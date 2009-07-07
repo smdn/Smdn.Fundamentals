@@ -62,11 +62,19 @@ namespace Smdn.IO {
     }
 
     public IntPtr Buffer {
-      get { return buffer; }
+      get
+      {
+        CheckDisposed();
+        return buffer;
+      }
     }
 
     public int Size {
-      get { return size; }
+      get
+      {
+        CheckDisposed();
+        return size;
+      }
     }
 
     public UnmanagedMemoryBuffer(int cb)
@@ -155,9 +163,9 @@ namespace Smdn.IO {
       if (cb < 0)
         throw new ArgumentOutOfRangeException("cb must be zero or positive number");
 
-      buffer = realloc(buffer, size);
+      buffer = realloc(buffer, cb);
 
-      if (this.buffer == IntPtr.Zero)
+      if (buffer == IntPtr.Zero)
         throw new OutOfMemoryException("buffer reallocation failed");
 
       size = cb;
