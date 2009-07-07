@@ -23,26 +23,50 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.IO;
 
-[assembly: CLSCompliant(false)]
+namespace Smdn.IO {
+  public class BigEndianBinaryReader : System.IO.BinaryReader {
+    public BigEndianBinaryReader(Stream stream) : base(stream)
+    {
+      this.reader = new BinaryReader(stream);
+    }
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
+    public override short ReadInt16()
+    {
+      return reader.ReadInt16BE();
+    }
 
-[assembly: AssemblyTitle("Smdn")]
-[assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyConfiguration("")]
+    public override ushort ReadUInt16()
+    {
+      return reader.ReadUInt16BE();
+    }
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+    public override int ReadInt32()
+    {
+      return reader.ReadInt32BE();
+    }
 
-[assembly: AssemblyVersion("0.10.*")]
+    public override uint ReadUInt32()
+    {
+      return reader.ReadUInt32BE();
+    }
 
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+    public override long ReadInt64()
+    {
+      return reader.ReadInt64BE();
+    }
 
+    public override ulong ReadUInt64()
+    {
+      return reader.ReadUInt64BE();
+    }
+
+    public virtual UInt48 ReadUInt48()
+    {
+      return reader.ReadUInt48BE();
+    }
+
+    private BinaryReader reader;
+  }
+}

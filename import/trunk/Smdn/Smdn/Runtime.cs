@@ -23,26 +23,27 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: CLSCompliant(false)]
+namespace Smdn {
+  public static class Runtime {
+    /*
+     * http://mono-project.com/FAQ:_Technical
+     */
+    public static bool IsRunningOnMono {
+      get { return Type.GetType("Mono.Runtime") != null; }
+    }
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
+    public static bool IsRunningOnUnix {
+      get
+      {
+        var platform = (int)Environment.OSVersion.Platform;
 
-[assembly: AssemblyTitle("Smdn")]
-[assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyConfiguration("")]
+        return (platform == 4 || platform == 6 || platform == 128);
+      }
+    }
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion("0.10.*")]
-
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
-
+    public static Version Version {
+      get { return Environment.Version; }
+    }
+  }
+}

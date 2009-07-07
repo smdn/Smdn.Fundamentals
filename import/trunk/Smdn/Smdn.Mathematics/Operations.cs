@@ -23,26 +23,56 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: CLSCompliant(false)]
+namespace Smdn.Mathematics {
+  public class Operations {
+    /// <summary>
+    /// greatest common divisor of m and n
+    /// </summary>
+    public static int GCD(int m, int n)
+    {
+      return (int)GCD((long)m, (long)n);
+    }
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
+    /// <summary>
+    /// greatest common divisor of m and n
+    /// </summary>
+    public static long GCD(long m, long n)
+    {
+      long mm, nn;
 
-[assembly: AssemblyTitle("Smdn")]
-[assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyConfiguration("")]
+      if (m < n) {
+        mm = n;
+        nn = m;
+      }
+      else {
+        mm = m;
+        nn = n;
+      }
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+      while (nn != 0) {
+        var t = mm % nn;
+        mm = nn;
+        nn = t;
+      }
 
-[assembly: AssemblyVersion("0.10.*")]
+      return mm;
+    }
 
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+    /// <summary>
+    /// least common multiple of m and n
+    /// </summary>
+    public static int LCM(int m, int n)
+    {
+      return (int)LCM((long)m, (long)n);
+    }
 
+    /// <summary>
+    /// least common multiple of m and n
+    /// </summary>
+    public static long LCM(long m, long n)
+    {
+      return (m * n) / GCD(m, n);
+    }
+  }
+}

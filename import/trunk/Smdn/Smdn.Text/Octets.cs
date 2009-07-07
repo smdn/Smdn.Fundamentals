@@ -23,26 +23,29 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: CLSCompliant(false)]
+namespace Smdn.Text {
+  public static class Octets {
+    public const byte NUL   = 0x00;
+    public const byte CR    = 0x0d;
+    public const byte LF    = 0x0a;
+    public const byte SP    = 0x20;
+    public const byte HT    = 0x09; // horizontal tab
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
+    public static readonly byte[] CRLF = new byte[] {0x0d, 0x0a};
 
-[assembly: AssemblyTitle("Smdn")]
-[assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyConfiguration("")]
+    public static readonly byte[] LowerCaseHexOcets = new byte[] {
+      0x30, 0x31, 0x32, 0x33,
+      0x34, 0x35, 0x36, 0x37,
+      0x38, 0x39, 0x61, 0x62,
+      0x63, 0x64, 0x65, 0x66,
+    };
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion("0.10.*")]
-
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
-
+    public static readonly byte[] UpperCaseHexOcets = new byte[] {
+      0x30, 0x31, 0x32, 0x33,
+      0x34, 0x35, 0x36, 0x37,
+      0x38, 0x39, 0x41, 0x42,
+      0x43, 0x44, 0x45, 0x46,
+    };
+  }
+}

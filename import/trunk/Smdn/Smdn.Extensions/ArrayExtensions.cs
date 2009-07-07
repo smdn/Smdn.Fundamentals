@@ -23,26 +23,52 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
-[assembly: CLSCompliant(false)]
+namespace Smdn.Extensions {
+  /// <summary>
+  /// extension methods for System.Array
+  /// </summary>
+  public static class ArrayExtensions {
+    public static T[] Concat<T>(this T[] array, params T[][] arrays)
+    {
+      if (array == null)
+        throw new ArgumentNullException("array");
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
+      if (arrays == null || arrays.Length == 0)
+        return array;
 
-[assembly: AssemblyTitle("Smdn")]
-[assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyConfiguration("")]
+      var length = array.Length;
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+      for (var i = 0; i < arrays.Length; i++) {
+        length += arrays[i].Length;
+      }
 
-[assembly: AssemblyVersion("0.10.*")]
+      var concat = new T[length];
+      var index = 0;
 
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+      Array.Copy(array, 0, concat, index, array.Length);
 
+      index += array.Length;
+
+      for (var i = 0; i < arrays.Length; i++) {
+        Array.Copy(arrays[i], 0, concat, index, arrays[i].Length);
+
+        index += arrays[i].Length;
+      }
+
+      return concat;
+    }
+
+    public static T[] Slice<T>(this T[] array, int start, int count)
+    {
+      if (array == null)
+        throw new ArgumentNullException("array");
+
+      var cut = new T[count];
+
+      Array.Copy(array, start, cut, 0, count);
+
+      return cut;
+    }
+  }
+}

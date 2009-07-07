@@ -23,26 +23,50 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.IO;
 
-[assembly: CLSCompliant(false)]
+namespace Smdn.IO {
+  public class BigEndianBinaryWriter : System.IO.BinaryWriter {
+    public BigEndianBinaryWriter(Stream stream) : base(stream)
+    {
+      this.writer = new BinaryWriter(stream);
+    }
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
+    public override void Write(short @value)
+    {
+      writer.WriteBE(@value);
+    }
 
-[assembly: AssemblyTitle("Smdn")]
-[assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyConfiguration("")]
+    public override void Write(ushort @value)
+    {
+      writer.WriteBE(@value);
+    }
 
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
+    public override void Write(int @value)
+    {
+      writer.WriteBE(@value);
+    }
 
-[assembly: AssemblyVersion("0.10.*")]
+    public override void Write(uint @value)
+    {
+      writer.WriteBE(@value);
+    }
 
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
+    public override void Write(long @value)
+    {
+      writer.WriteBE(@value);
+    }
 
+    public override void Write(ulong @value)
+    {
+      writer.WriteBE(@value);
+    }
+
+    public virtual void Write(UInt48 @value)
+    {
+      writer.WriteBE(@value);
+    }
+
+    private BinaryWriter writer;
+  }
+}
