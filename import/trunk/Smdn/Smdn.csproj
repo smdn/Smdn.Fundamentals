@@ -83,6 +83,7 @@
     <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn\Runtime.cs" />
+    <Compile Include="Smdn.Text\MimeEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
