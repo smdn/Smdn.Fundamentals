@@ -28,7 +28,7 @@ using System.Text;
 
 namespace Smdn.Text {
   public static class Convert {
-    public static byte[] ToPrintableAsciiByteArray(string str)
+    internal static byte[] ToPrintableAsciiByteArray(string str, bool allowCrLf, bool allowTab)
     {
       if (str == null)
         throw new ArgumentNullException("str");
@@ -37,12 +37,22 @@ namespace Smdn.Text {
       var bytes = new byte[chars.Length];
 
       for (var i = 0; i < chars.Length; i++) {
-        if (chars[i] < '\u0020' || chars[i] == '\u007f')
-          throw new FormatException("contains non-printable character");
-        else if ('\u0080' <= chars[i])
-          throw new FormatException("contains non-ascii character");
-        else
-          bytes[i] = (byte)chars[i];
+        if (chars[i] < '\u0020') {
+          var isAllowedChar =
+            (allowCrLf && (chars[i] == Chars.CR || chars[i] == Chars.LF)) ||
+            (allowTab && (chars[i] == Chars.HT));
+
+          if (!isAllowedChar)
+            throw new FormatException("contains non-printable character");
+        }
+        else if ('\u0080' <= chars[i]) {
+          if (chars[i] == '\u007f')
+            throw new FormatException("contains non-printable character");
+          else
+            throw new FormatException("contains non-ascii character");
+        }
+
+        bytes[i] = (byte)chars[i];
       }
 
       return bytes;
@@ -211,7 +221,7 @@ namespace Smdn.Text {
 
     public static string FromModifiedUTF7String(string str)
     {
-      var bytes = ToPrintableAsciiByteArray(str);
+      var bytes = ToPrintableAsciiByteArray(str, false, false);
       var decoded = new StringBuilder();
 
       for (var index = 0; index < bytes.Length; index++) {
@@ -314,9 +324,19 @@ namespace Smdn.Text {
       return quoted.ToString();
     }
 
-    public static byte[] FromQuotedPrintableString(string str)
+    public static string FromQuotedPrintableString(string str)
     {
-      var quoted = ToPrintableAsciiByteArray(str);
+      return FromQuotedPrintableString(str, Encoding.ASCII);
+    }
+
+    public static string FromQuotedPrintableString(string str, Encoding encoding)
+    {
+      return encoding.GetString(FromQuotedPrintableStringToByteArray(str));
+    }
+
+    public static byte[] FromQuotedPrintableStringToByteArray(string str)
+    {
+      var quoted = ToPrintableAsciiByteArray(str, true, true);
       var decoded = new MemoryStream(str.Length);
       var prevQuoted = false;
 

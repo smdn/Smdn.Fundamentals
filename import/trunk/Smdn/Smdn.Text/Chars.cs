@@ -29,6 +29,7 @@ namespace Smdn.Text {
     public const char NUL     = '\u0000';
     public const char CR      = '\u000d';
     public const char LF      = '\u000a';
+    public const char HT      = '\u0009'; // horizontal tab
     public const char SP      = ' ';
     public const char DQuote  = '"';
     public const char Comma   = ',';

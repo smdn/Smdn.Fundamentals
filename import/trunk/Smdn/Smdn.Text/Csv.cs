@@ -52,7 +52,7 @@ namespace Smdn.Text {
           continue;
 
         if (quoted)
-          splitted.Add(csv.Substring(splitAt + 1, index - splitAt - 2));
+          splitted.Add(csv.Substring(splitAt + 1, index - splitAt - 2).Replace("\"\"", "\""));
         else
           splitted.Add(csv.Substring(splitAt, index - splitAt));
 
