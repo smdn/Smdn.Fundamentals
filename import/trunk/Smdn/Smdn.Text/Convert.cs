@@ -62,10 +62,8 @@ namespace Smdn.Text {
     public static string ToLowerCaseHexString(byte[] bytes)
     {
       var chars = new char[bytes.Length * 2];
-      var b = 0;
-      var c = 0;
 
-      for (; b < bytes.Length;) {
+      for (int b = 0, c = 0; b < bytes.Length;) {
         chars[c++] = Chars.LowerCaseHexChars[bytes[b] >> 4];
         chars[c++] = Chars.LowerCaseHexChars[bytes[b] & 0xf];
         b++;
@@ -77,10 +75,8 @@ namespace Smdn.Text {
     public static string ToUpperCaseHexString(byte[] bytes)
     {
       var chars = new char[bytes.Length * 2];
-      var b = 0;
-      var c = 0;
 
-      for (; b < bytes.Length;) {
+      for (int b = 0, c = 0; b < bytes.Length;) {
         chars[c++] = Chars.UpperCaseHexChars[bytes[b] >> 4];
         chars[c++] = Chars.UpperCaseHexChars[bytes[b] & 0xf];
         b++;
