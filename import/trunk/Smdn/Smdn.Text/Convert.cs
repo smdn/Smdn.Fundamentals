@@ -44,13 +44,13 @@ namespace Smdn.Text {
             (allowTab && (chars[i] == Chars.HT));
 
           if (!isAllowedChar)
-            throw new FormatException("contains non-printable character");
+            throw new FormatException(string.Format("contains non-printable character: at index {0} of '{1}', \\u{2:x4}", i, str, (int)chars[i]));
         }
         else if ('\u0080' <= chars[i]) {
           if (chars[i] == '\u007f')
-            throw new FormatException("contains non-printable character");
+            throw new FormatException(string.Format("contains non-printable character: at index {0} of '{1}', \\u{2:x4}", i, str, (int)chars[i]));
           else
-            throw new FormatException("contains non-ascii character");
+            throw new FormatException(string.Format("contains non-ascii character: at index {0} of '{1}', \\u{2:x4}", i, str, (int)chars[i]));
         }
 
         bytes[i] = (byte)chars[i];
