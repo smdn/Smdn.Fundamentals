@@ -29,7 +29,7 @@ namespace Smdn.Extensions {
   /// extension methods for System.DateTime
   /// </summary>
   public static class DateTimeExtensions {
-#region "Unix time extensions"
+#region "extensions for unix time"
     public static int ToUnixTime32(this DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
@@ -71,35 +71,35 @@ namespace Smdn.Extensions {
     public readonly static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #endregion
 
-#region "ISO date time extensions"
-    public static DateTime FromIsoDateTime(ulong isoDateTime)
+#region "extensions for date time of ISO base media file format"
+    public static DateTime FromIso14496DateTime(ulong isoDateTime)
     {
       // this might overflow
-      return IsoDateTimeEpoch.AddSeconds(isoDateTime);
+      return Iso14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
-    public static DateTime FromIsoDateTime(uint isoDateTime)
+    public static DateTime FromIso14496DateTime(uint isoDateTime)
     {
-      return IsoDateTimeEpoch.AddSeconds(isoDateTime);
+      return Iso14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
-    public static ulong ToIsoDateTime64(this DateTime dateTime)
-    {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (ulong)dateTime.Subtract(IsoDateTimeEpoch).TotalSeconds;
-    }
-
-    public static uint ToIsoDateTime32(this DateTime dateTime)
+    public static ulong ToIso14496DateTime64(this DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
 
-      return (uint)dateTime.Subtract(IsoDateTimeEpoch).TotalSeconds;
+      return (ulong)dateTime.Subtract(Iso14496DateTimeEpoch).TotalSeconds;
     }
 
-    public readonly static DateTime IsoDateTimeEpoch = new DateTime(1904, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    public static uint ToIso14496DateTime32(this DateTime dateTime)
+    {
+      if (dateTime.Kind != DateTimeKind.Utc)
+        dateTime = dateTime.ToUniversalTime();
+
+      return (uint)dateTime.Subtract(Iso14496DateTimeEpoch).TotalSeconds;
+    }
+
+    public readonly static DateTime Iso14496DateTimeEpoch = new DateTime(1904, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #endregion
   }
 }
