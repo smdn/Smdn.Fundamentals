@@ -25,6 +25,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Smdn.Text {
   public static class Convert {
@@ -386,6 +387,95 @@ namespace Smdn.Text {
 
       return decoded.ToArray();
     }
+#endregion
+
+#region "MIME encoding"
+    // http://tools.ietf.org/html/rfc2047
+    // RFC 2047 - MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header Extensions for Non-ASCII Text
+    // 2. Syntax of encoded-words
+    // 3. Character sets
+    // 4. Encodings
+
+    // encoded-word = "=?" charset "?" encoding "?" encoded-text "?="
+    // charset = token    ; see section 3
+    // encoding = token   ; see section 4
+    // token = 1*<Any CHAR except SPACE, CTLs, and especials>
+    // especials = "(" / ")" / "<" / ">" / "@" / "," / ";" / ":" / "
+    //             <"> / "/" / "[" / "]" / "?" / "." / "="
+    // encoded-text = 1*<Any printable ASCII character other than "?"
+    //                   or SPACE>
+    //               ; (but see "Use of encoded-words in message
+    //               ; headers", section 5)
+    public static string ToMimeEncodedString(string str, MimeEncoding encoding)
+    {
+      return ToMimeEncodedString(str, encoding, Encoding.ASCII);
+    }
+
+    public static string ToMimeEncodedString(string str, MimeEncoding encoding, Encoding charset)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (charset == null)
+        throw new ArgumentNullException("charset");
+
+      switch (encoding) {
+        case MimeEncoding.Base64:
+          throw new NotImplementedException();
+        case MimeEncoding.QuotedPrintable:
+          throw new NotImplementedException();
+        default:
+          throw new System.ComponentModel.InvalidEnumArgumentException("encoding", (int)encoding, typeof(MimeEncoding));
+      }
+    }
+
+    public static string FromMimeEncodedString(string str)
+    {
+      MimeEncoding discard1;
+      Encoding discard2;
+
+      return FromMimeEncodedString(str, out discard1, out discard2);
+    }
+
+    public static string FromMimeEncodedString(string str, out MimeEncoding encoding, out Encoding charset)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      charset = null;
+      encoding = MimeEncoding.None;
+
+      Encoding lastCharset = null;
+      var lastEncoding = MimeEncoding.None;
+
+      var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
+        // charset
+        try {
+          lastCharset = Encoding.GetEncoding(m.Groups[1].Value);
+        }
+        catch {
+          throw new FormatException(string.Format("{0} is an unsupported or invalid charset", m.Groups[1].Value));
+        }
+
+        // encoding
+        switch (m.Groups[2].Value.ToLowerInvariant()) {
+          case "b":
+            lastEncoding = MimeEncoding.Base64;
+            return FromBase64String(m.Groups[3].Value, lastCharset);
+          case "q":
+            lastEncoding = MimeEncoding.QuotedPrintable;
+            return FromQuotedPrintableString(m.Groups[3].Value, lastCharset);
+        }
+
+        throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
+      });
+
+      charset = lastCharset;
+      encoding = lastEncoding;
+
+      return ret;
+    }
+
+    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*\=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?\=\s*", RegexOptions.Singleline);
 #endregion
   }
 }
