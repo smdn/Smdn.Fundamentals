@@ -102,7 +102,7 @@ namespace Smdn.IO {
 
     public short ReadInt16LE()
     {
-      var bytes = ReadBytes(2);
+      var bytes = ReadBytesOrThrow(2);
 
       return (short)(bytes[1] << 8 | bytes[0]);
     }
@@ -169,8 +169,8 @@ namespace Smdn.IO {
 
     public ulong ReadUInt64LE()
     {
-      var low  = (ulong)ReadUInt32BE();
-      var high = (ulong)ReadUInt32BE();
+      var low  = (ulong)ReadUInt32LE();
+      var high = (ulong)ReadUInt32LE();
 
       return (ulong)(high << 32 | low);
     }

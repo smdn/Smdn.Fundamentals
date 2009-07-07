@@ -34,8 +34,11 @@ namespace Smdn.IO {
 
     public void WriteZero(long bytes)
     {
-      for (; 4L <= bytes; bytes -= 4L)
-        Write((uint)0);
+      if (bytes < 0)
+        throw new ArgumentOutOfRangeException("bytes", "must be zero or positive number");
+
+      for (; 8L <= bytes; bytes -= 8L)
+        Write((UInt64)0);
 
       for (; 0L < bytes; bytes--)
         Write((byte)0);
