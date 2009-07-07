@@ -59,6 +59,14 @@ namespace Smdn.Extensions {
       return concat;
     }
 
+    public static T[] Slice<T>(this T[] array, int start)
+    {
+      if (array == null)
+        throw new ArgumentNullException("array");
+
+      return Slice(array, start, array.Length - start);
+    }
+
     public static T[] Slice<T>(this T[] array, int start, int count)
     {
       if (array == null)
