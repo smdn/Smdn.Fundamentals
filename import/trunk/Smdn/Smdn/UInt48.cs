@@ -133,17 +133,17 @@ namespace Smdn {
 
     public Int64 ToInt64()
     {
-      return (Int64)(Byte0 << 40 |
-                     Byte1 << 32 |
-                     Byte2 << 24 |
-                     Byte3 << 16 |
-                     Byte4 << 8 |
-                     Byte5);
+      return (Int64)ToUInt64();
     }
 
     public UInt64 ToUInt64()
     {
-      return (UInt64)ToInt64();
+      return ((UInt64)Byte0 << 40 |
+              (UInt64)Byte1 << 32 |
+              (UInt64)Byte2 << 24 |
+              (UInt64)Byte3 << 16 |
+              (UInt64)Byte4 << 8 |
+              (UInt64)Byte5);
     }
 
     public byte[] ToBigEndianByteArray()
