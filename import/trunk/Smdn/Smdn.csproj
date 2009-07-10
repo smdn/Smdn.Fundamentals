@@ -84,6 +84,8 @@
     <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn.Text\MimeEncoding.cs" />
+    <Compile Include="Smdn.IO\PathUtils.cs" />
+    <Compile Include="Smdn.Extensions\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
 namespace Smdn.Extensions {
   /// <summary>
@@ -77,6 +78,41 @@ namespace Smdn.Extensions {
       Array.Copy(array, start, cut, 0, count);
 
       return cut;
+    }
+
+    public static bool IsEqualsTo<T>(this T[] array, T[] other) where T : IEquatable<T>
+    {
+      if (array == null || other == null)
+        return false;
+
+      if (array.Length != other.Length)
+        return false;
+
+      for (var i = 0; i < array.Length; i++) {
+        if (!array[i].Equals(other[i]))
+          return false;
+      }
+
+      return true;
+    }
+
+    public static bool IsEqualsTo<T>(this T[] array, T[] other, IEqualityComparer<T> comparer)
+    {
+      if (comparer == null)
+        throw new ArgumentNullException("comparer");
+
+      if (array == null || other == null)
+        return false;
+
+      if (array.Length != other.Length)
+        return false;
+
+      for (var i = 0; i < array.Length; i++) {
+        if (!comparer.Equals(array[i], other[i]))
+          return false;
+      }
+
+      return true;
     }
   }
 }

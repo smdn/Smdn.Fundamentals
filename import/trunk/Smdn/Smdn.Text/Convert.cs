@@ -85,6 +85,67 @@ namespace Smdn.Text {
 
       return new string(chars);
     }
+
+    public static byte[] FromHexString(string str)
+    {
+      return FromHexString(str, true, true);
+    }
+
+    public static byte[] FromLowerCaseHexString(string str)
+    {
+      return FromHexString(str, true, false);
+    }
+
+    public static byte[] FromUpperCaseHexString(string str)
+    {
+      return FromHexString(str, false, true);
+    }
+
+    private static byte[] FromHexString(string str, bool allowLowerCaseChar, bool allowUpperCaseChar)
+    {
+      if ((str.Length & 0x1) != 0)
+        throw new FormatException("incorrect form");
+
+      var chars = str.ToCharArray();
+      var bytes = new byte[chars.Length / 2];
+      var high = true;
+
+      for (int c = 0, b = 0; c < chars.Length;) {
+        int val;
+
+        if ('0' <= chars[c] && chars[c] <= '9') {
+          val = (int)(chars[c] - '0');
+        }
+        else if ('a' <= chars[c] && chars[c] <= 'f') {
+          if (allowLowerCaseChar)
+            val = 0xa + (int)(chars[c] - 'a');
+          else
+            throw new FormatException("incorrect form");
+        }
+        else if ('A' <= chars[c] && chars[c] <= 'F') {
+          if (allowUpperCaseChar)
+            val = 0xa + (int)(chars[c] - 'A');
+          else
+            throw new FormatException("incorrect form");
+        }
+        else {
+          throw new FormatException("incorrect form");
+        }
+
+        if (high) {
+          bytes[b] = (byte)(val << 4);
+        }
+        else {
+          bytes[b] = (byte)(bytes[b] | val);
+          b++;
+        }
+
+        c++;
+        high = !high;
+      }
+
+      return bytes;
+    }
 #endregion
 
 #region "base64"
