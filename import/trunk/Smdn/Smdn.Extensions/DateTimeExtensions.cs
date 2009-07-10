@@ -23,12 +23,102 @@
 // THE SOFTWARE.
 
 using System;
+using System.Globalization;
 
 namespace Smdn.Extensions {
   /// <summary>
   /// extension methods for System.DateTime
   /// </summary>
   public static class DateTimeExtensions {
+#region "formatting and parsing extensions"
+    public static string ToRfc822DateTimeString(this DateTime dateTime)
+    {
+      if (dateTime.Kind == DateTimeKind.Utc)
+        return dateTime.ToString("ddd, d MMM yyyy HH:mm:ss 'GMT'", CultureInfo.InvariantCulture);
+      else
+        return string.Format("{0} {1}",
+                             dateTime.ToString("ddd, d MMM yyyy HH:mm:ss", CultureInfo.InvariantCulture),
+                             dateTime.ToString("zzz", CultureInfo.InvariantCulture).Replace(":", string.Empty));
+    }
+
+    public static string ToISO8601DateTimeString(this DateTime dateTime)
+    {
+      return ToW3CDateTimeString(dateTime);
+    }
+
+    public static string ToW3CDateTimeString(this DateTime dateTime)
+    {
+      if (dateTime.Kind == DateTimeKind.Utc)
+        return dateTime.ToString("yyyy-MM-ddTHH:mm:ss'Z'", CultureInfo.InvariantCulture);
+      else
+        return dateTime.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
+    }
+
+    public static DateTime FromRFC822DateTimeString(string s)
+    {
+      return FromDateTimeString(s, rfc822Formats, "GMT");
+    }
+
+    public static DateTime FromISO8601DateTimeString(string s)
+    {
+      return FromW3CDateTimeString(s);
+    }
+
+    public static DateTime FromW3CDateTimeString(string s)
+    {
+      return FromDateTimeString(s, w3cFormats, "Z");
+    }
+
+    private static DateTime FromDateTimeString(string s, string[] formats, string utc)
+    {
+      if (s == null)
+        throw new ArgumentNullException("str");
+
+      var dateTime = DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces);
+
+      if (s.EndsWith(utc))
+        return new DateTime(dateTime.Ticks, DateTimeKind.Utc);
+      else
+        return new DateTime(dateTime.Ticks, DateTimeKind.Local);
+    }
+
+    private static readonly string[] rfc822Formats = new[]
+    {
+      "d MMM yyyy HH:mm",
+      "d MMM yyyy HH:mm z",
+      "d MMM yyyy HH:mm zz",
+      "d MMM yyyy HH:mm zzz",
+      "d MMM yyyy HH:mm 'GMT'",
+      "d MMM yyyy HH:mm:ss",
+      "d MMM yyyy HH:mm:ss z",
+      "d MMM yyyy HH:mm:ss zz",
+      "d MMM yyyy HH:mm:ss zzz",
+      "d MMM yyyy HH:mm:ss 'GMT'",
+      "ddd, d MMM yyyy HH:mm",
+      "ddd, d MMM yyyy HH:mm z",
+      "ddd, d MMM yyyy HH:mm zz",
+      "ddd, d MMM yyyy HH:mm zzz",
+      "ddd, d MMM yyyy HH:mm 'GMT'",
+      "ddd, d MMM yyyy HH:mm:ss",
+      "ddd, d MMM yyyy HH:mm:ss z",
+      "ddd, d MMM yyyy HH:mm:ss zz",
+      "ddd, d MMM yyyy HH:mm:ss zzz",
+      "ddd, d MMM yyyy HH:mm:ss 'GMT'",
+    };
+
+    private static string[] w3cFormats = new string[]
+    {
+      "yyyy-MM-ddTHH:mm'Z'",
+      "yyyy-MM-ddTHH:mm:ss'Z'",
+      "yyyy-MM-dd HH:mm'Z'",
+      "yyyy-MM-dd HH:mm:ss'Z'",
+      "yyyy-MM-ddTHH:mmzzz",
+      "yyyy-MM-ddTHH:mm:sszzz",
+      "yyyy-MM-dd HH:mmzzz",
+      "yyyy-MM-dd HH:mm:sszzz",
+    };
+#endregion
+
 #region "extensions for unix time"
     public static int ToUnixTime32(this DateTime dateTime)
     {
