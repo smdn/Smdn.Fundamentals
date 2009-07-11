@@ -31,14 +31,37 @@ namespace Smdn.Extensions {
   /// </summary>
   public static class DateTimeExtensions {
 #region "formatting and parsing extensions"
+    public static string GetCurrentTimeZoneOffsetString(bool delimiter)
+    {
+      var offset = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+
+      if (delimiter) {
+        if (TimeSpan.Zero <= offset)
+          return string.Format("+{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
+        else
+          return string.Format("-{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
+      }
+      else {
+        if (TimeSpan.Zero <= offset)
+          return string.Format("+{0:d2}{1:d2}", offset.Hours, offset.Minutes);
+        else
+          return string.Format("-{0:d2}{1:d2}", offset.Hours, offset.Minutes);
+      }
+    }
+
     public static string ToRfc822DateTimeString(this DateTime dateTime)
     {
+      var str = dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture);
+
       if (dateTime.Kind == DateTimeKind.Utc)
-        return dateTime.ToString("ddd, d MMM yyyy HH:mm:ss 'GMT'", CultureInfo.InvariantCulture);
+        return str + "GMT";
       else
-        return string.Format("{0} {1}",
-                             dateTime.ToString("ddd, d MMM yyyy HH:mm:ss", CultureInfo.InvariantCulture),
-                             dateTime.ToString("zzz", CultureInfo.InvariantCulture).Replace(":", string.Empty));
+        return str + GetCurrentTimeZoneOffsetString(false);
+    }
+
+    public static DateTime FromRFC822DateTimeString(string s)
+    {
+      return FromDateTimeString(s, rfc822Formats, "GMT");
     }
 
     public static string ToISO8601DateTimeString(this DateTime dateTime)
@@ -52,11 +75,6 @@ namespace Smdn.Extensions {
         return dateTime.ToString("yyyy-MM-ddTHH:mm:ss'Z'", CultureInfo.InvariantCulture);
       else
         return dateTime.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
-    }
-
-    public static DateTime FromRFC822DateTimeString(string s)
-    {
-      return FromDateTimeString(s, rfc822Formats, "GMT");
     }
 
     public static DateTime FromISO8601DateTimeString(string s)
