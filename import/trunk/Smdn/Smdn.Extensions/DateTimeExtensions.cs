@@ -49,7 +49,7 @@ namespace Smdn.Extensions {
       }
     }
 
-    public static string ToRfc822DateTimeString(this DateTime dateTime)
+    public static string ToRFC822DateTimeString(this DateTime dateTime)
     {
       var str = dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture);
 
@@ -61,7 +61,7 @@ namespace Smdn.Extensions {
 
     public static DateTime FromRFC822DateTimeString(string s)
     {
-      return FromDateTimeString(s, rfc822Formats, "GMT");
+      return FromDateTimeString(s, rfc822DateTimeFormats, "GMT");
     }
 
     public static string ToISO8601DateTimeString(this DateTime dateTime)
@@ -84,7 +84,7 @@ namespace Smdn.Extensions {
 
     public static DateTime FromW3CDateTimeString(string s)
     {
-      return FromDateTimeString(s, w3cFormats, "Z");
+      return FromDateTimeString(s, w3cDateTimeFormats, "Z");
     }
 
     private static DateTime FromDateTimeString(string s, string[] formats, string utc)
@@ -100,7 +100,7 @@ namespace Smdn.Extensions {
         return new DateTime(dateTime.Ticks, DateTimeKind.Local);
     }
 
-    private static readonly string[] rfc822Formats = new[]
+    private static readonly string[] rfc822DateTimeFormats = new[]
     {
       "d MMM yyyy HH:mm",
       "d MMM yyyy HH:mm z",
@@ -124,7 +124,7 @@ namespace Smdn.Extensions {
       "ddd, d MMM yyyy HH:mm:ss 'GMT'",
     };
 
-    private static string[] w3cFormats = new string[]
+    private static string[] w3cDateTimeFormats = new string[]
     {
       "yyyy-MM-ddTHH:mm'Z'",
       "yyyy-MM-ddTHH:mm:ss'Z'",
@@ -180,34 +180,34 @@ namespace Smdn.Extensions {
 #endregion
 
 #region "extensions for date time of ISO base media file format"
-    public static DateTime FromIso14496DateTime(ulong isoDateTime)
+    public static DateTime FromISO14496DateTime(ulong isoDateTime)
     {
       // this might overflow
-      return Iso14496DateTimeEpoch.AddSeconds(isoDateTime);
+      return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
-    public static DateTime FromIso14496DateTime(uint isoDateTime)
+    public static DateTime FromISO14496DateTime(uint isoDateTime)
     {
-      return Iso14496DateTimeEpoch.AddSeconds(isoDateTime);
+      return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
-    public static ulong ToIso14496DateTime64(this DateTime dateTime)
-    {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (ulong)dateTime.Subtract(Iso14496DateTimeEpoch).TotalSeconds;
-    }
-
-    public static uint ToIso14496DateTime32(this DateTime dateTime)
+    public static ulong ToISO14496DateTime64(this DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
 
-      return (uint)dateTime.Subtract(Iso14496DateTimeEpoch).TotalSeconds;
+      return (ulong)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
     }
 
-    public readonly static DateTime Iso14496DateTimeEpoch = new DateTime(1904, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    public static uint ToISO14496DateTime32(this DateTime dateTime)
+    {
+      if (dateTime.Kind != DateTimeKind.Utc)
+        dateTime = dateTime.ToUniversalTime();
+
+      return (uint)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
+    }
+
+    public readonly static DateTime ISO14496DateTimeEpoch = new DateTime(1904, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #endregion
   }
 }
