@@ -86,6 +86,12 @@
     <Compile Include="Smdn.Text\MimeEncoding.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn.Extensions\StringExtensions.cs" />
+    <Compile Include="Smdn.Text\FromQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Text\ToQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Text\FromRFC3501ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Text\ToRFC3501ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Text\ToRFC2152ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Text\FromRFC2152ModifiedBase64Transform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

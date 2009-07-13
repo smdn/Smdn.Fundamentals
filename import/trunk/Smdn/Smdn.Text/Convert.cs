@@ -22,13 +22,76 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#define TRANSFORMIMPL_FAST
+#undef TRANSFORMIMPL_FAST
+
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Smdn.Text {
   public static class Convert {
+#region "text tranform"
+    internal static string TransformTo(string str, ICryptoTransform transform, Encoding encoding)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return Encoding.ASCII.GetString(TransformBytes(encoding.GetBytes(str), transform));
+    }
+
+    internal static string TransformFrom(string str, ICryptoTransform transform, Encoding encoding)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return encoding.GetString(TransformBytes(Encoding.ASCII.GetBytes(str), transform));
+    }
+
+    internal static byte[] TransformBytes(byte[] inputBuffer, ICryptoTransform transform)
+    {
+      var outputBuffer = new byte[inputBuffer.Length * transform.OutputBlockSize];
+      var outputOffset = 0;
+      var inputOffset  = 0;
+
+      if (transform.CanTransformMultipleBlocks) {
+        var inputCount = (inputBuffer.Length / transform.InputBlockSize) * transform.InputBlockSize;
+
+        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
+        inputOffset  += inputCount;
+      }
+
+      var inputRemain = inputBuffer.Length - inputOffset;
+
+      while (transform.InputBlockSize <= inputRemain) {
+        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, transform.InputBlockSize, outputBuffer, outputOffset);
+
+        inputOffset += transform.InputBlockSize;
+        inputRemain -= transform.InputBlockSize;
+      }
+
+      if (0 < inputRemain) {
+        var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputBuffer.Length - inputOffset);
+
+        if (outputBuffer.Length != outputOffset + finalBlock.Length)
+          Array.Resize(ref outputBuffer, outputOffset + finalBlock.Length);
+
+        Buffer.BlockCopy(finalBlock, 0, outputBuffer, outputOffset, finalBlock.Length);
+      }
+      else {
+        if (outputBuffer.Length != outputOffset)
+          Array.Resize(ref outputBuffer, outputOffset);
+      }
+
+      return outputBuffer;
+    }
+
     internal static byte[] ToPrintableAsciiByteArray(string str, bool allowCrLf, bool allowTab)
     {
       if (str == null)
@@ -58,6 +121,7 @@ namespace Smdn.Text {
 
       return bytes;
     }
+#endregion
 
 #region "hexadecimal"
     public static string ToLowerCaseHexString(byte[] bytes)
@@ -148,7 +212,8 @@ namespace Smdn.Text {
     }
 #endregion
 
-#region "base64"
+#region "Base64"
+#if TRANSFORMIMPL_FAST
     public static string ToBase64String(string str)
     {
       return ToBase64String(str, Encoding.ASCII);
@@ -161,7 +226,7 @@ namespace Smdn.Text {
 
     public static string ToBase64String(byte[] bytes)
     {
-      return System.Convert.ToBase64String(bytes);
+      return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
     }
 
     public static string FromBase64String(string str)
@@ -178,25 +243,69 @@ namespace Smdn.Text {
     {
       return System.Convert.FromBase64String(str);
     }
+#else
+    private static ICryptoTransform   toBase64Transform = new   ToBase64Transform();
+    private static ICryptoTransform fromBase64Transfrom = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
+
+    public static string ToBase64String(string str)
+    {
+      lock (toBase64Transform) {
+        return TransformTo(str, toBase64Transform, Encoding.ASCII);
+      }
+    }
+
+    public static string ToBase64String(string str, Encoding encoding)
+    {
+      lock (toBase64Transform) {
+        return TransformTo(str, toBase64Transform, encoding);
+      }
+    }
+
+    public static string ToBase64String(byte[] bytes)
+    {
+      lock (toBase64Transform) {
+        return Encoding.ASCII.GetString(TransformBytes(bytes, toBase64Transform));
+      }
+    }
+
+    public static string FromBase64String(string str)
+    {
+      lock (fromBase64Transfrom) {
+        return TransformFrom(str, fromBase64Transfrom, Encoding.ASCII);
+      }
+    }
+
+    public static string FromBase64String(string str, Encoding encoding)
+    {
+      lock (fromBase64Transfrom) {
+        return TransformFrom(str, fromBase64Transfrom, encoding);
+      }
+    }
+
+    public static byte[] FromBase64StringToByteArray(string str)
+    {
+      lock (fromBase64Transfrom) {
+        return TransformBytes(Encoding.ASCII.GetBytes(str), fromBase64Transfrom);
+      }
+    }
+#endif
 #endregion
 
-#region "modified base64"
-    // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
-    // 5.1.3. Mailbox International Naming Convention
-    // http://tools.ietf.org/html/rfc3501#section-5.1.3
-    public static string ToModifiedBase64String(string str)
+#region "RFC 2152 Modified Base64"
+#if TRANSFORMIMPL_FAST
+    public static string ToRFC2152ModifiedBase64String(string str)
     {
-      return ToModifiedBase64String(Encoding.ASCII.GetBytes(str));
+      return ToRFC2152ModifiedBase64String(Encoding.ASCII.GetBytes(str));
     }
 
-    public static string ToModifiedBase64String(string str, Encoding encoding)
+    public static string ToRFC2152ModifiedBase64String(string str, Encoding encoding)
     {
-      return ToModifiedBase64String(encoding.GetBytes(str));
+      return ToRFC2152ModifiedBase64String(encoding.GetBytes(str));
     }
 
-    public static string ToModifiedBase64String(byte[] bytes)
+    public static string ToRFC2152ModifiedBase64String(byte[] bytes)
     {
-      var base64 = System.Convert.ToBase64String(bytes).Replace('/', ',');
+      var base64 = System.Convert.ToBase64String(bytes);
       var padding = base64.IndexOf('=');
 
       if (0 <= padding)
@@ -205,21 +314,18 @@ namespace Smdn.Text {
         return base64;
     }
 
-    public static string FromModifiedBase64String(string str)
+    public static string FromRFC2152ModifiedBase64String(string str)
     {
-      return FromModifiedBase64String(str, Encoding.ASCII);
+      return FromRFC2152ModifiedBase64String(str, Encoding.ASCII);
     }
 
-    public static string FromModifiedBase64String(string str, Encoding encoding)
+    public static string FromRFC2152ModifiedBase64String(string str, Encoding encoding)
     {
-      return encoding.GetString(FromModifiedBase64StringToByteArray(str));
+      return encoding.GetString(FromRFC2152ModifiedBase64StringToByteArray(str));
     }
 
-    public static byte[] FromModifiedBase64StringToByteArray(string str)
+    public static byte[] FromRFC2152ModifiedBase64StringToByteArray(string str)
     {
-      // "," is used instead of "/"
-      str = str.Replace(',', '/');
-
       var padding = 4 - str.Length & 3;
 
       if (padding == 4)
@@ -227,99 +333,137 @@ namespace Smdn.Text {
       else if (padding == 3)
         throw new FormatException("incorrect form");
       else
-        return System.Convert.FromBase64String(str + (new string('=', padding)));
+        return System.Convert.FromBase64String(str + (new String('=', padding)));
     }
+#else
+    private static ICryptoTransform   toRFC2152ModifiedBase64Transform = new   ToRFC2152ModifiedBase64Transform();
+    private static ICryptoTransform fromRFC2152ModifiedBase64Transfrom = new FromRFC2152ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
+
+    public static string ToRFC2152ModifiedBase64String(string str)
+    {
+      lock (toRFC2152ModifiedBase64Transform) {
+        return TransformTo(str, toRFC2152ModifiedBase64Transform, Encoding.ASCII);
+      }
+    }
+
+    public static string ToRFC2152ModifiedBase64String(string str, Encoding encoding)
+    {
+      lock (toRFC2152ModifiedBase64Transform) {
+        return TransformTo(str, toRFC2152ModifiedBase64Transform, encoding);
+      }
+    }
+
+    public static string ToRFC2152ModifiedBase64String(byte[] bytes)
+    {
+      lock (toRFC2152ModifiedBase64Transform) {
+        return Encoding.ASCII.GetString(TransformBytes(bytes, toRFC2152ModifiedBase64Transform));
+      }
+    }
+
+    public static string FromRFC2152ModifiedBase64String(string str)
+    {
+      lock (fromRFC2152ModifiedBase64Transfrom) {
+        return TransformFrom(str, fromRFC2152ModifiedBase64Transfrom, Encoding.ASCII);
+      }
+    }
+
+    public static string FromRFC2152ModifiedBase64String(string str, Encoding encoding)
+    {
+      lock (fromRFC2152ModifiedBase64Transfrom) {
+        return TransformFrom(str, fromRFC2152ModifiedBase64Transfrom, encoding);
+      }
+    }
+
+    public static byte[] FromRFC2152ModifiedBase64StringToByteArray(string str)
+    {
+      lock (fromRFC2152ModifiedBase64Transfrom) {
+        return TransformBytes(Encoding.ASCII.GetBytes(str), fromRFC2152ModifiedBase64Transfrom);
+      }
+    }
+#endif
 #endregion
 
-#region "modified UTF-7"
-    // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
-    // 5.1.3. Mailbox International Naming Convention
-    // http://tools.ietf.org/html/rfc3501#section-5.1.3
-    public static string ToModifiedUTF7String(string str)
+#region "RFC 3501 Modified Base64"
+#if TRANSFORMIMPL_FAST
+    public static string ToRFC3501ModifiedBase64String(string str)
     {
-      var encoded = new StringBuilder();
-      var chars = str.ToCharArray();
-      var shiftFrom = -1;
-
-      for (var index = 0; index < chars.Length; index++) {
-        var c = chars[index];
-
-        if (('\u0020' <= c && c <= '\u007e')) {
-          if (0 <= shiftFrom) {
-            // string -> modified UTF7
-            encoded.Append('&');
-            encoded.Append(ToModifiedBase64String(str.Substring(shiftFrom, index - shiftFrom), Encoding.BigEndianUnicode));
-            encoded.Append('-');
-
-            shiftFrom = -1;
-          }
-
-          // printable US-ASCII characters
-          if (c == '\u0026')
-            // except for "&"
-            encoded.Append("&-");
-          else
-            encoded.Append(c);
-        }
-        else {
-          if (shiftFrom == -1)
-            shiftFrom = index;
-        }
-      }
-
-      if (0 <= shiftFrom) {
-        // string -> modified UTF7
-        encoded.Append('&');
-        encoded.Append(ToModifiedBase64String(str.Substring(shiftFrom), Encoding.BigEndianUnicode));
-        encoded.Append('-');
-      }
-
-      return encoded.ToString();
+      return ToRFC3501ModifiedBase64String(Encoding.ASCII.GetBytes(str));
     }
 
-    public static string FromModifiedUTF7String(string str)
+    public static string ToRFC3501ModifiedBase64String(string str, Encoding encoding)
     {
-      var bytes = ToPrintableAsciiByteArray(str, false, false);
-      var decoded = new StringBuilder();
-
-      for (var index = 0; index < bytes.Length; index++) {
-        // In modified UTF-7, printable US-ASCII characters, except for "&",
-        // represent themselves
-        // "&" is used to shift to modified BASE64
-        if (bytes[index] != 0x26) { // '&'
-          decoded.Append((char)bytes[index]);
-          continue;
-        }
-
-        if (bytes.Length <= ++index)
-          // incorrect form
-          throw new FormatException("incorrect form");
-
-        if (bytes[index] == 0x2d) { // '-'
-          // The character "&" (0x26) is represented by the two-octet sequence "&-".
-          decoded.Append('&');
-          continue;
-        }
-
-        var nonprintable = new StringBuilder();
-
-        for (; index < bytes.Length; index++) {
-          if (bytes[index] == 0x2d) // '-'
-            // "-" is used to shift back to US-ASCII
-            break;
-
-          nonprintable.Append((char)bytes[index]);
-        }
-
-        // modified UTF7 -> string
-        decoded.Append(FromModifiedBase64String(nonprintable.ToString(), Encoding.BigEndianUnicode));
-      }
-
-      return decoded.ToString();
+      return ToRFC3501ModifiedBase64String(encoding.GetBytes(str));
     }
+
+    public static string ToRFC3501ModifiedBase64String(byte[] bytes)
+    {
+      return ToRFC2152ModifiedBase64String(bytes).Replace('/', ',');
+    }
+
+    public static string FromRFC3501ModifiedBase64String(string str)
+    {
+      return FromRFC3501ModifiedBase64String(str, Encoding.ASCII);
+    }
+
+    public static string FromRFC3501ModifiedBase64String(string str, Encoding encoding)
+    {
+      return encoding.GetString(FromRFC3501ModifiedBase64StringToByteArray(str));
+    }
+
+    public static byte[] FromRFC3501ModifiedBase64StringToByteArray(string str)
+    {
+      return FromRFC2152ModifiedBase64StringToByteArray(str.Replace('/', ','));
+    }
+#else
+    private static ICryptoTransform   toRFC3501ModifiedBase64Transform = new   ToRFC3501ModifiedBase64Transform();
+    private static ICryptoTransform fromRFC3501ModifiedBase64Transfrom = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
+
+    public static string ToRFC3501ModifiedBase64String(string str)
+    {
+      lock (toRFC3501ModifiedBase64Transform) {
+        return TransformTo(str, toRFC3501ModifiedBase64Transform, Encoding.ASCII);
+      }
+    }
+
+    public static string ToRFC3501ModifiedBase64String(string str, Encoding encoding)
+    {
+      lock (toRFC3501ModifiedBase64Transform) {
+        return TransformTo(str, toRFC3501ModifiedBase64Transform, encoding);
+      }
+    }
+
+    public static string ToRFC3501ModifiedBase64String(byte[] bytes)
+    {
+      lock (toRFC3501ModifiedBase64Transform) {
+        return Encoding.ASCII.GetString(TransformBytes(bytes, toRFC3501ModifiedBase64Transform));
+      }
+    }
+
+    public static string FromRFC3501ModifiedBase64String(string str)
+    {
+      lock (fromRFC3501ModifiedBase64Transfrom) {
+        return TransformFrom(str, fromRFC3501ModifiedBase64Transfrom, Encoding.ASCII);
+      }
+    }
+
+    public static string FromRFC3501ModifiedBase64String(string str, Encoding encoding)
+    {
+      lock (fromRFC3501ModifiedBase64Transfrom) {
+        return TransformFrom(str, fromRFC3501ModifiedBase64Transfrom, encoding);
+      }
+    }
+
+    public static byte[] FromRFC3501ModifiedBase64StringToByteArray(string str)
+    {
+      lock (fromRFC3501ModifiedBase64Transfrom) {
+        return TransformBytes(Encoding.ASCII.GetBytes(str), fromRFC3501ModifiedBase64Transfrom);
+      }
+    }
+#endif
 #endregion
 
 #region "quoted printable"
+#if TRANSFORMIMPL_FAST
     public static string ToQuotedPrintableString(string str)
     {
       return ToQuotedPrintableString(str, Encoding.ASCII);
@@ -344,6 +488,7 @@ namespace Smdn.Text {
 
           quoted.Append('\u003d'); // '=' 0x3d
 
+#warning "TODO: remove folding"
           if (octet == Octets.HT || octet == Octets.SP) {
             // '\t' 0x09 or ' ' 0x20
             quoted.Append(Chars.UpperCaseHexChars[octet >> 4]);
@@ -447,6 +592,140 @@ namespace Smdn.Text {
       }
 
       return decoded.ToArray();
+    }
+#else
+    private static ICryptoTransform   toQuotedPrintableTransform = new   ToQuotedPrintableTransform();
+    private static ICryptoTransform fromQuotedPrintableTransfrom = new FromQuotedPrintableTransform();
+
+    public static string ToQuotedPrintableString(string str)
+    {
+      lock (toQuotedPrintableTransform) {
+        return TransformTo(str, toQuotedPrintableTransform, Encoding.ASCII);
+      }
+    }
+    
+    public static string ToQuotedPrintableString(string str, Encoding encoding)
+    {
+      lock (toQuotedPrintableTransform) {
+        return TransformTo(str, toQuotedPrintableTransform, encoding);
+      }
+    }
+
+    public static string ToQuotedPrintableString(byte[] bytes)
+    {
+      lock (toQuotedPrintableTransform) {
+        return Encoding.ASCII.GetString(TransformBytes(bytes, toQuotedPrintableTransform));
+      }
+    }
+
+    public static string FromQuotedPrintableString(string str)
+    {
+      lock (fromQuotedPrintableTransfrom) {
+        return TransformFrom(str, fromQuotedPrintableTransfrom, Encoding.ASCII);
+      }
+    }
+
+    public static string FromQuotedPrintableString(string str, Encoding encoding)
+    {
+      lock (fromQuotedPrintableTransfrom) {
+        return TransformFrom(str, fromQuotedPrintableTransfrom, encoding);
+      }
+    }
+
+    public static byte[] FromQuotedPrintableStringToByteArray(string str)
+    {
+      lock (fromQuotedPrintableTransfrom) {
+        return TransformBytes(Encoding.ASCII.GetBytes(str), fromQuotedPrintableTransfrom);
+      }
+    }
+#endif
+#endregion
+
+#region "Modified UTF-7"
+    // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
+    // 5.1.3. Mailbox International Naming Convention
+    // http://tools.ietf.org/html/rfc3501#section-5.1.3
+    public static string ToModifiedUTF7String(string str)
+    {
+      var encoded = new StringBuilder();
+      var chars = str.ToCharArray();
+      var shiftFrom = -1;
+
+      for (var index = 0; index < chars.Length; index++) {
+        var c = chars[index];
+
+        if (('\u0020' <= c && c <= '\u007e')) {
+          if (0 <= shiftFrom) {
+            // string -> modified UTF7
+            encoded.Append('&');
+            encoded.Append(ToRFC3501ModifiedBase64String(str.Substring(shiftFrom, index - shiftFrom), Encoding.BigEndianUnicode));
+            encoded.Append('-');
+
+            shiftFrom = -1;
+          }
+
+          // printable US-ASCII characters
+          if (c == '\u0026')
+            // except for "&"
+            encoded.Append("&-");
+          else
+            encoded.Append(c);
+        }
+        else {
+          if (shiftFrom == -1)
+            shiftFrom = index;
+        }
+      }
+
+      if (0 <= shiftFrom) {
+        // string -> modified UTF7
+        encoded.Append('&');
+        encoded.Append(ToRFC3501ModifiedBase64String(str.Substring(shiftFrom), Encoding.BigEndianUnicode));
+        encoded.Append('-');
+      }
+
+      return encoded.ToString();
+    }
+
+    public static string FromModifiedUTF7String(string str)
+    {
+      var bytes = ToPrintableAsciiByteArray(str, false, false);
+      var decoded = new StringBuilder();
+
+      for (var index = 0; index < bytes.Length; index++) {
+        // In modified UTF-7, printable US-ASCII characters, except for "&",
+        // represent themselves
+        // "&" is used to shift to modified BASE64
+        if (bytes[index] != 0x26) { // '&'
+          decoded.Append((char)bytes[index]);
+          continue;
+        }
+
+        if (bytes.Length <= ++index)
+          // incorrect form
+          throw new FormatException("incorrect form");
+
+        if (bytes[index] == 0x2d) { // '-'
+          // The character "&" (0x26) is represented by the two-octet sequence "&-".
+          decoded.Append('&');
+          continue;
+        }
+
+        var nonprintable = new StringBuilder();
+
+        for (; index < bytes.Length; index++) {
+          if (bytes[index] == 0x2d) // '-'
+            // "-" is used to shift back to US-ASCII
+            break;
+
+          nonprintable.Append((char)bytes[index]);
+        }
+
+        // modified UTF7 -> string
+        decoded.Append(FromRFC3501ModifiedBase64String(nonprintable.ToString(), Encoding.BigEndianUnicode));
+      }
+
+      return decoded.ToString();
     }
 #endregion
 
