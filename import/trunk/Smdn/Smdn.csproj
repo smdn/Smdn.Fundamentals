@@ -92,6 +92,9 @@
     <Compile Include="Smdn.Text\ToRFC3501ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Text\ToRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Text\FromRFC2152ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
