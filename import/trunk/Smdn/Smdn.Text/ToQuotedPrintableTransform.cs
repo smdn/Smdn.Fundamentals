@@ -104,10 +104,10 @@ namespace Smdn.Text {
           ret += 1;
         }
         else {
-          // '=' 0x3d or control char
+          // '=' 0x3d or non printable char
           outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
-          outputBuffer[outputOffset++] = Octets.UpperCaseHexOcets[octet >> 4];
-          outputBuffer[outputOffset++] = Octets.UpperCaseHexOcets[octet & 0xf];
+          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet >> 4];
+          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet & 0xf];
 
           ret += 3;
         }
