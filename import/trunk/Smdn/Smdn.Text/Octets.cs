@@ -34,14 +34,14 @@ namespace Smdn.Text {
 
     public static readonly byte[] CRLF = new byte[] {0x0d, 0x0a};
 
-    public static readonly byte[] LowerCaseHexOcets = new byte[] {
+    public static readonly byte[] LowerCaseHexOctets = new byte[] {
       0x30, 0x31, 0x32, 0x33,
       0x34, 0x35, 0x36, 0x37,
       0x38, 0x39, 0x61, 0x62,
       0x63, 0x64, 0x65, 0x66,
     };
 
-    public static readonly byte[] UpperCaseHexOcets = new byte[] {
+    public static readonly byte[] UpperCaseHexOctets = new byte[] {
       0x30, 0x31, 0x32, 0x33,
       0x34, 0x35, 0x36, 0x37,
       0x38, 0x39, 0x41, 0x42,
