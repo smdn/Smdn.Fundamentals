@@ -111,7 +111,20 @@ namespace Smdn.Text {
         if (bufferOffset == 3) {
           // dequote
           if (buffer[1] == Octets.CR && buffer[2] == Octets.LF) {
-            // line break
+            // soft newline (CRLF)
+            bufferOffset = 0;
+          }
+          else if (buffer[1] == Octets.CR || buffer[1] == Octets.LF) {
+            // soft newline (CR, LF)
+            if (buffer[2] == 0x3d) {
+              bufferOffset = 1;
+            }
+            else {
+              outputBuffer[outputOffset++] = buffer[2];
+              ret++;
+
+              bufferOffset = 0;
+            }
           }
           else {
             byte d = 0x00;
@@ -134,9 +147,9 @@ namespace Smdn.Text {
 
             outputBuffer[outputOffset++] = d;
             ret++;
-          }
 
-          bufferOffset = 0;
+            bufferOffset = 0;
+          }
         }
       }
 
