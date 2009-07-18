@@ -95,6 +95,7 @@
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\ByteString.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
