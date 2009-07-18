@@ -32,33 +32,29 @@ namespace Smdn.IO {
     protected const int DefaultBufferSize = 1024;
     protected const int MinimumBufferSize = 8;
 
-    public Stream BaseStream {
-      get { return baseStream; }
-    }
-
     public override bool CanSeek {
-      get { return baseStream.CanSeek; }
+      get { return stream.CanSeek; }
     }
 
     public override bool CanRead {
-      get { return baseStream.CanWrite; }
+      get { return stream.CanWrite; }
     }
 
     public override bool CanWrite {
-      get { return baseStream.CanRead; }
+      get { return stream.CanRead; }
     }
 
     public override bool CanTimeout {
-      get { return baseStream.CanTimeout; }
+      get { return stream.CanTimeout; }
     }
 
     public override long Position {
-      get { return baseStream.Position; }
+      get { return stream.Position; }
       set { Seek(value, SeekOrigin.Begin); }
     }
 
     public override long Length {
-      get { return baseStream.Length; }
+      get { return stream.Length; }
     }
 
     public byte[] NewLine {
@@ -69,10 +65,14 @@ namespace Smdn.IO {
       get { return buffer.Length; }
     }
 
-    protected LineOrientedStream(Stream baseStream, byte[] newLine, bool strictEOL, int bufferSize)
+    protected Stream InnerStream {
+      get { return stream; }
+    }
+
+    protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize)
     {
-      if (baseStream == null)
-        throw new ArgumentNullException("baseStream");
+      if (stream == null)
+        throw new ArgumentNullException("stream");
       if (strictEOL) {
         if (newLine == null)
           throw new ArgumentNullException("newLine");
@@ -82,7 +82,7 @@ namespace Smdn.IO {
       if (bufferSize < MinimumBufferSize)
         throw new ArgumentOutOfRangeException("bufferSize", string.Format("must be greater than or equals to {0}", MinimumBufferSize));
 
-      this.baseStream = baseStream;
+      this.stream = stream;
       this.strictEOL = strictEOL;
       this.newLine = newLine;
       this.buffer = new byte[bufferSize];
@@ -91,11 +91,11 @@ namespace Smdn.IO {
     protected override void Dispose(bool disposing)
     {
       if (disposing) {
-        if (baseStream != null)
-          baseStream.Close();
+        if (stream != null)
+          stream.Close();
       }
 
-      baseStream = null;
+      stream = null;
       newLine = null;
       buffer = null;
     }
@@ -106,7 +106,7 @@ namespace Smdn.IO {
 
       bufRemain = 0; // discard buffered
 
-      baseStream.SetLength(@value);
+      stream.SetLength(@value);
     }
 
     public override long Seek(long offset, SeekOrigin origin)
@@ -115,14 +115,14 @@ namespace Smdn.IO {
 
       bufRemain = 0; // discard buffered
 
-      return baseStream.Seek(offset, origin);
+      return stream.Seek(offset, origin);
     }
 
     public override void Flush()
     {
       CheckDisposed();
 
-      baseStream.Flush();
+      stream.Flush();
     }
 
     public override int ReadByte()
@@ -253,7 +253,7 @@ namespace Smdn.IO {
 
       if (buffer.Length <= count) {
         // read from base stream
-        read += baseStream.Read(dest, offset, count);
+        read += stream.Read(dest, offset, count);
       }
       else {
         FillBuffer();
@@ -281,7 +281,7 @@ namespace Smdn.IO {
     private int FillBuffer()
     {
       bufOffset = 0;
-      bufRemain = baseStream.Read(buffer, 0, buffer.Length);
+      bufRemain = stream.Read(buffer, 0, buffer.Length);
 
       return bufRemain;
     }
@@ -290,16 +290,16 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      baseStream.Write(buffer, offset, count);
+      stream.Write(buffer, offset, count);
     }
 
     private void CheckDisposed()
     {
-      if (baseStream == null)
+      if (stream == null)
         throw new ObjectDisposedException(GetType().Name);
     }
 
-    private Stream baseStream;
+    private Stream stream;
     private byte[] newLine;
     private bool strictEOL;
     private byte[] buffer;

@@ -27,13 +27,13 @@ using System.IO;
 
 namespace Smdn.IO {
   public class LooseLineOrientedStream : LineOrientedStream {
-    public LooseLineOrientedStream(Stream baseStream)
-      : base(baseStream, null, false, DefaultBufferSize)
+    public LooseLineOrientedStream(Stream stream)
+      : base(stream, null, false, DefaultBufferSize)
     {
     }
 
-    public LooseLineOrientedStream(Stream baseStream, int bufferSize)
-      : base(baseStream, null, false, bufferSize)
+    public LooseLineOrientedStream(Stream stream, int bufferSize)
+      : base(stream, null, false, bufferSize)
     {
     }
   }

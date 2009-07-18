@@ -29,23 +29,23 @@ using Smdn.Text;
 
 namespace Smdn.IO {
   public class StrictLineOrientedStream : LineOrientedStream {
-    public StrictLineOrientedStream(Stream baseStream)
-      : base(baseStream, Octets.CRLF, true, DefaultBufferSize)
+    public StrictLineOrientedStream(Stream stream)
+      : base(stream, Octets.CRLF, true, DefaultBufferSize)
     {
     }
 
-    public StrictLineOrientedStream(Stream baseStream, int bufferSize)
-      : base(baseStream, Octets.CRLF, true, bufferSize)
+    public StrictLineOrientedStream(Stream stream, int bufferSize)
+      : base(stream, Octets.CRLF, true, bufferSize)
     {
     }
 
-    public StrictLineOrientedStream(Stream baseStream, byte[] newLine)
-      : base(baseStream, newLine, true, DefaultBufferSize)
+    public StrictLineOrientedStream(Stream stream, byte[] newLine)
+      : base(stream, newLine, true, DefaultBufferSize)
     {
     }
 
-    public StrictLineOrientedStream(Stream baseStream, byte[] newLine, int bufferSize)
-      : base(baseStream, newLine, true, bufferSize)
+    public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize)
+      : base(stream, newLine, true, bufferSize)
     {
     }
   }
