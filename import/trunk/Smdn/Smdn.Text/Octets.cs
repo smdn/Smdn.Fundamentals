@@ -47,5 +47,10 @@ namespace Smdn.Text {
       0x38, 0x39, 0x41, 0x42,
       0x43, 0x44, 0x45, 0x46,
     };
+
+    public static bool IsDecimalNumber(byte b)
+    {
+      return (0x30 <= b && b <= 0x39);
+    }
   }
 }

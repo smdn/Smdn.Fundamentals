@@ -25,7 +25,7 @@
 using System;
 
 namespace Smdn.IO {
-  public class ByteString {
+  public class ByteString : IEquatable<ByteString>, IEquatable<byte[]>, IEquatable<string> {
     [System.Runtime.CompilerServices.IndexerName("Bytes")]
     public byte this[int index] {
       get { return bytes[index]; }
@@ -36,12 +36,17 @@ namespace Smdn.IO {
       get { return bytes.Length; }
     }
 
-    public bool Empty {
+    public bool IsEmpty {
       get { return bytes.Length == 0; }
     }
 
     public byte[] ByteArray {
       get { return bytes; }
+    }
+
+    public static ByteString CreateEmpty()
+    {
+      return new ByteString(new byte[] {});
     }
 
     public ByteString(params byte[] @value)
@@ -53,7 +58,7 @@ namespace Smdn.IO {
     }
 
     public ByteString(byte[] @value, int index)
-      : this(@value, index, @value.Length)
+      : this(@value, index, @value.Length - index)
     {
     }
 
@@ -63,12 +68,10 @@ namespace Smdn.IO {
         throw new ArgumentNullException("value");
       if (index < 0)
         throw new ArgumentOutOfRangeException("index", "must be zero or positive number");
-      if (@value.Length <= index)
-        throw new ArgumentOutOfRangeException("index", "larger than length");
       if (count < 0)
         throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
-      if (@value.Length < count)
-        throw new ArgumentOutOfRangeException("index", "larger than length");
+      if (@value.Length < index + count)
+        throw new ArgumentException("index + count is larger than length");
 
       this.bytes = new byte[count];
 
@@ -97,9 +100,9 @@ namespace Smdn.IO {
       return Contains(@value.bytes);
     }
 
-    public bool Contains(params byte[] @value)
+    public bool Contains(byte[] @value)
     {
-      return 0 <= IndexOf(@value);
+      return 0 <= IndexOf(@value, 0);
     }
 
     public bool StartsWith(ByteString @value)
@@ -110,13 +113,31 @@ namespace Smdn.IO {
       return StartsWith(@value.bytes);
     }
 
-    public bool StartsWith(params byte[] @value)
+    public bool StartsWith(byte[] @value)
     {
       if (bytes.Length < @value.Length)
         return false;
 
       for (var index = 0; index < @value.Length; index++) {
         if (bytes[index] != @value[index])
+          return false;
+      }
+
+      return true;
+    }
+
+    public bool StartsWith(string @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      if (bytes.Length < @value.Length)
+        return false;
+
+      var chars = @value.ToCharArray();
+
+      for (var index = 0; index < chars.Length; index++) {
+        if (bytes[index] != chars[index])
           return false;
       }
 
@@ -131,7 +152,7 @@ namespace Smdn.IO {
       return EndsWith(@value.bytes);
     }
 
-    public bool EndsWith(params byte[] @value)
+    public bool EndsWith(byte[] @value)
     {
       if (bytes.Length < @value.Length)
         return false;
@@ -146,14 +167,48 @@ namespace Smdn.IO {
       return true;
     }
 
+    public bool EndsWith(string @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      if (bytes.Length < @value.Length)
+        return false;
+
+      var chars = @value.ToCharArray();
+      var offset = bytes.Length - @value.Length;
+
+      for (var index = 0; index < chars.Length; index++, offset++) {
+        if (bytes[offset] != chars[index])
+          return false;
+      }
+
+      return true;
+    }
+
     public int IndexOf(char @value)
     {
-      return IndexOf((byte)@value);
+      return IndexOf(@value, 0);
+    }
+
+    public int IndexOf(char @value, int startIndex)
+    {
+      for (var index = startIndex; index < bytes.Length; index++) {
+        if (bytes[index] == @value)
+          return index;
+      }
+
+      return -1;
     }
 
     public int IndexOf(byte @value)
     {
-      for (var index = 0; index < bytes.Length; index++) {
+      return IndexOf(@value, 0);
+    }
+
+    public int IndexOf(byte @value, int startIndex)
+    {
+      for (var index = startIndex; index < bytes.Length; index++) {
         if (bytes[index] == @value)
           return index;
       }
@@ -163,19 +218,70 @@ namespace Smdn.IO {
 
     public int IndexOf(ByteString @value)
     {
+      return IndexOf(@value, 0);
+    }
+
+    public int IndexOf(ByteString @value, int startIndex)
+    {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      return IndexOf(@value.bytes);
+      return IndexOf(@value.bytes, startIndex);
     }
 
-    public int IndexOf(params byte[] @value)
+    public int IndexOf(byte[] @value)
     {
+      return IndexOf(@value, 0);
+    }
+
+    public int IndexOf(byte[] @value, int startIndex)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+      if (startIndex < 0)
+        throw new ArgumentOutOfRangeException("startIndex", "must be zero or positive number");
+
+      if (bytes.Length < @value.Length)
+        return -1;
+
       var matchedIndex = 0;
 
-      for (var index = 0; index < bytes.Length; index++) {
+      for (var index = startIndex; index < bytes.Length; index++) {
       recheck:
         if (bytes[index] == @value[matchedIndex]) {
+          if (@value.Length == ++matchedIndex)
+            return index - matchedIndex + 1;
+        }
+        else if (0 < matchedIndex) {
+          matchedIndex = 0;
+          goto recheck;
+        }
+      }
+
+      return -1;
+    }
+
+    public int IndexOf(string @value)
+    {
+      return IndexOf(@value, 0);
+    }
+
+    public int IndexOf(string @value, int startIndex)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+      if (startIndex < 0)
+        throw new ArgumentOutOfRangeException("startIndex", "must be zero or positive number");
+
+      if (bytes.Length < @value.Length)
+        return -1;
+
+      var chars = @value.ToCharArray();
+      var matchedIndex = 0;
+
+      for (var index = startIndex; index < bytes.Length; index++) {
+      recheck:
+        if (bytes[index] == chars[matchedIndex]) {
           if (@value.Length == ++matchedIndex)
             return index - matchedIndex + 1;
         }
@@ -198,6 +304,71 @@ namespace Smdn.IO {
       return new ByteString(bytes, index, count);
     }
 
+    public ByteString ToUpper()
+    {
+      var uppercased = new byte[bytes.Length];
+
+      Buffer.BlockCopy(bytes, 0, uppercased, 0, bytes.Length);
+
+      for (var index = 0; index < uppercased.Length; index++) {
+        if (0x61 <= uppercased[index] && uppercased[index] <= 0x7a)
+          uppercased[index] = (byte)(uppercased[index] - 0x20);
+      }
+
+      return new ByteString(uppercased);
+    }
+
+    public ByteString ToLower()
+    {
+      var lowercased = new byte[bytes.Length];
+
+      Buffer.BlockCopy(bytes, 0, lowercased, 0, bytes.Length);
+
+      for (var index = 0; index < lowercased.Length; index++) {
+        if (0x41 <= lowercased[index] && lowercased[index] <= 0x5a)
+          lowercased[index] = (byte)(lowercased[index] + 0x20);
+      }
+
+      return new ByteString(lowercased);
+    }
+
+    public ByteString TrimStart()
+    {
+      for (var index = 0; index < bytes.Length; index++) {
+        if (!(bytes[index] == 0x20 ||
+              bytes[index] == 0xa0 ||
+              bytes[index] == 0x09 ||
+              bytes[index] == 0x0a ||
+              bytes[index] == 0x0b ||
+              bytes[index] == 0x0c ||
+              bytes[index] == 0x0d))
+          return new ByteString(bytes, index, bytes.Length - index);
+      }
+
+      return CreateEmpty();
+    }
+
+    public ByteString TrimEnd()
+    {
+      for (var index = bytes.Length - 1; 0 <= index; index--) {
+        if (!(bytes[index] == 0x20 ||
+              bytes[index] == 0xa0 ||
+              bytes[index] == 0x09 ||
+              bytes[index] == 0x0a ||
+              bytes[index] == 0x0b ||
+              bytes[index] == 0x0c ||
+              bytes[index] == 0x0d))
+          return new ByteString(bytes, 0, index + 1);
+      }
+
+      return CreateEmpty();
+    }
+
+    public ByteString Trim()
+    {
+      return TrimStart().TrimEnd();
+    }
+
     public static bool IsNullOrEmpty(ByteString str)
     {
       if (str == null)
@@ -206,6 +377,96 @@ namespace Smdn.IO {
         return true;
       else
         return false;
+    }
+
+    public bool Equals(ByteString other)
+    {
+      if (Object.ReferenceEquals(this, other))
+        return true;
+      else
+        return this == other;
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (obj is ByteString)
+        return Equals((obj as ByteString).bytes);
+      else if (obj is byte[])
+        return Equals(obj as byte[]);
+      else if (obj is string)
+        return Equals(obj as string);
+      else
+        return false;
+    }
+
+    public bool Equals(byte[] other)
+    {
+      if (other == null)
+        return false;
+      if (bytes.Length != other.Length)
+        return false;
+
+      for (var index = 0; index < bytes.Length; index++) {
+        if (bytes[index] != other[index])
+          return false;
+      }
+
+      return true;
+    }
+
+    public bool Equals(string other)
+    {
+      if (other == null)
+        return false;
+      if (bytes.Length != other.Length)
+        return false;
+
+      var chars = other.ToCharArray();
+
+      for (var index = 0; index < bytes.Length; index++) {
+        if (bytes[index] != chars[index])
+          return false;
+      }
+
+      return true;
+    }
+
+    public static bool operator == (ByteString x, ByteString y)
+    {
+      if (null == (object)x || null == (object)y) {
+        if (null == (object)x && null == (object)y)
+          return true;
+        else
+          return false;
+      }
+
+      return x.Equals(y.bytes);
+    }
+
+    public static bool operator != (ByteString x, ByteString y)
+    {
+      return !(x == y);
+    }
+
+    public bool EqualsIgnoreCase(ByteString other)
+    {
+      if (other == null)
+        return false;
+      else if (bytes.Length != other.Length)
+        return false;
+
+      return this.ToLower().Equals(other.ToLower()); // XXX
+    }
+
+    public override int GetHashCode()
+    {
+      var h = 0;
+
+      for (var index = 0; index < bytes.Length; index++) {
+        h = unchecked(h * 37 + bytes[index]);
+      }
+
+      return h;
     }
 
     public override string ToString()
