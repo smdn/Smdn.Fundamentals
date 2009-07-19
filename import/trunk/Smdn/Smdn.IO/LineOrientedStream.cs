@@ -174,7 +174,7 @@ namespace Smdn.IO {
         bufRemain--;
         bufOffset++;
 
-        if (bufRemain == 0) {
+        if (!eol && bufRemain == 0) {
           var count = bufOffset - bufCopyFrom;
 
           Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retOffset, count);
