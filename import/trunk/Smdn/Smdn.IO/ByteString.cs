@@ -458,6 +458,16 @@ namespace Smdn.IO {
       return this.ToLower().Equals(other.ToLower()); // XXX
     }
 
+    public bool EqualsIgnoreCase(string other)
+    {
+      if (other == null)
+        return false;
+      else if (bytes.Length != other.Length)
+        return false;
+
+      return this.ToLower().Equals(other.ToLower()); // XXX
+    }
+
     public override int GetHashCode()
     {
       var h = 0;

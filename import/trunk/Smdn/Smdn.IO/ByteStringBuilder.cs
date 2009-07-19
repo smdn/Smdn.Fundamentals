@@ -85,17 +85,28 @@ namespace Smdn.IO {
 
     public ByteStringBuilder Append(byte[] str)
     {
+      return Append(str, 0, str.Length);
+    }
+
+    public ByteStringBuilder Append(byte[] str, int index, int count)
+    {
       if (str == null)
         throw new ArgumentNullException("str");
+      if (index < 0)
+        throw new ArgumentOutOfRangeException("index", "must be zero or positive number");
+      if (count < 0)
+        throw new ArgumentOutOfRangeException("index", "must be zero or positive number");
+      if (str.Length < index + count)
+        throw new ArgumentException("index + count is larger than length");
 
-      if (str.Length == 0)
+      if (count == 0)
         return this;
 
-      EnsureCapacity(length + str.Length);
+      EnsureCapacity(length + count);
 
-      Buffer.BlockCopy(str, 0, buffer, length, str.Length);
+      Buffer.BlockCopy(str, index, buffer, length, count);
 
-      length += str.Length;
+      length += count;
 
       return this;
     }
