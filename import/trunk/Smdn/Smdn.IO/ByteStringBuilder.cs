@@ -116,8 +116,10 @@ namespace Smdn.IO {
       if (capacity <= buffer.Length)
         return;
 
+      capacity = Math.Max(capacity, buffer.Length * 2);
+
       if (maxCapacity < capacity)
-        capacity = maxCapacity;
+        throw new ArgumentOutOfRangeException("maximum capacity");
 
       var newBuffer = new byte[capacity];
 
