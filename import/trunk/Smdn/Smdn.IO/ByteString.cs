@@ -481,6 +481,7 @@ namespace Smdn.IO {
 
     public override string ToString()
     {
+#if true
       var chars = new char[bytes.Length];
 
       for (var index = 0; index < bytes.Length; index++) {
@@ -488,6 +489,9 @@ namespace Smdn.IO {
       }
 
       return new string(chars);
+#elif
+      return System.Text.Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+#endif
     }
 
     private byte[] bytes;
