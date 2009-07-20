@@ -151,7 +151,7 @@ namespace Smdn.IO {
         return null;
 
       var newLineOffset = 0;
-      var retBuffer = new byte[BufferSize];
+      var retBuffer = new byte[bufRemain];
       var retOffset = 0;
       var bufCopyFrom = bufOffset;
       var eol = false;
@@ -175,12 +175,13 @@ namespace Smdn.IO {
         bufOffset++;
 
         if (!eol && bufRemain == 0) {
+          var newRetBuffer = new byte[retBuffer.Length + BufferSize];
           var count = bufOffset - bufCopyFrom;
 
-          Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retOffset, count);
+          Buffer.BlockCopy(retBuffer, 0, newRetBuffer, 0, retOffset);
+          Buffer.BlockCopy(buffer, bufCopyFrom, newRetBuffer, retOffset, count);
 
-          Array.Resize(ref retBuffer, retBuffer.Length + BufferSize);
-
+          retBuffer = newRetBuffer;
           retOffset += count;
 
           eos = (FillBuffer() <= 0);
@@ -211,9 +212,16 @@ namespace Smdn.IO {
           if (0 < retLength - retOffset)
             Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retOffset, retLength - retOffset);
 
-          Array.Resize(ref retBuffer, retLength);
+          if (retLength == retOffset) {
+            return retBuffer;
+          }
+          else {
+            var ret = new byte[retLength];
 
-          return retBuffer;
+            Buffer.BlockCopy(retBuffer, 0, ret, 0, retLength);
+
+            return ret;
+          }
         }
       }
     }
