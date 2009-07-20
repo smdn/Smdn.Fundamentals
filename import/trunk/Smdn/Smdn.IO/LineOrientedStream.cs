@@ -212,7 +212,7 @@ namespace Smdn.IO {
           if (0 < retLength - retOffset)
             Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retOffset, retLength - retOffset);
 
-          if (retLength == retOffset) {
+          if (retLength == retBuffer.Length) {
             return retBuffer;
           }
           else {
