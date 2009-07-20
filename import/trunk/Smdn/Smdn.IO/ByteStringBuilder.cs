@@ -144,6 +144,23 @@ namespace Smdn.IO {
       buffer = newBuffer;
     }
 
+    public ArraySegment<byte> GetSegment()
+    {
+      return new ArraySegment<byte>(buffer, 0, length);
+    }
+
+    public ArraySegment<byte> GetSegment(int offset, int count)
+    {
+      if (offset < 0)
+        throw new ArgumentOutOfRangeException("offset", "must be zero or positive number");
+      if (count < 0)
+        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+      if (length < offset + count)
+        throw new ArgumentException("index + count is larger than length");
+
+      return new ArraySegment<byte>(buffer, offset, count);
+    }
+
     public ByteString ToByteString()
     {
       return new ByteString(buffer, 0, length);
