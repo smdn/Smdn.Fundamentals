@@ -470,6 +470,11 @@ namespace Smdn.IO {
 
     public static ByteString operator + (ByteString x, ByteString y)
     {
+      if (x == null)
+        throw new ArgumentNullException("x");
+      if (y == null)
+        throw new ArgumentNullException("y");
+
       return Concat(x, y);
     }
 
