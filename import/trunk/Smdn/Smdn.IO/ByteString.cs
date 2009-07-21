@@ -468,6 +468,55 @@ namespace Smdn.IO {
       return this.ToLower().Equals(other.ToLower()); // XXX
     }
 
+    public static ByteString operator + (ByteString x, ByteString y)
+    {
+      return Concat(x, y);
+    }
+
+    public static ByteString operator * (ByteString x, int y)
+    {
+      if (x == null)
+        throw new ArgumentNullException("x");
+      if (y < 0)
+        throw new ArgumentOutOfRangeException("y", "must be non-zero positive number");
+
+      if (x == null)
+        return CreateEmpty();
+
+      var bytes = new byte[x.Length * y];
+
+      for (int count = 0, offset = 0; count < y; count++, offset += x.Length) {
+        Buffer.BlockCopy(x.bytes, 0, bytes, offset, x.Length);
+      }
+
+      return new ByteString(bytes);
+    }
+
+    public static ByteString Concat(params ByteString[] values)
+    {
+      if (values == null)
+        throw new ArgumentNullException("values");
+
+      var length = 0;
+
+      foreach (var val in values) {
+        if (val != null)
+          length += val.Length;
+      }
+
+      var bytes = new byte[length];
+      var offset = 0;
+
+      foreach (var val in values) {
+        if (val != null) {
+          Buffer.BlockCopy(val.bytes, 0, bytes, offset, val.Length);
+          offset += val.Length;
+        }
+      }
+
+      return new ByteString(bytes);
+    }
+
     public override int GetHashCode()
     {
       var h = 0;

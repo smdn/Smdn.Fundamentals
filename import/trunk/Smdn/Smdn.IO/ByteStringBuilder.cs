@@ -127,6 +127,25 @@ namespace Smdn.IO {
       return this;
     }
 
+    public ByteStringBuilder Append(string str)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      if (str.Length == 0)
+        return this;
+
+      EnsureCapacity(length + str.Length);
+
+      var chars = str.ToCharArray();
+
+      for (var index = 0; index < str.Length; index++, length++) {
+        buffer[length] = (byte)chars[index];
+      }
+
+      return this;
+    }
+
     private void EnsureCapacity(int capacity)
     {
       if (capacity <= buffer.Length)

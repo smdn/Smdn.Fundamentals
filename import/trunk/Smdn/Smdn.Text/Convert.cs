@@ -126,28 +126,35 @@ namespace Smdn.Text {
 #region "hexadecimal"
     public static string ToLowerCaseHexString(byte[] bytes)
     {
-      var chars = new char[bytes.Length * 2];
-
-      for (int b = 0, c = 0; b < bytes.Length;) {
-        chars[c++] = Chars.LowerCaseHexChars[bytes[b] >> 4];
-        chars[c++] = Chars.LowerCaseHexChars[bytes[b] & 0xf];
-        b++;
-      }
-
-      return new string(chars);
+      return new string(ConvertByteArrayToHex(bytes, Chars.LowerCaseHexChars));
     }
 
     public static string ToUpperCaseHexString(byte[] bytes)
     {
-      var chars = new char[bytes.Length * 2];
+      return new string(ConvertByteArrayToHex(bytes, Chars.UpperCaseHexChars));
+    }
+
+    public static byte[] ToLowerCaseHexByteArray(byte[] bytes)
+    {
+      return ConvertByteArrayToHex(bytes, Octets.LowerCaseHexOctets);
+    }
+
+    public static byte[] ToUpperCaseHexByteArray(byte[] bytes)
+    {
+      return ConvertByteArrayToHex(bytes, Octets.UpperCaseHexOctets);
+    }
+
+    private static T[] ConvertByteArrayToHex<T>(byte[] bytes, T[] table)
+    {
+      var hex = new T[bytes.Length * 2];
 
       for (int b = 0, c = 0; b < bytes.Length;) {
-        chars[c++] = Chars.UpperCaseHexChars[bytes[b] >> 4];
-        chars[c++] = Chars.UpperCaseHexChars[bytes[b] & 0xf];
+        hex[c++] = table[bytes[b] >> 4];
+        hex[c++] = table[bytes[b] & 0xf];
         b++;
       }
 
-      return new string(chars);
+      return hex;
     }
 
     public static byte[] FromHexString(string str)
