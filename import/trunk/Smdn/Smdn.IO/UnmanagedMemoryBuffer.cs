@@ -48,6 +48,14 @@ namespace Smdn.IO {
       }
     }
 
+    public bool CanReAlloc {
+      get
+      {
+        CheckDisposed();
+        return realloc != null;
+      }
+    }
+
     public UnmanagedMemoryBuffer(int cb, AllocProc alloc, FreeProc free)
       : this(cb, alloc, null, free)
     {
@@ -157,6 +165,16 @@ namespace Smdn.IO {
 
       ptr = newPtr;
       size = cb;
+    }
+
+    public static explicit operator IntPtr(UnmanagedMemoryBuffer buffer)
+    {
+      return buffer.Ptr;
+    }
+
+    public static unsafe explicit operator void*(UnmanagedMemoryBuffer buffer)
+    {
+      return buffer.ToPointer();
     }
 
     public unsafe void* ToPointer()
