@@ -98,6 +98,8 @@
     <Compile Include="Smdn.IO\ByteString.cs" />
     <Compile Include="Smdn.IO\ByteStringBuilder.cs" />
     <Compile Include="Smdn.IO\HeapMemoryBuffer.cs" />
+    <Compile Include="Smdn.IO\CoTaskMemoryBuffer.cs" />
+    <Compile Include="Smdn.IO\GlobalMemoryBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

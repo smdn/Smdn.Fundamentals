@@ -73,23 +73,40 @@ namespace Smdn.IO {
     */
 
     public HeapMemoryBuffer(int cb)
-      : base(cb, HeapAlloc, HeapReAlloc, HeapFree)
+      : base(cb, GetAllocProc(), HeapReAlloc, HeapFree)
     {
-      if (!(Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32Windows))
-        throw new PlatformNotSupportedException("supported only on Windows NT/Windows 95 or over");
     }
 
     public HeapMemoryBuffer(byte[] data)
-      : base(data, HeapAlloc, HeapFree)
+      : base(data, GetAllocProc(), HeapFree)
     {
-      if (!(Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32Windows))
-        throw new PlatformNotSupportedException("supported only on Windows NT/Windows 95 or over");
     }
 
     public HeapMemoryBuffer(char[] data)
-      : base(data, HeapAlloc, HeapFree)
+      : base(data, GetAllocProc(), HeapFree)
     {
-      if (!(Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32Windows))
+    }
+
+    public HeapMemoryBuffer(short[] data)
+      : base(data, GetAllocProc(), HeapFree)
+    {
+    }
+
+    public HeapMemoryBuffer(int[] data)
+      : base(data, GetAllocProc(), HeapFree)
+    {
+    }
+
+    public HeapMemoryBuffer(long[] data)
+      : base(data, GetAllocProc(), HeapFree)
+    {
+    }
+
+    private static AllocProc GetAllocProc()
+    {
+      if (Environment.OSVersion.Platform == PlatformID.Win32NT || Environment.OSVersion.Platform == PlatformID.Win32Windows)
+        return HeapAlloc;
+      else
         throw new PlatformNotSupportedException("supported only on Windows NT/Windows 95 or over");
     }
   }

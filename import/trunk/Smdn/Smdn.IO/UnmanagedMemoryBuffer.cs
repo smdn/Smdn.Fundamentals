@@ -32,40 +32,11 @@ namespace Smdn.IO {
     public delegate IntPtr ReAllocProc(IntPtr ptr, int cb);
     public delegate void FreeProc(IntPtr ptr);
 
-    public static AllocProc   DefaultAlloc   = Marshal.AllocCoTaskMem;
-    public static ReAllocProc DefaultReAlloc = Marshal.ReAllocCoTaskMem;
-    public static FreeProc    DefaultFree    = Marshal.FreeCoTaskMem;
-
-    public static UnmanagedMemoryBuffer CreateCoTaskMem(int cb)
-    {
-      return new UnmanagedMemoryBuffer(cb, Marshal.AllocCoTaskMem, Marshal.ReAllocCoTaskMem, Marshal.FreeCoTaskMem);
-    }
-
-    public static UnmanagedMemoryBuffer CreateCoTaskMem(byte[] data)
-    {
-      return new UnmanagedMemoryBuffer(data, Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem);
-    }
-
-    public static UnmanagedMemoryBuffer CreateHGlobal(int cb)
-    {
-      return new UnmanagedMemoryBuffer(cb, Marshal.AllocHGlobal, ReAllocHGlobal, Marshal.FreeHGlobal);
-    }
-
-    public static UnmanagedMemoryBuffer CreateHGlobal(byte[] data)
-    {
-      return new UnmanagedMemoryBuffer(data, Marshal.AllocHGlobal, Marshal.FreeHGlobal);
-    }
-
-    private static IntPtr ReAllocHGlobal(IntPtr ptr, int cb)
-    {
-      return Marshal.ReAllocHGlobal(ptr, new IntPtr(cb));
-    }
-
-    public IntPtr Buffer {
+    public IntPtr Ptr {
       get
       {
         CheckDisposed();
-        return buffer;
+        return ptr;
       }
     }
 
@@ -75,11 +46,6 @@ namespace Smdn.IO {
         CheckDisposed();
         return size;
       }
-    }
-
-    public UnmanagedMemoryBuffer(int cb)
-      : this(cb, DefaultAlloc, DefaultReAlloc, DefaultFree)
-    {
     }
 
     public UnmanagedMemoryBuffer(int cb, AllocProc alloc, FreeProc free)
@@ -102,57 +68,44 @@ namespace Smdn.IO {
       Alloc(alloc, cb);
     }
 
-    public UnmanagedMemoryBuffer(byte[] data)
-      : this(data, DefaultAlloc, DefaultFree)
-    {
-    }
-
     public UnmanagedMemoryBuffer(byte[] data, AllocProc alloc, FreeProc free)
+      : this(data.Length, alloc, free)
     {
-      if (data == null)
-        throw new ArgumentNullException("data");
-      if (alloc == null)
-        throw new ArgumentNullException("alloc");
-      if (free == null)
-        throw new ArgumentNullException("free");
-
-      this.realloc = null;
-      this.free    = free;
-
-      Alloc(alloc, data.Length);
-
-      Marshal.Copy(data, 0, this.buffer, data.Length);
-    }
-
-    public UnmanagedMemoryBuffer(char[] data)
-      : this(data, DefaultAlloc, DefaultFree)
-    {
+      Marshal.Copy(data, 0, this.ptr, data.Length);
     }
 
     public UnmanagedMemoryBuffer(char[] data, AllocProc alloc, FreeProc free)
+      : this(data.Length * Marshal.SizeOf(typeof(char)), alloc, free)
     {
-      if (data == null)
-        throw new ArgumentNullException("data");
-      if (alloc == null)
-        throw new ArgumentNullException("alloc");
-      if (free == null)
-        throw new ArgumentNullException("free");
+      Marshal.Copy(data, 0, this.ptr, data.Length);
+    }
 
-      this.realloc = null;
-      this.free    = free;
+    public UnmanagedMemoryBuffer(short[] data, AllocProc alloc, FreeProc free)
+      : this(data.Length * Marshal.SizeOf(typeof(short)), alloc, free)
+    {
+      Marshal.Copy(data, 0, this.ptr, data.Length);
+    }
 
-      Alloc(alloc, data.Length * Marshal.SizeOf(typeof(char)));
+    public UnmanagedMemoryBuffer(int[] data, AllocProc alloc, FreeProc free)
+      : this(data.Length * Marshal.SizeOf(typeof(int)), alloc, free)
+    {
+      Marshal.Copy(data, 0, this.ptr, data.Length);
+    }
 
-      Marshal.Copy(data, 0, this.buffer, data.Length);
+    public UnmanagedMemoryBuffer(long[] data, AllocProc alloc, FreeProc free)
+      : this(data.Length * Marshal.SizeOf(typeof(long)), alloc, free)
+    {
+      Marshal.Copy(data, 0, this.ptr, data.Length);
     }
 
     protected virtual void Alloc(AllocProc alloc, int cb)
     {
-      this.size   = cb;
-      this.buffer = alloc(cb);
+      this.ptr = alloc(cb);
 
-      if (this.buffer == IntPtr.Zero)
+      if (this.ptr == IntPtr.Zero)
         throw new OutOfMemoryException("buffer allocation failed");
+
+      this.size   = cb;
     }
 
     ~UnmanagedMemoryBuffer()
@@ -173,18 +126,18 @@ namespace Smdn.IO {
 
     protected virtual void Dispose(bool disposing)
     {
-      if (buffer == IntPtr.Zero)
+      if (ptr == IntPtr.Zero)
         // disposed
         return;
 
-      free(buffer);
+      free(ptr);
 
       if (disposing) {
         realloc = null;
         free = null;
       }
 
-      buffer = IntPtr.Zero;
+      ptr = IntPtr.Zero;
     }
 
     public virtual void ReAlloc(int cb)
@@ -197,11 +150,12 @@ namespace Smdn.IO {
       if (cb < 0)
         throw new ArgumentOutOfRangeException("cb must be zero or positive number");
 
-      buffer = realloc(buffer, cb);
+      var newPtr = realloc(ptr, cb);
 
-      if (buffer == IntPtr.Zero)
+      if (newPtr == IntPtr.Zero)
         throw new OutOfMemoryException("buffer reallocation failed");
 
+      ptr = newPtr;
       size = cb;
     }
 
@@ -209,7 +163,7 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      return buffer.ToPointer();
+      return ptr.ToPointer();
     }
 
     public byte[] ToByteArray()
@@ -218,7 +172,7 @@ namespace Smdn.IO {
 
       var bytes = new byte[size];
 
-      Marshal.Copy(buffer, bytes, 0, size);
+      Marshal.Copy(ptr, bytes, 0, size);
 
       return bytes;
     }
@@ -228,17 +182,17 @@ namespace Smdn.IO {
       CheckDisposed();
 
       unsafe {
-        return new UnmanagedMemoryStream((byte*)buffer.ToPointer(), size, size, FileAccess.ReadWrite);
+        return new UnmanagedMemoryStream((byte*)ptr.ToPointer(), size, size, FileAccess.ReadWrite);
       }
     }
 
     private void CheckDisposed()
     {
-      if (buffer == IntPtr.Zero)
+      if (ptr == IntPtr.Zero)
         throw new ObjectDisposedException(GetType().Name);
     }
 
-    private IntPtr buffer = IntPtr.Zero;
+    private IntPtr ptr = IntPtr.Zero;
     private int size = 0;
     private ReAllocProc realloc = null;
     private FreeProc free = null;
