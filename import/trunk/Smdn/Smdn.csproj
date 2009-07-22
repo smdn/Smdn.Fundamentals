@@ -97,6 +97,7 @@
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\ByteString.cs" />
     <Compile Include="Smdn.IO\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.IO\HeapMemoryBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

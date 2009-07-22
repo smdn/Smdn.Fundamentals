@@ -121,7 +121,29 @@ namespace Smdn.IO {
 
       Alloc(alloc, data.Length);
 
-      Marshal.Copy(data, 0, this.buffer, size);
+      Marshal.Copy(data, 0, this.buffer, data.Length);
+    }
+
+    public UnmanagedMemoryBuffer(char[] data)
+      : this(data, DefaultAlloc, DefaultFree)
+    {
+    }
+
+    public UnmanagedMemoryBuffer(char[] data, AllocProc alloc, FreeProc free)
+    {
+      if (data == null)
+        throw new ArgumentNullException("data");
+      if (alloc == null)
+        throw new ArgumentNullException("alloc");
+      if (free == null)
+        throw new ArgumentNullException("free");
+
+      this.realloc = null;
+      this.free    = free;
+
+      Alloc(alloc, data.Length * Marshal.SizeOf(typeof(char)));
+
+      Marshal.Copy(data, 0, this.buffer, data.Length);
     }
 
     protected virtual void Alloc(AllocProc alloc, int cb)
@@ -133,6 +155,11 @@ namespace Smdn.IO {
         throw new OutOfMemoryException("buffer allocation failed");
     }
 
+    ~UnmanagedMemoryBuffer()
+    {
+      Dispose(false);
+    }
+
     public void Dispose()
     {
       Free();
@@ -141,16 +168,23 @@ namespace Smdn.IO {
     public virtual void Free()
     {
       Dispose(true);
+      GC.SuppressFinalize(this);
     }
 
     protected virtual void Dispose(bool disposing)
     {
+      if (buffer == IntPtr.Zero)
+        // disposed
+        return;
+
+      free(buffer);
+
       if (disposing) {
-        if (buffer != IntPtr.Zero) {
-          free(buffer);
-          buffer = IntPtr.Zero;
-        }
+        realloc = null;
+        free = null;
       }
+
+      buffer = IntPtr.Zero;
     }
 
     public virtual void ReAlloc(int cb)
@@ -178,6 +212,17 @@ namespace Smdn.IO {
       return buffer.ToPointer();
     }
 
+    public byte[] ToByteArray()
+    {
+      CheckDisposed();
+
+      var bytes = new byte[size];
+
+      Marshal.Copy(buffer, bytes, 0, size);
+
+      return bytes;
+    }
+
     public UnmanagedMemoryStream ToStream()
     {
       CheckDisposed();
@@ -195,7 +240,7 @@ namespace Smdn.IO {
 
     private IntPtr buffer = IntPtr.Zero;
     private int size = 0;
-    private readonly ReAllocProc realloc = null;
-    private readonly FreeProc free = null;
+    private ReAllocProc realloc = null;
+    private FreeProc free = null;
   }
 }
