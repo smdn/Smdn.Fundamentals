@@ -2,9 +2,9 @@ using System;
 using System.Globalization;
 using NUnit.Framework;
 
-namespace Smdn.Extensions {
+namespace Smdn.Formats {
   [TestFixture()]
-  public class DateTimeExtensionsTests {
+  public class DateTimeConvertTests {
     private string timezoneOffset = string.Empty;
     private string timezoneOffsetNoDelim = string.Empty;
 
@@ -26,8 +26,8 @@ namespace Smdn.Extensions {
     [Test]
     public void TestGetCurrentTimeZoneOffsetString()
     {
-      Assert.AreEqual(timezoneOffset, DateTimeExtensions.GetCurrentTimeZoneOffsetString(true));
-      Assert.AreEqual(timezoneOffsetNoDelim, DateTimeExtensions.GetCurrentTimeZoneOffsetString(false));
+      Assert.AreEqual(timezoneOffset, DateTimeConvert.GetCurrentTimeZoneOffsetString(true));
+      Assert.AreEqual(timezoneOffsetNoDelim, DateTimeConvert.GetCurrentTimeZoneOffsetString(false));
     }
 
     [Test]
@@ -36,7 +36,7 @@ namespace Smdn.Extensions {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 GMT",
-                      DateTimeExtensions.ToRFC822DateTimeString(dtm));
+                      DateTimeConvert.ToRFC822DateTimeString(dtm));
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Smdn.Extensions {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Local);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-                      DateTimeExtensions.ToRFC822DateTimeString(dtm));
+                      DateTimeConvert.ToRFC822DateTimeString(dtm));
     }
 
     [Test]
@@ -54,13 +54,13 @@ namespace Smdn.Extensions {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Unspecified);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-                      DateTimeExtensions.ToRFC822DateTimeString(dtm));
+                      DateTimeConvert.ToRFC822DateTimeString(dtm));
     }
 
     [Test]
     public void FromRFC822DateTimeStringUtc()
     {
-      var dtm = DateTimeExtensions.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 GMT");
+      var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 GMT");
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek);
       Assert.AreEqual(10, dtm.Day);
@@ -75,7 +75,7 @@ namespace Smdn.Extensions {
     [Test]
     public void TestFromRFC822DateTimeStringLocal()
     {
-      var dtm = DateTimeExtensions.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +09:00");
+      var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +09:00");
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek);
       Assert.AreEqual(10, dtm.Day);
@@ -92,8 +92,8 @@ namespace Smdn.Extensions {
     {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
-      Assert.AreEqual(DateTimeExtensions.ToW3CDateTimeString(dtm),
-                      DateTimeExtensions.ToISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeConvert.ToW3CDateTimeString(dtm),
+                      DateTimeConvert.ToISO8601DateTimeString(dtm));
     }
 
     [Test]
@@ -102,7 +102,7 @@ namespace Smdn.Extensions {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
       Assert.AreEqual("2008-02-25T15:01:12Z",
-                      DateTimeExtensions.ToW3CDateTimeString(dtm));
+                      DateTimeConvert.ToW3CDateTimeString(dtm));
     }
 
     [Test]
@@ -111,7 +111,7 @@ namespace Smdn.Extensions {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Local);
 
       Assert.AreEqual("2008-02-25T15:01:12" + timezoneOffset,
-                      DateTimeExtensions.ToW3CDateTimeString(dtm));
+                      DateTimeConvert.ToW3CDateTimeString(dtm));
     }
 
     [Test]
@@ -120,7 +120,7 @@ namespace Smdn.Extensions {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Unspecified);
 
       Assert.AreEqual("2008-02-25T15:01:12" + timezoneOffset,
-                      DateTimeExtensions.ToW3CDateTimeString(dtm));
+                      DateTimeConvert.ToW3CDateTimeString(dtm));
     }
 
     [Test]
@@ -128,14 +128,14 @@ namespace Smdn.Extensions {
     {
       var dtm = "2008-04-11T12:34:56Z";
 
-      Assert.AreEqual(DateTimeExtensions.FromW3CDateTimeString(dtm),
-                      DateTimeExtensions.FromISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeConvert.FromW3CDateTimeString(dtm),
+                      DateTimeConvert.FromISO8601DateTimeString(dtm));
     }
 
     [Test]
     public void TestFromW3CDateTimeStringUtc()
     {
-      var dtm = DateTimeExtensions.FromW3CDateTimeString("2008-04-11T12:34:56Z");
+      var dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56Z");
 
       Assert.AreEqual(2008, dtm.Year);
       Assert.AreEqual(04, dtm.Month);
@@ -149,7 +149,7 @@ namespace Smdn.Extensions {
     [Test]
     public void TestFromW3CDateTimeStringLocal()
     {
-      var dtm = DateTimeExtensions.FromW3CDateTimeString("2008-04-11T12:34:56 +09:00");
+      var dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56 +09:00");
 
       Assert.AreEqual(2008, dtm.Year);
       Assert.AreEqual(04, dtm.Month);
@@ -164,36 +164,36 @@ namespace Smdn.Extensions {
     public void FromUnixTimeUtcTest()
     {
       Assert.AreEqual(DateTime.Parse("1970-01-01T00:00:00+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
-                      DateTimeExtensions.FromUnixTimeUtc(0L));
+                      DateTimeConvert.FromUnixTimeUtc(0L));
       Assert.AreEqual(DateTime.Parse("2001-09-09T01:46:40+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
-                      DateTimeExtensions.FromUnixTimeUtc(1000000000L));
+                      DateTimeConvert.FromUnixTimeUtc(1000000000L));
       Assert.AreEqual(DateTime.Parse("2038-01-19T03:14:07+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
-                      DateTimeExtensions.FromUnixTimeUtc((long)0x7FFFFFFF));
+                      DateTimeConvert.FromUnixTimeUtc((long)0x7FFFFFFF));
     }
 
     [Test]
     public void ToUnixTime64Test()
     {
       Assert.AreEqual(0L,
-                      DateTime.Parse("1970-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUnixTime64());
+                      DateTimeConvert.ToUnixTime64(DateTime.Parse("1970-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
       Assert.AreEqual(1000000000L,
-                      DateTime.Parse("2001-09-09T01:46:40", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUnixTime64());
+                      DateTimeConvert.ToUnixTime64(DateTime.Parse("2001-09-09T01:46:40", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
       Assert.AreEqual((long)0x7FFFFFFF,
-                      DateTime.Parse("2038-01-19T03:14:07", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToUnixTime64());
+                      DateTimeConvert.ToUnixTime64(DateTime.Parse("2038-01-19T03:14:07", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
     }
 
     [Test]
     public void FromIso14496DateTimeTest()
     {
       Assert.AreEqual(DateTime.Parse("1904-01-01T00:00:00+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
-                      DateTimeExtensions.FromISO14496DateTime(0UL));
+                      DateTimeConvert.FromISO14496DateTime(0UL));
     }
 
     [Test]
     public void ToIso14496DateTime64Test()
     {
       Assert.AreEqual(0UL,
-                      DateTime.Parse("1904-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal).ToISO14496DateTime64());
+                      DateTimeConvert.ToISO14496DateTime64(DateTime.Parse("1904-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
     }
   }
 }

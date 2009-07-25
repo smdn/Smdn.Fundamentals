@@ -2,8 +2,6 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-using Smdn.Extensions;
-
 namespace Smdn.IO {
   [TestFixture]
   public class BinaryWriterTest {

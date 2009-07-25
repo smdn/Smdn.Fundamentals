@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Extensions {
+namespace Smdn {
   [TestFixture()]
   public class StringExtensionsTests {
     [Test]

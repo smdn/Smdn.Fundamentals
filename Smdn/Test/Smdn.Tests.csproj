@@ -35,18 +35,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Smdn\" />
-    <Folder Include="Smdn.Extensions\" />
     <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Text\" />
+    <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Mathematics\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn\UInt48.cs" />
-    <Compile Include="Smdn.Extensions\ArrayExtensions.cs" />
     <Compile Include="Smdn.IO\UnmanagedMemoryBuffer.cs" />
-    <Compile Include="Smdn.Text\Convert.cs" />
-    <Compile Include="Smdn.Text\Csv.cs" />
-    <Compile Include="Smdn.Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn.Mathematics\Fraction.cs" />
     <Compile Include="Smdn.IO\BigEndianBinaryReader.cs" />
@@ -55,12 +51,14 @@
     <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
     <Compile Include="Smdn.IO\BinaryReader.cs" />
     <Compile Include="Smdn.IO\BinaryWriter.cs" />
-    <Compile Include="Smdn.Extensions\StringExtensions.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\ByteString.cs" />
     <Compile Include="Smdn.IO\ByteStringBuilder.cs" />
+    <Compile Include="Smdn\ArrayExtensions.cs" />
+    <Compile Include="Smdn\StringExtensions.cs" />
+    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

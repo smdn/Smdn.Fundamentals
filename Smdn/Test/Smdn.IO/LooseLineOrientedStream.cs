@@ -2,8 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-using Smdn.Extensions;
-using Smdn.Text;
+using Smdn.Formats;
 
 namespace Smdn.IO {
   [TestFixture]
