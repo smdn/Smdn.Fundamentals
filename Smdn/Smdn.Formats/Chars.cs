@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Smdn.Text {
+namespace Smdn.Formats {
   public static class Chars {
     public const char NUL     = '\u0000';
     public const char CR      = '\u000d';

@@ -25,7 +25,7 @@
 using System;
 using System.Text;
 
-namespace Smdn.Extensions {
+namespace Smdn {
   public static class StringExtensions {
     public delegate string ReplaceCharEvaluator(char ch, string str, int index);
     public delegate string ReplaceStringEvaluator(string matched, string str, int index);

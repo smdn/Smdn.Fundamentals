@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Smdn.IO {
+namespace Smdn {
   public class ByteStringBuilder {
     [System.Runtime.CompilerServices.IndexerName("Bytes")]
     public byte this[int index] {

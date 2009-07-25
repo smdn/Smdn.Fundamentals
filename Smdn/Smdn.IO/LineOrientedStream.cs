@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-using Smdn.Text;
+using Smdn.Formats;
 
 namespace Smdn.IO {
   public class LineOrientedStream : Stream {

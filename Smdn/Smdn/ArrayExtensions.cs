@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Smdn.Extensions {
+namespace Smdn {
   /// <summary>
   /// extension methods for System.Array
   /// </summary>
@@ -80,7 +80,7 @@ namespace Smdn.Extensions {
       return cut;
     }
 
-    public static bool IsEqualsTo<T>(this T[] array, T[] other) where T : IEquatable<T>
+    public static bool EqualsAll<T>(this T[] array, T[] other) where T : IEquatable<T>
     {
       if (array == null || other == null)
         return false;
@@ -96,7 +96,7 @@ namespace Smdn.Extensions {
       return true;
     }
 
-    public static bool IsEqualsTo<T>(this T[] array, T[] other, IEqualityComparer<T> comparer)
+    public static bool EqualsAll<T>(this T[] array, T[] other, IEqualityComparer<T> comparer)
     {
       if (comparer == null)
         throw new ArgumentNullException("comparer");

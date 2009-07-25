@@ -65,8 +65,6 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Extensions\ArrayExtensions.cs" />
-    <Compile Include="Smdn.Extensions\DateTimeExtensions.cs" />
     <Compile Include="System.Runtime.CompilerServices\ExtensionAttribute.cs" />
     <Compile Include="Smdn.IO\UnmanagedMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\BigEndianBinaryReader.cs" />
@@ -76,30 +74,35 @@
     <Compile Include="Smdn.IO\LittleEndianBinaryReader.cs" />
     <Compile Include="Smdn.IO\BinaryWriter.cs" />
     <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
-    <Compile Include="Smdn.Text\Convert.cs" />
-    <Compile Include="Smdn.Text\Csv.cs" />
-    <Compile Include="Smdn.Text\Chars.cs" />
-    <Compile Include="Smdn.Text\Octets.cs" />
+    <Compile Include="Smdn.Formats\TextConvert.cs" />
+    <Compile Include="Smdn.Formats\Chars.cs" />
+    <Compile Include="Smdn.Formats\Octets.cs" />
     <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn\Runtime.cs" />
-    <Compile Include="Smdn.Text\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats\MimeEncoding.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
-    <Compile Include="Smdn.Extensions\StringExtensions.cs" />
-    <Compile Include="Smdn.Text\FromQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Text\ToQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Text\FromRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Text\ToRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Text\ToRFC2152ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Text\FromRFC2152ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\FromQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats\ToQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\ToRFC3501ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\ToRFC2152ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\ByteString.cs" />
-    <Compile Include="Smdn.IO\ByteStringBuilder.cs" />
     <Compile Include="Smdn.IO\HeapMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\CoTaskMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\GlobalMemoryBuffer.cs" />
+    <Compile Include="Smdn\ByteString.cs" />
+    <Compile Include="Smdn\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn\ArrayExtensions.cs" />
+    <Compile Include="Smdn\StringExtensions.cs" />
+    <Compile Include="Smdn.Mathematics\Matrix3D.cs" />
+    <Compile Include="Smdn.Mathematics\Matrix4D.cs" />
+    <Compile Include="Smdn.Mathematics\Vector3D.cs" />
+    <Compile Include="Smdn.Mathematics\Vector4D.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -115,6 +118,6 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <Folder Include="Smdn.Text\" />
+    <Folder Include="Smdn.Formats\" />
   </ItemGroup>
 </Project>

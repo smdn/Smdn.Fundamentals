@@ -26,13 +26,13 @@
 #undef TRANSFORMIMPL_FAST
 
 using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Smdn.Text {
-  public static class Convert {
+namespace Smdn.Formats {
+  public static class TextConvert {
 #region "text tranform"
     internal static string TransformTo(string str, ICryptoTransform transform, Encoding encoding)
     {
@@ -216,6 +216,57 @@ namespace Smdn.Text {
       }
 
       return bytes;
+    }
+#endregion
+
+#region "CSV"
+    // http://www.ietf.org/rfc/rfc4180.txt
+    // Common Format and MIME Type for Comma-Separated Values (CSV) Files
+    public static string[] FromCSV(string csv)
+    {
+      // append dummy splitter
+      csv += ",";
+
+      var splitted = new List<string>();
+      var splitAt = 0;
+      var quoted = false;
+      var inQuote = false;
+
+      for (var index = 0; index < csv.Length; index++) {
+        if (csv[index] == Chars.DQuote) {
+          inQuote = !inQuote;
+          quoted = true;
+        }
+
+        if (inQuote)
+          continue;
+
+        if (csv[index] != Chars.Comma)
+          continue;
+
+        if (quoted)
+          splitted.Add(csv.Substring(splitAt + 1, index - splitAt - 2).Replace("\"\"", "\""));
+        else
+          splitted.Add(csv.Substring(splitAt, index - splitAt));
+
+        quoted = false;
+        splitAt = index + 1;
+      }
+
+      return splitted.ToArray();
+    }
+
+    public static string ToCSV(string[] csv)
+    {
+      if (csv.Length == 0)
+        return string.Empty;
+
+      return string.Join(",", Array.ConvertAll(csv, delegate(string s) {
+        if (s.Contains("\""))
+          return string.Format("\"{0}\"", s.Replace("\"", "\"\""));
+        else
+          return s;
+      }));
     }
 #endregion
 

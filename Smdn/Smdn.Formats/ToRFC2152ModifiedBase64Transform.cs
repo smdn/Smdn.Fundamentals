@@ -23,34 +23,38 @@
 // THE SOFTWARE.
 
 using System;
+using System.Security.Cryptography;
 
-namespace Smdn.Text {
-  public static class Octets {
-    public const byte NUL   = 0x00;
-    public const byte CR    = 0x0d;
-    public const byte LF    = 0x0a;
-    public const byte SP    = 0x20;
-    public const byte HT    = 0x09; // horizontal tab
-
-    public static readonly byte[] CRLF = new byte[] {0x0d, 0x0a};
-
-    public static readonly byte[] LowerCaseHexOctets = new byte[] {
-      0x30, 0x31, 0x32, 0x33,
-      0x34, 0x35, 0x36, 0x37,
-      0x38, 0x39, 0x61, 0x62,
-      0x63, 0x64, 0x65, 0x66,
-    };
-
-    public static readonly byte[] UpperCaseHexOctets = new byte[] {
-      0x30, 0x31, 0x32, 0x33,
-      0x34, 0x35, 0x36, 0x37,
-      0x38, 0x39, 0x41, 0x42,
-      0x43, 0x44, 0x45, 0x46,
-    };
-
-    public static bool IsDecimalNumber(byte b)
+namespace Smdn.Formats {
+  // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
+  // http://tools.ietf.org/html/rfc2152
+  public class ToRFC2152ModifiedBase64Transform : ToBase64Transform, ICryptoTransform {
+    public ToRFC2152ModifiedBase64Transform()
+      : base()
     {
-      return (0x30 <= b && b <= 0x39);
+    }
+
+    public virtual new byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+    {
+      // The pad character "=" is not used when encoding
+      // Modified Base64 because of the conflict with its use as an escape
+      // character for the Q content transfer encoding in RFC 2047 header
+      // fields, as mentioned above.
+      var transformed = base.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
+
+      int padding = -1;
+
+      for (var i = transformed.Length - 1; 0 <= i; i--) {
+        if (transformed[i] == 0x3d) // '=' 0x3d
+          padding = i;
+        else
+          break;
+      }
+
+      if (0 <= padding)
+        Array.Resize(ref transformed, padding);
+
+      return transformed;
     }
   }
 }

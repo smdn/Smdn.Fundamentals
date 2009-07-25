@@ -25,8 +25,6 @@
 using System;
 using System.IO;
 
-using Smdn.Extensions;
-
 namespace Smdn.IO {
   public static class PathUtils {
     public static string RemoveInvalidPathChars(string path)

@@ -25,7 +25,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Text {
+namespace Smdn.Formats {
   public class FromQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }

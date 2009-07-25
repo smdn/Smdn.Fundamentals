@@ -25,12 +25,9 @@
 using System;
 using System.Globalization;
 
-namespace Smdn.Extensions {
-  /// <summary>
-  /// extension methods for System.DateTime
-  /// </summary>
-  public static class DateTimeExtensions {
-#region "formatting and parsing extensions"
+namespace Smdn.Formats {
+  public static class DateTimeConvert {
+#region "formatting and parsing methods"
     public static string GetCurrentTimeZoneOffsetString(bool delimiter)
     {
       var offset = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
@@ -49,7 +46,7 @@ namespace Smdn.Extensions {
       }
     }
 
-    public static string ToRFC822DateTimeString(this DateTime dateTime)
+    public static string ToRFC822DateTimeString(DateTime dateTime)
     {
       var str = dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture);
 
@@ -64,12 +61,12 @@ namespace Smdn.Extensions {
       return FromDateTimeString(s, rfc822DateTimeFormats, "GMT");
     }
 
-    public static string ToISO8601DateTimeString(this DateTime dateTime)
+    public static string ToISO8601DateTimeString(DateTime dateTime)
     {
       return ToW3CDateTimeString(dateTime);
     }
 
-    public static string ToW3CDateTimeString(this DateTime dateTime)
+    public static string ToW3CDateTimeString(DateTime dateTime)
     {
       if (dateTime.Kind == DateTimeKind.Utc)
         return dateTime.ToString("yyyy-MM-ddTHH:mm:ss'Z'", CultureInfo.InvariantCulture);
@@ -137,8 +134,8 @@ namespace Smdn.Extensions {
     };
 #endregion
 
-#region "extensions for unix time"
-    public static int ToUnixTime32(this DateTime dateTime)
+#region "conversion methods for unix time"
+    public static int ToUnixTime32(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
@@ -146,7 +143,7 @@ namespace Smdn.Extensions {
       return (int)dateTime.Subtract(UnixEpoch).TotalSeconds;
     }
 
-    public static long ToUnixTime64(this DateTime dateTime)
+    public static long ToUnixTime64(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
@@ -179,7 +176,7 @@ namespace Smdn.Extensions {
     public readonly static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 #endregion
 
-#region "extensions for date time of ISO base media file format"
+#region "conversion methods for date time of ISO base media file format"
     public static DateTime FromISO14496DateTime(ulong isoDateTime)
     {
       // this might overflow
@@ -191,7 +188,7 @@ namespace Smdn.Extensions {
       return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
-    public static ulong ToISO14496DateTime64(this DateTime dateTime)
+    public static ulong ToISO14496DateTime64(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
@@ -199,7 +196,7 @@ namespace Smdn.Extensions {
       return (ulong)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
     }
 
-    public static uint ToISO14496DateTime32(this DateTime dateTime)
+    public static uint ToISO14496DateTime32(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
