@@ -104,6 +104,7 @@
     <Compile Include="Smdn.Mathematics\Vector4D.cs" />
     <Compile Include="Smdn.Interop\mmsystem.h.cs" />
     <Compile Include="Smdn.Interop\HeapMemoryBuffer.cs" />
+    <Compile Include="Smdn.IO\PartialStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -59,6 +59,7 @@
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn.IO\PartialStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
