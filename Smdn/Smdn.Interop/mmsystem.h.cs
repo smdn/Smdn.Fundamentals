@@ -102,15 +102,24 @@ namespace Smdn.Interop {
       }
     }
 
-    public static WAVEFORMATEX CreateLinearPCMFormat(uint samplesPerSec, ushort bitsPerSample, ushort channles)
+    public static WAVEFORMATEX CreateLinearPCMFormat(int samplesPerSec, int bitsPerSample, int channles)
     {
+      if (samplesPerSec <= 0)
+        throw new ArgumentOutOfRangeException("samplesPerSec", "must be non-zero positive number");
+      if (bitsPerSample <= 0)
+        throw new ArgumentOutOfRangeException("bitsPerSample", "must be non-zero positive number");
+      if ((bitsPerSample & 0x7) != 0x0)
+        throw new ArgumentOutOfRangeException("bitsPerSample", "must be number of n * 8");
+      if (channles <= 0)
+        throw new ArgumentOutOfRangeException("channles", "must be non-zero positive number");
+
       var format = new WAVEFORMATEX();
 
       format.wFormatTag = WAVE_FORMAT_TAG.WAVE_FORMAT_PCM;
-      format.nChannels = channles;
-      format.nSamplesPerSec = samplesPerSec;
-      format.wBitsPerSample = bitsPerSample;
-      format.nBlockAlign = (ushort)((bitsPerSample * channles) / 8);
+      format.nChannels = (ushort)channles;
+      format.nSamplesPerSec = (uint)samplesPerSec;
+      format.wBitsPerSample = (ushort)bitsPerSample;
+      format.nBlockAlign = (ushort)((bitsPerSample * channles) >> 3);
       format.nAvgBytesPerSec = format.nBlockAlign * format.nSamplesPerSec;
       format.cbSize = 0;
 
