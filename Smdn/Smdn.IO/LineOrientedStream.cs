@@ -37,11 +37,11 @@ namespace Smdn.IO {
     }
 
     public override bool CanRead {
-      get { return stream.CanWrite; }
+      get { return stream.CanRead; }
     }
 
     public override bool CanWrite {
-      get { return stream.CanRead; }
+      get { return stream.CanWrite; }
     }
 
     public override bool CanTimeout {
