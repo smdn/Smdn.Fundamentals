@@ -91,7 +91,6 @@
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\HeapMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\CoTaskMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\GlobalMemoryBuffer.cs" />
     <Compile Include="Smdn\ByteString.cs" />
@@ -103,6 +102,8 @@
     <Compile Include="Smdn.Mathematics\Matrix4D.cs" />
     <Compile Include="Smdn.Mathematics\Vector3D.cs" />
     <Compile Include="Smdn.Mathematics\Vector4D.cs" />
+    <Compile Include="Smdn.Interop\mmsystem.h.cs" />
+    <Compile Include="Smdn.Interop\HeapMemoryBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -119,5 +120,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
+    <Folder Include="Smdn.Interop\" />
   </ItemGroup>
 </Project>
