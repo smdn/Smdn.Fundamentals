@@ -84,6 +84,11 @@ namespace Smdn.IO {
     {
     }
 
+    public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen)
+      : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen)
+    {
+    }
+
     public PartialStream(Stream innerStream, long offset, long length)
       : this(innerStream, offset, length, false, true)
     {
