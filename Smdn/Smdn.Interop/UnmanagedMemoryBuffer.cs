@@ -126,6 +126,13 @@ namespace Smdn.Interop {
       Free();
     }
 
+    public virtual void ZeroFree()
+    {
+      if (IntPtr.Zero != ptr)
+        Clear();
+      Free();
+    }
+
     public virtual void Free()
     {
       Dispose(true);
@@ -167,6 +174,105 @@ namespace Smdn.Interop {
       size = cb;
     }
 
+#region "read/write"
+    /// <summary>equivarent operation of ZeroMemory</summary>
+    public virtual void Clear()
+    {
+      Set(0, 0, size);
+    }
+
+    /// <summary>equivarent operation of memset</summary>
+    public void Set(byte val)
+    {
+      Set(val, 0, size);
+    }
+
+    /// <summary>equivarent operation of memset</summary>
+    public virtual void Set(byte val, int offset, int length)
+    {
+      CheckDisposed();
+
+      unsafe {
+        var p = (byte*)ptr.ToPointer() + offset;
+
+        while (0 < length--) {
+          *(p++) = val;
+        }
+      }
+    }
+
+    /// <summary>equivarent operation of memcpy</summary>
+    public void Copy(IntPtr destination)
+    {
+      Copy(0, destination, size);
+    }
+
+    /// <summary>equivarent operation of memcpy</summary>
+    public virtual void Copy(int offset, IntPtr destination, int length)
+    {
+      CheckDisposed();
+
+      unsafe {
+        var src = (byte*)ptr.ToPointer() + offset;
+        var dst = (byte*)destination.ToPointer();
+
+        while (0 < length--) {
+          *(dst++) = *(src++);
+        }
+      }
+    }
+
+    public void Write(byte[] source)
+    {
+      Write(source, 0, source.Length, 0);
+    }
+
+    public void Write(byte[] source, int offset)
+    {
+      Write(source, 0, source.Length, offset);
+    }
+
+    public void Write(byte[] source, int index, int length)
+    {
+      Write(source, index, length, 0);
+    }
+
+    public virtual void Write(byte[] source, int index, int length, int offset)
+    {
+      CheckDisposed();
+
+      unsafe {
+        Marshal.Copy(source, index, (IntPtr)((byte*)ptr.ToPointer() + offset), length);
+      }
+    }
+
+    public void Read(byte[] destination)
+    {
+      Read(destination, 0, destination.Length, 0);
+    }
+
+    public void Read(byte[] destination, int index, int length)
+    {
+      Read(destination, index, length, 0);
+    }
+
+    public virtual void Read(byte[] destination, int index, int length, int offset)
+    {
+      CheckDisposed();
+
+      unsafe {
+#if true
+        Marshal.Copy((IntPtr)((byte*)ptr.ToPointer() + offset), destination, index, length);
+#else
+        fixed (byte* dest = destination) {
+          Copy(offset, length, (IntPtr)(dest + index));
+        }
+#endif
+      }
+    }
+#endregion
+
+#region "type conversion"
     public static explicit operator IntPtr(UnmanagedMemoryBuffer buffer)
     {
       return buffer.Ptr;
@@ -203,6 +309,7 @@ namespace Smdn.Interop {
         return new UnmanagedMemoryStream((byte*)ptr.ToPointer(), size, size, FileAccess.ReadWrite);
       }
     }
+#endregion
 
     private void CheckDisposed()
     {

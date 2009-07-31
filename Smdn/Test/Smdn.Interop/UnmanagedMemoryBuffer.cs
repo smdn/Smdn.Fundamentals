@@ -179,5 +179,129 @@ namespace Smdn.Interop {
         Assert.IsTrue(IntPtr.Zero != (IntPtr)buffer);
       }
     }
+
+    [Test]
+    public void TestZeroFree()
+    {
+      using (var allocBuffer = new GlobalMemoryBuffer(8)) {
+        allocBuffer.Clear();
+
+        var alloc = (UnmanagedMemoryBuffer.AllocProc)delegate(int cb) {
+          return allocBuffer.Ptr;
+        };
+        var free = (UnmanagedMemoryBuffer.FreeProc)delegate(IntPtr ptr) {
+          // do nothing
+        };
+
+        allocBuffer.Set(0xcd);
+
+        Assert.AreEqual(new byte[] {0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd}, allocBuffer.ToByteArray());
+
+        using (var buffer = new UnmanagedMemoryBuffer(allocBuffer.Size, alloc, free)) {
+          buffer.ZeroFree();
+
+          try {
+            buffer.ZeroFree();
+          }
+          catch (ObjectDisposedException) {
+            Assert.Fail("ObjectDisposedException thrown");
+          }
+
+          try {
+            buffer.Set(0xff);
+            Assert.Fail("ObjectDisposedException not thrown");
+          }
+          catch (ObjectDisposedException) {
+          }
+        }
+
+        Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, allocBuffer.ToByteArray());
+      }
+    }
+
+    [Test]
+    public void TestClear()
+    {
+      using (var buffer = new GlobalMemoryBuffer(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07})) {
+        Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}, buffer.ToByteArray());
+
+        buffer.Clear();
+        Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, buffer.ToByteArray());
+      }
+    }
+
+    [Test]
+    public void TestSet()
+    {
+      using (var allocBuffer = new GlobalMemoryBuffer(12)) {
+        allocBuffer.Clear();
+
+        var alloc = (UnmanagedMemoryBuffer.AllocProc)delegate(int cb) {
+          return new IntPtr((allocBuffer.Ptr.ToInt32() + 2));
+        };
+        var free = (UnmanagedMemoryBuffer.FreeProc)delegate(IntPtr ptr) {
+          // do nothing
+        };
+
+        using (var buffer = new UnmanagedMemoryBuffer(8, alloc, free)) {
+          buffer.Set(0xcd);
+          Assert.AreEqual(new byte[] {0x00, 0x00, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0xcd, 0x00, 0x00}, allocBuffer.ToByteArray());
+
+          buffer.Set(0xff, 2, 4);
+          Assert.AreEqual(new byte[] {0x00, 0x00, 0xcd, 0xcd, 0xff, 0xff, 0xff, 0xff, 0xcd, 0xcd, 0x00, 0x00}, allocBuffer.ToByteArray());
+
+          buffer.Set(0);
+          Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, allocBuffer.ToByteArray());
+        }
+      }
+    }
+
+    [Test]
+    public void TestCopy()
+    {
+      using (var dest = new GlobalMemoryBuffer(8)) {
+        using (var source = new GlobalMemoryBuffer(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07})) {
+          dest.Clear();
+          source.Copy((IntPtr)dest);
+          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}, dest.ToByteArray());
+
+          dest.Clear();
+          source.Copy(2, (IntPtr)dest, 4);
+          Assert.AreEqual(new byte[] {0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00}, dest.ToByteArray());
+        }
+      }
+    }
+
+    [Test]
+    public void TestWrite()
+    {
+      using (var buffer = new GlobalMemoryBuffer(8)) {
+        buffer.Clear();
+
+        buffer.Write(new byte[] {0x00, 0x01, 0x02, 0x03});
+        Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x00, 0x00, 0x00, 0x00}, buffer.ToByteArray());
+
+        buffer.Clear();
+
+        buffer.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}, 4, 4, 4);
+        Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}, buffer.ToByteArray());
+      }
+    }
+
+    [Test]
+    public void TestRead()
+    {
+      using (var buffer = new GlobalMemoryBuffer(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07})) {
+        byte[] readBuffer;
+
+        readBuffer = new byte[8];
+        buffer.Read(readBuffer);
+        Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}, readBuffer);
+
+        readBuffer = new byte[6];
+        buffer.Read(readBuffer, 2, 4, 4);
+        Assert.AreEqual(new byte[] {0x00, 0x00, 0x04, 0x05, 0x06, 0x07}, readBuffer);
+      }
+    }
   }
 }
