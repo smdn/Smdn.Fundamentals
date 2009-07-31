@@ -25,30 +25,40 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Smdn.IO {
-  public class CoTaskMemoryBuffer : UnmanagedMemoryBuffer {
-    public CoTaskMemoryBuffer(int cb)
-      : base(cb, Marshal.AllocCoTaskMem, Marshal.ReAllocCoTaskMem, Marshal.FreeCoTaskMem)
+namespace Smdn.Interop {
+  public class GlobalMemoryBuffer : UnmanagedMemoryBuffer {
+    private static IntPtr ReAllocHGlobal(IntPtr ptr, int cb)
+    {
+      return Marshal.ReAllocHGlobal(ptr, new IntPtr(cb));
+    }
+
+    public GlobalMemoryBuffer(int cb)
+      : base(cb, Marshal.AllocHGlobal, ReAllocHGlobal, Marshal.FreeHGlobal)
     {
     }
 
-    public CoTaskMemoryBuffer(byte[] data)
-      : base(data, Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem)
+    public GlobalMemoryBuffer(byte[] data)
+      : base(data, Marshal.AllocHGlobal, Marshal.FreeHGlobal)
     {
     }
 
-    public CoTaskMemoryBuffer(short[] data)
-      : base(data, Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem)
+    public GlobalMemoryBuffer(char[] data)
+      : base(data, Marshal.AllocHGlobal, Marshal.FreeHGlobal)
     {
     }
 
-    public CoTaskMemoryBuffer(int[] data)
-      : base(data, Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem)
+    public GlobalMemoryBuffer(short[] data)
+      : base(data, Marshal.AllocHGlobal, Marshal.FreeHGlobal)
     {
     }
 
-    public CoTaskMemoryBuffer(long[] data)
-      : base(data, Marshal.AllocCoTaskMem, Marshal.FreeCoTaskMem)
+    public GlobalMemoryBuffer(int[] data)
+      : base(data, Marshal.AllocHGlobal, Marshal.FreeHGlobal)
+    {
+    }
+
+    public GlobalMemoryBuffer(long[] data)
+      : base(data, Marshal.AllocHGlobal, Marshal.FreeHGlobal)
     {
     }
   }

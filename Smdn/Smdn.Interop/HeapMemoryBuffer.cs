@@ -26,7 +26,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
-  public class HeapMemoryBuffer : Smdn.IO.UnmanagedMemoryBuffer {
+  public class HeapMemoryBuffer : UnmanagedMemoryBuffer {
     private const uint HEAP_ZERO_MEMORY = 0x00000008;
 
     [DllImport("kernel32")]

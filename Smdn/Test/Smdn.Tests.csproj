@@ -38,10 +38,10 @@
     <Folder Include="Smdn.IO\" />
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Mathematics\" />
+    <Folder Include="Smdn.Interop\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn\UInt48.cs" />
-    <Compile Include="Smdn.IO\UnmanagedMemoryBuffer.cs" />
     <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn.Mathematics\Fraction.cs" />
@@ -60,6 +60,7 @@
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
+    <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

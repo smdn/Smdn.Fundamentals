@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.IO {
+namespace Smdn.Interop {
   [TestFixture]
   public class UnmanagedMemoryBufferTest {
     [Test]

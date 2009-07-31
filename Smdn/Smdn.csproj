@@ -66,7 +66,6 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="System.Runtime.CompilerServices\ExtensionAttribute.cs" />
-    <Compile Include="Smdn.IO\UnmanagedMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\BigEndianBinaryReader.cs" />
     <Compile Include="Smdn.IO\BigEndianBinaryWriter.cs" />
     <Compile Include="Smdn.Mathematics\Fraction.cs" />
@@ -91,8 +90,6 @@
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\CoTaskMemoryBuffer.cs" />
-    <Compile Include="Smdn.IO\GlobalMemoryBuffer.cs" />
     <Compile Include="Smdn\ByteString.cs" />
     <Compile Include="Smdn\ByteStringBuilder.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
@@ -106,6 +103,9 @@
     <Compile Include="Smdn.Interop\HeapMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
     <Compile Include="Smdn.Media\PcmStreamPlayer.cs" />
+    <Compile Include="Smdn.Interop\CoTaskMemoryBuffer.cs" />
+    <Compile Include="Smdn.Interop\GlobalMemoryBuffer.cs" />
+    <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

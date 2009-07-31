@@ -26,7 +26,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Smdn.IO {
+namespace Smdn.Interop {
   public class UnmanagedMemoryBuffer : IDisposable {
     public delegate IntPtr AllocProc(int cb);
     public delegate IntPtr ReAllocProc(IntPtr ptr, int cb);
