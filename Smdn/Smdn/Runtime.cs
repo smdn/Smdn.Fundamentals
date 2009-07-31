@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Reflection;
 
 namespace Smdn {
   public static class Runtime {
@@ -42,8 +43,34 @@ namespace Smdn {
       }
     }
 
+    public static bool IsSimdRuntimeAvailable {
+      get
+      {
+        if (isSimdRuntimeAvailable == null)
+          isSimdRuntimeAvailable = GetSimdRuntimeAvailable();
+
+        return isSimdRuntimeAvailable.Value;
+      }
+    }
+
     public static Version Version {
       get { return Environment.Version; }
     }
+
+    private static bool GetSimdRuntimeAvailable()
+    {
+      try {
+        var assm = Assembly.Load("Mono.Simd, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756");
+        var simdRuntimeType = assm.GetType("Mono.Simd.SimdRuntime");
+
+        // return Mono.Simd.SimdRuntime.AccelMode != AccelMode.None;
+        return 0 != (int)simdRuntimeType.GetProperty("AccellMode", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
+      }
+      catch {
+        return false;
+      }
+    }
+
+    private static bool? isSimdRuntimeAvailable = null;
   }
 }

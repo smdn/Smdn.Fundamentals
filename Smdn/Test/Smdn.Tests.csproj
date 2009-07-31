@@ -61,6 +61,7 @@
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
     <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
+    <Compile Include="Smdn\Runtime.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
