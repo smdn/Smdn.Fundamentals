@@ -105,6 +105,7 @@
     <Compile Include="Smdn.Interop\mmsystem.h.cs" />
     <Compile Include="Smdn.Interop\HeapMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
+    <Compile Include="Smdn.Media\PcmStreamPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -122,5 +123,6 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Interop\" />
+    <Folder Include="Smdn.Media\" />
   </ItemGroup>
 </Project>
