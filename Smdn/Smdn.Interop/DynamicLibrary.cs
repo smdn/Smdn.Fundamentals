@@ -30,7 +30,8 @@ namespace Smdn.Interop {
     public static DynamicLibrary Load(string path)
     {
       if (Runtime.IsRunningOnUnix)
-        return new SharedLibrary(path);
+        //return new SharedLibrary(path);
+        throw new PlatformNotSupportedException();
       else
         return new DynamicLinkLibrary(path);
     }
