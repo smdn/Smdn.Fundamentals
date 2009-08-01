@@ -29,46 +29,31 @@ namespace Smdn.Interop {
   public class HeapMemoryBuffer : UnmanagedMemoryBuffer {
     private const uint HEAP_ZERO_MEMORY = 0x00000008;
 
-    [DllImport("kernel32")]
-    private static extern IntPtr GetProcessHeap();
-
-    private static IntPtr hHeap = GetProcessHeap();
+    private static IntPtr hHeap = kernel32.GetProcessHeap();
 
     /// <value>same as return value of GetProcessHeap</value>
     public static IntPtr ProcessHeapHandle {
       get { return hHeap; }
     }
 
-    [DllImport("kernel32")]
-    private static extern IntPtr HeapAlloc(IntPtr hHeap, uint dwFlags, uint dwBytes);
-
     private static IntPtr HeapAlloc(int cb)
     {
-      return HeapAlloc(hHeap, HEAP_ZERO_MEMORY, (uint)cb);
+      return kernel32.HeapAlloc(hHeap, HEAP_ZERO_MEMORY, (uint)cb);
     }
-
-    [DllImport("kernel32")]
-    private static extern IntPtr HeapReAlloc(IntPtr hHeap, uint dwFlags, IntPtr lpMem, uint dwBytes);
 
     private static IntPtr HeapReAlloc(IntPtr ptr, int cb)
     {
-      return HeapReAlloc(hHeap, HEAP_ZERO_MEMORY, ptr, (uint)cb);
+      return kernel32.HeapReAlloc(hHeap, HEAP_ZERO_MEMORY, ptr, (uint)cb);
     }
-
-    [DllImport("kernel32")]
-    private static extern bool HeapFree(IntPtr hHeap, uint dwFlags, IntPtr lpMem);
 
     private static void HeapFree(IntPtr ptr)
     {
-      HeapFree(hHeap, 0, ptr);
+      kernel32.HeapFree(hHeap, 0, ptr);
     }
 
     /*
-    [DllImport("kernel32")]
-    private static extern uint HeapSize(IntPtr hHeap, int flags, IntPtr lpMem);
-
     public uint Size {
-      get { return HeapSize(hHeap, 0, base.Buffer); }
+      get { return kernel32.HeapSize(hHeap, 0, base.Buffer); }
     }
     */
 

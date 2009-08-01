@@ -106,6 +106,12 @@
     <Compile Include="Smdn.Interop\CoTaskMemoryBuffer.cs" />
     <Compile Include="Smdn.Interop\GlobalMemoryBuffer.cs" />
     <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
+    <Compile Include="Smdn.Interop\kernel32.cs" />
+    <Compile Include="Smdn.Interop\DynamicLibrary.cs" />
+    <Compile Include="Smdn.Interop\DynamicLinkLibrary.cs" />
+    <Compile Include="Smdn.Interop\SharedLibrary.cs" />
+    <Compile Include="Smdn.Interop\libdl.cs" />
+    <Compile Include="Smdn.Interop\FunctionNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
