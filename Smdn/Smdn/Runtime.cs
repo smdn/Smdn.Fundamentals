@@ -59,12 +59,42 @@ namespace Smdn {
 
     private static bool GetSimdRuntimeAvailable()
     {
-      try {
-        var assm = Assembly.Load("Mono.Simd, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756");
-        var simdRuntimeType = assm.GetType("Mono.Simd.SimdRuntime");
+      // return Mono.Simd.SimdRuntime.AccelMode != Mono.Simd.AccelMode.None;
 
-        // return Mono.Simd.SimdRuntime.AccelMode != AccelMode.None;
-        return 0 != (int)simdRuntimeType.GetProperty("AccellMode", BindingFlags.Static | BindingFlags.Public).GetValue(null, null);
+      try {
+        Assembly.Load("Mono.Simd, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756");
+
+#if true
+        const string code = @"
+namespace Smdn {
+  public static class SimdRuntime {
+    public static bool GetSimdRuntimeAvailable() {
+      return Mono.Simd.SimdRuntime.AccelMode != Mono.Simd.AccelMode.None;
+    }
+  }
+}";
+
+        using (var provider = new Microsoft.CSharp.CSharpCodeProvider(new System.Collections.Generic.Dictionary<string, string>() {{"CompilerVersion", "v2.0"}})) {
+          var options = new System.CodeDom.Compiler.CompilerParameters(new[] {"Mono.Simd"});
+
+          options.GenerateInMemory = true;
+          options.IncludeDebugInformation = false;
+
+          var result = provider.CompileAssemblyFromSource(options, code);
+
+          var simdRuntimeType = result.CompiledAssembly.GetType("Smdn.SimdRuntime", true);
+
+          return (bool)simdRuntimeType.GetMethod("GetSimdRuntimeAvailable", BindingFlags.Static | BindingFlags.Public).Invoke(null, null);
+        }
+#else
+        var simdRuntimeType = assm.GetType("Mono.Simd.SimdRuntime", true);
+
+        // this will not return actual acceleration mode
+        // (Mono does not emit replaced intrinsics, so this returns AccelMode.None always)
+        var accelMode = (int)simdRuntimeType.GetProperty("AccelMode", BindingFlags.Static | BindingFlags.Public).GetValue(null, null));
+
+        return accelMode != 0;
+#endif
       }
       catch {
         return false;

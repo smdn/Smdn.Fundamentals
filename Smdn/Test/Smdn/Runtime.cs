@@ -12,9 +12,19 @@ namespace Smdn {
       // no exception must be thrown
       var available = Runtime.IsSimdRuntimeAvailable;
 
-      if (available)
+      if (available) {
         // Mono.Simd must be loaded if available
-        Console.WriteLine(Type.GetType("Mono.Simd.SimdRuntime", true));
+        Assembly assmMonoSimd = null;
+
+        foreach (var assm in AppDomain.CurrentDomain.GetAssemblies()) {
+          if (assm.FullName.StartsWith("Mono.Simd")) {
+            assmMonoSimd = assm;
+            break;
+          }
+        }
+
+        Assert.IsNotNull(assmMonoSimd);
+      }
     }
   }
 }
