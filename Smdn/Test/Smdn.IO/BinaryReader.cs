@@ -72,6 +72,7 @@ namespace Smdn.IO {
           type.GetMethod("ReadInt16LE"),
           type.GetMethod("ReadInt32LE"),
           type.GetMethod("ReadInt64LE"),
+          type.GetMethod("ReadFourCC"),
         }) {
           reader.BaseStream.Position = reader.BaseStream.Length - 1;
 

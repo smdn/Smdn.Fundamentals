@@ -50,5 +50,21 @@ namespace Smdn.IO {
       Assert.AreEqual(stream.Position, actual.Length, "length");
       Assert.AreEqual(stream.ToArray(), actual);
     }
+
+    [Test]
+    public void TestWriteFourCC()
+    {
+      var stream = new MemoryStream();
+      var writer = new LittleEndianBinaryWriter(stream);
+
+      writer.Write(new FourCC("RIFF"));
+
+      var actual = new byte[] {
+        0x52, 0x49, 0x46, 0x46,
+      };
+
+      Assert.AreEqual(stream.Position, actual.Length, "length");
+      Assert.AreEqual(stream.ToArray(), actual);
+    }
   }
 }

@@ -54,14 +54,15 @@
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\ByteString.cs" />
-    <Compile Include="Smdn.IO\ByteStringBuilder.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
     <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
     <Compile Include="Smdn\Runtime.cs" />
+    <Compile Include="Smdn\FourCC.cs" />
+    <Compile Include="Smdn\ByteStringBuilder.cs" />
+    <Compile Include="Smdn\ByteString.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

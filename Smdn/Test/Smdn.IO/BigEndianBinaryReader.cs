@@ -46,5 +46,15 @@ namespace Smdn.IO {
 
       Assert.AreEqual(stream.Length, reader.BaseStream.Position, "position");
     }
+
+    [Test]
+    public void TestReadFourCC()
+    {
+      var reader = new BigEndianBinaryReader(new MemoryStream(new byte[] {
+        0x52, 0x49, 0x46, 0x46,
+      }));
+
+      Assert.AreEqual("RIFF", reader.ReadFourCC().ToString());
+    }
   }
 }
