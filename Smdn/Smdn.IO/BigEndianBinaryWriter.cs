@@ -67,6 +67,11 @@ namespace Smdn.IO {
       writer.WriteBE(@value);
     }
 
+    public virtual void Write(FourCC @value)
+    {
+      writer.Write(@value);
+    }
+
     private BinaryWriter writer;
   }
 }

@@ -67,6 +67,11 @@ namespace Smdn.IO {
       return reader.ReadUInt48BE();
     }
 
+    public virtual FourCC ReadFourCC()
+    {
+      return reader.ReadFourCC();
+    }
+
     private BinaryReader reader;
   }
 }

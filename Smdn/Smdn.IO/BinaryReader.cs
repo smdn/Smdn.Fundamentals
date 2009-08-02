@@ -184,5 +184,10 @@ namespace Smdn.IO {
     {
       return new UInt48(ReadBytesOrThrow(6), false);
     }
+
+    public FourCC ReadFourCC()
+    {
+      return new FourCC(ReadBytesOrThrow(4));
+    }
   }
 }

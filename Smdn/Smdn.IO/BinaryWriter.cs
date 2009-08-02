@@ -147,5 +147,10 @@ namespace Smdn.IO {
     {
       Write(@value.ToLittleEndianByteArray());
     }
+
+    public void Write(FourCC @value)
+    {
+      Write(@value.ToByteArray());
+    }
   }
 }
