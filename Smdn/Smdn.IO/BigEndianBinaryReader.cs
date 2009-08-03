@@ -27,6 +27,10 @@ using System.IO;
 
 namespace Smdn.IO {
   public class BigEndianBinaryReader : System.IO.BinaryReader {
+    public bool EndOfStream {
+      get { return reader.EndOfStream; }
+    }
+
     public BigEndianBinaryReader(Stream stream) : base(stream)
     {
       this.reader = new BinaryReader(stream);

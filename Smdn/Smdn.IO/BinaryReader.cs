@@ -27,6 +27,10 @@ using System.IO;
 
 namespace Smdn.IO {
   public class BinaryReader : System.IO.BinaryReader {
+    public bool EndOfStream {
+      get { return PeekChar() < 0; }
+    }
+
     public BinaryReader(Stream stream)
       : base(stream)
     {
