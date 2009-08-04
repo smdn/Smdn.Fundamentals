@@ -87,7 +87,7 @@ namespace Smdn.IO {
       }
     }
 
-    private byte[] ReadBytesOrThrow(int length)
+    protected byte[] ReadBytesOrThrow(int length)
     {
       var bytes = ReadBytes(length);
 
