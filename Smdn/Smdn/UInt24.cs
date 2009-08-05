@@ -43,6 +43,7 @@ namespace Smdn {
 
     public static readonly UInt24 MaxValue = (UInt24)maxValue;
     public static readonly UInt24 MinValue = (UInt24)minValue;
+    public static readonly UInt24 Zero     = (UInt24)0;
 
     internal UInt24(byte[] bytes, bool bigEndian)
     {

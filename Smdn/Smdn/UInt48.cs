@@ -46,6 +46,7 @@ namespace Smdn {
 
     public static readonly UInt48 MaxValue = (UInt48)maxValue;
     public static readonly UInt48 MinValue = (UInt48)minValue;
+    public static readonly UInt48 Zero     = (UInt48)0;
 
     internal UInt48(byte[] bytes, bool bigEndian)
     {
