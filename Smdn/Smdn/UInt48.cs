@@ -131,6 +131,26 @@ namespace Smdn {
       return uint48;
     }
 
+    public static explicit operator int(UInt48 val)
+    {
+      return (int)val.ToInt64();
+    }
+
+    public static explicit operator uint(UInt48 val)
+    {
+      return (uint)val.ToUInt64();
+    }
+
+    public static implicit operator long(UInt48 val)
+    {
+      return val.ToInt64();
+    }
+
+    public static implicit operator ulong(UInt48 val)
+    {
+      return val.ToUInt64();
+    }
+
     public Int64 ToInt64()
     {
       return (Int64)ToUInt64();
