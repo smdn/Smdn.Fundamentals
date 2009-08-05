@@ -91,6 +91,18 @@ namespace Smdn {
         catch (OverflowException) {
         }
       }
+
+      foreach (var t in new[] {
+        typeof(long),
+        typeof(ulong),
+      }) {
+        try {
+          Convert.ChangeType(UInt48.MaxValue, t);
+        }
+        catch (OverflowException) {
+          Assert.Fail("OverflowException thrown: type {0}", t);
+        }
+      }
     }
   }
 }
