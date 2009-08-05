@@ -115,6 +115,8 @@
     <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Smdn.Imaging\LockedBitmap.cs" />
     <Compile Include="Smdn\UInt24.cs" />
+    <Compile Include="Smdn.IO\BinaryReaderImpl.cs" />
+    <Compile Include="Smdn.IO\BinaryWriterImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

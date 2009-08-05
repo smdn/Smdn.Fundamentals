@@ -28,74 +28,72 @@ using System.IO;
 namespace Smdn.IO {
   public class BigEndianBinaryReader : System.IO.BinaryReader {
     public bool EndOfStream {
-      get { return reader.EndOfStream; }
+      get { return BinaryReaderImpl.IsEndOfStream(this); }
     }
 
-    public BigEndianBinaryReader(Stream stream) : base(stream)
+    public BigEndianBinaryReader(Stream stream)
+      : base(stream)
     {
-      this.reader = new Smdn.IO.BinaryReader(stream);
     }
 
     protected byte[] ReadBytesOrThrowException(int count)
     {
-      return reader.ReadBytesOrThrowException(count);
+      return BinaryReaderImpl.ReadBytesOrThrowException(this, count);
     }
 
     public byte[] ReadBytes(long count)
     {
-      return reader.ReadBytes(count);
+      return BinaryReaderImpl.ReadBytes(this, count);
     }
 
     public byte[] ReadToEnd()
     {
-      return reader.ReadToEnd();
+      return BinaryReaderImpl.ReadToEnd(this);
     }
 
     public override short ReadInt16()
     {
-      return reader.ReadInt16BE();
+      return BinaryReaderImpl.ReadInt16BE(this);
     }
 
     public override ushort ReadUInt16()
     {
-      return reader.ReadUInt16BE();
+      return BinaryReaderImpl.ReadUInt16BE(this);
     }
 
     public override int ReadInt32()
     {
-      return reader.ReadInt32BE();
+      return BinaryReaderImpl.ReadInt32BE(this);
     }
 
     public override uint ReadUInt32()
     {
-      return reader.ReadUInt32BE();
+      return BinaryReaderImpl.ReadUInt32BE(this);
     }
 
     public override long ReadInt64()
     {
-      return reader.ReadInt64BE();
+      return BinaryReaderImpl.ReadInt64BE(this);
     }
 
     public override ulong ReadUInt64()
     {
-      return reader.ReadUInt64BE();
+      return BinaryReaderImpl.ReadUInt64BE(this);
     }
 
     public virtual UInt24 ReadUInt24()
     {
-      return reader.ReadUInt24BE();
+      return BinaryReaderImpl.ReadUInt24BE(this);
     }
 
     public virtual UInt48 ReadUInt48()
     {
-      return reader.ReadUInt48BE();
+      return BinaryReaderImpl.ReadUInt48BE(this);
     }
 
     public virtual FourCC ReadFourCC()
     {
-      return reader.ReadFourCC();
+      return BinaryReaderImpl.ReadFourCC(this);
     }
-
-    private Smdn.IO.BinaryReader reader;
   }
 }

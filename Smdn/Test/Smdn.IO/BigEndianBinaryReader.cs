@@ -11,7 +11,8 @@ namespace Smdn.IO {
       var stream = new MemoryStream(new byte[] {
         0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x80, 0x00, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
+        0x00,
       });
 
       var reader = new BigEndianBinaryReader(stream);
@@ -22,6 +23,7 @@ namespace Smdn.IO {
       Assert.AreEqual((ushort)0x8000, reader.ReadUInt16());
       Assert.AreEqual((byte)0x00, reader.ReadByte());
       Assert.AreEqual((UInt48)0x800000000000, reader.ReadUInt48());
+      Assert.AreEqual((UInt24)0x800000, reader.ReadUInt24());
 
       Assert.AreEqual(stream.Length, reader.BaseStream.Position, "position");
     }
@@ -32,7 +34,8 @@ namespace Smdn.IO {
       var stream = new MemoryStream(new byte[] {
         0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
         0x80, 0x00, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
+        0x00,
       });
 
       var reader = new BigEndianBinaryReader(stream);
@@ -43,6 +46,7 @@ namespace Smdn.IO {
       Assert.AreEqual(short.MinValue, reader.ReadInt16());
       Assert.AreEqual((sbyte)0, reader.ReadSByte());
       Assert.AreEqual((UInt48)0x800000000000, reader.ReadUInt48());
+      Assert.AreEqual((UInt24)0x800000, reader.ReadUInt24());
 
       Assert.AreEqual(stream.Length, reader.BaseStream.Position, "position");
     }

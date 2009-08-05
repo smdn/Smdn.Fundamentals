@@ -28,7 +28,7 @@ using System.IO;
 namespace Smdn.IO {
   public class BinaryReader : System.IO.BinaryReader {
     public bool EndOfStream {
-      get { return PeekChar() < 0; }
+      get { return BinaryReaderImpl.IsEndOfStream(this); }
     }
 
     public BinaryReader(Stream stream)
@@ -36,172 +36,104 @@ namespace Smdn.IO {
     {
     }
 
-    public byte[] ReadToEnd()
+    protected byte[] ReadBytesOrThrowException(int count)
     {
-      if (BaseStream.CanSeek) {
-        return ReadBytes(BaseStream.Length - BaseStream.Position);
-      }
-      else {
-        // TODO: use BaseStream.Read
-        //return base.ReadBytes((int)(BaseStream.Length - BaseStream.Position));
-        throw new NotSupportedException();
-      }
+      return BinaryReaderImpl.ReadBytesOrThrowException(this, count);
     }
 
     public byte[] ReadBytes(long count)
     {
-      if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
-
-      if (count == 0)
-        return new byte[] {};
-
-      var readTotal = 0L;
-      byte[] buffer = null;
-
-      while (readTotal < count) {
-        var bytesToRead = count - readTotal;
-        var bytes = base.ReadBytes((int.MaxValue < bytesToRead) ? int.MaxValue : (int)bytesToRead);
-
-        if (buffer == null) {
-          if (bytes.LongLength < bytesToRead || bytes.LongLength == count)
-            return bytes; // EOF or read required bytes
-          else
-            buffer = new byte[count];
-        }
-
-        Array.Copy(bytes, 0L, buffer, readTotal, bytes.LongLength);
-
-        readTotal += bytes.LongLength;
-      }
-
-      if (readTotal < count) {
-        var readBuffer = new byte[readTotal];
-
-        Array.Copy(buffer, 0L, readBuffer, 0L, readTotal);
-
-        return readBuffer;
-      }
-      else {
-        return buffer;
-      }
+      return BinaryReaderImpl.ReadBytes(this, count);
     }
 
-    internal protected byte[] ReadBytesOrThrowException(int length)
+    public byte[] ReadToEnd()
     {
-      var bytes = ReadBytes(length);
-
-      if (bytes.Length < length)
-        throw new EndOfStreamException();
-      else
-        return bytes;
+      return BinaryReaderImpl.ReadToEnd(this);
     }
 
     public short ReadInt16BE()
     {
-      var bytes = ReadBytesOrThrowException(2);
-
-      return (short)(bytes[0] << 8 | bytes[1]);
+      return BinaryReaderImpl.ReadInt16BE(this);
     }
 
     public short ReadInt16LE()
     {
-      var bytes = ReadBytesOrThrowException(2);
-
-      return (short)(bytes[1] << 8 | bytes[0]);
+      return BinaryReaderImpl.ReadInt16LE(this);
     }
 
     public ushort ReadUInt16BE()
     {
-      var bytes = ReadBytesOrThrowException(2);
-
-      return (ushort)(bytes[0] << 8 | bytes[1]);
+      return BinaryReaderImpl.ReadUInt16BE(this);
     }
 
     public ushort ReadUInt16LE()
     {
-      var bytes = ReadBytesOrThrowException(2);
-
-      return (ushort)(bytes[1] << 8 | bytes[0]);
+      return BinaryReaderImpl.ReadUInt16LE(this);
     }
 
     public int ReadInt32BE()
     {
-      var bytes = ReadBytesOrThrowException(4);
-
-      return (int)(bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]);
+      return BinaryReaderImpl.ReadInt32BE(this);
     }
 
     public int ReadInt32LE()
     {
-      var bytes = ReadBytesOrThrowException(4);
-
-      return (int)(bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0]);
+      return BinaryReaderImpl.ReadInt32LE(this);
     }
 
     public uint ReadUInt32BE()
     {
-      var bytes = ReadBytesOrThrowException(4);
-
-      return (uint)(bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]);
+      return BinaryReaderImpl.ReadUInt32BE(this);
     }
 
     public uint ReadUInt32LE()
     {
-      var bytes = ReadBytesOrThrowException(4);
-
-      return (uint)(bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0]);
+      return BinaryReaderImpl.ReadUInt32LE(this);
     }
 
     public long ReadInt64BE()
     {
-      return (long)ReadUInt64BE();
+      return BinaryReaderImpl.ReadInt64BE(this);
     }
 
     public long ReadInt64LE()
     {
-      return (long)ReadUInt64LE();
+      return BinaryReaderImpl.ReadInt64LE(this);
     }
 
     public ulong ReadUInt64BE()
     {
-      var high = (ulong)ReadUInt32BE();
-      var low  = (ulong)ReadUInt32BE();
-
-      return (ulong)(high << 32 | low);
+      return BinaryReaderImpl.ReadUInt64BE(this);
     }
 
     public ulong ReadUInt64LE()
     {
-      var low  = (ulong)ReadUInt32LE();
-      var high = (ulong)ReadUInt32LE();
-
-      return (ulong)(high << 32 | low);
+      return BinaryReaderImpl.ReadUInt64LE(this);
     }
 
     public UInt24 ReadUInt24BE()
     {
-      return new UInt24(ReadBytesOrThrowException(3), true);
+      return BinaryReaderImpl.ReadUInt24BE(this);
     }
 
     public UInt24 ReadUInt24LE()
     {
-      return new UInt24(ReadBytesOrThrowException(3), false);
+      return BinaryReaderImpl.ReadUInt24LE(this);
     }
 
     public UInt48 ReadUInt48BE()
     {
-      return new UInt48(ReadBytesOrThrowException(6), true);
+      return BinaryReaderImpl.ReadUInt48BE(this);
     }
 
     public UInt48 ReadUInt48LE()
     {
-      return new UInt48(ReadBytesOrThrowException(6), false);
+      return BinaryReaderImpl.ReadUInt48LE(this);
     }
 
     public FourCC ReadFourCC()
     {
-      return new FourCC(ReadBytesOrThrowException(4));
+      return BinaryReaderImpl.ReadFourCC(this);
     }
   }
 }

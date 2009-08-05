@@ -27,56 +27,59 @@ using System.IO;
 
 namespace Smdn.IO {
   public class BigEndianBinaryWriter : System.IO.BinaryWriter {
-    public BigEndianBinaryWriter(Stream stream) : base(stream)
+    public BigEndianBinaryWriter(Stream stream)
+      : base(stream)
     {
-      this.writer = new BinaryWriter(stream);
+    }
+
+    public void WriteZero(long bytes)
+    {
+      BinaryWriterImpl.WriteZero(this, bytes);
     }
 
     public override void Write(short @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public override void Write(ushort @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public override void Write(int @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public override void Write(uint @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public override void Write(long @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public override void Write(ulong @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public virtual void Write(UInt24 @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public virtual void Write(UInt48 @value)
     {
-      writer.WriteBE(@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public virtual void Write(FourCC @value)
     {
-      writer.Write(@value);
+      BinaryWriterImpl.Write(this, @value);
     }
-
-    private BinaryWriter writer;
   }
 }

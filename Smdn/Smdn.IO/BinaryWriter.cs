@@ -34,133 +34,92 @@ namespace Smdn.IO {
 
     public void WriteZero(long bytes)
     {
-      if (bytes < 0)
-        throw new ArgumentOutOfRangeException("bytes", "must be zero or positive number");
-
-      for (; 8L <= bytes; bytes -= 8L)
-        Write((UInt64)0);
-
-      for (; 0L < bytes; bytes--)
-        Write((byte)0);
+      BinaryWriterImpl.WriteZero(this, bytes);
     }
 
     public void WriteBE(short @value)
     {
-      WriteBE((ushort)@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(short @value)
     {
-      WriteLE((ushort)@value);
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(int @value)
     {
-      WriteBE((uint)@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(int @value)
     {
-      WriteLE((uint)@value);
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(long @value)
     {
-      WriteBE((ulong)@value);
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(long @value)
     {
-      WriteLE((ulong)@value);
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(ushort @value)
     {
-      Write(new[] {
-        (byte)((@value & 0xff00) >> 8),
-        (byte) (@value & 0x00ff),
-      });
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(ushort @value)
     {
-      Write(new[] {
-        (byte) (@value & 0x00ff),
-        (byte)((@value & 0xff00) >> 8),
-      });
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(uint @value)
     {
-      Write(new[] {
-        (byte)((@value & 0xff000000) >> 24),
-        (byte)((@value & 0x00ff0000) >> 16),
-        (byte)((@value & 0x0000ff00) >> 8),
-        (byte) (@value & 0x000000ff),
-      });
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(uint @value)
     {
-      Write(new[] {
-        (byte) (@value & 0x000000ff),
-        (byte)((@value & 0x0000ff00) >> 8),
-        (byte)((@value & 0x00ff0000) >> 16),
-        (byte)((@value & 0xff000000) >> 24),
-      });
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(ulong @value)
     {
-      Write(new[] {
-        (byte)((@value & 0xff00000000000000) >> 56),
-        (byte)((@value & 0x00ff000000000000) >> 48),
-        (byte)((@value & 0x0000ff0000000000) >> 40),
-        (byte)((@value & 0x000000ff00000000) >> 32),
-        (byte)((@value & 0x00000000ff000000) >> 24),
-        (byte)((@value & 0x0000000000ff0000) >> 16),
-        (byte)((@value & 0x000000000000ff00) >> 8),
-        (byte) (@value & 0x00000000000000ff),
-      });
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(ulong @value)
     {
-      Write(new[] {
-        (byte) (@value & 0x00000000000000ff),
-        (byte)((@value & 0x000000000000ff00) >> 8),
-        (byte)((@value & 0x0000000000ff0000) >> 16),
-        (byte)((@value & 0x00000000ff000000) >> 24),
-        (byte)((@value & 0x000000ff00000000) >> 32),
-        (byte)((@value & 0x0000ff0000000000) >> 40),
-        (byte)((@value & 0x00ff000000000000) >> 48),
-        (byte)((@value & 0xff00000000000000) >> 56),
-      });
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(UInt24 @value)
     {
-      Write(@value.ToBigEndianByteArray());
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(UInt24 @value)
     {
-      Write(@value.ToLittleEndianByteArray());
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void WriteBE(UInt48 @value)
     {
-      Write(@value.ToBigEndianByteArray());
+      BinaryWriterImpl.WriteBE(this, @value);
     }
 
     public void WriteLE(UInt48 @value)
     {
-      Write(@value.ToLittleEndianByteArray());
+      BinaryWriterImpl.WriteLE(this, @value);
     }
 
     public void Write(FourCC @value)
     {
-      Write(@value.ToByteArray());
+      BinaryWriterImpl.Write(this, @value);
     }
   }
 }
