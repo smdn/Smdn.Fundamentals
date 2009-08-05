@@ -52,9 +52,9 @@ namespace Smdn {
         Byte2 = bytes[2];
       }
       else {
-        Byte0 = bytes[0];
+        Byte0 = bytes[2];
         Byte1 = bytes[1];
-        Byte2 = bytes[2];
+        Byte2 = bytes[0];
       }
     }
 
