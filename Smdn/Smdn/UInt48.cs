@@ -30,7 +30,8 @@ namespace Smdn {
   public struct UInt48 :
     IEquatable<UInt48>,
     IComparable,
-    IComparable<UInt48>
+    IComparable<UInt48>,
+    IConvertible
   {
     // big endian
     [FieldOffset(0)] public byte Byte0; // 0x 0000ff00 00000000
@@ -189,6 +190,93 @@ namespace Smdn {
         Byte0,
       };
     }
+
+#region "IConvertible implementation"
+    TypeCode IConvertible.GetTypeCode()
+    {
+      return TypeCode.Object;
+    }
+
+    bool IConvertible.ToBoolean(IFormatProvider provider)
+    {
+      return Convert.ToBoolean(ToInt64());
+    }
+
+    byte IConvertible.ToByte(IFormatProvider provider)
+    {
+      return Convert.ToByte(ToInt64());
+    }
+
+    char IConvertible.ToChar(IFormatProvider provider)
+    {
+      return Convert.ToChar(ToInt64());
+    }
+
+    DateTime IConvertible.ToDateTime(IFormatProvider provider)
+    {
+      return Convert.ToDateTime(ToInt64());
+    }
+
+    decimal IConvertible.ToDecimal(IFormatProvider provider)
+    {
+      return Convert.ToDecimal(ToInt64());
+    }
+
+    double IConvertible.ToDouble(IFormatProvider provider)
+    {
+      return Convert.ToDouble(ToInt64());
+    }
+
+    short IConvertible.ToInt16(IFormatProvider provider)
+    {
+      return Convert.ToInt16(ToInt64());
+    }
+
+    int IConvertible.ToInt32(IFormatProvider provider)
+    {
+      return Convert.ToInt32(ToInt64());
+    }
+
+    long IConvertible.ToInt64(IFormatProvider provider)
+    {
+      return ToInt64();
+    }
+
+    sbyte IConvertible.ToSByte(IFormatProvider provider)
+    {
+      return Convert.ToSByte(ToInt64());
+    }
+
+    float IConvertible.ToSingle(IFormatProvider provider)
+    {
+      return Convert.ToSingle(ToInt64());
+    }
+
+    string IConvertible.ToString(IFormatProvider provider)
+    {
+      return Convert.ToString(ToInt64(), provider);
+    }
+
+    object IConvertible.ToType(Type conversionType, IFormatProvider provider)
+    {
+      return Convert.ChangeType(ToInt64(), conversionType, provider);
+    }
+
+    ushort IConvertible.ToUInt16(IFormatProvider provider)
+    {
+      return Convert.ToUInt16(ToUInt64());
+    }
+
+    uint IConvertible.ToUInt32(IFormatProvider provider)
+    {
+      return Convert.ToUInt32(ToUInt64());
+    }
+
+    ulong IConvertible.ToUInt64(IFormatProvider provider)
+    {
+      return ToUInt64();
+    }
+#endregion
 
     public int CompareTo(object obj)
     {
