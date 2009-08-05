@@ -138,6 +138,16 @@ namespace Smdn.IO {
       });
     }
 
+    public void WriteBE(UInt24 @value)
+    {
+      Write(@value.ToBigEndianByteArray());
+    }
+
+    public void WriteLE(UInt24 @value)
+    {
+      Write(@value.ToLittleEndianByteArray());
+    }
+
     public void WriteBE(UInt48 @value)
     {
       Write(@value.ToBigEndianByteArray());

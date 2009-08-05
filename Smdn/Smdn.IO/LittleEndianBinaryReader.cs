@@ -33,7 +33,22 @@ namespace Smdn.IO {
 
     public LittleEndianBinaryReader(Stream stream) : base(stream)
     {
-      this.reader = new BinaryReader(stream);
+      this.reader = new Smdn.IO.BinaryReader(stream);
+    }
+
+    protected byte[] ReadBytesOrThrowException(int count)
+    {
+      return reader.ReadBytesOrThrowException(count);
+    }
+
+    public byte[] ReadBytes(long count)
+    {
+      return reader.ReadBytes(count);
+    }
+
+    public byte[] ReadToEnd()
+    {
+      return reader.ReadToEnd();
     }
 
     public override short ReadInt16()
@@ -66,6 +81,11 @@ namespace Smdn.IO {
       return reader.ReadUInt64LE();
     }
 
+    public virtual UInt24 ReadUInt24()
+    {
+      return reader.ReadUInt24LE();
+    }
+
     public virtual UInt48 ReadUInt48()
     {
       return reader.ReadUInt48LE();
@@ -76,6 +96,6 @@ namespace Smdn.IO {
       return reader.ReadFourCC();
     }
 
-    private BinaryReader reader;
+    private Smdn.IO.BinaryReader reader;
   }
 }

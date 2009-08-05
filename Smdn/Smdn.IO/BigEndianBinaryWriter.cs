@@ -62,6 +62,11 @@ namespace Smdn.IO {
       writer.WriteBE(@value);
     }
 
+    public virtual void Write(UInt24 @value)
+    {
+      writer.WriteBE(@value);
+    }
+
     public virtual void Write(UInt48 @value)
     {
       writer.WriteBE(@value);

@@ -87,7 +87,7 @@ namespace Smdn.IO {
       }
     }
 
-    protected byte[] ReadBytesOrThrow(int length)
+    internal protected byte[] ReadBytesOrThrowException(int length)
     {
       var bytes = ReadBytes(length);
 
@@ -99,56 +99,56 @@ namespace Smdn.IO {
 
     public short ReadInt16BE()
     {
-      var bytes = ReadBytesOrThrow(2);
+      var bytes = ReadBytesOrThrowException(2);
 
       return (short)(bytes[0] << 8 | bytes[1]);
     }
 
     public short ReadInt16LE()
     {
-      var bytes = ReadBytesOrThrow(2);
+      var bytes = ReadBytesOrThrowException(2);
 
       return (short)(bytes[1] << 8 | bytes[0]);
     }
 
     public ushort ReadUInt16BE()
     {
-      var bytes = ReadBytesOrThrow(2);
+      var bytes = ReadBytesOrThrowException(2);
 
       return (ushort)(bytes[0] << 8 | bytes[1]);
     }
 
     public ushort ReadUInt16LE()
     {
-      var bytes = ReadBytesOrThrow(2);
+      var bytes = ReadBytesOrThrowException(2);
 
       return (ushort)(bytes[1] << 8 | bytes[0]);
     }
 
     public int ReadInt32BE()
     {
-      var bytes = ReadBytesOrThrow(4);
+      var bytes = ReadBytesOrThrowException(4);
 
       return (int)(bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]);
     }
 
     public int ReadInt32LE()
     {
-      var bytes = ReadBytesOrThrow(4);
+      var bytes = ReadBytesOrThrowException(4);
 
       return (int)(bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0]);
     }
 
     public uint ReadUInt32BE()
     {
-      var bytes = ReadBytesOrThrow(4);
+      var bytes = ReadBytesOrThrowException(4);
 
       return (uint)(bytes[0] << 24 | bytes[1] << 16 | bytes[2] << 8 | bytes[3]);
     }
 
     public uint ReadUInt32LE()
     {
-      var bytes = ReadBytesOrThrow(4);
+      var bytes = ReadBytesOrThrowException(4);
 
       return (uint)(bytes[3] << 24 | bytes[2] << 16 | bytes[1] << 8 | bytes[0]);
     }
@@ -179,19 +179,29 @@ namespace Smdn.IO {
       return (ulong)(high << 32 | low);
     }
 
+    public UInt24 ReadUInt24BE()
+    {
+      return new UInt24(ReadBytesOrThrowException(3), true);
+    }
+
+    public UInt24 ReadUInt24LE()
+    {
+      return new UInt24(ReadBytesOrThrowException(3), false);
+    }
+
     public UInt48 ReadUInt48BE()
     {
-      return new UInt48(ReadBytesOrThrow(6), true);
+      return new UInt48(ReadBytesOrThrowException(6), true);
     }
 
     public UInt48 ReadUInt48LE()
     {
-      return new UInt48(ReadBytesOrThrow(6), false);
+      return new UInt48(ReadBytesOrThrowException(6), false);
     }
 
     public FourCC ReadFourCC()
     {
-      return new FourCC(ReadBytesOrThrow(4));
+      return new FourCC(ReadBytesOrThrowException(4));
     }
   }
 }
