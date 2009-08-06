@@ -34,6 +34,10 @@ namespace Smdn {
       get { return Type.GetType("Mono.Runtime") != null; }
     }
 
+    public static bool IsRunningOnWindows {
+      get { return (int)Environment.OSVersion.Platform < 4; }
+    }
+
     public static bool IsRunningOnUnix {
       get
       {
