@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
@@ -124,6 +125,20 @@ namespace Smdn.Interop {
       format.cbSize = 0;
 
       return format;
+    }
+
+    public static WAVEFORMATEX ReadFrom(Stream stream)
+    {
+      var fmt = new WAVEFORMATEX();
+      var reader = new BinaryReader(stream);
+
+      fmt.wFormatTag = (WAVE_FORMAT_TAG)reader.ReadUInt16();
+      fmt.nSamplesPerSec = reader.ReadUInt32();
+      fmt.nAvgBytesPerSec = reader.ReadUInt32();
+      fmt.nBlockAlign = reader.ReadUInt16();
+      fmt.wBitsPerSample = reader.ReadUInt16();
+
+      return fmt;
     }
   }
 }
