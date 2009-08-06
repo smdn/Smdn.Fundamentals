@@ -27,6 +27,36 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class PathUtils {
+    public static bool Equals(string pathX, string pathY)
+    {
+      pathX = Path.GetFullPath(pathX);
+      pathY = Path.GetFullPath(pathY);
+
+      if (pathX.EndsWith(Path.DirectorySeparatorChar.ToString()))
+        pathX = pathX.Substring(0, pathX.Length - 1);
+      else if (pathX.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+        pathX = pathX.Substring(0, pathX.Length - 1);
+
+      if (pathY.EndsWith(Path.DirectorySeparatorChar.ToString()))
+        pathY = pathY.Substring(0, pathY.Length - 1);
+      else if (pathY.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+        pathY = pathY.Substring(0, pathY.Length - 1);
+
+      if (Runtime.IsRunningOnWindows)
+        return string.Equals(pathX, pathY, StringComparison.CurrentCultureIgnoreCase);
+      else
+        return string.Equals(pathX, pathY, StringComparison.CurrentCulture);
+    }
+
+    public static bool IsSameFile(string pathX, string pathY)
+    {
+      if (File.Exists(pathX) && File.Exists(pathY))
+        // XXX: symbolic link, etc.
+        return Equals(pathX, pathY);
+      else
+        return false;
+    }
+
     public static string RemoveInvalidPathChars(string path)
     {
       return StringExtensions.Remove(path, Path.GetInvalidPathChars());
