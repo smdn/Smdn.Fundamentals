@@ -10,6 +10,7 @@ namespace Smdn.IO {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
 
       using (var stream = new PartialStream(inner, 2, 4, true)) {
+        Assert.AreEqual(2, inner.Position);
         Assert.IsTrue(stream.LeaveInnerStreamOpen);
       }
 
@@ -27,6 +28,7 @@ namespace Smdn.IO {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
 
       using (var stream = new PartialStream(inner, 2, 4, false)) {
+        Assert.AreEqual(2, inner.Position);
         Assert.IsFalse(stream.LeaveInnerStreamOpen);
       }
 
@@ -44,6 +46,8 @@ namespace Smdn.IO {
       var readOnly = true;
       var inner = new MemoryStream(8);
       var stream = new PartialStream(inner, 4, 4, readOnly /*readonly*/, true);
+
+      Assert.AreEqual(4, inner.Position);
 
       if (!inner.CanWrite)
         Assert.Fail("inner stream is not writable");
@@ -70,6 +74,67 @@ namespace Smdn.IO {
       }
       catch (InvalidOperationException) {
       }
+    }
+
+    [Test]
+    public void TestConstructNotSeekToBegin()
+    {
+      var inner = new MemoryStream(8);
+
+      inner.Position = 0;
+
+      var stream = new PartialStream(inner, 4, 4, false, true, false);
+
+      Assert.AreEqual(0, inner.Position);
+      Assert.AreEqual(-4, stream.Position);
+    }
+
+    [Test]
+    public void TestConstructNested()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+      var nestOuter = new PartialStream(inner, 1, 6);
+      var nestInner = new PartialStream(nestOuter, 1, 4);
+
+      Assert.AreEqual(2, inner.Position);
+      Assert.AreEqual(1, nestOuter.Position);
+      Assert.AreEqual(0, nestInner.Position);
+
+      Assert.IsInstanceOfType(typeof(PartialStream), nestInner.InnerStream);
+
+      var buffer = new byte[inner.Length];
+
+      nestInner.Position = 0;
+      Assert.AreEqual(4, nestInner.Read(buffer, 0, buffer.Length));
+      Assert.AreEqual(new byte[] {0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00}, buffer);
+
+      nestOuter.Position = 0;
+      Assert.AreEqual(6, nestOuter.Read(buffer, 0, buffer.Length));
+      Assert.AreEqual(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00}, buffer);
+    }
+
+    [Test]
+    public void TestConstructNonNested()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+      var nestOuter = new PartialStream(inner, 1, 6);
+      var nestInner = PartialStream.CreateNonNested(nestOuter, 1, 4);
+
+      Assert.AreEqual(2, inner.Position);
+      Assert.AreEqual(1, nestOuter.Position);
+      Assert.AreEqual(0, nestInner.Position);
+
+      Assert.IsNotInstanceOfType(typeof(PartialStream), nestInner.InnerStream);
+
+      var buffer = new byte[inner.Length];
+
+      nestInner.Position = 0;
+      Assert.AreEqual(4, nestInner.Read(buffer, 0, buffer.Length));
+      Assert.AreEqual(new byte[] {0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00}, buffer);
+
+      nestOuter.Position = 0;
+      Assert.AreEqual(6, nestOuter.Read(buffer, 0, buffer.Length));
+      Assert.AreEqual(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00}, buffer);
     }
 
     [Test]

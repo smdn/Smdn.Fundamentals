@@ -26,7 +26,42 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class PartialStream : Stream {
+  public class PartialStream : Stream, ICloneable {
+#region "class members"
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
+    {
+      return CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
+    }
+
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin)
+    {
+      return CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, seekToBegin);
+    }
+
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length)
+    {
+      return CreateNonNested(innerOrPartialStream, offset, length, true);
+    }
+
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
+    {
+      if (innerOrPartialStream == null)
+        throw new ArgumentNullException("innerOrPartialStream");
+      if (offset < 0)
+        throw new ArgumentOutOfRangeException("offset", "must be zero or positive number");
+
+      if (innerOrPartialStream is PartialStream) {
+        var partialStream = innerOrPartialStream as PartialStream;
+        var innerStream = partialStream.InnerStream;
+
+        return new PartialStream(innerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin);
+      }
+      else {
+        return new PartialStream(innerOrPartialStream, offset, length, true, true);
+      }
+    }
+#endregion
+
     public Stream InnerStream {
       get { CheckDisposed(); return stream; }
     }
@@ -75,41 +110,55 @@ namespace Smdn.IO {
     }
 
     public PartialStream(Stream innerStream, long offset)
-      : this(innerStream, offset, null, false, true)
+      : this(innerStream, offset, null, false, true, true)
     {
     }
 
     public PartialStream(Stream innerStream, long offset, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, null, false, leaveInnerStreamOpen)
+      : this(innerStream, offset, null, false, leaveInnerStreamOpen, true)
     {
     }
 
     public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen)
+      : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen, true)
+    {
+    }
+
+    public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
+      : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen, seekToBegin)
     {
     }
 
     public PartialStream(Stream innerStream, long offset, long length)
-      : this(innerStream, offset, length, false, true)
+      : this(innerStream, offset, length, false, true, true)
     {
     }
 
     public PartialStream(Stream innerStream, long offset, long length, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, (long?)length, false, leaveInnerStreamOpen)
+      : this(innerStream, offset, (long?)length, false, leaveInnerStreamOpen, true)
     {
     }
 
     public PartialStream(Stream innerStream, long offset, long length, bool @readonly, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen)
+      : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen, true)
     {
     }
 
-    private PartialStream(Stream innerStream, long offset, long? length, bool @readonly, bool leaveInnerStreamOpen)
+    public PartialStream(Stream innerStream, long offset, long length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
+      : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen, seekToBegin)
+    {
+    }
+
+    private PartialStream(Stream innerStream, long offset, long? length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
     {
       if (innerStream == null)
         throw new ArgumentNullException("innerStream");
       if (!innerStream.CanSeek)
         throw new ArgumentException("innerStream", "stream must be seekable");
+      if (offset < 0)
+        throw new ArgumentOutOfRangeException("offset", "must be zero or positive number");
+      if (length.HasValue && length.Value < 0)
+        throw new ArgumentOutOfRangeException("length", "must be zero or positive number");
 
       this.stream = innerStream;
       this.offset = offset;
@@ -117,7 +166,8 @@ namespace Smdn.IO {
       this.writable = !@readonly;
       this.leaveInnerStreamOpen = leaveInnerStreamOpen;
 
-      this.Position = 0;
+      if (seekToBegin)
+        this.Position = 0;
     }
 
     public override void Close()
@@ -126,6 +176,16 @@ namespace Smdn.IO {
         stream.Close();
 
       stream = null;
+    }
+
+    object ICloneable.Clone()
+    {
+      return Clone();
+    }
+
+    public PartialStream Clone()
+    {
+      return (PartialStream)MemberwiseClone();
     }
 
     public override void SetLength(long @value)
@@ -161,7 +221,7 @@ namespace Smdn.IO {
           throw new ArgumentException(string.Format("unsupported seek origin {0}", origin), "origin");
       }
 
-      throw new IOException("Attempted to seek before start of MemoryStream.");
+      throw new IOException("Attempted to seek before start of PartialStream.");
     }
 
     public override void Flush()
