@@ -30,6 +30,18 @@ namespace Smdn {
   /// extension methods for System.Array
   /// </summary>
   public static class ArrayExtensions {
+    public static T[] Append<T>(this T[] array, params T[] elements)
+    {
+      return Concat(array, new T[][] {elements});
+      //return Concat(array, elements);
+    }
+
+    public static T[] Prepend<T>(this T[] array, params T[] elements)
+    {
+      return Concat(elements, new T[][] {array});
+      //return Concat(elements, array);
+    }
+
     public static T[] Concat<T>(this T[] array, params T[][] arrays)
     {
       if (array == null)

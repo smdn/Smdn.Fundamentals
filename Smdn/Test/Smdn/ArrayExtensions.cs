@@ -6,6 +6,24 @@ namespace Smdn {
   [TestFixture()]
   public class ArrayExtensionsTests {
     [Test]
+    public void TestAppend()
+    {
+      var arr = new[] {0, 1, 2};
+
+      Assert.AreEqual(new[] {0, 1, 2, 3}, arr.Append(3));
+      Assert.AreEqual(new[] {0, 1, 2, 3, 4, 5}, arr.Append(3, 4, 5));
+    }
+
+    [Test]
+    public void TestPrepend()
+    {
+      var arr = new[] {3, 4, 5};
+
+      Assert.AreEqual(new[] {0, 3, 4, 5}, arr.Prepend(0));
+      Assert.AreEqual(new[] {0, 1, 2, 3, 4, 5}, arr.Prepend(0, 1, 2));
+    }
+
+    [Test]
     public void TestConcat()
     {
       var arr1 = new[] {0, 1, 2};
