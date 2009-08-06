@@ -1,4 +1,4 @@
-// 
+//
 // Author:
 //       smdn <smdn@mail.invisiblefulmoon.net>
 // 
@@ -23,40 +23,12 @@
 // THE SOFTWARE.
 
 using System;
-using System.Reflection;
 
-namespace Smdn {
-  public static class Runtime {
-    /*
-     * http://mono-project.com/FAQ:_Technical
-     */
-    public static bool IsRunningOnMono {
-      get { return Type.GetType("Mono.Runtime") != null; }
-    }
-
-    public static bool IsRunningOnWindows {
-      get { return (int)Environment.OSVersion.Platform < 4; }
-    }
-
-    public static bool IsRunningOnUnix {
-      get
-      {
-        var platform = (int)Environment.OSVersion.Platform;
-
-        return (platform == 4 || platform == 6 || platform == 128);
-      }
-    }
-
-    public static int SimdRuntimeAccelMode {
-      get { return Mono.Simd.SimdRuntime.AccelMode; }
-    }
-
-    public static bool IsSimdRuntimeAvailable {
-      get { return 0 < Mono.Simd.SimdRuntime.AccelMode; }
-    }
-
-    public static Version Version {
-      get { return Environment.Version; }
+namespace Mono.Simd {
+  internal static class SimdRuntime {
+    // Mono JIT runtime will replace return value to actual acceleration mode
+    public static int AccelMode {
+      get { return 0; }
     }
   }
 }

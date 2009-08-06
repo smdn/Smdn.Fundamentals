@@ -117,6 +117,7 @@
     <Compile Include="Smdn\UInt24.cs" />
     <Compile Include="Smdn.IO\BinaryReaderImpl.cs" />
     <Compile Include="Smdn.IO\BinaryWriterImpl.cs" />
+    <Compile Include="Mono.Simd\SimdRuntime.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -137,5 +138,6 @@
     <Folder Include="Smdn.Interop\" />
     <Folder Include="Smdn.Media\" />
     <Folder Include="Smdn.Imaging\" />
+    <Folder Include="Mono.Simd\" />
   </ItemGroup>
 </Project>
