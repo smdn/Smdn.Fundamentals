@@ -33,13 +33,15 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Smdn")]
 [assembly: AssemblyDescription("Smdn.dll")]
+[assembly: AssemblyCopyright("Copyright(C) 2009 smdn")]
+[assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
 [assembly: AssemblyConfiguration("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
 // The form "{Major}.{Minor}.*" will automatically update the build and revision,
 // and "{Major}.{Minor}.{Build}.*" will update just the revision.
 
-[assembly: AssemblyVersion("0.10.*")]
+[assembly: AssemblyVersion("0.20.0.0")]
 
 // The following attributes are used to specify the signing key for the assembly,
 // if desired. See the Mono documentation for more information about signing.
