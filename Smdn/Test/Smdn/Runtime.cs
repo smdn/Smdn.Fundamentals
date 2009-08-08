@@ -60,5 +60,37 @@ namespace Smdn {
 
       Assert.AreEqual(0 < GetSimdRuntimeAccelMode(), Runtime.IsSimdRuntimeAvailable);
     }
+
+    [Test]
+    public void TestVersionString()
+    {
+      // returns non-null value always
+      Assert.IsNotNull(Runtime.VersionString);
+      Assert.IsNotNull(Runtime.VersionString);
+      Assert.IsNotNull(Runtime.VersionString);
+
+      var version = Runtime.Name.ToLower();
+
+      if (Runtime.IsRunningOnMono)
+        Assert.IsTrue(version.Contains("mono"));
+      else
+        Assert.IsFalse(version.Contains("mono"));
+    }
+
+    [Test]
+    public void TestName()
+    {
+      // returns non-null value always
+      Assert.IsNotNull(Runtime.Name);
+      Assert.IsNotNull(Runtime.Name);
+      Assert.IsNotNull(Runtime.Name);
+
+      var name = Runtime.Name.ToLower();
+
+      if (Runtime.IsRunningOnMono)
+        Assert.IsTrue(name.Contains("mono"));
+      else
+        Assert.IsTrue(name.Contains(".net"));
+    }
   }
 }

@@ -67,6 +67,7 @@
     <Compile Include="Smdn\ByteString.cs" />
     <Compile Include="Smdn.Imaging\LockedBitmap.cs" />
     <Compile Include="Smdn\UInt24.cs" />
+    <Compile Include="Smdn.Interop\Platform.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

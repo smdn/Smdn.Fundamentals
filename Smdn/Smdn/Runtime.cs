@@ -55,8 +55,41 @@ namespace Smdn {
       get { return 0 < Mono.Simd.SimdRuntime.AccelMode; }
     }
 
-    public static Version Version {
-      get { return Environment.Version; }
+    private static string versionString = null;
+
+    public static string VersionString {
+      get
+      {
+        if (versionString == null) {
+          versionString = string.Format(".NET Framework {0}", Environment.Version.ToString()); // default
+
+          try {
+            if (IsRunningOnMono)
+              versionString = Smdn.Interop.Shell.Execute("mono -V | head -1").Trim();
+          }
+          catch {
+            // ignore exceptions
+          }
+        }
+
+        return versionString;
+      }
+    }
+
+    private static string name = null;
+
+    public static string Name {
+      get
+      {
+        if (name == null) {
+          if (IsRunningOnMono)
+            name = "Mono";
+          else
+            name = ".NET Framework";
+        }
+
+        return name;
+      }
     }
   }
 }
