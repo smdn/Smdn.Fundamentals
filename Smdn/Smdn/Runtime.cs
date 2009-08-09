@@ -27,11 +27,42 @@ using System.Reflection;
 
 namespace Smdn {
   public static class Runtime {
-    /*
-     * http://mono-project.com/FAQ:_Technical
-     */
+    private static RuntimeEnvironment runtimeEnvironment;
+    private static string name;
+
+    static Runtime()
+    {
+      if (Type.GetType("Mono.Runtime") != null) {
+        /*
+         * http://mono-project.com/FAQ:_Technical
+         */
+        runtimeEnvironment = RuntimeEnvironment.Mono;
+        name = "Mono";
+      }
+      else if (Type.GetType("FXAssembly") != null) {
+        runtimeEnvironment = RuntimeEnvironment.NetFx;
+        name = ".NET Framework";
+      }
+      else {
+        runtimeEnvironment = RuntimeEnvironment.Unknown;
+        name = "(unknown)";
+      }
+    }
+
+    public static RuntimeEnvironment RuntimeEnvironment {
+      get { return runtimeEnvironment; }
+    }
+
+    public static string Name {
+      get { return name; }
+    }
+
+    public static bool IsRunningOnNetFx {
+      get { return runtimeEnvironment == RuntimeEnvironment.NetFx; }
+    }
+
     public static bool IsRunningOnMono {
-      get { return Type.GetType("Mono.Runtime") != null; }
+      get { return runtimeEnvironment == RuntimeEnvironment.Mono; }
     }
 
     public static bool IsRunningOnWindows {
@@ -73,22 +104,6 @@ namespace Smdn {
         }
 
         return versionString;
-      }
-    }
-
-    private static string name = null;
-
-    public static string Name {
-      get
-      {
-        if (name == null) {
-          if (IsRunningOnMono)
-            name = "Mono";
-          else
-            name = ".NET Framework";
-        }
-
-        return name;
       }
     }
   }

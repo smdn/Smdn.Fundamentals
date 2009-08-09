@@ -69,12 +69,34 @@ namespace Smdn {
       Assert.IsNotNull(Runtime.VersionString);
       Assert.IsNotNull(Runtime.VersionString);
 
-      var version = Runtime.Name.ToLower();
+      var version = Runtime.VersionString.ToLower();
 
-      if (Runtime.IsRunningOnMono)
-        Assert.IsTrue(version.Contains("mono"));
+      switch (Runtime.RuntimeEnvironment) {
+        case RuntimeEnvironment.Mono:
+          Assert.IsTrue(version.Contains("mono"));
+          break;
+        default:
+          Assert.IsTrue(version.Contains(".net"));
+          break;
+      }
+    }
+
+    [Test]
+    public void TestIsRunningOnUnix()
+    {
+      if (string.Empty.Equals(Interop.Shell.Execute("uname")))
+        Assert.IsFalse(Runtime.IsRunningOnUnix);
       else
-        Assert.IsFalse(version.Contains("mono"));
+        Assert.IsTrue(Runtime.IsRunningOnUnix);
+    }
+
+    [Test]
+    public void TestIsRunningOnWindows()
+    {
+      if (string.Empty.Equals(Interop.Shell.Execute("VER")))
+        Assert.IsFalse(Runtime.IsRunningOnWindows);
+      else
+        Assert.IsTrue(Runtime.IsRunningOnWindows);
     }
 
     [Test]
@@ -87,10 +109,17 @@ namespace Smdn {
 
       var name = Runtime.Name.ToLower();
 
-      if (Runtime.IsRunningOnMono)
-        Assert.IsTrue(name.Contains("mono"));
-      else
-        Assert.IsTrue(name.Contains(".net"));
+      switch (Runtime.RuntimeEnvironment) {
+        case RuntimeEnvironment.Mono:
+          Assert.IsTrue(name.Contains("mono"));
+          break;
+        case RuntimeEnvironment.NetFx:
+          Assert.IsTrue(name.Contains(".net"));
+          break;
+        default:
+          Assert.IsTrue(name.Contains("unknown"));
+          break;
+      }
     }
   }
 }

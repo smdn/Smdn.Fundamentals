@@ -120,6 +120,7 @@
     <Compile Include="Mono.Simd\SimdRuntime.cs" />
     <Compile Include="Smdn.Interop\Shell.cs" />
     <Compile Include="Smdn.Interop\Platform.cs" />
+    <Compile Include="Smdn\RuntimeEnvironment.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
