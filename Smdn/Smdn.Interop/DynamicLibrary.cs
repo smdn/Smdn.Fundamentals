@@ -94,12 +94,16 @@ namespace Smdn.Interop {
       if (symbol == null)
         throw new ArgumentNullException("symbol");
 
-      var ptr = GetFunctionPointer(symbol);
+      return GetDelegateForFunctionPointer<TDelegate>(GetFunctionPointer(symbol));
+    }
 
-      if (ptr == IntPtr.Zero)
+    /// <remarks>TDelegate must be a delegate type</remarks>
+    public static TDelegate GetDelegateForFunctionPointer<TDelegate>(IntPtr functionPointer) where TDelegate : class /* instead of delegate */
+    {
+      if (functionPointer == IntPtr.Zero)
         return null;
       else
-        return System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(ptr, typeof(TDelegate)) as TDelegate;
+        return System.Runtime.InteropServices.Marshal.GetDelegateForFunctionPointer(functionPointer, typeof(TDelegate)) as TDelegate;
     }
 
     protected void CheckDisposed()
