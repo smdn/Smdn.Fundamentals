@@ -116,7 +116,7 @@ namespace Smdn {
 
     public static bool AskYesNo(string format, params object[] args)
     {
-      return AskYesNo(false);
+      return AskYesNo(false, format, args);
     }
 
     public static bool AskYesNo(bool @default, string format, params object[] args)
