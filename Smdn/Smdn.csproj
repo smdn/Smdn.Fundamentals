@@ -121,6 +121,7 @@
     <Compile Include="Smdn.Interop\Shell.cs" />
     <Compile Include="Smdn.Interop\Platform.cs" />
     <Compile Include="Smdn\RuntimeEnvironment.cs" />
+    <Compile Include="Smdn\ConsoleUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
