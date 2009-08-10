@@ -76,34 +76,34 @@ namespace Smdn.Interop {
     public ushort wBitsPerSample;
     public ushort cbSize;
 
-    public static WAVEFORMATEX CreateLinearPCMFormat(WAVE_FORMAT format)
+    public static WAVEFORMATEX CreateLinearPcmFormat(WAVE_FORMAT format)
     {
       switch (format) {
-        case WAVE_FORMAT.WAVE_FORMAT_1M08:  return CreateLinearPCMFormat(11025,  8, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_1S08:  return CreateLinearPCMFormat(11025,  8, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_1M16:  return CreateLinearPCMFormat(11025, 16, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_1S16:  return CreateLinearPCMFormat(11025, 16, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_2M08:  return CreateLinearPCMFormat(22050,  8, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_2S08:  return CreateLinearPCMFormat(22050,  8, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_2M16:  return CreateLinearPCMFormat(22050, 16, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_2S16:  return CreateLinearPCMFormat(22050, 16, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_4M08:  return CreateLinearPCMFormat(44100,  8, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_4S08:  return CreateLinearPCMFormat(44100,  8, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_4M16:  return CreateLinearPCMFormat(44100, 16, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_4S16:  return CreateLinearPCMFormat(44100, 16, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_48M08: return CreateLinearPCMFormat(48000,  8, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_48S08: return CreateLinearPCMFormat(48000,  8, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_48M16: return CreateLinearPCMFormat(48000, 16, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_48S16: return CreateLinearPCMFormat(48000, 16, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_96M08: return CreateLinearPCMFormat(96000,  8, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_96S08: return CreateLinearPCMFormat(96000,  8, 2);
-        case WAVE_FORMAT.WAVE_FORMAT_96M16: return CreateLinearPCMFormat(96000, 16, 1);
-        case WAVE_FORMAT.WAVE_FORMAT_96S16: return CreateLinearPCMFormat(96000, 16, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_1M08:  return CreateLinearPcmFormat(11025L,  8, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_1S08:  return CreateLinearPcmFormat(11025L,  8, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_1M16:  return CreateLinearPcmFormat(11025L, 16, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_1S16:  return CreateLinearPcmFormat(11025L, 16, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_2M08:  return CreateLinearPcmFormat(22050L,  8, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_2S08:  return CreateLinearPcmFormat(22050L,  8, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_2M16:  return CreateLinearPcmFormat(22050L, 16, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_2S16:  return CreateLinearPcmFormat(22050L, 16, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_4M08:  return CreateLinearPcmFormat(44100L,  8, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_4S08:  return CreateLinearPcmFormat(44100L,  8, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_4M16:  return CreateLinearPcmFormat(44100L, 16, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_4S16:  return CreateLinearPcmFormat(44100L, 16, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_48M08: return CreateLinearPcmFormat(48000L,  8, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_48S08: return CreateLinearPcmFormat(48000L,  8, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_48M16: return CreateLinearPcmFormat(48000L, 16, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_48S16: return CreateLinearPcmFormat(48000L, 16, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_96M08: return CreateLinearPcmFormat(96000L,  8, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_96S08: return CreateLinearPcmFormat(96000L,  8, 2);
+        case WAVE_FORMAT.WAVE_FORMAT_96M16: return CreateLinearPcmFormat(96000L, 16, 1);
+        case WAVE_FORMAT.WAVE_FORMAT_96S16: return CreateLinearPcmFormat(96000L, 16, 2);
         default: throw new NotSupportedException("unsupported format");
       }
     }
 
-    public static WAVEFORMATEX CreateLinearPCMFormat(int samplesPerSec, int bitsPerSample, int channles)
+    public static WAVEFORMATEX CreateLinearPcmFormat(long samplesPerSec, int bitsPerSample, int channles)
     {
       if (samplesPerSec <= 0)
         throw new ArgumentOutOfRangeException("samplesPerSec", "must be non-zero positive number");
@@ -133,12 +133,33 @@ namespace Smdn.Interop {
       var reader = new BinaryReader(stream);
 
       fmt.wFormatTag = (WAVE_FORMAT_TAG)reader.ReadUInt16();
+      fmt.nChannels = reader.ReadUInt16();
       fmt.nSamplesPerSec = reader.ReadUInt32();
       fmt.nAvgBytesPerSec = reader.ReadUInt32();
       fmt.nBlockAlign = reader.ReadUInt16();
       fmt.wBitsPerSample = reader.ReadUInt16();
 
+      if (18 <= stream.Length)
+        fmt.cbSize = reader.ReadUInt16();
+
       return fmt;
+    }
+
+    public void WriteTo(Stream stream)
+    {
+      var writer = new BinaryWriter(stream);
+
+      writer.Write((ushort)this.wFormatTag);
+      writer.Write(this.nChannels);
+      writer.Write(this.nSamplesPerSec);
+      writer.Write(this.nAvgBytesPerSec);
+      writer.Write(this.nBlockAlign);
+      writer.Write(this.wBitsPerSample);
+
+      if (this.cbSize != 0)
+        writer.Write(this.cbSize);
+
+      writer.Flush();
     }
   }
 }

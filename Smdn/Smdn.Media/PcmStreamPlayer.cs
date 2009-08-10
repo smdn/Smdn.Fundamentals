@@ -77,9 +77,9 @@ namespace Smdn.Media {
       disposed = true;
     }
 
-    public void PlaySync(Stream linearPcmStream, int samplesPerSecond, int bitsPerSample, int channels)
+    public void PlaySync(Stream linearPcmStream, long samplesPerSecond, int bitsPerSample, int channels)
     {
-      PlaySync(linearPcmStream, WAVEFORMATEX.CreateLinearPCMFormat(samplesPerSecond, bitsPerSample, channels));
+      PlaySync(linearPcmStream, WAVEFORMATEX.CreateLinearPcmFormat(samplesPerSecond, bitsPerSample, channels));
     }
 
     public void PlaySync(Stream linearPcmStream, WAVEFORMATEX format)
@@ -101,14 +101,14 @@ namespace Smdn.Media {
 
     protected abstract void DoPlaySync(Stream linearPcmStream, WAVEFORMATEX format);
 
-    public void PlayAsync(Stream linearPcmStream, int samplesPerSecond, int bitsPerSample, int channels)
+    public void PlayAsync(Stream linearPcmStream, long samplesPerSecond, int bitsPerSample, int channels)
     {
-      PlayAsync(linearPcmStream, WAVEFORMATEX.CreateLinearPCMFormat(samplesPerSecond, bitsPerSample, channels), false);
+      PlayAsync(linearPcmStream, WAVEFORMATEX.CreateLinearPcmFormat(samplesPerSecond, bitsPerSample, channels), false);
     }
 
-    public void PlayAsync(Stream linearPcmStream, int samplesPerSecond, int bitsPerSample, int channels, bool repeat)
+    public void PlayAsync(Stream linearPcmStream, long samplesPerSecond, int bitsPerSample, int channels, bool repeat)
     {
-      PlayAsync(linearPcmStream, WAVEFORMATEX.CreateLinearPCMFormat(samplesPerSecond, bitsPerSample, channels), repeat);
+      PlayAsync(linearPcmStream, WAVEFORMATEX.CreateLinearPcmFormat(samplesPerSecond, bitsPerSample, channels), repeat);
     }
 
     public void PlayAsync(Stream linearPcmStream, WAVEFORMATEX format)
