@@ -124,6 +124,7 @@
     <Compile Include="Smdn\ConsoleUtils.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
     <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
+    <Compile Include="Smdn.IO\InterruptStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

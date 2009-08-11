@@ -69,6 +69,7 @@
     <Compile Include="Smdn\UInt24.cs" />
     <Compile Include="Smdn.Interop\Platform.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
+    <Compile Include="Smdn.IO\InterruptStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
