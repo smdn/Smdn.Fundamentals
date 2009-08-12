@@ -31,10 +31,13 @@ namespace Smdn.Interop {
     {
       ProcessStartInfo psi;
 
-      if (Runtime.IsRunningOnUnix)
+      if (Runtime.IsRunningOnUnix) {
         psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0}\"", command));
-      else
-        psi = new ProcessStartInfo(command);
+      }
+      else {
+        psi = new ProcessStartInfo("cmd", string.Format("/c \"{0}\"", command));
+        psi.CreateNoWindow = true;
+      }
 
       psi.UseShellExecute = false;
       psi.RedirectStandardOutput = true;
