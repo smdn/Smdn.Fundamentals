@@ -35,6 +35,34 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestReadToEndWithUnseekableStream()
+    {
+      byte[] actual = new byte[4096];
+      byte[] actualCompressed;
+
+      (new Random()).NextBytes(actual);
+
+      using (var compressedMemoryStream = new MemoryStream()) {
+        using (var compressStream = new System.IO.Compression.DeflateStream(compressedMemoryStream, System.IO.Compression.CompressionMode.Compress)) {
+          compressStream.Write(actual, 0, actual.Length);
+          compressStream.Flush();
+        }
+
+        compressedMemoryStream.Close();
+
+        actualCompressed = compressedMemoryStream.ToArray();
+      }
+
+      using (var decompressStream = new System.IO.Compression.DeflateStream(new MemoryStream(actualCompressed), System.IO.Compression.CompressionMode.Decompress)) {
+        Assert.IsFalse(decompressStream.CanSeek);
+
+        var reader = new Smdn.IO.BinaryReader(decompressStream);
+
+        Assert.AreEqual(actual, reader.ReadToEnd());
+      }
+    }
+
+    [Test]
     public void TestReadBytes()
     {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};

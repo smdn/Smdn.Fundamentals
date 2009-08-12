@@ -38,9 +38,22 @@ namespace Smdn.IO {
         return ReadBytes(r, r.BaseStream.Length - r.BaseStream.Position);
       }
       else {
-        // TODO: use BaseStream.Read
-        //return base.ReadBytes((int)(BaseStream.Length - BaseStream.Position));
-        throw new NotSupportedException();
+        using (var readStream = new MemoryStream()) {
+          var buffer = new byte[1024];
+
+          for (;;) {
+            var read = r.BaseStream.Read(buffer, 0, buffer.Length);
+
+            readStream.Write(buffer, 0, read);
+
+            if (read <= 0)
+              break;
+          }
+
+          readStream.Close();
+
+          return readStream.ToArray();
+        }
       }
     }
 
