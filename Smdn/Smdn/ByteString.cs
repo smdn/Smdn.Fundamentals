@@ -543,7 +543,7 @@ namespace Smdn {
       }
 
       return new string(chars);
-#elif
+#else
       return System.Text.Encoding.ASCII.GetString(bytes, 0, bytes.Length);
 #endif
     }
