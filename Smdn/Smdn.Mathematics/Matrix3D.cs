@@ -145,6 +145,7 @@ namespace Smdn.Mathematics {
     {
       var index = 0;
 
+#if false // CS0213 with csc.exe 3.5
       fixed (float* mat = matrix.Matrix) {
         return new Matrix3D(new[] {
           mat[index++],
@@ -160,12 +161,28 @@ namespace Smdn.Mathematics {
           mat[index++],
         });
       }
+#else
+      return new Matrix3D(new[] {
+        matrix.Matrix[index++],
+        matrix.Matrix[index++],
+        matrix.Matrix[index++],
+
+        matrix.Matrix[index++],
+        matrix.Matrix[index++],
+        matrix.Matrix[index++],
+
+        matrix.Matrix[index++],
+        matrix.Matrix[index++],
+        matrix.Matrix[index++],
+      });
+#endif
     }
 
     public static Matrix3D operator -(Matrix3D matrix)
     {
       var index = 0;
 
+#if false // CS0213 with csc.exe 3.5
       fixed (float* mat = matrix.Matrix) {
         return new Matrix3D(new[] {
           -mat[index++],
@@ -181,12 +198,28 @@ namespace Smdn.Mathematics {
           -mat[index++],
         });
       }
+#else
+      return new Matrix3D(new[] {
+        -matrix.Matrix[index++],
+        -matrix.Matrix[index++],
+        -matrix.Matrix[index++],
+
+        -matrix.Matrix[index++],
+        -matrix.Matrix[index++],
+        -matrix.Matrix[index++],
+
+        -matrix.Matrix[index++],
+        -matrix.Matrix[index++],
+        -matrix.Matrix[index++],
+      });
+#endif
     }
 
     public static Matrix3D operator +(Matrix3D matrix1, Matrix3D matrix2)
     {
       var index = 0;
 
+#if false // CS0213 with csc.exe 3.5
       fixed (float* mat1 = matrix1.Matrix, mat2 = matrix2.Matrix) {
         return new Matrix3D(new[] {
           mat1[index] + mat2[index++],
@@ -202,12 +235,28 @@ namespace Smdn.Mathematics {
           mat1[index] + mat2[index++],
         });
       }
+#else
+      return new Matrix3D(new[] {
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+        matrix1.Matrix[index] + matrix2.Matrix[index++],
+      });
+#endif
     }
 
     public static Matrix3D operator *(float scalar, Matrix3D matrix)
     {
       var index = 0;
 
+#if false // CS0213 with csc.exe 3.5
       fixed (float* mat = matrix.Matrix) {
         return new Matrix3D(new[] {
           scalar * mat[index++],
@@ -223,6 +272,21 @@ namespace Smdn.Mathematics {
           scalar * mat[index++],
         });
       }
+#else
+      return new Matrix3D(new[] {
+        scalar * matrix.Matrix[index++],
+        scalar * matrix.Matrix[index++],
+        scalar * matrix.Matrix[index++],
+
+        scalar * matrix.Matrix[index++],
+        scalar * matrix.Matrix[index++],
+        scalar * matrix.Matrix[index++],
+
+        scalar * matrix.Matrix[index++],
+        scalar * matrix.Matrix[index++],
+        scalar * matrix.Matrix[index++],
+      });
+#endif
     }
 
     public static Vector3D operator *(Vector3D vector, Matrix3D matrix)
@@ -238,6 +302,7 @@ namespace Smdn.Mathematics {
     {
       var matrix = new Matrix3D();
 
+#if false // CS0213 with csc.exe 3.5
       fixed (float* mat = matrix.Matrix, mat1 = matrix1.Matrix, mat2 = matrix2.Matrix) {
         var ij = 0;
         for (var i = 0; i < 3; i++) { // row
@@ -254,6 +319,23 @@ namespace Smdn.Mathematics {
           }
         }
       }
+#else
+      var ij = 0;
+
+      for (var i = 0; i < 3; i++) { // row
+        for (var j = 0; j < 3; j++) { // column
+          var ik = i << 2;
+          var kj = j;
+          var sum = 0.0f;
+          for (var k = 0; k < 3; k++) {
+            sum += matrix1.Matrix[ik] * matrix2.Matrix[kj];
+            ik += 1;
+            kj += 4;
+          }
+          matrix.Matrix[ij++] = sum;
+        }
+      }
+#endif
 
       return matrix;
     }
