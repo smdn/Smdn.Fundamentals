@@ -29,6 +29,27 @@ using Smdn.Interop;
 
 namespace Smdn.Media {
   public abstract class PcmStreamPlayer : IDisposable {
+#region "class methods"
+    public static PcmStreamPlayer Create()
+    {
+      try {
+        System.Runtime.Remoting.ObjectHandle handle = null;
+
+        if (Runtime.IsRunningOnWindows)
+          handle = Activator.CreateInstance("Smdn.Interop.WinMM", "Smdn.Interop.WinMM.PcmStreamPlayer");
+        else if (Runtime.IsRunningOnUnix)
+          handle = Activator.CreateInstance("Smdn.Interop.Alsa", "Smdn.Interop.Alsa.PcmStreamPlayer");
+
+        if (handle != null)
+          return (PcmStreamPlayer)handle.Unwrap();
+      }
+      catch (Exception) {
+      }
+
+      return new NullPcmStreamPlayer();
+    }
+#endregion
+
     public event EventHandler PlayDone;
 
     public bool Playing {
@@ -52,7 +73,7 @@ namespace Smdn.Media {
 
     public abstract long PositionInBytes { get; set; }
 
-    public virtual TimeSpan Potision {
+    public virtual TimeSpan Position {
       get { return TimeSpan.FromMilliseconds(1000 * PositionInBytes / format.nAvgBytesPerSec); }
       set { PositionInBytes = (long)(value.TotalSeconds * format.nAvgBytesPerSec); }
     }
