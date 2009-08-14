@@ -74,8 +74,20 @@ namespace Smdn.Media {
     public abstract long PositionInBytes { get; set; }
 
     public virtual TimeSpan Position {
-      get { return TimeSpan.FromMilliseconds(1000 * PositionInBytes / format.nAvgBytesPerSec); }
-      set { PositionInBytes = (long)(value.TotalSeconds * format.nAvgBytesPerSec); }
+      get
+      {
+        if (Playing)
+          return TimeSpan.FromMilliseconds(1000 * PositionInBytes / format.nAvgBytesPerSec);
+        else
+          return TimeSpan.Zero;
+      }
+      set
+      {
+        if (Playing)
+          PositionInBytes = (long)(value.TotalSeconds * format.nAvgBytesPerSec);
+        else
+          PositionInBytes = 0;
+      }
     }
 
     protected PcmStreamPlayer()
