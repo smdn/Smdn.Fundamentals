@@ -161,5 +161,16 @@ namespace Smdn.Interop {
 
       writer.Flush();
     }
+
+    public static bool Equals(WAVEFORMATEX x, WAVEFORMATEX y)
+    {
+      return
+        x.wFormatTag == y.wFormatTag &&
+        x.nChannels == y.nChannels &&
+        x.nSamplesPerSec == y.nSamplesPerSec &&
+        x.nAvgBytesPerSec == y.nAvgBytesPerSec &&
+        x.nBlockAlign == y.nBlockAlign &&
+        x.wBitsPerSample == y.wBitsPerSample;
+    }
   }
 }
