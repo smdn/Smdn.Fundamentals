@@ -56,23 +56,23 @@ namespace Smdn.IO {
 
       try {
         stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
-        Assert.Fail("InvalidOperationException not thrown");
+        Assert.Fail("NotSupportedException not thrown");
       }
-      catch (InvalidOperationException) {
+      catch (NotSupportedException) {
       }
 
       try {
         stream.WriteByte(0x00);
-        Assert.Fail("InvalidOperationException not thrown");
+        Assert.Fail("NotSupportedException not thrown");
       }
-      catch (InvalidOperationException) {
+      catch (NotSupportedException) {
       }
 
       try {
         stream.Flush();
-        Assert.Fail("InvalidOperationException not thrown");
+        Assert.Fail("NotSupportedException not thrown");
       }
-      catch (InvalidOperationException) {
+      catch (NotSupportedException) {
       }
     }
 
