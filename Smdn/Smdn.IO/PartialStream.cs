@@ -282,7 +282,7 @@ namespace Smdn.IO {
     private void CheckWritable()
     {
       if (!writable)
-        throw new InvalidOperationException("stream is read only");
+        throw new NotSupportedException("stream is read only");
     }
 
     private Stream stream;
