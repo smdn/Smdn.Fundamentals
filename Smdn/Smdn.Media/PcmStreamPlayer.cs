@@ -60,9 +60,7 @@ namespace Smdn.Media {
       get; private set;
     }
 
-    public bool Repeat {
-      get; private set;
-    }
+    public abstract bool Repeat { get; set; }
 
     protected WAVEFORMATEX WaveFormat {
       get { return format; }

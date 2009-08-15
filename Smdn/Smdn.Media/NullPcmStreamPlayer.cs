@@ -39,6 +39,10 @@ namespace Smdn.Media {
       set { /* do nothing */ }
     }
 
+    public override bool Repeat {
+      get; set;
+    }
+
     internal NullPcmStreamPlayer()
     {
     }
