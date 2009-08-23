@@ -37,10 +37,10 @@ namespace Smdn.Interop {
       ProcessStartInfo psi;
 
       if (Runtime.IsRunningOnUnix) {
-        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments));
+        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments.Replace("\"", "\\\"")));
       }
       else {
-        psi = new ProcessStartInfo("cmd", string.Format("/c \"{0} {1}\"", command, arguments));
+        psi = new ProcessStartInfo("cmd", string.Format("/c \"{0} {1}\"", command, arguments.Replace("\"", "\\\"")));
         psi.CreateNoWindow = true;
       }
 
