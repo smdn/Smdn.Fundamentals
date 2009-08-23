@@ -28,11 +28,11 @@ using System.IO;
 namespace Smdn.IO {
   public class ExtendStream : ExtendStreamBase {
     protected override bool CanSeekPrependedData {
-      get { return prependStream.CanSeek; }
+      get { return (prependStream == null) ? true : prependStream.CanSeek; }
     }
 
     protected override bool CanSeekAppendedData {
-      get { return appendStream.CanSeek; }
+      get { return (appendStream == null) ? true : appendStream.CanSeek; }
     }
 
     public ExtendStream(Stream innerStream, byte[] prependData, byte[] appendData)
@@ -81,12 +81,14 @@ namespace Smdn.IO {
 
     protected override void SetPrependedDataPosition(long position)
     {
-      prependStream.Position = position;
+      if (prependStream != null)
+        prependStream.Position = position;
     }
 
     protected override void SetAppendedDataPosition(long position)
     {
-      appendStream.Position = position;
+      if (appendStream != null)
+        appendStream.Position = position;
     }
 
     protected override void ReadPrependedData(byte[] buffer, int offset, int count)
