@@ -27,19 +27,32 @@ using System.Diagnostics;
 
 namespace Smdn.Interop {
   public static class Shell {
-    public static string Execute(string command)
+    public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
+    {
+      return CreateProcessStartInfo(command, string.Join(" ", arguments));
+    }
+
+    public static ProcessStartInfo CreateProcessStartInfo(string command, string arguments)
     {
       ProcessStartInfo psi;
 
       if (Runtime.IsRunningOnUnix) {
-        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0}\"", command));
+        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments));
       }
       else {
-        psi = new ProcessStartInfo("cmd", string.Format("/c \"{0}\"", command));
+        psi = new ProcessStartInfo("cmd", string.Format("/c \"{0} {1}\"", command, arguments));
         psi.CreateNoWindow = true;
       }
 
       psi.UseShellExecute = false;
+
+      return psi;
+    }
+
+    public static string Execute(string command)
+    {
+      var psi = CreateProcessStartInfo(command, string.Empty);
+
       psi.RedirectStandardOutput = true;
 
       using (var process = Process.Start(psi)) {
