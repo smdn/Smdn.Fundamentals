@@ -40,7 +40,7 @@ namespace Smdn.Interop {
         psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments.Replace("\"", "\\\"")));
       }
       else {
-        psi = new ProcessStartInfo("cmd", string.Format("/c \"{0} {1}\"", command, arguments.Replace("\"", "\\\"")));
+        psi = new ProcessStartInfo("cmd", string.Format("/c {0} {1}", command, arguments));
         psi.CreateNoWindow = true;
       }
 
