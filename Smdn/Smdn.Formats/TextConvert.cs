@@ -222,7 +222,7 @@ namespace Smdn.Formats {
 #region "CSV"
     // http://www.ietf.org/rfc/rfc4180.txt
     // Common Format and MIME Type for Comma-Separated Values (CSV) Files
-    public static string[] FromCSV(string csv)
+    public static string[] FromCSVString(string csv)
     {
       // append dummy splitter
       csv += ",";
@@ -256,7 +256,7 @@ namespace Smdn.Formats {
       return splitted.ToArray();
     }
 
-    public static string ToCSV(string[] csv)
+    public static string ToCSVString(string[] csv)
     {
       if (csv.Length == 0)
         return string.Empty;
