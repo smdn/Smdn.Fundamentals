@@ -29,7 +29,17 @@ namespace Smdn.IO {
   internal static class BinaryReaderImpl {
     internal static bool IsEndOfStream(System.IO.BinaryReader r)
     {
-      return r.PeekChar() < 0;
+      if (r.BaseStream.CanSeek) {
+        var eos = (r.BaseStream.ReadByte() < 0);
+
+        if (!eos)
+          r.BaseStream.Seek(-1, SeekOrigin.Current);
+
+        return eos;
+      }
+      else {
+        return false;
+      }
     }
 
     internal static byte[] ReadToEnd(System.IO.BinaryReader r)
