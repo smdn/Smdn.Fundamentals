@@ -105,6 +105,7 @@
     <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
     <Compile Include="Smdn.IO\InterruptStream.cs" />
     <Compile Include="Smdn.Media\NullPcmStreamPlayer.cs" />
+    <Compile Include="Smdn\EnumUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
