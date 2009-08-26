@@ -100,17 +100,17 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TestToCSV()
+    public void TestToCSVString()
     {
-      Assert.AreEqual("a,b,c", TextConvert.ToCSV(new[] {"a", "b", "c"}));
-      Assert.AreEqual("abc,\"d\"\"e\"\"f\",g'h'i", TextConvert.ToCSV(new[] {"abc", "d\"e\"f", "g'h'i"}));
+      Assert.AreEqual("a,b,c", TextConvert.ToCSVString(new[] {"a", "b", "c"}));
+      Assert.AreEqual("abc,\"d\"\"e\"\"f\",g'h'i", TextConvert.ToCSVString(new[] {"abc", "d\"e\"f", "g'h'i"}));
     }
 
     [Test]
-    public void TestFromCSV()
+    public void TestFromCSVString()
     {
-      Assert.AreEqual(new[] {"a", "b", "c"}, TextConvert.FromCSV("a,b,c"));
-      Assert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, TextConvert.FromCSV("abc,\"d\"\"e\"\"f\",g'h'i"));
+      Assert.AreEqual(new[] {"a", "b", "c"}, TextConvert.FromCSVString("a,b,c"));
+      Assert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, TextConvert.FromCSVString("abc,\"d\"\"e\"\"f\",g'h'i"));
     }
 
     [Test]
