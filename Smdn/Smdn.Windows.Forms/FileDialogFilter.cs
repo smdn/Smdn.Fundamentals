@@ -40,6 +40,7 @@ namespace Smdn.Windows.Forms {
       }
 
       public Filter(string description, params string[] patterns)
+        : this() // csc CS0843
       {
         this.Description = description;
         this.Patterns = patterns;
