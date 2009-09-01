@@ -25,12 +25,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Smdn.Windows.Forms {
+namespace Smdn.IO {
   public static class FileDialogFilter {
-    public const string FilterDelimiter = "|";
-    public const string PatternDelimiter = ";";
+    public const string Delimiter = "|";
 
     public struct Filter {
+      public const string PatternDelimiter = ";";
+      public const string DescriptionPatternDelimiter = "|";
+
       public string Description {
         get; private set;
       }
@@ -44,6 +46,11 @@ namespace Smdn.Windows.Forms {
       {
         this.Description = description;
         this.Patterns = patterns;
+      }
+
+      public override string ToString()
+      {
+        return string.Format("{0} ({1}){2}{1}", Description, string.Join(PatternDelimiter, Patterns ?? new string[0]), DescriptionPatternDelimiter);
       }
     }
 
@@ -76,8 +83,8 @@ namespace Smdn.Windows.Forms {
       if (filters == null || filters.Length <= 0)
         return string.Empty;
 
-      return string.Join(FilterDelimiter, Array.ConvertAll(filters, delegate(Filter filter) {
-        return string.Format("{0} ({1})|{1}", filter.Description, string.Join(PatternDelimiter, filter.Patterns ?? new string[0]));
+      return string.Join(Delimiter, Array.ConvertAll(filters, delegate(Filter filter) {
+        return filter.ToString();
       }));
     }
   }
