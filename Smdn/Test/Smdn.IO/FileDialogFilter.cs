@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace Smdn.Windows.Forms {
+namespace Smdn.IO {
   [TestFixture]
   public class FileDialogFilterTest {
     [Test]

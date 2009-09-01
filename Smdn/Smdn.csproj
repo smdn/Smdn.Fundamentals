@@ -106,7 +106,7 @@
     <Compile Include="Smdn.IO\InterruptStream.cs" />
     <Compile Include="Smdn.Media\NullPcmStreamPlayer.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
-    <Compile Include="Smdn.Windows.Forms\FileDialogFilter.cs" />
+    <Compile Include="Smdn.IO\FileDialogFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -129,6 +129,5 @@
     <Folder Include="Smdn.Media\" />
     <Folder Include="Smdn.Imaging\" />
     <Folder Include="Mono.Simd\" />
-    <Folder Include="Smdn.Windows.Forms\" />
   </ItemGroup>
 </Project>

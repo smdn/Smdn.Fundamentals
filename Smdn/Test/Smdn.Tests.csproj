@@ -41,7 +41,6 @@
     <Folder Include="Smdn.Mathematics\" />
     <Folder Include="Smdn.Interop\" />
     <Folder Include="Smdn.Imaging\" />
-    <Folder Include="Smdn.Windows.Forms\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn\UInt48.cs" />
@@ -71,7 +70,7 @@
     <Compile Include="Smdn.Interop\Platform.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
     <Compile Include="Smdn.IO\InterruptStream.cs" />
-    <Compile Include="Smdn.Windows.Forms\FileDialogFilter.cs" />
+    <Compile Include="Smdn.IO\FileDialogFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
