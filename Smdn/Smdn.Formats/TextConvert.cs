@@ -787,6 +787,56 @@ namespace Smdn.Formats {
     }
 #endregion
 
+#region "PercentEncoding"
+    //private static ICryptoTransform   toBase64Transform = new   ToBase64Transform();
+    //private static ICryptoTransform fromBase64Transfrom = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
+
+    public static string ToPercentEncodedString(string str)
+    {
+      return TransformTo(str, new ToPercentEncodedTransform(), Encoding.ASCII);
+    }
+
+    public static string ToPercentEncodedString(string str, Encoding encoding)
+    {
+      return TransformTo(str, new ToPercentEncodedTransform(), encoding);
+    }
+
+    public static string ToPercentEncodedString(byte[] bytes)
+    {
+      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToPercentEncodedTransform()));
+    }
+
+    public static string FromPercentEncodedString(string str)
+    {
+      return TransformFrom(str, new FromPercentEncodedTransform(), Encoding.ASCII);
+    }
+
+    public static string FromPercentEncodedString(string str, bool decodePlusToSpace)
+    {
+      return TransformFrom(str, new FromPercentEncodedTransform(decodePlusToSpace), Encoding.ASCII);
+    }
+
+    public static string FromPercentEncodedString(string str, Encoding encoding)
+    {
+      return TransformFrom(str, new FromPercentEncodedTransform(), encoding);
+    }
+
+    public static string FromPercentEncodedString(string str, Encoding encoding, bool decodePlusToSpace)
+    {
+      return TransformFrom(str, new FromPercentEncodedTransform(decodePlusToSpace), encoding);
+    }
+
+    public static byte[] FromPercentEncodedStringToByteArray(string str)
+    {
+      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromPercentEncodedTransform());
+    }
+
+    public static byte[] FromPercentEncodedStringToByteArray(string str, bool decodePlusToSpace)
+    {
+      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromPercentEncodedTransform(decodePlusToSpace));
+    }
+#endregion
+
 #region "MIME encoding"
     // http://tools.ietf.org/html/rfc2047
     // RFC 2047 - MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header Extensions for Non-ASCII Text

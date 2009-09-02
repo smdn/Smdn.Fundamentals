@@ -107,6 +107,8 @@
     <Compile Include="Smdn.Media\NullPcmStreamPlayer.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
+    <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
+    <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

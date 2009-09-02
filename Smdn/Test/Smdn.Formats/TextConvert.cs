@@ -193,6 +193,29 @@ namespace Smdn.Formats {
     }
 
     [Test]
+    public void TestToPercentEncodedString()
+    {
+      Assert.AreEqual("012abcABC-._~%21%22%23%24%E6%97%A5%E6%9C%AC%E8%AA%9E", TextConvert.ToPercentEncodedString("012abcABC-._~!\"#$日本語", Encoding.UTF8));
+      Assert.AreEqual("%93%FA%96%7B%8C%EA", TextConvert.ToPercentEncodedString("日本語", sjis));
+      Assert.AreEqual("%C6%FC%CB%DC%B8%EC", TextConvert.ToPercentEncodedString("日本語", eucjp));
+    }
+
+    [Test]
+    public void TestFromPercentEncodedString()
+    {
+      Assert.AreEqual("012abcABC-._~!\"#$日本語", TextConvert.FromPercentEncodedString("012abcABC-._~%21%22%23%24%e6%97%a5%e6%9c%ac%e8%aa%9e", Encoding.UTF8));
+      Assert.AreEqual("日本語", TextConvert.FromPercentEncodedString("%93%fa%96%7B%8C%EA", sjis));
+      Assert.AreEqual("日本語", TextConvert.FromPercentEncodedString("%c6%Fc%cb%Dc%b8%eC", eucjp));
+    }
+
+    [Test]
+    public void TestFromPercentEncodedStringDecodePlusToSpace()
+    {
+      Assert.AreEqual("ABC+DEF", TextConvert.FromPercentEncodedString("ABC+DEF", false));
+      Assert.AreEqual("ABC DEF", TextConvert.FromPercentEncodedString("ABC+DEF", true));
+    }
+
+    [Test]
     public void TestConvertQuotedPrintableDecodableJapanese()
     {
       foreach (var encoding in new[] {
