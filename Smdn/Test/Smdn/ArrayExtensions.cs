@@ -46,6 +46,52 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestShuffle()
+    {
+      var array0 = new int[] {};
+      var shuffle0 = ArrayExtensions.Shuffle(array0);
+
+      Assert.IsFalse(object.ReferenceEquals(array0, shuffle0));
+      Assert.AreEqual(array0, shuffle0);
+
+      var array1 = new int[] {0};
+      var shuffle1 = ArrayExtensions.Shuffle(array1);
+
+      Assert.IsFalse(object.ReferenceEquals(array1, shuffle1));
+      Assert.AreEqual(array1, shuffle1);
+
+      var array = new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+      Assert.IsFalse(object.ReferenceEquals(array, ArrayExtensions.Shuffle(array)));
+
+      for (var act = 0; act < 10; act++) {
+        if (ArrayExtensions.EqualsAll(array, ArrayExtensions.Shuffle(array)))
+          if (ArrayExtensions.EqualsAll(array, ArrayExtensions.Shuffle(array)))
+            Assert.Fail();
+      }
+    }
+
+    private class Sequencial : Random {
+      public override int Next(int maxValue)
+      {
+        return maxValue - 1;
+      }
+
+      public override int Next(int minValue, int maxValue)
+      {
+        return maxValue - 1;
+      }
+    }
+
+    [Test]
+    public void TestShuffleWithSpecifiedRandom()
+    {
+      var array = new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+      Assert.AreEqual(array, ArrayExtensions.Shuffle(array, new Sequencial()));
+    }
+
+    [Test]
     public void TestEqualsAllWithIEquatable()
     {
       var array1 = new[] {0, 1, 2, 3, 4, 5};
