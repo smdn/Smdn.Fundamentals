@@ -92,6 +92,35 @@ namespace Smdn {
       return cut;
     }
 
+    public static T[] Shuffle<T>(this T[] array)
+    {
+      return Shuffle(array, new Random());
+    }
+
+    public static T[] Shuffle<T>(this T[] array, Random random)
+    {
+      if (array == null)
+        throw new ArgumentNullException("array");
+      if (random == null)
+        throw new ArgumentNullException("random");
+
+      var shuffled = (T[])array.Clone();
+
+      if (shuffled.Length < 2)
+        return shuffled;
+
+      // http://ray.sakura.ne.jp/tips/shaffle.html
+      for (var i = 1; i < shuffled.Length; i++) {
+        var j = random.Next(0, i + 1);
+
+        var temp    = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = temp;
+      }
+
+      return shuffled;
+    }
+
     public static bool EqualsAll<T>(this T[] array, T[] other) where T : IEquatable<T>
     {
       if (array == null || other == null)
