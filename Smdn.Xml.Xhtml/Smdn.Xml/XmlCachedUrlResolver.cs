@@ -51,18 +51,23 @@ namespace Smdn.Xml {
         throw new ArgumentNullException("absoluteUri");
       if (!absoluteUri.IsAbsoluteUri)
         throw new UriFormatException("absoluteUri is not absolute URI");
-      if (ofObjectToReturn != null && typeof(Stream).IsAssignableFrom(ofObjectToReturn))
+      if (ofObjectToReturn != null && !typeof(Stream).IsAssignableFrom(ofObjectToReturn))
         throw new XmlException("argument ofObjectToReturn is invalid");
 
-      var path = Path.Combine(cacheDirectory, absoluteUri.LocalPath.Replace('/', Path.DirectorySeparatorChar));
+      var file = Path.Combine(cacheDirectory, absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar));
 
-      if (!File.Exists(path) || (cacheExpiration <= (DateTime.Now - File.GetLastWriteTime(path)))) {
+      if (!File.Exists(file) || (cacheExpiration <= (DateTime.Now - File.GetLastWriteTime(file)))) {
+        var dir = Path.GetDirectoryName(file);
+
+        if (!Directory.Exists(dir))
+          Directory.CreateDirectory(dir);
+
         using (var client = new WebClient()) {
-          File.WriteAllBytes(path, client.DownloadData(absoluteUri));
+          File.WriteAllBytes(file, client.DownloadData(absoluteUri));
         }
       }
 
-      return File.OpenRead(path);
+      return File.OpenRead(file);
     }
 
     private string cacheDirectory;
