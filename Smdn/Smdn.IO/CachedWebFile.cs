@@ -25,6 +25,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text;
 
 namespace Smdn.IO {
   public class CachedWebFile {
@@ -97,11 +98,32 @@ namespace Smdn.IO {
       return (new CachedWebFile(fileUri, cachePath, expirationInterval)).ReadAllLines();
     }
 
+    public static string[] ReadAllLines(Uri fileUri, string cachePath, TimeSpan expirationInterval, Encoding encoding)
+    {
+      return (new CachedWebFile(fileUri, cachePath, expirationInterval)).ReadAllLines(encoding);
+    }
+
     public string[] ReadAllLines()
+    {
+      return ReadAllLinesCore(null);
+    }
+
+    public string[] ReadAllLines(Encoding encoding)
+    {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return ReadAllLinesCore(encoding);
+    }
+
+    private string[] ReadAllLinesCore(Encoding encoding)
     {
       EnsureFileExists();
 
-      return File.ReadAllLines(CachePath);
+      if (encoding == null)
+        return File.ReadAllLines(CachePath);
+      else
+        return File.ReadAllLines(CachePath, encoding);
     }
 
     public static string ReadAllText(Uri fileUri, string cachePath, TimeSpan expirationInterval)
@@ -109,11 +131,32 @@ namespace Smdn.IO {
       return (new CachedWebFile(fileUri, cachePath, expirationInterval)).ReadAllText();
     }
 
+    public static string ReadAllText(Uri fileUri, string cachePath, TimeSpan expirationInterval, Encoding encoding)
+    {
+      return (new CachedWebFile(fileUri, cachePath, expirationInterval)).ReadAllText(encoding);
+    }
+
     public string ReadAllText()
+    {
+      return ReadAllTextCore(null);
+    }
+
+    public string ReadAllText(Encoding encoding)
+    {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return ReadAllTextCore(encoding);
+    }
+
+    private string ReadAllTextCore(Encoding encoding)
     {
       EnsureFileExists();
 
-      return File.ReadAllText(CachePath);
+      if (encoding == null)
+        return File.ReadAllText(CachePath);
+      else
+        return File.ReadAllText(CachePath, encoding);
     }
   }
 }
