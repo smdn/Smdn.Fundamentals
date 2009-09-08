@@ -57,14 +57,26 @@ namespace Smdn.IO {
 
     private void EnsureFileExists()
     {
-      if (!File.Exists(CachePath) || (ExpirationInterval <= (DateTime.Now - File.GetLastWriteTime(CachePath)))) {
+      var cacheExists = File.Exists(CachePath);
+
+      if (!cacheExists || (ExpirationInterval <= (DateTime.Now - File.GetLastWriteTime(CachePath)))) {
         var dir = Path.GetDirectoryName(CachePath);
 
         if (!Directory.Exists(dir))
           Directory.CreateDirectory(dir);
 
         using (var client = new WebClient()) {
-          File.WriteAllBytes(CachePath, client.DownloadData(FileUri));
+          try {
+            if (FileUri.Scheme != Uri.UriSchemeHttp)
+              // ftp or else
+              client.Credentials = new NetworkCredential("anonymous", string.Empty);
+
+            File.WriteAllBytes(CachePath, client.DownloadData(FileUri));
+          }
+          catch {
+            if (!cacheExists)
+              throw;
+          }
         }
       }
     }
