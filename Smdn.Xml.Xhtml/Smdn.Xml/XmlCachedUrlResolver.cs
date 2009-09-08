@@ -34,15 +34,15 @@ namespace Smdn.Xml {
     {
     }
 
-    public XmlCachedUrlResolver(string cacheDirectory, TimeSpan cacheExpiration)
+    public XmlCachedUrlResolver(string cacheDirectory, TimeSpan cacheExpirationInterval)
     {
       if (cacheDirectory == null)
         throw new ArgumentNullException("cacheDirectory");
-      if (cacheExpiration < TimeSpan.Zero)
-        throw new ArgumentOutOfRangeException("cacheExpiration", "must be zero or positive value");
+      if (cacheExpirationInterval < TimeSpan.Zero)
+        throw new ArgumentOutOfRangeException("cacheExpirationInterval", "must be zero or positive value");
 
       this.cacheDirectory = cacheDirectory;
-      this.cacheExpiration = cacheExpiration;
+      this.cacheExpirationInterval = cacheExpirationInterval;
     }
 
     public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
@@ -54,23 +54,12 @@ namespace Smdn.Xml {
       if (ofObjectToReturn != null && !typeof(Stream).IsAssignableFrom(ofObjectToReturn))
         throw new XmlException("argument ofObjectToReturn is invalid");
 
-      var file = Path.Combine(cacheDirectory, absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar));
-
-      if (!File.Exists(file) || (cacheExpiration <= (DateTime.Now - File.GetLastWriteTime(file)))) {
-        var dir = Path.GetDirectoryName(file);
-
-        if (!Directory.Exists(dir))
-          Directory.CreateDirectory(dir);
-
-        using (var client = new WebClient()) {
-          File.WriteAllBytes(file, client.DownloadData(absoluteUri));
-        }
-      }
-
-      return File.OpenRead(file);
+      return Smdn.IO.CachedWebFile.OpenRead(absoluteUri,
+                                            Path.Combine(cacheDirectory, absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar)),
+                                            cacheExpirationInterval);
     }
 
     private string cacheDirectory;
-    private TimeSpan cacheExpiration;
+    private TimeSpan cacheExpirationInterval;
   }
 }
