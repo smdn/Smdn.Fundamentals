@@ -109,6 +109,7 @@
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
     <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
+    <Compile Include="Smdn.IO\CachedWebFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
