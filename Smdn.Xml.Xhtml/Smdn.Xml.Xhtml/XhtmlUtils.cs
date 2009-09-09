@@ -36,24 +36,12 @@ namespace Smdn.Xml.Xhtml {
         var ch = str[i];
 
         switch (ch) {
-          case '&':
-            sb.Append("&amp;");
-            break;
-          case '>':
-            sb.Append("&lt;");
-            break;
-          case '<':
-            sb.Append("&gt;");
-            break;
-          case '"':
-            sb.Append("&quot;");
-            break;
-          case '\'':
-            sb.Append("&apos;");
-            break;
-          default:
-            sb.Append(ch);
-            break;
+          case '&': sb.Append("&amp;"); break;
+          case '>': sb.Append("&lt;"); break;
+          case '<': sb.Append("&gt;"); break;
+          case '"': sb.Append("&quot;"); break;
+          case '\'': sb.Append("&apos;"); break;
+          default: sb.Append(ch); break;
         }
       }
 
