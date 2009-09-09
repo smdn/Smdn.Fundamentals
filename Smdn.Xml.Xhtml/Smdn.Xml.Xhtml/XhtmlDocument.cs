@@ -97,5 +97,28 @@ namespace Smdn.Xml.Xhtml {
 
       return img;
     }
+
+    public XmlElement CreateXhtmlPre()
+    {
+      return CreateXhtmlPre(null);
+    }
+
+    public XmlElement CreateXhtmlPre(bool preserveWhitespaces)
+    {
+      if (preserveWhitespaces)
+        return CreateXhtmlPre("preserve");
+      else
+        return CreateXhtmlPre(null /* "default" */);
+    }
+
+    public XmlElement CreateXhtmlPre(string xmlSpaceAttribute)
+    {
+      var pre = CreateXhtmlElement("pre");
+
+      if (xmlSpaceAttribute != null)
+        pre.Attributes.Append(CreateAttribute("xml:space")).Value = xmlSpaceAttribute;
+
+      return pre;
+    }
   }
 }
