@@ -49,8 +49,8 @@ namespace Smdn.Xml.Xhtml {
 
       var element = CreateElement(name, W3CNamespaces.Xhtml);
 
-      if (id     != null) element.Attributes.Append(CreateAttribute("id")).Value = id;
-      if (@class != null) element.Attributes.Append(CreateAttribute("class")).Value = @class;
+      if (id     != null) element.SetAttribute("id", id);
+      if (@class != null) element.SetAttribute("class", @class);
 
       return element;
     }
@@ -69,10 +69,10 @@ namespace Smdn.Xml.Xhtml {
     {
       var anchor = CreateXhtmlElement("a");
 
-      if (id        != null) anchor.Attributes.Append(CreateAttribute("id")).Value = id;
-      if (href      != null) anchor.Attributes.Append(CreateAttribute("href")).Value = href;
-      if (@class    != null) anchor.Attributes.Append(CreateAttribute("class")).Value = @class;
-      if (title     != null) anchor.Attributes.Append(CreateAttribute("title")).Value = title;
+      if (id        != null) anchor.SetAttribute("id", id);
+      if (href      != null) anchor.SetAttribute("href", href);
+      if (@class    != null) anchor.SetAttribute("class", @class);
+      if (title     != null) anchor.SetAttribute("title", title);
 
       return anchor;
     }
@@ -91,11 +91,11 @@ namespace Smdn.Xml.Xhtml {
     {
       var img = CreateXhtmlElement("img");
 
-      if (src    != null) img.Attributes.Append(CreateAttribute("src")).Value = src;
-      if (alt    != null) img.Attributes.Append(CreateAttribute("alt")).Value = alt;
-      if (title  != null) img.Attributes.Append(CreateAttribute("title")).Value = title;
-      if (width  != null) img.Attributes.Append(CreateAttribute("width")).Value = width;
-      if (height != null) img.Attributes.Append(CreateAttribute("height")).Value = height;
+      if (src    != null) img.SetAttribute("src", src);
+      if (alt    != null) img.SetAttribute("alt", alt);
+      if (title  != null) img.SetAttribute("title", title);
+      if (width  != null) img.SetAttribute("width", width);
+      if (height != null) img.SetAttribute("height", height);
 
       return img;
     }
@@ -118,7 +118,7 @@ namespace Smdn.Xml.Xhtml {
       var pre = CreateXhtmlElement("pre");
 
       if (xmlSpaceAttribute != null)
-        pre.Attributes.Append(CreateAttribute("xml:space")).Value = xmlSpaceAttribute;
+        pre.SetAttribute("xml:space", xmlSpaceAttribute);
 
       return pre;
     }
