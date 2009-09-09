@@ -47,9 +47,9 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Xml.Xhtml\W3CNamespaces.cs" />
     <Compile Include="Smdn.Xml.Xhtml\XhtmlUtils.cs" />
-    <Compile Include="Smdn.Xml\XmlCachedUrlResolver.cs" />
+    <Compile Include="Smdn.Xml.Xhtml\XhtmlDocument.cs" />
+    <Compile Include="Smdn.Xml.Xhtml\W3CNamespaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -67,7 +67,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Smdn.Xml.Xhtml\" />
-    <Folder Include="Smdn.Xml\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">

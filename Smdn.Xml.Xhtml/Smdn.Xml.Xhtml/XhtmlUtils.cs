@@ -24,6 +24,7 @@
 
 using System;
 using System.Text;
+using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
   public static class XhtmlUtils {
@@ -46,6 +47,61 @@ namespace Smdn.Xml.Xhtml {
       }
 
       return sb.ToString();
+    }
+
+    public static string ToString(XmlNode node, XmlWriterSettings settings)
+    {
+      if (node == null)
+        throw new ArgumentNullException();
+
+      var sb = new StringBuilder();
+      var writer = XmlWriter.Create(sb, settings);
+
+      if (node is XhtmlDocument) {
+        ProcessDocument(node as XhtmlDocument, delegate(XmlDocument doc) {
+          doc.WriteContentTo(writer);
+        });
+      }
+      else {
+        node.WriteContentTo(writer);
+      }
+
+      writer.Flush();
+
+      if (node is XhtmlDocument)
+        sb.Replace("\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\"[]>", "\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
+
+      sb.Replace("<pre>\u200b", "<pre>");
+
+      return sb.ToString();
+    }
+
+    private static void ProcessDocument(XhtmlDocument document, Action<XmlDocument> action)
+    {
+      var nsmgr = new XmlNamespaceManager(document.NameTable);
+
+      try {
+        nsmgr.PushScope();
+        nsmgr.AddNamespace("x", W3CNamespaces.Xhtml);
+
+        // TODO: clone
+#if false
+        // System.Xml.XmlException: DocumentType cannot be imported.
+        var doc = (XmlDocument)document.Clone();
+#else
+        var doc = document;
+#endif
+
+        foreach (XmlNode pre in document.SelectNodes("//x:pre", nsmgr)) {
+          // HACK: insert 'ZERO WIDTH SPACE' (U+200B) to avoid indenting
+          pre.PrependChild(document.CreateTextNode("\u200b"));
+        }
+
+        action(doc);
+      }
+      finally {
+        nsmgr.PopScope();
+      }
     }
   }
 }
