@@ -75,6 +75,16 @@ namespace Smdn.Xml.Xhtml {
       return anchor;
     }
 
+    public XmlElement CreateXhtmlImage(string src)
+    {
+      return CreateXhtmlImage(src, null, null, null, null);
+    }
+
+    public XmlElement CreateXhtmlImage(string src, string alt, string title)
+    {
+      return CreateXhtmlImage(src, alt, title);
+    }
+
     public XmlElement CreateXhtmlImage(string src, string alt, string title, string width, string height)
     {
       var img = CreateXhtmlElement("img");
