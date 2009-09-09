@@ -26,19 +26,34 @@ using System;
 
 namespace Smdn {
   public static class EnumUtils {
-    public static bool TryParse<TEnum>(string value, out TEnum result) /*where TEnum : Enum*/ {
+    public static TEnum Parse<TEnum>(string value) where TEnum : struct /*instead of Enum*/
+    {
+      return Parse<TEnum>(value, false);
+    }
+
+    public static TEnum Parse<TEnum>(string value, bool ignoreCase) where TEnum : struct /*instead of Enum*/
+    {
+      return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
+    }
+
+    public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct /*instead of Enum*/
+    {
       return TryParse(value, false, out result);
     }
 
-    public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) /*where TEnum : Enum*/ {
-      result = default(TEnum);
+    public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct /*instead of Enum*/
+    {
+      if (value == null)
+        throw new ArgumentNullException("value");
 
       try {
-        result = (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
+        result = Parse<TEnum>(value, ignoreCase);
 
         return true;
       }
-      catch {
+      catch (ArgumentException) {
+        result = default(TEnum);
+
         return false;
       }
     }

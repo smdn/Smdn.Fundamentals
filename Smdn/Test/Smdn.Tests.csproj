@@ -71,6 +71,7 @@
     <Compile Include="Smdn.IO\ExtendStream.cs" />
     <Compile Include="Smdn.IO\InterruptStream.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
+    <Compile Include="Smdn\EnumUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
