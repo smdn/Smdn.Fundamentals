@@ -67,10 +67,12 @@ namespace Smdn.Xml.Xhtml {
 
     public XmlElement CreateXhtmlAnchor(string href, string id, string title, string @class)
     {
-      var anchor = CreateXhtmlElement("a", id, @class);
+      var anchor = CreateXhtmlElement("a");
 
-      if (href  != null) anchor.Attributes.Append(CreateAttribute("href")).Value  = href;
-      if (title != null) anchor.Attributes.Append(CreateAttribute("title")).Value = title;
+      if (id        != null) anchor.Attributes.Append(CreateAttribute("id")).Value = id;
+      if (href      != null) anchor.Attributes.Append(CreateAttribute("href")).Value = href;
+      if (@class    != null) anchor.Attributes.Append(CreateAttribute("class")).Value = @class;
+      if (title     != null) anchor.Attributes.Append(CreateAttribute("title")).Value = title;
 
       return anchor;
     }
@@ -82,7 +84,7 @@ namespace Smdn.Xml.Xhtml {
 
     public XmlElement CreateXhtmlImage(string src, string alt, string title)
     {
-      return CreateXhtmlImage(src, alt, title);
+      return CreateXhtmlImage(src, alt, title, null, null);
     }
 
     public XmlElement CreateXhtmlImage(string src, string alt, string title, string width, string height)
