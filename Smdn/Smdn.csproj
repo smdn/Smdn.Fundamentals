@@ -110,6 +110,7 @@
     <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
     <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
+    <Compile Include="Smdn\NullableConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
