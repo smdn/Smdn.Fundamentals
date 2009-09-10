@@ -1063,5 +1063,59 @@ namespace Smdn.Formats {
 
     private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*\=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?\=\s*", RegexOptions.Singleline);
 #endregion
+
+#region "XHTML and HTML style escape"
+    public static string ToHtmlEscapedString(string str)
+    {
+      return ToXhtmlEscapedString(str, false);
+    }
+
+    public static string ToXhtmlEscapedString(string str)
+    {
+      return ToXhtmlEscapedString(str, true);
+    }
+
+    private static string ToXhtmlEscapedString(string str, bool xhtml)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      var sb = new StringBuilder(str.Length);
+      var len = str.Length;
+
+      for (var i = 0; i < len; i++) {
+        var ch = str[i];
+
+        switch (ch) {
+          case Chars.Ampersand:   sb.Append("&amp;"); break;
+          case Chars.LessThan:    sb.Append("&lt;"); break;
+          case Chars.GreaterThan: sb.Append("&gt;"); break;
+          case Chars.DQuote:      sb.Append("&quot;"); break;
+          case Chars.Quote:
+            if (xhtml) sb.Append("&apos;");
+            else sb.Append(Chars.Quote);
+            break;
+          default: sb.Append(ch); break;
+        }
+      }
+
+      return sb.ToString();
+    }
+
+    public static string FromHtmlEscapedString(string str)
+    {
+      return FromXhtmlEscapedString(str, false);
+    }
+
+    public static string FromXhtmlEscapedString(string str)
+    {
+      return FromXhtmlEscapedString(str, true);
+    }
+
+    private static string FromXhtmlEscapedString(string str, bool xhtml)
+    {
+      throw new NotImplementedException();
+    }
+#endregion
   }
 }

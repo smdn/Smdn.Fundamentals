@@ -31,8 +31,12 @@ namespace Smdn.Formats {
     public const char LF      = '\u000a';
     public const char HT      = '\u0009'; // horizontal tab
     public const char SP      = ' ';
+    public const char Quote   = '\'';
     public const char DQuote  = '"';
     public const char Comma   = ',';
+    public const char LessThan    = '<';
+    public const char GreaterThan = '>';
+    public const char Ampersand   = '&';
     public const string CRLF  = "\u000d\u000a";
 
     public static readonly char[] LowerCaseHexChars = new char[] {
