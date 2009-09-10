@@ -28,27 +28,6 @@ using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
   public static class XhtmlUtils {
-    public static string EscapeSpecialChars(string str)
-    {
-      var sb = new StringBuilder(str.Length);
-      var len = str.Length;
-
-      for (var i = 0; i < len; i++) {
-        var ch = str[i];
-
-        switch (ch) {
-          case '&': sb.Append("&amp;"); break;
-          case '>': sb.Append("&lt;"); break;
-          case '<': sb.Append("&gt;"); break;
-          case '"': sb.Append("&quot;"); break;
-          case '\'': sb.Append("&apos;"); break;
-          default: sb.Append(ch); break;
-        }
-      }
-
-      return sb.ToString();
-    }
-
     public static string ToString(XmlNode node, XmlWriterSettings settings)
     {
       if (node == null)
