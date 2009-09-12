@@ -27,9 +27,11 @@ using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
   public static class libdl {
-    [DllImport("libdl")] public static extern IntPtr dlopen(string filename, int flag);
-    [DllImport("libdl")] public static extern string dlerror();
-    [DllImport("libdl")] public static extern IntPtr dlsym(IntPtr handle, string symbol);
-    [DllImport("libdl")] public static extern int dlclose(IntPtr handle);
+    private const string dllname = "libdl";
+
+    [DllImport(dllname)] public static extern IntPtr dlopen(string filename, int flag);
+    [DllImport(dllname)] public static extern string dlerror();
+    [DllImport(dllname)] public static extern IntPtr dlsym(IntPtr handle, string symbol);
+    [DllImport(dllname)] public static extern int dlclose(IntPtr handle);
   }
 }
