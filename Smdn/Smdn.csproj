@@ -92,7 +92,6 @@
     <Compile Include="Smdn.Interop\libdl.cs" />
     <Compile Include="Smdn.Interop\FunctionNotFoundException.cs" />
     <Compile Include="Smdn\FourCC.cs" />
-    <Compile Include="Smdn.Imaging\LockedBitmap.cs" />
     <Compile Include="Smdn\UInt24.cs" />
     <Compile Include="Smdn.IO\BinaryReaderImpl.cs" />
     <Compile Include="Smdn.IO\BinaryWriterImpl.cs" />
@@ -131,7 +130,6 @@
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Interop\" />
     <Folder Include="Smdn.Media\" />
-    <Folder Include="Smdn.Imaging\" />
     <Folder Include="Mono.Simd\" />
   </ItemGroup>
 </Project>
