@@ -51,14 +51,34 @@ namespace Smdn.Interop {
 
     public static string Execute(string command)
     {
+      string stdout;
+
+      Execute(command, out stdout);
+
+      return stdout;
+    }
+
+    public static int Execute(string command, out string stdout)
+    {
+      string discard;
+
+      return Execute(command, out stdout, out discard);
+    }
+
+    public static int Execute(string command, out string stdout, out string stderr)
+    {
       var psi = CreateProcessStartInfo(command, string.Empty);
 
       psi.RedirectStandardOutput = true;
+      psi.RedirectStandardError  = true;
 
       using (var process = Process.Start(psi)) {
         process.WaitForExit();
 
-        return process.StandardOutput.ReadToEnd();
+        stdout = process.StandardOutput.ReadToEnd();
+        stderr = process.StandardError.ReadToEnd();
+
+        return process.ExitCode;
       }
     }
   }
