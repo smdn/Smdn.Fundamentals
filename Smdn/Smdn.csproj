@@ -110,6 +110,9 @@
     <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
     <Compile Include="Smdn\NullableConvert.cs" />
+    <Compile Include="Smdn.Interop\shell32.cs" />
+    <Compile Include="Smdn.Interop\shellapi.h.cs" />
+    <Compile Include="Smdn.Interop\FileManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
