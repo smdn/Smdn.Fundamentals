@@ -61,8 +61,12 @@ namespace Smdn.Interop {
           psi = new ProcessStartInfo(filemanager);
           psi.UseShellExecute = false;
 
-          if (path != null)
-            psi.Arguments = string.Format("--no-default-window {0}", Path.GetDirectoryName(path));
+          if (path != null) {
+            if (File.Exists(path))
+              path = Path.GetDirectoryName(path);
+
+            psi.Arguments = string.Format("--no-default-window {0}", path);
+          }
         }
         /*
         else {
