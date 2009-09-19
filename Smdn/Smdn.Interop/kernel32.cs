@@ -29,14 +29,16 @@ namespace Smdn.Interop {
   public static class kernel32 {
     private const string dllname = "kernel32.dll";
 
-    [DllImport(dllname)] public static extern IntPtr LoadLibrary(string lpFileName);
-    [DllImport(dllname)] public static extern bool FreeLibrary(IntPtr hModule);
-    [DllImport(dllname)] public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+    [DllImport(dllname, SetLastError = true)] public static extern bool CloseHandle(IntPtr hObject);
 
-    [DllImport(dllname)] public static extern IntPtr GetProcessHeap();
-    [DllImport(dllname)] public static extern IntPtr HeapAlloc(IntPtr hHeap, uint dwFlags, uint dwBytes);
-    [DllImport(dllname)] public static extern IntPtr HeapReAlloc(IntPtr hHeap, uint dwFlags, IntPtr lpMem, uint dwBytes);
-    [DllImport(dllname)] public static extern bool HeapFree(IntPtr hHeap, uint dwFlags, IntPtr lpMem);
-    [DllImport(dllname)] public static extern uint HeapSize(IntPtr hHeap, int flags, IntPtr lpMem);
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr LoadLibrary(string lpFileName);
+    [DllImport(dllname, SetLastError = true)] public static extern bool FreeLibrary(IntPtr hModule);
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr GetProcessHeap();
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr HeapAlloc(IntPtr hHeap, uint dwFlags, uint dwBytes);
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr HeapReAlloc(IntPtr hHeap, uint dwFlags, IntPtr lpMem, uint dwBytes);
+    [DllImport(dllname, SetLastError = true)] public static extern bool HeapFree(IntPtr hHeap, uint dwFlags, IntPtr lpMem);
+    [DllImport(dllname, SetLastError = true)] public static extern uint HeapSize(IntPtr hHeap, int flags, IntPtr lpMem);
   }
 }
