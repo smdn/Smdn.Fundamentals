@@ -113,6 +113,8 @@
     <Compile Include="Smdn.Interop\shell32.cs" />
     <Compile Include="Smdn.Interop\shellapi.h.cs" />
     <Compile Include="Smdn.Interop\FileManager.cs" />
+    <Compile Include="Smdn\Action.cs" />
+    <Compile Include="Smdn\Func.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
