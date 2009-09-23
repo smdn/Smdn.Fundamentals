@@ -33,6 +33,7 @@ namespace Smdn.Interop {
 
     [DllImport(dllname, SetLastError = true)] public static extern IntPtr LoadLibrary(string lpFileName);
     [DllImport(dllname, SetLastError = true)] public static extern bool FreeLibrary(IntPtr hModule);
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr GetModuleHandle(string lpModuleName);
     [DllImport(dllname, SetLastError = true)] public static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
 
     [DllImport(dllname, SetLastError = true)] public static extern IntPtr GetProcessHeap();
