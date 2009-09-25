@@ -16,6 +16,31 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestIsNullOrEmpty()
+    {
+      Assert.IsTrue(ShellString.IsNullOrEmpty(null));
+      Assert.IsTrue(ShellString.IsNullOrEmpty(new ShellString(null)));
+      Assert.IsTrue(ShellString.IsNullOrEmpty(new ShellString(string.Empty)));
+      Assert.IsFalse(ShellString.IsNullOrEmpty(new ShellString("a")));
+    }
+
+    [Test]
+    public void TestExpand()
+    {
+      try {
+        Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", "foo");
+
+        Assert.AreEqual(null, ShellString.Expand(null));
+        Assert.AreEqual(null, ShellString.Expand(new ShellString(null)));
+        Assert.AreEqual(string.Empty, ShellString.Expand(new ShellString(string.Empty)));
+        Assert.AreEqual("foo", ShellString.Expand(new ShellString("%Smdn.Tests.TestValue1%")));
+      }
+      finally {
+        Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
+      }
+    }
+
+    [Test]
     public void TestExpanded()
     {
       try {

@@ -71,6 +71,14 @@ namespace Smdn.IO {
         return string.IsNullOrEmpty(str.Raw);
     }
 
+    public static string Expand(ShellString str)
+    {
+      if (str == null)
+        return null;
+      else
+        return str.Expanded;
+    }
+
 #region "equality"
     public bool Equals(ShellString other)
     {
