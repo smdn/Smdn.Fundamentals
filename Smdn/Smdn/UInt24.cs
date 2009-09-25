@@ -59,6 +59,7 @@ namespace Smdn {
       }
     }
 
+    [CLSCompliant(false)]
     public static explicit operator UInt24(uint val)
     {
       if (maxValue < val)
@@ -87,6 +88,7 @@ namespace Smdn {
       return uint24;
     }
 
+    [CLSCompliant(false)]
     public static explicit operator UInt24(ushort val)
     {
       var uint24 = new UInt24();
@@ -117,6 +119,7 @@ namespace Smdn {
       return (short)val.ToInt32();
     }
 
+    [CLSCompliant(false)]
     public static implicit operator ushort(UInt24 val)
     {
       return (ushort)val.ToUInt32();
@@ -127,6 +130,7 @@ namespace Smdn {
       return val.ToInt32();
     }
 
+    [CLSCompliant(false)]
     public static implicit operator uint(UInt24 val)
     {
       return val.ToUInt32();
@@ -137,6 +141,7 @@ namespace Smdn {
       return (Int32)ToUInt32();
     }
 
+    [CLSCompliant(false)]
     public UInt32 ToUInt32()
     {
       return ((UInt32)Byte0 << 16 |

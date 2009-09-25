@@ -28,6 +28,7 @@ using System.IO;
 using Smdn.Interop;
 
 namespace Smdn.Media {
+  [CLSCompliant(false)]
   public abstract class PcmStreamPlayer : IDisposable {
 #region "class methods"
     public static PcmStreamPlayer Create()

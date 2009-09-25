@@ -26,7 +26,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Mathematics {
-  [StructLayout(LayoutKind.Explicit, Pack = 1)]
+  [CLSCompliant(false), StructLayout(LayoutKind.Explicit, Pack = 1)]
   public unsafe struct Matrix4D {
     [FieldOffset( 0)] public fixed float Matrix[16];
 

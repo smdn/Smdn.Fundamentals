@@ -177,17 +177,20 @@ namespace Smdn.Formats {
 #endregion
 
 #region "conversion methods for date time of ISO base media file format"
+    [CLSCompliant(false)]
     public static DateTime FromISO14496DateTime(ulong isoDateTime)
     {
       // this might overflow
       return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
+    [CLSCompliant(false)]
     public static DateTime FromISO14496DateTime(uint isoDateTime)
     {
       return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
     }
 
+    [CLSCompliant(false)]
     public static ulong ToISO14496DateTime64(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
@@ -196,6 +199,7 @@ namespace Smdn.Formats {
       return (ulong)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
     }
 
+    [CLSCompliant(false)]
     public static uint ToISO14496DateTime32(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)

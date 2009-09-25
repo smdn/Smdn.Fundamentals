@@ -42,6 +42,7 @@ namespace Smdn.IO {
       BinaryWriterImpl.WriteBE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public override void Write(ushort @value)
     {
       BinaryWriterImpl.WriteBE(this, @value);
@@ -52,6 +53,7 @@ namespace Smdn.IO {
       BinaryWriterImpl.WriteBE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public override void Write(uint @value)
     {
       BinaryWriterImpl.WriteBE(this, @value);
@@ -62,6 +64,7 @@ namespace Smdn.IO {
       BinaryWriterImpl.WriteBE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public override void Write(ulong @value)
     {
       BinaryWriterImpl.WriteBE(this, @value);

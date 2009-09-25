@@ -61,11 +61,13 @@ namespace Smdn.IO {
       return BinaryReaderImpl.ReadInt16LE(this);
     }
 
+    [CLSCompliant(false)]
     public ushort ReadUInt16BE()
     {
       return BinaryReaderImpl.ReadUInt16BE(this);
     }
 
+    [CLSCompliant(false)]
     public ushort ReadUInt16LE()
     {
       return BinaryReaderImpl.ReadUInt16LE(this);
@@ -81,11 +83,13 @@ namespace Smdn.IO {
       return BinaryReaderImpl.ReadInt32LE(this);
     }
 
+    [CLSCompliant(false)]
     public uint ReadUInt32BE()
     {
       return BinaryReaderImpl.ReadUInt32BE(this);
     }
 
+    [CLSCompliant(false)]
     public uint ReadUInt32LE()
     {
       return BinaryReaderImpl.ReadUInt32LE(this);
@@ -101,11 +105,13 @@ namespace Smdn.IO {
       return BinaryReaderImpl.ReadInt64LE(this);
     }
 
+    [CLSCompliant(false)]
     public ulong ReadUInt64BE()
     {
       return BinaryReaderImpl.ReadUInt64BE(this);
     }
 
+    [CLSCompliant(false)]
     public ulong ReadUInt64LE()
     {
       return BinaryReaderImpl.ReadUInt64LE(this);

@@ -67,31 +67,37 @@ namespace Smdn.IO {
       BinaryWriterImpl.WriteLE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public void WriteBE(ushort @value)
     {
       BinaryWriterImpl.WriteBE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public void WriteLE(ushort @value)
     {
       BinaryWriterImpl.WriteLE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public void WriteBE(uint @value)
     {
       BinaryWriterImpl.WriteBE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public void WriteLE(uint @value)
     {
       BinaryWriterImpl.WriteLE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public void WriteBE(ulong @value)
     {
       BinaryWriterImpl.WriteBE(this, @value);
     }
 
+    [CLSCompliant(false)]
     public void WriteLE(ulong @value)
     {
       BinaryWriterImpl.WriteLE(this, @value);

@@ -68,6 +68,7 @@ namespace Smdn {
       }
     }
 
+    [CLSCompliant(false)]
     public static explicit operator UInt48(ulong val)
     {
       if (maxValue < val)
@@ -102,6 +103,7 @@ namespace Smdn {
       return uint48;
     }
 
+    [CLSCompliant(false)]
     public static explicit operator UInt48(uint val)
     {
       var uint48 = new UInt48();
@@ -138,6 +140,7 @@ namespace Smdn {
       return (int)val.ToInt64();
     }
 
+    [CLSCompliant(false)]
     public static explicit operator uint(UInt48 val)
     {
       return (uint)val.ToUInt64();
@@ -148,6 +151,7 @@ namespace Smdn {
       return val.ToInt64();
     }
 
+    [CLSCompliant(false)]
     public static implicit operator ulong(UInt48 val)
     {
       return val.ToUInt64();
@@ -158,6 +162,7 @@ namespace Smdn {
       return (Int64)ToUInt64();
     }
 
+    [CLSCompliant(false)]
     public UInt64 ToUInt64()
     {
       return ((UInt64)Byte0 << 40 |

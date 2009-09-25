@@ -27,7 +27,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
-  [Flags]
+  [CLSCompliant(false), Flags]
   public enum WAVE_FORMAT : uint {
     WAVE_INVALIDFORMAT  = 0,
     WAVE_FORMAT_1M08    = 1 <<  0,
@@ -52,6 +52,7 @@ namespace Smdn.Interop {
     WAVE_FORMAT_96S16   = 1 << 19,
   }
 
+  [CLSCompliant(false)]
   public enum WAVE_FORMAT_TAG : ushort {
     WAVE_FORMAT_UNKNOWN           = 0x0000,
     WAVE_FORMAT_PCM               = 0x0001,
@@ -66,7 +67,7 @@ namespace Smdn.Interop {
     WAVE_FORMAT_EXTENSIBLE        = 0xfffe,
   }
 
-  [StructLayout(LayoutKind.Sequential, Pack = 0)]
+  [CLSCompliant(false), StructLayout(LayoutKind.Sequential, Pack = 0)]
   public struct WAVEFORMATEX {
     public WAVE_FORMAT_TAG wFormatTag;
     public ushort nChannels;

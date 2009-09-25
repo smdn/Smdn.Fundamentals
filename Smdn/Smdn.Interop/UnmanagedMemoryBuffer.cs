@@ -278,11 +278,13 @@ namespace Smdn.Interop {
       return buffer.Ptr;
     }
 
+    [CLSCompliant(false)]
     public static unsafe explicit operator void*(UnmanagedMemoryBuffer buffer)
     {
       return buffer.ToPointer();
     }
 
+    [CLSCompliant(false)]
     public unsafe void* ToPointer()
     {
       CheckDisposed();
@@ -301,6 +303,7 @@ namespace Smdn.Interop {
       return bytes;
     }
 
+    [CLSCompliant(false)]
     public UnmanagedMemoryStream ToStream()
     {
       CheckDisposed();

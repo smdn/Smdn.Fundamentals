@@ -26,6 +26,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
+  [CLSCompliant(false)]
   public static class shell32 {
     private const string dllname = "shell32.dll";
 

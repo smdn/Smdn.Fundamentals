@@ -26,6 +26,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
+  [CLSCompliant(false)]
   public enum SEE_MASK : uint {
     DEFAULT             = 0x00000000,
     INVOKEIDLIST        = 0x0000000c,
@@ -34,7 +35,7 @@ namespace Smdn.Interop {
     FLAG_NO_UI          = 0x00000400,
   }
 
-  [StructLayout(LayoutKind.Sequential)]
+  [CLSCompliant(false), StructLayout(LayoutKind.Sequential)]
   public struct SHELLEXECUTEINFO {
     public int cbSize;
     public SEE_MASK fMask;

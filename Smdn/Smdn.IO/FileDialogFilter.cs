@@ -54,6 +54,7 @@ namespace Smdn.IO {
       }
     }
 
+    [CLSCompliant(false)]
     public static string CreateFilterString(params string[][] descriptionPatternPairs)
     {
       return CreateFilterString(Array.ConvertAll(descriptionPatternPairs, delegate(string[] pair) {
@@ -78,6 +79,7 @@ namespace Smdn.IO {
       return CreateFilterString(filters);
     }
 
+    [CLSCompliant(false)]
     public static string CreateFilterString(params Filter[] filters)
     {
       if (filters == null || filters.Length <= 0)

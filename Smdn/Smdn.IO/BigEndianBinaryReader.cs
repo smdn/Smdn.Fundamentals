@@ -56,6 +56,7 @@ namespace Smdn.IO {
       return BinaryReaderImpl.ReadInt16BE(this);
     }
 
+    [CLSCompliant(false)]
     public override ushort ReadUInt16()
     {
       return BinaryReaderImpl.ReadUInt16BE(this);
@@ -66,6 +67,7 @@ namespace Smdn.IO {
       return BinaryReaderImpl.ReadInt32BE(this);
     }
 
+    [CLSCompliant(false)]
     public override uint ReadUInt32()
     {
       return BinaryReaderImpl.ReadUInt32BE(this);
@@ -76,6 +78,7 @@ namespace Smdn.IO {
       return BinaryReaderImpl.ReadInt64BE(this);
     }
 
+    [CLSCompliant(false)]
     public override ulong ReadUInt64()
     {
       return BinaryReaderImpl.ReadUInt64BE(this);

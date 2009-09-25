@@ -26,6 +26,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
+  [CLSCompliant(false)]
   public static class kernel32 {
     private const string dllname = "kernel32.dll";
 
