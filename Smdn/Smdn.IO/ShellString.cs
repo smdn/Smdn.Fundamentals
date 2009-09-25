@@ -26,6 +26,7 @@ using System;
 
 namespace Smdn.IO {
   public class ShellString :
+    ICloneable,
     IEquatable<string>,
     IEquatable<ShellString>
   {
@@ -50,6 +51,16 @@ namespace Smdn.IO {
     public ShellString(string raw)
     {
       this.Raw = raw;
+    }
+
+    public ShellString Clone()
+    {
+      return new ShellString(this.Raw);
+    }
+
+    object ICloneable.Clone()
+    {
+      return Clone();
     }
 
     public static bool IsNullOrEmpty(ShellString str)
