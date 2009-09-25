@@ -16,6 +16,20 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestClone()
+    {
+      var str = new ShellString("aaa");
+      var cloned = str.Clone();
+
+      Assert.IsFalse(object.ReferenceEquals(str, cloned));
+      Assert.AreEqual(str.Raw, cloned.Raw);
+
+      str.Raw = "hoge";
+
+      Assert.AreNotEqual(str.Raw, cloned.Raw);
+    }
+
+    [Test]
     public void TestIsNullOrEmpty()
     {
       Assert.IsTrue(ShellString.IsNullOrEmpty(null));
