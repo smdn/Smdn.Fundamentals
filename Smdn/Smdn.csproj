@@ -116,6 +116,7 @@
     <Compile Include="Smdn.Interop\FileManager.cs" />
     <Compile Include="Smdn\Action.cs" />
     <Compile Include="Smdn\Func.cs" />
+    <Compile Include="Smdn.IO\ShellString.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

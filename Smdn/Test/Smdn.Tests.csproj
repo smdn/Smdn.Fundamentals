@@ -70,6 +70,7 @@
     <Compile Include="Smdn.IO\InterruptStream.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
+    <Compile Include="Smdn.IO\ShellString.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
