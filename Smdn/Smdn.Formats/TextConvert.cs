@@ -302,49 +302,34 @@ namespace Smdn.Formats {
       return System.Convert.FromBase64String(str);
     }
 #else
-    private static ICryptoTransform   toBase64Transform = new   ToBase64Transform();
-    private static ICryptoTransform fromBase64Transfrom = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
-
     public static string ToBase64String(string str)
     {
-      lock (toBase64Transform) {
-        return TransformTo(str, toBase64Transform, Encoding.ASCII);
-      }
+      return TransformTo(str, new ToBase64Transform(), Encoding.ASCII);
     }
 
     public static string ToBase64String(string str, Encoding encoding)
     {
-      lock (toBase64Transform) {
-        return TransformTo(str, toBase64Transform, encoding);
-      }
+      return TransformTo(str, new ToBase64Transform(), encoding);
     }
 
     public static string ToBase64String(byte[] bytes)
     {
-      lock (toBase64Transform) {
-        return Encoding.ASCII.GetString(TransformBytes(bytes, toBase64Transform));
-      }
+      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToBase64Transform()));
     }
 
     public static string FromBase64String(string str)
     {
-      lock (fromBase64Transfrom) {
-        return TransformFrom(str, fromBase64Transfrom, Encoding.ASCII);
-      }
+      return TransformFrom(str, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), Encoding.ASCII);
     }
 
     public static string FromBase64String(string str, Encoding encoding)
     {
-      lock (fromBase64Transfrom) {
-        return TransformFrom(str, fromBase64Transfrom, encoding);
-      }
+      return TransformFrom(str, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), encoding);
     }
 
     public static byte[] FromBase64StringToByteArray(string str)
     {
-      lock (fromBase64Transfrom) {
-        return TransformBytes(Encoding.ASCII.GetBytes(str), fromBase64Transfrom);
-      }
+      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces));
     }
 #endif
 #endregion
@@ -394,49 +379,34 @@ namespace Smdn.Formats {
         return System.Convert.FromBase64String(str + (new String('=', padding)));
     }
 #else
-    private static ICryptoTransform   toRFC2152ModifiedBase64Transform = new   ToRFC2152ModifiedBase64Transform();
-    private static ICryptoTransform fromRFC2152ModifiedBase64Transfrom = new FromRFC2152ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
-
     public static string ToRFC2152ModifiedBase64String(string str)
     {
-      lock (toRFC2152ModifiedBase64Transform) {
-        return TransformTo(str, toRFC2152ModifiedBase64Transform, Encoding.ASCII);
-      }
+      return TransformTo(str, new ToRFC2152ModifiedBase64Transform(), Encoding.ASCII);
     }
 
     public static string ToRFC2152ModifiedBase64String(string str, Encoding encoding)
     {
-      lock (toRFC2152ModifiedBase64Transform) {
-        return TransformTo(str, toRFC2152ModifiedBase64Transform, encoding);
-      }
+      return TransformTo(str, new ToRFC2152ModifiedBase64Transform(), encoding);
     }
 
     public static string ToRFC2152ModifiedBase64String(byte[] bytes)
     {
-      lock (toRFC2152ModifiedBase64Transform) {
-        return Encoding.ASCII.GetString(TransformBytes(bytes, toRFC2152ModifiedBase64Transform));
-      }
+      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToRFC2152ModifiedBase64Transform()));
     }
 
     public static string FromRFC2152ModifiedBase64String(string str)
     {
-      lock (fromRFC2152ModifiedBase64Transfrom) {
-        return TransformFrom(str, fromRFC2152ModifiedBase64Transfrom, Encoding.ASCII);
-      }
+      return TransformFrom(str, new FromRFC2152ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), Encoding.ASCII);
     }
 
     public static string FromRFC2152ModifiedBase64String(string str, Encoding encoding)
     {
-      lock (fromRFC2152ModifiedBase64Transfrom) {
-        return TransformFrom(str, fromRFC2152ModifiedBase64Transfrom, encoding);
-      }
+      return TransformFrom(str, new FromRFC2152ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), encoding);
     }
 
     public static byte[] FromRFC2152ModifiedBase64StringToByteArray(string str)
     {
-      lock (fromRFC2152ModifiedBase64Transfrom) {
-        return TransformBytes(Encoding.ASCII.GetBytes(str), fromRFC2152ModifiedBase64Transfrom);
-      }
+      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromRFC2152ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces));
     }
 #endif
 #endregion
@@ -473,49 +443,34 @@ namespace Smdn.Formats {
       return FromRFC2152ModifiedBase64StringToByteArray(str.Replace('/', ','));
     }
 #else
-    private static ICryptoTransform   toRFC3501ModifiedBase64Transform = new   ToRFC3501ModifiedBase64Transform();
-    private static ICryptoTransform fromRFC3501ModifiedBase64Transfrom = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
-
     public static string ToRFC3501ModifiedBase64String(string str)
     {
-      lock (toRFC3501ModifiedBase64Transform) {
-        return TransformTo(str, toRFC3501ModifiedBase64Transform, Encoding.ASCII);
-      }
+      return TransformTo(str, new ToRFC3501ModifiedBase64Transform(), Encoding.ASCII);
     }
 
     public static string ToRFC3501ModifiedBase64String(string str, Encoding encoding)
     {
-      lock (toRFC3501ModifiedBase64Transform) {
-        return TransformTo(str, toRFC3501ModifiedBase64Transform, encoding);
-      }
+      return TransformTo(str, new ToRFC3501ModifiedBase64Transform(), encoding);
     }
 
     public static string ToRFC3501ModifiedBase64String(byte[] bytes)
     {
-      lock (toRFC3501ModifiedBase64Transform) {
-        return Encoding.ASCII.GetString(TransformBytes(bytes, toRFC3501ModifiedBase64Transform));
-      }
+      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToRFC3501ModifiedBase64Transform()));
     }
 
     public static string FromRFC3501ModifiedBase64String(string str)
     {
-      lock (fromRFC3501ModifiedBase64Transfrom) {
-        return TransformFrom(str, fromRFC3501ModifiedBase64Transfrom, Encoding.ASCII);
-      }
+      return TransformFrom(str, new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), Encoding.ASCII);
     }
 
     public static string FromRFC3501ModifiedBase64String(string str, Encoding encoding)
     {
-      lock (fromRFC3501ModifiedBase64Transfrom) {
-        return TransformFrom(str, fromRFC3501ModifiedBase64Transfrom, encoding);
-      }
+      return TransformFrom(str, new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), encoding);
     }
 
     public static byte[] FromRFC3501ModifiedBase64StringToByteArray(string str)
     {
-      lock (fromRFC3501ModifiedBase64Transfrom) {
-        return TransformBytes(Encoding.ASCII.GetBytes(str), fromRFC3501ModifiedBase64Transfrom);
-      }
+      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces));
     }
 #endif
 #endregion
@@ -652,49 +607,34 @@ namespace Smdn.Formats {
       return decoded.ToArray();
     }
 #else
-    private static ICryptoTransform   toQuotedPrintableTransform = new   ToQuotedPrintableTransform();
-    private static ICryptoTransform fromQuotedPrintableTransfrom = new FromQuotedPrintableTransform();
-
     public static string ToQuotedPrintableString(string str)
     {
-      lock (toQuotedPrintableTransform) {
-        return TransformTo(str, toQuotedPrintableTransform, Encoding.ASCII);
-      }
+      return TransformTo(str, new ToQuotedPrintableTransform(), Encoding.ASCII);
     }
     
     public static string ToQuotedPrintableString(string str, Encoding encoding)
     {
-      lock (toQuotedPrintableTransform) {
-        return TransformTo(str, toQuotedPrintableTransform, encoding);
-      }
+      return TransformTo(str, new ToQuotedPrintableTransform(), encoding);
     }
 
     public static string ToQuotedPrintableString(byte[] bytes)
     {
-      lock (toQuotedPrintableTransform) {
-        return Encoding.ASCII.GetString(TransformBytes(bytes, toQuotedPrintableTransform));
-      }
+      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToQuotedPrintableTransform()));
     }
 
     public static string FromQuotedPrintableString(string str)
     {
-      lock (fromQuotedPrintableTransfrom) {
-        return TransformFrom(str, fromQuotedPrintableTransfrom, Encoding.ASCII);
-      }
+      return TransformFrom(str, new FromQuotedPrintableTransform(), Encoding.ASCII);
     }
 
     public static string FromQuotedPrintableString(string str, Encoding encoding)
     {
-      lock (fromQuotedPrintableTransfrom) {
-        return TransformFrom(str, fromQuotedPrintableTransfrom, encoding);
-      }
+      return TransformFrom(str, new FromQuotedPrintableTransform(), encoding);
     }
 
     public static byte[] FromQuotedPrintableStringToByteArray(string str)
     {
-      lock (fromQuotedPrintableTransfrom) {
-        return TransformBytes(Encoding.ASCII.GetBytes(str), fromQuotedPrintableTransfrom);
-      }
+      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromQuotedPrintableTransform());
     }
 #endif
 #endregion
@@ -788,9 +728,6 @@ namespace Smdn.Formats {
 #endregion
 
 #region "PercentEncoding"
-    //private static ICryptoTransform   toBase64Transform = new   ToBase64Transform();
-    //private static ICryptoTransform fromBase64Transfrom = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
-
     public static string ToPercentEncodedString(string str)
     {
       return TransformTo(str, new ToPercentEncodedTransform(), Encoding.ASCII);
