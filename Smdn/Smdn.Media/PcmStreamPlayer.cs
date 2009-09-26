@@ -37,7 +37,7 @@ namespace Smdn.Media {
         System.Runtime.Remoting.ObjectHandle handle = null;
 
         if (Runtime.IsRunningOnWindows)
-          handle = Activator.CreateInstance("Smdn.Windows.Multimedia", "Smdn.Windows.Multimedia.PcmStreamPlayer");
+          handle = Activator.CreateInstance("Smdn.Windows.Multimedia", "Smdn.Windows.Multimedia.WaveformAudio.PcmStreamPlayer");
         else if (Runtime.IsRunningOnUnix)
           handle = Activator.CreateInstance("Smdn.Media.Alsa", "Smdn.Media.Alsa.PcmStreamPlayer");
 
