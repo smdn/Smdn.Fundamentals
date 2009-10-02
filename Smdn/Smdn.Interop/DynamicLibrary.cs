@@ -86,7 +86,14 @@ namespace Smdn.Interop {
       }
     }
 
+    protected abstract IntPtr GetFunctionPointer(int index);
     protected abstract IntPtr GetFunctionPointer(string symbol);
+
+    /// <remarks>TDelegate must be a delegate type</remarks>
+    public TDelegate GetFunction<TDelegate>(int index) where TDelegate : class /* instead of delegate */
+    {
+      return GetDelegateForFunctionPointer<TDelegate>(GetFunctionPointer(index));
+    }
 
     /// <remarks>TDelegate must be a delegate type</remarks>
     public TDelegate GetFunction<TDelegate>(string symbol) where TDelegate : class /* instead of delegate */

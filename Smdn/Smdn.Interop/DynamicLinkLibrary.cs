@@ -54,6 +54,19 @@ namespace Smdn.Interop {
       kernel32.FreeLibrary(Handle);
     }
 
+    protected override IntPtr GetFunctionPointer(int index)
+    {
+      if (index <= 0)
+        throw new ArgumentOutOfRangeException("index", "must be non-zero positive number");
+
+      var ptr = kernel32.GetProcAddress(Handle, new IntPtr(index & 0x0000ffff));
+
+      if (ptr == IntPtr.Zero)
+        throw new FunctionNotFoundException(string.Format("#{0}", index), base.Path);
+      else
+        return ptr;
+    }
+
     protected override IntPtr GetFunctionPointer(string name)
     {
       var ptr = kernel32.GetProcAddress(Handle, name);
