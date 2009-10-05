@@ -39,7 +39,7 @@ namespace Smdn.Mathematics {
     /// </summary>
     public static double Hypot(double x, double y)
     {
-      return Math.Sqrt(x * x, y * y);
+      return Math.Sqrt(x * x + y * y);
     }
 
     /// <summary>
