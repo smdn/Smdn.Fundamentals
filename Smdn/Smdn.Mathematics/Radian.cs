@@ -104,6 +104,16 @@ namespace Smdn.Mathematics {
 #endregion
 
 #region "operation"
+    public static Radian operator + (Radian rad)
+    {
+      return rad;
+    }
+
+    public static Radian operator - (Radian rad)
+    {
+      return new Radian(-rad.Value);
+    }
+
     public static Radian operator + (Radian x, Radian y)
     {
       return new Radian(x.Value + y.Value);
@@ -187,7 +197,7 @@ namespace Smdn.Mathematics {
 
     public static bool operator != (Radian x, Radian y)
     {
-      return x.Value == y.Value;
+      return x.Value != y.Value;
     }
 
     public override bool Equals(object obj)
