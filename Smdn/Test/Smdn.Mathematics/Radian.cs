@@ -16,25 +16,37 @@ namespace Smdn.Mathematics {
     [Test]
     public void TestQuadrant()
     {
-      var r = new Radian(1.0f);
+      var r = new Radian(1.0e-6f /*float.Epsilon*/);
 
       Assert.AreEqual(4, (Radian.Zero - r).Quadrant);
+      Assert.AreEqual(1, Radian.Zero.Quadrant);
       Assert.AreEqual(1, (Radian.Zero + r).Quadrant);
 
       Assert.AreEqual(1, (Radian.RightAngle - r).Quadrant);
+      Assert.AreEqual(2, Radian.RightAngle.Quadrant);
       Assert.AreEqual(2, (Radian.RightAngle + r).Quadrant);
 
       Assert.AreEqual(2, (Radian.StraightAngle - r).Quadrant);
+      Assert.AreEqual(3, Radian.StraightAngle.Quadrant);
       Assert.AreEqual(3, (Radian.StraightAngle + r).Quadrant);
 
       Assert.AreEqual(3, (Radian.StraightAngle + Radian.RightAngle - r).Quadrant);
+      Assert.AreEqual(4, (Radian.StraightAngle + Radian.RightAngle).Quadrant);
       Assert.AreEqual(4, (Radian.StraightAngle + Radian.RightAngle + r).Quadrant);
 
       Assert.AreEqual(4, (Radian.FullAngle - r).Quadrant);
+      Assert.AreEqual(1, Radian.FullAngle.Quadrant);
       Assert.AreEqual(1, (Radian.FullAngle + r).Quadrant);
 
       Assert.AreEqual(4, (2.0f * Radian.FullAngle - r).Quadrant);
       Assert.AreEqual(1, (2.0f * Radian.FullAngle + r).Quadrant);
+
+      try {
+        var quad = (new Radian(float.PositiveInfinity)).Quadrant;
+        Assert.Fail("NotFiniteNumberException not thrown");
+      }
+      catch (NotFiniteNumberException) {
+      }
     }
 
     [Test]
@@ -54,6 +66,39 @@ namespace Smdn.Mathematics {
 
         Assert.IsTrue((Radian.Zero <= reg && reg < Radian.FullAngle));
       }
+
+      foreach (var f in new[] {float.PositiveInfinity, float.NegativeInfinity, float.NaN}) {
+        try {
+          var rad = (new Radian(f)).Regularized;
+          Assert.Fail("NotFiniteNumberException not thrown");
+        }
+        catch (NotFiniteNumberException) {
+        }
+      }
+    }
+
+    [Test]
+    public void TestFloatValueProperties()
+    {
+      Assert.IsFalse((new Radian(float.PositiveInfinity)).IsNaN);
+      Assert.IsTrue((new Radian(float.PositiveInfinity)).IsInfinity);
+      Assert.IsTrue((new Radian(float.PositiveInfinity)).IsPositiveInfinity);
+      Assert.IsFalse((new Radian(float.PositiveInfinity)).IsNegativeInfinity);
+
+      Assert.IsFalse((new Radian(float.NegativeInfinity)).IsNaN);
+      Assert.IsTrue((new Radian(float.NegativeInfinity)).IsInfinity);
+      Assert.IsFalse((new Radian(float.NegativeInfinity)).IsPositiveInfinity);
+      Assert.IsTrue((new Radian(float.NegativeInfinity)).IsNegativeInfinity);
+
+      Assert.IsTrue((new Radian(float.NaN)).IsNaN);
+      Assert.IsFalse((new Radian(float.NaN)).IsInfinity);
+      Assert.IsFalse((new Radian(float.NaN)).IsPositiveInfinity);
+      Assert.IsFalse((new Radian(float.NaN)).IsNegativeInfinity);
+
+      Assert.IsFalse(Radian.Zero.IsNaN);
+      Assert.IsFalse(Radian.Zero.IsInfinity);
+      Assert.IsFalse(Radian.Zero.IsPositiveInfinity);
+      Assert.IsFalse(Radian.Zero.IsNegativeInfinity);
     }
 
     [Test]
