@@ -41,10 +41,31 @@ namespace Smdn.Mathematics {
 
     public float Value;
 
+    public bool IsNaN {
+      get { return float.IsNaN(Value); }
+    }
+
+    public bool IsInfinity {
+      get { return float.IsInfinity(Value); }
+    }
+
+    public bool IsPositiveInfinity {
+      get { return float.IsPositiveInfinity(Value); }
+    }
+
+    public bool IsNegativeInfinity {
+      get { return float.IsNegativeInfinity(Value); }
+    }
+
     public Radian Regularized {
       get
       {
         var val = Value;
+
+        if (IsInfinity)
+          throw new ArithmeticException("value is infinity");
+        if (IsNaN)
+          throw new ArithmeticException("value is NaN");
 
         // XXX
         if (val < 0.0f) {
