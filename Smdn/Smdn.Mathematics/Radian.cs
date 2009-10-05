@@ -121,6 +121,21 @@ namespace Smdn.Mathematics {
       return (this / Radian.PI) * 180.0f;
     }
 
+    public static float ToDegree(float radian)
+    {
+      return (new Radian(radian)).ToDegree();
+    }
+
+    public float ToDegreeRegularized()
+    {
+      return Regularized.ToDegree();
+    }
+
+    public static float ToDegreeRegularized(float radian)
+    {
+      return (new Radian(radian)).ToDegreeRegularized();
+    }
+
     public float ToSingle()
     {
       return Value;
