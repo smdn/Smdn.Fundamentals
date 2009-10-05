@@ -5,6 +5,15 @@ namespace Smdn.Mathematics {
   [TestFixture]
   public class OperationsTest {
     [Test]
+    public void TestHypot()
+    {
+      Assert.AreEqual(5.0f, Operations.Hypot(4.0f, 3.0f));
+      Assert.AreEqual(5.0f, Operations.Hypot(3.0f, 4.0f));
+
+      Assert.AreEqual(Math.Sqrt(2.0), Operations.Hypot(1.0, 1.0));
+    }
+
+    [Test]
     public void TestGCD()
     {
       Assert.AreEqual(3, Operations.GCD(3, 0));
