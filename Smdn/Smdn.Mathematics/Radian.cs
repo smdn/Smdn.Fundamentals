@@ -63,12 +63,13 @@ namespace Smdn.Mathematics {
         var val = Value;
 
         if (IsInfinity)
-          throw new ArithmeticException("value is infinity");
+          throw new NotFiniteNumberException("value is infinity");
         if (IsNaN)
-          throw new ArithmeticException("value is NaN");
+          throw new NotFiniteNumberException("value is NaN");
 
         // XXX
         if (val < 0.0f) {
+          // negative value
           for (;;) {
             if (0.0f <= val)
               return new Radian(val);
@@ -77,6 +78,7 @@ namespace Smdn.Mathematics {
           }
         }
         else {
+          // positive value
           for (;;) {
             if (val < FullAngle.Value)
               return new Radian(val);
@@ -88,8 +90,19 @@ namespace Smdn.Mathematics {
     }
 
     public int Quadrant {
-      // XXX
-      get { return (int)(Regularized / RightAngle) + 1; }
+      get
+      {
+        var reg = Regularized;
+
+        if (reg < RightAngle)
+          return 1;
+        else if (reg < StraightAngle)
+          return 2;
+        else if (reg < (StraightAngle + RightAngle))
+          return 3;
+        else /*if (reg < FullAngle)*/
+          return 4;
+      }
     }
 
     public Radian(float @value)
