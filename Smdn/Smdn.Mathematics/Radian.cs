@@ -141,6 +141,11 @@ namespace Smdn.Mathematics {
       return Value;
     }
 
+    public double ToDouble()
+    {
+      return (double)Value;
+    }
+
     public static explicit operator float(Radian rad)
     {
       return rad.Value;
@@ -149,6 +154,16 @@ namespace Smdn.Mathematics {
     public static explicit operator Radian(float val)
     {
       return new Radian(val);
+    }
+
+    public static explicit operator double(Radian rad)
+    {
+      return (double)rad.Value;
+    }
+
+    public static explicit operator Radian(double val)
+    {
+      return new Radian((float)val);
     }
 #endregion
 
