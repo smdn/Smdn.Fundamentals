@@ -27,6 +27,22 @@ using System;
 namespace Smdn.Mathematics {
   public class Operations {
     /// <summary>
+    /// length of the hypotenuse of a triangle
+    /// </summary>
+    public static float Hypot(float x, float y)
+    {
+      return (float)Math.Sqrt((double)(x * x + y * y));
+    }
+
+    /// <summary>
+    /// length of the hypotenuse of a triangle
+    /// </summary>
+    public static double Hypot(double x, double y)
+    {
+      return Math.Sqrt(x * x, y * y);
+    }
+
+    /// <summary>
     /// greatest common divisor of m and n
     /// </summary>
     public static int GCD(int m, int n)
