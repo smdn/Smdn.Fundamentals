@@ -119,6 +119,7 @@
     <Compile Include="Smdn\Func.cs" />
     <Compile Include="Smdn.IO\ShellString.cs" />
     <Compile Include="Smdn.Mathematics\Radian.cs" />
+    <Compile Include="Smdn.Mathematics\Polar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
