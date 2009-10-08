@@ -86,6 +86,11 @@ namespace Smdn.Mathematics {
 #endregion
 
 #region "operation"
+    public Polar Rotate(Radian angle)
+    {
+      return new Polar(Radius, Angle + angle);
+    }
+
     public static Polar operator + (Polar pol)
     {
       return new Polar(pol.Radius, pol.Angle);
