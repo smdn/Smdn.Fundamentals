@@ -67,6 +67,7 @@ namespace Smdn.Mathematics {
     }
 
     public Polar(float radius, Radian angle)
+      : this()
     {
       this.Radius = radius;
       this.Angle = angle;
