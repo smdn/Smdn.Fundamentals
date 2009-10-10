@@ -32,12 +32,42 @@ namespace Smdn {
     /*
      * class members
      */
-    public static readonly MimeType TextPlain                   = new MimeType("text", "plain");
-    public static readonly MimeType MultipartAlternative        = new MimeType("multipart", "alternative");
-    public static readonly MimeType MultipartMixed              = new MimeType("multipart", "mixed");
-    public static readonly MimeType ApplicationOctetStream      = new MimeType("application", "octet-stream");
+    public static readonly MimeType TextPlain                   = MimeType.CreateTextType("plain");
+    public static readonly MimeType MultipartAlternative        = MimeType.CreateMultipartType("alternative");
+    public static readonly MimeType MultipartMixed              = MimeType.CreateMultipartType("mixed");
+    public static readonly MimeType ApplicationOctetStream      = MimeType.CreateApplicationType("octet-stream");
 
     private const string defaultMimeTypesFile = "/etc/mime.types";
+
+    public static MimeType CreateTextType(string subtype)
+    {
+      return new MimeType("text", subtype);
+    }
+
+    public static MimeType CreateImageType(string subtype)
+    {
+      return new MimeType("image", subtype);
+    }
+
+    public static MimeType CreateAudioType(string subtype)
+    {
+      return new MimeType("audio", subtype);
+    }
+
+    public static MimeType CreateVideoType(string subtype)
+    {
+      return new MimeType("video", subtype);
+    }
+
+    public static MimeType CreateApplicationType(string subtype)
+    {
+      return new MimeType("application", subtype);
+    }
+
+    public static MimeType CreateMultipartType(string subtype)
+    {
+      return new MimeType("multipart", subtype);
+    }
 
     public static MimeType GetMimeTypeByExtension(string extension)
     {
@@ -80,7 +110,7 @@ namespace Smdn {
 
       return null;
     }
-    
+
     private static MimeType GetMimeTypeByExtensionWin(string extension)
     {
       var key = Registry.ClassesRoot.OpenSubKey(extension);
