@@ -27,6 +27,22 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class PathUtils {
+    public static string ChangeFileName(string path, string newFileName)
+    {
+      if (newFileName == null)
+        throw new ArgumentNullException("newFileName");
+
+      var dir = Path.GetDirectoryName(path);
+      var ext = Path.GetExtension(path);
+
+      return Path.Combine(dir, newFileName + ext);
+    }
+
+    public static string ChangeDirectoryName(string path, string newDirectoryName)
+    {
+      return Path.Combine(newDirectoryName, Path.GetFileName(path));
+    }
+
     public static bool ArePathEqual(string pathX, string pathY)
     {
       pathX = Path.GetFullPath(pathX);
