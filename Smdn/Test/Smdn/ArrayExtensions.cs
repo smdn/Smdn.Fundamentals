@@ -99,6 +99,7 @@ namespace Smdn {
       var array3 = new[] {0, 1, 2, 3, 4};
       var array4 = new[] {0, 1, 2, 3, 4, 6};
 
+      Assert.IsTrue(ArrayExtensions.EqualsAll((int[])null, (int[])null), "compare with null and null");
       Assert.IsFalse(ArrayExtensions.EqualsAll(array1, null), "compare with null 1");
       Assert.IsFalse(ArrayExtensions.EqualsAll(null, array1), "compare with null 2");
 
@@ -120,6 +121,7 @@ namespace Smdn {
       var array3 = new[] {0, 1, 2, 3, 4};
       var array4 = new[] {0, 1, 2, 3, 4, 6};
 
+      Assert.IsTrue(ArrayExtensions.EqualsAll((int[])null, (int[])null, EqualityComparer<int>.Default), "compare with null and null");
       Assert.IsFalse(ArrayExtensions.EqualsAll(array1, null, EqualityComparer<int>.Default), "compare with null 1");
       Assert.IsFalse(ArrayExtensions.EqualsAll(null, array1, EqualityComparer<int>.Default), "compare with null 2");
 
