@@ -28,11 +28,55 @@ using System.Collections.Generic;
 
 namespace Smdn.Collections {
   public static class IEnumerableExtensions {
+    public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other) where T : IEquatable<T>
+    {
+      if (enumerable == null && other == null)
+        return true;
+      else if (enumerable == null || other == null)
+        return false;
+
+      var enumeratorThis  = enumerable.GetEnumerator();
+      var enumeratorOther = other.GetEnumerator();
+
+      while (enumeratorThis.MoveNext()) {
+        if (!enumeratorOther.MoveNext())
+          return false;
+        else if (!enumeratorThis.Current.Equals(enumeratorOther.Current))
+          return false;
+      }
+
+      return !enumeratorOther.MoveNext();
+    }
+
+    public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other, IEqualityComparer<T> comparer)
+    {
+      if (comparer == null)
+        throw new ArgumentNullException("comparer");
+
+      if (enumerable == null && other == null)
+        return true;
+      else if (enumerable == null || other == null)
+        return false;
+
+      var enumeratorThis  = enumerable.GetEnumerator();
+      var enumeratorOther = other.GetEnumerator();
+
+      while (enumeratorThis.MoveNext()) {
+        if (!enumeratorOther.MoveNext())
+          return false;
+        else if (!comparer.Equals(enumeratorThis.Current, enumeratorOther.Current))
+          return false;
+      }
+
+      return !enumeratorOther.MoveNext();
+    }
+
     public static IEnumerable<TOutput> ConvertAll<TInput, TOutput>(this IEnumerable<TInput> enumerable, Converter<TInput, TOutput> converter)
     {
-      foreach (var input in enumerable) {
-        yield return converter(input);
-      }
+      var enumerator = enumerable.GetEnumerator();
+
+      while (enumerator.MoveNext())
+        yield return converter(enumerator.Current);
     }
 
     public static int Count(this IEnumerable enumerable)
@@ -42,12 +86,10 @@ namespace Smdn.Collections {
 
       // XXX
       var count = 0;
+      var enumerator = enumerable.GetEnumerator();
 
-#pragma warning disable 0168 // declared but never used
-      foreach (var element in enumerable) {
+      while (enumerator.MoveNext())
         count++;
-      }
-#pragma warning restore 0168
 
       return count;
     }
