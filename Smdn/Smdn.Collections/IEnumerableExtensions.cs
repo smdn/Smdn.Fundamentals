@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
@@ -34,7 +35,7 @@ namespace Smdn.Collections {
       }
     }
 
-    public static int Count<T>(this IEnumerable<T> enumerable)
+    public static int Count(this IEnumerable enumerable)
     {
       if (enumerable is System.Collections.ICollection)
         return (enumerable as System.Collections.ICollection).Count;
