@@ -121,6 +121,9 @@
     <Compile Include="Smdn.Mathematics\Radian.cs" />
     <Compile Include="Smdn.Mathematics\Polar.cs" />
     <Compile Include="Smdn\MimeType.cs" />
+    <Compile Include="Smdn.IO\DirectoryInfoExtensions.cs" />
+    <Compile Include="Smdn.IO\DirectoryUtils.cs" />
+    <Compile Include="Smdn\IEnumerableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
