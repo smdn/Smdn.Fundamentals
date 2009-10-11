@@ -33,5 +33,22 @@ namespace Smdn.Collections {
         yield return converter(input);
       }
     }
+
+    public static int Count<T>(this IEnumerable<T> enumerable)
+    {
+      if (enumerable is System.Collections.ICollection)
+        return (enumerable as System.Collections.ICollection).Count;
+
+      // XXX
+      var count = 0;
+
+#pragma warning disable 0168 // declared but never used
+      foreach (var element in enumerable) {
+        count++;
+      }
+#pragma warning restore 0168
+
+      return count;
+    }
   }
 }
