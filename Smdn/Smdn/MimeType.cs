@@ -159,9 +159,19 @@ namespace Smdn {
       this.SubType = subType;
     }
 
+    public bool TypeEquals(MimeType mimeType)
+    {
+      return TypeEquals(mimeType.Type);
+    }
+
     public bool TypeEquals(string type)
     {
       return string.Equals(Type, type, StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    public bool SubTypeEquals(MimeType mimeType)
+    {
+      return SubTypeEquals(mimeType.SubType);
     }
 
     public bool SubTypeEquals(string subType)
