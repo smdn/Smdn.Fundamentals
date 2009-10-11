@@ -5,6 +5,41 @@ namespace Smdn.IO {
   [TestFixture]
   public class PathUtilsTests {
     [Test]
+    public void TestChangeFileName()
+    {
+      if (Runtime.IsRunningOnUnix) {
+        Assert.AreEqual("/var/log/renamed.log", PathUtils.ChangeFileName("/var/log/test.log", "renamed"));
+        Assert.AreEqual("../renamed.log", PathUtils.ChangeFileName("../test.log", "renamed"));
+        Assert.AreEqual("/var/log/renamed", PathUtils.ChangeFileName("/var/log/test", "renamed"));
+      }
+      else {
+        Assert.AreEqual(@"C:\WINDOWS\renamed.ini", PathUtils.ChangeFileName(@"C:\WINDOWS\boot.ini", "renamed"));
+        Assert.AreEqual(@"..\renamed.ini", PathUtils.ChangeFileName(@"..\boot.ini", "renamed"));
+        Assert.AreEqual(@"C:\WINDOWS\renamed", PathUtils.ChangeFileName(@"C:\WINDOWS\boot", "renamed"));
+      }
+
+      Assert.AreEqual(@"renamed.ini", PathUtils.ChangeFileName(@"boot.ini", "renamed"));
+      Assert.AreEqual("renamed", PathUtils.ChangeFileName("test", "renamed"));
+    }
+
+    [Test]
+    public void TestChangeDirectoryName()
+    {
+      if (Runtime.IsRunningOnUnix) {
+        Assert.AreEqual("/renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "/renamed"));
+        Assert.AreEqual("../renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "../renamed"));
+        Assert.AreEqual("test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", string.Empty));
+        Assert.AreEqual("./test.log", PathUtils.ChangeDirectoryName("test.log", "./"));
+      }
+      else {
+        Assert.AreEqual(@"C:\renamed\boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", @"C:\renamed"));
+        Assert.AreEqual(@"..\renamed\boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", @"..\renamed"));
+        Assert.AreEqual("boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", string.Empty));
+        Assert.AreEqual(@".\boot.ini", PathUtils.ChangeDirectoryName(@"boot.ini", @".\"));
+      }
+    }
+
+    [Test]
     public void TestArePathEqual()
     {
       if (Runtime.IsRunningOnUnix) {
