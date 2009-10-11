@@ -69,21 +69,23 @@ namespace Smdn {
       return new MimeType("multipart", subtype);
     }
 
-    public static MimeType GetMimeTypeByExtension(string extension)
+    public static MimeType GetMimeTypeByExtension(string extensionOrPath)
     {
-      return GetMimeTypeByExtension(extension, defaultMimeTypesFile);
+      return GetMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
     }
 
-    public static MimeType GetMimeTypeByExtension(string extension, string mimeTypesFile)
+    public static MimeType GetMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
     {
       if (Runtime.IsRunningOnWindows)
-        return GetMimeTypeByExtensionWin(extension);
+        return GetMimeTypeByExtensionWin(extensionOrPath);
       else
-        return GetMimeTypeByExtensionUnix(mimeTypesFile, extension);
+        return GetMimeTypeByExtensionUnix(mimeTypesFile, extensionOrPath);
     }
 
-    private static MimeType GetMimeTypeByExtensionUnix(string mimeTypesFile, string extension)
+    private static MimeType GetMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
     {
+      var extension = Path.GetExtension(extensionOrPath);
+
       if (extension.StartsWith("."))
         extension = extension.Substring(1);
 
@@ -111,8 +113,9 @@ namespace Smdn {
       return null;
     }
 
-    private static MimeType GetMimeTypeByExtensionWin(string extension)
+    private static MimeType GetMimeTypeByExtensionWin(string extensionOrPath)
     {
+      var extension = Path.GetExtension(extensionOrPath);
       var key = Registry.ClassesRoot.OpenSubKey(extension);
 
       if (key == null)
