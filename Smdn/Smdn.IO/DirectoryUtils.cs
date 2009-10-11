@@ -26,6 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using Smdn.Collections;
+
 namespace Smdn.IO {
   public static class DirectoryUtils {
     public static IEnumerable<string> GetFiles(string directory, Predicate<string> searchPattern)

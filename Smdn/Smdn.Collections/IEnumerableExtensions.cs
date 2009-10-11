@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Smdn {
+namespace Smdn.Collections {
   public static class IEnumerableExtensions {
     public static IEnumerable<TOutput> ConvertAll<TInput, TOutput>(this IEnumerable<TInput> enumerable, Converter<TInput, TOutput> converter)
     {
