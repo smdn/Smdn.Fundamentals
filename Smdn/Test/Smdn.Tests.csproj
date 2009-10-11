@@ -73,6 +73,7 @@
     <Compile Include="Smdn.IO\ShellString.cs" />
     <Compile Include="Smdn.Mathematics\Radian.cs" />
     <Compile Include="Smdn.Mathematics\Polar.cs" />
+    <Compile Include="Smdn\MimeType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
