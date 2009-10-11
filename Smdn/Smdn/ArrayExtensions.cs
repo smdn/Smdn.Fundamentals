@@ -123,7 +123,9 @@ namespace Smdn {
 
     public static bool EqualsAll<T>(this T[] array, T[] other) where T : IEquatable<T>
     {
-      if (array == null || other == null)
+      if (array == null && other == null)
+        return true;
+      else if (array == null || other == null)
         return false;
 
       if (array.Length != other.Length)
@@ -142,7 +144,9 @@ namespace Smdn {
       if (comparer == null)
         throw new ArgumentNullException("comparer");
 
-      if (array == null || other == null)
+      if (array == null && other == null)
+        return true;
+      else if (array == null || other == null)
         return false;
 
       if (array.Length != other.Length)
