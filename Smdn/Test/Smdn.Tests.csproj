@@ -41,6 +41,7 @@
     <Folder Include="Smdn.Mathematics\" />
     <Folder Include="Smdn.Interop\" />
     <Folder Include="Smdn.Collections\" />
+    <Folder Include="Smdn.Threading\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn\UInt48.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Smdn.Mathematics\Polar.cs" />
     <Compile Include="Smdn\MimeType.cs" />
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
+    <Compile Include="Smdn.Threading\Parallel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
