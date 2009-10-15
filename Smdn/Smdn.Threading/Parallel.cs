@@ -67,7 +67,7 @@ namespace Smdn.Threading {
     public static void ForEach<T>(IEnumerable<T> enumerable, Action<T> action)
     {
       if (enumerable == null)
-        throw new ArgumentNullException();
+        throw new ArgumentNullException("enumerable");
 
       var count = enumerable.Count();
 
