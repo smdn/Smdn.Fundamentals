@@ -30,6 +30,40 @@ using Smdn.Collections;
 
 namespace Smdn.Threading {
   public static class Parallel {
+    public static void For(int fromInclusive, int toExclusive, Action<int> action)
+    {
+      if (fromInclusive == toExclusive)
+        return;
+
+      var count = toExclusive - fromInclusive;
+
+      if (count <= 0)
+        return;
+      else if (action == null)
+        throw new ArgumentNullException("action");
+
+      if (count == 1) {
+        action(fromInclusive);
+      }
+      else {
+        using (var wait = new AutoResetEvent(false)) {
+          for (var i = fromInclusive; i < toExclusive; i++) {
+            ThreadPool.QueueUserWorkItem(delegate(object state) {
+              try {
+                action((int)state);
+              }
+              finally {
+                if (Interlocked.Decrement(ref count) == 0)
+                  wait.Set();
+              }
+            }, i);
+          }
+
+          wait.WaitOne();
+        }
+      }
+    }
+
     public static void ForEach<T>(IEnumerable<T> enumerable, Action<T> action)
     {
       if (enumerable == null)
@@ -49,10 +83,13 @@ namespace Smdn.Threading {
         using (var wait = new AutoResetEvent(false)) {
           foreach (var e in enumerable) {
             ThreadPool.QueueUserWorkItem(delegate(object state) {
-              action((T)state);
-
-              if (Interlocked.Decrement(ref count) == 0)
-                wait.Set();
+              try {
+                action((T)state);
+              }
+              finally {
+                if (Interlocked.Decrement(ref count) == 0)
+                  wait.Set();
+              }
             }, e);
           }
 
