@@ -46,5 +46,40 @@ namespace Smdn.Collections {
       Assert.AreEqual(5, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Count());
       Assert.AreEqual(5, ((IEnumerable)new ArrayList(new[] {0, 1, 2, 3, 4})).Count());
     }
+
+    private static IEnumerable<int> GetEnumerator()
+    {
+      yield return 0;
+      yield return 1;
+      yield return 2;
+      yield return 3;
+      yield return 4;
+    }
+
+    private static IEnumerable<int> GetEmptyEnumerator()
+    {
+      yield break;
+    }
+
+    [Test]
+    public void TestFirst()
+    {
+      Assert.AreEqual(0, ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).First());
+      Assert.AreEqual(0, GetEnumerator().First());
+
+      try {
+        ((IEnumerable<int>)new int[] {}).First();
+        Assert.Fail("InvalidOperationException not thrown");
+      }
+      catch (InvalidOperationException) {
+      }
+
+      try {
+        GetEmptyEnumerator().First();
+        Assert.Fail("InvalidOperationException not thrown");
+      }
+      catch (InvalidOperationException) {
+      }
+    }
   }
 }

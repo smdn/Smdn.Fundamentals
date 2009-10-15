@@ -93,5 +93,25 @@ namespace Smdn.Collections {
 
       return count;
     }
+
+    public static T First<T>(this IEnumerable<T> enumerable)
+    {
+      if (enumerable is IList<T>) {
+        var list = enumerable as IList<T>;
+
+        if (0 < list.Count)
+          return list[0];
+        else
+          throw new InvalidOperationException("sequence is empty");
+      }
+      else {
+        var enumerator = enumerable.GetEnumerator();
+
+        if (enumerator.MoveNext())
+          return enumerator.Current;
+        else
+          throw new InvalidOperationException("sequence is empty");
+      }
+    }
   }
 }
