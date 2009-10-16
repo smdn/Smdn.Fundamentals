@@ -120,5 +120,33 @@ namespace Smdn {
 
       return str;
     }
+
+    public static int Count(this string str, char c)
+    {
+      var chars = str.ToCharArray();
+      var count = 0;
+
+      for (var index = 0; index < chars.Length; index++) {
+        if (chars[index] == c)
+          count++;
+      }
+
+      return count;
+    }
+
+    public static int Count(this string str, string substr)
+    {
+      if (string.IsNullOrEmpty(substr))
+        throw new ArgumentException("length must be greater than 1", "substr");
+
+      for (int count = 0, lastIndex = 0;; count++) {
+        var index = str.IndexOf(substr, lastIndex);
+
+        if (index < 0)
+          return count;
+        else
+          lastIndex = index + substr.Length;
+      }
+    }
   }
 }
