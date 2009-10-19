@@ -29,5 +29,20 @@ namespace Smdn {
         return string.Format("{0}{1}", i, matched.ToUpper());
       }), "replace strings");
     }
+
+    [Test]
+    public void TestCount()
+    {
+      Assert.AreEqual(0, "abcdefg".Count("abcdefgh"));
+      Assert.AreEqual(1, "abcdefg".Count("abcdefg"));
+      Assert.AreEqual(1, "abcdefg".Count("abcdef"));
+
+      Assert.AreEqual(2, "xxyyxyyxx".Count("xx"));
+      Assert.AreEqual(2, "xxyyxyyxx".Count("xy"));
+      Assert.AreEqual(0, "xxyyxyyxx".Count("xxx"));
+
+      Assert.AreEqual(5, "xxyyxyyxx".Count('x'));
+      Assert.AreEqual(4, "xxyyxyyxx".Count('y'));
+    }
   }
 }
