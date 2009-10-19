@@ -44,7 +44,6 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Media\SoundPlayerUtils.cs" />
     <Compile Include="Smdn.Threading\ProcessLock.cs" />
     <Compile Include="Smdn\EnvironmentUtils.cs" />
     <Compile Include="System.Runtime.CompilerServices\ExtensionAttribute.cs" />
@@ -81,10 +80,8 @@
     <Compile Include="Smdn.Mathematics\Matrix4D.cs" />
     <Compile Include="Smdn.Mathematics\Vector3D.cs" />
     <Compile Include="Smdn.Mathematics\Vector4D.cs" />
-    <Compile Include="Smdn.Interop\mmsystem.h.cs" />
     <Compile Include="Smdn.Interop\HeapMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
-    <Compile Include="Smdn.Media\PcmStreamPlayer.cs" />
     <Compile Include="Smdn.Interop\CoTaskMemoryBuffer.cs" />
     <Compile Include="Smdn.Interop\GlobalMemoryBuffer.cs" />
     <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
@@ -106,7 +103,6 @@
     <Compile Include="Smdn.IO\ExtendStream.cs" />
     <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
     <Compile Include="Smdn.IO\InterruptStream.cs" />
-    <Compile Include="Smdn.Media\NullPcmStreamPlayer.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
@@ -126,6 +122,7 @@
     <Compile Include="Smdn.IO\DirectoryUtils.cs" />
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
+    <Compile Include="Smdn.Media\mmsystem.h.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -144,7 +141,6 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Interop\" />
-    <Folder Include="Smdn.Media\" />
     <Folder Include="Mono.Simd\" />
     <Folder Include="Smdn.Collections\" />
     <Folder Include="Smdn.Threading\" />

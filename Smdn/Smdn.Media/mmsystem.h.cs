@@ -26,7 +26,7 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace Smdn.Interop {
+namespace Smdn.Media {
   [CLSCompliant(false), Flags]
   public enum WAVE_FORMAT : uint {
     WAVE_INVALIDFORMAT  = 0,
