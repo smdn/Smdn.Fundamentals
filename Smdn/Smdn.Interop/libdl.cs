@@ -26,7 +26,6 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
-  [CLSCompliant(false)]
   public static class libdl {
     private const string dllname = "libdl";
 
