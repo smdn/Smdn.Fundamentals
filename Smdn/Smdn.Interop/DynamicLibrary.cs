@@ -25,7 +25,7 @@
 using System;
 
 namespace Smdn.Interop {
-  public abstract class DynamicLibrary : IDisposable {
+  public abstract class DynamicLibrary : IEquatable<DynamicLibrary>, IDisposable {
 #region "class members"
     public static DynamicLibrary Load(string path)
     {
@@ -117,6 +117,27 @@ namespace Smdn.Interop {
     {
       if (handle == IntPtr.Zero)
         throw new ObjectDisposedException(GetType().FullName);
+    }
+
+    public bool Equals(DynamicLibrary other)
+    {
+      if (other == null)
+        return false;
+      else
+        return this.Handle == other.Handle;
+    }
+
+    public override bool Equals(object obj)
+    {
+      if (obj is DynamicLibrary)
+        return Equals(obj as DynamicLibrary);
+      else
+        return false;
+    }
+
+    public override int GetHashCode ()
+    {
+      return Handle.GetHashCode();
     }
 
     public override string ToString()
