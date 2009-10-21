@@ -43,5 +43,10 @@ namespace Smdn.Interop {
     [DllImport(dllname, SetLastError = true)] public static extern IntPtr HeapReAlloc(IntPtr hHeap, uint dwFlags, IntPtr lpMem, uint dwBytes);
     [DllImport(dllname, SetLastError = true)] public static extern bool HeapFree(IntPtr hHeap, uint dwFlags, IntPtr lpMem);
     [DllImport(dllname, SetLastError = true)] public static extern uint HeapSize(IntPtr hHeap, int flags, IntPtr lpMem);
+
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr LocalFree(IntPtr /*HLOCAL*/ hMem);
+    [DllImport(dllname, SetLastError = true)] public static extern IntPtr LocalLock(IntPtr /*HLOCAL*/ hMem);
+    [DllImport(dllname, SetLastError = true)] public static extern bool LocalUnlock(IntPtr /*HLOCAL*/ hMem);
+    [DllImport(dllname, SetLastError = true)] public static extern uint LocalSize(IntPtr /*HLOCAL*/ hMem);
   }
 }

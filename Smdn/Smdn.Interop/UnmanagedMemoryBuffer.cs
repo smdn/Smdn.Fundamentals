@@ -32,6 +32,63 @@ namespace Smdn.Interop {
     public delegate IntPtr ReAllocProc(IntPtr ptr, int cb);
     public delegate void FreeProc(IntPtr ptr);
 
+    /*
+     * class members
+     */
+    public static IntPtr UncheckedMemCpy(IntPtr dest, IntPtr src, int n)
+    {
+      if (Runtime.IsRunningOnWindows)
+        return msvcrt.memcpy(dest, src, n);
+      else
+        return libc.memcpy(dest, src, n);
+    }
+
+    [CLSCompliant(false)]
+    public static unsafe void* UncheckedMemCpy(void* dest, void* src, int n)
+    {
+      if (Runtime.IsRunningOnWindows)
+        return msvcrt.memcpy(dest, src, n);
+      else
+        return libc.memcpy(dest, src, n);
+    }
+
+    public static IntPtr UncheckedMemMove(IntPtr dest, IntPtr src, int n)
+    {
+      if (Runtime.IsRunningOnWindows)
+        return msvcrt.memmove(dest, src, n);
+      else
+        return libc.memmove(dest, src, n);
+    }
+
+    [CLSCompliant(false)]
+    public static unsafe void* UncheckedMemMove(void* dest, void* src, int n)
+    {
+      if (Runtime.IsRunningOnWindows)
+        return msvcrt.memmove(dest, src, n);
+      else
+        return libc.memmove(dest, src, n);
+    }
+
+    public static IntPtr UncheckedMemSet(IntPtr s, int c, int n)
+    {
+      if (Runtime.IsRunningOnWindows)
+        return msvcrt.memset(s, c, n);
+      else
+        return libc.memset(s, c, n);
+    }
+
+    [CLSCompliant(false)]
+    public static unsafe void* UncheckedMemMove(void* s, int c, int n)
+    {
+      if (Runtime.IsRunningOnWindows)
+        return msvcrt.memset(s, c, n);
+      else
+        return libc.memset(s, c, n);
+    }
+
+    /*
+     * instance members
+     */
     public IntPtr Ptr {
       get
       {
@@ -54,6 +111,26 @@ namespace Smdn.Interop {
         CheckDisposed();
         return realloc != null;
       }
+    }
+
+    protected UnmanagedMemoryBuffer(IntPtr ptr, int cb, FreeProc free)
+      : this(ptr, cb, null, free)
+    {
+    }
+
+    protected UnmanagedMemoryBuffer(IntPtr ptr, int cb, ReAllocProc realloc, FreeProc free)
+    {
+      if (ptr == IntPtr.Zero)
+        throw new ArgumentException("ptr == NULL");
+      if (free == null)
+        throw new ArgumentNullException("free");
+      if (cb < 0)
+        throw new ArgumentOutOfRangeException("cb must be greater than or equals to 0");
+
+      this.ptr     = ptr;
+      this.size    = cb;
+      this.realloc = realloc;
+      this.free    = free;
     }
 
     public UnmanagedMemoryBuffer(int cb, AllocProc alloc, FreeProc free)
