@@ -79,6 +79,16 @@ namespace Smdn.Collections {
         yield return converter(enumerator.Current);
     }
 
+    public static T[] ToArray<T>(this IEnumerable<T> enumerable)
+    {
+      if (enumerable is List<T>)
+        return (enumerable as List<T>).ToArray();
+      else if (enumerable is T[])
+        return (enumerable as T[]);
+
+      return (new List<T>(enumerable)).ToArray();
+    }
+
     public static int Count(this IEnumerable enumerable)
     {
       if (enumerable is System.Collections.ICollection)

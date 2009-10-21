@@ -81,5 +81,16 @@ namespace Smdn.Collections {
       catch (InvalidOperationException) {
       }
     }
+
+    [Test]
+    public void TestToArray()
+    {
+      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
+                                              ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).ToArray()));
+      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
+                                              ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).ToArray()));
+      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
+                                              GetEnumerator().ToArray()));
+    }
   }
 }
