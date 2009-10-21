@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
 
 namespace Smdn.Interop {
   public class DynamicLinkLibrary : DynamicLibrary {
@@ -44,7 +46,7 @@ namespace Smdn.Interop {
       var hModule = kernel32.LoadLibrary(path);
 
       if (hModule == IntPtr.Zero)
-        throw new DllNotFoundException(string.Format("LoadLibrary failed: {0}", path));
+        throw new Win32Exception(Marshal.GetLastWin32Error(), string.Format("LoadLibrary failed: {0}", path));
 
       return hModule;
     }
