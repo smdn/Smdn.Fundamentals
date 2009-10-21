@@ -126,6 +126,7 @@
     <Compile Include="Smdn.Interop\LocalMemoryBuffer.cs" />
     <Compile Include="Smdn.Interop\msvcrt.cs" />
     <Compile Include="Smdn.Interop\libc.cs" />
+    <Compile Include="Smdn\IntPtrExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
