@@ -27,6 +27,28 @@ using System.IO;
 
 namespace Smdn {
   public static class Platform {
+    static Platform()
+    {
+      // System.BitConverter.IsLittleEndian
+      unsafe {
+        int i = 1;
+        byte* b = (byte*)&i;
+
+        if (b[0] == 1)
+          endianness = Endianness.BigEndian;
+        else if (b[3] == 1)
+          endianness = Endianness.LittleEndian;
+        else
+          endianness = Endianness.Unknown;
+      }
+    }
+
+    private static Endianness endianness;
+
+    public static Endianness Endianness {
+      get { return endianness; }
+    }
+
     private static string kernelName = null;
 
     public static string KernelName {
