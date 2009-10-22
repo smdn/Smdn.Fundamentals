@@ -35,9 +35,9 @@ namespace Smdn {
         byte* b = (byte*)&i;
 
         if (b[0] == 1)
-          endianness = Endianness.BigEndian;
-        else if (b[3] == 1)
           endianness = Endianness.LittleEndian;
+        else if (b[3] == 1)
+          endianness = Endianness.BigEndian;
         else
           endianness = Endianness.Unknown;
       }
