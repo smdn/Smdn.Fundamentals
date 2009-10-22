@@ -96,7 +96,7 @@ namespace Smdn {
 
           try {
             if (IsRunningOnMono)
-              versionString = Smdn.Interop.Shell.Execute("mono -V | head -1").Trim();
+              versionString = Smdn.IO.Shell.Execute("mono -V | head -1").Trim();
           }
           catch {
             // ignore exceptions

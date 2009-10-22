@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.Interop {
+namespace Smdn {
   public static class Platform {
     private static string kernelName = null;
 
@@ -37,7 +37,7 @@ namespace Smdn.Interop {
 
           try {
             if (Runtime.IsRunningOnUnix)
-              kernelName = Shell.Execute("uname -srvom").Trim();
+              kernelName = Smdn.IO.Shell.Execute("uname -srvom").Trim();
           }
           catch {
             // ignore exceptions
@@ -58,7 +58,7 @@ namespace Smdn.Interop {
 
           try {
             if (Runtime.IsRunningOnUnix)
-              distributionName = Shell.Execute("lsb_release -ds").Trim();
+              distributionName = Smdn.IO.Shell.Execute("lsb_release -ds").Trim();
           }
           catch {
             // ignore exceptions

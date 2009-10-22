@@ -25,7 +25,7 @@
 using System;
 using System.Diagnostics;
 
-namespace Smdn.Interop {
+namespace Smdn.IO {
   public static class Shell {
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
     {

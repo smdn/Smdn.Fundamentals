@@ -86,8 +86,6 @@
     <Compile Include="Smdn.IO\BinaryReaderImpl.cs" />
     <Compile Include="Smdn.IO\BinaryWriterImpl.cs" />
     <Compile Include="Mono.Simd\SimdRuntime.cs" />
-    <Compile Include="Smdn.Interop\Shell.cs" />
-    <Compile Include="Smdn.Interop\Platform.cs" />
     <Compile Include="Smdn\RuntimeEnvironment.cs" />
     <Compile Include="Smdn\ConsoleUtils.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
@@ -99,9 +97,6 @@
     <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
     <Compile Include="Smdn\NullableConvert.cs" />
-    <Compile Include="Smdn.Interop\shell32.cs" />
-    <Compile Include="Smdn.Interop\shellapi.h.cs" />
-    <Compile Include="Smdn.Interop\FileManager.cs" />
     <Compile Include="Smdn\Action.cs" />
     <Compile Include="Smdn\Func.cs" />
     <Compile Include="Smdn.IO\ShellString.cs" />
@@ -114,6 +109,9 @@
     <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn.Media\mmsystem.h.cs" />
     <Compile Include="Smdn\IntPtrExtensions.cs" />
+    <Compile Include="Smdn\Platform.cs" />
+    <Compile Include="Smdn.IO\Shell.cs" />
+    <Compile Include="Smdn.IO\FileManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -131,7 +129,6 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
-    <Folder Include="Smdn.Interop\" />
     <Folder Include="Mono.Simd\" />
     <Folder Include="Smdn.Collections\" />
     <Folder Include="Smdn.Threading\" />
