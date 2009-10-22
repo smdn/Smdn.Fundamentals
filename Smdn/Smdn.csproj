@@ -80,17 +80,7 @@
     <Compile Include="Smdn.Mathematics\Matrix4D.cs" />
     <Compile Include="Smdn.Mathematics\Vector3D.cs" />
     <Compile Include="Smdn.Mathematics\Vector4D.cs" />
-    <Compile Include="Smdn.Interop\HeapMemoryBuffer.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
-    <Compile Include="Smdn.Interop\CoTaskMemoryBuffer.cs" />
-    <Compile Include="Smdn.Interop\GlobalMemoryBuffer.cs" />
-    <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
-    <Compile Include="Smdn.Interop\kernel32.cs" />
-    <Compile Include="Smdn.Interop\DynamicLibrary.cs" />
-    <Compile Include="Smdn.Interop\DynamicLinkLibrary.cs" />
-    <Compile Include="Smdn.Interop\SharedLibrary.cs" />
-    <Compile Include="Smdn.Interop\libdl.cs" />
-    <Compile Include="Smdn.Interop\FunctionNotFoundException.cs" />
     <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Smdn\UInt24.cs" />
     <Compile Include="Smdn.IO\BinaryReaderImpl.cs" />
@@ -123,9 +113,6 @@
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn.Media\mmsystem.h.cs" />
-    <Compile Include="Smdn.Interop\LocalMemoryBuffer.cs" />
-    <Compile Include="Smdn.Interop\msvcrt.cs" />
-    <Compile Include="Smdn.Interop\libc.cs" />
     <Compile Include="Smdn\IntPtrExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
