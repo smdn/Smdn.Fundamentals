@@ -5,6 +5,15 @@ namespace Smdn {
   [TestFixture]
   public class PlatformTests {
     [Test]
+    public void TestEndianness()
+    {
+      if (BitConverter.IsLittleEndian)
+        Assert.AreEqual(Endianness.LittleEndian, Platform.Endianness);
+      else
+        Assert.AreNotEqual(Endianness.LittleEndian, Platform.Endianness); // XXX
+    }
+
+    [Test]
     public void TestDistributionName()
     {
       // returns non-null value always
