@@ -110,9 +110,9 @@
     <Compile Include="Smdn.Media\mmsystem.h.cs" />
     <Compile Include="Smdn\IntPtrExtensions.cs" />
     <Compile Include="Smdn\Platform.cs" />
-    <Compile Include="Smdn.IO\Shell.cs" />
     <Compile Include="Smdn.IO\FileManager.cs" />
     <Compile Include="Smdn\Endianness.cs" />
+    <Compile Include="Smdn\Shell.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
