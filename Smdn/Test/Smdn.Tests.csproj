@@ -39,7 +39,6 @@
     <Folder Include="Smdn.IO\" />
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Mathematics\" />
-    <Folder Include="Smdn.Interop\" />
     <Folder Include="Smdn.Collections\" />
     <Folder Include="Smdn.Threading\" />
   </ItemGroup>
@@ -61,13 +60,11 @@
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
-    <Compile Include="Smdn.Interop\UnmanagedMemoryBuffer.cs" />
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Smdn\ByteStringBuilder.cs" />
     <Compile Include="Smdn\ByteString.cs" />
     <Compile Include="Smdn\UInt24.cs" />
-    <Compile Include="Smdn.Interop\Platform.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
     <Compile Include="Smdn.IO\InterruptStream.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
@@ -78,6 +75,7 @@
     <Compile Include="Smdn\MimeType.cs" />
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
+    <Compile Include="Smdn\Platform.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

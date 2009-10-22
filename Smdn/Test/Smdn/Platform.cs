@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Interop {
+namespace Smdn {
   [TestFixture]
   public class PlatformTests {
     [Test]

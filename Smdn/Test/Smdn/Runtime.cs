@@ -84,7 +84,7 @@ namespace Smdn {
     [Test]
     public void TestIsRunningOnUnix()
     {
-      if (string.Empty.Equals(Interop.Shell.Execute("uname")))
+      if (string.Empty.Equals(IO.Shell.Execute("uname")))
         Assert.IsFalse(Runtime.IsRunningOnUnix);
       else
         Assert.IsTrue(Runtime.IsRunningOnUnix);
@@ -93,7 +93,7 @@ namespace Smdn {
     [Test]
     public void TestIsRunningOnWindows()
     {
-      if (string.Empty.Equals(Interop.Shell.Execute("VER")))
+      if (string.Empty.Equals(IO.Shell.Execute("VER")))
         Assert.IsFalse(Runtime.IsRunningOnWindows);
       else
         Assert.IsTrue(Runtime.IsRunningOnWindows);
