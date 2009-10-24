@@ -58,6 +58,22 @@ namespace Smdn {
       return (val == null) ? null : val.Value.ToString();
     }
 
+    public static double? ToDouble(string val)
+    {
+      return (val == null) ? (double?)null : double.Parse(val);
+    }
+
+    public static double? ToDoubleIgnoreException(string val)
+    {
+      try { return ToDouble(val); }
+      catch { return null; }
+    }
+
+    public static string ToString(double? val)
+    {
+      return (val == null) ? null : val.Value.ToString();
+    }
+
     public static bool? ToBoolean(string val)
     {
       return (val == null) ? (bool?)null : bool.Parse(val);
