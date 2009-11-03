@@ -67,33 +67,5 @@ namespace Smdn.IO {
         return dir.FullName; // XXX: relative path
       });
     }
-
-    public static string GetTemporaryFile(string directory)
-    {
-      if (directory == null)
-        throw new ArgumentNullException("directory");
-      if (!Directory.Exists(directory))
-        throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
-
-      // XXX
-      for (var index = 0;; index++) {
-        var now = DateTime.Now;
-        var fileinfo = new FileInfo(Path.Combine(directory, string.Format("{0}.{1}-p{2}t{3}-{4}.tmp",
-                                                                          Smdn.Formats.DateTimeConvert.ToUnixTime64(now),
-                                                                          now.Millisecond, // microseconds
-                                                                          System.Diagnostics.Process.GetCurrentProcess().Id,
-                                                                          System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                                                          index)));
-
-        try {
-          using (var stream = fileinfo.Open(FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None)) {
-            return fileinfo.FullName;
-          }
-        }
-        catch (IOException) {
-          continue;
-        }
-      }
-    }
   }
 }

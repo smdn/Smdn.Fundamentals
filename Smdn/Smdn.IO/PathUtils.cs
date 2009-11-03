@@ -177,5 +177,42 @@ namespace Smdn.IO {
 
       return false;
     }
+
+    public static string RenameUnique(string file)
+    {
+      if (file == null)
+        throw new ArgumentNullException("file");
+      if (!File.Exists(file))
+        throw new DirectoryNotFoundException(string.Format("file '{0}' not found", file));
+
+      var directory = Path.GetDirectoryName(file);
+      var extension = Path.GetExtension(file);
+
+      for (var index = 0;; index++) {
+        var now = DateTime.Now;
+        var newpath = Path.Combine(directory, string.Format("{0}.{1}-p{2}t{3}-{4}{5}",
+                                                            Smdn.Formats.DateTimeConvert.ToUnixTime64(now),
+                                                            now.Millisecond,
+                                                            System.Diagnostics.Process.GetCurrentProcess().Id,
+                                                            System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                                            index,
+                                                            extension));
+
+        try {
+          if (File.Exists(newpath))
+            // file exists, retry
+            continue;
+
+          // rename
+          File.Move(file, newpath);
+
+          return newpath;
+        }
+        catch (IOException) {
+          // file exists, retry
+          continue;
+        }
+      }
+    }
   }
 }
