@@ -24,6 +24,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 namespace Smdn.IO {
   public static class PathUtils {
@@ -110,6 +111,71 @@ namespace Smdn.IO {
     public static string ReplaceInvalidFileNameChars(string path, StringExtensions.ReplaceCharEvaluator evaluator)
     {
       return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
+    }
+
+    public static bool ContainsShellEscapeChar(string path)
+    {
+      return ContainsShellEscapeChar(path, Encoding.Default);
+    }
+
+    public static bool ContainsShellEscapeChar(string path, Encoding encoding)
+    {
+      return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
+    }
+
+    public static bool ContainsShellPipeChar(string path)
+    {
+      return ContainsShellPipeChar(path, Encoding.Default);
+    }
+
+    public static bool ContainsShellPipeChar(string path, Encoding encoding)
+    {
+      return ContainsShellSpecialChars(path, encoding, 0x7c); // '|'
+    }
+
+    public static bool ContainsShellSpecialChars(string path, Encoding encoding, params byte[] specialChars)
+    {
+      if (path == null)
+        throw new ArgumentNullException("path");
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+      if (specialChars == null)
+        throw new ArgumentNullException("specialChars");
+
+      if (specialChars.Length == 0)
+        return false;
+
+      var encoder = encoding.GetEncoder();
+      var chars = path.ToCharArray();
+      var buffer = new byte[4];
+
+      encoder.Reset();
+
+      for (var index = 0; index < chars.Length;) {
+        try {
+          var length = encoder.GetBytes(chars, index, 1, buffer, 0, false);
+
+          for (var i = 1; i < length; i++) {
+            for (var j = 0; j < specialChars.Length; j++) {
+              if (buffer[i] == specialChars[j])
+                return true;
+            }
+          }
+
+          index++;
+        }
+        catch (ArgumentException) {
+          if (0x100 <= buffer.Length) {
+            throw new SystemException(); // XXX
+          }
+          else {
+            Array.Resize(ref buffer, buffer.Length * 2);
+            continue;
+          }
+        }
+      }
+
+      return false;
     }
   }
 }
