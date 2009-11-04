@@ -11,6 +11,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,7 +35,7 @@
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -113,6 +114,9 @@
     <Compile Include="Smdn.IO\FileManager.cs" />
     <Compile Include="Smdn\Endianness.cs" />
     <Compile Include="Smdn\Shell.cs" />
+    <Compile Include="Smdn\Uuid.cs" />
+    <Compile Include="Smdn\UuidVersion.cs" />
+    <Compile Include="Smdn\Urn.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>Smdn.Tests</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +77,8 @@
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn\Platform.cs" />
+    <Compile Include="Smdn\Uuid.cs" />
+    <Compile Include="Smdn\Urn.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
