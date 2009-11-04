@@ -170,6 +170,21 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestReadAfterEndOfInnerStream()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+      var stream = new PartialStream(inner, inner.Length, 8);
+
+      Assert.AreEqual(8, stream.Length);
+      Assert.AreEqual(0, stream.Position);
+
+      var buffer = new byte[2];
+
+      Assert.AreEqual(0, stream.Read(buffer, 0, 2));
+      Assert.AreEqual(0, stream.Position);
+    }
+
+    [Test]
     public void TestReadLengthNotSpecified()
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
