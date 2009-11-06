@@ -300,19 +300,19 @@ namespace Smdn {
       }
     }
 
-    private static Random defaultRandom = new Random(Environment.TickCount);
+    private static RandomNumberGenerator defaultRng = new RNGCryptoServiceProvider();
 
     public static Uuid CreateFromRandomNumber()
     {
-      lock (defaultRandom) {
-        return CreateFromRandomNumber(defaultRandom);
+      lock (defaultRng) {
+        return CreateFromRandomNumber(defaultRng);
       }
     }
 
-    public static Uuid CreateFromRandomNumber(Random random)
+    public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng)
     {
-      if (random == null)
-        throw new ArgumentNullException("random");
+      if (rng == null)
+        throw new ArgumentNullException("rng");
 
       /*
        * 4.4. Algorithms for Creating a UUID from Truly Random or
@@ -325,7 +325,7 @@ namespace Smdn {
        */
       var bytes = new byte[16];
 
-      random.NextBytes(bytes);
+      rng.GetBytes(bytes);
 
       var uuid = new Uuid(bytes);
 
