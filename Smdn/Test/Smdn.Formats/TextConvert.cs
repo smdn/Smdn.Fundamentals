@@ -114,6 +114,20 @@ namespace Smdn.Formats {
     }
 
     [Test]
+    public void TestToBase64ByteArray()
+    {
+      Assert.AreEqual(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30},
+                      TextConvert.ToBase64ByteArray(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34}));
+    }
+
+    [Test]
+    public void TestFromBase64ByteArray()
+    {
+      Assert.AreEqual(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34},
+                      TextConvert.FromBase64ByteArray(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30}));
+    }
+
+    [Test]
     public void TestTransformToBase64()
     {
       foreach (var test in new[] {

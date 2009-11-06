@@ -314,7 +314,12 @@ namespace Smdn.Formats {
 
     public static string ToBase64String(byte[] bytes)
     {
-      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToBase64Transform()));
+      return Encoding.ASCII.GetString(ToBase64ByteArray(bytes));
+    }
+
+    public static byte[] ToBase64ByteArray(byte[] bytes)
+    {
+      return TransformBytes(bytes, new ToBase64Transform());
     }
 
     public static string FromBase64String(string str)
@@ -329,7 +334,12 @@ namespace Smdn.Formats {
 
     public static byte[] FromBase64StringToByteArray(string str)
     {
-      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces));
+      return FromBase64ByteArray(Encoding.ASCII.GetBytes(str));
+    }
+
+    public static byte[] FromBase64ByteArray(byte[] bytes)
+    {
+      return TransformBytes(bytes, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces));
     }
 #endif
 #endregion
