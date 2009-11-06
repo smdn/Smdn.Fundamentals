@@ -56,9 +56,20 @@ namespace Smdn.Formats {
         return str + GetCurrentTimeZoneOffsetString(false);
     }
 
+    public static string ToRFC822DateTimeString(DateTimeOffset dateTimeOffset)
+    {
+      return dateTimeOffset.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture) +
+        dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture).Replace(":", string.Empty);
+    }
+
     public static DateTime FromRFC822DateTimeString(string s)
     {
       return FromDateTimeString(s, rfc822DateTimeFormats, "GMT");
+    }
+
+    public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
+    {
+      return FromDateTimeOffsetString(s, rfc822DateTimeFormats);
     }
 
     public static string ToISO8601DateTimeString(DateTime dateTime)
@@ -66,12 +77,19 @@ namespace Smdn.Formats {
       return ToW3CDateTimeString(dateTime);
     }
 
+    public static string ToISO8601DateTimeString(DateTimeOffset dateTimeOffset)
+    {
+      return ToW3CDateTimeString(dateTimeOffset);
+    }
+
     public static string ToW3CDateTimeString(DateTime dateTime)
     {
-      if (dateTime.Kind == DateTimeKind.Utc)
-        return dateTime.ToString("yyyy-MM-ddTHH:mm:ss'Z'", CultureInfo.InvariantCulture);
-      else
-        return dateTime.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
+      return dateTime.ToString("yyyy-MM-ddTHH:mm:ssK", CultureInfo.InvariantCulture);
+    }
+
+    public static string ToW3CDateTimeString(DateTimeOffset dateTimeOffset)
+    {
+      return dateTimeOffset.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
     }
 
     public static DateTime FromISO8601DateTimeString(string s)
@@ -84,63 +102,93 @@ namespace Smdn.Formats {
       return FromDateTimeString(s, w3cDateTimeFormats, "Z");
     }
 
+    public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
+    {
+      return FromW3CDateTimeOffsetString(s);
+    }
+
+    public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
+    {
+      return FromDateTimeOffsetString(s, w3cDateTimeFormats);
+    }
+
     private static DateTime FromDateTimeString(string s, string[] formats, string utc)
     {
       if (s == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException("s");
 
-      var dateTime = DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces);
+      var dateTime = DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal);
 
       if (s.EndsWith(utc))
-        return new DateTime(dateTime.Ticks, DateTimeKind.Utc);
+        return dateTime.ToUniversalTime();
       else
-        return new DateTime(dateTime.Ticks, DateTimeKind.Local);
+        return dateTime.ToLocalTime();
+    }
+
+    private static DateTimeOffset FromDateTimeOffsetString(string s, string[] formats)
+    {
+      if (s == null)
+        throw new ArgumentNullException("s");
+
+      return DateTimeOffset.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces);
     }
 
     private static readonly string[] rfc822DateTimeFormats = new[]
     {
-      "d MMM yyyy HH:mm",
-      "d MMM yyyy HH:mm z",
-      "d MMM yyyy HH:mm zz",
+      "d MMM yyyy HH:mm Z",
       "d MMM yyyy HH:mm zzz",
-      "d MMM yyyy HH:mm 'GMT'",
-      "d MMM yyyy HH:mm:ss",
-      "d MMM yyyy HH:mm:ss z",
-      "d MMM yyyy HH:mm:ss zz",
+      "d MMM yyyy HH:mm",
+      "d MMM yyyy HH:mm:ss Z",
       "d MMM yyyy HH:mm:ss zzz",
-      "d MMM yyyy HH:mm:ss 'GMT'",
-      "ddd, d MMM yyyy HH:mm",
-      "ddd, d MMM yyyy HH:mm z",
-      "ddd, d MMM yyyy HH:mm zz",
+      "d MMM yyyy HH:mm:ss",
+      "ddd, d MMM yyyy HH:mm Z",
       "ddd, d MMM yyyy HH:mm zzz",
-      "ddd, d MMM yyyy HH:mm 'GMT'",
-      "ddd, d MMM yyyy HH:mm:ss",
-      "ddd, d MMM yyyy HH:mm:ss z",
-      "ddd, d MMM yyyy HH:mm:ss zz",
+      "ddd, d MMM yyyy HH:mm",
+      "ddd, d MMM yyyy HH:mm:ss Z",
       "ddd, d MMM yyyy HH:mm:ss zzz",
-      "ddd, d MMM yyyy HH:mm:ss 'GMT'",
+      "ddd, d MMM yyyy HH:mm:ss",
+      "r",
     };
 
     private static string[] w3cDateTimeFormats = new string[]
     {
-      "yyyy-MM-ddTHH:mm'Z'",
-      "yyyy-MM-ddTHH:mm:ss'Z'",
-      "yyyy-MM-dd HH:mm'Z'",
-      "yyyy-MM-dd HH:mm:ss'Z'",
-      "yyyy-MM-ddTHH:mmzzz",
       "yyyy-MM-ddTHH:mm:sszzz",
-      "yyyy-MM-dd HH:mmzzz",
+      "yyyy-MM-ddTHH:mm:ss",
+      "yyyy-MM-ddTHH:mmzzz",
+      "yyyy-MM-ddTHH:mm",
       "yyyy-MM-dd HH:mm:sszzz",
+      "yyyy-MM-dd HH:mm:ss",
+      "yyyy-MM-dd HH:mmzzz",
+      "yyyy-MM-dd HH:mm",
+      "yyyy-MM-ddTHH:mm:ss'Z'",
+      "yyyy-MM-ddTHH:mm:ss",
+      "yyyy-MM-ddTHH:mm'Z'",
+      "yyyy-MM-ddTHH:mm",
+      "yyyy-MM-dd HH:mm:ss'Z'",
+      "yyyy-MM-dd HH:mm:ss",
+      "yyyy-MM-dd HH:mm'Z'",
+      "yyyy-MM-dd HH:mm",
+      "u",
     };
 #endregion
 
 #region "conversion methods for unix time"
+    public static int ToUnixTime32(DateTimeOffset dateTimeOffset)
+    {
+      return ToUnixTime32(dateTimeOffset.UtcDateTime);
+    }
+
     public static int ToUnixTime32(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
 
       return (int)dateTime.Subtract(UnixEpoch).TotalSeconds;
+    }
+
+    public static long ToUnixTime64(DateTimeOffset dateTimeOffset)
+    {
+      return ToUnixTime64(dateTimeOffset.UtcDateTime);
     }
 
     public static long ToUnixTime64(DateTime dateTime)
@@ -191,12 +239,24 @@ namespace Smdn.Formats {
     }
 
     [CLSCompliant(false)]
+    public static ulong ToISO14496DateTime64(DateTimeOffset dateTimeOffset)
+    {
+      return ToISO14496DateTime64(dateTimeOffset.UtcDateTime);
+    }
+
+    [CLSCompliant(false)]
     public static ulong ToISO14496DateTime64(DateTime dateTime)
     {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
 
       return (ulong)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
+    }
+
+    [CLSCompliant(false)]
+    public static uint ToISO14496DateTime32(DateTimeOffset dateTimeOffset)
+    {
+      return ToISO14496DateTime32(dateTimeOffset.UtcDateTime);
     }
 
     [CLSCompliant(false)]
