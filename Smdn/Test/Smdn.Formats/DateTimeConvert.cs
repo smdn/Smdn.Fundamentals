@@ -58,7 +58,16 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void FromRFC822DateTimeStringUtc()
+    public void TestToRFC822DateTimeStringDateTimeOffset()
+    {
+      var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
+
+      Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
+                      DateTimeConvert.ToRFC822DateTimeString(dto));
+    }
+
+    [Test]
+    public void TestFromRFC822DateTimeStringUtc()
     {
       var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 GMT");
 
@@ -75,7 +84,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromRFC822DateTimeStringLocal()
     {
-      var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +09:00");
+      var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +0900");
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek);
       Assert.AreEqual(10, dtm.Day);
@@ -85,6 +94,22 @@ namespace Smdn.Formats {
       Assert.AreEqual(41, dtm.Minute);
       Assert.AreEqual(1, dtm.Second);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind);
+    }
+
+    [Test, Ignore("Mono Bug #547675")]
+    public void TestFromRFC822DateTimeOffsetString()
+    {
+      var dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01 +0900");
+
+      Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek);
+      Assert.AreEqual(10, dto.Day);
+      Assert.AreEqual(6, dto.Month);
+      Assert.AreEqual(2003, dto.Year);
+      Assert.AreEqual(9, dto.Hour);
+      Assert.AreEqual(41, dto.Minute);
+      Assert.AreEqual(1, dto.Second);
+      Assert.AreEqual(9, dto.Offset.Hours);
+      Assert.AreEqual(0, dto.Offset.Minutes);
     }
 
     [Test]
@@ -115,12 +140,21 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TestToW3CDateTimeStringFUnspecifiedKind()
+    public void TestToW3CDateTimeStringUnspecifiedKind()
     {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Unspecified);
 
-      Assert.AreEqual("2008-02-25T15:01:12" + timezoneOffset,
+      Assert.AreEqual("2008-02-25T15:01:12",
                       DateTimeConvert.ToW3CDateTimeString(dtm));
+    }
+
+    [Test]
+    public void TestToW3CDateTimeStringDateTimeOffset()
+    {
+      var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
+
+      Assert.AreEqual("2008-02-25T15:01:12" + timezoneOffset,
+                      DateTimeConvert.ToW3CDateTimeString(dto));
     }
 
     [Test]
@@ -161,7 +195,22 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void FromUnixTimeUtcTest()
+    public void TestFromW3CDateTimeOffsetString()
+    {
+      var dto = DateTimeConvert.FromW3CDateTimeOffsetString("2008-04-11T12:34:56 +09:00");
+
+      Assert.AreEqual(2008, dto.Year);
+      Assert.AreEqual(04, dto.Month);
+      Assert.AreEqual(11, dto.Day);
+      Assert.AreEqual(12, dto.Hour);
+      Assert.AreEqual(34, dto.Minute);
+      Assert.AreEqual(56, dto.Second);
+      Assert.AreEqual(9, dto.Offset.Hours);
+      Assert.AreEqual(0, dto.Offset.Minutes);
+    }
+
+    [Test]
+    public void TestFromUnixTimeUtc()
     {
       Assert.AreEqual(DateTime.Parse("1970-01-01T00:00:00+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
                       DateTimeConvert.FromUnixTimeUtc(0L));
@@ -172,7 +221,7 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void ToUnixTime64Test()
+    public void TestToUnixTime64()
     {
       Assert.AreEqual(0L,
                       DateTimeConvert.ToUnixTime64(DateTime.Parse("1970-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
@@ -183,14 +232,14 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void FromIso14496DateTimeTest()
+    public void TestFromIso14496DateTime()
     {
       Assert.AreEqual(DateTime.Parse("1904-01-01T00:00:00+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
                       DateTimeConvert.FromISO14496DateTime(0UL));
     }
 
     [Test]
-    public void ToIso14496DateTime64Test()
+    public void TestToIso14496DateTime64()
     {
       Assert.AreEqual(0UL,
                       DateTimeConvert.ToISO14496DateTime64(DateTime.Parse("1904-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
