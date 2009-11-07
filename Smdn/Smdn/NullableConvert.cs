@@ -100,5 +100,21 @@ namespace Smdn {
       try { return ToEnum<TEnum>(val); }
       catch { return null; }
     }
+
+    public static Guid? ToGuid(string val)
+    {
+      if (val == null)
+        return null;
+      else if (string.Empty.Equals(val))
+        return Guid.Empty;
+      else
+        return new Guid(val);
+    }
+
+    public static Guid? ToGuidIgnoreException(string val)
+    {
+      try { return ToGuid(val); }
+      catch { return null; }
+    }
   }
 }
