@@ -79,6 +79,21 @@ namespace Smdn.Collections {
         yield return converter(enumerator.Current);
     }
 
+    public static T Find<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    {
+      if (enumerable is List<T>)
+        return (enumerable as List<T>).Find(match);
+
+      var enumerator = enumerable.GetEnumerator();
+
+      while (enumerator.MoveNext()) {
+        if (match(enumerator.Current))
+          return enumerator.Current;
+      }
+
+      return default(T);
+    }
+
     public static T[] ToArray<T>(this IEnumerable<T> enumerable)
     {
       if (enumerable is List<T>)
