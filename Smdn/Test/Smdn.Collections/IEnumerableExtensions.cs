@@ -83,6 +83,15 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestFind()
+    {
+      Assert.AreEqual("a",   (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 1;}));
+      Assert.AreEqual("aa",  (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 2;}));
+      Assert.AreEqual("aaa", (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 3;}));
+      Assert.AreEqual(null,  (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 4;}));
+    }
+
+    [Test]
     public void TestToArray()
     {
       Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
