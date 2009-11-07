@@ -659,8 +659,9 @@ namespace Smdn {
       if (this.clock_seq_low != other.clock_seq_low)
         return this.clock_seq_low - other.clock_seq_low;
 
-      fixed (byte* nthis = this.node)
-      fixed (byte* nother = other.node) {
+      fixed (byte* nthis = this.node) {
+        byte* nother = other.node;
+
         for (var i = 0; i < 6; i++) {
           if (nthis[i] < nother[i])
             return -1;
