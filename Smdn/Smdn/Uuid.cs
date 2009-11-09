@@ -37,7 +37,12 @@ namespace Smdn {
    * http://tools.ietf.org/html/rfc4122
    */
   [CLSCompliant(false), StructLayout(LayoutKind.Explicit, Pack = 1)]
-  public unsafe struct Uuid : IEquatable<Uuid>, IComparable<Uuid>, IFormattable {
+  public unsafe struct Uuid :
+    IEquatable<Uuid>,
+    IEquatable<Guid>,
+    IComparable<Uuid>,
+    IFormattable
+  {
     public enum Namespace : int {
       RFC4122Dns      = 0x6ba7b810,
       RFC4122Url      = 0x6ba7b811,
@@ -524,6 +529,11 @@ namespace Smdn {
       }
     }
 
+    public Uuid(Guid guid)
+      : this(guid.ToByteArray())
+    {
+    }
+
     public Uuid(byte[] octets)
       : this(octets, 0)
     {
@@ -638,8 +648,15 @@ namespace Smdn {
         return 1;
       else if (obj is Uuid)
         return CompareTo((Uuid)obj);
+      else if (obj is Guid)
+        return CompareTo((Guid)obj);
       else
         throw new ArgumentException("obj is not Uuid");
+    }
+
+    public int ComapreTo(Guid other)
+    {
+      return ComapreTo((Uuid)other);
     }
 
     public int CompareTo(Uuid other)
@@ -689,8 +706,15 @@ namespace Smdn {
     {
       if (obj is Uuid)
         return Equals((Uuid)obj);
+      else if (obj is Guid)
+        return Equals((Guid)obj);
       else
         return false;
+    }
+
+    public bool Equals(Guid other)
+    {
+      return this == (Uuid)other;
     }
 
     public bool Equals(Uuid other)
@@ -700,6 +724,21 @@ namespace Smdn {
 #endregion
 
 #region "conversion"
+    public static implicit operator Guid(Uuid @value)
+    {
+      return @value.ToGuid();
+    }
+
+    public static implicit operator Uuid(Guid @value)
+    {
+      return new Uuid(@value);
+    }
+
+    public Guid ToGuid()
+    {
+      return new Guid(ToByteArray());
+    }
+
     public Urn ToUrn()
     {
       return new Urn(UrnNamespaceIdentifier, ToString(null, null));
