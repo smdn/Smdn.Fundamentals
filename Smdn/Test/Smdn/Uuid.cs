@@ -25,6 +25,13 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstructFromGuid()
+    {
+      Assert.AreEqual(Uuid.Nil, new Uuid(Guid.Empty));
+      Assert.AreEqual(Uuid.RFC4122NamespaceDns, new Uuid(new Guid("6ba7b810-9dad-11d1-80b4-00c04fd430c8")));
+    }
+
+    [Test]
     public void TestConstructFromUrn()
     {
       Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Uuid(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
@@ -124,6 +131,34 @@ namespace Smdn {
     {
       Assert.AreEqual(new Urn("urn:uuid:00000000-0000-0000-0000-000000000000"), Uuid.Nil.ToUrn());
       Assert.AreEqual(new Urn("urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8"), Uuid.RFC4122NamespaceDns.ToUrn());
+    }
+
+    [Test]
+    public void TestToGuid()
+    {
+      Assert.AreEqual(Guid.Empty, Uuid.Nil.ToGuid());
+      Assert.AreEqual(new Guid("6ba7b810-9dad-11d1-80b4-00c04fd430c8"), Uuid.RFC4122NamespaceDns.ToGuid());
+    }
+
+    [Test]
+    public void TestImplicitConversionOperator()
+    {
+      Guid guid = Uuid.Nil;
+
+      Assert.AreEqual(guid, Guid.Empty);
+
+      Uuid uuid = Guid.Empty;
+
+      Assert.AreEqual(uuid, Uuid.Nil);
+    }
+
+    [Test]
+    public void TestEqualityOperator()
+    {
+      Assert.IsTrue(Uuid.Nil == Uuid.Nil);
+      Assert.IsFalse(Uuid.Nil != Uuid.Nil);
+      Assert.IsFalse(Uuid.Nil == Uuid.RFC4122NamespaceDns);
+      Assert.IsTrue(Uuid.Nil != Uuid.RFC4122NamespaceDns);
     }
   }
 }
