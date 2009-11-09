@@ -530,7 +530,7 @@ namespace Smdn {
     }
 
     public Uuid(Guid guid)
-      : this(guid.ToByteArray())
+      : this(guid.ToString())
     {
     }
 
@@ -736,7 +736,7 @@ namespace Smdn {
 
     public Guid ToGuid()
     {
-      return new Guid(ToByteArray());
+      return new Guid(ToString(null, null));
     }
 
     public Urn ToUrn()
