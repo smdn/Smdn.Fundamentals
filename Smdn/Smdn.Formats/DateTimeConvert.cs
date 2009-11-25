@@ -135,23 +135,24 @@ namespace Smdn.Formats {
 
     private static readonly string[] rfc822DateTimeFormats = new[]
     {
-      "d MMM yyyy HH:mm Z",
-      "d MMM yyyy HH:mm zzz",
-      "d MMM yyyy HH:mm",
-      "d MMM yyyy HH:mm:ss Z",
-      "d MMM yyyy HH:mm:ss zzz",
-      "d MMM yyyy HH:mm:ss",
-      "ddd, d MMM yyyy HH:mm Z",
-      "ddd, d MMM yyyy HH:mm zzz",
-      "ddd, d MMM yyyy HH:mm",
-      "ddd, d MMM yyyy HH:mm:ss Z",
-      "ddd, d MMM yyyy HH:mm:ss zzz",
-      "ddd, d MMM yyyy HH:mm:ss",
       "r",
+      "ddd, d MMM yyyy HH:mm zzz",
+      "ddd, d MMM yyyy HH:mm Z",
+      "ddd, d MMM yyyy HH:mm",
+      "ddd, d MMM yyyy HH:mm:ss zzz",
+      "ddd, d MMM yyyy HH:mm:ss Z",
+      "ddd, d MMM yyyy HH:mm:ss",
+      "d MMM yyyy HH:mm zzz",
+      "d MMM yyyy HH:mm Z",
+      "d MMM yyyy HH:mm",
+      "d MMM yyyy HH:mm:ss zzz",
+      "d MMM yyyy HH:mm:ss Z",
+      "d MMM yyyy HH:mm:ss",
     };
 
     private static string[] w3cDateTimeFormats = new string[]
     {
+      "u",
       "yyyy-MM-ddTHH:mm:sszzz",
       "yyyy-MM-ddTHH:mm:ss",
       "yyyy-MM-ddTHH:mmzzz",
@@ -168,7 +169,6 @@ namespace Smdn.Formats {
       "yyyy-MM-dd HH:mm:ss",
       "yyyy-MM-dd HH:mm'Z'",
       "yyyy-MM-dd HH:mm",
-      "u",
     };
 #endregion
 
