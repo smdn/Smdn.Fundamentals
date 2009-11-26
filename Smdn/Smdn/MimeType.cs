@@ -28,7 +28,7 @@ using System;
 using System.IO;
 
 namespace Smdn {
-  public class MimeType : IEquatable<MimeType> {
+  public class MimeType : IEquatable<MimeType>, IEquatable<string> {
     /*
      * class members
      */
@@ -186,6 +186,8 @@ namespace Smdn {
     {
       if (obj is MimeType)
         return Equals((MimeType)obj);
+      else if (obj is string)
+        return Equals(obj as string);
       else
         return false;
     }
@@ -196,6 +198,14 @@ namespace Smdn {
         return false;
       else
         return (this.Type == other.Type && this.SubType == other.SubType);
+    }
+
+    public bool Equals(string other)
+    {
+      if (other == null)
+        return false;
+      else
+        return ToString().Equals(other);
     }
 
     public override int GetHashCode()
