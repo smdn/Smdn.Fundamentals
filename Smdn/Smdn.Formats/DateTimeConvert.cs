@@ -64,12 +64,12 @@ namespace Smdn.Formats {
 
     public static DateTime FromRFC822DateTimeString(string s)
     {
-      return FromDateTimeString(s, rfc822DateTimeFormats, "GMT");
+      return FromDateTimeString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
     }
 
     public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
     {
-      return FromDateTimeOffsetString(s, rfc822DateTimeFormats);
+      return FromDateTimeOffsetString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
     }
 
     public static string ToISO8601DateTimeString(DateTime dateTime)
@@ -99,7 +99,7 @@ namespace Smdn.Formats {
 
     public static DateTime FromW3CDateTimeString(string s)
     {
-      return FromDateTimeString(s, w3cDateTimeFormats, "Z");
+      return FromDateTimeString(s, w3cDateTimeFormats, w3cUniversalTimeString);
     }
 
     public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
@@ -109,64 +109,83 @@ namespace Smdn.Formats {
 
     public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
     {
-      return FromDateTimeOffsetString(s, w3cDateTimeFormats);
+      return FromDateTimeOffsetString(s, w3cDateTimeFormats, w3cUniversalTimeString);
     }
 
-    private static DateTime FromDateTimeString(string s, string[] formats, string utc)
+    private static DateTime FromDateTimeString(string s, string[] formats, string universalTimeString)
     {
       if (s == null)
         throw new ArgumentNullException("s");
 
-      var dateTime = DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces | DateTimeStyles.AssumeUniversal);
+      var universal = s.EndsWith(universalTimeString);
+      var styles = DateTimeStyles.AllowWhiteSpaces;
 
-      if (s.EndsWith(utc))
-        return dateTime.ToUniversalTime();
+      if (universal)
+        styles |= DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal;
       else
-        return dateTime.ToLocalTime();
+        // TODO: JST, EST, etc; use TimeZoneInfo
+        styles |= DateTimeStyles.AssumeLocal;
+
+      return DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, styles);
     }
 
-    private static DateTimeOffset FromDateTimeOffsetString(string s, string[] formats)
+    private static DateTimeOffset FromDateTimeOffsetString(string s, string[] formats, string universalTimeString)
     {
       if (s == null)
         throw new ArgumentNullException("s");
 
-      return DateTimeOffset.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces);
+      var universal = s.EndsWith(universalTimeString);
+      var styles = DateTimeStyles.AllowWhiteSpaces;
+
+      if (universal)
+        styles |= DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal;
+      else
+        // TODO: JST, EST, etc; use TimeZoneInfo
+        styles |= DateTimeStyles.AssumeLocal;
+
+      return DateTimeOffset.ParseExact(s, formats, CultureInfo.InvariantCulture, styles);
     }
+
+    private static readonly string rfc822UniversalTimeString = " GMT";
 
     private static readonly string[] rfc822DateTimeFormats = new[]
     {
       "r",
-      "ddd, d MMM yyyy HH:mm zzz",
-      "ddd, d MMM yyyy HH:mm Z",
-      "ddd, d MMM yyyy HH:mm",
       "ddd, d MMM yyyy HH:mm:ss zzz",
       "ddd, d MMM yyyy HH:mm:ss Z",
       "ddd, d MMM yyyy HH:mm:ss",
-      "d MMM yyyy HH:mm zzz",
-      "d MMM yyyy HH:mm Z",
-      "d MMM yyyy HH:mm",
+      "ddd, d MMM yyyy HH:mm zzz",
+      "ddd, d MMM yyyy HH:mm Z",
+      "ddd, d MMM yyyy HH:mm",
       "d MMM yyyy HH:mm:ss zzz",
       "d MMM yyyy HH:mm:ss Z",
       "d MMM yyyy HH:mm:ss",
+      "d MMM yyyy HH:mm zzz",
+      "d MMM yyyy HH:mm Z",
+      "d MMM yyyy HH:mm",
     };
+
+    private static readonly string w3cUniversalTimeString = "Z";
 
     private static string[] w3cDateTimeFormats = new string[]
     {
       "u",
+      "yyyy-MM-ddTHH:mm:ss.fzzz",
+      "yyyy-MM-ddTHH:mm:ss.f'Z'",
+      "yyyy-MM-ddTHH:mm:ss.f",
       "yyyy-MM-ddTHH:mm:sszzz",
-      "yyyy-MM-ddTHH:mm:ss",
-      "yyyy-MM-ddTHH:mmzzz",
-      "yyyy-MM-ddTHH:mm",
-      "yyyy-MM-dd HH:mm:sszzz",
-      "yyyy-MM-dd HH:mm:ss",
-      "yyyy-MM-dd HH:mmzzz",
-      "yyyy-MM-dd HH:mm",
       "yyyy-MM-ddTHH:mm:ss'Z'",
       "yyyy-MM-ddTHH:mm:ss",
+      "yyyy-MM-ddTHH:mmzzz",
       "yyyy-MM-ddTHH:mm'Z'",
       "yyyy-MM-ddTHH:mm",
+      "yyyy-MM-dd HH:mm:ss.fzzz",
+      "yyyy-MM-dd HH:mm:ss.f'Z'",
+      "yyyy-MM-dd HH:mm:ss.f",
+      "yyyy-MM-dd HH:mm:sszzz",
       "yyyy-MM-dd HH:mm:ss'Z'",
       "yyyy-MM-dd HH:mm:ss",
+      "yyyy-MM-dd HH:mmzzz",
       "yyyy-MM-dd HH:mm'Z'",
       "yyyy-MM-dd HH:mm",
     };
