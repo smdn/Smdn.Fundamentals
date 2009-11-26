@@ -96,7 +96,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind);
     }
 
-    [Test, Ignore("Mono Bug #547675")]
+    [Test/*, Ignore("Mono Bug #547675")*/]
     public void TestFromRFC822DateTimeOffsetString()
     {
       var dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01 +0900");
@@ -111,6 +111,23 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours);
       Assert.AreEqual(0, dto.Offset.Minutes);
     }
+
+    [Test]
+    public void TestFromRFC822DateTimeOffsetStringGmt()
+    {
+      var dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02 GMT");
+
+      Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek);
+      Assert.AreEqual(13, dto.Day);
+      Assert.AreEqual(4, dto.Month);
+      Assert.AreEqual(2001, dto.Year);
+      Assert.AreEqual(19, dto.Hour);
+      Assert.AreEqual(23, dto.Minute);
+      Assert.AreEqual(2, dto.Second);
+      Assert.AreEqual(0, dto.Offset.Hours);
+      Assert.AreEqual(0, dto.Offset.Minutes);
+    }
+
 
     [Test]
     public void TestToISO8601DateTimeStringUtc()
