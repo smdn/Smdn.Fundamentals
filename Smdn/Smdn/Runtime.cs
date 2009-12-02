@@ -45,7 +45,7 @@ namespace Smdn {
       }
       else {
         runtimeEnvironment = RuntimeEnvironment.Unknown;
-        name = "(unknown)";
+        name = ".NET Framework compatible";
       }
     }
 
@@ -92,11 +92,13 @@ namespace Smdn {
       get
       {
         if (versionString == null) {
-          versionString = string.Format(".NET Framework {0}", Environment.Version.ToString()); // default
+          versionString = string.Format("{0} {1}", name, Environment.Version); // default
 
           try {
-            if (IsRunningOnMono)
-              versionString = Shell.Execute("mono -V | head -1").Trim();
+            var monoRuntime = Type.GetType("Mono.Runtime");
+
+            if (monoRuntime != null)
+              versionString = string.Format("Mono ({0})", monoRuntime.InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes));
           }
           catch {
             // ignore exceptions
