@@ -95,8 +95,15 @@ namespace Smdn.IO {
           psi.UseShellExecute = false;
 
           if (path != null) {
-            if (File.Exists(path))
+            if (File.Exists(path)) {
               path = Path.GetDirectoryName(path);
+            }
+            else if (selected) {
+              var parent = Directory.GetParent(path);
+
+              if (parent != null)
+                path = parent.FullName;
+            }
 
             psi.Arguments = string.Format("--no-default-window {0}", path);
           }
