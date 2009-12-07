@@ -161,5 +161,27 @@ namespace Smdn.IO {
         return false;
       }
     }
+
+    /// <summary>open or execute path with UseShellExecute</summary>
+    public static void Open(string path)
+    {
+      if (path == null)
+        throw new ArgumentNullException("path");
+
+      var psi = new ProcessStartInfo();
+
+      psi.FileName = path;
+      psi.ErrorDialog = true;
+      psi.UseShellExecute = true;
+
+      try {
+        using (var process = Process.Start(psi)) {
+          process.Close();
+        }
+      }
+      catch (System.ComponentModel.Win32Exception) {
+        // ignore
+      }
+    }
   }
 }
