@@ -80,6 +80,7 @@
     <Compile Include="Smdn\Uuid.cs" />
     <Compile Include="Smdn\Urn.cs" />
     <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
+    <Compile Include="Smdn\Lazy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

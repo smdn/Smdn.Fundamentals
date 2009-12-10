@@ -117,6 +117,7 @@
     <Compile Include="Smdn\UuidVersion.cs" />
     <Compile Include="Smdn\Urn.cs" />
     <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
+    <Compile Include="Smdn\Lazy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
