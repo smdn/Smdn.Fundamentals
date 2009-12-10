@@ -46,6 +46,40 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestSliceCheckRange()
+    {
+      var array = new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+      try {
+        array.Slice(-1, 1);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
+
+      try {
+        array.Slice(11, 0);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
+
+      try {
+        array.Slice(0, 11);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
+
+      try {
+        array.Slice(10, 0);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
+    }
+
+    [Test]
     public void TestShuffle()
     {
       var array0 = new int[] {};
