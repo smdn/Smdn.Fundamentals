@@ -99,6 +99,26 @@ namespace Smdn.Collections {
       return default(T);
     }
 
+    public static IEnumerable<T> FindAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    {
+      if (match == null)
+        throw new ArgumentNullException("match");
+
+      /*
+      if (enumerable is List<T>)
+        return (enumerable as List<T>).FindAll(match);
+      else if (enumerable is T[])
+        return Array.FindAll(enumerable as T[], match);
+      */
+
+      var enumerator = enumerable.GetEnumerator();
+
+      while (enumerator.MoveNext()) {
+        if (match(enumerator.Current))
+          yield return enumerator.Current;
+      }
+    }
+
     public static bool Exists<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
       if (match == null)

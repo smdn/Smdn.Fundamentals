@@ -99,6 +99,13 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestFindAll()
+    {
+      CollectionAssert.AreEquivalent(new int[0], ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).FindAll(delegate(int i){ return i == 9; }));
+      CollectionAssert.AreEquivalent(new[] {0, 1, 2}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).FindAll(delegate(int i){ return i < 3; }));
+    }
+
+    [Test]
     public void TestExists()
     {
       Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Exists(delegate(int i){ return i == 3; }));
