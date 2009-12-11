@@ -81,8 +81,13 @@ namespace Smdn.Collections {
 
     public static T Find<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
+      if (match == null)
+        throw new ArgumentNullException("match");
+
       if (enumerable is List<T>)
         return (enumerable as List<T>).Find(match);
+      else if (enumerable is T[])
+        return Array.Find(enumerable as T[], match);
 
       var enumerator = enumerable.GetEnumerator();
 
@@ -92,6 +97,26 @@ namespace Smdn.Collections {
       }
 
       return default(T);
+    }
+
+    public static bool Exists<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    {
+      if (match == null)
+        throw new ArgumentNullException("match");
+
+      if (enumerable is List<T>)
+        return (enumerable as List<T>).Exists(match);
+      else if (enumerable is T[])
+        return Array.Exists(enumerable as T[], match);
+
+      var enumerator = enumerable.GetEnumerator();
+
+      while (enumerator.MoveNext()) {
+        if (match(enumerator.Current))
+          return true;
+      }
+
+      return false;
     }
 
     public static T[] ToArray<T>(this IEnumerable<T> enumerable)

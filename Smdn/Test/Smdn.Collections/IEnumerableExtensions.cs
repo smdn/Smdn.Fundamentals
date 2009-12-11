@@ -89,6 +89,24 @@ namespace Smdn.Collections {
       Assert.AreEqual("aa",  (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 2;}));
       Assert.AreEqual("aaa", (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 3;}));
       Assert.AreEqual(null,  (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 4;}));
+
+      Assert.AreEqual(3, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Find(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Find(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(3, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Find(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Find(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(3, ((IEnumerable<int>)GetEnumerator()).Find(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)GetEnumerator()).Find(delegate(int i){ return i == 9; }));
+    }
+
+    [Test]
+    public void TestExists()
+    {
+      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Exists(delegate(int i){ return i == 3; }));
+      Assert.IsFalse(((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Exists(delegate(int i){ return i == 9; }));
+      Assert.IsTrue (((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Exists(delegate(int i){ return i == 3; }));
+      Assert.IsFalse(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Exists(delegate(int i){ return i == 9; }));
+      Assert.IsTrue (((IEnumerable<int>)GetEnumerator()).Exists(delegate(int i){ return i == 3; }));
+      Assert.IsFalse(((IEnumerable<int>)GetEnumerator()).Exists(delegate(int i){ return i == 9; }));
     }
 
     [Test]
