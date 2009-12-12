@@ -79,6 +79,12 @@ namespace Smdn.Collections {
         yield return converter(enumerator.Current);
     }
 
+    public static IEnumerable<TResult> Cast<TResult>(this IEnumerable enumerable)
+    {
+      foreach (TResult e in enumerable)
+        yield return e;
+    }
+
     public static T Find<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
       if (match == null)

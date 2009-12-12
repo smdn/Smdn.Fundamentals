@@ -40,6 +40,13 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestCast()
+    {
+      // TODO
+      Assert.Ignore("no tests");
+    }
+
+    [Test]
     public void TestCount()
     {
       Assert.AreEqual(5, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Count());
