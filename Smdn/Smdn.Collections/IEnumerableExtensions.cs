@@ -147,6 +147,14 @@ namespace Smdn.Collections {
         yield return enumerator.Current;
     }
 
+    public static IEnumerable<T> Reverse<T>(this IEnumerable<T> enumerable)
+    {
+      var list = (enumerable as IList<T>) ?? new List<T>(enumerable);
+
+      for (var i = list.Count - 1; 0 <= i; i--)
+        yield return list[i];
+    }
+
     public static T[] ToArray<T>(this IEnumerable<T> enumerable)
     {
       if (enumerable is List<T>)

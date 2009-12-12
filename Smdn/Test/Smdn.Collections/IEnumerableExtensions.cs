@@ -128,6 +128,14 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestReverse()
+    {
+      CollectionAssert.AreEquivalent(new[] {4, 3, 2, 1, 0}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Reverse());
+      CollectionAssert.AreEquivalent(new[] {4, 3, 2, 1, 0}, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Reverse());
+      CollectionAssert.AreEquivalent(new[] {4, 3, 2, 1, 0}, ((IEnumerable<int>)GetEnumerator()).Reverse());
+    }
+
+    [Test]
     public void TestToArray()
     {
       Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
