@@ -139,6 +139,14 @@ namespace Smdn.Collections {
       return false;
     }
 
+    public static IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count)
+    {
+      var enumerator = enumerable.GetEnumerator();
+
+      while (0 < count-- && enumerator.MoveNext())
+        yield return enumerator.Current;
+    }
+
     public static T[] ToArray<T>(this IEnumerable<T> enumerable)
     {
       if (enumerable is List<T>)

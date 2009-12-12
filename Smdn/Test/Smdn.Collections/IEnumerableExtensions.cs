@@ -117,6 +117,17 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestTake()
+    {
+      CollectionAssert.AreEquivalent(new int[0], ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Take(-1));
+      CollectionAssert.AreEquivalent(new int[0], ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Take(0));
+      CollectionAssert.AreEquivalent(new[] {0}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Take(1));
+      CollectionAssert.AreEquivalent(new[] {0, 1, 2}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Take(3));
+      CollectionAssert.AreEquivalent(new[] {0, 1, 2, 3, 4}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Take(5));
+      CollectionAssert.AreEquivalent(new[] {0, 1, 2, 3, 4}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Take(10));
+    }
+
+    [Test]
     public void TestToArray()
     {
       Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
