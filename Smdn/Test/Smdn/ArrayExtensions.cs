@@ -43,6 +43,7 @@ namespace Smdn {
       Assert.AreEqual(new[] {7, 8, 9}, array.Slice(7, 3));
       Assert.AreEqual(new[] {2, 3, 4, 5, 6}, array.Slice(2, 5));
       Assert.AreEqual(new[] {6, 7, 8, 9}, array.Slice(6));
+      Assert.AreEqual(new int[] {}, array.Slice(0, 0));
     }
 
     [Test]
@@ -73,6 +74,13 @@ namespace Smdn {
 
       try {
         array.Slice(10, 0);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
+
+      try {
+        (new int[] {0}).Slice(1);
         Assert.Fail("ArgumentException not thrown");
       }
       catch (ArgumentException) {
