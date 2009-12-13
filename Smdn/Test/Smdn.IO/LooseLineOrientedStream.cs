@@ -36,5 +36,23 @@ namespace Smdn.IO {
       Assert.AreEqual(ArrayExtensions.Slice(data, 10, 1), stream.ReadLine(false));
       Assert.IsNull(stream.ReadLine());
     }
+
+    [Test]
+    public void TestReadLineBufferEndsWithEOLKeepEOL()
+    {
+      var data = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, Octets.CR};
+      var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+
+      Assert.AreEqual(data, stream.ReadLine(true));
+    }
+
+    [Test]
+    public void TestReadLineBufferEndsWithEOLDiscardEOL()
+    {
+      var data = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, Octets.CR};
+      var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+
+      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 7), stream.ReadLine(false));
+    }
   }
 }

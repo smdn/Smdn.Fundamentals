@@ -195,7 +195,9 @@ namespace Smdn.IO {
           if (eol && !strictEOL) {
             var crlf = (bufOffset == 0)
               ? retBuffer[retOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF
-              :    buffer[bufOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF;
+              : (bufOffset == buffer.Length)
+                ? false
+                : buffer[bufOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF;
 
             if (crlf) {
               retLength++;
