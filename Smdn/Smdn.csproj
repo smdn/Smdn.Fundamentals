@@ -11,6 +11,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -118,6 +119,7 @@
     <Compile Include="Smdn\Urn.cs" />
     <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
     <Compile Include="Smdn\Lazy.cs" />
+    <Compile Include="Smdn.IO\StreamExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
