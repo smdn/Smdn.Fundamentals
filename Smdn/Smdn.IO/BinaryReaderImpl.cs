@@ -49,16 +49,7 @@ namespace Smdn.IO {
       }
       else {
         using (var readStream = new MemoryStream()) {
-          var buffer = new byte[1024];
-
-          for (;;) {
-            var read = r.BaseStream.Read(buffer, 0, buffer.Length);
-
-            readStream.Write(buffer, 0, read);
-
-            if (read <= 0)
-              break;
-          }
+          r.BaseStream.WriteToEnd(readStream, 1024);
 
           readStream.Close();
 
