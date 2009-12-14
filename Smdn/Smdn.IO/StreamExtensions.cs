@@ -50,5 +50,29 @@ namespace Smdn.IO {
         toStream.Write(buffer, 0, read);
       }
     }
+
+    public static void WriteToEnd(this Stream stream, System.IO.BinaryWriter writer)
+    {
+      WriteToEnd(stream, writer, 4096);
+    }
+
+    public static void WriteToEnd(this Stream stream, System.IO.BinaryWriter writer, int bufferSize)
+    {
+      if (writer == null)
+        throw new ArgumentNullException("writer");
+      if (bufferSize <= 0)
+        throw new ArgumentOutOfRangeException("bufferSize", "must be non-zero positive number");
+
+      var buffer = new byte[bufferSize];
+
+      for (;;) {
+        var read = stream.Read(buffer, 0, bufferSize);
+
+        if (read <= 0)
+          break;
+
+        writer.Write(buffer, 0, read);
+      }
+    }
   }
 }

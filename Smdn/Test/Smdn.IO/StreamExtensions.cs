@@ -57,5 +57,24 @@ namespace Smdn.IO {
 
       Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}, outputStream.ToArray());
     }
+
+    [Test]
+    public void TestWriteToBinaryWriter()
+    {
+      var inputData = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+      var inputStream = new MemoryStream(inputData);
+      var outputStream = new MemoryStream();
+      var writer = new System.IO.BinaryWriter(outputStream);
+
+      StreamExtensions.WriteToEnd(inputStream, writer, 3);
+
+      writer.Flush();
+
+      Assert.AreEqual(8, outputStream.Length);
+
+      outputStream.Close();
+
+      Assert.AreEqual(inputData, outputStream.ToArray());
+    }
   }
 }
