@@ -23,14 +23,91 @@
 // THE SOFTWARE.
 
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace Smdn.Formats {
   public class SIPrefixFormat : IFormatProvider, ICustomFormatter {
-    private static readonly string[] DecimalAbbreviations = new string[] {string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y"};
-    private static readonly string[] BinaryAbbreviations = new string[] {string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi"};
-    private static readonly string[] DecimalPrefixes = new string[] {string.Empty, " Kilo", " Mega", " Giga", " Tera", " Peta", " Exa", " Zetta", " Yotta"};
-    private static readonly string[] BinaryPrefixes = new string[] {string.Empty, " Kibi", " Mebi", " Gibi", " Tebi", " Pebi", " Exbi", " Zebi", " Yobi"};
+    /*
+     * class members
+     */
+    private static readonly string[] InvaliantDecimalAbbreviations = new string[] {string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y"};
+    private static readonly string[] InvaliantBinaryAbbreviations = new string[] {string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi"};
+    private static readonly string[] InvaliantDecimalPrefixes = new string[] {string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta"};
+    private static readonly string[] InvaliantBinaryPrefixes = new string[] {string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi"};
+
+    private static readonly SIPrefixFormat invaliantInfo = new SIPrefixFormat(CultureInfo.InvariantCulture);
+
+    public static SIPrefixFormat CurrentInfo {
+      get { return new SIPrefixFormat(CultureInfo.CurrentCulture); }
+    }
+
+    public static SIPrefixFormat InvaliantInfo {
+      get { return invaliantInfo; }
+    }
+
+    /*
+     * instance members
+     */
+    public string ByteUnit {
+      get; private set;
+    }
+
+    public string ByteUnitAbbreviation {
+      get; private set;
+    }
+
+    private string[] DecimalPrefixes {
+      get; /*private*/ set;
+    }
+
+    private string[] BinaryPrefixes {
+      get; /*private*/ set;
+    }
+
+    public string ValuePrefixDelimiter {
+      get; private set;
+    }
+
+    public string PrefixUnitDelimiter {
+      get; private set;
+    }
+
+    public SIPrefixFormat()
+      : this(CultureInfo.InvariantCulture)
+    {
+    }
+
+    public SIPrefixFormat(CultureInfo cultureInfo)
+    {
+      if (cultureInfo == null)
+        throw new ArgumentNullException("cultureInfo");
+
+      //this.cultureInfo = cultureInfo;
+      const string singleSpace = " ";
+
+      switch (cultureInfo.LCID) {
+        case 0x00000411: // ja
+          ByteUnit = "バイト";
+          ValuePrefixDelimiter = singleSpace;
+          PrefixUnitDelimiter = string.Empty;
+          DecimalPrefixes = new[] {string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ"};
+          BinaryPrefixes  = new[] {string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ"};
+          break;
+
+        // case 0x00000409: // en-us
+        // case 0x00000809: // en-gb
+        default:
+          ByteUnit = "Bytes";
+          ValuePrefixDelimiter = singleSpace;
+          PrefixUnitDelimiter = singleSpace;
+          DecimalPrefixes = InvaliantDecimalPrefixes;
+          BinaryPrefixes = InvaliantBinaryPrefixes;
+          break;
+      }
+
+      ByteUnitAbbreviation = "B";
+    }
 
     public string Format(string format, object arg, IFormatProvider formatProvider)
     {
@@ -57,16 +134,17 @@ namespace Smdn.Formats {
       bool fileSizeFormat = false;
       string[] prefixes;
       decimal unit;
+      bool abbreviate = false;
 
       switch (format[0]) {
         /* binary format */
-        case 'b': unit = 1024.0m; prefixes = BinaryAbbreviations; break;
+        case 'b': unit = 1024.0m; prefixes = InvaliantBinaryAbbreviations; abbreviate = true; break;
         case 'B': unit = 1024.0m; prefixes = BinaryPrefixes; break;
         /* decimal format */
-        case 'd': unit = 1000.0m; prefixes = DecimalAbbreviations; break;
+        case 'd': unit = 1000.0m; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
         case 'D': unit = 1000.0m; prefixes = DecimalPrefixes; break;
         /* file size format */
-        case 'f': unit = 1024.0m; fileSizeFormat = true; prefixes = DecimalAbbreviations; break;
+        case 'f': unit = 1024.0m; fileSizeFormat = true; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
         case 'F': unit = 1024.0m; fileSizeFormat = true; prefixes = DecimalPrefixes; break;
 
         default:
@@ -99,12 +177,18 @@ namespace Smdn.Formats {
       val = sign * val;
 
       var ret = new StringBuilder();
+      string unitString = null;
 
       if (fileSizeFormat) {
         if (aux == 0)
           ret.Append(val.ToString("F0"));
         else
           ret.Append(val.ToString("F1"));
+
+        if (abbreviate)
+          unitString = ByteUnitAbbreviation;
+        else
+          unitString = ByteUnit;
       }
       else {
         if (digits == 0)
@@ -113,7 +197,17 @@ namespace Smdn.Formats {
           ret.Append(val.ToString("F" + digits.ToString()));
       }
 
+      if (!abbreviate && 0 < prefixes[aux].Length)
+        ret.Append(ValuePrefixDelimiter);
+
       ret.Append(prefixes[aux]);
+
+      if (unitString != null) {
+        if (!abbreviate && 0 < unitString.Length)
+          ret.Append(PrefixUnitDelimiter);
+
+        ret.Append(unitString);
+      }
 
       return ret.ToString();
     }
@@ -137,5 +231,7 @@ namespace Smdn.Formats {
       else
         return null;
     }
+
+    //private CultureInfo cultureInfo;
   }
 }

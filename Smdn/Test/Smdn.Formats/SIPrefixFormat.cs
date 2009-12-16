@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using NUnit.Framework;
 
 namespace Smdn.Formats {
@@ -7,7 +8,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatArgs()
     {
-      var provider = new SIPrefixFormat();
+      var provider = SIPrefixFormat.InvaliantInfo;
 
       foreach (var arg in new object[] {
         1000,
@@ -32,7 +33,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatDecimal()
     {
-      var provider = new SIPrefixFormat();
+      var provider = SIPrefixFormat.InvaliantInfo;
 
       foreach (var pair in new[] {
         new {ExpectedShort = "0",     ExpectedLong ="0",        Value =       0m},
@@ -57,7 +58,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatBinary()
     {
-      var provider = new SIPrefixFormat();
+      var provider = SIPrefixFormat.InvaliantInfo;
 
       foreach (var pair in new[] {
         new {ExpectedShort = "0",      ExpectedLong = "0",          Value =       0m},
@@ -82,29 +83,29 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatFileSize()
     {
-      var provider = new SIPrefixFormat();
+      var provider = SIPrefixFormat.InvaliantInfo;
 
       foreach (var pair in new[] {
-        new {ExpectedShort = "0",       ExpectedLong = "0",             Value =       0m},
-        new {ExpectedShort = "1",       ExpectedLong = "1",             Value =       1m},
-        new {ExpectedShort = "10",      ExpectedLong = "10",            Value =      10m},
-        new {ExpectedShort = "100",     ExpectedLong = "100",           Value =     100m},
-        new {ExpectedShort = "999",     ExpectedLong = "999",           Value =     999m},
-        new {ExpectedShort = "1000",    ExpectedLong = "1000",          Value =    1000m},
-        new {ExpectedShort = "1001",    ExpectedLong = "1001",          Value =    1001m},
-        new {ExpectedShort = "1023",    ExpectedLong = "1023",          Value =    1023m},
-        new {ExpectedShort = "1.0k",    ExpectedLong = "1.0 Kilo",      Value =    1024m},
-        new {ExpectedShort = "1.0k",    ExpectedLong = "1.0 Kilo",      Value =    1025m},
-        new {ExpectedShort = "10.0k",   ExpectedLong = "10.0 Kilo",     Value =   10240m},
-        new {ExpectedShort = "100.0k",  ExpectedLong = "100.0 Kilo",    Value =  102400m},
-        new {ExpectedShort = "1000.0k", ExpectedLong = "1000.0 Kilo",   Value = 1024000m},
-        new {ExpectedShort = "1024.0k", ExpectedLong = "1024.0 Kilo",   Value = 1048575m},
-        new {ExpectedShort = "1.0M",    ExpectedLong = "1.0 Mega",      Value = 1048576m},
-        new {ExpectedShort = "10.0M",   ExpectedLong = "10.0 Mega",     Value = 10485760m},
-        new {ExpectedShort = "100.0M",  ExpectedLong = "100.0 Mega",    Value = 104857600m},
-        new {ExpectedShort = "1000.0M", ExpectedLong = "1000.0 Mega",   Value = 1048576000m},
-        new {ExpectedShort = "1024.0M", ExpectedLong = "1024.0 Mega",   Value = 1073741823m},
-        new {ExpectedShort = "1.0G",    ExpectedLong = "1.0 Giga",      Value = 1073741824m},
+        new {ExpectedShort = "0B",        ExpectedLong = "0 Bytes",             Value =       0m},
+        new {ExpectedShort = "1B",        ExpectedLong = "1 Bytes",             Value =       1m},
+        new {ExpectedShort = "10B",       ExpectedLong = "10 Bytes",            Value =      10m},
+        new {ExpectedShort = "100B",      ExpectedLong = "100 Bytes",           Value =     100m},
+        new {ExpectedShort = "999B",      ExpectedLong = "999 Bytes",           Value =     999m},
+        new {ExpectedShort = "1000B",     ExpectedLong = "1000 Bytes",          Value =    1000m},
+        new {ExpectedShort = "1001B",     ExpectedLong = "1001 Bytes",          Value =    1001m},
+        new {ExpectedShort = "1023B",     ExpectedLong = "1023 Bytes",          Value =    1023m},
+        new {ExpectedShort = "1.0kB",     ExpectedLong = "1.0 Kilo Bytes",      Value =    1024m},
+        new {ExpectedShort = "1.0kB",     ExpectedLong = "1.0 Kilo Bytes",      Value =    1025m},
+        new {ExpectedShort = "10.0kB",    ExpectedLong = "10.0 Kilo Bytes",     Value =   10240m},
+        new {ExpectedShort = "100.0kB",   ExpectedLong = "100.0 Kilo Bytes",    Value =  102400m},
+        new {ExpectedShort = "1000.0kB",  ExpectedLong = "1000.0 Kilo Bytes",   Value = 1024000m},
+        new {ExpectedShort = "1024.0kB",  ExpectedLong = "1024.0 Kilo Bytes",   Value = 1048575m},
+        new {ExpectedShort = "1.0MB",     ExpectedLong = "1.0 Mega Bytes",      Value = 1048576m},
+        new {ExpectedShort = "10.0MB",    ExpectedLong = "10.0 Mega Bytes",     Value = 10485760m},
+        new {ExpectedShort = "100.0MB",   ExpectedLong = "100.0 Mega Bytes",    Value = 104857600m},
+        new {ExpectedShort = "1000.0MB",  ExpectedLong = "1000.0 Mega Bytes",   Value = 1048576000m},
+        new {ExpectedShort = "1024.0MB",  ExpectedLong = "1024.0 Mega Bytes",   Value = 1073741823m},
+        new {ExpectedShort = "1.0GB",     ExpectedLong = "1.0 Giga Bytes",      Value = 1073741824m},
       }) {
         Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:f}", pair.Value));
         Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:F}", pair.Value));
@@ -114,7 +115,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatDecimalValue()
     {
-      var provider = new SIPrefixFormat();
+      var provider = SIPrefixFormat.InvaliantInfo;
       var decimalValue = +1000000m;
 
       foreach (var sign in new[] {+1m, -1m}) {
@@ -133,8 +134,8 @@ namespace Smdn.Formats {
           new {Expected = "1.000 Mega",     Format = "D3"},
           new {Expected = "1.000000 Mega",  Format = "D6"},
 
-          new {Expected = "976.6k",         Format = "f"},
-          new {Expected = "976.6 Kilo",     Format = "F"},
+          new {Expected = "976.6kB",          Format = "f"},
+          new {Expected = "976.6 Kilo Bytes", Format = "F"},
         }) {
           var format = string.Format("{{0:{0}}}", pair.Format);
           var expected = (sign < decimal.Zero) ? "-" + pair.Expected : pair.Expected;
@@ -147,8 +148,8 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatBinaryValue()
     {
+      var provider = SIPrefixFormat.InvaliantInfo;
       var binaryValue = +1048576m;
-      var provider = new SIPrefixFormat();
 
       foreach (var sign in new[] {+1m, -1m}) {
         foreach (var pair in new[] {
@@ -166,14 +167,53 @@ namespace Smdn.Formats {
           new {Expected = "1.049 Mega",     Format = "D3"},
           new {Expected = "1.048576 Mega",  Format = "D6"},
 
-          new {Expected = "1.0M",           Format = "f"},
-          new {Expected = "1.0 Mega",       Format = "F"},
+          new {Expected = "1.0MB",          Format = "f"},
+          new {Expected = "1.0 Mega Bytes", Format = "F"},
         }) {
           var format = string.Format("{{0:{0}}}", pair.Format);
           var expected = (sign < decimal.Zero) ? "-" + pair.Expected : pair.Expected;
 
           Assert.AreEqual(expected, string.Format(provider, format, sign * binaryValue));
         }
+      }
+    }
+
+    [Test]
+    public void TestFormatSpecificLocaleJA()
+    {
+      var provider = new SIPrefixFormat(new CultureInfo("ja-jp"));
+
+      foreach (var pair in new[] {
+        new {ExpectedShort = "1.0",       ExpectedLong = "1.0",           Value =             1m},
+        new {ExpectedShort = "1.0ki",     ExpectedLong = "1.0 キビ",      Value =          1024m},
+        new {ExpectedShort = "1.0Mi",     ExpectedLong = "1.0 メビ",      Value =       1048576m},
+        new {ExpectedShort = "1.0Gi",     ExpectedLong = "1.0 ギビ",      Value =    1073741824m},
+        new {ExpectedShort = "1.0Ti",     ExpectedLong = "1.0 テビ",      Value = 1099511627776m},
+      }) {
+        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:b1}", pair.Value));
+        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:B1}", pair.Value));
+      }
+
+      foreach (var pair in new[] {
+        new {ExpectedShort = "1.0",       ExpectedLong = "1.0",           Value =             1m},
+        new {ExpectedShort = "1.0k",      ExpectedLong = "1.0 キロ",      Value =          1000m},
+        new {ExpectedShort = "1.0M",      ExpectedLong = "1.0 メガ",      Value =       1000000m},
+        new {ExpectedShort = "1.0G",      ExpectedLong = "1.0 ギガ",      Value =    1000000000m},
+        new {ExpectedShort = "1.0T",      ExpectedLong = "1.0 テラ",      Value = 1000000000000m},
+      }) {
+        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:d1}", pair.Value));
+        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:D1}", pair.Value));
+      }
+
+      foreach (var pair in new[] {
+        new {ExpectedShort = "1B",        ExpectedLong = "1バイト",              Value =             1m},
+        new {ExpectedShort = "1.0kB",     ExpectedLong = "1.0 キロバイト",       Value =          1024m},
+        new {ExpectedShort = "1.0MB",     ExpectedLong = "1.0 メガバイト",       Value =       1048576m},
+        new {ExpectedShort = "1.0GB",     ExpectedLong = "1.0 ギガバイト",       Value =    1073741824m},
+        new {ExpectedShort = "1.0TB",     ExpectedLong = "1.0 テラバイト",       Value = 1099511627776m},
+      }) {
+        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:f}", pair.Value));
+        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:F}", pair.Value));
       }
     }
   }
