@@ -90,6 +90,15 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestFirstOrDefault()
+    {
+      Assert.AreEqual(0, ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).FirstOrDefault());
+      Assert.AreEqual(0, GetEnumerator().FirstOrDefault());
+      Assert.AreEqual(0, ((IEnumerable<int>)new int[] {}).FirstOrDefault());
+      Assert.AreEqual(0, GetEmptyEnumerator().FirstOrDefault());
+    }
+
+    [Test]
     public void TestFind()
     {
       Assert.AreEqual("a",   (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 1;}));
