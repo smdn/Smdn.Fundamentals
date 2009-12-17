@@ -232,6 +232,18 @@ namespace Smdn.IO {
       stream.Flush();
     }
 
+    public override int ReadByte()
+    {
+      CheckDisposed();
+
+      if (length == null)
+        return stream.ReadByte();
+      else if (length.Value <= Position)
+        return -1;
+      else
+        return stream.ReadByte();
+    }
+
     public override int Read(byte[] buffer, int offset, int count)
     {
       CheckDisposed();

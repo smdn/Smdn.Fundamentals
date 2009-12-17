@@ -220,6 +220,48 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestReadByteLengthSpecified()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+      var stream = new PartialStream(inner, 2, 4);
+
+      foreach (var expected in new int[] {
+        0x02, 0x03, 0x04, 0x05, -1,
+      }) {
+        Assert.AreEqual(expected, stream.ReadByte());
+      }
+
+      Assert.AreEqual(4, stream.Position);
+      Assert.AreEqual(6, stream.InnerStream.Position);
+
+      Assert.AreEqual(-1, stream.ReadByte());
+
+      Assert.AreEqual(4, stream.Position);
+      Assert.AreEqual(6, stream.InnerStream.Position);
+    }
+
+    [Test]
+    public void TestReadByteLengthNotSpecified()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+      var stream = new PartialStream(inner, 2);
+
+      foreach (var expected in new int[] {
+        0x02, 0x03, 0x04, 0x05, 0x06, 0x07, -1,
+      }) {
+        Assert.AreEqual(expected, stream.ReadByte());
+      }
+
+      Assert.AreEqual(6, stream.Position);
+      Assert.AreEqual(8, stream.InnerStream.Position);
+
+      Assert.AreEqual(-1, stream.ReadByte());
+
+      Assert.AreEqual(6, stream.Position);
+      Assert.AreEqual(8, stream.InnerStream.Position);
+    }
+
+    [Test]
     public void TestWriteLengthSpecified()
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
