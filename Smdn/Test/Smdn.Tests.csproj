@@ -10,7 +10,6 @@
     <AssemblyName>Smdn.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Tests</RootNamespace>
-    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +82,7 @@
     <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
     <Compile Include="Smdn\Lazy.cs" />
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
+    <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
