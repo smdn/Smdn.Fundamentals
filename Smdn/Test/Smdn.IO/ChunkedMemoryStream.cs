@@ -195,7 +195,6 @@ namespace Smdn.IO {
     public void TestSetLength()
     {
       using (var stream = new ChunkedMemoryStream(4)) {
-      //using (var stream = new MemoryStream(4)) {
         for (var len = 0L; len < 12L; len++) {
           stream.SetLength(len);
           Assert.AreEqual(len, stream.Length);
@@ -232,6 +231,14 @@ namespace Smdn.IO {
         Assert.AreEqual(3L, stream.Position);
         Assert.AreEqual(0, stream.ReadByte());
         Assert.AreEqual(4L, stream.Position);
+      }
+    }
+
+    [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+    public void TestSetLengthNegative()
+    {
+      using (var stream = new ChunkedMemoryStream(4)) {
+        stream.SetLength(-1);
       }
     }
 
