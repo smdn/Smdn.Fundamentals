@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Smdn.IO {
-  public class WeakCachedStream : Stream {
+  public abstract class CachedStreamBase : Stream {
     public Stream InnerStream {
       get { CheckDisposed(); return stream; }
     }
@@ -73,22 +73,7 @@ namespace Smdn.IO {
       get { CheckDisposed(); return leaveInnerStreamOpen; }
     }
 
-    public WeakCachedStream(Stream innerStream)
-      : this(innerStream, 40960, true)
-    {
-    }
-
-    public WeakCachedStream(Stream innerStream, int blockSize)
-      : this(innerStream, blockSize, true)
-    {
-    }
-
-    public WeakCachedStream(Stream innerStream, bool leaveInnerStreamOpen)
-      : this(innerStream, 40960, leaveInnerStreamOpen)
-    {
-    }
-
-    public WeakCachedStream(Stream innerStream, int blockSize, bool leaveInnerStreamOpen)
+    protected CachedStreamBase(Stream innerStream, int blockSize, bool leaveInnerStreamOpen)
     {
       if (innerStream == null)
         throw new ArgumentNullException("innerStream");
@@ -113,11 +98,6 @@ namespace Smdn.IO {
         if (!leaveInnerStreamOpen)
           stream.Close();
         stream = null;
-      }
-
-      if (cachedBlocks != null) {
-        cachedBlocks.Clear();
-        cachedBlocks = null;
       }
     }
 
@@ -212,27 +192,12 @@ namespace Smdn.IO {
 
       offsetInBlock = (int)blockOffset;
 
-      var block = TryGetCachedBlock(blockIndex);
-
-      if (block == null)
-        block = CacheBlock(blockIndex);
-
-      return block;
+      return GetBlock(blockIndex);
     }
 
-    private byte[] TryGetCachedBlock(long blockIndex)
-    {
-      WeakReference blockReference;
+    protected abstract byte[] GetBlock(long blockIndex);
 
-      cachedBlocks.TryGetValue(blockIndex, out blockReference);
-
-      if (blockReference == null)
-        return null;
-      else
-        return blockReference.Target as byte[];
-    }
-
-    private byte[] CacheBlock(long blockIndex)
+    protected byte[] ReadBlock(long blockIndex)
     {
       var block = new byte[blockSize];
 
@@ -242,8 +207,6 @@ namespace Smdn.IO {
 
       if (read < blockSize)
         Array.Resize(ref block, read);
-
-      cachedBlocks[blockIndex] = new WeakReference(block);
 
       return block;
     }
@@ -284,6 +247,5 @@ namespace Smdn.IO {
     private readonly int blockSize;
     private readonly bool leaveInnerStreamOpen;
     private long position;
-    private Dictionary<long, WeakReference> cachedBlocks = new Dictionary<long, WeakReference>();
   }
 }

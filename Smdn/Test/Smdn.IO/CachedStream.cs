@@ -7,7 +7,7 @@ using Smdn;
 
 namespace Smdn.IO {
   [TestFixture]
-  public class WeakCachedStreamTests {
+  public class CachedStreamTests {
     [Test]
     public void TestProperties()
     {
@@ -15,7 +15,7 @@ namespace Smdn.IO {
         innerStream.SetLength(8);
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
 
-        using (var stream = new WeakCachedStream(innerStream, 4, true)) {
+        using (var stream = new CachedStream(innerStream, 4, true)) {
           Assert.IsTrue(stream.CanRead, "can read");
           Assert.IsFalse(stream.CanWrite, "can write");
           Assert.IsTrue(stream.CanSeek, "can seek");
@@ -34,7 +34,7 @@ namespace Smdn.IO {
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}, 0, 16);
         innerStream.Position = 0L;
 
-        using (var stream = new WeakCachedStream(innerStream, 4)) {
+        using (var stream = new CachedStream(innerStream, 4)) {
           Assert.AreEqual(4L, stream.Seek(4, SeekOrigin.Begin));
           Assert.AreEqual(4L, stream.Position);
           Assert.AreEqual(0x04, stream.ReadByte());
@@ -68,7 +68,7 @@ namespace Smdn.IO {
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}, 0, 16);
         innerStream.Position = 0L;
 
-        using (var stream = new WeakCachedStream(innerStream, 4)) {
+        using (var stream = new CachedStream(innerStream, 4)) {
           Assert.AreEqual(0L, stream.Position);
           Assert.AreEqual(0x00, stream.ReadByte());
           Assert.AreEqual(1L, stream.Position);
@@ -107,7 +107,7 @@ namespace Smdn.IO {
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10}, 0, 17);
         innerStream.Position = 0L;
 
-        using (var stream = new WeakCachedStream(innerStream, 4)) {
+        using (var stream = new CachedStream(innerStream, 4)) {
           var buffer = new byte[stream.Length];
 
           Assert.AreEqual(6, stream.Read(buffer, 0, 6));
@@ -151,7 +151,7 @@ namespace Smdn.IO {
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}, 0, 12);
         innerStream.Position = 0L;
 
-        using (var stream = new WeakCachedStream(innerStream, 4, true)) {
+        using (var stream = new CachedStream(innerStream, 4, true)) {
           Assert.AreEqual(6L, stream.Seek(6L, SeekOrigin.Begin));
           Assert.AreEqual(6L, stream.Position);
 
@@ -207,7 +207,7 @@ namespace Smdn.IO {
     [Test, ExpectedException(typeof(NotSupportedException))]
     public void TestWriteByte()
     {
-      using (var stream = new WeakCachedStream(CreateStream(), 4, false)) {
+      using (var stream = new CachedStream(CreateStream(), 4, false)) {
         stream.WriteByte(0x00);
       }
     }
@@ -215,7 +215,7 @@ namespace Smdn.IO {
     [Test, ExpectedException(typeof(NotSupportedException))]
     public void TestWrite()
     {
-      using (var stream = new WeakCachedStream(CreateStream(), 4, false)) {
+      using (var stream = new CachedStream(CreateStream(), 4, false)) {
         stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
       }
     }
@@ -223,7 +223,7 @@ namespace Smdn.IO {
     [Test, ExpectedException(typeof(NotSupportedException))]
     public void TestSetLength()
     {
-      using (var stream = new WeakCachedStream(CreateStream(), 4, false)) {
+      using (var stream = new CachedStream(CreateStream(), 4, false)) {
         stream.SetLength(32L);
       }
     }
@@ -231,7 +231,7 @@ namespace Smdn.IO {
     [Test, ExpectedException(typeof(NotSupportedException))]
     public void TestFlush()
     {
-      using (var stream = new WeakCachedStream(CreateStream(), 4, false)) {
+      using (var stream = new CachedStream(CreateStream(), 4, false)) {
         stream.Flush();
       }
     }

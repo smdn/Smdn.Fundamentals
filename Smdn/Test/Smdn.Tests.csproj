@@ -83,7 +83,7 @@
     <Compile Include="Smdn\Lazy.cs" />
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
     <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
-    <Compile Include="Smdn.IO\WeakCachedStream.cs" />
+    <Compile Include="Smdn.IO\CachedStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
