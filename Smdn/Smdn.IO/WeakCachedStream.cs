@@ -157,14 +157,10 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      long blockOffset;
-      var blockIndex = Math.DivRem(position, (long)blockSize, out blockOffset);
-      var block = TryGetCachedBlock(blockIndex);
+      int blockOffset;
+      var block = GetBlock(position, out blockOffset);
 
-      if (block == null)
-        block = CacheBlock(blockIndex);
-
-      if (block.Length <= (int)blockOffset) {
+      if (block.Length <= blockOffset) {
         return -1;
       }
       else {
@@ -189,19 +185,15 @@ namespace Smdn.IO {
       var ret = 0;
 
       for (;;) {
-        long blockOffset;
-        var blockIndex = Math.DivRem(position, (long)blockSize, out blockOffset);
-        var block = TryGetCachedBlock(blockIndex);
-
-        if (block == null)
-          block = CacheBlock(blockIndex);
+        int blockOffset;
+        var block = GetBlock(position, out blockOffset);
 
         if (block.Length == 0)
           return ret; // end of stream
 
-        var bytesToCopy = Math.Min(block.Length - (int)blockOffset, count);
+        var bytesToCopy = Math.Min(block.Length - blockOffset, count);
 
-        Buffer.BlockCopy(block, (int)blockOffset, buffer, offset, bytesToCopy);
+        Buffer.BlockCopy(block, blockOffset, buffer, offset, bytesToCopy);
 
         position  += bytesToCopy;
         ret       += bytesToCopy;
@@ -211,6 +203,21 @@ namespace Smdn.IO {
         if (count <= 0)
           return ret;
       }
+    }
+
+    private byte[] GetBlock(long offset, out int offsetInBlock)
+    {
+      long blockOffset;
+      var blockIndex = Math.DivRem(position, (long)blockSize, out blockOffset);
+
+      offsetInBlock = (int)blockOffset;
+
+      var block = TryGetCachedBlock(blockIndex);
+
+      if (block == null)
+        block = CacheBlock(blockIndex);
+
+      return block;
     }
 
     private byte[] TryGetCachedBlock(long blockIndex)
