@@ -188,10 +188,10 @@ namespace Smdn.IO {
         int blockOffset;
         var block = GetBlock(position, out blockOffset);
 
-        if (block.Length == 0)
-          return ret; // end of stream
-
         var bytesToCopy = Math.Min(block.Length - blockOffset, count);
+
+        if (bytesToCopy <= 0)
+          return ret; // end of stream
 
         Buffer.BlockCopy(block, blockOffset, buffer, offset, bytesToCopy);
 

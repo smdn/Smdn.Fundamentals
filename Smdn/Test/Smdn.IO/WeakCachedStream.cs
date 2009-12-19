@@ -104,7 +104,7 @@ namespace Smdn.IO {
     public void TestRead()
     {
       using (var innerStream = new MemoryStream(16)) {
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}, 0, 16);
+        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10}, 0, 17);
         innerStream.Position = 0L;
 
         using (var stream = new WeakCachedStream(innerStream, 4)) {
@@ -128,12 +128,17 @@ namespace Smdn.IO {
 
           stream.Position = 12L;
 
-          Assert.AreEqual(4, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(16L, stream.Position);
-          Assert.AreEqual(new byte[] {0x0c, 0x0d, 0x0e, 0x0f}, buffer.Slice(0, 4));
+          Assert.AreEqual(5, stream.Read(buffer, 0, 6));
+          Assert.AreEqual(17L, stream.Position);
+          Assert.AreEqual(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}, buffer.Slice(0, 5));
 
           Assert.AreEqual(0, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(16L, stream.Position);
+          Assert.AreEqual(17L, stream.Position);
+
+          stream.Position = 16L;
+
+          Assert.AreEqual(1, stream.Read(buffer, 0, 6));
+          Assert.AreEqual(17L, stream.Position);
         }
       }
     }
