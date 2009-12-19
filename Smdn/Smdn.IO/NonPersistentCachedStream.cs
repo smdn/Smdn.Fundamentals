@@ -27,23 +27,23 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Smdn.IO {
-  public class CachedStream : CachedStreamBase {
-    public CachedStream(Stream innerStream)
+  public class NonPersistentCachedStream : CachedStreamBase {
+    public NonPersistentCachedStream(Stream innerStream)
       : this(innerStream, 40960, true)
     {
     }
 
-    public CachedStream(Stream innerStream, int blockSize)
+    public NonPersistentCachedStream(Stream innerStream, int blockSize)
       : this(innerStream, blockSize, true)
     {
     }
 
-    public CachedStream(Stream innerStream, bool leaveInnerStreamOpen)
+    public NonPersistentCachedStream(Stream innerStream, bool leaveInnerStreamOpen)
       : this(innerStream, 40960, leaveInnerStreamOpen)
     {
     }
 
-    public CachedStream(Stream innerStream, int blockSize, bool leaveInnerStreamOpen)
+    public NonPersistentCachedStream(Stream innerStream, int blockSize, bool leaveInnerStreamOpen)
       : base(innerStream, blockSize, leaveInnerStreamOpen)
     {
     }

@@ -122,7 +122,7 @@
     <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
     <Compile Include="Smdn.IO\CachedStreamBase.cs" />
     <Compile Include="Smdn.IO\PersistentCachedStream.cs" />
-    <Compile Include="Smdn.IO\CachedStream.cs" />
+    <Compile Include="Smdn.IO\NonPersistentCachedStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
