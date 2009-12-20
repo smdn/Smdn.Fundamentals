@@ -89,6 +89,11 @@ namespace Smdn.IO {
       return StringExtensions.Remove(path, Path.GetInvalidFileNameChars());
     }
 
+    public static string ReplaceInvalidPathCharsWithBlanks(string path)
+    {
+      return ReplaceInvalidPathChars(path, " ");
+    }
+
     public static string ReplaceInvalidPathChars(string path, string newValue)
     {
       return ReplaceInvalidPathChars(path, delegate(char ch, string str, int index) {
@@ -99,6 +104,11 @@ namespace Smdn.IO {
     public static string ReplaceInvalidPathChars(string path, StringExtensions.ReplaceCharEvaluator evaluator)
     {
       return StringExtensions.Replace(path, Path.GetInvalidPathChars(), evaluator);
+    }
+
+    public static string ReplaceInvalidFileNameCharsWithBlanks(string path)
+    {
+      return ReplaceInvalidFileNameChars(path, " ");
     }
 
     public static string ReplaceInvalidFileNameChars(string path, string newValue)
