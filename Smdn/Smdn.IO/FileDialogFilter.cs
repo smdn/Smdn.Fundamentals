@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 
+using Smdn.Collections;
+
 namespace Smdn.IO {
   public static class FileDialogFilter {
     public const string Delimiter = "|";
@@ -77,6 +79,14 @@ namespace Smdn.IO {
       }
 
       return CreateFilterString(filters);
+    }
+
+    public static string CreateFilterString(IEnumerable<Filter> filters)
+    {
+      if (filters == null)
+        throw new ArgumentNullException("filters");
+
+      return CreateFilterString(filters.ToArray());
     }
 
     [CLSCompliant(false)]
