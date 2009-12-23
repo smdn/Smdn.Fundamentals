@@ -225,5 +225,25 @@ namespace Smdn.Collections {
           return default(T);
       }
     }
+
+    public static bool TrueForAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    {
+      if (match == null)
+        throw new ArgumentNullException("match");
+
+      if (enumerable is List<T>)
+        return (enumerable as List<T>).TrueForAll(match);
+      else if (enumerable is T[])
+        return Array.TrueForAll(enumerable as T[], match);
+
+      var enumerator = enumerable.GetEnumerator();
+
+      while (enumerator.MoveNext()) {
+        if (!match(enumerator.Current))
+          return false;
+      }
+
+      return true;
+    }
   }
 }

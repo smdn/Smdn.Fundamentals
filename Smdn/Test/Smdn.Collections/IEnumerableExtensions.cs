@@ -161,5 +161,19 @@ namespace Smdn.Collections {
       Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
                                               GetEnumerator().ToArray()));
     }
+
+    [Test]
+    public void TestTrueForAll()
+    {
+      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).TrueForAll(delegate(int i){ return 0 <= i; }));
+      Assert.IsFalse(((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).TrueForAll(delegate(int i){ return 3 <= i; }));
+      Assert.IsTrue (((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).TrueForAll(delegate(int i){ return 0 <= i; }));
+      Assert.IsFalse(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).TrueForAll(delegate(int i){ return 3 <= i; }));
+      Assert.IsTrue (((IEnumerable<int>)GetEnumerator()).TrueForAll(delegate(int i){ return 0 <= i; }));
+      Assert.IsFalse(((IEnumerable<int>)GetEnumerator()).TrueForAll(delegate(int i){ return 3 <= i; }));
+
+      Assert.IsTrue(((IEnumerable<int>)new int[] {}).TrueForAll(delegate(int i){ return false; }));
+      Assert.IsTrue(GetEmptyEnumerator().TrueForAll(delegate(int i){ return false; }));
+    }
   }
 }
