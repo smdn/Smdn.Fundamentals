@@ -124,6 +124,7 @@
     <Compile Include="Smdn.IO\PersistentCachedStream.cs" />
     <Compile Include="Smdn.IO\NonPersistentCachedStream.cs" />
     <Compile Include="Smdn.IO\PipeOutStream.cs" />
+    <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

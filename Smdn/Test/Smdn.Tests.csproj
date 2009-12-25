@@ -84,6 +84,7 @@
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
     <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
     <Compile Include="Smdn.IO\CachedStream.cs" />
+    <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
