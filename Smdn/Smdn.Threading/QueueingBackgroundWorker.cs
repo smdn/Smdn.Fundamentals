@@ -29,6 +29,7 @@ using System.ComponentModel;
 namespace Smdn.Threading {
   public class QueueingBackgroundWorker : BackgroundWorker {
     public event EventHandler AllWorkerCompleted;
+    public event EventHandler Cancelled;
 
     public int PendingWorkerCount {
       get
@@ -50,7 +51,7 @@ namespace Smdn.Threading {
         pendingWorkerArgs.Clear();
       }
 
-      canceled = false;
+      cancelled = false;
     }
 
     public void QueueWorkerAsync()
@@ -61,7 +62,7 @@ namespace Smdn.Threading {
     public void QueueWorkerAsync(object argument)
     {
       lock (pendingWorkerArgs.SyncRoot) {
-        if (IsBusy)
+        if (IsBusy || cancelled)
           pendingWorkerArgs.Enqueue(argument);
         else
           RunWorkerAsync(argument);
@@ -70,9 +71,16 @@ namespace Smdn.Threading {
 
     public void CancelPendingAndRunningWorkerAsync()
     {
-      CancelAsync();
+      if (IsBusy) {
+        CancelAsync();
 
-      canceled = true;
+        cancelled = true;
+      }
+      else if (!cancelled) {
+        cancelled = true;
+
+        OnCancelled(EventArgs.Empty);
+      }
     }
 
     protected override void OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
@@ -84,22 +92,36 @@ namespace Smdn.Threading {
         var allCompleted = true;
 
         lock (pendingWorkerArgs.SyncRoot) {
-          if (!canceled && 0 < pendingWorkerArgs.Count) {
+          if (!cancelled && 0 < pendingWorkerArgs.Count) {
             RunWorkerAsync(pendingWorkerArgs.Dequeue());
             allCompleted = false;
           }
         }
 
-        if (allCompleted) {
-          var ev = this.AllWorkerCompleted;
-
-          if (ev != null)
-            ev(this, EventArgs.Empty);
-        }
+        if (cancelled)
+          OnCancelled(EventArgs.Empty);
+        else if (allCompleted)
+          OnAllWorkerCompleted(EventArgs.Empty);
       }
     }
 
+    protected virtual void OnAllWorkerCompleted(EventArgs e)
+    {
+      var ev = this.AllWorkerCompleted;
+
+      if (ev != null)
+        ev(this, EventArgs.Empty);
+    }
+
+    protected virtual void OnCancelled(EventArgs e)
+    {
+      var ev = this.Cancelled;
+
+      if (ev != null)
+        ev(this, EventArgs.Empty);
+    }
+
     private Queue pendingWorkerArgs = new Queue();
-    private bool canceled = false;
+    private bool cancelled = false;
   }
 }

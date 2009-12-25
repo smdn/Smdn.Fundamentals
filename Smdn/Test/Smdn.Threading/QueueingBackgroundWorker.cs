@@ -88,12 +88,47 @@ namespace Smdn.Threading {
     }
 
     [Test]
-    public void TestCancelAsync()
+    public void TestQueueWorkerAsyncAfterCancelPendingAndRunningWorkerAsync()
+    {
+      using (var worker = new QueueingBackgroundWorker()) {
+        var cancelled = false;
+
+        worker.DoWork += delegate {
+          Thread.Sleep(25);
+        };
+        worker.Cancelled += delegate {
+          cancelled = true;
+        };
+
+        for (var i = 0; i < 10; i++) {
+          worker.QueueWorkerAsync(i);
+        }
+
+        worker.CancelPendingAndRunningWorkerAsync();
+        worker.QueueWorkerAsync(11);
+
+        Thread.Sleep(100);
+
+        Assert.IsTrue(cancelled, "cancelled");
+
+        var pendingWorkerCount = worker.PendingWorkerCount;
+
+        Assert.Greater(pendingWorkerCount, 0);
+
+        worker.QueueWorkerAsync(12);
+
+        Assert.AreEqual(pendingWorkerCount + 1, worker.PendingWorkerCount);
+      }
+    }
+
+    [Test]
+    public void TestCancelPendingAndRunningWorkerAsync()
     {
       using (var worker = new QueueingBackgroundWorker()) {
         var maxWorker = 10;
         var ranWorkers = new bool[maxWorker];
         var allDone = false;
+        var cancelled = false;
 
         worker.DoWork += delegate(object sender, DoWorkEventArgs e) {
           ranWorkers[(int)e.Argument] = true;
@@ -102,6 +137,9 @@ namespace Smdn.Threading {
         };
         worker.AllWorkerCompleted += delegate {
           allDone = true;
+        };
+        worker.Cancelled += delegate {
+          cancelled = true;
         };
 
         for (var i = 0; i < maxWorker; i++) {
@@ -115,23 +153,40 @@ namespace Smdn.Threading {
         for (var wait = 0;; wait++) {
           Thread.Sleep(25);
 
-          if (allDone)
+          if (cancelled)
             break;
 
           if (1000 < wait)
-            Assert.Fail("not completed");
+            Assert.Fail("not cancelled");
         }
 
         Assert.Greater(worker.PendingWorkerCount, 0);
+        Assert.IsFalse(allDone, "AllWorkerCompleted must not be raised");
 
         var ranWorkerCount = maxWorker - worker.PendingWorkerCount;
 
         for (var i = 0; i < ranWorkerCount; i++) {
-          Assert.IsTrue(ranWorkers[i], "DoWork called #{0}", i);
+          Assert.IsTrue(ranWorkers[i], "DoWork raised #{0}", i);
         }
         for (var i = ranWorkerCount; i < maxWorker; i++) {
-          Assert.IsFalse(ranWorkers[i], "DoWork not called #{0}", i);
+          Assert.IsFalse(ranWorkers[i], "DoWork not raised #{0}", i);
         }
+      }
+    }
+
+    [Test]
+    public void TestCancelPendingAndRunningWorkerAsyncNotQueued()
+    {
+      using (var worker = new QueueingBackgroundWorker()) {
+        var cancelled = false;
+
+        worker.Cancelled += delegate {
+          cancelled = true;
+        };
+
+        worker.CancelPendingAndRunningWorkerAsync();
+
+        Assert.IsTrue(cancelled, "Cancelled must be raised");
       }
     }
   }
