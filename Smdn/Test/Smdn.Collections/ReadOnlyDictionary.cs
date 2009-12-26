@@ -19,6 +19,26 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestConstructFromKeyValuePairs()
+    {
+      var dic = new ReadOnlyDictionary<string, string>(new[] {
+        new KeyValuePair<string, string>("key1", "val1"),
+        new KeyValuePair<string, string>("key2", "val2"),
+        new KeyValuePair<string, string>("key3", "val3"),
+      });
+
+      Assert.IsTrue(dic.IsReadOnly);
+      Assert.AreEqual("val1", dic["key1"]);
+
+      try {
+        dic.Add("newkey", "newvalue");
+        Assert.Fail("NotSupportedException");
+      }
+      catch (NotSupportedException) {
+      }
+    }
+
+    [Test]
     public void TestReadOperations()
     {
       var dic = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>() {

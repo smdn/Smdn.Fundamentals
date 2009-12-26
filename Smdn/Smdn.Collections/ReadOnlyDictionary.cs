@@ -56,6 +56,23 @@ namespace Smdn.Collections {
       this.dictionary = dictionary;
     }
 
+    public ReadOnlyDictionary(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
+      : this(pairs, null)
+    {
+    }
+
+    public ReadOnlyDictionary(IEnumerable<KeyValuePair<TKey, TValue>> pairs, IEqualityComparer<TKey> comparer)
+    {
+      if (pairs == null)
+        throw new ArgumentNullException("pairs");
+
+      this.dictionary = new Dictionary<TKey, TValue>(comparer);
+
+      foreach (var pair in pairs) {
+        dictionary.Add(pair);
+      }
+    }
+
     /*
      * read operations
      */
