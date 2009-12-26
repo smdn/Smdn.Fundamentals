@@ -126,6 +126,7 @@
     <Compile Include="Smdn.IO\PipeOutStream.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

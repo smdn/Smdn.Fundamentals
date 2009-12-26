@@ -86,6 +86,7 @@
     <Compile Include="Smdn.IO\CachedStream.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
