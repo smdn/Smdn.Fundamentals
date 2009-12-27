@@ -49,6 +49,21 @@ namespace Smdn {
       return new ByteString(new byte[] {});
     }
 
+    public static byte[] ToByteArray(string @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      var chars = @value.ToCharArray();
+      var bytes = new byte[@value.Length];
+
+      for (var index = 0; index < chars.Length; index++) {
+        bytes[index] = (byte)chars[index];
+      }
+
+      return bytes;
+    }
+
     public ByteString(params byte[] @value)
     {
       if (@value == null)
@@ -80,16 +95,7 @@ namespace Smdn {
 
     public ByteString(string @value)
     {
-      if (@value == null)
-        throw new ArgumentNullException("value");
-
-      var chars = @value.ToCharArray();
-
-      this.bytes = new byte[@value.Length];
-
-      for (var index = 0; index < chars.Length; index++) {
-        this.bytes[index] = (byte)chars[index];
-      }
+      this.bytes = ToByteArray(@value);
     }
 
     public bool Contains(ByteString @value)

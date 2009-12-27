@@ -57,6 +57,14 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestToByteArray()
+    {
+      var bytes = ByteString.ToByteArray("abc");
+
+      Assert.AreEqual(new byte[] {0x61, 0x62, 0x63}, bytes);
+    }
+
+    [Test]
     public void TestContains()
     {
       var str = new ByteString("ababdabdbdabcab");
