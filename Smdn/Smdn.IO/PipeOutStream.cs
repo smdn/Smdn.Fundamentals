@@ -73,16 +73,22 @@ namespace Smdn.IO {
     }
 
     public PipeOutStream(ProcessStartInfo startInfo)
-      : this(startInfo, null)
+      : this(startInfo, null, null)
     {
     }
 
     public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onErrorDataReceived)
+      : this(startInfo, null, onErrorDataReceived)
+    {
+    }
+
+    public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onOutputDataReceived, DataReceivedEventHandler onErrorDataReceived)
     {
       if (startInfo == null)
         throw new ArgumentNullException("startInfo");
 
       this.startInfo = startInfo;
+      this.onOutputDataReceived = onOutputDataReceived;
       this.onErrorDataReceived = onErrorDataReceived;
     }
 
@@ -99,6 +105,9 @@ namespace Smdn.IO {
 
         process = null;
       }
+
+      onOutputDataReceived = null;
+      onErrorDataReceived = null;
 
       disposed = true;
     }
@@ -155,6 +164,11 @@ namespace Smdn.IO {
       process = new Process();
       process.StartInfo = startInfo;
 
+      if (onOutputDataReceived != null) {
+        startInfo.RedirectStandardOutput = true;
+        process.OutputDataReceived += onOutputDataReceived;
+      }
+
       if (onErrorDataReceived != null) {
         startInfo.RedirectStandardError = true;
         process.ErrorDataReceived += onErrorDataReceived;
@@ -199,6 +213,7 @@ namespace Smdn.IO {
     private bool disposed = false;
     private ProcessStartInfo startInfo;
     private Process process = null;
+    private DataReceivedEventHandler onOutputDataReceived;
     private DataReceivedEventHandler onErrorDataReceived;
     private int waitForExitTimeout = 1000;
   }
