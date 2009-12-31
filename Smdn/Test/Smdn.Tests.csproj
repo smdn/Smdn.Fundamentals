@@ -44,30 +44,15 @@
     <Folder Include="Smdn.Threading\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn.Mathematics\Fraction.cs" />
-    <Compile Include="Smdn.IO\BigEndianBinaryReader.cs" />
-    <Compile Include="Smdn.IO\LittleEndianBinaryReader.cs" />
-    <Compile Include="Smdn.IO\BigEndianBinaryWriter.cs" />
-    <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
-    <Compile Include="Smdn.IO\BinaryReader.cs" />
-    <Compile Include="Smdn.IO\BinaryWriter.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
-    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
-    <Compile Include="Smdn.IO\PartialStream.cs" />
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn\FourCC.cs" />
-    <Compile Include="Smdn\ByteStringBuilder.cs" />
-    <Compile Include="Smdn\ByteString.cs" />
-    <Compile Include="Smdn\UInt24.cs" />
-    <Compile Include="Smdn.IO\ExtendStream.cs" />
-    <Compile Include="Smdn.IO\InterruptStream.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn.IO\ShellString.cs" />
@@ -82,8 +67,6 @@
     <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
     <Compile Include="Smdn\Lazy.cs" />
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
-    <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
-    <Compile Include="Smdn.IO\CachedStream.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
