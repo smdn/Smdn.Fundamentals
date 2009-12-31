@@ -25,6 +25,10 @@
 using System;
 
 namespace Smdn {
+  /*
+   * RFC 2361 - WAVE and AVI Codec Registries [INFORMATIONAL]
+   * http://tools.ietf.org/html/rfc2361
+   */
   public struct FourCC :
     IEquatable<FourCC>,
     IEquatable<string>,
@@ -104,6 +108,20 @@ namespace Smdn {
     public int ToInt32BigEndian()
     {
       return fourcc;
+    }
+
+    public Guid ToCodecGuid()
+    {
+      /*
+       * RFC 2361 - WAVE and AVI Codec Registries
+       * 4 Mapping Codec IDs to GUID Values
+       *    FourCC values are converted to GUIDs by inserting the FourCC value
+       *    into the XXXXXXXX part of the same template: {XXXXXXXX-0000-0010-
+       *    8000-00AA00389B71}. For example, a conversion of the FourCC value of
+       *    "H260" would result in the GUID value of {30363248-0000-0010-8000-
+       *    00AA00389B71}.
+       */
+      return new Guid(ToInt32LittleEndian(), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
     }
 
     public byte[] ToByteArray()
