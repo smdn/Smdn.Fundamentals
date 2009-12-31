@@ -28,7 +28,7 @@ namespace Smdn {
   public struct FourCC :
     IEquatable<FourCC>,
     IEquatable<string>,
-    IEquatable<ByteString>
+    IEquatable<byte[]>
   {
     public static readonly FourCC Empty = new FourCC(0);
 
@@ -69,11 +69,6 @@ namespace Smdn {
                     (byte)@value[3];
     }
 
-    public FourCC(ByteString @value)
-      : this(@value.ByteArray)
-    {
-    }
-
     private FourCC(int fourcc)
     {
       this.fourcc = fourcc;
@@ -91,14 +86,14 @@ namespace Smdn {
       return fourcc.ToString();
     }
 
-    public static implicit operator FourCC(ByteString fourccString)
+    public static implicit operator FourCC(byte[] fourccByteArray)
     {
-      return new FourCC(fourccString);
+      return new FourCC(fourccByteArray);
     }
 
-    public static implicit operator ByteString(FourCC fourcc)
+    public static implicit operator byte[](FourCC fourcc)
     {
-      return fourcc.ToByteString();
+      return fourcc.ToByteArray();
     }
 
     public int ToInt32LittleEndian()
@@ -119,11 +114,6 @@ namespace Smdn {
         (byte)((fourcc >>  8) & 0xff),
         (byte)( fourcc        & 0xff),
       };
-    }
-
-    public ByteString ToByteString()
-    {
-      return new ByteString(ToByteArray());
     }
 
     public override string ToString()
@@ -155,8 +145,8 @@ namespace Smdn {
         return Equals((FourCC)obj);
       else if (obj is string)
         return Equals(obj as string);
-      else if (obj is ByteString)
-        return Equals(obj as ByteString);
+      else if (obj is byte[])
+        return Equals(obj as byte[]);
       else
         return false;
     }
@@ -171,9 +161,9 @@ namespace Smdn {
       return string.Equals(this.ToString(), other);
     }
 
-    public bool Equals(ByteString other)
+    public bool Equals(byte[] other)
     {
-      return this.ToByteString().Equals(other);
+      return ArrayExtensions.EqualsAll(this.ToByteArray(), other);
     }
 #endregion
 

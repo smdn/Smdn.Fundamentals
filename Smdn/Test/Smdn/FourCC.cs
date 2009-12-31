@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using NUnit.Framework;
 
 namespace Smdn {
@@ -26,27 +27,19 @@ namespace Smdn {
     }
 
     [Test]
-    public void ConstructFromByteString()
-    {
-      Assert.AreEqual("RIFF", (new FourCC(new ByteString("RIFF"))).ToString());
-      Assert.AreEqual("isom", (new FourCC(new ByteString("isom"))).ToString());
-    }
-
-    [Test]
     public void TestEquatable()
     {
       var x = FourCC.CreateLittleEndian(0x46464952);
       var nullString = (string)null;
-      var nullByteString = (ByteString)null;
+      var nullByteArray = (byte[])null;
 
       Assert.IsTrue(x.Equals(x));
       Assert.IsFalse(x.Equals((object)null));
       Assert.IsFalse(x.Equals(nullString));
-      Assert.IsFalse(x.Equals(nullByteString));
+      Assert.IsFalse(x.Equals(nullByteArray));
       Assert.IsFalse(x.Equals(0x46464952));
       Assert.IsTrue(x.Equals(FourCC.CreateLittleEndian(0x46464952)));
       Assert.IsTrue(x.Equals(new FourCC("RIFF")));
-      Assert.IsTrue(x.Equals(new FourCC(new ByteString(new byte[] {0x52, 0x49, 0x46, 0x46}))));
       Assert.IsTrue(x.Equals(new FourCC(new byte[] {0x52, 0x49, 0x46, 0x46})));
     }
 
@@ -79,13 +72,6 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestToByteString()
-    {
-      Assert.AreEqual(new ByteString(new byte[] {0x52, 0x49, 0x46, 0x46}), FourCC.CreateLittleEndian(0x46464952).ToString());
-      Assert.AreEqual(new ByteString(new byte[] {0x69, 0x73, 0x6f, 0x6d}), FourCC.CreateBigEndian(0x69736f6d).ToString());
-    }
-
-    [Test]
     public void TestToByteArray()
     {
       Assert.AreEqual(new byte[] {0x52, 0x49, 0x46, 0x46}, FourCC.CreateLittleEndian(0x46464952).ToByteArray());
@@ -107,10 +93,10 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestImplicitOperatorByteString()
+    public void TestImplicitOperatorByteArray()
     {
-      Assert.AreEqual(new ByteString("RIFF"), (ByteString)FourCC.CreateLittleEndian(0x46464952));
-      Assert.AreEqual((FourCC)(new ByteString("RIFF")), FourCC.CreateLittleEndian(0x46464952));
+      Assert.AreEqual(Encoding.ASCII.GetBytes("RIFF"), (byte[])FourCC.CreateLittleEndian(0x46464952));
+      Assert.AreEqual((FourCC)Encoding.ASCII.GetBytes("RIFF"), FourCC.CreateLittleEndian(0x46464952));
     }
   }
 }
