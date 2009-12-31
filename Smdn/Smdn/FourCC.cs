@@ -76,7 +76,7 @@ namespace Smdn {
 #endregion
 
 #region "conversion"
-    public static explicit operator FourCC(string fourccString)
+    public static implicit operator FourCC(string fourccString)
     {
       return new FourCC(fourccString);
     }
