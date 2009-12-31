@@ -76,22 +76,22 @@ namespace Smdn {
 #endregion
 
 #region "conversion"
-    public static implicit operator FourCC(string fourccString)
+    public static explicit operator FourCC(string fourccString)
     {
       return new FourCC(fourccString);
     }
 
-    public static implicit operator string(FourCC fourcc)
+    public static explicit operator string(FourCC fourcc)
     {
       return fourcc.ToString();
     }
 
-    public static implicit operator FourCC(byte[] fourccByteArray)
+    public static explicit operator FourCC(byte[] fourccByteArray)
     {
       return new FourCC(fourccByteArray);
     }
 
-    public static implicit operator byte[](FourCC fourcc)
+    public static explicit operator byte[](FourCC fourcc)
     {
       return fourcc.ToByteArray();
     }
