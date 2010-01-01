@@ -72,6 +72,7 @@
     <Compile Include="Smdn\UnixTimeStamp.cs" />
     <Compile Include="Smdn\MathUtils.cs" />
     <Compile Include="Smdn.Formats\Csv.cs" />
+    <Compile Include="Smdn.Formats\Hexadecimals.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

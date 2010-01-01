@@ -105,6 +105,7 @@
     <Compile Include="Smdn.Formats\Csv.cs" />
     <Compile Include="Smdn.Formats\CsvReader.cs" />
     <Compile Include="Smdn.Formats\CsvWriter.cs" />
+    <Compile Include="Smdn.Formats\Hexadecimals.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

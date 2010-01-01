@@ -607,7 +607,7 @@ namespace Smdn {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
 
       try {
-        this.Node = TextConvert.FromHexString(fields[4]);
+        this.Node = Hexadecimals.ToByteArray(fields[4]);
       }
       catch (FormatException) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
