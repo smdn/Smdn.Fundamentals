@@ -191,58 +191,6 @@ namespace Smdn.Formats {
     };
 #endregion
 
-#region "conversion methods for unix time"
-    public static int ToUnixTime32(DateTimeOffset dateTimeOffset)
-    {
-      return ToUnixTime32(dateTimeOffset.UtcDateTime);
-    }
-
-    public static int ToUnixTime32(DateTime dateTime)
-    {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (int)dateTime.Subtract(UnixEpoch).TotalSeconds;
-    }
-
-    public static long ToUnixTime64(DateTimeOffset dateTimeOffset)
-    {
-      return ToUnixTime64(dateTimeOffset.UtcDateTime);
-    }
-
-    public static long ToUnixTime64(DateTime dateTime)
-    {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (long)dateTime.Subtract(UnixEpoch).TotalSeconds;
-    }
-
-    public static DateTime FromUnixTime(int unixTime)
-    {
-      return FromUnixTime((long)unixTime);
-    }
-
-    public static DateTime FromUnixTimeUtc(int unixTime)
-    {
-      return FromUnixTimeUtc((long)unixTime);
-    }
-
-    public static DateTime FromUnixTime(long unixTime)
-    {
-      // this might overflow
-      return UnixEpoch.AddSeconds(unixTime).ToLocalTime();
-    }
-
-    public static DateTime FromUnixTimeUtc(long unixTime)
-    {
-      // this might overflow
-      return UnixEpoch.AddSeconds(unixTime);
-    }
-
-    public readonly static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-#endregion
-
 #region "conversion methods for date time of ISO base media file format"
     [CLSCompliant(false)]
     public static DateTime FromISO14496DateTime(ulong isoDateTime)
