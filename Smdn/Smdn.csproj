@@ -102,6 +102,9 @@
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
     <Compile Include="Smdn\UnixTimeStamp.cs" />
     <Compile Include="Smdn\MathUtils.cs" />
+    <Compile Include="Smdn.Formats\Csv.cs" />
+    <Compile Include="Smdn.Formats\CsvReader.cs" />
+    <Compile Include="Smdn.Formats\CsvWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -71,6 +71,7 @@
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
     <Compile Include="Smdn\UnixTimeStamp.cs" />
     <Compile Include="Smdn\MathUtils.cs" />
+    <Compile Include="Smdn.Formats\Csv.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

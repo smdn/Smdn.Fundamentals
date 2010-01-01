@@ -100,20 +100,6 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TestToCSVString()
-    {
-      Assert.AreEqual("a,b,c", TextConvert.ToCSVString(new[] {"a", "b", "c"}));
-      Assert.AreEqual("abc,\"d\"\"e\"\"f\",g'h'i", TextConvert.ToCSVString(new[] {"abc", "d\"e\"f", "g'h'i"}));
-    }
-
-    [Test]
-    public void TestFromCSVString()
-    {
-      Assert.AreEqual(new[] {"a", "b", "c"}, TextConvert.FromCSVString("a,b,c"));
-      Assert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, TextConvert.FromCSVString("abc,\"d\"\"e\"\"f\",g'h'i"));
-    }
-
-    [Test]
     public void TestToBase64ByteArray()
     {
       Assert.AreEqual(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30},

@@ -219,57 +219,6 @@ namespace Smdn.Formats {
     }
 #endregion
 
-#region "CSV"
-    // http://www.ietf.org/rfc/rfc4180.txt
-    // Common Format and MIME Type for Comma-Separated Values (CSV) Files
-    public static string[] FromCSVString(string csv)
-    {
-      // append dummy splitter
-      csv += ",";
-
-      var splitted = new List<string>();
-      var splitAt = 0;
-      var quoted = false;
-      var inQuote = false;
-
-      for (var index = 0; index < csv.Length; index++) {
-        if (csv[index] == Chars.DQuote) {
-          inQuote = !inQuote;
-          quoted = true;
-        }
-
-        if (inQuote)
-          continue;
-
-        if (csv[index] != Chars.Comma)
-          continue;
-
-        if (quoted)
-          splitted.Add(csv.Substring(splitAt + 1, index - splitAt - 2).Replace("\"\"", "\""));
-        else
-          splitted.Add(csv.Substring(splitAt, index - splitAt));
-
-        quoted = false;
-        splitAt = index + 1;
-      }
-
-      return splitted.ToArray();
-    }
-
-    public static string ToCSVString(string[] csv)
-    {
-      if (csv.Length == 0)
-        return string.Empty;
-
-      return string.Join(",", Array.ConvertAll(csv, delegate(string s) {
-        if (s.Contains("\""))
-          return string.Format("\"{0}\"", s.Replace("\"", "\"\""));
-        else
-          return s;
-      }));
-    }
-#endregion
-
 #region "Base64"
 #if TRANSFORMIMPL_FAST
     public static string ToBase64String(string str)
