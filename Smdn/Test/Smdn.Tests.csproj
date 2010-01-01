@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn.Formats\TextConvert.cs" />
-    <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn.Mathematics\Fraction.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
@@ -71,6 +70,7 @@
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
     <Compile Include="Smdn\UnixTimeStamp.cs" />
+    <Compile Include="Smdn\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

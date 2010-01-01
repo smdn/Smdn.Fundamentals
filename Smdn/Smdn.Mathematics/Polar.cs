@@ -76,7 +76,7 @@ namespace Smdn.Mathematics {
 #region "conversion"
     public static Polar FromCartecian(float x, float y)
     {
-      return new Polar(Operations.Hypot(x, y), new Radian((float)Math.Atan2(y, x)));
+      return new Polar(MathUtils.Hypot(x, y), new Radian((float)Math.Atan2(y, x)));
     }
 
     // System.Drawing.dll

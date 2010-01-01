@@ -24,8 +24,8 @@
 
 using System;
 
-namespace Smdn.Mathematics {
-  public class Operations {
+namespace Smdn {
+  public static class MathUtils {
     /// <summary>
     /// length of the hypotenuse of a triangle
     /// </summary>
@@ -45,15 +45,15 @@ namespace Smdn.Mathematics {
     /// <summary>
     /// greatest common divisor of m and n
     /// </summary>
-    public static int GCD(int m, int n)
+    public static int Gcd(int m, int n)
     {
-      return (int)GCD((long)m, (long)n);
+      return (int)Gcd((long)m, (long)n);
     }
 
     /// <summary>
     /// greatest common divisor of m and n
     /// </summary>
-    public static long GCD(long m, long n)
+    public static long Gcd(long m, long n)
     {
       long mm, nn;
 
@@ -78,17 +78,17 @@ namespace Smdn.Mathematics {
     /// <summary>
     /// least common multiple of m and n
     /// </summary>
-    public static int LCM(int m, int n)
+    public static int Lcm(int m, int n)
     {
-      return (int)LCM((long)m, (long)n);
+      return (int)Lcm((long)m, (long)n);
     }
 
     /// <summary>
     /// least common multiple of m and n
     /// </summary>
-    public static long LCM(long m, long n)
+    public static long Lcm(long m, long n)
     {
-      return (m * n) / GCD(m, n);
+      return (m * n) / Gcd(m, n);
     }
   }
 }

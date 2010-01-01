@@ -11,6 +11,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,7 +52,6 @@
     <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Formats\Chars.cs" />
     <Compile Include="Smdn.Formats\Octets.cs" />
-    <Compile Include="Smdn.Mathematics\Operations.cs" />
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn.Formats\MimeEncoding.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
@@ -101,6 +101,7 @@
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
     <Compile Include="Smdn\UnixTimeStamp.cs" />
+    <Compile Include="Smdn\MathUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
