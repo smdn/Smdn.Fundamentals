@@ -26,6 +26,8 @@ using System;
 
 namespace Smdn {
   public static class UnixTimeStamp {
+    public readonly static DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
     public static long UtcNow {
       get { return ToInt64(DateTime.UtcNow); }
     }
@@ -44,7 +46,7 @@ namespace Smdn {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
 
-      return (int)dateTime.Subtract(UnixEpoch).TotalSeconds;
+      return (int)dateTime.Subtract(Epoch).TotalSeconds;
     }
 
     public static long ToInt64(DateTimeOffset dateTimeOffset)
@@ -57,7 +59,7 @@ namespace Smdn {
       if (dateTime.Kind != DateTimeKind.Utc)
         dateTime = dateTime.ToUniversalTime();
 
-      return (long)dateTime.Subtract(UnixEpoch).TotalSeconds;
+      return (long)dateTime.Subtract(Epoch).TotalSeconds;
     }
 
     public static DateTime ToLocalDateTime(int unixTime)
@@ -73,15 +75,13 @@ namespace Smdn {
     public static DateTime ToLocalDateTime(long unixTime)
     {
       // this might overflow
-      return UnixEpoch.AddSeconds(unixTime).ToLocalTime();
+      return Epoch.AddSeconds(unixTime).ToLocalTime();
     }
 
     public static DateTime ToUtcDateTime(long unixTime)
     {
       // this might overflow
-      return UnixEpoch.AddSeconds(unixTime);
+      return Epoch.AddSeconds(unixTime);
     }
-
-    public readonly static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
   }
 }
