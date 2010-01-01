@@ -201,7 +201,7 @@ namespace Smdn.IO {
       for (var index = 0;; index++) {
         var now = DateTime.Now;
         var newpath = Path.Combine(directory, string.Format("{0}.{1}-p{2}t{3}-{4}{5}",
-                                                            UnixTime.ToInt64(now),
+                                                            UnixTimeStamp.ToInt64(now),
                                                             now.Millisecond,
                                                             System.Diagnostics.Process.GetCurrentProcess().Id,
                                                             System.Threading.Thread.CurrentThread.ManagedThreadId,

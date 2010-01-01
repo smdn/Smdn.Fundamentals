@@ -70,7 +70,7 @@
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
-    <Compile Include="Smdn\UnixTime.cs" />
+    <Compile Include="Smdn\UnixTimeStamp.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

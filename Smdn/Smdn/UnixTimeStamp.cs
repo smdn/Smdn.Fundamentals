@@ -25,7 +25,7 @@
 using System;
 
 namespace Smdn {
-  public static class UnixTime {
+  public static class UnixTimeStamp {
     public static long UtcNow {
       get { return ToInt64(DateTime.UtcNow); }
     }
