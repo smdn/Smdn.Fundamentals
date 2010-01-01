@@ -61,6 +61,11 @@ namespace Smdn.Formats {
         dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture).Replace(":", string.Empty);
     }
 
+    public static string ToRFC822DateTimeStringNullable(DateTimeOffset? dateTimeOffset)
+    {
+      return (dateTimeOffset == null) ? null : ToRFC822DateTimeString(dateTimeOffset.Value);
+    }
+
     public static DateTime FromRFC822DateTimeString(string s)
     {
       return FromDateTimeString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
@@ -69,6 +74,11 @@ namespace Smdn.Formats {
     public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
     {
       return FromDateTimeOffsetString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
+    }
+
+    public static DateTimeOffset? FromRFC822DateTimeOffsetStringNullable(string s)
+    {
+      return (s == null) ? (DateTimeOffset?)null : (DateTimeOffset?)FromRFC822DateTimeOffsetString(s);
     }
 
     public static string ToISO8601DateTimeString(DateTime dateTime)
@@ -91,6 +101,11 @@ namespace Smdn.Formats {
       return dateTimeOffset.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
     }
 
+    public static string ToW3CDateTimeStringNullable(DateTimeOffset? dateTimeOffset)
+    {
+      return (dateTimeOffset == null) ? null : ToW3CDateTimeString(dateTimeOffset.Value);
+    }
+
     public static DateTime FromISO8601DateTimeString(string s)
     {
       return FromW3CDateTimeString(s);
@@ -109,6 +124,11 @@ namespace Smdn.Formats {
     public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
     {
       return FromDateTimeOffsetString(s, w3cDateTimeFormats, w3cUniversalTimeString);
+    }
+
+    public static DateTimeOffset? FromW3CDateTimeOffsetStringNullable(string s)
+    {
+      return (s == null) ? (DateTimeOffset?)null : (DateTimeOffset?)FromW3CDateTimeOffsetString(s);
     }
 
     private static DateTime FromDateTimeString(string s, string[] formats, string universalTimeString)

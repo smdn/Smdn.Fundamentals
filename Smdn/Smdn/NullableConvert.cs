@@ -27,6 +27,7 @@ using System;
 using Smdn.Formats;
 
 namespace Smdn {
+  [Obsolete]
   public static class NullableConvert {
     public static Uri ToUri(string val)
     {
@@ -118,75 +119,5 @@ namespace Smdn {
       try { return ToGuid(val); }
       catch { return null; }
     }
-
-#region "DateTime"
-    public static string ToRFC822DateTimeString(DateTime? dateTime)
-    {
-      return (dateTime == null)
-        ? null
-        : DateTimeConvert.ToRFC822DateTimeString(dateTime.Value);
-    }
-
-    public static string ToRFC822DateTimeString(DateTimeOffset? dateTimeOffset)
-    {
-      return (dateTimeOffset == null)
-        ? null
-        : DateTimeConvert.ToRFC822DateTimeString(dateTimeOffset.Value);
-    }
-
-    public static DateTime? FromRFC822DateTimeString(string s)
-    {
-      return (s == null)
-        ? (DateTime?)null
-        : DateTimeConvert.FromRFC822DateTimeString(s);
-    }
-
-    public static DateTimeOffset? FromRFC822DateTimeOffsetString(string s)
-    {
-      return (s == null)
-        ? (DateTimeOffset?)null
-        : DateTimeConvert.FromRFC822DateTimeOffsetString(s);
-    }
-
-    public static DateTimeOffset? FromRFC822DateTimeOffsetStringIgnoreException(string s)
-    {
-      try { return FromRFC822DateTimeOffsetString(s); }
-      catch { return null; }
-    }
-
-    public static string ToW3CDateTimeString(DateTime? dateTime)
-    {
-      return (dateTime == null)
-        ? null
-        : DateTimeConvert.ToW3CDateTimeString(dateTime.Value);
-    }
-
-    public static string ToW3CDateTimeString(DateTimeOffset? dateTimeOffset)
-    {
-      return (dateTimeOffset == null)
-        ? null
-        : DateTimeConvert.ToW3CDateTimeString(dateTimeOffset.Value);
-    }
-
-    public static DateTime? FromW3CDateTimeString(string s)
-    {
-      return (s == null)
-        ? (DateTime?)null
-        : DateTimeConvert.FromW3CDateTimeString(s);
-    }
-
-    public static DateTimeOffset? FromW3CDateTimeOffsetString(string s)
-    {
-      return (s == null)
-        ? (DateTimeOffset?)null
-        : DateTimeConvert.FromW3CDateTimeOffsetString(s);
-    }
-
-    public static DateTimeOffset? FromW3CDateTimeOffsetStringIgnoreException(string s)
-    {
-      try { return FromW3CDateTimeOffsetString(s); }
-      catch { return null; }
-    }
-#endregion
   }
 }
