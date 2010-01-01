@@ -225,19 +225,5 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours);
       Assert.AreEqual(0, dto.Offset.Minutes);
     }
-
-    [Test]
-    public void TestFromIso14496DateTime()
-    {
-      Assert.AreEqual(DateTime.Parse("1904-01-01T00:00:00+00", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal),
-                      DateTimeConvert.FromISO14496DateTime(0UL));
-    }
-
-    [Test]
-    public void TestToIso14496DateTime64()
-    {
-      Assert.AreEqual(0UL,
-                      DateTimeConvert.ToISO14496DateTime64(DateTime.Parse("1904-01-01T00:00:00", CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal)));
-    }
   }
 }

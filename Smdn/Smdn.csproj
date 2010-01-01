@@ -101,6 +101,7 @@
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
     <Compile Include="Smdn\UnixTimeStamp.cs" />
+    <Compile Include="Smdn\Iso14496TimeStamp.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

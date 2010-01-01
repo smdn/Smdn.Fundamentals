@@ -27,7 +27,6 @@ using System.Globalization;
 
 namespace Smdn.Formats {
   public static class DateTimeConvert {
-#region "formatting and parsing methods"
     public static string GetCurrentTimeZoneOffsetString(bool delimiter)
     {
       var offset = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
@@ -189,53 +188,5 @@ namespace Smdn.Formats {
       "yyyy-MM-dd HH:mm'Z'",
       "yyyy-MM-dd HH:mm",
     };
-#endregion
-
-#region "conversion methods for date time of ISO base media file format"
-    [CLSCompliant(false)]
-    public static DateTime FromISO14496DateTime(ulong isoDateTime)
-    {
-      // this might overflow
-      return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
-    }
-
-    [CLSCompliant(false)]
-    public static DateTime FromISO14496DateTime(uint isoDateTime)
-    {
-      return ISO14496DateTimeEpoch.AddSeconds(isoDateTime);
-    }
-
-    [CLSCompliant(false)]
-    public static ulong ToISO14496DateTime64(DateTimeOffset dateTimeOffset)
-    {
-      return ToISO14496DateTime64(dateTimeOffset.UtcDateTime);
-    }
-
-    [CLSCompliant(false)]
-    public static ulong ToISO14496DateTime64(DateTime dateTime)
-    {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (ulong)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
-    }
-
-    [CLSCompliant(false)]
-    public static uint ToISO14496DateTime32(DateTimeOffset dateTimeOffset)
-    {
-      return ToISO14496DateTime32(dateTimeOffset.UtcDateTime);
-    }
-
-    [CLSCompliant(false)]
-    public static uint ToISO14496DateTime32(DateTime dateTime)
-    {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (uint)dateTime.Subtract(ISO14496DateTimeEpoch).TotalSeconds;
-    }
-
-    public readonly static DateTime ISO14496DateTimeEpoch = new DateTime(1904, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-#endregion
   }
 }
