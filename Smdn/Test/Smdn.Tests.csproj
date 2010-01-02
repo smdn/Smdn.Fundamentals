@@ -48,7 +48,6 @@
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn\Runtime.cs" />
-    <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn.Mathematics\Radian.cs" />
     <Compile Include="Smdn.Mathematics\Polar.cs" />

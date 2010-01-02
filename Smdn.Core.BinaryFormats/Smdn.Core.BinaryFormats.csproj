@@ -52,6 +52,7 @@
     <Compile Include="Smdn.IO\BinaryWriterImpl.cs" />
     <Compile Include="Smdn.IO\LittleEndianBinaryReader.cs" />
     <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
+    <Compile Include="Smdn\FourCC.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

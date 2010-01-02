@@ -52,7 +52,6 @@
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
-    <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Mono.Simd\SimdRuntime.cs" />
     <Compile Include="Smdn\RuntimeEnvironment.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
