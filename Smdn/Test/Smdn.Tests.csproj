@@ -68,11 +68,17 @@
     <Compile Include="Smdn.Formats\Hexadecimals.cs" />
     <Compile Include="Smdn\ByteString.cs" />
     <Compile Include="Smdn\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
+    <Compile Include="Smdn.IO\PartialStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
       <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
       <Name>Smdn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Smdn.IO\Smdn.IO.csproj">
+      <Project>{9E053580-F602-11DE-9012-0018F344D241}</Project>
+      <Name>Smdn.IO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

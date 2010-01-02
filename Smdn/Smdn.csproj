@@ -11,7 +11,6 @@
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -86,6 +85,8 @@
     <Compile Include="Smdn\ConvertUtils.cs" />
     <Compile Include="Smdn\ByteString.cs" />
     <Compile Include="Smdn\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
+    <Compile Include="Smdn.IO\PartialStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
