@@ -7,10 +7,11 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{72E150F4-F71B-11DE-8995-0018F344D241}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Smdn.Core.Standards</RootNamespace>
+    <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn.Core.Standards</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
