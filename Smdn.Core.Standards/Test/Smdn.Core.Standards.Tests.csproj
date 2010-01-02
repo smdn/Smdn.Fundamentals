@@ -7,9 +7,9 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{05F807B8-C1CC-4485-A6D6-817C50E08CE1}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Smdn.Tests</AssemblyName>
+    <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <RootNamespace>Smdn.Tests</RootNamespace>
+    <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
