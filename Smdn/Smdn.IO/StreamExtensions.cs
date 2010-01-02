@@ -74,5 +74,31 @@ namespace Smdn.IO {
         writer.Write(buffer, 0, read);
       }
     }
+
+    public static byte[] ReadToEnd(this Stream stream)
+    {
+      return ReadToEnd(stream, 4096, 4096);
+    }
+
+    public static byte[] ReadToEnd(this Stream stream, int initialCapacity)
+    {
+      return ReadToEnd(stream, 4096, initialCapacity);
+    }
+
+    public static byte[] ReadToEnd(this Stream stream, int readBufferSize, int initialCapacity)
+    {
+      if (readBufferSize <= 0)
+        throw new ArgumentOutOfRangeException("readBufferSize", "must be non-zero positive number");
+      if (initialCapacity < 0)
+        throw new ArgumentOutOfRangeException("initialCapacity", "must be zero or positive number");
+
+      using (var outStream = new MemoryStream(initialCapacity)) {
+        WriteToEnd(stream, outStream, readBufferSize);
+
+        outStream.Close();
+
+        return outStream.ToArray();
+      }
+    }
   }
 }

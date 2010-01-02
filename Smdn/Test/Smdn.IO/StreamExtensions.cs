@@ -76,5 +76,15 @@ namespace Smdn.IO {
 
       Assert.AreEqual(inputData, outputStream.ToArray());
     }
+
+    [Test]
+    public void TestReadToEnd()
+    {
+      using (var stream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07})) {
+        stream.Seek(4, SeekOrigin.Begin);
+
+        Assert.AreEqual(new byte[] {0x04, 0x05, 0x06, 0x07}, StreamExtensions.ReadToEnd(stream, 2, 2));
+      }
+    }
   }
 }
