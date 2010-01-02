@@ -48,19 +48,10 @@
     <Compile Include="Smdn\EnvironmentUtils.cs" />
     <Compile Include="System.Runtime.CompilerServices\ExtensionAttribute.cs" />
     <Compile Include="Smdn.Mathematics\Fraction.cs" />
-    <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Formats\Chars.cs" />
     <Compile Include="Smdn.Formats\Octets.cs" />
     <Compile Include="Smdn\Runtime.cs" />
-    <Compile Include="Smdn.Formats\MimeEncoding.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
-    <Compile Include="Smdn.Formats\FromQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Formats\ToQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\ToRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\ToRFC2152ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn\FourCC.cs" />
@@ -69,8 +60,6 @@
     <Compile Include="Smdn\ConsoleUtils.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
-    <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
-    <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
     <Compile Include="Smdn\NullableConvert.cs" />
     <Compile Include="Smdn\Action.cs" />
@@ -102,8 +91,6 @@
     <Compile Include="Smdn\UnixTimeStamp.cs" />
     <Compile Include="Smdn\MathUtils.cs" />
     <Compile Include="Smdn.Formats\Csv.cs" />
-    <Compile Include="Smdn.Formats\CsvReader.cs" />
-    <Compile Include="Smdn.Formats\CsvWriter.cs" />
     <Compile Include="Smdn.Formats\Hexadecimals.cs" />
     <Compile Include="Smdn\ConvertUtils.cs" />
   </ItemGroup>

@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E77012FA-BA4E-490A-9285-57976ECBC441}</ProjectGuid>
+    <ProjectGuid>{05F807B8-C1CC-4485-A6D6-817C50E08CE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
@@ -33,50 +33,23 @@
     <Reference Include="System" />
     <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Smdn\" />
-    <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Formats\" />
-    <Folder Include="Smdn.Mathematics\" />
-    <Folder Include="Smdn.Collections\" />
-    <Folder Include="Smdn.Threading\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Smdn.Mathematics\Fraction.cs" />
-    <Compile Include="Smdn.IO\PathUtils.cs" />
-    <Compile Include="Smdn\ArrayExtensions.cs" />
-    <Compile Include="Smdn\StringExtensions.cs" />
-    <Compile Include="Smdn\Runtime.cs" />
-    <Compile Include="Smdn\FourCC.cs" />
-    <Compile Include="Smdn.IO\FileDialogFilter.cs" />
-    <Compile Include="Smdn\EnumUtils.cs" />
-    <Compile Include="Smdn.IO\ShellString.cs" />
-    <Compile Include="Smdn.Mathematics\Radian.cs" />
-    <Compile Include="Smdn.Mathematics\Polar.cs" />
-    <Compile Include="Smdn\MimeType.cs" />
-    <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
-    <Compile Include="Smdn.Threading\Parallel.cs" />
-    <Compile Include="Smdn\Platform.cs" />
-    <Compile Include="Smdn\Uuid.cs" />
-    <Compile Include="Smdn\Urn.cs" />
-    <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
-    <Compile Include="Smdn\Lazy.cs" />
-    <Compile Include="Smdn.IO\StreamExtensions.cs" />
-    <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
-    <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
-    <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
-    <Compile Include="Smdn\UnixTimeStamp.cs" />
-    <Compile Include="Smdn\MathUtils.cs" />
-    <Compile Include="Smdn.Formats\Csv.cs" />
-    <Compile Include="Smdn.Formats\Hexadecimals.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Smdn.csproj">
+    <ProjectReference Include="..\..\Smdn\Smdn.csproj">
       <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Smdn.Core.Standards.csproj">
+      <Project>{72E150F4-F71B-11DE-8995-0018F344D241}</Project>
+      <Name>Smdn.Core.Standards</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Smdn.Formats\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn.Formats\TextConvert.cs" />
+  </ItemGroup>
 </Project>
