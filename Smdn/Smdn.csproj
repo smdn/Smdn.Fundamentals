@@ -11,6 +11,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -83,6 +84,8 @@
     <Compile Include="Smdn.Formats\Csv.cs" />
     <Compile Include="Smdn.Formats\Hexadecimals.cs" />
     <Compile Include="Smdn\ConvertUtils.cs" />
+    <Compile Include="Smdn\ByteString.cs" />
+    <Compile Include="Smdn\ByteStringBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

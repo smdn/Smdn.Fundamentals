@@ -66,6 +66,8 @@
     <Compile Include="Smdn\MathUtils.cs" />
     <Compile Include="Smdn.Formats\Csv.cs" />
     <Compile Include="Smdn.Formats\Hexadecimals.cs" />
+    <Compile Include="Smdn\ByteString.cs" />
+    <Compile Include="Smdn\ByteStringBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
