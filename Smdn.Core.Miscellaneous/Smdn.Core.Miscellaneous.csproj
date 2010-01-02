@@ -11,6 +11,7 @@
     <AssemblyName>Smdn.Core.Miscellaneous</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,9 +53,11 @@
     <Compile Include="Smdn.IO\ShellString.cs" />
     <Compile Include="Smdn.Threading\ProcessLock.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
+    <Compile Include="Smdn.Xml\XmlCachedUrlResolver.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
@@ -71,6 +74,7 @@
     <Folder Include="Smdn\" />
     <Folder Include="Smdn.IO\" />
     <Folder Include="Smdn.Threading\" />
+    <Folder Include="Smdn.Xml\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">
