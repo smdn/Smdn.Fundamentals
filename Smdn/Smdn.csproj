@@ -11,6 +11,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,7 +67,6 @@
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn.Media\mmsystem.h.cs" />
-    <Compile Include="Smdn\IntPtrExtensions.cs" />
     <Compile Include="Smdn\Platform.cs" />
     <Compile Include="Smdn\Endianness.cs" />
     <Compile Include="Smdn\Shell.cs" />
