@@ -739,9 +739,9 @@ namespace Smdn {
       return new Guid(ToString(null, null));
     }
 
-    public Urn ToUrn()
+    public Uri ToUrn()
     {
-      return new Urn(UrnNamespaceIdentifier, ToString(null, null));
+      return new Uri(string.Format("urn:{0}:{1}", UrnNamespaceIdentifier, ToString(null, null)));
     }
 
     public byte[] ToByteArray()
