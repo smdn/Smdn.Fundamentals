@@ -56,6 +56,9 @@
     <Compile Include="Smdn.Formats\CsvReader.cs" />
     <Compile Include="Smdn.Formats\CsvWriter.cs" />
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -72,6 +75,7 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
+    <Folder Include="Smdn.IO\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">
