@@ -53,6 +53,8 @@
     <Compile Include="Smdn.IO\LittleEndianBinaryReader.cs" />
     <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
     <Compile Include="Smdn\FourCC.cs" />
+    <Compile Include="Smdn.IO\ExtendStream.cs" />
+    <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
