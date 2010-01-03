@@ -46,62 +46,20 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	Smdn.Threading/ProcessLock.cs \
-	Smdn/EnvironmentUtils.cs \
 	System.Runtime.CompilerServices/ExtensionAttribute.cs \
-	Smdn.IO/BigEndianBinaryReader.cs \
-	Smdn.IO/BigEndianBinaryWriter.cs \
 	Smdn.Mathematics/Fraction.cs \
-	Smdn.IO/BinaryReader.cs \
-	Smdn.IO/LittleEndianBinaryReader.cs \
-	Smdn.IO/BinaryWriter.cs \
-	Smdn.IO/LittleEndianBinaryWriter.cs \
-	Smdn.Formats/TextConvert.cs \
 	Smdn.Formats/Chars.cs \
 	Smdn.Formats/Octets.cs \
-	Smdn.Mathematics/Operations.cs \
-	Smdn/UInt48.cs \
 	Smdn/Runtime.cs \
-	Smdn.Formats/MimeEncoding.cs \
 	Smdn.IO/PathUtils.cs \
-	Smdn.Formats/FromQuotedPrintableTransform.cs \
-	Smdn.Formats/ToQuotedPrintableTransform.cs \
-	Smdn.Formats/FromRFC3501ModifiedBase64Transform.cs \
-	Smdn.Formats/ToRFC3501ModifiedBase64Transform.cs \
-	Smdn.Formats/ToRFC2152ModifiedBase64Transform.cs \
-	Smdn.Formats/FromRFC2152ModifiedBase64Transform.cs \
-	Smdn.IO/LineOrientedStream.cs \
-	Smdn.IO/StrictLineOrientedStream.cs \
-	Smdn.IO/LooseLineOrientedStream.cs \
-	Smdn/ByteString.cs \
-	Smdn/ByteStringBuilder.cs \
-	Smdn.Formats/DateTimeConvert.cs \
 	Smdn/ArrayExtensions.cs \
 	Smdn/StringExtensions.cs \
-	Smdn.Mathematics/Matrix3D.cs \
-	Smdn.Mathematics/Matrix4D.cs \
-	Smdn.Mathematics/Vector3D.cs \
-	Smdn.Mathematics/Vector4D.cs \
-	Smdn.IO/PartialStream.cs \
-	Smdn/FourCC.cs \
-	Smdn/UInt24.cs \
-	Smdn.IO/BinaryReaderImpl.cs \
-	Smdn.IO/BinaryWriterImpl.cs \
 	Mono.Simd/SimdRuntime.cs \
 	Smdn/RuntimeEnvironment.cs \
-	Smdn/ConsoleUtils.cs \
-	Smdn.IO/ExtendStream.cs \
-	Smdn.IO/ExtendStreamBase.cs \
-	Smdn.IO/InterruptStream.cs \
 	Smdn/EnumUtils.cs \
-	Smdn.IO/FileDialogFilter.cs \
-	Smdn.Formats/ToPercentEncodedTransform.cs \
-	Smdn.Formats/FromPercentEncodedTransform.cs \
-	Smdn.IO/CachedWebFile.cs \
 	Smdn/NullableConvert.cs \
 	Smdn/Action.cs \
 	Smdn/Func.cs \
-	Smdn.IO/ShellString.cs \
 	Smdn.Mathematics/Radian.cs \
 	Smdn.Mathematics/Polar.cs \
 	Smdn/MimeType.cs \
@@ -110,25 +68,28 @@ FILES = \
 	Smdn.Collections/IEnumerableExtensions.cs \
 	Smdn.Threading/Parallel.cs \
 	Smdn.Media/mmsystem.h.cs \
-	Smdn/IntPtrExtensions.cs \
 	Smdn/Platform.cs \
-	Smdn.IO/FileManager.cs \
 	Smdn/Endianness.cs \
 	Smdn/Shell.cs \
 	Smdn/Uuid.cs \
 	Smdn/UuidVersion.cs \
 	Smdn/Urn.cs \
-	Smdn.Formats/SIPrefixFormat.cs \
 	Smdn/Lazy.cs \
 	Smdn.IO/StreamExtensions.cs \
-	Smdn.IO/ChunkedMemoryStream.cs \
-	Smdn.IO/CachedStreamBase.cs \
-	Smdn.IO/PersistentCachedStream.cs \
-	Smdn.IO/NonPersistentCachedStream.cs \
-	Smdn.IO/PipeOutStream.cs \
-	Smdn.Threading/QueueingBackgroundWorker.cs \
 	Smdn.Collections/ReadOnlyDictionary.cs \
-	Smdn.Collections/IDictionaryExtensions.cs 
+	Smdn.Collections/IDictionaryExtensions.cs \
+	Smdn/UnixTimeStamp.cs \
+	Smdn/MathUtils.cs \
+	Smdn.Formats/Csv.cs \
+	Smdn.Formats/Hexadecimals.cs \
+	Smdn/ConvertUtils.cs \
+	Smdn/ByteString.cs \
+	Smdn/ByteStringBuilder.cs \
+	Smdn.IO/ChunkedMemoryStream.cs \
+	Smdn.IO/PartialStream.cs \
+	Smdn.IO/CachedStreamBase.cs \
+	Smdn.IO/NonPersistentCachedStream.cs \
+	Smdn.IO/PersistentCachedStream.cs 
 
 DATA_FILES = 
 
