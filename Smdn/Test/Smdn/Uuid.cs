@@ -129,8 +129,8 @@ namespace Smdn {
     [Test]
     public void TestToUrn()
     {
-      Assert.AreEqual(new Uri("urn:uuid:00000000-0000-0000-0000-000000000000"), Uuid.Nil.ToUrn());
-      Assert.AreEqual(new Uri("urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8"), Uuid.RFC4122NamespaceDns.ToUrn());
+      StringAssert.AreEqualIgnoringCase((new Uri("urn:uuid:00000000-0000-0000-0000-000000000000")).ToString(), Uuid.Nil.ToUrn().ToString());
+      StringAssert.AreEqualIgnoringCase((new Uri("urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8")).ToString(), Uuid.RFC4122NamespaceDns.ToUrn().ToString());
     }
 
     [Test]
