@@ -57,8 +57,6 @@ namespace Smdn {
       Reserved              = 0xe0,
     }
 
-    public const string UrnNamespaceIdentifier = "uuid";
-
     /*
      * 4.1.7. Nil UUID
      *    The nil UUID is special form of UUID that is specified to have all
@@ -559,23 +557,8 @@ namespace Smdn {
     }
 
     public Uuid(Uri uuidUrn)
-      : this(new Urn(uuidUrn))
+      : this(Urn.GetNamespaceSpecificString(uuidUrn, Urn.NamespaceUuid))
     {
-    }
-
-    public Uuid(Urn uuidUrn)
-      : this(UrnToUuid(uuidUrn))
-    {
-    }
-
-    private static string UrnToUuid(Urn uuidUrn)
-    {
-      if (uuidUrn == null)
-        throw new ArgumentNullException("uuidUrn");
-      if (uuidUrn.NamespaceIdentifier != UrnNamespaceIdentifier)
-        throw new ArgumentException("urn is not uuid", "uuidUrn");
-
-      return uuidUrn.NamespaceSpecificString;
     }
 
     public Uuid(string uuid)
@@ -741,7 +724,7 @@ namespace Smdn {
 
     public Uri ToUrn()
     {
-      return new Uri(string.Format("urn:{0}:{1}", UrnNamespaceIdentifier, ToString(null, null)));
+      return Urn.Create(Urn.NamespaceUuid, ToString(null, null));
     }
 
     public byte[] ToByteArray()

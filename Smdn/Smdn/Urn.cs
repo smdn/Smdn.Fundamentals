@@ -32,46 +32,64 @@ namespace Smdn {
    * Uniform Resource Names (URN) Namespaces
    * http://www.iana.org/assignments/urn-namespaces/
    */
-  public class Urn : Uri {
-    public static readonly string UriSchemeUrn = "urn";
+  public static class Urn {
+    public const string Scheme = "urn";
+    public const string NamespaceIetf   = "IETF"; //  1, RFC2648
+    public const string NamespaceIsbn   = "ISBN"; //  9, RFC3187
+    public const string NamespaceUuid   = "UUID"; // 18, RFC4122
+    public const string NamespaceIso    = "iso";  // 29, RFC5141
 
-    public static void Parse(string urn, out string nid, out string nns)
+    private const string Delimiter = ":";
+
+    public static void Split(string urn, out string nid, out string nns)
     {
-      var nidAndNss = (new Urn(urn)).SplitNidAndNss();
+      Split(new Uri(urn), out nid, out nns);
+    }
+
+    public static void Split(Uri urn, out string nid, out string nns)
+    {
+      var nidAndNss = SplitNidAndNss(urn);
 
       nid = nidAndNss[0];
       nns = nidAndNss[1];
     }
 
-    public string NamespaceIdentifier {
-      get { return SplitNidAndNss()[0]; }
-    }
-
-    public string NamespaceSpecificString {
-      get { return SplitNidAndNss()[1]; }
-    }
-
-    public Urn(Uri urn)
-      : this(urn.ToString())
+    public static string GetNamespaceIdentifier(string urn)
     {
+      return GetNamespaceIdentifier(new Uri(urn));
     }
 
-    public Urn(string nid, string nss)
-      : this(string.Format("{0}:{1}:{2}", UriSchemeUrn, nid, nss))
+    public static string GetNamespaceIdentifier(Uri urn)
     {
+      var nidAndNss = SplitNidAndNss(urn);
+
+      return nidAndNss[0];
     }
 
-    public Urn(string urnString)
-      : base(urnString)
+    public static string GetNamespaceSpecificString(string urn, string expectedNid)
     {
-      if (!string.Equals(Scheme, UriSchemeUrn, StringComparison.InvariantCultureIgnoreCase))
-        throw new ArgumentException(string.Format("scheme must be {0}", UriSchemeUrn), "urnString");
+      return GetNamespaceSpecificString(new Uri(urn), expectedNid);
     }
 
-    private string[] SplitNidAndNss()
+    public static string GetNamespaceSpecificString(Uri urn, string expectedNid)
     {
-      var nidAndNss = LocalPath;
-      var delim = nidAndNss.IndexOf(":");
+      var nidAndNss = SplitNidAndNss(urn);
+
+      if (string.Equals(expectedNid, nidAndNss[0], StringComparison.InvariantCultureIgnoreCase))
+        return nidAndNss[1];
+      else
+        throw new ArgumentException(string.Format("nid is not {0}", expectedNid), "urn");
+    }
+
+    private static string[] SplitNidAndNss(Uri urn)
+    {
+      if (urn == null)
+        throw new ArgumentNullException("urn");
+      if (!string.Equals(urn.Scheme, Scheme, StringComparison.InvariantCultureIgnoreCase))
+        throw new ArgumentException("not URN", "urn");
+
+      var nidAndNss = urn.LocalPath;
+      var delim = nidAndNss.IndexOf(Delimiter);
 
       if (delim < 0)
         throw new UriFormatException("invalid URN");
@@ -80,6 +98,16 @@ namespace Smdn {
         nidAndNss.Substring(0, delim),
         nidAndNss.Substring(delim + 1),
       };
+    }
+
+    public static Uri Create(string nid, string nss)
+    {
+      if (nid == null)
+        throw new ArgumentNullException("nid");
+      if (nss == null)
+        throw new ArgumentNullException("nss");
+
+      return new Uri(string.Concat(Scheme, Delimiter, nid, Delimiter, nss));
     }
   }
 }

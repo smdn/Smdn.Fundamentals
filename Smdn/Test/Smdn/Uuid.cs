@@ -35,7 +35,7 @@ namespace Smdn {
     public void TestConstructFromUrn()
     {
       Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Uuid(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
-      Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Uuid(new Urn("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
+      Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Uuid(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
     }
 
     [Test]

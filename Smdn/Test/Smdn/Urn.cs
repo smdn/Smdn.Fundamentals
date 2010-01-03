@@ -5,38 +5,48 @@ namespace Smdn {
   [TestFixture()]
   public class UrnTests {
     [Test]
-    public void TestConstruct()
+    public void TestCreate()
     {
-      new Urn("urn:ietf:rfc:2141");
-      new Urn("Urn:ietf:rfc:2141");
-      new Urn("URN:ISBN:4-8399-0454-5");
-      new Urn("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6");
-
-      Assert.AreEqual(new Urn("urn:ietf:rfc:2141"), new Urn("ietf", "rfc:2141"));
-      Assert.AreEqual(new Urn("URN:ISBN:4-8399-0454-5"), new Urn("ISBN", "4-8399-0454-5"));
-      Assert.AreEqual(new Urn("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Urn("uuid", "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"));
-    }
-
-    [Test, ExpectedException(typeof(ArgumentException))]
-    public void TestConstructInvalidScheme()
-    {
-      new Urn("http://localhost/");
+      Assert.AreEqual(new Uri("urn:ietf:rfc:2141"), Urn.Create("ietf", "rfc:2141"));
+      Assert.AreEqual(new Uri("URN:ISBN:4-8399-0454-5"), Urn.Create("ISBN", "4-8399-0454-5"));
+      Assert.AreEqual(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), Urn.Create("uuid", "f81d4fae-7dec-11d0-a765-00a0c91e6bf6"));
     }
 
     [Test]
-    public void TestNamespaceIdentifier()
+    public void TestGetNamespaceIdentifier()
     {
-      Assert.AreEqual("ietf", (new Urn("urn:ietf:rfc:2141")).NamespaceIdentifier);
-      Assert.AreEqual("ISBN", (new Urn("URN:ISBN:4-8399-0454-5")).NamespaceIdentifier);
-      Assert.AreEqual("uuid", (new Urn("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")).NamespaceIdentifier);
+      Assert.AreEqual("ietf", Urn.GetNamespaceIdentifier("urn:ietf:rfc:2141"));
+      Assert.AreEqual("ietf", Urn.GetNamespaceIdentifier(new Uri("urn:ietf:rfc:2141")));
+      Assert.AreEqual("ISBN", Urn.GetNamespaceIdentifier("URN:ISBN:4-8399-0454-5"));
+      Assert.AreEqual("ISBN", Urn.GetNamespaceIdentifier(new Uri("URN:ISBN:4-8399-0454-5")));
+      Assert.AreEqual("uuid", Urn.GetNamespaceIdentifier("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"));
+      Assert.AreEqual("uuid", Urn.GetNamespaceIdentifier(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
+      Assert.AreEqual("iso",  Urn.GetNamespaceIdentifier("urn:iso:std:iso:9999:-1:ed-1:en"));
+
+      try {
+        Urn.GetNamespaceIdentifier("http://localhost");
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
     }
 
     [Test]
-    public void TestNamespaceSpecificString()
+    public void TestGetNamespaceSpecificString()
     {
-      Assert.AreEqual("rfc:2141", (new Urn("urn:ietf:rfc:2141")).NamespaceSpecificString);
-      Assert.AreEqual("4-8399-0454-5", (new Urn("URN:ISBN:4-8399-0454-5")).NamespaceSpecificString);
-      Assert.AreEqual("f81d4fae-7dec-11d0-a765-00a0c91e6bf6", (new Urn("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")).NamespaceSpecificString);
-    }
+      Assert.AreEqual("rfc:2141", Urn.GetNamespaceSpecificString("urn:ietf:rfc:2141", Urn.NamespaceIetf));
+      Assert.AreEqual("rfc:2141", Urn.GetNamespaceSpecificString("URN:IETF:rfc:2141", Urn.NamespaceIetf));
+      Assert.AreEqual("rfc:2141", Urn.GetNamespaceSpecificString(new Uri("urn:ietf:rfc:2141"), Urn.NamespaceIetf));
+      Assert.AreEqual("4-8399-0454-5", Urn.GetNamespaceSpecificString("URN:ISBN:4-8399-0454-5", Urn.NamespaceIsbn));
+      Assert.AreEqual("f81d4fae-7dec-11d0-a765-00a0c91e6bf6", Urn.GetNamespaceSpecificString("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6", Urn.NamespaceUuid));
+      Assert.AreEqual("std:iso:9999:-1:ed-1:en",  Urn.GetNamespaceSpecificString("urn:iso:std:iso:9999:-1:ed-1:en", Urn.NamespaceIso));
+
+      try {
+        Urn.GetNamespaceSpecificString("urn:ietf:rfc:2141", Urn.NamespaceUuid);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
+   }
   }
 }
