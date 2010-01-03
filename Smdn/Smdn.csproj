@@ -11,6 +11,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -55,7 +56,6 @@
     <Compile Include="Mono.Simd\SimdRuntime.cs" />
     <Compile Include="Smdn\RuntimeEnvironment.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
-    <Compile Include="Smdn\NullableConvert.cs" />
     <Compile Include="Smdn\Action.cs" />
     <Compile Include="Smdn\Func.cs" />
     <Compile Include="Smdn.Mathematics\Radian.cs" />
