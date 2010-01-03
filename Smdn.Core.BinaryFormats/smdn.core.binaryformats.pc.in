@@ -1,0 +1,6 @@
+Name: Smdn.Core.BinaryFormats
+Description: Smdn.Core.BinaryFormats
+Version: 0.1
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/Smdn.Core.BinaryFormats.dll
