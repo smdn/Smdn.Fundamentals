@@ -65,7 +65,7 @@ namespace Smdn.IO {
       get { return buffer.Length; }
     }
 
-    protected Stream InnerStream {
+    public virtual Stream InnerStream {
       get { return stream; }
     }
 

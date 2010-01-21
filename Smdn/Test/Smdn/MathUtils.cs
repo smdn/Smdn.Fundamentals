@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Mathematics {
+namespace Smdn {
   [TestFixture]
   public class MathUtilsTest {
     [Test]
@@ -28,6 +28,25 @@ namespace Smdn.Mathematics {
       Assert.AreEqual(0, MathUtils.Lcm(3, 0));
       Assert.AreEqual(36, MathUtils.Lcm(12, 18));
       Assert.AreEqual(187, MathUtils.Lcm(17, 11));
+    }
+
+    [Test]
+    public void TestGetRandomBytes1()
+    {
+      var bytes = MathUtils.GetRandomBytes(16);
+
+      Assert.AreEqual(16, bytes.Length);
+      Assert.AreNotEqual(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}, bytes);
+    }
+
+    [Test]
+    public void TestGetRandomBytes2()
+    {
+      var bytes = new byte[16];
+
+      MathUtils.GetRandomBytes(bytes);
+
+      Assert.AreNotEqual(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}, bytes);
     }
   }
 }

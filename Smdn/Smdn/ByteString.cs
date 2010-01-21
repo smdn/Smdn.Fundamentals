@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
 namespace Smdn {
   public class ByteString : IEquatable<ByteString>, IEquatable<byte[]>, IEquatable<string> {
@@ -308,6 +309,29 @@ namespace Smdn {
     public ByteString Substring(int index, int count)
     {
       return new ByteString(bytes, index, count);
+    }
+
+    public ByteString[] Split(byte delimiter)
+    {
+      return Split((char)delimiter);
+    }
+
+    public ByteString[] Split(char delimiter)
+    {
+      var splitted = new List<ByteString>();
+      var index = 0;
+      var lastIndex = 0;
+
+      for (index = 0; index < bytes.Length; index++) {
+        if (bytes[index] == delimiter) {
+          splitted.Add(Substring(lastIndex, index - lastIndex));
+          lastIndex = index + 1;
+        }
+      }
+
+      splitted.Add(Substring(lastIndex, index - lastIndex));
+
+      return splitted.ToArray();
     }
 
     public ByteString ToUpper()

@@ -170,6 +170,30 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestSplit()
+    {
+      var splitted = (new ByteString(" a bc  def g ")).Split(' ');
+
+      Assert.AreEqual(new[] {
+        new ByteString(string.Empty),
+        new ByteString("a"),
+        new ByteString("bc"),
+        new ByteString(string.Empty),
+        new ByteString("def"),
+        new ByteString("g"),
+        new ByteString(string.Empty),
+      }, splitted);
+    }
+
+    [Test]
+    public void TestSplitNoDelimiters()
+    {
+      var splitted = (new ByteString("abcde")).Split(' ');
+
+      Assert.AreEqual(new[] {new ByteString("abcde")}, splitted);
+    }
+
+    [Test]
     public void TestToUpper()
     {
       var str = new ByteString("`abcdefghijklmnopqrstuvwxyz{");

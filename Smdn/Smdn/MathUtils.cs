@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Security.Cryptography;
 
 namespace Smdn {
   public static class MathUtils {
@@ -89,6 +90,27 @@ namespace Smdn {
     public static long Lcm(long m, long n)
     {
       return (m * n) / Gcd(m, n);
+    }
+
+    public static byte[] GetRandomBytes(int length)
+    {
+      var bytes = new byte[length];
+
+      GetRandomBytes(bytes);
+
+      return bytes;
+    }
+
+    private static RandomNumberGenerator defaultRng = RandomNumberGenerator.Create();
+
+    public static void GetRandomBytes(byte[] bytes)
+    {
+      if (bytes == null)
+        throw new ArgumentNullException("bytes");
+
+      lock (defaultRng) {
+        defaultRng.GetBytes(bytes);
+      }
     }
   }
 }

@@ -303,13 +303,9 @@ namespace Smdn {
       }
     }
 
-    private static RandomNumberGenerator defaultRng = new RNGCryptoServiceProvider();
-
     public static Uuid CreateFromRandomNumber()
     {
-      lock (defaultRng) {
-        return CreateFromRandomNumber(defaultRng);
-      }
+      return CreateFromRandomNumber(MathUtils.GetRandomBytes(16));
     }
 
     public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng)
@@ -317,6 +313,15 @@ namespace Smdn {
       if (rng == null)
         throw new ArgumentNullException("rng");
 
+      var randomNumber = new byte[16];
+
+      rng.GetBytes(randomNumber);
+
+      return CreateFromRandomNumber(randomNumber);
+    }
+
+    public static Uuid CreateFromRandomNumber(byte[] randomNumber)
+    {
       /*
        * 4.4. Algorithms for Creating a UUID from Truly Random or
        *      Pseudo-Random Numbers
@@ -326,11 +331,12 @@ namespace Smdn {
        *    o  Set all the other bits to randomly (or pseudo-randomly) chosen
        *       values.
        */
-      var bytes = new byte[16];
+      if (randomNumber == null)
+        throw new ArgumentNullException("randomNumber");
+      else if (randomNumber.Length != 16)
+        throw new ArgumentException("randomNumber", "length must be 16");
 
-      rng.GetBytes(bytes);
-
-      var uuid = new Uuid(bytes);
+      var uuid = new Uuid(randomNumber);
 
       /*
        *    o  Set the two most significant bits (bits 6 and 7) of the
