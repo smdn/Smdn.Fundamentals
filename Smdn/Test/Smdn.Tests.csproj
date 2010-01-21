@@ -76,10 +76,6 @@
       <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Smdn.Core.BinaryFormats\Smdn.Core.BinaryFormats.csproj">
-      <Project>{EFCDB368-F7E4-11DE-9F78-0018F344D241}</Project>
-      <Name>Smdn.Core.BinaryFormats</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

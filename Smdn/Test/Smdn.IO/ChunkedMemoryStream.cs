@@ -125,35 +125,35 @@ namespace Smdn.IO {
       var results = new List<byte[]>();
 
       foreach (var stream in new Stream[] {memoryStream, chunkedStream}) {
-        var writer = new BigEndianBinaryWriter(stream);
-        var reader = new BigEndianBinaryReader(stream);
+        var writer = new BinaryWriter(stream);
+        var reader = new BinaryReader(stream);
 
-        writer.Write(0x00010203);
+        writer.Write(new byte[] {0x00, 0x01, 0x02, 0x03});
         writer.Flush();
 
         stream.Position = 2L;
 
-        writer.Write(0x04050607);
-        writer.Write(0x08090a0b);
+        writer.Write(new byte[] {0x04, 0x05, 0x06, 0x07});
+        writer.Write(new byte[] {0x08, 0x09, 0x0a, 0x0b});
 
         stream.Seek(-2L, SeekOrigin.Current);
 
-        Assert.AreEqual(0x0a0b, reader.ReadInt16());
+        Assert.AreEqual(0x0a0b, System.Net.IPAddress.HostToNetworkOrder(reader.ReadInt16()));
 
         stream.Seek(4L, SeekOrigin.Begin);
 
-        writer.Write(0x0c0d0e0f);
+        writer.Write(new byte[] {0x0c, 0x0d, 0x0e, 0x0f});
 
         stream.Seek(-10L, SeekOrigin.End);
 
-        Assert.AreEqual(0x00010405, reader.ReadInt32());
+        Assert.AreEqual(0x00010405, System.Net.IPAddress.HostToNetworkOrder(reader.ReadInt32()));
 
         Assert.AreEqual(4L, stream.Position);
         Assert.AreEqual(10L, stream.Length);
 
         stream.Position = 0L;
 
-        results.Add(reader.ReadToEnd());
+        results.Add(reader.ReadBytes((int)stream.Length));
       }
 
       Assert.AreEqual(results[0], results[1]);
