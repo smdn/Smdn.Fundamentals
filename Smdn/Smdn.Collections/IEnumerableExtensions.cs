@@ -165,10 +165,19 @@ namespace Smdn.Collections {
     {
       if (enumerable is List<T>)
         return (enumerable as List<T>).ToArray();
-      else if (enumerable is T[])
-        return (enumerable as T[]);
 
-      return (new List<T>(enumerable)).ToArray();
+      var collection = enumerable as System.Collections.ICollection;
+
+      if (collection == null) {
+        return (new List<T>(enumerable)).ToArray();
+      }
+      else {
+        var array = new T[collection.Count];
+
+        collection.CopyTo(array, 0);
+
+        return array;
+      }
     }
 
     public static int Count(this IEnumerable enumerable)

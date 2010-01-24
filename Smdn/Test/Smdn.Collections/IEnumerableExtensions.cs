@@ -160,6 +160,17 @@ namespace Smdn.Collections {
                                               ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).ToArray()));
       Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
                                               GetEnumerator().ToArray()));
+
+      var dictionary = new Dictionary<string, int>() {
+        {"0", 0},
+        {"1", 1},
+        {"2", 2},
+        {"3", 3},
+        {"4", 4},
+      };
+
+      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4},
+                                              ((IEnumerable<int>)dictionary.Values).ToArray()));
     }
 
     [Test]
