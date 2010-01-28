@@ -19,6 +19,25 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestConstructBaseDictionaryChanged()
+    {
+      var basedic = new Dictionary<string, string>() {
+        {"key1", "val1"},
+        {"key2", "val2"},
+        {"key3", "val3"},
+      };
+      var dic = new ReadOnlyDictionary<string, string>(basedic);
+
+      Assert.IsTrue(dic.IsReadOnly);
+      Assert.IsTrue(dic.ContainsKey("key1"));
+      Assert.IsFalse(dic.ContainsKey("key4"));
+
+      basedic.Add("key4", "val4");
+
+      Assert.IsTrue(dic.ContainsKey("key4"));
+    }
+
+    [Test]
     public void TestConstructFromKeyValuePairs()
     {
       var dic = new ReadOnlyDictionary<string, string>(new[] {
