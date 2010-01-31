@@ -591,19 +591,19 @@ namespace Smdn.Formats {
 #endregion
 
 #region "PercentEncoding"
-    public static string ToPercentEncodedString(string str)
+    public static string ToPercentEncodedString(string str, ToPercentEncodedTransformMode mode)
     {
-      return TransformTo(str, new ToPercentEncodedTransform(), Encoding.ASCII);
+      return TransformTo(str, new ToPercentEncodedTransform(mode), Encoding.ASCII);
     }
 
-    public static string ToPercentEncodedString(string str, Encoding encoding)
+    public static string ToPercentEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding)
     {
-      return TransformTo(str, new ToPercentEncodedTransform(), encoding);
+      return TransformTo(str, new ToPercentEncodedTransform(mode), encoding);
     }
 
-    public static string ToPercentEncodedString(byte[] bytes)
+    public static string ToPercentEncodedString(byte[] bytes, ToPercentEncodedTransformMode mode)
     {
-      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToPercentEncodedTransform()));
+      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToPercentEncodedTransform(mode)));
     }
 
     public static string FromPercentEncodedString(string str)

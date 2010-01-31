@@ -99,17 +99,93 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TestToPercentEncodedString()
+    public void TestToPercentEncodedStringRfc2396Uri()
     {
-      Assert.AreEqual("012abcABC-._~%21%22%23%24%E6%97%A5%E6%9C%AC%E8%AA%9E", TextConvert.ToPercentEncodedString("012abcABC-._~!\"#$日本語", Encoding.UTF8));
-      Assert.AreEqual("%93%FA%96%7B%8C%EA", TextConvert.ToPercentEncodedString("日本語", sjis));
-      Assert.AreEqual("%C6%FC%CB%DC%B8%EC", TextConvert.ToPercentEncodedString("日本語", eucjp));
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = TextConvert.ToPercentEncodedString(text,
+                                                      ToPercentEncodedTransformMode.Rfc2396Uri,
+                                                      Encoding.ASCII);
+
+      Assert.AreEqual(Uri.EscapeUriString(text),
+                      actual, "same as Uri.EscapeUriString");
+      Assert.AreEqual("%20!%22#$%25&'()*+,-./0123456789:;%3C=%3E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+                      actual);
+    }
+
+    [Test]
+    public void TestToPercentEncodedStringRfc3986Uri()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = TextConvert.ToPercentEncodedString(text,
+                                                      ToPercentEncodedTransformMode.Rfc3986Uri,
+                                                      Encoding.ASCII);
+
+      Assert.AreEqual("%20%21%22#$%25&%27%28%29%2A+,-./0123456789:;%3C=%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+                      actual);
+    }
+
+    [Test]
+    public void TestToPercentEncodedStringRfc2396Data()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = TextConvert.ToPercentEncodedString(text,
+                                                      ToPercentEncodedTransformMode.Rfc2396Data,
+                                                      Encoding.ASCII);
+
+      Assert.AreEqual(Uri.EscapeDataString(text),
+                      actual, "same as Uri.EscapeDataString");
+      Assert.AreEqual("%20!%22%23%24%25%26'()*%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+                      actual);
+    }
+
+    [Test]
+    public void TestToPercentEncodedStringRfc3986Data()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = TextConvert.ToPercentEncodedString(text,
+                                                      ToPercentEncodedTransformMode.Rfc3986Data,
+                                                      Encoding.ASCII);
+
+      Assert.AreEqual("%20%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+                      actual);
+    }
+
+    [Test]
+    public void TestToPercentEncodedStringNonAsciiString()
+    {
+      foreach (var mode in new[] {
+        ToPercentEncodedTransformMode.Rfc2396Uri,
+        ToPercentEncodedTransformMode.Rfc2396Data,
+        ToPercentEncodedTransformMode.Rfc3986Uri,
+        ToPercentEncodedTransformMode.Rfc3986Data,
+      }) {
+        Assert.AreEqual("%93%FA%96%7B%8C%EA", TextConvert.ToPercentEncodedString("日本語", mode, sjis), "mode: {0}", mode);
+        Assert.AreEqual("%C6%FC%CB%DC%B8%EC", TextConvert.ToPercentEncodedString("日本語", mode, eucjp), "mode: {0}", mode);
+      }
+    }
+
+    [Test]
+    public void TestToPercentEncodedStringEscapeSpaceToPlus()
+    {
+      foreach (var mode in new[] {
+        ToPercentEncodedTransformMode.Rfc2396Uri,
+        ToPercentEncodedTransformMode.Rfc2396Data,
+        ToPercentEncodedTransformMode.Rfc3986Uri,
+        ToPercentEncodedTransformMode.Rfc3986Data,
+      }) {
+        Assert.AreEqual("abc%20def", TextConvert.ToPercentEncodedString("abc def", mode, Encoding.ASCII), "mode: {0}", mode);
+
+        var mode2 = mode | ToPercentEncodedTransformMode.EscapeSpaceToPlus;
+
+        Assert.AreEqual("abc+def", TextConvert.ToPercentEncodedString("abc def", mode2, Encoding.ASCII), "mode: {0}", mode2);
+      }
     }
 
     [Test]
     public void TestFromPercentEncodedString()
     {
-      Assert.AreEqual("012abcABC-._~!\"#$日本語", TextConvert.FromPercentEncodedString("012abcABC-._~%21%22%23%24%e6%97%a5%e6%9c%ac%e8%aa%9e", Encoding.UTF8));
+      Assert.AreEqual("012abcABC-._~!\"#$日本語",
+                      TextConvert.FromPercentEncodedString("012abcABC-._~%21%22%23%24%e6%97%a5%e6%9c%ac%e8%aa%9e", Encoding.UTF8));
       Assert.AreEqual("日本語", TextConvert.FromPercentEncodedString("%93%fa%96%7B%8C%EA", sjis));
       Assert.AreEqual("日本語", TextConvert.FromPercentEncodedString("%c6%Fc%cb%Dc%b8%eC", eucjp));
     }

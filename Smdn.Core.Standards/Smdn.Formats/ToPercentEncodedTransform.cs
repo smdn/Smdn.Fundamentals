@@ -30,8 +30,41 @@ namespace Smdn.Formats {
    * http://tools.ietf.org/html/rfc3986
    * RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax
    * 2.1. Percent-Encoding
+   * 
+   * http://tools.ietf.org/html/rfc2396
+   * RFC 2396 - Uniform Resource Identifiers (URI): Generic Syntax
    */
   public class ToPercentEncodedTransform : ICryptoTransform {
+    //                                    "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+    // RFC 2396 unreserved characters:    "!      '()*  -. 0123456789     ?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[  ] _ abcdefghijklmnopqrstuvwxyz   ~";
+    // RFC 3986 unreserved characters:    "             -. 0123456789       ABCDEFGHIJKLMNOPQRSTUVWXYZ     _ abcdefghijklmnopqrstuvwxyz   ~";
+    private const string
+      rfc2396UriEscapeChars             = " \"  %                      < >                            [\\]^ `                          {|} ";
+    private const string
+      rfc3986UriEscapeChars             = "!\"  % '()*                 < >?@                          [\\]^ `                          {|} ";
+    private const string
+      rfc2396DataEscapeChars            = " \"#$%&    +,  /          :;<=>?@                          [\\]^ `                          {|} ";
+    private const string
+      rfc3986DataEscapeChars            = "!\"#$%&'()*+,  /          :;<=>?@                          [\\]^ `                          {|} ";
+
+    private byte[] GetEscapeOctets(string str)
+    {
+      var chars = str.ToCharArray();
+      var octets = new byte[0x80 - 0x20];
+      var count = 0;
+
+      octets[count++] = Octets.SP;
+
+      for (var i = 0; i < chars.Length; i++) {
+        if (chars[i] != Chars.SP)
+          octets[count++] = (byte)chars[i];
+      }
+
+      Array.Resize(ref octets, count);
+
+      return octets;
+    }
+
     public bool CanTransformMultipleBlocks {
       get { return true; }
     }
@@ -48,8 +81,26 @@ namespace Smdn.Formats {
       get { return 3; }
     }
 
-    public ToPercentEncodedTransform()
+    public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode)
     {
+      switch (mode & ToPercentEncodedTransformMode.ModeMask) {
+        case ToPercentEncodedTransformMode.Rfc2396Uri:
+          escapeOctets = GetEscapeOctets(rfc2396UriEscapeChars);
+          break;
+        case ToPercentEncodedTransformMode.Rfc2396Data:
+          escapeOctets = GetEscapeOctets(rfc2396DataEscapeChars);
+          break;
+        case ToPercentEncodedTransformMode.Rfc3986Uri:
+          escapeOctets = GetEscapeOctets(rfc3986UriEscapeChars);
+          break;
+        case ToPercentEncodedTransformMode.Rfc3986Data:
+          escapeOctets = GetEscapeOctets(rfc3986DataEscapeChars);
+          break;
+        default:
+          throw new NotSupportedException(string.Format("unsupported transform mode: {0}", mode));
+      }
+
+      escapeSpaceToPlus = (int)(mode & ToPercentEncodedTransformMode.EscapeSpaceToPlus) != 0;
     }
 
     ~ToPercentEncodedTransform()
@@ -99,23 +150,33 @@ namespace Smdn.Formats {
       for (var i = 0; i < inputCount; i++) {
         var octet = inputBuffer[inputOffset++];
 
-        // unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
-        if ((0x30 <= octet && octet <= 0x39) || // DIGIT
-            (0x41 <= octet && octet <= 0x5a) || (0x61 <= octet && octet <= 0x7a) || // ALPHA
-            octet == 0x2d || // '-'
-            octet == 0x2e || // '.'
-            octet == 0x5f || // '_'
-            octet == 0x7e) { // '~'
+        var escape =
+          !((0x30 <= octet && octet <= 0x39) || // DIGIT
+            (0x41 <= octet && octet <= 0x5a) || // UPALPHA
+            (0x61 <= octet && octet <= 0x7a) // LOWALPHA
+           ) &&
+          (octet < 0x20 || 0x80 <= octet);
+
+        escape |= (0 <= Array.BinarySearch(escapeOctets, octet));
+
+        if (escape) {
+          if (octet == 0x20 && escapeSpaceToPlus) {
+            outputBuffer[outputOffset++] = 0x2b; // '+' 0x2b
+
+            ret += 1;
+          }
+          else {
+            outputBuffer[outputOffset++] = 0x25; // '%' 0x25
+            outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet >> 4];
+            outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet & 0xf];
+
+            ret += 3;
+          }
+        }
+        else {
           outputBuffer[outputOffset++] = octet;
 
           ret += 1;
-        }
-        else {
-          outputBuffer[outputOffset++] = 0x25; // '%' 0x25
-          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet >> 4];
-          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet & 0xf];
-
-          ret += 3;
         }
       }
 
@@ -146,5 +207,7 @@ namespace Smdn.Formats {
     }
 
     private bool disposed = false;
+    private byte[] escapeOctets;
+    private bool escapeSpaceToPlus;
   }
 }
