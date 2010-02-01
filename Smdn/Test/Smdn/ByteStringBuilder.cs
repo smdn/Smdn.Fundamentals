@@ -81,6 +81,30 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestToByteArray()
+    {
+      var b = new ByteStringBuilder();
+
+      b.Append(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0x66});
+
+      var bytes1 = b.ToByteArray();
+
+      Assert.AreEqual(6, bytes1.Length);
+      Assert.AreEqual((new ByteString("abcdef")).ByteArray, bytes1);
+
+      Assert.AreNotSame(bytes1, b.ToByteArray());
+
+      b.Append((byte)0x67);
+
+      var bytes2 = b.ToByteArray();
+
+      Assert.AreNotSame(bytes1, bytes2);
+
+      Assert.AreEqual(7, bytes2.Length);
+      Assert.AreEqual((new ByteString("abcdefg")).ByteArray, bytes2);
+    }
+
+    [Test]
     public void TestToByteString()
     {
       var b = new ByteStringBuilder();

@@ -180,6 +180,15 @@ namespace Smdn {
       return new ArraySegment<byte>(buffer, offset, count);
     }
 
+    public byte[] ToByteArray()
+    {
+      var bytes = new byte[length];
+
+      Buffer.BlockCopy(buffer, 0, bytes, 0, length);
+
+      return bytes;
+    }
+
     public ByteString ToByteString()
     {
       return new ByteString(buffer, 0, length);
