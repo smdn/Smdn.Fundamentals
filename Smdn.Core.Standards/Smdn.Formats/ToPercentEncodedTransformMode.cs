@@ -32,6 +32,8 @@ namespace Smdn.Formats {
     Rfc2396Data     =  1 <<  1,
     Rfc3986Uri      =  1 <<  2,
     Rfc3986Data     =  1 <<  3,
+    Rfc5092Uri      =  1 <<  4,
+    Rfc5092Path     =  1 <<  5,
 
     OptionMask      = -1,
     EscapeSpaceToPlus = 1 << 16,

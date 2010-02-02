@@ -151,6 +151,30 @@ namespace Smdn.Formats {
     }
 
     [Test]
+    public void TestToPercentEncodedStringRfc5092Uri()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = TextConvert.ToPercentEncodedString(text,
+                                                      ToPercentEncodedTransformMode.Rfc5092Uri,
+                                                      Encoding.ASCII);
+
+      Assert.AreEqual("%20!%22%23$%25&'()*+,-.%2F0123456789%3A%3B%3C=%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+                      actual);
+    }
+
+    [Test]
+    public void TestToPercentEncodedStringRfc5092Path()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = TextConvert.ToPercentEncodedString(text,
+                                                      ToPercentEncodedTransformMode.Rfc5092Path,
+                                                      Encoding.ASCII);
+
+      Assert.AreEqual("%20!%22%23$%25&'()*+,-./0123456789:%3B%3C=%3E%3F@ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+                      actual);
+    }
+
+    [Test]
     public void TestToPercentEncodedStringNonAsciiString()
     {
       foreach (var mode in new[] {
@@ -158,6 +182,8 @@ namespace Smdn.Formats {
         ToPercentEncodedTransformMode.Rfc2396Data,
         ToPercentEncodedTransformMode.Rfc3986Uri,
         ToPercentEncodedTransformMode.Rfc3986Data,
+        ToPercentEncodedTransformMode.Rfc5092Uri,
+        ToPercentEncodedTransformMode.Rfc5092Path,
       }) {
         Assert.AreEqual("%93%FA%96%7B%8C%EA", TextConvert.ToPercentEncodedString("日本語", mode, sjis), "mode: {0}", mode);
         Assert.AreEqual("%C6%FC%CB%DC%B8%EC", TextConvert.ToPercentEncodedString("日本語", mode, eucjp), "mode: {0}", mode);

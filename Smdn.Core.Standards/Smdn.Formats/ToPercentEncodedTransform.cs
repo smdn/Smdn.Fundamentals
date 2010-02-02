@@ -47,6 +47,11 @@ namespace Smdn.Formats {
     private const string
       rfc3986DataEscapeChars            = "!\"#$%&'()*+,  /          :;<=>?@                          [\\]^ `                          {|} ";
 
+    private const string
+      rfc5092AChars                     = " \"# %         /          :;< >?@                          [\\]^ `                          {|} ";
+    private const string
+      rfc5092BChars                     = " \"# %                     ;< >?                           [\\]^ `                          {|} ";
+
     private byte[] GetEscapeOctets(string str)
     {
       var chars = str.ToCharArray();
@@ -95,6 +100,12 @@ namespace Smdn.Formats {
           break;
         case ToPercentEncodedTransformMode.Rfc3986Data:
           escapeOctets = GetEscapeOctets(rfc3986DataEscapeChars);
+          break;
+        case ToPercentEncodedTransformMode.Rfc5092Uri:
+          escapeOctets = GetEscapeOctets(rfc5092AChars);
+          break;
+        case ToPercentEncodedTransformMode.Rfc5092Path:
+          escapeOctets = GetEscapeOctets(rfc5092BChars);
           break;
         default:
           throw new NotSupportedException(string.Format("unsupported transform mode: {0}", mode));
