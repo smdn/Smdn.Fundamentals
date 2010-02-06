@@ -122,12 +122,59 @@ namespace Smdn {
 
     public bool StartsWith(byte[] @value)
     {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
       if (bytes.Length < @value.Length)
         return false;
 
       for (var index = 0; index < @value.Length; index++) {
         if (bytes[index] != @value[index])
           return false;
+      }
+
+      return true;
+    }
+
+    public bool StartsWithIgnoreCase(ByteString @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return StartsWithIgnoreCase(@value.bytes);
+    }
+
+    public bool StartsWithIgnoreCase(byte[] @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      if (bytes.Length < @value.Length)
+        return false;
+
+      for (var index = 0; index < @value.Length; index++) {
+        if (bytes[index] == @value[index]) {
+          continue;
+        }
+        else {
+          var lower = (int)bytes[index];
+
+          if (0x41 <= lower && lower <= 0x5a)
+            lower += 0x20;
+          else if (!(0x61 <= lower && lower <= 0x7a))
+            lower = -1;
+
+          if (lower == -1)
+            return false;
+
+          if (lower == @value[index])
+            continue;
+          else if ((0x41 <= @value[index] && @value[index] <= 0x5a) &&
+                   lower == (@value[index] + 0x20))
+            continue;
+          else
+            return false;
+        }
       }
 
       return true;
@@ -295,7 +342,7 @@ namespace Smdn {
           var lower = (int)bytes[index];
 
           if (0x41 <= lower && lower <= 0x5a)
-            lower = lower + 0x20;
+            lower += 0x20;
           else if (!(0x61 <= lower && lower <= 0x7a))
             lower = -1;
 

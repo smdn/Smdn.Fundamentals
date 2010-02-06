@@ -144,6 +144,20 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestStartsWithIgnoreCase()
+    {
+      var str = new ByteString("aBC");
+
+      Assert.IsTrue(str.StartsWithIgnoreCase(new ByteString("abc")));
+      Assert.IsTrue(str.StartsWithIgnoreCase(new ByteString("aBc")));
+      Assert.IsTrue(str.StartsWithIgnoreCase(new ByteString("aBC")));
+      Assert.IsTrue(str.StartsWithIgnoreCase(new ByteString("ABc")));
+      Assert.IsTrue(str.StartsWithIgnoreCase(new ByteString("AbC")));
+      Assert.IsFalse(str.StartsWithIgnoreCase(new ByteString("abd")));
+      Assert.IsFalse(str.StartsWithIgnoreCase(new ByteString("abcdef")));
+    }
+
+    [Test]
     public void TestStartsWithString()
     {
       var str = new ByteString("abcde");
