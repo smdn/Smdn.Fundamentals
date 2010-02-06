@@ -97,6 +97,24 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestIndexOfIgnoreCase()
+    {
+      var str = new ByteString("abcDEF");
+
+      Assert.AreEqual(0, str.IndexOfIgnoreCase(new ByteString("ABC")));
+      Assert.AreEqual(0, str.IndexOfIgnoreCase(new ByteString("Abc")));
+      Assert.AreEqual(0, str.IndexOfIgnoreCase(new ByteString("abC")));
+      Assert.AreEqual(0, str.IndexOfIgnoreCase(new ByteString("abc")));
+
+      Assert.AreEqual(2, str.IndexOfIgnoreCase(new ByteString("cde")));
+      Assert.AreEqual(2, str.IndexOfIgnoreCase(new ByteString("CDE")));
+      Assert.AreEqual(2, str.IndexOfIgnoreCase(new ByteString("cdE")));
+      Assert.AreEqual(2, str.IndexOfIgnoreCase(new ByteString("cDE")));
+      Assert.AreEqual(2, str.IndexOfIgnoreCase(new ByteString("CDe")));
+      Assert.AreEqual(2, str.IndexOfIgnoreCase(new ByteString("Cde")));
+    }
+
+    [Test]
     public void TestIndexOfString()
     {
       var str = new ByteString("ababdabdbdabcab");

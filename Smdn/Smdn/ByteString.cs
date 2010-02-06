@@ -225,7 +225,10 @@ namespace Smdn {
 
     public int IndexOf(ByteString @value)
     {
-      return IndexOf(@value, 0);
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOf(@value.bytes, 0, true);
     }
 
     public int IndexOf(ByteString @value, int startIndex)
@@ -233,15 +236,46 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      return IndexOf(@value.bytes, startIndex);
+      return IndexOf(@value.bytes, startIndex, true);
+    }
+
+    public int IndexOfIgnoreCase(ByteString @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOf(@value.bytes, 0, false);
+    }
+
+    public int IndexOfIgnoreCase(ByteString @value, int startIndex)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOf(@value.bytes, startIndex, false);
     }
 
     public int IndexOf(byte[] @value)
     {
-      return IndexOf(@value, 0);
+      return IndexOf(@value, 0, true);
     }
 
     public int IndexOf(byte[] @value, int startIndex)
+    {
+      return IndexOf(@value, startIndex, true);
+    }
+
+    public int IndexOfIgnoreCase(byte[] @value)
+    {
+      return IndexOf(@value, 0, false);
+    }
+
+    public int IndexOfIgnoreCase(byte[] @value, int startIndex)
+    {
+      return IndexOf(@value, startIndex, false);
+    }
+
+    private int IndexOf(byte[] @value, int startIndex, bool caseSensitive)
     {
       if (@value == null)
         throw new ArgumentNullException("value");
@@ -255,7 +289,25 @@ namespace Smdn {
 
       for (var index = startIndex; index < bytes.Length; index++) {
       recheck:
-        if (bytes[index] == @value[matchedIndex]) {
+        var matched = bytes[index] == @value[matchedIndex];
+
+        if (!matched && !caseSensitive) {
+          var lower = (int)bytes[index];
+
+          if (0x41 <= lower && lower <= 0x5a)
+            lower = lower + 0x20;
+          else if (!(0x61 <= lower && lower <= 0x7a))
+            lower = -1;
+
+          if (lower != -1) {
+            if (lower == @value[matchedIndex])
+              matched = true;
+            else if (0x41 <= @value[matchedIndex] && @value[matchedIndex] <= 0x5a)
+              matched = lower == (@value[matchedIndex] + 0x20);
+          }
+        }
+
+        if (matched) {
           if (@value.Length == ++matchedIndex)
             return index - matchedIndex + 1;
         }
