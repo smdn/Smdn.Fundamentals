@@ -96,7 +96,15 @@ namespace Smdn {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      return Append(str.ByteArray);
+      return Append(str.ByteArray, 0, str.Length);
+    }
+
+    public ByteStringBuilder Append(ByteString str, int index, int count)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      return Append(str.ByteArray, index, count);
     }
 
     public ByteStringBuilder Append(byte[] str)

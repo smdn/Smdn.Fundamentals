@@ -77,7 +77,11 @@ namespace Smdn {
 
       Assert.AreEqual(20, b.Length);
 
-      Assert.AreEqual("0123456789abcdefgxyz", b.ToString());
+      Assert.IsTrue(Object.ReferenceEquals(b, b.Append(new ByteString("0123456789"), 5, 3)));
+
+      Assert.AreEqual(23, b.Length);
+
+      Assert.AreEqual("0123456789abcdefgxyz567", b.ToString());
     }
 
     [Test]
