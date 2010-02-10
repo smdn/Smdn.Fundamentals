@@ -400,6 +400,36 @@ namespace Smdn {
       return -1;
     }
 
+    public int IndexOfNot(char @value)
+    {
+      return IndexOfNot(@value, 0);
+    }
+
+    public int IndexOfNot(char @value, int startIndex)
+    {
+      for (var index = startIndex; index < bytes.Length; index++) {
+        if (bytes[index] != @value)
+          return index;
+      }
+
+      return -1;
+    }
+
+    public int IndexOfNot(byte @value)
+    {
+      return IndexOfNot(@value, 0);
+    }
+
+    public int IndexOfNot(byte @value, int startIndex)
+    {
+      for (var index = startIndex; index < bytes.Length; index++) {
+        if (bytes[index] != @value)
+          return index;
+      }
+
+      return -1;
+    }
+
     public ByteString Substring(int index)
     {
       return new ByteString(bytes, index, bytes.Length - index);

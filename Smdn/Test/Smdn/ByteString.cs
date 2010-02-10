@@ -133,6 +133,27 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestIndexOfNot()
+    {
+      ByteString str;
+
+      str = new ByteString("aaabbb");
+
+      Assert.AreEqual(3, str.IndexOfNot('a'));
+      Assert.AreEqual(3, str.IndexOfNot(0x61));
+      Assert.AreEqual(3, str.IndexOfNot('a', 3));
+      Assert.AreEqual(3, str.IndexOfNot(0x61, 3));
+      Assert.AreEqual(5, str.IndexOfNot('a', 5));
+      Assert.AreEqual(5, str.IndexOfNot(0x61, 5));
+      Assert.AreEqual(0, str.IndexOfNot('b'));
+      Assert.AreEqual(0, str.IndexOfNot(0x62));
+      Assert.AreEqual(-1, str.IndexOfNot('b', 3));
+      Assert.AreEqual(-1, str.IndexOfNot(0x62, 3));
+      Assert.AreEqual(-1, str.IndexOfNot('b', 5));
+      Assert.AreEqual(-1, str.IndexOfNot(0x62, 5));
+    }
+
+    [Test]
     public void TestStartsWith()
     {
       var str = new ByteString("abcde");
