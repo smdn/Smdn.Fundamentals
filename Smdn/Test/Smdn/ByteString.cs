@@ -242,6 +242,64 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestToUInt32()
+    {
+      Assert.AreEqual(0U, (new ByteString("0")).ToUInt64());
+      Assert.AreEqual(1234567890U, (new ByteString("1234567890")).ToUInt32());
+    }
+
+    [Test]
+    public void TestToUInt32ContainsNonNumberCharacter()
+    {
+      ToNumberContainsNonNumberCharacter(32);
+    }
+
+    [Test, ExpectedException(typeof(OverflowException))]
+    public void TestToUInt32Overflow()
+    {
+      (new ByteString("4294967296")).ToUInt32();
+    }
+
+    [Test]
+    public void TestToUInt64()
+    {
+      Assert.AreEqual(0UL, (new ByteString("0")).ToUInt64());
+      Assert.AreEqual(1234567890UL, (new ByteString("1234567890")).ToUInt64());
+    }
+
+    [Test]
+    public void TestToUInt64ContainsNonNumberCharacter()
+    {
+      ToNumberContainsNonNumberCharacter(64);
+    }
+
+    private void ToNumberContainsNonNumberCharacter(int bits)
+    {
+      foreach (var test in new[] {
+        "-1",
+        "+1",
+        "0x0123456",
+        "1234567890a",
+      }) {
+        try {
+          if (bits == 32)
+            (new ByteString(test)).ToUInt32();
+          else if (bits == 64)
+            (new ByteString(test)).ToUInt64();
+          Assert.Fail("FormatException not thrown");
+        }
+        catch (FormatException) {
+        }
+      }
+    }
+
+    [Test, ExpectedException(typeof(OverflowException))]
+    public void TestToUInt64Overflow()
+    {
+      (new ByteString("18446744073709551616")).ToUInt64();
+    }
+
+    [Test]
     public void TestTrimStart()
     {
       var expected = new ByteString("abc");

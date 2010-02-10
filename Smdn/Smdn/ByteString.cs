@@ -461,6 +461,36 @@ namespace Smdn {
       return new ByteString(lowercased);
     }
 
+    [CLSCompliant(false)]
+    public uint ToUInt32()
+    {
+      uint val = 0U;
+
+      for (var index = 0; index < bytes.Length; index++) {
+        if (0x30 <= bytes[index] && bytes[index] <= 0x39)
+          val = checked((val * 10) + (uint)(bytes[index] - 0x30));
+        else
+          throw new FormatException("contains non-number character");
+      }
+
+      return val;
+    }
+
+    [CLSCompliant(false)]
+    public ulong ToUInt64()
+    {
+      ulong val = 0UL;
+
+      for (var index = 0; index < bytes.Length; index++) {
+        if (0x30 <= bytes[index] && bytes[index] <= 0x39)
+          val = checked((val * 10) + (ulong)(bytes[index] - 0x30));
+        else
+          throw new FormatException("contains non-number character");
+      }
+
+      return val;
+    }
+
     public ByteString TrimStart()
     {
       for (var index = 0; index < bytes.Length; index++) {
