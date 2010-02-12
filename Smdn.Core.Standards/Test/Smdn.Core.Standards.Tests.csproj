@@ -54,5 +54,6 @@
     <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
   </ItemGroup>
 </Project>

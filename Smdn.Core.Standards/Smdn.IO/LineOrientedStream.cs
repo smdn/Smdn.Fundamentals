@@ -228,6 +228,56 @@ namespace Smdn.IO {
       }
     }
 
+    public long Read(Stream targetStream, long length)
+    {
+      CheckDisposed();
+
+      if (length < 0L)
+        throw new ArgumentOutOfRangeException("length", "must be zero or positive number");
+      if (targetStream == null)
+        throw new ArgumentNullException("target");
+
+      if (length <= bufRemain) {
+        var count = (int)length;
+
+        targetStream.Write(buffer, bufOffset, count);
+
+        bufOffset += count;
+        bufRemain -= count;
+
+        return count;
+      }
+
+      var read = 0L;
+
+      if (bufRemain != 0) {
+        targetStream.Write(buffer, bufOffset, bufRemain);
+
+        read    = bufRemain;
+        length -= bufRemain;
+
+        bufRemain = 0;
+      }
+
+      // read from base stream
+      for (;;) {
+        var r = stream.Read(buffer, 0, (int)Math.Min(length, buffer.Length));
+
+        if (r <= 0)
+          break;
+
+        targetStream.Write(buffer, 0, r);
+
+        length -= r;
+        read   += r;
+
+        if (length <= 0)
+          break;
+      }
+
+      return read;
+    }
+
     public override int Read(byte[] dest, int offset, int count)
     {
       CheckDisposed();
