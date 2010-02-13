@@ -311,40 +311,19 @@ namespace Smdn.IO {
         bufRemain = 0;
       }
 
-      if (buffer.Length <= count) {
-        // read from base stream
-        for (;;) {
-          var r = stream.Read(dest, offset, count);
+      // read from base stream
+      for (;;) {
+        if (count <= 0)
+          break;
 
-          if (r <= 0)
-            break;
+        var r = stream.Read(dest, offset, count);
 
-          offset += r;
-          count  -= r;
-          read   += r;
+        if (r <= 0)
+          break;
 
-          if (count <= 0)
-            break;
-        }
-      }
-      else {
-        FillBuffer();
-
-        if (count <= bufRemain) {
-          Buffer.BlockCopy(buffer, 0, dest, offset, count);
-
-          read += count;
-
-          bufOffset += count;
-          bufRemain -= count;
-        }
-        else {
-          Buffer.BlockCopy(buffer, 0, dest, offset, bufRemain);
-
-          read += bufRemain;
-
-          bufRemain = 0;
-        }
+        offset += r;
+        count  -= r;
+        read   += r;
       }
 
       return read;
