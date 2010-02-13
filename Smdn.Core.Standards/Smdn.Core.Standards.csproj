@@ -59,6 +59,7 @@
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
+    <Compile Include="Smdn.Formats\CharwiseStringComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
