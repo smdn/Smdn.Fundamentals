@@ -313,7 +313,19 @@ namespace Smdn.IO {
 
       if (buffer.Length <= count) {
         // read from base stream
-        read += stream.Read(dest, offset, count);
+        for (;;) {
+          var r = stream.Read(dest, offset, count);
+
+          if (r <= 0)
+            break;
+
+          offset += r;
+          count  -= r;
+          read   += r;
+
+          if (count <= 0)
+            break;
+        }
       }
       else {
         FillBuffer();
