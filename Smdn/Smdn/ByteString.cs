@@ -626,7 +626,16 @@ namespace Smdn {
       else if (bytes.Length != other.Length)
         return false;
 
-      return this.ToLower().Equals(other.ToLower()); // XXX
+      for (var index = 0; index < bytes.Length; index++) {
+        if (bytes[index] == other[index])
+          continue;
+        else if (bytes[index] == ToLower(other[index]))
+          continue;
+        else
+          return false;
+      }
+
+      return true;
     }
 
     public bool EqualsIgnoreCase(string other)
