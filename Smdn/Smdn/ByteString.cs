@@ -114,7 +114,7 @@ namespace Smdn {
 
     public bool StartsWith(ByteString @value)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return StartsWith(@value.bytes);
@@ -138,7 +138,7 @@ namespace Smdn {
 
     public bool StartsWithIgnoreCase(ByteString @value)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return StartsWithIgnoreCase(@value.bytes);
@@ -191,7 +191,7 @@ namespace Smdn {
 
     public bool EndsWith(ByteString @value)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return EndsWith(@value.bytes);
@@ -263,7 +263,7 @@ namespace Smdn {
 
     public int IndexOf(ByteString @value)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return IndexOf(@value.bytes, 0, true);
@@ -271,7 +271,7 @@ namespace Smdn {
 
     public int IndexOf(ByteString @value, int startIndex)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return IndexOf(@value.bytes, startIndex, true);
@@ -279,7 +279,7 @@ namespace Smdn {
 
     public int IndexOfIgnoreCase(ByteString @value)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return IndexOf(@value.bytes, 0, false);
@@ -287,7 +287,7 @@ namespace Smdn {
 
     public int IndexOfIgnoreCase(ByteString @value, int startIndex)
     {
-      if (@value == null)
+      if ((object)@value == null)
         throw new ArgumentNullException("value");
 
       return IndexOf(@value.bytes, startIndex, false);
@@ -542,7 +542,7 @@ namespace Smdn {
 
     public static bool IsNullOrEmpty(ByteString str)
     {
-      if (str == null)
+      if ((object)str == null)
         return true;
       else if (str.Length == 0)
         return true;
@@ -621,7 +621,7 @@ namespace Smdn {
 
     public bool EqualsIgnoreCase(ByteString other)
     {
-      if (other == null)
+      if ((object)other == null)
         return false;
       else if (bytes.Length != other.Length)
         return false;
@@ -640,7 +640,7 @@ namespace Smdn {
 
     public bool EqualsIgnoreCase(string other)
     {
-      if (other == null)
+      if ((object)other == null)
         return false;
       else if (bytes.Length != other.Length)
         return false;
