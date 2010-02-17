@@ -189,42 +189,43 @@ namespace Smdn.IO {
           bufCopyFrom = bufOffset;
         }
 
-        if (eol || eos) {
-          var retLength = retOffset + (bufOffset - bufCopyFrom);
+        if (eol || eos)
+          break;
+      }
 
-          if (eol && !strictEOL) {
-            var crlf = (bufOffset == 0)
-              ? retBuffer[retOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF
-              : (bufOffset == buffer.Length)
-                ? false
-                : buffer[bufOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF;
+      var retLength = retOffset + (bufOffset - bufCopyFrom);
 
-            if (crlf) {
-              retLength++;
-              newLineOffset++;
+      if (eol && !strictEOL) {
+        var crlf = (bufOffset == 0)
+          ? retBuffer[retOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF
+          : (bufOffset == buffer.Length)
+            ? false
+            : buffer[bufOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF;
 
-              bufOffset++;
-              bufRemain--;
-            }
-          }
+        if (crlf) {
+          retLength++;
+          newLineOffset++;
 
-          if (!keepEOL)
-            retLength -= newLineOffset;
-
-          if (0 < retLength - retOffset)
-            Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retOffset, retLength - retOffset);
-
-          if (retLength == retBuffer.Length) {
-            return retBuffer;
-          }
-          else {
-            var ret = new byte[retLength];
-
-            Buffer.BlockCopy(retBuffer, 0, ret, 0, retLength);
-
-            return ret;
-          }
+          bufOffset++;
+          bufRemain--;
         }
+      }
+
+      if (!keepEOL)
+        retLength -= newLineOffset;
+
+      if (0 < retLength - retOffset)
+        Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retOffset, retLength - retOffset);
+
+      if (retLength == retBuffer.Length) {
+        return retBuffer;
+      }
+      else {
+        var ret = new byte[retLength];
+
+        Buffer.BlockCopy(retBuffer, 0, ret, 0, retLength);
+
+        return ret;
       }
     }
 
