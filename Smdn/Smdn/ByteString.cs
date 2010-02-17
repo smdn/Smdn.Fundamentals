@@ -157,20 +157,11 @@ namespace Smdn {
           continue;
         }
         else {
-          var lower = (int)bytes[index];
-
-          if (0x41 <= lower && lower <= 0x5a)
-            lower += 0x20;
-          else if (!(0x61 <= lower && lower <= 0x7a))
-            lower = -1;
+          var lower = ToLower(bytes[index]);
 
           if (lower == -1)
             return false;
-
-          if (lower == @value[index])
-            continue;
-          else if ((0x41 <= @value[index] && @value[index] <= 0x5a) &&
-                   lower == (@value[index] + 0x20))
+          else if (lower == @value[index] || lower == ToLower(@value[index]))
             continue;
           else
             return false;
@@ -339,19 +330,10 @@ namespace Smdn {
         var matched = bytes[index] == @value[matchedIndex];
 
         if (!matched && !caseSensitive) {
-          var lower = (int)bytes[index];
+          var lower = ToLower(bytes[index]);
 
-          if (0x41 <= lower && lower <= 0x5a)
-            lower += 0x20;
-          else if (!(0x61 <= lower && lower <= 0x7a))
-            lower = -1;
-
-          if (lower != -1) {
-            if (lower == @value[matchedIndex])
-              matched = true;
-            else if (0x41 <= @value[matchedIndex] && @value[matchedIndex] <= 0x5a)
-              matched = lower == (@value[matchedIndex] + 0x20);
-          }
+          if (lower != -1)
+            matched = (lower == @value[matchedIndex] || lower == ToLower(@value[matchedIndex]));
         }
 
         if (matched) {
@@ -735,6 +717,16 @@ namespace Smdn {
 #else
       return System.Text.Encoding.ASCII.GetString(bytes, 0, bytes.Length);
 #endif
+    }
+
+    private int ToLower(byte b)
+    {
+      if (0x41 <= b && b <= 0x5a)
+        return b + 0x20;
+      else if (0x61 <= b && b <= 0x7a)
+        return b;
+      else
+        return -1;
     }
 
     private byte[] bytes;
