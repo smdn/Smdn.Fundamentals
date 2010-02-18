@@ -213,6 +213,14 @@ namespace Smdn {
       return ToString().GetHashCode();
     }
 
+    public static explicit operator string (MimeType mimeType)
+    {
+      if (mimeType == null)
+        return null;
+      else
+        return mimeType.ToString();
+    }
+
     public override string ToString()
     {
       return string.Format("{0}/{1}", Type, SubType);

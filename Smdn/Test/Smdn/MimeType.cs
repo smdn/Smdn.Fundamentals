@@ -46,5 +46,23 @@ namespace Smdn {
       Assert.AreEqual(MimeType.CreateImageType("png"), MimeType.GetMimeTypeByExtension("image.png"));
       Assert.AreEqual(null, MimeType.GetMimeTypeByExtension(".hoge"));
     }
+
+    [Test]
+    public void TestToString()
+    {
+      Assert.AreEqual("text/plain", MimeType.TextPlain.ToString());
+      Assert.AreEqual("application/octet-stream", MimeType.ApplicationOctetStream.ToString());
+      Assert.AreEqual("text/html", MimeType.CreateTextType("html").ToString());
+    }
+
+    [Test]
+    public void TestExplicitToStringCoversion()
+    {
+      Assert.AreEqual("text/plain", (string)MimeType.TextPlain);
+      Assert.AreEqual("application/octet-stream", (string)MimeType.ApplicationOctetStream);
+      Assert.AreEqual("text/html", (string)MimeType.CreateTextType("html"));
+
+      Assert.IsNull((string)((MimeType)null));
+    }
   }
 }
