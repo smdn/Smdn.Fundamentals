@@ -169,6 +169,16 @@ namespace Smdn {
 
     public bool TypeEquals(string type)
     {
+      return string.Equals(Type, type, StringComparison.InvariantCulture);
+    }
+
+    public bool TypeEqualsIgnoreCase(MimeType mimeType)
+    {
+      return TypeEqualsIgnoreCase(mimeType.Type);
+    }
+
+    public bool TypeEqualsIgnoreCase(string type)
+    {
       return string.Equals(Type, type, StringComparison.InvariantCultureIgnoreCase);
     }
 
@@ -178,6 +188,16 @@ namespace Smdn {
     }
 
     public bool SubTypeEquals(string subType)
+    {
+      return string.Equals(SubType, subType, StringComparison.InvariantCulture);
+    }
+
+    public bool SubTypeEqualsIgnoreCase(MimeType mimeType)
+    {
+      return SubTypeEqualsIgnoreCase(mimeType.SubType);
+    }
+
+    public bool SubTypeEqualsIgnoreCase(string subType)
     {
       return string.Equals(SubType, subType, StringComparison.InvariantCultureIgnoreCase);
     }
@@ -197,7 +217,7 @@ namespace Smdn {
       if (other == null)
         return false;
       else
-        return (this.Type == other.Type && this.SubType == other.SubType);
+        return TypeEquals(other) && SubTypeEquals(other);
     }
 
     public bool Equals(string other)
@@ -205,7 +225,23 @@ namespace Smdn {
       if (other == null)
         return false;
       else
-        return ToString().Equals(other);
+        return string.Equals(ToString(), other, StringComparison.InvariantCulture);
+    }
+
+    public bool EqualsIgnoreCase(MimeType other)
+    {
+      if (other == null)
+        return false;
+      else
+        return TypeEqualsIgnoreCase(other) && SubTypeEqualsIgnoreCase(other);
+    }
+
+    public bool EqualsIgnoreCase(string other)
+    {
+      if (other == null)
+        return false;
+      else
+        return string.Equals(ToString(), other, StringComparison.InvariantCultureIgnoreCase);
     }
 
     public override int GetHashCode()
