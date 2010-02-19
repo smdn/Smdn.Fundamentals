@@ -31,5 +31,10 @@ namespace Smdn.Collections {
     {
       return new ReadOnlyDictionary<TKey, TValue>(dictionary);
     }
+
+    public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+    {
+      return new ReadOnlyDictionary<TKey, TValue>(dictionary, comparer);
+    }
   }
 }

@@ -58,6 +58,28 @@ namespace Smdn.Collections {
     }
 
     [Test]
+    public void TestConstructFromKeyValuePairsWithSpecifiedEqualityComaperer()
+    {
+      var dic = new ReadOnlyDictionary<string, string>(new[] {
+        new KeyValuePair<string, string>("key1", "val1"),
+        new KeyValuePair<string, string>("key2", "val2"),
+        new KeyValuePair<string, string>("key3", "val3"),
+      }, StringComparer.InvariantCultureIgnoreCase);
+
+      Assert.IsTrue(dic.IsReadOnly);
+      Assert.AreEqual("val1", dic["key1"]);
+      Assert.AreEqual("val1", dic["Key1"]);
+      Assert.AreEqual("val1", dic["KEY1"]);
+
+      try {
+        dic.Add("newkey", "newvalue");
+        Assert.Fail("NotSupportedException");
+      }
+      catch (NotSupportedException) {
+      }
+    }
+
+    [Test]
     public void TestReadOperations()
     {
       var dic = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>() {
