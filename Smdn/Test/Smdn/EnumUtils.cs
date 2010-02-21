@@ -14,6 +14,7 @@ namespace Smdn {
       Assert.AreEqual(DayOfWeek.Wednesday, EnumUtils.Parse<DayOfWeek>("Wednesday"));
 
       Assert.AreEqual(DayOfWeek.Sunday, EnumUtils.Parse<DayOfWeek>("sUndaY", true));
+      Assert.AreEqual(DayOfWeek.Sunday, EnumUtils.ParseIgnoreCase<DayOfWeek>("sUndaY"));
 
       try {
         Assert.AreEqual(DayOfWeek.Sunday, EnumUtils.Parse<DayOfWeek>("sUndaY"));
@@ -39,6 +40,9 @@ namespace Smdn {
       Assert.AreEqual(DayOfWeek.Friday, result);
 
       Assert.IsTrue(EnumUtils.TryParse<DayOfWeek>("fRiDay", true, out result));
+      Assert.AreEqual(DayOfWeek.Friday, result);
+
+      Assert.IsTrue(EnumUtils.TryParseIgnoreCase<DayOfWeek>("fRiDay", out result));
       Assert.AreEqual(DayOfWeek.Friday, result);
 
       Assert.IsFalse(EnumUtils.TryParse<DayOfWeek>("fRiDay", false, out result));

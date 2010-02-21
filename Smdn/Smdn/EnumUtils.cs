@@ -31,6 +31,11 @@ namespace Smdn {
       return Parse<TEnum>(value, false);
     }
 
+    public static TEnum ParseIgnoreCase<TEnum>(string value) where TEnum : struct /*instead of Enum*/
+    {
+      return Parse<TEnum>(value, true);
+    }
+
     public static TEnum Parse<TEnum>(string value, bool ignoreCase) where TEnum : struct /*instead of Enum*/
     {
       return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
@@ -39,6 +44,11 @@ namespace Smdn {
     public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct /*instead of Enum*/
     {
       return TryParse(value, false, out result);
+    }
+
+    public static bool TryParseIgnoreCase<TEnum>(string value, out TEnum result) where TEnum : struct /*instead of Enum*/
+    {
+      return TryParse(value, true, out result);
     }
 
     public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct /*instead of Enum*/
