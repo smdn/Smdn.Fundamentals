@@ -30,16 +30,44 @@ namespace Smdn {
   /// extension methods for System.Array
   /// </summary>
   public static class ArrayExtensions {
-    public static T[] Append<T>(this T[] array, params T[] elements)
+    public static T[] Append<T>(this T[] array, T element, params T[] elements)
     {
-      return Concat(array, new T[][] {elements});
-      //return Concat(array, elements);
+      if (array == null)
+        throw new ArgumentNullException("array");
+
+      if (array.Length == 0 && elements.Length == 0)
+        return new T[] {element};
+
+      var appended = new T[array.Length + 1 + elements.Length];
+
+      Array.Copy(array, 0, appended, 0, array.Length);
+
+      appended[array.Length] = element;
+
+      if (0 < elements.Length)
+        Array.Copy(elements, 0, appended, 1 + array.Length, elements.Length);
+
+      return appended;
     }
 
-    public static T[] Prepend<T>(this T[] array, params T[] elements)
+    public static T[] Prepend<T>(this T[] array, T element, params T[] elements)
     {
-      return Concat(elements, new T[][] {array});
-      //return Concat(elements, array);
+      if (array == null)
+        throw new ArgumentNullException("array");
+
+      if (array.Length == 0 && elements.Length == 0)
+        return new T[] {element};
+
+      var prepended = new T[array.Length + 1 + elements.Length];
+
+      prepended[0] = element;
+
+      if (0 < elements.Length)
+        Array.Copy(elements, 0, prepended, 1, elements.Length);
+
+      Array.Copy(array, 0, prepended, 1 + elements.Length, array.Length);
+
+      return prepended;
     }
 
     public static T[] Concat<T>(this T[] array, params T[][] arrays)

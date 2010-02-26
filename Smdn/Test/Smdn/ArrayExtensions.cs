@@ -12,6 +12,10 @@ namespace Smdn {
 
       Assert.AreEqual(new[] {0, 1, 2, 3}, arr.Append(3));
       Assert.AreEqual(new[] {0, 1, 2, 3, 4, 5}, arr.Append(3, 4, 5));
+
+      arr = new int[] {};
+
+      Assert.AreEqual(new[] {9}, arr.Append(9));
     }
 
     [Test]
@@ -21,6 +25,10 @@ namespace Smdn {
 
       Assert.AreEqual(new[] {0, 3, 4, 5}, arr.Prepend(0));
       Assert.AreEqual(new[] {0, 1, 2, 3, 4, 5}, arr.Prepend(0, 1, 2));
+
+      arr = new int[] {};
+
+      Assert.AreEqual(new[] {9}, arr.Prepend(9));
     }
 
     [Test]
