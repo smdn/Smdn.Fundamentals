@@ -417,15 +417,9 @@ namespace Smdn {
     public byte[] Node {
       get
       {
-        var ret = new byte[6];
-
         fixed (byte* n = node) {
-          for (var i = 0; i < 6; i++) {
-            ret[i] = n[i];
-          }
+          return new[] {n[0], n[1], n[2], n[3], n[4], n[5]};
         }
-
-        return ret;
       }
       private set
       {
