@@ -60,6 +60,7 @@
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
     <Compile Include="Smdn.Formats\CharwiseStringComparer.cs" />
+    <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,6 +78,7 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Security.Cryptography\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">

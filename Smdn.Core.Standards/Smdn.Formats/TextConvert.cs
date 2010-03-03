@@ -31,6 +31,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Smdn.Security.Cryptography;
+
 namespace Smdn.Formats {
   public static class TextConvert {
 #region "text tranform"
@@ -56,40 +58,7 @@ namespace Smdn.Formats {
 
     internal static byte[] TransformBytes(byte[] inputBuffer, ICryptoTransform transform)
     {
-      var outputBuffer = new byte[inputBuffer.Length * transform.OutputBlockSize];
-      var outputOffset = 0;
-      var inputOffset  = 0;
-
-      if (transform.CanTransformMultipleBlocks) {
-        var inputCount = (inputBuffer.Length / transform.InputBlockSize) * transform.InputBlockSize;
-
-        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
-        inputOffset  += inputCount;
-      }
-
-      var inputRemain = inputBuffer.Length - inputOffset;
-
-      while (transform.InputBlockSize <= inputRemain) {
-        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, transform.InputBlockSize, outputBuffer, outputOffset);
-
-        inputOffset += transform.InputBlockSize;
-        inputRemain -= transform.InputBlockSize;
-      }
-
-      if (0 < inputRemain) {
-        var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputBuffer.Length - inputOffset);
-
-        if (outputBuffer.Length != outputOffset + finalBlock.Length)
-          Array.Resize(ref outputBuffer, outputOffset + finalBlock.Length);
-
-        Buffer.BlockCopy(finalBlock, 0, outputBuffer, outputOffset, finalBlock.Length);
-      }
-      else {
-        if (outputBuffer.Length != outputOffset)
-          Array.Resize(ref outputBuffer, outputOffset);
-      }
-
-      return outputBuffer;
+      return ICryptoTransformExtensions.TransformBytes(transform, inputBuffer);
     }
 
     internal static byte[] ToPrintableAsciiByteArray(string str, bool allowCrLf, bool allowTab)
