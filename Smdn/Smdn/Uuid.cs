@@ -25,6 +25,7 @@
 using System;
 using System.Globalization;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
@@ -77,10 +78,65 @@ namespace Smdn {
       return CreateTimeBased();
     }
 
-    public static Uuid CreateTimeBased()
+    private static int GetClock()
+    {
+      var bytes = MathUtils.GetRandomBytes(2);
+
+      return (bytes[0] << 8 | bytes[1]) & 0x3fff;
+    }
+
+    private static DateTime GetTimestamp()
     {
       throw new NotImplementedException();
-      //CreateTimeBased(DateTime.Now, 0, null);
+    }
+
+    private static PhysicalAddress GetNode()
+    {
+      var nic = Array.Find(NetworkInterface.GetAllNetworkInterfaces(), delegate(NetworkInterface networkInterface) {
+        return networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback;
+      });
+
+      if (nic == null)
+        throw new NotSupportedException("network interface not found");
+
+      return nic.GetPhysicalAddress();
+    }
+
+    public static Uuid CreateTimeBased()
+    {
+      return CreateTimeBased(GetTimestamp(),
+                             GetClock(),
+                             GetNode());
+    }
+
+    public static Uuid CreateTimeBased(DateTime timestamp, int clock)
+    {
+      return CreateTimeBased(timestamp,
+                             clock,
+                             GetNode());
+    }
+
+    public static Uuid CreateTimeBased(PhysicalAddress node)
+    {
+      if (node == null)
+        throw new ArgumentNullException("node");
+
+      return CreateTimeBased(node.GetAddressBytes());
+    }
+
+    public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node)
+    {
+      if (node == null)
+        throw new ArgumentNullException("node");
+
+      return CreateTimeBased(timestamp, clock, node.GetAddressBytes());
+    }
+
+    public static Uuid CreateTimeBased(byte[] node)
+    {
+      return CreateTimeBased(GetTimestamp(),
+                             GetClock(),
+                             node);
     }
 
     public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node)
@@ -463,6 +519,10 @@ namespace Smdn {
       }
     }
 
+    public PhysicalAddress PhysicalAddress {
+      get { return new PhysicalAddress(Node); }
+    }
+
     public UuidVersion Version {
       get
       {
@@ -496,6 +556,13 @@ namespace Smdn {
             return Variant.Reserved;
         }
       }
+    }
+
+    public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
+                PhysicalAddress node)
+    : this(time_low, time_mid, time_hi_and_version, clock_seq_hi_and_reserved, clock_seq_low,
+           node.GetAddressBytes())
+    {
     }
 
     public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,

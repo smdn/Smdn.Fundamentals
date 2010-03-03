@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture()]
   public class UuidTests {
     [Test]
-    public void TestConstruct()
+    public void TestConstruct1()
     {
       var uuid = new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6");
 
@@ -25,6 +26,26 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstruct2()
+    {
+      var uuid = new Uuid("01c47915-4777-11d8-bc70-0090272ff725");
+
+      Assert.AreEqual(0x01c47915, uuid.TimeLow);
+      Assert.AreEqual(0x4777, uuid.TimeMid);
+      Assert.AreEqual(0x11d8, uuid.TimeHighAndVersion);
+      Assert.AreEqual(0xbc, uuid.ClockSeqHighAndReserved);
+      Assert.AreEqual(0x70, uuid.ClockSeqLow);
+      Assert.AreEqual(new byte[] {0x00, 0x90, 0x27, 0x2f, 0xf7, 0x25}, uuid.Node);
+      Assert.AreEqual(UuidVersion.Version1, uuid.Version);
+      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
+
+      Assert.AreEqual((new DateTime(2004, 1, 15, 16, 22, 26, 376, DateTimeKind.Utc)).AddTicks(3221), uuid.Timestamp);
+      Assert.AreEqual(15472, uuid.Clock);
+      Assert.AreEqual("00:90:27:2f:f7:25", uuid.IEEE802MacAddress);
+      Assert.AreEqual(PhysicalAddress.Parse("00-90-27-2f-f7-25"), uuid.PhysicalAddress);
+    }
+
+    [Test]
     public void TestConstructFromGuid()
     {
       Assert.AreEqual(Uuid.Nil, new Uuid(Guid.Empty));
@@ -39,13 +60,34 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestCreateTimeBased()
+    public void TestCreateTimeBased1()
     {
       var uuid = Uuid.CreateTimeBased((new DateTime(1997, 2, 3, 17, 43, 12, 216, DateTimeKind.Utc)).AddTicks(8750), 10085, new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6});
 
       Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), uuid);
       Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
       Assert.AreEqual(UuidVersion.Version1, uuid.Version);
+    }
+
+    [Test]
+    public void TestCreateTimeBased2()
+    {
+      var node = new PhysicalAddress(new byte[] {0x00, 0x90, 0x27, 0x2f, 0xf7, 0x25});
+      var uuid = Uuid.CreateTimeBased((new DateTime(2004, 1, 15, 16, 22, 26, 376, DateTimeKind.Utc)).AddTicks(3221), 15472, node);
+
+      Assert.AreEqual(new Uuid("01c47915-4777-11d8-bc70-0090272ff725"), uuid);
+      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
+      Assert.AreEqual(UuidVersion.Version1, uuid.Version);
+    }
+
+    [Test]
+    public void TestCreateTimeBased3()
+    {
+      var uuid = Uuid.CreateTimeBased((new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc)), 0);
+
+      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
+      Assert.AreEqual(UuidVersion.Version1, uuid.Version);
+      Assert.AreNotEqual(PhysicalAddress.None, uuid.PhysicalAddress);
     }
 
     [Test]
