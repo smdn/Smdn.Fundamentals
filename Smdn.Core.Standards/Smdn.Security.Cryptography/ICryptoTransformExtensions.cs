@@ -54,18 +54,12 @@ namespace Smdn.Security.Cryptography {
         inputRemain -= transform.InputBlockSize;
       }
 
-      if (0 < inputRemain) {
-        var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputBuffer.Length - inputOffset);
+      var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputBuffer.Length - inputOffset);
 
-        if (outputBuffer.Length != outputOffset + finalBlock.Length)
-          Array.Resize(ref outputBuffer, outputOffset + finalBlock.Length);
+      if (outputBuffer.Length != outputOffset + finalBlock.Length)
+        Array.Resize(ref outputBuffer, outputOffset + finalBlock.Length);
 
-        Buffer.BlockCopy(finalBlock, 0, outputBuffer, outputOffset, finalBlock.Length);
-      }
-      else {
-        if (outputBuffer.Length != outputOffset)
-          Array.Resize(ref outputBuffer, outputOffset);
-      }
+      Buffer.BlockCopy(finalBlock, 0, outputBuffer, outputOffset, finalBlock.Length);
 
       return outputBuffer;
     }
