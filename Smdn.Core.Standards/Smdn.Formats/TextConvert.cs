@@ -783,12 +783,33 @@ namespace Smdn.Formats {
       return ret.ToString();
     }
 
+    public static string FromMimeEncodedStringNullable(string str)
+    {
+      if (str == null)
+        return null;
+      else
+        return FromMimeEncodedString(str);
+    }
+
     public static string FromMimeEncodedString(string str)
     {
       MimeEncoding discard1;
       Encoding discard2;
 
       return FromMimeEncodedString(str, out discard1, out discard2);
+    }
+
+    public static string FromMimeEncodedStringNullable(string str, out MimeEncoding encoding, out Encoding charset)
+    {
+      if (str == null) {
+        encoding = MimeEncoding.None;
+        charset = null;
+
+        return null;
+      }
+      else {
+        return FromMimeEncodedString(str, out encoding, out charset);
+      }
     }
 
     public static string FromMimeEncodedString(string str, out MimeEncoding encoding, out Encoding charset)
