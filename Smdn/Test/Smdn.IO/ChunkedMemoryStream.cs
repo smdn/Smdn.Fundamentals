@@ -327,6 +327,42 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestSeekInternalStateNotChanged1()
+    {
+      using (var stream = new ChunkedMemoryStream()) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        Assert.AreEqual(0L, stream.Seek(0L, SeekOrigin.Begin));
+        Assert.AreEqual(0L, stream.Length);
+
+        stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+
+        Assert.AreEqual(4L, stream.Position);
+        Assert.AreEqual(4L, stream.Length);
+      }
+    }
+
+    [Test]
+    public void TestSeekInternalStateNotChanged2()
+    {
+      using (var stream = new ChunkedMemoryStream()) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        stream.Position = 0L;
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+
+        Assert.AreEqual(4L, stream.Position);
+        Assert.AreEqual(4L, stream.Length);
+      }
+    }
+
+    [Test]
     public void TestReadByte()
     {
       using (var stream = new ChunkedMemoryStream(8)) {

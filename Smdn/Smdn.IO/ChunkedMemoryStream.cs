@@ -142,6 +142,9 @@ namespace Smdn.IO {
 
       public void SetPosition(long offset)
       {
+        if (Position == offset)
+          return;
+
         if (Length < offset)
           SetLength(offset);
 
