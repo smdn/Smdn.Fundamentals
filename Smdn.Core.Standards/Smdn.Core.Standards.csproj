@@ -61,6 +61,7 @@
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
     <Compile Include="Smdn.Formats\CharwiseStringComparer.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
+    <Compile Include="Smdn.Formats\EncodingUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
