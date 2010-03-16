@@ -254,5 +254,31 @@ namespace Smdn.Collections {
 
       return true;
     }
+
+    public static IEnumerable<T> EnumerateDepthFirst<T>(this IEnumerable<T> nestedEnumerable)
+      where T : IEnumerable<T>
+    {
+      if (nestedEnumerable == null)
+        throw new ArgumentNullException("nestedEnumerable");
+
+      var stack = new Stack<IEnumerator<T>>();
+      var enumerator = nestedEnumerable.GetEnumerator();
+
+      for (;;) {
+        if (enumerator.MoveNext()) {
+          stack.Push(enumerator);
+
+          yield return enumerator.Current;
+
+          enumerator = enumerator.Current.GetEnumerator();
+        }
+        else {
+          if (stack.Count == 0)
+            yield break;
+
+          enumerator = stack.Pop();
+        }
+      }
+    }
   }
 }
