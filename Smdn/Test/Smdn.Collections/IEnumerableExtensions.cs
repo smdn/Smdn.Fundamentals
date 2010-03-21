@@ -20,12 +20,12 @@ namespace Smdn.Collections {
     [Test]
     public void TestEqualsAllWithIEqualityComparer()
     {
-      Assert.IsTrue(((IEnumerable<string>)(new string[] {})).EqualsAll(new string[] {}, StringComparer.InvariantCultureIgnoreCase));
-      Assert.IsTrue(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d", "E"}, StringComparer.InvariantCultureIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(null, StringComparer.InvariantCultureIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new string[] {}, StringComparer.InvariantCultureIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d"}, StringComparer.InvariantCultureIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d", "E", "f"}, StringComparer.InvariantCultureIgnoreCase));
+      Assert.IsTrue(((IEnumerable<string>)(new string[] {})).EqualsAll(new string[] {}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsTrue(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d", "E"}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(null, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new string[] {}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d"}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d", "E", "f"}, StringComparer.OrdinalIgnoreCase));
     }
 
     [Test]

@@ -31,7 +31,7 @@ namespace Smdn.Collections {
         {"key1", "val1"},
         {"key2", "val2"},
         {"key3", "val3"},
-      }).AsReadOnly(StringComparer.InvariantCultureIgnoreCase);
+      }).AsReadOnly(StringComparer.OrdinalIgnoreCase);
 
       Assert.IsTrue(dic.IsReadOnly);
       Assert.AreEqual("val1", dic["key1"]);

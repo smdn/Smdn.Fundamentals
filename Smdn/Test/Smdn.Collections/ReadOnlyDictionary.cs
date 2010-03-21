@@ -64,7 +64,7 @@ namespace Smdn.Collections {
         new KeyValuePair<string, string>("key1", "val1"),
         new KeyValuePair<string, string>("key2", "val2"),
         new KeyValuePair<string, string>("key3", "val3"),
-      }, StringComparer.InvariantCultureIgnoreCase);
+      }, StringComparer.OrdinalIgnoreCase);
 
       Assert.IsTrue(dic.IsReadOnly);
       Assert.AreEqual("val1", dic["key1"]);
