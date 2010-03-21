@@ -169,7 +169,7 @@ namespace Smdn {
 
     public bool TypeEquals(string type)
     {
-      return string.Equals(Type, type, StringComparison.InvariantCulture);
+      return string.Equals(Type, type, StringComparison.Ordinal);
     }
 
     public bool TypeEqualsIgnoreCase(MimeType mimeType)
@@ -179,7 +179,7 @@ namespace Smdn {
 
     public bool TypeEqualsIgnoreCase(string type)
     {
-      return string.Equals(Type, type, StringComparison.InvariantCultureIgnoreCase);
+      return string.Equals(Type, type, StringComparison.OrdinalIgnoreCase);
     }
 
     public bool SubTypeEquals(MimeType mimeType)
@@ -189,7 +189,7 @@ namespace Smdn {
 
     public bool SubTypeEquals(string subType)
     {
-      return string.Equals(SubType, subType, StringComparison.InvariantCulture);
+      return string.Equals(SubType, subType, StringComparison.Ordinal);
     }
 
     public bool SubTypeEqualsIgnoreCase(MimeType mimeType)
@@ -199,7 +199,7 @@ namespace Smdn {
 
     public bool SubTypeEqualsIgnoreCase(string subType)
     {
-      return string.Equals(SubType, subType, StringComparison.InvariantCultureIgnoreCase);
+      return string.Equals(SubType, subType, StringComparison.OrdinalIgnoreCase);
     }
 
     public override bool Equals(object obj)
@@ -225,7 +225,7 @@ namespace Smdn {
       if (other == null)
         return false;
       else
-        return string.Equals(ToString(), other, StringComparison.InvariantCulture);
+        return string.Equals(ToString(), other, StringComparison.Ordinal);
     }
 
     public bool EqualsIgnoreCase(MimeType other)
@@ -241,7 +241,7 @@ namespace Smdn {
       if (other == null)
         return false;
       else
-        return string.Equals(ToString(), other, StringComparison.InvariantCultureIgnoreCase);
+        return string.Equals(ToString(), other, StringComparison.OrdinalIgnoreCase);
     }
 
     public override int GetHashCode()

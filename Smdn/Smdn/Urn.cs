@@ -75,7 +75,7 @@ namespace Smdn {
     {
       var nidAndNss = SplitNidAndNss(urn);
 
-      if (string.Equals(expectedNid, nidAndNss[0], StringComparison.InvariantCultureIgnoreCase))
+      if (string.Equals(expectedNid, nidAndNss[0], StringComparison.OrdinalIgnoreCase))
         return nidAndNss[1];
       else
         throw new ArgumentException(string.Format("nid is not {0}", expectedNid), "urn");
@@ -85,7 +85,7 @@ namespace Smdn {
     {
       if (urn == null)
         throw new ArgumentNullException("urn");
-      if (!string.Equals(urn.Scheme, Scheme, StringComparison.InvariantCultureIgnoreCase))
+      if (!string.Equals(urn.Scheme, Scheme, StringComparison.OrdinalIgnoreCase))
         throw new ArgumentException("not URN", "urn");
 
       var nidAndNss = urn.LocalPath;
