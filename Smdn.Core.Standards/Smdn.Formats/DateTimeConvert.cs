@@ -136,7 +136,7 @@ namespace Smdn.Formats {
       if (s == null)
         throw new ArgumentNullException("s");
 
-      var universal = s.EndsWith(universalTimeString);
+      var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
       var styles = DateTimeStyles.AllowWhiteSpaces;
 
       if (universal)
@@ -153,7 +153,7 @@ namespace Smdn.Formats {
       if (s == null)
         throw new ArgumentNullException("s");
 
-      var universal = s.EndsWith(universalTimeString);
+      var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
       var styles = DateTimeStyles.AllowWhiteSpaces;
 
       if (universal)
