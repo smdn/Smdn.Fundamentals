@@ -56,7 +56,7 @@ namespace Smdn.Formats {
         return encoding;
     }
 
-    private static Dictionary<string, string> encodingAliases = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
+    private static Dictionary<string, string> encodingAliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
       /* UTF-8 */
       {"utf8",        "utf-8"},
       {"utf_8",       "utf-8"},
