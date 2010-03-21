@@ -55,7 +55,6 @@
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
-    <Compile Include="Smdn.Formats\CharwiseStringComparer.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
   </ItemGroup>
