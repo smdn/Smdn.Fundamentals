@@ -161,7 +161,7 @@ namespace Smdn.Formats {
       if (inputBuffer.Length - inputCount < inputOffset)
         throw new ArgumentException("inputBuffer.Length - inputCount < inputOffset", "inputOffset");
       if (InputBlockSize < inputCount)
-        throw new ArgumentOutOfRangeException("inputCount", "input length too long");
+        throw new ArgumentOutOfRangeException("inputCount", inputCount, "input length too long");
 
       var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
       var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);

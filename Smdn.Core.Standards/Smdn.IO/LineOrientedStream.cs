@@ -80,7 +80,9 @@ namespace Smdn.IO {
           throw new ArgumentException("newLine", "must be non-zero positive length");
       }
       if (bufferSize < MinimumBufferSize)
-        throw new ArgumentOutOfRangeException("bufferSize", string.Format("must be greater than or equals to {0}", MinimumBufferSize));
+        throw new ArgumentOutOfRangeException("bufferSize",
+                                              bufferSize,
+                                              string.Format("must be greater than or equals to {0}", MinimumBufferSize));
 
       this.stream = stream;
       this.strictEOL = strictEOL;
@@ -247,7 +249,7 @@ namespace Smdn.IO {
       CheckDisposed();
 
       if (length < 0L)
-        throw new ArgumentOutOfRangeException("length", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("length", length, "must be zero or positive number");
       if (targetStream == null)
         throw new ArgumentNullException("target");
 
@@ -299,9 +301,9 @@ namespace Smdn.IO {
       if (dest == null)
         throw new ArgumentNullException("dest");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", "must be greater than or equals to 0");
+        throw new ArgumentOutOfRangeException("offset", offset, "must be greater than or equals to 0");
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be greater than or equals to 0");
+        throw new ArgumentOutOfRangeException("count", count, "must be greater than or equals to 0");
       if (dest.Length < offset + count)
         throw new ArgumentException("invalid range");
 

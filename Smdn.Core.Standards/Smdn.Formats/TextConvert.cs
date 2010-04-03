@@ -664,11 +664,11 @@ namespace Smdn.Formats {
         throw new ArgumentNullException("charset");
       if (doFold) {
         if (foldingLimit < 1)
-          throw new ArgumentOutOfRangeException("foldingLimit");
+          throw new ArgumentOutOfRangeException("foldingLimit", foldingLimit, "must be greater than 1");
         if (foldingOffset < 0)
-          throw new ArgumentOutOfRangeException("foldingOffset");
+          throw new ArgumentOutOfRangeException("foldingOffset", foldingOffset, "must be greater than zero");
         if (foldingLimit <= foldingOffset)
-          throw new ArgumentOutOfRangeException("foldingOffset");
+          throw new ArgumentOutOfRangeException("foldingOffset", foldingOffset, "must be less than foldingLimit");
         if (foldingString == null)
           throw new ArgumentNullException("foldingString");
       }
@@ -708,7 +708,7 @@ namespace Smdn.Formats {
       var outputLimit = foldingLimit - (foldingOffset + ambleLength);
 
       if (outputLimit <= 0)
-        throw new ArgumentOutOfRangeException("foldingLimit", "too short");
+        throw new ArgumentOutOfRangeException("foldingLimit", foldingLimit, "too short");
 
       // copy preamble to buffer
       Buffer.BlockCopy(preamble, 0, outputBuffer, 0, preamble.Length);
@@ -751,7 +751,9 @@ namespace Smdn.Formats {
         }
 
         if (outputBuffer.Length < ambleLength + transformed.Length)
-          throw new ArgumentOutOfRangeException("foldingLimit", string.Format("too short, at least {0} is required", ambleLength + transformed.Length));
+          throw new ArgumentOutOfRangeException("foldingLimit",
+                                                foldingLimit,
+                                                string.Format("too short, at least {0} is required", ambleLength + transformed.Length));
 
         // copy transformed chars to buffer
         Buffer.BlockCopy(transformed, 0, outputBuffer, outputCount, transformed.Length);
