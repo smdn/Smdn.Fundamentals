@@ -77,7 +77,7 @@ namespace Smdn.IO {
         if (newLine == null)
           throw new ArgumentNullException("newLine");
         if (newLine.Length == 0)
-          throw new ArgumentException("newLine", "must be non-zero positive length");
+          throw new ArgumentException("must be non-zero positive length", "newLine");
       }
       if (bufferSize < MinimumBufferSize)
         throw new ArgumentOutOfRangeException("bufferSize",
