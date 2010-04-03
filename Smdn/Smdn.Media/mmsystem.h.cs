@@ -107,13 +107,13 @@ namespace Smdn.Media {
     public static WAVEFORMATEX CreateLinearPcmFormat(long samplesPerSec, int bitsPerSample, int channles)
     {
       if (samplesPerSec <= 0)
-        throw new ArgumentOutOfRangeException("samplesPerSec", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("samplesPerSec", samplesPerSec, "must be non-zero positive number");
       if (bitsPerSample <= 0)
-        throw new ArgumentOutOfRangeException("bitsPerSample", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("bitsPerSample", bitsPerSample, "must be non-zero positive number");
       if ((bitsPerSample & 0x7) != 0x0)
-        throw new ArgumentOutOfRangeException("bitsPerSample", "must be number of n * 8");
+        throw new ArgumentOutOfRangeException("bitsPerSample", bitsPerSample, "must be number of n * 8");
       if (channles <= 0)
-        throw new ArgumentOutOfRangeException("channles", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("channles", channles, "must be non-zero positive number");
 
       var format = new WAVEFORMATEX();
 

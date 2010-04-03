@@ -159,10 +159,10 @@ namespace Smdn {
         timestamp = timestamp.ToUniversalTime();
 
       if (timestamp < timestampEpoch)
-        throw new ArgumentOutOfRangeException("timestamp", string.Format("must be greater than or equals to {0}", timestampEpoch));
+        throw new ArgumentOutOfRangeException("timestamp", timestamp, string.Format("must be greater than or equals to {0}", timestampEpoch));
 
       if (clock < 0 || 0x3fff <= clock)
-        throw new ArgumentOutOfRangeException("clock", "must be 14-bit unsigned integer");
+        throw new ArgumentOutOfRangeException("clock", clock, "must be 14-bit unsigned integer");
 
       if (node == null)
         throw new ArgumentNullException("node");
@@ -610,7 +610,7 @@ namespace Smdn {
       if (octets == null)
         throw new ArgumentNullException("octets");
       if (index < 0)
-        throw new ArgumentOutOfRangeException("must be zero or positive number", "index");
+        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
       if (octets.Length - index < 16)
         throw new ArgumentException("at least 16 octets is required", "octets, index");
 

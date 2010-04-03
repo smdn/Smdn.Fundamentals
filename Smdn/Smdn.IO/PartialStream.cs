@@ -48,7 +48,7 @@ namespace Smdn.IO {
       if (innerOrPartialStream == null)
         throw new ArgumentNullException("innerOrPartialStream");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
 
       if (innerOrPartialStream is PartialStream) {
         var partialStream = innerOrPartialStream as PartialStream;
@@ -89,7 +89,7 @@ namespace Smdn.IO {
         CheckDisposed();
 
         if (value < 0)
-          throw new ArgumentOutOfRangeException("Position", "must be zero or positive number");
+          throw new ArgumentOutOfRangeException("Position", value, "must be zero or positive number");
         stream.Position = value + offset;
       }
     }
@@ -156,9 +156,9 @@ namespace Smdn.IO {
       if (!innerStream.CanSeek)
         throw new ArgumentException("innerStream", "stream must be seekable");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
       if (length.HasValue && length.Value < 0)
-        throw new ArgumentOutOfRangeException("length", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("length", length.Value, "must be zero or positive number");
 
       this.stream = innerStream;
       this.offset = offset;
@@ -249,7 +249,7 @@ namespace Smdn.IO {
       CheckDisposed();
 
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
 
       if (length == null)
         return stream.Read(buffer, offset, count);
@@ -270,7 +270,7 @@ namespace Smdn.IO {
       CheckWritable();
 
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
 
       if (length == null) {
         stream.Write(buffer, offset, count);

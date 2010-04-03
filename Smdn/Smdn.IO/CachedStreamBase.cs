@@ -59,7 +59,7 @@ namespace Smdn.IO {
         CheckDisposed();
 
         if (value < 0)
-          throw new ArgumentOutOfRangeException("Position", "must be zero or positive number");
+          throw new ArgumentOutOfRangeException("Position", value, "must be zero or positive number");
 
         position = value;
       }
@@ -83,7 +83,7 @@ namespace Smdn.IO {
         throw new ArgumentException("stream must be readable", "innerStream");
 
       if (blockSize <= 0)
-        throw new ArgumentOutOfRangeException("blockSize", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("blockSize", blockSize, "must be non-zero positive number");
 
       this.stream = innerStream;
       this.blockSize = blockSize;
@@ -156,9 +156,9 @@ namespace Smdn.IO {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
       if (buffer.Length < offset + count)
         throw new ArgumentException("invalid range");
 

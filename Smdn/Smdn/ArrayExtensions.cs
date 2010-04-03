@@ -113,9 +113,9 @@ namespace Smdn {
       if (array == null)
         throw new ArgumentNullException("array");
       if (start < 0)
-        throw new ArgumentOutOfRangeException("start", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("start", start, "must be zero or positive number");
       if (count < 0)
-        throw new ArgumentOutOfRangeException("start", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("start", start, "must be zero or positive number");
       if (array.Length <= start)
         throw new ArgumentException("start", "must be less than array length");
       if (array.Length <= count - start)

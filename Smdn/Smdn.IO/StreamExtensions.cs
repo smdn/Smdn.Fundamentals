@@ -37,7 +37,7 @@ namespace Smdn.IO {
       if (toStream == null)
         throw new ArgumentNullException("toStream");
       if (bufferSize <= 0)
-        throw new ArgumentOutOfRangeException("bufferSize", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("bufferSize", bufferSize, "must be non-zero positive number");
 
       var buffer = new byte[bufferSize];
 
@@ -61,7 +61,7 @@ namespace Smdn.IO {
       if (writer == null)
         throw new ArgumentNullException("writer");
       if (bufferSize <= 0)
-        throw new ArgumentOutOfRangeException("bufferSize", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("bufferSize", bufferSize, "must be non-zero positive number");
 
       var buffer = new byte[bufferSize];
 
@@ -88,9 +88,9 @@ namespace Smdn.IO {
     public static byte[] ReadToEnd(this Stream stream, int readBufferSize, int initialCapacity)
     {
       if (readBufferSize <= 0)
-        throw new ArgumentOutOfRangeException("readBufferSize", "must be non-zero positive number");
+        throw new ArgumentOutOfRangeException("readBufferSize", readBufferSize, "must be non-zero positive number");
       if (initialCapacity < 0)
-        throw new ArgumentOutOfRangeException("initialCapacity", "must be zero or positive number");
+        throw new ArgumentOutOfRangeException("initialCapacity", initialCapacity, "must be zero or positive number");
 
       using (var outStream = new MemoryStream(initialCapacity)) {
         WriteToEnd(stream, outStream, readBufferSize);
