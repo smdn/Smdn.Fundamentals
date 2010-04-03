@@ -631,7 +631,7 @@ namespace Smdn {
     public Uuid(string uuid)
     {
       if (uuid == null)
-        throw new ArgumentNullException();
+        throw new ArgumentNullException("uuid");
 
       this.fields_high = 0;
       this.fields_low = 0;
