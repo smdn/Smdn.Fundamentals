@@ -307,7 +307,7 @@ namespace Smdn {
         switch (version) {
           case UuidVersion.NameBasedMD5Hash: hashAlgorithm = MD5.Create(); break;
           case UuidVersion.NameBasedSHA1Hash: hashAlgorithm = SHA1.Create(); break;
-          default: throw new ArgumentException("version must be 3 or 5");
+          default: throw new ArgumentException("version must be 3 or 5", "version");
         }
 
         /* 
@@ -390,7 +390,7 @@ namespace Smdn {
       if (randomNumber == null)
         throw new ArgumentNullException("randomNumber");
       else if (randomNumber.Length != 16)
-        throw new ArgumentException("randomNumber", "length must be 16");
+        throw new ArgumentException("length must be 16", "randomNumber");
 
       var uuid = new Uuid(randomNumber);
 
@@ -701,7 +701,7 @@ namespace Smdn {
       else if (obj is Guid)
         return CompareTo((Guid)obj);
       else
-        throw new ArgumentException("obj is not Uuid");
+        throw new ArgumentException("obj is not Uuid", "obj");
     }
 
     public int ComapreTo(Guid other)

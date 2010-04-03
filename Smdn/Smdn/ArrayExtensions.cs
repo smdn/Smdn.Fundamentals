@@ -119,7 +119,7 @@ namespace Smdn {
       if (array.Length <= start)
         throw new ArgumentException("start", "must be less than array length");
       if (array.Length <= count - start)
-        throw new ArgumentException("start, count");
+        throw new ArgumentException("invalid range", "start, count");
 
       var cut = new T[count];
 
