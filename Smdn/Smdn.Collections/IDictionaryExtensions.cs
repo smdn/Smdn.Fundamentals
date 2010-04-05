@@ -29,11 +29,19 @@ namespace Smdn.Collections {
   public static class IDictionaryExtensions {
     public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
     {
-      return new ReadOnlyDictionary<TKey, TValue>(dictionary);
+      if (dictionary == null)
+        throw new ArgumentNullException("dictionary");
+      else if (dictionary.IsReadOnly)
+        return dictionary;
+      else
+        return new ReadOnlyDictionary<TKey, TValue>(dictionary);
     }
 
     public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
     {
+      if (dictionary == null)
+        throw new ArgumentNullException("dictionary");
+
       return new ReadOnlyDictionary<TKey, TValue>(dictionary, comparer);
     }
   }

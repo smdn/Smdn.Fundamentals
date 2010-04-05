@@ -22,6 +22,11 @@ namespace Smdn.Collections {
       }
       catch (NotSupportedException) {
       }
+
+      var dic2 = dic.AsReadOnly();
+
+      Assert.AreSame(dic2, dic);
+      Assert.IsTrue(dic2.IsReadOnly);
     }
 
     [Test]
