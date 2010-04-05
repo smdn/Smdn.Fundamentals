@@ -57,7 +57,6 @@ FILES = \
 	Mono.Simd/SimdRuntime.cs \
 	Smdn/RuntimeEnvironment.cs \
 	Smdn/EnumUtils.cs \
-	Smdn/NullableConvert.cs \
 	Smdn/Action.cs \
 	Smdn/Func.cs \
 	Smdn.Mathematics/Radian.cs \
@@ -89,7 +88,8 @@ FILES = \
 	Smdn.IO/PartialStream.cs \
 	Smdn.IO/CachedStreamBase.cs \
 	Smdn.IO/NonPersistentCachedStream.cs \
-	Smdn.IO/PersistentCachedStream.cs 
+	Smdn.IO/PersistentCachedStream.cs \
+	Smdn/Tuple.cs 
 
 DATA_FILES = 
 
