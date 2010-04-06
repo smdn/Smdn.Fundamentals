@@ -88,6 +88,7 @@
     <Compile Include="Smdn.IO\NonPersistentCachedStream.cs" />
     <Compile Include="Smdn.IO\PersistentCachedStream.cs" />
     <Compile Include="Smdn\Tuple.cs" />
+    <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
