@@ -69,6 +69,7 @@
     <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
     <Compile Include="Smdn.IO\PartialStream.cs" />
     <Compile Include="Smdn.IO\CachedStream.cs" />
+    <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
