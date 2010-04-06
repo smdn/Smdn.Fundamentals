@@ -859,19 +859,38 @@ namespace Smdn.Formats {
 #region "XHTML and HTML style escape"
     public static string ToHtmlEscapedString(string str)
     {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
       return ToXhtmlEscapedString(str, false);
     }
 
     public static string ToXhtmlEscapedString(string str)
     {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
       return ToXhtmlEscapedString(str, true);
+    }
+
+    public static string ToHtmlEscapedStringNullable(string str)
+    {
+      if (str == null)
+        return null;
+      else
+        return ToXhtmlEscapedString(str, false);
+    }
+
+    public static string ToXhtmlEscapedStringNullable(string str)
+    {
+      if (str == null)
+        return null;
+      else
+        return ToXhtmlEscapedString(str, true);
     }
 
     private static string ToXhtmlEscapedString(string str, bool xhtml)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-
       var sb = new StringBuilder(str.Length);
       var len = str.Length;
 
