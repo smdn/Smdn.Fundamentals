@@ -24,9 +24,30 @@
 
 using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace Smdn.Security.Cryptography {
   public static class ICryptoTransformExtensions {
+    public static string TransformStringTo(this ICryptoTransform transform, string str, Encoding encoding)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return Encoding.ASCII.GetString(TransformBytes(transform, encoding.GetBytes(str)));
+    }
+
+    public static string TransformStringFrom(this ICryptoTransform transform, string str, Encoding encoding)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return encoding.GetString(TransformBytes(transform, Encoding.ASCII.GetBytes(str)));
+    }
+
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer)
     {
       if (transform == null)
