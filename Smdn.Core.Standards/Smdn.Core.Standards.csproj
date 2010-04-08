@@ -46,7 +46,6 @@
     <Compile Include="Smdn.Formats\FromQuotedPrintableTransform.cs" />
     <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
     <Compile Include="Smdn.Formats\ToQuotedPrintableTransform.cs" />
@@ -60,6 +59,7 @@
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
+    <Compile Include="Smdn.Formats\MimeEncodingMethod.cs" />
     <Compile Include="Smdn.Formats\PercentEncoding.cs" />
   </ItemGroup>
   <ItemGroup>

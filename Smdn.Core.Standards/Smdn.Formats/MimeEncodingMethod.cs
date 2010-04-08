@@ -25,7 +25,7 @@
 using System;
 
 namespace Smdn.Formats {
-  public enum MimeEncoding
+  public enum MimeEncodingMethod
   {
     None,
     Base64,           // B-Encode

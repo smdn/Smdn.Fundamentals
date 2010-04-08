@@ -159,10 +159,10 @@ namespace Smdn.Formats {
     public void TestToMimeEncodedStringNoFolding()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=",
-                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ", MimeEncoding.Base64, Encoding.UTF8),
+                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ", MimeEncodingMethod.Base64, Encoding.UTF8),
                       "base64");
       Assert.AreEqual("=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
-                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ", MimeEncoding.QuotedPrintable, Encoding.UTF8),
+                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ", MimeEncodingMethod.QuotedPrintable, Encoding.UTF8),
                       "quoted-printable");
     }
 
@@ -170,10 +170,10 @@ namespace Smdn.Formats {
     public void TestToMimeEncodedStringWithFolding()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=\r\n\t=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=",
-                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncoding.Base64, Encoding.UTF8, 76, 0),
+                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncodingMethod.Base64, Encoding.UTF8, 76, 0),
                       "base64");
       Assert.AreEqual("=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=\r\n\t=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB?=\r\n\t=?utf-8?q?=E3=83=8A?=",
-                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ", MimeEncoding.QuotedPrintable, Encoding.UTF8, 76, 0),
+                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ", MimeEncodingMethod.QuotedPrintable, Encoding.UTF8, 76, 0),
                       "quoted-printable");
     }
 
@@ -181,10 +181,10 @@ namespace Smdn.Formats {
     public void TestToMimeEncodedStringSpecifiedFormat()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK5ryi5a2X?=\n =?utf-8?b?YWJj44GL44GqMTIz44Kr44OK5ryi5a2XYWJj44GL44GqMTIz44Kr?=\n =?utf-8?b?44OK?=",
-                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncoding.Base64, Encoding.UTF8, 64, 9, "\n "),
+                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncodingMethod.Base64, Encoding.UTF8, 64, 9, "\n "),
                       "base64");
       Assert.AreEqual("=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123?=\n =?utf-8?q?=E3=82=AB=E3=83=8A=E6=BC=A2=E5=AD=97abc=E3=81=8B?=\n =?utf-8?q?=E3=81=AA123=E3=82=AB=E3=83=8A=E6=BC=A2=E5=AD=97abc?=\n =?utf-8?q?=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
-                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncoding.QuotedPrintable, Encoding.UTF8, 64, 9, "\n "),
+                      TextConvert.ToMimeEncodedString("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncodingMethod.QuotedPrintable, Encoding.UTF8, 64, 9, "\n "),
                       "quoted-printable");
     }
 
@@ -192,7 +192,7 @@ namespace Smdn.Formats {
     public void TestToMimeEncodedStringInvalidCharset()
     {
       try {
-        TextConvert.ToMimeEncodedString("漢字abcかな123カナ", MimeEncoding.Base64, null);
+        TextConvert.ToMimeEncodedString("漢字abcかな123カナ", MimeEncodingMethod.Base64, null);
         Assert.Fail("no exceptions thrown");
       }
       catch (ArgumentException) {
@@ -203,7 +203,7 @@ namespace Smdn.Formats {
     public void TestToMimeEncodedStringInvalidEncoding()
     {
       try {
-        TextConvert.ToMimeEncodedString("漢字abcかな123カナ", (MimeEncoding)0x7fffffff, Encoding.UTF8);
+        TextConvert.ToMimeEncodedString("漢字abcかな123カナ", (MimeEncodingMethod)0x7fffffff, Encoding.UTF8);
         Assert.Fail("no exceptions thrown");
       }
       catch (ArgumentException) {
@@ -214,36 +214,36 @@ namespace Smdn.Formats {
     public void TestFromMimeEncodedStringQEncoded()
     {
       Encoding charset;
-      MimeEncoding encoding;
+      MimeEncodingMethod encoding;
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=", out encoding, out charset),
                       "utf8");
-      Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "utf8");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "utf8");
       Assert.AreEqual(Encoding.UTF8, charset, "utf8");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?utf-7?Q?+byJbVw-abc+MEswag-123+MKswyg-?=", out encoding, out charset),
                       "utf7");
-      Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "utf7");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "utf7");
       Assert.AreEqual(Encoding.UTF7, charset, "utf7");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?iso-2022-jp?q?=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B?=", out encoding, out charset),
                       "iso-2022-jp");
-      Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "iso-2022-jp");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "iso-2022-jp");
       Assert.AreEqual(TestUtils.Encodings.Jis, charset, "iso-2022-jp");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?shift_jis?Q?=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i?=", out encoding, out charset),
                       "shift_jis");
-      Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "shift_jis");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "shift_jis");
       Assert.AreEqual(TestUtils.Encodings.ShiftJis, charset, "shift_jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?euc-jp?q?=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA?=", out encoding, out charset),
                       "euc-jp");
-      Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "euc-jp");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "euc-jp");
       Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
     }
 
@@ -251,36 +251,36 @@ namespace Smdn.Formats {
     public void FromMimeEncodedStringBEncoded()
     {
       Encoding charset;
-      MimeEncoding encoding;
+      MimeEncodingMethod encoding;
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?utf-8?B?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=", out encoding, out charset),
                       "utf8");
-      Assert.AreEqual(MimeEncoding.Base64, encoding, "utf8");
+      Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "utf8");
       Assert.AreEqual(Encoding.UTF8, charset, "utf8");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?utf-7?b?K2J5SmJWdy1hYmMrTUVzd2FnLTEyMytNS3N3eWct?=", out encoding, out charset),
                       "utf7");
-      Assert.AreEqual(MimeEncoding.Base64, encoding, "utf7");
+      Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "utf7");
       Assert.AreEqual(Encoding.UTF7, charset, "utf7");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?iso-2022-jp?B?GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC?=", out encoding, out charset),
                       "iso-2022-jp");
-      Assert.AreEqual(MimeEncoding.Base64, encoding, "iso-2022-jp");
+      Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "iso-2022-jp");
       Assert.AreEqual(TestUtils.Encodings.Jis, charset, "iso-2022-jp");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?shift_jis?b?ir+OmmFiY4KpgsgxMjODSoNp?=", out encoding, out charset),
                       "shift_jis");
-      Assert.AreEqual(MimeEncoding.Base64, encoding, "shift_jis");
+      Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "shift_jis");
       Assert.AreEqual(TestUtils.Encodings.ShiftJis, charset, "shift_jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?euc-jp?B?tMG7+mFiY6SrpMoxMjOlq6XK?=", out encoding, out charset),
                       "euc-jp");
-      Assert.AreEqual(MimeEncoding.Base64, encoding, "euc-jp");
+      Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "euc-jp");
       Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
     }
 

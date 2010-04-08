@@ -598,32 +598,32 @@ namespace Smdn.Formats {
     //                   or SPACE>
     //               ; (but see "Use of encoded-words in message
     //               ; headers", section 5)
-    public static string ToMimeEncodedString(string str, MimeEncoding encoding)
+    public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding)
     {
       return ToMimeEncodedString(str, encoding, Encoding.ASCII, false, 0, 0, null);
     }
 
-    public static string ToMimeEncodedString(string str, MimeEncoding encoding, Encoding charset)
+    public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset)
     {
       return ToMimeEncodedString(str, encoding, charset, false, 0, 0, null);
     }
 
-    public static string ToMimeEncodedString(string str, MimeEncoding encoding, int foldingLimit, int foldingOffset)
+    public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset)
     {
       return ToMimeEncodedString(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
     }
 
-    public static string ToMimeEncodedString(string str, MimeEncoding encoding, int foldingLimit, int foldingOffset, string foldingString)
+    public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset, string foldingString)
     {
       return ToMimeEncodedString(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, foldingString);
     }
 
-    public static string ToMimeEncodedString(string str, MimeEncoding encoding, Encoding charset, int foldingLimit, int foldingOffset)
+    public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset)
     {
       return ToMimeEncodedString(str, encoding, charset, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
     }
 
-    public static string ToMimeEncodedString(string str, MimeEncoding encoding, Encoding charset, int foldingLimit, int foldingOffset, string foldingString)
+    public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset, string foldingString)
     {
       return ToMimeEncodedString(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
     }
@@ -631,7 +631,7 @@ namespace Smdn.Formats {
     private static readonly string mimeEncodingFoldingString = Chars.CRLF + Chars.HT;
     private static readonly byte[] mimeEncodingPostamble = new byte[] {0x3f, 0x3d}; // "?="
 
-    private static string ToMimeEncodedString(string str, MimeEncoding encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
+    private static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
     {
       if (str == null)
         throw new ArgumentNullException("str");
@@ -652,16 +652,16 @@ namespace Smdn.Formats {
       char encodingChar;
 
       switch (encoding) {
-        case MimeEncoding.Base64:
+        case MimeEncodingMethod.Base64:
           transform = new ToBase64Transform();
           encodingChar = 'b';
           break;
-        case MimeEncoding.QuotedPrintable:
+        case MimeEncodingMethod.QuotedPrintable:
           transform = new ToQuotedPrintableTransform();
           encodingChar = 'q';
           break;
         default:
-          throw new System.ComponentModel.InvalidEnumArgumentException("encoding", (int)encoding, typeof(MimeEncoding));
+          throw new System.ComponentModel.InvalidEnumArgumentException("encoding", (int)encoding, typeof(MimeEncodingMethod));
       }
 
       var preambleText = string.Format("=?{0}?{1}?", charset.BodyName, encodingChar);
@@ -770,16 +770,16 @@ namespace Smdn.Formats {
 
     public static string FromMimeEncodedString(string str)
     {
-      MimeEncoding discard1;
+      MimeEncodingMethod discard1;
       Encoding discard2;
 
       return FromMimeEncodedString(str, out discard1, out discard2);
     }
 
-    public static string FromMimeEncodedStringNullable(string str, out MimeEncoding encoding, out Encoding charset)
+    public static string FromMimeEncodedStringNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)
     {
       if (str == null) {
-        encoding = MimeEncoding.None;
+        encoding = MimeEncodingMethod.None;
         charset = null;
 
         return null;
@@ -789,16 +789,16 @@ namespace Smdn.Formats {
       }
     }
 
-    public static string FromMimeEncodedString(string str, out MimeEncoding encoding, out Encoding charset)
+    public static string FromMimeEncodedString(string str, out MimeEncodingMethod encoding, out Encoding charset)
     {
       if (str == null)
         throw new ArgumentNullException("str");
 
       charset = null;
-      encoding = MimeEncoding.None;
+      encoding = MimeEncodingMethod.None;
 
       Encoding lastCharset = null;
-      var lastEncoding = MimeEncoding.None;
+      var lastEncoding = MimeEncodingMethod.None;
 
       var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
         // charset
@@ -812,10 +812,10 @@ namespace Smdn.Formats {
         // encoding
         switch (m.Groups[2].Value.ToLowerInvariant()) {
           case "b":
-            lastEncoding = MimeEncoding.Base64;
+            lastEncoding = MimeEncodingMethod.Base64;
             return Base64.GetDecodedString(m.Groups[3].Value, lastCharset);
           case "q":
-            lastEncoding = MimeEncoding.QuotedPrintable;
+            lastEncoding = MimeEncodingMethod.QuotedPrintable;
             return FromQuotedPrintableString(m.Groups[3].Value, lastCharset);
         }
 
