@@ -6,20 +6,6 @@ namespace Smdn.Formats {
   [TestFixture]
   public class TextConvertTest {
     [Test]
-    public void TestToBase64ByteArray()
-    {
-      Assert.AreEqual(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30},
-                      TextConvert.ToBase64ByteArray(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34}));
-    }
-
-    [Test]
-    public void TestFromBase64ByteArray()
-    {
-      Assert.AreEqual(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34},
-                      TextConvert.FromBase64ByteArray(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30}));
-    }
-
-    [Test]
     public void TestTransformToBase64()
     {
       foreach (var test in new[] {
@@ -27,7 +13,7 @@ namespace Smdn.Formats {
         new {Data = new byte[] {0xfb, 0xf0},        ExpectedBase64 = "+/A=", Expected2152Base64 = "+/A",  Expected3501Base64 = "+,A"},
         new {Data = new byte[] {0xfb, 0xf0, 0x00},  ExpectedBase64 = "+/AA", Expected2152Base64 = "+/AA", Expected3501Base64 = "+,AA"},
       }) {
-        Assert.AreEqual(test.ExpectedBase64, TextConvert.ToBase64String(test.Data), "Base64");
+        //Assert.AreEqual(test.ExpectedBase64, TextConvert.ToBase64String(test.Data), "Base64");
         Assert.AreEqual(test.Expected2152Base64, TextConvert.ToRFC2152ModifiedBase64String(test.Data), "RFC2152 Base64");
         Assert.AreEqual(test.Expected3501Base64, TextConvert.ToRFC3501ModifiedBase64String(test.Data), "RFC3501 Base64");
       }
@@ -41,7 +27,7 @@ namespace Smdn.Formats {
         new {Expected = new byte[] {0xfb, 0xf0},        DataBase64 = "+/A=", Data2152Base64 = "+/A",  Data3501Base64 = "+,A"},
         new {Expected = new byte[] {0xfb, 0xf0, 0x00},  DataBase64 = "+/AA", Data2152Base64 = "+/AA", Data3501Base64 = "+,AA"},
       }) {
-        Assert.AreEqual(test.Expected, TextConvert.FromBase64StringToByteArray(test.DataBase64), "Base64");
+        //Assert.AreEqual(test.Expected, TextConvert.FromBase64StringToByteArray(test.DataBase64), "Base64");
         Assert.AreEqual(test.Expected, TextConvert.FromRFC2152ModifiedBase64StringToByteArray(test.Data2152Base64), "RFC2152 Base64");
         Assert.AreEqual(test.Expected, TextConvert.FromRFC3501ModifiedBase64StringToByteArray(test.Data3501Base64), "RFC3501 Base64");
       }
@@ -292,26 +278,6 @@ namespace Smdn.Formats {
     {
       Assert.AreEqual("Now's the time for all folk to come to the aid of their country.",
                       TextConvert.FromQuotedPrintableString("Now's the=\n time =\rfor all folk to come =\r\nto the aid=\r=\n of their country."));
-    }
-
-    [Test]
-    public void TestFromBase64String()
-    {
-      Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromBase64String("5ryi5a2XYWJj44GL44GqMTIz44Kr44OK", Encoding.UTF8),
-                      "utf-8");
-
-      Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromBase64String("tMG7+mFiY6SrpMoxMjOlq6XK", eucjp),
-                      "euc-jp");
-
-      Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromBase64String("GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC", jis),
-                      "jis");
-
-      Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromBase64String("ir+OmmFiY4KpgsgxMjODSoNp", sjis),
-                      "shift-jis");
     }
 
     [Test]

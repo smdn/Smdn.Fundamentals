@@ -93,83 +93,53 @@ namespace Smdn.Formats {
 #endregion
 
 #region "Base64"
-#if TRANSFORMIMPL_FAST
-    [Obsolete("use Base64.Encode()")]
+    [Obsolete("use Base64.GetEncodedString()")]
     public static string ToBase64String(string str)
     {
-      return Base64.Encode(str);
+      return Base64.GetEncodedString(str);
     }
 
-    [Obsolete("use Base64.Encode()")]
+    [Obsolete("use Base64.GetEncodedString()")]
     public static string ToBase64String(string str, Encoding encoding)
     {
-      return Base64.Encode(str, encoding);
+      return Base64.GetEncodedString(str, encoding);
+    }
+
+    [Obsolete("use Base64.GetEncodedString()")]
+    public static string ToBase64String(byte[] bytes)
+    {
+      return Base64.GetEncodedString(bytes);
     }
 
     [Obsolete("use Base64.Encode()")]
-    public static string ToBase64String(byte[] bytes)
+    public static byte[] ToBase64ByteArray(byte[] bytes)
     {
       return Base64.Encode(bytes);
     }
 
-    [Obsolete("use Base64.Decode()")]
+    [Obsolete("use Base64.GetDecodedString()")]
     public static string FromBase64String(string str)
+    {
+      return Base64.GetDecodedString(str);
+    }
+
+    [Obsolete("use Base64.GetDecodedString()")]
+    public static string FromBase64String(string str, Encoding encoding)
+    {
+      return Base64.GetDecodedString(str, encoding);
+    }
+
+    [Obsolete("use Base64.Decode()")]
+    public static byte[] FromBase64StringToByteArray(string str)
     {
       return Base64.Decode(str);
     }
 
     [Obsolete("use Base64.Decode()")]
-    public static string FromBase64String(string str, Encoding encoding)
-    {
-      return Base64.Decode(str, encoding);
-    }
-
-    [Obsolete("use Base64.DecodeToByteArray()")]
-    public static byte[] FromBase64StringToByteArray(string str)
-    {
-      return Base64.DecodeToByteArray(str);
-    }
-#else
-    public static string ToBase64String(string str)
-    {
-      return TransformTo(str, new ToBase64Transform(), Encoding.ASCII);
-    }
-
-    public static string ToBase64String(string str, Encoding encoding)
-    {
-      return TransformTo(str, new ToBase64Transform(), encoding);
-    }
-
-    public static string ToBase64String(byte[] bytes)
-    {
-      return Encoding.ASCII.GetString(ToBase64ByteArray(bytes));
-    }
-
-    public static byte[] ToBase64ByteArray(byte[] bytes)
-    {
-      return TransformBytes(bytes, new ToBase64Transform());
-    }
-
-    public static string FromBase64String(string str)
-    {
-      return TransformFrom(str, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), Encoding.ASCII);
-    }
-
-    public static string FromBase64String(string str, Encoding encoding)
-    {
-      return TransformFrom(str, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), encoding);
-    }
-
-    public static byte[] FromBase64StringToByteArray(string str)
-    {
-      return FromBase64ByteArray(Encoding.ASCII.GetBytes(str));
-    }
-
     public static byte[] FromBase64ByteArray(byte[] bytes)
     {
-      return TransformBytes(bytes, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces));
+      return Base64.Decode(bytes);
     }
-#endif
 #endregion
 
 #region "RFC 2152 Modified Base64"
@@ -844,7 +814,7 @@ namespace Smdn.Formats {
         switch (m.Groups[2].Value.ToLowerInvariant()) {
           case "b":
             lastEncoding = MimeEncoding.Base64;
-            return FromBase64String(m.Groups[3].Value, lastCharset);
+            return Base64.GetDecodedString(m.Groups[3].Value, lastCharset);
           case "q":
             lastEncoding = MimeEncoding.QuotedPrintable;
             return FromQuotedPrintableString(m.Groups[3].Value, lastCharset);
