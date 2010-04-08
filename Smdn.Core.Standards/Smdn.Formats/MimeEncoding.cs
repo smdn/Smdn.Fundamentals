@@ -265,8 +265,7 @@ namespace Smdn.Formats {
               return Base64.GetDecodedString(m.Groups[3].Value, lastCharset);
             case "q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
-              // TODO: replace
-              return TextConvert.FromQuotedPrintableString(m.Groups[3].Value, lastCharset);
+              return QuotedPrintableEncoding.GetDecodedString(m.Groups[3].Value, lastCharset);
           }
 
           throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));

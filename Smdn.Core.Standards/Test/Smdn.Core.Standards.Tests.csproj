@@ -58,5 +58,6 @@
     <Compile Include="Smdn.Formats\PercentEncoding.cs" />
     <Compile Include="Smdn.Formats\TestUtils.cs" />
     <Compile Include="Smdn.Formats\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats\QuotedPrintableEncoding.cs" />
   </ItemGroup>
 </Project>

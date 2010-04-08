@@ -62,6 +62,7 @@
     <Compile Include="Smdn.Formats\MimeEncodingMethod.cs" />
     <Compile Include="Smdn.Formats\PercentEncoding.cs" />
     <Compile Include="Smdn.Formats\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats\QuotedPrintableEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
