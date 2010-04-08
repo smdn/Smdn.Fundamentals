@@ -59,7 +59,6 @@
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
-    <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +77,6 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Security.Cryptography\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">

@@ -47,7 +47,6 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Security.Cryptography\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
@@ -55,7 +54,6 @@
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
-    <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
   </ItemGroup>
 </Project>

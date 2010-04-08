@@ -70,6 +70,7 @@
     <Compile Include="Smdn.IO\PartialStream.cs" />
     <Compile Include="Smdn.IO\CachedStream.cs" />
     <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
+    <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
