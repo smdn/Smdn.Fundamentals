@@ -94,34 +94,40 @@ namespace Smdn.Formats {
 
 #region "Base64"
 #if TRANSFORMIMPL_FAST
+    [Obsolete("use Base64.Encode()")]
     public static string ToBase64String(string str)
     {
-      return ToBase64String(str, Encoding.ASCII);
+      return Base64.Encode(str);
     }
 
+    [Obsolete("use Base64.Encode()")]
     public static string ToBase64String(string str, Encoding encoding)
     {
-      return ToBase64String(encoding.GetBytes(str));
+      return Base64.Encode(str, encoding);
     }
 
+    [Obsolete("use Base64.Encode()")]
     public static string ToBase64String(byte[] bytes)
     {
-      return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+      return Base64.Encode(bytes);
     }
 
+    [Obsolete("use Base64.Decode()")]
     public static string FromBase64String(string str)
     {
-      return FromBase64String(str, Encoding.ASCII);
+      return Base64.Decode(str);
     }
 
+    [Obsolete("use Base64.Decode()")]
     public static string FromBase64String(string str, Encoding encoding)
     {
-      return encoding.GetString(FromBase64StringToByteArray(str));
+      return Base64.Decode(str, encoding);
     }
 
+    [Obsolete("use Base64.DecodeToByteArray()")]
     public static byte[] FromBase64StringToByteArray(string str)
     {
-      return System.Convert.FromBase64String(str);
+      return Base64.DecodeToByteArray(str);
     }
 #else
     public static string ToBase64String(string str)
