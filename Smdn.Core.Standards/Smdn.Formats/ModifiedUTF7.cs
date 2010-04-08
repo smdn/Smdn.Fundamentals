@@ -24,6 +24,7 @@
 
 using System;
 using System.Text;
+using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
 
@@ -85,7 +86,7 @@ namespace Smdn.Formats {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      var transform = new FromRFC3501ModifiedBase64Transform();
+      var transform = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces);
       var chars = str.ToCharArray();
       var decoded = new StringBuilder();
 
