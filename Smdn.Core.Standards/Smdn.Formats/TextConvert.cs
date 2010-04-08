@@ -582,253 +582,65 @@ namespace Smdn.Formats {
 #endregion
 
 #region "MIME encoding"
-    // http://tools.ietf.org/html/rfc2047
-    // RFC 2047 - MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header Extensions for Non-ASCII Text
-    // 2. Syntax of encoded-words
-    // 3. Character sets
-    // 4. Encodings
-
-    // encoded-word = "=?" charset "?" encoding "?" encoded-text "?="
-    // charset = token    ; see section 3
-    // encoding = token   ; see section 4
-    // token = 1*<Any CHAR except SPACE, CTLs, and especials>
-    // especials = "(" / ")" / "<" / ">" / "@" / "," / ";" / ":" / "
-    //             <"> / "/" / "[" / "]" / "?" / "." / "="
-    // encoded-text = 1*<Any printable ASCII character other than "?"
-    //                   or SPACE>
-    //               ; (but see "Use of encoded-words in message
-    //               ; headers", section 5)
+    [Obsolete("use MimeEncoding.Encode()")]
     public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding)
     {
-      return ToMimeEncodedString(str, encoding, Encoding.ASCII, false, 0, 0, null);
+      return MimeEncoding.Encode(str, encoding);
     }
 
+    [Obsolete("use MimeEncoding.Encode()")]
     public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset)
     {
-      return ToMimeEncodedString(str, encoding, charset, false, 0, 0, null);
+      return MimeEncoding.Encode(str, encoding, charset);
     }
 
+    [Obsolete("use MimeEncoding.Encode()")]
     public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset)
     {
-      return ToMimeEncodedString(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
+      return MimeEncoding.Encode(str, encoding, foldingLimit, foldingOffset);
     }
 
+    [Obsolete("use MimeEncoding.Encode()")]
     public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset, string foldingString)
     {
-      return ToMimeEncodedString(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, foldingString);
+      return MimeEncoding.Encode(str, encoding, foldingLimit, foldingOffset, foldingString);
     }
 
+    [Obsolete("use MimeEncoding.Encode()")]
     public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset)
     {
-      return ToMimeEncodedString(str, encoding, charset, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
+      return MimeEncoding.Encode(str, encoding, charset, foldingLimit, foldingOffset);
     }
 
+    [Obsolete("use MimeEncoding.Encode()")]
     public static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset, string foldingString)
     {
-      return ToMimeEncodedString(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
+      return MimeEncoding.Encode(str, encoding, charset, foldingLimit, foldingOffset, foldingString);
     }
 
-    private static readonly string mimeEncodingFoldingString = Chars.CRLF + Chars.HT;
-    private static readonly byte[] mimeEncodingPostamble = new byte[] {0x3f, 0x3d}; // "?="
-
-    private static string ToMimeEncodedString(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
-    {
-      if (str == null)
-        throw new ArgumentNullException("str");
-      if (charset == null)
-        throw new ArgumentNullException("charset");
-      if (doFold) {
-        if (foldingLimit < 1)
-          throw new ArgumentOutOfRangeException("foldingLimit", foldingLimit, "must be greater than 1");
-        if (foldingOffset < 0)
-          throw new ArgumentOutOfRangeException("foldingOffset", foldingOffset, "must be greater than zero");
-        if (foldingLimit <= foldingOffset)
-          throw new ArgumentOutOfRangeException("foldingOffset", foldingOffset, "must be less than foldingLimit");
-        if (foldingString == null)
-          throw new ArgumentNullException("foldingString");
-      }
-
-      ICryptoTransform transform;
-      char encodingChar;
-
-      switch (encoding) {
-        case MimeEncodingMethod.Base64:
-          transform = new ToBase64Transform();
-          encodingChar = 'b';
-          break;
-        case MimeEncodingMethod.QuotedPrintable:
-          transform = new ToQuotedPrintableTransform();
-          encodingChar = 'q';
-          break;
-        default:
-          throw new System.ComponentModel.InvalidEnumArgumentException("encoding", (int)encoding, typeof(MimeEncodingMethod));
-      }
-
-      var preambleText = string.Format("=?{0}?{1}?", charset.BodyName, encodingChar);
-
-      if (!doFold) {
-        lock (transform) {
-          return preambleText + TransformTo(str, transform, charset) + "?=";
-        }
-      }
-
-      // folding
-      var ret = new StringBuilder();
-      var preamble = Encoding.ASCII.GetBytes(preambleText);
-      var firstLine = true;
-      var inputCharBuffer = str.ToCharArray();
-      var inputCharOffset = 0;
-      var outputBuffer = new byte[foldingLimit];
-      var ambleLength = preamble.Length + mimeEncodingPostamble.Length;
-      var outputLimit = foldingLimit - (foldingOffset + ambleLength);
-
-      if (outputLimit <= 0)
-        throw new ArgumentOutOfRangeException("foldingLimit", foldingLimit, "too short");
-
-      // copy preamble to buffer
-      Buffer.BlockCopy(preamble, 0, outputBuffer, 0, preamble.Length);
-
-      for (;;) {
-        var inputBlockSizeLimit = (outputLimit * transform.InputBlockSize) / transform.OutputBlockSize - 1;
-        var transformCharCount = 0;
-        var outputCount = preamble.Length;
-
-        // decide char count to transform
-        for (transformCharCount = inputBlockSizeLimit / charset.GetMaxByteCount(1);; transformCharCount++) {
-          if (inputCharBuffer.Length <= inputCharOffset + transformCharCount) {
-            transformCharCount = inputCharBuffer.Length - inputCharOffset;
-            break;
-          }
-
-          if (inputBlockSizeLimit <= charset.GetByteCount(inputCharBuffer, inputCharOffset, transformCharCount + 1))
-            break;
-        }
-
-        // transform chars
-        byte[] transformed = null;
-
-        for (;;) {
-          var t = TransformBytes(charset.GetBytes(inputCharBuffer, inputCharOffset, transformCharCount), transform);
-
-          if (transformed == null || t.Length <= outputLimit) {
-            transformed = t;
-
-            if (inputCharBuffer.Length <= inputCharOffset + transformCharCount + 1)
-              break;
-
-            transformCharCount++;
-            continue;
-          }
-          else {
-            transformCharCount--;
-            break;
-          }
-        }
-
-        if (outputBuffer.Length < ambleLength + transformed.Length)
-          throw new ArgumentOutOfRangeException("foldingLimit",
-                                                foldingLimit,
-                                                string.Format("too short, at least {0} is required", ambleLength + transformed.Length));
-
-        // copy transformed chars to buffer
-        Buffer.BlockCopy(transformed, 0, outputBuffer, outputCount, transformed.Length);
-
-        outputCount += transformed.Length;
-
-        // copy postanble to buffer
-        Buffer.BlockCopy(mimeEncodingPostamble, 0, outputBuffer, outputCount, mimeEncodingPostamble.Length);
-
-        outputCount += mimeEncodingPostamble.Length;
-
-        ret.Append(Encoding.ASCII.GetString(outputBuffer, 0, outputCount));
-
-        inputCharOffset += transformCharCount;
-
-        if (inputCharOffset < inputCharBuffer.Length) {
-          ret.Append(foldingString);
-
-          if (firstLine) {
-            outputLimit = foldingLimit - ambleLength;
-            firstLine = false;
-          }
-        }
-        else {
-          break;
-        }
-      }
-
-      return ret.ToString();
-    }
-
+    [Obsolete("use MimeEncoding.DecodeNullable()")]
     public static string FromMimeEncodedStringNullable(string str)
     {
-      if (str == null)
-        return null;
-      else
-        return FromMimeEncodedString(str);
+      return MimeEncoding.DecodeNullable(str);
     }
 
+    [Obsolete("use MimeEncoding.Decode()")]
     public static string FromMimeEncodedString(string str)
     {
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return FromMimeEncodedString(str, out discard1, out discard2);
+      return MimeEncoding.Decode(str);
     }
 
+    [Obsolete("use MimeEncoding.DecodeNullable()")]
     public static string FromMimeEncodedStringNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)
     {
-      if (str == null) {
-        encoding = MimeEncodingMethod.None;
-        charset = null;
-
-        return null;
-      }
-      else {
-        return FromMimeEncodedString(str, out encoding, out charset);
-      }
+      return MimeEncoding.DecodeNullable(str, out encoding, out charset);
     }
 
+    [Obsolete("use MimeEncoding.Decode()")]
     public static string FromMimeEncodedString(string str, out MimeEncodingMethod encoding, out Encoding charset)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-
-      charset = null;
-      encoding = MimeEncodingMethod.None;
-
-      Encoding lastCharset = null;
-      var lastEncoding = MimeEncodingMethod.None;
-
-      var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
-        // charset
-        try {
-          lastCharset = Encoding.GetEncoding(m.Groups[1].Value);
-        }
-        catch {
-          throw new FormatException(string.Format("{0} is an unsupported or invalid charset", m.Groups[1].Value));
-        }
-
-        // encoding
-        switch (m.Groups[2].Value.ToLowerInvariant()) {
-          case "b":
-            lastEncoding = MimeEncodingMethod.Base64;
-            return Base64.GetDecodedString(m.Groups[3].Value, lastCharset);
-          case "q":
-            lastEncoding = MimeEncodingMethod.QuotedPrintable;
-            return FromQuotedPrintableString(m.Groups[3].Value, lastCharset);
-        }
-
-        throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
-      });
-
-      charset = lastCharset;
-      encoding = lastEncoding;
-
-      return ret;
+      return MimeEncoding.Decode(str, out encoding, out charset);
     }
-
-    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*\=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?\=\s*", RegexOptions.Singleline);
 #endregion
 
 #region "XHTML and HTML style escape"
