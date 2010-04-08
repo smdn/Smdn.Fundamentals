@@ -55,5 +55,7 @@
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.IO\LineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
+    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
+    <Compile Include="Smdn.Formats\TestUtils.cs" />
   </ItemGroup>
 </Project>

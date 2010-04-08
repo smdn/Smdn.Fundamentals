@@ -85,137 +85,12 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TestToPercentEncodedStringRfc2396Uri()
-    {
-      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      var actual = TextConvert.ToPercentEncodedString(text,
-                                                      ToPercentEncodedTransformMode.Rfc2396Uri,
-                                                      Encoding.ASCII);
-
-      Assert.AreEqual(Uri.EscapeUriString(text),
-                      actual, "same as Uri.EscapeUriString");
-      Assert.AreEqual("%20!%22#$%25&'()*+,-./0123456789:;%3C=%3E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
-                      actual);
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringRfc3986Uri()
-    {
-      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      var actual = TextConvert.ToPercentEncodedString(text,
-                                                      ToPercentEncodedTransformMode.Rfc3986Uri,
-                                                      Encoding.ASCII);
-
-      Assert.AreEqual("%20%21%22#$%25&%27%28%29%2A+,-./0123456789:;%3C=%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
-                      actual);
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringRfc2396Data()
-    {
-      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      var actual = TextConvert.ToPercentEncodedString(text,
-                                                      ToPercentEncodedTransformMode.Rfc2396Data,
-                                                      Encoding.ASCII);
-
-      Assert.AreEqual(Uri.EscapeDataString(text),
-                      actual, "same as Uri.EscapeDataString");
-      Assert.AreEqual("%20!%22%23%24%25%26'()*%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
-                      actual);
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringRfc3986Data()
-    {
-      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      var actual = TextConvert.ToPercentEncodedString(text,
-                                                      ToPercentEncodedTransformMode.Rfc3986Data,
-                                                      Encoding.ASCII);
-
-      Assert.AreEqual("%20%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
-                      actual);
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringRfc5092Uri()
-    {
-      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      var actual = TextConvert.ToPercentEncodedString(text,
-                                                      ToPercentEncodedTransformMode.Rfc5092Uri,
-                                                      Encoding.ASCII);
-
-      Assert.AreEqual("%20!%22%23$%25&'()*+,-.%2F0123456789%3A%3B%3C=%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
-                      actual);
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringRfc5092Path()
-    {
-      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-      var actual = TextConvert.ToPercentEncodedString(text,
-                                                      ToPercentEncodedTransformMode.Rfc5092Path,
-                                                      Encoding.ASCII);
-
-      Assert.AreEqual("%20!%22%23$%25&'()*+,-./0123456789:%3B%3C=%3E%3F@ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
-                      actual);
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringNonAsciiString()
-    {
-      foreach (var mode in new[] {
-        ToPercentEncodedTransformMode.Rfc2396Uri,
-        ToPercentEncodedTransformMode.Rfc2396Data,
-        ToPercentEncodedTransformMode.Rfc3986Uri,
-        ToPercentEncodedTransformMode.Rfc3986Data,
-        ToPercentEncodedTransformMode.Rfc5092Uri,
-        ToPercentEncodedTransformMode.Rfc5092Path,
-      }) {
-        Assert.AreEqual("%93%FA%96%7B%8C%EA", TextConvert.ToPercentEncodedString("日本語", mode, sjis), "mode: {0}", mode);
-        Assert.AreEqual("%C6%FC%CB%DC%B8%EC", TextConvert.ToPercentEncodedString("日本語", mode, eucjp), "mode: {0}", mode);
-      }
-    }
-
-    [Test]
-    public void TestToPercentEncodedStringEscapeSpaceToPlus()
-    {
-      foreach (var mode in new[] {
-        ToPercentEncodedTransformMode.Rfc2396Uri,
-        ToPercentEncodedTransformMode.Rfc2396Data,
-        ToPercentEncodedTransformMode.Rfc3986Uri,
-        ToPercentEncodedTransformMode.Rfc3986Data,
-      }) {
-        Assert.AreEqual("abc%20def", TextConvert.ToPercentEncodedString("abc def", mode, Encoding.ASCII), "mode: {0}", mode);
-
-        var mode2 = mode | ToPercentEncodedTransformMode.EscapeSpaceToPlus;
-
-        Assert.AreEqual("abc+def", TextConvert.ToPercentEncodedString("abc def", mode2, Encoding.ASCII), "mode: {0}", mode2);
-      }
-    }
-
-    [Test]
-    public void TestFromPercentEncodedString()
-    {
-      Assert.AreEqual("012abcABC-._~!\"#$日本語",
-                      TextConvert.FromPercentEncodedString("012abcABC-._~%21%22%23%24%e6%97%a5%e6%9c%ac%e8%aa%9e", Encoding.UTF8));
-      Assert.AreEqual("日本語", TextConvert.FromPercentEncodedString("%93%fa%96%7B%8C%EA", sjis));
-      Assert.AreEqual("日本語", TextConvert.FromPercentEncodedString("%c6%Fc%cb%Dc%b8%eC", eucjp));
-    }
-
-    [Test]
-    public void TestFromPercentEncodedStringDecodePlusToSpace()
-    {
-      Assert.AreEqual("ABC+DEF", TextConvert.FromPercentEncodedString("ABC+DEF", false));
-      Assert.AreEqual("ABC DEF", TextConvert.FromPercentEncodedString("ABC+DEF", true));
-    }
-
-    [Test]
     public void TestConvertQuotedPrintableDecodableJapanese()
     {
       foreach (var encoding in new[] {
-        jis,
-        sjis,
-        eucjp,
+        TestUtils.Encodings.Jis,
+        TestUtils.Encodings.ShiftJis,
+        TestUtils.Encodings.EucJP,
         Encoding.BigEndianUnicode,
         Encoding.UTF7,
         Encoding.UTF8}) {
@@ -261,15 +136,15 @@ namespace Smdn.Formats {
                       "utf8");
 
       Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromQuotedPrintableString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", eucjp),
+                      TextConvert.FromQuotedPrintableString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", TestUtils.Encodings.EucJP),
                       "eucjp");
 
       Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromQuotedPrintableString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", jis),
+                      TextConvert.FromQuotedPrintableString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", TestUtils.Encodings.Jis),
                       "jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
-                      TextConvert.FromQuotedPrintableString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", sjis),
+                      TextConvert.FromQuotedPrintableString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", TestUtils.Encodings.ShiftJis),
                       "shift-jis");
     }
 
@@ -357,19 +232,19 @@ namespace Smdn.Formats {
                       TextConvert.FromMimeEncodedString("=?iso-2022-jp?q?=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B?=", out encoding, out charset),
                       "iso-2022-jp");
       Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "iso-2022-jp");
-      Assert.AreEqual(jis, charset, "iso-2022-jp");
+      Assert.AreEqual(TestUtils.Encodings.Jis, charset, "iso-2022-jp");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?shift_jis?Q?=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i?=", out encoding, out charset),
                       "shift_jis");
       Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "shift_jis");
-      Assert.AreEqual(sjis, charset, "shift_jis");
+      Assert.AreEqual(TestUtils.Encodings.ShiftJis, charset, "shift_jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?euc-jp?q?=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA?=", out encoding, out charset),
                       "euc-jp");
       Assert.AreEqual(MimeEncoding.QuotedPrintable, encoding, "euc-jp");
-      Assert.AreEqual(eucjp, charset, "euc-jp");
+      Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
     }
 
     [Test]
@@ -394,19 +269,19 @@ namespace Smdn.Formats {
                       TextConvert.FromMimeEncodedString("=?iso-2022-jp?B?GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC?=", out encoding, out charset),
                       "iso-2022-jp");
       Assert.AreEqual(MimeEncoding.Base64, encoding, "iso-2022-jp");
-      Assert.AreEqual(jis, charset, "iso-2022-jp");
+      Assert.AreEqual(TestUtils.Encodings.Jis, charset, "iso-2022-jp");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?shift_jis?b?ir+OmmFiY4KpgsgxMjODSoNp?=", out encoding, out charset),
                       "shift_jis");
       Assert.AreEqual(MimeEncoding.Base64, encoding, "shift_jis");
-      Assert.AreEqual(sjis, charset, "shift_jis");
+      Assert.AreEqual(TestUtils.Encodings.ShiftJis, charset, "shift_jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       TextConvert.FromMimeEncodedString("=?euc-jp?B?tMG7+mFiY6SrpMoxMjOlq6XK?=", out encoding, out charset),
                       "euc-jp");
       Assert.AreEqual(MimeEncoding.Base64, encoding, "euc-jp");
-      Assert.AreEqual(eucjp, charset, "euc-jp");
+      Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
     }
 
     [Test]
@@ -449,9 +324,5 @@ namespace Smdn.Formats {
                       TextConvert.FromMimeEncodedString("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
                       "utf8");
     }
-
-    private readonly Encoding jis = Encoding.GetEncoding("iso-2022-jp");
-    private readonly Encoding sjis = Encoding.GetEncoding("shift_jis");
-    private readonly Encoding eucjp = Encoding.GetEncoding("euc-jp");
   }
 }

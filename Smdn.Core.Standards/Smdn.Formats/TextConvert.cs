@@ -38,22 +38,12 @@ namespace Smdn.Formats {
 #region "text tranform"
     internal static string TransformTo(string str, ICryptoTransform transform, Encoding encoding)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-      if (encoding == null)
-        throw new ArgumentNullException("encoding");
-
-      return Encoding.ASCII.GetString(TransformBytes(encoding.GetBytes(str), transform));
+      return transform.TransformStringTo(str, encoding);
     }
 
     internal static string TransformFrom(string str, ICryptoTransform transform, Encoding encoding)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-      if (encoding == null)
-        throw new ArgumentNullException("encoding");
-
-      return encoding.GetString(TransformBytes(Encoding.ASCII.GetBytes(str), transform));
+      return transform.TransformStringFrom(str, encoding);
     }
 
     internal static byte[] TransformBytes(byte[] inputBuffer, ICryptoTransform transform)
@@ -536,49 +526,58 @@ namespace Smdn.Formats {
 #endregion
 
 #region "PercentEncoding"
+    [Obsolete("use PercentEncoding.GetEncodedString()")]
     public static string ToPercentEncodedString(string str, ToPercentEncodedTransformMode mode)
     {
-      return TransformTo(str, new ToPercentEncodedTransform(mode), Encoding.ASCII);
+      return PercentEncoding.GetEncodedString(str, mode);
     }
 
+    [Obsolete("use PercentEncoding.GetEncodedString()")]
     public static string ToPercentEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding)
     {
-      return TransformTo(str, new ToPercentEncodedTransform(mode), encoding);
+      return PercentEncoding.GetEncodedString(str, mode, encoding);
     }
 
+    [Obsolete("use PercentEncoding.GetEncodedString()")]
     public static string ToPercentEncodedString(byte[] bytes, ToPercentEncodedTransformMode mode)
     {
-      return Encoding.ASCII.GetString(TransformBytes(bytes, new ToPercentEncodedTransform(mode)));
+      return PercentEncoding.GetEncodedString(bytes, mode);
     }
 
+    [Obsolete("use PercentEncoding.GetDecodedString()")]
     public static string FromPercentEncodedString(string str)
     {
-      return TransformFrom(str, new FromPercentEncodedTransform(), Encoding.ASCII);
+      return PercentEncoding.GetDecodedString(str);
     }
 
+    [Obsolete("use PercentEncoding.GetDecodedString()")]
     public static string FromPercentEncodedString(string str, bool decodePlusToSpace)
     {
-      return TransformFrom(str, new FromPercentEncodedTransform(decodePlusToSpace), Encoding.ASCII);
+      return PercentEncoding.GetDecodedString(str, decodePlusToSpace);
     }
 
+    [Obsolete("use PercentEncoding.GetDecodedString()")]
     public static string FromPercentEncodedString(string str, Encoding encoding)
     {
-      return TransformFrom(str, new FromPercentEncodedTransform(), encoding);
+      return PercentEncoding.GetDecodedString(str, encoding);
     }
 
+    [Obsolete("use PercentEncoding.GetDecodedString()")]
     public static string FromPercentEncodedString(string str, Encoding encoding, bool decodePlusToSpace)
     {
-      return TransformFrom(str, new FromPercentEncodedTransform(decodePlusToSpace), encoding);
+      return PercentEncoding.GetDecodedString(str, encoding, decodePlusToSpace);
     }
 
+    [Obsolete("use PercentEncoding.Decode()")]
     public static byte[] FromPercentEncodedStringToByteArray(string str)
     {
-      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromPercentEncodedTransform());
+      return PercentEncoding.Decode(str);
     }
 
+    [Obsolete("use PercentEncoding.Decode()")]
     public static byte[] FromPercentEncodedStringToByteArray(string str, bool decodePlusToSpace)
     {
-      return TransformBytes(Encoding.ASCII.GetBytes(str), new FromPercentEncodedTransform(decodePlusToSpace));
+      return PercentEncoding.Decode(str, decodePlusToSpace);
     }
 #endregion
 

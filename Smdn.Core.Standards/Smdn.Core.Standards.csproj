@@ -60,6 +60,7 @@
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
+    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
