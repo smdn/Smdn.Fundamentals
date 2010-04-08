@@ -24,37 +24,65 @@
 
 using System;
 using System.Text;
+using System.Security.Cryptography;
+
+using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats {
   public static class Base64 {
-    public static string Encode(string str)
+    public static string GetEncodedString(string str)
     {
-      return Encode(str, Encoding.ASCII);
+      return GetEncodedString(str, Encoding.ASCII);
     }
 
-    public static string Encode(string str, Encoding encoding)
+    public static string GetEncodedString(string str, Encoding encoding)
     {
-      return Encode(encoding.GetBytes(str));
+      return GetEncodedString(encoding.GetBytes(str));
     }
 
-    public static string Encode(byte[] bytes)
+    public static string GetEncodedString(byte[] bytes)
     {
       return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
     }
 
-    public static string Decode(string str)
+    public static byte[] Encode(string str)
     {
-      return Decode(str, Encoding.ASCII);
+      return Encode(str, Encoding.ASCII);
     }
 
-    public static string Decode(string str, Encoding encoding)
+    public static byte[] Encode(string str, Encoding encoding)
     {
-      return encoding.GetString(DecodeToByteArray(str));
+      return Encode(encoding.GetBytes(str));
     }
 
-    public static byte[] DecodeToByteArray(string str)
+    public static byte[] Encode(byte[] bytes)
+    {
+      return ICryptoTransformExtensions.TransformBytes(new ToBase64Transform(), bytes);
+    }
+
+    public static string GetDecodedString(string str)
+    {
+      return GetDecodedString(str, Encoding.ASCII);
+    }
+
+    public static string GetDecodedString(string str, Encoding encoding)
+    {
+      return encoding.GetString(Decode(str));
+    }
+
+    public static string GetDecodedString(byte[] bytes)
+    {
+      return Encoding.ASCII.GetString(Decode(bytes));
+    }
+
+    public static byte[] Decode(string str)
     {
       return System.Convert.FromBase64String(str);
+    }
+
+    public static byte[] Decode(byte[] bytes)
+    {
+      return ICryptoTransformExtensions.TransformBytes(new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), bytes);
     }
   }
 }

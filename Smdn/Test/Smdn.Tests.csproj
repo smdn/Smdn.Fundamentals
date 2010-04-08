@@ -71,6 +71,7 @@
     <Compile Include="Smdn.IO\CachedStream.cs" />
     <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
+    <Compile Include="Smdn.Formats\Base64.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">
