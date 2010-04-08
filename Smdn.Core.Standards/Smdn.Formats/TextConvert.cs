@@ -51,6 +51,7 @@ namespace Smdn.Formats {
       return ICryptoTransformExtensions.TransformBytes(transform, inputBuffer);
     }
 
+#if false
     internal static byte[] ToPrintableAsciiByteArray(string str, bool allowCrLf, bool allowTab)
     {
       if (str == null)
@@ -80,6 +81,7 @@ namespace Smdn.Formats {
 
       return bytes;
     }
+#endif
 #endregion
 
 #region "Base64"
@@ -312,90 +314,16 @@ namespace Smdn.Formats {
 #endregion
 
 #region "Modified UTF-7"
-    // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
-    // 5.1.3. Mailbox International Naming Convention
-    // http://tools.ietf.org/html/rfc3501#section-5.1.3
+    [Obsolete("use ModifiedUTF7.Encode()")]
     public static string ToModifiedUTF7String(string str)
     {
-      var encoded = new StringBuilder();
-      var chars = str.ToCharArray();
-      var shiftFrom = -1;
-
-      for (var index = 0; index < chars.Length; index++) {
-        var c = chars[index];
-
-        if (('\u0020' <= c && c <= '\u007e')) {
-          if (0 <= shiftFrom) {
-            // string -> modified UTF7
-            encoded.Append('&');
-            encoded.Append(ToRFC3501ModifiedBase64String(str.Substring(shiftFrom, index - shiftFrom), Encoding.BigEndianUnicode));
-            encoded.Append('-');
-
-            shiftFrom = -1;
-          }
-
-          // printable US-ASCII characters
-          if (c == '\u0026')
-            // except for "&"
-            encoded.Append("&-");
-          else
-            encoded.Append(c);
-        }
-        else {
-          if (shiftFrom == -1)
-            shiftFrom = index;
-        }
-      }
-
-      if (0 <= shiftFrom) {
-        // string -> modified UTF7
-        encoded.Append('&');
-        encoded.Append(ToRFC3501ModifiedBase64String(str.Substring(shiftFrom), Encoding.BigEndianUnicode));
-        encoded.Append('-');
-      }
-
-      return encoded.ToString();
+      return ModifiedUTF7.Encode(str);
     }
 
+    [Obsolete("use ModifiedUTF7.Decode()")]
     public static string FromModifiedUTF7String(string str)
     {
-      var bytes = ToPrintableAsciiByteArray(str, false, false);
-      var decoded = new StringBuilder();
-
-      for (var index = 0; index < bytes.Length; index++) {
-        // In modified UTF-7, printable US-ASCII characters, except for "&",
-        // represent themselves
-        // "&" is used to shift to modified BASE64
-        if (bytes[index] != 0x26) { // '&'
-          decoded.Append((char)bytes[index]);
-          continue;
-        }
-
-        if (bytes.Length <= ++index)
-          // incorrect form
-          throw new FormatException("incorrect form");
-
-        if (bytes[index] == 0x2d) { // '-'
-          // The character "&" (0x26) is represented by the two-octet sequence "&-".
-          decoded.Append('&');
-          continue;
-        }
-
-        var nonprintable = new StringBuilder();
-
-        for (; index < bytes.Length; index++) {
-          if (bytes[index] == 0x2d) // '-'
-            // "-" is used to shift back to US-ASCII
-            break;
-
-          nonprintable.Append((char)bytes[index]);
-        }
-
-        // modified UTF7 -> string
-        decoded.Append(FromRFC3501ModifiedBase64String(nonprintable.ToString(), Encoding.BigEndianUnicode));
-      }
-
-      return decoded.ToString();
+      return ModifiedUTF7.Decode(str);
     }
 #endregion
 

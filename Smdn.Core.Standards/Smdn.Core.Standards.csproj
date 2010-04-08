@@ -63,6 +63,7 @@
     <Compile Include="Smdn.Formats\PercentEncoding.cs" />
     <Compile Include="Smdn.Formats\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

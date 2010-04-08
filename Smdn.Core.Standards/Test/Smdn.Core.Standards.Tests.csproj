@@ -59,5 +59,6 @@
     <Compile Include="Smdn.Formats\TestUtils.cs" />
     <Compile Include="Smdn.Formats\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
   </ItemGroup>
 </Project>

@@ -32,56 +32,5 @@ namespace Smdn.Formats {
         Assert.AreEqual(test.Expected, TextConvert.FromRFC3501ModifiedBase64StringToByteArray(test.Data3501Base64), "RFC3501 Base64");
       }
     }
-
-    [Test]
-    public void TestFromModifiedUTF7String()
-    {
-      Assert.AreEqual("INBOX.日本語", TextConvert.FromModifiedUTF7String("INBOX.&ZeVnLIqe-"));
-
-      Assert.AreEqual("&日&-本-&語-", TextConvert.FromModifiedUTF7String("&-&ZeU-&--&Zyw--&-&ip4--"));
-
-      Assert.AreEqual("~peter/mail/台北/日本語", TextConvert.FromModifiedUTF7String("~peter/mail/&U,BTFw-/&ZeVnLIqe-"));
-
-      Assert.AreEqual("☺!", TextConvert.FromModifiedUTF7String("&Jjo-!"), "☺");
-
-      // padding: 0
-      Assert.AreEqual("下書き", TextConvert.FromModifiedUTF7String("&Tgtm+DBN-"));
-      // padding: 1
-      Assert.AreEqual("サポート", TextConvert.FromModifiedUTF7String("&MLUw3TD8MMg-"));
-      // padding: 2
-      Assert.AreEqual("迷惑メール", TextConvert.FromModifiedUTF7String("&j,dg0TDhMPww6w-"));
-    }
-
-    [Test, ExpectedException(typeof(FormatException))]
-    public void TestFromModifiedUTF7StringIncorrectForm()
-    {
-      TextConvert.FromModifiedUTF7String("&Tgtm+DBN-&");
-    }
-
-    [Test]
-    public void TestFromModifiedUTF7StringBroken()
-    {
-      Assert.AreEqual("下書き", TextConvert.FromModifiedUTF7String("&Tgtm+DBN"));
-      Assert.AreEqual("Tgtm+DBN-", TextConvert.FromModifiedUTF7String("Tgtm+DBN-"));
-    }
-
-    [Test]
-    public void TestToModifiedUTF7String()
-    {
-      Assert.AreEqual("INBOX.&ZeVnLIqe-", TextConvert.ToModifiedUTF7String("INBOX.日本語"));
-
-      Assert.AreEqual("&-&ZeU-&--&Zyw--&-&ip4--", TextConvert.ToModifiedUTF7String("&日&-本-&語-"));
-
-      Assert.AreEqual("~peter/mail/&U,BTFw-/&ZeVnLIqe-", TextConvert.ToModifiedUTF7String("~peter/mail/台北/日本語"));
-
-      Assert.AreEqual("&Jjo-!", TextConvert.ToModifiedUTF7String("☺!"), "☺");
-
-      // padding: 0
-      Assert.AreEqual("&Tgtm+DBN-", TextConvert.ToModifiedUTF7String("下書き"));
-      // padding: 1
-      Assert.AreEqual("&MLUw3TD8MMg-", TextConvert.ToModifiedUTF7String("サポート"));
-      // padding: 2
-      Assert.AreEqual("&j,dg0TDhMPww6w-", TextConvert.ToModifiedUTF7String("迷惑メール"));
-    }
   }
 }
