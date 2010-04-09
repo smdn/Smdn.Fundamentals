@@ -90,6 +90,24 @@ namespace Smdn.Collections {
       while (enumerator.MoveNext())
         count++;
 
+      // TODO: throw OverflowException
+      return count;
+    }
+
+    public static int Count<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+    {
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      var count = 0;
+      var enumerator = GetEnumerator(source);
+
+      while (enumerator.MoveNext()) {
+        if (predicate(enumerator.Current))
+          count++;
+      }
+
+      // TODO: throw OverflowException
       return count;
     }
 
