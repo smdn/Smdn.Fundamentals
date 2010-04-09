@@ -46,10 +46,10 @@ namespace Smdn.Collections {
       return Enumerable.Select(enumerable, delegate(TInput input) { return converter(input); });
     }
 
-    [Obsolete("use Enumerable.SingleOrDefault instead")]
+    [Obsolete("use Enumerable.FirstOrDefault instead")]
     public static T Find<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
-      return Enumerable.SingleOrDefault(enumerable, match);
+      return Enumerable.FirstOrDefault(enumerable, delegate(T val) { return match(val); });
     }
 
     [Obsolete("use Enumerable.Where instead")]
@@ -67,7 +67,7 @@ namespace Smdn.Collections {
     [Obsolete("use Enumerable.All instead")]
     public static bool TrueForAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
-      return Enumerable.All(enumerable, match);
+      return Enumerable.All(enumerable, delegate(T val) { return match(val); });
     }
 
     public static IEnumerable<T> EnumerateDepthFirst<T>(this IEnumerable<T> nestedEnumerable)

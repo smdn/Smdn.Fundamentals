@@ -22,21 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if !LINQ
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
   public static class Enumerable {
-    public static bool All<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    private static IEnumerator<TSource> GetEnumerator<TSource>(IEnumerable<TSource> source)
     {
-      if (match == null)
-        throw new ArgumentNullException("match");
+      if (source == null)
+        throw new ArgumentNullException("source");
 
-      var enumerator = enumerable.GetEnumerator();
+      return source.GetEnumerator();
+    }
+
+    public static bool All<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+    {
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      var enumerator = GetEnumerator(source);
 
       while (enumerator.MoveNext()) {
-        if (!match(enumerator.Current))
+        if (!predicate(enumerator.Current))
           return false;
       }
 
@@ -45,12 +54,15 @@ namespace Smdn.Collections {
 
     public static bool Any<TSource>(this IEnumerable<TSource> source)
     {
-      return source.GetEnumerator().MoveNext();
+      return GetEnumerator(source).MoveNext();
     }
 
     public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      var enumerator = source.GetEnumerator();
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      var enumerator = GetEnumerator(source);
 
       while (enumerator.MoveNext()) {
         if (predicate(enumerator.Current))
@@ -60,20 +72,20 @@ namespace Smdn.Collections {
       return false;
     }
 
-    public static IEnumerable<TResult> Cast<TResult>(this IEnumerable enumerable)
+    public static IEnumerable<TResult> Cast<TResult>(this IEnumerable source)
     {
-      foreach (TResult e in enumerable)
+      foreach (TResult e in source) // this might throw InvalidCastException
         yield return e;
     }
 
-    public static int Count(this IEnumerable enumerable)
+    public static int Count<TSource>(this IEnumerable<TSource> source)
     {
-      if (enumerable is System.Collections.ICollection)
-        return (enumerable as System.Collections.ICollection).Count;
+      if (source is System.Collections.ICollection)
+        return (source as System.Collections.ICollection).Count;
 
       // XXX
       var count = 0;
-      var enumerator = enumerable.GetEnumerator();
+      var enumerator = GetEnumerator(source);
 
       while (enumerator.MoveNext())
         count++;
@@ -81,10 +93,10 @@ namespace Smdn.Collections {
       return count;
     }
 
-    public static T First<T>(this IEnumerable<T> enumerable)
+    public static TSource First<TSource>(this IEnumerable<TSource> source)
     {
-      if (enumerable is IList<T>) {
-        var list = enumerable as IList<T>;
+      if (source is IList<TSource>) {
+        var list = source as IList<TSource>;
 
         if (0 < list.Count)
           return list[0];
@@ -92,7 +104,7 @@ namespace Smdn.Collections {
           throw new InvalidOperationException("sequence is empty");
       }
       else {
-        var enumerator = enumerable.GetEnumerator();
+        var enumerator = GetEnumerator(source);
 
         if (enumerator.MoveNext())
           return enumerator.Current;
@@ -101,29 +113,57 @@ namespace Smdn.Collections {
       }
     }
 
-    public static T FirstOrDefault<T>(this IEnumerable<T> enumerable)
+    /*
+    public static TSource First<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (enumerable is IList<T>) {
-        var list = enumerable as IList<T>;
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      throw new NotImplementedException();
+    }
+    */
+
+    public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source)
+    {
+      if (source is IList<TSource>) {
+        var list = source as IList<TSource>;
 
         if (0 < list.Count)
           return list[0];
         else
-          return default(T);
+          return default(TSource);
       }
       else {
-        var enumerator = enumerable.GetEnumerator();
+        var enumerator = GetEnumerator(source);
 
         if (enumerator.MoveNext())
           return enumerator.Current;
         else
-          return default(T);
+          return default(TSource);
       }
     }
 
-    public static IEnumerable<T> Reverse<T>(this IEnumerable<T> enumerable)
+    public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      var list = (enumerable as IList<T>) ?? new List<T>(enumerable);
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      var enumerator = GetEnumerator(source);
+
+      while (enumerator.MoveNext()) {
+        if (predicate(enumerator.Current))
+          return enumerator.Current;
+      }
+
+      return default(TSource);
+    }
+
+    public static IEnumerable<TSource> Reverse<TSource>(this IEnumerable<TSource> source)
+    {
+      if (source == null)
+        throw new ArgumentNullException("source");
+
+      var list = (source as IList<TSource>) ?? new List<TSource>(source);
 
       for (var i = list.Count - 1; 0 <= i; i--)
         yield return list[i];
@@ -131,73 +171,58 @@ namespace Smdn.Collections {
 
     public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
-      var enumerator = source.GetEnumerator();
+      if (selector == null)
+        throw new ArgumentNullException("selector");
+
+      var enumerator = GetEnumerator(source);
 
       while (enumerator.MoveNext())
         yield return selector(enumerator.Current);
     }
 
-    public static bool SequenceEqual<T>(this IEnumerable<T> enumerable, IEnumerable<T> other) where T : IEquatable<T>
+    /*
+    public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, int, TResult> selector)
     {
-      if (enumerable == null && other == null)
-        return true;
-      else if (enumerable == null || other == null)
-        return false;
+      if (selector == null)
+        throw new ArgumentNullException("selector");
 
-      var enumeratorThis  = enumerable.GetEnumerator();
-      var enumeratorOther = other.GetEnumerator();
+      throw new NotImplementedException();
+    }
+    */
 
-      while (enumeratorThis.MoveNext()) {
-        if (!enumeratorOther.MoveNext())
-          return false;
-        else if (!enumeratorThis.Current.Equals(enumeratorOther.Current))
-          return false;
-      }
-
-      return !enumeratorOther.MoveNext();
+    public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
+    {
+      return SequenceEqual(first, second, EqualityComparer<TSource>.Default);
     }
 
-    public static bool SequenceEqual<T>(this IEnumerable<T> enumerable, IEnumerable<T> other, IEqualityComparer<T> comparer)
+    public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer)
     {
+      if (first == null && second == null)
+        return true;
+      else if (first == null)
+        throw new ArgumentNullException("first");
+      else if (second == null)
+        throw new ArgumentNullException("second");
+
       if (comparer == null)
         throw new ArgumentNullException("comparer");
 
-      if (enumerable == null && other == null)
-        return true;
-      else if (enumerable == null || other == null)
-        return false;
+      var enumeratorFirst  = first.GetEnumerator();
+      var enumeratorSecond = second.GetEnumerator();
 
-      var enumeratorThis  = enumerable.GetEnumerator();
-      var enumeratorOther = other.GetEnumerator();
-
-      while (enumeratorThis.MoveNext()) {
-        if (!enumeratorOther.MoveNext())
+      while (enumeratorFirst.MoveNext()) {
+        if (!enumeratorSecond.MoveNext())
           return false;
-        else if (!comparer.Equals(enumeratorThis.Current, enumeratorOther.Current))
+        else if (!comparer.Equals(enumeratorFirst.Current, enumeratorSecond.Current))
           return false;
       }
 
-      return !enumeratorOther.MoveNext();
+      return !enumeratorSecond.MoveNext();
     }
 
-    public static T SingleOrDefault<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, int count)
     {
-      if (match == null)
-        throw new ArgumentNullException("match");
-
-      var enumerator = enumerable.GetEnumerator();
-
-      while (enumerator.MoveNext()) {
-        if (match(enumerator.Current))
-          return enumerator.Current;
-      }
-
-      return default(T);
-    }
-
-    public static IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count)
-    {
-      var enumerator = enumerable.GetEnumerator();
+      var enumerator = GetEnumerator(source);
 
       while (0 < count-- && enumerator.MoveNext())
         yield return enumerator.Current;
@@ -222,17 +247,32 @@ namespace Smdn.Collections {
       }
     }
 
-    public static IEnumerable<T> Where<T>(this IEnumerable<T> enumerable, Func<T, bool> match)
+    public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (match == null)
-        throw new ArgumentNullException("match");
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
 
-      var enumerator = enumerable.GetEnumerator();
+      var enumerator = GetEnumerator(source);
 
       while (enumerator.MoveNext()) {
-        if (match(enumerator.Current))
+        if (predicate(enumerator.Current))
+          yield return enumerator.Current;
+      }
+    }
+
+    public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate)
+    {
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      var enumerator = GetEnumerator(source);
+      var index = 0;
+
+      while (enumerator.MoveNext()) {
+        if (predicate(enumerator.Current, index))
           yield return enumerator.Current;
       }
     }
   }
 }
+#endif // !LINQ
