@@ -78,6 +78,29 @@ namespace Smdn.Collections {
         yield return e;
     }
 
+    public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource @value)
+    {
+      if (source is ICollection<TSource>)
+        return (source as ICollection<TSource>).Contains(@value);
+
+      return Contains(source, @value, null);
+    }
+
+    public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource @value, IEqualityComparer<TSource> comparer)
+    {
+      var enumerator = GetEnumerator(source);
+
+      if (comparer == null)
+        comparer = EqualityComparer<TSource>.Default;
+
+      while (enumerator.MoveNext()) {
+        if (comparer.Equals(enumerator.Current, @value))
+          return true;
+      }
+
+      return false;
+    }
+
     public static int Count<TSource>(this IEnumerable<TSource> source)
     {
       if (source is System.Collections.ICollection)
@@ -210,7 +233,7 @@ namespace Smdn.Collections {
 
     public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second)
     {
-      return SequenceEqual(first, second, EqualityComparer<TSource>.Default);
+      return SequenceEqual(first, second, null);
     }
 
     public static bool SequenceEqual<TSource>(this IEnumerable<TSource> first, IEnumerable<TSource> second, IEqualityComparer<TSource> comparer)
@@ -223,7 +246,7 @@ namespace Smdn.Collections {
         throw new ArgumentNullException("second");
 
       if (comparer == null)
-        throw new ArgumentNullException("comparer");
+        comparer = EqualityComparer<TSource>.Default;
 
       var enumeratorFirst  = first.GetEnumerator();
       var enumeratorSecond = second.GetEnumerator();
