@@ -44,7 +44,7 @@ namespace Smdn.IO {
 
       return (new DirectoryInfo(directory)).GetFiles(searchOption, delegate(FileInfo file) {
         return searchPattern(file.FullName);
-      }).ConvertAll(delegate(FileInfo file) {
+      }).Select(delegate(FileInfo file) {
         return file.FullName;
       });
     }
@@ -63,7 +63,7 @@ namespace Smdn.IO {
 
       return (new DirectoryInfo(directory)).GetDirectories(searchOption, delegate(DirectoryInfo dir) {
         return searchPattern(dir.FullName);
-      }).ConvertAll(delegate(DirectoryInfo dir) {
+      }).Select(delegate(DirectoryInfo dir) {
         return dir.FullName; // XXX: relative path
       });
     }
