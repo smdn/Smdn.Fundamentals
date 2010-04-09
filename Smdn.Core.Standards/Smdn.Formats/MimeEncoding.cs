@@ -261,12 +261,14 @@ namespace Smdn.Formats {
           // encoding
           ICryptoTransform transform;
 
-          switch (m.Groups[2].Value.ToLowerInvariant()) {
+          switch (m.Groups[2].Value) {
             case "b":
+            case "B":
               lastEncoding = MimeEncodingMethod.Base64;
               transform = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
               break;
             case "q":
+            case "Q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
               transform = new FromQuotedPrintableTransform();
               break;
