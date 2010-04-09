@@ -62,6 +62,7 @@
     <Compile Include="Smdn\MimeType.cs" />
     <Compile Include="Smdn.IO\DirectoryInfoExtensions.cs" />
     <Compile Include="Smdn.IO\DirectoryUtils.cs" />
+    <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn.Media\mmsystem.h.cs" />
     <Compile Include="Smdn\Platform.cs" />

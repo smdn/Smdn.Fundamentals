@@ -28,156 +28,42 @@ using System.Collections.Generic;
 
 namespace Smdn.Collections {
   public static class Enumerable {
-    public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other) where T : IEquatable<T>
-    {
-      if (enumerable == null && other == null)
-        return true;
-      else if (enumerable == null || other == null)
-        return false;
-
-      var enumeratorThis  = enumerable.GetEnumerator();
-      var enumeratorOther = other.GetEnumerator();
-
-      while (enumeratorThis.MoveNext()) {
-        if (!enumeratorOther.MoveNext())
-          return false;
-        else if (!enumeratorThis.Current.Equals(enumeratorOther.Current))
-          return false;
-      }
-
-      return !enumeratorOther.MoveNext();
-    }
-
-    public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other, IEqualityComparer<T> comparer)
-    {
-      if (comparer == null)
-        throw new ArgumentNullException("comparer");
-
-      if (enumerable == null && other == null)
-        return true;
-      else if (enumerable == null || other == null)
-        return false;
-
-      var enumeratorThis  = enumerable.GetEnumerator();
-      var enumeratorOther = other.GetEnumerator();
-
-      while (enumeratorThis.MoveNext()) {
-        if (!enumeratorOther.MoveNext())
-          return false;
-        else if (!comparer.Equals(enumeratorThis.Current, enumeratorOther.Current))
-          return false;
-      }
-
-      return !enumeratorOther.MoveNext();
-    }
-
-    public static IEnumerable<TOutput> ConvertAll<TInput, TOutput>(this IEnumerable<TInput> enumerable, Converter<TInput, TOutput> converter)
-    {
-      var enumerator = enumerable.GetEnumerator();
-
-      while (enumerator.MoveNext())
-        yield return converter(enumerator.Current);
-    }
-
-    public static IEnumerable<TResult> Cast<TResult>(this IEnumerable enumerable)
-    {
-      foreach (TResult e in enumerable)
-        yield return e;
-    }
-
-    public static T Find<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    public static bool All<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
       if (match == null)
         throw new ArgumentNullException("match");
 
-      if (enumerable is List<T>)
-        return (enumerable as List<T>).Find(match);
-      else if (enumerable is T[])
-        return Array.Find(enumerable as T[], match);
-
       var enumerator = enumerable.GetEnumerator();
 
       while (enumerator.MoveNext()) {
-        if (match(enumerator.Current))
-          return enumerator.Current;
+        if (!match(enumerator.Current))
+          return false;
       }
 
-      return default(T);
+      return true;
     }
 
-    public static IEnumerable<T> FindAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    public static bool Any<TSource>(this IEnumerable<TSource> source)
     {
-      if (match == null)
-        throw new ArgumentNullException("match");
-
-      /*
-      if (enumerable is List<T>)
-        return (enumerable as List<T>).FindAll(match);
-      else if (enumerable is T[])
-        return Array.FindAll(enumerable as T[], match);
-      */
-
-      var enumerator = enumerable.GetEnumerator();
-
-      while (enumerator.MoveNext()) {
-        if (match(enumerator.Current))
-          yield return enumerator.Current;
-      }
+      return source.GetEnumerator().MoveNext();
     }
 
-    public static bool Exists<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (match == null)
-        throw new ArgumentNullException("match");
-
-      if (enumerable is List<T>)
-        return (enumerable as List<T>).Exists(match);
-      else if (enumerable is T[])
-        return Array.Exists(enumerable as T[], match);
-
-      var enumerator = enumerable.GetEnumerator();
+      var enumerator = source.GetEnumerator();
 
       while (enumerator.MoveNext()) {
-        if (match(enumerator.Current))
+        if (predicate(enumerator.Current))
           return true;
       }
 
       return false;
     }
 
-    public static IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count)
+    public static IEnumerable<TResult> Cast<TResult>(this IEnumerable enumerable)
     {
-      var enumerator = enumerable.GetEnumerator();
-
-      while (0 < count-- && enumerator.MoveNext())
-        yield return enumerator.Current;
-    }
-
-    public static IEnumerable<T> Reverse<T>(this IEnumerable<T> enumerable)
-    {
-      var list = (enumerable as IList<T>) ?? new List<T>(enumerable);
-
-      for (var i = list.Count - 1; 0 <= i; i--)
-        yield return list[i];
-    }
-
-    public static T[] ToArray<T>(this IEnumerable<T> enumerable)
-    {
-      if (enumerable is List<T>)
-        return (enumerable as List<T>).ToArray();
-
-      var collection = enumerable as System.Collections.ICollection;
-
-      if (collection == null) {
-        return (new List<T>(enumerable)).ToArray();
-      }
-      else {
-        var array = new T[collection.Count];
-
-        collection.CopyTo(array, 0);
-
-        return array;
-      }
+      foreach (TResult e in enumerable)
+        yield return e;
     }
 
     public static int Count(this IEnumerable enumerable)
@@ -235,49 +121,117 @@ namespace Smdn.Collections {
       }
     }
 
-    public static bool TrueForAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
+    public static IEnumerable<T> Reverse<T>(this IEnumerable<T> enumerable)
+    {
+      var list = (enumerable as IList<T>) ?? new List<T>(enumerable);
+
+      for (var i = list.Count - 1; 0 <= i; i--)
+        yield return list[i];
+    }
+
+    public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+    {
+      var enumerator = source.GetEnumerator();
+
+      while (enumerator.MoveNext())
+        yield return selector(enumerator.Current);
+    }
+
+    public static bool SequenceEqual<T>(this IEnumerable<T> enumerable, IEnumerable<T> other) where T : IEquatable<T>
+    {
+      if (enumerable == null && other == null)
+        return true;
+      else if (enumerable == null || other == null)
+        return false;
+
+      var enumeratorThis  = enumerable.GetEnumerator();
+      var enumeratorOther = other.GetEnumerator();
+
+      while (enumeratorThis.MoveNext()) {
+        if (!enumeratorOther.MoveNext())
+          return false;
+        else if (!enumeratorThis.Current.Equals(enumeratorOther.Current))
+          return false;
+      }
+
+      return !enumeratorOther.MoveNext();
+    }
+
+    public static bool SequenceEqual<T>(this IEnumerable<T> enumerable, IEnumerable<T> other, IEqualityComparer<T> comparer)
+    {
+      if (comparer == null)
+        throw new ArgumentNullException("comparer");
+
+      if (enumerable == null && other == null)
+        return true;
+      else if (enumerable == null || other == null)
+        return false;
+
+      var enumeratorThis  = enumerable.GetEnumerator();
+      var enumeratorOther = other.GetEnumerator();
+
+      while (enumeratorThis.MoveNext()) {
+        if (!enumeratorOther.MoveNext())
+          return false;
+        else if (!comparer.Equals(enumeratorThis.Current, enumeratorOther.Current))
+          return false;
+      }
+
+      return !enumeratorOther.MoveNext();
+    }
+
+    public static T SingleOrDefault<T>(this IEnumerable<T> enumerable, Predicate<T> match)
     {
       if (match == null)
         throw new ArgumentNullException("match");
 
+      var enumerator = enumerable.GetEnumerator();
+
+      while (enumerator.MoveNext()) {
+        if (match(enumerator.Current))
+          return enumerator.Current;
+      }
+
+      return default(T);
+    }
+
+    public static IEnumerable<T> Take<T>(this IEnumerable<T> enumerable, int count)
+    {
+      var enumerator = enumerable.GetEnumerator();
+
+      while (0 < count-- && enumerator.MoveNext())
+        yield return enumerator.Current;
+    }
+
+    public static T[] ToArray<T>(this IEnumerable<T> enumerable)
+    {
       if (enumerable is List<T>)
-        return (enumerable as List<T>).TrueForAll(match);
-      else if (enumerable is T[])
-        return Array.TrueForAll(enumerable as T[], match);
+        return (enumerable as List<T>).ToArray();
+
+      var collection = enumerable as System.Collections.ICollection;
+
+      if (collection == null) {
+        return (new List<T>(enumerable)).ToArray();
+      }
+      else {
+        var array = new T[collection.Count];
+
+        collection.CopyTo(array, 0);
+
+        return array;
+      }
+    }
+
+    public static IEnumerable<T> Where<T>(this IEnumerable<T> enumerable, Func<T, bool> match)
+    {
+      if (match == null)
+        throw new ArgumentNullException("match");
 
       var enumerator = enumerable.GetEnumerator();
 
       while (enumerator.MoveNext()) {
-        if (!match(enumerator.Current))
-          return false;
-      }
-
-      return true;
-    }
-
-    public static IEnumerable<T> EnumerateDepthFirst<T>(this IEnumerable<T> nestedEnumerable)
-      where T : IEnumerable<T>
-    {
-      if (nestedEnumerable == null)
-        throw new ArgumentNullException("nestedEnumerable");
-
-      var stack = new Stack<IEnumerator<T>>();
-      var enumerator = nestedEnumerable.GetEnumerator();
-
-      for (;;) {
-        if (enumerator.MoveNext()) {
-          stack.Push(enumerator);
-
+        if (match(enumerator.Current))
           yield return enumerator.Current;
-
-          enumerator = enumerator.Current.GetEnumerator();
-        }
-        else {
-          if (stack.Count == 0)
-            yield break;
-
-          enumerator = stack.Pop();
-        }
       }
     }
   }
