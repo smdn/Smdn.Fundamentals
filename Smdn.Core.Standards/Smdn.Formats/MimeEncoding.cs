@@ -259,16 +259,22 @@ namespace Smdn.Formats {
             throw new FormatException(string.Format("{0} is an unsupported or invalid charset", m.Groups[1].Value));
 
           // encoding
+          ICryptoTransform transform;
+
           switch (m.Groups[2].Value.ToLowerInvariant()) {
             case "b":
               lastEncoding = MimeEncodingMethod.Base64;
-              return Base64.GetDecodedString(m.Groups[3].Value, lastCharset);
+              transform = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
+              break;
             case "q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
-              return QuotedPrintableEncoding.GetDecodedString(m.Groups[3].Value, lastCharset);
+              transform = new FromQuotedPrintableTransform();
+              break;
+            default:
+              throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
           }
 
-          throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
+          return transform.TransformStringFrom(m.Groups[3].Value, lastCharset);
         });
 
         charset = lastCharset;
