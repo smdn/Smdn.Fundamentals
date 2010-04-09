@@ -103,6 +103,39 @@ string[] fruits = { "apple", "banana", "mango", "orange", "passionfruit", "grape
     }
 
     [Test]
+    public void TestContains()
+    {
+      Assert.IsTrue (((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).Contains(2));
+      Assert.IsFalse(((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).Contains(9));
+      Assert.IsTrue (GetEnumerator().Contains(2));
+      Assert.IsFalse(GetEnumerator().Contains(9));
+      Assert.IsFalse(GetEmptyEnumerator().Contains(2));
+      Assert.IsFalse(GetEmptyEnumerator().Contains(9));
+    }
+
+    [Test]
+    public void TestContains2()
+    {
+string[] fruits = { "apple", "banana", "mango", "orange", "passionfruit", "grape" };
+
+string fruit = "mango";
+
+bool hasMango = fruits.Contains(fruit);
+
+      Assert.IsTrue(hasMango);
+    }
+
+    [Test]
+    public void TestContainsWithIEqualityComparer()
+    {
+      Assert.IsFalse(((IEnumerable<string>)(new string[] {})).Contains("a", StringComparer.OrdinalIgnoreCase));
+      Assert.IsTrue (((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).Contains("a", StringComparer.OrdinalIgnoreCase));
+      Assert.IsTrue (((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).Contains("A", StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).Contains("x", StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).Contains("X", StringComparer.OrdinalIgnoreCase));
+    }
+
+    [Test]
     public void TestFirst()
     {
       Assert.AreEqual(0, ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).First());
