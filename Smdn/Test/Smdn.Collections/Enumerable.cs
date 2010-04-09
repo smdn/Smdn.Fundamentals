@@ -6,35 +6,42 @@ using NUnit.Framework;
 namespace Smdn.Collections {
   [TestFixture()]
   public class EnumerableTests {
-    [Test]
-    public void TestEqualsAll()
+    class Pet
     {
-      Assert.IsTrue(((IEnumerable<int>)(new int[] {})).EqualsAll(new int[] {}));
-      Assert.IsTrue(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).EqualsAll(new[] {0, 1, 2, 3, 4}));
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public bool Vaccinated { get; set; }
+    }
+
+    [Test]
+    public void TestSequenceEqual()
+    {
+      Assert.IsTrue(((IEnumerable<int>)(new int[] {})).SequenceEqual(new int[] {}));
+      Assert.IsTrue(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new[] {0, 1, 2, 3, 4}));
       //Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).EqualsAll(null));
-      Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).EqualsAll(new int[] {}));
-      Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).EqualsAll(new[] {0, 1, 2, 3}));
-      Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).EqualsAll(new[] {0, 1, 2, 3, 4, 5}));
+      Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new int[] {}));
+      Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new[] {0, 1, 2, 3}));
+      Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new[] {0, 1, 2, 3, 4, 5}));
     }
 
     [Test]
-    public void TestEqualsAllWithIEqualityComparer()
+    public void TestSequenceEqualWithIEqualityComparer()
     {
-      Assert.IsTrue(((IEnumerable<string>)(new string[] {})).EqualsAll(new string[] {}, StringComparer.OrdinalIgnoreCase));
-      Assert.IsTrue(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d", "E"}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsTrue(((IEnumerable<string>)(new string[] {})).SequenceEqual(new string[] {}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsTrue(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new[] {"A", "b", "C", "d", "E"}, StringComparer.OrdinalIgnoreCase));
       //Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(null, StringComparer.OrdinalIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new string[] {}, StringComparer.OrdinalIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d"}, StringComparer.OrdinalIgnoreCase));
-      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(new[] {"A", "b", "C", "d", "E", "f"}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new string[] {}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new[] {"A", "b", "C", "d"}, StringComparer.OrdinalIgnoreCase));
+      Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new[] {"A", "b", "C", "d", "E", "f"}, StringComparer.OrdinalIgnoreCase));
     }
 
     [Test]
-    public void TestConvertAll()
+    public void TestSelect()
     {
-      Assert.IsTrue(((IEnumerable<string>)(new string[] {})).EqualsAll((new int[] {}).ConvertAll(delegate(int i) {
+      Assert.IsTrue(((IEnumerable<string>)(new string[] {})).SequenceEqual((new int[] {}).Select(delegate(int i) {
         return i.ToString();
       })));
-      Assert.IsTrue(((IEnumerable<string>)(new string[] {"0", "1", "2", "3", "4"})).EqualsAll((new int[] {0, 1, 2, 3, 4}).ConvertAll(delegate(int i) {
+      Assert.IsTrue(((IEnumerable<string>)(new string[] {"0", "1", "2", "3", "4"})).SequenceEqual((new int[] {0, 1, 2, 3, 4}).Select(delegate(int i) {
         return i.ToString();
       })));
     }
@@ -42,8 +49,13 @@ namespace Smdn.Collections {
     [Test]
     public void TestCast()
     {
-      // TODO
-      Assert.Ignore("no tests");
+      var collection = new System.Collections.ArrayList();
+
+      collection.Add(1);
+      collection.Add(2);
+      collection.Add(3);
+
+      Assert.IsTrue(collection.Cast<int>().SequenceEqual(new int[] {1, 2, 3}));
     }
 
     [Test]
@@ -52,6 +64,28 @@ namespace Smdn.Collections {
       Assert.AreEqual(5, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Count());
       Assert.AreEqual(5, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Count());
       //Assert.AreEqual(5, ((IEnumerable)new ArrayList(new[] {0, 1, 2, 3, 4})).Count());
+    }
+
+    [Test]
+    public void TestCount2()
+    {
+string[] fruits = { "apple", "banana", "mango", "orange", "passionfruit", "grape" };
+
+    int numberOfFruits = fruits.Count();
+
+      Assert.AreEqual(6, numberOfFruits);
+    }
+
+    [Test]
+    public void TestCountWithPredicate2()
+    {
+    Pet[] pets = { new Pet { Name="Barley", Vaccinated=true },
+                   new Pet { Name="Boots", Vaccinated=false },
+                   new Pet { Name="Whiskers", Vaccinated=false } };
+
+      int numberUnvaccinated = pets.Count(p => p.Vaccinated == false);
+
+      Assert.AreEqual(2, numberUnvaccinated);
     }
 
     private static IEnumerable<int> GetEnumerator()
@@ -99,37 +133,99 @@ namespace Smdn.Collections {
     }
 
     [Test]
-    public void TestFind()
+    public void TestFirstOrDefault2()
     {
-      Assert.AreEqual("a",   (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 1;}));
-      Assert.AreEqual("aa",  (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 2;}));
-      Assert.AreEqual("aaa", (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 3;}));
-      Assert.AreEqual(null,  (new[] {"a", "aa", "aaa"}).Find(delegate(string s) {return s.Length == 4;}));
+int[] numbers = { };
+int first = numbers.FirstOrDefault();
 
-      Assert.AreEqual(3, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Find(delegate(int i){ return i == 3; }));
-      Assert.AreEqual(0, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Find(delegate(int i){ return i == 9; }));
-      Assert.AreEqual(3, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Find(delegate(int i){ return i == 3; }));
-      Assert.AreEqual(0, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Find(delegate(int i){ return i == 9; }));
-      Assert.AreEqual(3, ((IEnumerable<int>)GetEnumerator()).Find(delegate(int i){ return i == 3; }));
-      Assert.AreEqual(0, ((IEnumerable<int>)GetEnumerator()).Find(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(first, 0);
     }
 
     [Test]
-    public void TestFindAll()
+    public void TestFirstOrDefaultWithPredicate()
     {
-      CollectionAssert.AreEquivalent(new int[0], ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).FindAll(delegate(int i){ return i == 9; }));
-      CollectionAssert.AreEquivalent(new[] {0, 1, 2}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).FindAll(delegate(int i){ return i < 3; }));
+      Assert.AreEqual("a",   (new[] {"a", "aa", "aaa"}).FirstOrDefault(delegate(string s) {return s.Length == 1;}));
+      Assert.AreEqual("aa",  (new[] {"a", "aa", "aaa"}).FirstOrDefault(delegate(string s) {return s.Length == 2;}));
+      Assert.AreEqual("aaa", (new[] {"a", "aa", "aaa"}).FirstOrDefault(delegate(string s) {return s.Length == 3;}));
+      Assert.AreEqual(null,  (new[] {"a", "aa", "aaa"}).FirstOrDefault(delegate(string s) {return s.Length == 4;}));
+
+      Assert.AreEqual(3, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).FirstOrDefault(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).FirstOrDefault(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(3, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).FirstOrDefault(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).FirstOrDefault(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(3, ((IEnumerable<int>)GetEnumerator()).FirstOrDefault(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)GetEnumerator()).FirstOrDefault(delegate(int i){ return i == 9; }));
     }
 
     [Test]
-    public void TestExists()
+    public void TestFirstOrDefaultWithPredicate2()
     {
-      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Exists(delegate(int i){ return i == 3; }));
-      Assert.IsFalse(((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Exists(delegate(int i){ return i == 9; }));
-      Assert.IsTrue (((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Exists(delegate(int i){ return i == 3; }));
-      Assert.IsFalse(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Exists(delegate(int i){ return i == 9; }));
-      Assert.IsTrue (((IEnumerable<int>)GetEnumerator()).Exists(delegate(int i){ return i == 3; }));
-      Assert.IsFalse(((IEnumerable<int>)GetEnumerator()).Exists(delegate(int i){ return i == 9; }));
+string[] names = { "Hartono, Tommy", "Adams, Terry", 
+                     "Andersen, Henriette Thaulow", 
+                     "Hedlund, Magnus", "Ito, Shu" };
+
+string firstLongName = names.FirstOrDefault(name => name.Length > 20);
+
+      Assert.AreEqual("Andersen, Henriette Thaulow", firstLongName);
+
+string firstVeryLongName = names.FirstOrDefault(name => name.Length > 30);
+
+      Assert.IsNull(firstVeryLongName);
+    }
+
+    [Test]
+    public void TestWhere()
+    {
+      CollectionAssert.AreEquivalent(new int[0], ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Where(delegate(int i){ return i == 9; }));
+      CollectionAssert.AreEquivalent(new[] {0, 1, 2}, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Where(delegate(int i){ return i < 3; }));
+    }
+
+    [Test]
+    public void TestWhere2()
+    {
+List<string> fruits =
+    new List<string> { "apple", "passionfruit", "banana", "mango", 
+                    "orange", "blueberry", "grape", "strawberry" };
+
+IEnumerable<string> query = fruits.Where(fruit => fruit.Length < 6);
+
+      Assert.IsTrue(query.SequenceEqual(new[] {"apple", "mango", "grape"}));
+    }
+
+    [Test]
+    public void TestAny()
+    {
+      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Any());
+      Assert.IsFalse(((IEnumerable<int>)new int[0]).Any());
+      Assert.IsTrue (GetEnumerator().Any());
+      Assert.IsFalse(GetEmptyEnumerator().Any());
+    }
+
+    [Test]
+    public void TestAnyWithPredicate()
+    {
+      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Any(delegate(int i){ return i == 3; }));
+      Assert.IsFalse(((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Any(delegate(int i){ return i == 9; }));
+      Assert.IsTrue (((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Any(delegate(int i){ return i == 3; }));
+      Assert.IsFalse(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).Any(delegate(int i){ return i == 9; }));
+      Assert.IsTrue (((IEnumerable<int>)GetEnumerator()).Any(delegate(int i){ return i == 3; }));
+      Assert.IsFalse(((IEnumerable<int>)GetEnumerator()).Any(delegate(int i){ return i == 9; }));
+    }
+
+    [Test]
+    public void TestAnyWithPredicate2()
+    {
+    // Create an array of Pets.
+    Pet[] pets =
+        { new Pet { Name="Barley", Age=8, Vaccinated=true },
+          new Pet { Name="Boots", Age=4, Vaccinated=false },
+          new Pet { Name="Whiskers", Age=1, Vaccinated=false } };
+
+    // Determine whether any pets over age 1 are also unvaccinated.
+    bool unvaccinated =
+        pets.Any(p => p.Age > 1 && p.Vaccinated == false);
+
+      Assert.IsTrue(unvaccinated);
     }
 
     [Test]
@@ -174,17 +270,32 @@ namespace Smdn.Collections {
     }
 
     [Test]
-    public void TestTrueForAll()
+    public void TestAll()
     {
-      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).TrueForAll(delegate(int i){ return 0 <= i; }));
-      Assert.IsFalse(((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).TrueForAll(delegate(int i){ return 3 <= i; }));
-      Assert.IsTrue (((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).TrueForAll(delegate(int i){ return 0 <= i; }));
-      Assert.IsFalse(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).TrueForAll(delegate(int i){ return 3 <= i; }));
-      Assert.IsTrue (((IEnumerable<int>)GetEnumerator()).TrueForAll(delegate(int i){ return 0 <= i; }));
-      Assert.IsFalse(((IEnumerable<int>)GetEnumerator()).TrueForAll(delegate(int i){ return 3 <= i; }));
+      Assert.IsTrue (((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).All(delegate(int i){ return 0 <= i; }));
+      Assert.IsFalse(((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).All(delegate(int i){ return 3 <= i; }));
+      Assert.IsTrue (((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).All(delegate(int i){ return 0 <= i; }));
+      Assert.IsFalse(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).All(delegate(int i){ return 3 <= i; }));
+      Assert.IsTrue (((IEnumerable<int>)GetEnumerator()).All(delegate(int i){ return 0 <= i; }));
+      Assert.IsFalse(((IEnumerable<int>)GetEnumerator()).All(delegate(int i){ return 3 <= i; }));
 
-      Assert.IsTrue(((IEnumerable<int>)new int[] {}).TrueForAll(delegate(int i){ return false; }));
-      Assert.IsTrue(GetEmptyEnumerator().TrueForAll(delegate(int i){ return false; }));
+      Assert.IsTrue(((IEnumerable<int>)new int[] {}).All(delegate(int i){ return false; }));
+      Assert.IsTrue(GetEmptyEnumerator().All(delegate(int i){ return false; }));
+    }
+
+    [Test]
+    public void TestAll2()
+    {
+    Pet[] pets = { new Pet { Name="Barley", Age=10 },
+                   new Pet { Name="Boots", Age=4 },
+                   new Pet { Name="Whiskers", Age=6 } };
+
+    // Determine whether all pet names 
+    // in the array start with 'B'.
+    bool allStartWithB = pets.All(pet =>
+                                      pet.Name.StartsWith("B"));
+
+      Assert.IsFalse(allStartWithB);
     }
   }
 }
