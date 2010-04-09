@@ -29,23 +29,34 @@ using System.Collections.Generic;
 
 namespace Smdn.Collections {
   public static class Enumerable {
-    private static IEnumerator<TSource> GetEnumerator<TSource>(IEnumerable<TSource> source)
+    private static void CheckArgs(object source)
     {
       if (source == null)
         throw new ArgumentNullException("source");
+    }
 
-      return source.GetEnumerator();
+    private static void CheckArgsPredicate(object source, object predicate)
+    {
+      if (source == null)
+        throw new ArgumentNullException("source");
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+    }
+
+    private static void CheckArgsSelector(object source, object selector)
+    {
+      if (source == null)
+        throw new ArgumentNullException("source");
+      if (selector == null)
+        throw new ArgumentNullException("selector");
     }
 
     public static bool All<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (predicate == null)
-        throw new ArgumentNullException("predicate");
+      CheckArgsPredicate(source, predicate);
 
-      var enumerator = GetEnumerator(source);
-
-      while (enumerator.MoveNext()) {
-        if (!predicate(enumerator.Current))
+      foreach (var item in source) {
+        if (!predicate(item))
           return false;
       }
 
@@ -54,18 +65,19 @@ namespace Smdn.Collections {
 
     public static bool Any<TSource>(this IEnumerable<TSource> source)
     {
-      return GetEnumerator(source).MoveNext();
+      CheckArgs(source);
+
+      using (var enumerator = source.GetEnumerator()) {
+        return enumerator.MoveNext();
+      }
     }
 
     public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (predicate == null)
-        throw new ArgumentNullException("predicate");
+      CheckArgsPredicate(source, predicate);
 
-      var enumerator = GetEnumerator(source);
-
-      while (enumerator.MoveNext()) {
-        if (predicate(enumerator.Current))
+      foreach (var item in source) {
+        if (predicate(item))
           return true;
       }
 
@@ -74,8 +86,11 @@ namespace Smdn.Collections {
 
     public static IEnumerable<TResult> Cast<TResult>(this IEnumerable source)
     {
-      foreach (TResult e in source) // this might throw InvalidCastException
-        yield return e;
+      CheckArgs(source);
+
+      foreach (TResult castedItem in source) { // this might throw InvalidCastException
+        yield return castedItem;
+      }
     }
 
     public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource @value)
@@ -88,13 +103,13 @@ namespace Smdn.Collections {
 
     public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource @value, IEqualityComparer<TSource> comparer)
     {
-      var enumerator = GetEnumerator(source);
+      CheckArgs(source);
 
       if (comparer == null)
         comparer = EqualityComparer<TSource>.Default;
 
-      while (enumerator.MoveNext()) {
-        if (comparer.Equals(enumerator.Current, @value))
+      foreach (var item in source) {
+        if (comparer.Equals(item, @value))
           return true;
       }
 
@@ -103,30 +118,31 @@ namespace Smdn.Collections {
 
     public static int Count<TSource>(this IEnumerable<TSource> source)
     {
+      CheckArgs(source);
+
       if (source is System.Collections.ICollection)
         return (source as System.Collections.ICollection).Count;
 
       // XXX
       var count = 0;
-      var enumerator = GetEnumerator(source);
 
-      while (enumerator.MoveNext())
-        count++;
+      using (var enumerator = source.GetEnumerator()) {
+        while (enumerator.MoveNext())
+          count++;
 
-      // TODO: throw OverflowException
-      return count;
+        // TODO: throw OverflowException
+        return count;
+      }
     }
 
     public static int Count<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (predicate == null)
-        throw new ArgumentNullException("predicate");
+      CheckArgsPredicate(source, predicate);
 
       var count = 0;
-      var enumerator = GetEnumerator(source);
 
-      while (enumerator.MoveNext()) {
-        if (predicate(enumerator.Current))
+      foreach (var item in source) {
+        if (predicate(item))
           count++;
       }
 
@@ -136,6 +152,8 @@ namespace Smdn.Collections {
 
     public static TSource First<TSource>(this IEnumerable<TSource> source)
     {
+      CheckArgs(source);
+
       if (source is IList<TSource>) {
         var list = source as IList<TSource>;
 
@@ -145,12 +163,11 @@ namespace Smdn.Collections {
           throw new InvalidOperationException("sequence is empty");
       }
       else {
-        var enumerator = GetEnumerator(source);
+        foreach (var item in source) {
+          return item;
+        }
 
-        if (enumerator.MoveNext())
-          return enumerator.Current;
-        else
-          throw new InvalidOperationException("sequence is empty");
+        throw new InvalidOperationException("sequence is empty");
       }
     }
 
@@ -166,6 +183,8 @@ namespace Smdn.Collections {
 
     public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source)
     {
+      CheckArgs(source);
+
       if (source is IList<TSource>) {
         var list = source as IList<TSource>;
 
@@ -175,25 +194,21 @@ namespace Smdn.Collections {
           return default(TSource);
       }
       else {
-        var enumerator = GetEnumerator(source);
+        foreach (var item in source) {
+          return item;
+        }
 
-        if (enumerator.MoveNext())
-          return enumerator.Current;
-        else
-          return default(TSource);
+        return default(TSource);
       }
     }
 
     public static TSource FirstOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (predicate == null)
-        throw new ArgumentNullException("predicate");
+      CheckArgsPredicate(source, predicate);
 
-      var enumerator = GetEnumerator(source);
-
-      while (enumerator.MoveNext()) {
-        if (predicate(enumerator.Current))
-          return enumerator.Current;
+      foreach (var item in source) {
+        if (predicate(item))
+          return item;
       }
 
       return default(TSource);
@@ -201,8 +216,7 @@ namespace Smdn.Collections {
 
     public static IEnumerable<TSource> Reverse<TSource>(this IEnumerable<TSource> source)
     {
-      if (source == null)
-        throw new ArgumentNullException("source");
+      CheckArgs(source);
 
       var list = (source as IList<TSource>) ?? new List<TSource>(source);
 
@@ -212,13 +226,11 @@ namespace Smdn.Collections {
 
     public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
     {
-      if (selector == null)
-        throw new ArgumentNullException("selector");
+      CheckArgsSelector(source, selector);
 
-      var enumerator = GetEnumerator(source);
-
-      while (enumerator.MoveNext())
-        yield return selector(enumerator.Current);
+      foreach (var item in source) {
+        yield return selector(item);
+      }
     }
 
     /*
@@ -248,39 +260,42 @@ namespace Smdn.Collections {
       if (comparer == null)
         comparer = EqualityComparer<TSource>.Default;
 
-      var enumeratorFirst  = first.GetEnumerator();
-      var enumeratorSecond = second.GetEnumerator();
+      using (IEnumerator<TSource> enumeratorFirst = first.GetEnumerator(), enumeratorSecond = second.GetEnumerator()) {
+        while (enumeratorFirst.MoveNext()) {
+          if (!enumeratorSecond.MoveNext())
+            return false;
+          else if (!comparer.Equals(enumeratorFirst.Current, enumeratorSecond.Current))
+            return false;
+        }
 
-      while (enumeratorFirst.MoveNext()) {
-        if (!enumeratorSecond.MoveNext())
-          return false;
-        else if (!comparer.Equals(enumeratorFirst.Current, enumeratorSecond.Current))
-          return false;
+        return !enumeratorSecond.MoveNext();
       }
-
-      return !enumeratorSecond.MoveNext();
     }
 
     public static IEnumerable<TSource> Take<TSource>(this IEnumerable<TSource> source, int count)
     {
-      var enumerator = GetEnumerator(source);
+      CheckArgs(source);
 
-      while (0 < count-- && enumerator.MoveNext())
-        yield return enumerator.Current;
+      foreach (var item in source) {
+        if (0 < count--)
+          yield return item;
+      }
     }
 
-    public static T[] ToArray<T>(this IEnumerable<T> enumerable)
+    public static TSource[] ToArray<TSource>(this IEnumerable<TSource> source)
     {
-      if (enumerable is List<T>)
-        return (enumerable as List<T>).ToArray();
+      CheckArgs(source);
 
-      var collection = enumerable as System.Collections.ICollection;
+      if (source is List<TSource>)
+        return (source as List<TSource>).ToArray();
+
+      var collection = source as System.Collections.ICollection;
 
       if (collection == null) {
-        return (new List<T>(enumerable)).ToArray();
+        return (new List<TSource>(source)).ToArray();
       }
       else {
-        var array = new T[collection.Count];
+        var array = new TSource[collection.Count];
 
         collection.CopyTo(array, 0);
 
@@ -290,28 +305,23 @@ namespace Smdn.Collections {
 
     public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
     {
-      if (predicate == null)
-        throw new ArgumentNullException("predicate");
+      CheckArgsPredicate(source, predicate);
 
-      var enumerator = GetEnumerator(source);
-
-      while (enumerator.MoveNext()) {
-        if (predicate(enumerator.Current))
-          yield return enumerator.Current;
+      foreach (var item in source) {
+        if (predicate(item))
+          yield return item;
       }
     }
 
     public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, int, bool> predicate)
     {
-      if (predicate == null)
-        throw new ArgumentNullException("predicate");
+      CheckArgsPredicate(source, predicate);
 
-      var enumerator = GetEnumerator(source);
       var index = 0;
 
-      while (enumerator.MoveNext()) {
-        if (predicate(enumerator.Current, index))
-          yield return enumerator.Current;
+      foreach (var item in source) {
+        if (predicate(item, index++))
+          yield return item;
       }
     }
   }
