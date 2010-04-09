@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Smdn.Collections {
   [TestFixture()]
-  public class IEnumerableExtensionsTests {
+  public class EnumerableTests {
     [Test]
     public void TestEqualsAll()
     {

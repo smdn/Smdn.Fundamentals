@@ -51,7 +51,6 @@
     <Compile Include="Smdn.Mathematics\Radian.cs" />
     <Compile Include="Smdn.Mathematics\Polar.cs" />
     <Compile Include="Smdn\MimeType.cs" />
-    <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn\Platform.cs" />
     <Compile Include="Smdn\Uuid.cs" />
@@ -72,6 +71,7 @@
     <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Formats\Base64.cs" />
+    <Compile Include="Smdn.Collections\Enumerable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn.csproj">

@@ -27,7 +27,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
-  public static class IEnumerableExtensions {
+  public static class Enumerable {
     public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other) where T : IEquatable<T>
     {
       if (enumerable == null && other == null)
