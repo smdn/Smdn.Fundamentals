@@ -23,8 +23,9 @@
 // THE SOFTWARE.
 
 using System;
-using System.Text;
+using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 
 using Smdn.Security.Cryptography;
 
@@ -83,6 +84,23 @@ namespace Smdn.Formats {
     public static byte[] Decode(byte[] bytes)
     {
       return ICryptoTransformExtensions.TransformBytes(new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), bytes);
+    }
+
+    public static Stream CreateEncodingStream(Stream stream)
+    {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+
+      // TODO: impl
+      throw new NotImplementedException();
+    }
+
+    public static Stream CreateDecodingStream(Stream stream)
+    {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+
+      return new CryptoStream(stream, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), CryptoStreamMode.Read);
     }
   }
 }
