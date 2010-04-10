@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 using System;
+using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 using Smdn.Security.Cryptography;
@@ -74,6 +76,23 @@ namespace Smdn.Formats {
     {
       return ICryptoTransformExtensions.TransformBytes(new FromQuotedPrintableTransform(),
                                                        Encoding.ASCII.GetBytes(str));
+    }
+
+    public static Stream CreateEncodingStream(Stream stream)
+    {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+
+      // TODO: impl
+      throw new NotImplementedException();
+    }
+
+    public static Stream CreateDecodingStream(Stream stream)
+    {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+
+      return new CryptoStream(stream, new FromQuotedPrintableTransform(), CryptoStreamMode.Read);
     }
 
 #if false
