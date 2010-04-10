@@ -28,6 +28,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Smdn.Formats.Mime;
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats {

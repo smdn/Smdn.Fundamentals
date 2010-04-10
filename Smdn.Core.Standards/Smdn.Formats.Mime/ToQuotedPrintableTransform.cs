@@ -25,8 +25,8 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Formats {
-  public class FromQuotedPrintableTransform : ICryptoTransform {
+namespace Smdn.Formats.Mime {
+  public class ToQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }
     }
@@ -40,14 +40,14 @@ namespace Smdn.Formats {
     }
 
     public int OutputBlockSize {
-      get { return 1; }
+      get { return 3; }
     }
 
-    public FromQuotedPrintableTransform()
+    public ToQuotedPrintableTransform()
     {
     }
 
-    ~FromQuotedPrintableTransform()
+    ~ToQuotedPrintableTransform()
     {
       Dispose(false);
     }
@@ -91,65 +91,25 @@ namespace Smdn.Formats {
 
       var ret = 0;
 
-      while (0 < inputCount--) {
+      for (var i = 0; i < inputCount; i++) {
         var octet = inputBuffer[inputOffset++];
 
-        if (bufferOffset == 0) {
-          if (octet == 0x3d) { // '=' 0x3d
-            buffer[bufferOffset++] = octet;
-          }
-          else {
-            outputBuffer[outputOffset++] = octet;
-            ret++;
-          }
+        if ((0x21 <= octet && octet <= 0x3c) ||
+            (0x3e <= octet && octet <= 0x7e) ||
+            octet == Octets.HT ||
+            octet == Octets.SP) {
+          // printable char (except '=' 0x3d)
+          outputBuffer[outputOffset++] = octet;
+
+          ret += 1;
         }
         else {
-          // quoted char
-          buffer[bufferOffset++] = octet;
-        }
+          // '=' 0x3d or non printable char
+          outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
+          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet >> 4];
+          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet & 0xf];
 
-        if (bufferOffset == 3) {
-          // dequote
-          if (buffer[1] == Octets.CR && buffer[2] == Octets.LF) {
-            // soft newline (CRLF)
-            bufferOffset = 0;
-          }
-          else if (buffer[1] == Octets.CR || buffer[1] == Octets.LF) {
-            // soft newline (CR, LF)
-            if (buffer[2] == 0x3d) {
-              bufferOffset = 1;
-            }
-            else {
-              outputBuffer[outputOffset++] = buffer[2];
-              ret++;
-
-              bufferOffset = 0;
-            }
-          }
-          else {
-            byte d = 0x00;
-
-            for (var i = 1; i < 3; i++) {
-              d <<= 4;
-
-              if (0x30 <= buffer[i] && buffer[i] <= 0x39)
-                // '0' 0x30 to '9' 0x39
-                d |= (byte)(buffer[i] - 0x30);
-              else if (0x41 <= buffer[i] && buffer[i] <= 0x46)
-                // 'A' 0x41 to 'F' 0x46
-                d |= (byte)(buffer[i] - 0x37);
-              else if (0x61 <= buffer[i] && buffer[i] <= 0x66)
-                // 'a' 0x61 to 'f' 0x66
-                d |= (byte)(buffer[i] - 0x57);
-              else
-                throw new FormatException("incorrect form");
-            }
-
-            outputBuffer[outputOffset++] = d;
-            ret++;
-
-            bufferOffset = 0;
-          }
+          ret += 3;
         }
       }
 
@@ -171,16 +131,14 @@ namespace Smdn.Formats {
       if (InputBlockSize < inputCount)
         throw new ArgumentOutOfRangeException("inputCount", inputCount, "input length too long");
 
-      var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
-      var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
+      var outputBuffer = new byte[inputCount * OutputBlockSize];
+      var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputBuffer.Length);
 
       Array.Resize(ref outputBuffer, len);
 
       return outputBuffer;
     }
 
-    private byte[] buffer = new byte[3];
-    private int bufferOffset = 0;
     private bool disposed = false;
   }
 }

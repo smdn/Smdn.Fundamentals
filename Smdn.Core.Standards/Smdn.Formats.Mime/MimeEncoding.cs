@@ -29,7 +29,7 @@ using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.Mime {
   /*
    * http://tools.ietf.org/html/rfc2047
    * RFC 2047 - MIME (Multipurpose Internet Mail Extensions) Part Three: Message Header Extensions for Non-ASCII Text

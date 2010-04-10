@@ -43,12 +43,10 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
-    <Compile Include="Smdn.Formats\FromQuotedPrintableTransform.cs" />
     <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
-    <Compile Include="Smdn.Formats\ToQuotedPrintableTransform.cs" />
     <Compile Include="Smdn.Formats\ToRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\ToRFC3501ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\CsvReader.cs" />
@@ -59,11 +57,13 @@
     <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
-    <Compile Include="Smdn.Formats\MimeEncodingMethod.cs" />
     <Compile Include="Smdn.Formats\PercentEncoding.cs" />
-    <Compile Include="Smdn.Formats\MimeEncoding.cs" />
-    <Compile Include="Smdn.Formats\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
+    <Compile Include="Smdn.Formats.Mime\ToQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats.Mime\FromQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncodingMethod.cs" />
+    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -81,6 +81,7 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Formats.Mime\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">

@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.Mime {
   public enum MimeEncodingMethod
   {
     None,

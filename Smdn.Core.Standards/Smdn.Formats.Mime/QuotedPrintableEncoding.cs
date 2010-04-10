@@ -29,7 +29,7 @@ using System.Text;
 
 using Smdn.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.Mime {
   public static class QuotedPrintableEncoding {
     public static string GetEncodedString(string str)
     {
