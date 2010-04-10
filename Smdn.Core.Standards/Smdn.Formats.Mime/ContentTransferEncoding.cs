@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Smdn.Formats.Mime {
@@ -106,9 +107,9 @@ namespace Smdn.Formats.Mime {
         case ContentTransferEncodingMethod.Binary:
           return stream;
         case ContentTransferEncodingMethod.Base64:
-          return Base64.CreateDecodingStream(stream);
+          return new CryptoStream(stream, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), CryptoStreamMode.Read);
         case ContentTransferEncodingMethod.QuotedPrintable:
-          return QuotedPrintableEncoding.CreateDecodingStream(stream);
+          return new CryptoStream(stream, new FromQuotedPrintableTransform(), CryptoStreamMode.Read);
         case ContentTransferEncodingMethod.UUEncode:
         case ContentTransferEncodingMethod.GZip64:
         default:
