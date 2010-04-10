@@ -63,5 +63,6 @@
     <Compile Include="Smdn.Formats\FromModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
   </ItemGroup>
 </Project>
