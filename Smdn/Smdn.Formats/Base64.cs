@@ -91,8 +91,7 @@ namespace Smdn.Formats {
       if (stream == null)
         throw new ArgumentNullException("stream");
 
-      // TODO: impl
-      throw new NotImplementedException();
+      return new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Write);
     }
 
     public static Stream CreateDecodingStream(Stream stream)
