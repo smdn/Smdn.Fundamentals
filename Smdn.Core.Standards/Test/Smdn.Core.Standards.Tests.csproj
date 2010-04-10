@@ -10,6 +10,7 @@
     <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
+    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,6 +48,7 @@
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Formats.Mime\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
@@ -56,10 +58,10 @@
     <Compile Include="Smdn.Formats\EncodingUtils.cs" />
     <Compile Include="Smdn.Formats\PercentEncoding.cs" />
     <Compile Include="Smdn.Formats\TestUtils.cs" />
-    <Compile Include="Smdn.Formats\MimeEncoding.cs" />
-    <Compile Include="Smdn.Formats\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
     <Compile Include="Smdn.Formats\ToModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\FromModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
   </ItemGroup>
 </Project>
