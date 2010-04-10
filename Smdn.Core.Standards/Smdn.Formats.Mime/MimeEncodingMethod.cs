@@ -25,10 +25,13 @@
 using System;
 
 namespace Smdn.Formats.Mime {
-  public enum MimeEncodingMethod
-  {
+  public enum MimeEncodingMethod {
     None,
-    Base64,           // B-Encode
-    QuotedPrintable,  // Q-Encode
+
+    /// <summary>base64, B-Encoding</summary>
+    Base64,
+
+    /// <summary>quoted-printable, Q-Encoding</summary>
+    QuotedPrintable,
   }
 }
