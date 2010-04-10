@@ -33,7 +33,7 @@ namespace Smdn.Formats.Mime {
         {"7bit",              ContentTransferEncodingMethod.SevenBit},
         {"8bit",              ContentTransferEncodingMethod.EightBit},
         {"binary",            ContentTransferEncodingMethod.Binary},
-        {"baase64",           ContentTransferEncodingMethod.Base64},
+        {"base64",            ContentTransferEncodingMethod.Base64},
         {"quoted-printable",  ContentTransferEncodingMethod.QuotedPrintable},
 
         // non-standards
