@@ -212,6 +212,21 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestIsPrefixOf()
+    {
+      var str = new ByteString("abc");
+
+      Assert.IsTrue(str.IsPrefixOf(new ByteString("abcd")));
+      Assert.IsTrue(str.IsPrefixOf(new byte[] {0x61, 0x62, 0x63, 0x64}));
+      Assert.IsTrue(str.IsPrefixOf(new ByteString("abc")));
+      Assert.IsTrue(str.IsPrefixOf(new byte[] {0x61, 0x62, 0x63}));
+      Assert.IsFalse(str.IsPrefixOf(new ByteString("abd")));
+      Assert.IsFalse(str.IsPrefixOf(new byte[] {0x61, 0x62, 0x64}));
+      Assert.IsFalse(str.IsPrefixOf(new ByteString("ab")));
+      Assert.IsFalse(str.IsPrefixOf(new byte[] {0x61, 0x62}));
+    }
+
+    [Test]
     public void TestSubstring()
     {
       var str = new ByteString("abcde");

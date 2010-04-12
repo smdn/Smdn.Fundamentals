@@ -231,6 +231,30 @@ namespace Smdn {
       return true;
     }
 
+    public bool IsPrefixOf(ByteString @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IsPrefixOf(@value.bytes);
+    }
+
+    public bool IsPrefixOf(byte[] @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      if (@value.Length < bytes.Length)
+        return false;
+
+      for (var index = 0; index < bytes.Length; index++) {
+        if (@value[index] != bytes[index])
+          return false;
+      }
+
+      return true;
+    }
+
     public int IndexOf(char @value)
     {
       return IndexOf(@value, 0);
