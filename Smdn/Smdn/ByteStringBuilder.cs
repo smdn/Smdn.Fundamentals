@@ -28,12 +28,7 @@ namespace Smdn {
   public class ByteStringBuilder {
     [System.Runtime.CompilerServices.IndexerName("Bytes")]
     public byte this[int index] {
-      get
-      {
-        if (index < 0 || length <= index)
-          throw new IndexOutOfRangeException();
-        return buffer[index];
-      }
+      get { return buffer[index]; }
       set
       {
         if (index < 0 || length <= index)
