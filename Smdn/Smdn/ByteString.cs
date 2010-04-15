@@ -584,14 +584,22 @@ namespace Smdn {
 
     public override bool Equals(object obj)
     {
-      if (obj is ByteString)
-        return Equals((obj as ByteString).bytes);
-      else if (obj is byte[])
-        return Equals(obj as byte[]);
-      else if (obj is string)
-        return Equals(obj as string);
-      else
-        return false;
+      var byteString = obj as ByteString;
+
+      if (byteString != null)
+        return Equals(byteString.bytes);
+
+      var byteArray = obj as byte[];
+
+      if (byteArray != null)
+        return Equals(byteArray);
+
+      var str = obj as string;
+
+      if (str != null)
+        return Equals(str);
+
+      return false;
     }
 
     public bool Equals(byte[] other)

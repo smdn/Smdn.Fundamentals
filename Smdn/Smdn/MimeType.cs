@@ -204,12 +204,17 @@ namespace Smdn {
 
     public override bool Equals(object obj)
     {
-      if (obj is MimeType)
-        return Equals((MimeType)obj);
-      else if (obj is string)
-        return Equals(obj as string);
-      else
-        return false;
+      var mimeType = obj as MimeType;
+
+      if (mimeType != null)
+        return Equals(mimeType);
+
+      var str = obj as string;
+
+      if (str != null)
+        return Equals(str);
+
+      return false;
     }
 
     public bool Equals(MimeType other)
