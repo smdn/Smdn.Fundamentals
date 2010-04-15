@@ -29,8 +29,8 @@ using Smdn.Formats;
 
 namespace Smdn.IO {
   public class LineOrientedStream : Stream {
-    protected const int DefaultBufferSize = 1024;
-    protected const int MinimumBufferSize = 8;
+    protected static readonly int DefaultBufferSize = 1024;
+    protected static readonly int MinimumBufferSize = 8;
 
     public override bool CanSeek {
       get { return stream.CanSeek; }
