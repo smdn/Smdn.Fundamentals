@@ -95,10 +95,12 @@ namespace Smdn.Collections {
 
     public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource @value)
     {
-      if (source is ICollection<TSource>)
-        return (source as ICollection<TSource>).Contains(@value);
+      var collection = source as ICollection<TSource>;
 
-      return Contains(source, @value, null);
+      if (collection == null)
+        return Contains(source, @value, null);
+      else
+        return collection.Contains(@value);
     }
 
     public static bool Contains<TSource>(this IEnumerable<TSource> source, TSource @value, IEqualityComparer<TSource> comparer)
@@ -120,8 +122,10 @@ namespace Smdn.Collections {
     {
       CheckArgs(source);
 
-      if (source is System.Collections.ICollection)
-        return (source as System.Collections.ICollection).Count;
+      var collection = source as System.Collections.ICollection;
+
+      if (collection != null)
+        return collection.Count;
 
       // XXX
       var count = 0;
@@ -154,20 +158,20 @@ namespace Smdn.Collections {
     {
       CheckArgs(source);
 
-      if (source is IList<TSource>) {
-        var list = source as IList<TSource>;
+      var list = source as IList<TSource>;
 
-        if (0 < list.Count)
-          return list[0];
-        else
-          throw new InvalidOperationException("sequence is empty");
-      }
-      else {
+      if (list == null) {
         foreach (var item in source) {
           return item;
         }
 
         throw new InvalidOperationException("sequence is empty");
+      }
+      else {
+        if (0 < list.Count)
+          return list[0];
+        else
+          throw new InvalidOperationException("sequence is empty");
       }
     }
 
@@ -185,20 +189,20 @@ namespace Smdn.Collections {
     {
       CheckArgs(source);
 
-      if (source is IList<TSource>) {
-        var list = source as IList<TSource>;
+      var list = source as IList<TSource>;
 
-        if (0 < list.Count)
-          return list[0];
-        else
-          return default(TSource);
-      }
-      else {
+      if (list == null) {
         foreach (var item in source) {
           return item;
         }
 
         return default(TSource);
+      }
+      else {
+        if (0 < list.Count)
+          return list[0];
+        else
+          return default(TSource);
       }
     }
 
@@ -286,8 +290,10 @@ namespace Smdn.Collections {
     {
       CheckArgs(source);
 
-      if (source is List<TSource>)
-        return (source as List<TSource>).ToArray();
+      var list = source as List<TSource>;
+
+      if (list != null)
+        return list.ToArray();
 
       var collection = source as System.Collections.ICollection;
 
