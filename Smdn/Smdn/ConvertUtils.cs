@@ -25,7 +25,7 @@
 using System;
 
 namespace Smdn {
-  public class ConvertUtils {
+  public static class ConvertUtils {
     public static Uri ToUri(string val)
     {
       if (val == null)
