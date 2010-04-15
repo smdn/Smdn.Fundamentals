@@ -251,7 +251,7 @@ namespace Smdn.IO {
       if (length < 0L)
         throw new ArgumentOutOfRangeException("length", length, "must be zero or positive number");
       if (targetStream == null)
-        throw new ArgumentNullException("target");
+        throw new ArgumentNullException("targetStream");
 
       if (length <= bufRemain) {
         var count = (int)length;
