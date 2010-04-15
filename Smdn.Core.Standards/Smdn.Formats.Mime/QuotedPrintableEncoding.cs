@@ -56,6 +56,9 @@ namespace Smdn.Formats.Mime {
 
     public static byte[] Encode(string str, Encoding encoding)
     {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
       return ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(),
                                                        encoding.GetBytes(str));
     }

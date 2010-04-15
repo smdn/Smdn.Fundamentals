@@ -54,6 +54,9 @@ namespace Smdn.Formats {
 
     public static byte[] Encode(string str, ToPercentEncodedTransformMode mode, Encoding encoding)
     {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
       return ICryptoTransformExtensions.TransformBytes(new ToPercentEncodedTransform(mode),
                                                        encoding.GetBytes(str));
     }
