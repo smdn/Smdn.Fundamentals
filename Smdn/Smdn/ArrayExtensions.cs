@@ -34,6 +34,8 @@ namespace Smdn {
     {
       if (array == null)
         throw new ArgumentNullException("array");
+      if (elements == null)
+        throw new ArgumentNullException("elements");
 
       if (array.Length == 0 && elements.Length == 0)
         return new T[] {element};
@@ -54,6 +56,8 @@ namespace Smdn {
     {
       if (array == null)
         throw new ArgumentNullException("array");
+      if (elements == null)
+        throw new ArgumentNullException("elements");
 
       if (array.Length == 0 && elements.Length == 0)
         return new T[] {element};

@@ -142,6 +142,9 @@ namespace Smdn {
 
     public MimeType(string mimeType)
     {
+      if (mimeType == null)
+        throw new ArgumentNullException("mimeType");
+
       var type = mimeType.Split(new[] {'/'}, 2);
 
       if (type.Length < 2)
@@ -164,6 +167,9 @@ namespace Smdn {
 
     public bool TypeEquals(MimeType mimeType)
     {
+      if (mimeType == null)
+        return false;
+
       return TypeEquals(mimeType.Type);
     }
 
@@ -174,6 +180,9 @@ namespace Smdn {
 
     public bool TypeEqualsIgnoreCase(MimeType mimeType)
     {
+      if (mimeType == null)
+        return false;
+
       return TypeEqualsIgnoreCase(mimeType.Type);
     }
 
@@ -184,6 +193,9 @@ namespace Smdn {
 
     public bool SubTypeEquals(MimeType mimeType)
     {
+      if (mimeType == null)
+        return false;
+
       return SubTypeEquals(mimeType.SubType);
     }
 
@@ -194,6 +206,9 @@ namespace Smdn {
 
     public bool SubTypeEqualsIgnoreCase(MimeType mimeType)
     {
+      if (mimeType == null)
+        return false;
+
       return SubTypeEqualsIgnoreCase(mimeType.SubType);
     }
 

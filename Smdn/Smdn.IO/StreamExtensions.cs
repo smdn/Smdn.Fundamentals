@@ -34,6 +34,8 @@ namespace Smdn.IO {
 
     public static void WriteToEnd(this Stream fromStream, Stream toStream, int bufferSize)
     {
+      if (fromStream == null)
+        throw new ArgumentNullException("fromStream");
       if (toStream == null)
         throw new ArgumentNullException("toStream");
       if (bufferSize <= 0)
@@ -58,6 +60,8 @@ namespace Smdn.IO {
 
     public static void WriteToEnd(this Stream stream, System.IO.BinaryWriter writer, int bufferSize)
     {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
       if (writer == null)
         throw new ArgumentNullException("writer");
       if (bufferSize <= 0)
@@ -87,6 +91,8 @@ namespace Smdn.IO {
 
     public static byte[] ReadToEnd(this Stream stream, int readBufferSize, int initialCapacity)
     {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
       if (readBufferSize <= 0)
         throw new ArgumentOutOfRangeException("readBufferSize", readBufferSize, "must be non-zero positive number");
       if (initialCapacity < 0)

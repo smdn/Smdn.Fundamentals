@@ -109,6 +109,9 @@ namespace Smdn {
 
     public ByteStringBuilder Append(byte[] str)
     {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
       return Append(str, 0, str.Length);
     }
 

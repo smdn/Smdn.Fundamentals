@@ -38,6 +38,9 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(string str, Encoding encoding)
     {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
       return GetEncodedString(encoding.GetBytes(str));
     }
 
@@ -53,6 +56,9 @@ namespace Smdn.Formats {
 
     public static byte[] Encode(string str, Encoding encoding)
     {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
       return Encode(encoding.GetBytes(str));
     }
 
@@ -68,6 +74,9 @@ namespace Smdn.Formats {
 
     public static string GetDecodedString(string str, Encoding encoding)
     {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
       return encoding.GetString(Decode(str));
     }
 

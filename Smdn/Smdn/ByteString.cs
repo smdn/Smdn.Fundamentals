@@ -199,6 +199,9 @@ namespace Smdn {
 
     public bool EndsWith(byte[] @value)
     {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
       if (bytes.Length < @value.Length)
         return false;
 

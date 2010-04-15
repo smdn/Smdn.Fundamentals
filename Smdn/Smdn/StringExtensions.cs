@@ -123,6 +123,9 @@ namespace Smdn {
 
     public static int Count(this string str, char c)
     {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
       var chars = str.ToCharArray();
       var count = 0;
 
@@ -136,6 +139,9 @@ namespace Smdn {
 
     public static int Count(this string str, string substr)
     {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
       if (string.IsNullOrEmpty(substr))
         throw new ArgumentException("length must be greater than 1", "substr");
 
