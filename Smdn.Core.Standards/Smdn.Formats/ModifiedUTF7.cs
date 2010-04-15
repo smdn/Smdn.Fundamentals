@@ -40,45 +40,46 @@ namespace Smdn.Formats {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      var transform = new ToRFC3501ModifiedBase64Transform();
-      var encoded = new StringBuilder();
-      var chars = str.ToCharArray();
-      var shiftFrom = -1;
+      using (var transform = new ToRFC3501ModifiedBase64Transform()) {
+        var encoded = new StringBuilder();
+        var chars = str.ToCharArray();
+        var shiftFrom = -1;
 
-      for (var index = 0; index < chars.Length; index++) {
-        var c = chars[index];
+        for (var index = 0; index < chars.Length; index++) {
+          var c = chars[index];
 
-        if (('\u0020' <= c && c <= '\u007e')) {
-          if (0 <= shiftFrom) {
-            // string -> modified UTF7
-            encoded.Append('&');
-            encoded.Append(transform.TransformStringTo(str.Substring(shiftFrom, index - shiftFrom), Encoding.BigEndianUnicode));
-            encoded.Append('-');
+          if (('\u0020' <= c && c <= '\u007e')) {
+            if (0 <= shiftFrom) {
+              // string -> modified UTF7
+              encoded.Append('&');
+              encoded.Append(transform.TransformStringTo(str.Substring(shiftFrom, index - shiftFrom), Encoding.BigEndianUnicode));
+              encoded.Append('-');
 
-            shiftFrom = -1;
+              shiftFrom = -1;
+            }
+
+            // printable US-ASCII characters
+            if (c == '\u0026')
+              // except for "&"
+              encoded.Append("&-");
+            else
+              encoded.Append(c);
           }
-
-          // printable US-ASCII characters
-          if (c == '\u0026')
-            // except for "&"
-            encoded.Append("&-");
-          else
-            encoded.Append(c);
+          else {
+            if (shiftFrom == -1)
+              shiftFrom = index;
+          }
         }
-        else {
-          if (shiftFrom == -1)
-            shiftFrom = index;
+
+        if (0 <= shiftFrom) {
+          // string -> modified UTF7
+          encoded.Append('&');
+          encoded.Append(transform.TransformStringTo(str.Substring(shiftFrom), Encoding.BigEndianUnicode));
+          encoded.Append('-');
         }
-      }
 
-      if (0 <= shiftFrom) {
-        // string -> modified UTF7
-        encoded.Append('&');
-        encoded.Append(transform.TransformStringTo(str.Substring(shiftFrom), Encoding.BigEndianUnicode));
-        encoded.Append('-');
+        return encoded.ToString();
       }
-
-      return encoded.ToString();
     }
 
     public static string Decode(string str)
@@ -86,47 +87,48 @@ namespace Smdn.Formats {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      var transform = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces);
-      var chars = str.ToCharArray();
-      var decoded = new StringBuilder();
+      using (var transform = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces)) {
+        var chars = str.ToCharArray();
+        var decoded = new StringBuilder();
 
-      for (var index = 0; index < chars.Length; index++) {
-        if (chars[index] < '\u0020' || '\u007e' < chars[index])
-          throw new FormatException(string.Format("contains non-ascii or non-printable character: at index {0} of '{1}', \\u{2:x4}", index, str, (int)chars[index]));
+        for (var index = 0; index < chars.Length; index++) {
+          if (chars[index] < '\u0020' || '\u007e' < chars[index])
+            throw new FormatException(string.Format("contains non-ascii or non-printable character: at index {0} of '{1}', \\u{2:x4}", index, str, (int)chars[index]));
 
-        // In modified UTF-7, printable US-ASCII characters, except for "&",
-        // represent themselves
-        // "&" is used to shift to modified BASE64
-        if (chars[index] != '&') {
-          decoded.Append(chars[index]);
-          continue;
+          // In modified UTF-7, printable US-ASCII characters, except for "&",
+          // represent themselves
+          // "&" is used to shift to modified BASE64
+          if (chars[index] != '&') {
+            decoded.Append(chars[index]);
+            continue;
+          }
+
+          if (chars.Length <= ++index)
+            // incorrect form
+            throw new FormatException("incorrect form");
+
+          if (chars[index] == '-') {
+            // The character "&" (0x26) is represented by the two-octet sequence "&-".
+            decoded.Append('&');
+            continue;
+          }
+
+          var nonprintable = new StringBuilder();
+
+          for (; index < chars.Length; index++) {
+            if (chars[index] == '-')
+              // "-" is used to shift back to US-ASCII
+              break;
+
+            nonprintable.Append(chars[index]);
+          }
+
+          // modified UTF7 -> string
+          decoded.Append(transform.TransformStringFrom(nonprintable.ToString(), Encoding.BigEndianUnicode));
         }
 
-        if (chars.Length <= ++index)
-          // incorrect form
-          throw new FormatException("incorrect form");
-
-        if (chars[index] == '-') {
-          // The character "&" (0x26) is represented by the two-octet sequence "&-".
-          decoded.Append('&');
-          continue;
-        }
-
-        var nonprintable = new StringBuilder();
-
-        for (; index < chars.Length; index++) {
-          if (chars[index] == '-')
-            // "-" is used to shift back to US-ASCII
-            break;
-
-          nonprintable.Append(chars[index]);
-        }
-
-        // modified UTF7 -> string
-        decoded.Append(transform.TransformStringFrom(nonprintable.ToString(), Encoding.BigEndianUnicode));
+        return decoded.ToString();
       }
-
-      return decoded.ToString();
     }
   }
 }
