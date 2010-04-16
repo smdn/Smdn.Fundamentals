@@ -148,10 +148,8 @@ namespace Smdn {
 
       EnsureCapacity(length + str.Length);
 
-      var chars = str.ToCharArray();
-
       for (var index = 0; index < str.Length; index++, length++) {
-        buffer[length] = (byte)chars[index];
+        buffer[length] = (byte)str[index];
       }
 
       return this;
