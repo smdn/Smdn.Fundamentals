@@ -471,11 +471,11 @@ namespace Smdn {
     {
       var uppercased = new byte[bytes.Length];
 
-      Buffer.BlockCopy(bytes, 0, uppercased, 0, bytes.Length);
-
-      for (var index = 0; index < uppercased.Length; index++) {
-        if (0x61 <= uppercased[index] && uppercased[index] <= 0x7a)
-          uppercased[index] = (byte)(uppercased[index] - 0x20);
+      for (var index = 0; index < bytes.Length; index++) {
+        if (0x61 <= bytes[index] && bytes[index] <= 0x7a)
+          uppercased[index] = (byte)(bytes[index] - 0x20);
+        else
+          uppercased[index] = bytes[index];
       }
 
       return new ByteString(uppercased);
@@ -485,11 +485,11 @@ namespace Smdn {
     {
       var lowercased = new byte[bytes.Length];
 
-      Buffer.BlockCopy(bytes, 0, lowercased, 0, bytes.Length);
-
-      for (var index = 0; index < lowercased.Length; index++) {
-        if (0x41 <= lowercased[index] && lowercased[index] <= 0x5a)
-          lowercased[index] = (byte)(lowercased[index] + 0x20);
+      for (var index = 0; index < bytes.Length; index++) {
+        if (0x41 <= bytes[index] && bytes[index] <= 0x5a)
+          lowercased[index] = (byte)(bytes[index] + 0x20);
+        else
+          lowercased[index] = bytes[index];
       }
 
       return new ByteString(lowercased);
