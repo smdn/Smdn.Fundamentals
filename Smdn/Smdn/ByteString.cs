@@ -743,17 +743,30 @@ namespace Smdn {
 
     public override string ToString()
     {
-#if true
-      var chars = new char[bytes.Length];
+      return ToString(0, bytes.Length);
+    }
 
-      for (var index = 0; index < bytes.Length; index++) {
-        chars[index] = (char)bytes[index];
+    public string ToString(int index)
+    {
+      return ToString(index, bytes.Length - index);
+    }
+
+    public string ToString(int index, int count)
+    {
+      if (index < 0)
+        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
+      if (count < 0)
+        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
+      if (bytes.Length < index + count)
+        throw new ArgumentException("index + count is larger than length");
+
+      var chars = new char[count];
+
+      for (var i = 0; 0 < count; count--) {
+        chars[i++] = (char)bytes[index++];
       }
 
       return new string(chars);
-#else
-      return System.Text.Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-#endif
     }
 
     private int ToLower(byte b)

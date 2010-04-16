@@ -505,5 +505,21 @@ namespace Smdn {
 
       Assert.AreEqual("abc", str.ToString());
     }
+
+    [Test]
+    public void TestToStringPartial()
+    {
+      var str = new ByteString("abcdefghi");
+
+      Assert.AreEqual("abcdefghi", str.ToString(0));
+      Assert.AreEqual("", str.ToString(0, 0));
+      Assert.AreEqual("abc", str.ToString(0, 3));
+      Assert.AreEqual("abcdefghi", str.ToString(0, 9));
+      Assert.AreEqual("defghi", str.ToString(3));
+      Assert.AreEqual("", str.ToString(3, 0));
+      Assert.AreEqual("def", str.ToString(3, 3));
+      Assert.AreEqual("defghi", str.ToString(3, 6));
+      Assert.AreEqual("i", str.ToString(8, 1));
+    }
   }
 }
