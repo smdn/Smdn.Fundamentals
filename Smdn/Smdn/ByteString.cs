@@ -55,11 +55,10 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      var chars = @value.ToCharArray();
       var bytes = new byte[@value.Length];
 
-      for (var index = 0; index < chars.Length; index++) {
-        bytes[index] = (byte)chars[index];
+      for (var index = 0; index < @value.Length; index++) {
+        bytes[index] = (byte)@value[index];
       }
 
       return bytes;
@@ -179,10 +178,8 @@ namespace Smdn {
       if (bytes.Length < @value.Length)
         return false;
 
-      var chars = @value.ToCharArray();
-
-      for (var index = 0; index < chars.Length; index++) {
-        if (bytes[index] != chars[index])
+      for (var index = 0; index < @value.Length; index++) {
+        if (bytes[index] != @value[index])
           return false;
       }
 
@@ -223,11 +220,10 @@ namespace Smdn {
       if (bytes.Length < @value.Length)
         return false;
 
-      var chars = @value.ToCharArray();
       var offset = bytes.Length - @value.Length;
 
-      for (var index = 0; index < chars.Length; index++, offset++) {
-        if (bytes[offset] != chars[index])
+      for (var index = 0; index < @value.Length; index++, offset++) {
+        if (bytes[offset] != @value[index])
           return false;
       }
 
@@ -391,12 +387,11 @@ namespace Smdn {
       if (bytes.Length < @value.Length)
         return -1;
 
-      var chars = @value.ToCharArray();
       var matchedIndex = 0;
 
       for (var index = startIndex; index < bytes.Length; index++) {
       recheck:
-        if (bytes[index] == chars[matchedIndex]) {
+        if (bytes[index] == @value[matchedIndex]) {
           if (@value.Length == ++matchedIndex)
             return index - matchedIndex + 1;
         }
@@ -627,10 +622,8 @@ namespace Smdn {
       if (bytes.Length != other.Length)
         return false;
 
-      var chars = other.ToCharArray();
-
       for (var index = 0; index < bytes.Length; index++) {
-        if (bytes[index] != chars[index])
+        if (bytes[index] != other[index])
           return false;
       }
 
