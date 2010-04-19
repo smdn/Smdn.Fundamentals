@@ -53,11 +53,13 @@ namespace Smdn {
 
     public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct /*instead of Enum*/
     {
-      if (value == null)
-        throw new ArgumentNullException("value");
+      var type = typeof(TEnum);
+
+      if (!type.IsEnum)
+        throw new ArgumentException("type is not enum");
 
       try {
-        result = Parse<TEnum>(value, ignoreCase);
+        result = (TEnum)Enum.Parse(type, value, ignoreCase);
 
         return true;
       }
