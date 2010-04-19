@@ -58,6 +58,21 @@ namespace Smdn.IO {
       Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}, outputStream.ToArray());
     }
 
+    [Test, ExpectedException(typeof(NotSupportedException)), Ignore("to be written")]
+    public void TestWriteToEndReadFromUnreadableStream()
+    {
+    }
+
+    [Test, ExpectedException(typeof(NotSupportedException))]
+    public void TestWriteToEndWriteToUnwritableStream()
+    {
+      var inputData = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
+      var inputStream = new MemoryStream(inputData);
+      var outputStream = new MemoryStream(new byte[0], false);
+
+      StreamExtensions.WriteToEnd(inputStream, outputStream);
+    }
+
     [Test]
     public void TestWriteToBinaryWriter()
     {
