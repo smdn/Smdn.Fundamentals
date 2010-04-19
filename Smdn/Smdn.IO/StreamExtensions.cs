@@ -27,38 +27,40 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
-    public static void WriteToEnd(this Stream fromStream, Stream toStream)
+    public static void CopyTo(this Stream stream, Stream destination)
     {
-      WriteToEnd(fromStream, toStream, 4096);
+      CopyTo(stream, destination, 10 * 1024);
     }
 
-    public static void WriteToEnd(this Stream fromStream, Stream toStream, int bufferSize)
+    public static void CopyTo(this Stream stream, Stream destination, int bufferSize)
     {
-      if (fromStream == null)
-        throw new ArgumentNullException("fromStream");
-      if (toStream == null)
-        throw new ArgumentNullException("toStream");
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+      if (destination == null)
+        throw new ArgumentNullException("destination");
       if (bufferSize <= 0)
         throw new ArgumentOutOfRangeException("bufferSize", bufferSize, "must be non-zero positive number");
 
       var buffer = new byte[bufferSize];
 
       for (;;) {
-        var read = fromStream.Read(buffer, 0, bufferSize);
+        // throws NotSupportedException if !CanRead
+        var read = stream.Read(buffer, 0, bufferSize);
 
         if (read <= 0)
           break;
 
-        toStream.Write(buffer, 0, read);
+        // throws NotSupportedException if !CanWrite
+        destination.Write(buffer, 0, read);
       }
     }
 
-    public static void WriteToEnd(this Stream stream, System.IO.BinaryWriter writer)
+    public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer)
     {
-      WriteToEnd(stream, writer, 4096);
+      CopyTo(stream, writer, 10 * 1024);
     }
 
-    public static void WriteToEnd(this Stream stream, System.IO.BinaryWriter writer, int bufferSize)
+    public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer, int bufferSize)
     {
       if (stream == null)
         throw new ArgumentNullException("stream");
@@ -99,7 +101,7 @@ namespace Smdn.IO {
         throw new ArgumentOutOfRangeException("initialCapacity", initialCapacity, "must be zero or positive number");
 
       using (var outStream = new MemoryStream(initialCapacity)) {
-        WriteToEnd(stream, outStream, readBufferSize);
+        CopyTo(stream, outStream, readBufferSize);
 
         outStream.Close();
 
