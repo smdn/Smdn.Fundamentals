@@ -47,5 +47,26 @@ namespace Smdn {
 
       Assert.IsFalse(EnumUtils.TryParse<DayOfWeek>("fRiDay", false, out result));
     }
+
+    [Test, ExpectedException(typeof(ArgumentException))]
+    public void TestTryParseNonEnumType()
+    {
+      Guid result;
+
+      EnumUtils.TryParse<Guid>("test", out result);
+    }
+
+    [Flags] enum Colors { None=0, Red = 1, Green = 2, Blue = 4 };
+
+    [Test]
+    public void TestTryParseFlagsEnum()
+    {
+      Colors colorValue;
+
+      Assert.IsTrue(EnumUtils.TryParse("Red, Green", true, out colorValue));
+
+      Assert.IsTrue((int)(colorValue & Colors.Red) != 0);
+      Assert.IsTrue((int)(colorValue & Colors.Green) != 0);
+    }
   }
 }
