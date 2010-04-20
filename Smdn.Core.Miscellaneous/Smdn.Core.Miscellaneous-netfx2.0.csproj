@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -17,20 +17,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>NET_2_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
-    <OutputPath>..\build\bin\Debug\</OutputPath>
+    <OutputPath>..\build\bin\Debug\netfx2.0\</OutputPath>
     <RootNamespace>Smdn.Core.Miscellaneous</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
-    <OutputPath>..\build\bin\Release\</OutputPath>
+    <OutputPath>..\build\bin\Release\netfx2.0\</OutputPath>
     <RootNamespace>Smdn.Core.Miscellaneous</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -77,9 +78,9 @@
     <Folder Include="Smdn.Xml\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Smdn\Smdn.csproj">
+    <ProjectReference Include="..\Smdn\Smdn-netfx2.0.csproj">
       <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
-      <Name>Smdn</Name>
+      <Name>Smdn-netfx2.0</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

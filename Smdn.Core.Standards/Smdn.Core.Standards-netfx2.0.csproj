@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EFCDB368-F7E4-11DE-9F78-0018F344D241}</ProjectGuid>
+    <ProjectGuid>{72E150F4-F71B-11DE-8995-0018F344D241}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Smdn</RootNamespace>
-    <AssemblyName>Smdn.Core.BinaryFormats</AssemblyName>
+    <AssemblyName>Smdn.Core.Standards</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
   </PropertyGroup>
@@ -16,21 +16,22 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>NET_2_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
-    <OutputPath>..\build\bin\Debug\</OutputPath>
-    <RootNamespace>Smdn.Core.BinaryFormats</RootNamespace>
+    <OutputPath>..\build\bin\Debug\netfx2.0\</OutputPath>
+    <RootNamespace>Smdn.Core.Standards</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
-    <OutputPath>..\build\bin\Release\</OutputPath>
-    <RootNamespace>Smdn.Core.BinaryFormats</RootNamespace>
+    <OutputPath>..\build\bin\Release\netfx2.0\</OutputPath>
+    <RootNamespace>Smdn.Core.Standards</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -42,19 +43,30 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn\UInt24.cs" />
-    <Compile Include="Smdn\UInt48.cs" />
-    <Compile Include="Smdn.IO\BigEndianBinaryReader.cs" />
-    <Compile Include="Smdn.IO\BigEndianBinaryWriter.cs" />
-    <Compile Include="Smdn.IO\BinaryReader.cs" />
-    <Compile Include="Smdn.IO\BinaryReaderImpl.cs" />
-    <Compile Include="Smdn.IO\BinaryWriter.cs" />
-    <Compile Include="Smdn.IO\BinaryWriterImpl.cs" />
-    <Compile Include="Smdn.IO\LittleEndianBinaryReader.cs" />
-    <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
-    <Compile Include="Smdn\FourCC.cs" />
-    <Compile Include="Smdn.IO\ExtendStream.cs" />
-    <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
+    <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
+    <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\TextConvert.cs" />
+    <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
+    <Compile Include="Smdn.Formats\ToRFC2152ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\ToRFC3501ModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\CsvReader.cs" />
+    <Compile Include="Smdn.Formats\CsvWriter.cs" />
+    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
+    <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
+    <Compile Include="Smdn.Formats\EncodingUtils.cs" />
+    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
+    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
+    <Compile Include="Smdn.Formats.Mime\ToQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats.Mime\FromQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncodingMethod.cs" />
+    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\ContentTransferEncodingMethod.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -70,12 +82,14 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
+    <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Formats.Mime\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Smdn\Smdn.csproj">
+    <ProjectReference Include="..\Smdn\Smdn-netfx2.0.csproj">
       <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
-      <Name>Smdn</Name>
+      <Name>Smdn-netfx2.0</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
