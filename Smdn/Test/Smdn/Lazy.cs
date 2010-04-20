@@ -43,8 +43,8 @@ namespace Smdn {
       var lazy = new Lazy<int>(delegate{ return 3; });
 
       Assert.IsFalse(lazy.IsValueCreated);
-      Assert.AreEqual("3", lazy.ToString());
-      Assert.IsTrue(lazy.IsValueCreated);
+      Assert.AreNotEqual("3", lazy.ToString());
+      Assert.IsFalse(lazy.IsValueCreated);
     }
   }
 }

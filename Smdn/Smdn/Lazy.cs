@@ -91,7 +91,10 @@ namespace Smdn {
     /// <returns>Calling this method causes initialization.</returns>
     public override string ToString()
     {
-      return Value.ToString();
+      if (isValueCreated)
+        return Value.ToString();
+      else
+        return "value is not created";
     }
 
     private T val;
