@@ -15,8 +15,8 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <OutputPath>bin\Debug\netfx2.0</OutputPath>
+    <DefineConstants>NET_2_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -24,7 +24,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin\Release\netfx2.0\</OutputPath>
+    <DefineConstants>NET_2_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -75,9 +76,9 @@
     <Compile Include="Smdn.Collections\Enumerable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.csproj">
+    <ProjectReference Include="..\Smdn-netfx2.0.csproj">
       <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
-      <Name>Smdn</Name>
+      <Name>Smdn-netfx2.0</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

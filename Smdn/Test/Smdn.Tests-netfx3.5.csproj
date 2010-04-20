@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{76E85D66-C347-4E5F-8344-67A0D788C5DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Smdn.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Smdn.Tests</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\netfx3.5\</OutputPath>
+    <DefineConstants>NET_2_0;NET_3_5;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release\netfx3.5\</OutputPath>
+    <DefineConstants>NET_2_0;NET_3_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Smdn\" />
+    <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Formats\" />
+    <Folder Include="Smdn.Mathematics\" />
+    <Folder Include="Smdn.Collections\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Smdn.Mathematics\Fraction.cs" />
+    <Compile Include="Smdn.IO\PathUtils.cs" />
+    <Compile Include="Smdn\ArrayExtensions.cs" />
+    <Compile Include="Smdn\StringExtensions.cs" />
+    <Compile Include="Smdn\Runtime.cs" />
+    <Compile Include="Smdn\EnumUtils.cs" />
+    <Compile Include="Smdn.Mathematics\Radian.cs" />
+    <Compile Include="Smdn.Mathematics\Polar.cs" />
+    <Compile Include="Smdn\MimeType.cs" />
+    <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
+    <Compile Include="Smdn.Threading\Parallel.cs" />
+    <Compile Include="Smdn\Platform.cs" />
+    <Compile Include="Smdn\Uuid.cs" />
+    <Compile Include="Smdn\Urn.cs" />
+    <Compile Include="Smdn\Lazy.cs" />
+    <Compile Include="Smdn.IO\StreamExtensions.cs" />
+    <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
+    <Compile Include="Smdn\UnixTimeStamp.cs" />
+    <Compile Include="Smdn\MathUtils.cs" />
+    <Compile Include="Smdn.Formats\Csv.cs" />
+    <Compile Include="Smdn.Formats\Hexadecimals.cs" />
+    <Compile Include="Smdn\ByteString.cs" />
+    <Compile Include="Smdn\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
+    <Compile Include="Smdn.IO\PartialStream.cs" />
+    <Compile Include="Smdn.IO\CachedStream.cs" />
+    <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
+    <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
+    <Compile Include="Smdn.Formats\Base64.cs" />
+    <Compile Include="Smdn.Collections\Enumerable.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Smdn-netfx3.5.csproj">
+      <Project>{94EE5515-F253-491B-8F0F-09F70D03B1B6}</Project>
+      <Name>Smdn-netfx3.5</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -14,7 +14,7 @@ namespace Smdn.IO {
       var inputStream = new MemoryStream(inputData);
       var outputStream = new MemoryStream();
 
-      StreamExtensions.CopyTo(inputStream, outputStream, 3);
+      inputStream.CopyTo(outputStream, 3);
 
       Assert.AreEqual(8, outputStream.Length);
 
@@ -30,7 +30,7 @@ namespace Smdn.IO {
       var inputStream = new MemoryStream(inputData);
       var outputStream = new MemoryStream();
 
-      StreamExtensions.CopyTo(inputStream, outputStream, 16);
+      inputStream.CopyTo(outputStream, 16);
 
       Assert.AreEqual(8, outputStream.Length);
 
@@ -49,7 +49,7 @@ namespace Smdn.IO {
       inputStream.Seek(4, SeekOrigin.Begin);
       outputStream.Seek(8, SeekOrigin.Begin);
 
-      StreamExtensions.CopyTo(inputStream, outputStream);
+      inputStream.CopyTo(outputStream);
 
       Assert.AreEqual(12, outputStream.Length);
 
@@ -70,7 +70,7 @@ namespace Smdn.IO {
       var inputStream = new MemoryStream(inputData);
       var outputStream = new MemoryStream(new byte[0], false);
 
-      StreamExtensions.CopyTo(inputStream, outputStream);
+      inputStream.CopyTo(outputStream);
     }
 
     [Test]

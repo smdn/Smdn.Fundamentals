@@ -36,6 +36,18 @@ namespace Smdn {
     {
       DayOfWeek result;
 
+#if NET_4_0
+      Assert.IsTrue(Enum.TryParse<DayOfWeek>("Friday", out result));
+      Assert.AreEqual(DayOfWeek.Friday, result);
+
+      Assert.IsTrue(Enum.TryParse<DayOfWeek>("fRiDay", true, out result));
+      Assert.AreEqual(DayOfWeek.Friday, result);
+
+      Assert.IsTrue(EnumUtils.TryParseIgnoreCase<DayOfWeek>("fRiDay", out result));
+      Assert.AreEqual(DayOfWeek.Friday, result);
+
+      Assert.IsFalse(Enum.TryParse<DayOfWeek>("fRiDay", false, out result));
+#else
       Assert.IsTrue(EnumUtils.TryParse<DayOfWeek>("Friday", out result));
       Assert.AreEqual(DayOfWeek.Friday, result);
 
@@ -46,6 +58,7 @@ namespace Smdn {
       Assert.AreEqual(DayOfWeek.Friday, result);
 
       Assert.IsFalse(EnumUtils.TryParse<DayOfWeek>("fRiDay", false, out result));
+#endif
     }
 
     [Test, ExpectedException(typeof(ArgumentException))]
@@ -53,7 +66,11 @@ namespace Smdn {
     {
       Guid result;
 
+#if NET_4_0
+      Enum.TryParse<Guid>("test", out result);
+#else
       EnumUtils.TryParse<Guid>("test", out result);
+#endif
     }
 
     [Flags] enum Colors { None=0, Red = 1, Green = 2, Blue = 4 };
@@ -63,7 +80,11 @@ namespace Smdn {
     {
       Colors colorValue;
 
+#if NET_4_0
+      Assert.IsTrue(Enum.TryParse("Red, Green", true, out colorValue));
+#else
       Assert.IsTrue(EnumUtils.TryParse("Red, Green", true, out colorValue));
+#endif
 
       Assert.IsTrue((int)(colorValue & Colors.Red) != 0);
       Assert.IsTrue((int)(colorValue & Colors.Green) != 0);

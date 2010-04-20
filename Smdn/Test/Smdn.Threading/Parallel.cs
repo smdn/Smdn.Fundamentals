@@ -1,6 +1,10 @@
 using System;
 using NUnit.Framework;
 
+#if NET_4_0
+using System.Threading.Tasks;
+#endif
+
 namespace Smdn.Threading {
   [TestFixture()]
   public class ParallelTests {
