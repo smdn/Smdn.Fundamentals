@@ -10,13 +10,13 @@
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>NET_2_0;NET_3_5;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
@@ -33,6 +33,7 @@
     <OutputPath>..\build\bin\Release\</OutputPath>
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>NET_2_0;NET_3_5</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -95,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

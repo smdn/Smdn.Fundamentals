@@ -33,6 +33,7 @@
     <OutputPath>..\build\bin\Release\</OutputPath>
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
