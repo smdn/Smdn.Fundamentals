@@ -49,7 +49,7 @@ namespace Smdn.IO {
       }
       else {
         using (var readStream = new MemoryStream()) {
-          r.BaseStream.WriteToEnd(readStream, 1024);
+          r.BaseStream.CopyTo(readStream, 1024);
 
           readStream.Close();
 
