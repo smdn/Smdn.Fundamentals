@@ -33,6 +33,7 @@ using Smdn.Collections;
 #endif
 
 namespace Smdn.Threading {
+#if !NET_4_0
   public static class Parallel {
     public static void For(int fromInclusive, int toExclusive, Action<int> action)
     {
@@ -102,4 +103,5 @@ namespace Smdn.Threading {
       }
     }
   }
+#endif
 }
