@@ -20,7 +20,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
-    <OutputPath>..\build\bin\Debug\</OutputPath>
+    <OutputPath>..\build\bin\Debug\netfx4.0\</OutputPath>
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
-    <OutputPath>..\build\bin\Release\</OutputPath>
+    <OutputPath>..\build\bin\Release\netfx4.0\</OutputPath>
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
