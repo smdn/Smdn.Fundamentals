@@ -27,6 +27,7 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
+#if !NET_4_0
     public static void CopyTo(this Stream stream, Stream destination)
     {
       CopyTo(stream, destination, 10 * 1024);
@@ -54,6 +55,7 @@ namespace Smdn.IO {
         destination.Write(buffer, 0, read);
       }
     }
+#endif
 
     public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer)
     {
@@ -101,7 +103,7 @@ namespace Smdn.IO {
         throw new ArgumentOutOfRangeException("initialCapacity", initialCapacity, "must be zero or positive number");
 
       using (var outStream = new MemoryStream(initialCapacity)) {
-        CopyTo(stream, outStream, readBufferSize);
+        stream.CopyTo(outStream, readBufferSize);
 
         outStream.Close();
 
