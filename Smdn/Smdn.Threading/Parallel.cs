@@ -26,7 +26,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
+#if NET_3_5
+using System.Linq;
+#else
 using Smdn.Collections;
+#endif
 
 namespace Smdn.Threading {
   public static class Parallel {

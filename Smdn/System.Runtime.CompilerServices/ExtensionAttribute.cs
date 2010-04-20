@@ -25,8 +25,10 @@
 using System;
 
 namespace System.Runtime.CompilerServices {
+#if !NET_3_5
   // this attribute is used by C# compiler.
   // extension methods cannot be declared without ExtensionAttribute, declared in System.Core.dll.
   [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method)]
   public sealed class ExtensionAttribute : Attribute {}
+#endif
 }

@@ -26,7 +26,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+#if NET_3_5
+using System.Linq;
+#else
 using Smdn.Collections;
+#endif
 
 namespace Smdn.IO {
   public static class DirectoryUtils {

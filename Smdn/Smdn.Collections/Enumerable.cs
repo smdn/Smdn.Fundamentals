@@ -22,12 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if !LINQ
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
+#if !NET_3_5
   public static class Enumerable {
     private static void CheckArgs(object source)
     {
@@ -331,5 +331,5 @@ namespace Smdn.Collections {
       }
     }
   }
+#endif
 }
-#endif // !LINQ

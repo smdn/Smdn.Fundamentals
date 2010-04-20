@@ -28,6 +28,7 @@ namespace Smdn {
   /*
    * System.Lazy<T> is available from .NET Framework 4
    */
+#if !NET_4_0
   [Serializable]
   /*[ComVisible(false)]*/
   /*[HostProtection(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]*/
@@ -98,4 +99,5 @@ namespace Smdn {
     private bool isValueCreated = false;
     private object initLock;
   }
+#endif
 }
