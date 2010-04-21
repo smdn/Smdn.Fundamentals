@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -10,7 +10,6 @@
     <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
-    <ReleaseVersion>0.20</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,16 +35,6 @@
     <Reference Include="System.Core" />
     <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\Smdn-netfx3.5.csproj">
-      <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
-      <Name>Smdn-netfx3.5</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Smdn.Core.Standards-netfx3.5.csproj">
-      <Project>{72E150F4-F71B-11DE-8995-0018F344D241}</Project>
-      <Name>Smdn.Core.Standards-netfx3.5</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Smdn.Formats\" />
@@ -66,5 +55,15 @@
     <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smdn\Smdn-netfx3.5.csproj">
+      <Project>{94EE5515-F253-491B-8F0F-09F70D03B1B6}</Project>
+      <Name>Smdn-netfx3.5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Smdn.Core.Standards-netfx3.5.csproj">
+      <Project>{A749376E-4C07-400D-9FDA-F6A9DF2E7B18}</Project>
+      <Name>Smdn.Core.Standards-netfx3.5</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

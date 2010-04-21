@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -89,7 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn-netfx3.5.csproj">
-      <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
+      <Project>{94EE5515-F253-491B-8F0F-09F70D03B1B6}</Project>
       <Name>Smdn-netfx3.5</Name>
     </ProjectReference>
   </ItemGroup>
