@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -38,11 +38,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\Smdn-netfx3.5.csproj">
-      <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
+      <Project>{94EE5515-F253-491B-8F0F-09F70D03B1B6}</Project>
       <Name>Smdn-netfx3.5</Name>
     </ProjectReference>
     <ProjectReference Include="..\Smdn.Core.Standards-netfx3.5.csproj">
-      <Project>{72E150F4-F71B-11DE-8995-0018F344D241}</Project>
+      <Project>{A749376E-4C07-400D-9FDA-F6A9DF2E7B18}</Project>
       <Name>Smdn.Core.Standards-netfx3.5</Name>
     </ProjectReference>
   </ItemGroup>
