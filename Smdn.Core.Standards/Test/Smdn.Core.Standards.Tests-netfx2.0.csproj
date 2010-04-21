@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{05F807B8-C1CC-4485-A6D6-817C50E08CE1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
+    <ReleaseVersion>0.20</ReleaseVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\netfx2.0\</OutputPath>
+    <DefineConstants>NET_2_0;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>NET_2_0</DefineConstants>
+    <OutputPath>bin\Release\netfx2.0\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smdn\Smdn-netfx2.0.csproj">
+      <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
+      <Name>Smdn-netfx2.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Smdn.Core.Standards-netfx2.0.csproj">
+      <Project>{72E150F4-F71B-11DE-8995-0018F344D241}</Project>
+      <Name>Smdn.Core.Standards-netfx2.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Smdn.Formats\" />
+    <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Formats.Mime\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
+    <Compile Include="Smdn.Formats\EncodingUtils.cs" />
+    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
+    <Compile Include="Smdn.Formats\TestUtils.cs" />
+    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
+    <Compile Include="Smdn.Formats\ToModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\FromModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
+  </ItemGroup>
+</Project>

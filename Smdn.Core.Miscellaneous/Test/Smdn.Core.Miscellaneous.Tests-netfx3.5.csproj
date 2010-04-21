@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0179C969-7F3F-4F0C-9C4F-2C10E9381317}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Smdn.Core.Miscellaneous.Tests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>Smdn.Core.Miscellaneous.Tests</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\netfx3.5\</OutputPath>
+    <DefineConstants>NET_2_0;NET_3_5;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5</DefineConstants>
+    <OutputPath>bin\Release\netfx3.5\</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smdn\Smdn-netfx3.5.csproj">
+      <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
+      <Name>Smdn-netfx3.5</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Smdn.Core.Miscellaneous-netfx3.5.csproj">
+      <Project>{44FF2C0E-F740-11DE-B243-0018F344D241}</Project>
+      <Name>Smdn.Core.Miscellaneous-netfx3.5</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Smdn.Formats\" />
+    <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Threading\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
+    <Compile Include="Smdn.IO\FileDialogFilter.cs" />
+    <Compile Include="Smdn.IO\ShellString.cs" />
+    <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
+  </ItemGroup>
+</Project>
