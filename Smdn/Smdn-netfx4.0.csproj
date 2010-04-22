@@ -10,6 +10,7 @@
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn</AssemblyName>
     <OutputPath>..\build\bin\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -21,6 +22,7 @@
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Debug\netfx4.0\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\netfx4.0\</IntermediateOutputPath>
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -31,6 +33,7 @@
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Release\netfx4.0\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\netfx4.0\</IntermediateOutputPath>
     <RootNamespace>Smdn</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>

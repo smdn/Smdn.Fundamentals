@@ -10,12 +10,15 @@
     <AssemblyName>Smdn.Core.BinaryFormats.Tests</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Core.BinaryFormats.Tests</RootNamespace>
+    <OutputPath>bin\</OutputPath>
+    <IntermediateOutputPath>obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\netfx2.0\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\netfx2.0\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,6 +29,7 @@
     <Optimize>false</Optimize>
     <DefineConstants>NET_2_0</DefineConstants>
     <OutputPath>bin\Release\netfx2.0\</OutputPath>
+    <IntermediateOutputPath>obj\Release\netfx2.0\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

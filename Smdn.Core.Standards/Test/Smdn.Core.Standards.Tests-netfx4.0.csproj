@@ -11,12 +11,15 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
     <ReleaseVersion>0.20</ReleaseVersion>
+    <OutputPath>bin\</OutputPath>
+    <IntermediateOutputPath>obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\netfx4.0\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\netfx4.0\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,6 +30,7 @@
     <Optimize>false</Optimize>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
     <OutputPath>bin\Release\netfx4.0\</OutputPath>
+    <IntermediateOutputPath>obj\Release\netfx4.0\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

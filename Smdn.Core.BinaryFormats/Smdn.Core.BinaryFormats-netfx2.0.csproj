@@ -11,6 +11,7 @@
     <AssemblyName>Smdn.Core.BinaryFormats</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Debug\netfx2.0\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\netfx2.0\</IntermediateOutputPath>
     <RootNamespace>Smdn.Core.BinaryFormats</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -31,6 +33,7 @@
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Release\netfx2.0\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\netfx2.0\</IntermediateOutputPath>
     <RootNamespace>Smdn.Core.BinaryFormats</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

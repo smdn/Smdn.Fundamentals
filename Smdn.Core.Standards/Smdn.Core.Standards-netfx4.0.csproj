@@ -11,6 +11,7 @@
     <AssemblyName>Smdn.Core.Standards</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Debug\netfx4.0\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\netfx4.0\</IntermediateOutputPath>
     <RootNamespace>Smdn.Core.Standards</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -31,6 +33,7 @@
     <WarningLevel>3</WarningLevel>
     <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Release\netfx4.0\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\netfx4.0\</IntermediateOutputPath>
     <RootNamespace>Smdn.Core.Standards</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

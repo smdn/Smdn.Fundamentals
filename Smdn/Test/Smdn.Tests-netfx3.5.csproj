@@ -10,12 +10,15 @@
     <AssemblyName>Smdn.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <RootNamespace>Smdn.Tests</RootNamespace>
+    <OutputPath>bin\</OutputPath>
+    <IntermediateOutputPath>obj\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\netfx3.5\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\netfx3.5\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,6 +28,7 @@
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release\netfx3.5\</OutputPath>
+    <IntermediateOutputPath>obj\Release\netfx3.5\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
