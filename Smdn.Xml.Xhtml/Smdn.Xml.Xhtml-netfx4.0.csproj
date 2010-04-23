@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn-netfx4.0.csproj">
-      <Project>{9778FCEA-6A63-11DE-B228-0018F344D241}</Project>
+      <Project>{3FDF8CFA-B168-466F-B303-AEDDBED87BB9}</Project>
       <Name>Smdn-netfx4.0</Name>
     </ProjectReference>
   </ItemGroup>
