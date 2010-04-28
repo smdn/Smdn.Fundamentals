@@ -363,7 +363,7 @@ namespace Smdn.IO {
     private void CheckDisposed()
     {
       if (stream == null)
-        throw new ObjectDisposedException(GetType().Name);
+        throw new ObjectDisposedException(GetType().FullName);
     }
 
     private Stream stream;
