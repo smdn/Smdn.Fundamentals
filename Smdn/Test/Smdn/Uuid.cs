@@ -1,11 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture()]
   public class UuidTests {
+    [Test]
+    public void TestSizeOfUuid()
+    {
+      Assert.AreEqual(Marshal.SizeOf(typeof(Guid)),
+                      Marshal.SizeOf(typeof(Uuid)));
+    }
+
     [Test]
     public void TestConstruct1()
     {
