@@ -574,6 +574,7 @@ namespace Smdn {
 
     public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
                 byte node0, byte node1, byte node2, byte node3, byte node4, byte node5)
+      : this()
     {
       this.fields_high = 0;
       this.fields_low = 0;
