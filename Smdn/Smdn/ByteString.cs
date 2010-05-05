@@ -24,10 +24,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Smdn {
-  public class ByteString : IEquatable<ByteString>, IEquatable<byte[]>, IEquatable<string> {
-    [System.Runtime.CompilerServices.IndexerName("Bytes")]
+  [Serializable]
+  public class ByteString :
+    IEquatable<ByteString>,
+    IEquatable<byte[]>,
+    IEquatable<string>,
+    ISerializable
+  {
+    [IndexerName("Bytes")]
     public byte this[int index] {
       get { return bytes[index]; }
       set { bytes[index] = value; }
@@ -96,6 +104,16 @@ namespace Smdn {
     public ByteString(string @value)
     {
       this.bytes = ToByteArray(@value);
+    }
+
+    protected ByteString(SerializationInfo info, StreamingContext context)
+    {
+      this.bytes = (byte[])info.GetValue("bytes", typeof(byte[]));
+    }
+
+    public void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+      info.AddValue("bytes", bytes);
     }
 
     public bool Contains(ByteString @value)
