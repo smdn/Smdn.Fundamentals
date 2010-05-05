@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 
 namespace Smdn {
@@ -520,6 +522,26 @@ namespace Smdn {
       Assert.AreEqual("def", str.ToString(3, 3));
       Assert.AreEqual("defghi", str.ToString(3, 6));
       Assert.AreEqual("i", str.ToString(8, 1));
+    }
+
+    [Test]
+    public void TestBinarySerialization()
+    {
+      var toSerialize = new ByteString("abc");
+      var serializeFormatter = new BinaryFormatter();
+      var stream = new MemoryStream();
+
+      serializeFormatter.Serialize(stream, toSerialize);
+
+      stream.Position = 0L;
+
+      var deserializeFormatter = new BinaryFormatter();
+      var deserialized = (ByteString)deserializeFormatter.Deserialize(stream);
+
+      Assert.AreNotSame(toSerialize, deserialized);
+      Assert.AreEqual(toSerialize, deserialized);
+      Assert.IsTrue(toSerialize.Equals(deserialized));
+      Assert.IsTrue(deserialized.Equals(toSerialize));
     }
   }
 }
