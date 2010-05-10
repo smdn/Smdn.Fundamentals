@@ -96,6 +96,7 @@
     <Compile Include="Smdn.Formats\Base64.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Collections\Enumerable.cs" />
+    <Compile Include="Smdn\AggregatedException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
