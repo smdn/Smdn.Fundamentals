@@ -32,7 +32,7 @@ namespace Smdn.Threading {
       Assert.AreEqual(new[] {20, 21, 22, 23, 24, 25, 26, 27, 28, 29}, test1);
     }
 
-    [Test]
+    [Test, ExpectedException(typeof(AggregateException))]
     public void TestForExceptionInAction()
     {
       Parallel.For(0, 10, delegate(int i) {
@@ -55,7 +55,7 @@ namespace Smdn.Threading {
       Assert.IsTrue(ret[2]);
     }
 
-    [Test]
+    [Test, ExpectedException(typeof(AggregateException))]
     public void TestForEachExceptionInAction()
     {
       Parallel.ForEach(new[] {0, 1, 2}, delegate(int index) {
@@ -74,6 +74,14 @@ namespace Smdn.Threading {
       });
 
       Assert.IsTrue(ret[0]);
+    }
+
+    [Test, ExpectedException(typeof(AggregateException))]
+    public void TestForEachOneElementExceptionInAction()
+    {
+      Parallel.ForEach(new[] {0}, delegate(int index) {
+        throw new Exception();
+      });
     }
 
     [Test]

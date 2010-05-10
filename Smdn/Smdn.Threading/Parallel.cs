@@ -52,10 +52,19 @@ namespace Smdn.Threading {
       }
       else {
         using (var wait = new AutoResetEvent(false)) {
+          var exceptions = new List<Exception>();
+
           for (var i = fromInclusive; i < toExclusive; i++) {
             ThreadPool.QueueUserWorkItem(delegate(object state) {
               try {
-                action((int)state);
+                try {
+                  action((int)state);
+                }
+                catch (Exception ex) {
+                  lock (exceptions) {
+                    exceptions.Add(ex);
+                  }
+                }
               }
               finally {
                 if (Interlocked.Decrement(ref count) == 0)
@@ -65,6 +74,9 @@ namespace Smdn.Threading {
           }
 
           wait.WaitOne();
+
+          if (0 < exceptions.Count)
+            throw new AggregateException(exceptions);
         }
       }
     }
@@ -82,14 +94,28 @@ namespace Smdn.Threading {
         throw new ArgumentNullException("action");
 
       if (count == 1) {
-        action(enumerable.First());
+        try {
+          action(enumerable.First());
+        }
+        catch (Exception ex) {
+          throw new AggregateException(ex);
+        }
       }
       else {
         using (var wait = new AutoResetEvent(false)) {
+          var exceptions = new List<Exception>();
+
           foreach (var e in enumerable) {
             ThreadPool.QueueUserWorkItem(delegate(object state) {
               try {
-                action((T)state);
+                try {
+                  action((T)state);
+                }
+                catch (Exception ex) {
+                  lock (exceptions) {
+                    exceptions.Add(ex);
+                  }
+                }
               }
               finally {
                 if (Interlocked.Decrement(ref count) == 0)
@@ -99,6 +125,9 @@ namespace Smdn.Threading {
           }
 
           wait.WaitOne();
+
+          if (0 < exceptions.Count)
+            throw new AggregateException(exceptions);
         }
       }
     }
