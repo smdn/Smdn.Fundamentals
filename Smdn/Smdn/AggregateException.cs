@@ -29,7 +29,7 @@ using System.Collections.ObjectModel;
 
 namespace Smdn {
     /*
-   * System.AggregatedException is available from .NET Framework 4
+   * System.AggregateException is available from .NET Framework 4
    */
 #if !NET_4_0
   [Serializable]
