@@ -49,7 +49,6 @@
     <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
     <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\TextConvert.cs" />
     <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
     <Compile Include="Smdn.Formats\ToRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats\ToRFC3501ModifiedBase64Transform.cs" />
@@ -70,6 +69,7 @@
     <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncodingMethod.cs" />
+    <Compile Include="Smdn.Formats\HtmlEscape.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
