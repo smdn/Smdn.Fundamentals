@@ -32,48 +32,6 @@ using System.Linq;
 
 namespace Smdn.Collections {
   public static class IEnumerableExtensions {
-    [Obsolete("use Enumerable.SequenceEqual instead")]
-    public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other) where T : IEquatable<T>
-    {
-      return Enumerable.SequenceEqual(enumerable, other);
-    }
-
-    [Obsolete("use Enumerable.SequenceEqual instead")]
-    public static bool EqualsAll<T>(this IEnumerable<T> enumerable, IEnumerable<T> other, IEqualityComparer<T> comparer)
-    {
-      return Enumerable.SequenceEqual(enumerable, other, comparer);
-    }
-
-    [Obsolete("use Enumerable.Select instead")]
-    public static IEnumerable<TOutput> ConvertAll<TInput, TOutput>(this IEnumerable<TInput> enumerable, Converter<TInput, TOutput> converter)
-    {
-      return Enumerable.Select(enumerable, delegate(TInput input) { return converter(input); });
-    }
-
-    [Obsolete("use Enumerable.FirstOrDefault instead")]
-    public static T Find<T>(this IEnumerable<T> enumerable, Predicate<T> match)
-    {
-      return Enumerable.FirstOrDefault(enumerable, delegate(T val) { return match(val); });
-    }
-
-    [Obsolete("use Enumerable.Where instead")]
-    public static IEnumerable<T> FindAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
-    {
-      return Enumerable.Where(enumerable, delegate(T val) { return match(val); });
-    }
-
-    [Obsolete("use Enumerable.Any instead")]
-    public static bool Exists<T>(this IEnumerable<T> enumerable, Predicate<T> match)
-    {
-      return Enumerable.Any(enumerable, delegate(T val) { return match(val); });
-    }
-
-    [Obsolete("use Enumerable.All instead")]
-    public static bool TrueForAll<T>(this IEnumerable<T> enumerable, Predicate<T> match)
-    {
-      return Enumerable.All(enumerable, delegate(T val) { return match(val); });
-    }
-
     public static IEnumerable<T> EnumerateDepthFirst<T>(this IEnumerable<T> nestedEnumerable)
       where T : IEnumerable<T>
     {
