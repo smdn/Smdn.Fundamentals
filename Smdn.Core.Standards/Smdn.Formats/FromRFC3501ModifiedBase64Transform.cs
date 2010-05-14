@@ -29,7 +29,7 @@ namespace Smdn.Formats {
   // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
   // 5.1.3. Mailbox International Naming Convention
   // http://tools.ietf.org/html/rfc3501#section-5.1.3
-  public class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
+  public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
     public FromRFC3501ModifiedBase64Transform()
       : base()
     {

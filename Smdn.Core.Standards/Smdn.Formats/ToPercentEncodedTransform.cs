@@ -34,7 +34,7 @@ namespace Smdn.Formats {
    * http://tools.ietf.org/html/rfc2396
    * RFC 2396 - Uniform Resource Identifiers (URI): Generic Syntax
    */
-  public class ToPercentEncodedTransform : ICryptoTransform {
+  public sealed class ToPercentEncodedTransform : ICryptoTransform {
     //                                    "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
     // RFC 2396 unreserved characters:    "!      '()*  -. 0123456789     ?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[  ] _ abcdefghijklmnopqrstuvwxyz   ~";
     // RFC 3986 unreserved characters:    "             -. 0123456789       ABCDEFGHIJKLMNOPQRSTUVWXYZ     _ abcdefghijklmnopqrstuvwxyz   ~";
@@ -114,25 +114,14 @@ namespace Smdn.Formats {
       escapeSpaceToPlus = (int)(mode & ToPercentEncodedTransformMode.EscapeSpaceToPlus) != 0;
     }
 
-    ~ToPercentEncodedTransform()
-    {
-      Dispose(false);
-    }
-
-    protected virtual void Dispose(bool disposing)
+    public void Clear()
     {
       disposed = true;
     }
 
-    public void Clear()
-    {
-      Dispose(true);
-    }
-
     void IDisposable.Dispose()
     {
-      Dispose(true);
-      GC.SuppressFinalize(this);
+      Clear();
     }
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)

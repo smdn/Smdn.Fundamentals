@@ -29,7 +29,7 @@ namespace Smdn.Formats {
   // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
   // 5.1.3. Mailbox International Naming Convention
   // http://tools.ietf.org/html/rfc3501#section-5.1.3
-  public class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform, ICryptoTransform {
+  public sealed class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform, ICryptoTransform {
     public ToRFC3501ModifiedBase64Transform()
       : base()
     {
@@ -46,7 +46,7 @@ namespace Smdn.Formats {
       }
     }
 
-    public virtual new int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+    public new int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
       var outputCount = base.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
 

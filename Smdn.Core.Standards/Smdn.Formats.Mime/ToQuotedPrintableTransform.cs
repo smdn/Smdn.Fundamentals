@@ -26,7 +26,7 @@ using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.Mime {
-  public class ToQuotedPrintableTransform : ICryptoTransform {
+  public sealed class ToQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }
     }
@@ -47,25 +47,14 @@ namespace Smdn.Formats.Mime {
     {
     }
 
-    ~ToQuotedPrintableTransform()
-    {
-      Dispose(false);
-    }
-
-    protected virtual void Dispose(bool disposing)
+    public void Clear()
     {
       disposed = true;
     }
 
-    public void Clear()
-    {
-      Dispose(true);
-    }
-
     void IDisposable.Dispose()
     {
-      Dispose(true);
-      GC.SuppressFinalize(this);
+      Clear();
     }
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
