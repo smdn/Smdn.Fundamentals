@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Smdn.IO {
-  public class NonPersistentCachedStream : CachedStreamBase {
+  public sealed class NonPersistentCachedStream : CachedStreamBase {
     public NonPersistentCachedStream(Stream innerStream)
       : this(innerStream, 40960, true)
     {

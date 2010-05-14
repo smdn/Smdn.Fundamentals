@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class ChunkedMemoryStream : Stream {
+  public sealed class ChunkedMemoryStream : Stream {
     public static readonly int DefaultChunkSize = 40960;
 
     public delegate Chunk Allocator(int chunkSize);
