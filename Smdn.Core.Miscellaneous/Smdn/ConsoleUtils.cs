@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 using System;
+using System.Text;
+using System.Threading;
 
 namespace Smdn {
   public static class ConsoleUtils {
@@ -134,6 +136,37 @@ namespace Smdn {
         return @default;
       else
         return result.ToLower().StartsWith("y");
+    }
+
+    public static string ReadPassword(string promptFormat, params object[] arg)
+    {
+      Console.Write(promptFormat, arg);
+
+      var password = new StringBuilder();
+
+      for (;;) {
+        if (!Console.KeyAvailable) {
+          Thread.Sleep(50);
+          continue;
+        }
+
+        var keyinfo = Console.ReadKey(true);
+
+        switch (keyinfo.Key) {
+          case ConsoleKey.Enter:
+            Console.WriteLine();
+            return password.ToString();
+
+          case ConsoleKey.Backspace:
+            if (0 < password.Length)
+              password.Length -= 1;
+            break;
+
+          default:
+            password.Append(keyinfo.KeyChar);
+            break;
+        }
+      }
     }
   }
 }
