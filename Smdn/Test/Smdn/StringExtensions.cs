@@ -44,5 +44,48 @@ namespace Smdn {
       Assert.AreEqual(5, "xxyyxyyxx".Count('x'));
       Assert.AreEqual(4, "xxyyxyyxx".Count('y'));
     }
+
+    [Test]
+    public void TestSlice()
+    {
+      Assert.AreEqual("abc", "abcdef".Slice(0, 3));
+      Assert.AreEqual("cd", "abcdef".Slice(2, 4));
+      Assert.AreEqual("de", "abcdef".Slice(3, 5));
+      Assert.AreEqual("", "abcdef".Slice(0, 0));
+      Assert.AreEqual("abcdef", "abcdef".Slice(0, 6));
+      Assert.AreEqual("f", "abcdef".Slice(5, 6));
+
+      try {
+        "abc".Slice(-1, 0);
+        Assert.Fail("ArgumentOutOfRangeException not thrown #1");
+      }
+      catch (ArgumentOutOfRangeException ex) {
+        Assert.AreEqual("from", ex.ParamName, "#1");
+      }
+
+      try {
+        "abc".Slice(3, 4);
+        Assert.Fail("ArgumentOutOfRangeException not thrown #2");
+      }
+      catch (ArgumentOutOfRangeException ex) {
+        Assert.AreEqual("from", ex.ParamName, "#2");
+      }
+
+      try {
+        "abc".Slice(1, 0);
+        Assert.Fail("ArgumentOutOfRangeException not thrown #3");
+      }
+      catch (ArgumentOutOfRangeException ex) {
+        Assert.AreEqual("to", ex.ParamName, "#3");
+      }
+
+      try {
+        "abc".Slice(0, 4);
+        Assert.Fail("ArgumentOutOfRangeException not thrown #4");
+      }
+      catch (ArgumentOutOfRangeException ex) {
+        Assert.AreEqual("to", ex.ParamName, "#4");
+      }
+    }
   }
 }

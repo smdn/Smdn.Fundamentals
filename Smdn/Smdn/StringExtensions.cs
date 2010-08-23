@@ -154,5 +154,21 @@ namespace Smdn {
           lastIndex = index + substr.Length;
       }
     }
+
+    public static string Slice(this string str, int from, int to)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (from < 0)
+        throw new ArgumentOutOfRangeException("from", "must be zero or positive number");
+      if (str.Length <= from)
+        throw new ArgumentOutOfRangeException("from", "must be less than or equal to length");
+      if (to < from)
+        throw new ArgumentOutOfRangeException("to", "must be greater than 'from'");
+      if (str.Length < to)
+        throw new ArgumentOutOfRangeException("to", "must be less than or equal to length");
+
+      return str.Substring(from, to - from);
+    }
   }
 }
