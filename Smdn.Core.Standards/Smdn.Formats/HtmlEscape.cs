@@ -95,7 +95,18 @@ namespace Smdn.Formats {
 
     private static string FromXhtmlEscapedString(string str, bool xhtml)
     {
-      throw new NotImplementedException();
+      var sb = new StringBuilder(str);
+
+      sb.Replace("&lt;", "<");
+      sb.Replace("&gt;", ">");
+      sb.Replace("&quot;", "\"");
+
+      if (xhtml)
+        sb.Replace("&apos;", "'");
+
+      sb.Replace("&amp;", "&");
+
+      return sb.ToString();
     }
   }
 }
