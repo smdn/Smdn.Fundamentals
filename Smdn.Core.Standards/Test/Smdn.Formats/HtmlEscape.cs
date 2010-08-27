@@ -27,5 +27,16 @@ namespace Smdn.Formats {
     {
       Assert.AreEqual("<>&\"&apos;#", HtmlEscape.FromHtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"));
     }
+
+    [Test]
+    public void TestFromNumericCharacterReference()
+    {
+      Assert.AreEqual("Σ", HtmlEscape.FromNumericCharacterReference("&#931;"));
+      Assert.AreEqual("Σ", HtmlEscape.FromNumericCharacterReference("&#0931;"));
+      Assert.AreEqual("Σ", HtmlEscape.FromNumericCharacterReference("&#x3A3;"));
+      Assert.AreEqual("Σ", HtmlEscape.FromNumericCharacterReference("&#x03A3;"));
+      Assert.AreEqual("Σ", HtmlEscape.FromNumericCharacterReference("&#x3a3;"));
+      Assert.AreEqual("&lt;Σ&gt;", HtmlEscape.FromNumericCharacterReference("&lt;&#931;&gt;"));
+    }
   }
 }

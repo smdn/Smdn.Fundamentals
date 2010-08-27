@@ -24,6 +24,7 @@
 
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Smdn.Formats {
   public static class HtmlEscape {
@@ -107,6 +108,19 @@ namespace Smdn.Formats {
       sb.Replace("&amp;", "&");
 
       return sb.ToString();
+    }
+
+    public static string FromNumericCharacterReference(string str)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      return Regex.Replace(str, @"&#(?<hex>x?)(?<number>[0-9a-fA-F]+);", delegate(Match m) {
+        if (m.Groups["hex"].Length == 0)
+          return ((char)Convert.ToUInt16(m.Groups["number"].Value, 10)).ToString();
+        else
+          return ((char)Convert.ToUInt16(m.Groups["number"].Value, 16)).ToString();
+      });
     }
   }
 }
