@@ -59,6 +59,7 @@
     <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
+    <Compile Include="Smdn.Formats\HtmlEscape.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\Smdn-netfx3.5.csproj">
