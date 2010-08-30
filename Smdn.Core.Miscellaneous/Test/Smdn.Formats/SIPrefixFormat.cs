@@ -216,5 +216,51 @@ namespace Smdn.Formats {
         Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:F}", pair.Value));
       }
     }
+
+    [Test]
+    public void TestReadOnlyInstanceThrowsException()
+    {
+      foreach (var provider in new[] {
+        SIPrefixFormat.InvaliantInfo,
+        SIPrefixFormat.CurrentInfo,
+      }) {
+        Assert.IsTrue(provider.IsReadOnly, "IsReadOnly");
+
+        foreach (var pair in new[] {
+          new {Name = "ByteUnit", Action = (Action<string>)delegate(string arg) {provider.ByteUnit = arg;}},
+          new {Name = "ByteUnitAbbreviation", Action = (Action<string>)delegate(string arg) {provider.ByteUnitAbbreviation = arg;}},
+          new {Name = "PrefixUnitDelimiter", Action = (Action<string>)delegate(string arg) {provider.PrefixUnitDelimiter = arg;}},
+          new {Name = "ValuePrefixDelimiter", Action = (Action<string>)delegate(string arg) {provider.ValuePrefixDelimiter = arg;}},
+        }) {
+          try {
+            pair.Action(string.Empty);
+
+            Assert.Fail("InvalidOperationException not thrown: {0}", pair.Name);
+          }
+          catch (InvalidOperationException) {
+          }
+        }
+      }
+    }
+
+    [Test]
+    public void TestFormatWithCustomProvider()
+    {
+      var provider = new SIPrefixFormat();
+
+      Assert.IsFalse(provider.IsReadOnly, "IsReadOnly");
+
+      provider.ByteUnitAbbreviation = "BYTE";
+
+      foreach (var pair in new[] {
+        new {Expected = "1BYTE",    Value =             1m},
+        new {Expected = "1.0kBYTE", Value =          1024m},
+        new {Expected = "1.0MBYTE", Value =       1048576m},
+        new {Expected = "1.0GBYTE", Value =    1073741824m},
+        new {Expected = "1.0TBYTE", Value = 1099511627776m},
+      }) {
+        Assert.AreEqual(pair.Expected, string.Format(provider, "{0:f}", pair.Value));
+      }
+    }
   }
 }

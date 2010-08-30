@@ -36,10 +36,10 @@ namespace Smdn.Formats {
     private static readonly string[] InvaliantDecimalPrefixes = new string[] {string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta"};
     private static readonly string[] InvaliantBinaryPrefixes = new string[] {string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi"};
 
-    private static readonly SIPrefixFormat invaliantInfo = new SIPrefixFormat(CultureInfo.InvariantCulture);
+    private static readonly SIPrefixFormat invaliantInfo = new SIPrefixFormat(CultureInfo.InvariantCulture, true);
 
     public static SIPrefixFormat CurrentInfo {
-      get { return new SIPrefixFormat(CultureInfo.CurrentCulture); }
+      get { return new SIPrefixFormat(CultureInfo.CurrentCulture, true); }
     }
 
     public static SIPrefixFormat InvaliantInfo {
@@ -49,12 +49,24 @@ namespace Smdn.Formats {
     /*
      * instance members
      */
-    public string ByteUnit {
-      get; private set;
+    private readonly bool isReadOnly;
+
+    public bool IsReadOnly {
+      get { return isReadOnly; }
     }
 
+    private string byteUnit;
+
+    public string ByteUnit {
+      get { return byteUnit; }
+      set { ThrowIfReadOnly(); byteUnit = value; }
+    }
+
+    private string byteUnitAbbreviation = "B";
+
     public string ByteUnitAbbreviation {
-      get; private set;
+      get { return byteUnitAbbreviation; }
+      set { ThrowIfReadOnly(); byteUnitAbbreviation = value; }
     }
 
     private string[] DecimalPrefixes {
@@ -65,32 +77,45 @@ namespace Smdn.Formats {
       get; /*private*/ set;
     }
 
+    private string valuePrefixDelimiter;
+
     public string ValuePrefixDelimiter {
-      get; private set;
+      get { return valuePrefixDelimiter; }
+      set { ThrowIfReadOnly(); valuePrefixDelimiter = value; }
     }
 
+    private string prefixUnitDelimiter;
+
     public string PrefixUnitDelimiter {
-      get; private set;
+      get { return prefixUnitDelimiter; }
+      set { ThrowIfReadOnly(); prefixUnitDelimiter = value; }
     }
 
     public SIPrefixFormat()
-      : this(CultureInfo.InvariantCulture)
+      : this(CultureInfo.InvariantCulture, false)
     {
     }
 
     public SIPrefixFormat(CultureInfo cultureInfo)
+      : this(cultureInfo, false)
+    {
+    }
+
+    private SIPrefixFormat(CultureInfo cultureInfo, bool isReadOnly)
     {
       if (cultureInfo == null)
         throw new ArgumentNullException("cultureInfo");
+
+      this.isReadOnly = isReadOnly;
 
       //this.cultureInfo = cultureInfo;
       const string singleSpace = " ";
 
       switch (cultureInfo.LCID) {
         case 0x00000411: // ja
-          ByteUnit = "バイト";
-          ValuePrefixDelimiter = singleSpace;
-          PrefixUnitDelimiter = string.Empty;
+          byteUnit = "バイト";
+          valuePrefixDelimiter = singleSpace;
+          prefixUnitDelimiter = string.Empty;
           DecimalPrefixes = new[] {string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ"};
           BinaryPrefixes  = new[] {string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ"};
           break;
@@ -98,15 +123,13 @@ namespace Smdn.Formats {
         // case 0x00000409: // en-us
         // case 0x00000809: // en-gb
         default:
-          ByteUnit = "Bytes";
-          ValuePrefixDelimiter = singleSpace;
-          PrefixUnitDelimiter = singleSpace;
+          byteUnit = "Bytes";
+          valuePrefixDelimiter = singleSpace;
+          prefixUnitDelimiter = singleSpace;
           DecimalPrefixes = InvaliantDecimalPrefixes;
           BinaryPrefixes = InvaliantBinaryPrefixes;
           break;
       }
-
-      ByteUnitAbbreviation = "B";
     }
 
     public string Format(string format, object arg, IFormatProvider formatProvider)
@@ -186,9 +209,9 @@ namespace Smdn.Formats {
           ret.Append(val.ToString("F1"));
 
         if (abbreviate)
-          unitString = ByteUnitAbbreviation;
+          unitString = byteUnitAbbreviation;
         else
-          unitString = ByteUnit;
+          unitString = byteUnit;
       }
       else {
         if (digits == 0)
@@ -198,13 +221,13 @@ namespace Smdn.Formats {
       }
 
       if (!abbreviate && 0 < prefixes[aux].Length)
-        ret.Append(ValuePrefixDelimiter);
+        ret.Append(valuePrefixDelimiter);
 
       ret.Append(prefixes[aux]);
 
       if (unitString != null) {
         if (!abbreviate && 0 < unitString.Length)
-          ret.Append(PrefixUnitDelimiter);
+          ret.Append(prefixUnitDelimiter);
 
         ret.Append(unitString);
       }
@@ -232,6 +255,11 @@ namespace Smdn.Formats {
         return null;
     }
 
+    private void ThrowIfReadOnly()
+    {
+      if (isReadOnly)
+        throw new InvalidOperationException("read-only");
+    }
     //private CultureInfo cultureInfo;
   }
 }
