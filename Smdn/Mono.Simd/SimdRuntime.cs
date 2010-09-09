@@ -1,6 +1,6 @@
 //
 // Author:
-//       smdn <smdn@mail.invisiblefulmoon.net>
+//       smdn <smdn@smdn.jp>
 // 
 // Copyright (c) 2009-2010 smdn
 // 
