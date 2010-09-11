@@ -120,7 +120,7 @@ namespace Smdn {
               try {
                 return new Version(s);
               }
-              catch (FormatException) {
+              catch (ArgumentException) {
                 // ignore
               }
             }
