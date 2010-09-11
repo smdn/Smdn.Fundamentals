@@ -108,5 +108,29 @@ namespace Smdn {
         return versionString;
       }
     }
+
+    public static Version Version {
+      get
+      {
+        switch (runtimeEnvironment) {
+          case RuntimeEnvironment.Mono: {
+            var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
+
+            foreach (var s in displayName.Split(' ')) {
+              try {
+                return new Version(s);
+              }
+              catch (FormatException) {
+                // ignore
+              }
+            }
+
+            break;
+          }
+        }
+
+        return Environment.Version;
+      }
+    }
   }
 }

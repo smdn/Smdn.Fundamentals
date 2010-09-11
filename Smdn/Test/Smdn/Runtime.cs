@@ -121,5 +121,21 @@ namespace Smdn {
           break;
       }
     }
+
+    [Test]
+    public void TestVersion()
+    {
+      if (Runtime.IsRunningOnMono) {
+        var version = Runtime.Version;
+
+        Assert.AreNotEqual(0, version.Major);
+        Assert.AreNotEqual(0, version.Minor);
+
+        Assert.IsTrue(Runtime.VersionString.Contains(version.ToString()));
+      }
+      else {
+        Assert.AreEqual(Environment.Version, Runtime.Version);
+      }
+    }
   }
 }
