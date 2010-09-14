@@ -93,12 +93,12 @@ namespace Smdn.Formats {
 
     public static string ToW3CDateTimeString(DateTime dateTime)
     {
-      return dateTime.ToString("yyyy-MM-ddTHH:mm:ssK", CultureInfo.InvariantCulture);
+      return dateTime.ToString("o");
     }
 
     public static string ToW3CDateTimeString(DateTimeOffset dateTimeOffset)
     {
-      return dateTimeOffset.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture);
+      return dateTimeOffset.ToString("o");
     }
 
     public static string ToW3CDateTimeStringNullable(DateTimeOffset? dateTimeOffset)
@@ -169,18 +169,31 @@ namespace Smdn.Formats {
 
     private static readonly string[] rfc822DateTimeFormats = new[]
     {
+      // TODO: f1-f6
       "r",
+      "ddd, d MMM yyyy HH:mm:ss.fffffff zzz",
+      "ddd, d MMM yyyy HH:mm:ss.fffffff GMT",
+      "ddd, d MMM yyyy HH:mm:ss.fffffff",
+      "ddd, d MMM yyyy HH:mm:ss.fff zzz",
+      "ddd, d MMM yyyy HH:mm:ss.fff GMT",
+      "ddd, d MMM yyyy HH:mm:ss.fff",
       "ddd, d MMM yyyy HH:mm:ss zzz",
-      "ddd, d MMM yyyy HH:mm:ss Z",
+      "ddd, d MMM yyyy HH:mm:ss GMT",
       "ddd, d MMM yyyy HH:mm:ss",
       "ddd, d MMM yyyy HH:mm zzz",
-      "ddd, d MMM yyyy HH:mm Z",
+      "ddd, d MMM yyyy HH:mm GMT",
       "ddd, d MMM yyyy HH:mm",
+      "d MMM yyyy HH:mm:ss.fffffff zzz",
+      "d MMM yyyy HH:mm:ss.fffffff GMT",
+      "d MMM yyyy HH:mm:ss.fffffff",
+      "d MMM yyyy HH:mm:ss.fff zzz",
+      "d MMM yyyy HH:mm:ss.fff GMT",
+      "d MMM yyyy HH:mm:ss.fff",
       "d MMM yyyy HH:mm:ss zzz",
-      "d MMM yyyy HH:mm:ss Z",
+      "d MMM yyyy HH:mm:ss GMT",
       "d MMM yyyy HH:mm:ss",
       "d MMM yyyy HH:mm zzz",
-      "d MMM yyyy HH:mm Z",
+      "d MMM yyyy HH:mm GMT",
       "d MMM yyyy HH:mm",
     };
 
@@ -188,19 +201,26 @@ namespace Smdn.Formats {
 
     private static string[] w3cDateTimeFormats = new string[]
     {
+      // TODO: f1-f6
       "u",
-      "yyyy-MM-ddTHH:mm:ss.fzzz",
-      "yyyy-MM-ddTHH:mm:ss.f'Z'",
-      "yyyy-MM-ddTHH:mm:ss.f",
+      "yyyy-MM-ddTHH:mm:ss.fffffffzzz",
+      "yyyy-MM-ddTHH:mm:ss.fffffff'Z'",
+      "yyyy-MM-ddTHH:mm:ss.fffffff",
+      "yyyy-MM-ddTHH:mm:ss.fffzzz",
+      "yyyy-MM-ddTHH:mm:ss.fff'Z'",
+      "yyyy-MM-ddTHH:mm:ss.fff",
       "yyyy-MM-ddTHH:mm:sszzz",
       "yyyy-MM-ddTHH:mm:ss'Z'",
       "yyyy-MM-ddTHH:mm:ss",
       "yyyy-MM-ddTHH:mmzzz",
       "yyyy-MM-ddTHH:mm'Z'",
       "yyyy-MM-ddTHH:mm",
-      "yyyy-MM-dd HH:mm:ss.fzzz",
-      "yyyy-MM-dd HH:mm:ss.f'Z'",
-      "yyyy-MM-dd HH:mm:ss.f",
+      "yyyy-MM-dd HH:mm:ss.fffffffzzz",
+      "yyyy-MM-dd HH:mm:ss.fffffff'Z'",
+      "yyyy-MM-dd HH:mm:ss.fffffff",
+      "yyyy-MM-dd HH:mm:ss.fffzzz",
+      "yyyy-MM-dd HH:mm:ss.fff'Z'",
+      "yyyy-MM-dd HH:mm:ss.fff",
       "yyyy-MM-dd HH:mm:sszzz",
       "yyyy-MM-dd HH:mm:ss'Z'",
       "yyyy-MM-dd HH:mm:ss",
