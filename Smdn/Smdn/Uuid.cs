@@ -630,12 +630,10 @@ namespace Smdn {
     }
 
     public Uuid(string uuid)
+      : this()
     {
       if (uuid == null)
         throw new ArgumentNullException("uuid");
-
-      this.fields_high = 0;
-      this.fields_low = 0;
 
       // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
       var fields = uuid.Split('-');
