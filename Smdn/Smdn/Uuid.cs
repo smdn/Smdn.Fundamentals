@@ -37,7 +37,7 @@ namespace Smdn {
    * RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace
    * http://tools.ietf.org/html/rfc4122
    */
-  [CLSCompliant(false), StructLayout(LayoutKind.Explicit, Pack = 1)]
+  [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public unsafe struct Uuid :
     IEquatable<Uuid>,
     IEquatable<Guid>,
@@ -56,6 +56,26 @@ namespace Smdn {
       RFC4122               = 0x80,
       MicrosoftReserved     = 0xc0,
       Reserved              = 0xe0,
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    private struct _Node {
+      public byte N0;
+      public byte N1;
+      public byte N2;
+      public byte N3;
+      public byte N4;
+      public byte N5;
+
+      public _Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)
+      {
+        N0 = n0;
+        N1 = n1;
+        N2 = n2;
+        N3 = n3;
+        N4 = n4;
+        N5 = n5;
+      }
     }
 
     /*
@@ -213,7 +233,7 @@ namespace Smdn {
        *    o  Set the node field to the 48-bit IEEE address in the same order of
        *       significance as the address.
        */
-      uuid.Node = node;
+      uuid.node = new _Node(node[0], node[1], node[2], node[3], node[4], node[5]);
 
       SetRFC4122Fields(ref uuid, UuidVersion.Version1);
 
@@ -425,7 +445,7 @@ namespace Smdn {
     /*   6- 7 */ [FieldOffset( 6)] private ushort time_hi_and_version;
     /*   8    */ [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
     /*   9    */ [FieldOffset( 9)] private byte clock_seq_low;
-    /*  10-15 */ [FieldOffset(10)] private fixed byte node[6];
+    /*  10-15 */ [FieldOffset(10)] private _Node node;
 
     [FieldOffset( 0)] private ulong fields_high;
     [FieldOffset( 8)] private ulong fields_low;
@@ -471,20 +491,7 @@ namespace Smdn {
 
     /// <value>node;The spatially unique node identifier</value>
     public byte[] Node {
-      get
-      {
-        fixed (byte* n = node) {
-          return new[] {n[0], n[1], n[2], n[3], n[4], n[5]};
-        }
-      }
-      private set
-      {
-        fixed (byte* n = node) {
-          for (var i = 0; i < 6; i++) {
-            n[i] = value[i];
-          }
-        }
-      }
+      get { return new[] {node.N0, node.N1, node.N2, node.N3, node.N4, node.N5}; }
     }
 
     /*
@@ -511,12 +518,7 @@ namespace Smdn {
     }
 
     public string IEEE802MacAddress {
-      get
-      {
-        fixed (byte* n = node) {
-          return string.Format("{0:x2}:{1:x2}:{2:x2}:{3:x2}:{4:x2}:{5:x2}", n[0], n[1], n[2], n[3], n[4], n[5]);
-        }
-      }
+      get { return string.Format("{0:x2}:{1:x2}:{2:x2}:{3:x2}:{4:x2}:{5:x2}", node.N0, node.N1, node.N2, node.N3, node.N4, node.N5); }
     }
 
     public PhysicalAddress PhysicalAddress {
@@ -576,23 +578,12 @@ namespace Smdn {
                 byte node0, byte node1, byte node2, byte node3, byte node4, byte node5)
       : this()
     {
-      this.fields_high = 0;
-      this.fields_low = 0;
-
       this.time_low = time_low;
       this.time_mid = time_mid;
       this.time_hi_and_version = time_hi_and_version;
       this.clock_seq_hi_and_reserved = clock_seq_hi_and_reserved;
       this.clock_seq_low = clock_seq_low;
-
-      fixed (byte* n = this.node) {
-        n[0] = node0;
-        n[1] = node1;
-        n[2] = node2;
-        n[3] = node3;
-        n[4] = node4;
-        n[5] = node5;
-      }
+      this.node = new _Node(node0, node1, node2, node3, node4, node5);
     }
 
     public Uuid(Guid guid)
@@ -656,7 +647,9 @@ namespace Smdn {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
 
       try {
-        this.Node = Hexadecimals.ToByteArray(fields[4]);
+        var n = Hexadecimals.ToByteArray(fields[4]);
+
+        this.node = new _Node(n[0], n[1], n[2], n[3], n[4], n[5]);
       }
       catch (FormatException) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
@@ -710,31 +703,35 @@ namespace Smdn {
 
     public int CompareTo(Uuid other)
     {
-      if (this.time_low != other.time_low)
-        return (int)((long)this.time_low - (long)other.time_low);
+      int ret;
 
-      if (this.time_mid != other.time_mid)
-        return this.time_mid - other.time_mid;
+      if ((ret = (int)((long)this.time_low - (long)other.time_low)) != 0)
+        return ret;
 
-      if (this.time_hi_and_version != other.time_hi_and_version)
-        return this.time_hi_and_version - other.time_hi_and_version;
+      if ((ret = this.time_mid - other.time_mid) != 0)
+        return ret;
 
-      if (this.clock_seq_hi_and_reserved != other.clock_seq_hi_and_reserved)
-        return this.clock_seq_hi_and_reserved - other.clock_seq_hi_and_reserved;
+      if ((ret = this.time_hi_and_version - other.time_hi_and_version) != 0)
+        return ret;
 
-      if (this.clock_seq_low != other.clock_seq_low)
-        return this.clock_seq_low - other.clock_seq_low;
+      if ((ret = this.clock_seq_hi_and_reserved - other.clock_seq_hi_and_reserved) != 0)
+        return ret;
 
-      fixed (byte* nthis = this.node) {
-        byte* nother = other.node;
+      if ((ret = this.clock_seq_low - other.clock_seq_low) != 0)
+        return ret;
 
-        for (var i = 0; i < 6; i++) {
-          if (nthis[i] < nother[i])
-            return -1;
-          else if (nthis[i] > nother[i])
-            return 1;
-        }
-      }
+      if ((ret = this.node.N0 - other.node.N0) != 0)
+        return ret;
+      if ((ret = this.node.N1 - other.node.N1) != 0)
+        return ret;
+      if ((ret = this.node.N2 - other.node.N2) != 0)
+        return ret;
+      if ((ret = this.node.N3 - other.node.N3) != 0)
+        return ret;
+      if ((ret = this.node.N4 - other.node.N4) != 0)
+        return ret;
+      if ((ret = this.node.N5 - other.node.N5) != 0)
+        return ret;
 
       return 0;
     }
@@ -825,45 +822,41 @@ namespace Smdn {
 
       switch (format) {
         case "N":
-          fixed (byte* n = node) {
-            return string.Format("{0:x8}{1:x4}{2:x4}{3:x2}{4:x2}{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
-                                 time_low,
-                                 time_mid,
-                                 time_hi_and_version,
-                                 clock_seq_hi_and_reserved,
-                                 clock_seq_low,
-                                 n[0],
-                                 n[1],
-                                 n[2],
-                                 n[3],
-                                 n[4],
-                                 n[5]);
-          }
+          return string.Format("{0:x8}{1:x4}{2:x4}{3:x2}{4:x2}{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
+                               time_low,
+                               time_mid,
+                               time_hi_and_version,
+                               clock_seq_hi_and_reserved,
+                               clock_seq_low,
+                               node.N0,
+                               node.N1,
+                               node.N2,
+                               node.N3,
+                               node.N4,
+                               node.N5);
 
         case "D":
         case "B":
         case "P":
-          fixed (byte* n = node) {
-            var ret = string.Format("{0:x8}-{1:x4}-{2:x4}-{3:x2}{4:x2}-{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
-                                    time_low,
-                                    time_mid,
-                                    time_hi_and_version,
-                                    clock_seq_hi_and_reserved,
-                                    clock_seq_low,
-                                    n[0],
-                                    n[1],
-                                    n[2],
-                                    n[3],
-                                    n[4],
-                                    n[5]);
+          var ret = string.Format("{0:x8}-{1:x4}-{2:x4}-{3:x2}{4:x2}-{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
+                                  time_low,
+                                  time_mid,
+                                  time_hi_and_version,
+                                  clock_seq_hi_and_reserved,
+                                  clock_seq_low,
+                                  node.N0,
+                                  node.N1,
+                                  node.N2,
+                                  node.N3,
+                                  node.N4,
+                                  node.N5);
 
-            if (format == "B")
-              return "{" + ret + "}";
-            else if (format == "P")
-              return "(" + ret + ")";
-            else
-              return ret;
-          }
+          if (format == "B")
+            return "{" + ret + "}";
+          else if (format == "P")
+            return "(" + ret + ")";
+          else
+            return ret;
 
         default:
           throw new FormatException(string.Format("invalid format: {0}", format));
