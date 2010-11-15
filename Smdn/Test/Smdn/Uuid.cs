@@ -210,5 +210,39 @@ namespace Smdn {
       Assert.IsFalse(Uuid.Nil == Uuid.RFC4122NamespaceDns);
       Assert.IsTrue(Uuid.Nil != Uuid.RFC4122NamespaceDns);
     }
+
+    [Test]
+    public void TestCompareTo()
+    {
+      Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns));
+
+      var x = new Uuid("00000000-0000-0000-0000-000000000000");
+      var y = new Uuid("00000001-0000-0000-0000-000000000000");
+
+      Assert.Less(x, y);
+      Assert.Greater(y, x);
+
+      x = new Uuid("00000000-0000-0000-0000-000000000000");
+      y = new Uuid("00000000-0000-0000-0000-000000000001");
+
+      Assert.Less(x, y);
+      Assert.Greater(y, x);
+    }
+
+    [Test]
+    public void TestGreaterThanLessThanOperator()
+    {
+      var x = new Uuid("00000000-0000-0000-0000-000000000000");
+      var y = new Uuid("00000001-0000-0000-0000-000000000000");
+
+      Assert.IsTrue(x < y, "x < y");
+      Assert.IsFalse(x > y, "x > y");
+
+      x = new Uuid("00000000-0000-0000-0000-000000000000");
+      y = new Uuid("00000000-0000-0000-0000-000000000001");
+
+      Assert.IsTrue(x < y, "x < y");
+      Assert.IsFalse(x > y, "x > y");
+    }
   }
 }
