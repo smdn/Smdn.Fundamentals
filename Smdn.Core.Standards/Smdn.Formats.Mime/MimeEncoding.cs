@@ -115,10 +115,10 @@ namespace Smdn.Formats.Mime {
           throw new System.ComponentModel.InvalidEnumArgumentException("encoding", (int)encoding, typeof(MimeEncodingMethod));
       }
 
-      var preambleText = string.Format("=?{0}?{1}?", charset.BodyName, encodingChar);
+      var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
 
       if (!doFold)
-        return preambleText + transform.TransformStringTo(str, charset) + "?=";
+        return string.Concat(preambleText, transform.TransformStringTo(str, charset), "?=");
 
       // folding
       var ret = new StringBuilder();
