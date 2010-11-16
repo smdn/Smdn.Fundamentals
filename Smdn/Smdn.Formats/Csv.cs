@@ -70,7 +70,7 @@ namespace Smdn.Formats {
 
       return string.Join(",", Array.ConvertAll(csv, delegate(string s) {
         if (s.Contains("\""))
-          return string.Format("\"{0}\"", s.Replace("\"", "\"\""));
+          return string.Concat("\"", s.Replace("\"", "\"\""), "\"");
         else
           return s;
       }));

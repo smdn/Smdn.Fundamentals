@@ -279,7 +279,7 @@ namespace Smdn {
 
     public override string ToString()
     {
-      return string.Format("{0}/{1}", Type, SubType);
+      return string.Concat(Type, "/", SubType);
     }
   }
 }
