@@ -33,15 +33,15 @@ namespace Smdn.Formats {
 
       if (delimiter) {
         if (TimeSpan.Zero <= offset)
-          return string.Format("+{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
+          return string.Format(CultureInfo.InvariantCulture, "+{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
         else
-          return string.Format("-{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
+          return string.Format(CultureInfo.InvariantCulture, "-{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
       }
       else {
         if (TimeSpan.Zero <= offset)
-          return string.Format("+{0:d2}{1:d2}", offset.Hours, offset.Minutes);
+          return string.Format(CultureInfo.InvariantCulture, "+{0:d2}{1:d2}", offset.Hours, offset.Minutes);
         else
-          return string.Format("-{0:d2}{1:d2}", offset.Hours, offset.Minutes);
+          return string.Format(CultureInfo.InvariantCulture, "-{0:d2}{1:d2}", offset.Hours, offset.Minutes);
       }
     }
 
