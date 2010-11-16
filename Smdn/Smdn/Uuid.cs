@@ -37,7 +37,7 @@ namespace Smdn {
    * RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace
    * http://tools.ietf.org/html/rfc4122
    */
-  [StructLayout(LayoutKind.Explicit, Pack = 1)]
+  [CLSCompliant(false), StructLayout(LayoutKind.Explicit, Pack = 1)]
   public unsafe struct Uuid :
     IEquatable<Uuid>,
     IEquatable<Guid>,
