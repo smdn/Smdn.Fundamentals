@@ -237,7 +237,8 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*\=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?\=\s*", RegexOptions.Singleline);
+    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?=\s*",
+                                                                   RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
     {
