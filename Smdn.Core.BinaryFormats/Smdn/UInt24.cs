@@ -67,9 +67,11 @@ namespace Smdn {
 
       var uint24 = new UInt24();
 
-      uint24.Byte0 = (byte)((val & 0x00ff0000) >> 16);
-      uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
-      uint24.Byte2 = (byte)((val & 0x000000ff));
+      unchecked {
+        uint24.Byte0 = (byte)((val & 0x00ff0000) >> 16);
+        uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
+        uint24.Byte2 = (byte)((val & 0x000000ff));
+      }
 
       return uint24;
     }
@@ -81,9 +83,11 @@ namespace Smdn {
 
       var uint24 = new UInt24();
 
-      uint24.Byte0 = (byte)((val & 0x00ff0000) >> 16);
-      uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
-      uint24.Byte2 = (byte)((val & 0x000000ff));
+      unchecked {
+        uint24.Byte0 = (byte)((val & 0x00ff0000) >> 16);
+        uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
+        uint24.Byte2 = (byte)((val & 0x000000ff));
+      }
 
       return uint24;
     }
@@ -93,9 +97,11 @@ namespace Smdn {
     {
       var uint24 = new UInt24();
 
-      uint24.Byte0 = 0;
-      uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
-      uint24.Byte2 = (byte)((val & 0x000000ff));
+      unchecked {
+        uint24.Byte0 = 0;
+        uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
+        uint24.Byte2 = (byte)((val & 0x000000ff));
+      }
 
       return uint24;
     }
@@ -107,9 +113,11 @@ namespace Smdn {
 
       var uint24 = new UInt24();
 
-      uint24.Byte0 = 0;
-      uint24.Byte1 = (byte)((val & 0x00007f00) >> 8);
-      uint24.Byte2 = (byte)((val & 0x000000ff));
+      unchecked {
+        uint24.Byte0 = 0;
+        uint24.Byte1 = (byte)((val & 0x00007f00) >> 8);
+        uint24.Byte2 = (byte)((val & 0x000000ff));
+      }
 
       return uint24;
     }
@@ -138,7 +146,7 @@ namespace Smdn {
 
     public Int32 ToInt32()
     {
-      return (Int32)ToUInt32();
+      return unchecked((Int32)ToUInt32());
     }
 
     [CLSCompliant(false)]

@@ -67,10 +67,12 @@ namespace Smdn {
       if (@value.Length != 4)
         throw new ArgumentOutOfRangeException("value", "length must be 4");
 
-      this.fourcc = (byte)@value[0] << 24 |
-                    (byte)@value[1] << 16 |
-                    (byte)@value[2] << 8 |
-                    (byte)@value[3];
+      checked {
+        this.fourcc = (byte)@value[0] << 24 |
+                      (byte)@value[1] << 16 |
+                      (byte)@value[2] << 8 |
+                      (byte)@value[3];
+      }
     }
 
     private FourCC(int fourcc)
@@ -126,22 +128,26 @@ namespace Smdn {
 
     public byte[] ToByteArray()
     {
-      return new[] {
-        (byte)((fourcc >> 24) & 0xff),
-        (byte)((fourcc >> 16) & 0xff),
-        (byte)((fourcc >>  8) & 0xff),
-        (byte)( fourcc        & 0xff),
-      };
+      unchecked {
+        return new[] {
+          (byte)((fourcc >> 24) & 0xff),
+          (byte)((fourcc >> 16) & 0xff),
+          (byte)((fourcc >>  8) & 0xff),
+          (byte)( fourcc        & 0xff),
+        };
+      }
     }
 
     public override string ToString()
     {
-      return new string(new[] {
-        (char)((fourcc >> 24) & 0xff),
-        (char)((fourcc >> 16) & 0xff),
-        (char)((fourcc >>  8) & 0xff),
-        (char)( fourcc        & 0xff),
-      });
+      unchecked {
+        return new string(new[] {
+          (char)((fourcc >> 24) & 0xff),
+          (char)((fourcc >> 16) & 0xff),
+          (char)((fourcc >>  8) & 0xff),
+          (char)( fourcc        & 0xff),
+        });
+      }
     }
 
 #endregion

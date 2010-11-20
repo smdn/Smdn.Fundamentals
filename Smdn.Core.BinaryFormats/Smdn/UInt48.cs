@@ -76,12 +76,14 @@ namespace Smdn {
 
       var uint48 = new UInt48();
 
-      uint48.Byte0 = (byte)((val & 0x0000ff0000000000) >> 40);
-      uint48.Byte1 = (byte)((val & 0x000000ff00000000) >> 32);
-      uint48.Byte2 = (byte)((val & 0x00000000ff000000) >> 24);
-      uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
-      uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
-      uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      unchecked {
+        uint48.Byte0 = (byte)((val & 0x0000ff0000000000) >> 40);
+        uint48.Byte1 = (byte)((val & 0x000000ff00000000) >> 32);
+        uint48.Byte2 = (byte)((val & 0x00000000ff000000) >> 24);
+        uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
+        uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
+        uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      }
 
       return uint48;
     }
@@ -93,12 +95,14 @@ namespace Smdn {
 
       var uint48 = new UInt48();
 
-      uint48.Byte0 = (byte)((val & 0x0000ff0000000000) >> 40);
-      uint48.Byte1 = (byte)((val & 0x000000ff00000000) >> 32);
-      uint48.Byte2 = (byte)((val & 0x00000000ff000000) >> 24);
-      uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
-      uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
-      uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      unchecked {
+        uint48.Byte0 = (byte)((val & 0x0000ff0000000000) >> 40);
+        uint48.Byte1 = (byte)((val & 0x000000ff00000000) >> 32);
+        uint48.Byte2 = (byte)((val & 0x00000000ff000000) >> 24);
+        uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
+        uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
+        uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      }
 
       return uint48;
     }
@@ -108,12 +112,14 @@ namespace Smdn {
     {
       var uint48 = new UInt48();
 
-      uint48.Byte0 = 0;
-      uint48.Byte1 = 0;
-      uint48.Byte2 = (byte)((val & 0x00000000ff000000) >> 24);
-      uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
-      uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
-      uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      unchecked {
+        uint48.Byte0 = 0;
+        uint48.Byte1 = 0;
+        uint48.Byte2 = (byte)((val & 0x00000000ff000000) >> 24);
+        uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
+        uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
+        uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      }
 
       return uint48;
     }
@@ -125,12 +131,14 @@ namespace Smdn {
 
       var uint48 = new UInt48();
 
-      uint48.Byte0 = 0;
-      uint48.Byte1 = 0;
-      uint48.Byte2 = (byte)((val & 0x000000007f000000) >> 24);
-      uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
-      uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
-      uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      unchecked {
+        uint48.Byte0 = 0;
+        uint48.Byte1 = 0;
+        uint48.Byte2 = (byte)((val & 0x000000007f000000) >> 24);
+        uint48.Byte3 = (byte)((val & 0x0000000000ff0000) >> 16);
+        uint48.Byte4 = (byte)((val & 0x000000000000ff00) >> 8);
+        uint48.Byte5 = (byte)((val & 0x00000000000000ff));
+      }
 
       return uint48;
     }
@@ -159,7 +167,7 @@ namespace Smdn {
 
     public Int64 ToInt64()
     {
-      return (Int64)ToUInt64();
+      return unchecked((Int64)ToUInt64());
     }
 
     [CLSCompliant(false)]
