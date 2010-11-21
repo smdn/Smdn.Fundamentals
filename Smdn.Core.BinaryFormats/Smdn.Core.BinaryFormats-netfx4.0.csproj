@@ -59,6 +59,7 @@
     <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
     <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
+    <Compile Include="Smdn\BinaryConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

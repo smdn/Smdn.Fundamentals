@@ -60,6 +60,7 @@
     <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
     <Compile Include="Smdn\FourCC.cs" />
     <Compile Include="Smdn.IO\ExtendStream.cs" />
+    <Compile Include="Smdn\BinaryConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Smdn.IO\" />
