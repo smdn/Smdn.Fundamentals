@@ -26,106 +26,110 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class BinaryWriter : System.IO.BinaryWriter {
+  public class BinaryWriter : BinaryWriterBase {
+    public Endianness Endianness {
+      get { return endianness; }
+    }
+
     public BinaryWriter(Stream stream)
-      : base(stream)
+      : this(stream, false)
     {
     }
 
-    public void WriteZero(long bytes)
+    public BinaryWriter(Stream stream, bool leaveBaseStreamOpen)
+      : this(stream, Platform.Endianness, leaveBaseStreamOpen)
     {
-      BinaryWriterImpl.WriteZero(this, bytes);
     }
 
-    public void WriteBE(short @value)
+    protected BinaryWriter(Stream baseStream, Endianness endianness, bool leaveBaseStreamOpen)
+      : base(baseStream, leaveBaseStreamOpen)
     {
-      BinaryWriterImpl.WriteBE(this, @value);
+      this.endianness = endianness;
+      this.store = new byte[8];
     }
 
-    public void WriteLE(short @value)
+    public override void Write(byte @value)
     {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
+      store[0] = @value;
 
-    public void WriteBE(int @value)
-    {
-      BinaryWriterImpl.WriteBE(this, @value);
-    }
-
-    public void WriteLE(int @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public void WriteBE(long @value)
-    {
-      BinaryWriterImpl.WriteBE(this, @value);
-    }
-
-    public void WriteLE(long @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
+      Write(store, 0, 1);
     }
 
     [CLSCompliant(false)]
-    public void WriteBE(ushort @value)
+    public override void Write(sbyte @value)
     {
-      BinaryWriterImpl.WriteBE(this, @value);
+      store[0] = unchecked((byte)@value);
+
+      WriteUnchecked(store, 0, 1);
+    }
+
+    public override void Write(short @value)
+    {
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 2);
     }
 
     [CLSCompliant(false)]
-    public void WriteLE(ushort @value)
+    public override void Write(ushort @value)
     {
-      BinaryWriterImpl.WriteLE(this, @value);
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 2);
+    }
+
+    public override void Write(int @value)
+    {
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 4);
     }
 
     [CLSCompliant(false)]
-    public void WriteBE(uint @value)
+    public override void Write(uint @value)
     {
-      BinaryWriterImpl.WriteBE(this, @value);
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 4);
+    }
+
+    public override void Write(long @value)
+    {
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      Write(store, 0, 8);
     }
 
     [CLSCompliant(false)]
-    public void WriteLE(uint @value)
+    public override void Write(ulong @value)
     {
-      BinaryWriterImpl.WriteLE(this, @value);
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 8);
     }
 
-    [CLSCompliant(false)]
-    public void WriteBE(ulong @value)
+    public override void Write(UInt24 @value)
     {
-      BinaryWriterImpl.WriteBE(this, @value);
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 3);
     }
 
-    [CLSCompliant(false)]
-    public void WriteLE(ulong @value)
+    public override void Write(UInt48 @value)
     {
-      BinaryWriterImpl.WriteLE(this, @value);
+      BinaryConvert.GetBytes(@value, endianness, store, 0);
+
+      WriteUnchecked(store, 0, 6);
     }
 
-    public void WriteBE(UInt24 @value)
+    public override void Write(FourCC @value)
     {
-      BinaryWriterImpl.WriteBE(this, @value);
+      @value.GetBytes(store, 0);
+
+      WriteUnchecked(store, 0, 4);
     }
 
-    public void WriteLE(UInt24 @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public void WriteBE(UInt48 @value)
-    {
-      BinaryWriterImpl.WriteBE(this, @value);
-    }
-
-    public void WriteLE(UInt48 @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public void Write(FourCC @value)
-    {
-      BinaryWriterImpl.Write(this, @value);
-    }
+    private readonly Endianness endianness;
+    private byte[] store;
   }
 }

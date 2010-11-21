@@ -26,63 +26,15 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class LittleEndianBinaryWriter : System.IO.BinaryWriter {
+  public class LittleEndianBinaryWriter : Smdn.IO.BinaryWriter {
     public LittleEndianBinaryWriter(Stream stream)
-      : base(stream)
+      : this(stream, false)
     {
     }
 
-    public void WriteZero(long bytes)
+    public LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen)
+      : base(stream, Endianness.LittleEndian, leaveBaseStreamOpen)
     {
-      BinaryWriterImpl.WriteZero(this, bytes);
-    }
-
-    public override void Write(short @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    [CLSCompliant(false)]
-    public override void Write(ushort @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public override void Write(int @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    [CLSCompliant(false)]
-    public override void Write(uint @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public override void Write(long @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    [CLSCompliant(false)]
-    public override void Write(ulong @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public virtual void Write(UInt24 @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public virtual void Write(UInt48 @value)
-    {
-      BinaryWriterImpl.WriteLE(this, @value);
-    }
-
-    public virtual void Write(FourCC @value)
-    {
-      BinaryWriterImpl.Write(this, @value);
     }
   }
 }
