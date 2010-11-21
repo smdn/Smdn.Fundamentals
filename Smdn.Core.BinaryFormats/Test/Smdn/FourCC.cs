@@ -6,6 +6,12 @@ namespace Smdn {
   [TestFixture()]
   public class FourCCTests {
     [Test]
+    public void TestSizeOfStructure()
+    {
+      Assert.AreEqual(4, System.Runtime.InteropServices.Marshal.SizeOf(typeof(FourCC)));
+    }
+
+    [Test]
     public void ConstructFromInt()
     {
       Assert.AreEqual("RIFF", FourCC.CreateLittleEndian(0x46464952).ToString());

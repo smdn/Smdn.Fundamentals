@@ -5,6 +5,12 @@ namespace Smdn {
   [TestFixture()]
   public class UInt24Tests {
     [Test]
+    public void TestSizeOfStructure()
+    {
+      Assert.AreEqual(3, System.Runtime.InteropServices.Marshal.SizeOf(typeof(UInt24)));
+    }
+
+    [Test]
     public void Test()
     {
       Assert.AreEqual((UInt24)(int)0xff00ff, (UInt24)0xff00ff);
