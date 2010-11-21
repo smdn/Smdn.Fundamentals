@@ -93,6 +93,8 @@ namespace Smdn.IO {
 
     public virtual Byte ReadByte()
     {
+      CheckDisposed();
+
       var val = stream.ReadByte();
 
       if (val == -1)

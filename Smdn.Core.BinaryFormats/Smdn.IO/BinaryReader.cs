@@ -48,6 +48,21 @@ namespace Smdn.IO {
       this.store = new byte[8];
     }
 
+    public override byte ReadByte()
+    {
+      ReadBytesUnchecked(store, 0, 1, true);
+
+      return store[0];
+    }
+
+    [CLSCompliant(false)]
+    public override sbyte ReadSByte()
+    {
+      ReadBytesUnchecked(store, 0, 1, true);
+
+      return unchecked((sbyte)store[0]);
+    }
+
     public override short ReadInt16()
     {
       ReadBytesUnchecked(store, 0, 2, true);
