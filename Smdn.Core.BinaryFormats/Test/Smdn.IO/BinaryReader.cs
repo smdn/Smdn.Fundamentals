@@ -6,6 +6,48 @@ using NUnit.Framework;
 namespace Smdn.IO {
   [TestFixture]
   public class BinaryReaderTest {
+    private class NonReadableStream : Stream {
+      public override bool CanRead {
+        get { return false; }
+      }
+
+      public override bool CanSeek {
+        get { return false; }
+      }
+
+      public override bool CanWrite {
+        get { return true; }
+      }
+
+
+      public override long Length {
+        get { throw new NotImplementedException(); }
+      }
+
+      public override long Position {
+        get { throw new NotImplementedException(); }
+        set { throw new NotImplementedException(); }
+      }
+
+      public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
+      public override void SetLength(long @value) { throw new NotImplementedException(); }
+      public override void Flush() { throw new NotImplementedException(); }
+      public override int Read(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+      public override void Write(byte[] buffer, int offset, int count) { throw new NotImplementedException(); }
+    }
+
+    [Test]
+    public void TestConstructWithNonReadableStream()
+    {
+      try {
+        using (var reader = new Smdn.IO.BinaryReader(new NonReadableStream())) {
+          Assert.Fail("ArgumentException not thrown");
+        }
+      }
+      catch (ArgumentException) {
+      }
+    }
+
     [Test]
     public void TestClose()
     {
@@ -355,6 +397,44 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestReadFromClosedReader()
+    {
+      var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
+
+      foreach (var test in new[] {
+        new {Method = "ReadByte",   Count = 1},
+        new {Method = "ReadSByte",  Count = 1},
+        new {Method = "ReadInt16",  Count = 2},
+        new {Method = "ReadUInt16", Count = 2},
+        new {Method = "ReadInt32",  Count = 4},
+        new {Method = "ReadUInt32", Count = 4},
+        new {Method = "ReadInt64",  Count = 8},
+        new {Method = "ReadUInt64", Count = 8},
+        new {Method = "ReadUInt24", Count = 3},
+        new {Method = "ReadUInt48", Count = 6},
+        new {Method = "ReadFourCC", Count = 4},
+      }) {
+        using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+          reader.Close();
+
+          try {
+            reader.GetType().InvokeMember(test.Method,
+                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
+                                          null,
+                                          reader,
+                                          null);
+
+            Assert.Fail("ObjectDisposedException not thrown; method = {0}", test.Method);
+          }
+          catch (TargetInvocationException ex) {
+            if (!(ex.InnerException is ObjectDisposedException))
+              Assert.Fail("unexpected exception: {0}", ex);
+          }
+        }
+      }
+    }
+
+    [Test]
     public void TestReadEndOfStreamException()
     {
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
@@ -391,7 +471,7 @@ namespace Smdn.IO {
 
             Assert.Fail("EndOfStreamException not thrown: {0}", test.Method);
           }
-          catch (System.Reflection.TargetInvocationException ex) {
+          catch (TargetInvocationException ex) {
             if (!(ex.InnerException is EndOfStreamException))
               Assert.Fail("unexpected exception: {0}", ex);
           }
