@@ -26,120 +26,95 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class BinaryReader : System.IO.BinaryReader {
-    public bool EndOfStream {
-      get { return BinaryReaderImpl.IsEndOfStream(this); }
+  public class BinaryReader : BinaryReaderBase {
+    public Endianness Endianness {
+      get { return endianness; }
     }
 
     public BinaryReader(Stream stream)
-      : base(stream)
+      : this(stream, false)
     {
     }
 
-    protected byte[] ReadBytesOrThrowException(int count)
+    public BinaryReader(Stream stream, bool leaveBaseStreamOpen)
+      : this(stream, Platform.Endianness, leaveBaseStreamOpen)
     {
-      return BinaryReaderImpl.ReadBytesOrThrowException(this, count);
     }
 
-    public byte[] ReadBytes(long count)
+    protected BinaryReader(Stream baseStream, Endianness endianness, bool leaveBaseStreamOpen)
+      : base(baseStream, leaveBaseStreamOpen)
     {
-      return BinaryReaderImpl.ReadBytes(this, count);
+      this.endianness = endianness;
+      this.store = new byte[8];
     }
 
-    public byte[] ReadToEnd()
+    public override short ReadInt16()
     {
-      return BinaryReaderImpl.ReadToEnd(this);
-    }
+      ReadBytesUnchecked(store, 0, 2, true);
 
-    public short ReadInt16BE()
-    {
-      return BinaryReaderImpl.ReadInt16BE(this);
-    }
-
-    public short ReadInt16LE()
-    {
-      return BinaryReaderImpl.ReadInt16LE(this);
+      return BinaryConvert.ToInt16(store, 0, endianness);
     }
 
     [CLSCompliant(false)]
-    public ushort ReadUInt16BE()
+    public override ushort ReadUInt16()
     {
-      return BinaryReaderImpl.ReadUInt16BE(this);
+      ReadBytesUnchecked(store, 0, 2, true);
+
+      return BinaryConvert.ToUInt16(store, 0, endianness);
+    }
+
+    public override int ReadInt32()
+    {
+      ReadBytesUnchecked(store, 0, 4, true);
+
+      return BinaryConvert.ToInt32(store, 0, endianness);
     }
 
     [CLSCompliant(false)]
-    public ushort ReadUInt16LE()
+    public override uint ReadUInt32()
     {
-      return BinaryReaderImpl.ReadUInt16LE(this);
+      ReadBytesUnchecked(store, 0, 4, true);
+
+      return BinaryConvert.ToUInt32(store, 0, endianness);
     }
 
-    public int ReadInt32BE()
+    public override long ReadInt64()
     {
-      return BinaryReaderImpl.ReadInt32BE(this);
-    }
+      ReadBytesUnchecked(store, 0, 8, true);
 
-    public int ReadInt32LE()
-    {
-      return BinaryReaderImpl.ReadInt32LE(this);
-    }
-
-    [CLSCompliant(false)]
-    public uint ReadUInt32BE()
-    {
-      return BinaryReaderImpl.ReadUInt32BE(this);
+      return BinaryConvert.ToInt64(store, 0, endianness);
     }
 
     [CLSCompliant(false)]
-    public uint ReadUInt32LE()
+    public override ulong ReadUInt64()
     {
-      return BinaryReaderImpl.ReadUInt32LE(this);
+      ReadBytesUnchecked(store, 0, 8, true);
+
+      return BinaryConvert.ToUInt64(store, 0, endianness);
     }
 
-    public long ReadInt64BE()
+    public override UInt24 ReadUInt24()
     {
-      return BinaryReaderImpl.ReadInt64BE(this);
+      ReadBytesUnchecked(store, 0, 3, true);
+
+      return BinaryConvert.ToUInt24(store, 0, endianness);
     }
 
-    public long ReadInt64LE()
+    public override UInt48 ReadUInt48()
     {
-      return BinaryReaderImpl.ReadInt64LE(this);
+      ReadBytesUnchecked(store, 0, 6, true);
+
+      return BinaryConvert.ToUInt48(store, 0, endianness);
     }
 
-    [CLSCompliant(false)]
-    public ulong ReadUInt64BE()
+    public override FourCC ReadFourCC()
     {
-      return BinaryReaderImpl.ReadUInt64BE(this);
+      ReadBytesUnchecked(store, 0, 4, true);
+
+      return new FourCC(store, 0);
     }
 
-    [CLSCompliant(false)]
-    public ulong ReadUInt64LE()
-    {
-      return BinaryReaderImpl.ReadUInt64LE(this);
-    }
-
-    public UInt24 ReadUInt24BE()
-    {
-      return BinaryReaderImpl.ReadUInt24BE(this);
-    }
-
-    public UInt24 ReadUInt24LE()
-    {
-      return BinaryReaderImpl.ReadUInt24LE(this);
-    }
-
-    public UInt48 ReadUInt48BE()
-    {
-      return BinaryReaderImpl.ReadUInt48BE(this);
-    }
-
-    public UInt48 ReadUInt48LE()
-    {
-      return BinaryReaderImpl.ReadUInt48LE(this);
-    }
-
-    public FourCC ReadFourCC()
-    {
-      return BinaryReaderImpl.ReadFourCC(this);
-    }
+    private readonly Endianness endianness;
+    private byte[] store;
   }
 }

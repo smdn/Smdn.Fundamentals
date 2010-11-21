@@ -26,77 +26,15 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class BigEndianBinaryReader : System.IO.BinaryReader {
-    public bool EndOfStream {
-      get { return BinaryReaderImpl.IsEndOfStream(this); }
-    }
-
+  public class BigEndianBinaryReader : Smdn.IO.BinaryReader {
     public BigEndianBinaryReader(Stream stream)
-      : base(stream)
+      : this(stream, false)
     {
     }
 
-    protected byte[] ReadBytesOrThrowException(int count)
+    public BigEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen)
+      : base(stream, Endianness.BigEndian, leaveBaseStreamOpen)
     {
-      return BinaryReaderImpl.ReadBytesOrThrowException(this, count);
-    }
-
-    public byte[] ReadBytes(long count)
-    {
-      return BinaryReaderImpl.ReadBytes(this, count);
-    }
-
-    public byte[] ReadToEnd()
-    {
-      return BinaryReaderImpl.ReadToEnd(this);
-    }
-
-    public override short ReadInt16()
-    {
-      return BinaryReaderImpl.ReadInt16BE(this);
-    }
-
-    [CLSCompliant(false)]
-    public override ushort ReadUInt16()
-    {
-      return BinaryReaderImpl.ReadUInt16BE(this);
-    }
-
-    public override int ReadInt32()
-    {
-      return BinaryReaderImpl.ReadInt32BE(this);
-    }
-
-    [CLSCompliant(false)]
-    public override uint ReadUInt32()
-    {
-      return BinaryReaderImpl.ReadUInt32BE(this);
-    }
-
-    public override long ReadInt64()
-    {
-      return BinaryReaderImpl.ReadInt64BE(this);
-    }
-
-    [CLSCompliant(false)]
-    public override ulong ReadUInt64()
-    {
-      return BinaryReaderImpl.ReadUInt64BE(this);
-    }
-
-    public virtual UInt24 ReadUInt24()
-    {
-      return BinaryReaderImpl.ReadUInt24BE(this);
-    }
-
-    public virtual UInt48 ReadUInt48()
-    {
-      return BinaryReaderImpl.ReadUInt48BE(this);
-    }
-
-    public virtual FourCC ReadFourCC()
-    {
-      return BinaryReaderImpl.ReadFourCC(this);
     }
   }
 }
