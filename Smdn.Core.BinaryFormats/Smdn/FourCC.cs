@@ -48,16 +48,23 @@ namespace Smdn {
     }
 
     public FourCC(byte[] @value)
+      : this(@value, 0)
+    {
+    }
+
+    public FourCC(byte[] @value, int startIndex)
     {
       if (@value == null)
         throw new ArgumentNullException("value");
-      if (@value.Length != 4)
-        throw new ArgumentOutOfRangeException("value", "length must be 4");
+      if (startIndex < 0)
+        throw new ArgumentOutOfRangeException("startIndex", "must be zero or positive number");
+      if (@value.Length - startIndex < 4)
+        throw new ArgumentOutOfRangeException("value, startIndex", "length must be 4");
 
-      this.fourcc = @value[0] << 24 |
-                    @value[1] << 16 |
-                    @value[2] << 8 |
-                    @value[3];
+      this.fourcc = @value[startIndex + 0] << 24 |
+                    @value[startIndex + 1] << 16 |
+                    @value[startIndex + 2] << 8 |
+                    @value[startIndex + 3];
     }
 
     public FourCC(string value)

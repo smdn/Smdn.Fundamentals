@@ -48,23 +48,23 @@ namespace Smdn {
     public static readonly UInt48 MinValue = (UInt48)minValue;
     public static readonly UInt48 Zero     = (UInt48)0;
 
-    internal UInt48(byte[] bytes, bool bigEndian)
+    internal UInt48(byte[] bytes, int startIndex, bool bigEndian)
     {
       if (bigEndian) {
-        Byte0 = bytes[0];
-        Byte1 = bytes[1];
-        Byte2 = bytes[2];
-        Byte3 = bytes[3];
-        Byte4 = bytes[4];
-        Byte5 = bytes[5];
+        Byte0 = bytes[startIndex + 0];
+        Byte1 = bytes[startIndex + 1];
+        Byte2 = bytes[startIndex + 2];
+        Byte3 = bytes[startIndex + 3];
+        Byte4 = bytes[startIndex + 4];
+        Byte5 = bytes[startIndex + 5];
       }
       else {
-        Byte0 = bytes[5];
-        Byte1 = bytes[4];
-        Byte2 = bytes[3];
-        Byte3 = bytes[2];
-        Byte4 = bytes[1];
-        Byte5 = bytes[0];
+        Byte0 = bytes[startIndex + 5];
+        Byte1 = bytes[startIndex + 4];
+        Byte2 = bytes[startIndex + 3];
+        Byte3 = bytes[startIndex + 2];
+        Byte4 = bytes[startIndex + 1];
+        Byte5 = bytes[startIndex + 0];
       }
     }
 

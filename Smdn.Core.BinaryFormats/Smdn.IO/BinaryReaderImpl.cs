@@ -191,27 +191,27 @@ namespace Smdn.IO {
 
     internal static UInt24 ReadUInt24BE(System.IO.BinaryReader r)
     {
-      return new UInt24(ReadBytesOrThrowException(r, 3), true);
+      return new UInt24(ReadBytesOrThrowException(r, 3), 0, true);
     }
 
     internal static UInt24 ReadUInt24LE(System.IO.BinaryReader r)
     {
-      return new UInt24(ReadBytesOrThrowException(r, 3), false);
+      return new UInt24(ReadBytesOrThrowException(r, 3), 0, false);
     }
 
     internal static UInt48 ReadUInt48BE(System.IO.BinaryReader r)
     {
-      return new UInt48(ReadBytesOrThrowException(r, 6), true);
+      return new UInt48(ReadBytesOrThrowException(r, 6), 0, true);
     }
 
     internal static UInt48 ReadUInt48LE(System.IO.BinaryReader r)
     {
-      return new UInt48(ReadBytesOrThrowException(r, 6), false);
+      return new UInt48(ReadBytesOrThrowException(r, 6), 0, false);
     }
 
     internal static FourCC ReadFourCC(System.IO.BinaryReader r)
     {
-      return new FourCC(ReadBytesOrThrowException(r, 4));
+      return new FourCC(ReadBytesOrThrowException(r, 4), 0);
     }
   }
 }
