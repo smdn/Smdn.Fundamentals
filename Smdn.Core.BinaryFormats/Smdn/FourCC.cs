@@ -133,16 +133,28 @@ namespace Smdn {
       return new Guid(ToInt32LittleEndian(), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
     }
 
+    public void GetBytes(byte[] buffer, int startIndex)
+    {
+      if (buffer == null)
+        throw new ArgumentNullException("buffer");
+      if (buffer.Length - 4 < startIndex)
+        throw new ArgumentOutOfRangeException("startIndex, buffer");
+
+      unchecked {
+        buffer[startIndex++] = (byte)(fourcc >> 24);
+        buffer[startIndex++] = (byte)(fourcc >> 16);
+        buffer[startIndex++] = (byte)(fourcc >>  8);
+        buffer[startIndex++] = (byte)(fourcc);
+      }
+    }
+
     public byte[] ToByteArray()
     {
-      unchecked {
-        return new[] {
-          (byte)((fourcc >> 24) & 0xff),
-          (byte)((fourcc >> 16) & 0xff),
-          (byte)((fourcc >>  8) & 0xff),
-          (byte)( fourcc        & 0xff),
-        };
-      }
+      var bytes = new byte[4];
+
+      GetBytes(bytes, 0);
+
+      return bytes;
     }
 
     public override string ToString()

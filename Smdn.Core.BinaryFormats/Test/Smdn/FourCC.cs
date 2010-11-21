@@ -85,6 +85,42 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestGetBytes()
+    {
+      var fourcc = new FourCC("RIFF");
+      var buffer = new byte[] {0xcc, 0xdd, 0xcc, 0xdd, 0xcc};
+
+      fourcc.GetBytes(buffer, 1);
+
+      Assert.AreEqual(new byte[] {0xcc, 0x52, 0x49, 0x46, 0x46}, buffer);
+
+      fourcc.GetBytes(buffer, 0);
+
+      Assert.AreEqual(new byte[] {0x52, 0x49, 0x46, 0x46, 0x46}, buffer);
+
+      try {
+        fourcc.GetBytes(null, 0);
+        Assert.Fail("ArgumentNullException not thrown");
+      }
+      catch (ArgumentNullException) {
+      }
+
+      try {
+        fourcc.GetBytes(new byte[4], 1);
+        Assert.Fail("ArgumentOutOfRangeException not thrown");
+      }
+      catch (ArgumentOutOfRangeException) {
+      }
+
+      try {
+        fourcc.GetBytes(new byte[3], 0);
+        Assert.Fail("ArgumentOutOfRangeException not thrown");
+      }
+      catch (ArgumentOutOfRangeException) {
+      }
+    }
+
+    [Test]
     public void TestToByteArray()
     {
       Assert.AreEqual(new byte[] {0x52, 0x49, 0x46, 0x46}, FourCC.CreateLittleEndian(0x46464952).ToByteArray());
