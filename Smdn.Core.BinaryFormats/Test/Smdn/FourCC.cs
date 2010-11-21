@@ -15,7 +15,7 @@ namespace Smdn {
     [Test]
     public void ConstructFromByteArray()
     {
-      Assert.AreEqual("RIFF", (new FourCC(new byte[] {0x52, 0x49, 0x46, 0x46})).ToString());
+      Assert.AreEqual("RIFF", (new FourCC(new byte[] {0x00, 0x52, 0x49, 0x46, 0x46, 0x00}, 1)).ToString());
       Assert.AreEqual("isom", (new FourCC(new byte[] {0x69, 0x73, 0x6f, 0x6d})).ToString());
     }
 
