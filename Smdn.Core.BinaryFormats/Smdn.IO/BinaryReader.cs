@@ -45,91 +45,91 @@ namespace Smdn.IO {
       : base(baseStream, leaveBaseStreamOpen)
     {
       this.endianness = endianness;
-      this.store = new byte[8];
+      this.Storage = new byte[8];
     }
 
     public override byte ReadByte()
     {
-      ReadBytesUnchecked(store, 0, 1, true);
+      ReadBytesUnchecked(Storage, 0, 1, true);
 
-      return store[0];
+      return Storage[0];
     }
 
     [CLSCompliant(false)]
     public override sbyte ReadSByte()
     {
-      ReadBytesUnchecked(store, 0, 1, true);
+      ReadBytesUnchecked(Storage, 0, 1, true);
 
-      return unchecked((sbyte)store[0]);
+      return unchecked((sbyte)Storage[0]);
     }
 
     public override short ReadInt16()
     {
-      ReadBytesUnchecked(store, 0, 2, true);
+      ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConvert.ToInt16(store, 0, endianness);
+      return BinaryConvert.ToInt16(Storage, 0, endianness);
     }
 
     [CLSCompliant(false)]
     public override ushort ReadUInt16()
     {
-      ReadBytesUnchecked(store, 0, 2, true);
+      ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConvert.ToUInt16(store, 0, endianness);
+      return BinaryConvert.ToUInt16(Storage, 0, endianness);
     }
 
     public override int ReadInt32()
     {
-      ReadBytesUnchecked(store, 0, 4, true);
+      ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConvert.ToInt32(store, 0, endianness);
+      return BinaryConvert.ToInt32(Storage, 0, endianness);
     }
 
     [CLSCompliant(false)]
     public override uint ReadUInt32()
     {
-      ReadBytesUnchecked(store, 0, 4, true);
+      ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConvert.ToUInt32(store, 0, endianness);
+      return BinaryConvert.ToUInt32(Storage, 0, endianness);
     }
 
     public override long ReadInt64()
     {
-      ReadBytesUnchecked(store, 0, 8, true);
+      ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConvert.ToInt64(store, 0, endianness);
+      return BinaryConvert.ToInt64(Storage, 0, endianness);
     }
 
     [CLSCompliant(false)]
     public override ulong ReadUInt64()
     {
-      ReadBytesUnchecked(store, 0, 8, true);
+      ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConvert.ToUInt64(store, 0, endianness);
+      return BinaryConvert.ToUInt64(Storage, 0, endianness);
     }
 
     public override UInt24 ReadUInt24()
     {
-      ReadBytesUnchecked(store, 0, 3, true);
+      ReadBytesUnchecked(Storage, 0, 3, true);
 
-      return BinaryConvert.ToUInt24(store, 0, endianness);
+      return BinaryConvert.ToUInt24(Storage, 0, endianness);
     }
 
     public override UInt48 ReadUInt48()
     {
-      ReadBytesUnchecked(store, 0, 6, true);
+      ReadBytesUnchecked(Storage, 0, 6, true);
 
-      return BinaryConvert.ToUInt48(store, 0, endianness);
+      return BinaryConvert.ToUInt48(Storage, 0, endianness);
     }
 
     public override FourCC ReadFourCC()
     {
-      ReadBytesUnchecked(store, 0, 4, true);
+      ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return new FourCC(store, 0);
+      return new FourCC(Storage, 0);
     }
 
     private readonly Endianness endianness;
-    private byte[] store;
+    protected byte[] Storage;
   }
 }

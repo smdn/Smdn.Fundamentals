@@ -45,91 +45,91 @@ namespace Smdn.IO {
       : base(baseStream, leaveBaseStreamOpen)
     {
       this.endianness = endianness;
-      this.store = new byte[8];
+      this.Storage = new byte[8];
     }
 
     public override void Write(byte @value)
     {
-      store[0] = @value;
+      Storage[0] = @value;
 
-      Write(store, 0, 1);
+      Write(Storage, 0, 1);
     }
 
     [CLSCompliant(false)]
     public override void Write(sbyte @value)
     {
-      store[0] = unchecked((byte)@value);
+      Storage[0] = unchecked((byte)@value);
 
-      WriteUnchecked(store, 0, 1);
+      WriteUnchecked(Storage, 0, 1);
     }
 
     public override void Write(short @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 2);
+      WriteUnchecked(Storage, 0, 2);
     }
 
     [CLSCompliant(false)]
     public override void Write(ushort @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 2);
+      WriteUnchecked(Storage, 0, 2);
     }
 
     public override void Write(int @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 4);
+      WriteUnchecked(Storage, 0, 4);
     }
 
     [CLSCompliant(false)]
     public override void Write(uint @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 4);
+      WriteUnchecked(Storage, 0, 4);
     }
 
     public override void Write(long @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      Write(store, 0, 8);
+      Write(Storage, 0, 8);
     }
 
     [CLSCompliant(false)]
     public override void Write(ulong @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 8);
+      WriteUnchecked(Storage, 0, 8);
     }
 
     public override void Write(UInt24 @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 3);
+      WriteUnchecked(Storage, 0, 3);
     }
 
     public override void Write(UInt48 @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, store, 0);
+      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
 
-      WriteUnchecked(store, 0, 6);
+      WriteUnchecked(Storage, 0, 6);
     }
 
     public override void Write(FourCC @value)
     {
-      @value.GetBytes(store, 0);
+      @value.GetBytes(Storage, 0);
 
-      WriteUnchecked(store, 0, 4);
+      WriteUnchecked(Storage, 0, 4);
     }
 
     private readonly Endianness endianness;
-    private byte[] store;
+    protected byte[] Storage;
   }
 }
