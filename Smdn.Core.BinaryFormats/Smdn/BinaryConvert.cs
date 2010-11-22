@@ -24,8 +24,10 @@
 using System;
 
 namespace Smdn {
-  public static class BinaryConvert {
-    private static void CheckSourceArray(byte[] @value, int startIndex, int count)
+  public /*static*/ abstract class BinaryConvert {
+    protected BinaryConvert() {}
+
+    protected static void CheckSourceArray(byte[] @value, int startIndex, int count)
     {
       if (@value == null)
         throw new ArgumentNullException("value");
@@ -35,7 +37,7 @@ namespace Smdn {
         throw new ArgumentOutOfRangeException("startIndex, value");
     }
 
-    private static void CheckDestArray(byte[] @bytes, int startIndex, int count)
+    protected static void CheckDestArray(byte[] @bytes, int startIndex, int count)
     {
       if (@bytes == null)
         throw new ArgumentNullException("bytes");
@@ -45,7 +47,7 @@ namespace Smdn {
         throw new ArgumentOutOfRangeException("startIndex, bytes");
     }
 
-    private static Exception GetUnsupportedEndianException(Endianness endian)
+    protected static Exception GetUnsupportedEndianException(Endianness endian)
     {
       return new NotSupportedException(string.Format("endian '{0}' is not supported", endian));
     }
