@@ -177,6 +177,45 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestGetBytes()
+    {
+      byte[] buffer = new byte[18] {
+        0xcc,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0xcc
+      };
+
+      Uuid.RFC4122NamespaceDns.GetBytes(buffer, 1);
+
+      CollectionAssert.AreEqual(new[] {0xcc, 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc},
+                                buffer);
+
+      try {
+        Uuid.RFC4122NamespaceDns.GetBytes(null, 0);
+        Assert.Fail("ArgumentNullException not thrown");
+      }
+      catch (ArgumentNullException) {
+      }
+
+      try {
+        Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0);
+        Assert.Fail("ArgumentOutOfRangeException not thrown");
+      }
+      catch (ArgumentOutOfRangeException) {
+      }
+
+      try {
+        Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1);
+        Assert.Fail("ArgumentOutOfRangeException not thrown");
+      }
+      catch (ArgumentOutOfRangeException) {
+      }
+    }
+
+    [Test]
     public void TestToUrn()
     {
       StringAssert.AreEqualIgnoringCase((new Uri("urn:uuid:00000000-0000-0000-0000-000000000000")).ToString(), Uuid.Nil.ToUrn().ToString());

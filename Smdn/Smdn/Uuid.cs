@@ -457,26 +457,14 @@ namespace Smdn {
       get { return time_low; }
     }
 
-    private uint TimeLowNetworkOrder {
-      get { return (uint)IPAddress.HostToNetworkOrder((int)time_low); }
-    }
-
     /// <value>time_mid; The middle field of the timestamp</value>
     public ushort TimeMid {
       get { return time_mid; }
     }
 
-    private ushort TimeMidNetworkOrder {
-      get { return (ushort)IPAddress.HostToNetworkOrder((short)time_mid); }
-    }
-
     /// <value>time_hi_and_version; The high field of the timestamp multiplexed with the version number</value>
     public ushort TimeHighAndVersion {
       get { return time_hi_and_version; }
-    }
-
-    private ushort TimeHighAndVersionNetworkOrder {
-      get { return (ushort)IPAddress.HostToNetworkOrder((short)time_hi_and_version); }
     }
 
     /// <value>clock_seq_hi_and_reserved; The high field of the clock sequence multiplexed with the variant</value>
@@ -790,13 +778,41 @@ namespace Smdn {
       return Urn.Create(Urn.NamespaceUuid, ToString(null, null));
     }
 
+    public void GetBytes(byte[] buffer, int startIndex)
+    {
+      if (buffer == null)
+        throw new ArgumentNullException("buffer");
+      if (buffer.Length - 16 < startIndex)
+        throw new ArgumentOutOfRangeException("startIndex, buffer");
+
+      unchecked {
+        // XXX: use BinaryConvert
+        buffer[startIndex++] = (byte)(time_low >> 24);
+        buffer[startIndex++] = (byte)(time_low >> 16);
+        buffer[startIndex++] = (byte)(time_low >> 8);
+        buffer[startIndex++] = (byte)(time_low);
+        buffer[startIndex++] = (byte)(time_mid >> 8);
+        buffer[startIndex++] = (byte)(time_mid);
+        buffer[startIndex++] = (byte)(time_hi_and_version >> 8);
+        buffer[startIndex++] = (byte)(time_hi_and_version);
+        buffer[startIndex++] = clock_seq_hi_and_reserved;
+        buffer[startIndex++] = clock_seq_low;
+        buffer[startIndex++] = node.N0;
+        buffer[startIndex++] = node.N1;
+        buffer[startIndex++] = node.N2;
+        buffer[startIndex++] = node.N3;
+        buffer[startIndex++] = node.N4;
+        buffer[startIndex++] = node.N5;
+      }
+    }
+
     public byte[] ToByteArray()
     {
-      return ArrayExtensions.Concat(BitConverter.GetBytes(TimeLowNetworkOrder),
-                                    BitConverter.GetBytes(TimeMidNetworkOrder),
-                                    BitConverter.GetBytes(TimeHighAndVersionNetworkOrder),
-                                    new byte[] {clock_seq_hi_and_reserved, clock_seq_low},
-                                    Node);
+      var bytes = new byte[16];
+
+      GetBytes(bytes, 0);
+
+      return bytes;
     }
 #endregion
 
