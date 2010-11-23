@@ -465,6 +465,32 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestReadZeroBytes()
+    {
+      using (var stream = new ChunkedMemoryStream(8)) {
+        for (var i = 0; i < 32; i++) {
+          stream.WriteByte((byte)i);
+        }
+
+        var buffer = new byte[4];
+
+        Assert.AreEqual(0L, stream.Seek(0, SeekOrigin.Begin));
+
+        Assert.AreEqual(0, stream.Read(buffer, 0, 0));
+        Assert.AreEqual(new byte[4], buffer);
+
+        Assert.AreEqual(0L, stream.Position);
+
+        Assert.AreEqual(8L, stream.Seek(8, SeekOrigin.Begin));
+
+        Assert.AreEqual(0, stream.Read(buffer, 0, 0));
+        Assert.AreEqual(new byte[4], buffer);
+
+        Assert.AreEqual(8L, stream.Position);
+      }
+    }
+
+    [Test]
     public void TestReadByteFromEmptyStream()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
