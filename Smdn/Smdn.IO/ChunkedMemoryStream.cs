@@ -174,8 +174,7 @@ namespace Smdn.IO {
 
         if (currentChunkRemainder == 0) {
           if (!MoveToNextChunk(false))
-            // end of stream
-            return -1;
+            return -1; // end of stream
         }
 
         var ret = currentChunk.Data[currentChunkOffset];
@@ -196,11 +195,10 @@ namespace Smdn.IO {
         for (;;) {
           if (currentChunkRemainder == 0) {
             if (!MoveToNextChunk(false))
-              // end of stream
-              return read;
+              return read; // end of stream
           }
 
-          var bytesToRead = (currentChunkRemainder <= count) ? currentChunkRemainder : count;
+          var bytesToRead = Math.Min(currentChunkRemainder, count);
 
           Buffer.BlockCopy(currentChunk.Data, currentChunkOffset, buffer, offset, bytesToRead);
 
@@ -240,7 +238,7 @@ namespace Smdn.IO {
           if (currentChunkRemainder == 0)
             MoveToNextChunk(true);
 
-          var bytesToWrite = (currentChunkRemainder <= count) ? currentChunkRemainder : count;
+          var bytesToWrite = Math.Min(currentChunkRemainder, count);
 
           Buffer.BlockCopy(buffer, offset, currentChunk.Data, currentChunkOffset, bytesToWrite);
 
@@ -445,7 +443,10 @@ namespace Smdn.IO {
       if (buffer.Length < offset + count)
         throw new ArgumentException("invalid range");
 
-      return chain.Read(buffer, offset, count);
+      if (count == 0)
+        return 0;
+      else
+        return chain.Read(buffer, offset, count);
     }
 
     public override void WriteByte(byte @value)
@@ -468,7 +469,10 @@ namespace Smdn.IO {
       if (buffer.Length < offset + count)
         throw new ArgumentException("invalid range");
 
-      chain.Write(buffer, offset, count);
+      if (count == 0)
+        return;
+      else
+        chain.Write(buffer, offset, count);
     }
 
     public override void Flush()
