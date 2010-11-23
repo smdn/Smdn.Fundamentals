@@ -31,7 +31,8 @@ namespace Smdn {
     IEquatable<UInt24>,
     IComparable,
     IComparable<UInt24>,
-    IConvertible
+    IConvertible,
+    IFormattable
   {
     // big endian
     [FieldOffset(0)] public byte Byte0; // 0x 00ff0000
@@ -68,9 +69,9 @@ namespace Smdn {
       var uint24 = new UInt24();
 
       unchecked {
-        uint24.Byte0 = (byte)((val & 0x00ff0000) >> 16);
-        uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
-        uint24.Byte2 = (byte)((val & 0x000000ff));
+        uint24.Byte0 = (byte)(val >> 16);
+        uint24.Byte1 = (byte)(val >> 8);
+        uint24.Byte2 = (byte)(val);
       }
 
       return uint24;
@@ -84,23 +85,23 @@ namespace Smdn {
       var uint24 = new UInt24();
 
       unchecked {
-        uint24.Byte0 = (byte)((val & 0x00ff0000) >> 16);
-        uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
-        uint24.Byte2 = (byte)((val & 0x000000ff));
+        uint24.Byte0 = (byte)(val >> 16);
+        uint24.Byte1 = (byte)(val >> 8);
+        uint24.Byte2 = (byte)(val);
       }
 
       return uint24;
     }
 
     [CLSCompliant(false)]
-    public static explicit operator UInt24(ushort val)
+    public static implicit operator UInt24(ushort val)
     {
       var uint24 = new UInt24();
 
       unchecked {
         uint24.Byte0 = 0;
-        uint24.Byte1 = (byte)((val & 0x0000ff00) >> 8);
-        uint24.Byte2 = (byte)((val & 0x000000ff));
+        uint24.Byte1 = (byte)(val >> 8);
+        uint24.Byte2 = (byte)(val);
       }
 
       return uint24;
@@ -115,22 +116,22 @@ namespace Smdn {
 
       unchecked {
         uint24.Byte0 = 0;
-        uint24.Byte1 = (byte)((val & 0x00007f00) >> 8);
-        uint24.Byte2 = (byte)((val & 0x000000ff));
+        uint24.Byte1 = (byte)(val >> 8);
+        uint24.Byte2 = (byte)(val);
       }
 
       return uint24;
     }
 
-    public static implicit operator short(UInt24 val)
+    public static explicit operator short(UInt24 val)
     {
-      return (short)val.ToInt32();
+      return checked((short)val.ToInt32());
     }
 
     [CLSCompliant(false)]
-    public static implicit operator ushort(UInt24 val)
+    public static explicit operator ushort(UInt24 val)
     {
-      return (ushort)val.ToUInt32();
+      return checked((ushort)val.ToUInt32());
     }
 
     public static implicit operator int(UInt24 val)
@@ -157,98 +158,25 @@ namespace Smdn {
               (UInt32)Byte2);
     }
 
-    public byte[] ToBigEndianByteArray()
-    {
-      return new[] {
-        Byte0,
-        Byte1,
-        Byte2,
-      };
-    }
-
-    public byte[] ToLittleEndianByteArray()
-    {
-      return new[] {
-        Byte2,
-        Byte1,
-        Byte0,
-      };
-    }
-
 #region "IConvertible implementation"
     TypeCode IConvertible.GetTypeCode()
     {
       return TypeCode.Object;
     }
 
-    bool IConvertible.ToBoolean(IFormatProvider provider)
+    string IConvertible.ToString(IFormatProvider provider)
     {
-      return Convert.ToBoolean(ToInt32());
+      return ToString(null, provider);
     }
 
     byte IConvertible.ToByte(IFormatProvider provider)
     {
-      return Convert.ToByte(ToInt32());
-    }
-
-    char IConvertible.ToChar(IFormatProvider provider)
-    {
-      return Convert.ToChar(ToInt32());
-    }
-
-    DateTime IConvertible.ToDateTime(IFormatProvider provider)
-    {
-      return Convert.ToDateTime(ToInt32());
-    }
-
-    decimal IConvertible.ToDecimal(IFormatProvider provider)
-    {
-      return Convert.ToDecimal(ToInt32());
-    }
-
-    double IConvertible.ToDouble(IFormatProvider provider)
-    {
-      return Convert.ToDouble(ToInt32());
-    }
-
-    short IConvertible.ToInt16(IFormatProvider provider)
-    {
-      return Convert.ToInt16(ToInt32());
-    }
-
-    int IConvertible.ToInt32(IFormatProvider provider)
-    {
-      return ToInt32();
-    }
-
-    long IConvertible.ToInt64(IFormatProvider provider)
-    {
-      return Convert.ToInt64(ToInt32());
-    }
-
-    sbyte IConvertible.ToSByte(IFormatProvider provider)
-    {
-      return Convert.ToSByte(ToInt32());
-    }
-
-    float IConvertible.ToSingle(IFormatProvider provider)
-    {
-      return Convert.ToSingle(ToInt32());
-    }
-
-    string IConvertible.ToString(IFormatProvider provider)
-    {
-      return Convert.ToString(ToInt32(), provider);
-    }
-
-    object IConvertible.ToType(Type conversionType, IFormatProvider provider)
-    {
-      return Convert.ChangeType(ToInt32(), conversionType, provider);
+      return checked((byte)ToUInt32());
     }
 
     ushort IConvertible.ToUInt16(IFormatProvider provider)
     {
-      return Convert.ToUInt16(ToUInt32());
+      return checked((ushort)ToUInt32());
     }
 
     uint IConvertible.ToUInt32(IFormatProvider provider)
@@ -258,7 +186,62 @@ namespace Smdn {
 
     ulong IConvertible.ToUInt64(IFormatProvider provider)
     {
-      return Convert.ToUInt64(ToUInt32());
+      return (ulong)ToUInt32();
+    }
+
+    sbyte IConvertible.ToSByte(IFormatProvider provider)
+    {
+      return checked((sbyte)ToInt32());
+    }
+
+    short IConvertible.ToInt16(IFormatProvider provider)
+    {
+      return checked((short)ToInt32());
+    }
+
+    int IConvertible.ToInt32(IFormatProvider provider)
+    {
+      return ToInt32();
+    }
+
+    long IConvertible.ToInt64(IFormatProvider provider)
+    {
+      return (long)ToInt32();
+    }
+
+    bool IConvertible.ToBoolean(IFormatProvider provider)
+    {
+      return Convert.ToBoolean(ToUInt32());
+    }
+
+    char IConvertible.ToChar(IFormatProvider provider)
+    {
+      return Convert.ToChar(ToUInt32());
+    }
+
+    DateTime IConvertible.ToDateTime(IFormatProvider provider)
+    {
+      return Convert.ToDateTime(ToUInt32());
+    }
+
+    decimal IConvertible.ToDecimal(IFormatProvider provider)
+    {
+      return Convert.ToDecimal(ToUInt32());
+    }
+
+    double IConvertible.ToDouble(IFormatProvider provider)
+    {
+      return Convert.ToDouble(ToUInt32());
+    }
+
+    float IConvertible.ToSingle(IFormatProvider provider)
+    {
+      return Convert.ToSingle(ToUInt32());
+    }
+
+    object IConvertible.ToType(Type conversionType, IFormatProvider provider)
+    {
+      return Convert.ChangeType(ToUInt32(), conversionType, provider);
     }
 #endregion
 
@@ -299,7 +282,22 @@ namespace Smdn {
 
     public override string ToString()
     {
-      return ToUInt32().ToString();
+      return ToString(null, null);
+    }
+
+    public string ToString(string format)
+    {
+      return ToString(format, null);
+    }
+
+    public string ToString(IFormatProvider formatProvider)
+    {
+      return ToString(null, formatProvider);
+    }
+
+    public string ToString(string format, IFormatProvider formatProvider)
+    {
+      return ToUInt32().ToString(format, formatProvider);
     }
   }
 }

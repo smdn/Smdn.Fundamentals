@@ -19,9 +19,6 @@ namespace Smdn {
 
       Assert.AreEqual((int)0x123456, val.ToInt32());
 
-      Assert.AreEqual(new byte[] {0x12, 0x34, 0x56}, val.ToBigEndianByteArray());
-      Assert.AreEqual(new byte[] {0x56, 0x34, 0x12}, val.ToLittleEndianByteArray());
-
       var zero = (UInt24)0x000000;
       var one  = (UInt24)0x000001;
 
@@ -35,37 +32,241 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestExplicitOperator()
+    public void TestOpExplicitFromInt16()
     {
-      int intval;
+      foreach (var test in new[] {
+        new {Value = (short)0x000000, ExpectedResult = 0x00000000, ExpectedHex = "0"},
+        new {Value = (short)0x007fff, ExpectedResult = 0x00007fff, ExpectedHex = "7fff"},
+        new {Value = Int16.MaxValue,  ExpectedResult = 0x00007fff, ExpectedHex = "7fff"},
+      }) {
 
-      intval = (UInt24)0x000000;
-      Assert.AreEqual((int)0x000000, intval);
+        try {
+          UInt24 val = (UInt24)test.Value;
 
-      intval = (UInt24)0xffffff;
-      Assert.AreEqual((int)0xffffff, intval);
+          Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", test.ExpectedHex);
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+        }
+        catch (OverflowException) {
+          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+        }
+      }
 
-      uint uintval;
+      foreach (var test in new[] {
+        new {Value = (short)-1},
+        new {Value = Int16.MinValue},
+      }) {
+        try {
+          UInt24 val = (UInt24)test.Value;
 
-      uintval = (UInt24)0x000000;
-      Assert.AreEqual((uint)0x000000, uintval);
-
-      uintval = (UInt24)0xffffff;
-      Assert.AreEqual((uint)0xffffff, uintval);
+          Assert.Fail("OverflowException not thrown: value = {0}", test.Value);
+          Assert.AreNotEqual(0, val.ToInt32());
+        }
+        catch (OverflowException) {
+        }
+      }
     }
 
     [Test]
-    public void TestImplicitOperator()
+    public void TestOpExplicitFromInt32()
     {
-      Assert.AreEqual(0, (short)((UInt24)0x000000));
-      Assert.AreEqual(short.MaxValue, (short)((UInt24)0x007fff));
-      Assert.AreEqual(short.MinValue, (short)((UInt24)0x008000));
-      Assert.AreEqual(-1, (short)((UInt24)0x00ffff));
+      foreach (var test in new[] {
+        new {Value = (int)0x00000000, ExpectedResult = 0x00000000, ExpectedHex = "0"},
+        new {Value = (int)0x00ffffff, ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
+      }) {
 
-      Assert.AreEqual((ushort)0x000000, (ushort)((UInt24)0x000000));
-      Assert.AreEqual((ushort)0x007fff, (ushort)((UInt24)0x007fff));
-      Assert.AreEqual((ushort)0x008000, (ushort)((UInt24)0x008000));
-      Assert.AreEqual((ushort)0x00ffff, (ushort)((UInt24)0x00ffff));
+        try {
+          UInt24 val = (UInt24)test.Value;
+
+          Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", test.ExpectedHex);
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+        }
+        catch (OverflowException) {
+          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+        }
+      }
+
+      foreach (var test in new[] {
+        new {Value = (int)-1},
+        new {Value = (int)0x01000000},
+        new {Value = Int32.MaxValue},
+        new {Value = Int32.MinValue},
+      }) {
+        try {
+          UInt24 val = (UInt24)test.Value;
+
+          Assert.Fail("OverflowException not thrown: value = {0}", test.Value);
+          Assert.AreNotEqual(0, val.ToInt32());
+        }
+        catch (OverflowException) {
+        }
+      }
+    }
+
+    [Test]
+    public void TestOpExplicitFromUInt32()
+    {
+      foreach (var test in new[] {
+        new {Value = (uint)0x00000000,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
+        new {Value = (uint)0x00ffffff,  ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
+        new {Value = UInt32.MinValue,   ExpectedResult = 0x00000000, ExpectedHex = "0"},
+      }) {
+
+        try {
+          UInt24 val = (UInt24)test.Value;
+
+          Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", test.ExpectedHex);
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+        }
+        catch (OverflowException) {
+          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+        }
+      }
+
+      foreach (var test in new[] {
+        new {Value = (uint)0x01000000},
+        new {Value = (uint)0xffffffff},
+        new {Value = UInt32.MaxValue},
+      }) {
+        try {
+          UInt24 val = (UInt24)test.Value;
+
+          Assert.Fail("OverflowException not thrown: value = {0}", test.Value);
+          Assert.AreNotEqual(0u, val.ToUInt32());
+        }
+        catch (OverflowException) {
+        }
+      }
+    }
+
+    [Test]
+    public void TestOpExplicitToInt16()
+    {
+      foreach (var test in new[] {
+        new {Value = UInt24.MinValue,   ExpectedResult = (short)0x0000, ExpectedHex = "0"},
+        new {Value = (UInt24)0x000000,  ExpectedResult = (short)0x0000, ExpectedHex = "0"},
+        new {Value = (UInt24)0x007fff,  ExpectedResult = (short)0x7fff, ExpectedHex = "7fff"},
+      }) {
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+
+        try {
+          Assert.IsTrue(test.ExpectedResult == (short)test.Value);
+        }
+        catch (OverflowException) {
+          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+        }
+      }
+
+      foreach (var test in new[] {
+        new {Value = (UInt24)0x008000,  ExpectedHex = "8000"},
+        new {Value = (UInt24)0xffffff,  ExpectedHex = "ffffff"},
+        new {Value = UInt24.MaxValue,   ExpectedHex = "ffffff"},
+      }) {
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+
+        try {
+          Assert.IsFalse((short)0 == (short)test.Value);
+          Assert.Fail("OverflowException not thrown: value = {0}", test.ExpectedHex);
+        }
+        catch (OverflowException) {
+        }
+      }
+    }
+
+    [Test]
+    public void TestOpExplicitToUInt16()
+    {
+      foreach (var test in new[] {
+        new {Value = UInt24.MinValue,   ExpectedResult = (ushort)0x0000, ExpectedHex = "0"},
+        new {Value = (UInt24)0x000000,  ExpectedResult = (ushort)0x0000, ExpectedHex = "0"},
+        new {Value = (UInt24)0x007fff,  ExpectedResult = (ushort)0x7fff, ExpectedHex = "7fff"},
+        new {Value = (UInt24)0x008000,  ExpectedResult = (ushort)0x8000, ExpectedHex = "8000"},
+        new {Value = (UInt24)0x00ffff,  ExpectedResult = (ushort)0xffff, ExpectedHex = "ffff"},
+      }) {
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+
+        try {
+          Assert.IsTrue(test.ExpectedResult == (ushort)test.Value);
+        }
+        catch (OverflowException) {
+          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+        }
+      }
+
+      foreach (var test in new[] {
+        new {Value = (UInt24)0x010000,  ExpectedHex = "10000"},
+        new {Value = (UInt24)0xffffff,  ExpectedHex = "ffffff"},
+        new {Value = UInt24.MaxValue,   ExpectedHex = "ffffff"},
+      }) {
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+
+        try {
+          Assert.IsFalse((ushort)0 == (ushort)test.Value);
+          Assert.Fail("OverflowException not thrown: value = {0}", test.ExpectedHex);
+        }
+        catch (OverflowException) {
+        }
+      }
+    }
+
+    [Test]
+    public void TestOpImplicitFromUInt16()
+    {
+      UInt24 val;
+   
+      foreach (var test in new[] {
+        new {Value = (ushort)0,       ExpectedResult = 0x00000000, ExpectedHex = "0"},
+        new {Value = (ushort)0x0000,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
+        new {Value = (ushort)0xffff,  ExpectedResult = 0x0000ffff, ExpectedHex = "ffff"},
+        new {Value = UInt16.MinValue, ExpectedResult = 0x00000000, ExpectedHex = "0"},
+        new {Value = UInt16.MaxValue, ExpectedResult = 0x0000ffff, ExpectedHex = "ffff"},
+      }) {
+        val = test.Value;
+
+        Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", val);
+        Assert.AreEqual(test.ExpectedHex, val.ToString("x"), "value = {0}", val);
+      }
+    }
+
+    [Test]
+    public void TestOpImplicitToInt32()
+    {
+      int max = UInt24.MaxValue;
+      int min = UInt24.MinValue;
+
+      Assert.IsTrue((int)0x00ffffff == max);
+      Assert.IsTrue((int)0x00000000 == min);
+    }
+
+    [Test]
+    public void TestOpImplicitToUInt32()
+    {
+      uint max = UInt24.MaxValue;
+      uint min = UInt24.MinValue;
+
+      Assert.IsTrue((uint)0x00ffffff == max);
+      Assert.IsTrue((uint)0x00000000 == min);
+    }
+
+    [Test]
+    public void TestToInt32()
+    {
+      Assert.IsTrue((int)0x00ffffff == UInt24.MaxValue.ToInt32());
+      Assert.IsTrue((int)0x00000000 == UInt24.MinValue.ToInt32());
+
+      UInt24 val = (UInt24)0x123456;
+
+      Assert.IsTrue((int)0x00123456 == val.ToInt32());
+    }
+
+    [Test]
+    public void TestToUInt32()
+    {
+      Assert.IsTrue((uint)0x00ffffff == UInt24.MaxValue.ToUInt32());
+      Assert.IsTrue((uint)0x00000000 == UInt24.MinValue.ToUInt32());
+
+      UInt24 val = (UInt24)0x123456;
+
+      Assert.IsTrue((uint)0x00123456 == val.ToUInt32());
     }
 
     [Test]
@@ -109,6 +310,15 @@ namespace Smdn {
           Assert.Fail("OverflowException thrown: type {0}", t);
         }
       }
+    }
+
+    [Test]
+    public void TestToString()
+    {
+      Assert.AreEqual("0", UInt24.Zero.ToString());
+      Assert.AreEqual("0000", UInt24.Zero.ToString("D4"));
+      Assert.AreEqual("16777215", UInt24.MaxValue.ToString());
+      Assert.AreEqual("FFFFFF", UInt24.MaxValue.ToString("X"));
     }
   }
 }
