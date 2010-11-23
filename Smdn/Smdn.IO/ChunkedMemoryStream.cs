@@ -72,25 +72,30 @@ namespace Smdn.IO {
       {
         this.chunkSize = chunkSize;
         this.allocator = allocator;
-        this.firstChunk = allocator(chunkSize);
-
-        this.currentChunk = firstChunk;
 
         currentChunkOffset = 0;
         currentChunkRemainder = chunkSize;
       }
 
+      private Chunk TryGetFirstChunk(bool ensureCreated)
+      {
+        if (ensureCreated && firstChunk == null)
+          currentChunk = firstChunk = allocator(chunkSize);
+
+        return firstChunk;
+      }
+
       public void Dispose()
       {
-        var chunk = firstChunk;
+        var chunk = TryGetFirstChunk(false);
 
         for (;;) {
+          if (chunk == null)
+            break;
+
           var next = chunk.Next;
 
           chunk.Dispose();
-
-          if (next == null)
-            break;
 
           chunk = next;
         }
@@ -103,7 +108,7 @@ namespace Smdn.IO {
 
         chunkCount = 1;
 
-        var chunk = firstChunk;
+        var chunk = TryGetFirstChunk(true);
 
         // allocate
         while ((int)chunkSize <= length) {
@@ -148,7 +153,7 @@ namespace Smdn.IO {
         if (Length < offset)
           SetLength(offset);
 
-        currentChunk = firstChunk;
+        currentChunk = TryGetFirstChunk(true);
         currentChunkIndex = 0;
 
         while ((int)chunkSize <= offset) {
@@ -164,6 +169,9 @@ namespace Smdn.IO {
 
       public int ReadByte()
       {
+        if (TryGetFirstChunk(false) == null)
+          return -1; // stream is empty
+
         if (currentChunkRemainder == 0) {
           if (!MoveToNextChunk(false))
             // end of stream
@@ -180,6 +188,9 @@ namespace Smdn.IO {
 
       public int Read(byte[] buffer, int offset, int count)
       {
+        if (TryGetFirstChunk(false) == null)
+          return 0; // stream is empty
+
         var read = 0;
 
         for (;;) {
@@ -207,6 +218,8 @@ namespace Smdn.IO {
 
       public void WriteByte(byte @value)
       {
+        TryGetFirstChunk(true);
+
         if (currentChunkRemainder == 0)
           MoveToNextChunk(true);
 
@@ -221,6 +234,8 @@ namespace Smdn.IO {
 
       public void Write(byte[] buffer, int offset, int count)
       {
+        TryGetFirstChunk(true);
+
         for (;;) {
           if (currentChunkRemainder == 0)
             MoveToNextChunk(true);
@@ -269,7 +284,10 @@ namespace Smdn.IO {
       {
         var buffer = new byte[Length];
         var offset = 0L;
-        var chunk = firstChunk;
+        var chunk = TryGetFirstChunk(false);
+
+        if (chunk == null)
+          return buffer; // stream is empty (length must be zero)
 
         for (;;) {
           if (chunk.Next == null) {
