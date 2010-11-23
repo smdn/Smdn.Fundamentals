@@ -44,6 +44,23 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestAllocateDisposeChunkEmptyStream()
+    {
+      var allocated = new List<TestChunk>();
+
+      using (var stream = new ChunkedMemoryStream(4, delegate(int size) {
+        Assert.AreEqual(4, size);
+        return new TestChunk(size, allocated);
+      })) {
+        Assert.AreEqual(0, allocated.Count, "first chunk");
+
+        stream.Close();
+
+        Assert.AreEqual(0, allocated.Count, "closed");
+      }
+    }
+
+    [Test]
     public void TestAllocateDisposeChunk()
     {
       var allocated = new List<TestChunk>();
@@ -52,7 +69,7 @@ namespace Smdn.IO {
         Assert.AreEqual(4, size);
         return new TestChunk(size, allocated);
       })) {
-        Assert.AreEqual(1, allocated.Count, "first chunk");
+        Assert.AreEqual(0, allocated.Count, "first chunk");
 
         var writer = new System.IO.BinaryWriter(stream);
 
@@ -231,6 +248,30 @@ namespace Smdn.IO {
         Assert.AreEqual(3L, stream.Position);
         Assert.AreEqual(0, stream.ReadByte());
         Assert.AreEqual(4L, stream.Position);
+      }
+    }
+
+    [Test]
+    public void TestSetLengthEmptyStream()
+    {
+      using (var stream = new ChunkedMemoryStream(4)) {
+        Assert.AreEqual(0L, stream.Length);
+        Assert.AreEqual(0L, stream.Position);
+
+        stream.SetLength(2L);
+
+        Assert.AreEqual(2L, stream.Length);
+        Assert.AreEqual(0L, stream.Position);
+      }
+
+      using (var stream = new ChunkedMemoryStream(4)) {
+        Assert.AreEqual(0L, stream.Length);
+        Assert.AreEqual(0L, stream.Position);
+
+        stream.SetLength(6L);
+
+        Assert.AreEqual(6L, stream.Length);
+        Assert.AreEqual(0L, stream.Position);
       }
     }
 
@@ -424,6 +465,48 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestReadByteFromEmptyStream()
+    {
+      using (var stream = new ChunkedMemoryStream(8)) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        Assert.AreEqual(-1, stream.ReadByte());
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+      }
+    }
+
+    [Test]
+    public void TestReadFromEmptyStream()
+    {
+      using (var stream = new ChunkedMemoryStream(8)) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        var buffer = new byte[4];
+
+        Assert.AreEqual(0, stream.Read(buffer, 0, 4));
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+      }
+
+      using (var stream = new ChunkedMemoryStream(8)) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        var buffer = new byte[12];
+
+        Assert.AreEqual(0, stream.Read(buffer, 0, 12));
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+      }
+    }
+
+    [Test]
     public void TestWriteByte()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
@@ -485,6 +568,25 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestWriteZeroBytesToEmptyStream()
+    {
+      using (var stream = new ChunkedMemoryStream(8)) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        stream.Write(new byte[0], 0, 0);
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        stream.Write(new byte[8], 0, 0);
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+      }
+    }
+
+    [Test]
     public void TestSeekAndReadRandom()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
@@ -531,6 +633,60 @@ namespace Smdn.IO {
         Assert.AreEqual(13, stream.Seek(1, SeekOrigin.Current));
         Assert.AreEqual(-1, stream.ReadByte());
         Assert.AreEqual(13, stream.Position);
+      }
+    }
+    [Test]
+    public void TestToArray()
+    {
+      using (var stream = new ChunkedMemoryStream(8)) {
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        Assert.AreEqual(new byte[0], stream.ToArray());
+
+        stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+
+        Assert.AreEqual(4L, stream.Position);
+        Assert.AreEqual(4L, stream.Length);
+
+        Assert.AreEqual(new byte[] {
+          0x00, 0x01, 0x02, 0x03
+        }, stream.ToArray());
+
+        stream.Write(new byte[] {0x04, 0x05, 0x06, 0x07}, 0, 4);
+
+        Assert.AreEqual(8L, stream.Position);
+        Assert.AreEqual(8L, stream.Length);
+
+        Assert.AreEqual(new byte[] {
+          0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        }, stream.ToArray());
+
+        stream.Write(new byte[] {0x08, 0x09, 0x0a, 0x0b}, 0, 4);
+
+        Assert.AreEqual(12L, stream.Position);
+        Assert.AreEqual(12L, stream.Length);
+
+        Assert.AreEqual(new byte[] {
+          0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b,
+        }, stream.ToArray());
+
+        // shorten
+        stream.SetLength(6L);
+
+        Assert.AreEqual(6L, stream.Position);
+        Assert.AreEqual(6L, stream.Length);
+
+        Assert.AreEqual(new byte[] {
+          0x00, 0x01, 0x02, 0x03, 0x04, 0x05,
+        }, stream.ToArray());
+
+        stream.SetLength(0L);
+
+        Assert.AreEqual(0L, stream.Position);
+        Assert.AreEqual(0L, stream.Length);
+
+        Assert.AreEqual(new byte[0], stream.ToArray());
       }
     }
   }
