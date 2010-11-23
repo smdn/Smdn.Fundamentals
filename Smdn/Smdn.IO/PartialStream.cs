@@ -231,17 +231,23 @@ namespace Smdn.IO {
 
       stream.Flush();
     }
+  
+    protected long GetRemainderLength()
+    {
+      if (length.HasValue)
+        return length.Value - (stream.Position - offset);
+      else
+        return long.MaxValue;
+    }
 
     public override int ReadByte()
     {
       CheckDisposed();
 
-      if (length == null)
+      if (0L < GetRemainderLength())
         return stream.ReadByte();
-      else if (length.Value <= Position)
-        return -1;
       else
-        return stream.ReadByte();
+        return -1;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
@@ -251,17 +257,12 @@ namespace Smdn.IO {
       if (count < 0)
         throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
 
-      if (length == null)
-        return stream.Read(buffer, offset, count);
+      var remainder = GetRemainderLength();
 
-      var remainder = (int)(length.Value - Position); // XXX: long -> int
-
-      if (remainder <= 0)
-        return 0;
-      else if (remainder < count)
-        return stream.Read(buffer, offset, remainder);
+      if (0L < remainder)
+        return stream.Read(buffer, offset, (int)Math.Min(count, remainder)); // XXX: long -> int
       else
-        return stream.Read(buffer, offset, count);
+        return 0;
     }
 
     public override void Write(byte[] buffer, int offset, int count)
@@ -272,17 +273,12 @@ namespace Smdn.IO {
       if (count < 0)
         throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
 
-      if (length == null) {
-        stream.Write(buffer, offset, count);
-      }
-      else {
-        var remainder = (int)(length.Value - Position); // XXX: long -> int
+      var remainder = GetRemainderLength() - count;
 
-        if (remainder <= 0 || remainder < count)
-          throw new IOException("end of stream");
-        else
-          stream.Write(buffer, offset, count);
-      }
+      if (remainder < 0L)
+        throw new IOException("end of stream");
+      else
+        stream.Write(buffer, offset, count);
     }
 
     private void CheckDisposed()
