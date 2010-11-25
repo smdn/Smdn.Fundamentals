@@ -27,25 +27,35 @@ using System.IO;
 
 namespace Smdn.IO {
   public class BinaryReader : BinaryReaderBase {
+    private const int defaultStorageSize = 8;
+
     public Endianness Endianness {
       get { return endianness; }
     }
 
     public BinaryReader(Stream stream)
-      : this(stream, false)
+      : this(stream, Platform.Endianness, false, defaultStorageSize)
     {
     }
 
     public BinaryReader(Stream stream, bool leaveBaseStreamOpen)
-      : this(stream, Platform.Endianness, leaveBaseStreamOpen)
+      : this(stream, Platform.Endianness, leaveBaseStreamOpen, defaultStorageSize)
     {
     }
 
     protected BinaryReader(Stream baseStream, Endianness endianness, bool leaveBaseStreamOpen)
+      : this(baseStream, endianness, leaveBaseStreamOpen, defaultStorageSize)
+    {
+    }
+
+    protected BinaryReader(Stream baseStream, Endianness endianness, bool leaveBaseStreamOpen, int storageSize)
       : base(baseStream, leaveBaseStreamOpen)
     {
+      if (storageSize <= 0)
+        throw new ArgumentOutOfRangeException("storageSize", storageSize, "must be non-zero positive number");
+
       this.endianness = endianness;
-      this.Storage = new byte[8];
+      this.Storage = new byte[storageSize];
     }
 
     public override byte ReadByte()
@@ -130,6 +140,6 @@ namespace Smdn.IO {
     }
 
     private readonly Endianness endianness;
-    protected byte[] Storage;
+    protected readonly byte[] Storage;
   }
 }

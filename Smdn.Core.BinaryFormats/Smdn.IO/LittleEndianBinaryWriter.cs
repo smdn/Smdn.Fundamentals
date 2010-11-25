@@ -36,5 +36,10 @@ namespace Smdn.IO {
       : base(stream, Endianness.LittleEndian, leaveBaseStreamOpen)
     {
     }
+
+    protected LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize)
+      : base(stream, Endianness.LittleEndian, leaveBaseStreamOpen, storageSize)
+    {
+    }
   }
 }
