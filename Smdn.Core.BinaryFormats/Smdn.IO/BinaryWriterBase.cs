@@ -148,6 +148,17 @@ namespace Smdn.IO {
       WriteUnchecked(buffer, index, count);
     }
 
+    public void Write(ArraySegment<byte> @value)
+    {
+      if (@value.Array == null)
+        throw new ArgumentException("value.Array is null", "value");
+
+      if (@value.Count == 0)
+        return;
+
+      WriteUnchecked(@value.Array, @value.Offset, @value.Count);
+    }
+
     protected void WriteUnchecked(byte[] buffer, int index, int count)
     {
       CheckDisposed();

@@ -225,6 +225,77 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestWriteArraySegmentOfByte()
+    {
+      var data = new byte[] {0x11, 0x22, 0x33, 0x44};
+
+      using (var stream = new MemoryStream()) {
+        var writer = new Smdn.IO.BinaryWriter(stream);
+
+        Assert.AreEqual(0L, writer.BaseStream.Position);
+
+        writer.Write(new ArraySegment<byte>(data, 0, 4));
+        writer.Flush();
+
+        Assert.AreEqual(4L, writer.BaseStream.Position);
+
+        writer.Close();
+
+        CollectionAssert.AreEqual(data, stream.ToArray());
+
+        try {
+          writer.Write(data);
+          Assert.Fail("ObjectDisposedException not thown");
+        }
+        catch (ObjectDisposedException) {
+        }
+      }
+
+      using (var stream = new MemoryStream()) {
+        var writer = new Smdn.IO.BinaryWriter(stream);
+
+        Assert.AreEqual(0L, writer.BaseStream.Position);
+
+        writer.Write(new ArraySegment<byte>(data, 1, 2));
+        writer.Flush();
+
+        Assert.AreEqual(2L, writer.BaseStream.Position);
+
+        writer.Close();
+
+        CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
+
+        try {
+          writer.Write(new ArraySegment<byte>(data, 1, 2));
+          Assert.Fail("ObjectDisposedException not thown");
+        }
+        catch (ObjectDisposedException) {
+        }
+      }
+    }
+
+    [Test]
+    public void TestWriteArraySegmentOfByteEmpty()
+    {
+      using (var stream = new MemoryStream()) {
+        var writer = new Smdn.IO.BinaryWriter(stream);
+
+        Assert.AreEqual(0L, writer.BaseStream.Position);
+
+        try {
+          writer.Write(new ArraySegment<byte>());
+          Assert.Fail("ArgumentException not thrown");
+        }
+        catch (ArgumentException) {
+        }
+
+        writer.Flush();
+
+        Assert.AreEqual(0L, writer.BaseStream.Position);
+      }
+    }
+
+    [Test]
     public void TestWriteZero()
     {
       Predicate<byte> allzero = delegate(byte b) {
