@@ -79,6 +79,7 @@
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Formats\Base64.cs" />
     <Compile Include="Smdn.Collections\Enumerable.cs" />
+    <Compile Include="Smdn\BinaryConvert.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

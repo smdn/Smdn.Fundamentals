@@ -97,6 +97,7 @@
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Collections\Enumerable.cs" />
     <Compile Include="Smdn\AggregateException.cs" />
+    <Compile Include="Smdn\BinaryConvert.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
