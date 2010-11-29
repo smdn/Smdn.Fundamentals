@@ -305,12 +305,7 @@ namespace Smdn {
 
     public bool Equals(UInt48 other)
     {
-      return (this.Byte0 == other.Byte0 &&
-              this.Byte1 == other.Byte1 &&
-              this.Byte2 == other.Byte2 &&
-              this.Byte3 == other.Byte3 &&
-              this.Byte4 == other.Byte4 &&
-              this.Byte5 == other.Byte5);
+      return this == other;
     }
 
     [CLSCompliant(false)]
@@ -334,6 +329,26 @@ namespace Smdn {
         return Equals((long)obj);
       else
         return false;
+    }
+
+    public static bool operator == (UInt48 x, UInt48 y)
+    {
+      return (x.Byte0 == y.Byte0 &&
+              x.Byte1 == y.Byte1 &&
+              x.Byte2 == y.Byte2 &&
+              x.Byte3 == y.Byte3 &&
+              x.Byte4 == y.Byte4 &&
+              x.Byte5 == y.Byte5);
+    }
+
+    public static bool operator != (UInt48 x, UInt48 y)
+    {
+      return (x.Byte0 != y.Byte0 ||
+              x.Byte1 != y.Byte1 ||
+              x.Byte2 != y.Byte2 ||
+              x.Byte3 != y.Byte3 ||
+              x.Byte4 != y.Byte4 ||
+              x.Byte5 != y.Byte5);
     }
 
     public override int GetHashCode()

@@ -56,6 +56,30 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestOpEquality()
+    {
+      Assert.IsTrue(UInt48.Zero == (UInt48)0);
+      Assert.IsFalse(UInt48.Zero == (UInt48)0x000000000010);
+      Assert.IsFalse(UInt48.Zero == (UInt48)0x000000001000);
+      Assert.IsFalse(UInt48.Zero == (UInt48)0x000000100000);
+      Assert.IsFalse(UInt48.Zero == (UInt48)0x000010000000);
+      Assert.IsFalse(UInt48.Zero == (UInt48)0x001000000000);
+      Assert.IsFalse(UInt48.Zero == (UInt48)0x100000000000);
+    }
+
+    [Test]
+    public void TestOpIneqality()
+    {
+      Assert.IsFalse(UInt48.Zero != (UInt48)0);
+      Assert.IsTrue(UInt48.Zero != (UInt48)0x000000000010);
+      Assert.IsTrue(UInt48.Zero != (UInt48)0x000000001000);
+      Assert.IsTrue(UInt48.Zero != (UInt48)0x000000100000);
+      Assert.IsTrue(UInt48.Zero != (UInt48)0x000010000000);
+      Assert.IsTrue(UInt48.Zero != (UInt48)0x001000000000);
+      Assert.IsTrue(UInt48.Zero != (UInt48)0x100000000000);
+    }
+
+    [Test]
     public void TestOpExplicitFromInt32()
     {
       foreach (var test in new[] {

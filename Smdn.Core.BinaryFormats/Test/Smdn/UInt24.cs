@@ -56,6 +56,24 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestOpEquality()
+    {
+      Assert.IsTrue(UInt24.Zero == (UInt24)0);
+      Assert.IsFalse(UInt24.Zero == (UInt24)0x000010);
+      Assert.IsFalse(UInt24.Zero == (UInt24)0x001000);
+      Assert.IsFalse(UInt24.Zero == (UInt24)0x100000);
+    }
+
+    [Test]
+    public void TestOpIneqality()
+    {
+      Assert.IsFalse(UInt24.Zero != (UInt24)0);
+      Assert.IsTrue(UInt24.Zero != (UInt24)0x000010);
+      Assert.IsTrue(UInt24.Zero != (UInt24)0x001000);
+      Assert.IsTrue(UInt24.Zero != (UInt24)0x100000);
+    }
+
+    [Test]
     public void TestOpExplicitFromInt16()
     {
       foreach (var test in new[] {
