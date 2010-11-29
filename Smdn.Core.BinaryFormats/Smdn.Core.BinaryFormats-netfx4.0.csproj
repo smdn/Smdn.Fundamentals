@@ -59,6 +59,7 @@
     <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
     <Compile Include="Smdn.IO\BinaryReaderBase.cs" />
     <Compile Include="Smdn.IO\BinaryWriterBase.cs" />
+    <Compile Include="Smdn\BinaryConvertExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

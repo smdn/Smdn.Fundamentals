@@ -120,34 +120,6 @@ namespace Smdn {
       }
     }
 
-    public static UInt24 ToUInt24(byte[] @value, int startIndex, Endianness endian)
-    {
-      CheckSourceArray(@value, startIndex, 3);
-
-      switch (endian) {
-        case Endianness.LittleEndian:
-          return new UInt24(@value, startIndex, false);
-        case Endianness.BigEndian:
-          return new UInt24(@value, startIndex, true);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
-
-    public static UInt48 ToUInt48(byte[] @value, int startIndex, Endianness endian)
-    {
-      CheckSourceArray(@value, startIndex, 6);
-
-      switch (endian) {
-        case Endianness.LittleEndian:
-          return new UInt48(@value, startIndex, false);
-        case Endianness.BigEndian:
-          return new UInt48(@value, startIndex, true);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
-
     public static void GetBytes(Int16 @value, Endianness endian, byte[] bytes, int startIndex)
     {
       GetBytes(unchecked((UInt16)@value), endian, bytes, startIndex);
@@ -254,68 +226,6 @@ namespace Smdn {
       }
     }
 
-    public static void GetBytes(UInt24 @value, Endianness endian, byte[] bytes, int startIndex)
-    {
-      CheckDestArray(bytes, startIndex, 3);
-
-      UInt32 val = @value.ToUInt32();
-
-      switch (endian) {
-        case Endianness.LittleEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(val);
-            bytes[startIndex++] = (byte)(val >> 8);
-            bytes[startIndex++] = (byte)(val >> 16);
-          }
-          break;
-
-        case Endianness.BigEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(val >> 16);
-            bytes[startIndex++] = (byte)(val >> 8);
-            bytes[startIndex++] = (byte)(val);
-          }
-          break;
-
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
-
-    public static void GetBytes(UInt48 @value, Endianness endian, byte[] bytes, int startIndex)
-    {
-      CheckDestArray(bytes, startIndex, 6);
-
-      UInt64 val = @value.ToUInt64();
-
-      switch (endian) {
-        case Endianness.LittleEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(val);
-            bytes[startIndex++] = (byte)(val >> 8);
-            bytes[startIndex++] = (byte)(val >> 16);
-            bytes[startIndex++] = (byte)(val >> 24);
-            bytes[startIndex++] = (byte)(val >> 32);
-            bytes[startIndex++] = (byte)(val >> 40);
-          }
-          break;
-
-        case Endianness.BigEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(val >> 40);
-            bytes[startIndex++] = (byte)(val >> 32);
-            bytes[startIndex++] = (byte)(val >> 24);
-            bytes[startIndex++] = (byte)(val >> 16);
-            bytes[startIndex++] = (byte)(val >> 8);
-            bytes[startIndex++] = (byte)(val);
-          }
-          break;
-
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
-
     public static byte[] GetBytes(Int16 @value, Endianness endian)
     {
       var bytes = new byte[2];
@@ -334,6 +244,7 @@ namespace Smdn {
 
       return bytes;
     }
+
     public static byte[] GetBytes(Int32 @value, Endianness endian)
     {
       var bytes = new byte[4];
@@ -366,24 +277,6 @@ namespace Smdn {
     public static byte[] GetBytes(UInt64 @value, Endianness endian)
     {
       var bytes = new byte[8];
-
-      GetBytes(@value, endian, bytes, 0);
-
-      return bytes;
-    }
-
-    public static byte[] GetBytes(UInt24 @value, Endianness endian)
-    {
-      var bytes = new byte[3];
-
-      GetBytes(@value, endian, bytes, 0);
-
-      return bytes;
-    }
-
-    public static byte[] GetBytes(UInt48 @value, Endianness endian)
-    {
-      var bytes = new byte[6];
 
       GetBytes(@value, endian, bytes, 0);
 

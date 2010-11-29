@@ -122,14 +122,14 @@ namespace Smdn.IO {
     {
       ReadBytesUnchecked(Storage, 0, 3, true);
 
-      return BinaryConvert.ToUInt24(Storage, 0, endianness);
+      return BinaryConvertExtensions.ToUInt24(Storage, 0, endianness);
     }
 
     public override UInt48 ReadUInt48()
     {
       ReadBytesUnchecked(Storage, 0, 6, true);
 
-      return BinaryConvert.ToUInt48(Storage, 0, endianness);
+      return BinaryConvertExtensions.ToUInt48(Storage, 0, endianness);
     }
 
     public override FourCC ReadFourCC()

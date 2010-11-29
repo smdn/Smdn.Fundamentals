@@ -120,14 +120,14 @@ namespace Smdn.IO {
 
     public override void Write(UInt24 @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConvertExtensions.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 3);
     }
 
     public override void Write(UInt48 @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConvertExtensions.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 6);
     }
