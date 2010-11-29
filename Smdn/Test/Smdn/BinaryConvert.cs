@@ -15,6 +15,28 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestByteSwap()
+    {
+      Assert.IsTrue(unchecked((long)0xefcdab8967452301) == BinaryConvert.ByteSwap(unchecked((long)0x0123456789abcdef)), "long, 0x0123456789abcdef");
+      Assert.IsTrue(unchecked((ulong)0xefcdab8967452301) == BinaryConvert.ByteSwap(unchecked((ulong)0x0123456789abcdef)), "ulong, 0x0123456789abcdef");
+
+      Assert.IsTrue(unchecked((long)0x1032547698badcfe) == BinaryConvert.ByteSwap(unchecked((long)0xfedcba9876543210)), "long, 0xfedcba9876543210");
+      Assert.IsTrue(unchecked((ulong)0x1032547698badcfe) == BinaryConvert.ByteSwap(unchecked((ulong)0xfedcba9876543210)), "ulong, 0xfedcba9876543210");
+
+      Assert.IsTrue(unchecked((int)0x78563412) == BinaryConvert.ByteSwap(unchecked((int)0x12345678)), "int, 0x12345678");
+      Assert.IsTrue(unchecked((uint)0x78563412) == BinaryConvert.ByteSwap(unchecked((uint)0x12345678)), "uint, 0x12345678");
+
+      Assert.IsTrue(unchecked((int)0x98badcfe) == BinaryConvert.ByteSwap(unchecked((int)0xfedcba98)), "int, 0xfedcba98");
+      Assert.IsTrue(unchecked((uint)0x98badcfe) == BinaryConvert.ByteSwap(unchecked((uint)0xfedcba98)), "uint, 0xfedcba98");
+
+      Assert.IsTrue(unchecked((short)0x3412) == BinaryConvert.ByteSwap(unchecked((short)0x1234)), "short, 0x1234");
+      Assert.IsTrue(unchecked((ushort)0x3412) == BinaryConvert.ByteSwap(unchecked((ushort)0x1234)), "ushort, 0x1234");
+
+      Assert.IsTrue(unchecked((short)0xdcfe) == BinaryConvert.ByteSwap(unchecked((short)0xfedc)), "short, 0xfedc");
+      Assert.IsTrue(unchecked((ushort)0xdcfe) == BinaryConvert.ByteSwap(unchecked((ushort)0xfedc)), "ushort, 0xfedc");
+    }
+
+    [Test]
     public void TestToInt16()
     {
       Assert.AreEqual(unchecked((short)0x8000),

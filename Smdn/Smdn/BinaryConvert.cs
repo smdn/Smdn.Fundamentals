@@ -52,6 +52,71 @@ namespace Smdn {
       return new NotSupportedException(string.Format("endian '{0}' is not supported", endian));
     }
 
+    public static Int16 ByteSwap(Int16 @value)
+    {
+      unchecked {
+        return (Int16)(((@value >> 8) & 0x00ff) | (@value << 8));
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static UInt16 ByteSwap(UInt16 @value)
+    {
+      unchecked {
+        return (UInt16)(((@value >> 8) & 0x00ff) | (@value << 8));
+      }
+    }
+
+    public static Int32 ByteSwap(Int32 @value)
+    {
+      unchecked {
+        return (Int32)(((@value >> 24) & 0x000000ff) |
+                       ((@value >>  8) & 0x0000ff00) |
+                       ((@value <<  8) & 0x00ff0000) |
+                        (@value << 24));
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static UInt32 ByteSwap(UInt32 @value)
+    {
+      unchecked {
+        return (UInt32)(((@value >> 24) & 0x000000ff) |
+                        ((@value >>  8) & 0x0000ff00) |
+                        ((@value <<  8) & 0x00ff0000) |
+                         (@value << 24));
+      }
+    }
+
+    public static Int64 ByteSwap(Int64 @value)
+    {
+      unchecked {
+        return (Int64)(((@value >> 56) & 0x00000000000000ff) |
+                       ((@value >> 40) & 0x000000000000ff00) |
+                       ((@value >> 24) & 0x0000000000ff0000) |
+                       ((@value >>  8) & 0x00000000ff000000) |
+                       ((@value <<  8) & 0x000000ff00000000) |
+                       ((@value << 24) & 0x0000ff0000000000) |
+                       ((@value << 40) & 0x00ff000000000000) |
+                        (@value << 56));
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static UInt64 ByteSwap(UInt64 @value)
+    {
+      unchecked {
+        return (UInt64)(((@value >> 56) & 0x00000000000000ff) |
+                        ((@value >> 40) & 0x000000000000ff00) |
+                        ((@value >> 24) & 0x0000000000ff0000) |
+                        ((@value >>  8) & 0x00000000ff000000) |
+                        ((@value <<  8) & 0x000000ff00000000) |
+                        ((@value << 24) & 0x0000ff0000000000) |
+                        ((@value << 40) & 0x00ff000000000000) |
+                         (@value << 56));
+      }
+    }
+
     public static Int16 ToInt16(byte[] @value, int startIndex, Endianness endian)
     {
       return unchecked((Int16)ToUInt16(@value, startIndex, endian));
