@@ -29,8 +29,12 @@ namespace Smdn {
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt48 :
     IEquatable<UInt48>,
+    IEquatable<ulong>,
+    IEquatable<long>,
     IComparable,
     IComparable<UInt48>,
+    IComparable<ulong>,
+    IComparable<long>,
     IConvertible,
     IFormattable
   {
@@ -275,6 +279,10 @@ namespace Smdn {
         return 1;
       else if (obj is UInt48)
         return CompareTo((UInt48)obj);
+      else if (obj is ulong)
+        return CompareTo((ulong)obj);
+      else if (obj is long)
+        return CompareTo((long)obj);
       else
         throw new ArgumentException("ojb is not UInt48");
     }
@@ -282,6 +290,17 @@ namespace Smdn {
     public int CompareTo(UInt48 other)
     {
       return this.ToUInt64().CompareTo(other.ToUInt64());
+    }
+
+    [CLSCompliant(false)]
+    public int CompareTo(ulong other)
+    {
+      return this.ToUInt64().CompareTo(other);
+    }
+
+    public int CompareTo(long other)
+    {
+      return this.ToInt64().CompareTo(other);
     }
 
     public bool Equals(UInt48 other)
@@ -294,10 +313,25 @@ namespace Smdn {
               this.Byte5 == other.Byte5);
     }
 
+    [CLSCompliant(false)]
+    public bool Equals(ulong other)
+    {
+      return this.ToUInt64() == other;
+    }
+
+    public bool Equals(long other)
+    {
+      return this.ToInt64() == other;
+    }
+
     public override bool Equals(object obj)
     {
       if (obj is UInt48)
         return Equals((UInt48)obj);
+      else if (obj is ulong)
+        return Equals((ulong)obj);
+      else if (obj is long)
+        return Equals((long)obj);
       else
         return false;
     }

@@ -29,8 +29,12 @@ namespace Smdn {
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt24 :
     IEquatable<UInt24>,
+    IEquatable<uint>,
+    IEquatable<int>,
     IComparable,
     IComparable<UInt24>,
+    IComparable<uint>,
+    IComparable<int>,
     IConvertible,
     IFormattable
   {
@@ -251,6 +255,10 @@ namespace Smdn {
         return 1;
       else if (obj is UInt24)
         return CompareTo((UInt24)obj);
+      else if (obj is uint)
+        return CompareTo((uint)obj);
+      else if (obj is int)
+        return CompareTo((int)obj);
       else
         throw new ArgumentException("ojb is not UInt24");
     }
@@ -260,6 +268,17 @@ namespace Smdn {
       return this.ToUInt32().CompareTo(other.ToUInt32());
     }
 
+    [CLSCompliant(false)]
+    public int CompareTo(uint other)
+    {
+      return this.ToUInt32().CompareTo(other);
+    }
+
+    public int CompareTo(int other)
+    {
+      return this.ToInt32().CompareTo(other);
+    }
+
     public bool Equals(UInt24 other)
     {
       return (this.Byte0 == other.Byte0 &&
@@ -267,10 +286,25 @@ namespace Smdn {
               this.Byte2 == other.Byte2);
     }
 
+    [CLSCompliant(false)]
+    public bool Equals(uint other)
+    {
+      return this.ToUInt32() == other;
+    }
+
+    public bool Equals(int other)
+    {
+      return this.ToInt32() == other;
+    }
+
     public override bool Equals(object obj)
     {
       if (obj is UInt24)
         return Equals((UInt24)obj);
+      else if (obj is uint)
+        return Equals((uint)obj);
+      else if (obj is int)
+        return Equals((int)obj);
       else
         return false;
     }

@@ -28,7 +28,31 @@ namespace Smdn {
 
       Assert.AreEqual(1, zero.CompareTo(null));
 
-      Assert.Greater(one, zero);
+      Assert.Less(zero, one);
+      Assert.Less(0L, one);
+      Assert.Less(0UL, one);
+    }
+
+    [Test]
+    public void TestEquals()
+    {
+      Assert.IsTrue(UInt48.Zero.Equals(UInt48.Zero));
+      Assert.IsTrue(UInt48.Zero.Equals(0L));
+      Assert.IsTrue(UInt48.Zero.Equals(0UL));
+      Assert.IsFalse(UInt48.Zero.Equals(UInt48.MaxValue));
+      Assert.IsFalse(UInt48.Zero.Equals(long.MaxValue));
+      Assert.IsFalse(UInt48.Zero.Equals(ulong.MaxValue));
+
+      object val;
+
+      val = UInt48.Zero;
+      Assert.IsTrue(UInt48.Zero.Equals(val));
+
+      val = 0L;
+      Assert.IsTrue(UInt48.Zero.Equals(val));
+
+      val = 0UL;
+      Assert.IsTrue(UInt48.Zero.Equals(val));
     }
 
     [Test]
