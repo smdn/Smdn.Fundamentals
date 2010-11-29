@@ -1,6 +1,0 @@
-Name: Smdn.Core.Standards
-Description: Smdn.Core.Standards
-Version: 0.20
-
-Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/Smdn.Core.Standards.dll
