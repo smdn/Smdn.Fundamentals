@@ -94,7 +94,7 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static implicit operator UInt24(ushort val)
+    public static explicit operator UInt24(ushort val)
     {
       var uint24 = new UInt24();
 
@@ -134,13 +134,13 @@ namespace Smdn {
       return checked((ushort)val.ToUInt32());
     }
 
-    public static implicit operator int(UInt24 val)
+    public static explicit operator int(UInt24 val)
     {
       return val.ToInt32();
     }
 
     [CLSCompliant(false)]
-    public static implicit operator uint(UInt24 val)
+    public static explicit operator uint(UInt24 val)
     {
       return val.ToUInt32();
     }

@@ -209,7 +209,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestOpImplicitFromUInt32()
+    public void TestOpExplicitFromUInt32()
     {
       UInt48 val;
 
@@ -220,7 +220,7 @@ namespace Smdn {
         new {Value = UInt32.MinValue,   ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
         new {Value = UInt32.MaxValue,   ExpectedResult = (long)0x00000000ffffffff, ExpectedHex = "ffffffff"},
       }) {
-        val = test.Value;
+        val = (UInt48)test.Value;
 
         Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", val);
         Assert.AreEqual(test.ExpectedHex, val.ToString("x"), "value = {0}", val);
@@ -228,20 +228,20 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestOpImplicitToInt64()
+    public void TestOpExplicitToInt64()
     {
-      long max = UInt48.MaxValue;
-      long min = UInt48.MinValue;
+      long max = (long)UInt48.MaxValue;
+      long min = (long)UInt48.MinValue;
 
       Assert.IsTrue((long)0x0000ffffffffffff == max);
       Assert.IsTrue((long)0x0000000000000000 == min);
     }
 
     [Test]
-    public void TestOpImplicitToUInt64()
+    public void TestOpExplicitToUInt64()
     {
-      ulong max = UInt48.MaxValue;
-      ulong min = UInt48.MinValue;
+      ulong max = (ulong)UInt48.MaxValue;
+      ulong min = (ulong)UInt48.MinValue;
 
       Assert.IsTrue((ulong)0x0000ffffffffffff == max);
       Assert.IsTrue((ulong)0x0000000000000000 == min);

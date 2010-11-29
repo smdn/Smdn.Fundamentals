@@ -109,7 +109,7 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static implicit operator UInt48(uint val)
+    public static explicit operator UInt48(uint val)
     {
       var uint48 = new UInt48();
 
@@ -155,13 +155,13 @@ namespace Smdn {
       return checked((uint)val.ToUInt64());
     }
 
-    public static implicit operator long(UInt48 val)
+    public static explicit operator long(UInt48 val)
     {
       return val.ToInt64();
     }
 
     [CLSCompliant(false)]
-    public static implicit operator ulong(UInt48 val)
+    public static explicit operator ulong(UInt48 val)
     {
       return val.ToUInt64();
     }

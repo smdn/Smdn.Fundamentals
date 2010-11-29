@@ -209,10 +209,10 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestOpImplicitFromUInt16()
+    public void TestOpExplicitFromUInt16()
     {
       UInt24 val;
-   
+
       foreach (var test in new[] {
         new {Value = (ushort)0,       ExpectedResult = 0x00000000, ExpectedHex = "0"},
         new {Value = (ushort)0x0000,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
@@ -220,7 +220,7 @@ namespace Smdn {
         new {Value = UInt16.MinValue, ExpectedResult = 0x00000000, ExpectedHex = "0"},
         new {Value = UInt16.MaxValue, ExpectedResult = 0x0000ffff, ExpectedHex = "ffff"},
       }) {
-        val = test.Value;
+        val = (UInt24)test.Value;
 
         Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", val);
         Assert.AreEqual(test.ExpectedHex, val.ToString("x"), "value = {0}", val);
@@ -228,20 +228,20 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestOpImplicitToInt32()
+    public void TestOpExplicitToInt32()
     {
-      int max = UInt24.MaxValue;
-      int min = UInt24.MinValue;
+      int max = (int)UInt24.MaxValue;
+      int min = (int)UInt24.MinValue;
 
       Assert.IsTrue((int)0x00ffffff == max);
       Assert.IsTrue((int)0x00000000 == min);
     }
 
     [Test]
-    public void TestOpImplicitToUInt32()
+    public void TestOpExplicitToUInt32()
     {
-      uint max = UInt24.MaxValue;
-      uint min = UInt24.MinValue;
+      uint max = (uint)UInt24.MaxValue;
+      uint min = (uint)UInt24.MinValue;
 
       Assert.IsTrue((uint)0x00ffffff == max);
       Assert.IsTrue((uint)0x00000000 == min);
