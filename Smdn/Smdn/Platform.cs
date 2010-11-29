@@ -35,19 +35,15 @@ namespace Smdn {
         byte* b = (byte*)&i;
 
         if (b[0] == 1)
-          endianness = Endianness.LittleEndian;
+          Endianness = Endianness.LittleEndian;
         else if (b[3] == 1)
-          endianness = Endianness.BigEndian;
+          Endianness = Endianness.BigEndian;
         else
-          endianness = Endianness.Unknown;
+          Endianness = Endianness.Unknown;
       }
     }
 
-    private static Endianness endianness;
-
-    public static Endianness Endianness {
-      get { return endianness; }
-    }
+    public static readonly Endianness Endianness;
 
     private static string kernelName = null;
 
