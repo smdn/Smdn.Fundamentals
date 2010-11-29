@@ -37,7 +37,7 @@ namespace Smdn {
    * RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace
    * http://tools.ietf.org/html/rfc4122
    */
-  [CLSCompliant(false), StructLayout(LayoutKind.Explicit, Pack = 1)]
+  [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public unsafe struct Uuid :
     IEquatable<Uuid>,
     IEquatable<Guid>,
@@ -459,16 +459,19 @@ namespace Smdn {
     [FieldOffset( 0)] private fixed byte octets[16];
 
     /// <value>time_low; The low field of the timestamp</value>
+    [CLSCompliant(false)]
     public uint TimeLow {
       get { return time_low; }
     }
 
     /// <value>time_mid; The middle field of the timestamp</value>
+    [CLSCompliant(false)]
     public ushort TimeMid {
       get { return time_mid; }
     }
 
     /// <value>time_hi_and_version; The high field of the timestamp multiplexed with the version number</value>
+    [CLSCompliant(false)]
     public ushort TimeHighAndVersion {
       get { return time_hi_and_version; }
     }
@@ -554,6 +557,7 @@ namespace Smdn {
       }
     }
 
+    [CLSCompliant(false)]
     public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
                 PhysicalAddress node)
     : this(time_low, time_mid, time_hi_and_version, clock_seq_hi_and_reserved, clock_seq_low,
@@ -561,6 +565,7 @@ namespace Smdn {
     {
     }
 
+    [CLSCompliant(false)]
     public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
                 byte[] node)
       : this(time_low, time_mid, time_hi_and_version, clock_seq_hi_and_reserved, clock_seq_low,
@@ -568,6 +573,7 @@ namespace Smdn {
     {
     }
 
+    [CLSCompliant(false)]
     public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
                 byte node0, byte node1, byte node2, byte node3, byte node4, byte node5)
       : this()
