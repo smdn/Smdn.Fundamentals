@@ -133,15 +133,6 @@ namespace Smdn.IO {
       return unchecked((UInt64)ReadInt64());
     }
 
-    public abstract UInt24 ReadUInt24();
-
-    public abstract UInt48 ReadUInt48();
-
-    public virtual FourCC ReadFourCC()
-    {
-      return new FourCC(ReadBytes(4L), 0);
-    }
-
     public byte[] ReadBytes(int count)
     {
       if (count < 0)

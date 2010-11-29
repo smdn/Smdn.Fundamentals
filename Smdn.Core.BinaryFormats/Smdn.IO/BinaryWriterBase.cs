@@ -114,15 +114,6 @@ namespace Smdn.IO {
       Write(unchecked((Int64)@value));
     }
 
-    public abstract void Write(UInt24 @value);
-
-    public abstract void Write(UInt48 @value);
-
-    public virtual void Write(FourCC @value)
-    {
-      Write(@value.ToByteArray());
-    }
-
     public void Write(byte[] buffer)
     {
       if (buffer == null)

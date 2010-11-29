@@ -118,21 +118,21 @@ namespace Smdn.IO {
       return BinaryConvert.ToUInt64(Storage, 0, endianness);
     }
 
-    public override UInt24 ReadUInt24()
+    public virtual UInt24 ReadUInt24()
     {
       ReadBytesUnchecked(Storage, 0, 3, true);
 
       return BinaryConvertExtensions.ToUInt24(Storage, 0, endianness);
     }
 
-    public override UInt48 ReadUInt48()
+    public virtual UInt48 ReadUInt48()
     {
       ReadBytesUnchecked(Storage, 0, 6, true);
 
       return BinaryConvertExtensions.ToUInt48(Storage, 0, endianness);
     }
 
-    public override FourCC ReadFourCC()
+    public virtual FourCC ReadFourCC()
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 

@@ -118,21 +118,21 @@ namespace Smdn.IO {
       WriteUnchecked(Storage, 0, 8);
     }
 
-    public override void Write(UInt24 @value)
+    public virtual void Write(UInt24 @value)
     {
       BinaryConvertExtensions.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 3);
     }
 
-    public override void Write(UInt48 @value)
+    public virtual void Write(UInt48 @value)
     {
       BinaryConvertExtensions.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 6);
     }
 
-    public override void Write(FourCC @value)
+    public virtual void Write(FourCC @value)
     {
       @value.GetBytes(Storage, 0);
 
