@@ -4,27 +4,27 @@ EXTRA_DIST =
 # Warning: This is an automatically generated file, do not edit!
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:3 -optimize- -debug "-define:DEBUG"
-ASSEMBLY = ../build/bin/Debug/Smdn.dll
+ASSEMBLY_COMPILER_COMMAND = dmcs
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:3 -optimize- -debug "-define:NET_2_0;NET_3_5;NET_4_0;DEBUG"
+ASSEMBLY = ../build/bin/Debug/netfx4.0/Smdn.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
-BUILD_DIR = ../build/bin/Debug/
+BUILD_DIR = ../build/bin/Debug/netfx4.0/
 
-SMDN_DLL_MDB_SOURCE=../build/bin/Debug/Smdn.dll.mdb
+SMDN_DLL_MDB_SOURCE=../build/bin/Debug/netfx4.0/Smdn.dll.mdb
 SMDN_DLL_MDB=$(BUILD_DIR)/Smdn.dll.mdb
 
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:3 -optimize+
-ASSEMBLY = ../build/bin/Release/Smdn.dll
+ASSEMBLY_COMPILER_COMMAND = dmcs
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:3 -optimize+ "-define:NET_2_0;NET_3_5;NET_4_0"
+ASSEMBLY = ../build/bin/Release/netfx4.0/Smdn.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
-BUILD_DIR = ../build/bin/Release/
+BUILD_DIR = ../build/bin/Release/netfx4.0/
 
 SMDN_DLL_MDB=
 
@@ -37,7 +37,7 @@ PROGRAMFILES = \
 	$(SMDN_DLL_MDB)  
 
 LINUX_PKGCONFIG = \
-	$(SMDN_PC)  
+	$(SMDN_NETFX4_0_PC)  
 
 
 RESGEN=resgen2
@@ -89,7 +89,12 @@ FILES = \
 	Smdn.IO/CachedStreamBase.cs \
 	Smdn.IO/NonPersistentCachedStream.cs \
 	Smdn.IO/PersistentCachedStream.cs \
-	Smdn/Tuple.cs 
+	Smdn/Tuple.cs \
+	Smdn.IO/TextReaderExtensions.cs \
+	Smdn.Formats/Base64.cs \
+	Smdn.Security.Cryptography/ICryptoTransformExtensions.cs \
+	Smdn.Collections/Enumerable.cs \
+	Smdn/AggregateException.cs 
 
 DATA_FILES = 
 
@@ -100,10 +105,11 @@ EXTRAS = \
 	Mono.Simd \
 	Smdn.Collections \
 	Smdn.Threading \
-	smdn.pc.in 
+	smdn-netfx4.0.pc.in 
 
 REFERENCES =  \
-	System
+	System \
+	System.Core
 
 DLL_REFERENCES = 
 
@@ -111,9 +117,9 @@ CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 include $(top_srcdir)/Makefile.include
 
-SMDN_PC = $(BUILD_DIR)/smdn.pc
+SMDN_NETFX4_0_PC = $(BUILD_DIR)/smdn-netfx4.0.pc
 
-$(eval $(call emit-deploy-wrapper,SMDN_PC,smdn.pc))
+$(eval $(call emit-deploy-wrapper,SMDN_NETFX4_0_PC,smdn-netfx4.0.pc))
 
 
 $(eval $(call emit_resgen_targets))
