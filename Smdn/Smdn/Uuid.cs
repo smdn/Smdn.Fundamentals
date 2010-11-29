@@ -88,10 +88,10 @@ namespace Smdn {
     /*
      * Appendix C. Appendix C - Some Name Space IDs
      */
-    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
-    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
-    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
-    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
+    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
+    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
+    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
+    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
 
     public static Uuid NewUuid()
     {
@@ -337,7 +337,13 @@ namespace Smdn {
          * 
          *    o  Compute the hash of the name space ID concatenated with the name.
          */
-        var hash = hashAlgorithm.ComputeHash(ArrayExtensions.Concat(namespaceId.ToByteArray(), name));
+        var buffer = new byte[16 + name.Length];
+
+        namespaceId.GetBytes(buffer, 0, Endianness.BigEndian);
+
+        Buffer.BlockCopy(name, 0, buffer, 16, name.Length);
+
+        var hash = hashAlgorithm.ComputeHash(buffer);
 
         /*
          *    o  Set octets zero through 3 of the time_low field to octets zero
@@ -349,7 +355,7 @@ namespace Smdn {
          *    o  Set octets zero and one of the time_hi_and_version field to octets
          *       6 and 7 of the hash.
          */
-        var uuid = new Uuid(hash);
+        var uuid = new Uuid(hash, 0, Endianness.BigEndian);
 
         /*
          *    o  Set the four most significant bits (bits 12 through 15) of the
@@ -440,9 +446,9 @@ namespace Smdn {
      * 4.1.2. Layout and Byte Order
      */
     /* Octet# */
-    /*   0- 3 */ [FieldOffset( 0)] private uint time_low;
-    /*   4- 5 */ [FieldOffset( 4)] private ushort time_mid;
-    /*   6- 7 */ [FieldOffset( 6)] private ushort time_hi_and_version;
+    /*   0- 3 */ [FieldOffset( 0)] private uint time_low; // host order
+    /*   4- 5 */ [FieldOffset( 4)] private ushort time_mid; // host order
+    /*   6- 7 */ [FieldOffset( 6)] private ushort time_hi_and_version; // host order
     /*   8    */ [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
     /*   9    */ [FieldOffset( 9)] private byte clock_seq_low;
     /*  10-15 */ [FieldOffset(10)] private _Node node;
@@ -580,11 +586,16 @@ namespace Smdn {
     }
 
     public Uuid(byte[] octets)
-      : this(octets, 0)
+      : this(octets, 0, Platform.Endianness)
     {
     }
 
     public Uuid(byte[] octets, int index)
+      : this(octets, index, Platform.Endianness)
+    {
+    }
+
+    public Uuid(byte[] octets, int index, Endianness endian)
       : this()
     {
       if (octets == null)
@@ -600,7 +611,19 @@ namespace Smdn {
         }
       }
 
-      ConvertBytesNetworkToHostOrder();
+      switch (endian) {
+        case Endianness.LittleEndian:
+        case Endianness.BigEndian:
+          if (Platform.Endianness != endian) {
+            this.time_low             = BinaryConvert.ByteSwap(this.time_low);
+            this.time_mid             = BinaryConvert.ByteSwap(this.time_mid);
+            this.time_hi_and_version  = BinaryConvert.ByteSwap(this.time_hi_and_version);
+          }
+          break;
+
+        default:
+          throw new NotSupportedException(string.Concat("unsupported endian: ", endian.ToString()));
+      }
     }
 
     public Uuid(Uri uuidUrn)
@@ -642,13 +665,6 @@ namespace Smdn {
       catch (FormatException) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
       }
-    }
-
-    private void ConvertBytesNetworkToHostOrder()
-    {
-      this.time_low = (uint)IPAddress.NetworkToHostOrder((int)this.time_low);
-      this.time_mid = (ushort)IPAddress.NetworkToHostOrder((short)this.time_mid);
-      this.time_hi_and_version = (ushort)IPAddress.NetworkToHostOrder((short)this.time_hi_and_version);
     }
 
 #region "comparison"
@@ -780,21 +796,23 @@ namespace Smdn {
 
     public void GetBytes(byte[] buffer, int startIndex)
     {
+      GetBytes(buffer, startIndex, Platform.Endianness);
+    }
+
+    public void GetBytes(byte[] buffer, int startIndex, Endianness endian)
+    {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
       if (buffer.Length - 16 < startIndex)
         throw new ArgumentOutOfRangeException("startIndex, buffer");
 
       unchecked {
-        // XXX: use BinaryConvert
-        buffer[startIndex++] = (byte)(time_low >> 24);
-        buffer[startIndex++] = (byte)(time_low >> 16);
-        buffer[startIndex++] = (byte)(time_low >> 8);
-        buffer[startIndex++] = (byte)(time_low);
-        buffer[startIndex++] = (byte)(time_mid >> 8);
-        buffer[startIndex++] = (byte)(time_mid);
-        buffer[startIndex++] = (byte)(time_hi_and_version >> 8);
-        buffer[startIndex++] = (byte)(time_hi_and_version);
+        BinaryConvert.GetBytes(time_low,            endian, buffer, startIndex + 0);
+        BinaryConvert.GetBytes(time_mid,            endian, buffer, startIndex + 4);
+        BinaryConvert.GetBytes(time_hi_and_version, endian, buffer, startIndex + 6);
+
+        startIndex += 8;
+
         buffer[startIndex++] = clock_seq_hi_and_reserved;
         buffer[startIndex++] = clock_seq_low;
         buffer[startIndex++] = node.N0;
@@ -808,9 +826,14 @@ namespace Smdn {
 
     public byte[] ToByteArray()
     {
+      return ToByteArray(Platform.Endianness);
+    }
+
+    public byte[] ToByteArray(Endianness endian)
+    {
       var bytes = new byte[16];
 
-      GetBytes(bytes, 0);
+      GetBytes(bytes, 0, endian);
 
       return bytes;
     }
