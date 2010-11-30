@@ -94,7 +94,8 @@ FILES = \
 	Smdn.Formats/Base64.cs \
 	Smdn.Security.Cryptography/ICryptoTransformExtensions.cs \
 	Smdn.Collections/Enumerable.cs \
-	Smdn/AggregateException.cs 
+	Smdn/AggregateException.cs \
+	Smdn/BinaryConvert.cs 
 
 DATA_FILES = 
 
@@ -105,6 +106,7 @@ EXTRAS = \
 	Mono.Simd \
 	Smdn.Collections \
 	Smdn.Threading \
+	Smdn \
 	smdn-netfx4.0.pc.in 
 
 REFERENCES =  \
