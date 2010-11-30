@@ -66,9 +66,9 @@ FILES = \
 	Smdn/FourCC.cs \
 	Smdn.IO/ExtendStream.cs \
 	Smdn.IO/ExtendStreamBase.cs \
-	Smdn/BinaryConvert.cs \
 	Smdn.IO/BinaryReaderBase.cs \
-	Smdn.IO/BinaryWriterBase.cs 
+	Smdn.IO/BinaryWriterBase.cs \
+	Smdn/BinaryConvertExtensions.cs 
 
 DATA_FILES = 
 
@@ -76,6 +76,7 @@ RESOURCES =
 
 EXTRAS = \
 	Smdn.IO \
+	Smdn \
 	smdn.core.binaryformats-netfx4.0.pc.in 
 
 REFERENCES =  \
