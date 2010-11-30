@@ -42,6 +42,8 @@ namespace Smdn {
     IEquatable<Uuid>,
     IEquatable<Guid>,
     IComparable<Uuid>,
+    IComparable<Guid>,
+    IComparable,
     IFormattable
   {
     public enum Namespace : int {
@@ -706,9 +708,9 @@ namespace Smdn {
         throw new ArgumentException("obj is not Uuid", "obj");
     }
 
-    public int ComapreTo(Guid other)
+    public int CompareTo(Guid other)
     {
-      return ComapreTo((Uuid)other);
+      return CompareTo((Uuid)other);
     }
 
     public int CompareTo(Uuid other)
@@ -780,12 +782,12 @@ namespace Smdn {
 #endregion
 
 #region "conversion"
-    public static implicit operator Guid(Uuid @value)
+    public static explicit operator Guid(Uuid @value)
     {
       return @value.ToGuid();
     }
 
-    public static implicit operator Uuid(Guid @value)
+    public static explicit operator Uuid(Guid @value)
     {
       return new Uuid(@value);
     }
