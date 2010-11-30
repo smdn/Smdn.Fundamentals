@@ -293,13 +293,13 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestImplicitConversionOperator()
+    public void TestExplicitConversionOperator()
     {
-      Guid guid = Uuid.Nil;
+      Guid guid = (Guid)Uuid.Nil;
 
       Assert.AreEqual(guid, Guid.Empty);
 
-      Uuid uuid = Guid.Empty;
+      Uuid uuid = (Uuid)Guid.Empty;
 
       Assert.AreEqual(uuid, Uuid.Nil);
     }
@@ -314,21 +314,72 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestEquals()
+    {
+      Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals(Uuid.RFC4122NamespaceDns));
+      Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(null));
+      Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(1));
+
+      var u0 = new Uuid("00000000-0000-0000-0000-000000000000");
+      var g0 = new Guid("00000000-0000-0000-0000-000000000000");
+      var u1 = new Uuid("00000001-0000-0000-0000-000000000000");
+      var g1 = new Guid("00000001-0000-0000-0000-000000000000");
+      var u2 = new Uuid("00000000-0000-0000-0000-000000000001");
+      var g2 = new Guid("00000000-0000-0000-0000-000000000001");
+      object o;
+
+      Assert.IsTrue(u0.Equals(u0));
+      Assert.IsTrue(u0.Equals(g0));
+
+      o = u0; Assert.IsTrue(u0.Equals(o));
+      o = g0; Assert.IsTrue(u0.Equals(o));
+
+      Assert.IsFalse(u0.Equals(u1));
+      Assert.IsFalse(u0.Equals(g1));
+
+      o = u1; Assert.IsFalse(u0.Equals(o));
+      o = g1; Assert.IsFalse(u0.Equals(o));
+
+      Assert.IsFalse(u0.Equals(u2));
+      Assert.IsFalse(u0.Equals(g2));
+
+      o = u2; Assert.IsFalse(u0.Equals(o));
+      o = g2; Assert.IsFalse(u0.Equals(o));
+    }
+
+    [Test]
     public void TestCompareTo()
     {
       Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns));
+      Assert.AreEqual(1, Uuid.RFC4122NamespaceDns.CompareTo(null));
+      Assert.AreNotEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty));
 
-      var x = new Uuid("00000000-0000-0000-0000-000000000000");
-      var y = new Uuid("00000001-0000-0000-0000-000000000000");
+      try {
+        Uuid.RFC4122NamespaceDns.CompareTo(1);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
+      }
 
-      Assert.Less(x, y);
-      Assert.Greater(y, x);
+      var ux = new Uuid("00000000-0000-0000-0000-000000000000");
+      var uy = new Uuid("00000001-0000-0000-0000-000000000000");
+      var gx = new Guid("00000000-0000-0000-0000-000000000000");
+      var gy = new Guid("00000001-0000-0000-0000-000000000000");
 
-      x = new Uuid("00000000-0000-0000-0000-000000000000");
-      y = new Uuid("00000000-0000-0000-0000-000000000001");
+      Assert.Less(ux, uy);
+      Assert.Less(gx, uy);
+      Assert.Greater(uy, ux);
+      Assert.Greater(gy, ux);
 
-      Assert.Less(x, y);
-      Assert.Greater(y, x);
+      ux = new Uuid("00000000-0000-0000-0000-000000000000");
+      uy = new Uuid("00000000-0000-0000-0000-000000000001");
+      gx = new Guid("00000000-0000-0000-0000-000000000000");
+      gy = new Guid("00000000-0000-0000-0000-000000000001");
+
+      Assert.Less(ux, uy);
+      Assert.Less(gx, uy);
+      Assert.Greater(uy, ux);
+      Assert.Greater(gy, ux);
     }
 
     [Test]
