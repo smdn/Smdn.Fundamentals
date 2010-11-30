@@ -38,7 +38,7 @@ namespace Smdn {
    * http://tools.ietf.org/html/rfc4122
    */
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
-  public unsafe struct Uuid :
+  public struct Uuid :
     IEquatable<Uuid>,
     IEquatable<Guid>,
     IComparable<Uuid>,
@@ -204,9 +204,12 @@ namespace Smdn {
        *       time_hi_and_version field equal to bits 48 through 59 from the
        *       timestamp in the same order of significance.
        */
-      uuid.time_low = (uint)(ts & 0xffffffff);
-      uuid.time_mid = (ushort)((ts >> 32) & 0xffff);
-      uuid.time_hi_and_version = (ushort)((ts >> 48) & 0x0fff);
+      unchecked {
+        uuid.time_low = (uint)ts; // (uint)(ts & 0xffffffff);
+        uuid.time_mid = (ushort)(ts >> 32); //(ushort)((ts >> 32) & 0xffff);
+        uuid.time_hi_and_version =(ushort)(ts >> 48); // (ushort)((ts >> 48) & 0x0fff);
+        // MSB will be replaced at SetRFC4122Fields()
+      }
 
       /*
        *    o  Set the four most significant bits (bits 12 through 15) of the
@@ -223,8 +226,11 @@ namespace Smdn {
        *       (bits 8 through 13) of the clock sequence in the same order of
        *       significance.
        */
-      uuid.clock_seq_low = (byte)(clock & 0xff);
-      uuid.clock_seq_hi_and_reserved = (byte)((clock >> 8) & 0x3f);
+      unchecked {
+        uuid.clock_seq_low = (byte)clock; // (byte)(clock & 0xff);
+        uuid.clock_seq_hi_and_reserved = (byte)(clock >> 8); // (byte)((clock >> 8) & 0x3f);
+        // MSB will be replaced at SetRFC4122Fields()
+      }
 
       /*
        *    o  Set the two most significant bits (bits 6 and 7) of the
@@ -435,11 +441,15 @@ namespace Smdn {
 
     private static void SetRFC4122Fields(ref Uuid uuid, UuidVersion version)
     {
-      uuid.time_hi_and_version &= 0x0fff;
-      uuid.time_hi_and_version |= (ushort)((int)version << 12);
+      unchecked {
+        //uuid.time_hi_and_version &= 0x0fff;
+        //uuid.time_hi_and_version |= (ushort)((int)version << 12);
+        uuid.time_hi_and_version = (ushort)((uuid.time_hi_and_version & 0x0fff) | ((int)version << 12));
 
-      uuid.clock_seq_hi_and_reserved &= 0x3f;
-      uuid.clock_seq_hi_and_reserved |= 0x80;
+        //uuid.clock_seq_hi_and_reserved &= 0x3f;
+        //uuid.clock_seq_hi_and_reserved |= 0x80;
+        uuid.clock_seq_hi_and_reserved = (byte)((uuid.clock_seq_hi_and_reserved & 0x3f) | 0x80);
+      }
     }
 
     /*
@@ -455,8 +465,6 @@ namespace Smdn {
 
     [FieldOffset( 0)] private ulong fields_high;
     [FieldOffset( 8)] private ulong fields_low;
-
-    [FieldOffset( 0)] private fixed byte octets[16];
 
     /// <value>time_low; The low field of the timestamp</value>
     [CLSCompliant(false)]
@@ -611,25 +619,17 @@ namespace Smdn {
       if (octets.Length - index < 16)
         throw new ArgumentException("at least 16 octets is required", "octets, index");
 
-      fixed (byte* o = this.octets) {
-        for (var i = index; i < 16; i++) {
-          o[i] = octets[i];
-        }
-      }
-
-      switch (endian) {
-        case Endianness.LittleEndian:
-        case Endianness.BigEndian:
-          if (Platform.Endianness != endian) {
-            this.time_low             = BinaryConvert.ByteSwap(this.time_low);
-            this.time_mid             = BinaryConvert.ByteSwap(this.time_mid);
-            this.time_hi_and_version  = BinaryConvert.ByteSwap(this.time_hi_and_version);
-          }
-          break;
-
-        default:
-          throw new NotSupportedException(string.Concat("unsupported endian: ", endian.ToString()));
-      }
+      this.time_low                   = BinaryConvert.ToUInt32(octets, index + 0, endian);
+      this.time_mid                   = BinaryConvert.ToUInt16(octets, index + 4, endian);
+      this.time_hi_and_version        = BinaryConvert.ToUInt16(octets, index + 6, endian);
+      this.clock_seq_hi_and_reserved  = octets[index +  8];
+      this.clock_seq_low              = octets[index +  9];
+      this.node.N0                    = octets[index + 10];
+      this.node.N1                    = octets[index + 11];
+      this.node.N2                    = octets[index + 12];
+      this.node.N3                    = octets[index + 13];
+      this.node.N4                    = octets[index + 14];
+      this.node.N5                    = octets[index + 15];
     }
 
     public Uuid(Uri uuidUrn)
@@ -812,22 +812,18 @@ namespace Smdn {
       if (buffer.Length - 16 < startIndex)
         throw new ArgumentOutOfRangeException("startIndex, buffer");
 
-      unchecked {
-        BinaryConvert.GetBytes(time_low,            endian, buffer, startIndex + 0);
-        BinaryConvert.GetBytes(time_mid,            endian, buffer, startIndex + 4);
-        BinaryConvert.GetBytes(time_hi_and_version, endian, buffer, startIndex + 6);
+      BinaryConvert.GetBytes(time_low,            endian, buffer, startIndex + 0);
+      BinaryConvert.GetBytes(time_mid,            endian, buffer, startIndex + 4);
+      BinaryConvert.GetBytes(time_hi_and_version, endian, buffer, startIndex + 6);
 
-        startIndex += 8;
-
-        buffer[startIndex++] = clock_seq_hi_and_reserved;
-        buffer[startIndex++] = clock_seq_low;
-        buffer[startIndex++] = node.N0;
-        buffer[startIndex++] = node.N1;
-        buffer[startIndex++] = node.N2;
-        buffer[startIndex++] = node.N3;
-        buffer[startIndex++] = node.N4;
-        buffer[startIndex++] = node.N5;
-      }
+      buffer[startIndex +  8] = clock_seq_hi_and_reserved;
+      buffer[startIndex +  9] = clock_seq_low;
+      buffer[startIndex + 10] = node.N0;
+      buffer[startIndex + 11] = node.N1;
+      buffer[startIndex + 12] = node.N2;
+      buffer[startIndex + 13] = node.N3;
+      buffer[startIndex + 14] = node.N4;
+      buffer[startIndex + 15] = node.N5;
     }
 
     public byte[] ToByteArray()
