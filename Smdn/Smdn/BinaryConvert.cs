@@ -274,7 +274,7 @@ namespace Smdn {
       GetBytesLE(unchecked((UInt16)@value), bytes, startIndex);
     }
 
-    public static void GetBytesBE(Int16 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytesBE(Int16 @value, byte[] bytes, int startIndex)
     {
       GetBytesBE(unchecked((UInt16)@value), bytes, startIndex);
     }
@@ -552,11 +552,11 @@ namespace Smdn {
       return bytes;
     }
 
-    public static byte[] GetBytes(Int64 @value)
+    public static byte[] GetBytesBE(Int64 @value)
     {
       var bytes = new byte[8];
 
-      GetBytesLE(@value, bytes, 0);
+      GetBytesBE(@value, bytes, 0);
 
       return bytes;
     }
@@ -581,7 +581,7 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static byte[] GetBytes(UInt64 @value)
+    public static byte[] GetBytesBE(UInt64 @value)
     {
       var bytes = new byte[8];
 
