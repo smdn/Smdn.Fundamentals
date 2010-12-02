@@ -461,7 +461,7 @@ namespace Smdn {
     {
       var bytes = new byte[2];
 
-      GetBytesBE(@value, bytes, 0);
+      GetBytesLE(@value, bytes, 0);
 
       return bytes;
     }
