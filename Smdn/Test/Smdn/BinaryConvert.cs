@@ -48,6 +48,11 @@ namespace Smdn {
       Assert.AreEqual(unchecked((short)0x0080),
                       BinaryConvert.ToInt16(new byte[] {0x00, 0x80, 0x00}, 1, Endianness.LittleEndian));
 
+      Assert.AreEqual(unchecked((short)0x8000),
+                      BinaryConvert.ToInt16BE(new byte[] {0x80, 0x00}, 0));
+      Assert.AreEqual(unchecked((short)0x0080),
+                      BinaryConvert.ToInt16LE(new byte[] {0x80, 0x00}, 0));
+
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToInt16(null, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt16(new byte[] {0x00}, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt16(new byte[] {0x00, 0x00}, 1, Endianness.BigEndian));
@@ -65,6 +70,11 @@ namespace Smdn {
                       BinaryConvert.ToUInt16(new byte[] {0x80, 0x00}, 0, Endianness.LittleEndian));
       Assert.AreEqual(unchecked((ushort)0x0080),
                       BinaryConvert.ToUInt16(new byte[] {0x00, 0x80, 0x00}, 1, Endianness.LittleEndian));
+
+      Assert.AreEqual(unchecked((ushort)0x8000),
+                      BinaryConvert.ToUInt16BE(new byte[] {0x80, 0x00}, 0));
+      Assert.AreEqual(unchecked((ushort)0x0080),
+                      BinaryConvert.ToUInt16LE(new byte[] {0x80, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToUInt16(null, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt16(new byte[] {0x00}, 0, Endianness.BigEndian));
@@ -84,6 +94,11 @@ namespace Smdn {
       Assert.AreEqual(unchecked((int)0x00008000),
                       BinaryConvert.ToInt32(new byte[] {0xff, 0x00, 0x80, 0x00, 0x00}, 1, Endianness.LittleEndian));
 
+      Assert.AreEqual(unchecked((int)0xff008000),
+                      BinaryConvert.ToInt32BE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0));
+      Assert.AreEqual(unchecked((int)0x008000ff),
+                      BinaryConvert.ToInt32LE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0));
+
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToInt32(null, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
@@ -101,6 +116,11 @@ namespace Smdn {
                       BinaryConvert.ToUInt32(new byte[] {0xff, 0x00, 0x80, 0x00}, 0, Endianness.LittleEndian));
       Assert.AreEqual(unchecked((uint)0x00008000),
                       BinaryConvert.ToUInt32(new byte[] {0xff, 0x00, 0x80, 0x00, 0x00}, 1, Endianness.LittleEndian));
+
+      Assert.AreEqual(unchecked((uint)0xff008000),
+                      BinaryConvert.ToUInt32BE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0));
+      Assert.AreEqual(unchecked((uint)0x008000ff),
+                      BinaryConvert.ToUInt32LE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToUInt32(null, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
@@ -120,6 +140,11 @@ namespace Smdn {
       Assert.AreEqual(unchecked((long)0x0000dd008000cc00),
                       BinaryConvert.ToInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00}, 1, Endianness.LittleEndian));
 
+      Assert.AreEqual(unchecked((long)0xff00cc008000dd00),
+                      BinaryConvert.ToInt64BE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0));
+      Assert.AreEqual(unchecked((long)0x00dd008000cc00ff),
+                      BinaryConvert.ToInt64LE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0));
+
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToInt64(null, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
@@ -137,6 +162,11 @@ namespace Smdn {
                       BinaryConvert.ToUInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0, Endianness.LittleEndian));
       Assert.AreEqual(unchecked((ulong)0x0000dd008000cc00),
                       BinaryConvert.ToUInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00}, 1, Endianness.LittleEndian));
+
+      Assert.AreEqual(unchecked((ulong)0xff00cc008000dd00),
+                      BinaryConvert.ToUInt64BE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0));
+      Assert.AreEqual(unchecked((ulong)0x00dd008000cc00ff),
+                      BinaryConvert.ToUInt64LE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToUInt64(null, 0, Endianness.BigEndian));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
@@ -165,6 +195,10 @@ namespace Smdn {
                                 BinaryConvert.GetBytes(short.MinValue, Endianness.BigEndian));
       CollectionAssert.AreEqual(new byte[] {0x00, 0x80},
                                 BinaryConvert.GetBytes(short.MinValue, Endianness.LittleEndian));
+      CollectionAssert.AreEqual(new byte[] {0x80, 0x00},
+                                BinaryConvert.GetBytesBE(short.MinValue));
+      CollectionAssert.AreEqual(new byte[] {0x00, 0x80},
+                                BinaryConvert.GetBytesLE(short.MinValue));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, null, 0));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, new byte[1], 0));
@@ -189,6 +223,10 @@ namespace Smdn {
                                 BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian));
       CollectionAssert.AreEqual(new byte[] {0x00, 0xff},
                                 BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.LittleEndian));
+      CollectionAssert.AreEqual(new byte[] {0xff, 0x00},
+                                BinaryConvert.GetBytesBE(unchecked((ushort)0xff00)));
+      CollectionAssert.AreEqual(new byte[] {0x00, 0xff},
+                                BinaryConvert.GetBytesLE(unchecked((ushort)0xff00)));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, null, 0));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, new byte[1], 0));
@@ -217,6 +255,10 @@ namespace Smdn {
                                 BinaryConvert.GetBytes(int.MinValue, Endianness.BigEndian));
       CollectionAssert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x80},
                                 BinaryConvert.GetBytes(int.MinValue, Endianness.LittleEndian));
+      CollectionAssert.AreEqual(new byte[] {0x80, 0x00, 0x00, 0x00},
+                                BinaryConvert.GetBytesBE(int.MinValue));
+      CollectionAssert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x80},
+                                BinaryConvert.GetBytesLE(int.MinValue));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, null, 0));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, new byte[3], 0));
@@ -241,6 +283,10 @@ namespace Smdn {
                                 BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian));
       CollectionAssert.AreEqual(new byte[] {0x44, 0x33, 0x22, 0x11},
                                 BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.LittleEndian));
+      CollectionAssert.AreEqual(new byte[] {0x11, 0x22, 0x33, 0x44},
+                                BinaryConvert.GetBytesBE(unchecked((uint)0x11223344)));
+      CollectionAssert.AreEqual(new byte[] {0x44, 0x33, 0x22, 0x11},
+                                BinaryConvert.GetBytesLE(unchecked((uint)0x11223344)));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, null, 0));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, new byte[3], 0));
@@ -269,6 +315,10 @@ namespace Smdn {
                                 BinaryConvert.GetBytes(long.MinValue, Endianness.BigEndian));
       CollectionAssert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80},
                                 BinaryConvert.GetBytes(long.MinValue, Endianness.LittleEndian));
+      CollectionAssert.AreEqual(new byte[] {0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+                                BinaryConvert.GetBytesBE(long.MinValue));
+      CollectionAssert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80},
+                                BinaryConvert.GetBytesLE(long.MinValue));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, null, 0));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, new byte[7], 0));
@@ -293,6 +343,10 @@ namespace Smdn {
                                 BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian));
       CollectionAssert.AreEqual(new byte[] {0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11},
                                 BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.LittleEndian));
+      CollectionAssert.AreEqual(new byte[] {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88},
+                                BinaryConvert.GetBytesBE(unchecked((ulong)0x1122334455667788)));
+      CollectionAssert.AreEqual(new byte[] {0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11},
+                                BinaryConvert.GetBytesLE(unchecked((ulong)0x1122334455667788)));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, null, 0));
       ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, new byte[7], 0));
