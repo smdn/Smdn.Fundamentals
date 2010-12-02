@@ -117,24 +117,58 @@ namespace Smdn {
       }
     }
 
+    public static Int16 ToInt16LE(byte[] @value, int startIndex)
+    {
+      return unchecked((Int16)ToUInt16LE(@value, startIndex));
+    }
+
+    public static Int16 ToInt16BE(byte[] @value, int startIndex)
+    {
+      return unchecked((Int16)ToUInt16BE(@value, startIndex));
+    }
+
     public static Int16 ToInt16(byte[] @value, int startIndex, Endianness endian)
     {
       return unchecked((Int16)ToUInt16(@value, startIndex, endian));
     }
 
     [CLSCompliant(false)]
-    public static UInt16 ToUInt16(byte[] @value, int startIndex, Endianness endian)
+    public static UInt16 ToUInt16LE(byte[] @value, int startIndex)
     {
       CheckSourceArray(@value, startIndex, 2);
 
+      return (UInt16)(@value[startIndex] |
+                      @value[startIndex + 1] << 8);
+    }
+
+    [CLSCompliant(false)]
+    public static UInt16 ToUInt16BE(byte[] @value, int startIndex)
+    {
+      CheckSourceArray(@value, startIndex, 2);
+
+      return (UInt16)(@value[startIndex] << 8 |
+                      @value[startIndex + 1]);
+    }
+
+    [CLSCompliant(false)]
+    public static UInt16 ToUInt16(byte[] @value, int startIndex, Endianness endian)
+    {
       switch (endian) {
-        case Endianness.LittleEndian:
-          return (UInt16)(@value[startIndex + 1] << 8 | @value[startIndex]);
-        case Endianness.BigEndian:
-          return (UInt16)(@value[startIndex] << 8 | @value[startIndex + 1]);
+        case Endianness.LittleEndian: return ToUInt16LE(@value, startIndex);
+        case Endianness.BigEndian:    return ToUInt16BE(@value, startIndex);
         default:
           throw GetUnsupportedEndianException(endian);
       }
+    }
+
+    public static Int32 ToInt32LE(byte[] @value, int startIndex)
+    {
+      return unchecked((Int32)ToUInt32LE(@value, startIndex));
+    }
+
+    public static Int32 ToInt32BE(byte[] @value, int startIndex)
+    {
+      return unchecked((Int32)ToUInt32BE(@value, startIndex));
     }
 
     public static Int32 ToInt32(byte[] @value, int startIndex, Endianness endian)
@@ -143,18 +177,46 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static UInt32 ToUInt32(byte[] @value, int startIndex, Endianness endian)
+    public static UInt32 ToUInt32LE(byte[] @value, int startIndex)
     {
       CheckSourceArray(@value, startIndex, 4);
 
+      return (UInt32)(@value[startIndex] |
+                      @value[startIndex + 1] << 8 |
+                      @value[startIndex + 2] << 16 |
+                      @value[startIndex + 3] << 24);
+    }
+
+    [CLSCompliant(false)]
+    public static UInt32 ToUInt32BE(byte[] @value, int startIndex)
+    {
+      CheckSourceArray(@value, startIndex, 4);
+
+      return (UInt32)(@value[startIndex] << 24 |
+                      @value[startIndex + 1] << 16 |
+                      @value[startIndex + 2] << 8 |
+                      @value[startIndex + 3]);
+    }
+
+    [CLSCompliant(false)]
+    public static UInt32 ToUInt32(byte[] @value, int startIndex, Endianness endian)
+    {
       switch (endian) {
-        case Endianness.LittleEndian:
-          return (UInt32)(@value[startIndex + 3] << 24 | @value[startIndex + 2] << 16 | @value[startIndex + 1] << 8 | @value[startIndex]);
-        case Endianness.BigEndian:
-          return (UInt32)(@value[startIndex] << 24 | @value[startIndex + 1] << 16 | @value[startIndex + 2] << 8 | @value[startIndex + 3]);
+        case Endianness.LittleEndian: return ToUInt32LE(@value, startIndex);
+        case Endianness.BigEndian:    return ToUInt32BE(@value, startIndex);
         default:
           throw GetUnsupportedEndianException(endian);
       }
+    }
+
+    public static Int64 ToInt64LE(byte[] @value, int startIndex)
+    {
+      return unchecked((Int64)ToUInt64LE(@value, startIndex));
+    }
+
+    public static Int64 ToInt64BE(byte[] @value, int startIndex)
+    {
+      return unchecked((Int64)ToUInt64BE(@value, startIndex));
     }
 
     public static Int64 ToInt64(byte[] @value, int startIndex, Endianness endian)
@@ -163,26 +225,58 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
+    public static UInt64 ToUInt64LE(byte[] @value, int startIndex)
+    {
+      CheckSourceArray(@value, startIndex, 8);
+
+      UInt64 low  = (UInt32)(@value[startIndex] |
+                             @value[startIndex + 1] << 8 |
+                             @value[startIndex + 2] << 16 |
+                             @value[startIndex + 3] << 24);
+      UInt64 high = (UInt32)(@value[startIndex + 4 ] |
+                             @value[startIndex + 5] << 8 |
+                             @value[startIndex + 6] << 16 |
+                             @value[startIndex + 7] << 24);
+
+      return high << 32 | low;
+    }
+
+    [CLSCompliant(false)]
+    public static UInt64 ToUInt64BE(byte[] @value, int startIndex)
+    {
+      CheckSourceArray(@value, startIndex, 8);
+
+      UInt64 high = (UInt32)(@value[startIndex] << 24 |
+                             @value[startIndex + 1] << 16 |
+                             @value[startIndex + 2] << 8 |
+                             @value[startIndex + 3]);
+      UInt64 low  = (UInt32)(@value[startIndex + 4] << 24 |
+                             @value[startIndex + 5] << 16 |
+                             @value[startIndex + 6] << 8 |
+                             @value[startIndex + 7]);
+
+      return high << 32 | low;
+    }
+
+    [CLSCompliant(false)]
     public static UInt64 ToUInt64(byte[] @value, int startIndex, Endianness endian)
     {
       switch (endian) {
-        case Endianness.LittleEndian: {
-          UInt64 low  = (UInt64)ToUInt32(@value, startIndex + 0, endian);
-          UInt64 high = (UInt64)ToUInt32(@value, startIndex + 4, endian);
-
-          return high << 32 | low;
-        }
-
-        case Endianness.BigEndian: {
-          UInt64 high = (UInt64)ToUInt32(@value, startIndex + 0, endian);
-          UInt64 low  = (UInt64)ToUInt32(@value, startIndex + 4, endian);
-
-          return high << 32 | low;
-        }
-
+        case Endianness.LittleEndian: return ToUInt64LE(@value, startIndex);
+        case Endianness.BigEndian:    return ToUInt64BE(@value, startIndex);
         default:
           throw GetUnsupportedEndianException(endian);
       }
+    }
+
+    public static void GetBytesLE(Int16 @value, byte[] bytes, int startIndex)
+    {
+      GetBytesLE(unchecked((UInt16)@value), bytes, startIndex);
+    }
+
+    public static void GetBytesBE(Int16 @value, Endianness endian, byte[] bytes, int startIndex)
+    {
+      GetBytesBE(unchecked((UInt16)@value), bytes, startIndex);
     }
 
     public static void GetBytes(Int16 @value, Endianness endian, byte[] bytes, int startIndex)
@@ -191,28 +285,46 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static void GetBytes(UInt16 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytesLE(UInt16 @value, byte[] bytes, int startIndex)
     {
       CheckDestArray(bytes, startIndex, 2);
 
+      unchecked {
+        bytes[startIndex    ] = (byte)(@value);
+        bytes[startIndex + 1] = (byte)(@value >> 8);
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static void GetBytesBE(UInt16 @value, byte[] bytes, int startIndex)
+    {
+      CheckDestArray(bytes, startIndex, 2);
+
+      unchecked {
+        bytes[startIndex    ] = (byte)(@value >> 8);
+        bytes[startIndex + 1] = (byte)(@value);
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static void GetBytes(UInt16 @value, Endianness endian, byte[] bytes, int startIndex)
+    {
       switch (endian) {
-        case Endianness.LittleEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(@value);
-            bytes[startIndex++] = (byte)(@value >> 8);
-          }
-          break;
-
-        case Endianness.BigEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(@value >> 8);
-            bytes[startIndex++] = (byte)(@value);
-          }
-          break;
-
+        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
+        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
         default:
           throw GetUnsupportedEndianException(endian);
       }
+    }
+
+    public static void GetBytesLE(Int32 @value, byte[] bytes, int startIndex)
+    {
+      GetBytesLE(unchecked((UInt32)@value), bytes, startIndex);
+    }
+
+    public static void GetBytesBE(Int32 @value, byte[] bytes, int startIndex)
+    {
+      GetBytesBE(unchecked((UInt32)@value), bytes, startIndex);
     }
 
     public static void GetBytes(Int32 @value, Endianness endian, byte[] bytes, int startIndex)
@@ -221,32 +333,50 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static void GetBytes(UInt32 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytesLE(UInt32 @value, byte[] bytes, int startIndex)
     {
       CheckDestArray(bytes, startIndex, 4);
 
+      unchecked {
+        bytes[startIndex    ] = (byte)(@value);
+        bytes[startIndex + 1] = (byte)(@value >> 8);
+        bytes[startIndex + 2] = (byte)(@value >> 16);
+        bytes[startIndex + 3] = (byte)(@value >> 24);
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static void GetBytesBE(UInt32 @value, byte[] bytes, int startIndex)
+    {
+      CheckDestArray(bytes, startIndex, 4);
+
+      unchecked {
+        bytes[startIndex    ] = (byte)(@value >> 24);
+        bytes[startIndex + 1] = (byte)(@value >> 16);
+        bytes[startIndex + 2] = (byte)(@value >> 8);
+        bytes[startIndex + 3] = (byte)(@value);
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static void GetBytes(UInt32 @value, Endianness endian, byte[] bytes, int startIndex)
+    {
       switch (endian) {
-        case Endianness.LittleEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(@value);
-            bytes[startIndex++] = (byte)(@value >> 8);
-            bytes[startIndex++] = (byte)(@value >> 16);
-            bytes[startIndex++] = (byte)(@value >> 24);
-          }
-          break;
-
-        case Endianness.BigEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(@value >> 24);
-            bytes[startIndex++] = (byte)(@value >> 16);
-            bytes[startIndex++] = (byte)(@value >> 8);
-            bytes[startIndex++] = (byte)(@value);
-          }
-          break;
-
+        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
+        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
         default:
           throw GetUnsupportedEndianException(endian);
       }
+    }
+
+    public static void GetBytesLE(Int64 @value, byte[] bytes, int startIndex)
+    {
+      GetBytesLE(unchecked((UInt64)@value), bytes, startIndex);
+    }
+
+    public static void GetBytesBE(Int64 @value, byte[] bytes, int startIndex)
+    {
+      GetBytesBE(unchecked((UInt64)@value), bytes, startIndex);
     }
 
     public static void GetBytes(Int64 @value, Endianness endian, byte[] bytes, int startIndex)
@@ -255,40 +385,66 @@ namespace Smdn {
     }
 
     [CLSCompliant(false)]
-    public static void GetBytes(UInt64 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytesLE(UInt64 @value, byte[] bytes, int startIndex)
     {
       CheckDestArray(bytes, startIndex, 8);
 
+      unchecked {
+        bytes[startIndex    ] = (byte)(@value);
+        bytes[startIndex + 1] = (byte)(@value >> 8);
+        bytes[startIndex + 2] = (byte)(@value >> 16);
+        bytes[startIndex + 3] = (byte)(@value >> 24);
+        bytes[startIndex + 4] = (byte)(@value >> 32);
+        bytes[startIndex + 5] = (byte)(@value >> 40);
+        bytes[startIndex + 6] = (byte)(@value >> 48);
+        bytes[startIndex + 7] = (byte)(@value >> 56);
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static void GetBytesBE(UInt64 @value, byte[] bytes, int startIndex)
+    {
+      CheckDestArray(bytes, startIndex, 8);
+
+      unchecked {
+        bytes[startIndex    ] = (byte)(@value >> 56);
+        bytes[startIndex + 1] = (byte)(@value >> 48);
+        bytes[startIndex + 2] = (byte)(@value >> 40);
+        bytes[startIndex + 3] = (byte)(@value >> 32);
+        bytes[startIndex + 4] = (byte)(@value >> 24);
+        bytes[startIndex + 5] = (byte)(@value >> 16);
+        bytes[startIndex + 6] = (byte)(@value >> 8);
+        bytes[startIndex + 7] = (byte)(@value);
+      }
+    }
+
+    [CLSCompliant(false)]
+    public static void GetBytes(UInt64 @value, Endianness endian, byte[] bytes, int startIndex)
+    {
       switch (endian) {
-        case Endianness.LittleEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(@value);
-            bytes[startIndex++] = (byte)(@value >> 8);
-            bytes[startIndex++] = (byte)(@value >> 16);
-            bytes[startIndex++] = (byte)(@value >> 24);
-            bytes[startIndex++] = (byte)(@value >> 32);
-            bytes[startIndex++] = (byte)(@value >> 40);
-            bytes[startIndex++] = (byte)(@value >> 48);
-            bytes[startIndex++] = (byte)(@value >> 56);
-          }
-          break;
-
-        case Endianness.BigEndian:
-          unchecked {
-            bytes[startIndex++] = (byte)(@value >> 56);
-            bytes[startIndex++] = (byte)(@value >> 48);
-            bytes[startIndex++] = (byte)(@value >> 40);
-            bytes[startIndex++] = (byte)(@value >> 32);
-            bytes[startIndex++] = (byte)(@value >> 24);
-            bytes[startIndex++] = (byte)(@value >> 16);
-            bytes[startIndex++] = (byte)(@value >> 8);
-            bytes[startIndex++] = (byte)(@value);
-          }
-          break;
-
+        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
+        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
         default:
           throw GetUnsupportedEndianException(endian);
       }
+    }
+
+    public static byte[] GetBytesLE(Int16 @value)
+    {
+      var bytes = new byte[2];
+
+      GetBytesLE(@value, bytes, 0);
+
+      return bytes;
+    }
+
+    public static byte[] GetBytesBE(Int16 @value)
+    {
+      var bytes = new byte[2];
+
+      GetBytesBE(@value, bytes, 0);
+
+      return bytes;
     }
 
     public static byte[] GetBytes(Int16 @value, Endianness endian)
@@ -296,6 +452,26 @@ namespace Smdn {
       var bytes = new byte[2];
 
       GetBytes(@value, endian, bytes, 0);
+
+      return bytes;
+    }
+
+    [CLSCompliant(false)]
+    public static byte[] GetBytesLE(UInt16 @value)
+    {
+      var bytes = new byte[2];
+
+      GetBytesBE(@value, bytes, 0);
+
+      return bytes;
+    }
+
+    [CLSCompliant(false)]
+    public static byte[] GetBytesBE(UInt16 @value)
+    {
+      var bytes = new byte[2];
+
+      GetBytesBE(@value, bytes, 0);
 
       return bytes;
     }
@@ -310,11 +486,49 @@ namespace Smdn {
       return bytes;
     }
 
+    public static byte[] GetBytesLE(Int32 @value)
+    {
+      var bytes = new byte[4];
+
+      GetBytesLE(@value, bytes, 0);
+
+      return bytes;
+    }
+
+    public static byte[] GetBytesBE(Int32 @value)
+    {
+      var bytes = new byte[4];
+
+      GetBytesBE(@value, bytes, 0);
+
+      return bytes;
+    }
+
     public static byte[] GetBytes(Int32 @value, Endianness endian)
     {
       var bytes = new byte[4];
 
       GetBytes(@value, endian, bytes, 0);
+
+      return bytes;
+    }
+
+    [CLSCompliant(false)]
+    public static byte[] GetBytesLE(UInt32 @value)
+    {
+      var bytes = new byte[4];
+
+      GetBytesLE(@value, bytes, 0);
+
+      return bytes;
+    }
+
+    [CLSCompliant(false)]
+    public static byte[] GetBytesBE(UInt32 @value)
+    {
+      var bytes = new byte[4];
+
+      GetBytesBE(@value, bytes, 0);
 
       return bytes;
     }
@@ -329,11 +543,49 @@ namespace Smdn {
       return bytes;
     }
 
+    public static byte[] GetBytesLE(Int64 @value)
+    {
+      var bytes = new byte[8];
+
+      GetBytesLE(@value, bytes, 0);
+
+      return bytes;
+    }
+
+    public static byte[] GetBytes(Int64 @value)
+    {
+      var bytes = new byte[8];
+
+      GetBytesLE(@value, bytes, 0);
+
+      return bytes;
+    }
+
     public static byte[] GetBytes(Int64 @value, Endianness endian)
     {
       var bytes = new byte[8];
 
       GetBytes(@value, endian, bytes, 0);
+
+      return bytes;
+    }
+
+    [CLSCompliant(false)]
+    public static byte[] GetBytesLE(UInt64 @value)
+    {
+      var bytes = new byte[8];
+
+      GetBytesLE(@value, bytes, 0);
+
+      return bytes;
+    }
+
+    [CLSCompliant(false)]
+    public static byte[] GetBytes(UInt64 @value)
+    {
+      var bytes = new byte[8];
+
+      GetBytesBE(@value, bytes, 0);
 
       return bytes;
     }
