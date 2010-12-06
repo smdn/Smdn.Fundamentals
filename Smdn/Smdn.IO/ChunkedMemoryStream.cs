@@ -55,7 +55,7 @@ namespace Smdn.IO {
       }
     }
 
-    private class ChunkChain : IDisposable {
+    private sealed class ChunkChain : IDisposable {
       public int ChunkSize {
         get { return chunkSize; }
       }
@@ -68,13 +68,16 @@ namespace Smdn.IO {
         get { return currentChunkIndex * chunkSize + currentChunkOffset; }
       }
 
+      private int ReadableByteCount {
+        get { return ((currentChunk.Next == null) ? lastChunkLength : chunkSize) - currentChunkOffset; }
+      }
+
       public ChunkChain(int chunkSize, Allocator allocator)
       {
         this.chunkSize = chunkSize;
         this.allocator = allocator;
 
         currentChunkOffset = 0;
-        currentChunkRemainder = chunkSize;
       }
 
       private Chunk TryGetFirstChunk(bool ensureCreated)
@@ -99,6 +102,9 @@ namespace Smdn.IO {
 
           chunk = next;
         }
+
+        firstChunk = null;
+        currentChunk = null;
       }
 
       public void SetLength(long length)
@@ -141,8 +147,6 @@ namespace Smdn.IO {
         // set new position
         if (Length < Position)
           SetPosition(Length);
-        else
-          currentChunkRemainder = (currentChunk.Next == null ? lastChunkLength : chunkSize) - currentChunkOffset;
       }
 
       public void SetPosition(long offset)
@@ -164,7 +168,6 @@ namespace Smdn.IO {
         }
 
         currentChunkOffset = (int)offset;
-        currentChunkRemainder = (currentChunk.Next == null ? lastChunkLength : chunkSize) - currentChunkOffset;
       }
 
       public int ReadByte()
@@ -172,17 +175,12 @@ namespace Smdn.IO {
         if (TryGetFirstChunk(false) == null)
           return -1; // stream is empty
 
-        if (currentChunkRemainder == 0) {
+        if (ReadableByteCount == 0) {
           if (!MoveToNextChunk(false))
             return -1; // end of stream
         }
 
-        var ret = currentChunk.Data[currentChunkOffset];
-
-        currentChunkOffset++;
-        currentChunkRemainder--;
-
-        return ret;
+        return currentChunk.Data[currentChunkOffset++];
       }
 
       public int Read(byte[] buffer, int offset, int count)
@@ -193,12 +191,12 @@ namespace Smdn.IO {
         var read = 0;
 
         for (;;) {
-          if (currentChunkRemainder == 0) {
+          if (ReadableByteCount == 0) {
             if (!MoveToNextChunk(false))
               return read; // end of stream
           }
 
-          var bytesToRead = Math.Min(currentChunkRemainder, count);
+          var bytesToRead = Math.Min(ReadableByteCount, count);
 
           Buffer.BlockCopy(currentChunk.Data, currentChunkOffset, buffer, offset, bytesToRead);
 
@@ -207,7 +205,6 @@ namespace Smdn.IO {
           read += bytesToRead;
 
           currentChunkOffset += bytesToRead;
-          currentChunkRemainder -= bytesToRead;
 
           if (count <= 0)
             return read;
@@ -218,13 +215,10 @@ namespace Smdn.IO {
       {
         TryGetFirstChunk(true);
 
-        if (currentChunkRemainder == 0)
+        if (chunkSize == currentChunkOffset)
           MoveToNextChunk(true);
 
-        currentChunk.Data[currentChunkOffset] = @value;
-
-        currentChunkOffset++;
-        currentChunkRemainder--;
+        currentChunk.Data[currentChunkOffset++] = @value;
 
         if (currentChunk.Next == null)
           lastChunkLength = currentChunkOffset;
@@ -235,10 +229,10 @@ namespace Smdn.IO {
         TryGetFirstChunk(true);
 
         for (;;) {
-          if (currentChunkRemainder == 0)
+          if (currentChunkOffset == chunkSize)
             MoveToNextChunk(true);
 
-          var bytesToWrite = Math.Min(currentChunkRemainder, count);
+          var bytesToWrite = Math.Min(chunkSize - currentChunkOffset, count);
 
           Buffer.BlockCopy(buffer, offset, currentChunk.Data, currentChunkOffset, bytesToWrite);
 
@@ -246,7 +240,6 @@ namespace Smdn.IO {
           count -= bytesToWrite;
 
           currentChunkOffset += bytesToWrite;
-          currentChunkRemainder -= bytesToWrite;
 
           if (currentChunk.Next == null)
             lastChunkLength = currentChunkOffset;
@@ -259,21 +252,18 @@ namespace Smdn.IO {
       private bool MoveToNextChunk(bool write)
       {
         if (currentChunk.Next == null) {
-          if (write) {
-            currentChunk.Next = allocator(chunkSize);
-            chunkCount++;
-            lastChunkLength = 0;
-          }
-          else {
+          if (!write)
             return false;
-          }
+
+          currentChunk.Next = allocator(chunkSize);
+          chunkCount++;
+          lastChunkLength = 0;
         }
 
         currentChunk = currentChunk.Next;
         currentChunkIndex++;
 
         currentChunkOffset = 0;
-        currentChunkRemainder = (!write && currentChunk.Next == null) ? lastChunkLength : chunkSize;
 
         return true;
       }
@@ -310,7 +300,6 @@ namespace Smdn.IO {
       private Chunk currentChunk;
 
       private int currentChunkOffset;
-      private int currentChunkRemainder;
       private long currentChunkIndex = 0;
       private long chunkCount = 1;
       private int lastChunkLength = 0;
