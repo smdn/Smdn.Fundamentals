@@ -80,6 +80,7 @@
     <Compile Include="Smdn.Formats\Base64.cs" />
     <Compile Include="Smdn.Collections\Enumerable.cs" />
     <Compile Include="Smdn\BinaryConvert.cs" />
+    <Compile Include="Smdn\ExceptionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn-netfx3.5.csproj">

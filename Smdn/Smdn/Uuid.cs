@@ -181,7 +181,7 @@ namespace Smdn {
         timestamp = timestamp.ToUniversalTime();
 
       if (timestamp < timestampEpoch)
-        throw new ArgumentOutOfRangeException("timestamp", timestamp, string.Format("must be greater than or equals to {0}", timestampEpoch));
+        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(timestampEpoch, "timestamp", timestamp);
 
       if (clock < 0 || 0x3fff <= clock)
         throw new ArgumentOutOfRangeException("clock", clock, "must be 14-bit unsigned integer");
@@ -304,7 +304,7 @@ namespace Smdn {
         case Namespace.RFC4122Url:    return CreateNameBased(name, RFC4122NamespaceUrl, version);
         case Namespace.RFC4122IsoOid: return CreateNameBased(name, RFC4122NamespaceIsoOid, version);
         case Namespace.RFC4122X500:   return CreateNameBased(name, RFC4122NamespaceX500, version);
-        default: throw new ArgumentException(string.Format("undefined namespace id: {0}", ns));
+        default: throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("ns", ns);
       }
     }
 
@@ -335,7 +335,7 @@ namespace Smdn {
         switch (version) {
           case UuidVersion.NameBasedMD5Hash: hashAlgorithm = MD5.Create(); break;
           case UuidVersion.NameBasedSHA1Hash: hashAlgorithm = SHA1.Create(); break;
-          default: throw new ArgumentException("version must be 3 or 5", "version");
+          default:  throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("version", version, "must be 3 or 5");
         }
 
         /* 
@@ -617,9 +617,9 @@ namespace Smdn {
       if (octets == null)
         throw new ArgumentNullException("octets");
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
-      if (octets.Length - index < 16)
-        throw new ArgumentException("at least 16 octets is required", "octets, index");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
+      if (octets.Length - 16 < index)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", octets, index, 16);
 
       this.time_low                   = BinaryConvert.ToUInt32(octets, index + 0, endian);
       this.time_mid                   = BinaryConvert.ToUInt16(octets, index + 4, endian);
@@ -811,8 +811,10 @@ namespace Smdn {
     {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (buffer.Length - 16 < startIndex)
-        throw new ArgumentOutOfRangeException("startIndex, buffer");
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", buffer, startIndex, 16);
 
       BinaryConvert.GetBytes(time_low,            endian, buffer, startIndex + 0);
       BinaryConvert.GetBytes(time_mid,            endian, buffer, startIndex + 4);

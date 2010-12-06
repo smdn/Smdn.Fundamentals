@@ -32,9 +32,9 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
       if (startIndex < 0)
-        throw new ArgumentOutOfRangeException("startIndex", "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (@value.Length - count < startIndex)
-        throw new ArgumentOutOfRangeException("startIndex, value");
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", @value, startIndex, count);
     }
 
     protected static void CheckDestArray(byte[] @bytes, int startIndex, int count)
@@ -42,14 +42,14 @@ namespace Smdn {
       if (@bytes == null)
         throw new ArgumentNullException("bytes");
       if (startIndex < 0)
-        throw new ArgumentOutOfRangeException("startIndex", "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (@bytes.Length - count < startIndex)
-        throw new ArgumentOutOfRangeException("startIndex, bytes");
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", @bytes, startIndex, count);
     }
 
     protected static Exception GetUnsupportedEndianException(Endianness endian)
     {
-      return new NotSupportedException(string.Format("endian '{0}' is not supported", endian));
+      return ExceptionUtils.CreateNotSupportedEnumValue(endian);
     }
 
     public static Int16 ByteSwap(Int16 @value)

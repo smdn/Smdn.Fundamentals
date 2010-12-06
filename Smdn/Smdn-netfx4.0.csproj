@@ -98,6 +98,7 @@
     <Compile Include="Smdn.Collections\Enumerable.cs" />
     <Compile Include="Smdn\AggregateException.cs" />
     <Compile Include="Smdn\BinaryConvert.cs" />
+    <Compile Include="Smdn\ExceptionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -120,5 +121,9 @@
     <Folder Include="Smdn.Collections\" />
     <Folder Include="Smdn.Threading\" />
     <Folder Include="Smdn\" />
+    <Folder Include="resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\exceptions-ja.txt" />
   </ItemGroup>
 </Project>

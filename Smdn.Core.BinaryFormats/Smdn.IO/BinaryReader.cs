@@ -52,7 +52,7 @@ namespace Smdn.IO {
       : base(baseStream, leaveBaseStreamOpen)
     {
       if (storageSize <= 0)
-        throw new ArgumentOutOfRangeException("storageSize", storageSize, "must be non-zero positive number");
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("storageSize", storageSize);
 
       this.endianness = endianness;
       this.Storage = new byte[storageSize];

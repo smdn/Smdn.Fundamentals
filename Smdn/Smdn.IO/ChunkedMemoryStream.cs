@@ -339,7 +339,7 @@ namespace Smdn.IO {
         CheckDisposed();
 
         if (value < 0)
-          throw new ArgumentOutOfRangeException("Position", value, "must be zero or positive number");
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
 
         chain.SetPosition(value);
       }
@@ -371,7 +371,7 @@ namespace Smdn.IO {
     public ChunkedMemoryStream(int chunkSize, Allocator allocator)
     {
       if (chunkSize <= 0)
-        throw new ArgumentOutOfRangeException("chunkSize", chunkSize, "must be non-zero positive number");
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("chunkSize", chunkSize);
       if (allocator == null)
         throw new ArgumentNullException("allocator");
 
@@ -393,7 +393,7 @@ namespace Smdn.IO {
       CheckDisposed();
 
       if (@value < 0)
-        throw new ArgumentOutOfRangeException("value", @value, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("value", @value);
 
       chain.SetLength(@value);
     }
@@ -414,12 +414,12 @@ namespace Smdn.IO {
 
         case SeekOrigin.Begin:
           if (offset < 0L)
-            throw new IOException("Attempted to seek before start of stream.");
+            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();;
           chain.SetPosition(offset);
           return chain.Position;
 
         default:
-          throw new ArgumentException(string.Format("unsupported seek origin {0}", origin), "origin");
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
       }
     }
 
@@ -437,11 +437,11 @@ namespace Smdn.IO {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
-      if (buffer.Length < offset + count)
-        throw new ArgumentException("invalid range");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (buffer.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
 
       if (count == 0)
         return 0;
@@ -463,11 +463,11 @@ namespace Smdn.IO {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
-      if (buffer.Length < offset + count)
-        throw new ArgumentException("invalid range");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (buffer.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
 
       if (count == 0)
         return;

@@ -63,8 +63,8 @@ namespace Smdn.IO {
       if (baseStream == null)
         throw new ArgumentNullException("baseStream");
       if (!baseStream.CanRead)
-        throw new ArgumentException("does not support reading.", "baseStream");
-      
+        throw ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
+
       this.stream = baseStream;
       this.leaveBaseStreamOpen = leaveBaseStreamOpen;
     }
@@ -136,7 +136,7 @@ namespace Smdn.IO {
     public byte[] ReadBytes(int count)
     {
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (count == 0)
         return new byte[] {};
 
@@ -160,7 +160,7 @@ namespace Smdn.IO {
     public byte[] ReadExactBytes(int count)
     {
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (count == 0)
         return new byte[] {};
 
@@ -194,11 +194,11 @@ namespace Smdn.IO {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
-      if (buffer.Length - index < count)
-        throw new ArgumentException("length of buffer - index < count");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
+      if (buffer.Length - count < index)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", buffer, index, count);
 
       return ReadBytesUnchecked(buffer, index, count, readExactBytes);
     }

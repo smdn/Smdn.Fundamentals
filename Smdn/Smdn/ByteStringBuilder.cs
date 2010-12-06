@@ -47,7 +47,7 @@ namespace Smdn {
       set
       {
         if (value < 0)
-          throw new ArgumentOutOfRangeException("Length", value, "must be greater than zero");
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Length", value);
         length = value;
       }
     }
@@ -73,9 +73,9 @@ namespace Smdn {
     public ByteStringBuilder(int capacity, int maxCapacity)
     {
       if (capacity <= 0)
-        throw new ArgumentOutOfRangeException("capacity", capacity, "must be non-zero positive number");
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("capacity", capacity);
       if (maxCapacity < capacity)
-        throw new ArgumentOutOfRangeException("maxCapacity", maxCapacity, "must be greater than capacity");
+        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo("'capacity'", "maxCapacity", maxCapacity);
 
       this.buffer = new byte[capacity];
       this.length = 0;
@@ -120,11 +120,11 @@ namespace Smdn {
       if (str == null)
         throw new ArgumentNullException("str");
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
-      if (str.Length < index + count)
-        throw new ArgumentException("index + count is larger than length");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (str.Length - count < index)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", str, index, count);
 
       if (count == 0)
         return this;
@@ -163,7 +163,7 @@ namespace Smdn {
       capacity = Math.Max(capacity, buffer.Length * 2);
 
       if (maxCapacity < capacity)
-        throw new ArgumentOutOfRangeException("capacity", capacity, "capacity > maximum capacity");
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'MaxCapacity'", "capacity", capacity);
 
       var newBuffer = new byte[capacity];
 
@@ -180,9 +180,9 @@ namespace Smdn {
     public ArraySegment<byte> GetSegment(int offset, int count)
     {
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (length < offset + count)
         throw new ArgumentException("index + count is larger than length");
 

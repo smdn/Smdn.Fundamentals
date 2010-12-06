@@ -52,6 +52,8 @@ namespace Smdn {
       Assert.AreEqual(new[] {2, 3, 4, 5, 6}, array.Slice(2, 5));
       Assert.AreEqual(new[] {6, 7, 8, 9}, array.Slice(6));
       Assert.AreEqual(new int[] {}, array.Slice(0, 0));
+      Assert.AreEqual(new int[] {}, array.Slice(10, 0));
+      Assert.AreEqual(new int[] {}, (new int[] {0}).Slice(1));
     }
 
     [Test]
@@ -61,9 +63,16 @@ namespace Smdn {
 
       try {
         array.Slice(-1, 1);
-        Assert.Fail("ArgumentException not thrown");
+        Assert.Fail("ArgumentOutOfRangeException not thrown");
       }
-      catch (ArgumentException) {
+      catch (ArgumentOutOfRangeException) {
+      }
+
+      try {
+        array.Slice(1, -1);
+        Assert.Fail("ArgumentOutOfRangeException not thrown");
+      }
+      catch (ArgumentOutOfRangeException) {
       }
 
       try {
@@ -75,20 +84,6 @@ namespace Smdn {
 
       try {
         array.Slice(0, 11);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
-
-      try {
-        array.Slice(10, 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
-
-      try {
-        (new int[] {0}).Slice(1);
         Assert.Fail("ArgumentException not thrown");
       }
       catch (ArgumentException) {

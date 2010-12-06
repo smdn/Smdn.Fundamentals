@@ -117,13 +117,11 @@ namespace Smdn {
       if (array == null)
         throw new ArgumentNullException("array");
       if (start < 0)
-        throw new ArgumentOutOfRangeException("start", start, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("start", start);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("start", start, "must be zero or positive number");
-      if (array.Length <= start)
-        throw new ArgumentException("start", "must be less than array length");
-      if (array.Length <= count - start)
-        throw new ArgumentException("invalid range", "start, count");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (array.Length - count < start)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("start", array, start, count);
 
       var cut = new T[count];
 

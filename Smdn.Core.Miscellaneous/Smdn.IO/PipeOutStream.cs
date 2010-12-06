@@ -45,12 +45,12 @@ namespace Smdn.IO {
     }
 
     public override long Length {
-      get { CheckDisposed(); throw new NotSupportedException(); }
+      get { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
     }
 
     public override long Position {
-      get { CheckDisposed(); throw new NotSupportedException(); }
-      set { CheckDisposed(); throw new NotSupportedException(); }
+      get { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
+      set { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
     }
 
     public ProcessStartInfo StartInfo {
@@ -67,7 +67,7 @@ namespace Smdn.IO {
       private set
       {
         if (value < -1)
-          throw new ArgumentOutOfRangeException("WaitForExitTimeout", "must be greater than or equals to -1");
+          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, "WaitForExitTimeout", value);
         waitForExitTimeout = value;
       }
     }
@@ -116,21 +116,21 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      throw new NotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
     }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
       CheckDisposed();
 
-      throw SeekNotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedSeekingStream();
     }
 
     public override int Read(byte[] buffer, int offset, int count)
     {
       CheckDisposed();
 
-      throw ReadNotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedReadingStream();
     }
 
     public override void WriteByte(byte @value)
@@ -198,16 +198,6 @@ namespace Smdn.IO {
     {
       if (disposed)
         throw new ObjectDisposedException(GetType().FullName);
-    }
-
-    private Exception SeekNotSupportedException()
-    {
-      return new NotSupportedException("stream is not seekable");
-    }
-
-    private Exception ReadNotSupportedException()
-    {
-      return new NotSupportedException("stream is read only");
     }
 
     private bool disposed = false;

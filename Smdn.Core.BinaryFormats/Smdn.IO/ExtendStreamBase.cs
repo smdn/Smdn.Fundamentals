@@ -62,7 +62,7 @@ namespace Smdn.IO {
         CheckSeekable();
 
         if (value < 0)
-          throw new ArgumentOutOfRangeException("Position", "must be zero or positive number");
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
         position = value;
         SetPosition();
       }
@@ -98,11 +98,11 @@ namespace Smdn.IO {
       if (innerStream == null)
         throw new ArgumentNullException("innerStream");
       if (!innerStream.CanRead)
-        throw new ArgumentException("innerStream", "stream must be readable");
+        throw ExceptionUtils.CreateArgumentMustBeReadableStream("innerStream");
+      if (prependLength < 0L)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("prependLength", prependLength);
       if (appendLength < 0L)
-        throw new ArgumentOutOfRangeException("prependLength", "must be zero or positive number");
-      if (appendLength < 0L)
-        throw new ArgumentOutOfRangeException("prependLength", "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("appendLength", appendLength);
 
       this.stream = innerStream;
       this.prependLength = prependLength;
@@ -125,14 +125,14 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      throw new NotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
     }
 
     public override void Flush()
     {
       CheckDisposed();
 
-      throw new NotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedWritingStream();
     }
 
     public override long Seek(long offset, SeekOrigin origin)
@@ -164,10 +164,10 @@ namespace Smdn.IO {
           return position;
 
         default:
-          throw new ArgumentException(string.Format("unsupported seek origin {0}", origin), "origin");
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
       }
 
-      throw new IOException("Attempted to seek before start of stream.");
+      throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
     }
 
     protected abstract void SetPrependedDataPosition(long position);
@@ -206,11 +206,11 @@ namespace Smdn.IO {
       if (buffer == null)
         throw new ArgumentNullException("buffer");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", "must be zero or positive number");
-      if (buffer.Length < offset + count)
-        throw new ArgumentException("invalid range");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (buffer.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
 
       var ret = 0;
 
@@ -283,7 +283,7 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      throw new NotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedWritingStream();
     }
 
     private void CheckDisposed()
@@ -295,7 +295,7 @@ namespace Smdn.IO {
     private void CheckSeekable()
     {
       if (!CanSeek)
-        throw new NotSupportedException("cannot seek stream");
+        throw ExceptionUtils.CreateNotSupportedSeekingStream();
     }
 
     private Stream stream;

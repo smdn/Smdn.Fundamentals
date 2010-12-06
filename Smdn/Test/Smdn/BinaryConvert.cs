@@ -54,8 +54,9 @@ namespace Smdn {
                       BinaryConvert.ToInt16LE(new byte[] {0x80, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToInt16(null, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt16(new byte[] {0x00}, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt16(new byte[] {0x00, 0x00}, 1, Endianness.BigEndian));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt16(new byte[] {0x00}, -1, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToInt16(new byte[] {0x00}, 0, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToInt16(new byte[] {0x00, 0x00}, 1, Endianness.BigEndian));
       ExpectException<NotSupportedException>      (() => BinaryConvert.ToInt16(new byte[] {0x00, 0x00}, 0, Endianness.Unknown));
     }
 
@@ -77,8 +78,9 @@ namespace Smdn {
                       BinaryConvert.ToUInt16LE(new byte[] {0x80, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToUInt16(null, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt16(new byte[] {0x00}, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt16(new byte[] {0x00, 0x00}, 1, Endianness.BigEndian));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt16(new byte[] {0x00}, -1, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToUInt16(new byte[] {0x00}, 0, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToUInt16(new byte[] {0x00, 0x00}, 1, Endianness.BigEndian));
       ExpectException<NotSupportedException>      (() => BinaryConvert.ToUInt16(new byte[] {0x00, 0x00}, 0, Endianness.Unknown));
     }
 
@@ -100,8 +102,9 @@ namespace Smdn {
                       BinaryConvert.ToInt32LE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToInt32(null, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00}, -1, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
       ExpectException<NotSupportedException>      (() => BinaryConvert.ToInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 0, Endianness.Unknown));
     }
 
@@ -123,8 +126,9 @@ namespace Smdn {
                       BinaryConvert.ToUInt32LE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToUInt32(null, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00}, -1, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
       ExpectException<NotSupportedException>      (() => BinaryConvert.ToUInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 0, Endianness.Unknown));
     }
 
@@ -146,8 +150,9 @@ namespace Smdn {
                       BinaryConvert.ToInt64LE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToInt64(null, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, -1, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
       ExpectException<NotSupportedException>      (() => BinaryConvert.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.Unknown));
     }
 
@@ -169,8 +174,9 @@ namespace Smdn {
                       BinaryConvert.ToUInt64LE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.ToUInt64(null, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, -1, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.BigEndian));
+      ExpectException<ArgumentException>          (() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, Endianness.BigEndian));
       ExpectException<NotSupportedException>      (() => BinaryConvert.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, Endianness.Unknown));
     }
 
@@ -201,8 +207,9 @@ namespace Smdn {
                                 BinaryConvert.GetBytesLE(short.MinValue));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, null, 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, new byte[1], 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, new byte[2], 1));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, new byte[1], -1));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, new byte[1], 0));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.BigEndian, new byte[2], 1));
       ExpectException<NotSupportedException>      (() => BinaryConvert.GetBytes(unchecked((short)0xff00), Endianness.Unknown, new byte[2], 0));
     }
 
@@ -229,8 +236,9 @@ namespace Smdn {
                                 BinaryConvert.GetBytesLE(unchecked((ushort)0xff00)));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, null, 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, new byte[1], 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, new byte[2], 1));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, new byte[1], -1));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, new byte[1], 0));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.BigEndian, new byte[2], 1));
       ExpectException<NotSupportedException>      (() => BinaryConvert.GetBytes(unchecked((ushort)0xff00), Endianness.Unknown, new byte[2], 0));
     }
 
@@ -261,8 +269,9 @@ namespace Smdn {
                                 BinaryConvert.GetBytesLE(int.MinValue));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, null, 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, new byte[3], 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, new byte[4], 1));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, new byte[3], -1));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, new byte[3], 0));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.BigEndian, new byte[4], 1));
       ExpectException<NotSupportedException>      (() => BinaryConvert.GetBytes(unchecked((int)0x11223344), Endianness.Unknown, new byte[4], 0));
     }
 
@@ -289,8 +298,9 @@ namespace Smdn {
                                 BinaryConvert.GetBytesLE(unchecked((uint)0x11223344)));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, null, 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, new byte[3], 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, new byte[4], 1));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, new byte[3], -1));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, new byte[3], 0));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.BigEndian, new byte[4], 1));
       ExpectException<NotSupportedException>      (() => BinaryConvert.GetBytes(unchecked((uint)0x11223344), Endianness.Unknown, new byte[4], 0));
     }
 
@@ -321,8 +331,9 @@ namespace Smdn {
                                 BinaryConvert.GetBytesLE(long.MinValue));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, null, 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, new byte[7], 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, new byte[8], 1));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, new byte[7], -1));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, new byte[7], 0));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.BigEndian, new byte[8], 1));
       ExpectException<NotSupportedException>      (() => BinaryConvert.GetBytes(unchecked((long)0x1122334455667788), Endianness.Unknown, new byte[8], 0));
     }
 
@@ -349,8 +360,9 @@ namespace Smdn {
                                 BinaryConvert.GetBytesLE(unchecked((ulong)0x1122334455667788)));
 
       ExpectException<ArgumentNullException>      (() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, null, 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, new byte[7], 0));
-      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, new byte[8], 1));
+      ExpectException<ArgumentOutOfRangeException>(() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, new byte[7], -1));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, new byte[7], 0));
+      ExpectException<ArgumentException>          (() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.BigEndian, new byte[8], 1));
       ExpectException<NotSupportedException>      (() => BinaryConvert.GetBytes(unchecked((ulong)0x1122334455667788), Endianness.Unknown, new byte[8], 0));
     }
   }

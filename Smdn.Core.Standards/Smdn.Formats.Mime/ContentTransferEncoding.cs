@@ -86,8 +86,7 @@ namespace Smdn.Formats.Mime {
         case ContentTransferEncodingMethod.UUEncode: return "x-uuencode";
         case ContentTransferEncodingMethod.GZip64: return "x-gzip64";
         default:
-          throw new NotSupportedException(string.Format("unsupported content transfer encoding: {0}",
-                                                        method));
+          throw ExceptionUtils.CreateNotSupportedEnumValue(method);
       }
     }
 
@@ -113,7 +112,7 @@ namespace Smdn.Formats.Mime {
         case ContentTransferEncodingMethod.UUEncode:
         case ContentTransferEncodingMethod.GZip64:
         default:
-          throw new NotSupportedException(string.Format("unsupported content transfer encoding: {0}", encoding));
+          throw ExceptionUtils.CreateNotSupportedEnumValue(encoding);
       }
     }
 

@@ -90,11 +90,11 @@ namespace Smdn.Formats.Mime {
         throw new ArgumentNullException("charset");
       if (doFold) {
         if (foldingLimit < 1)
-          throw new ArgumentOutOfRangeException("foldingLimit", foldingLimit, "must be greater than 1");
+          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(1, "foldingLimit", foldingLimit);
         if (foldingOffset < 0)
-          throw new ArgumentOutOfRangeException("foldingOffset", foldingOffset, "must be greater than zero");
+          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(0, "foldingOffset", foldingOffset);
         if (foldingLimit <= foldingOffset)
-          throw new ArgumentOutOfRangeException("foldingOffset", foldingOffset, "must be less than foldingLimit");
+          throw ExceptionUtils.CreateArgumentMustBeLessThan("'foldingLimit'", "foldingOffset", foldingOffset);
         if (foldingString == null)
           throw new ArgumentNullException("foldingString");
       }
@@ -112,7 +112,7 @@ namespace Smdn.Formats.Mime {
           encodingChar = 'q';
           break;
         default:
-          throw new System.ComponentModel.InvalidEnumArgumentException("encoding", (int)encoding, typeof(MimeEncodingMethod));
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("encoding", encoding);
       }
 
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");

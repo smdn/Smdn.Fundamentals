@@ -90,11 +90,11 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
-      if (@value.Length < index + count)
-        throw new ArgumentException("index + count is larger than length");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (@value.Length - count < index)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", @value, index, count);
 
       this.bytes = new byte[count];
 
@@ -359,7 +359,7 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
       if (startIndex < 0)
-        throw new ArgumentOutOfRangeException("startIndex", startIndex, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
 
       if (bytes.Length < @value.Length)
         return -1;
@@ -400,7 +400,7 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
       if (startIndex < 0)
-        throw new ArgumentOutOfRangeException("startIndex", startIndex, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
 
       if (bytes.Length < @value.Length)
         return -1;
@@ -709,7 +709,7 @@ namespace Smdn {
       if (x == null)
         throw new ArgumentNullException("x");
       if (y < 0)
-        throw new ArgumentOutOfRangeException("y", y, "must be non-zero positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("y", y);
 
       if (x == null)
         return CreateEmpty();
@@ -772,9 +772,9 @@ namespace Smdn {
     public string ToString(int index, int count)
     {
       if (index < 0)
-        throw new ArgumentOutOfRangeException("index", index, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (bytes.Length < index + count)
         throw new ArgumentException("index + count is larger than length");
 

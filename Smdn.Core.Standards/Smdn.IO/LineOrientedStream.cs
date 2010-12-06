@@ -77,12 +77,11 @@ namespace Smdn.IO {
         if (newLine == null)
           throw new ArgumentNullException("newLine");
         if (newLine.Length == 0)
-          throw new ArgumentException("must be non-zero positive length", "newLine");
+          throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray("newLine");
       }
+
       if (bufferSize < MinimumBufferSize)
-        throw new ArgumentOutOfRangeException("bufferSize",
-                                              bufferSize,
-                                              string.Format("must be greater than or equals to {0}", MinimumBufferSize));
+        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(MinimumBufferSize, "bufferSize", bufferSize);
 
       this.stream = stream;
       this.strictEOL = strictEOL;
@@ -249,7 +248,7 @@ namespace Smdn.IO {
       CheckDisposed();
 
       if (length < 0L)
-        throw new ArgumentOutOfRangeException("length", length, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("length", length);
       if (targetStream == null)
         throw new ArgumentNullException("targetStream");
 
@@ -301,11 +300,11 @@ namespace Smdn.IO {
       if (dest == null)
         throw new ArgumentNullException("dest");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", offset, "must be greater than or equals to 0");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be greater than or equals to 0");
-      if (dest.Length < offset + count)
-        throw new ArgumentException("invalid range");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (dest.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", dest, offset, count);
 
       if (count <= bufRemain) {
         Buffer.BlockCopy(buffer, bufOffset, dest, offset, count);

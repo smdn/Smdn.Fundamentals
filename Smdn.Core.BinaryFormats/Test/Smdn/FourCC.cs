@@ -106,17 +106,24 @@ namespace Smdn {
       }
 
       try {
-        fourcc.GetBytes(new byte[4], 1);
+        fourcc.GetBytes(new byte[3], -1);
         Assert.Fail("ArgumentOutOfRangeException not thrown");
       }
       catch (ArgumentOutOfRangeException) {
       }
 
       try {
-        fourcc.GetBytes(new byte[3], 0);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
+        fourcc.GetBytes(new byte[4], 1);
+        Assert.Fail("ArgumentException not thrown");
       }
-      catch (ArgumentOutOfRangeException) {
+      catch (ArgumentException) {
+      }
+
+      try {
+        fourcc.GetBytes(new byte[3], 0);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
       }
     }
 

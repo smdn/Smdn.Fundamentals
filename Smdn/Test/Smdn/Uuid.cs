@@ -264,17 +264,24 @@ namespace Smdn {
       }
 
       try {
-        Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0);
+        Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], -1);
         Assert.Fail("ArgumentOutOfRangeException not thrown");
       }
       catch (ArgumentOutOfRangeException) {
       }
 
       try {
-        Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
+        Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0);
+        Assert.Fail("ArgumentException not thrown");
       }
-      catch (ArgumentOutOfRangeException) {
+      catch (ArgumentException) {
+      }
+
+      try {
+        Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1);
+        Assert.Fail("ArgumentException not thrown");
+      }
+      catch (ArgumentException) {
       }
     }
 

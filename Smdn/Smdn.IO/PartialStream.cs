@@ -48,7 +48,7 @@ namespace Smdn.IO {
       if (innerOrPartialStream == null)
         throw new ArgumentNullException("innerOrPartialStream");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
 
       if (innerOrPartialStream is PartialStream) {
         var partialStream = innerOrPartialStream as PartialStream;
@@ -89,7 +89,7 @@ namespace Smdn.IO {
         CheckDisposed();
 
         if (value < 0)
-          throw new ArgumentOutOfRangeException("Position", value, "must be zero or positive number");
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
         stream.Position = value + offset;
       }
     }
@@ -154,11 +154,11 @@ namespace Smdn.IO {
       if (innerStream == null)
         throw new ArgumentNullException("innerStream");
       if (!innerStream.CanSeek)
-        throw new ArgumentException("innerStream", "stream must be seekable");
+        throw ExceptionUtils.CreateArgumentMustBeSeekableStream("innerStream");
       if (offset < 0)
-        throw new ArgumentOutOfRangeException("offset", offset, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (length.HasValue && length.Value < 0)
-        throw new ArgumentOutOfRangeException("length", length.Value, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("length", length.Value);
 
       this.stream = innerStream;
       this.offset = offset;
@@ -192,7 +192,7 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      throw new NotSupportedException();
+      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
     }
 
     public override long Seek(long offset, SeekOrigin origin)
@@ -218,10 +218,10 @@ namespace Smdn.IO {
             return stream.Seek(this.offset + position, SeekOrigin.Begin) - this.offset;
         }
         default:
-          throw new ArgumentException(string.Format("unsupported seek origin {0}", origin), "origin");
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
       }
 
-      throw new IOException("Attempted to seek before start of PartialStream.");
+      throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
     }
 
     public override void Flush()
@@ -255,7 +255,7 @@ namespace Smdn.IO {
       CheckDisposed();
 
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
 
       var remainder = GetRemainderLength();
 
@@ -271,12 +271,12 @@ namespace Smdn.IO {
       CheckWritable();
 
       if (count < 0)
-        throw new ArgumentOutOfRangeException("count", count, "must be zero or positive number");
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
 
       var remainder = GetRemainderLength() - count;
 
       if (remainder < 0L)
-        throw new IOException("end of stream");
+        throw new IOException("attempted to write after end of stream");
       else
         stream.Write(buffer, offset, count);
     }
@@ -290,7 +290,7 @@ namespace Smdn.IO {
     private void CheckWritable()
     {
       if (!writable)
-        throw new NotSupportedException("stream is read only");
+        throw ExceptionUtils.CreateNotSupportedWritingStream();
     }
 
     private Stream stream;
