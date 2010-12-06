@@ -10,7 +10,7 @@ namespace Smdn.IO {
     [Test]
     public void TestConstructFromMemoryStream()
     {
-      var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
 
       using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
         Assert.IsTrue(stream.CanRead, "can read");
@@ -25,7 +25,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadByte()
     {
-      var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
       var index = 0;
 
@@ -45,7 +45,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadAndReadLine()
     {
-      var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
       var buffer = new byte[8];
 
@@ -59,7 +59,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadToStreamBufferEmpty()
     {
-      var data = new byte[] {0x00, 0x01, Octets.CR, Octets.LF, 0x02, 0x03, 0x04, Octets.CR, Octets.LF, 0x05, 0x06, 0x07};
+      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       var copyStream = new MemoryStream();
@@ -74,7 +74,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadToStreamLessThanBuffered()
     {
-      var data = new byte[] {0x00, 0x01, Octets.CR, Octets.LF, 0x02, 0x03, 0x04, Octets.CR, Octets.LF, 0x05, 0x06, 0x07};
+      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 16);
 
       var line = stream.ReadLine(true);
@@ -93,7 +93,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadToStreamLongerThanBuffered()
     {
-      var data = new byte[] {0x00, 0x01, Octets.CR, Octets.LF, 0x02, 0x03, 0x04, Octets.CR, Octets.LF, 0x05, 0x06, 0x07};
+      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       var line = stream.ReadLine(true);
@@ -112,7 +112,7 @@ namespace Smdn.IO {
     [Test]
     public void TestClose()
     {
-      var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
 
       using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
         stream.Close();

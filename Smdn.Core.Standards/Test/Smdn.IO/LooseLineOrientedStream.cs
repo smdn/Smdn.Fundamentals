@@ -10,7 +10,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadLineKeepEOL()
     {
-      var data = new byte[] {0x00, Octets.CR, 0x02, Octets.LF, 0x04, Octets.LF, Octets.CR, 0x07, Octets.CR, Octets.LF, 0x00};
+      var data = new byte[] {0x40, Octets.CR, 0x42, Octets.LF, 0x44, Octets.LF, Octets.CR, 0x47, Octets.CR, Octets.LF, 0x50};
       var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(ArrayExtensions.Slice(data, 0, 2), stream.ReadLine());
@@ -25,7 +25,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadLineDiscardEOL()
     {
-      var data = new byte[] {0x00, Octets.CR, 0x02, Octets.LF, 0x04, Octets.LF, Octets.CR, 0x07, Octets.CR, Octets.LF, 0x00};
+      var data = new byte[] {0x40, Octets.CR, 0x42, Octets.LF, 0x44, Octets.LF, Octets.CR, 0x47, Octets.CR, Octets.LF, 0x50};
       var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(ArrayExtensions.Slice(data, 0, 1), stream.ReadLine(false));
@@ -40,7 +40,7 @@ namespace Smdn.IO {
     [Test]
     public void TestReadLineBufferEndsWithEOLKeepEOL()
     {
-      var data = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, Octets.CR};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR};
       var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(data, stream.ReadLine(true));
@@ -49,10 +49,38 @@ namespace Smdn.IO {
     [Test]
     public void TestReadLineBufferEndsWithEOLDiscardEOL()
     {
-      var data = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, Octets.CR};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR};
       var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(ArrayExtensions.Slice(data, 0, 7), stream.ReadLine(false));
+    }
+
+    [Test]
+    public void TestReadLineEOLSplittedBetweenBufferDiscardEOL()
+    {
+      var data = new byte[] {
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR,
+        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66,
+      };
+      var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+
+      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 7), stream.ReadLine(false));
+      Assert.AreEqual(ArrayExtensions.Slice(data, 9), stream.ReadLine(false));
+      Assert.IsNull(stream.ReadLine());
+    }
+
+    [Test]
+    public void TestReadLineEOLSplittedBetweenBufferKeepEOL()
+    {
+      var data = new byte[] {
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR,
+        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66,
+      };
+      var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+
+      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 9), stream.ReadLine(true));
+      Assert.AreEqual(ArrayExtensions.Slice(data, 9), stream.ReadLine(true));
+      Assert.IsNull(stream.ReadLine());
     }
   }
 }
