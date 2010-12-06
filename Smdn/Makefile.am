@@ -95,11 +95,13 @@ FILES = \
 	Smdn.Security.Cryptography/ICryptoTransformExtensions.cs \
 	Smdn.Collections/Enumerable.cs \
 	Smdn/AggregateException.cs \
-	Smdn/BinaryConvert.cs 
+	Smdn/BinaryConvert.cs \
+	Smdn/ExceptionUtils.cs 
 
 DATA_FILES = 
 
-RESOURCES = 
+RESOURCES = \
+	resources/exceptions-ja.txt,Smdn.resources.exceptions-ja.txt 
 
 EXTRAS = \
 	Smdn.Formats \
@@ -107,6 +109,7 @@ EXTRAS = \
 	Smdn.Collections \
 	Smdn.Threading \
 	Smdn \
+	resources \
 	smdn-netfx4.0.pc.in 
 
 REFERENCES =  \
