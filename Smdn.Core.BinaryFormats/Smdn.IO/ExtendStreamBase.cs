@@ -39,19 +39,23 @@ namespace Smdn.IO {
     }
 
     public override bool CanSeek {
-      get { CheckDisposed(); return stream.CanSeek && CanSeekPrependedData && CanSeekAppendedData; }
+      get { return !IsClosed && stream.CanSeek && CanSeekPrependedData && CanSeekAppendedData; }
     }
 
     public override bool CanRead {
-      get { CheckDisposed(); return stream.CanRead; }
+      get { return !IsClosed && stream.CanRead; }
     }
 
     public override bool CanWrite {
-      get { CheckDisposed(); return false; }
+      get { return /*!IsClosed &&*/ false; }
     }
 
     public override bool CanTimeout {
-      get { CheckDisposed(); return stream.CanTimeout; }
+      get { return !IsClosed && stream.CanTimeout; }
+    }
+
+    private bool IsClosed {
+      get { return stream == null; }
     }
 
     public override long Position {
@@ -288,7 +292,7 @@ namespace Smdn.IO {
 
     private void CheckDisposed()
     {
-      if (stream == null)
+      if (IsClosed)
         throw new ObjectDisposedException(GetType().FullName);
     }
 

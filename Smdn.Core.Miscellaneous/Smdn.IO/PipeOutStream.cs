@@ -29,19 +29,19 @@ using System.IO;
 namespace Smdn.IO {
   public class PipeOutStream : Stream {
     public override bool CanSeek {
-      get { CheckDisposed(); return false; }
+      get { return /*!disposed &&*/ false; }
     }
 
     public override bool CanRead {
-      get { CheckDisposed(); return false; }
+      get { return /*!disposed &&*/ false; }
     }
 
     public override bool CanWrite {
-      get { CheckDisposed(); return true; }
+      get { return !disposed /*&& true*/; }
     }
 
     public override bool CanTimeout {
-      get { CheckDisposed(); return false; }
+      get { return false; }
     }
 
     public override long Length {

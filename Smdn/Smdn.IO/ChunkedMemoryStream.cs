@@ -317,19 +317,23 @@ namespace Smdn.IO {
     }
 
     public override bool CanSeek {
-      get { CheckDisposed(); return true; }
+      get { return !IsClosed /*&& true*/; }
     }
 
     public override bool CanRead {
-      get { CheckDisposed(); return true; }
+      get { return !IsClosed /*&& true*/; }
     }
 
     public override bool CanWrite {
-      get { CheckDisposed(); return true; }
+      get { return !IsClosed /*&& true*/; }
     }
 
     public override bool CanTimeout {
-      get { CheckDisposed(); return false; }
+      get { return false; }
+    }
+
+    private bool IsClosed {
+      get { return chain == null; }
     }
 
     public override long Position {
@@ -491,7 +495,7 @@ namespace Smdn.IO {
 
     private void CheckDisposed()
     {
-      if (chain == null)
+      if (IsClosed)
         throw new ObjectDisposedException(GetType().FullName);
     }
 

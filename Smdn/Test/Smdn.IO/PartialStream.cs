@@ -138,6 +138,52 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestCloseLeaveInnerStreamOpen()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+
+      using (var stream = new PartialStream(inner, 2, 4, true)) {
+        TestClose(stream);
+      }
+    }
+
+    [Test]
+    public void TestCloseLeaveInnerStreamClose()
+    {
+      var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
+
+      using (var stream = new PartialStream(inner, 2, 4, false)) {
+        TestClose(stream);
+      }
+    }
+
+    private void TestClose(PartialStream stream)
+    {
+      stream.Close();
+
+      Assert.IsFalse(stream.CanRead, "CanRead");
+      Assert.IsFalse(stream.CanWrite, "CanWrite");
+      Assert.IsFalse(stream.CanSeek, "CanSeek");
+      Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
+      try {
+        stream.ReadByte();
+        Assert.Fail("ObjectDisposedException not thrown");
+      }
+      catch (ObjectDisposedException) {
+      }
+
+      try {
+        stream.WriteByte(0x00);
+        Assert.Fail("ObjectDisposedException not thrown");
+      }
+      catch (ObjectDisposedException) {
+      }
+
+      stream.Close();
+    }
+
+    [Test]
     public void TestReadLengthSpecified()
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});

@@ -45,6 +45,40 @@ namespace Smdn.IO {
     }
 
     [Test]
+    public void TestClose()
+    {
+      using (var innerStream = new MemoryStream(8)) {
+        innerStream.SetLength(8);
+        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+
+        using (var stream = CreateCachedStream(innerStream, 4, true)) {
+          stream.Close();
+
+          Assert.IsFalse(stream.CanRead, "CanRead");
+          Assert.IsFalse(stream.CanWrite, "CanWrite");
+          Assert.IsFalse(stream.CanSeek, "CanSeek");
+          Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
+          try {
+            stream.ReadByte();
+            Assert.Fail("ObjectDisposedException not thrown");
+          }
+          catch (ObjectDisposedException) {
+          }
+
+          try {
+            stream.WriteByte(0x00);
+            Assert.Fail("ObjectDisposedException not thrown");
+          }
+          catch (ObjectDisposedException) {
+          }
+
+          stream.Close();
+        }
+      }
+    }
+
+    [Test]
     public void TestSeek()
     {
       using (var innerStream = new MemoryStream(16)) {

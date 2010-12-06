@@ -142,6 +142,11 @@ namespace Smdn.IO {
       var results = new List<byte[]>();
 
       foreach (var stream in new Stream[] {memoryStream, chunkedStream}) {
+        Assert.IsTrue(stream.CanRead, "CanRead");
+        Assert.IsTrue(stream.CanWrite, "CanWrite");
+        Assert.IsTrue(stream.CanSeek, "CanSeek");
+        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
         var writer = new BinaryWriter(stream);
         var reader = new BinaryReader(stream);
 
@@ -171,9 +176,52 @@ namespace Smdn.IO {
         stream.Position = 0L;
 
         results.Add(reader.ReadBytes((int)stream.Length));
+
+        reader.Close();
+
+        Assert.IsFalse(stream.CanRead, "CanRead");
+        Assert.IsFalse(stream.CanWrite, "CanWrite");
+        Assert.IsFalse(stream.CanSeek, "CanSeek");
+        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
+        try {
+          stream.ReadByte();
+          Assert.Fail("ObjectDisposedException not thrown");
+        }
+        catch (ObjectDisposedException) {
+        }
       }
 
       Assert.AreEqual(results[0], results[1]);
+    }
+
+    [Test]
+    public void TestClose()
+    {
+      using (var stream = new ChunkedMemoryStream(8)) {
+        stream.Close();
+
+        Assert.IsFalse(stream.CanRead, "CanRead");
+        Assert.IsFalse(stream.CanWrite, "CanWrite");
+        Assert.IsFalse(stream.CanSeek, "CanSeek");
+        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
+        try {
+          stream.ReadByte();
+          Assert.Fail("ObjectDisposedException not thrown");
+        }
+        catch (ObjectDisposedException) {
+        }
+
+        try {
+          stream.WriteByte(0x00);
+          Assert.Fail("ObjectDisposedException not thrown");
+        }
+        catch (ObjectDisposedException) {
+        }
+
+        stream.Close();
+      }
     }
 
     [Test]

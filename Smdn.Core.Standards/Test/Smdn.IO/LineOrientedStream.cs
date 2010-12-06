@@ -8,6 +8,21 @@ namespace Smdn.IO {
   [TestFixture]
   public class LineOrientedStreamTests {
     [Test]
+    public void TestConstructFromMemoryStream()
+    {
+      var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
+
+      using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
+        Assert.IsTrue(stream.CanRead, "can read");
+        Assert.IsTrue(stream.CanWrite, "can write");
+        Assert.IsTrue(stream.CanSeek, "can seek");
+        Assert.IsFalse(stream.CanTimeout, "can timeout");
+        Assert.AreEqual(8L, stream.Length);
+        Assert.AreEqual(0L, stream.Position);
+      }
+    }
+
+    [Test]
     public void TestReadByte()
     {
       var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
@@ -92,6 +107,37 @@ namespace Smdn.IO {
       copyStream.Close();
 
       Assert.AreEqual(data.Slice(4, 8), copyStream.ToArray());
+    }
+
+    [Test]
+    public void TestClose()
+    {
+      var data = new byte[] {0x00, 0x01, 0x02, 0x03, Octets.CR, Octets.LF, 0x04, 0x05};
+
+      using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
+        stream.Close();
+
+        Assert.IsFalse(stream.CanRead, "CanRead");
+        Assert.IsFalse(stream.CanWrite, "CanWrite");
+        Assert.IsFalse(stream.CanSeek, "CanSeek");
+        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
+        try {
+          stream.ReadByte();
+          Assert.Fail("ObjectDisposedException not thrown");
+        }
+        catch (ObjectDisposedException) {
+        }
+
+        try {
+          stream.WriteByte(0x00);
+          Assert.Fail("ObjectDisposedException not thrown");
+        }
+        catch (ObjectDisposedException) {
+        }
+
+        stream.Close();
+      }
     }
   }
 }
