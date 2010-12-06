@@ -10,7 +10,6 @@
     <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
-    <ReleaseVersion>0.20</ReleaseVersion>
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
   </PropertyGroup>
@@ -70,5 +69,6 @@
     <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
+    <Compile Include="Smdn.Formats\HtmlEscape.cs" />
   </ItemGroup>
 </Project>
