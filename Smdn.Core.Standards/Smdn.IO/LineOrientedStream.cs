@@ -32,6 +32,13 @@ namespace Smdn.IO {
     protected static readonly int DefaultBufferSize = 1024;
     protected static readonly int MinimumBufferSize = 8;
 
+    private enum EolState {
+      NotMatched = 0,
+      NewLine,
+      CR,
+      LF
+    }
+
     public override bool CanSeek {
       get { return !IsClosed && stream.CanSeek; }
     }
@@ -157,21 +164,28 @@ namespace Smdn.IO {
 
       var newLineOffset = 0;
       var bufCopyFrom = bufOffset;
-      var eol = false;
+      var eol = EolState.NotMatched;
       var eos = false;
       var retCount = 0;
       byte[] retBuffer = null;
 
       for (;;) {
         if (strictEOL) {
-          if (buffer[bufOffset] == newLine[newLineOffset])
-            eol = (newLine.Length == ++newLineOffset);
-          else
+          if (buffer[bufOffset] == newLine[newLineOffset]) {
+            if (newLine.Length == ++newLineOffset)
+              eol = EolState.NewLine;
+          }
+          else {
             newLineOffset = 0;
+          }
         }
         else {
-          if (buffer[bufOffset] == Octets.CR || buffer[bufOffset] == Octets.LF) {
-            eol = true;
+          if (buffer[bufOffset] == Octets.CR) {
+            eol = EolState.CR;
+            newLineOffset = 1;
+          }
+          else if (buffer[bufOffset] == Octets.LF) {
+            eol = EolState.LF;
             newLineOffset = 1;
           }
         }
@@ -179,7 +193,8 @@ namespace Smdn.IO {
         bufRemain--;
         bufOffset++;
 
-        if (!eol && bufRemain == 0) {
+        if (bufRemain == 0 &&
+            (eol == EolState.NotMatched || eol == EolState.CR /* read ahead; CRLF */)) {
           var count = bufOffset - bufCopyFrom;
 
           if (retBuffer == null) {
@@ -203,29 +218,22 @@ namespace Smdn.IO {
           bufCopyFrom = bufOffset;
         }
 
-        if (eol || eos)
+        if (eol != EolState.NotMatched || eos)
           break;
       }
 
       var retLength = retCount + (bufOffset - bufCopyFrom);
 
-      if (eol && !strictEOL) {
-        var crlf = (bufOffset == 0)
-          ? retBuffer[retCount - 1] == Octets.CR && buffer[bufOffset] == Octets.LF
-          : (bufOffset == buffer.Length)
-            ? false
-            : buffer[bufOffset - 1] == Octets.CR && buffer[bufOffset] == Octets.LF;
+      if (eol == EolState.CR && buffer[bufOffset] == Octets.LF) {
+        // CRLF
+        retLength++;
+        newLineOffset++;
 
-        if (crlf) {
-          retLength++;
-          newLineOffset++;
-
-          bufOffset++;
-          bufRemain--;
-        }
+        bufOffset++;
+        bufRemain--;
       }
 
-      if (!keepEOL)
+      if (!keepEOL && eol != EolState.NotMatched)
         retLength -= newLineOffset;
 
       if (retBuffer == null || 0 < retLength - retCount) {
