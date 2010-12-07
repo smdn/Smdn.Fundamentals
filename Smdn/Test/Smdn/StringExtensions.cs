@@ -9,11 +9,19 @@ namespace Smdn {
     {
       var str = "abcdefghijklmnopqrstuvwxyz";
 
-      Assert.AreEqual(str, str.Remove(new char[] {}), "remove no chars");
       Assert.AreEqual(str, str.Remove(new string[] {}), "remove no strings");
 
-      Assert.AreEqual("bcdefgijklmnoqrstuvwxy", str.Remove('a', 'h', 'p', 'z'), "remove chars");
       Assert.AreEqual("defghijklpqrstuvw", str.Remove("abc", "mno", "xyz"), "remove strings");
+    }
+
+    [Test]
+    public void TestRemoveChars()
+    {
+      var str = "abcdefghijklmnopqrstuvwxyz";
+
+      Assert.AreEqual(str, str.RemoveChars(new char[] {}), "remove no chars");
+
+      Assert.AreEqual("bcdefgijklmnoqrstuvwxy", str.RemoveChars('a', 'h', 'p', 'z'), "remove chars");
     }
 
     [Test]

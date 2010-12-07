@@ -81,12 +81,12 @@ namespace Smdn.IO {
 
     public static string RemoveInvalidPathChars(string path)
     {
-      return StringExtensions.Remove(path, Path.GetInvalidPathChars());
+      return StringExtensions.RemoveChars(path, Path.GetInvalidPathChars());
     }
 
     public static string RemoveInvalidFileNameChars(string path)
     {
-      return StringExtensions.Remove(path, Path.GetInvalidFileNameChars());
+      return StringExtensions.RemoveChars(path, Path.GetInvalidFileNameChars());
     }
 
     public static string ReplaceInvalidPathCharsWithBlanks(string path)
