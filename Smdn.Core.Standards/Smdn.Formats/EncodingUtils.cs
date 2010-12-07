@@ -55,7 +55,7 @@ namespace Smdn.Formats {
       var encoding = GetEncoding(name);
 
       if (encoding == null)
-        throw new NotSupportedException(string.Format("charset '{0}' is not supported by runtime", name));
+        throw new EncodingNotSupportedException(name);
       else
         return encoding;
     }

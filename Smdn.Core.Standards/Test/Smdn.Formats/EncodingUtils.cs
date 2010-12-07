@@ -137,10 +137,18 @@ namespace Smdn.Formats {
       Assert.IsNull(EncodingUtils.GetEncoding("x-unkwnown-encoding"));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestGetEncodingThrowException()
     {
-      EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding");
+      try {
+        EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding");
+        Assert.Fail("EncodingNotSupportedException not thrown");
+      }
+      catch (EncodingNotSupportedException ex) {
+        Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
+        Assert.IsNotNull(ex.Message);
+        Assert.IsNull(ex.InnerException);
+      }
     }
   }
 }
