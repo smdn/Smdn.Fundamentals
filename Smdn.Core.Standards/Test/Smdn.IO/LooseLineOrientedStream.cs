@@ -60,13 +60,18 @@ namespace Smdn.IO {
     {
       var data = new byte[] {
         0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR,
-        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66,
+        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Octets.CR,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Octets.LF,
+        Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, Octets.CR,
       };
       var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 7), stream.ReadLine(false));
-      Assert.AreEqual(ArrayExtensions.Slice(data, 9), stream.ReadLine(false));
-      Assert.IsNull(stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data,  0, 7), stream.ReadLine(false)); // CRLF
+      Assert.AreEqual(ArrayExtensions.Slice(data,  9, 6), stream.ReadLine(false)); // CR
+      Assert.AreEqual(ArrayExtensions.Slice(data, 16, 7), stream.ReadLine(false)); // LF
+      Assert.AreEqual(new byte[0], stream.ReadLine(false)); // CR
+      Assert.AreEqual(ArrayExtensions.Slice(data, 25, 6), stream.ReadLine(false)); // CR
+      Assert.IsNull(stream.ReadLine(false)); // EOS
     }
 
     [Test]
@@ -74,13 +79,18 @@ namespace Smdn.IO {
     {
       var data = new byte[] {
         0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR,
-        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66,
+        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Octets.CR,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Octets.LF,
+        Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, Octets.CR,
       };
       var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 9), stream.ReadLine(true));
-      Assert.AreEqual(ArrayExtensions.Slice(data, 9), stream.ReadLine(true));
-      Assert.IsNull(stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data,  0, 9), stream.ReadLine(true)); // CRLF
+      Assert.AreEqual(ArrayExtensions.Slice(data,  9, 7), stream.ReadLine(true)); // CR
+      Assert.AreEqual(ArrayExtensions.Slice(data, 16, 8), stream.ReadLine(true)); // LF
+      Assert.AreEqual(ArrayExtensions.Slice(data, 24, 1), stream.ReadLine(true)); // CR
+      Assert.AreEqual(ArrayExtensions.Slice(data, 25, 7), stream.ReadLine(true)); // CR
+      Assert.IsNull(stream.ReadLine(true)); // EOS
     }
   }
 }
