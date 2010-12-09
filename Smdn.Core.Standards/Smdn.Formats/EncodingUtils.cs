@@ -65,9 +65,9 @@ namespace Smdn.Formats {
     }
 
     public static Encoding GetEncodingThrowException(string name,
-                                                     EncodingSelectionCallback selectEncoding)
+                                                     EncodingSelectionCallback selectFallbackEncoding)
     {
-      var encoding = GetEncoding(name, selectEncoding);
+      var encoding = GetEncoding(name, selectFallbackEncoding);
 
       if (encoding == null)
         throw new EncodingNotSupportedException(name);
