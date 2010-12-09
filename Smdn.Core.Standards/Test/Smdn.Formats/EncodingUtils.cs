@@ -138,6 +138,31 @@ namespace Smdn.Formats {
     }
 
     [Test]
+    public void TestGetEncodingSelectFallback()
+    {
+      var ret = EncodingUtils.GetEncoding("x-unkwnown-encoding", delegate(string name) {
+        Assert.AreEqual("x-unkwnown-encoding", name, "callback arg");
+
+        return Encoding.UTF8;
+      });
+
+      Assert.IsNotNull(ret);
+      Assert.AreEqual(Encoding.UTF8, ret);
+    }
+
+    [Test]
+    public void TestGetEncodingSelectFallbackReturnNull()
+    {
+      var ret = EncodingUtils.GetEncoding("x-unkwnown-encoding", delegate(string name) {
+        Assert.AreEqual("x-unkwnown-encoding", name, "callback arg");
+
+        return null;
+      });
+
+      Assert.IsNull(ret);
+    }
+
+    [Test]
     public void TestGetEncodingThrowException()
     {
       try {
@@ -145,6 +170,38 @@ namespace Smdn.Formats {
         Assert.Fail("EncodingNotSupportedException not thrown");
       }
       catch (EncodingNotSupportedException ex) {
+        Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
+        Assert.IsNotNull(ex.Message);
+        Assert.IsNull(ex.InnerException);
+      }
+    }
+
+    [Test]
+    public void TestGetEncodingThrowExceptionSelectFallback()
+    {
+      var ret = EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", delegate(string name) {
+        Assert.AreEqual("x-unkwnown-encoding", name);
+        return Encoding.UTF8;
+      });
+
+      Assert.IsNotNull(ret);
+      Assert.AreEqual(Encoding.UTF8, ret);
+    }
+
+    [Test]
+    public void TestGetEncodingThrowExceptionSelectFallbackReturnNull()
+    {
+      string encodingName = null;
+
+      try {
+        EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", delegate(string name) {
+          encodingName = name;
+          return null;
+        });
+        Assert.Fail("EncodingNotSupportedException not thrown");
+      }
+      catch (EncodingNotSupportedException ex) {
+        Assert.AreEqual("x-unkwnown-encoding", encodingName);
         Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
         Assert.IsNotNull(ex.Message);
         Assert.IsNull(ex.InnerException);

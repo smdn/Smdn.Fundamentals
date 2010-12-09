@@ -30,29 +30,44 @@ namespace Smdn.Formats {
   public static class EncodingUtils {
     public static Encoding GetEncoding(string name)
     {
+      return GetEncoding(name, null);
+    }
+
+    public static Encoding GetEncoding(string name,
+                                       EncodingSelectionCallback selectFallbackEncoding)
+    {
       if (name == null)
         throw new ArgumentNullException("name");
 
       // remove leading and trailing whitespaces (\x20, \n, \t, etc.)
       name = name.Trim();
 
-      string legalName;
+      string encodingName;
 
-      if (encodingCollationTable.TryGetValue(name.RemoveChars('-', '_', ' '), out legalName))
-        name = legalName;
+      if (!encodingCollationTable.TryGetValue(name.RemoveChars('-', '_', ' '), out encodingName))
+        encodingName = name;
 
       try {
-        return Encoding.GetEncoding(name);
+        return Encoding.GetEncoding(encodingName);
       }
       catch (ArgumentException) {
         // illegal or unsupported
-        return null;
+        if (selectFallbackEncoding == null)
+          return null;
+        else
+          return selectFallbackEncoding(name); // trimmed name
       }
     }
 
     public static Encoding GetEncodingThrowException(string name)
     {
-      var encoding = GetEncoding(name);
+      return GetEncodingThrowException(name, null);
+    }
+
+    public static Encoding GetEncodingThrowException(string name,
+                                                     EncodingSelectionCallback selectEncoding)
+    {
+      var encoding = GetEncoding(name, selectEncoding);
 
       if (encoding == null)
         throw new EncodingNotSupportedException(name);
