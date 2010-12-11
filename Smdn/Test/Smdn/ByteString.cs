@@ -525,6 +525,35 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestIsNullOrEmpty()
+    {
+      Assert.IsTrue(ByteString.IsNullOrEmpty(null));
+      Assert.IsTrue(ByteString.IsNullOrEmpty(new ByteString("")));
+      Assert.IsFalse(ByteString.IsNullOrEmpty(new ByteString("a")));
+    }
+
+    [Test]
+    public void TestIsTerminatedByCRLF()
+    {
+      Assert.IsTrue(ByteString.IsTerminatedByCRLF(new ByteString("a\r\n")));
+      Assert.IsFalse(ByteString.IsTerminatedByCRLF(new ByteString("a\r")));
+      Assert.IsFalse(ByteString.IsTerminatedByCRLF(new ByteString("a\n")));
+
+      Assert.IsTrue(ByteString.IsTerminatedByCRLF(new ByteString("\r\n")));
+      Assert.IsFalse(ByteString.IsTerminatedByCRLF(new ByteString("\r")));
+      Assert.IsFalse(ByteString.IsTerminatedByCRLF(new ByteString("\n")));
+
+      Assert.IsFalse(ByteString.IsTerminatedByCRLF(new ByteString("")));
+
+      try {
+        ByteString.IsTerminatedByCRLF(null);
+        Assert.Fail("ArgumentNullException not thrown");
+      }
+      catch (ArgumentNullException) {
+      }
+    }
+
+    [Test]
     public void TestBinarySerialization()
     {
       var toSerialize = new ByteString("abc");
