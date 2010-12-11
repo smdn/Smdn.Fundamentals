@@ -61,31 +61,27 @@ namespace Smdn {
       if (oldChars == null)
         throw new ArgumentNullException("oldChars");
 
-      foreach (var ch in oldChars) {
-        var lastIndex = 0;
-        var sb = new StringBuilder();
+      var lastIndex = 0;
+      var sb = new StringBuilder(str.Length);
 
-        for (;;) {
-          var index = str.IndexOf(ch, lastIndex);
+      for (;;) {
+        var index = str.IndexOfAny(oldChars, lastIndex);
 
-          if (index < 0) {
-            sb.Append(str.Substring(lastIndex));
-            break;
-          }
-          else {
-            sb.Append(str.Substring(lastIndex, index - lastIndex));
-
-            if (evaluator != null)
-              sb.Append(evaluator(ch, str, index));
-
-            lastIndex = index + 1;
-          }
+        if (index < 0) {
+          sb.Append(str.Substring(lastIndex));
+          break;
         }
+        else {
+          sb.Append(str.Substring(lastIndex, index - lastIndex));
 
-        str = sb.ToString();
+          if (evaluator != null)
+            sb.Append(evaluator(str[index], str, index));
+
+          lastIndex = index + 1;
+        }
       }
 
-      return str;
+      return sb.ToString();
     }
 
     public static string Replace(this string str, string[] oldValues, ReplaceStringEvaluator evaluator)

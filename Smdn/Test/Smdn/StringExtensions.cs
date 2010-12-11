@@ -29,7 +29,7 @@ namespace Smdn {
     {
       var str = "abcdefghijklmnopqrstuvwxyz";
 
-      Assert.AreEqual("0Abcdefg8Hijklmno17Pqrstuvwxy29Z", str.Replace(new[] {'a', 'h', 'p', 'z'}, delegate(char c, string s, int i) {
+      Assert.AreEqual("0Abcdefg7Hijklmno15Pqrstuvwxy25Z", str.Replace(new[] {'a', 'h', 'p', 'z'}, delegate(char c, string s, int i) {
         return string.Format("{0}{1}", i, Char.ToUpper(c));
       }), "replace chars");
 
