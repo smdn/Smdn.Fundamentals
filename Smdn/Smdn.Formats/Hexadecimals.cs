@@ -28,22 +28,22 @@ namespace Smdn.Formats {
   public static class Hexadecimals {
     public static string ToLowerString(byte[] bytes)
     {
-      return new string(ConvertByteArrayToHex(bytes, Chars.LowerCaseHexChars));
+      return new string(ConvertByteArrayToHex(bytes, Chars.LowerCaseHexCharArray));
     }
 
     public static string ToUpperString(byte[] bytes)
     {
-      return new string(ConvertByteArrayToHex(bytes, Chars.UpperCaseHexChars));
+      return new string(ConvertByteArrayToHex(bytes, Chars.UpperCaseHexCharArray));
     }
 
     public static byte[] ToLowerByteArray(byte[] bytes)
     {
-      return ConvertByteArrayToHex(bytes, Octets.LowerCaseHexOctets);
+      return ConvertByteArrayToHex(bytes, Octets.LowerCaseHexOctetArray);
     }
 
     public static byte[] ToUpperByteArray(byte[] bytes)
     {
-      return ConvertByteArrayToHex(bytes, Octets.UpperCaseHexOctets);
+      return ConvertByteArrayToHex(bytes, Octets.UpperCaseHexOctetArray);
     }
 
     private static T[] ConvertByteArrayToHex<T>(byte[] bytes, T[] table)

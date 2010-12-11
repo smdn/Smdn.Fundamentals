@@ -32,21 +32,51 @@ namespace Smdn.Formats {
     public const byte SP    = 0x20;
     public const byte HT    = 0x09; // horizontal tab
 
-    public static readonly byte[] CRLF = new byte[] {0x0d, 0x0a};
+    internal static readonly byte[] CRLFArray = new byte[] {0x0d, 0x0a};
 
-    public static readonly byte[] LowerCaseHexOctets = new byte[] {
+    [Obsolete("use GetCRLF() instead", true)]
+    public static byte[] CRLF {
+      get { throw new NotImplementedException(); }
+    }
+
+    public static byte[] GetCRLF()
+    {
+      return (byte[])CRLFArray.Clone();
+    }
+
+    internal static readonly byte[] LowerCaseHexOctetArray = new byte[] {
       0x30, 0x31, 0x32, 0x33,
       0x34, 0x35, 0x36, 0x37,
       0x38, 0x39, 0x61, 0x62,
       0x63, 0x64, 0x65, 0x66,
     };
 
-    public static readonly byte[] UpperCaseHexOctets = new byte[] {
+    internal static readonly byte[] UpperCaseHexOctetArray = new byte[] {
       0x30, 0x31, 0x32, 0x33,
       0x34, 0x35, 0x36, 0x37,
       0x38, 0x39, 0x41, 0x42,
       0x43, 0x44, 0x45, 0x46,
     };
+
+    [Obsolete("use GetLowerCaseHexOctetArray() instead", true)]
+    public static byte[] LowerCaseHexOctets {
+      get { throw new NotImplementedException(); }
+    }
+
+    [Obsolete("use GetUpperCaseHexOctetArray() instead", true)]
+    public static byte[] UpperCaseHexOctets {
+      get { throw new NotImplementedException(); }
+    }
+
+    public static byte[] GetLowerCaseHexOctets()
+    {
+      return (byte[])LowerCaseHexOctetArray.Clone();
+    }
+
+    public static byte[] GetUpperCaseHexOctets()
+    {
+      return (byte[])UpperCaseHexOctetArray.Clone();
+    }
 
     public static bool IsDecimalNumber(byte b)
     {
