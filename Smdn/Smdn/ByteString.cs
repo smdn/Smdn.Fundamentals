@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
+using Smdn.Formats;
+
 namespace Smdn {
   [Serializable]
   public class ByteString :
@@ -588,6 +590,17 @@ namespace Smdn {
         return true;
       else
         return false;
+    }
+
+    public static bool IsTerminatedByCRLF(ByteString str)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      else if (str.bytes.Length < 2)
+        return false;
+
+      return (str.bytes[str.bytes.Length - 2] == Octets.CR &&
+              str.bytes[str.bytes.Length - 1] == Octets.LF);
     }
 
     public bool Equals(ByteString other)
