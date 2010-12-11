@@ -8,6 +8,19 @@ namespace Smdn.IO {
   [TestFixture]
   public class StrictLineOrientedStreamTests {
     [Test]
+    public void TestNewLine()
+    {
+      using (var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
+        var newLine = stream.NewLine;
+
+        Assert.IsNotNull(newLine);
+        Assert.AreEqual(new byte[] {0x0d, 0x0a}, newLine, "must return CRLF");
+
+        Assert.AreNotSame(newLine, stream.NewLine, "must be different instance");
+      }
+    }
+
+    [Test]
     public void TestReadLineCRLF()
     {
       var data = new byte[] {0x40, Octets.CR, 0x42, Octets.LF, 0x44, Octets.LF, Octets.CR, 0x47, Octets.CR, Octets.LF, 0x50};

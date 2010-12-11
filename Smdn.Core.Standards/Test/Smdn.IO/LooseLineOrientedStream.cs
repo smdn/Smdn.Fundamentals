@@ -8,6 +8,14 @@ namespace Smdn.IO {
   [TestFixture]
   public class LooseLineOrientedStreamTests {
     [Test]
+    public void TestNewLine()
+    {
+      using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
+        Assert.IsNull(stream.NewLine);
+      }
+    }
+
+    [Test]
     public void TestReadLineKeepEOL()
     {
       var data = new byte[] {0x40, Octets.CR, 0x42, Octets.LF, 0x44, Octets.LF, Octets.CR, 0x47, Octets.CR, Octets.LF, 0x50};
