@@ -78,6 +78,7 @@ namespace Smdn.Formats.Mime {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
 
+      var upperCaseHexOctets = Octets.GetUpperCaseHexOctets();
       var ret = 0;
 
       for (var i = 0; i < inputCount; i++) {
@@ -95,8 +96,8 @@ namespace Smdn.Formats.Mime {
         else {
           // '=' 0x3d or non printable char
           outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
-          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet >> 4];
-          outputBuffer[outputOffset++] = Octets.UpperCaseHexOctets[octet & 0xf];
+          outputBuffer[outputOffset++] = upperCaseHexOctets[octet >> 4];
+          outputBuffer[outputOffset++] = upperCaseHexOctets[octet & 0xf];
 
           ret += 3;
         }
