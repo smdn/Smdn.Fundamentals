@@ -28,12 +28,12 @@ using System.IO;
 namespace Smdn.IO {
   public class StrictLineOrientedStream : LineOrientedStream {
     public StrictLineOrientedStream(Stream stream)
-      : base(stream, Smdn.Formats.Octets.CRLF, true, DefaultBufferSize)
+      : base(stream, Smdn.Formats.Octets.GetCRLF(), true, DefaultBufferSize)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, int bufferSize)
-      : base(stream, Smdn.Formats.Octets.CRLF, true, bufferSize)
+      : base(stream, Smdn.Formats.Octets.GetCRLF(), true, bufferSize)
     {
     }
 

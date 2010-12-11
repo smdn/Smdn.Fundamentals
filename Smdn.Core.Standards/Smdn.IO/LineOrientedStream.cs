@@ -69,7 +69,7 @@ namespace Smdn.IO {
     }
 
     public byte[] NewLine {
-      get { return newLine; }
+      get { return (newLine == null) ? null : (byte[])newLine.Clone(); }
     }
 
     public int BufferSize {
