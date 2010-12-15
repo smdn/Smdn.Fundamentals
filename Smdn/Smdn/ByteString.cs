@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Text;
 
 using Smdn.Formats;
 
@@ -34,30 +35,140 @@ namespace Smdn {
   public class ByteString :
     IEquatable<ByteString>,
     IEquatable<byte[]>,
+    IEquatable<ArraySegment<byte>>,
     IEquatable<string>,
     ISerializable
   {
     [IndexerName("Bytes")]
     public byte this[int index] {
-      get { return bytes[index]; }
-      set { bytes[index] = value; }
+      get
+      {
+        if (index < 0 || segment.Count <= index)
+          throw new IndexOutOfRangeException();
+
+        return segment.Array[segment.Offset + index];
+      }
+      set
+      {
+        if (isMutable) {
+          if (index < 0 || segment.Count <= index)
+            throw new ArgumentOutOfRangeException("index", index, "index out of range");
+
+          segment.Array[segment.Offset + index] = value;
+        }
+        else {
+          throw new NotSupportedException("instance is immutable");
+        }
+      }
+    }
+
+    public bool IsMutable {
+      get { return isMutable; }
     }
 
     public int Length {
-      get { return bytes.Length; }
+      get { return segment.Count; }
     }
 
     public bool IsEmpty {
-      get { return bytes.Length == 0; }
+      get { return segment.Count == 0; }
     }
 
+    [Obsolete("use Segment instead")]
     public byte[] ByteArray {
-      get { return bytes; }
+      get { return segment.Array; }
+    }
+
+    public ArraySegment<byte> Segment {
+      get { return segment; }
     }
 
     public static ByteString CreateEmpty()
     {
-      return new ByteString(new byte[] {});
+      return new ByteString(new ArraySegment<byte>(new byte[0]), true);
+      //return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
+    }
+
+    public static ByteString CreateMutable(params byte[] @value)
+    {
+      return new ByteString(new ArraySegment<byte>(@value), true);
+    }
+
+    public static ByteString CreateMutable(byte[] @value, int offset)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), true);
+    }
+
+    public static ByteString CreateMutable(byte[] @value, int offset, int count)
+    {
+      return new ByteString(new ArraySegment<byte>(@value, offset, count), true);
+    }
+
+    public static ByteString CreateMutable(string str)
+    {
+      var bytes = ToByteArray(str);
+
+      return new ByteString(new ArraySegment<byte>(bytes), true);
+    }
+
+    public static ByteString CreateMutable(string str, int startIndex, int count)
+    {
+      var bytes = ToByteArray(str, startIndex, count);
+
+      return new ByteString(new ArraySegment<byte>(bytes), true);
+    }
+
+    public static ByteString CreateImmutable(params byte[] @value)
+    {
+      return new ByteString(new ArraySegment<byte>(@value), false);
+    }
+
+    public static ByteString CreateImmutable(byte[] @value, int offset)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), false);
+    }
+
+    public static ByteString CreateImmutable(byte[] @value, int offset, int count)
+    {
+      return new ByteString(new ArraySegment<byte>(@value, offset, count), false);
+    }
+
+    public static ByteString CreateImmutable(string str)
+    {
+      var bytes = ToByteArray(str);
+
+      return new ByteString(new ArraySegment<byte>(bytes), false);
+    }
+
+    public static ByteString CreateImmutable(string str, int startIndex, int count)
+    {
+      var bytes = ToByteArray(str, startIndex, count);
+
+      return new ByteString(new ArraySegment<byte>(bytes), false);
+    }
+
+    public static ByteString Create(bool asMutable, params byte[] @value)
+    {
+      return new ByteString(new ArraySegment<byte>(@value), asMutable);
+    }
+
+    public static ByteString Create(bool asMutable, byte[] @value, int offset)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), asMutable);
+    }
+
+    public static ByteString Create(bool asMutable, byte[] @value, int offset, int count)
+    {
+      return new ByteString(new ArraySegment<byte>(@value, offset, count), asMutable);
     }
 
     public static byte[] ToByteArray(string @value)
@@ -65,57 +176,61 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      var bytes = new byte[@value.Length];
+      return ToByteArray(@value, 0, @value.Length);
+    }
 
-      for (var index = 0; index < @value.Length; index++) {
-        bytes[index] = (byte)@value[index];
+    public static byte[] ToByteArray(string @value, int startIndex, int count)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (@value.Length - count < startIndex)
+        throw new ArgumentException("attempt to access beyond the end of the string"); // XXX
+
+      var bytes = new byte[@count];
+
+      for (var index = 0; index < count; index++) {
+        bytes[index] = (byte)@value[startIndex++];
       }
 
       return bytes;
     }
 
-    public ByteString(params byte[] @value)
+    public ByteString(ArraySegment<byte> segment, bool asMutable)
     {
-      if (@value == null)
-        throw new ArgumentNullException("value");
+      this.isMutable = asMutable;
 
-      this.bytes = @value;
+      if (this.isMutable) {
+        var newSegment = new byte[segment.Count];
+
+        Buffer.BlockCopy(segment.Array, segment.Offset, newSegment, 0, segment.Count);
+
+        this.segment = new ArraySegment<byte>(newSegment);
+      }
+      else {
+        this.segment = segment;
+      }
     }
 
-    public ByteString(byte[] @value, int index)
-      : this(@value, index, @value.Length - index)
+    public ByteString(string @value, bool asMutable)
     {
-    }
-
-    public ByteString(byte[] @value, int index, int count)
-    {
-      if (@value == null)
-        throw new ArgumentNullException("value");
-      if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
-      if (@value.Length - count < index)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", @value, index, count);
-
-      this.bytes = new byte[count];
-
-      Buffer.BlockCopy(@value, index, this.bytes, 0, count);
-    }
-
-    public ByteString(string @value)
-    {
-      this.bytes = ToByteArray(@value);
+      this.segment = new ArraySegment<byte>(ToByteArray(@value));
+      this.isMutable = asMutable;
     }
 
     protected ByteString(SerializationInfo info, StreamingContext context)
     {
-      this.bytes = (byte[])info.GetValue("bytes", typeof(byte[]));
+      this.segment = (ArraySegment<byte>)info.GetValue("segment", typeof(ArraySegment<byte>));
+      this.isMutable = info.GetBoolean("isMutable");
     }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
     {
-      info.AddValue("bytes", bytes);
+      info.AddValue("segment", segment);
+      info.AddValue("isMutable", isMutable);
     }
 
     public bool Contains(ByteString @value)
@@ -123,7 +238,7 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      return Contains(@value.bytes);
+      return 0 <= IndexOf(@value.segment, 0);
     }
 
     public bool Contains(byte[] @value)
@@ -136,7 +251,7 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return StartsWith(@value.bytes);
+      return StartsWith(@value.segment);
     }
 
     public bool StartsWith(byte[] @value)
@@ -144,12 +259,23 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      if (bytes.Length < @value.Length)
+      return StartsWith(new ArraySegment<byte>(@value));
+    }
+
+    public unsafe bool StartsWith(ArraySegment<byte> @value)
+    {
+      if (segment.Count < @value.Count)
         return false;
 
-      for (var index = 0; index < @value.Length; index++) {
-        if (bytes[index] != @value[index])
-          return false;
+      fixed (byte* str0 = segment.Array, substr0 = @value.Array) {
+        var str = str0 + segment.Offset;
+        var substr = substr0 + @value.Offset;
+        var len = @value.Count;
+
+        for (var index = 0; index < len; index++) {
+          if (str[index] != substr[index])
+            return false;
+        }
       }
 
       return true;
@@ -160,7 +286,7 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return StartsWithIgnoreCase(@value.bytes);
+      return StartsWithIgnoreCase(@value.segment);
     }
 
     public bool StartsWithIgnoreCase(byte[] @value)
@@ -168,21 +294,22 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      if (bytes.Length < @value.Length)
+      return StartsWithIgnoreCase(new ArraySegment<byte>(@value));
+    }
+
+    public unsafe bool StartsWithIgnoreCase(ArraySegment<byte> @value)
+    {
+      if (segment.Count < @value.Count)
         return false;
 
-      for (var index = 0; index < @value.Length; index++) {
-        if (bytes[index] == @value[index]) {
-          continue;
-        }
-        else {
-          var lower = ToLower(bytes[index]);
+      fixed (byte* str0 = segment.Array, substr0 = @value.Array) {
+        var str = str0 + segment.Offset;
+        var substr = substr0 + @value.Offset;
+        var len = @value.Count;
 
-          if (lower == -1)
-            return false;
-          else if (lower == @value[index] || lower == ToLower(@value[index]))
-            continue;
-          else
+        for (var index = 0; index < len; index++) {
+          if (Octets.ToLowerCaseAsciiTable[str[index]] !=
+              Octets.ToLowerCaseAsciiTable[substr[index]])
             return false;
         }
       }
@@ -190,17 +317,21 @@ namespace Smdn {
       return true;
     }
 
-    public bool StartsWith(string @value)
+    public unsafe bool StartsWith(string @value)
     {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      if (bytes.Length < @value.Length)
+      if (segment.Count < @value.Length)
         return false;
 
-      for (var index = 0; index < @value.Length; index++) {
-        if (bytes[index] != @value[index])
-          return false;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+
+        for (var index = 0; index < @value.Length; index++) {
+          if (str[index] != @value[index])
+            return false;
+        }
       }
 
       return true;
@@ -211,7 +342,7 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return EndsWith(@value.bytes);
+      return EndsWith(@value.segment);
     }
 
     public bool EndsWith(byte[] @value)
@@ -219,32 +350,43 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      if (bytes.Length < @value.Length)
+      return EndsWith(new ArraySegment<byte>(@value));
+    }
+
+    public unsafe bool EndsWith(ArraySegment<byte> @value)
+    {
+      if (segment.Count < @value.Count)
         return false;
 
-      var offset = bytes.Length - @value.Length;
+      fixed (byte* str0 = segment.Array, substr0 = @value.Array) {
+        var str = str0 + segment.Offset + segment.Count - @value.Count;
+        var substr = substr0 + @value.Offset;
+        var len = @value.Count;
 
-      for (var index = 0; index < @value.Length; index++, offset++) {
-        if (bytes[offset] != @value[index])
-          return false;
+        for (var index = 0; index < len; index++) {
+          if (str[index] != substr[index])
+            return false;
+        }
       }
 
       return true;
     }
 
-    public bool EndsWith(string @value)
+    public unsafe bool EndsWith(string @value)
     {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      if (bytes.Length < @value.Length)
+      if (segment.Count < @value.Length)
         return false;
 
-      var offset = bytes.Length - @value.Length;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset + segment.Count - @value.Length;
 
-      for (var index = 0; index < @value.Length; index++, offset++) {
-        if (bytes[offset] != @value[index])
-          return false;
+        for (var index = 0; index < @value.Length; index++) {
+          if (str[index] != @value[index])
+            return false;
+        }
       }
 
       return true;
@@ -255,7 +397,7 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      return IsPrefixOf(@value.bytes);
+      return IsPrefixOf(@value.segment);
     }
 
     public bool IsPrefixOf(byte[] @value)
@@ -263,12 +405,23 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException("value");
 
-      if (@value.Length < bytes.Length)
+      return IsPrefixOf(new ArraySegment<byte>(@value));
+    }
+
+    public unsafe bool IsPrefixOf(ArraySegment<byte> @value)
+    {
+      if (@value.Count < segment.Count)
         return false;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (@value[index] != bytes[index])
-          return false;
+      fixed (byte* str0 = segment.Array, substr0 = @value.Array) {
+        var str = str0 + segment.Offset;
+        var substr = substr0 + @value.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          if (substr[index] != str[index])
+            return false;
+        }
       }
 
       return true;
@@ -279,11 +432,16 @@ namespace Smdn {
       return IndexOf(@value, 0);
     }
 
-    public int IndexOf(char @value, int startIndex)
+    public unsafe int IndexOf(char @value, int startIndex)
     {
-      for (var index = startIndex; index < bytes.Length; index++) {
-        if (bytes[index] == @value)
-          return index;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = startIndex; index < len; index++) {
+          if (str[index] == @value)
+            return index;
+        }
       }
 
       return -1;
@@ -294,14 +452,51 @@ namespace Smdn {
       return IndexOf(@value, 0);
     }
 
-    public int IndexOf(byte @value, int startIndex)
+    public unsafe int IndexOf(byte @value, int startIndex)
     {
-      for (var index = startIndex; index < bytes.Length; index++) {
-        if (bytes[index] == @value)
-          return index;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = startIndex; index < len; index++) {
+          if (str[index] == @value)
+            return index;
+        }
       }
 
       return -1;
+    }
+
+    public int IndexOf(byte[] @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOf(new ArraySegment<byte>(@value), 0);
+    }
+
+    public int IndexOf(byte[] @value, int startIndex)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOf(new ArraySegment<byte>(@value), startIndex);
+    }
+
+    public int IndexOfIgnoreCase(byte[] @value)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOfIgnoreCase(new ArraySegment<byte>(@value), 0);
+    }
+
+    public int IndexOfIgnoreCase(byte[] @value, int startIndex)
+    {
+      if (@value == null)
+        throw new ArgumentNullException("value");
+
+      return IndexOfIgnoreCase(new ArraySegment<byte>(@value), startIndex);
     }
 
     public int IndexOf(ByteString @value)
@@ -309,7 +504,7 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return IndexOf(@value.bytes, 0, true);
+      return IndexOf(@value.segment, 0);
     }
 
     public int IndexOf(ByteString @value, int startIndex)
@@ -317,7 +512,7 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return IndexOf(@value.bytes, startIndex, true);
+      return IndexOf(@value.segment, startIndex);
     }
 
     public int IndexOfIgnoreCase(ByteString @value)
@@ -325,7 +520,7 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return IndexOf(@value.bytes, 0, false);
+      return IndexOfIgnoreCase(@value.segment, 0);
     }
 
     public int IndexOfIgnoreCase(ByteString @value, int startIndex)
@@ -333,59 +528,74 @@ namespace Smdn {
       if ((object)@value == null)
         throw new ArgumentNullException("value");
 
-      return IndexOf(@value.bytes, startIndex, false);
+      return IndexOfIgnoreCase(@value.segment, startIndex);
     }
 
-    public int IndexOf(byte[] @value)
+    public int IndexOf(ArraySegment<byte> @value)
     {
-      return IndexOf(@value, 0, true);
+      return IndexOf(@value, 0);
     }
 
-    public int IndexOf(byte[] @value, int startIndex)
+    public unsafe int IndexOf(ArraySegment<byte> @value, int startIndex)
     {
-      return IndexOf(@value, startIndex, true);
-    }
-
-    public int IndexOfIgnoreCase(byte[] @value)
-    {
-      return IndexOf(@value, 0, false);
-    }
-
-    public int IndexOfIgnoreCase(byte[] @value, int startIndex)
-    {
-      return IndexOf(@value, startIndex, false);
-    }
-
-    private int IndexOf(byte[] @value, int startIndex, bool caseSensitive)
-    {
-      if (@value == null)
-        throw new ArgumentNullException("value");
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
 
-      if (bytes.Length < @value.Length)
+      if (segment.Count < @value.Count)
         return -1;
 
-      var matchedIndex = 0;
+      fixed (byte* str0 = segment.Array, substr0 = @value.Array) {
+        var str = str0 + segment.Offset;
+        var substr = substr0 + @value.Offset;
+        var len = segment.Count;
+        var matchedIndex = 0;
 
-      for (var index = startIndex; index < bytes.Length; index++) {
-      recheck:
-        var matched = bytes[index] == @value[matchedIndex];
-
-        if (!matched && !caseSensitive) {
-          var lower = ToLower(bytes[index]);
-
-          if (lower != -1)
-            matched = (lower == @value[matchedIndex] || lower == ToLower(@value[matchedIndex]));
+        for (var index = startIndex; index < len; index++) {
+        recheck:
+          if (str[index] == substr[matchedIndex]) {
+            if (@value.Count == ++matchedIndex)
+              return index - matchedIndex + 1;
+          }
+          else if (0 < matchedIndex) {
+            matchedIndex = 0;
+            goto recheck;
+          }
         }
+      }
 
-        if (matched) {
-          if (@value.Length == ++matchedIndex)
-            return index - matchedIndex + 1;
-        }
-        else if (0 < matchedIndex) {
-          matchedIndex = 0;
-          goto recheck;
+      return -1;
+    }
+
+    public int IndexOfIgnoreCase(ArraySegment<byte> @value)
+    {
+      return IndexOfIgnoreCase(@value, 0);
+    }
+
+    public unsafe int IndexOfIgnoreCase(ArraySegment<byte> @value, int startIndex)
+    {
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+
+      if (segment.Count < @value.Count)
+        return -1;
+
+      fixed (byte* str0 = segment.Array, substr0 = @value.Array) {
+        var str = str0 + segment.Offset;
+        var substr = substr0 + @value.Offset;
+        var len = segment.Count;
+        var matchedIndex = 0;
+
+        for (var index = startIndex; index < len; index++) {
+        recheck:
+          if (Octets.ToLowerCaseAsciiTable[str[index]] ==
+              Octets.ToLowerCaseAsciiTable[substr[matchedIndex]]) {
+            if (@value.Count == ++matchedIndex)
+              return index - matchedIndex + 1;
+          }
+          else if (0 < matchedIndex) {
+            matchedIndex = 0;
+            goto recheck;
+          }
         }
       }
 
@@ -397,27 +607,31 @@ namespace Smdn {
       return IndexOf(@value, 0);
     }
 
-    public int IndexOf(string @value, int startIndex)
+    public unsafe int IndexOf(string @value, int startIndex)
     {
       if (@value == null)
         throw new ArgumentNullException("value");
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
 
-      if (bytes.Length < @value.Length)
+      if (segment.Count < @value.Length)
         return -1;
 
-      var matchedIndex = 0;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+        var matchedIndex = 0;
 
-      for (var index = startIndex; index < bytes.Length; index++) {
-      recheck:
-        if (bytes[index] == @value[matchedIndex]) {
-          if (@value.Length == ++matchedIndex)
-            return index - matchedIndex + 1;
-        }
-        else if (0 < matchedIndex) {
-          matchedIndex = 0;
-          goto recheck;
+        for (var index = startIndex; index < len; index++) {
+        recheck:
+          if (str[index] == @value[matchedIndex]) {
+            if (@value.Length == ++matchedIndex)
+              return index - matchedIndex + 1;
+          }
+          else if (0 < matchedIndex) {
+            matchedIndex = 0;
+            goto recheck;
+          }
         }
       }
 
@@ -429,11 +643,16 @@ namespace Smdn {
       return IndexOfNot(@value, 0);
     }
 
-    public int IndexOfNot(char @value, int startIndex)
+    public unsafe int IndexOfNot(char @value, int startIndex)
     {
-      for (var index = startIndex; index < bytes.Length; index++) {
-        if (bytes[index] != @value)
-          return index;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = startIndex; index < len; index++) {
+          if (str[index] != @value)
+            return index;
+        }
       }
 
       return -1;
@@ -444,24 +663,55 @@ namespace Smdn {
       return IndexOfNot(@value, 0);
     }
 
-    public int IndexOfNot(byte @value, int startIndex)
+    public unsafe int IndexOfNot(byte @value, int startIndex)
     {
-      for (var index = startIndex; index < bytes.Length; index++) {
-        if (bytes[index] != @value)
-          return index;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = startIndex; index < len; index++) {
+          if (str[index] != @value)
+            return index;
+        }
       }
 
       return -1;
     }
 
-    public ByteString Substring(int index)
+    public ByteString Substring(int startIndex)
     {
-      return new ByteString(bytes, index, bytes.Length - index);
+      return new ByteString(new ArraySegment<byte>(segment.Array,
+                                                   segment.Offset + startIndex,
+                                                   segment.Count - startIndex),
+                            isMutable);
     }
 
-    public ByteString Substring(int index, int count)
+    public ByteString Substring(int startIndex, int count)
     {
-      return new ByteString(bytes, index, count);
+      if (segment.Count < count)
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'Length'", "count", count);
+
+      return new ByteString(new ArraySegment<byte>(segment.Array,
+                                                   segment.Offset + startIndex,
+                                                   count),
+                            isMutable);
+    }
+
+    public ArraySegment<byte> GetSubSegment(int startIndex)
+    {
+      return new ArraySegment<byte>(segment.Array,
+                                    segment.Offset + startIndex,
+                                    segment.Count - startIndex);
+    }
+
+    public ArraySegment<byte> GetSubSegment(int startIndex, int count)
+    {
+      if (segment.Count < count)
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'Length'", "count", count);
+
+      return new ArraySegment<byte>(segment.Array,
+                                    segment.Offset + startIndex,
+                                    count);
     }
 
     public ByteString[] Split(byte delimiter)
@@ -469,16 +719,21 @@ namespace Smdn {
       return Split((char)delimiter);
     }
 
-    public ByteString[] Split(char delimiter)
+    public unsafe ByteString[] Split(char delimiter)
     {
       var splitted = new List<ByteString>();
       var index = 0;
       var lastIndex = 0;
 
-      for (index = 0; index < bytes.Length; index++) {
-        if (bytes[index] == delimiter) {
-          splitted.Add(Substring(lastIndex, index - lastIndex));
-          lastIndex = index + 1;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (index = 0; index < len; index++) {
+          if (str[index] == delimiter) {
+            splitted.Add(Substring(lastIndex, index - lastIndex));
+            lastIndex = index + 1;
+          }
         }
       }
 
@@ -487,99 +742,135 @@ namespace Smdn {
       return splitted.ToArray();
     }
 
-    public ByteString ToUpper()
+    // TODO: mutable/immutable
+    public unsafe ByteString ToUpper()
     {
-      var uppercased = new byte[bytes.Length];
+      var uppercased = new byte[segment.Count];
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (0x61 <= bytes[index] && bytes[index] <= 0x7a)
-          uppercased[index] = (byte)(bytes[index] - 0x20);
-        else
-          uppercased[index] = bytes[index];
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          uppercased[index] = Octets.ToUpperCaseAsciiTable[str[index]];
+        }
       }
 
-      return new ByteString(uppercased);
+      return new ByteString(new ArraySegment<byte>(uppercased), isMutable);
     }
 
-    public ByteString ToLower()
+    // TODO: mutable/immutable
+    public unsafe ByteString ToLower()
     {
-      var lowercased = new byte[bytes.Length];
+      var lowercased = new byte[segment.Count];
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (0x41 <= bytes[index] && bytes[index] <= 0x5a)
-          lowercased[index] = (byte)(bytes[index] + 0x20);
-        else
-          lowercased[index] = bytes[index];
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          lowercased[index] = Octets.ToLowerCaseAsciiTable[str[index]];
+        }
       }
 
-      return new ByteString(lowercased);
+      return new ByteString(new ArraySegment<byte>(lowercased), isMutable);
     }
 
     [CLSCompliant(false)]
-    public uint ToUInt32()
+    public unsafe uint ToUInt32()
     {
       uint val = 0U;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (0x30 <= bytes[index] && bytes[index] <= 0x39)
-          val = checked((val * 10) + (uint)(bytes[index] - 0x30));
-        else
-          throw new FormatException("contains non-number character");
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          var o = str[index];
+
+          if (0x30 <= o && o <= 0x39)
+            val = checked((val * 10) + (uint)(o - 0x30));
+          else
+            throw new FormatException("contains non-number character");
+        }
       }
 
       return val;
     }
 
     [CLSCompliant(false)]
-    public ulong ToUInt64()
+    public unsafe ulong ToUInt64()
     {
       ulong val = 0UL;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (0x30 <= bytes[index] && bytes[index] <= 0x39)
-          val = checked((val * 10) + (ulong)(bytes[index] - 0x30));
-        else
-          throw new FormatException("contains non-number character");
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          var o = str[index];
+
+          if (0x30 <= o && o <= 0x39)
+            val = checked((val * 10) + (ulong)(o - 0x30));
+          else
+            throw new FormatException("contains non-number character");
+        }
       }
 
       return val;
     }
 
-    public ByteString TrimStart()
+    // TODO: mutable/immutable
+    public unsafe ByteString TrimStart()
     {
-      for (var index = 0; index < bytes.Length; index++) {
-        if (!(bytes[index] == 0x20 ||
-              bytes[index] == 0xa0 ||
-              bytes[index] == 0x09 ||
-              bytes[index] == 0x0a ||
-              bytes[index] == 0x0b ||
-              bytes[index] == 0x0c ||
-              bytes[index] == 0x0d))
-          return new ByteString(bytes, index, bytes.Length - index);
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          var o = str[index];
+
+          if (!(o == 0x20 ||
+                o == 0xa0 ||
+                o == 0x09 ||
+                o == 0x0a ||
+                o == 0x0b ||
+                o == 0x0c ||
+                o == 0x0d))
+            return Substring(index, len - index);
+        }
       }
 
       return CreateEmpty();
     }
 
-    public ByteString TrimEnd()
+    // TODO: mutable/immutable
+    public unsafe ByteString TrimEnd()
     {
-      for (var index = bytes.Length - 1; 0 <= index; index--) {
-        if (!(bytes[index] == 0x20 ||
-              bytes[index] == 0xa0 ||
-              bytes[index] == 0x09 ||
-              bytes[index] == 0x0a ||
-              bytes[index] == 0x0b ||
-              bytes[index] == 0x0c ||
-              bytes[index] == 0x0d))
-          return new ByteString(bytes, 0, index + 1);
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+
+        for (var index = segment.Count - 1; 0 <= index; index--) {
+          var o = str[index];
+
+          if (!(o == 0x20 ||
+                o == 0xa0 ||
+                o == 0x09 ||
+                o == 0x0a ||
+                o == 0x0b ||
+                o == 0x0c ||
+                o == 0x0d))
+            return Substring(0, index + 1);
+        }
       }
 
       return CreateEmpty();
     }
 
+    // TODO: mutable/immutable
     public ByteString Trim()
     {
-      return TrimStart().TrimEnd();
+      return TrimStart().TrimEnd(); // XXX
     }
 
     public static bool IsNullOrEmpty(ByteString str)
@@ -596,19 +887,21 @@ namespace Smdn {
     {
       if (str == null)
         throw new ArgumentNullException("str");
-      else if (str.bytes.Length < 2)
+      else if (str.segment.Count < 2)
         return false;
 
-      return (str.bytes[str.bytes.Length - 2] == Octets.CR &&
-              str.bytes[str.bytes.Length - 1] == Octets.LF);
+      return (str.segment.Array[str.segment.Offset + str.segment.Count - 2] == Octets.CR &&
+              str.segment.Array[str.segment.Offset + str.segment.Count - 1] == Octets.LF);
     }
 
     public bool Equals(ByteString other)
     {
-      if (Object.ReferenceEquals(this, other))
+      if (other == null)
+        return false;
+      else if (Object.ReferenceEquals(this, other))
         return true;
       else
-        return this == other;
+        return Equals(other.segment);
     }
 
     public override bool Equals(object obj)
@@ -616,12 +909,15 @@ namespace Smdn {
       var byteString = obj as ByteString;
 
       if (byteString != null)
-        return Equals(byteString.bytes);
+        return Equals(byteString.segment);
 
       var byteArray = obj as byte[];
 
       if (byteArray != null)
         return Equals(byteArray);
+
+      if (obj is ArraySegment<byte>)
+        return Equals((ArraySegment<byte>)obj);
 
       var str = obj as string;
 
@@ -635,27 +931,44 @@ namespace Smdn {
     {
       if (other == null)
         return false;
-      if (bytes.Length != other.Length)
+      else
+        return Equals(new ArraySegment<byte>(other));
+    }
+
+    public unsafe bool Equals(ArraySegment<byte> other)
+    {
+      if (segment.Count != other.Count)
         return false;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (bytes[index] != other[index])
-          return false;
+      fixed (byte* strX0 = segment.Array, strY0 = other.Array) {
+        var strX = strX0 + segment.Offset;
+        var strY = strY0 + other.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          if (strX[index] != strY[index])
+            return false;
+        }
       }
 
       return true;
     }
 
-    public bool Equals(string other)
+    public unsafe bool Equals(string other)
     {
       if (other == null)
         return false;
-      if (bytes.Length != other.Length)
+      if (segment.Count != other.Length)
         return false;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (bytes[index] != other[index])
-          return false;
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          if (str[index] != other[index])
+            return false;
+        }
       }
 
       return true;
@@ -663,6 +976,9 @@ namespace Smdn {
 
     public static bool operator == (ByteString x, ByteString y)
     {
+      if (Object.ReferenceEquals(x, y))
+        return true;
+
       if (null == (object)x || null == (object)y) {
         if (null == (object)x && null == (object)y)
           return true;
@@ -670,7 +986,7 @@ namespace Smdn {
           return false;
       }
 
-      return x.Equals(y.bytes);
+      return x.Equals(y.segment);
     }
 
     public static bool operator != (ByteString x, ByteString y)
@@ -678,20 +994,23 @@ namespace Smdn {
       return !(x == y);
     }
 
-    public bool EqualsIgnoreCase(ByteString other)
+    public unsafe bool EqualsIgnoreCase(ByteString other)
     {
       if ((object)other == null)
         return false;
-      else if (bytes.Length != other.Length)
+      else if (segment.Count != other.segment.Count)
         return false;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        if (bytes[index] == other[index])
-          continue;
-        else if (bytes[index] == ToLower(other[index]))
-          continue;
-        else
-          return false;
+      fixed (byte* strX0 = this.segment.Array, strY0 = other.segment.Array) {
+        var strX = strX0 + this.segment.Offset;
+        var strY = strY0 + other.segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          if (Octets.ToLowerCaseAsciiTable[strX[index]] !=
+              Octets.ToLowerCaseAsciiTable[strY[index]])
+            return false;
+        }
       }
 
       return true;
@@ -701,7 +1020,7 @@ namespace Smdn {
     {
       if ((object)other == null)
         return false;
-      else if (bytes.Length != other.Length)
+      else if (segment.Count != other.Length)
         return false;
 
       return this.ToLower().Equals(other.ToLower()); // XXX
@@ -727,16 +1046,31 @@ namespace Smdn {
       if (x == null)
         return CreateEmpty();
 
-      var bytes = new byte[x.Length * y];
+      var bytes = new byte[x.segment.Count * y];
 
-      for (int count = 0, offset = 0; count < y; count++, offset += x.Length) {
-        Buffer.BlockCopy(x.bytes, 0, bytes, offset, x.Length);
+      for (int count = 0, offset = 0; count < y; count++, offset += x.segment.Count) {
+        Buffer.BlockCopy(x.segment.Array, x.segment.Offset, bytes, offset, x.segment.Count);
       }
 
-      return new ByteString(bytes);
+      return new ByteString(new ArraySegment<byte>(bytes), x.isMutable);
+    }
+
+    public static ByteString ConcatMutable(params ByteString[] values)
+    {
+      return Concat(true, values);
+    }
+
+    public static ByteString ConcatImmutable(params ByteString[] values)
+    {
+      return Concat(false, values);
     }
 
     public static ByteString Concat(params ByteString[] values)
+    {
+      return Concat(true /*as default*/, values);
+    }
+
+    public static ByteString Concat(bool asMutable, params ByteString[] values)
     {
       if (values == null)
         throw new ArgumentNullException("values");
@@ -753,63 +1087,167 @@ namespace Smdn {
 
       foreach (var val in values) {
         if (val != null) {
-          Buffer.BlockCopy(val.bytes, 0, bytes, offset, val.Length);
-          offset += val.Length;
+          Buffer.BlockCopy(val.segment.Array, val.segment.Offset, bytes, offset, val.segment.Count);
+          offset += val.segment.Count;
         }
       }
 
-      return new ByteString(bytes);
+      return new ByteString(new ArraySegment<byte>(bytes), asMutable);
     }
 
-    public override int GetHashCode()
+    public unsafe override int GetHashCode()
     {
       var h = 0;
 
-      for (var index = 0; index < bytes.Length; index++) {
-        h = unchecked(h * 37 + bytes[index]);
+      fixed (byte* str0 = segment.Array) {
+        var str = str0 + segment.Offset;
+        var len = segment.Count;
+
+        for (var index = 0; index < len; index++) {
+          h = unchecked(h * 37 + str[index]);
+        }
       }
 
       return h;
     }
 
-    public override string ToString()
+    public byte[] ToArray()
     {
-      return ToString(0, bytes.Length);
+      return ToArray(0, segment.Count);
     }
 
-    public string ToString(int index)
+    public byte[] ToArray(int startIndex)
     {
-      return ToString(index, bytes.Length - index);
+      return ToArray(startIndex, segment.Count - startIndex);
     }
 
-    public string ToString(int index, int count)
+    public byte[] ToArray(int startIndex, int count)
     {
-      if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
-      if (bytes.Length < index + count)
-        throw new ArgumentException("index + count is larger than length");
+      if (segment.Count - count < startIndex)
+        throw new ArgumentException("startIndex + count is larger than length"); // XXXX
 
-      var chars = new char[count];
+      var array = new byte[count];
 
-      for (var i = 0; 0 < count; count--) {
-        chars[i++] = (char)bytes[index++];
-      }
+      Buffer.BlockCopy(segment.Array, segment.Offset + startIndex, array, 0, count);
 
-      return new string(chars);
+      return array;
     }
 
-    private int ToLower(byte b)
+    public void CopyTo(byte[] dest)
     {
-      if (0x41 <= b && b <= 0x5a)
-        return b + 0x20;
-      else if (0x61 <= b && b <= 0x7a)
-        return b;
-      else
-        return -1;
+      CopyTo(0, dest, 0, segment.Count);
     }
 
-    private byte[] bytes;
+    public void CopyTo(byte[] dest, int destOffset)
+    {
+      CopyTo(0, dest, destOffset, segment.Count);
+    }
+
+    public void CopyTo(byte[] dest, int destOffset, int count)
+    {
+      CopyTo(0, dest, destOffset, count);
+    }
+
+    public void CopyTo(int startIndex, byte[] dest)
+    {
+      CopyTo(startIndex, dest, 0, segment.Count - startIndex);
+    }
+
+    public void CopyTo(int startIndex, byte[] dest, int destOffset)
+    {
+      CopyTo(startIndex, dest, destOffset, segment.Count - startIndex);
+    }
+
+    public void CopyTo(int startIndex, byte[] dest, int destOffset, int count)
+    {
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (segment.Count - count < startIndex)
+        throw new ArgumentException("startIndex + count is larger than length"); // XXXX
+
+      if (dest == null)
+        throw new ArgumentNullException("dest");
+      if (destOffset < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("destOffset", destOffset);
+      if (dest.Length - count < destOffset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("destOffset", dest, destOffset, count);
+
+      Buffer.BlockCopy(segment.Array, segment.Offset + startIndex, dest, destOffset, count);
+    }
+
+    public override string ToString()
+    {
+      return ToString(null, segment, 0, segment.Count);
+    }
+
+    public string ToString(int startIndex)
+    {
+      return ToString(null, segment, startIndex, segment.Count - startIndex);
+    }
+
+    public string ToString(int startIndex, int count)
+    {
+      return ToString(null, segment, startIndex, count);
+    }
+
+    public string ToString(Encoding encoding)
+    {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return ToString(encoding, segment, 0, segment.Count);
+    }
+
+    public string ToString(Encoding encoding, int startIndex)
+    {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return ToString(encoding, segment, startIndex, segment.Count - startIndex);
+    }
+
+    public string ToString(Encoding encoding, int startIndex, int count)
+    {
+      if (encoding == null)
+        throw new ArgumentNullException("encoding");
+
+      return ToString(encoding, segment, startIndex, count);
+    }
+
+    internal unsafe static string ToString(Encoding encoding, ArraySegment<byte> segment, int startIndex, int count)
+    {
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (segment.Count - count < startIndex)
+        throw new ArgumentException("startIndex + count is larger than length"); // XXXX
+
+      var index = startIndex + segment.Offset;
+
+      if (encoding == null) {
+        var chars = new char[count];
+
+        fixed (byte* str0 = segment.Array) {
+          for (var i = 0; 0 < count; count--) {
+            chars[i++] = (char)str0[index++];
+          }
+        }
+
+        return new string(chars);
+      }
+      else {
+        return encoding.GetString(segment.Array, index, count);
+      }
+    }
+
+    private readonly ArraySegment<byte> segment;
+    private readonly bool isMutable;
   }
 }

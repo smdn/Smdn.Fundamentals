@@ -96,44 +96,37 @@ namespace Smdn {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      return Append(str.ByteArray, 0, str.Length);
+      return Append(str.Segment);
     }
 
-    public ByteStringBuilder Append(ByteString str, int index, int count)
+    public ByteStringBuilder Append(ByteString str, int startIndex, int count)
     {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      return Append(str.ByteArray, index, count);
+      return Append(str.GetSubSegment(startIndex, count));
     }
 
     public ByteStringBuilder Append(byte[] str)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-
-      return Append(str, 0, str.Length);
+      return Append(new ArraySegment<byte>(str));
     }
 
-    public ByteStringBuilder Append(byte[] str, int index, int count)
+    public ByteStringBuilder Append(byte[] str, int startIndex, int count)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-      if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
-      if (str.Length - count < index)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", str, index, count);
+      return Append(new ArraySegment<byte>(str, startIndex, count));
+    }
 
-      if (count == 0)
+    public ByteStringBuilder Append(ArraySegment<byte> segment)
+    {
+      if (segment.Count == 0)
         return this;
 
-      EnsureCapacity(length + count);
+      EnsureCapacity(length + segment.Count);
 
-      Buffer.BlockCopy(str, index, buffer, length, count);
+      Buffer.BlockCopy(segment.Array, segment.Offset, buffer, length, segment.Count);
 
-      length += count;
+      length += segment.Count;
 
       return this;
     }
@@ -183,7 +176,7 @@ namespace Smdn {
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
-      if (length < offset + count)
+      if (length - count < offset)
         throw new ArgumentException("index + count is larger than length");
 
       return new ArraySegment<byte>(buffer, offset, count);
@@ -198,14 +191,17 @@ namespace Smdn {
       return bytes;
     }
 
-    public ByteString ToByteString()
+    public ByteString ToByteString(bool asMutable)
     {
-      return new ByteString(buffer, 0, length);
+      return ByteString.Create(asMutable, buffer, 0, length);
     }
 
     public override string ToString()
     {
-      return ToByteString().ToString();
+      return ByteString.ToString(null,
+                                 new ArraySegment<byte>(buffer, 0, length),
+                                 0,
+                                 length);
     }
 
     private byte[] buffer;

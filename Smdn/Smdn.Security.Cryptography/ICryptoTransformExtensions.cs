@@ -35,7 +35,9 @@ namespace Smdn.Security.Cryptography {
       if (encoding == null)
         throw new ArgumentNullException("encoding");
 
-      return Encoding.ASCII.GetString(TransformBytes(transform, encoding.GetBytes(str)));
+      var bytes = encoding.GetBytes(str);
+
+      return Encoding.ASCII.GetString(TransformBytes(transform, bytes, 0, bytes.Length));
     }
 
     public static string TransformStringFrom(this ICryptoTransform transform, string str, Encoding encoding)
@@ -45,37 +47,54 @@ namespace Smdn.Security.Cryptography {
       if (encoding == null)
         throw new ArgumentNullException("encoding");
 
-      return encoding.GetString(TransformBytes(transform, Encoding.ASCII.GetBytes(str)));
+      var bytes = Encoding.ASCII.GetBytes(str);
+
+      return encoding.GetString(TransformBytes(transform, bytes, 0, bytes.Length));
     }
 
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer)
     {
-      if (transform == null)
-        throw new ArgumentNullException("transform");
       if (inputBuffer == null)
         throw new ArgumentNullException("inputBuffer");
 
-      var outputBuffer = new byte[inputBuffer.Length * transform.OutputBlockSize];
+      return TransformBytes(transform, inputBuffer, 0, inputBuffer.Length);
+    }
+
+    public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer, int inputOffset, int inputCount)
+    {
+      if (transform == null)
+        throw new ArgumentNullException("transform");
+
+      if (inputBuffer == null)
+        throw new ArgumentNullException("inputBuffer");
+      if (inputOffset < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
+      if (inputCount < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
+      if (inputBuffer.Length - inputCount < inputOffset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
+
+      var outputBuffer = new byte[inputCount * transform.OutputBlockSize];
       var outputOffset = 0;
-      var inputOffset  = 0;
 
       if (transform.CanTransformMultipleBlocks) {
-        var inputCount = (inputBuffer.Length / transform.InputBlockSize) * transform.InputBlockSize;
+        var bytesToTransform = (inputCount / transform.InputBlockSize) * transform.InputBlockSize;
 
-        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
-        inputOffset  += inputCount;
+        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
+        inputOffset  += bytesToTransform;
+        inputCount   -= bytesToTransform;
       }
 
-      var inputRemain = inputBuffer.Length - inputOffset;
+      var inputBlockSize = transform.InputBlockSize;
 
-      while (transform.InputBlockSize <= inputRemain) {
-        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, transform.InputBlockSize, outputBuffer, outputOffset);
+      while (inputBlockSize <= inputCount) {
+        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, inputBlockSize, outputBuffer, outputOffset);
 
-        inputOffset += transform.InputBlockSize;
-        inputRemain -= transform.InputBlockSize;
+        inputOffset += inputBlockSize;
+        inputCount  -= inputBlockSize;
       }
 
-      var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputBuffer.Length - inputOffset);
+      var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
 
       if (outputBuffer.Length != outputOffset + finalBlock.Length)
         Array.Resize(ref outputBuffer, outputOffset + finalBlock.Length);

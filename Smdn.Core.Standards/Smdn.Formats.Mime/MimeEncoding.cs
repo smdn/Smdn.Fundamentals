@@ -156,7 +156,8 @@ namespace Smdn.Formats.Mime {
         byte[] transformed = null;
 
         for (;;) {
-          var t = transform.TransformBytes(charset.GetBytes(inputCharBuffer, inputCharOffset, transformCharCount));
+          var bytes = charset.GetBytes(inputCharBuffer, inputCharOffset, transformCharCount);
+          var t = transform.TransformBytes(bytes, 0, bytes.Length);
 
           if (transformed == null || t.Length <= outputLimit) {
             transformed = t;

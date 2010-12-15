@@ -12,7 +12,7 @@ namespace Smdn {
 
       Assert.AreEqual(0, b.Length);
       Assert.AreEqual(16, b.Capacity);
-      Assert.IsTrue(b.ToByteString().IsEmpty);
+      Assert.IsTrue(b.ToByteString(false).IsEmpty);
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Smdn {
 
       Assert.AreEqual(16, b.Capacity);
 
-      Assert.IsTrue(Object.ReferenceEquals(b, b.Append(new ByteString("0123456789"))));
+      Assert.IsTrue(Object.ReferenceEquals(b, b.Append(ByteString.CreateImmutable("0123456789"))));
 
       Assert.AreEqual(10, b.Length);
       Assert.AreEqual(16, b.Capacity);
@@ -77,7 +77,7 @@ namespace Smdn {
 
       Assert.AreEqual(20, b.Length);
 
-      Assert.IsTrue(Object.ReferenceEquals(b, b.Append(new ByteString("0123456789"), 5, 3)));
+      Assert.IsTrue(Object.ReferenceEquals(b, b.Append(ByteString.CreateImmutable("0123456789"), 5, 3)));
 
       Assert.AreEqual(23, b.Length);
 
@@ -94,7 +94,7 @@ namespace Smdn {
       var bytes1 = b.ToByteArray();
 
       Assert.AreEqual(6, bytes1.Length);
-      Assert.AreEqual((new ByteString("abcdef")).ByteArray, bytes1);
+      Assert.AreEqual(ByteString.CreateImmutable("abcdef").ToArray(), bytes1);
 
       Assert.AreNotSame(bytes1, b.ToByteArray());
 
@@ -105,7 +105,7 @@ namespace Smdn {
       Assert.AreNotSame(bytes1, bytes2);
 
       Assert.AreEqual(7, bytes2.Length);
-      Assert.AreEqual((new ByteString("abcdefg")).ByteArray, bytes2);
+      Assert.AreEqual(ByteString.CreateImmutable("abcdefg").ToArray(), bytes2);
     }
 
     [Test]
@@ -115,11 +115,11 @@ namespace Smdn {
 
       b.Append(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0x66});
 
-      Assert.AreEqual(new ByteString("abcdef"), b.ToByteString());
+      Assert.AreEqual(ByteString.CreateImmutable("abcdef"), b.ToByteString(false));
 
       b.Append((byte)0x67);
 
-      Assert.AreEqual(new ByteString("abcdefg"), b.ToByteString());
+      Assert.AreEqual(ByteString.CreateImmutable("abcdefg"), b.ToByteString(false));
     }
 
     [Test]

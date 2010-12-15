@@ -7,6 +7,70 @@ using NUnit.Framework;
 namespace Smdn.Security.Cryptography {
   [TestFixture]
   public class ICryptoTransformExtensionsTests {
+    [Test]
+    public void TestTransformBytes()
+    {
+      var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
+      var expected = new byte[] {0x59, 0x57, 0x4a, 0x6a, 0x5a, 0x47, 0x55, 0x3d};
+
+      using (var transform = new ToBase64Transform()) {
+        Assert.AreEqual(expected,
+                        ICryptoTransformExtensions.TransformBytes(transform, buffer.Slice(2, 5)));
+        Assert.AreEqual(expected,
+                        ICryptoTransformExtensions.TransformBytes(transform, buffer, 2, 5));
+      }
+    }
+
+    [Test]
+    public void TestTransformBytesArgumentException()
+    {
+      var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
+
+      using (var transform = new ToBase64Transform()) {
+        try {
+          ICryptoTransformExtensions.TransformBytes(null, buffer, 0, 9);
+          Assert.Fail("ArgumentNullException");
+        }
+        catch (ArgumentNullException) {
+        }
+
+        try {
+          ICryptoTransformExtensions.TransformBytes(transform, null, 0, 9);
+          Assert.Fail("ArgumentNullException");
+        }
+        catch (ArgumentNullException) {
+        }
+
+        try {
+          ICryptoTransformExtensions.TransformBytes(transform, buffer, -1, 10);
+          Assert.Fail("ArgumentOutOfRangeException");
+        }
+        catch (ArgumentOutOfRangeException) {
+        }
+
+        try {
+          ICryptoTransformExtensions.TransformBytes(transform, buffer, 10, -1);
+          Assert.Fail("ArgumentOutOfRangeException");
+        }
+        catch (ArgumentOutOfRangeException) {
+        }
+
+        try {
+          ICryptoTransformExtensions.TransformBytes(transform, buffer, 1, 9);
+          Assert.Fail("ArgumentException");
+        }
+        catch (ArgumentException) {
+        }
+
+        try {
+          ICryptoTransformExtensions.TransformBytes(transform, buffer, 9, 1);
+          Assert.Fail("ArgumentException");
+        }
+        catch (ArgumentException) {
+        }
+      }
+    }
+
     private byte[] TransformByCryptoStream(HashAlgorithm algorithm, byte[] bytes)
     {
       algorithm.Initialize();
