@@ -218,6 +218,17 @@ namespace Smdn.Collections {
       return default(TSource);
     }
 
+    public static IEnumerable<int> Range(int start, int count)
+    {
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+      if (int.MaxValue - count < start - 1)
+        throw new ArgumentOutOfRangeException("count");
+
+      for (var i = 0; i < count; i++)
+        yield return start++;
+    }
+
     public static IEnumerable<TSource> Reverse<TSource>(this IEnumerable<TSource> source)
     {
       CheckArgs(source);
@@ -307,6 +318,13 @@ namespace Smdn.Collections {
 
         return array;
       }
+    }
+
+    public static List<TSource> ToList<TSource>(this IEnumerable<TSource> source)
+    {
+      CheckArgs(source);
+
+      return new List<TSource>(source);
     }
 
     public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)

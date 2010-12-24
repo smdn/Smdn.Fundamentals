@@ -81,6 +81,7 @@
     <Compile Include="Smdn.Collections\Enumerable.cs" />
     <Compile Include="Smdn\BinaryConvert.cs" />
     <Compile Include="Smdn\ExceptionUtils.cs" />
+    <Compile Include="Smdn.Collections\HashSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn-netfx3.5.csproj">

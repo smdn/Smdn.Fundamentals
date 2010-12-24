@@ -99,6 +99,8 @@
     <Compile Include="Smdn\AggregateException.cs" />
     <Compile Include="Smdn\BinaryConvert.cs" />
     <Compile Include="Smdn\ExceptionUtils.cs" />
+    <Compile Include="Smdn.Collections\HashSet.cs" />
+    <Compile Include="Smdn.Collections\ISet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
