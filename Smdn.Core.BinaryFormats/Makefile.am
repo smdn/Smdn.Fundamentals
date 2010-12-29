@@ -68,7 +68,8 @@ FILES = \
 	Smdn.IO/ExtendStreamBase.cs \
 	Smdn.IO/BinaryReaderBase.cs \
 	Smdn.IO/BinaryWriterBase.cs \
-	Smdn/BinaryConvertExtensions.cs 
+	Smdn/BinaryConvertExtensions.cs \
+	Smdn.IO/UnclosableStream.cs 
 
 DATA_FILES = 
 
