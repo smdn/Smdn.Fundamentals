@@ -78,7 +78,9 @@ FILES = \
 	Smdn.Formats.Mime/QuotedPrintableEncoding.cs \
 	Smdn.Formats.Mime/ContentTransferEncoding.cs \
 	Smdn.Formats.Mime/ContentTransferEncodingMethod.cs \
-	Smdn.Formats/HtmlEscape.cs 
+	Smdn.Formats/HtmlEscape.cs \
+	Smdn.Formats/EncodingNotSupportedException.cs \
+	Smdn.Formats/EncodingSelectionCallback.cs 
 
 DATA_FILES = 
 
