@@ -96,7 +96,9 @@ FILES = \
 	Smdn.Collections/Enumerable.cs \
 	Smdn/AggregateException.cs \
 	Smdn/BinaryConvert.cs \
-	Smdn/ExceptionUtils.cs 
+	Smdn/ExceptionUtils.cs \
+	Smdn.Collections/HashSet.cs \
+	Smdn.Collections/ISet.cs 
 
 DATA_FILES = 
 
