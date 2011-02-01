@@ -139,6 +139,15 @@ bool hasMango = fruits.Contains(fruit);
     }
 
     [Test]
+    public void TestEmpty()
+    {
+      Assert.AreEqual(0, Enumerable.Empty<int>().Count());
+      CollectionAssert.AreEquivalent(new int[0], Enumerable.Empty<int>());
+      CollectionAssert.AreEquivalent(GetEmptyEnumerator(), Enumerable.Empty<int>());
+      CollectionAssert.AreEquivalent(new int[0], Enumerable.Empty<int>().ToArray());
+    }
+
+    [Test]
     public void TestFirst()
     {
       Assert.AreEqual(0, ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).First());
