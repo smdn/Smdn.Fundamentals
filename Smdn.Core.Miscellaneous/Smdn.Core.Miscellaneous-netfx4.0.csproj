@@ -57,6 +57,7 @@
     <Compile Include="Smdn.Threading\ProcessLock.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
     <Compile Include="Smdn.Xml\XmlCachedUrlResolver.cs" />
+    <Compile Include="Smdn.Net\WsseClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -79,6 +80,7 @@
     <Folder Include="Smdn.IO\" />
     <Folder Include="Smdn.Threading\" />
     <Folder Include="Smdn.Xml\" />
+    <Folder Include="Smdn.Net\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn-netfx4.0.csproj">
