@@ -30,6 +30,11 @@ namespace Smdn.Xml.Xhtml {
   public static class XhtmlUtils {
     public static string ToString(XmlNode node, XmlWriterSettings settings)
     {
+      return ToStringBuilder(node, settings).ToString();
+    }
+
+    public static StringBuilder ToStringBuilder(XmlNode node, XmlWriterSettings settings)
+    {
       if (node == null)
         throw new ArgumentNullException();
 
@@ -52,7 +57,7 @@ namespace Smdn.Xml.Xhtml {
 
       sb.Replace("<pre>\u200b", "<pre>");
 
-      return sb.ToString();
+      return sb;
     }
 
     private static void ProcessDocument(XhtmlDocument document, Action<XmlDocument> action)
