@@ -54,8 +54,11 @@ namespace Smdn.Xml {
       if (ofObjectToReturn != null && !typeof(Stream).IsAssignableFrom(ofObjectToReturn))
         throw new XmlException("argument ofObjectToReturn is invalid");
 
+      var directory = Path.Combine(cacheDirectory, absoluteUri.Host);
+      var file = absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar);
+
       return Smdn.IO.CachedWebFile.OpenRead(absoluteUri,
-                                            Path.Combine(cacheDirectory, absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar)),
+                                            Path.Combine(directory, file),
                                             cacheExpirationInterval);
     }
 
