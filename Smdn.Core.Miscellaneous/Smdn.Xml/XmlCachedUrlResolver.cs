@@ -54,11 +54,14 @@ namespace Smdn.Xml {
       if (ofObjectToReturn != null && !typeof(Stream).IsAssignableFrom(ofObjectToReturn))
         throw new XmlException("argument ofObjectToReturn is invalid");
 
-      var directory = Path.Combine(cacheDirectory, absoluteUri.Host);
-      var file = absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar);
+      if (string.Equals(absoluteUri.Scheme, Uri.UriSchemeFile, StringComparison.OrdinalIgnoreCase))
+        return File.OpenRead(absoluteUri.LocalPath);
+
+      var rootDirectory = Path.Combine(cacheDirectory, absoluteUri.Host);
+      var relativePath = absoluteUri.LocalPath.Substring(1).Replace('/', Path.DirectorySeparatorChar);
 
       return Smdn.IO.CachedWebFile.OpenRead(absoluteUri,
-                                            Path.Combine(directory, file),
+                                            Path.Combine(rootDirectory, relativePath),
                                             cacheExpirationInterval);
     }
 
