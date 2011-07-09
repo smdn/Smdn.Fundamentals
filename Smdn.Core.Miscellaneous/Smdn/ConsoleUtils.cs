@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.IO;
 using System.Text;
 using System.Threading;
 
@@ -33,16 +34,26 @@ namespace Smdn {
 
     private static int? cursorLeft = null;
     private static int? cursorTop = null;
+    private static bool cursorNotSupported = false;
 
     private static void PreserveAndRevertCursor()
     {
-      if (cursorLeft != null)
-        Console.CursorLeft = (int)cursorLeft;
-      if (cursorTop != null)
-        Console.CursorTop = (int)cursorTop;
+      if (cursorNotSupported)
+        return;
 
-      cursorLeft = Console.CursorLeft;
-      cursorTop  = Console.CursorTop;
+      try {
+        if (cursorLeft != null)
+          Console.CursorLeft = (int)cursorLeft;
+        if (cursorTop != null)
+          Console.CursorTop = (int)cursorTop;
+
+        cursorLeft = Console.CursorLeft;
+        cursorTop  = Console.CursorTop;
+      }
+      catch (IOException) {
+        // ignore
+        cursorNotSupported = true;
+      }
     }
 
     private static void WriteProgressChar()
