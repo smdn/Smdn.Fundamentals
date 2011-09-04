@@ -52,8 +52,13 @@ namespace Smdn.Xml.Xhtml {
 
       writer.Flush();
 
-      if (node is XhtmlDocument)
+      if (node is XhtmlDocument) {
+        // XHTML 1.1
         sb.Replace("\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\"[]>", "\"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">");
+
+        // HTML 5
+        sb.Replace("<!DOCTYPE html[]>", "<!DOCTYPE html>");
+      }
 
       sb.Replace("<pre>\u200b", "<pre>");
 
