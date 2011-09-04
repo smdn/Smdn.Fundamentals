@@ -122,5 +122,15 @@ namespace Smdn.Xml.Xhtml {
 
       return pre;
     }
+
+    public XmlElement GetXhtmlElementById(string id)
+    {
+      var attrId = SelectSingleNode(string.Concat("//@id[.='", id, "']")) as XmlAttribute;
+
+      if (attrId == null)
+        return null;
+      else
+        return attrId.OwnerElement;
+    }
   }
 }
