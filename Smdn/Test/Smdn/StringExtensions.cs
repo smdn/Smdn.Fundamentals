@@ -95,5 +95,36 @@ namespace Smdn {
         Assert.AreEqual("to", ex.ParamName, "#4");
       }
     }
+
+    [Test]
+    public void TestIndexOfNot()
+    {
+      Assert.AreEqual(2, "aabbcc".IndexOfNot('a'));
+      Assert.AreEqual(0, "aabbcc".IndexOfNot('b'));
+      Assert.AreEqual(-1, "cccccc".IndexOfNot('c'));
+
+      Assert.AreEqual(2, "aabb".IndexOfNot('a', 0));
+      Assert.AreEqual(2, "aabb".IndexOfNot('a', 1));
+      Assert.AreEqual(2, "aabb".IndexOfNot('a', 2));
+      Assert.AreEqual(3, "aabb".IndexOfNot('a', 3));
+
+      Assert.AreEqual(-1, "aaaa".IndexOfNot('a', 2));
+      Assert.AreEqual(-1, "aaaa".IndexOfNot('a', 4));
+
+      try {
+        "abc".IndexOfNot('a', -1);
+        Assert.Fail("ArgumentOutOfRangeException not thrown #1");
+      }
+      catch (ArgumentOutOfRangeException ex) {
+        Assert.AreEqual("startIndex", ex.ParamName, "#1");
+      }
+
+      try {
+        "abc".IndexOfNot('a', 4);
+        Assert.Fail("ArgumentException not thrown #2");
+      }
+      catch (ArgumentException) {
+      }
+    }
   }
 }

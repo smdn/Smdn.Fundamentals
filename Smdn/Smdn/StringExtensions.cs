@@ -179,5 +179,35 @@ namespace Smdn {
 
       return str.Substring(from, to - from);
     }
+
+    public static int IndexOfNot(this string str, char @value)
+    {
+      return IndexOfNot(str, @value, 0);
+    }
+
+    public static int IndexOfNot(this string str, char @value, int startIndex)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+      if (str.Length < startIndex)
+        //throw new ArgumentException("startIndex + count is larger than length");
+        throw new ArgumentException("startIndex is larger than length");
+
+      for (var index = startIndex; index < str.Length; index++) {
+        if (str[index] != @value)
+          return index;
+      }
+
+      return -1;
+    }
+
+#if false
+    public static int IndexOfNot(this string str, char @value, int startIndex, int count)
+    {
+      throw new NotImplementedException();
+    }
+#endif
   }
 }
