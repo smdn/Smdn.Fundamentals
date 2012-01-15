@@ -101,6 +101,8 @@
     <Compile Include="Smdn\ExceptionUtils.cs" />
     <Compile Include="Smdn.Collections\HashSet.cs" />
     <Compile Include="Smdn.Collections\ISet.cs" />
+    <Compile Include="Smdn\UriUtils.cs" />
+    <Compile Include="Smdn.Collections\KeyValuePair.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

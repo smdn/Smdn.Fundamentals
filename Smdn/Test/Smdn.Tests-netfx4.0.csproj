@@ -8,7 +8,6 @@
     <ProjectGuid>{6A95CCB4-BEE8-40AC-8FDD-683227DFE207}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Tests</RootNamespace>
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
@@ -82,6 +81,7 @@
     <Compile Include="Smdn\BinaryConvert.cs" />
     <Compile Include="Smdn\ExceptionUtils.cs" />
     <Compile Include="Smdn.Collections\HashSet.cs" />
+    <Compile Include="Smdn\UriUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
