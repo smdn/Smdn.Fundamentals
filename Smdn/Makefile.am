@@ -30,7 +30,7 @@ SMDN_DLL_MDB=
 
 endif
 
-AL=al2
+AL=al
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
@@ -98,7 +98,9 @@ FILES = \
 	Smdn/BinaryConvert.cs \
 	Smdn/ExceptionUtils.cs \
 	Smdn.Collections/HashSet.cs \
-	Smdn.Collections/ISet.cs 
+	Smdn.Collections/ISet.cs \
+	Smdn/UriUtils.cs \
+	Smdn.Collections/KeyValuePair.cs 
 
 DATA_FILES = 
 
