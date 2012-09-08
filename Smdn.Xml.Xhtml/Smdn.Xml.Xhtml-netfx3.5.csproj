@@ -49,6 +49,7 @@
     <Compile Include="Smdn.Xml.Xhtml\XhtmlUtils.cs" />
     <Compile Include="Smdn.Xml.Xhtml\XhtmlDocument.cs" />
     <Compile Include="Smdn.Xml.Xhtml\W3CNamespaces.cs" />
+    <Compile Include="Smdn.Xml.Xhtml\XmlElementExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
