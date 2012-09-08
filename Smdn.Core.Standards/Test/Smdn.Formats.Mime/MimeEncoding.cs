@@ -173,5 +173,78 @@ namespace Smdn.Formats.Mime {
                       MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
                       "utf8");
     }
+
+    [Test]
+    public void TestDecodeValidCharsetSelectFallback()
+    {
+      bool called = false;
+      EncodingSelectionCallback callback = delegate(string name) {
+        called = true;
+        return Encoding.ASCII;
+      };
+      MimeEncodingMethod encoding;
+      Encoding charset;
+
+      var ret = MimeEncoding.Decode("=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
+                                    callback,
+                                    out encoding,
+                                    out charset);
+
+      Assert.IsNotNull(ret);
+      Assert.AreEqual("漢字abcかな123カナ", ret);
+      Assert.IsFalse(called);
+      Assert.AreEqual(MimeEncodingMethod.QEncoding, encoding);
+      Assert.AreEqual(Encoding.UTF8, charset);
+    }
+
+    [Test]
+    public void TestDecodeInvalidCharsetSelectFallback()
+    {
+      bool called = false;
+      EncodingSelectionCallback callback = delegate(string name) {
+        called = true;
+        return Encoding.UTF8;
+      };
+      MimeEncodingMethod encoding;
+      Encoding charset;
+
+      var ret = MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
+                                    callback,
+                                    out encoding,
+                                    out charset);
+
+      Assert.IsNotNull(ret);
+      Assert.AreEqual("漢字abcかな123カナ", ret);
+      Assert.IsTrue(called);
+      Assert.AreEqual(MimeEncodingMethod.QEncoding, encoding);
+      Assert.AreEqual(Encoding.UTF8, charset);
+    }
+
+    [Test]
+    public void TestDecodeInvalidCharsetSelectFallbackReturnNull()
+    {
+      bool called = false;
+      EncodingSelectionCallback callback = delegate(string name) {
+        called = true;
+        return null;
+      };
+      MimeEncodingMethod encoding = MimeEncodingMethod.None;
+      Encoding charset = null;
+
+      try {
+        MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
+                            callback,
+                            out encoding,
+                            out charset);
+
+        Assert.Fail("FormatException not thrown");
+      }
+      catch (FormatException) {
+      }
+
+      Assert.IsTrue(called);
+      Assert.AreEqual(MimeEncodingMethod.None, encoding);
+      Assert.IsNull(charset);
+    }
   }
 }

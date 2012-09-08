@@ -209,39 +209,34 @@ namespace Smdn.Formats.Mime {
       return ret.ToString();
     }
 
-    public static string DecodeNullable(string str)
-    {
-      if (str == null)
-        return null;
-      else
-        return Decode(str);
-    }
-
     public static string Decode(string str)
     {
       MimeEncodingMethod discard1;
       Encoding discard2;
 
-      return Decode(str, out discard1, out discard2);
+      return Decode(str, null, out discard1, out discard2);
     }
 
-    public static string DecodeNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)
+    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding)
     {
-      if (str == null) {
-        encoding = MimeEncodingMethod.None;
-        charset = null;
+      MimeEncodingMethod discard1;
+      Encoding discard2;
 
-        return null;
-      }
-      else {
-        return Decode(str, out encoding, out charset);
-      }
+      return Decode(str, selectFallbackEncoding, out discard1, out discard2);
+    }
+
+    public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
+    {
+      return Decode(str, null, out encoding, out charset);
     }
 
     private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?=\s*",
                                                                    RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-    public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
+    public static string Decode(string str,
+                                EncodingSelectionCallback selectFallbackEncoding,
+                                out MimeEncodingMethod encoding,
+                                out Encoding charset)
     {
       if (str == null)
         throw new ArgumentNullException("str");
@@ -255,7 +250,7 @@ namespace Smdn.Formats.Mime {
       lock (mimeEncodedWordRegex) {
         var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
           // charset
-          lastCharset = EncodingUtils.GetEncoding(m.Groups[1].Value);
+          lastCharset = EncodingUtils.GetEncoding(m.Groups[1].Value, selectFallbackEncoding);
 
           if (lastCharset == null)
             throw new FormatException(string.Format("{0} is an unsupported or invalid charset", m.Groups[1].Value));
@@ -285,6 +280,57 @@ namespace Smdn.Formats.Mime {
         encoding = lastEncoding;
 
         return ret;
+      }
+    }
+
+    public static string DecodeNullable(string str)
+    {
+      if (str == null)
+        return null;
+
+      MimeEncodingMethod discard1;
+      Encoding discard2;
+
+      return Decode(str, null, out discard1, out discard2);
+    }
+
+    public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding)
+    {
+      if (str == null)
+        return null;
+
+      MimeEncodingMethod discard1;
+      Encoding discard2;
+
+      return Decode(str, selectFallbackEncoding, out discard1, out discard2);
+    }
+
+    public static string DecodeNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)
+    {
+      if (str == null) {
+        encoding = MimeEncodingMethod.None;
+        charset = null;
+
+        return null;
+      }
+      else {
+        return Decode(str, null, out encoding, out charset);
+      }
+    }
+
+    public static string DecodeNullable(string str,
+                                        EncodingSelectionCallback selectFallbackEncoding,
+                                        out MimeEncodingMethod encoding,
+                                        out Encoding charset)
+    {
+      if (str == null) {
+        encoding = MimeEncodingMethod.None;
+        charset = null;
+
+        return null;
+      }
+      else {
+        return Decode(str, selectFallbackEncoding, out encoding, out charset);
       }
     }
   }
