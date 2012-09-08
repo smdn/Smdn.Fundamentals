@@ -8,7 +8,6 @@
     <ProjectGuid>{9C78CD2D-FDD8-43BE-9954-783885B70BC1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
@@ -37,7 +36,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\Smdn-netfx4.0.csproj">
