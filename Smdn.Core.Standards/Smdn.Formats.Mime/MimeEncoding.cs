@@ -250,10 +250,13 @@ namespace Smdn.Formats.Mime {
       lock (mimeEncodedWordRegex) {
         var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
           // charset
-          lastCharset = EncodingUtils.GetEncoding(m.Groups[1].Value, selectFallbackEncoding);
+          var charsetName = m.Groups[1].Value;
+
+          lastCharset = EncodingUtils.GetEncoding(charsetName, selectFallbackEncoding);
 
           if (lastCharset == null)
-            throw new FormatException(string.Format("{0} is an unsupported or invalid charset", m.Groups[1].Value));
+            throw new EncodingNotSupportedException(charsetName,
+                                                    string.Format("'{0}' is an unsupported or invalid charset", charsetName));
 
           // encoding
           ICryptoTransform transform;

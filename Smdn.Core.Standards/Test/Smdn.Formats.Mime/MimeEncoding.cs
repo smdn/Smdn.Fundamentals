@@ -156,6 +156,9 @@ namespace Smdn.Formats.Mime {
                                           " =?ISO-2022-JP?B?GyRCQmc5JUk+JS0lYyVzJVohPCVzJCw0ViRiJEokLz0qTjsbKEI=?=" +
                                           " /=?ISO-2022-JP?B?GyRCPzdAODNoJTklPyE8JUghI0VQTz9GYk1GJE5KUTk5GyhC?=" +
                                           " =?ISO-2022-JP?B?GyRCJHIhKhsoQg==?="));
+
+      Assert.AreEqual("てすと①",
+                      MimeEncoding.Decode("=?cp932?B?gsSCt4LGh0A=?="));
     }
 
     [Test, ExpectedException(typeof(FormatException))]
@@ -166,12 +169,19 @@ namespace Smdn.Formats.Mime {
                       "utf8");
     }
 
-    [Test, ExpectedException(typeof(FormatException))]
+    [Test]
     public void TestDecodeInvalidCharset()
     {
-      Assert.AreEqual("漢字abcかな123カナ",
-                      MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
-                      "utf8");
+      try {
+        Assert.AreEqual("漢字abcかな123カナ",
+                        MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
+                        "utf8");
+
+        Assert.Fail("EncodingNotSupportedException not thrown");
+      }
+      catch (EncodingNotSupportedException ex) {
+        Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
+      }
     }
 
     [Test]
@@ -237,9 +247,10 @@ namespace Smdn.Formats.Mime {
                             out encoding,
                             out charset);
 
-        Assert.Fail("FormatException not thrown");
+        Assert.Fail("EncodingNotSupportedException not thrown");
       }
-      catch (FormatException) {
+      catch (EncodingNotSupportedException ex) {
+        Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
       }
 
       Assert.IsTrue(called);
