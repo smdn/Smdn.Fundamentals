@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Smdn.Core.Standards")]
 [assembly: AssemblyDescription("Smdn.Core.Standards.dll")]
-[assembly: AssemblyCopyright("Copyright(c) 2010-2011 smdn")]
+[assembly: AssemblyCopyright("Copyright(c) 2010-2012 smdn")]
 [assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
 [assembly: AssemblyConfiguration("")]
 
