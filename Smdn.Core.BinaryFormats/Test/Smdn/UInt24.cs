@@ -28,9 +28,9 @@ namespace Smdn {
 
       Assert.AreEqual(1, zero.CompareTo(null));
 
-      Assert.Less(zero, one);
-      Assert.Less(0, one);
-      Assert.Less(0u, one);
+      Assert.That(0 < one.CompareTo(zero));
+      Assert.That(0 < one.CompareTo(0));
+      Assert.That(0 < one.CompareTo(0u));
     }
 
     [Test]
