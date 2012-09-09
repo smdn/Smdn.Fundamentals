@@ -38,10 +38,11 @@ namespace Smdn.Formats {
     //                                    "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
     // RFC 2396 unreserved characters:    "!      '()*  -. 0123456789     ?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[  ] _ abcdefghijklmnopqrstuvwxyz   ~";
     // RFC 3986 unreserved characters:    "             -. 0123456789       ABCDEFGHIJKLMNOPQRSTUVWXYZ     _ abcdefghijklmnopqrstuvwxyz   ~";
+    // RFC 3986   reserved characters:    "!  #$ &'()*+,  /          :; = ?@                          [  ]                                 ";
     private const string
       rfc2396UriEscapeChars             = " \"  %                      < >                            [\\]^ `                          {|} ";
     private const string
-      rfc3986UriEscapeChars             = "!\"  % '()*                 < >?@                          [\\]^ `                          {|} ";
+      rfc3986UriEscapeChars             = " \"  %                      < >                             \\ ^ `                          {|} ";
     private const string
       rfc2396DataEscapeChars            = " \"#$%&    +,  /          :;<=>?@                          [\\]^ `                          {|} ";
     private const string

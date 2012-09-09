@@ -14,8 +14,6 @@ namespace Smdn.Formats {
                                                     ToPercentEncodedTransformMode.Rfc2396Uri,
                                                     Encoding.ASCII);
 
-      Assert.AreEqual(Uri.EscapeUriString(text),
-                      actual, "same as Uri.EscapeUriString");
       Assert.AreEqual("%20!%22#$%25&'()*+,-./0123456789:;%3C=%3E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
                       actual);
     }
@@ -28,7 +26,7 @@ namespace Smdn.Formats {
                                                     ToPercentEncodedTransformMode.Rfc3986Uri,
                                                     Encoding.ASCII);
 
-      Assert.AreEqual("%20%21%22#$%25&%27%28%29%2A+,-./0123456789:;%3C=%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
+      Assert.AreEqual("%20!%22#$%25&'()*+,-./0123456789:;%3C=%3E?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[%5C]%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
                       actual);
     }
 
@@ -40,8 +38,6 @@ namespace Smdn.Formats {
                                                     ToPercentEncodedTransformMode.Rfc2396Data,
                                                     Encoding.ASCII);
 
-      Assert.AreEqual(Uri.EscapeDataString(text),
-                      actual, "same as Uri.EscapeDataString");
       Assert.AreEqual("%20!%22%23%24%25%26'()*%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
                       actual);
     }
@@ -56,6 +52,46 @@ namespace Smdn.Formats {
 
       Assert.AreEqual("%20%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~",
                       actual);
+    }
+
+    [Test]
+    public void TestGetEncodedStringUriEscapeUriString()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = PercentEncoding.GetEncodedString(text,
+                                                    ToPercentEncodedTransformMode.UriEscapeUriString,
+                                                    Encoding.ASCII);
+
+#if NET_4_0
+      Assert.AreEqual(ToPercentEncodedTransformMode.Rfc3986Uri,
+#else
+      Assert.AreEqual(ToPercentEncodedTransformMode.Rfc2396Uri,
+#endif
+                      ToPercentEncodedTransformMode.UriEscapeUriString);
+
+      Assert.AreEqual(Uri.EscapeUriString(text),
+                      actual,
+                      "same as Uri.EscapeDataString");
+    }
+
+    [Test]
+    public void TestGetEncodedStringUriEscapeDataString()
+    {
+      var text = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
+      var actual = PercentEncoding.GetEncodedString(text,
+                                                    ToPercentEncodedTransformMode.UriEscapeDataString,
+                                                    Encoding.ASCII);
+
+#if NET_4_0
+      Assert.AreEqual(ToPercentEncodedTransformMode.Rfc3986Data,
+#else
+      Assert.AreEqual(ToPercentEncodedTransformMode.Rfc2396Data,
+#endif
+                      ToPercentEncodedTransformMode.UriEscapeDataString);
+
+      Assert.AreEqual(Uri.EscapeDataString(text),
+                      actual,
+                      "same as Uri.EscapeDataString");
     }
 
     [Test]
