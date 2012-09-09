@@ -382,20 +382,20 @@ namespace Smdn {
       var gx = new Guid("00000000-0000-0000-0000-000000000000");
       var gy = new Guid("00000001-0000-0000-0000-000000000000");
 
-      Assert.Less(ux, uy);
-      Assert.Less(gx, uy);
-      Assert.Greater(uy, ux);
-      Assert.Greater(gy, ux);
+      Assert.That(ux.CompareTo(uy) < 0);
+      Assert.That(ux.CompareTo(gy) < 0);
+      Assert.That(0 < uy.CompareTo(ux));
+      Assert.That(0 < uy.CompareTo(gx));
 
       ux = new Uuid("00000000-0000-0000-0000-000000000000");
       uy = new Uuid("00000000-0000-0000-0000-000000000001");
       gx = new Guid("00000000-0000-0000-0000-000000000000");
       gy = new Guid("00000000-0000-0000-0000-000000000001");
 
-      Assert.Less(ux, uy);
-      Assert.Less(gx, uy);
-      Assert.Greater(uy, ux);
-      Assert.Greater(gy, ux);
+      Assert.That(ux.CompareTo(uy) < 0);
+      Assert.That(ux.CompareTo(gy) < 0);
+      Assert.That(0 < uy.CompareTo(ux));
+      Assert.That(0 < uy.CompareTo(gx));
     }
 
     [Test]
