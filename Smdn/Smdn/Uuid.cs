@@ -903,6 +903,20 @@ namespace Smdn {
           else
             return ret;
 
+        case "X":
+          return string.Format("{{0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}}}}}",
+                               time_low,
+                               time_mid,
+                               time_hi_and_version,
+                               clock_seq_hi_and_reserved,
+                               clock_seq_low,
+                               node.N0,
+                               node.N1,
+                               node.N2,
+                               node.N3,
+                               node.N4,
+                               node.N5);
+
         default:
           throw new FormatException(string.Format("invalid format: {0}", format));
       }

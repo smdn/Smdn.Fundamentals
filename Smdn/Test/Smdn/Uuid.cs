@@ -174,9 +174,10 @@ namespace Smdn {
       Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString("D", null));
       Assert.AreEqual("{00000000-0000-0000-0000-000000000000}", Uuid.Nil.ToString("B", null));
       Assert.AreEqual("(00000000-0000-0000-0000-000000000000)", Uuid.Nil.ToString("P", null));
+      Assert.AreEqual("{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}", Uuid.Nil.ToString("X", null));
 
       try {
-        Uuid.Nil.ToString("X", null);
+        Uuid.Nil.ToString("Z", null);
         Assert.Fail("FormatException not thrown");
       }
       catch (FormatException) {
@@ -194,6 +195,10 @@ namespace Smdn {
       Assert.AreEqual(guid.ToString("D"), uuid.ToString("D"), "format = D");
       Assert.AreEqual(guid.ToString("B"), uuid.ToString("B"), "format = B");
       Assert.AreEqual(guid.ToString("P"), uuid.ToString("P"), "format = P");
+
+#if NET_4_0
+      Assert.AreEqual(guid.ToString("X"), uuid.ToString("X"), "format = X");
+#endif
     }
 
     [Test]
@@ -207,6 +212,10 @@ namespace Smdn {
       Assert.AreEqual(guid.ToString("D"), uuid.ToString("D"), "format = D");
       Assert.AreEqual(guid.ToString("B"), uuid.ToString("B"), "format = B");
       Assert.AreEqual(guid.ToString("P"), uuid.ToString("P"), "format = P");
+
+#if NET_4_0
+      Assert.AreEqual(guid.ToString("X"), uuid.ToString("X"), "format = X");
+#endif
     }
 
     [Test]
