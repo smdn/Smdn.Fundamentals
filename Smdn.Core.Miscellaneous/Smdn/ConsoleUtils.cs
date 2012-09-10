@@ -2,7 +2,7 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2011 smdn
+// Copyright (c) 2009-2012 smdn
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -54,6 +54,12 @@ namespace Smdn {
         // ignore
         cursorNotSupported = true;
       }
+    }
+
+    public static void ClearCursorPosition()
+    {
+      cursorLeft = null;
+      cursorTop  = null;
     }
 
     private static void WriteProgressChar()
@@ -147,6 +153,11 @@ namespace Smdn {
         return @default;
       else
         return result.ToLower().StartsWith("y");
+    }
+
+    public static string ReadPassword()
+    {
+      return ReadPassword("Password: ");
     }
 
     public static string ReadPassword(string promptFormat, params object[] arg)
