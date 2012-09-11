@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Smdn</RootNamespace>
+    <AssemblyName>Smdn</AssemblyName>
+    <OutputPath>..\build\bin\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <OutputType>Library</OutputType>
+    <OutputPath>..\build\bin\Debug\netfx4.5\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\netfx4.5\</IntermediateOutputPath>
+    <RootNamespace>Smdn</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <OutputType>Library</OutputType>
+    <OutputPath>..\build\bin\Release\netfx4.5\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\netfx4.5\</IntermediateOutputPath>
+    <RootNamespace>Smdn</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5</DefineConstants>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="System.Runtime.CompilerServices\ExtensionAttribute.cs" />
+    <Compile Include="Smdn.Mathematics\Fraction.cs" />
+    <Compile Include="Smdn.Formats\Chars.cs" />
+    <Compile Include="Smdn.Formats\Octets.cs" />
+    <Compile Include="Smdn\Runtime.cs" />
+    <Compile Include="Smdn.IO\PathUtils.cs" />
+    <Compile Include="Smdn\ArrayExtensions.cs" />
+    <Compile Include="Smdn\StringExtensions.cs" />
+    <Compile Include="Mono.Simd\SimdRuntime.cs" />
+    <Compile Include="Smdn\RuntimeEnvironment.cs" />
+    <Compile Include="Smdn\EnumUtils.cs" />
+    <Compile Include="Smdn\Action.cs" />
+    <Compile Include="Smdn\Func.cs" />
+    <Compile Include="Smdn.Mathematics\Radian.cs" />
+    <Compile Include="Smdn.Mathematics\Polar.cs" />
+    <Compile Include="Smdn\MimeType.cs" />
+    <Compile Include="Smdn.IO\DirectoryInfoExtensions.cs" />
+    <Compile Include="Smdn.IO\DirectoryUtils.cs" />
+    <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
+    <Compile Include="Smdn.Threading\Parallel.cs" />
+    <Compile Include="Smdn.Media\mmsystem.h.cs" />
+    <Compile Include="Smdn\Platform.cs" />
+    <Compile Include="Smdn\Endianness.cs" />
+    <Compile Include="Smdn\Shell.cs" />
+    <Compile Include="Smdn\Uuid.cs" />
+    <Compile Include="Smdn\UuidVersion.cs" />
+    <Compile Include="Smdn\Urn.cs" />
+    <Compile Include="Smdn\Lazy.cs" />
+    <Compile Include="Smdn.IO\StreamExtensions.cs" />
+    <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
+    <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
+    <Compile Include="Smdn\UnixTimeStamp.cs" />
+    <Compile Include="Smdn\MathUtils.cs" />
+    <Compile Include="Smdn.Formats\Csv.cs" />
+    <Compile Include="Smdn.Formats\Hexadecimals.cs" />
+    <Compile Include="Smdn\ConvertUtils.cs" />
+    <Compile Include="Smdn\ByteString.cs" />
+    <Compile Include="Smdn\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.IO\ChunkedMemoryStream.cs" />
+    <Compile Include="Smdn.IO\PartialStream.cs" />
+    <Compile Include="Smdn.IO\CachedStreamBase.cs" />
+    <Compile Include="Smdn.IO\NonPersistentCachedStream.cs" />
+    <Compile Include="Smdn.IO\PersistentCachedStream.cs" />
+    <Compile Include="Smdn\Tuple.cs" />
+    <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
+    <Compile Include="Smdn.Formats\Base64.cs" />
+    <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
+    <Compile Include="Smdn.Collections\Enumerable.cs" />
+    <Compile Include="Smdn\AggregateException.cs" />
+    <Compile Include="Smdn\BinaryConvert.cs" />
+    <Compile Include="Smdn\ExceptionUtils.cs" />
+    <Compile Include="Smdn.Collections\HashSet.cs" />
+    <Compile Include="Smdn.Collections\ISet.cs" />
+    <Compile Include="Smdn\UriUtils.cs" />
+    <Compile Include="Smdn.Collections\KeyValuePair.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <StandardHeader Text="&#xA;Author:&#xA;      ${AuthorName} &lt;${AuthorEmail}&gt;&#xA;&#xA;Copyright (c) 2009-${Year} ${CopyrightHolder}&#xA;&#xA;Permission is hereby granted, free of charge, to any person obtaining a copy&#xA;of this software and associated documentation files (the &quot;Software&quot;), to deal&#xA;in the Software without restriction, including without limitation the rights&#xA;to use, copy, modify, merge, publish, distribute, sublicense, and/or sell&#xA;copies of the Software, and to permit persons to whom the Software is&#xA;furnished to do so, subject to the following conditions:&#xA;&#xA;The above copyright notice and this permission notice shall be included in&#xA;all copies or substantial portions of the Software.&#xA;&#xA;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR&#xA;IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,&#xA;FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE&#xA;AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER&#xA;LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#xA;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN&#xA;THE SOFTWARE." inheritsSet="MITX11License" />
+          <ChangeLogPolicy UpdateMode="None" VcsIntegration="None" inheritsSet="Mono" />
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="Flat" ResourceNamePolicy="FileName" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Smdn.Formats\" />
+    <Folder Include="Mono.Simd\" />
+    <Folder Include="Smdn.Collections\" />
+    <Folder Include="Smdn.Threading\" />
+    <Folder Include="Smdn\" />
+    <Folder Include="resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\exceptions-ja.txt" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{60510FC0-2BB8-480B-8039-ABAB03D7C116}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Smdn.Core.Standards.Tests</AssemblyName>
+    <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
+    <OutputPath>bin\</OutputPath>
+    <IntermediateOutputPath>obj\</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\netfx4.5\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\netfx4.5\</IntermediateOutputPath>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5</DefineConstants>
+    <OutputPath>bin\Release\netfx4.5\</OutputPath>
+    <IntermediateOutputPath>obj\Release\netfx4.5\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Smdn\Smdn-netfx4.0.csproj">
+      <Project>{3FDF8CFA-B168-466F-B303-AEDDBED87BB9}</Project>
+      <Name>Smdn-netfx4.0</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Smdn.Core.Standards-netfx4.0.csproj">
+      <Project>{B5EDEF88-678E-427E-9281-325417D7EAC9}</Project>
+      <Name>Smdn.Core.Standards-netfx4.0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Smdn.Formats\" />
+    <Folder Include="Smdn.IO\" />
+    <Folder Include="Smdn.Formats.Mime\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
+    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
+    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
+    <Compile Include="Smdn.Formats\EncodingUtils.cs" />
+    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
+    <Compile Include="Smdn.Formats\TestUtils.cs" />
+    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
+    <Compile Include="Smdn.Formats\ToModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats\FromModifiedBase64Transform.cs" />
+    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
+    <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
+    <Compile Include="Smdn.Formats\HtmlEscape.cs" />
+    <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
+  </ItemGroup>
+</Project>
