@@ -14,25 +14,25 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\netfx4.5\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx4.5\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5</DefineConstants>
     <OutputPath>bin\Release\netfx4.5\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx4.5\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,11 +44,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\Smdn-netfx4.5.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
-      <Name>Smdn-netfx4.0</Name>
+      <Name>Smdn-netfx4.5</Name>
     </ProjectReference>
     <ProjectReference Include="..\Smdn.Core.Standards-netfx4.5.csproj">
       <Project>{4E98445F-676A-4457-8DF1-2FA6FE2D7AD4}</Project>
-      <Name>Smdn.Core.Standards-netfx4.0</Name>
+      <Name>Smdn.Core.Standards-netfx4.5</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
