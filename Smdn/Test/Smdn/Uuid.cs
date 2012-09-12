@@ -323,8 +323,10 @@ namespace Smdn {
     [Test]
     public void TestEqualityOperator()
     {
+#pragma warning disable 1718
       Assert.IsTrue(Uuid.Nil == Uuid.Nil);
       Assert.IsFalse(Uuid.Nil != Uuid.Nil);
+#pragma warning restore 1718
       Assert.IsFalse(Uuid.Nil == Uuid.RFC4122NamespaceDns);
       Assert.IsTrue(Uuid.Nil != Uuid.RFC4122NamespaceDns);
     }

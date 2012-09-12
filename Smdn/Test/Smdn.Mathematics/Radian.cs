@@ -165,7 +165,9 @@ namespace Smdn.Mathematics {
       var x = new Radian(0.0f);
       var y = new Radian(1.0f);
 
+#pragma warning disable 1718
       Assert.IsTrue(x == x);
+#pragma warning restore 1718
       Assert.IsTrue(x == (new Radian(0.0f)));
       Assert.IsFalse(x == y);
       Assert.IsTrue(x == Radian.Zero);
@@ -178,7 +180,9 @@ namespace Smdn.Mathematics {
       var x = new Radian(0.0f);
       var y = new Radian(1.0f);
 
+#pragma warning disable 1718
       Assert.IsFalse(x != x);
+#pragma warning restore 1718
       Assert.IsFalse(x != (new Radian(0.0f)));
       Assert.IsTrue(x != y);
       Assert.IsFalse(x != Radian.Zero);

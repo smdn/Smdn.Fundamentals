@@ -55,7 +55,9 @@ namespace Smdn {
       var x = FourCC.CreateLittleEndian(0x46464952);
       var y = FourCC.CreateBigEndian(0x69736f6d);
 
+#pragma warning disable 1718
       Assert.IsTrue(x == x);
+#pragma warning restore 1718
       Assert.IsFalse(x == y);
       Assert.IsFalse(x == FourCC.Empty);
     }
@@ -66,7 +68,9 @@ namespace Smdn {
       var x = FourCC.CreateLittleEndian(0x46464952);
       var y = FourCC.CreateBigEndian(0x69736f6d);
 
+#pragma warning disable 1718
       Assert.IsFalse(x != x);
+#pragma warning restore 1718
       Assert.IsTrue(x != y);
       Assert.IsTrue(x != FourCC.Empty);
     }
