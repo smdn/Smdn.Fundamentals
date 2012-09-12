@@ -100,7 +100,7 @@ namespace Smdn.IO {
       Assert.AreEqual(1, nestOuter.Position);
       Assert.AreEqual(0, nestInner.Position);
 
-      Assert.IsInstanceOfType(typeof(PartialStream), nestInner.InnerStream);
+      Assert.IsInstanceOf<PartialStream>(nestInner.InnerStream);
 
       var buffer = new byte[inner.Length];
 
@@ -124,7 +124,7 @@ namespace Smdn.IO {
       Assert.AreEqual(1, nestOuter.Position);
       Assert.AreEqual(0, nestInner.Position);
 
-      Assert.IsNotInstanceOfType(typeof(PartialStream), nestInner.InnerStream);
+      Assert.IsNotInstanceOf<PartialStream>(nestInner.InnerStream);
 
       var buffer = new byte[inner.Length];
 

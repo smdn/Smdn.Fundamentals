@@ -35,7 +35,7 @@ namespace Smdn.Formats {
 
         Assert.IsNotNull(deserialized);
         Assert.AreNotSame(obj, deserialized);
-        Assert.IsInstanceOfType(typeof(TSerializable), deserialized);
+        Assert.IsInstanceOf<TSerializable>(deserialized);
 
         if (action != null)
           action((TSerializable)deserialized);

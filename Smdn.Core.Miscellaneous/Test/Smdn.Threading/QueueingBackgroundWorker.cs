@@ -82,7 +82,7 @@ namespace Smdn.Threading {
 
         Assert.IsFalse(completedWorkers[5], "RunWorkerCompleted");
         Assert.AreEqual(1, exceptions.Count);
-        Assert.IsInstanceOfType(typeof(InvalidOperationException), exceptions[0]);
+        Assert.IsInstanceOf<InvalidOperationException>(exceptions[0]);
         Assert.AreEqual("5", exceptions[0].Message);
       }
     }

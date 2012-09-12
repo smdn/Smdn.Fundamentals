@@ -23,7 +23,7 @@ namespace Smdn {
       var lazy = new Lazy<ReferenceType>();
 
       Assert.IsFalse(lazy.IsValueCreated);
-      Assert.IsInstanceOfType(typeof(ReferenceType), lazy.Value);
+      Assert.IsInstanceOf<ReferenceType>(lazy.Value);
       Assert.IsTrue(lazy.IsValueCreated);
     }
 
