@@ -20,10 +20,8 @@
     <DefineConstants>NET_2_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Debug\netfx2.0\</OutputPath>
     <IntermediateOutputPath>..\build\obj\Debug\netfx2.0\</IntermediateOutputPath>
-    <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -31,10 +29,8 @@
     <DefineConstants>NET_2_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputType>Library</OutputType>
     <OutputPath>..\build\bin\Release\netfx2.0\</OutputPath>
     <IntermediateOutputPath>..\build\obj\Release\netfx2.0\</IntermediateOutputPath>
-    <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
