@@ -118,29 +118,51 @@ namespace Smdn.Formats.Mime {
 
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset)
     {
+      return CreateTextReader(stream, encoding, charset, false);
+    }
+
+    public static StreamReader CreateTextReader(Stream stream, string encoding, string charset, bool leaveStreamOpen)
+    {
       return CreateTextReader(stream,
                               GetEncodingMethodThrowException(encoding),
                               charset == null
                                 ? Encoding.GetEncoding("ISO-8859-1")
-                                : EncodingUtils.GetEncodingThrowException(charset));
+                                : EncodingUtils.GetEncodingThrowException(charset),
+                              leaveStreamOpen);
     }
 
     public static StreamReader CreateTextReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset)
     {
+      return CreateTextReader(stream, encoding, charset, false);
+    }
+
+    public static StreamReader CreateTextReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
+    {
       if (encoding == ContentTransferEncodingMethod.Binary)
         throw new InvalidOperationException("can't create TextReader from message of binary transfer encoding");
 
-      return new StreamReader(CreateDecodingStream(stream, encoding), charset);
+      return new StreamReader(CreateDecodingStream(stream, encoding), charset, true, 1024, leaveStreamOpen);
     }
 
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding)
     {
+      return CreateBinaryReader(stream, encoding, false);
+    }
+
+    public static BinaryReader CreateBinaryReader(Stream stream, string encoding, bool leaveStreamOpen)
+    {
       return CreateBinaryReader(stream,
                                 GetEncodingMethodThrowException(encoding),
-                                null);
+                                null,
+                                leaveStreamOpen);
     }
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding)
+    {
+      return CreateBinaryReader(stream, encoding, false);
+    }
+
+    public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, bool leaveStreamOpen)
     {
       return CreateBinaryReader(stream,
                                 encoding,
@@ -149,10 +171,15 @@ namespace Smdn.Formats.Mime {
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset)
     {
+      return CreateBinaryReader(stream, encoding, charset, false);
+    }
+
+    public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
+    {
       if (charset == null)
-        return new BinaryReader(CreateDecodingStream(stream, encoding));
+        return new BinaryReader(CreateDecodingStream(stream, encoding), Encoding.UTF8, leaveStreamOpen);
       else
-        return new BinaryReader(CreateDecodingStream(stream, encoding), charset);
+        return new BinaryReader(CreateDecodingStream(stream, encoding), charset, leaveStreamOpen);
     }
   }
 }
