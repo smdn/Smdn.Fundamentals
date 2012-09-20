@@ -28,6 +28,8 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.IO;
+
 namespace Smdn.Formats.Mime {
   public static class ContentTransferEncoding {
     public const string HeaderName = "Content-Transfer-Encoding";
@@ -141,7 +143,16 @@ namespace Smdn.Formats.Mime {
       if (encoding == ContentTransferEncodingMethod.Binary)
         throw new InvalidOperationException("can't create TextReader from message of binary transfer encoding");
 
-      return new StreamReader(CreateDecodingStream(stream, encoding), charset, true, 1024, leaveStreamOpen);
+      stream = CreateDecodingStream(stream, encoding);
+
+#if NET_4_5
+      return new StreamReader(stream, charset, true, 1024, leaveStreamOpen);
+#else
+      if (leaveStreamOpen)
+        stream = new NonClosingStream(stream);
+
+      return new StreamReader(stream, charset);
+#endif
     }
 
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding)
@@ -176,10 +187,16 @@ namespace Smdn.Formats.Mime {
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
     {
-      if (charset == null)
-        return new BinaryReader(CreateDecodingStream(stream, encoding), Encoding.UTF8, leaveStreamOpen);
-      else
-        return new BinaryReader(CreateDecodingStream(stream, encoding), charset, leaveStreamOpen);
+      stream = CreateDecodingStream(stream, encoding);
+
+#if NET_4_5
+      return new BinaryReader(stream, charset ?? Encoding.UTF8, leaveStreamOpen);
+#else
+      if (leaveStreamOpen)
+        stream = new NonClosingStream(stream);
+
+      return new BinaryReader(stream, charset ?? Encoding.UTF8);
+#endif
     }
   }
 }
