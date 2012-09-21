@@ -82,7 +82,15 @@ namespace Smdn.Formats.Mime {
               yield return new KeyValuePair<string, string>(currentName, currentValue.ToString());
 
             currentName = line.Substring(0, delim).TrimEnd().ToString();
-            currentValue = new StringBuilder(line.Substring(delim + 1).TrimStart().ToString());
+
+            if (currentName.Length <= 0) {
+              // ignore incorrect formed header
+              currentName = null;
+              currentValue = null;
+            }
+            else {
+              currentValue = new StringBuilder(line.Substring(delim + 1).TrimStart().ToString());
+            }
           }
         }
       }
