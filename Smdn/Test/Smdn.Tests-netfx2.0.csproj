@@ -82,6 +82,7 @@
     <Compile Include="Smdn\ExceptionUtils.cs" />
     <Compile Include="Smdn.Collections\HashSet.cs" />
     <Compile Include="Smdn\UriUtils.cs" />
+    <Compile Include="Smdn.IO\NonClosingStream.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

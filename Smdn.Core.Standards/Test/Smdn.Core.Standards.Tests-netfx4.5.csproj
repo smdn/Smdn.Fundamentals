@@ -73,5 +73,6 @@
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
     <Compile Include="Smdn.Formats\HtmlEscape.cs" />
     <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
   </ItemGroup>
 </Project>
