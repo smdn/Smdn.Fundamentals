@@ -43,8 +43,18 @@ namespace Smdn.Formats.Mime {
       get { return 1; }
     }
 
-    public FromQuotedPrintableTransform()
+    public FromQuotedPrintableTransform(FromQuotedPrintableTransformMode mode)
     {
+      switch (mode) {
+        case FromQuotedPrintableTransformMode.MimeEncoding:
+          dequoteUnderscore = true;
+          break;
+        case FromQuotedPrintableTransformMode.ContentTransferEncoding:
+          dequoteUnderscore = false;
+          break;
+        default:
+          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
+      }
     }
 
     public void Clear()
@@ -86,6 +96,10 @@ namespace Smdn.Formats.Mime {
         if (bufferOffset == 0) {
           if (octet == 0x3d) { // '=' 0x3d
             buffer[bufferOffset++] = octet;
+          }
+          else if (dequoteUnderscore && octet == 0x5f) { // '_' 0x5f
+            outputBuffer[outputOffset++] = 0x20; // ' ' 0x20
+            ret++;
           }
           else {
             outputBuffer[outputOffset++] = octet;
@@ -170,6 +184,7 @@ namespace Smdn.Formats.Mime {
 
     private byte[] buffer = new byte[3];
     private int bufferOffset = 0;
+    private readonly bool dequoteUnderscore;
     private bool disposed = false;
   }
 }

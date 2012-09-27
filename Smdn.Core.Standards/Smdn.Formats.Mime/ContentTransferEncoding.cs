@@ -108,9 +108,13 @@ namespace Smdn.Formats.Mime {
         case ContentTransferEncodingMethod.Binary:
           return stream;
         case ContentTransferEncodingMethod.Base64:
-          return new CryptoStream(stream, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), CryptoStreamMode.Read);
+          return new CryptoStream(stream,
+                                  new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces),
+                                  CryptoStreamMode.Read);
         case ContentTransferEncodingMethod.QuotedPrintable:
-          return new CryptoStream(stream, new FromQuotedPrintableTransform(), CryptoStreamMode.Read);
+          return new CryptoStream(stream,
+                                  new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
+                                  CryptoStreamMode.Read);
         case ContentTransferEncodingMethod.UUEncode:
         case ContentTransferEncodingMethod.GZip64:
         default:

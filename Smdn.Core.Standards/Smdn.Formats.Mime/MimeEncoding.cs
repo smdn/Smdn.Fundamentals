@@ -108,7 +108,7 @@ namespace Smdn.Formats.Mime {
           encodingChar = 'b';
           break;
         case MimeEncodingMethod.QuotedPrintable:
-          transform = new ToQuotedPrintableTransform();
+          transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding);
           encodingChar = 'q';
           break;
         default:
@@ -270,7 +270,7 @@ namespace Smdn.Formats.Mime {
             case "q":
             case "Q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
-              transform = new FromQuotedPrintableTransform();
+              transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
               break;
             default:
               throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));

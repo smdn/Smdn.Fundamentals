@@ -6,6 +6,13 @@ namespace Smdn.Formats.Mime {
   [TestFixture]
   public class MimeEncodingTests {
     [Test]
+    public void TestEncodeQEncoding()
+    {
+      Assert.AreEqual("=?utf-8?q?=E6=BC=A2=20=E5=AD=97=09ab=3Dc?=",
+                      MimeEncoding.Encode("漢 字\tab=c", MimeEncodingMethod.QEncoding, Encoding.UTF8));
+    }
+
+    [Test]
     public void TestEncodeNoFolding()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=",
@@ -61,7 +68,22 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeQEncoded()
+    public void TestDecodeQEncoding()
+    {
+      // http://tools.ietf.org/html/rfc2047#section-8
+      // 8. Examples
+      Assert.AreEqual("a", MimeEncoding.Decode("=?ISO-8859-1?Q?a?="), "case1");
+      // TODO
+      //Assert.AreEqual("a b", MimeEncoding.Decode("=?ISO-8859-1?Q?a?= b"), "case2");
+      Assert.AreEqual("ab", MimeEncoding.Decode("=?ISO-8859-1?Q?a?= =?ISO-8859-1?Q?b?="), "case3");
+      Assert.AreEqual("ab", MimeEncoding.Decode("=?ISO-8859-1?Q?a?=  =?ISO-8859-1?Q?b?="), "case4");
+      Assert.AreEqual("ab", MimeEncoding.Decode("=?ISO-8859-1?Q?a?=\n =?ISO-8859-1?Q?b?="), "case5");
+      Assert.AreEqual("a b", MimeEncoding.Decode("=?ISO-8859-1?Q?a_b?="), "case6");
+      Assert.AreEqual("a b", MimeEncoding.Decode("=?ISO-8859-1?Q?a?= =?ISO-8859-2?Q?_b?="), "case7");
+    }
+
+    [Test]
+    public void TestDecodeQEncodingCharsets()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -95,6 +117,23 @@ namespace Smdn.Formats.Mime {
                       "euc-jp");
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "euc-jp");
       Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
+    }
+
+    [Test]
+    public void TestDecodeQEncodingEscapedWhitespace()
+    {
+      Encoding charset;
+      MimeEncodingMethod encoding;
+
+      Assert.AreEqual("Amazon.co.jp ご注文の発送 (XXX-YYYYYYY-ZZZZZZZ)",
+                      MimeEncoding.Decode("=?ISO-2022-JP?Q?Amazon.co.jp_=1B$B$4CmJ8$NH/Aw=1B(B_(XXX-YYYYYYY-ZZZZZZZ)?=", out encoding, out charset), "case1");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "case1");
+      Assert.AreEqual(TestUtils.Encodings.Jis, charset, "case1");
+
+      Assert.AreEqual("Amazon.co.jp ご注文の確認",
+                      MimeEncoding.Decode("=?UTF-8?Q?Amazon.co?= =?UTF-8?Q?.jp_=E3=81=94=E6=B3=A8=E6=96=87=E3=81=AE=E7=A2=BA=E8=AA=8D?=", out encoding, out charset), "case2");
+      Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "case2");
+      Assert.AreEqual(Encoding.UTF8, charset, "case2");
     }
 
     [Test]

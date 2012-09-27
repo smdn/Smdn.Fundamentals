@@ -43,8 +43,18 @@ namespace Smdn.Formats.Mime {
       get { return 3; }
     }
 
-    public ToQuotedPrintableTransform()
+    public ToQuotedPrintableTransform(ToQuotedPrintableTransformMode mode)
     {
+      switch (mode) {
+        case ToQuotedPrintableTransformMode.MimeEncoding:
+          quoteWhitespaces = true;
+          break;
+        case ToQuotedPrintableTransformMode.ContentTransferEncoding:
+          quoteWhitespaces = false;
+          break;
+        default:
+          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
+      }
     }
 
     public void Clear()
@@ -83,23 +93,33 @@ namespace Smdn.Formats.Mime {
 
       for (var i = 0; i < inputCount; i++) {
         var octet = inputBuffer[inputOffset++];
+        var quote = false;
 
         if ((0x21 <= octet && octet <= 0x3c) ||
-            (0x3e <= octet && octet <= 0x7e) ||
-            octet == Octets.HT ||
-            octet == Octets.SP) {
+            (0x3e <= octet && octet <= 0x7e)) {
           // printable char (except '=' 0x3d)
-          outputBuffer[outputOffset++] = octet;
-
-          ret += 1;
+          quote = false;
+        }
+        else if (octet == Octets.HT ||
+                 octet == Octets.SP) {
+          quote = quoteWhitespaces;
         }
         else {
+          quote = true;
+        }
+
+        if (quote) {
           // '=' 0x3d or non printable char
           outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
           outputBuffer[outputOffset++] = upperCaseHexOctets[octet >> 4];
           outputBuffer[outputOffset++] = upperCaseHexOctets[octet & 0xf];
 
           ret += 3;
+        }
+        else {
+          outputBuffer[outputOffset++] = octet;
+
+          ret += 1;
         }
       }
 
@@ -129,6 +149,7 @@ namespace Smdn.Formats.Mime {
       return outputBuffer;
     }
 
+    private readonly bool quoteWhitespaces = true;
     private bool disposed = false;
   }
 }

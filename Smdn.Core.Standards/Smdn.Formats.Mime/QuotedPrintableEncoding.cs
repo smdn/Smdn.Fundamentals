@@ -38,7 +38,7 @@ namespace Smdn.Formats.Mime {
     
     public static string GetEncodedString(string str, Encoding encoding)
     {
-      return ICryptoTransformExtensions.TransformStringTo(new ToQuotedPrintableTransform(),
+      return ICryptoTransformExtensions.TransformStringTo(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
                                                           str,
                                                           encoding);
     }
@@ -53,7 +53,7 @@ namespace Smdn.Formats.Mime {
 
     public static string GetEncodedString(byte[] bytes, int offset, int count)
     {
-      return Encoding.ASCII.GetString(ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(),
+      return Encoding.ASCII.GetString(ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
                                                                                 bytes,
                                                                                 offset,
                                                                                 count));
@@ -71,7 +71,7 @@ namespace Smdn.Formats.Mime {
 
       var bytes = encoding.GetBytes(str);
 
-      return ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(),
+      return ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
                                                        bytes,
                                                        0,
                                                        bytes.Length);
@@ -84,7 +84,7 @@ namespace Smdn.Formats.Mime {
 
     public static string GetDecodedString(string str, Encoding encoding)
     {
-      return ICryptoTransformExtensions.TransformStringFrom(new FromQuotedPrintableTransform(),
+      return ICryptoTransformExtensions.TransformStringFrom(new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
                                                             str,
                                                             encoding);
     }
@@ -93,7 +93,7 @@ namespace Smdn.Formats.Mime {
     {
       var bytes = Encoding.ASCII.GetBytes(str);
 
-      return ICryptoTransformExtensions.TransformBytes(new FromQuotedPrintableTransform(),
+      return ICryptoTransformExtensions.TransformBytes(new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
                                                        bytes,
                                                        0,
                                                        bytes.Length);
@@ -113,7 +113,7 @@ namespace Smdn.Formats.Mime {
       if (stream == null)
         throw new ArgumentNullException("stream");
 
-      return new CryptoStream(stream, new FromQuotedPrintableTransform(), CryptoStreamMode.Read);
+      return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
     }
 
 #if false
