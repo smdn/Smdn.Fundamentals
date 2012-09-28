@@ -227,9 +227,37 @@ namespace Smdn.Formats.Mime {
     [Test, ExpectedException(typeof(FormatException))]
     public void TestDecodeInvalidEncoding()
     {
-      Assert.AreEqual("漢字abcかな123カナ",
-                      MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
-                      "utf8");
+      MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=");
+    }
+
+    [Test]
+    public void TestDecodeInvalidEncodingConvertToAlternativeText()
+    {
+      bool called = false;
+
+      var ret = MimeEncoding.Decode("foo =?utf-8?x?baz?= bar", null, delegate(Encoding c, string m, string t) {
+        called = true;
+        Assert.AreEqual(Encoding.UTF8, c);
+        Assert.AreEqual("x", m);
+        Assert.AreEqual("baz", t);
+        return "baz";
+      });
+
+      Assert.IsTrue(called, "called");
+      Assert.AreEqual(ret, "foobazbar");
+
+      Encoding charset;
+      MimeEncodingMethod encoding;
+
+      Assert.AreEqual("<alternative text>",
+                      MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
+                                          null,
+                                          (e, m, t) => "<alternative text>",
+                                          out encoding,
+                                          out charset));
+
+      Assert.AreEqual(Encoding.UTF8, charset);
+      Assert.AreEqual(MimeEncodingMethod.None, encoding);
     }
 
     [Test]
@@ -319,6 +347,77 @@ namespace Smdn.Formats.Mime {
       Assert.IsTrue(called);
       Assert.AreEqual(MimeEncodingMethod.None, encoding);
       Assert.IsNull(charset);
+    }
+
+    [Test]
+    public void TestDecodeInvalidFormatConvertToAlternativeText()
+    {
+      Encoding charset;
+      MimeEncodingMethod encoding;
+      bool called = false;
+
+      var ret = MimeEncoding.Decode("foo =?utf-8?q?===?= bar", null, delegate(Encoding c, string m, string t) {
+        called = true;
+        Assert.AreEqual(Encoding.UTF8, c);
+        Assert.AreEqual("q", m);
+        Assert.AreEqual("===", t);
+        return "baz";
+      }, out encoding, out charset);
+
+      Assert.IsTrue(called, "called");
+      Assert.AreEqual(ret, "foobazbar");
+      Assert.AreEqual(MimeEncodingMethod.QEncoding, encoding);
+      Assert.AreEqual(Encoding.UTF8, charset);
+    }
+
+    [Test, ExpectedException(typeof(FormatException))]
+    public void TestDecodeQEncodingInvalidFormat()
+    {
+      MimeEncoding.Decode("=?utf-8?q?===?=");
+    }
+
+    [Test]
+    public void TestDecodeQEncodingInvalidFormatConvertToAlternativeText()
+    {
+      Assert.AreEqual("<alt>",
+                      MimeEncoding.Decode("=?utf-8?q?===?=", null, (c, m, t) => "<alt>"));
+
+      Assert.AreEqual("foo<alt>bar",
+                      MimeEncoding.Decode("foo =?utf-8?q?===?= bar", null, (c, m, t) => "<alt>"));
+
+      Assert.AreEqual("foo===bar",
+                      MimeEncoding.Decode("foo =?utf-8?q?===?= bar", null, (c, m, t) => t));
+
+      Assert.AreEqual("foobar",
+                      MimeEncoding.Decode("foo =?utf-8?q?===?= bar", null, (c, m, t) => string.Empty));
+
+      Assert.AreEqual("foo =?utf-8?q?===?= bar",
+                      MimeEncoding.Decode("foo =?utf-8?q?===?= bar", null, (c, m, t) => null));
+    }
+
+    [Test, ExpectedException(typeof(FormatException))]
+    public void TestDecodeBEncodingInvalidFormat()
+    {
+      MimeEncoding.Decode("=?utf-8?b?****?=");
+    }
+
+    [Test]
+    public void TestDecodeBEncodingInvalidFormatConvertToAlternativeText()
+    {
+      Assert.AreEqual("<alt>",
+                      MimeEncoding.Decode("=?utf-8?b?****?=", null, (c, m, t) => "<alt>"));
+
+      Assert.AreEqual("foo<alt>bar",
+                      MimeEncoding.Decode("foo =?utf-8?b?****?= bar", null, (c, m, t) => "<alt>"));
+
+      Assert.AreEqual("foo****bar",
+                      MimeEncoding.Decode("foo =?utf-8?b?****?= bar", null, (c, m, t) => t));
+
+      Assert.AreEqual("foobar",
+                      MimeEncoding.Decode("foo =?utf-8?b?****?= bar", null, (c, m, t) => string.Empty));
+
+      Assert.AreEqual("foo =?utf-8?b?****?= bar",
+                      MimeEncoding.Decode("foo =?utf-8?b?****?= bar", null, (c, m, t) => null));
     }
   }
 }

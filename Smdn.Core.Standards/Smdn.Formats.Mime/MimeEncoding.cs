@@ -214,7 +214,7 @@ namespace Smdn.Formats.Mime {
       MimeEncodingMethod discard1;
       Encoding discard2;
 
-      return Decode(str, null, out discard1, out discard2);
+      return Decode(str, null, null, out discard1, out discard2);
     }
 
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding)
@@ -222,12 +222,25 @@ namespace Smdn.Formats.Mime {
       MimeEncodingMethod discard1;
       Encoding discard2;
 
-      return Decode(str, selectFallbackEncoding, out discard1, out discard2);
+      return Decode(str, selectFallbackEncoding, null, out discard1, out discard2);
+    }
+
+    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
+    {
+      MimeEncodingMethod discard1;
+      Encoding discard2;
+
+      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out discard1, out discard2);
     }
 
     public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
     {
-      return Decode(str, null, out encoding, out charset);
+      return Decode(str, null, null, out encoding, out charset);
+    }
+
+    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding charset)
+    {
+      return Decode(str, selectFallbackEncoding, null, out encoding, out charset);
     }
 
     private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?=\s*",
@@ -235,6 +248,7 @@ namespace Smdn.Formats.Mime {
 
     public static string Decode(string str,
                                 EncodingSelectionCallback selectFallbackEncoding,
+                                MimeEncodedWordConverter decodeMalformedOrUnsupported,
                                 out MimeEncodingMethod encoding,
                                 out Encoding charset)
     {
@@ -273,10 +287,21 @@ namespace Smdn.Formats.Mime {
               transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
               break;
             default:
-              throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
+              if (decodeMalformedOrUnsupported == null)
+                throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
+              else
+                return decodeMalformedOrUnsupported(lastCharset, m.Groups[2].Value, m.Groups[3].Value) ?? m.Value;
           }
 
-          return transform.TransformStringFrom(m.Groups[3].Value, lastCharset);
+          try {
+            return transform.TransformStringFrom(m.Groups[3].Value, lastCharset);
+          }
+          catch (FormatException) {
+            if (decodeMalformedOrUnsupported == null)
+              throw;
+            else
+              return decodeMalformedOrUnsupported(lastCharset, m.Groups[2].Value, m.Groups[3].Value) ?? m.Value;
+          }
         });
 
         charset = lastCharset;
@@ -294,7 +319,7 @@ namespace Smdn.Formats.Mime {
       MimeEncodingMethod discard1;
       Encoding discard2;
 
-      return Decode(str, null, out discard1, out discard2);
+      return Decode(str, null, null, out discard1, out discard2);
     }
 
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding)
@@ -305,7 +330,18 @@ namespace Smdn.Formats.Mime {
       MimeEncodingMethod discard1;
       Encoding discard2;
 
-      return Decode(str, selectFallbackEncoding, out discard1, out discard2);
+      return Decode(str, selectFallbackEncoding, null, out discard1, out discard2);
+    }
+
+    public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
+    {
+      if (str == null)
+        return null;
+
+      MimeEncodingMethod discard1;
+      Encoding discard2;
+
+      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out discard1, out discard2);
     }
 
     public static string DecodeNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)
@@ -317,7 +353,7 @@ namespace Smdn.Formats.Mime {
         return null;
       }
       else {
-        return Decode(str, null, out encoding, out charset);
+        return Decode(str, null, null, out encoding, out charset);
       }
     }
 
@@ -333,7 +369,24 @@ namespace Smdn.Formats.Mime {
         return null;
       }
       else {
-        return Decode(str, selectFallbackEncoding, out encoding, out charset);
+        return Decode(str, selectFallbackEncoding, null, out encoding, out charset);
+      }
+    }
+
+    public static string DecodeNullable(string str,
+                                        EncodingSelectionCallback selectFallbackEncoding,
+                                        MimeEncodedWordConverter decodeMalformedOrUnsupported,
+                                        out MimeEncodingMethod encoding,
+                                        out Encoding charset)
+    {
+      if (str == null) {
+        encoding = MimeEncodingMethod.None;
+        charset = null;
+
+        return null;
+      }
+      else {
+        return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out encoding, out charset);
       }
     }
   }
