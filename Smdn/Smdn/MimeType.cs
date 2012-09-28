@@ -39,6 +39,62 @@ namespace Smdn {
 
     private const string defaultMimeTypesFile = "/etc/mime.types";
 
+    public static bool TryParse(string s, out MimeType result)
+    {
+      var type = Parse(s, false);
+
+      if (type == null) {
+        result = null;
+        return false;
+      }
+      else {
+        result = new MimeType(type);
+        return true;
+      }
+    }
+
+    private static Tuple<string, string> Parse(string mimeType, bool throwException)
+    {
+      if (mimeType == null) {
+        if (throwException)
+          throw new ArgumentNullException("mimeType");
+        else
+          return null;
+      }
+
+      if (mimeType.Length == 0) {
+        if (throwException)
+          throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("mimeType");
+        else
+          return null;
+      }
+
+      var type = mimeType.Split(new[] {'/'});
+
+      if (type.Length != 2) {
+        if (throwException)
+          throw new ArgumentException(string.Format("invalid type: {0}", mimeType), "mimeType");
+        else
+          return null;
+      }
+
+      if (type[0].Length == 0) {
+        if (throwException)
+          throw new ArgumentException("type must be non-empty string", "mimeType");
+        else
+          return null;
+      }
+
+      if (type[1].Length == 0) {
+        if (throwException)
+          throw new ArgumentException("subtype must be non-empty string", "mimeType");
+        else
+          return null;
+      }
+
+      return Tuple.Create(type[0], type[1]);
+    }
+
     public static MimeType CreateTextType(string subtype)
     {
       return new MimeType("text", subtype);
@@ -141,17 +197,8 @@ namespace Smdn {
     }
 
     public MimeType(string mimeType)
+      : this(Parse(mimeType, true))
     {
-      if (mimeType == null)
-        throw new ArgumentNullException("mimeType");
-
-      var type = mimeType.Split(new[] {'/'}, 2);
-
-      if (type.Length < 2)
-        throw new ArgumentException(string.Format("invalid type: {0}", mimeType), "mimeType");
-
-      this.Type = type[0];
-      this.SubType = type[1];
     }
 
     public MimeType(string type, string subType)
@@ -163,6 +210,12 @@ namespace Smdn {
 
       this.Type = type;
       this.SubType = subType;
+    }
+
+    private MimeType(Tuple<string, string> type)
+    {
+      this.Type = type.Item1;
+      this.SubType = type.Item2;
     }
 
     public bool TypeEquals(MimeType mimeType)

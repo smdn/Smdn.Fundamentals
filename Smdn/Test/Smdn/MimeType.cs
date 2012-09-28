@@ -14,6 +14,17 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstructorInvalidArgument()
+    {
+      Assert.Throws<ArgumentNullException>(() => new MimeType((string)null), "#1");
+      Assert.Throws<ArgumentException>(() => new MimeType(string.Empty), "#2");
+      Assert.Throws<ArgumentException>(() => new MimeType("text"), "#3");
+      Assert.Throws<ArgumentException>(() => new MimeType("text/"), "#4");
+      Assert.Throws<ArgumentException>(() => new MimeType("/plain"), "#5");
+      Assert.Throws<ArgumentException>(() => new MimeType("text/plain/hoge"), "#6");
+    }
+
+    [Test]
     public void TestEquals()
     {
       Assert.IsTrue((new MimeType("text", "plain")).Equals(new MimeType("text", "plain")));
@@ -94,6 +105,33 @@ namespace Smdn {
       Assert.AreEqual("text/html", (string)MimeType.CreateTextType("html"));
 
       Assert.IsNull((string)((MimeType)null));
+    }
+
+    [Test]
+    public void TestTryParse()
+    {
+      MimeType result;
+
+      Assert.IsFalse(MimeType.TryParse(null, out result), "#1");
+      Assert.IsNull(result, "#1");
+
+      Assert.IsFalse(MimeType.TryParse(string.Empty, out result), "#2");
+      Assert.IsNull(result, "#2");
+
+      Assert.IsFalse(MimeType.TryParse("text", out result), "#3");
+      Assert.IsNull(result, "#3");
+
+      Assert.IsFalse(MimeType.TryParse("text/", out result), "#4");
+      Assert.IsNull(result, "#4");
+
+      Assert.IsFalse(MimeType.TryParse("/plain", out result), "#5");
+      Assert.IsNull(result, "#5");
+
+      Assert.IsFalse(MimeType.TryParse("text/plain/hoge", out result), "#6");
+      Assert.IsNull(result, "#6");
+
+      Assert.IsTrue(MimeType.TryParse("text/plain", out result), "#7");
+      Assert.AreEqual(MimeType.TextPlain, result, "#7");
     }
   }
 }
