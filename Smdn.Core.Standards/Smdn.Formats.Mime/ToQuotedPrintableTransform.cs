@@ -95,17 +95,22 @@ namespace Smdn.Formats.Mime {
         var octet = inputBuffer[inputOffset++];
         var quote = false;
 
-        if ((0x21 <= octet && octet <= 0x3c) ||
-            (0x3e <= octet && octet <= 0x7e)) {
-          // printable char (except '=' 0x3d)
-          quote = false;
-        }
-        else if (octet == Octets.HT ||
-                 octet == Octets.SP) {
-          quote = quoteWhitespaces;
-        }
-        else {
-          quote = true;
+        switch (octet) {
+          case Octets.HT:
+          case Octets.SP:
+          case 0x3f: // '?'
+          case 0x5f: // '_'
+            quote = quoteWhitespaces;
+            break;
+
+          case 0x3d: // '='
+            quote = true;
+            break;
+
+          default:
+            // quote non-printable chars
+            quote = (octet < 0x21 || 0x7f < octet);
+            break;
         }
 
         if (quote) {

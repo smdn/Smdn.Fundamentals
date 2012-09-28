@@ -6,13 +6,6 @@ namespace Smdn.Formats.Mime {
   [TestFixture]
   public class MimeEncodingTests {
     [Test]
-    public void TestEncodeQEncoding()
-    {
-      Assert.AreEqual("=?utf-8?q?=E6=BC=A2=20=E5=AD=97=09ab=3Dc?=",
-                      MimeEncoding.Encode("漢 字\tab=c", MimeEncodingMethod.QEncoding, Encoding.UTF8));
-    }
-
-    [Test]
     public void TestEncodeNoFolding()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=",
@@ -83,6 +76,36 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
+    public void TestEncodeQEncodingWhitespaces()
+    {
+      Assert.AreEqual("=?utf-8?q?=E6=BC=A2=20=E5=AD=97=09=E3=81=8B=E3=81=AA?=",
+                      MimeEncoding.Encode("漢 字\tかな", MimeEncodingMethod.QEncoding, Encoding.UTF8));
+    }
+
+    [Test]
+    public void TestDecodeQEncodingWhitespaces()
+    {
+      Assert.AreEqual("漢 字\tかな",
+                      MimeEncoding.Decode("=?utf-8?q?=E6=BC=A2=20=E5=AD=97=09=E3=81=8B=E3=81=AA?="));
+      Assert.AreEqual("漢 字\tかな",
+                      MimeEncoding.Decode("=?utf-8?q?=E6=BC=A2_=E5=AD=97=09=E3=81=8B=E3=81=AA?="));
+    }
+
+    [Test]
+    public void TestEncodeQEncodingSpecialChars()
+    {
+      Assert.AreEqual("=?utf-8?q?a=3Fb=3Dc=5Fd?=",
+                      MimeEncoding.Encode("a?b=c_d", MimeEncodingMethod.QEncoding, Encoding.UTF8));
+    }
+
+    [Test]
+    public void TestDecodeQEncodingSpecialChars()
+    {
+      Assert.AreEqual("a?b=c_d", MimeEncoding.Decode("=?utf-8?q?a=3Fb=3Dc=5Fd?="));
+      Assert.AreEqual("a?b=c d", MimeEncoding.Decode("=?utf-8?q?a=3Fb=3Dc_d?="));
+    }
+
+    [Test]
     public void TestDecodeQEncodingCharsets()
     {
       Encoding charset;
@@ -137,7 +160,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeBEncoded()
+    public void TestDecodeBEncoding()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -174,7 +197,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeBEncodedBug()
+    public void TestDecodeBEncodingBug()
     {
       Assert.AreEqual("【Microsoft】欽ちゃん球団の片岡安祐美さんが Office にチャレンジ! ワクワクの春 開幕!",
                       MimeEncoding.Decode("=?iso-2022-jp?B?GyRCIVobKEJNaWNyb3NvZnQbJEIhWzZWJEEkYyRzNWVDRBsoQg==?=" + 
