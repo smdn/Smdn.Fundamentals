@@ -55,6 +55,42 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
+    [TestCase(ContentTransferEncodingMethod.SevenBit)]
+    [TestCase(ContentTransferEncodingMethod.EightBit)]
+    [TestCase(ContentTransferEncodingMethod.Binary)]
+    [TestCase(ContentTransferEncodingMethod.Base64)]
+    [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
+    public void TestCreateDecodingStreamCloseInnerStream(ContentTransferEncodingMethod method)
+    {
+      using (var inputStream = new MemoryStream(new byte[] {0, 1, 2, 3, 4, 5, 6, 7})) {
+        using (var decodingStream = ContentTransferEncoding.CreateDecodingStream(inputStream,
+                                                                                 method,
+                                                                                 false)) {
+        }
+
+        Assert.Throws<ObjectDisposedException>(() => inputStream.ReadByte());
+      }
+    }
+
+    [Test]
+    [TestCase(ContentTransferEncodingMethod.SevenBit)]
+    [TestCase(ContentTransferEncodingMethod.EightBit)]
+    [TestCase(ContentTransferEncodingMethod.Binary)]
+    [TestCase(ContentTransferEncodingMethod.Base64)]
+    [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
+    public void TestCreateDecodingStreamLeaveInnerStreamOpen(ContentTransferEncodingMethod method)
+    {
+      using (var inputStream = new MemoryStream(new byte[] {0, 1, 2, 3, 4, 5, 6, 7})) {
+        using (var decodingStream = ContentTransferEncoding.CreateDecodingStream(inputStream,
+                                                                                 method,
+                                                                                 true)) {
+        }
+
+        Assert.DoesNotThrow(() => inputStream.ReadByte());
+      }
+    }
+
+    [Test]
     public void TestCreateTextReader()
     {
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B"))) {

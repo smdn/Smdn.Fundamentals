@@ -94,32 +94,52 @@ namespace Smdn.Formats.Mime {
 
     public static Stream CreateDecodingStream(Stream stream, string encoding)
     {
-      return CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding));
+      return CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), false);
+    }
+
+    public static Stream CreateDecodingStream(Stream stream, string encoding, bool leaveStreamOpen)
+    {
+      return CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), leaveStreamOpen);
     }
 
     public static Stream CreateDecodingStream(Stream stream, ContentTransferEncodingMethod encoding)
     {
+      return CreateDecodingStream(stream, encoding, false);
+    }
+
+    public static Stream CreateDecodingStream(Stream stream, ContentTransferEncodingMethod encoding, bool leaveStreamOpen)
+    {
       if (stream == null)
         throw new ArgumentNullException("stream");
+
+      Stream decodingStream = null;
 
       switch (encoding) {
         case ContentTransferEncodingMethod.SevenBit:
         case ContentTransferEncodingMethod.EightBit:
         case ContentTransferEncodingMethod.Binary:
-          return stream;
+          decodingStream = stream;
+          break;
         case ContentTransferEncodingMethod.Base64:
-          return new CryptoStream(stream,
-                                  new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces),
-                                  CryptoStreamMode.Read);
+          decodingStream = new CryptoStream(stream,
+                                            new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces),
+                                            CryptoStreamMode.Read);
+          break;
         case ContentTransferEncodingMethod.QuotedPrintable:
-          return new CryptoStream(stream,
-                                  new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
-                                  CryptoStreamMode.Read);
+          decodingStream = new CryptoStream(stream,
+                                            new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
+                                            CryptoStreamMode.Read);
+          break;
         case ContentTransferEncodingMethod.UUEncode:
         case ContentTransferEncodingMethod.GZip64:
         default:
           throw ExceptionUtils.CreateNotSupportedEnumValue(encoding);
       }
+
+      if (leaveStreamOpen)
+        return new NonClosingStream(decodingStream);
+      else
+        return decodingStream;
     }
 
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset)
@@ -147,7 +167,7 @@ namespace Smdn.Formats.Mime {
       if (encoding == ContentTransferEncodingMethod.Binary)
         throw new InvalidOperationException("can't create TextReader from message of binary transfer encoding");
 
-      stream = CreateDecodingStream(stream, encoding);
+      stream = CreateDecodingStream(stream, encoding, false);
 
 #if NET_4_5
       return new StreamReader(stream, charset, true, 1024, leaveStreamOpen);
@@ -191,7 +211,7 @@ namespace Smdn.Formats.Mime {
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
     {
-      stream = CreateDecodingStream(stream, encoding);
+      stream = CreateDecodingStream(stream, encoding, false);
 
 #if NET_4_5
       return new BinaryReader(stream, charset ?? Encoding.UTF8, leaveStreamOpen);
