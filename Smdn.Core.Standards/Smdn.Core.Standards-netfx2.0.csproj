@@ -68,6 +68,9 @@
     <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
     <Compile Include="Smdn.Formats\EncodingSelectionCallback.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
+    <Compile Include="Smdn.Formats.Mime\FromQuotedPrintableTransformMode.cs" />
+    <Compile Include="Smdn.Formats.Mime\ToQuotedPrintableTransformMode.cs" />
+    <Compile Include="Smdn.Formats.Mime\MimeEncodedWordConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
