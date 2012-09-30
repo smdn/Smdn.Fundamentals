@@ -243,7 +243,21 @@ namespace Smdn.Formats.Mime {
       return Decode(str, selectFallbackEncoding, null, out encoding, out charset);
     }
 
-    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*=\?([^?]+)\?([^?]+)\?([^\?\s]+)\?=\s*",
+    /*
+     * RFC 2231 - MIME Parameter Value and Encoded Word Extensions: Character Sets, Languages, and Continuations
+     * http://tools.ietf.org/html/rfc2231
+     * http://www.rfc-editor.org/errata_search.php?rfc=2231
+     *
+     * The ABNF given in RFC 2047 for encoded-words is:
+     * 
+     *    encoded-word := "=?" charset "?" encoding "?" encoded-text "?="
+     * 
+     * This specification changes this ABNF to:
+     * 
+     *       encoded-word := "=?" charset ["*" language] "?" encoding "?"
+     *                       encoded-text "?="
+     */
+    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*",
                                                                    RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     public static string Decode(string str,
@@ -264,18 +278,20 @@ namespace Smdn.Formats.Mime {
       lock (mimeEncodedWordRegex) {
         var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
           // charset
-          var charsetName = m.Groups[1].Value;
+          var charsetString = m.Groups["charset"].Value;
 
-          lastCharset = EncodingUtils.GetEncoding(charsetName, selectFallbackEncoding);
+          lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
 
           if (lastCharset == null)
-            throw new EncodingNotSupportedException(charsetName,
-                                                    string.Format("'{0}' is an unsupported or invalid charset", charsetName));
+            throw new EncodingNotSupportedException(charsetString,
+                                                    string.Format("'{0}' is an unsupported or invalid charset", charsetString));
 
           // encoding
+          var encodingString = m.Groups["encoding"].Value;
+          var encodedText = m.Groups["text"].Value;
           ICryptoTransform transform;
 
-          switch (m.Groups[2].Value) {
+          switch (encodingString) {
             case "b":
             case "B":
               lastEncoding = MimeEncodingMethod.Base64;
@@ -288,19 +304,19 @@ namespace Smdn.Formats.Mime {
               break;
             default:
               if (decodeMalformedOrUnsupported == null)
-                throw new FormatException(string.Format("{0} is an invalid encoding", m.Groups[2].Value));
+                throw new FormatException(string.Format("{0} is an invalid encoding", encodingString));
               else
-                return decodeMalformedOrUnsupported(lastCharset, m.Groups[2].Value, m.Groups[3].Value) ?? m.Value;
+                return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
           }
 
           try {
-            return transform.TransformStringFrom(m.Groups[3].Value, lastCharset);
+            return transform.TransformStringFrom(encodedText, lastCharset);
           }
           catch (FormatException) {
             if (decodeMalformedOrUnsupported == null)
               throw;
             else
-              return decodeMalformedOrUnsupported(lastCharset, m.Groups[2].Value, m.Groups[3].Value) ?? m.Value;
+              return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
           }
         });
 

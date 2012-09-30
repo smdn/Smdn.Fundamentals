@@ -61,6 +61,18 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
+    public void TestDecodeContainsLanguageSpecification()
+    {
+      Encoding charset;
+      MimeEncodingMethod encoding;
+
+      Assert.AreEqual("Keith Moore",
+                      MimeEncoding.Decode("=?US-ASCII*EN?Q?Keith_Moore?=", out encoding, out charset));
+      Assert.AreEqual(MimeEncodingMethod.QEncoding, encoding);
+      Assert.AreEqual(Encoding.ASCII, charset);
+    }
+
+    [Test]
     public void TestDecodeQEncoding()
     {
       // http://tools.ietf.org/html/rfc2047#section-8
