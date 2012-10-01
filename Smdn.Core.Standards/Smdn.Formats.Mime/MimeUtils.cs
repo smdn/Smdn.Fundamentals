@@ -34,10 +34,20 @@ namespace Smdn.Formats.Mime {
   public static class MimeUtils {
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream)
     {
-      return ParseHeader(new LooseLineOrientedStream(stream));
+      return ParseHeader(new LooseLineOrientedStream(stream), false);
+    }
+
+    public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream, bool keepWhitespaces)
+    {
+      return ParseHeader(new LooseLineOrientedStream(stream), keepWhitespaces);
     }
 
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream)
+    {
+      return ParseHeader(stream, false);
+    }
+
+    public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream, bool keepWhitespaces)
     {
       if (stream == null)
         throw new ArgumentNullException("stream");
@@ -46,15 +56,22 @@ namespace Smdn.Formats.Mime {
       StringBuilder currentValue = null;
 
       for (;;) {
-        var lineBytes = stream.ReadLine(false);
+        var lineBytes = stream.ReadLine(keepWhitespaces);
 
         if (lineBytes == null)
           break; // unexpected end of stream
 
         var line = ByteString.CreateImmutable(lineBytes);
 
-        if (line.IsEmpty)
-          break; // end of headers
+        if (keepWhitespaces) {
+          if ((line.Length == 1 && (line[0] == Octets.CR || line[0] == Octets.LF)) ||
+              (line.Length == 2 && (line[0] == Octets.CR && line[1] == Octets.LF)))
+            break; // end of headers
+        }
+        else {
+          if (line.IsEmpty)
+            break; // end of headers
+        }
 
         if (line[0] == Octets.HT || line[0] == Octets.SP) { // LWSP-char
           // folding
@@ -62,8 +79,10 @@ namespace Smdn.Formats.Mime {
             // ignore incorrect formed header
             continue;
 
-          currentValue.Append(Chars.SP);
-          currentValue.Append(line.TrimStart().ToString());
+          if (!keepWhitespaces)
+            line = line.Trim();
+
+          currentValue.Append(line.ToString());
         }
         else {
           // field       =  field-name ":" [ field-body ] CRLF
@@ -89,7 +108,12 @@ namespace Smdn.Formats.Mime {
               currentValue = null;
             }
             else {
-              currentValue = new StringBuilder(line.Substring(delim + 1).TrimStart().ToString());
+              line = line.Substring(delim + 1);
+
+              if (!keepWhitespaces)
+                line = line.TrimStart();
+
+              currentValue = new StringBuilder(line.ToString());
             }
           }
         }

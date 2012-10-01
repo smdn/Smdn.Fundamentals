@@ -11,8 +11,13 @@ namespace Smdn.Formats.Mime {
   public class MimeUtilsTests {
     private void ParseHeader(string input, Action<IEnumerable<KeyValuePair<string, string>>, Stream> testAction)
     {
+      ParseHeader(input, false, testAction);
+    }
+
+    private void ParseHeader(string input, bool keepWhitespaces, Action<IEnumerable<KeyValuePair<string, string>>, Stream> testAction)
+    {
       using (var stream = new LooseLineOrientedStream(new MemoryStream(Encoding.ASCII.GetBytes(input)))) {
-        testAction(MimeUtils.ParseHeader(stream), stream);
+        testAction(MimeUtils.ParseHeader(stream, keepWhitespaces), stream);
       }
     }
 
@@ -44,6 +49,37 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
         var reader = new StreamReader(stream, Encoding.ASCII);
 
         Assert.AreEqual("line1\r\nline2\r\nline3", reader.ReadToEnd());
+      });
+    }
+
+    [Test]
+    public void TestParseHeaderKeepWhitespaces()
+    {
+      var input = "MIME-Version: 1.0\r\n" +
+"Content-Type:\ttext/plain \r" +
+"Subject:test\t\n" +
+"\r" +
+"line1\n" +
+"line2\n" +
+"line3\n";
+
+      ParseHeader(input, true, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
+        var headers = new List<KeyValuePair<string, string>>(ret);
+
+        Assert.AreEqual(3, headers.Count);
+
+        Assert.AreEqual("MIME-Version", headers[0].Key);
+        Assert.AreEqual(" 1.0\r\n", headers[0].Value);
+
+        Assert.AreEqual("Content-Type", headers[1].Key);
+        Assert.AreEqual("\ttext/plain \r", headers[1].Value);
+
+        Assert.AreEqual("Subject", headers[2].Key);
+        Assert.AreEqual("test\t\n", headers[2].Value);
+
+        var reader = new StreamReader(stream, Encoding.ASCII);
+
+        Assert.AreEqual("line1\nline2\nline3\n", reader.ReadToEnd());
       });
     }
 
@@ -186,7 +222,26 @@ MIME-Version: 1.0";
         Assert.AreEqual(1, headers.Count);
 
         Assert.AreEqual("Subject", headers[0].Key);
-        Assert.AreEqual("line1 line2 line3 line4", headers[0].Value);
+        Assert.AreEqual("line1line2line3line4", headers[0].Value);
+      });
+    }
+
+    [Test]
+    public void TestParseHeaderMultilineValueKeepWhitespace()
+    {
+      var input = 
+        "Subject: \t line1\r\n" +
+          " line2\n" +
+          "\tline3\r" +
+          "   \tline4\r\n";
+
+      ParseHeader(input, true, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
+        var headers = new List<KeyValuePair<string, string>>(ret);
+
+        Assert.AreEqual(1, headers.Count);
+
+        Assert.AreEqual("Subject", headers[0].Key);
+        Assert.AreEqual(" \t line1\r\n line2\n\tline3\r   \tline4\r\n", headers[0].Value);
       });
     }
   }
