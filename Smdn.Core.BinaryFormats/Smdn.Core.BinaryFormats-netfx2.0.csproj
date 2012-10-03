@@ -55,7 +55,6 @@
     <Compile Include="Smdn.IO\BinaryReaderBase.cs" />
     <Compile Include="Smdn.IO\BinaryWriterBase.cs" />
     <Compile Include="Smdn\BinaryConvertExtensions.cs" />
-    <Compile Include="Smdn.IO\UnclosableStream.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
