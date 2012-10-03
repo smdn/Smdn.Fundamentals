@@ -70,7 +70,7 @@ namespace Smdn.IO {
 
     public override void Close()
     {
-      if (stream != null)
+      if (stream != null && stream.CanWrite)
         stream.Flush();
 
       stream = null;

@@ -176,21 +176,46 @@ namespace Smdn.IO {
     }
 
     private class TestFlushMemoryStream : MemoryStream {
+      public override bool CanWrite {
+        get { return canWrite; }
+      }
+
+      public TestFlushMemoryStream(bool canWrite)
+      {
+        this.canWrite = canWrite;
+      }
+
       public override void Flush()
       {
         throw new NotSupportedException();
       }
+
+      private readonly bool canWrite;
     }
 
     [Test]
     public void TestCloseInnerStreamFlushed()
     {
-      using (var baseStream = new TestFlushMemoryStream()) {
+      using (var baseStream = new TestFlushMemoryStream(true)) {
         var stream = new NonClosingStream(baseStream);
 
         Assert.DoesNotThrow(delegate {stream.WriteByte(1);});
 
         Assert.Throws<NotSupportedException>(delegate {stream.Close();});
+
+        Assert.DoesNotThrow(delegate {baseStream.WriteByte(1);});
+      }
+    }
+
+    [Test]
+    public void TestCloseInnerStreamNotFlushedIfStreamIsNotWritable()
+    {
+      using (var baseStream = new TestFlushMemoryStream(false)) {
+        var stream = new NonClosingStream(baseStream);
+
+        Assert.DoesNotThrow(delegate {stream.WriteByte(1);});
+
+        Assert.DoesNotThrow(delegate {stream.Close();});
 
         Assert.DoesNotThrow(delegate {baseStream.WriteByte(1);});
       }
