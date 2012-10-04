@@ -57,7 +57,7 @@ namespace Smdn.IO {
         return new PartialStream(innerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin);
       }
       else {
-        return new PartialStream(innerOrPartialStream, offset, length, true, true);
+        return new PartialStream(innerOrPartialStream, offset, length, true, true, seekToBegin);
       }
     }
 #endregion
