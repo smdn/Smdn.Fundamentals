@@ -60,24 +60,24 @@ namespace Smdn.IO {
     }
 
     public override long Position {
-      get { return stream.Position; }
+      get { CheckDisposed(); return stream.Position - bufRemain; }
       set { Seek(value, SeekOrigin.Begin); }
     }
 
     public override long Length {
-      get { return stream.Length; }
+      get { CheckDisposed(); return stream.Length; }
     }
 
     public byte[] NewLine {
-      get { return (newLine == null) ? null : (byte[])newLine.Clone(); }
+      get { CheckDisposed(); return (newLine == null) ? null : (byte[])newLine.Clone(); }
     }
 
     public int BufferSize {
-      get { return buffer.Length; }
+      get { CheckDisposed(); return buffer.Length; }
     }
 
     public virtual Stream InnerStream {
-      get { return stream; }
+      get { CheckDisposed(); return stream; }
     }
 
     protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize)
