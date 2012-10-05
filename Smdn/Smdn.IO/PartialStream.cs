@@ -50,14 +50,15 @@ namespace Smdn.IO {
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
 
-      if (innerOrPartialStream is PartialStream) {
-        var partialStream = innerOrPartialStream as PartialStream;
+      var partialStream = innerOrPartialStream as PartialStream;
+
+      if (partialStream == null) {
+        return new PartialStream(innerOrPartialStream, offset, length, true, true, seekToBegin);
+      }
+      else {
         var innerStream = partialStream.InnerStream;
 
         return new PartialStream(innerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin);
-      }
-      else {
-        return new PartialStream(innerOrPartialStream, offset, length, true, true, seekToBegin);
       }
     }
 #endregion
