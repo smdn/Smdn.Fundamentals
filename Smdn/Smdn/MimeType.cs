@@ -132,18 +132,31 @@ namespace Smdn {
 
     public static MimeType GetMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
     {
-      if (Runtime.IsRunningOnWindows)
+      if (extensionOrPath == null)
+        throw new ArgumentNullException("extensionOrPath");
+
+      if (Runtime.IsRunningOnWindows) {
         return GetMimeTypeByExtensionWin(extensionOrPath);
-      else
+      }
+      else {
+        if (mimeTypesFile == null)
+          throw new ArgumentNullException("mimeTypesFile");
+
         return GetMimeTypeByExtensionUnix(mimeTypesFile, extensionOrPath);
+      }
     }
+
+    private static readonly char[] mimeTypesFileDelimiters = new char[] {'\t', ' '};
 
     private static MimeType GetMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
     {
       var extension = Path.GetExtension(extensionOrPath);
 
-      if (extension.StartsWith("."))
+      if (extension.StartsWith(".", StringComparison.Ordinal))
         extension = extension.Substring(1);
+
+      if (extension.Length == 0)
+        return null;
 
       using (var reader = new StreamReader(mimeTypesFile)) {
         for (;;) {
@@ -151,16 +164,16 @@ namespace Smdn {
 
           if (line == null)
             break;
-          else if (line.StartsWith("#"))
+          else if (line.StartsWith("#", StringComparison.Ordinal))
             continue;
 
-          var entry = line.Split(new[] {"\t", " "}, StringSplitOptions.RemoveEmptyEntries);
+          var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
 
           if (entry.Length <= 1)
             continue;
 
           for (var index = 1; index < entry.Length; index++) {
-            if (entry[index] == extension)
+            if (string.Equals(entry[index], extension, StringComparison.OrdinalIgnoreCase))
               return new MimeType(entry[0]);
           }
         }
@@ -172,6 +185,10 @@ namespace Smdn {
     private static MimeType GetMimeTypeByExtensionWin(string extensionOrPath)
     {
       var extension = Path.GetExtension(extensionOrPath);
+
+      if (extension.Length <= 1)
+        return null; // if "" or "."
+
       var key = Registry.ClassesRoot.OpenSubKey(extension);
 
       if (key == null)

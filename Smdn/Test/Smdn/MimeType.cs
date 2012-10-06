@@ -84,9 +84,18 @@ namespace Smdn {
     public void TestGetMimeTypeByExtension()
     {
       Assert.AreEqual(MimeType.TextPlain, MimeType.GetMimeTypeByExtension("hoge.txt"));
+      Assert.AreEqual(MimeType.TextPlain, MimeType.GetMimeTypeByExtension("hoge.TXT"));
       Assert.AreEqual(MimeType.CreateTextType("html"), MimeType.GetMimeTypeByExtension("index.html"));
       Assert.AreEqual(MimeType.CreateImageType("png"), MimeType.GetMimeTypeByExtension("image.png"));
       Assert.AreEqual(null, MimeType.GetMimeTypeByExtension(".hoge"));
+      Assert.AreEqual(null, MimeType.GetMimeTypeByExtension("hoge"));
+      Assert.AreEqual(null, MimeType.GetMimeTypeByExtension(string.Empty));
+      Assert.AreEqual(null, MimeType.GetMimeTypeByExtension("."));
+
+      Assert.Throws<ArgumentNullException>(() => MimeType.GetMimeTypeByExtension(null));
+
+      if (Runtime.IsRunningOnUnix)
+        Assert.Throws<ArgumentNullException>(() => MimeType.GetMimeTypeByExtension("hoge.txt", null));
     }
 
     [Test]
