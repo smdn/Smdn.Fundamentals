@@ -126,24 +126,36 @@ namespace Smdn {
       return new MimeType("multipart", subtype);
     }
 
+    [Obsolete("use FindMimeTypeByExtension() instead")]
     public static MimeType GetMimeTypeByExtension(string extensionOrPath)
     {
-      return GetMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
+      return FindMimeTypeByExtension(extensionOrPath);
     }
 
+    [Obsolete("use FindMimeTypeByExtension() instead")]
     public static MimeType GetMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
+    {
+      return FindMimeTypeByExtension(extensionOrPath, mimeTypesFile);
+    }
+
+    public static MimeType FindMimeTypeByExtension(string extensionOrPath)
+    {
+      return FindMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
+    }
+
+    public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
     {
       if (extensionOrPath == null)
         throw new ArgumentNullException("extensionOrPath");
 
       if (Runtime.IsRunningOnWindows) {
-        return GetMimeTypeByExtensionWin(extensionOrPath);
+        return FindMimeTypeByExtensionWin(extensionOrPath);
       }
       else {
         if (mimeTypesFile == null)
           throw new ArgumentNullException("mimeTypesFile");
 
-        return GetMimeTypeByExtensionUnix(mimeTypesFile, extensionOrPath);
+        return FindMimeTypeByExtensionUnix(mimeTypesFile, extensionOrPath);
       }
     }
 
@@ -172,7 +184,7 @@ namespace Smdn {
       }
     }
 
-    private static MimeType GetMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
+    private static MimeType FindMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
     {
       var extension = Path.GetExtension(extensionOrPath);
 
@@ -192,7 +204,7 @@ namespace Smdn {
       return null;
     }
 
-    private static MimeType GetMimeTypeByExtensionWin(string extensionOrPath)
+    private static MimeType FindMimeTypeByExtensionWin(string extensionOrPath)
     {
       var extension = Path.GetExtension(extensionOrPath);
 
