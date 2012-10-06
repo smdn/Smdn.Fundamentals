@@ -25,6 +25,7 @@
 using Microsoft.Win32;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Smdn {
@@ -148,6 +149,29 @@ namespace Smdn {
 
     private static readonly char[] mimeTypesFileDelimiters = new char[] {'\t', ' '};
 
+    private static IEnumerable<KeyValuePair<string, string[]>> ReadMimeTypesFileLines(string mimeTypesFile)
+    {
+      using (var reader = new StreamReader(mimeTypesFile)) {
+        for (;;) {
+          var line = reader.ReadLine();
+
+          if (line == null)
+            break;
+          else if (line.Length == 0)
+            continue;
+          else if (line.StartsWith("#", StringComparison.Ordinal))
+            continue;
+
+          var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
+
+          if (entry.Length <= 1)
+            continue;
+
+          yield return new KeyValuePair<string, string[]>(entry[0], entry);
+        }
+      }
+    }
+
     private static MimeType GetMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
     {
       var extension = Path.GetExtension(extensionOrPath);
@@ -158,24 +182,10 @@ namespace Smdn {
       if (extension.Length == 0)
         return null;
 
-      using (var reader = new StreamReader(mimeTypesFile)) {
-        for (;;) {
-          var line = reader.ReadLine();
-
-          if (line == null)
-            break;
-          else if (line.StartsWith("#", StringComparison.Ordinal))
-            continue;
-
-          var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
-
-          if (entry.Length <= 1)
-            continue;
-
-          for (var index = 1; index < entry.Length; index++) {
-            if (string.Equals(entry[index], extension, StringComparison.OrdinalIgnoreCase))
-              return new MimeType(entry[0]);
-          }
+      foreach (var entry in ReadMimeTypesFileLines(mimeTypesFile)) {
+        for (var index = 1; index < entry.Value.Length; index++) {
+          if (string.Equals(entry.Value[index], extension, StringComparison.OrdinalIgnoreCase))
+            return new MimeType(entry.Key);
         }
       }
 
@@ -200,6 +210,73 @@ namespace Smdn {
         return null;
       else
         return new MimeType((string)mimeType);
+    }
+
+    public static string[] FindExtensionsByMimeType(MimeType mimeType)
+    {
+      return FindExtensionsByMimeType(mimeType, defaultMimeTypesFile);
+    }
+
+    public static string[] FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile)
+    {
+      if (mimeType == null)
+        throw new ArgumentNullException("mimeType");
+
+      return FindExtensionsByMimeType(mimeType.ToString());
+    }
+
+    public static string[] FindExtensionsByMimeType(string mimeType)
+    {
+      return FindExtensionsByMimeType(mimeType, defaultMimeTypesFile);
+    }
+
+    public static string[] FindExtensionsByMimeType(string mimeType, string mimeTypesFile)
+    {
+      if (mimeType == null)
+        throw new ArgumentNullException("mimeType");
+      if (mimeType.Length == 0)
+        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("mimeType");
+
+      if (Runtime.IsRunningOnWindows) {
+        return FindExtensionsByMimeTypeWin(mimeType);
+      }
+      else {
+        if (mimeTypesFile == null)
+          throw new ArgumentNullException("mimeTypesFile");
+
+        return FindExtensionsByMimeTypeUnix(mimeType, mimeTypesFile);
+      }
+    }
+
+    private static string[] FindExtensionsByMimeTypeUnix(string mimeType, string mimeTypesFile)
+    {
+      var found = new List<string>();
+
+      foreach (var entry in ReadMimeTypesFileLines(mimeTypesFile)) {
+        if (string.Equals(entry.Key, mimeType, StringComparison.OrdinalIgnoreCase)) {
+          for (var index = 1; index < entry.Value.Length; index++)
+            found.Add("." + entry.Value[index]);
+        }
+      }
+
+      return found.ToArray();
+    }
+
+    private static string[] FindExtensionsByMimeTypeWin(string mimeType)
+    {
+      var found = new List<string>();
+
+      foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
+        using (var key = Registry.ClassesRoot.OpenSubKey(name)) {
+          if (key == null)
+            continue;
+
+          if (string.Equals((string)key.GetValue("Content Type"), mimeType, StringComparison.OrdinalIgnoreCase))
+            found.Add(name);
+        }
+      }
+
+      return found.ToArray();
     }
 
     /*

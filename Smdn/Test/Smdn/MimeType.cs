@@ -99,6 +99,31 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestFindExtensionsByMimeType()
+    {
+      CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("text/plain"),
+                                ".txt");
+      CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("TEXT/PLAIN"),
+                                ".txt");
+      CollectionAssert.Contains(MimeType.FindExtensionsByMimeType(MimeType.TextPlain),
+                                ".txt");
+
+      CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("text/html"),
+                                ".html");
+
+      CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("image/jpeg"),
+                                ".jpg");
+
+      Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge"));
+
+      Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((string)null));
+      Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null));
+
+      if (Runtime.IsRunningOnUnix)
+        Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", null));
+    }
+
+    [Test]
     public void TestToString()
     {
       Assert.AreEqual("text/plain", MimeType.TextPlain.ToString());
