@@ -53,16 +53,6 @@ namespace Smdn.Formats {
       'C', 'D', 'E', 'F'
     };
 
-    [Obsolete("use GetLowerCaseHexChars() instead", true)]
-    public static char[] LowerCaseHexChars {
-      get { throw new NotImplementedException(); }
-    }
-
-    [Obsolete("use GetUpperCaseHexChars() instead", true)]
-    public static char[] UpperCaseHexChars {
-      get { throw new NotImplementedException(); }
-    }
-
     public static char[] GetLowerCaseHexChars()
     {
       return (char[])LowerCaseHexCharArray.Clone();

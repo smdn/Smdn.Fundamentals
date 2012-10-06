@@ -30,12 +30,6 @@ namespace Smdn {
     public delegate string ReplaceCharEvaluator(char ch, string str, int index);
     public delegate string ReplaceStringEvaluator(string matched, string str, int index);
 
-    [Obsolete("use RemoveChars instead")]
-    public static string Remove(this string str, params char[] oldChars)
-    {
-      return ReplaceInternal(str, oldChars, null);
-    }
-
     public static string RemoveChars(this string str, params char[] oldChars)
     {
       return ReplaceInternal(str, oldChars, null);

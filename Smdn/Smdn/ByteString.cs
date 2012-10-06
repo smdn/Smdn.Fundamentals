@@ -74,11 +74,6 @@ namespace Smdn {
       get { return segment.Count == 0; }
     }
 
-    [Obsolete("use Segment instead")]
-    public byte[] ByteArray {
-      get { return segment.Array; }
-    }
-
     public ArraySegment<byte> Segment {
       get { return segment; }
     }
