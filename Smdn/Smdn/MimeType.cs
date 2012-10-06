@@ -199,17 +199,17 @@ namespace Smdn {
       if (extension.Length <= 1)
         return null; // if "" or "."
 
-      var key = Registry.ClassesRoot.OpenSubKey(extension);
+      using (var key = Registry.ClassesRoot.OpenSubKey(extension)) {
+        if (key == null)
+          return null;
 
-      if (key == null)
-        return null;
+        var mimeType = key.GetValue("Content Type");
 
-      var mimeType = key.GetValue("Content Type");
-
-      if (mimeType == null)
-        return null;
-      else
-        return new MimeType((string)mimeType);
+        if (mimeType == null)
+          return null;
+        else
+          return new MimeType((string)mimeType);
+      }
     }
 
     public static string[] FindExtensionsByMimeType(MimeType mimeType)
