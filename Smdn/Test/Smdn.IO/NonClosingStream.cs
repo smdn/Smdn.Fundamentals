@@ -213,11 +213,11 @@ namespace Smdn.IO {
       using (var baseStream = new TestFlushMemoryStream(false)) {
         var stream = new NonClosingStream(baseStream);
 
-        Assert.DoesNotThrow(delegate {stream.WriteByte(1);});
+        Assert.DoesNotThrow(delegate {stream.ReadByte();});
 
         Assert.DoesNotThrow(delegate {stream.Close();});
 
-        Assert.DoesNotThrow(delegate {baseStream.WriteByte(1);});
+        Assert.DoesNotThrow(delegate {baseStream.ReadByte();});
       }
     }
   }
