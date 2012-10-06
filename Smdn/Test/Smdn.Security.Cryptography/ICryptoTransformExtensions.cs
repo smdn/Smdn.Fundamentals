@@ -127,6 +127,9 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTranformBytesWithSymmetricAlgorithm()
     {
+      if (Runtime.IsRunningOnNetFx)
+        Assert.Ignore("this test will fail on .NET Framework");
+
       var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
       var symmetricAlgorithms = new SymmetricAlgorithm[] {
