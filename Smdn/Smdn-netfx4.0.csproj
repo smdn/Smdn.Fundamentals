@@ -99,6 +99,7 @@
     <Compile Include="Smdn\UriUtils.cs" />
     <Compile Include="Smdn.Collections\KeyValuePair.cs" />
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
+    <Compile Include="Smdn.Threading\LazyInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

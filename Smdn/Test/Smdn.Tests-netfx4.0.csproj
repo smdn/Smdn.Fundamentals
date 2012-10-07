@@ -11,28 +11,27 @@
     <RootNamespace>Smdn.Tests</RootNamespace>
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx4.0\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Release\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx4.0\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -86,6 +85,7 @@
     <Compile Include="Smdn.Collections\HashSet.cs" />
     <Compile Include="Smdn\UriUtils.cs" />
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
+    <Compile Include="Smdn.Threading\LazyInitializer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
