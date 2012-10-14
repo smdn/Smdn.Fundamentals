@@ -101,5 +101,17 @@ namespace Smdn.IO {
         Assert.AreEqual(new byte[] {0x04, 0x05, 0x06, 0x07}, StreamExtensions.ReadToEnd(stream, 2, 2));
       }
     }
+
+    [Test]
+    public void TestWriteArraySegment()
+    {
+      using (var stream = new MemoryStream()) {
+        var segment = new ArraySegment<byte>(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04}, 1, 3);
+
+        StreamExtensions.Write(stream, segment);
+
+        Assert.AreEqual(new byte[] {0x01, 0x02, 0x03}, stream.ToArray());
+      }
+    }
   }
 }

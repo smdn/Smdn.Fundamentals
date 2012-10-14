@@ -110,5 +110,13 @@ namespace Smdn.IO {
         return outStream.ToArray();
       }
     }
+
+    public static void Write(this Stream stream, ArraySegment<byte> segment)
+    {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+
+      stream.Write(segment.Array, segment.Offset, segment.Count);
+    }
   }
 }
