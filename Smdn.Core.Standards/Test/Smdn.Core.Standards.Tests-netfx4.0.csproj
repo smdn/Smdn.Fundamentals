@@ -11,28 +11,27 @@
     <RootNamespace>Smdn.Core.Standards.Tests</RootNamespace>
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\</IntermediateOutputPath>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx4.0\</IntermediateOutputPath>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
     <OutputPath>bin\Release\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx4.0\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -56,6 +55,7 @@
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.IO\" />
     <Folder Include="Smdn.Formats.Mime\" />
+    <Folder Include="Smdn.Formats.UUEncoding\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
@@ -74,5 +74,8 @@
     <Compile Include="Smdn.Formats\HtmlEscape.cs" />
     <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
+    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingStream.cs" />
+    <Compile Include="Smdn.Formats.UUEncoding\UUDecoder.cs" />
+    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingTransform.cs" />
   </ItemGroup>
 </Project>
