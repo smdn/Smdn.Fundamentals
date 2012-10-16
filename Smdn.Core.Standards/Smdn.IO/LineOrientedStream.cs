@@ -31,6 +31,7 @@ namespace Smdn.IO {
   public class LineOrientedStream : Stream {
     protected static readonly int DefaultBufferSize = 1024;
     protected static readonly int MinimumBufferSize = 8;
+    protected static readonly bool DefaultLeaveStreamOpen = false;
 
     private enum EolState {
       NotMatched = 0,
@@ -80,7 +81,7 @@ namespace Smdn.IO {
       get { CheckDisposed(); return stream; }
     }
 
-    protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize)
+    protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize, bool leaveStreamOpen)
     {
       if (stream == null)
         throw new ArgumentNullException("stream");
@@ -98,12 +99,13 @@ namespace Smdn.IO {
       this.strictEOL = strictEOL;
       this.newLine = newLine;
       this.buffer = new byte[bufferSize];
+      this.leaveStreamOpen = leaveStreamOpen;
     }
 
     protected override void Dispose(bool disposing)
     {
       if (disposing) {
-        if (stream != null)
+        if (stream != null && !leaveStreamOpen)
           stream.Close();
       }
 
@@ -380,6 +382,7 @@ namespace Smdn.IO {
     private Stream stream;
     private byte[] newLine;
     private bool strictEOL;
+    private readonly bool leaveStreamOpen;
     private byte[] buffer;
     private int bufOffset = 0;
     private int bufRemain  = 0;

@@ -14,13 +14,18 @@ namespace Smdn.IO {
 
     private static LineOrientedStream CreateStream(StreamType type, Stream baseStream, int bufferSize)
     {
+      return CreateStream(type, baseStream, bufferSize, false);
+    }
+
+    private static LineOrientedStream CreateStream(StreamType type, Stream baseStream, int bufferSize, bool leaveStreamOpen)
+    {
       switch (type) {
         case StreamType.Loose:
-          return new LooseLineOrientedStream(baseStream, bufferSize);
+          return new LooseLineOrientedStream(baseStream, bufferSize, leaveStreamOpen);
         case StreamType.Strict:
-          return new StrictLineOrientedStream(baseStream, bufferSize);
+          return new StrictLineOrientedStream(baseStream, bufferSize, leaveStreamOpen);
         default:
-          return new LooseLineOrientedStream(baseStream, bufferSize); // XXX
+          return new LooseLineOrientedStream(baseStream, bufferSize, leaveStreamOpen); // XXX
       }
     }
 
@@ -200,6 +205,32 @@ namespace Smdn.IO {
         Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
         Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
+
+        stream.Close();
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestCloseLeaveStreamOpen(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+
+      using (var baseStream = new MemoryStream(data)) {
+        var stream = CreateStream(type, baseStream, 8, true);
+
+        stream.Close();
+
+        Assert.IsFalse(stream.CanRead, "CanRead");
+        Assert.IsFalse(stream.CanWrite, "CanWrite");
+        Assert.IsFalse(stream.CanSeek, "CanSeek");
+        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
+
+        Assert.DoesNotThrow(() => baseStream.ReadByte());
+        Assert.DoesNotThrow(() => baseStream.WriteByte(0x00));
 
         stream.Close();
       }
