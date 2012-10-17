@@ -29,6 +29,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Smdn.IO;
+using Smdn.Formats.UUEncoding;
 
 namespace Smdn.Formats.Mime {
   public static class ContentTransferEncoding {
@@ -131,6 +132,9 @@ namespace Smdn.Formats.Mime {
                                             CryptoStreamMode.Read);
           break;
         case ContentTransferEncodingMethod.UUEncode:
+          decodingStream = new UUDecodingStream(stream, leaveStreamOpen);
+          leaveStreamOpen = false;
+          break;
         case ContentTransferEncodingMethod.GZip64:
         default:
           throw ExceptionUtils.CreateNotSupportedEnumValue(encoding);

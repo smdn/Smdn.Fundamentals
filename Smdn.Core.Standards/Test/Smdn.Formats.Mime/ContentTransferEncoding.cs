@@ -54,12 +54,12 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    [Test]
     [TestCase(ContentTransferEncodingMethod.SevenBit)]
     [TestCase(ContentTransferEncodingMethod.EightBit)]
     [TestCase(ContentTransferEncodingMethod.Binary)]
     [TestCase(ContentTransferEncodingMethod.Base64)]
     [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
+    [TestCase(ContentTransferEncodingMethod.UUEncode)]
     public void TestCreateDecodingStreamCloseInnerStream(ContentTransferEncodingMethod method)
     {
       using (var inputStream = new MemoryStream(new byte[] {0, 1, 2, 3, 4, 5, 6, 7})) {
@@ -72,12 +72,12 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    [Test]
     [TestCase(ContentTransferEncodingMethod.SevenBit)]
     [TestCase(ContentTransferEncodingMethod.EightBit)]
     [TestCase(ContentTransferEncodingMethod.Binary)]
     [TestCase(ContentTransferEncodingMethod.Base64)]
     [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
+    [TestCase(ContentTransferEncodingMethod.UUEncode)]
     public void TestCreateDecodingStreamLeaveInnerStreamOpen(ContentTransferEncodingMethod method)
     {
       using (var inputStream = new MemoryStream(new byte[] {0, 1, 2, 3, 4, 5, 6, 7})) {
@@ -90,12 +90,16 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    [Test]
-    public void TestCreateTextReader()
+    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+    public void TestCreateTextReader(ContentTransferEncodingMethod cte, string content)
     {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B"))) {
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader = ContentTransferEncoding.CreateTextReader(stream,
-                                                              ContentTransferEncodingMethod.QuotedPrintable,
+                                                              cte,
                                                               TestUtils.Encodings.Jis);
 
         Assert.AreEqual(TestUtils.Encodings.Jis, reader.CurrentEncoding);
@@ -115,12 +119,16 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    [Test]
-    public void TestCreateTextReaderLeaveInnerStreamOpen()
+    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+    public void TestCreateTextReaderLeaveInnerStreamOpen(ContentTransferEncodingMethod cte, string content)
     {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B"))) {
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader1 = ContentTransferEncoding.CreateTextReader(stream,
-                                                               ContentTransferEncodingMethod.QuotedPrintable,
+                                                               cte,
                                                                TestUtils.Encodings.Jis,
                                                                true);
 
@@ -131,19 +139,40 @@ namespace Smdn.Formats.Mime {
         reader1.Close();
 
         var reader2 = ContentTransferEncoding.CreateTextReader(stream,
-                                                               ContentTransferEncodingMethod.QuotedPrintable,
+                                                               cte,
                                                                TestUtils.Encodings.Jis);
 
         Assert.AreEqual("漢字abcかな123カナ", reader2.ReadToEnd(), "read again");
       }
     }
 
-    [Test]
-    public void TestCreateBinaryReader()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestCreateTextReaderFromBinaryContentTransferEncoding(bool leaveStreamOpen)
     {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B"))) {
+      var content = "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42";
+
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
+        Assert.Throws<InvalidOperationException>(delegate {
+          ContentTransferEncoding.CreateTextReader(stream,
+                                                   ContentTransferEncodingMethod.Binary,
+                                                   TestUtils.Encodings.Jis,
+                                                   leaveStreamOpen);
+        });
+      }
+    }
+
+    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.Binary, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+    public void TestCreateBinaryReader(ContentTransferEncodingMethod cte, string content)
+    {
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader = ContentTransferEncoding.CreateBinaryReader(stream,
-                                                                ContentTransferEncodingMethod.QuotedPrintable,
+                                                                cte,
                                                                 TestUtils.Encodings.Jis);
 
         Assert.AreEqual(TestUtils.Encodings.Jis.GetBytes("漢字abcかな123カナ"),
@@ -163,12 +192,17 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    [Test]
-    public void TestCreateBinaryReaderLeaveInnerStreamOpen()
+    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.Binary, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+    public void TestCreateBinaryReaderLeaveInnerStreamOpen(ContentTransferEncodingMethod cte, string content)
     {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B"))) {
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader1 = ContentTransferEncoding.CreateBinaryReader(stream,
-                                                                 ContentTransferEncodingMethod.QuotedPrintable,
+                                                                 cte,
                                                                  TestUtils.Encodings.Jis,
                                                                  true);
 
@@ -180,7 +214,7 @@ namespace Smdn.Formats.Mime {
         reader1.Close();
 
         var reader2 = ContentTransferEncoding.CreateBinaryReader(stream,
-                                                                 ContentTransferEncodingMethod.QuotedPrintable,
+                                                                 cte,
                                                                  TestUtils.Encodings.Jis);
 
         Assert.AreEqual(TestUtils.Encodings.Jis.GetBytes("漢字abcかな123カナ"),
