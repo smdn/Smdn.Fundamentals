@@ -37,6 +37,8 @@ namespace Smdn {
     public static readonly MimeType MultipartAlternative        = MimeType.CreateMultipartType("alternative");
     public static readonly MimeType MultipartMixed              = MimeType.CreateMultipartType("mixed");
     public static readonly MimeType ApplicationOctetStream      = MimeType.CreateApplicationType("octet-stream");
+    public static readonly MimeType MessagePartial              = new MimeType("message", "partial");
+    public static readonly MimeType MessageExternalBody         = new MimeType("message", "external-body");
 
     private const string defaultMimeTypesFile = "/etc/mime.types";
 
