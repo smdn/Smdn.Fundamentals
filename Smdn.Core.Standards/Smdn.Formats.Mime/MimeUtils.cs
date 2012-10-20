@@ -79,6 +79,9 @@ namespace Smdn.Formats.Mime {
           currentValue.Append(line.ToString());
         }
         else {
+          if (currentName != null)
+            yield return new KeyValuePair<string, string>(currentName, currentValue.ToString());
+
           // field       =  field-name ":" [ field-body ] CRLF
           // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
           const byte nameBodyDelimiter = (byte)':';
@@ -91,9 +94,6 @@ namespace Smdn.Formats.Mime {
             continue;
           }
           else {
-            if (currentName != null)
-              yield return new KeyValuePair<string, string>(currentName, currentValue.ToString());
-
             currentName = line.Substring(0, delim).TrimEnd().ToString();
 
             if (currentName.Length <= 0) {

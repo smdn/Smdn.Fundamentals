@@ -147,38 +147,60 @@ Content-Type: text/plain
       });
     }
 
-    [Test]
-    public void TestParseHeaderIgnoreInvalidHeaderNameOnly()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestParseHeaderIgnoreInvalidHeaderNameOnly(bool keepWhitespaces)
     {
       var input = @"X-Invalid-Header
-MIME-Version: 1.0";
+MIME-Version: 1.0
+X-Invalid-Header
+";
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
+      ParseHeader(input, keepWhitespaces, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
         var headers = new List<KeyValuePair<string, string>>(ret);
 
         Assert.AreEqual(1, headers.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value);
+        Assert.AreEqual("1.0", headers[0].Value.Trim());
       });
     }
 
-    [Test]
-    public void TestParseHeaderIgnoreInvalidHeaderValueOnly()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestParseHeaderIgnoreInvalidHeaderValueOnly1(bool keepWhitespaces)
     {
       var input = @": invalid-header-value
-MIME-Version: 1.0";
+MIME-Version: 1.0
+: invalid-header-value";
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
+      ParseHeader(input, keepWhitespaces, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
         var headers = new List<KeyValuePair<string, string>>(ret);
 
         Assert.AreEqual(1, headers.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value);
+        Assert.AreEqual("1.0", headers[0].Value.Trim());
       });
     }
-    
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestParseHeaderIgnoreInvalidHeaderValueOnly2(bool keepWhitespaces)
+    {
+      var input = @"   : invalid-header-value
+MIME-Version: 1.0";
+
+      ParseHeader(input, keepWhitespaces, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
+        var headers = new List<KeyValuePair<string, string>>(ret);
+
+        Assert.AreEqual(1, headers.Count);
+
+        Assert.AreEqual("MIME-Version", headers[0].Key);
+        Assert.AreEqual("1.0", headers[0].Value.Trim());
+      });
+    }
+
     [Test]
     public void TestParseHeaderMixedWhitespaces()
     {
