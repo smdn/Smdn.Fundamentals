@@ -56,22 +56,16 @@ namespace Smdn.Formats.Mime {
       StringBuilder currentValue = null;
 
       for (;;) {
-        var lineBytes = stream.ReadLine(keepWhitespaces);
+        var lineBytes = stream.ReadLine(true);
 
         if (lineBytes == null)
           break; // unexpected end of stream
 
         var line = ByteString.CreateImmutable(lineBytes);
 
-        if (keepWhitespaces) {
-          if ((line.Length == 1 && (line[0] == Octets.CR || line[0] == Octets.LF)) ||
-              (line.Length == 2 && (line[0] == Octets.CR && line[1] == Octets.LF)))
-            break; // end of headers
-        }
-        else {
-          if (line.IsEmpty)
-            break; // end of headers
-        }
+        if ((line.Length == 1 && (line[0] == Octets.CR || line[0] == Octets.LF)) ||
+            (line.Length == 2 && (line[0] == Octets.CR && line[1] == Octets.LF)))
+          break; // end of headers
 
         if (line[0] == Octets.HT || line[0] == Octets.SP) { // LWSP-char
           // folding
@@ -111,7 +105,7 @@ namespace Smdn.Formats.Mime {
               line = line.Substring(delim + 1);
 
               if (!keepWhitespaces)
-                line = line.TrimStart();
+                line = line.Trim();
 
               currentValue = new StringBuilder(line.ToString());
             }
