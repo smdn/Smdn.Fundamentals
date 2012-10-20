@@ -47,21 +47,67 @@ namespace Smdn.Formats.Mime {
       return ParseHeader(stream, false);
     }
 
+    private static readonly char[] lineDelmiters = new char[] {'\r', '\n'};
+
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream, bool keepWhitespaces)
+    {
+      foreach (var header in ParseHeaderRaw(stream)) {
+        if (keepWhitespaces) {
+          yield return new KeyValuePair<string, string>(header.Name.ToString(), header.Value.ToString());
+        }
+        else {
+          var valueLines = header.Value.ToString().Split(lineDelmiters);
+
+          for (var i = 0; i < valueLines.Length; i++) {
+            valueLines[i] = valueLines[i].Trim();
+          }
+
+          yield return new KeyValuePair<string, string>(header.Name.Trim().ToString(), string.Concat(valueLines));
+        }
+      }
+    }
+
+    public struct HeaderData
+    {
+      public ByteString RawData {
+        get { return rawData; }
+      }
+
+      public ByteString Name {
+        get { return ByteString.CreateImmutable(rawData.Segment.Array, 0, indexOfDelmiter); }
+      }
+
+      public ByteString Value {
+        get { return ByteString.CreateImmutable(rawData.Segment.Array, indexOfDelmiter + 1); }
+      }
+
+      public int IndexOfDelimiter {
+        get { return indexOfDelmiter; }
+      }
+
+      internal HeaderData(ByteString rawData, int indexOfDelimiter)
+      {
+        this.rawData = rawData;
+        this.indexOfDelmiter = indexOfDelimiter;
+      }
+
+      private readonly ByteString rawData;
+      private readonly int indexOfDelmiter;
+    }
+
+    public static IEnumerable<HeaderData> ParseHeaderRaw(LineOrientedStream stream)
     {
       if (stream == null)
         throw new ArgumentNullException("stream");
 
-      string currentName = null;
-      StringBuilder currentValue = null;
+      ByteStringBuilder header = null;
+      var indexOfDelimiter = -1;
 
       for (;;) {
-        var lineBytes = stream.ReadLine(true);
+        var line = stream.ReadLine(true);
 
-        if (lineBytes == null)
+        if (line == null)
           break; // unexpected end of stream
-
-        var line = ByteString.CreateImmutable(lineBytes);
 
         if ((line.Length == 1 && (line[0] == Octets.CR || line[0] == Octets.LF)) ||
             (line.Length == 2 && (line[0] == Octets.CR && line[1] == Octets.LF)))
@@ -69,52 +115,42 @@ namespace Smdn.Formats.Mime {
 
         if (line[0] == Octets.HT || line[0] == Octets.SP) { // LWSP-char
           // folding
-          if (currentName == null)
+          if (header == null)
             // ignore incorrect formed header
             continue;
 
-          if (!keepWhitespaces)
-            line = line.Trim();
-
-          currentValue.Append(line.ToString());
+          header.Append(line);
         }
         else {
-          if (currentName != null)
-            yield return new KeyValuePair<string, string>(currentName, currentValue.ToString());
+          if (0 < indexOfDelimiter)
+            yield return new HeaderData(header.ToByteString(true), indexOfDelimiter);
 
           // field       =  field-name ":" [ field-body ] CRLF
           // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
           const byte nameBodyDelimiter = (byte)':';
-          var delim = line.IndexOf(nameBodyDelimiter);
 
-          if (delim < 0) {
+          indexOfDelimiter = -1;
+
+          for (var index = 0; index < line.Length; index++) {
+            if (line[index] == nameBodyDelimiter) {
+              indexOfDelimiter = index;
+              break;
+            }
+          }
+
+          if (indexOfDelimiter == -1) {
             // ignore incorrect formed header
-            currentName = null;
-            currentValue = null;
-            continue;
+            header = null;
           }
           else {
-            currentName = line.Substring(0, delim).TrimEnd().ToString();
-
-            if (currentName.Length <= 0) {
-              // ignore incorrect formed header
-              currentName = null;
-              currentValue = null;
-            }
-            else {
-              line = line.Substring(delim + 1);
-
-              if (!keepWhitespaces)
-                line = line.Trim();
-
-              currentValue = new StringBuilder(line.ToString());
-            }
+            header = new ByteStringBuilder(line.Length);
+            header.Append(line);
           }
         }
       }
 
-      if (currentName != null)
-        yield return new KeyValuePair<string, string>(currentName, currentValue.ToString());
+      if (0 < indexOfDelimiter)
+        yield return new HeaderData(header.ToByteString(true), indexOfDelimiter);
     }
   }
 }
