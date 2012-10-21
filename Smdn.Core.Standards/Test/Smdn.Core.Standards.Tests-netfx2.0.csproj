@@ -71,5 +71,8 @@
     <Compile Include="Smdn.Formats\HtmlEscape.cs" />
     <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
+    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingStream.cs" />
+    <Compile Include="Smdn.Formats.UUEncoding\UUDecoder.cs" />
+    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingTransform.cs" />
   </ItemGroup>
 </Project>
