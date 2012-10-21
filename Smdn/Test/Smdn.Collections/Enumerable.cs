@@ -219,6 +219,64 @@ string firstVeryLongName = names.FirstOrDefault(name => name.Length > 30);
     }
 
     [Test]
+    public void TestLast()
+    {
+      Assert.AreEqual(4, ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).Last());
+      Assert.AreEqual(4, GetEnumerator().Last());
+
+      Assert.Throws<InvalidOperationException>(() => ((IEnumerable<int>)new int[] {}).Last());
+      Assert.Throws<InvalidOperationException>(() => GetEmptyEnumerator().Last());
+    }
+
+    [Test]
+    public void TestLastOrDefault()
+    {
+      Assert.AreEqual(4, ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).LastOrDefault());
+      Assert.AreEqual(4, GetEnumerator().LastOrDefault());
+      Assert.AreEqual(0, ((IEnumerable<int>)new int[] {}).LastOrDefault());
+      Assert.AreEqual(0, GetEmptyEnumerator().LastOrDefault());
+    }
+
+    [Test]
+    public void TestLastOrDefault2()
+    {
+      int[] numbers = { };
+      int last = numbers.LastOrDefault();
+
+      Assert.AreEqual(last, 0);
+    }
+
+    [Test]
+    public void TestLastOrDefaultWithPredicate()
+    {
+      Assert.AreEqual("a",   (new[] {"a", "aa", "aaa"}).LastOrDefault(delegate(string s) {return s.Length == 1;}));
+      Assert.AreEqual("aa",  (new[] {"a", "aa", "aaa"}).LastOrDefault(delegate(string s) {return s.Length == 2;}));
+      Assert.AreEqual("aaa", (new[] {"a", "aa", "aaa"}).LastOrDefault(delegate(string s) {return s.Length == 3;}));
+      Assert.AreEqual(null,  (new[] {"a", "aa", "aaa"}).LastOrDefault(delegate(string s) {return s.Length == 4;}));
+
+      Assert.AreEqual(3, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).LastOrDefault(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).LastOrDefault(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(3, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).LastOrDefault(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).LastOrDefault(delegate(int i){ return i == 9; }));
+      Assert.AreEqual(3, ((IEnumerable<int>)GetEnumerator()).LastOrDefault(delegate(int i){ return i == 3; }));
+      Assert.AreEqual(0, ((IEnumerable<int>)GetEnumerator()).LastOrDefault(delegate(int i){ return i == 9; }));
+    }
+
+    [Test]
+    public void TestLastOrDefaultWithPredicate2()
+    {
+      double[] numbers = { 49.6, 52.3, 51.0, 49.4, 50.2, 48.3 };
+
+      double last50 = numbers.LastOrDefault(n => Math.Round(n) == 50.0);
+
+      Assert.AreEqual(50.2, last50);
+
+      double last40 = numbers.LastOrDefault(n => Math.Round(n) == 40.0);
+
+      Assert.AreEqual(0.0, last40);
+    }
+
+    [Test]
     public void TestWhere()
     {
       CollectionAssert.AreEquivalent(new int[0], ((IEnumerable<int>)new int[] {0, 1, 2, 3, 4}).Where(delegate(int i){ return i == 9; }));

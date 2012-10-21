@@ -227,6 +227,81 @@ namespace Smdn.Collections {
       return default(TSource);
     }
 
+    public static TSource Last<TSource>(this IEnumerable<TSource> source)
+    {
+      CheckArgs(source);
+
+      var list = source as IList<TSource>;
+
+      if (list == null) {
+        var last = default(TSource);
+        var empty = true;
+
+        foreach (var item in source) {
+          last = item;
+          empty = false;
+        }
+
+        if (empty)
+          throw new InvalidOperationException("sequence is empty");
+        else
+          return last;
+      }
+      else {
+        if (0 < list.Count)
+          return list[list.Count - 1];
+        else
+          throw new InvalidOperationException("sequence is empty");
+      }
+    }
+
+    /*
+    public static TSource Last<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+    {
+      if (predicate == null)
+        throw new ArgumentNullException("predicate");
+
+      throw new NotImplementedException();
+    }
+    */
+
+    public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source)
+    {
+      CheckArgs(source);
+
+      var list = source as IList<TSource>;
+
+      if (list == null) {
+        var last = default(TSource);
+
+        foreach (var item in source) {
+          last = item;
+        }
+
+        return last;
+      }
+      else {
+        if (0 < list.Count)
+          return list[list.Count - 1];
+        else
+          return default(TSource);
+      }
+    }
+
+    public static TSource LastOrDefault<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+    {
+      CheckArgsPredicate(source, predicate);
+
+      var last = default(TSource);
+
+      foreach (var item in source) {
+        if (predicate(item))
+          last = item;
+      }
+
+      return last;
+    }
+
     public static IEnumerable<int> Range(int start, int count)
     {
       if (count < 0)
