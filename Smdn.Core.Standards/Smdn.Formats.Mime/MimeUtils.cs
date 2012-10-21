@@ -67,7 +67,7 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    public struct HeaderData
+    public struct HeaderField
     {
       public ByteString RawData {
         get { return rawData; }
@@ -85,7 +85,7 @@ namespace Smdn.Formats.Mime {
         get { return indexOfDelmiter; }
       }
 
-      internal HeaderData(ByteString rawData, int indexOfDelimiter)
+      internal HeaderField(ByteString rawData, int indexOfDelimiter)
       {
         this.rawData = rawData;
         this.indexOfDelmiter = indexOfDelimiter;
@@ -95,7 +95,7 @@ namespace Smdn.Formats.Mime {
       private readonly int indexOfDelmiter;
     }
 
-    public static IEnumerable<HeaderData> ParseHeaderRaw(LineOrientedStream stream)
+    public static IEnumerable<HeaderField> ParseHeaderRaw(LineOrientedStream stream)
     {
       if (stream == null)
         throw new ArgumentNullException("stream");
@@ -123,7 +123,7 @@ namespace Smdn.Formats.Mime {
         }
         else {
           if (0 < indexOfDelimiter)
-            yield return new HeaderData(header.ToByteString(true), indexOfDelimiter);
+            yield return new HeaderField(header.ToByteString(true), indexOfDelimiter);
 
           // field       =  field-name ":" [ field-body ] CRLF
           // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
@@ -150,7 +150,7 @@ namespace Smdn.Formats.Mime {
       }
 
       if (0 < indexOfDelimiter)
-        yield return new HeaderData(header.ToByteString(true), indexOfDelimiter);
+        yield return new HeaderField(header.ToByteString(true), indexOfDelimiter);
     }
   }
 }
