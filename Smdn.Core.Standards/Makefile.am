@@ -16,6 +16,8 @@ BUILD_DIR = ../build/bin/Debug/netfx4.0/
 SMDN_CORE_STANDARDS_DLL_MDB_SOURCE=../build/bin/Debug/netfx4.0/Smdn.Core.Standards.dll.mdb
 SMDN_CORE_STANDARDS_DLL_MDB=$(BUILD_DIR)/Smdn.Core.Standards.dll.mdb
 SMDN_DLL_SOURCE=../build/bin/Debug/netfx4.0/Smdn.dll
+SMDN_DLL_MDB_SOURCE=../build/bin/Debug/netfx4.0/Smdn.dll.mdb
+SMDN_DLL_MDB=$(BUILD_DIR)/Smdn.dll.mdb
 
 endif
 
@@ -31,6 +33,7 @@ BUILD_DIR = ../build/bin/Release/netfx4.0/
 
 SMDN_CORE_STANDARDS_DLL_MDB=
 SMDN_DLL_SOURCE=../build/bin/Release/netfx4.0/Smdn.dll
+SMDN_DLL_MDB=
 
 endif
 
@@ -39,7 +42,8 @@ SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
 	$(SMDN_CORE_STANDARDS_DLL_MDB) \
-	$(SMDN_DLL)  
+	$(SMDN_DLL) \
+	$(SMDN_DLL_MDB)  
 
 LINUX_PKGCONFIG = \
 	$(SMDN_CORE_STANDARDS_NETFX4_0_PC)  
@@ -76,7 +80,14 @@ FILES = \
 	Smdn.Formats.Mime/ContentTransferEncodingMethod.cs \
 	Smdn.Formats/HtmlEscape.cs \
 	Smdn.Formats/EncodingNotSupportedException.cs \
-	Smdn.Formats/EncodingSelectionCallback.cs 
+	Smdn.Formats/EncodingSelectionCallback.cs \
+	Smdn.Formats.Mime/MimeUtils.cs \
+	Smdn.Formats.Mime/FromQuotedPrintableTransformMode.cs \
+	Smdn.Formats.Mime/ToQuotedPrintableTransformMode.cs \
+	Smdn.Formats.Mime/MimeEncodedWordConverter.cs \
+	Smdn.Formats.UUEncoding/UUDecodingStream.cs \
+	Smdn.Formats.UUEncoding/UUDecodingTransform.cs \
+	Smdn.Formats.UUEncoding/UUDecoder.cs 
 
 DATA_FILES = 
 
@@ -86,6 +97,7 @@ EXTRAS = \
 	Smdn.Formats \
 	Smdn.IO \
 	Smdn.Formats.Mime \
+	Smdn.Formats.UUEncoding \
 	smdn.core.standards-netfx4.0.pc.in 
 
 REFERENCES =  \
