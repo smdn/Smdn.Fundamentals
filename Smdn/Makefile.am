@@ -100,7 +100,9 @@ FILES = \
 	Smdn.Collections/HashSet.cs \
 	Smdn.Collections/ISet.cs \
 	Smdn/UriUtils.cs \
-	Smdn.Collections/KeyValuePair.cs 
+	Smdn.Collections/KeyValuePair.cs \
+	Smdn.IO/NonClosingStream.cs \
+	Smdn.Threading/LazyInitializer.cs 
 
 DATA_FILES = 
 
