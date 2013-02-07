@@ -2,7 +2,7 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2012 smdn
+// Copyright (c) 2009-2013 smdn
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle("Smdn")]
 [assembly: AssemblyDescription("Smdn.dll")]
-[assembly: AssemblyCopyright("Copyright(c) 2009-2012 smdn")]
+[assembly: AssemblyCopyright("Copyright(c) 2009-2013 smdn")]
 [assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
 [assembly: AssemblyConfiguration("")]
 
