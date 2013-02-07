@@ -114,7 +114,9 @@ namespace Smdn.Formats.UUEncoding {
     public override void Close()
     {
       if (stream != null) {
-        stream.Close();
+        if (!leaveStreamOpen)
+          stream.Close();
+
         stream = null;
       }
 

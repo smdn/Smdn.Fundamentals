@@ -78,21 +78,44 @@ end";
 `
 end";
 
-      using (var stream = new UUDecodingStream(CreateStream(input))) {
-        var buffer = new byte[3];
+      using (var baseStream = CreateStream(input)) {
+        using (var stream = new UUDecodingStream(baseStream)) {
+          var buffer = new byte[3];
 
-        Assert.DoesNotThrow(() => stream.Read(buffer, 0, 1), "Read");
-        Assert.DoesNotThrow(() => stream.ReadByte(), "ReadByte");
+          Assert.DoesNotThrow(() => stream.Read(buffer, 0, 1), "Read");
+          Assert.DoesNotThrow(() => stream.ReadByte(), "ReadByte");
 
-        stream.Close();
+          stream.Close();
 
-        Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 1), "Read");
-        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
-        Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(0x0644, stream.Permissions), "Permissions");
-        Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual("cat.txt", stream.FileName), "FileName");
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsTrue(stream.EndOfFile), "EndOfFile");
+          Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 1), "Read");
+          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
+          Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(0x0644, stream.Permissions), "Permissions");
+          Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual("cat.txt", stream.FileName), "FileName");
+          Assert.Throws<ObjectDisposedException>(() => Assert.IsTrue(stream.EndOfFile), "EndOfFile");
 
-        Assert.DoesNotThrow(() => stream.Close(), "Close() again");
+          Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte(), "baseStream.ReadByte()");
+
+          Assert.DoesNotThrow(() => stream.Close(), "Close() again");
+        }
+      }
+    }
+
+    [Test]
+    public void TestCloseLeaveStreamOpen()
+    {
+      var input = @"begin 644 cat.txt
+#0V%T
+`
+end";
+
+      using (var baseStream = CreateStream(input)) {
+        using (var stream = new UUDecodingStream(baseStream, true)) {
+          stream.Close();
+
+          Assert.DoesNotThrow(() => baseStream.ReadByte(), "baseStream.ReadByte()");
+
+          Assert.DoesNotThrow(() => stream.Close(), "Close() again");
+        }
       }
     }
 
