@@ -38,28 +38,22 @@ namespace Smdn {
 
     public static int ToInt32(DateTimeOffset dateTimeOffset)
     {
-      return ToInt32(dateTimeOffset.UtcDateTime);
+      return (int)dateTimeOffset.UtcDateTime.Subtract(Epoch).TotalSeconds;
     }
 
     public static int ToInt32(DateTime dateTime)
     {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (int)dateTime.Subtract(Epoch).TotalSeconds;
+      return (int)dateTime.ToUniversalTime().Subtract(Epoch).TotalSeconds;
     }
 
     public static long ToInt64(DateTimeOffset dateTimeOffset)
     {
-      return ToInt64(dateTimeOffset.UtcDateTime);
+      return (long)dateTimeOffset.UtcDateTime.Subtract(Epoch).TotalSeconds;
     }
 
     public static long ToInt64(DateTime dateTime)
     {
-      if (dateTime.Kind != DateTimeKind.Utc)
-        dateTime = dateTime.ToUniversalTime();
-
-      return (long)dateTime.Subtract(Epoch).TotalSeconds;
+      return (long)dateTime.ToUniversalTime().Subtract(Epoch).TotalSeconds;
     }
 
     public static DateTime ToLocalDateTime(int unixTime)
