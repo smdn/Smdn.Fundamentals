@@ -39,6 +39,10 @@ namespace Smdn.IO {
         throw new ArgumentNullException("stream");
       if (destination == null)
         throw new ArgumentNullException("destination");
+      if (!stream.CanRead)
+        throw new NotSupportedException("stream does not support reading");
+      if (!destination.CanWrite)
+        throw new NotSupportedException("destination stream does not support writing");
       if (bufferSize <= 0)
         throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("bufferSize", bufferSize);
 
