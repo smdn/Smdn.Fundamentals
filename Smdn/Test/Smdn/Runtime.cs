@@ -128,7 +128,7 @@ namespace Smdn {
       if (Runtime.IsRunningOnMono) {
         var version = Runtime.Version;
 
-        Assert.IsTrue(version.Major != 0 && version.Minor != 0);
+        Assert.IsTrue(version.Major != 0 || version.Minor != 0);
 
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
       }
