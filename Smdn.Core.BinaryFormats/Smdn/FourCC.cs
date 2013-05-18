@@ -23,6 +23,11 @@
 // THE SOFTWARE.
 
 using System;
+#if NET_3_5
+using System.Linq;
+#else
+using Smdn.Collections;
+#endif
 
 namespace Smdn {
   /*
@@ -208,7 +213,10 @@ namespace Smdn {
 
     public bool Equals(byte[] other)
     {
-      return ArrayExtensions.EqualsAll(this.ToByteArray(), other);
+      if (other == null)
+        return false;
+      else
+        return other.SequenceEqual(this.ToByteArray());
     }
 #endregion
 
