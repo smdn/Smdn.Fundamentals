@@ -24,6 +24,11 @@
 
 using System;
 using System.Collections.Generic;
+#if NET_3_5
+using System.Linq;
+#else
+using Smdn.Collections;
+#endif
 
 namespace Smdn {
   /// <summary>
@@ -159,6 +164,7 @@ namespace Smdn {
       return shuffled;
     }
 
+    [Obsolete("use System.Linq.Enumerable.SequenceEqual")]
     public static bool EqualsAll<T>(this T[] array, T[] other) where T : IEquatable<T>
     {
       if (array == null && other == null)
@@ -166,17 +172,10 @@ namespace Smdn {
       else if (array == null || other == null)
         return false;
 
-      if (array.Length != other.Length)
-        return false;
-
-      for (var i = 0; i < array.Length; i++) {
-        if (!array[i].Equals(other[i]))
-          return false;
-      }
-
-      return true;
+      return Enumerable.SequenceEqual(array, other);
     }
 
+    [Obsolete("use System.Linq.Enumerable.SequenceEqual")]
     public static bool EqualsAll<T>(this T[] array, T[] other, IEqualityComparer<T> comparer)
     {
       if (comparer == null)
@@ -187,15 +186,7 @@ namespace Smdn {
       else if (array == null || other == null)
         return false;
 
-      if (array.Length != other.Length)
-        return false;
-
-      for (var i = 0; i < array.Length; i++) {
-        if (!comparer.Equals(array[i], other[i]))
-          return false;
-      }
-
-      return true;
+      return Enumerable.SequenceEqual(array, other, comparer);
     }
   }
 }

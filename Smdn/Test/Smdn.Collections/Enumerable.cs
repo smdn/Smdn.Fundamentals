@@ -21,10 +21,13 @@ namespace Smdn.Collections {
     {
       Assert.IsTrue(((IEnumerable<int>)(new int[] {})).SequenceEqual(new int[] {}));
       Assert.IsTrue(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new[] {0, 1, 2, 3, 4}));
-      //Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).EqualsAll(null));
       Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new int[] {}));
       Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new[] {0, 1, 2, 3}));
       Assert.IsFalse(((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual(new[] {0, 1, 2, 3, 4, 5}));
+
+      Assert.Throws<ArgumentNullException>(() => ((IEnumerable<int>)(new int[] {})).SequenceEqual((int[])null));
+      Assert.Throws<ArgumentNullException>(() => ((IEnumerable<int>)null).SequenceEqual(new int[] {}));
+      Assert.Throws<ArgumentNullException>(() => ((IEnumerable<int>)(new[] {0, 1, 2, 3, 4})).SequenceEqual((int[])null));
     }
 
     [Test]
@@ -32,10 +35,13 @@ namespace Smdn.Collections {
     {
       Assert.IsTrue(((IEnumerable<string>)(new string[] {})).SequenceEqual(new string[] {}, StringComparer.OrdinalIgnoreCase));
       Assert.IsTrue(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new[] {"A", "b", "C", "d", "E"}, StringComparer.OrdinalIgnoreCase));
-      //Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).EqualsAll(null, StringComparer.OrdinalIgnoreCase));
       Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new string[] {}, StringComparer.OrdinalIgnoreCase));
       Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new[] {"A", "b", "C", "d"}, StringComparer.OrdinalIgnoreCase));
       Assert.IsFalse(((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual(new[] {"A", "b", "C", "d", "E", "f"}, StringComparer.OrdinalIgnoreCase));
+
+      Assert.Throws<ArgumentNullException>(() => ((IEnumerable<string>)(new string[] {})).SequenceEqual((string[])null, StringComparer.OrdinalIgnoreCase));
+      Assert.Throws<ArgumentNullException>(() => ((IEnumerable<string>)null).SequenceEqual(new string[] {}, StringComparer.OrdinalIgnoreCase));
+      Assert.Throws<ArgumentNullException>(() => ((IEnumerable<string>)(new[] {"a", "b", "c", "d", "e"})).SequenceEqual((string[])null, StringComparer.OrdinalIgnoreCase));
     }
 
     [Test]
@@ -353,12 +359,9 @@ IEnumerable<string> query = fruits.Where(fruit => fruit.Length < 6);
     [Test]
     public void TestToArray()
     {
-      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
-                                              ((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).ToArray()));
-      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
-                                              ((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4})).ToArray()));
-      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4}, 
-                                              GetEnumerator().ToArray()));
+      Assert.IsTrue((new[] {0, 1, 2, 3, 4}).SequenceEqual(((IEnumerable<int>)new[] {0, 1, 2, 3, 4}).ToArray()));
+      Assert.IsTrue((new[] {0, 1, 2, 3, 4}).SequenceEqual(((IEnumerable<int>)new List<int>(new[] {0, 1, 2, 3, 4}).ToArray())));
+      Assert.IsTrue((new[] {0, 1, 2, 3, 4}).SequenceEqual(GetEnumerator().ToArray()));
 
       var dictionary = new Dictionary<string, int>() {
         {"0", 0},
@@ -368,8 +371,7 @@ IEnumerable<string> query = fruits.Where(fruit => fruit.Length < 6);
         {"4", 4},
       };
 
-      Assert.IsTrue(ArrayExtensions.EqualsAll(new[] {0, 1, 2, 3, 4},
-                                              ((IEnumerable<int>)dictionary.Values).ToArray()));
+      Assert.IsTrue((new[] {0, 1, 2, 3, 4}).SequenceEqual(((IEnumerable<int>)dictionary.Values).ToArray()));
     }
 
     [Test]

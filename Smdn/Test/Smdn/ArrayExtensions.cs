@@ -1,5 +1,10 @@
 using System;
 using System.Collections.Generic;
+#if NET_3_5
+using System.Linq;
+#else
+using Smdn.Collections;
+#endif
 using NUnit.Framework;
 
 namespace Smdn {
@@ -110,8 +115,8 @@ namespace Smdn {
       Assert.IsFalse(object.ReferenceEquals(array, ArrayExtensions.Shuffle(array)));
 
       for (var act = 0; act < 10; act++) {
-        if (ArrayExtensions.EqualsAll(array, ArrayExtensions.Shuffle(array)))
-          if (ArrayExtensions.EqualsAll(array, ArrayExtensions.Shuffle(array)))
+        if (array.SequenceEqual(ArrayExtensions.Shuffle(array)))
+          if (array.SequenceEqual(ArrayExtensions.Shuffle(array)))
             Assert.Fail();
       }
     }
