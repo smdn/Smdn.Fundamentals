@@ -49,13 +49,11 @@ namespace Smdn.IO {
       var buffer = new byte[bufferSize];
 
       for (;;) {
-        // throws NotSupportedException if !CanRead
         var read = stream.Read(buffer, 0, bufferSize);
 
         if (read <= 0)
           break;
 
-        // throws NotSupportedException if !CanWrite
         destination.Write(buffer, 0, read);
       }
     }
