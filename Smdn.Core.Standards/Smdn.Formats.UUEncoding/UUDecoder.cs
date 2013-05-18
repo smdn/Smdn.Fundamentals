@@ -69,9 +69,7 @@ namespace Smdn.Formats.UUEncoding {
         if (path == null)
           throw new ArgumentNullException("path");
 
-        using (var fileStream = File.OpenWrite(path)) {
-          fileStream.SetLength(0L);
-
+        using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write)) {
           stream.CopyTo(fileStream);
         }
       }
