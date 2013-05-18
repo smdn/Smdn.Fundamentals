@@ -128,18 +128,6 @@ namespace Smdn {
       return new MimeType("multipart", subtype);
     }
 
-    [Obsolete("use FindMimeTypeByExtension() instead")]
-    public static MimeType GetMimeTypeByExtension(string extensionOrPath)
-    {
-      return FindMimeTypeByExtension(extensionOrPath);
-    }
-
-    [Obsolete("use FindMimeTypeByExtension() instead")]
-    public static MimeType GetMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
-    {
-      return FindMimeTypeByExtension(extensionOrPath, mimeTypesFile);
-    }
-
     public static MimeType FindMimeTypeByExtension(string extensionOrPath)
     {
       return FindMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
