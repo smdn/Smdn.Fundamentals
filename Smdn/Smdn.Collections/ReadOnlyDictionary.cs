@@ -23,29 +23,196 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
-  public class ReadOnlyDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
+  /*
+   * System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue> is available from .NET Framework 4.5
+   */
+#if !NET_4_5
+  public class ReadOnlyDictionary<TKey, TValue> :
+    IDictionary<TKey, TValue>,
+    IDictionary
+  {
+    public sealed class KeyCollection : ICollection<TKey> {
+      public int Count {
+        get { return keys.Count; }
+      }
+
+      bool ICollection<TKey>.IsReadOnly {
+        get { return true; }
+      }
+
+      internal KeyCollection(ICollection<TKey> keys)
+      {
+        this.keys = keys;
+      }
+
+      void ICollection<TKey>.Add(TKey item)
+      {
+        throw GetReadOnlyException();
+      }
+
+      void ICollection<TKey>.Clear()
+      {
+        throw GetReadOnlyException();
+      }
+
+      bool ICollection<TKey>.Contains(TKey item)
+      {
+        return keys.Contains(item);
+      }
+
+      public void CopyTo(TKey[] array, int arrayIndex)
+      {
+        keys.CopyTo(array, arrayIndex);
+      }
+
+      bool ICollection<TKey>.Remove(TKey item)
+      {
+        throw GetReadOnlyException();
+      }
+
+      public IEnumerator<TKey> GetEnumerator()
+      {
+        return keys.GetEnumerator();
+      }
+
+      IEnumerator IEnumerable.GetEnumerator()
+      {
+        return keys.GetEnumerator();
+      }
+
+      private static Exception GetReadOnlyException()
+      {
+        return new NotSupportedException("dictionary is read-only");
+      }
+
+      private readonly ICollection<TKey> keys;
+    }
+
+    public sealed class ValueCollection : ICollection<TValue> {
+      public int Count {
+        get { return values.Count; }
+      }
+
+      bool ICollection<TValue>.IsReadOnly {
+        get { return true; }
+      }
+
+      internal ValueCollection(ICollection<TValue> values)
+      {
+        this.values = values;
+      }
+
+      void ICollection<TValue>.Add(TValue item)
+      {
+        throw GetReadOnlyException();
+      }
+
+      void ICollection<TValue>.Clear()
+      {
+        throw GetReadOnlyException();
+      }
+
+      bool ICollection<TValue>.Contains(TValue item)
+      {
+        return values.Contains(item);
+      }
+
+      public void CopyTo(TValue[] array, int arrayIndex)
+      {
+        values.CopyTo(array, arrayIndex);
+      }
+
+      bool ICollection<TValue>.Remove(TValue item)
+      {
+        throw GetReadOnlyException();
+      }
+
+      public IEnumerator<TValue> GetEnumerator()
+      {
+        return values.GetEnumerator();
+      }
+
+      IEnumerator IEnumerable.GetEnumerator()
+      {
+        return values.GetEnumerator();
+      }
+
+      private static Exception GetReadOnlyException()
+      {
+        return new NotSupportedException("dictionary is read-only");
+      }
+
+      private readonly ICollection<TValue> values;
+    }
+
+    protected IDictionary<TKey, TValue> Dictionary {
+      get { return dictionary; }
+    }
+
     public TValue this[TKey key] {
       get { return dictionary[key]; }
-      set { throw ReadOnlyException(); }
     }
 
-    public ICollection<TKey> Keys {
-      get { return dictionary.Keys; }
+    public KeyCollection Keys {
+      get { return new KeyCollection(dictionary.Keys); }
     }
 
-    public ICollection<TValue> Values {
-      get { return dictionary.Values; }
+    public ValueCollection Values {
+      get { return new ValueCollection(dictionary.Values); }
     }
 
     public int Count {
       get { return dictionary.Count; }
     }
 
-    public bool IsReadOnly {
+    TValue IDictionary<TKey, TValue>.this[TKey key] {
+      get { return dictionary[key]; }
+      set { throw GetReadOnlyException(); }
+    }
+
+    object IDictionary.this[object key] {
+      get { return (dictionary as IDictionary)[key]; }
+      set { throw GetReadOnlyException(); }
+    }
+
+    ICollection<TKey> IDictionary<TKey, TValue>.Keys {
+      get { return dictionary.Keys; }
+    }
+
+    ICollection<TValue> IDictionary<TKey, TValue>.Values {
+      get { return dictionary.Values; }
+    }
+
+    ICollection IDictionary.Keys {
+      get { return (dictionary as IDictionary).Keys; }
+    }
+
+    ICollection IDictionary.Values {
+      get { return (dictionary as IDictionary).Values; }
+    }
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly {
       get { return true; }
+    }
+
+    bool IDictionary.IsReadOnly {
+      get { return true; }
+    }
+
+    bool IDictionary.IsFixedSize {
+      get { return (dictionary as IDictionary).IsFixedSize; }
+    }
+
+    bool ICollection.IsSynchronized {
+      get { return (dictionary as IDictionary).IsSynchronized; }
+    }
+
+    object ICollection.SyncRoot {
+      get { return (dictionary as IDictionary).SyncRoot; }
     }
 
     public ReadOnlyDictionary(IDictionary<TKey, TValue> dictionary)
@@ -56,44 +223,42 @@ namespace Smdn.Collections {
       this.dictionary = dictionary;
     }
 
-    public ReadOnlyDictionary(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
-      : this(pairs, null)
-    {
-    }
-
-    public ReadOnlyDictionary(IEnumerable<KeyValuePair<TKey, TValue>> pairs, IEqualityComparer<TKey> comparer)
-    {
-      if (pairs == null)
-        throw new ArgumentNullException("pairs");
-
-      this.dictionary = new Dictionary<TKey, TValue>(comparer);
-
-      foreach (var pair in pairs) {
-        dictionary.Add(pair);
-      }
-    }
-
     /*
      * read operations
      */
-    public bool Contains(KeyValuePair<TKey, TValue> item)
-    {
-      return dictionary.Contains(item);
-    }
-
     public bool ContainsKey(TKey key)
     {
       return dictionary.ContainsKey(key);
     }
 
-    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
+    bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
+    {
+      return dictionary.Contains(item);
+    }
+
+    bool IDictionary.Contains(object key)
+    {
+      return (dictionary as IDictionary).Contains(key);
+    }
+
+    void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
     {
       dictionary.CopyTo(array, arrayIndex);
+    }
+
+    void ICollection.CopyTo(Array array, int index)
+    {
+      (dictionary as IDictionary).CopyTo(array, index);
     }
 
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
       return dictionary.GetEnumerator();
+    }
+
+    System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator()
+    {
+      return (dictionary as IDictionary).GetEnumerator();
     }
 
     System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -109,36 +274,52 @@ namespace Smdn.Collections {
     /*
      * write operations
      */
-    public void Add(KeyValuePair<TKey, TValue> item)
+    void IDictionary<TKey, TValue>.Add(TKey key, TValue @value)
     {
-      throw ReadOnlyException();
+      throw GetReadOnlyException();
     }
 
-    public void Add(TKey key, TValue @value)
+    void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
     {
-      throw ReadOnlyException();
+      throw GetReadOnlyException();
     }
 
-    public void Clear()
+    void IDictionary.Add(object key, object value)
     {
-      throw ReadOnlyException();
+      throw GetReadOnlyException();
     }
 
-    public bool Remove(KeyValuePair<TKey, TValue> item)
+    void ICollection<KeyValuePair<TKey, TValue>>.Clear()
     {
-      throw ReadOnlyException();
+      throw GetReadOnlyException();
     }
 
-    public bool Remove(TKey key)
+    void IDictionary.Clear()
     {
-      throw ReadOnlyException();
+      throw GetReadOnlyException();
     }
 
-    private Exception ReadOnlyException()
+    bool IDictionary<TKey, TValue>.Remove(TKey key)
+    {
+      throw GetReadOnlyException();
+    }
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+    {
+      throw GetReadOnlyException();
+    }
+
+    void IDictionary.Remove(object key)
+    {
+      throw GetReadOnlyException();
+    }
+
+    private static Exception GetReadOnlyException()
     {
       return new NotSupportedException("dictionary is read-only");
     }
 
     private IDictionary<TKey, TValue> dictionary;
   }
+#endif
 }

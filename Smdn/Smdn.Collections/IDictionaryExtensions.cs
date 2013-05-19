@@ -31,18 +31,18 @@ namespace Smdn.Collections {
     {
       if (dictionary == null)
         throw new ArgumentNullException("dictionary");
-      else if (dictionary.IsReadOnly)
-        return dictionary;
-      else
-        return new ReadOnlyDictionary<TKey, TValue>(dictionary);
+
+#if NET_4_5
+      return new System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>(dictionary);
+#else
+      return new Smdn.Collections.ReadOnlyDictionary<TKey, TValue>(dictionary);
+#endif
     }
 
+    [Obsolete("use AsReadOnly()", true)]
     public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
     {
-      if (dictionary == null)
-        throw new ArgumentNullException("dictionary");
-
-      return new ReadOnlyDictionary<TKey, TValue>(dictionary, comparer);
+      throw new NotImplementedException();
     }
   }
 }

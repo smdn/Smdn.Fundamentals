@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -14,10 +15,10 @@ namespace Smdn.Collections {
         {"key3", "val3"},
       }).AsReadOnly();
 
-      Assert.IsTrue(dic.IsReadOnly);
+      Assert.IsTrue((dic as IDictionary).IsReadOnly);
 
       try {
-        dic.Add("newkey", "newvalue");
+        (dic as IDictionary<string, string>).Add("newkey", "newvalue");
         Assert.Fail("NotSupportedException not thrown");
       }
       catch (NotSupportedException) {
@@ -25,10 +26,11 @@ namespace Smdn.Collections {
 
       var dic2 = dic.AsReadOnly();
 
-      Assert.AreSame(dic2, dic);
-      Assert.IsTrue(dic2.IsReadOnly);
+      Assert.AreNotSame(dic2, dic);
+      Assert.IsTrue((dic2 as IDictionary).IsReadOnly);
     }
 
+#if false
     [Test]
     public void TestAsReadOnlyWithSpecifiedComparer()
     {
@@ -50,5 +52,6 @@ namespace Smdn.Collections {
       catch (NotSupportedException) {
       }
     }
+#endif
   }
 }
