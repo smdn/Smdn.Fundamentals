@@ -117,12 +117,12 @@ namespace Smdn {
                 var msgstr = line.Substring(7).Trim();
 
                 // dequote
-                if (msgid.StartsWith("\"") && msgid.EndsWith("\""))
+                if (msgid.StartsWith('"') && msgid.EndsWith('"'))
                   msgid = msgid.Substring(1, msgid.Length - 2);
                 else
                   msgid = null; // invalid?
 
-                if (msgstr.StartsWith("\"") && msgstr.EndsWith("\""))
+                if (msgstr.StartsWith('"') && msgstr.EndsWith('"'))
                   msgstr = msgstr.Substring(1, msgstr.Length - 2);
                 else
                   msgstr = null; // invalid?

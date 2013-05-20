@@ -98,7 +98,7 @@ namespace Smdn {
           try {
             if (Runtime.IsRunningOnUnix) {
               foreach (var line in File.ReadAllLines("/proc/cpuinfo")) {
-                if (line.StartsWith("model name")) {
+                if (line.StartsWith("model name", StringComparison.Ordinal)) {
                   processorName = line.Substring(line.IndexOf(':') + 1).Trim();
                   break;
                 }

@@ -161,7 +161,7 @@ namespace Smdn {
             break;
           else if (line.Length == 0)
             continue;
-          else if (line.StartsWith("#", StringComparison.Ordinal))
+          else if (line.StartsWith('#'))
             continue;
 
           var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
@@ -178,7 +178,7 @@ namespace Smdn {
     {
       var extension = Path.GetExtension(extensionOrPath);
 
-      if (extension.StartsWith(".", StringComparison.Ordinal))
+      if (extension.StartsWith('.'))
         extension = extension.Substring(1);
 
       if (extension.Length == 0)

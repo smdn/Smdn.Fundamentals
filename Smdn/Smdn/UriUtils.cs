@@ -67,7 +67,7 @@ namespace Smdn {
 
       var ret = new Dictionary<string, string>(comparer);
 
-      if (queryParameters.StartsWith("?", StringComparison.Ordinal))
+      if (queryParameters.StartsWith('?'))
         queryParameters = queryParameters.Substring(1);
 
       if (queryParameters.Length == 0)

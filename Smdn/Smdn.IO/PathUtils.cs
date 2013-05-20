@@ -49,14 +49,14 @@ namespace Smdn.IO {
       pathX = Path.GetFullPath(pathX);
       pathY = Path.GetFullPath(pathY);
 
-      if (pathX.EndsWith(Path.DirectorySeparatorChar.ToString()))
+      if (pathX.EndsWith(Path.DirectorySeparatorChar))
         pathX = pathX.Substring(0, pathX.Length - 1);
-      else if (pathX.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+      else if (pathX.EndsWith(Path.AltDirectorySeparatorChar))
         pathX = pathX.Substring(0, pathX.Length - 1);
 
-      if (pathY.EndsWith(Path.DirectorySeparatorChar.ToString()))
+      if (pathY.EndsWith(Path.DirectorySeparatorChar))
         pathY = pathY.Substring(0, pathY.Length - 1);
-      else if (pathY.EndsWith(Path.AltDirectorySeparatorChar.ToString()))
+      else if (pathY.EndsWith(Path.AltDirectorySeparatorChar))
         pathY = pathY.Substring(0, pathY.Length - 1);
 
       return string.Equals(pathX, pathY, Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);

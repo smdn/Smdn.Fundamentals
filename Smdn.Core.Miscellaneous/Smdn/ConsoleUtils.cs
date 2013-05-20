@@ -152,7 +152,7 @@ namespace Smdn {
       if (result == null)
         return @default;
       else
-        return result.ToLower().StartsWith("y");
+        return result.StartsWith("y", StringComparison.OrdinalIgnoreCase);
     }
 
     public static string ReadPassword()
