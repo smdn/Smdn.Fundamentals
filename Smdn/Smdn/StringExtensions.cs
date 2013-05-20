@@ -123,6 +123,28 @@ namespace Smdn {
       return str;
     }
 
+    public static bool StartsWith(this string str, char @value)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      if (str.Length == 0)
+        return false;
+      else
+        return str[0] == @value;
+    }
+
+    public static bool EndsWith(this string str, char @value)
+    {
+      if (str == null)
+        throw new ArgumentNullException("str");
+
+      if (str.Length == 0)
+        return false;
+      else
+        return str[str.Length - 1] == @value;
+    }
+
     public static int Count(this string str, char c)
     {
       if (str == null)
