@@ -86,6 +86,7 @@
     <Compile Include="Smdn\UriUtils.cs" />
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
     <Compile Include="Smdn.Threading\LazyInitializer.cs" />
+    <Compile Include="Smdn\EmptyArray.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

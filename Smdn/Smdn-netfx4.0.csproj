@@ -100,6 +100,7 @@
     <Compile Include="Smdn.Collections\KeyValuePair.cs" />
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
     <Compile Include="Smdn.Threading\LazyInitializer.cs" />
+    <Compile Include="Smdn\EmptyArray.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
