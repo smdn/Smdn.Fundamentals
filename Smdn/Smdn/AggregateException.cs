@@ -39,7 +39,7 @@ namespace Smdn {
     }
 
     public AggregateException()
-      : this(new Exception[0])
+      : this(EmptyArray<Exception>.Instance)
     {
     }
 
@@ -61,7 +61,7 @@ namespace Smdn {
     }
 
     public AggregateException(string message)
-      : this(message, new Exception[0])
+      : this(message, EmptyArray<Exception>.Instance)
     {
     }
 

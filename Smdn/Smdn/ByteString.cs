@@ -80,7 +80,7 @@ namespace Smdn {
 
     public static ByteString CreateEmpty()
     {
-      return new ByteString(new ArraySegment<byte>(new byte[0]), true);
+      return new ByteString(new ArraySegment<byte>(EmptyArray<byte>.Instance), true);
       //return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
     }
 

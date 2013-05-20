@@ -138,7 +138,7 @@ namespace Smdn.IO {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (count == 0)
-        return new byte[] {};
+        return EmptyArray<byte>.Instance;
 
       var buffer = new byte[count];
       var read = ReadBytes(buffer, 0, count, false);
@@ -162,7 +162,7 @@ namespace Smdn.IO {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (count == 0)
-        return new byte[] {};
+        return EmptyArray<byte>.Instance;
 
       var buffer = new byte[count];
 
@@ -236,7 +236,7 @@ namespace Smdn.IO {
         var remain = stream.Length - stream.Position;
 
         if (remain <= 0) {
-          return new byte[0];
+          return EmptyArray<byte>.Instance;
         }
         else {
           var bufferSize = (int)Math.Min(4096L, remain);

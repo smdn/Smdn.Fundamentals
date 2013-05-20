@@ -29,10 +29,6 @@ using System.Collections.Generic;
 namespace Smdn.Collections {
 #if !NET_3_5
   public static class Enumerable {
-    private static class EmptyOf<T> {
-      public static readonly T[] Enumerable = new T[0];
-    }
-
     private static void CheckArgs(object source)
     {
       if (source == null)
@@ -160,7 +156,7 @@ namespace Smdn.Collections {
 
     public static IEnumerable<TSource> Empty<TSource>()
     {
-      return EmptyOf<TSource>.Enumerable;
+      return EmptyArray<TSource>.Instance;
     }
 
     public static TSource First<TSource>(this IEnumerable<TSource> source)
