@@ -199,7 +199,7 @@ namespace Smdn.Formats {
 
     private static readonly string w3cUniversalTimeString = "Z";
 
-    private static string[] w3cDateTimeFormats = new string[]
+    private static readonly string[] w3cDateTimeFormats = new string[]
     {
       // TODO: f1-f6
       "u",

@@ -27,8 +27,8 @@ using System.Reflection;
 
 namespace Smdn {
   public static class Runtime {
-    private static RuntimeEnvironment runtimeEnvironment;
-    private static string name;
+    private static readonly RuntimeEnvironment runtimeEnvironment;
+    private static readonly string name;
 
     static Runtime()
     {

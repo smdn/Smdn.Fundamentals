@@ -54,7 +54,7 @@ namespace Smdn {
       }
 
 #if LOCALIZE_MESSAGE
-      private static Dictionary<string, Dictionary<string, string>> catalogues =
+      private static readonly Dictionary<string, Dictionary<string, string>> catalogues =
         new Dictionary<string, Dictionary<string, string>>(StringComparer.Ordinal);
 
       private static string InternalGetText(string msgid)

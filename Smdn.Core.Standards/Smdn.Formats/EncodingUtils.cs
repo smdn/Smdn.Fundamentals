@@ -75,7 +75,7 @@ namespace Smdn.Formats {
         return encoding;
     }
 
-    private static Dictionary<string, string> encodingCollationTable
+    private static readonly Dictionary<string, string> encodingCollationTable
       = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
       /* UTF-16 */
       {"utf16",       "utf-16"},
