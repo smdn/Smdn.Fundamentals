@@ -29,15 +29,21 @@ namespace Smdn {
   public static class Shell {
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
     {
-      return CreateProcessStartInfo(command, string.Join(" ", arguments));
+      return CreateProcessStartInfo(command, arguments == null ? string.Empty : string.Join(" ", arguments));
     }
 
     public static ProcessStartInfo CreateProcessStartInfo(string command, string arguments)
     {
+      if (command == null)
+        throw new ArgumentNullException("command");
+
       ProcessStartInfo psi;
 
       if (Runtime.IsRunningOnUnix) {
-        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments.Replace("\"", "\\\"")));
+        if (arguments != null)
+          arguments = arguments.Replace("\"", "\\\"");
+
+        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments));
       }
       else {
         psi = new ProcessStartInfo("cmd", string.Format("/c {0} {1}", command, arguments));
