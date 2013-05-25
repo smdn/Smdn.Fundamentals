@@ -102,7 +102,8 @@ FILES = \
 	Smdn/UriUtils.cs \
 	Smdn.Collections/KeyValuePair.cs \
 	Smdn.IO/NonClosingStream.cs \
-	Smdn.Threading/LazyInitializer.cs 
+	Smdn.Threading/LazyInitializer.cs \
+	Smdn/EmptyArray.cs 
 
 DATA_FILES = 
 
