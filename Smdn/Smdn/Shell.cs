@@ -79,10 +79,10 @@ namespace Smdn {
       psi.RedirectStandardError  = true;
 
       using (var process = Process.Start(psi)) {
-        process.WaitForExit();
-
         stdout = process.StandardOutput.ReadToEnd();
         stderr = process.StandardError.ReadToEnd();
+
+        process.WaitForExit();
 
         return process.ExitCode;
       }
