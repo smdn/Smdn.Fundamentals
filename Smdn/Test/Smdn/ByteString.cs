@@ -766,6 +766,37 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestGetSplittedSubstrings()
+    {
+      var splitted = (ByteString.CreateImmutable(" a bc  def g ")).GetSplittedSubstrings(' ');
+      var expected = new[] {
+        ByteString.CreateImmutable(string.Empty),
+        ByteString.CreateImmutable("a"),
+        ByteString.CreateImmutable("bc"),
+        ByteString.CreateImmutable(string.Empty),
+        ByteString.CreateImmutable("def"),
+        ByteString.CreateImmutable("g"),
+        ByteString.CreateImmutable(string.Empty),
+      };
+
+      CollectionAssert.AreEqual(expected, splitted);
+
+      splitted = (ByteString.CreateImmutable(string.Empty)).GetSplittedSubstrings(' ');
+      expected = new[] { ByteString.CreateImmutable(string.Empty) };
+
+      CollectionAssert.AreEqual(expected, splitted);
+    }
+
+    [Test]
+    public void TestGetSplittedSubstringsNoDelimiters()
+    {
+      var splitted = (ByteString.CreateImmutable("abcde")).GetSplittedSubstrings(' ');
+
+      CollectionAssert.AreEqual(new[] {ByteString.CreateImmutable("abcde")},
+                                splitted);
+    }
+
+    [Test]
     public void TestToUpper()
     {
       var str = ByteString.CreateImmutable("`abcdefghijklmnopqrstuvwxyz{");

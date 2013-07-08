@@ -24,6 +24,11 @@
 
 using System;
 using System.Collections.Generic;
+#if NET_3_5
+using System.Linq;
+#else
+using Smdn.Collections;
+#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
@@ -711,30 +716,36 @@ namespace Smdn {
 
     public ByteString[] Split(byte delimiter)
     {
-      return Split((char)delimiter);
+      return GetSplittedSubstrings(delimiter).ToArray();
     }
 
     public unsafe ByteString[] Split(char delimiter)
     {
-      var splitted = new List<ByteString>();
+      return GetSplittedSubstrings(delimiter).ToArray();
+    }
+
+    public IEnumerable<ByteString> GetSplittedSubstrings(byte delimiter)
+    {
+      return GetSplittedSubstrings((char)delimiter);
+    }
+
+    public IEnumerable<ByteString> GetSplittedSubstrings(char delimiter)
+    {
+      var str = segment.Array;
+      var len = segment.Count;
+      var offset = segment.Offset;
       var index = 0;
       var lastIndex = 0;
 
-      fixed (byte* str0 = segment.Array) {
-        var str = str0 + segment.Offset;
-        var len = segment.Count;
+      for (; index < len; index++, offset++) {
+        if (str[offset] == delimiter) {
+          yield return Substring(lastIndex, index - lastIndex);
 
-        for (index = 0; index < len; index++) {
-          if (str[index] == delimiter) {
-            splitted.Add(Substring(lastIndex, index - lastIndex));
-            lastIndex = index + 1;
-          }
+          lastIndex = index + 1;
         }
       }
 
-      splitted.Add(Substring(lastIndex, index - lastIndex));
-
-      return splitted.ToArray();
+      yield return Substring(lastIndex, index - lastIndex);
     }
 
     // TODO: mutable/immutable
