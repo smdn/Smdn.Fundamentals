@@ -29,38 +29,11 @@ using System.Runtime.InteropServices;
 
 namespace Smdn.IO {
   public static class FileManager {
-    [DllImport("shell32.dll")] private static extern bool ShellExecuteEx(ref SHELLEXECUTEINFO lpExecInfo);
-
-#region "shellapi.h"
-    private enum SEE_MASK : uint {
-      DEFAULT             = 0x00000000,
-      INVOKEIDLIST        = 0x0000000c,
-      NOCLOSEPROCESS      = 0x00000040,
-      DOENVSUBST          = 0x00000200,
-      FLAG_NO_UI          = 0x00000400,
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    private struct SHELLEXECUTEINFO {
-      public int cbSize;
-      public SEE_MASK fMask;
-      public IntPtr hwnd;
-      public string lpVerb;
-      public string lpFile;
-      public string lpParameters;
-      public string lpDirectory;
-      public int nShow;
-      public IntPtr hInstApp;
-      public IntPtr lpIDList;
-      public string lpClass;
-      public IntPtr hkeyClass;
-      public uint dwHotKey;
-      public IntPtr hIcon;
-      public IntPtr hProcess;
-
-      public static readonly int Size = Marshal.SizeOf(typeof(SHELLEXECUTEINFO));
-    }
-#endregion
+    [DllImport("shell32.dll")]
+    private static extern bool SHObjectProperties(IntPtr hwnd,
+                                                  uint shopObjectType,
+                                                  [MarshalAs(UnmanagedType.LPWStr)] string pszObjectName,
+                                                  [MarshalAs(UnmanagedType.LPWStr)] string pszPropertyPage);
 
     public static void Browse()
     {
@@ -134,17 +107,12 @@ namespace Smdn.IO {
         throw new ArgumentNullException("path");
 
       if (Runtime.IsRunningOnWindows) {
-        // this code is based on SantaMarta.Win32APIWrapper.Shell.FileProperties
-        var info = new SHELLEXECUTEINFO();
+        const int SHOP_FILEPATH = 0x2;
 
-        info.cbSize   = SHELLEXECUTEINFO.Size;
-        info.fMask    = SEE_MASK.NOCLOSEPROCESS | SEE_MASK.INVOKEIDLIST | SEE_MASK.FLAG_NO_UI;
-        info.hwnd     = hWnd;
-        info.lpFile   = path;
-        info.lpVerb   = "properties";
-        info.nShow    = 0;
-
-        ShellExecuteEx(ref info);
+        SHObjectProperties(IntPtr.Zero,
+                           SHOP_FILEPATH,
+                           path,
+                           string.Empty);
       }
       /*
       else {
