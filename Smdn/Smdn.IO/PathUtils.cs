@@ -224,5 +224,30 @@ namespace Smdn.IO {
         }
       }
     }
+
+    public static string GetRelativePath(string basePath, string path)
+    {
+      if (basePath == null)
+        throw new ArgumentNullException("basePath");
+      if (path == null)
+        throw new ArgumentNullException("path");
+
+      if (Runtime.IsRunningOnWindows) {
+        if (!Path.IsPathRooted(basePath))
+          throw new ArgumentException("must be absolute path", "basePath");
+        if (Path.IsPathRooted(path))
+          return path;
+      }
+
+      var uriBase = new Uri("file://" + basePath.Replace("%", "%25" /*encode*/));
+      var uriTarget = new Uri("file://" + path.Replace("%", "%25" /*encode*/));
+
+      var relativePath = Uri.UnescapeDataString(uriBase.MakeRelativeUri(uriTarget).ToString());
+
+      // convert directory separator
+      relativePath = relativePath.Replace('/', Path.DirectorySeparatorChar);
+
+      return relativePath.Replace("%25", "%" /*decode*/);
+    }
   }
 }
