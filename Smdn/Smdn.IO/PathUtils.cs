@@ -235,8 +235,11 @@ namespace Smdn.IO {
       if (Runtime.IsRunningOnWindows && !Path.IsPathRooted(basePath))
         throw new ArgumentException("must be absolute path", "basePath");
 
-      var uriBase = new Uri(basePath.Replace("%", "%25" /*encode*/));
-      var uriTarget = new Uri(path.Replace("%", "%25" /*encode*/));
+      basePath = basePath.Replace("%", "%25" /*encode*/);
+      path = path.Replace("%", "%25" /*encode*/);
+
+      var uriBase = new Uri(Runtime.IsRunningOnWindows ? basePath : Uri.UriSchemeFile + Uri.SchemeDelimiter + basePath);
+      var uriTarget = new Uri(Runtime.IsRunningOnWindows ? path : Uri.UriSchemeFile + Uri.SchemeDelimiter + path);
 
       var relativePath = Uri.UnescapeDataString(uriBase.MakeRelativeUri(uriTarget).ToString());
 
