@@ -225,13 +225,13 @@ namespace Smdn.IO {
                       "rooted path #2");
 
       Assert.AreEqual(@"C:\child",
-                      Path.Combine(@"C:\", PathUtils.GetRelativePath(@"C:\", @"C:\child")),
+                      Path.GetFullPath(Path.Combine(@"C:\", PathUtils.GetRelativePath(@"C:\", @"C:\child"))),
                       "re-combine #1");
       Assert.AreEqual(@"C:\dir\",
-                      Path.Combine(@"C:\child\", PathUtils.GetRelativePath(@"C:\child\", @"C:\dir\")),
+                      Path.GetFullPath(Path.Combine(@"C:\child\", PathUtils.GetRelativePath(@"C:\child\", @"C:\dir\"))),
                       "re-combine #2");
       Assert.AreEqual(@"C:\dir2\",
-                      Path.Combine(@"C:\dir1\subdir1\subdir2\", PathUtils.GetRelativePath(@"C:\dir1\subdir1\subdir2\", @"C:\dir2\")),
+                      Path.GetFullPath(Path.Combine(@"C:\dir1\subdir1\subdir2\", PathUtils.GetRelativePath(@"C:\dir1\subdir1\subdir2\", @"C:\dir2\"))),
                       "re-combine #3");
     }
 
