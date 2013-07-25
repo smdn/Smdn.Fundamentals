@@ -81,6 +81,8 @@ namespace Smdn.IO {
                 path = parent.FullName;
             }
 
+            path = "\"" + path.Replace("\"", "\\\"") + "\"";
+
             psi.Arguments = string.Format("--no-default-window {0}", path);
           }
         }
