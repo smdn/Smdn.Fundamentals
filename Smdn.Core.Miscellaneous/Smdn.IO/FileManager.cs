@@ -92,7 +92,8 @@ namespace Smdn.IO {
         return;
 
       using (var process = Process.Start(psi)) {
-        process.Close();
+        if (process != null) // Process.Start may return null
+          process.Close();
       }
     }
 
@@ -151,7 +152,8 @@ namespace Smdn.IO {
 
       try {
         using (var process = Process.Start(psi)) {
-          process.Close();
+          if (process != null) // Process.Start may return null
+            process.Close();
         }
       }
       catch (System.ComponentModel.Win32Exception) {
