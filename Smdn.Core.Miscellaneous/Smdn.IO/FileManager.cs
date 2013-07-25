@@ -54,6 +54,9 @@ namespace Smdn.IO {
         psi.UseShellExecute = false;
 
         if (path != null) {
+          // quote
+          path = "\"" + path + "\"";
+
           if (selected)
             psi.Arguments = "/select," + path;
           else
