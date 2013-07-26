@@ -208,10 +208,20 @@ namespace Smdn.IO {
 
       Assert.AreEqual(@"..\%sibling\",
                       PathUtils.GetRelativePath(@"C:\dir\", @"C:\%sibling\"),
-                      "contains % #1");
+                      "contains '%' #1");
       Assert.AreEqual(@"..\%73ibling\",
                       PathUtils.GetRelativePath(@"C:\dir\", @"C:\%73ibling\"),
-                      "contains % #2");
+                      "contains '%' #2");
+
+      Assert.AreEqual(@"..\foo:bar\",
+                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\foo:bar\"),
+                      "contains ':' #1");
+      Assert.AreEqual(@"foo:bar",
+                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\dir\foo:bar"),
+                      "contains ':' #2");
+      Assert.AreEqual(@"foo",
+                      PathUtils.GetRelativePath(@"C:\dir\foo:bar", @"C:\dir\foo"),
+                      "contains ':' #3");
 
       Assert.AreEqual(@"..\兄弟\",
                       PathUtils.GetRelativePath(@"C:\dir\", @"C:\兄弟\"),
@@ -292,10 +302,24 @@ namespace Smdn.IO {
 
       Assert.AreEqual("../%sibling/",
                       PathUtils.GetRelativePath("/root/dir/", "/root/%sibling/"),
-                      "contains % #1");
+                      "contains '%' #1");
       Assert.AreEqual("../%73ibling/",
                       PathUtils.GetRelativePath("/root/dir/", "/root/%73ibling/"),
-                      "contains % #2");
+                      "contains '%' #2");
+
+      Assert.AreEqual(@"../foo:bar/",
+                      PathUtils.GetRelativePath(@"/root/dir/", @"/root/foo:bar/"),
+                      "contains ':' #1");
+      Assert.AreEqual(@"foo:bar",
+                      PathUtils.GetRelativePath(@"/root/", @"/root/foo:bar"),
+                      "contains ':' #2");
+      Assert.AreEqual(@"foo",
+                      PathUtils.GetRelativePath(@"/root/foo:bar", @"/root/foo"),
+                      "contains ':' #3");
+
+      ///home/smdn/Pictures/temp/いおり/
+      ///home/smdn/Pictures/temp/いおり/
+
 
       Assert.AreEqual("../兄弟/",
                       PathUtils.GetRelativePath("/root/dir/", "/root/兄弟/"),
