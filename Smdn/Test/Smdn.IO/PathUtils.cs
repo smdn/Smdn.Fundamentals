@@ -216,7 +216,7 @@ namespace Smdn.IO {
       Assert.AreEqual(@"..\foo:bar\",
                       PathUtils.GetRelativePath(@"C:\dir\", @"C:\foo:bar\"),
                       "contains ':' #1");
-      Assert.AreEqual(@"foo:bar",
+      Assert.AreEqual(@".\foo:bar", // XXX
                       PathUtils.GetRelativePath(@"C:\dir\", @"C:\dir\foo:bar"),
                       "contains ':' #2");
       Assert.AreEqual(@"foo",
