@@ -60,20 +60,38 @@ namespace Smdn.IO {
 
     protected override byte[] GetBlock(long blockIndex)
     {
+#if NET_4_5
+      WeakReference<byte[]> blockReference = null;
+#else
+      WeakReference blockReference = null;
+#endif
       byte[] block = null;
 
-      if (cachedBlocks.ContainsKey(blockIndex))
-        block = cachedBlocks[blockIndex].Target as byte[];
+      if (cachedBlocks.TryGetValue(blockIndex, out blockReference)) {
+#if NET_4_5
+        blockReference.TryGetTarget(out block);
+#else 
+        block = blockReference.Target as byte[];
+#endif
+      }
 
       if (block == null) {
         block = ReadBlock(blockIndex);
 
+#if NET_4_5
+        cachedBlocks[blockIndex] = new WeakReference<byte[]>(block);
+#else
         cachedBlocks[blockIndex] = new WeakReference(block);
+#endif
       }
 
       return block;
     }
 
+#if NET_4_5
+    private Dictionary<long, WeakReference<byte[]>> cachedBlocks = new Dictionary<long, WeakReference<byte[]>>();
+#else 
     private Dictionary<long, WeakReference> cachedBlocks = new Dictionary<long, WeakReference>();
+#endif
   }
 }
