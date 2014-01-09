@@ -50,8 +50,8 @@ namespace Smdn {
     {
       var nidAndNss = SplitNidAndNss(urn);
 
-      nid = nidAndNss[0];
-      nns = nidAndNss[1];
+      nid = nidAndNss.Item1;
+      nns = nidAndNss.Item2;
     }
 
     public static string GetNamespaceIdentifier(string urn)
@@ -63,7 +63,7 @@ namespace Smdn {
     {
       var nidAndNss = SplitNidAndNss(urn);
 
-      return nidAndNss[0];
+      return nidAndNss.Item1;
     }
 
     public static string GetNamespaceSpecificString(string urn, string expectedNid)
@@ -75,13 +75,13 @@ namespace Smdn {
     {
       var nidAndNss = SplitNidAndNss(urn);
 
-      if (string.Equals(expectedNid, nidAndNss[0], StringComparison.OrdinalIgnoreCase))
-        return nidAndNss[1];
+      if (string.Equals(expectedNid, nidAndNss.Item1, StringComparison.OrdinalIgnoreCase))
+        return nidAndNss.Item2;
       else
         throw new ArgumentException(string.Format("nid is not {0}", expectedNid), "urn");
     }
 
-    private static string[] SplitNidAndNss(Uri urn)
+    private static Tuple<string, string> SplitNidAndNss(Uri urn)
     {
       if (urn == null)
         throw new ArgumentNullException("urn");
@@ -94,10 +94,8 @@ namespace Smdn {
       if (delim < 0)
         throw new UriFormatException("invalid URN");
 
-      return new[] {
-        nidAndNss.Substring(0, delim),
-        nidAndNss.Substring(delim + 1),
-      };
+      return Tuple.Create(nidAndNss.Substring(0, delim),
+                          nidAndNss.Substring(delim + 1));
     }
 
     public static Uri Create(string nid, string nss)
