@@ -56,6 +56,8 @@ namespace Smdn {
       }
     }
 
+    private static readonly char[] typeSubtypeDelimiters = new char[] {'/'};
+
     private static Tuple<string, string> Parse(string mimeType, bool throwException)
     {
       if (mimeType == null) {
@@ -72,7 +74,7 @@ namespace Smdn {
           return null;
       }
 
-      var type = mimeType.Split(new[] {'/'});
+      var type = mimeType.Split(typeSubtypeDelimiters);
 
       if (type.Length != 2) {
         if (throwException)
