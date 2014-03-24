@@ -19,7 +19,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx4.0\</IntermediateOutputPath>
-    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;DEBUG</DefineConstants>
+    <DefineConstants>NET_3_5;NET_4_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
+    <DefineConstants>NET_3_5;NET_4_0</DefineConstants>
     <OutputPath>bin\Release\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx4.0\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>

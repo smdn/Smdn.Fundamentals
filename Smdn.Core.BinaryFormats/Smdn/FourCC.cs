@@ -23,11 +23,7 @@
 // THE SOFTWARE.
 
 using System;
-#if NET_3_5
 using System.Linq;
-#else
-using Smdn.Collections;
-#endif
 
 namespace Smdn {
   /*

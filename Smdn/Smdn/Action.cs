@@ -24,19 +24,8 @@
 
 namespace Smdn {
   /*
-   * System.Action* is available from .NET Framework 3.5
+   * System.Action<... , T5> is available from .NET Framework 4.0
    */
-#if !NET_3_5
-  public delegate void Action
-    ();
-  public delegate void Action<T1, T2>
-    (T1 arg1, T2 arg2);
-  public delegate void Action<T1, T2, T3>
-    (T1 arg1, T2 arg2, T3 arg3);
-  public delegate void Action<T1, T2, T3, T4>
-    (T1 arg1, T2 arg2, T3 arg3, T4 arg4);
-#endif
-
 #if !NET_4_0
   public delegate void Action<T1, T2, T3, T4, T5>
     (T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5);

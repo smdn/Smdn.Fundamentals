@@ -27,10 +27,8 @@ using System;
 namespace Smdn {
   public static class EmptyArray<T> {
     public static readonly T[] Instance = (
-#if NET_3_5
       Runtime.RuntimeEnvironment == RuntimeEnvironment.NetFx ? System.Linq.Enumerable.Empty<T>() as T[] :
       Runtime.RuntimeEnvironment == RuntimeEnvironment.Mono  ? System.Linq.Enumerable.Empty<T>() as T[] :
-#endif
       null) ?? new T[0];
   }
 }

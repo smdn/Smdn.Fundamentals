@@ -25,10 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
-#if NET_3_5
 using System.Linq;
-#endif
 
 namespace Smdn.Collections {
   public static class IEnumerableExtensions {

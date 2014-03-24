@@ -19,7 +19,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\netfx3.5\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx3.5\</IntermediateOutputPath>
-    <DefineConstants>NET_2_0;NET_3_5;DEBUG</DefineConstants>
+    <DefineConstants>NET_3_5;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <DefineConstants>NET_2_0;NET_3_5</DefineConstants>
+    <DefineConstants>NET_3_5</DefineConstants>
     <OutputPath>bin\Release\netfx3.5\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx3.5\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>

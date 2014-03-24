@@ -18,7 +18,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx4.0\</IntermediateOutputPath>
-    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;DEBUG</DefineConstants>
+    <DefineConstants>NET_3_5;NET_4_0;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -28,7 +28,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Release\netfx4.0\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx4.0\</IntermediateOutputPath>
-    <DefineConstants>NET_2_0;NET_3_5;NET_4_0</DefineConstants>
+    <DefineConstants>NET_3_5;NET_4_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -79,7 +79,6 @@
     <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn.Formats\Base64.cs" />
-    <Compile Include="Smdn.Collections\Enumerable.cs" />
     <Compile Include="Smdn\BinaryConvert.cs" />
     <Compile Include="Smdn\ExceptionUtils.cs" />
     <Compile Include="Smdn.Collections\HashSet.cs" />

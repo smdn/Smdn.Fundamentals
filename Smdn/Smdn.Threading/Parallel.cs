@@ -24,13 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
-
-#if NET_3_5
 using System.Linq;
-#else
-using Smdn.Collections;
-#endif
+using System.Threading;
 
 namespace Smdn.Threading {
 #if !NET_4_0

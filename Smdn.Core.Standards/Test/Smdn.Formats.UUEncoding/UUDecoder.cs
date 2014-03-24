@@ -1,10 +1,6 @@
 using System;
 using System.IO;
-#if NET_3_5
 using System.Linq;
-#else
-using Smdn.Collections;
-#endif
 using System.Text;
 using NUnit.Framework;
 

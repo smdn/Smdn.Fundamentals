@@ -4,9 +4,7 @@ using NUnit.Framework;
 
 using GenericCollections = System.Collections.Generic;
 
-#if NET_3_5
 using System.Linq;
-#endif
 
 namespace Smdn.Collections {
 #if NET_4_0

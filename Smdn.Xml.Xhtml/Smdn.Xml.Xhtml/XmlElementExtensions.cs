@@ -24,13 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Xml;
-
-#if NET_3_5
 using System.Linq;
-#else
-using Smdn.Collections;
-#endif
+using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
   public static class XmlElementExtensions {

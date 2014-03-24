@@ -24,11 +24,7 @@
 
 using System;
 using System.Collections.Generic;
-#if NET_3_5
 using System.Linq;
-#else
-using Smdn.Collections;
-#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;

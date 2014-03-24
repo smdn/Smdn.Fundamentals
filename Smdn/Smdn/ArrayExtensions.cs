@@ -24,11 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-#if NET_3_5
 using System.Linq;
-#else
-using Smdn.Collections;
-#endif
+
 
 namespace Smdn {
   /// <summary>
