@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Smdn.Mathematics {
+namespace Smdn {
   public struct Fraction :
     IEquatable<Fraction>,
     IEquatable<double>

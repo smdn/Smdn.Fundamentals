@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Mathematics {
+namespace Smdn {
   [TestFixture]
   public class FractionTest {
     [Test]

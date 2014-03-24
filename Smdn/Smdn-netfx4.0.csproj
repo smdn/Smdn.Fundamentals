@@ -43,7 +43,6 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Mathematics\Fraction.cs" />
     <Compile Include="Smdn.Formats\Chars.cs" />
     <Compile Include="Smdn.Formats\Octets.cs" />
     <Compile Include="Smdn\Runtime.cs" />
@@ -55,8 +54,6 @@
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn\Action.cs" />
     <Compile Include="Smdn\Func.cs" />
-    <Compile Include="Smdn.Mathematics\Radian.cs" />
-    <Compile Include="Smdn.Mathematics\Polar.cs" />
     <Compile Include="Smdn\MimeType.cs" />
     <Compile Include="Smdn.IO\DirectoryInfoExtensions.cs" />
     <Compile Include="Smdn.IO\DirectoryUtils.cs" />
@@ -99,6 +96,7 @@
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
     <Compile Include="Smdn.Threading\LazyInitializer.cs" />
     <Compile Include="Smdn\EmptyArray.cs" />
+    <Compile Include="Smdn\Fraction.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

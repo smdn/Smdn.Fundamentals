@@ -49,14 +49,11 @@
     <Folder Include="Smdn.Collections\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Smdn.Mathematics\Fraction.cs" />
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
-    <Compile Include="Smdn.Mathematics\Radian.cs" />
-    <Compile Include="Smdn.Mathematics\Polar.cs" />
     <Compile Include="Smdn\MimeType.cs" />
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn.Threading\Parallel.cs" />
@@ -87,6 +84,7 @@
     <Compile Include="Smdn.Threading\LazyInitializer.cs" />
     <Compile Include="Smdn\EmptyArray.cs" />
     <Compile Include="Smdn\Shell.cs" />
+    <Compile Include="Smdn\Fraction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
