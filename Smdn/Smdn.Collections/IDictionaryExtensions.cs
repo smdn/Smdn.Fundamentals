@@ -38,11 +38,5 @@ namespace Smdn.Collections {
       return new Smdn.Collections.ReadOnlyDictionary<TKey, TValue>(dictionary);
 #endif
     }
-
-    [Obsolete("use AsReadOnly()", true)]
-    public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
-    {
-      throw new NotImplementedException();
-    }
   }
 }
