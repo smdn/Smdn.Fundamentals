@@ -39,9 +39,11 @@ namespace Smdn.Formats {
     {
       if (str == null)
         throw new ArgumentNullException("str");
+      if (str.Length == 0)
+        return string.Empty;
 
       using (var transform = new ToRFC3501ModifiedBase64Transform()) {
-        var encoded = new StringBuilder();
+        var encoded = new StringBuilder(str.Length * 2);
         var index = -1;
         var shiftFrom = -1;
 
@@ -86,45 +88,51 @@ namespace Smdn.Formats {
     {
       if (str == null)
         throw new ArgumentNullException("str");
+      if (str.Length == 0)
+        return string.Empty;
 
       using (var transform = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces)) {
-        var chars = str.ToCharArray();
-        var decoded = new StringBuilder();
+        var decoded = new StringBuilder(str.Length);
 
-        for (var index = 0; index < chars.Length; index++) {
-          if (chars[index] < '\u0020' || '\u007e' < chars[index])
-            throw new FormatException(string.Format("contains non-ascii or non-printable character: at index {0} of '{1}', \\u{2:x4}", index, str, (int)chars[index]));
+        for (var index = 0; index < str.Length; index++) {
+          var c = str[index];
+
+          if (c < '\u0020' || '\u007e' < c)
+            throw new FormatException(string.Format("contains non-ascii or non-printable character: at index {0} of '{1}', \\u{2:x4}", index, str, (int)c));
 
           // In modified UTF-7, printable US-ASCII characters, except for "&",
           // represent themselves
           // "&" is used to shift to modified BASE64
-          if (chars[index] != '&') {
-            decoded.Append(chars[index]);
+          if (c != '&') {
+            decoded.Append(c);
             continue;
           }
 
-          if (chars.Length <= ++index)
+          if (str.Length <= ++index)
             // incorrect form
             throw new FormatException("incorrect form");
 
-          if (chars[index] == '-') {
+          if (str[index] == '-') {
             // The character "&" (0x26) is represented by the two-octet sequence "&-".
             decoded.Append('&');
             continue;
           }
 
-          var nonprintable = new StringBuilder();
+          var nonPrintableChars = new byte[str.Length - index];
+          var len = 0;
 
-          for (; index < chars.Length; index++) {
-            if (chars[index] == '-')
+          for (; index < str.Length; index++) {
+            c = str[index];
+
+            if (c == '-')
               // "-" is used to shift back to US-ASCII
               break;
-
-            nonprintable.Append(chars[index]);
+            else
+              nonPrintableChars[len++] = (byte)c;
           }
 
           // modified UTF7 -> string
-          decoded.Append(transform.TransformStringFrom(nonprintable.ToString(), Encoding.BigEndianUnicode));
+          decoded.Append(Encoding.BigEndianUnicode.GetString(transform.TransformBytes(nonPrintableChars, 0, len)));
         }
 
         return decoded.ToString();
