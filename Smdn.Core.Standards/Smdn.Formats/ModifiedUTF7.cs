@@ -42,11 +42,11 @@ namespace Smdn.Formats {
 
       using (var transform = new ToRFC3501ModifiedBase64Transform()) {
         var encoded = new StringBuilder();
-        var chars = str.ToCharArray();
+        var index = -1;
         var shiftFrom = -1;
 
-        for (var index = 0; index < chars.Length; index++) {
-          var c = chars[index];
+        foreach (var c in str) {
+          index++;
 
           if (('\u0020' <= c && c <= '\u007e')) {
             if (0 <= shiftFrom) {

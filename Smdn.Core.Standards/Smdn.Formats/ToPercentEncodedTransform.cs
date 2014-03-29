@@ -55,15 +55,14 @@ namespace Smdn.Formats {
 
     private byte[] GetEscapeOctets(string str)
     {
-      var chars = str.ToCharArray();
       var octets = new byte[0x80 - 0x20];
       var count = 0;
 
       octets[count++] = Octets.SP;
 
-      for (var i = 0; i < chars.Length; i++) {
-        if (chars[i] != Chars.SP)
-          octets[count++] = (byte)chars[i];
+      foreach (var c in str) {
+        if (c != Chars.SP)
+          octets[count++] = (byte)c;
       }
 
       Array.Resize(ref octets, count);
