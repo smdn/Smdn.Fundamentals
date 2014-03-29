@@ -79,25 +79,25 @@ namespace Smdn.Formats {
       if ((str.Length & 0x1) != 0)
         throw new FormatException("incorrect form");
 
-      var chars = str.ToCharArray();
-      var bytes = new byte[chars.Length / 2];
+      var bytes = new byte[str.Length / 2];
       var high = true;
+      var b = 0;
 
-      for (int c = 0, b = 0; c < chars.Length;) {
+      foreach (var c in str) {
         int val;
 
-        if ('0' <= chars[c] && chars[c] <= '9') {
-          val = (int)(chars[c] - '0');
+        if ('0' <= c && c <= '9') {
+          val = (int)(c - '0');
         }
-        else if ('a' <= chars[c] && chars[c] <= 'f') {
+        else if ('a' <= c && c <= 'f') {
           if (allowLowerCaseChar)
-            val = 0xa + (int)(chars[c] - 'a');
+            val = 0xa + (int)(c - 'a');
           else
             throw new FormatException("incorrect form");
         }
-        else if ('A' <= chars[c] && chars[c] <= 'F') {
+        else if ('A' <= c && c <= 'F') {
           if (allowUpperCaseChar)
-            val = 0xa + (int)(chars[c] - 'A');
+            val = 0xa + (int)(c - 'A');
           else
             throw new FormatException("incorrect form");
         }
@@ -113,7 +113,6 @@ namespace Smdn.Formats {
           b++;
         }
 
-        c++;
         high = !high;
       }
 

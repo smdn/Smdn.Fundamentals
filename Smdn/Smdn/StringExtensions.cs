@@ -150,11 +150,10 @@ namespace Smdn {
       if (str == null)
         throw new ArgumentNullException("str");
 
-      var chars = str.ToCharArray();
       var count = 0;
 
-      for (var index = 0; index < chars.Length; index++) {
-        if (chars[index] == c)
+      foreach (var ch in str) {
+        if (ch == c)
           count++;
       }
 
