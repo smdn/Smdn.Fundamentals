@@ -77,7 +77,7 @@ namespace Smdn {
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonZeroPositive()
     {
       TestOnSpecificUICulture(delegate {
@@ -87,12 +87,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be non-zero positive value", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(0, ex.ActualValue);
-
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeZeroOrPositive()
     {
       TestOnSpecificUICulture(delegate {
@@ -102,12 +101,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be zero or positive value", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(-1, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThan()
     {
       TestOnSpecificUICulture(delegate {
@@ -117,12 +115,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be less than 2", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThanNullMaxValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -131,12 +128,11 @@ namespace Smdn {
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThanOrEqualTo()
     {
       TestOnSpecificUICulture(delegate {
@@ -146,12 +142,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be less than or equal to 2", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(3, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThanOrEqualToNullMaxValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -160,12 +155,11 @@ namespace Smdn {
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThan()
     {
       TestOnSpecificUICulture(delegate {
@@ -175,12 +169,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be greater than 2", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThanNullMaxValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -189,12 +182,11 @@ namespace Smdn {
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThanOrEqualTo()
     {
       TestOnSpecificUICulture(delegate {
@@ -204,12 +196,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be greater than or equal to 2", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(1, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThanOrEqualToNullMaxValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -218,12 +209,11 @@ namespace Smdn {
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeInRange()
     {
       TestOnSpecificUICulture(delegate {
@@ -233,12 +223,11 @@ namespace Smdn {
         StringAssert.StartsWith("must be in range 0 to 3", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(-1, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeInRangeNullFromValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -247,12 +236,11 @@ namespace Smdn {
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeInRangeNullToValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -261,12 +249,11 @@ namespace Smdn {
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
         Assert.AreEqual(2, ex.ActualValue);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeMultipleOf()
     {
       TestOnSpecificUICulture(delegate {
@@ -275,12 +262,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("must be multiple of 2", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyArray()
     {
       TestOnSpecificUICulture(delegate {
@@ -289,12 +275,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("must be a non-empty array", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentAttemptToAccessBeyondEndOfArray()
     {
       TestOnSpecificUICulture(delegate {
@@ -304,12 +289,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("attempt to access beyond the end of an array (length=4, offset=2, count=4)", ex.Message);
         Assert.AreEqual("index", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentAttemptToAccessBeyondEndOfArrayNullArray()
     {
       TestOnSpecificUICulture(delegate {
@@ -318,12 +302,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         Assert.IsNotEmpty(ex.Message);
         Assert.AreEqual("index", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyString()
     {
       TestOnSpecificUICulture(delegate {
@@ -332,12 +315,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("must be a non-empty string", ex.Message);
         Assert.AreEqual("arg", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeValidEnumValue1()
     {
       TestOnSpecificUICulture(delegate {
@@ -347,12 +329,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("invalid enum value ( value=-1, type=System.IO.SeekOrigin)", ex.Message);
         Assert.AreEqual("origin", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeValidEnumValue2()
     {
       TestOnSpecificUICulture(delegate {
@@ -362,12 +343,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("invalid enum value (invalid seek origin value=-1, type=System.IO.SeekOrigin)", ex.Message);
         Assert.AreEqual("origin", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(NotSupportedException))]
+    [Test, SetUICulture("")]
     public void TestCreateNotSupportedEnumValue()
     {
       TestOnSpecificUICulture(delegate {
@@ -376,12 +356,11 @@ namespace Smdn {
   
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("'Unknown' (Smdn.Endianness) is not supported", ex.Message);
-  
-        throw ex;
+        Assert.IsInstanceOf<NotSupportedException>(ex);
       });
     }
     
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeReadableStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -390,12 +369,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support reading", ex.Message);
         Assert.AreEqual("baseStream", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeWritableStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -404,12 +382,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support writing", ex.Message);
         Assert.AreEqual("baseStream", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeSeekableStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -418,12 +395,11 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support seeking", ex.Message);
         Assert.AreEqual("baseStream", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(NotSupportedException))]
+    [Test, SetUICulture("")]
     public void TestCreateNotSupportedReadingStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -431,12 +407,11 @@ namespace Smdn {
   
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support reading", ex.Message);
-  
-        throw ex;
+        Assert.IsInstanceOf<NotSupportedException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(NotSupportedException))]
+    [Test, SetUICulture("")]
     public void TestCreateNotSupportedWritingStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -444,12 +419,11 @@ namespace Smdn {
   
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support writing", ex.Message);
-  
-        throw ex;
+        Assert.IsInstanceOf<NotSupportedException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(NotSupportedException))]
+    [Test, SetUICulture("")]
     public void TestCreateNotSupportedSeekingStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -457,12 +431,11 @@ namespace Smdn {
   
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support seeking", ex.Message);
-  
-        throw ex;
+        Assert.IsInstanceOf<NotSupportedException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(NotSupportedException))]
+    [Test, SetUICulture("")]
     public void TestCreateNotSupportedSettingStreamLength()
     {
       TestOnSpecificUICulture(delegate {
@@ -470,12 +443,11 @@ namespace Smdn {
   
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("stream does not support setting length", ex.Message);
-  
-        throw ex;
+        Assert.IsInstanceOf<NotSupportedException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(IOException))]
+    [Test, SetUICulture("")]
     public void TestCreateIOAttemptToSeekBeforeStartOfStream()
     {
       TestOnSpecificUICulture(delegate {
@@ -483,12 +455,11 @@ namespace Smdn {
   
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("attempted to seek before start of stream", ex.Message);
-  
-        throw ex;
+        Assert.IsInstanceOf<IOException>(ex);
       });
     }
 
-    [Test, SetUICulture(""), ExpectedException(typeof(ArgumentException))]
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeValidIAsyncResult()
     {
       TestOnSpecificUICulture(delegate {
@@ -497,8 +468,7 @@ namespace Smdn {
         Assert.IsNull(ex.InnerException);
         StringAssert.StartsWith("invalid IAsyncResult", ex.Message);
         Assert.AreEqual("asyncResult", ex.ParamName);
-  
-        throw ex;
+        Assert.IsInstanceOf<ArgumentException>(ex);
       });
     }
   }
