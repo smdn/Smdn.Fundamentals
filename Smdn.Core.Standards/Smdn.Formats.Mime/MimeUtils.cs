@@ -27,7 +27,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using Smdn.Collections;
 using Smdn.IO;
 
 namespace Smdn.Formats.Mime {
