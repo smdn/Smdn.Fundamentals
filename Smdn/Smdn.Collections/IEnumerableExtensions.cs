@@ -47,6 +47,8 @@ namespace Smdn.Collections {
           enumerator = enumerator.Current.GetEnumerator();
         }
         else {
+          enumerator.Dispose();
+
           if (stack.Count == 0)
             yield break;
 
