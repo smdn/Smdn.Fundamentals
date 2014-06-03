@@ -31,20 +31,32 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle("Smdn.Xml.Xhtml")]
-[assembly: AssemblyDescription("Smdn.Xml.Xhtml.dll")]
-[assembly: AssemblyCopyright("Copyright(c) 2009-2012 smdn")]
+[assembly: AssemblyTitle(AssemblyInfo.Name)]
+[assembly: AssemblyProduct(AssemblyInfo.Name + "-" + AssemblyInfo.VersionString + AssemblyInfo.Suffix)]
+[assembly: AssemblyCopyright("Copyright(C) 2009-2012 smdn")]
 [assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
-[assembly: AssemblyConfiguration("")]
+
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
 // The form "{Major}.{Minor}.*" will automatically update the build and revision,
 // and "{Major}.{Minor}.{Build}.*" will update just the revision.
 
-[assembly: AssemblyVersion("0.10.*")]
+[assembly: AssemblyVersion(AssemblyInfo.VersionString)]
+[assembly: AssemblyInformationalVersion(AssemblyInfo.VersionString + AssemblyInfo.Suffix)]
 
 // The following attributes are used to specify the signing key for the assembly,
 // if desired. See the Mono documentation for more information about signing.
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 
+internal static class AssemblyInfo {
+  public const string Name = "Smdn.Xml.Xhtml";
+  public const string VersionString = "0.10";
+#if NET_4_5
+  public const string Suffix = "-netfx4.5";
+#elif NET_4_0
+  public const string Suffix = "-netfx4.0";
+#elif NET_3_5
+  public const string Suffix = "-netfx3.5";
+#endif
+}
