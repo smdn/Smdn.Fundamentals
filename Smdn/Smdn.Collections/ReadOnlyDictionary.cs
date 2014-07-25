@@ -30,11 +30,16 @@ namespace Smdn.Collections {
   /*
    * System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue> is available from .NET Framework 4.5
    */
-#if !NET_4_5
+#if NET_4_5
+  public static class ReadOnlyDictionary<TKey, TValue> {
+    public static readonly IReadOnlyDictionary<TKey, TValue> Empty = new System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>(new Dictionary<TKey, TValue>(0));
+#else
   public class ReadOnlyDictionary<TKey, TValue> :
     IDictionary<TKey, TValue>,
     IDictionary
   {
+    public static readonly IDictionary<TKey, TValue> Empty = new ReadOnlyDictionary(new Dictionary<TKey, TValue>(0));
+
     public sealed class KeyCollection : ICollection<TKey> {
       public int Count {
         get { return keys.Count; }
@@ -320,6 +325,6 @@ namespace Smdn.Collections {
     }
 
     private IDictionary<TKey, TValue> dictionary;
-  }
 #endif
+  }
 }

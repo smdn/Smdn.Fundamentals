@@ -13,6 +13,18 @@ namespace Smdn.Collections {
   [TestFixture]
   public class ReadOnlyDictionaryTests {
     [Test]
+    public void TestEmpty()
+    {
+      var empty = Smdn.Collections.ReadOnlyDictionary<string, string>.Empty;
+
+      Assert.AreEqual(0, empty.Count);
+
+#if !NET_4_5
+      Assert.Throws<NotSupportedException>(() => empty.Clear());
+#endif
+    }
+
+    [Test]
     public void TestConstruct()
     {
       var dic = new StringDictionary(new Dictionary<string, string>() {
