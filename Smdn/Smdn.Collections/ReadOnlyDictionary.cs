@@ -38,7 +38,7 @@ namespace Smdn.Collections {
     IDictionary<TKey, TValue>,
     IDictionary
   {
-    public static readonly IDictionary<TKey, TValue> Empty = new ReadOnlyDictionary(new Dictionary<TKey, TValue>(0));
+    public static readonly IDictionary<TKey, TValue> Empty = new ReadOnlyDictionary<TKey, TValue>(new Dictionary<TKey, TValue>(0));
 
     public sealed class KeyCollection : ICollection<TKey> {
       public int Count {
