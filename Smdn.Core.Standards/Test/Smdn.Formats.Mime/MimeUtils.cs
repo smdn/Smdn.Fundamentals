@@ -266,5 +266,83 @@ MIME-Version: 1.0";
         Assert.AreEqual(" \t line1\r\n line2\n\tline3\r   \tline4\r\n", headers[0].Value);
       });
     }
+
+    [Test]
+    public void TestRemoveHeaderWhiteSpaceAndComment()
+    {
+      var input = @"Wed (= Wednesday), 15 (th) Mar (March = 3rd month of year) 2002
+ 12 (hour):32 (minute):23 (second) (timezone =) +0900 (JST)";
+
+      Assert.AreEqual("Wed, 15 Mar 2002 12:32:23 +0900",
+                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+    }
+
+    [TestCase((string)null)]
+    [TestCase("")]
+    [TestCase("value")]
+    [TestCase("header value")]
+    public void TestRemoveHeaderWhiteSpaceAndComment_NotAffect(string input)
+    {
+      Assert.AreEqual(input, MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), input);
+    }
+
+    [TestCase("header\rvalue")]
+    [TestCase("header\nvalue")]
+    [TestCase("header\r\nvalue")]
+    [TestCase("header\r value")]
+    [TestCase("header\n value")]
+    [TestCase("header\r\n value")]
+    [TestCase("header\r\tvalue")]
+    [TestCase("header\n\tvalue")]
+    [TestCase("header\r\n\tvalue")]
+    public void TestRemoveHeaderWhiteSpaceAndComment_RemoveNewline(string input)
+    {
+      Assert.AreEqual("header value", MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), input);
+    }
+
+    [Test]
+    public void TestRemoveHeaderWhiteSpaceAndComment_QuotedPair_1()
+    {
+      var input = @"Wed, 15 Mar 2002 12:32:23 +0900 \(JST\) extratext";
+
+      Assert.AreEqual(@"Wed, 15 Mar 2002 12:32:23 +0900 \(JST\) extratext",
+                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+    }
+
+    [Test]
+    public void TestRemoveHeaderWhiteSpaceAndComment_QuotedPair_2()
+    {
+      var input = @"Wed, 15 Mar 2002 12:32:23 +0900 (JST\)) extratext";
+
+      Assert.AreEqual(@"Wed, 15 Mar 2002 12:32:23 +0900 extratext",
+                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+    }
+
+    [Test]
+    public void TestRemoveHeaderWhiteSpaceAndComment_QuotedPair_3()
+    {
+      var input = @"Wed, 15 Mar 2002 12:32:23 +0900 \";
+
+      Assert.AreEqual(@"Wed, 15 Mar 2002 12:32:23 +0900 \",
+                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+    }
+
+    [Test]
+    public void TestRemoveHeaderWhiteSpaceAndComment_NestedComment()
+    {
+      var input = @"Wed, 15 Mar 2002 12:32:23 +0900 (JST(Japan Standard time)) extratext";
+
+      Assert.AreEqual(@"Wed, 15 Mar 2002 12:32:23 +0900 extratext",
+                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+    }
+
+    [Test]
+    public void TestRemoveHeaderWhiteSpaceAndComment_UnmatchNest()
+    {
+      var input = @"Wed, 15 Mar 2002 12:32:23 +0900 (JST)) extratext";
+
+      Assert.AreEqual(@"Wed, 15 Mar 2002 12:32:23 +0900 extratext",
+                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+    }
   }
 }

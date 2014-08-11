@@ -151,5 +151,89 @@ namespace Smdn.Formats.Mime {
       if (0 < indexOfDelimiter)
         yield return new HeaderField(header.ToByteString(true), indexOfDelimiter);
     }
+
+    /// <param name="val">header field value.</param>
+    public static string RemoveHeaderWhiteSpaceAndComment(string val)
+    {
+      /*
+       * RFC 5322 - Internet Message Format
+       * http://tools.ietf.org/html/rfc5322
+       * 3.2.2. Folding White Space and Comments
+       * 
+       *    FWS             =   ([*WSP CRLF] 1*WSP) /  obs-FWS
+       *                                           ; Folding white space
+       *    ctext           =   %d33-39 /          ; Printable US-ASCII
+       *                        %d42-91 /          ;  characters not including
+       *                        %d93-126 /         ;  "(", ")", or "\"
+       *                        obs-ctext
+       *    ccontent        =   ctext / quoted-pair / comment
+       *    comment         =   "(" *([FWS] ccontent) [FWS] ")"
+       *    CFWS            =   (1*([FWS] comment) [FWS]) / FWS
+       * 
+       *    quoted-pair     =   ("\" (VCHAR / WSP)) / obs-qp
+       */
+      if (string.IsNullOrEmpty(val))
+        return val;
+
+      var ret = new StringBuilder(val.Length);
+      var fws = 0;
+      var nest = 0;
+
+      for (var index = 0; index < val.Length; index++) {
+        var ch = val[index];
+
+        switch (ch) {
+          case '(':
+            nest++;
+            break;
+
+          case ')':
+            nest = Math.Max(0, nest - 1);
+
+            if (nest == 0)
+              fws = 0;
+
+            break;
+
+          case '\\':
+            index++;
+
+            if (nest == 0) {
+              if (0 < fws)
+                ret.Append(' ');
+
+              ret.Append(ch);
+
+              if (index < val.Length)
+                ret.Append(val[index]);
+
+              fws = 0;
+            }
+
+            break;
+
+          case ' ':
+          case '\t':
+          case '\r':
+          case '\n':
+            fws++;
+            break;
+
+          default:
+            if (nest == 0) {
+              if (0 < fws)
+                ret.Append(' ');
+
+              ret.Append(ch);
+
+              fws = 0;
+            }
+
+            break;
+        }
+      }
+
+      return ret.ToString();
+    }
   }
 }
