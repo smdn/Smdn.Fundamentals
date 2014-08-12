@@ -14,12 +14,7 @@ namespace Smdn.IO {
         Assert.IsTrue(stream.LeaveInnerStreamOpen);
       }
 
-      try {
-        inner.ReadByte();
-      }
-      catch (ObjectDisposedException) {
-        Assert.Fail("ObjectDisposedException thrown");
-      }
+      Assert.DoesNotThrow(() => inner.ReadByte());
     }
 
     [Test]
@@ -32,12 +27,7 @@ namespace Smdn.IO {
         Assert.IsFalse(stream.LeaveInnerStreamOpen);
       }
 
-      try {
-        inner.ReadByte();
-        Assert.Fail("ObjectDisposedException not thrown");
-      }
-      catch (ObjectDisposedException) {
-      }
+      Assert.Throws<ObjectDisposedException>(() => inner.ReadByte());
     }
 
     [Test]
@@ -54,26 +44,16 @@ namespace Smdn.IO {
 
       Assert.IsFalse(stream.CanWrite);
 
-      try {
-        stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
-        Assert.Fail("NotSupportedException not thrown");
-      }
-      catch (NotSupportedException) {
-      }
+      Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
+      Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x00));
 
-      try {
-        stream.WriteByte(0x00);
-        Assert.Fail("NotSupportedException not thrown");
-      }
-      catch (NotSupportedException) {
-      }
+      var len = stream.Length;
+      var pos = stream.Position;
 
-      try {
-        stream.Flush();
-        Assert.Fail("NotSupportedException not thrown");
-      }
-      catch (NotSupportedException) {
-      }
+      Assert.DoesNotThrow(() => stream.Flush());
+
+      Assert.AreEqual(len, stream.Length);
+      Assert.AreEqual(pos, stream.Position);
     }
 
     [Test]
@@ -166,19 +146,8 @@ namespace Smdn.IO {
       Assert.IsFalse(stream.CanSeek, "CanSeek");
       Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
-      try {
-        stream.ReadByte();
-        Assert.Fail("ObjectDisposedException not thrown");
-      }
-      catch (ObjectDisposedException) {
-      }
-
-      try {
-        stream.WriteByte(0x00);
-        Assert.Fail("ObjectDisposedException not thrown");
-      }
-      catch (ObjectDisposedException) {
-      }
+      Assert.Throws<ObjectDisposedException>(() =>stream.ReadByte());
+      Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
 
       stream.Close();
     }
@@ -324,12 +293,7 @@ namespace Smdn.IO {
 
         Assert.AreEqual(3, stream.Position);
 
-        try {
-          stream.Write(new byte[] {0x05, 0x06}, 0, 2);
-          Assert.Fail("IOException not thrown");
-        }
-        catch (IOException) {
-        }
+        Assert.Throws<IOException>(() => stream.Write(new byte[] {0x05, 0x06}, 0, 2));
 
         Assert.AreEqual(3, stream.Position);
 
@@ -337,12 +301,7 @@ namespace Smdn.IO {
 
         Assert.AreEqual(4, stream.Position);
 
-        try {
-          stream.WriteByte(0x06);
-          Assert.Fail("IOException not thrown");
-        }
-        catch (IOException) {
-        }
+        Assert.Throws<IOException>(() => stream.WriteByte(0x06));
 
         Assert.AreEqual(4, stream.Position);
       }
@@ -367,13 +326,8 @@ namespace Smdn.IO {
 
         Assert.AreEqual(4, stream.Position);
 
-        try {
-          stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3);
-          Assert.Fail("NotSupportedException not thrown");
-        }
-        catch (NotSupportedException) {
-          // cannot expand MemoryStream
-        }
+        // cannot expand MemoryStream
+        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3));
 
         Assert.AreEqual(4, stream.Position);
 
@@ -381,13 +335,8 @@ namespace Smdn.IO {
 
         Assert.AreEqual(6, stream.Position);
 
-        try {
-          stream.WriteByte(0x08);
-          Assert.Fail("NotSupportedException not thrown");
-        }
-        catch (NotSupportedException) {
-          // cannot expand MemoryStream
-        }
+        // cannot expand MemoryStream
+        Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x08));
 
         Assert.AreEqual(6, stream.Position);
       }
@@ -412,12 +361,7 @@ namespace Smdn.IO {
       Assert.AreEqual(14L, stream.InnerStream.Position);
 
       // before start of stream
-      try {
-        stream.Seek(-1, SeekOrigin.Begin);
-        Assert.Fail("IOException not thrown");
-      }
-      catch (IOException) {
-      }
+      Assert.Throws<IOException>(() => stream.Seek(-1, SeekOrigin.Begin));
 
       Assert.AreEqual(10L, stream.Position);
       Assert.AreEqual(14L, stream.InnerStream.Position);
@@ -440,12 +384,7 @@ namespace Smdn.IO {
       Assert.AreEqual(14L, stream.InnerStream.Position);
 
       // before start of stream
-      try {
-        stream.Seek(-12, SeekOrigin.Current);
-        Assert.Fail("IOException not thrown");
-      }
-      catch (IOException) {
-      }
+      Assert.Throws<IOException>(() => stream.Seek(-12, SeekOrigin.Current));
 
       Assert.AreEqual(10L, stream.Position);
       Assert.AreEqual(14L, stream.InnerStream.Position);
@@ -470,12 +409,7 @@ namespace Smdn.IO {
       Assert.AreEqual(14L, stream.InnerStream.Position);
 
       // before start of stream
-      try {
-        stream.Position = -2;
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -2);
 
       Assert.AreEqual(10L, stream.Position);
       Assert.AreEqual(14L, stream.InnerStream.Position);
@@ -498,12 +432,7 @@ namespace Smdn.IO {
       Assert.AreEqual(12L, stream.InnerStream.Position);
 
       // before start of stream
-      try {
-        stream.Seek(-5, SeekOrigin.End);
-        Assert.Fail("IOException not thrown");
-      }
-      catch (IOException) {
-      }
+      Assert.Throws<IOException>(() => stream.Seek(-5, SeekOrigin.End));
 
       Assert.AreEqual(8L, stream.Position);
       Assert.AreEqual(12L, stream.InnerStream.Position);
@@ -526,12 +455,7 @@ namespace Smdn.IO {
       Assert.AreEqual(12L, stream.InnerStream.Position);
 
       // before start of stream
-      try {
-        stream.Seek(-5, SeekOrigin.End);
-        Assert.Fail("IOException not thrown");
-      }
-      catch (IOException) {
-      }
+      Assert.Throws<IOException>(() => stream.Seek(-5, SeekOrigin.End));
 
       Assert.AreEqual(8L, stream.Position);
       Assert.AreEqual(12L, stream.InnerStream.Position);

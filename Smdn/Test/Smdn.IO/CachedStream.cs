@@ -59,19 +59,8 @@ namespace Smdn.IO {
           Assert.IsFalse(stream.CanSeek, "CanSeek");
           Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
-          try {
-            stream.ReadByte();
-            Assert.Fail("ObjectDisposedException not thrown");
-          }
-          catch (ObjectDisposedException) {
-          }
-
-          try {
-            stream.WriteByte(0x00);
-            Assert.Fail("ObjectDisposedException not thrown");
-          }
-          catch (ObjectDisposedException) {
-          }
+          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+          Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
 
           stream.Close();
         }
@@ -102,12 +91,7 @@ namespace Smdn.IO {
           Assert.AreEqual(19L, stream.Position);
           Assert.AreEqual(-1, stream.ReadByte());
 
-          try {
-            stream.Seek(-17L, SeekOrigin.End);
-            Assert.Fail("IOException not thrown");
-          }
-          catch (IOException) {
-          }
+          Assert.Throws<IOException>(() => stream.Seek(-17L, SeekOrigin.End));
         }
       }
     }
@@ -255,35 +239,41 @@ namespace Smdn.IO {
       return stream;
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestWriteByte()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        stream.WriteByte(0x00);
+        Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x00));
       }
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestWrite()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
       }
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestSetLength()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        stream.SetLength(32L);
+        Assert.Throws<NotSupportedException>(() => stream.SetLength(32L));
       }
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestFlush()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        stream.Flush();
+        var pos = stream.Position;
+        var len = stream.Length;
+
+        Assert.DoesNotThrow(() => stream.Flush());
+
+        Assert.AreEqual(pos, stream.Position);
+        Assert.AreEqual(len, stream.Length);
       }
     }
   }
