@@ -233,7 +233,7 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      throw ExceptionUtils.CreateNotSupportedWritingStream();
+      // do nothing
     }
 
     private void CheckDisposed()

@@ -232,7 +232,6 @@ namespace Smdn.IO {
     public override void Flush()
     {
       CheckDisposed();
-      CheckWritable();
 
       stream.Flush();
     }
