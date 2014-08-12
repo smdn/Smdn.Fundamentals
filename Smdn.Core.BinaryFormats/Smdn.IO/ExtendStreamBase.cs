@@ -136,7 +136,7 @@ namespace Smdn.IO {
     {
       CheckDisposed();
 
-      throw ExceptionUtils.CreateNotSupportedWritingStream();
+      // do nothing
     }
 
     public override long Seek(long offset, SeekOrigin origin)
