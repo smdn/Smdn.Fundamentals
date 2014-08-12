@@ -8,54 +8,13 @@ namespace Smdn.IO {
     [Test]
     public void TestConstruct()
     {
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, (byte[])null, (byte[])null)).Length);
-      }
-      catch {
-        Assert.Fail("construct null/null");
-      }
-
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, new byte[] {}, null)).Length);
-      }
-      catch {
-        Assert.Fail("construct byte[]/null");
-      }
-
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, null, new byte[] {})).Length);
-      }
-      catch {
-        Assert.Fail("construct null/byte[]");
-      }
-
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, new byte[] {}, new byte[] {})).Length);
-      }
-      catch {
-        Assert.Fail("construct byte[]/byte[]");
-      }
-
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, Stream.Null, null)).Length);
-      }
-      catch {
-        Assert.Fail("construct Stream/null");
-      }
-
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, null, Stream.Null)).Length);
-      }
-      catch {
-        Assert.Fail("construct null/Stream");
-      }
-
-      try {
-        Assert.AreEqual(0L, (new ExtendStream(Stream.Null, Stream.Null, Stream.Null)).Length);
-      }
-      catch {
-        Assert.Fail("construct Stream/Stream");
-      }
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, (byte[])null, (byte[])null)).Length, "construct null/null");
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, new byte[] {}, null)).Length, "construct byte[]/null");
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, null, new byte[] {})).Length, "construct null/byte[]");
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, new byte[] {}, new byte[] {})).Length, "construct byte[]/byte[]");
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, Stream.Null, null)).Length, "construct Stream/null");
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, null, Stream.Null)).Length, "construct null/Stream");
+      Assert.AreEqual(0L, (new ExtendStream(Stream.Null, Stream.Null, Stream.Null)).Length, "construct Stream/Stream");
     }
 
     [Test]
@@ -76,33 +35,29 @@ namespace Smdn.IO {
         using (var extended = new ExtendStream(innerStream, new byte[] {0x00, 0x00}, new byte[] {0x00, 0x00})) {
           Assert.IsFalse(extended.CanWrite);
 
-          try {
-            extended.SetLength(10L);
-            Assert.Fail("no exception thrown with SetLength");
-          }
-          catch (NotSupportedException) {
-          }
+          Assert.Throws<NotSupportedException>(() => extended.SetLength(10L));
 
-          try {
-            extended.WriteByte(0xff);
-            Assert.Fail("no exception thrown with WriteByte");
-          }
-          catch (NotSupportedException) {
-          }
+          Assert.Throws<NotSupportedException>(() => extended.WriteByte(0xff));
 
-          try {
-            extended.Write(new byte[] {0xff, 0xff}, 0, 2);
-            Assert.Fail("no exception thrown with Write");
-          }
-          catch (NotSupportedException) {
-          }
+          Assert.Throws<NotSupportedException>(() => extended.Write(new byte[] {0xff, 0xff}, 0, 2));
+        }
+      }
+    }
 
-          try {
-            extended.Flush();
-            Assert.Fail("no exception thrown with Flush");
-          }
-          catch (NotSupportedException) {
-          }
+    [Test]
+    public void TestFlush()
+    {
+      using (var innerStream = new MemoryStream(new byte[] {0x00, 0x00})) {
+        using (var extended = new ExtendStream(innerStream, new byte[] {0x00, 0x00}, new byte[] {0x00, 0x00})) {
+          Assert.IsFalse(extended.CanWrite);
+
+          var len = extended.Length;
+          var pos = extended.Position;
+
+          Assert.DoesNotThrow(() => extended.Flush());
+
+          Assert.AreEqual(len, extended.Length);
+          Assert.AreEqual(pos, extended.Position);
         }
       }
     }
@@ -235,12 +190,7 @@ namespace Smdn.IO {
     {
       using (var innerStream = new MemoryStream(new byte[] {0x04, 0x05, 0x06, 0x07})) {
         using (var extended = new ExtendStream(innerStream, new byte[] {0x00, 0x01, 0x02, 0x03}, new byte[] {0x08, 0x09, 0x0a, 0x0b})) {
-          try {
-            extended.Position = -1L;
-            Assert.Fail("ArgumentOutOfRangeException not thrown");
-          }
-          catch (ArgumentOutOfRangeException) {
-          }
+          Assert.Throws<ArgumentOutOfRangeException>(() => extended.Position = -1L);
 
           for (var expected = 0L; expected < 12L; expected++) {
             extended.Position = expected;
@@ -263,25 +213,16 @@ namespace Smdn.IO {
           foreach (var offset in new long[] {
             0, 11, 1, 10, 2, 9, 3, 8, 4, 7, 5, 6,
           }) {
-            try {
-              Assert.AreEqual(offset, extended.Seek(offset, SeekOrigin.Begin));
-            }
-            catch (IOException) {
-              Assert.Fail("IOException thrown while seeking to {0}", offset);
-            }
+            Assert.AreEqual(offset, extended.Seek(offset, SeekOrigin.Begin), "seeking to {0}", offset);
 
             Assert.AreEqual(offset, extended.ReadByte());
           }
 
           extended.Position = 6L;
 
-          try {
-            extended.Seek(-1L, SeekOrigin.Begin);
-            Assert.Fail("IOException not thrown");
-          }
-          catch (IOException) {
-            Assert.AreEqual(6L, extended.Position);
-          }
+          Assert.Throws<IOException>(() => extended.Seek(-1L, SeekOrigin.Begin));
+
+          Assert.AreEqual(6L, extended.Position);
 
           Assert.AreEqual(12L, extended.Seek(12L, SeekOrigin.Begin));
           Assert.AreEqual(-1, extended.ReadByte());
@@ -298,13 +239,9 @@ namespace Smdn.IO {
 
           extended.Position = 6L;
 
-          try {
-            extended.Seek(-7, SeekOrigin.Current);
-            Assert.Fail("IOException not thrown");
-          }
-          catch (IOException) {
-            Assert.AreEqual(6L, extended.Position);
-          }
+          Assert.Throws<IOException>(() => extended.Seek(-7, SeekOrigin.Current));
+
+          Assert.AreEqual(6L, extended.Position);
 
           var pair = new long[][] {
             // offset / position
@@ -322,12 +259,7 @@ namespace Smdn.IO {
           };
 
           for (var index = 0; index < pair.Length; index++) {
-            try {
-              Assert.AreEqual(pair[index][1], extended.Seek(pair[index][0], SeekOrigin.Current), "seeked position {0}", index);
-            }
-            catch (IOException) {
-              Assert.Fail("IOException thrown while seeking ({0})", index);
-            }
+            Assert.AreEqual(pair[index][1], extended.Seek(pair[index][0], SeekOrigin.Current), "seeked position {0}", index);
 
             Assert.AreEqual(pair[index][1], extended.ReadByte(), "read value {0}", index);
           }
