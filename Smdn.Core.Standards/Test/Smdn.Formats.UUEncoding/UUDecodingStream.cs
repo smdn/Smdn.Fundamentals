@@ -56,7 +56,6 @@ end";
       using (var stream = new UUDecodingStream(CreateStream(input))) {
         Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00}, 0, 1));
         Assert.Throws<NotSupportedException>(() => stream.WriteByte((byte)0x00));
-        Assert.Throws<NotSupportedException>(() => stream.Flush());
         Assert.Throws<NotSupportedException>(() => stream.Seek(0L, SeekOrigin.Begin));
         Assert.Throws<NotSupportedException>(() => stream.SetLength(0L));
 
@@ -64,9 +63,23 @@ end";
 
         Assert.Throws<ObjectDisposedException>(() => stream.Write(new byte[] {0x00}, 0, 1));
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte((byte)0x00));
-        Assert.Throws<ObjectDisposedException>(() => stream.Flush());
         Assert.Throws<ObjectDisposedException>(() => stream.Seek(0L, SeekOrigin.Begin));
         Assert.Throws<ObjectDisposedException>(() => stream.SetLength(0L));
+      }
+    }
+
+    [Test]
+    public void TestFlush()
+    {
+      var input = @"begin 644 cat.txt
+#0V%T
+`
+end";
+
+      using (var baseStream = CreateStream(input)) {
+        using (var stream = new UUDecodingStream(baseStream)) {
+          Assert.DoesNotThrow(() => stream.Flush());
+        }
       }
     }
 

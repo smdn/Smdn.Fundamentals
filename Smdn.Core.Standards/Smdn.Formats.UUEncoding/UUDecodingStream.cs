@@ -280,7 +280,7 @@ namespace Smdn.Formats.UUEncoding {
     {
       CheckDisposed();
 
-      throw ExceptionUtils.CreateNotSupportedWritingStream();
+      // do nothing
     }
 
     public override void Write(byte[] buffer, int offset, int count)
