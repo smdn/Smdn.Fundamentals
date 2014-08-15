@@ -50,7 +50,7 @@ using System.Runtime.CompilerServices;
 
 internal static class AssemblyInfo {
   public const string Name = "Smdn";
-  public const string VersionString = "2.01";
+  public const string VersionString = "2.02";
 #if NET_4_5
   public const string Suffix = "-netfx4.5";
 #elif NET_4_0
