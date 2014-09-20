@@ -1,0 +1,6 @@
+Name: Smdn-netfx4.0
+Description: Smdn-netfx4.0
+Version: 0.1
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/Smdn.dll
