@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:3 -optimize- -debug "-define:NET_2_0;NET_3_5;NET_4_0;DEBUG"
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:3 -optimize- -debug "-define:NET_3_5;NET_4_0;DEBUG"
 ASSEMBLY = ../build/bin/Debug/netfx4.0/Smdn.Core.BinaryFormats.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
@@ -23,7 +23,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:3 -optimize+ "-define:NET_2_0;NET_3_5;NET_4_0"
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:3 -optimize+ "-define:NET_3_5;NET_4_0"
 ASSEMBLY = ../build/bin/Release/netfx4.0/Smdn.Core.BinaryFormats.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
