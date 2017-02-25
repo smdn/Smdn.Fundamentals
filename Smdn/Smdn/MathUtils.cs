@@ -24,6 +24,11 @@
 
 using System;
 using System.Security.Cryptography;
+#if NET_4_0
+using System.Threading;
+#else
+using Smdn.Threading;
+#endif
 
 namespace Smdn {
   public static class MathUtils {
@@ -163,12 +168,14 @@ namespace Smdn {
       return bytes;
     }
 
-    private static RandomNumberGenerator defaultRng = RandomNumberGenerator.Create();
+    private static RandomNumberGenerator defaultRng = null;
 
     public static void GetRandomBytes(byte[] bytes)
     {
       if (bytes == null)
         throw new ArgumentNullException("bytes");
+
+      LazyInitializer.EnsureInitialized(ref defaultRng, () => RandomNumberGenerator.Create());
 
       lock (defaultRng) {
         defaultRng.GetBytes(bytes);
