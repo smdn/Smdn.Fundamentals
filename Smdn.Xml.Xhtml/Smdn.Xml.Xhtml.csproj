@@ -68,7 +68,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
-      <Name>Smdn-netfx4.5</Name>
+      <Name>Smdn</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

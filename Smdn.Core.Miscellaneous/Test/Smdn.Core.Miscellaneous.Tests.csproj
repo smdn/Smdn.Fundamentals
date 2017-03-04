@@ -45,11 +45,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
-      <Name>Smdn-netfx4.5</Name>
+      <Name>Smdn</Name>
     </ProjectReference>
     <ProjectReference Include="..\Smdn.Core.Miscellaneous.csproj">
       <Project>{C13BB092-5F69-45E6-831A-CB2E14DA7AFB}</Project>
-      <Name>Smdn.Core.Miscellaneous-netfx4.5</Name>
+      <Name>Smdn.Core.Miscellaneous</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
