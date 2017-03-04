@@ -3,11 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-#if NET_4_5
 using StringDictionary = System.Collections.ObjectModel.ReadOnlyDictionary<string, string>;
-#else
-using StringDictionary = Smdn.Collections.ReadOnlyDictionary<string, string>;
-#endif
 
 namespace Smdn.Collections {
   [TestFixture]
@@ -18,10 +14,6 @@ namespace Smdn.Collections {
       var empty = Smdn.Collections.ReadOnlyDictionary<string, string>.Empty;
 
       Assert.AreEqual(0, empty.Count);
-
-#if !NET_4_5
-      Assert.Throws<NotSupportedException>(() => empty.Clear());
-#endif
     }
 
     [Test]
@@ -54,50 +46,6 @@ namespace Smdn.Collections {
 
       Assert.IsTrue(dic.ContainsKey("key4"));
     }
-
-#if false
-    [Test]
-    public void TestConstructFromKeyValuePairs()
-    {
-      var dic = new ReadOnlyDictionary<string, string>(new[] {
-        new KeyValuePair<string, string>("key1", "val1"),
-        new KeyValuePair<string, string>("key2", "val2"),
-        new KeyValuePair<string, string>("key3", "val3"),
-      });
-
-      Assert.IsTrue((dic as IDictionary).IsReadOnly);
-      Assert.AreEqual("val1", dic["key1"]);
-
-      try {
-        dic.Add("newkey", "newvalue");
-        Assert.Fail("NotSupportedException");
-      }
-      catch (NotSupportedException) {
-      }
-    }
-
-    [Test]
-    public void TestConstructFromKeyValuePairsWithSpecifiedEqualityComaperer()
-    {
-      var dic = new ReadOnlyDictionary<string, string>(new[] {
-        new KeyValuePair<string, string>("key1", "val1"),
-        new KeyValuePair<string, string>("key2", "val2"),
-        new KeyValuePair<string, string>("key3", "val3"),
-      }, StringComparer.OrdinalIgnoreCase);
-
-      Assert.IsTrue((dic as IDictionary).IsReadOnly);
-      Assert.AreEqual("val1", dic["key1"]);
-      Assert.AreEqual("val1", dic["Key1"]);
-      Assert.AreEqual("val1", dic["KEY1"]);
-
-      try {
-        dic.Add("newkey", "newvalue");
-        Assert.Fail("NotSupportedException");
-      }
-      catch (NotSupportedException) {
-      }
-    }
-#endif
 
     [Test]
     public void TestReadOperations()

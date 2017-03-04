@@ -173,14 +173,7 @@ namespace Smdn.Formats.Mime {
 
       stream = CreateDecodingStream(stream, encoding, false);
 
-#if NET_4_5
       return new StreamReader(stream, charset, true, 1024, leaveStreamOpen);
-#else
-      if (leaveStreamOpen)
-        stream = new NonClosingStream(stream);
-
-      return new StreamReader(stream, charset);
-#endif
     }
 
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding)
@@ -217,14 +210,7 @@ namespace Smdn.Formats.Mime {
     {
       stream = CreateDecodingStream(stream, encoding, false);
 
-#if NET_4_5
       return new BinaryReader(stream, charset ?? Encoding.UTF8, leaveStreamOpen);
-#else
-      if (leaveStreamOpen)
-        stream = new NonClosingStream(stream);
-
-      return new BinaryReader(stream, charset ?? Encoding.UTF8);
-#endif
     }
   }
 }

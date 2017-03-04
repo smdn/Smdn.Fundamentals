@@ -32,11 +32,7 @@ namespace Smdn.Collections {
       if (dictionary == null)
         throw new ArgumentNullException("dictionary");
 
-#if NET_4_5
       return new System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>(dictionary);
-#else
-      return new Smdn.Collections.ReadOnlyDictionary<TKey, TValue>(dictionary);
-#endif
     }
   }
 }
