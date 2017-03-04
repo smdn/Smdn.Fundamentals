@@ -51,11 +51,5 @@ using System.Runtime.CompilerServices;
 internal static class AssemblyInfo {
   public const string Name = "Smdn.Core.Miscellaneous";
   public const string VersionString = "0.30";
-#if NET_4_5
-  public const string Suffix = "-netfx4.5";
-#elif NET_4_0
-  public const string Suffix = "-netfx4.0";
-#elif NET_3_5
-  public const string Suffix = "-netfx3.5";
-#endif
+  public const string Suffix = string.Empty;
 }
