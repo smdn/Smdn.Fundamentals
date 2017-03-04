@@ -85,7 +85,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Smdn-netfx4.5.csproj">
+    <ProjectReference Include="..\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn-netfx4.5</Name>
     </ProjectReference>

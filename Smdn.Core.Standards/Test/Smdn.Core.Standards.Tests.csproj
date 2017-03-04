@@ -43,11 +43,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\Smdn-netfx4.5.csproj">
+    <ProjectReference Include="..\..\Smdn\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn-netfx4.5</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Smdn.Core.Standards-netfx4.5.csproj">
+    <ProjectReference Include="..\Smdn.Core.Standards.csproj">
       <Project>{4E98445F-676A-4457-8DF1-2FA6FE2D7AD4}</Project>
       <Name>Smdn.Core.Standards-netfx4.5</Name>
     </ProjectReference>

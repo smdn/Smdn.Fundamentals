@@ -44,11 +44,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Core.BinaryFormats-netfx4.5.csproj">
+    <ProjectReference Include="..\Smdn.Core.BinaryFormats.csproj">
       <Project>{7CA429AB-0940-46FD-A64D-2D9D69B26499}</Project>
       <Name>Smdn.Core.BinaryFormats-netfx4.5</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Smdn\Smdn-netfx4.5.csproj">
+    <ProjectReference Include="..\..\Smdn\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn-netfx4.5</Name>
     </ProjectReference>

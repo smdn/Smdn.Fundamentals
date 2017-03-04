@@ -1,9 +1,9 @@
 
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Tests-netfx4.5", "Smdn.Tests-netfx4.5.csproj", "{E9DDD781-950F-4FD6-91D8-6C84AB9A6A76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Tests-netfx4.5", "Smdn.Tests.csproj", "{E9DDD781-950F-4FD6-91D8-6C84AB9A6A76}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn-netfx4.5", "..\Smdn-netfx4.5.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn-netfx4.5", "..\Smdn.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +21,6 @@ Global
 		{E9DDD781-950F-4FD6-91D8-6C84AB9A6A76}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Smdn.Tests-netfx4.5.csproj
+		StartupItem = Smdn.Tests.csproj
 	EndGlobalSection
 EndGlobal
