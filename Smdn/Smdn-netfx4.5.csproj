@@ -20,8 +20,8 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputPath>..\build\bin\Debug\netfx4.5\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\Debug\netfx4.5\</IntermediateOutputPath>
+    <OutputPath>..\build\bin\Debug\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -29,8 +29,8 @@
     <Optimize>True</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputPath>..\build\bin\Release\netfx4.5\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\Release\netfx4.5\</IntermediateOutputPath>
+    <OutputPath>..\build\bin\Release\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DefineConstants></DefineConstants>
   </PropertyGroup>
