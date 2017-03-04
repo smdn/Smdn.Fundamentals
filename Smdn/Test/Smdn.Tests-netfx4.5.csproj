@@ -19,7 +19,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\netfx4.5\</OutputPath>
     <IntermediateOutputPath>obj\Debug\netfx4.5\</IntermediateOutputPath>
-    <DefineConstants>NET_3_5;NET_4_0;NET_4_5;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -29,7 +29,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Release\netfx4.5\</OutputPath>
     <IntermediateOutputPath>obj\Release\netfx4.5\</IntermediateOutputPath>
-    <DefineConstants>NET_3_5;NET_4_0;NET_4_5</DefineConstants>
+    <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
