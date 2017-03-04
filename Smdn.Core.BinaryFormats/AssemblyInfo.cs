@@ -51,5 +51,5 @@ using System.Runtime.CompilerServices;
 internal static class AssemblyInfo {
   public const string Name = "Smdn.Core.BinaryFormats";
   public const string VersionString = "0.40";
-  public const string Suffix = string.Empty;
+  public const string Suffix = "";
 }

@@ -51,5 +51,5 @@ using System.Runtime.CompilerServices;
 internal static class AssemblyInfo {
   public const string Name = "Smdn";
   public const string VersionString = "2.02";
-  public const string Suffix = string.Empty;
+  public const string Suffix = "";
 }
