@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -53,13 +53,10 @@
     <Compile Include="Mono.Simd\SimdRuntime.cs" />
     <Compile Include="Smdn\RuntimeEnvironment.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
-    <Compile Include="Smdn\Action.cs" />
-    <Compile Include="Smdn\Func.cs" />
     <Compile Include="Smdn\MimeType.cs" />
     <Compile Include="Smdn.IO\DirectoryInfoExtensions.cs" />
     <Compile Include="Smdn.IO\DirectoryUtils.cs" />
     <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
-    <Compile Include="Smdn.Threading\Parallel.cs" />
     <Compile Include="Smdn.Media\mmsystem.h.cs" />
     <Compile Include="Smdn\Platform.cs" />
     <Compile Include="Smdn\Endianness.cs" />
@@ -67,7 +64,6 @@
     <Compile Include="Smdn\Uuid.cs" />
     <Compile Include="Smdn\UuidVersion.cs" />
     <Compile Include="Smdn\Urn.cs" />
-    <Compile Include="Smdn\Lazy.cs" />
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
@@ -83,19 +79,14 @@
     <Compile Include="Smdn.IO\CachedStreamBase.cs" />
     <Compile Include="Smdn.IO\NonPersistentCachedStream.cs" />
     <Compile Include="Smdn.IO\PersistentCachedStream.cs" />
-    <Compile Include="Smdn\Tuple.cs" />
     <Compile Include="Smdn.IO\TextReaderExtensions.cs" />
     <Compile Include="Smdn.Formats\Base64.cs" />
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
-    <Compile Include="Smdn\AggregateException.cs" />
     <Compile Include="Smdn\BinaryConvert.cs" />
     <Compile Include="Smdn\ExceptionUtils.cs" />
-    <Compile Include="Smdn.Collections\HashSet.cs" />
-    <Compile Include="Smdn.Collections\ISet.cs" />
     <Compile Include="Smdn\UriUtils.cs" />
     <Compile Include="Smdn.Collections\KeyValuePair.cs" />
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
-    <Compile Include="Smdn.Threading\LazyInitializer.cs" />
     <Compile Include="Smdn\EmptyArray.cs" />
     <Compile Include="Smdn\Fraction.cs" />
   </ItemGroup>
@@ -118,7 +109,6 @@
     <Folder Include="Smdn.Formats\" />
     <Folder Include="Mono.Simd\" />
     <Folder Include="Smdn.Collections\" />
-    <Folder Include="Smdn.Threading\" />
     <Folder Include="Smdn\" />
     <Folder Include="resources\" />
   </ItemGroup>
