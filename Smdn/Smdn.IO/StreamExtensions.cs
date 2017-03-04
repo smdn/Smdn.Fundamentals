@@ -27,38 +27,6 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
-#if !NET_4_0
-    public static void CopyTo(this Stream stream, Stream destination)
-    {
-      CopyTo(stream, destination, 10 * 1024);
-    }
-
-    public static void CopyTo(this Stream stream, Stream destination, int bufferSize)
-    {
-      if (stream == null)
-        throw new ArgumentNullException("stream");
-      if (destination == null)
-        throw new ArgumentNullException("destination");
-      if (!stream.CanRead)
-        throw new NotSupportedException("stream does not support reading");
-      if (!destination.CanWrite)
-        throw new NotSupportedException("destination stream does not support writing");
-      if (bufferSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("bufferSize", bufferSize);
-
-      var buffer = new byte[bufferSize];
-
-      for (;;) {
-        var read = stream.Read(buffer, 0, bufferSize);
-
-        if (read <= 0)
-          break;
-
-        destination.Write(buffer, 0, read);
-      }
-    }
-#endif
-
     public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer)
     {
       CopyTo(stream, writer, 10 * 1024);

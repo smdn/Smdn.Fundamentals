@@ -37,11 +37,7 @@ namespace Smdn.Xml.Xhtml {
         throw new ArgumentNullException("styles");
 
       if (0 < styles.Count)
-#if NET_4_0
         element.SetAttribute("style", string.Join(" ", styles.Select(pair => string.Concat(pair.Key, ": ", pair.Value, ";"))));
-#else
-        element.SetAttribute("style", string.Join(" ", styles.Select(pair => string.Concat(pair.Key, ": ", pair.Value, ";")).ToArray()));
-#endif
     }
   }
 }

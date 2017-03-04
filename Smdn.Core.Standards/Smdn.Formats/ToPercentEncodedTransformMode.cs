@@ -35,14 +35,8 @@ namespace Smdn.Formats {
     Rfc5092Uri      =  1 <<  4,
     Rfc5092Path     =  1 <<  5,
 
-#if NET_4_0
     UriEscapeUriString  = Rfc3986Uri,
     UriEscapeDataString = Rfc3986Data,
-#else
-    UriEscapeUriString  = Rfc2396Uri,
-    UriEscapeDataString = Rfc2396Data,
-#endif
-
 
     OptionMask      = -1,
     EscapeSpaceToPlus = 1 << 16,

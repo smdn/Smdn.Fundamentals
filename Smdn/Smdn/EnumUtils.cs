@@ -41,41 +41,9 @@ namespace Smdn {
       return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
     }
 
-#if !NET_4_0
-    public static bool TryParse<TEnum>(string value, out TEnum result) where TEnum : struct /*instead of Enum*/
-    {
-      return TryParse(value, false, out result);
-    }
-#endif
-
     public static bool TryParseIgnoreCase<TEnum>(string value, out TEnum result) where TEnum : struct /*instead of Enum*/
     {
-#if NET_4_0
       return Enum.TryParse(value, true, out result);
-#else
-      return TryParse(value, true, out result);
-#endif
     }
-
-#if !NET_4_0
-    public static bool TryParse<TEnum>(string value, bool ignoreCase, out TEnum result) where TEnum : struct /*instead of Enum*/
-    {
-      var type = typeof(TEnum);
-
-      if (!type.IsEnum)
-        throw new ArgumentException("type is not enum");
-
-      try {
-        result = (TEnum)Enum.Parse(type, value, ignoreCase);
-
-        return true;
-      }
-      catch (ArgumentException) {
-        result = default(TEnum);
-
-        return false;
-      }
-    }
-#endif
   }
 }

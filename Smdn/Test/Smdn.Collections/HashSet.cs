@@ -7,7 +7,6 @@ using GenericCollections = System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn.Collections {
-#if NET_4_0
   public class HashSet<T> : GenericCollections.HashSet<T> {
     public HashSet()
       : base() {}
@@ -21,7 +20,7 @@ namespace Smdn.Collections {
     public HashSet(GenericCollections.IEnumerable<T> collection, GenericCollections.IEqualityComparer<T> comparer)
       : base(collection, comparer) {}
   }
-#endif
+
   [TestFixture]
   public class HashSetTests {
     [Test]

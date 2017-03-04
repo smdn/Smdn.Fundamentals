@@ -24,11 +24,7 @@
 
 using System;
 using System.Security.Cryptography;
-#if NET_4_0
 using System.Threading;
-#else
-using Smdn.Threading;
-#endif
 
 namespace Smdn {
   public static class MathUtils {

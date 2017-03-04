@@ -195,10 +195,7 @@ namespace Smdn {
       Assert.AreEqual(guid.ToString("D"), uuid.ToString("D"), "format = D");
       Assert.AreEqual(guid.ToString("B"), uuid.ToString("B"), "format = B");
       Assert.AreEqual(guid.ToString("P"), uuid.ToString("P"), "format = P");
-
-#if NET_4_0
       Assert.AreEqual(guid.ToString("X"), uuid.ToString("X"), "format = X");
-#endif
     }
 
     [Test]
@@ -212,10 +209,7 @@ namespace Smdn {
       Assert.AreEqual(guid.ToString("D"), uuid.ToString("D"), "format = D");
       Assert.AreEqual(guid.ToString("B"), uuid.ToString("B"), "format = B");
       Assert.AreEqual(guid.ToString("P"), uuid.ToString("P"), "format = P");
-
-#if NET_4_0
       Assert.AreEqual(guid.ToString("X"), uuid.ToString("X"), "format = X");
-#endif
     }
 
     [Test]
