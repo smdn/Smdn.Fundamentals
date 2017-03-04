@@ -17,8 +17,8 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>bin\Debug\netfx4.5\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\netfx4.5\</IntermediateOutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -28,8 +28,8 @@
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
     <DefineConstants></DefineConstants>
-    <OutputPath>bin\Release\netfx4.5\</OutputPath>
-    <IntermediateOutputPath>obj\Release\netfx4.5\</IntermediateOutputPath>
+    <OutputPath>bin\Release\</OutputPath>
+    <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
