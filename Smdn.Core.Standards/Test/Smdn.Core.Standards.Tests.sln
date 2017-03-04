@@ -1,11 +1,11 @@
 
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.Standards.Tests-netfx4.5", "Smdn.Core.Standards.Tests.csproj", "{60510FC0-2BB8-480B-8039-ABAB03D7C116}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.Standards.Tests", "Smdn.Core.Standards.Tests.csproj", "{60510FC0-2BB8-480B-8039-ABAB03D7C116}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.Standards-netfx4.5", "..\Smdn.Core.Standards.csproj", "{4E98445F-676A-4457-8DF1-2FA6FE2D7AD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.Standards", "..\Smdn.Core.Standards.csproj", "{4E98445F-676A-4457-8DF1-2FA6FE2D7AD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn-netfx4.5", "..\..\Smdn\Smdn.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn", "..\..\Smdn\Smdn.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

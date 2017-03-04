@@ -1,11 +1,11 @@
 
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.BinaryFormats.Tests-netfx4.5", "Smdn.Core.BinaryFormats.Tests.csproj", "{626EE849-EBD1-413F-B851-C1841396DF01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.BinaryFormats.Tests", "Smdn.Core.BinaryFormats.Tests.csproj", "{626EE849-EBD1-413F-B851-C1841396DF01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn-netfx4.5", "..\..\Smdn\Smdn.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn", "..\..\Smdn\Smdn.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.BinaryFormats-netfx4.5", "..\Smdn.Core.BinaryFormats.csproj", "{7CA429AB-0940-46FD-A64D-2D9D69B26499}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.BinaryFormats", "..\Smdn.Core.BinaryFormats.csproj", "{7CA429AB-0940-46FD-A64D-2D9D69B26499}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
