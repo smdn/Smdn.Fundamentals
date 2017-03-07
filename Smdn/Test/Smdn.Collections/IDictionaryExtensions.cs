@@ -29,29 +29,5 @@ namespace Smdn.Collections {
       Assert.AreNotSame(dic2, dic);
       Assert.IsTrue((dic2 as IDictionary).IsReadOnly);
     }
-
-#if false
-    [Test]
-    public void TestAsReadOnlyWithSpecifiedComparer()
-    {
-      var dic = (new Dictionary<string, string>() {
-        {"key1", "val1"},
-        {"key2", "val2"},
-        {"key3", "val3"},
-      }).AsReadOnly(StringComparer.OrdinalIgnoreCase);
-
-      Assert.IsTrue(dic.IsReadOnly);
-      Assert.AreEqual("val1", dic["key1"]);
-      Assert.AreEqual("val1", dic["Key1"]);
-      Assert.AreEqual("val1", dic["KEY1"]);
-
-      try {
-        dic.Add("newkey", "newvalue");
-        Assert.Fail("NotSupportedException not thrown");
-      }
-      catch (NotSupportedException) {
-      }
-    }
-#endif
   }
 }

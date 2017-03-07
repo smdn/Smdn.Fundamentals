@@ -217,12 +217,5 @@ namespace Smdn {
 
       return -1;
     }
-
-#if false
-    public static int IndexOfNot(this string str, char @value, int startIndex, int count)
-    {
-      throw new NotImplementedException();
-    }
-#endif
   }
 }
