@@ -35,10 +35,10 @@ namespace Smdn {
       }), "#5");
     }
 
-    [Test, ExpectedException(typeof(ArgumentNullException))]
+    [Test]
     public void TestJoinQueryParametersArgumentNull()
     {
-      UriUtils.JoinQueryParameters(null);
+      Assert.Throws<ArgumentNullException>(() => UriUtils.JoinQueryParameters(null));
     }
 
     [Test]
@@ -85,10 +85,10 @@ namespace Smdn {
       Assert.AreEqual("value3", splitted["name3"], "#5 name3");
     }
 
-    [Test, ExpectedException(typeof(ArgumentNullException))]
+    [Test]
     public void TestSplitQueryParametersArgumentNull()
     {
-      UriUtils.SplitQueryParameters(null);
+      Assert.Throws<ArgumentNullException>(() => UriUtils.SplitQueryParameters(null));
     }
 
     [Test]

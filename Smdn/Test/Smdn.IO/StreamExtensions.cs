@@ -70,24 +70,24 @@ namespace Smdn.IO {
       }
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestCopyToReadFromUnreadableStream()
     {
       var inputData = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
       var inputStream = new UnreadableMemoryStream(inputData);
       var outputStream = new MemoryStream();
 
-      inputStream.CopyTo(outputStream);
+      Assert.Throws<NotSupportedException>(() => inputStream.CopyTo(outputStream));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestCopyToWriteToUnwritableStream()
     {
       var inputData = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
       var inputStream = new MemoryStream(inputData);
       var outputStream = new MemoryStream(new byte[0], false);
 
-      inputStream.CopyTo(outputStream);
+      Assert.Throws<NotSupportedException>(() => inputStream.CopyTo(outputStream));
     }
 
     [Test]

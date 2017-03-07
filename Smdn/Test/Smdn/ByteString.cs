@@ -855,10 +855,12 @@ namespace Smdn {
       ToNumberContainsNonNumberCharacter(32);
     }
 
-    [Test, ExpectedException(typeof(OverflowException))]
+    [Test]
     public void TestToUInt32Overflow()
     {
-      (ByteString.CreateImmutable("4294967296")).ToUInt32();
+      var str = ByteString.CreateImmutable("4294967296");
+
+      Assert.Throws<OverflowException>(() => str.ToUInt32());
     }
 
     [Test]
@@ -894,10 +896,12 @@ namespace Smdn {
       }
     }
 
-    [Test, ExpectedException(typeof(OverflowException))]
+    [Test]
     public void TestToUInt64Overflow()
     {
-      (ByteString.CreateImmutable("18446744073709551616")).ToUInt64();
+      var str = ByteString.CreateImmutable("18446744073709551616");
+
+      Assert.Throws<OverflowException>(() => str.ToUInt64());
     }
 
     [Test]

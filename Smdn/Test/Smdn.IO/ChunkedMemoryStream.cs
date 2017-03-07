@@ -323,11 +323,11 @@ namespace Smdn.IO {
       }
     }
 
-    [Test, ExpectedException(typeof(ArgumentOutOfRangeException))]
+    [Test]
     public void TestSetLengthNegative()
     {
       using (var stream = new ChunkedMemoryStream(4)) {
-        stream.SetLength(-1);
+        Assert.Throws<ArgumentOutOfRangeException>(() => stream.SetLength(-1));
       }
     }
 

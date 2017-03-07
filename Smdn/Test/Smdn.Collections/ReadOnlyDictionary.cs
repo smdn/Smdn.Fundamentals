@@ -88,64 +88,84 @@ namespace Smdn.Collections {
       });
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestClear1()
     {
-      CreateReadOnly().Clear();
+      var dic = CreateReadOnly();
+
+      Assert.Throws<NotSupportedException>(() => dic.Clear());
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestClear2()
     {
-      (CreateReadOnly() as System.Collections.IDictionary).Clear();
+      var dic = CreateReadOnly() as System.Collections.IDictionary;
+
+      Assert.Throws<NotSupportedException>(() => dic.Clear());
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestAdd1()
     {
-      CreateReadOnly().Add("key", "val");
+      var dic = CreateReadOnly();
+
+      Assert.Throws<NotSupportedException>(() => dic.Add("key", "val"));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestAdd2()
     {
-      CreateReadOnly().Add(new KeyValuePair<string, string>("key", "val"));
+      var dic = CreateReadOnly();
+
+      Assert.Throws<NotSupportedException>(() => dic.Add(new KeyValuePair<string, string>("key", "val")));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestAdd3()
     {
-      (CreateReadOnly() as System.Collections.IDictionary).Add("key", "val");
+      var dic = CreateReadOnly() as System.Collections.IDictionary;
+
+      Assert.Throws<NotSupportedException>(() => dic.Add("key", "val"));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestRemove1()
     {
-      CreateReadOnly().Remove("key1");
+      var dic = CreateReadOnly();
+
+      Assert.Throws<NotSupportedException>(() => dic.Remove("key1"));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestRemove2()
     {
-      CreateReadOnly().Remove(new KeyValuePair<string, string>("key1", "val1"));
+      var dic = CreateReadOnly();
+
+      Assert.Throws<NotSupportedException>(() => dic.Remove(new KeyValuePair<string, string>("key1", "val1")));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestRemove3()
     {
-      (CreateReadOnly() as System.Collections.IDictionary).Remove("key");
+      var dic = CreateReadOnly() as System.Collections.IDictionary;
+
+      Assert.Throws<NotSupportedException>(() => dic.Remove("key"));
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestIndexer1()
     {
-      CreateReadOnly()["key4"] = "val4";
+      var dic = CreateReadOnly();
+
+      Assert.Throws<NotSupportedException>(() => dic["key4"] = "val4");
     }
 
-    [Test, ExpectedException(typeof(NotSupportedException))]
+    [Test]
     public void TestIndexer2()
     {
-      (CreateReadOnly() as System.Collections.IDictionary)["key4"] = "val4";
+      var dic = CreateReadOnly() as System.Collections.IDictionary;
+
+      Assert.Throws<NotSupportedException>(() => dic["key4"] = "val4");
     }
 
     [Test]
