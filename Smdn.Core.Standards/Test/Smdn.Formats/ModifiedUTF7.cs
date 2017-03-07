@@ -27,10 +27,10 @@ namespace Smdn.Formats {
       Assert.AreEqual("迷惑メール", ModifiedUTF7.Decode("&j,dg0TDhMPww6w-"));
     }
 
-    [Test, ExpectedException(typeof(FormatException))]
+    [Test]
     public void TestDecodeIncorrectForm()
     {
-      ModifiedUTF7.Decode("&Tgtm+DBN-&");
+      Assert.Throws<FormatException>(() => ModifiedUTF7.Decode("&Tgtm+DBN-&"));
     }
 
     [Test]

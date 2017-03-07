@@ -5,12 +5,12 @@ using NUnit.Framework;
 namespace Smdn.Formats {
   [TestFixture]
   public class EncodingUtilsTests {
-    [Test, ExpectedException(typeof(ArgumentNullException))]
+    [Test]
     public void TestGetEncodingNameNull()
     {
       string name = null;
 
-      Assert.IsNull(EncodingUtils.GetEncoding(name));
+      Assert.Throws<ArgumentNullException>(() => EncodingUtils.GetEncoding(name));
     }
 
     [Test]

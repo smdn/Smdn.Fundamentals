@@ -236,10 +236,10 @@ namespace Smdn.Formats.Mime {
                         MimeEncoding.Decode("=?cp932?B?gsSCt4LGh0A=?="));
     }
 
-    [Test, ExpectedException(typeof(FormatException))]
+    [Test]
     public void TestDecodeInvalidEncoding()
     {
-      MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=");
+      Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="));
     }
 
     [Test]
@@ -382,10 +382,10 @@ namespace Smdn.Formats.Mime {
       Assert.AreEqual(Encoding.UTF8, charset);
     }
 
-    [Test, ExpectedException(typeof(FormatException))]
+    [Test]
     public void TestDecodeQEncodingInvalidFormat()
     {
-      MimeEncoding.Decode("=?utf-8?q?===?=");
+      Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?q?===?="));
     }
 
     [Test]
@@ -407,10 +407,10 @@ namespace Smdn.Formats.Mime {
                       MimeEncoding.Decode("foo =?utf-8?q?===?= bar", null, (c, m, t) => null));
     }
 
-    [Test, ExpectedException(typeof(FormatException))]
+    [Test]
     public void TestDecodeBEncodingInvalidFormat()
     {
-      MimeEncoding.Decode("=?utf-8?b?****?=");
+      Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?b?****?="));
     }
 
     [Test]
