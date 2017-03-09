@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -29,7 +29,8 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -38,16 +39,9 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
-    <Reference Include="nunit.framework">
-      <Package>nunit</Package>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Smdn\" />
-    <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Formats\" />
     <Folder Include="Smdn.Mathematics\" />
-    <Folder Include="Smdn.Collections\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn.IO\PathUtils.cs" />
@@ -89,5 +83,13 @@
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit">
+      <Version>3.6.1</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

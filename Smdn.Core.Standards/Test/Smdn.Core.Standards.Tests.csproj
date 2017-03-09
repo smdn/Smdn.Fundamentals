@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -27,7 +27,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
@@ -37,10 +38,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="nunit.framework">
-      <Private>False</Private>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\Smdn.csproj">
@@ -53,11 +50,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Smdn.Formats\" />
-    <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Formats.Mime\" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
     <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
@@ -78,5 +70,13 @@
     <Compile Include="Smdn.Formats.UUEncoding\UUDecodingStream.cs" />
     <Compile Include="Smdn.Formats.UUEncoding\UUDecoder.cs" />
     <Compile Include="Smdn.Formats.UUEncoding\UUDecodingTransform.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit">
+      <Version>3.6.1</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>
