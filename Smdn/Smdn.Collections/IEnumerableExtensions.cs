@@ -29,6 +29,7 @@ using System.Linq;
 
 namespace Smdn.Collections {
   public static class IEnumerableExtensions {
+    [Obsolete("do not use")]
     public static IEnumerable<T> EnumerateDepthFirst<T>(this IEnumerable<T> nestedEnumerable)
       where T : IEnumerable<T>
     {
