@@ -634,11 +634,6 @@ namespace Smdn {
       this.node.N5                    = octets[index + 15];
     }
 
-    public Uuid(Uri uuidUrn)
-      : this(Urn.GetNamespaceSpecificString(uuidUrn, Urn.NamespaceUuid))
-    {
-    }
-
     public Uuid(string uuid)
       : this()
     {
@@ -795,11 +790,6 @@ namespace Smdn {
     public Guid ToGuid()
     {
       return new Guid(ToString(null, null));
-    }
-
-    public Uri ToUrn()
-    {
-      return Urn.Create(Urn.NamespaceUuid, ToString(null, null));
     }
 
     public void GetBytes(byte[] buffer, int startIndex)

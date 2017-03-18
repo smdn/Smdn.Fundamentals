@@ -64,7 +64,6 @@
     <Compile Include="Smdn\Shell.cs" />
     <Compile Include="Smdn\Uuid.cs" />
     <Compile Include="Smdn\UuidVersion.cs" />
-    <Compile Include="Smdn\Urn.cs" />
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
     <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
