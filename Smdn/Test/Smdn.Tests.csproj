@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
+    <Compile Include="Smdn\ConvertUtils.cs" />
     <Compile Include="Smdn\StringExtensions.cs" />
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />

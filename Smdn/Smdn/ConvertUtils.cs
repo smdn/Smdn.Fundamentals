@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Smdn {
   public static class ConvertUtils {
@@ -75,6 +77,16 @@ namespace Smdn {
     public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct /*instead of Enum*/
     {
       return (val == null) ? (TEnum?)null : EnumUtils.Parse<TEnum>(val, true);
+    }
+
+    public static string ToJoinedString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
+    {
+      const string separator = ", ";
+
+      if (pairs == null)
+        return null;
+
+      return string.Join(separator, pairs.Select(pair => string.Concat("{", pair.Key, " => ", pair.Value, "}")));
     }
   }
 }
