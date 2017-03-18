@@ -84,7 +84,9 @@ namespace Smdn {
     [Test]
     public void TestToCodecGuid()
     {
-      Assert.AreEqual(new Guid("00000001-0000-0010-8000-00aa00389b71"), FourCC.CreateLittleEndian((int)Smdn.Media.WAVE_FORMAT_TAG.WAVE_FORMAT_PCM).ToCodecGuid());
+      const ushort WAVE_FORMAT_PCM = 0x0001;
+
+      Assert.AreEqual(new Guid("00000001-0000-0010-8000-00aa00389b71"), FourCC.CreateLittleEndian((int)WAVE_FORMAT_PCM).ToCodecGuid());
       Assert.AreEqual(new Guid("34363248-0000-0010-8000-00AA00389B71"), (new FourCC("H264")).ToCodecGuid());
     }
 
