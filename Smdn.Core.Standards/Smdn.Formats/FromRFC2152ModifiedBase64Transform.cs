@@ -76,7 +76,7 @@ namespace Smdn.Formats {
           throw new FormatException("incorrect form");
 
         default: // case 4
-          return EmptyArray<byte>.Instance;
+          return Array.Empty<byte>();
       }
     }
 
