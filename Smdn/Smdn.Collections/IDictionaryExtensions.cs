@@ -27,6 +27,7 @@ using System.Collections.Generic;
 
 namespace Smdn.Collections {
   public static class IDictionaryExtensions {
+    [Obsolete("use System.Collections.ObjectModel.ReadOnlyDictionary or System.Collections.Generic.IReadOnlyDictionary instead")]
     public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
     {
       if (dictionary == null)
