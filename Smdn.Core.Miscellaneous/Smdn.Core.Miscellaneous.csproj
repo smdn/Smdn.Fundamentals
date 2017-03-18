@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,9 +9,10 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn.Core.Miscellaneous</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutputPath>..\build\bin\</OutputPath>
     <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -26,7 +27,8 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>True</Optimize>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
     <OutputPath>..\build\bin\Release\</OutputPath>
@@ -51,7 +53,9 @@
     <Compile Include="Smdn.IO\PipeOutStream.cs" />
     <Compile Include="Smdn.IO\ShellString.cs" />
     <Compile Include="Smdn.Threading\ProcessLock.cs" />
-    <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
+    <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Smdn.Xml\XmlCachedUrlResolver.cs" />
     <Compile Include="Smdn.Net\WsseClient.cs" />
   </ItemGroup>
@@ -70,14 +74,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup>
-    <Folder Include="Smdn.Formats\" />
-    <Folder Include="Smdn\" />
-    <Folder Include="Smdn.IO\" />
-    <Folder Include="Smdn.Threading\" />
-    <Folder Include="Smdn.Xml\" />
-    <Folder Include="Smdn.Net\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Smdn\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
