@@ -26,6 +26,7 @@ using System;
 
 namespace Smdn {
   public static class EmptyArray<T> {
+    [Obsolete("use Array.Empty<T>() instead")]
     public static readonly T[] Instance = (
       Runtime.RuntimeEnvironment == RuntimeEnvironment.NetFx ? System.Linq.Enumerable.Empty<T>() as T[] :
       Runtime.RuntimeEnvironment == RuntimeEnvironment.Mono  ? System.Linq.Enumerable.Empty<T>() as T[] :
