@@ -28,7 +28,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-using Smdn.IO;
 using Smdn.Formats.UUEncoding;
 
 namespace Smdn.Formats.Mime {
@@ -141,7 +140,7 @@ namespace Smdn.Formats.Mime {
       }
 
       if (leaveStreamOpen)
-        return new NonClosingStream(decodingStream);
+        return new Smdn.IO.NonClosingStream(decodingStream);
       else
         return decodingStream;
     }
