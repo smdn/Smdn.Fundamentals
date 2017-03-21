@@ -57,9 +57,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
-    <Compile Include="Smdn.IO\ShellString.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs" />
   </ItemGroup>
   <ItemGroup>

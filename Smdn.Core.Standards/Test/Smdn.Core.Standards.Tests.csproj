@@ -52,27 +52,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
-    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
-    <Compile Include="Smdn.Formats\EncodingUtils.cs" />
-    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
-    <Compile Include="Smdn.Formats\TestUtils.cs" />
-    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
-    <Compile Include="Smdn.Formats\ToModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\FromModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
-    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
-    <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
-    <Compile Include="Smdn.Formats\HtmlEscape.cs" />
-    <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
-    <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
-    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingStream.cs" />
-    <Compile Include="Smdn.Formats.UUEncoding\UUDecoder.cs" />
-    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingTransform.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
