@@ -52,13 +52,10 @@
     <Compile Include="Smdn\Runtime.cs" />
     <Compile Include="Smdn\EnumUtils.cs" />
     <Compile Include="Smdn\MimeType.cs" />
-    <Compile Include="Smdn.Collections\IEnumerableExtensions.cs" />
     <Compile Include="Smdn\Platform.cs" />
     <Compile Include="Smdn\Uuid.cs" />
     <Compile Include="Smdn.IO\StreamExtensions.cs" />
     <Compile Include="Smdn.Collections\ReadOnlyDictionary.cs" />
-    <Compile Include="Smdn.Collections\IDictionaryExtensions.cs" />
-    <Compile Include="Smdn\UnixTimeStamp.cs" />
     <Compile Include="Smdn\MathUtils.cs" />
     <Compile Include="Smdn.Formats\Csv.cs" />
     <Compile Include="Smdn.Formats\Hexadecimals.cs" />
@@ -74,9 +71,7 @@
     <Compile Include="Smdn\ExceptionUtils.cs" />
     <Compile Include="Smdn\UriUtils.cs" />
     <Compile Include="Smdn.IO\NonClosingStream.cs" />
-    <Compile Include="Smdn\EmptyArray.cs" />
     <Compile Include="Smdn\Shell.cs" />
-    <Compile Include="Smdn\Fraction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
