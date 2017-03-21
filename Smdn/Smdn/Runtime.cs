@@ -78,12 +78,14 @@ namespace Smdn {
       }
     }
 
+    [Obsolete("This member is deprecated.", true)]
     public static int SimdRuntimeAccelMode {
-      get { return Mono.Simd.SimdRuntime.AccelMode; }
+      get { throw new NotSupportedException("This member is deprecated."); }
     }
 
+    [Obsolete("This member is deprecated.", true)]
     public static bool IsSimdRuntimeAvailable {
-      get { return 0 < Mono.Simd.SimdRuntime.AccelMode; }
+      get { throw new NotSupportedException("This member is deprecated."); }
     }
 
     private static string versionString = null;

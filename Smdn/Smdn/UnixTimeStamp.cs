@@ -25,57 +25,56 @@
 using System;
 
 namespace Smdn {
+  [Obsolete("This class is no longer supported. Use System.DateTimeOffset instead.", true)]
   public static class UnixTimeStamp {
     public readonly static DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     public static long UtcNow {
-      get { return ToInt64(DateTime.UtcNow); }
+      get { throw new NotSupportedException("This member is no longer supported."); }
     }
 
     public static long Now {
-      get { return ToInt64(DateTime.Now); }
+      get { throw new NotSupportedException("This member is no longer supported."); }
     }
 
     public static int ToInt32(DateTimeOffset dateTimeOffset)
     {
-      return (int)dateTimeOffset.UtcDateTime.Subtract(Epoch).TotalSeconds;
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static int ToInt32(DateTime dateTime)
     {
-      return (int)dateTime.ToUniversalTime().Subtract(Epoch).TotalSeconds;
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static long ToInt64(DateTimeOffset dateTimeOffset)
     {
-      return (long)dateTimeOffset.UtcDateTime.Subtract(Epoch).TotalSeconds;
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static long ToInt64(DateTime dateTime)
     {
-      return (long)dateTime.ToUniversalTime().Subtract(Epoch).TotalSeconds;
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static DateTime ToLocalDateTime(int unixTime)
     {
-      return ToLocalDateTime((long)unixTime);
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static DateTime ToUtcDateTime(int unixTime)
     {
-      return ToUtcDateTime((long)unixTime);
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static DateTime ToLocalDateTime(long unixTime)
     {
-      // this might overflow
-      return Epoch.AddSeconds(unixTime).ToLocalTime();
+      throw new NotSupportedException("This member is no longer supported.");
     }
 
     public static DateTime ToUtcDateTime(long unixTime)
     {
-      // this might overflow
-      return Epoch.AddSeconds(unixTime);
+      throw new NotSupportedException("This member is no longer supported.");
     }
   }
 }

@@ -26,14 +26,11 @@ using System;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
+  [Obsolete("This class is no longer supported. Use System.Collections.ObjectModel.ReadOnlyDictionary or System.Collections.Generic.IReadOnlyDictionary instead.", true)]
   public static class IDictionaryExtensions {
-    [Obsolete("use System.Collections.ObjectModel.ReadOnlyDictionary or System.Collections.Generic.IReadOnlyDictionary instead")]
     public static IDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
     {
-      if (dictionary == null)
-        throw new ArgumentNullException("dictionary");
-
-      return new System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>(dictionary);
+      throw new NotSupportedException("This member is no longer supported.");
     }
   }
 }

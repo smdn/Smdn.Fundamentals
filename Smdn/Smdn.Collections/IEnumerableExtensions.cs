@@ -28,34 +28,12 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn.Collections {
+  [Obsolete("This class is no longer supported. Use System.Linq.Enumerable instead.", true)]
   public static class IEnumerableExtensions {
-    [Obsolete("do not use")]
     public static IEnumerable<T> EnumerateDepthFirst<T>(this IEnumerable<T> nestedEnumerable)
       where T : IEnumerable<T>
     {
-      if (nestedEnumerable == null)
-        throw new ArgumentNullException("nestedEnumerable");
-
-      var stack = new Stack<IEnumerator<T>>();
-      var enumerator = nestedEnumerable.GetEnumerator();
-
-      for (;;) {
-        if (enumerator.MoveNext()) {
-          stack.Push(enumerator);
-
-          yield return enumerator.Current;
-
-          enumerator = enumerator.Current.GetEnumerator();
-        }
-        else {
-          enumerator.Dispose();
-
-          if (stack.Count == 0)
-            yield break;
-
-          enumerator = stack.Pop();
-        }
-      }
+      throw new NotSupportedException("This member is no longer supported.");
     }
   }
 }

@@ -25,6 +25,7 @@
 using System;
 
 namespace Smdn {
+  [Obsolete("This structure is deprecated.", true)]
   public struct Fraction :
     IEquatable<Fraction>,
     IEquatable<double>
@@ -38,139 +39,130 @@ namespace Smdn {
 
     public Fraction(long numerator, long denominator)
     {
-      if (denominator == 0)
-        throw new DivideByZeroException("denominator must be non-zero value");
-
-      this.Numerator = numerator;
-      this.Denominator = denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
 #region "number * fraction, fraction * number"
     public static int operator* (int number, Fraction fraction)
     {
-      return (int)((number * fraction.Numerator) / fraction.Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static int operator* (Fraction fraction, int number)
     {
-      return (int)((number * fraction.Numerator) / fraction.Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static long operator* (long number, Fraction fraction)
     {
-      return (number * fraction.Numerator) / fraction.Denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static long operator* (Fraction fraction, long number)
     {
-      return (number * fraction.Numerator) / fraction.Denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static double operator* (double number, Fraction fraction)
     {
-      return (number * fraction.Numerator) / (double)fraction.Denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static double operator* (Fraction fraction, double number)
     {
-      return (number * fraction.Numerator) / (double)fraction.Denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static Fraction operator* (Fraction a, Fraction b)
     {
-      return new Fraction(a.Numerator * b.Numerator, a.Denominator * b.Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 #endregion
 
 #region "number / fraction"
     public static int operator/ (int number, Fraction fraction)
     {
-      return (int)((number * fraction.Denominator) / fraction.Numerator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static long operator/ (long number, Fraction fraction)
     {
-      return (number * fraction.Denominator) / fraction.Numerator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static double operator/ (double number, Fraction fraction)
     {
-      return (number * fraction.Denominator) / (double)fraction.Numerator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 #endregion
 
 #region "fraction / number"
     public static Fraction operator/ (Fraction fraction, int number)
     {
-      return new Fraction(fraction.Numerator, fraction.Denominator * number);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static Fraction operator/ (Fraction fraction, long number)
     {
-      return new Fraction(fraction.Numerator, fraction.Denominator * number);
+      throw new NotSupportedException("This member is deprecated.");
     }
 #endregion
 
 #region "conversion"
     public static explicit operator int (Fraction frac)
     {
-      return frac.ToInt32();
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static explicit operator long (Fraction frac)
     {
-      return frac.ToInt64();
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public static explicit operator double (Fraction frac)
     {
-      return frac.ToDouble();
+      throw new NotSupportedException("This member is deprecated.");
     }
 #endregion
 
     public override bool Equals(object other)
     {
-      if (other is double)
-        return Equals((double)other);
-      else if (other is Fraction)
-        return Equals((Fraction)other);
-      else
-        return false;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public bool Equals(double other)
     {
-      return (other == ToDouble());
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public bool Equals(Fraction frac)
     {
-      return (frac.Numerator == this.Numerator && frac.Denominator == this.Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public int ToInt32()
     {
-      return (int)(Numerator / Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public long ToInt64()
     {
-      return Numerator / Denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public double ToDouble()
     {
-      return Numerator / (double)Denominator;
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public override int GetHashCode()
     {
-      return (int)(Numerator ^ Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
 
     public override string ToString()
     {
-      return string.Format("{0}/{1}", Numerator, Denominator);
+      throw new NotSupportedException("This member is deprecated.");
     }
   }
 }
