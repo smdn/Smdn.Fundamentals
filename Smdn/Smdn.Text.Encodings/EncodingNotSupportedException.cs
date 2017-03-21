@@ -25,7 +25,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Smdn.Formats {
+namespace Smdn.Text.Encodings {
   [Serializable]
   public class EncodingNotSupportedException : NotSupportedException {
     /*

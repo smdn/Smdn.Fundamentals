@@ -26,7 +26,7 @@ using System;
 using System.Globalization;
 
 namespace Smdn.Formats {
-  public static class DateTimeConvert {
+  public static class DateTimeFormat {
     public static string GetCurrentTimeZoneOffsetString(bool delimiter)
     {
       var offset = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);

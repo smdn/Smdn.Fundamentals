@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.Csv {
   public class CsvWriter : StreamWriter {
     public char Delimiter {
       get { return delimiter; }

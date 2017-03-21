@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 using Smdn.IO;
 
-namespace Smdn.Formats.UUEncoding {
+namespace Smdn.Formats.UUEncodings {
   [TestFixture]
   public class UUDecoderTests {
     private static readonly byte[] testimg_png = new byte[] {

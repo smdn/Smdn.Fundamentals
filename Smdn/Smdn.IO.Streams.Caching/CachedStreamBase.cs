@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.Caching {
   public abstract class CachedStreamBase : Stream {
     public Stream InnerStream {
       get { CheckDisposed(); return stream; }

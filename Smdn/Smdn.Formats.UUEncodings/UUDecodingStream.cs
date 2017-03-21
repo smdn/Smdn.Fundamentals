@@ -29,7 +29,7 @@ using System.Text.RegularExpressions;
 using Smdn.IO;
 using Smdn.Security.Cryptography;
 
-namespace Smdn.Formats.UUEncoding {
+namespace Smdn.Formats.UUEncodings {
   public class UUDecodingStream : Stream {
     private enum State {
       Initial,

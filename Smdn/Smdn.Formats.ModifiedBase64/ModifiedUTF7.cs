@@ -28,7 +28,7 @@ using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.ModifiedBase64 {
   /*
    * RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
    * 5.1.3. Mailbox International Naming Convention

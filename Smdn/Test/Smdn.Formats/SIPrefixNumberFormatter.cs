@@ -4,11 +4,11 @@ using NUnit.Framework;
 
 namespace Smdn.Formats {
   [TestFixture()]
-  public class SIPrefixFormatTests {
+  public class SIPrefixNumberFormatterTests {
     [Test]
     public void TestFormatArgs()
     {
-      var provider = SIPrefixFormat.InvaliantInfo;
+      var provider = SIPrefixNumberFormatter.InvaliantInfo;
 
       foreach (var arg in new object[] {
         1000,
@@ -33,7 +33,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatDecimal()
     {
-      var provider = SIPrefixFormat.InvaliantInfo;
+      var provider = SIPrefixNumberFormatter.InvaliantInfo;
 
       foreach (var pair in new[] {
         new {ExpectedShort = "0",     ExpectedLong ="0",        Value =       0m},
@@ -58,7 +58,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatBinary()
     {
-      var provider = SIPrefixFormat.InvaliantInfo;
+      var provider = SIPrefixNumberFormatter.InvaliantInfo;
 
       foreach (var pair in new[] {
         new {ExpectedShort = "0",      ExpectedLong = "0",          Value =       0m},
@@ -83,7 +83,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatFileSize()
     {
-      var provider = SIPrefixFormat.InvaliantInfo;
+      var provider = SIPrefixNumberFormatter.InvaliantInfo;
 
       foreach (var pair in new[] {
         new {ExpectedShort = "0B",        ExpectedLong = "0 Bytes",             Value =       0m},
@@ -115,7 +115,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatDecimalValue()
     {
-      var provider = SIPrefixFormat.InvaliantInfo;
+      var provider = SIPrefixNumberFormatter.InvaliantInfo;
       var decimalValue = +1000000m;
 
       foreach (var sign in new[] {+1m, -1m}) {
@@ -148,7 +148,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatBinaryValue()
     {
-      var provider = SIPrefixFormat.InvaliantInfo;
+      var provider = SIPrefixNumberFormatter.InvaliantInfo;
       var binaryValue = +1048576m;
 
       foreach (var sign in new[] {+1m, -1m}) {
@@ -181,7 +181,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatSpecificLocaleJA()
     {
-      var provider = new SIPrefixFormat(new CultureInfo("ja-jp"));
+      var provider = new SIPrefixNumberFormatter(new CultureInfo("ja-jp"));
 
       foreach (var pair in new[] {
         new {ExpectedShort = "1.0",       ExpectedLong = "1.0",           Value =             1m},
@@ -221,8 +221,8 @@ namespace Smdn.Formats {
     public void TestReadOnlyInstanceThrowsException()
     {
       foreach (var provider in new[] {
-        SIPrefixFormat.InvaliantInfo,
-        SIPrefixFormat.CurrentInfo,
+        SIPrefixNumberFormatter.InvaliantInfo,
+        SIPrefixNumberFormatter.CurrentInfo,
       }) {
         Assert.IsTrue(provider.IsReadOnly, "IsReadOnly");
 
@@ -246,7 +246,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFormatWithCustomProvider()
     {
-      var provider = new SIPrefixFormat();
+      var provider = new SIPrefixNumberFormatter();
 
       Assert.IsFalse(provider.IsReadOnly, "IsReadOnly");
 

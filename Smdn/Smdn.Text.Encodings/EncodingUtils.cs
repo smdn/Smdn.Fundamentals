@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smdn.Formats {
+namespace Smdn.Text.Encodings {
   public static class EncodingUtils {
     public static Encoding GetEncoding(string name)
     {

@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 using Smdn.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.ModifiedBase64 {
   [TestFixture]
   public class FromRFC3501ModifiedBase64TransformTests {
     [Test]

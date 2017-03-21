@@ -25,7 +25,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.ModifiedBase64 {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152
   public class ToRFC2152ModifiedBase64Transform : ToBase64Transform, ICryptoTransform {

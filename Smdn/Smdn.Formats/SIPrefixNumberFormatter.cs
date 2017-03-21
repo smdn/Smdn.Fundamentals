@@ -27,7 +27,7 @@ using System.Globalization;
 using System.Text;
 
 namespace Smdn.Formats {
-  public class SIPrefixFormat : IFormatProvider, ICustomFormatter {
+  public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
     /*
      * class members
      */
@@ -36,13 +36,13 @@ namespace Smdn.Formats {
     private static readonly string[] InvaliantDecimalPrefixes = new string[] {string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta"};
     private static readonly string[] InvaliantBinaryPrefixes = new string[] {string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi"};
 
-    private static readonly SIPrefixFormat invaliantInfo = new SIPrefixFormat(CultureInfo.InvariantCulture, true);
+    private static readonly SIPrefixNumberFormatter invaliantInfo = new SIPrefixNumberFormatter(CultureInfo.InvariantCulture, true);
 
-    public static SIPrefixFormat CurrentInfo {
-      get { return new SIPrefixFormat(CultureInfo.CurrentCulture, true); }
+    public static SIPrefixNumberFormatter CurrentInfo {
+      get { return new SIPrefixNumberFormatter(CultureInfo.CurrentCulture, true); }
     }
 
-    public static SIPrefixFormat InvaliantInfo {
+    public static SIPrefixNumberFormatter InvaliantInfo {
       get { return invaliantInfo; }
     }
 
@@ -91,17 +91,17 @@ namespace Smdn.Formats {
       set { ThrowIfReadOnly(); prefixUnitDelimiter = value; }
     }
 
-    public SIPrefixFormat()
+    public SIPrefixNumberFormatter()
       : this(CultureInfo.InvariantCulture, false)
     {
     }
 
-    public SIPrefixFormat(CultureInfo cultureInfo)
+    public SIPrefixNumberFormatter(CultureInfo cultureInfo)
       : this(cultureInfo, false)
     {
     }
 
-    private SIPrefixFormat(CultureInfo cultureInfo, bool isReadOnly)
+    private SIPrefixNumberFormatter(CultureInfo cultureInfo, bool isReadOnly)
     {
       if (cultureInfo == null)
         throw new ArgumentNullException("cultureInfo");

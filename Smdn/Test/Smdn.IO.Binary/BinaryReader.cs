@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Binary {
   [TestFixture]
   public class BinaryReaderTest {
     private class NonReadableStream : Stream {

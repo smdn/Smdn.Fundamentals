@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using NUnit.Framework;
 
-namespace Smdn {
+namespace Smdn.Text {
   [TestFixture]
   public class ByteStringTests {
     private void AssertSegmentsAreSame(ArraySegment<byte> expected, ArraySegment<byte> actual)

@@ -26,7 +26,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.OperatingSystem {
   public class PipeOutStream : Stream {
     public override bool CanSeek {
       get { return /*!disposed &&*/ false; }

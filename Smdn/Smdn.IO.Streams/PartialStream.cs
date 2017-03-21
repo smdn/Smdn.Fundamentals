@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams {
   public class PartialStream : Stream, ICloneable {
 #region "class members"
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)

@@ -28,7 +28,7 @@ using System.IO;
 
 using Smdn.IO;
 
-namespace Smdn.Formats.UUEncoding {
+namespace Smdn.Formats.UUEncodings {
   public static class UUDecoder {
     public sealed class FileEntry : IDisposable {
       [CLSCompliant(false)]

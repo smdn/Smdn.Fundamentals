@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams {
   public sealed class ChunkedMemoryStream : Stream {
     public static readonly int DefaultChunkSize = 40960;
 

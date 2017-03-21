@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.Caching {
   public sealed class PersistentCachedStream : CachedStreamBase {
     public PersistentCachedStream(Stream innerStream)
       : this(innerStream, 40960, true)

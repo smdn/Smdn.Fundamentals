@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 using Smdn.Formats;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.LineOriented {
   [TestFixture]
   public class StrictLineOrientedStreamTests {
     [Test]

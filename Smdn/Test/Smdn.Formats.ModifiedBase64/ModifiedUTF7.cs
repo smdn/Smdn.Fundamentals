@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.ModifiedBase64 {
   [TestFixture]
   public class ModifiedUTF7Tests {
     [Test]

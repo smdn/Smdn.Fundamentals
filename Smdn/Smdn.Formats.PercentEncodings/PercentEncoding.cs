@@ -27,7 +27,7 @@ using System.Text;
 
 using Smdn.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.PercentEncodings {
   public static class PercentEncoding {
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode)
     {

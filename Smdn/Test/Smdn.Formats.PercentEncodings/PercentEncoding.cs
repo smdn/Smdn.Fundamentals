@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using NUnit.Framework;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.PercentEncodings {
   [TestFixture]
   public class PercentEncodingTests {
 

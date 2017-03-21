@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-namespace Smdn.Formats.UUEncoding {
+namespace Smdn.Formats.UUEncodings {
   [TestFixture]
   public class UUDecodingStreamTests {
     private MemoryStream CreateStream(string input)

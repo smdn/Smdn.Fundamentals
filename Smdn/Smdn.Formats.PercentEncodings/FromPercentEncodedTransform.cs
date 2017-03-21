@@ -25,7 +25,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.PercentEncodings {
   public sealed class FromPercentEncodedTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }

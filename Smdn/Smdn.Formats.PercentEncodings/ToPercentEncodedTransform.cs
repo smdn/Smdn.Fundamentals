@@ -25,7 +25,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Formats {
+namespace Smdn.Formats.PercentEncodings {
   /*
    * http://tools.ietf.org/html/rfc3986
    * RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax

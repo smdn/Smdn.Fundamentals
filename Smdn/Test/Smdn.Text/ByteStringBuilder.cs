@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Smdn {
+namespace Smdn.Text {
   [TestFixture]
   public class ByteStringBuilderTests {
     [Test]

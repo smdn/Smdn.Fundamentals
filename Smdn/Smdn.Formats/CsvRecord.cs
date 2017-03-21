@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Smdn.Formats {
-  public static class Csv {
+  public static class CsvRecord {
     // http://www.ietf.org/rfc/rfc4180.txt
     // Common Format and MIME Type for Comma-Separated Values (CSV) Files
     public static string[] ToSplitted(string csv)

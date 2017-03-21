@@ -27,7 +27,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Smdn.Formats {
-  public static class HtmlEscape {
+  public static class Html {
     public static string ToHtmlEscapedString(string str)
     {
       if (str == null)

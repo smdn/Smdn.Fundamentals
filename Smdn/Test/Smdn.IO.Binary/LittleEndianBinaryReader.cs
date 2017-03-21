@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Binary {
   [TestFixture]
   public class LittleEndianBinaryReaderTest {
     [Test]

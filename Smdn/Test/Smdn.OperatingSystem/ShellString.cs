@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-namespace Smdn.IO {
+namespace Smdn.OperatingSystem {
   [TestFixture]
   public class ShellStringTests {
     [Test]

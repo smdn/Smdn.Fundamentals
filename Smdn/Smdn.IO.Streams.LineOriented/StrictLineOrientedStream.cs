@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.LineOriented {
   public class StrictLineOrientedStream : LineOrientedStream {
     public StrictLineOrientedStream(Stream stream)
       : base(stream, Smdn.Formats.Octets.GetCRLF(), true, DefaultBufferSize, DefaultLeaveStreamOpen)

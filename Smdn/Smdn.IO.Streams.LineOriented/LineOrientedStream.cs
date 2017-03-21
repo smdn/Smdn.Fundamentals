@@ -27,7 +27,7 @@ using System.IO;
 
 using Smdn.Formats;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.LineOriented {
   public class LineOrientedStream : Stream {
     protected static readonly int DefaultBufferSize = 1024;
     protected static readonly int MinimumBufferSize = 8;

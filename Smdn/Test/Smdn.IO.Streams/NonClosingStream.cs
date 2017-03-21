@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 using Smdn;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams {
   [TestFixture]
   public class NonClosingStreamTests {
     [Test]

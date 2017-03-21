@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.LineOriented {
   public class LooseLineOrientedStream : LineOrientedStream {
     public LooseLineOrientedStream(Stream stream)
       : base(stream, null, false, DefaultBufferSize, DefaultLeaveStreamOpen)

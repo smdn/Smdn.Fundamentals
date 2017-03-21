@@ -26,8 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Smdn {
-  public static class UriUtils {
+namespace Smdn.Formats {
+  public static class UriQuery {
     private const char parameterSplitterChar = '&';
     private const char nameValueSplitterChar = '=';
 

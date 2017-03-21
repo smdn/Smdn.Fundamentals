@@ -25,7 +25,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Formats.UUEncoding {
+namespace Smdn.Formats.UUEncodings {
   public sealed class UUDecodingTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }

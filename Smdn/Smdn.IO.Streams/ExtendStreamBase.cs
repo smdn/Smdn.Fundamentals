@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams {
   public abstract class ExtendStreamBase : Stream {
     protected enum Range {
       Prepended,

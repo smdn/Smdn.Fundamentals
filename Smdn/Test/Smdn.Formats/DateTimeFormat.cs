@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Smdn.Formats {
   [TestFixture()]
-  public class DateTimeConvertTests {
+  public class DateTimeFormatTests {
     private string timezoneOffset = string.Empty;
     private string timezoneOffsetNoDelim = string.Empty;
 
@@ -26,8 +26,8 @@ namespace Smdn.Formats {
     [Test]
     public void TestGetCurrentTimeZoneOffsetString()
     {
-      Assert.AreEqual(timezoneOffset, DateTimeConvert.GetCurrentTimeZoneOffsetString(true));
-      Assert.AreEqual(timezoneOffsetNoDelim, DateTimeConvert.GetCurrentTimeZoneOffsetString(false));
+      Assert.AreEqual(timezoneOffset, DateTimeFormat.GetCurrentTimeZoneOffsetString(true));
+      Assert.AreEqual(timezoneOffsetNoDelim, DateTimeFormat.GetCurrentTimeZoneOffsetString(false));
     }
 
     [Test]
@@ -36,7 +36,7 @@ namespace Smdn.Formats {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 GMT",
-                      DateTimeConvert.ToRFC822DateTimeString(dtm));
+                      DateTimeFormat.ToRFC822DateTimeString(dtm));
     }
 
     [Test]
@@ -45,7 +45,7 @@ namespace Smdn.Formats {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Local);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-                      DateTimeConvert.ToRFC822DateTimeString(dtm));
+                      DateTimeFormat.ToRFC822DateTimeString(dtm));
     }
 
     [Test]
@@ -54,7 +54,7 @@ namespace Smdn.Formats {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Unspecified);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-                      DateTimeConvert.ToRFC822DateTimeString(dtm));
+                      DateTimeFormat.ToRFC822DateTimeString(dtm));
     }
 
     [Test]
@@ -63,13 +63,13 @@ namespace Smdn.Formats {
       var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
 
       Assert.AreEqual("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-                      DateTimeConvert.ToRFC822DateTimeString(dto));
+                      DateTimeFormat.ToRFC822DateTimeString(dto));
     }
 
     [Test]
     public void TestFromRFC822DateTimeStringUtc()
     {
-      var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 GMT");
+      var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 GMT");
       var c = "case1";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -83,7 +83,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(4567, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.123 GMT");
+      dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.123 GMT");
       c = "case2";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -97,7 +97,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 GMT");
+      dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 GMT");
       c = "case3";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -111,7 +111,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41 GMT");
+      dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41 GMT");
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
       Assert.AreEqual(10, dtm.Day, c);
@@ -128,7 +128,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromRFC822DateTimeStringLocal()
     {
-      var dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
+      var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
       var c = "case1";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -142,7 +142,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(4567, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.123 +0900");
+      dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.123 +0900");
       c = "case2";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -156,7 +156,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +0900");
+      dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +0900");
       c = "case3";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -170,7 +170,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41 +0900");
+      dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41 +0900");
       c = "case4";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
@@ -188,7 +188,7 @@ namespace Smdn.Formats {
     [Test/*, Ignore("Mono Bug #547675")*/]
     public void TestFromRFC822DateTimeOffsetString()
     {
-      var dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
+      var dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
       var c = "case1";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
@@ -203,7 +203,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.123 +0900");
+      dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.123 +0900");
       c = "case2";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
@@ -218,7 +218,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01 +0900");
+      dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01 +0900");
       c = "case3";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
@@ -233,7 +233,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41 +0900");
+      dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41 +0900");
       c = "case4";
 
       Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
@@ -252,7 +252,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromRFC822DateTimeOffsetStringGmt()
     {
-      var dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.1234567 GMT");
+      var dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.1234567 GMT");
       var c = "case1";
 
       Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
@@ -267,7 +267,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.123 GMT");
+      dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.123 GMT");
       c = "case2";
 
       Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
@@ -282,7 +282,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02 GMT");
+      dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02 GMT");
       c = "case3";
 
       Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
@@ -297,7 +297,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23 GMT");
+      dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23 GMT");
       c = "case4";
 
       Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
@@ -319,8 +319,8 @@ namespace Smdn.Formats {
     {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
-      Assert.AreEqual(DateTimeConvert.ToW3CDateTimeString(dtm),
-                      DateTimeConvert.ToISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeFormat.ToW3CDateTimeString(dtm),
+                      DateTimeFormat.ToISO8601DateTimeString(dtm));
     }
 
     [Test]
@@ -329,7 +329,7 @@ namespace Smdn.Formats {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Utc);
 
       Assert.AreEqual("2008-02-25T15:01:12.4560000Z",
-                      DateTimeConvert.ToW3CDateTimeString(dtm));
+                      DateTimeFormat.ToW3CDateTimeString(dtm));
     }
 
     [Test]
@@ -338,7 +338,7 @@ namespace Smdn.Formats {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Local);
 
       Assert.AreEqual("2008-02-25T15:01:12.4560000" + timezoneOffset,
-                      DateTimeConvert.ToW3CDateTimeString(dtm));
+                      DateTimeFormat.ToW3CDateTimeString(dtm));
     }
 
     [Test]
@@ -347,7 +347,7 @@ namespace Smdn.Formats {
       var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Unspecified);
 
       Assert.AreEqual("2008-02-25T15:01:12.4560000",
-                      DateTimeConvert.ToW3CDateTimeString(dtm));
+                      DateTimeFormat.ToW3CDateTimeString(dtm));
     }
 
     [Test]
@@ -356,7 +356,7 @@ namespace Smdn.Formats {
       var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, 456, DateTimeOffset.Now.Offset);
 
       Assert.AreEqual("2008-02-25T15:01:12.4560000" + timezoneOffset,
-                      DateTimeConvert.ToW3CDateTimeString(dto));
+                      DateTimeFormat.ToW3CDateTimeString(dto));
     }
 
     [Test]
@@ -364,29 +364,29 @@ namespace Smdn.Formats {
     {
       var dtm = "2008-04-11T12:34:56.7893333Z";
 
-      Assert.AreEqual(DateTimeConvert.FromW3CDateTimeString(dtm),
-                      DateTimeConvert.FromISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeFormat.FromW3CDateTimeString(dtm),
+                      DateTimeFormat.FromISO8601DateTimeString(dtm));
 
       dtm = "2008-04-11T12:34:56.789Z";
 
-      Assert.AreEqual(DateTimeConvert.FromW3CDateTimeString(dtm),
-                      DateTimeConvert.FromISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeFormat.FromW3CDateTimeString(dtm),
+                      DateTimeFormat.FromISO8601DateTimeString(dtm));
 
       dtm = "2008-04-11T12:34:56Z";
 
-      Assert.AreEqual(DateTimeConvert.FromW3CDateTimeString(dtm),
-                      DateTimeConvert.FromISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeFormat.FromW3CDateTimeString(dtm),
+                      DateTimeFormat.FromISO8601DateTimeString(dtm));
 
       dtm = "2008-04-11T12:34Z";
 
-      Assert.AreEqual(DateTimeConvert.FromW3CDateTimeString(dtm),
-                      DateTimeConvert.FromISO8601DateTimeString(dtm));
+      Assert.AreEqual(DateTimeFormat.FromW3CDateTimeString(dtm),
+                      DateTimeFormat.FromISO8601DateTimeString(dtm));
     }
 
     [Test]
     public void TestFromW3CDateTimeStringUtc()
     {
-      var dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56.7893333Z");
+      var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333Z");
       var c = "case1";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -399,7 +399,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(3333, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56.789Z");
+      dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.789Z");
       c = "case2";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -412,7 +412,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56Z");
+      dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56Z");
       c = "case3";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -425,7 +425,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34Z");
+      dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34Z");
       c = "case4";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -442,7 +442,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromW3CDateTimeStringLocal()
     {
-      var dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56.7893333 +09:00");
+      var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333 +09:00");
       var c = "case1";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -455,7 +455,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(3333, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56.789 +09:00");
+      dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.789 +09:00");
       c = "case2";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -468,7 +468,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34:56 +09:00");
+      dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56 +09:00");
       c = "case3";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -481,7 +481,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
       Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
 
-      dtm = DateTimeConvert.FromW3CDateTimeString("2008-04-11T12:34 +09:00");
+      dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34 +09:00");
       c = "case4";
 
       Assert.AreEqual(2008, dtm.Year, c);
@@ -498,7 +498,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromW3CDateTimeOffsetString()
     {
-      var dto = DateTimeConvert.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.7893333 +09:00");
+      var dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.7893333 +09:00");
       var c = "case1";
 
       Assert.AreEqual(2008, dto.Year, c);
@@ -512,7 +512,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.789 +09:00");
+      dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.789 +09:00");
       c = "case2";
 
       Assert.AreEqual(2008, dto.Year, c);
@@ -526,7 +526,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromW3CDateTimeOffsetString("2008-04-11T12:34:56 +09:00");
+      dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56 +09:00");
       c = "case3";
 
       Assert.AreEqual(2008, dto.Year, c);
@@ -540,7 +540,7 @@ namespace Smdn.Formats {
       Assert.AreEqual(9, dto.Offset.Hours, c);
       Assert.AreEqual(0, dto.Offset.Minutes, c);
 
-      dto = DateTimeConvert.FromW3CDateTimeOffsetString("2008-04-11T12:34 +09:00");
+      dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34 +09:00");
       c = "case4";
 
       Assert.AreEqual(2008, dto.Year, c);

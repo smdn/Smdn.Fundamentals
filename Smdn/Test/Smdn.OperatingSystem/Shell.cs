@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn {
+namespace Smdn.OperatingSystem {
   [TestFixture()]
   public class ShellTests {
     [Test]

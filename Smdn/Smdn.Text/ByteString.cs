@@ -31,7 +31,7 @@ using System.Text;
 
 using Smdn.Formats;
 
-namespace Smdn {
+namespace Smdn.Text {
   [Serializable]
   public class ByteString :
     IEquatable<ByteString>,

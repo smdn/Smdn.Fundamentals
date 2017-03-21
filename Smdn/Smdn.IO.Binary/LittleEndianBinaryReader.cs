@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Binary {
   public class LittleEndianBinaryReader : Smdn.IO.BinaryReader {
     public LittleEndianBinaryReader(Stream stream)
       : this(stream, false)

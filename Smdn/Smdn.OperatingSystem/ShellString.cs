@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Smdn.IO {
+namespace Smdn.OperatingSystem {
   public class ShellString :
     ICloneable,
     IEquatable<string>,

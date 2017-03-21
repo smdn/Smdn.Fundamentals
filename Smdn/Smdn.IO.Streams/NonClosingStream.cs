@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams {
   public class NonClosingStream : Stream {
     public Stream InnerStream {
       get { CheckDisposed(); return stream; }
