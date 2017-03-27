@@ -26,97 +26,11 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-  public class NonClosingStream : Stream {
-    public Stream InnerStream {
-      get { CheckDisposed(); return stream; }
-    }
-
-    public override bool CanSeek {
-      get { return !IsClosed && stream.CanSeek; }
-    }
-
-    public override bool CanRead {
-      get { return !IsClosed && stream.CanRead; }
-    }
-
-    public override bool CanWrite {
-      get { return !IsClosed && stream.CanWrite; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
-
-    public override long Position {
-      get { CheckDisposed(); return stream.Position; }
-      set { CheckDisposed(); stream.Position = value; }
-    }
-
-    public override long Length {
-      get { CheckDisposed(); return stream.Length; }
-    }
-
+  [Obsolete("use Smdn.IO.Streams.NonClosingStream instead")]
+  public class NonClosingStream : Smdn.IO.Streams.NonClosingStream {
     public NonClosingStream(Stream innerStream)
+      : base(innerStream)
     {
-      if (innerStream == null)
-        throw new ArgumentNullException("innerStream");
-
-      this.stream = innerStream;
     }
-
-    public override void Close()
-    {
-      if (stream != null && stream.CanWrite)
-        stream.Flush();
-
-      stream = null;
-    }
-
-    public override void SetLength(long @value)
-    {
-      CheckDisposed();
-
-      stream.SetLength(@value);
-    }
-
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-      CheckDisposed();
-
-      return stream.Seek(offset, origin);
-    }
-
-    public override void Flush()
-    {
-      CheckDisposed();
-
-      stream.Flush();
-    }
-
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-
-      return stream.Read(buffer, offset, count);
-    }
-
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-
-      stream.Write(buffer, offset, count);
-    }
-
-    private void CheckDisposed()
-    {
-      if (IsClosed)
-        throw new ObjectDisposedException(GetType().FullName);
-    }
-
-    private Stream stream;
   }
 }
