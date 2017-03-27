@@ -26,6 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
+  [Obsolete("use Smdn.IO.Binary.BinaryWriter instead")]
   public class BinaryWriter : BinaryWriterBase {
     private const int defaultStorageSize = 8;
 

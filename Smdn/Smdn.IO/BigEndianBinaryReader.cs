@@ -26,6 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
+  [Obsolete("use Smdn.IO.Binary.BigEndianBinaryReader instead")]
   public class BigEndianBinaryReader : Smdn.IO.BinaryReader {
     public BigEndianBinaryReader(Stream stream)
       : this(stream, false)

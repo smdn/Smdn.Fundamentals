@@ -26,6 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
+  [Obsolete("use Smdn.IO.Binary.BinaryReader instead")]
   public class BinaryReader : BinaryReaderBase {
     private const int defaultStorageSize = 8;
 

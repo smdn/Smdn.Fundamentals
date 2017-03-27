@@ -26,6 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
+  [Obsolete("use Smdn.IO.Binary.LittleEndianBinaryWriter instead")]
   public class LittleEndianBinaryWriter : Smdn.IO.BinaryWriter {
     public LittleEndianBinaryWriter(Stream stream)
       : this(stream, false)
