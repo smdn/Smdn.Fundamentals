@@ -37,7 +37,7 @@ namespace Smdn.Formats {
     public static Encoding GetEncoding(string name,
                                        EncodingSelectionCallback selectFallbackEncoding)
     {
-      return Smdn.Text.Encodings.EncodingUtils.GetEncoding(name, n => selectFallbackEncoding(n));
+      return Smdn.Text.Encodings.EncodingUtils.GetEncoding(name, n => selectFallbackEncoding == null ? null : selectFallbackEncoding(n));
     }
 
     public static Encoding GetEncodingThrowException(string name)
