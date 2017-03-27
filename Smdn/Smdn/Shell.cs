@@ -26,66 +26,31 @@ using System;
 using System.Diagnostics;
 
 namespace Smdn {
+  [Obsolete("use Smdn.OperatingSystem.Shell instead")]
   public static class Shell {
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
     {
-      return CreateProcessStartInfo(command, arguments == null ? string.Empty : string.Join(" ", arguments));
+      return Smdn.OperatingSystem.Shell.CreateProcessStartInfo(command, arguments);
     }
 
     public static ProcessStartInfo CreateProcessStartInfo(string command, string arguments)
     {
-      if (command == null)
-        throw new ArgumentNullException("command");
-
-      ProcessStartInfo psi;
-
-      if (Runtime.IsRunningOnUnix) {
-        if (arguments != null)
-          arguments = arguments.Replace("\"", "\\\"");
-
-        psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments));
-      }
-      else {
-        psi = new ProcessStartInfo("cmd", string.Format("/c {0} {1}", command, arguments));
-        psi.CreateNoWindow = true;
-      }
-
-      psi.UseShellExecute = false;
-
-      return psi;
+      return Smdn.OperatingSystem.Shell.CreateProcessStartInfo(command, arguments);
     }
 
     public static string Execute(string command)
     {
-      string stdout;
-
-      Execute(command, out stdout);
-
-      return stdout;
+      return Smdn.OperatingSystem.Shell.Execute(command);
     }
 
     public static int Execute(string command, out string stdout)
     {
-      string discard;
-
-      return Execute(command, out stdout, out discard);
+      return Smdn.OperatingSystem.Shell.Execute(command, out stdout);
     }
 
     public static int Execute(string command, out string stdout, out string stderr)
     {
-      var psi = CreateProcessStartInfo(command, string.Empty);
-
-      psi.RedirectStandardOutput = true;
-      psi.RedirectStandardError  = true;
-
-      using (var process = Process.Start(psi)) {
-        stdout = process.StandardOutput.ReadToEnd();
-        stderr = process.StandardError.ReadToEnd();
-
-        process.WaitForExit();
-
-        return process.ExitCode;
-      }
+      return Smdn.OperatingSystem.Shell.Execute(command, out stdout, out stderr);
     }
   }
 }

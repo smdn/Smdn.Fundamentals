@@ -465,9 +465,7 @@ namespace Smdn {
     [Test]
     public void TestIndexOfNot()
     {
-      ByteString str;
-
-      str = ByteString.CreateImmutable("aaabbb");
+      var str = ByteString.CreateImmutable("aaabbb");
 
       Assert.AreEqual(3, str.IndexOfNot('a'));
       Assert.AreEqual(3, str.IndexOfNot(0x61));
@@ -1072,36 +1070,32 @@ namespace Smdn {
     [Test]
     public void TestConcat()
     {
-      ByteString c;
+      var c1 = ByteString.Concat(ByteString.CreateImmutable("abc"),
+                                 ByteString.CreateImmutable("def"),
+                                 ByteString.CreateImmutable("ghi"));
 
-      c = ByteString.Concat(ByteString.CreateImmutable("abc"),
-                            ByteString.CreateImmutable("def"),
-                            ByteString.CreateImmutable("ghi"));
+      Assert.AreEqual(ByteString.CreateImmutable("abcdefghi"), c1);
+      Assert.IsTrue(c1.IsMutable);
 
-      Assert.AreEqual(ByteString.CreateImmutable("abcdefghi"), c);
-      Assert.IsTrue(c.IsMutable);
+      var c2 = ByteString.Concat(ByteString.CreateImmutable("abc"),
+                                 null,
+                                 ByteString.CreateMutable("ghi"));
 
-      c = ByteString.Concat(ByteString.CreateImmutable("abc"),
-                            null,
-                            ByteString.CreateMutable("ghi"));
+      Assert.AreEqual(ByteString.CreateImmutable("abcghi"), c2);
+      Assert.IsTrue(c2.IsMutable);
 
-      Assert.AreEqual(ByteString.CreateImmutable("abcghi"), c);
-      Assert.IsTrue(c.IsMutable);
+      var c3 = ByteString.Concat(null, null, null);
 
-      c = ByteString.Concat(null, null, null);
-
-      Assert.AreEqual(ByteString.CreateImmutable(""), c);
-      Assert.IsTrue(c.IsMutable);
+      Assert.AreEqual(ByteString.CreateImmutable(""), c3);
+      Assert.IsTrue(c3.IsMutable);
     }
 
     [Test]
     public void TestConcatImmutable()
     {
-      ByteString c;
-
-      c = ByteString.ConcatImmutable(ByteString.CreateImmutable("abc"),
-                                     null,
-                                     ByteString.CreateMutable("def"));
+      var c = ByteString.ConcatImmutable(ByteString.CreateImmutable("abc"),
+                                         null,
+                                         ByteString.CreateMutable("def"));
 
       Assert.AreEqual(ByteString.CreateImmutable("abcdef"), c);
       Assert.IsFalse(c.IsMutable);
@@ -1110,11 +1104,9 @@ namespace Smdn {
     [Test]
     public void TestConcatMutable()
     {
-      ByteString c;
-
-      c = ByteString.ConcatMutable(ByteString.CreateImmutable("abc"),
-                                   null,
-                                   ByteString.CreateMutable("def"));
+      var c = ByteString.ConcatMutable(ByteString.CreateImmutable("abc"),
+                                       null,
+                                       ByteString.CreateMutable("def"));
 
       Assert.AreEqual(ByteString.CreateImmutable("abcdef"), c);
       Assert.IsTrue(c.IsMutable);
@@ -1229,11 +1221,11 @@ namespace Smdn {
     public void TestBinarySerialization()
     {
       foreach (var test in new[] {
-        new {String = ByteString.CreateMutable("abc"), Test = "string mutable"},
-        new {String = ByteString.CreateImmutable("abc"), Test = "string immutable"},
-        new {String = ByteString.CreateEmpty(), Test = "empty"},
-        new {String = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), true), Test = "ArraySegment mutable"},
-        new {String = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), false), Test = "ArraySegment immutable"},
+        new {String = (Smdn.Text.ByteString)ByteString.CreateMutable("abc"), Test = "string mutable"},
+        new {String = (Smdn.Text.ByteString)ByteString.CreateImmutable("abc"), Test = "string immutable"},
+        new {String = (Smdn.Text.ByteString)ByteString.CreateEmpty(), Test = "empty"},
+        new {String = (Smdn.Text.ByteString)new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), true), Test = "ArraySegment mutable"},
+        new {String = (Smdn.Text.ByteString)new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), false), Test = "ArraySegment immutable"},
       }) {
         using (var stream = new MemoryStream()) {
           var serializeFormatter = new BinaryFormatter();
@@ -1243,7 +1235,7 @@ namespace Smdn {
 
           stream.Position = 0L;
 
-          var deserialized = (ByteString)deserializeFormatter.Deserialize(stream);
+          var deserialized = (Smdn.Text.ByteString)deserializeFormatter.Deserialize(stream);
 
           Assert.AreNotSame(test.String, deserialized, test.Test);
           Assert.AreEqual(test.String, deserialized, test.Test);
