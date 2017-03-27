@@ -26,6 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
+  [Obsolete("use Smdn.IO.Streams.ExtendStream instead")]
   public class ExtendStream : ExtendStreamBase {
     protected override bool CanSeekPrependedData {
       get { return (prependStream == null) ? true : prependStream.CanSeek; }

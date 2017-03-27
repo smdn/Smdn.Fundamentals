@@ -27,184 +27,21 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Smdn.IO {
-  public class PipeOutStream : Stream {
-    public override bool CanSeek {
-      get { return /*!disposed &&*/ false; }
-    }
-
-    public override bool CanRead {
-      get { return /*!disposed &&*/ false; }
-    }
-
-    public override bool CanWrite {
-      get { return !disposed /*&& true*/; }
-    }
-
-    public override bool CanTimeout {
-      get { return false; }
-    }
-
-    public override long Length {
-      get { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
-    }
-
-    public override long Position {
-      get { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
-      set { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
-    }
-
-    public ProcessStartInfo StartInfo {
-      get { CheckDisposed(); return startInfo; }
-    }
-
-    public Process Process {
-      get { CheckDisposed(); return process; }
-    }
-
-    /// <remarks>in milliseconds</remarks>
-    public int WaitForExitTimeout {
-      get { return waitForExitTimeout; }
-      private set
-      {
-        if (value < -1)
-          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, "WaitForExitTimeout", value);
-        waitForExitTimeout = value;
-      }
-    }
-
+  [Obsolete("use Smdn.OperatingSystem.PipeOutStream instead")]
+  public class PipeOutStream : Smdn.OperatingSystem.PipeOutStream {
     public PipeOutStream(ProcessStartInfo startInfo)
-      : this(startInfo, null, null)
+      : base(startInfo)
     {
     }
 
     public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onErrorDataReceived)
-      : this(startInfo, null, onErrorDataReceived)
+      : base(startInfo, onErrorDataReceived)
     {
     }
 
     public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onOutputDataReceived, DataReceivedEventHandler onErrorDataReceived)
+      : base(startInfo, onOutputDataReceived, onErrorDataReceived)
     {
-      if (startInfo == null)
-        throw new ArgumentNullException("startInfo");
-
-      this.startInfo = startInfo;
-      this.onOutputDataReceived = onOutputDataReceived;
-      this.onErrorDataReceived = onErrorDataReceived;
     }
-
-    public override void Close()
-    {
-      if (process != null) {
-        if (!process.HasExited) {
-          process.StandardInput.BaseStream.Flush();
-          process.StandardInput.Close();
-
-          if (!process.WaitForExit(waitForExitTimeout))
-            process.Kill();
-        }
-
-        process = null;
-      }
-
-      onOutputDataReceived = null;
-      onErrorDataReceived = null;
-
-      disposed = true;
-    }
-
-    public override void SetLength(long @value)
-    {
-      CheckDisposed();
-
-      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
-    }
-
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-      CheckDisposed();
-
-      throw ExceptionUtils.CreateNotSupportedSeekingStream();
-    }
-
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-
-      throw ExceptionUtils.CreateNotSupportedReadingStream();
-    }
-
-    public override void WriteByte(byte @value)
-    {
-      CheckDisposed();
-      CheckProcessAlive();
-
-      EnsureProcessStarted();
-
-      process.StandardInput.BaseStream.WriteByte(@value);
-    }
-
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-      CheckProcessAlive();
-
-      EnsureProcessStarted();
-
-      process.StandardInput.BaseStream.Write(buffer, offset, count);
-    }
-
-    private void EnsureProcessStarted()
-    {
-      if (process != null)
-        return;
-
-      startInfo.RedirectStandardInput = true;
-      startInfo.UseShellExecute = false; // redirecting stdout
-
-      process = new Process();
-      process.StartInfo = startInfo;
-
-      if (onOutputDataReceived != null) {
-        startInfo.RedirectStandardOutput = true;
-        process.OutputDataReceived += onOutputDataReceived;
-      }
-
-      if (onErrorDataReceived != null) {
-        startInfo.RedirectStandardError = true;
-        process.ErrorDataReceived += onErrorDataReceived;
-      }
-
-      process.Start();
-
-      if (startInfo.RedirectStandardError)
-        process.BeginErrorReadLine();
-    }
-
-    public override void Flush()
-    {
-      CheckDisposed();
-      CheckProcessAlive();
-
-      process.StandardInput.BaseStream.Flush();
-    }
-
-    private void CheckProcessAlive()
-    {
-      if (process != null && process.HasExited)
-        throw new IOException("process has exited");
-    }
-
-    private void CheckDisposed()
-    {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-    }
-
-    private bool disposed = false;
-    private ProcessStartInfo startInfo;
-    private Process process = null;
-    private DataReceivedEventHandler onOutputDataReceived;
-    private DataReceivedEventHandler onErrorDataReceived;
-    private int waitForExitTimeout = 1000;
   }
 }
