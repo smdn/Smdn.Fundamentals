@@ -29,8 +29,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 
-using Smdn.Formats;
-
 namespace Smdn.Text {
   [Serializable]
   public class ByteString :
@@ -304,8 +302,8 @@ namespace Smdn.Text {
         var len = @value.Count;
 
         for (var index = 0; index < len; index++) {
-          if (Octets.ToLowerCaseAsciiTable[str[index]] !=
-              Octets.ToLowerCaseAsciiTable[substr[index]])
+          if (Ascii.Octets.ToLowerCaseAsciiTable[str[index]] !=
+              Ascii.Octets.ToLowerCaseAsciiTable[substr[index]])
             return false;
         }
       }
@@ -583,8 +581,8 @@ namespace Smdn.Text {
 
         for (var index = startIndex; index < len; index++) {
         recheck:
-          if (Octets.ToLowerCaseAsciiTable[str[index]] ==
-              Octets.ToLowerCaseAsciiTable[substr[matchedIndex]]) {
+          if (Ascii.Octets.ToLowerCaseAsciiTable[str[index]] ==
+              Ascii.Octets.ToLowerCaseAsciiTable[substr[matchedIndex]]) {
             if (@value.Count == ++matchedIndex)
               return index - matchedIndex + 1;
           }
@@ -754,7 +752,7 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          uppercased[index] = Octets.ToUpperCaseAsciiTable[str[index]];
+          uppercased[index] = Ascii.Octets.ToUpperCaseAsciiTable[str[index]];
         }
       }
 
@@ -771,7 +769,7 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          lowercased[index] = Octets.ToLowerCaseAsciiTable[str[index]];
+          lowercased[index] = Ascii.Octets.ToLowerCaseAsciiTable[str[index]];
         }
       }
 
@@ -892,8 +890,8 @@ namespace Smdn.Text {
       else if (str.segment.Count < 2)
         return false;
 
-      return (str.segment.Array[str.segment.Offset + str.segment.Count - 2] == Octets.CR &&
-              str.segment.Array[str.segment.Offset + str.segment.Count - 1] == Octets.LF);
+      return (str.segment.Array[str.segment.Offset + str.segment.Count - 2] == Ascii.Octets.CR &&
+              str.segment.Array[str.segment.Offset + str.segment.Count - 1] == Ascii.Octets.LF);
     }
 
     public bool Equals(ByteString other)
@@ -1009,8 +1007,8 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          if (Octets.ToLowerCaseAsciiTable[strX[index]] !=
-              Octets.ToLowerCaseAsciiTable[strY[index]])
+          if (Ascii.Octets.ToLowerCaseAsciiTable[strX[index]] !=
+              Ascii.Octets.ToLowerCaseAsciiTable[strY[index]])
             return false;
         }
       }
