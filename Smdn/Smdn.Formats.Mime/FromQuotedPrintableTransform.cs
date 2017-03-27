@@ -26,165 +26,49 @@ using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.Mime {
+  [Obsolete("use Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform instead")]
   public sealed class FromQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
-      get { return true; }
+      get { return inst.CanTransformMultipleBlocks; }
     }
 
     public bool CanReuseTransform {
-      get { return true; }
+      get { return inst.CanReuseTransform; }
     }
 
     public int InputBlockSize {
-      get { return 1; }
+      get { return inst.InputBlockSize; }
     }
 
     public int OutputBlockSize {
-      get { return 1; }
+      get { return inst.OutputBlockSize; }
     }
 
     public FromQuotedPrintableTransform(FromQuotedPrintableTransformMode mode)
     {
-      switch (mode) {
-        case FromQuotedPrintableTransformMode.MimeEncoding:
-          dequoteUnderscore = true;
-          break;
-        case FromQuotedPrintableTransformMode.ContentTransferEncoding:
-          dequoteUnderscore = false;
-          break;
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
-      }
+      inst = new QuotedPrintable.FromQuotedPrintableTransform((QuotedPrintable.FromQuotedPrintableTransformMode)mode);
     }
 
     public void Clear()
     {
-      disposed = true;
+      inst.Clear();
     }
 
     void IDisposable.Dispose()
     {
-      Clear();
+      (inst as IDisposable).Dispose();
     }
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-
-      if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
-
-      if (outputBuffer == null)
-        throw new ArgumentNullException("outputBuffer");
-      if (outputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("outputOffset", outputOffset);
-      if (outputBuffer.Length - inputCount < outputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
-
-      var ret = 0;
-
-      while (0 < inputCount--) {
-        var octet = inputBuffer[inputOffset++];
-
-        if (bufferOffset == 0) {
-          if (octet == 0x3d) { // '=' 0x3d
-            buffer[bufferOffset++] = octet;
-          }
-          else if (dequoteUnderscore && octet == 0x5f) { // '_' 0x5f
-            outputBuffer[outputOffset++] = 0x20; // ' ' 0x20
-            ret++;
-          }
-          else {
-            outputBuffer[outputOffset++] = octet;
-            ret++;
-          }
-        }
-        else {
-          // quoted char
-          buffer[bufferOffset++] = octet;
-        }
-
-        if (bufferOffset == 3) {
-          // dequote
-          if (buffer[1] == Octets.CR && buffer[2] == Octets.LF) {
-            // soft newline (CRLF)
-            bufferOffset = 0;
-          }
-          else if (buffer[1] == Octets.CR || buffer[1] == Octets.LF) {
-            // soft newline (CR, LF)
-            if (buffer[2] == 0x3d) {
-              bufferOffset = 1;
-            }
-            else {
-              outputBuffer[outputOffset++] = buffer[2];
-              ret++;
-
-              bufferOffset = 0;
-            }
-          }
-          else {
-            byte d = 0x00;
-
-            for (var i = 1; i < 3; i++) {
-              d <<= 4;
-
-              if (0x30 <= buffer[i] && buffer[i] <= 0x39)
-                // '0' 0x30 to '9' 0x39
-                d |= (byte)(buffer[i] - 0x30);
-              else if (0x41 <= buffer[i] && buffer[i] <= 0x46)
-                // 'A' 0x41 to 'F' 0x46
-                d |= (byte)(buffer[i] - 0x37);
-              else if (0x61 <= buffer[i] && buffer[i] <= 0x66)
-                // 'a' 0x61 to 'f' 0x66
-                d |= (byte)(buffer[i] - 0x57);
-              else
-                throw new FormatException("incorrect form");
-            }
-
-            outputBuffer[outputOffset++] = d;
-            ret++;
-
-            bufferOffset = 0;
-          }
-        }
-      }
-
-      return ret;
+      return inst.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
     }
 
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
     {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-      if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
-      if (InputBlockSize < inputCount)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("InputBlockSize", "inputCount", inputCount);
-
-      var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
-      var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
-
-      Array.Resize(ref outputBuffer, len);
-
-      return outputBuffer;
+      return inst.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
     }
 
-    private byte[] buffer = new byte[3];
-    private int bufferOffset = 0;
-    private readonly bool dequoteUnderscore;
-    private bool disposed = false;
+    private readonly Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform inst;
   }
 }

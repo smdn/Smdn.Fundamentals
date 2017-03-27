@@ -28,6 +28,7 @@ using System.IO;
 using System.Text;
 
 using Smdn.IO;
+using Smdn.Text;
 
 namespace Smdn.Formats.Mime {
   public static class MimeUtils {
@@ -68,29 +69,29 @@ namespace Smdn.Formats.Mime {
 
     public struct HeaderField
     {
-      public ByteString RawData {
+      public Smdn.Text.ByteString RawData {
         get { return rawData; }
       }
 
-      public ByteString Name {
-        get { return ByteString.CreateImmutable(rawData.Segment.Array, 0, indexOfDelmiter); }
+      public Smdn.Text.ByteString Name {
+        get { return Smdn.Text.ByteString.CreateImmutable(rawData.Segment.Array, 0, indexOfDelmiter); }
       }
 
-      public ByteString Value {
-        get { return ByteString.CreateImmutable(rawData.Segment.Array, indexOfDelmiter + 1); }
+      public Smdn.Text.ByteString Value {
+        get { return Smdn.Text.ByteString.CreateImmutable(rawData.Segment.Array, indexOfDelmiter + 1); }
       }
 
       public int IndexOfDelimiter {
         get { return indexOfDelmiter; }
       }
 
-      internal HeaderField(ByteString rawData, int indexOfDelimiter)
+      internal HeaderField(Smdn.Text.ByteString rawData, int indexOfDelimiter)
       {
         this.rawData = rawData;
         this.indexOfDelmiter = indexOfDelimiter;
       }
 
-      private readonly ByteString rawData;
+      private readonly Smdn.Text.ByteString rawData;
       private readonly int indexOfDelmiter;
     }
 
@@ -108,11 +109,11 @@ namespace Smdn.Formats.Mime {
         if (line == null)
           break; // unexpected end of stream
 
-        if ((line.Length == 1 && (line[0] == Octets.CR || line[0] == Octets.LF)) ||
-            (line.Length == 2 && (line[0] == Octets.CR && line[1] == Octets.LF)))
+        if ((line.Length == 1 && (line[0] == Ascii.Octets.CR || line[0] == Ascii.Octets.LF)) ||
+            (line.Length == 2 && (line[0] == Ascii.Octets.CR && line[1] == Ascii.Octets.LF)))
           break; // end of headers
 
-        if (line[0] == Octets.HT || line[0] == Octets.SP) { // LWSP-char
+        if (line[0] == Ascii.Octets.HT || line[0] == Ascii.Octets.SP) { // LWSP-char
           // folding
           if (header == null)
             // ignore incorrect formed header

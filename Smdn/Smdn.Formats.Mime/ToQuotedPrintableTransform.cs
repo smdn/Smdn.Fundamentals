@@ -26,135 +26,49 @@ using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.Mime {
+  [Obsolete("use Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransform instead")]
   public sealed class ToQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
-      get { return true; }
+      get { return inst.CanTransformMultipleBlocks; }
     }
 
     public bool CanReuseTransform {
-      get { return true; }
+      get { return inst.CanReuseTransform; }
     }
 
     public int InputBlockSize {
-      get { return 1; }
+      get { return inst.InputBlockSize; }
     }
 
     public int OutputBlockSize {
-      get { return 3; }
+      get { return inst.OutputBlockSize; }
     }
 
     public ToQuotedPrintableTransform(ToQuotedPrintableTransformMode mode)
     {
-      switch (mode) {
-        case ToQuotedPrintableTransformMode.MimeEncoding:
-          quoteWhitespaces = true;
-          break;
-        case ToQuotedPrintableTransformMode.ContentTransferEncoding:
-          quoteWhitespaces = false;
-          break;
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
-      }
+      inst = new QuotedPrintable.ToQuotedPrintableTransform((QuotedPrintable.ToQuotedPrintableTransformMode)mode);
     }
 
     public void Clear()
     {
-      disposed = true;
+      inst.Clear();
     }
 
     void IDisposable.Dispose()
     {
-      Clear();
+      (inst as IDisposable).Dispose();
     }
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-
-      if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
-
-      if (outputBuffer == null)
-        throw new ArgumentNullException("outputBuffer");
-      if (outputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("outputOffset", outputOffset);
-      if (outputBuffer.Length - inputCount < outputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
-
-      var upperCaseHexOctets = Octets.GetUpperCaseHexOctets();
-      var ret = 0;
-
-      for (var i = 0; i < inputCount; i++) {
-        var octet = inputBuffer[inputOffset++];
-        var quote = false;
-
-        switch (octet) {
-          case Octets.HT:
-          case Octets.SP:
-          case 0x3f: // '?'
-          case 0x5f: // '_'
-            quote = quoteWhitespaces;
-            break;
-
-          case 0x3d: // '='
-            quote = true;
-            break;
-
-          default:
-            // quote non-printable chars
-            quote = (octet < 0x21 || 0x7f < octet);
-            break;
-        }
-
-        if (quote) {
-          // '=' 0x3d or non printable char
-          outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
-          outputBuffer[outputOffset++] = upperCaseHexOctets[octet >> 4];
-          outputBuffer[outputOffset++] = upperCaseHexOctets[octet & 0xf];
-
-          ret += 3;
-        }
-        else {
-          outputBuffer[outputOffset++] = octet;
-
-          ret += 1;
-        }
-      }
-
-      return ret;
+      return inst.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
     }
 
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
     {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-      if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputOffset);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
-      if (InputBlockSize < inputCount)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("InputBlockSize", "inputCount", inputCount);
-
-      var outputBuffer = new byte[inputCount * OutputBlockSize];
-      var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputBuffer.Length);
-
-      Array.Resize(ref outputBuffer, len);
-
-      return outputBuffer;
+      return inst.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
     }
 
-    private readonly bool quoteWhitespaces = true;
-    private bool disposed = false;
+    private readonly Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransform inst;
   }
 }

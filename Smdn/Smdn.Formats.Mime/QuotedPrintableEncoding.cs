@@ -30,90 +30,61 @@ using System.Text;
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats.Mime {
+  [Obsolete("use Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding instead")]
   public static class QuotedPrintableEncoding {
     public static string GetEncodedString(string str)
     {
-      return GetEncodedString(str, Encoding.ASCII);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.GetEncodedString(str);
     }
     
     public static string GetEncodedString(string str, Encoding encoding)
     {
-      return ICryptoTransformExtensions.TransformStringTo(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
-                                                          str,
-                                                          encoding);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.GetEncodedString(str, encoding);
     }
 
     public static string GetEncodedString(byte[] bytes)
     {
-      if (bytes == null)
-        throw new ArgumentNullException("bytes");
-
-      return GetEncodedString(bytes, 0, bytes.Length);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.GetEncodedString(bytes);
     }
 
     public static string GetEncodedString(byte[] bytes, int offset, int count)
     {
-      return Encoding.ASCII.GetString(ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
-                                                                                bytes,
-                                                                                offset,
-                                                                                count));
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.GetEncodedString(bytes, offset, count);
     }
 
     public static byte[] Encode(string str)
     {
-      return Encode(str, Encoding.ASCII);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.Encode(str);
     }
 
     public static byte[] Encode(string str, Encoding encoding)
     {
-      if (encoding == null)
-        throw new ArgumentNullException("encoding");
-
-      var bytes = encoding.GetBytes(str);
-
-      return ICryptoTransformExtensions.TransformBytes(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
-                                                       bytes,
-                                                       0,
-                                                       bytes.Length);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.Encode(str, encoding);
     }
 
     public static string GetDecodedString(string str)
     {
-      return GetDecodedString(str, Encoding.ASCII);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.GetDecodedString(str);
     }
 
     public static string GetDecodedString(string str, Encoding encoding)
     {
-      return ICryptoTransformExtensions.TransformStringFrom(new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
-                                                            str,
-                                                            encoding);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.GetDecodedString(str, encoding);
     }
 
     public static byte[] Decode(string str)
     {
-      var bytes = Encoding.ASCII.GetBytes(str);
-
-      return ICryptoTransformExtensions.TransformBytes(new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
-                                                       bytes,
-                                                       0,
-                                                       bytes.Length);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.Decode(str);
     }
 
     public static Stream CreateEncodingStream(Stream stream)
     {
-      if (stream == null)
-        throw new ArgumentNullException("stream");
-
-      // TODO: impl
-      throw new NotImplementedException();
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.CreateEncodingStream(stream);
     }
 
     public static Stream CreateDecodingStream(Stream stream)
     {
-      if (stream == null)
-        throw new ArgumentNullException("stream");
-
-      return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
+      return Smdn.Formats.QuotedPrintable.QuotedPrintableEncoding.CreateEncodingStream(stream);
     }
   }
 }
