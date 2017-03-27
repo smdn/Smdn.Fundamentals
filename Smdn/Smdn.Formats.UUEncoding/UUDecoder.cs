@@ -29,7 +29,9 @@ using System.IO;
 using Smdn.IO;
 
 namespace Smdn.Formats.UUEncoding {
+  [Obsolete("use Smdn.Formats.UUEncodings.UUDecoder instead")]
   public static class UUDecoder {
+    [Obsolete("use Smdn.Formats.UUEncodings.UUDecoder+FileEntry instead")]
     public sealed class FileEntry : IDisposable {
       [CLSCompliant(false)]
       public uint Permissions {
