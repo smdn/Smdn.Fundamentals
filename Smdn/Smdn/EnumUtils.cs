@@ -25,22 +25,24 @@
 using System;
 
 namespace Smdn {
+  [Obsolete("use Smdn.Text.StringConversion instead")]
   public static class EnumUtils {
     public static TEnum Parse<TEnum>(string value) where TEnum : struct /*instead of Enum*/
     {
-      return Parse<TEnum>(value, false);
+      return Smdn.Text.StringConversion.ToEnum<TEnum>(value);
     }
 
     public static TEnum ParseIgnoreCase<TEnum>(string value) where TEnum : struct /*instead of Enum*/
     {
-      return Parse<TEnum>(value, true);
+      return Smdn.Text.StringConversion.ToEnumIgnoreCase<TEnum>(value);
     }
 
     public static TEnum Parse<TEnum>(string value, bool ignoreCase) where TEnum : struct /*instead of Enum*/
     {
-      return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
+      return Smdn.Text.StringConversion.ToEnum<TEnum>(value, ignoreCase);
     }
 
+    [Obsolete("use Enum.TryParse instead")]
     public static bool TryParseIgnoreCase<TEnum>(string value, out TEnum result) where TEnum : struct /*instead of Enum*/
     {
       return Enum.TryParse(value, true, out result);

@@ -27,66 +27,56 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn {
+  [Obsolete("use Smdn.Text.StringConversion instead")]
   public static class ConvertUtils {
     public static Uri ToUri(string val)
     {
-      if (val == null)
-        throw new ArgumentNullException("val");
-
-      return new Uri(val);
+      return Smdn.Text.StringConversion.ToUri(val);
     }
 
     public static Uri ToUriNullable(string val)
     {
-      return (val == null) ? null : new Uri(val);
+      return Smdn.Text.StringConversion.ToUriNullable(val);
     }
 
     public static string ToString(Uri val)
     {
-      if (val == null)
-        throw new ArgumentNullException("val");
-
-      return val.ToString();
+      return Smdn.Text.StringConversion.ToString(val);
     }
 
     public static string ToStringNullable(Uri val)
     {
-      return (val == null) ? null : val.ToString();
+      return Smdn.Text.StringConversion.ToStringNullable(val);
     }
 
     public static int? ToInt32Nullable(string val)
     {
-      return (val == null) ? (int?)null : int.Parse(val);
+      return Smdn.Text.StringConversion.ToInt32Nullable(val);
     }
 
     public static string ToStringNullable(int? val)
     {
-      return (val == null) ? null : val.Value.ToString();
+      return Smdn.Text.StringConversion.ToStringNullable(val);
     }
 
     public static bool? ToBooleanNullable(string val)
     {
-      return (val == null) ? (bool?)null : bool.Parse(val);
+      return Smdn.Text.StringConversion.ToBooleanNullable(val);
     }
 
     public static string ToStringNullable(bool? val)
     {
-      return (val == null) ? null : val.Value.ToString().ToLowerInvariant();
+      return Smdn.Text.StringConversion.ToStringNullable(val);
     }
 
     public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct /*instead of Enum*/
     {
-      return (val == null) ? (TEnum?)null : EnumUtils.Parse<TEnum>(val, true);
+      return Smdn.Text.StringConversion.ToEnumNullable<TEnum>(val);
     }
 
     public static string ToJoinedString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
     {
-      const string separator = ", ";
-
-      if (pairs == null)
-        return null;
-
-      return string.Join(separator, pairs.Select(pair => string.Concat("{", pair.Key, " => ", pair.Value, "}")));
+      return Smdn.Text.StringConversion.ToJoinedString(pairs);
     }
   }
 }
