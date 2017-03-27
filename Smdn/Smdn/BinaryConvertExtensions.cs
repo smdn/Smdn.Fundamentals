@@ -25,187 +25,98 @@
 using System;
 
 namespace Smdn {
+  [Obsolete("use Smdn.IO.Binary.BinaryConversion instead")]
   public class BinaryConvertExtensions : BinaryConvert {
     protected BinaryConvertExtensions() {}
 
     public static UInt24 ToUInt24LE(byte[] @value, int startIndex)
     {
-      CheckSourceArray(@value, startIndex, 3);
-
-      return new UInt24(@value, startIndex, false);
+      return Smdn.IO.Binary.BinaryConversion.ToUInt24LE(@value, startIndex);
     }
 
     public static UInt24 ToUInt24BE(byte[] @value, int startIndex)
     {
-      CheckSourceArray(@value, startIndex, 3);
-
-      return new UInt24(@value, startIndex, true);
+      return Smdn.IO.Binary.BinaryConversion.ToUInt24BE(@value, startIndex);
     }
 
     public static UInt24 ToUInt24(byte[] @value, int startIndex, Endianness endian)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt24LE(@value, startIndex);
-        case Endianness.BigEndian:    return ToUInt24BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      return Smdn.IO.Binary.BinaryConversion.ToUInt24(@value, startIndex, endian);
     }
 
     public static UInt48 ToUInt48LE(byte[] @value, int startIndex)
     {
-      CheckSourceArray(@value, startIndex, 6);
-
-      return new UInt48(@value, startIndex, false);
+      return Smdn.IO.Binary.BinaryConversion.ToUInt48LE(@value, startIndex);
     }
 
     public static UInt48 ToUInt48BE(byte[] @value, int startIndex)
     {
-      CheckSourceArray(@value, startIndex, 6);
-
-      return new UInt48(@value, startIndex, true);
+      return Smdn.IO.Binary.BinaryConversion.ToUInt48BE(@value, startIndex);
     }
 
     public static UInt48 ToUInt48(byte[] @value, int startIndex, Endianness endian)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt48LE(@value, startIndex);
-        case Endianness.BigEndian:    return ToUInt48BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      return Smdn.IO.Binary.BinaryConversion.ToUInt48(@value, startIndex, endian);
     }
 
     public static void GetBytesLE(UInt24 @value, byte[] bytes, int startIndex)
     {
-      CheckDestArray(bytes, startIndex, 3);
-
-      UInt32 val = @value.ToUInt32();
-
-      unchecked {
-        bytes[startIndex    ] = (byte)(val);
-        bytes[startIndex + 1] = (byte)(val >> 8);
-        bytes[startIndex + 2] = (byte)(val >> 16);
-      }
+      Smdn.IO.Binary.BinaryConversion.GetBytesLE(@value, bytes, startIndex);
     }
 
     public static void GetBytesBE(UInt24 @value, byte[] bytes, int startIndex)
     {
-      CheckDestArray(bytes, startIndex, 3);
-
-      UInt32 val = @value.ToUInt32();
-
-      unchecked {
-        bytes[startIndex    ] = (byte)(val >> 16);
-        bytes[startIndex + 1] = (byte)(val >> 8);
-        bytes[startIndex + 2] = (byte)(val);
-      }
+      Smdn.IO.Binary.BinaryConversion.GetBytesBE(@value, bytes, startIndex);
     }
 
     public static void GetBytes(UInt24 @value, Endianness endian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      Smdn.IO.Binary.BinaryConversion.GetBytes(@value, endian, bytes, startIndex);
     }
 
     public static void GetBytesLE(UInt48 @value, byte[] bytes, int startIndex)
     {
-      CheckDestArray(bytes, startIndex, 6);
-
-      UInt64 val = @value.ToUInt64();
-
-      unchecked {
-        bytes[startIndex    ] = (byte)(val);
-        bytes[startIndex + 1] = (byte)(val >> 8);
-        bytes[startIndex + 2] = (byte)(val >> 16);
-        bytes[startIndex + 3] = (byte)(val >> 24);
-        bytes[startIndex + 4] = (byte)(val >> 32);
-        bytes[startIndex + 5] = (byte)(val >> 40);
-      }
+      Smdn.IO.Binary.BinaryConversion.GetBytesLE(@value, bytes, startIndex);
     }
 
     public static void GetBytesBE(UInt48 @value, byte[] bytes, int startIndex)
     {
-      CheckDestArray(bytes, startIndex, 6);
-
-      UInt64 val = @value.ToUInt64();
-
-      unchecked {
-        bytes[startIndex    ] = (byte)(val >> 40);
-        bytes[startIndex + 1] = (byte)(val >> 32);
-        bytes[startIndex + 2] = (byte)(val >> 24);
-        bytes[startIndex + 3] = (byte)(val >> 16);
-        bytes[startIndex + 4] = (byte)(val >> 8);
-        bytes[startIndex + 5] = (byte)(val);
-      }
+      Smdn.IO.Binary.BinaryConversion.GetBytesBE(@value, bytes, startIndex);
     }
 
     public static void GetBytes(UInt48 @value, Endianness endian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      Smdn.IO.Binary.BinaryConversion.GetBytes(@value, endian, bytes, startIndex);
     }
 
     public static byte[] GetBytesLE(UInt24 @value)
     {
-      var bytes = new byte[3];
-
-      GetBytesLE(@value, bytes, 0);
-
-      return bytes;
+      return Smdn.IO.Binary.BinaryConversion.GetBytesLE(@value);
     }
 
     public static byte[] GetBytesBE(UInt24 @value)
     {
-      var bytes = new byte[3];
-
-      GetBytesBE(@value, bytes, 0);
-
-      return bytes;
+      return Smdn.IO.Binary.BinaryConversion.GetBytesBE(@value);
     }
 
     public static byte[] GetBytes(UInt24 @value, Endianness endian)
     {
-      var bytes = new byte[3];
-
-      GetBytes(@value, endian, bytes, 0);
-
-      return bytes;
+      return Smdn.IO.Binary.BinaryConversion.GetBytes(@value, endian);
     }
 
     public static byte[] GetBytesLE(UInt48 @value)
     {
-      var bytes = new byte[6];
-
-      GetBytesLE(@value, bytes, 0);
-
-      return bytes;
+      return Smdn.IO.Binary.BinaryConversion.GetBytesLE(@value);
     }
 
     public static byte[] GetBytesBE(UInt48 @value)
     {
-      var bytes = new byte[6];
-
-      GetBytesBE(@value, bytes, 0);
-
-      return bytes;
+      return Smdn.IO.Binary.BinaryConversion.GetBytesBE(@value);
     }
 
     public static byte[] GetBytes(UInt48 @value, Endianness endian)
     {
-      var bytes = new byte[6];
-
-      GetBytes(@value, endian, bytes, 0);
-
-      return bytes;
+      return Smdn.IO.Binary.BinaryConversion.GetBytes(@value, endian);
     }
   }
 }
