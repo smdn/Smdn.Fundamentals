@@ -28,33 +28,11 @@ using System.Security.Cryptography;
 namespace Smdn.Formats {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152
-  public class ToRFC2152ModifiedBase64Transform : ToBase64Transform, ICryptoTransform {
+  [Obsolete("use Smdn.Formats.ModifiedBase64.ToRFC2152ModifiedBase64Transform instead")]
+  public class ToRFC2152ModifiedBase64Transform : Smdn.Formats.ModifiedBase64.ToRFC2152ModifiedBase64Transform {
     public ToRFC2152ModifiedBase64Transform()
       : base()
     {
-    }
-
-    public virtual new byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-    {
-      // The pad character "=" is not used when encoding
-      // Modified Base64 because of the conflict with its use as an escape
-      // character for the Q content transfer encoding in RFC 2047 header
-      // fields, as mentioned above.
-      var transformed = base.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
-
-      int padding = -1;
-
-      for (var i = transformed.Length - 1; 0 <= i; i--) {
-        if (transformed[i] == 0x3d) // '=' 0x3d
-          padding = i;
-        else
-          break;
-      }
-
-      if (0 <= padding)
-        Array.Resize(ref transformed, padding);
-
-      return transformed;
     }
   }
 }

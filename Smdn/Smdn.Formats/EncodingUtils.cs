@@ -27,72 +27,28 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Smdn.Formats {
+  [Obsolete("use Smdn.Text.Encodings.EncodingUtils instead")]
   public static class EncodingUtils {
     public static Encoding GetEncoding(string name)
     {
-      return GetEncoding(name, null);
+      return Smdn.Text.Encodings.EncodingUtils.GetEncoding(name);
     }
 
     public static Encoding GetEncoding(string name,
                                        EncodingSelectionCallback selectFallbackEncoding)
     {
-      if (name == null)
-        throw new ArgumentNullException("name");
-
-      // remove leading and trailing whitespaces (\x20, \n, \t, etc.)
-      name = name.Trim();
-
-      string encodingName;
-
-      if (!encodingCollationTable.TryGetValue(name.RemoveChars('-', '_', ' '), out encodingName))
-        encodingName = name;
-
-      try {
-        return Encoding.GetEncoding(encodingName);
-      }
-      catch (ArgumentException) {
-        // illegal or unsupported
-        if (selectFallbackEncoding == null)
-          return null;
-        else
-          return selectFallbackEncoding(name); // trimmed name
-      }
+      return Smdn.Text.Encodings.EncodingUtils.GetEncoding(name, n => selectFallbackEncoding(n));
     }
 
     public static Encoding GetEncodingThrowException(string name)
     {
-      return GetEncodingThrowException(name, null);
+      return Smdn.Text.Encodings.EncodingUtils.GetEncodingThrowException(name);
     }
 
     public static Encoding GetEncodingThrowException(string name,
                                                      EncodingSelectionCallback selectFallbackEncoding)
     {
-      var encoding = GetEncoding(name, selectFallbackEncoding);
-
-      if (encoding == null)
-        throw new EncodingNotSupportedException(name);
-      else
-        return encoding;
+      return Smdn.Text.Encodings.EncodingUtils.GetEncodingThrowException(name, n => selectFallbackEncoding(n));
     }
-
-    private static readonly Dictionary<string, string> encodingCollationTable
-      = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
-      /* UTF-16 */
-      {"utf16",       "utf-16"},
-      /* UTF-8 */
-      {"utf8",        "utf-8"},
-      /* Shift_JIS */
-      {"shiftjis",    "shift_jis"},     // shift_jis
-      {"xsjis",       "shift_jis"},     // x-sjis
-      /* EUC-JP */
-      {"eucjp",       "euc-jp"},        // euc-jp
-      {"xeucjp",      "euc-jp"},        // x-euc-jp
-      /* ISO-2022-JP */
-      {"iso2022jp",   "iso-2022-jp"},   // iso-2022-jp
-
-      // TODO
-      // {"utf16be",     "utf-16"},
-      // {"utf16le",     "utf-16"},
-    };
   }
 }

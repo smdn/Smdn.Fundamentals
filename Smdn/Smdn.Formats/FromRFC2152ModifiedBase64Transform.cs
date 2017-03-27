@@ -28,13 +28,8 @@ using System.Security.Cryptography;
 namespace Smdn.Formats {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152
-  public class FromRFC2152ModifiedBase64Transform : FromBase64Transform, ICryptoTransform {
-    private static readonly byte[] paddingBuffer = new byte[] {0x3d, 0x3d}; // '=' 0x3d
-
-    public new int InputBlockSize {
-      get { return 4; }
-    }
-
+  [Obsolete("use Smdn.Formats.ModifiedBase64.FromRFC2152ModifiedBase64Transform instead")]
+  public class FromRFC2152ModifiedBase64Transform : Smdn.Formats.ModifiedBase64.FromRFC2152ModifiedBase64Transform, ICryptoTransform {
     public FromRFC2152ModifiedBase64Transform()
       : base()
     {
@@ -44,42 +39,5 @@ namespace Smdn.Formats {
       : base(whitespaces)
     {
     }
-
-    public virtual new int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
-    {
-      count += inputCount;
-
-      return base.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
-    }
-
-    public virtual new byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-    {
-      // The pad character "=" is not used when encoding
-      // Modified Base64 because of the conflict with its use as an escape
-      // character for the Q content transfer encoding in RFC 2047 header
-      // fields, as mentioned above.
-      var paddingCount = 4 - (count + inputCount) & 3;
-
-      count = 0; // initialize
-
-      switch (paddingCount) {
-        case 1:
-        case 2:
-          var paddedInputBuffer = new byte[inputCount + paddingCount];
-
-          Buffer.BlockCopy(inputBuffer, inputOffset, paddedInputBuffer, 0, inputCount);
-          Buffer.BlockCopy(paddingBuffer, 0, paddedInputBuffer, inputCount, paddingCount);
-
-          return base.TransformFinalBlock(paddedInputBuffer, 0, paddedInputBuffer.Length);
-
-        case 3:
-          throw new FormatException("incorrect form");
-
-        default: // case 4
-          return Array.Empty<byte>();
-      }
-    }
-
-    private int count = 0;
   }
 }

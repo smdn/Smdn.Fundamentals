@@ -28,24 +28,10 @@ using System.IO;
 using System.Text;
 
 namespace Smdn.Formats {
-  public class CsvReader : StreamReader {
-    public char Delimiter {
-      get { return delimiter; }
-      set { delimiter = value; }
-    }
-
-    public char Quotator {
-      get { return quotator; }
-      set { quotator = value; }
-    }
-
-    public bool EscapeAlways {
-      get { return escapeAlways; }
-      set { escapeAlways = value; }
-    }
-
+  [Obsolete("use Smdn.Formats.Csv.CsvReader instead")]
+  public class CsvReader : Smdn.Formats.Csv.CsvReader {
     public CsvReader(string path)
-      : this(path, Encoding.Default)
+      : base(path)
     {
     }
 
@@ -55,7 +41,7 @@ namespace Smdn.Formats {
     }
 
     public CsvReader(Stream stream)
-      : this(stream, Encoding.Default)
+      : base(stream)
     {
     }
 
@@ -65,150 +51,13 @@ namespace Smdn.Formats {
     }
 
     public CsvReader(StreamReader reader)
-      : this(reader.BaseStream, reader.CurrentEncoding)
+      : base(reader)
     {
     }
 
     public CsvReader(StreamReader reader, Encoding encoding)
-      : base(reader.BaseStream, encoding)
+      : base(reader, encoding)
     {
     }
-
-    private string ReadField(out bool escaped)
-    {
-      escaped = false;
-
-      var field = new StringBuilder();
-      var c = base.Read();
-
-      if (c == -1)
-        // EOS
-        return null;
-
-      var ch = (char)c;
-
-      // switch by first character
-      if (ch == quotator) {
-        // escaped column
-        escaped = true;
-      }
-      else if (ch == delimiter) {
-        // empty column
-        return string.Empty;
-      }
-      else if (ch == Chars.CR) {
-        // unescaped newline
-        if ((int)Chars.LF == base.Peek()) {
-          base.Read(); // CRLF
-          return Chars.CRLF;
-        }
-        else {
-          return new string(Chars.LF, 1);
-        }
-      }
-      else if (ch == Chars.LF) {
-        // unescaped newline
-        return new string(Chars.CR, 1);
-      }
-
-      if (escaped) {
-        // escaped field
-        var quot = 1;
-        var prev = ch;
-
-        for (;;) {
-          c = base.Peek();
-
-          if (c == -1)
-            break;
-
-          ch = (char)c;
-
-          if (ch == quotator) {
-            if (quot == 0) {
-              quot = 1;
-              if (prev == quotator)
-                field.Append((char)base.Read());
-              else
-                throw new InvalidDataException(string.Format("invalid quotation after '{0}'", field.ToString()));
-            }
-            else {
-              quot = 0;
-              base.Read();
-            }
-          }
-          else {
-            if (quot == 0 && ch == delimiter) {
-              base.Read();
-              break;
-            }
-            else if (quot == 0 && (ch == Chars.CR || ch == Chars.LF)) {
-              break;
-            }
-            else {
-              field.Append((char)base.Read());
-            }
-          }
-
-          prev = ch;
-        }
-      }
-      else {
-        // unescaped field
-        field.Append(ch);
-
-        for (;;) {
-          c = base.Peek();
-
-          if (c == -1)
-            break;
-
-          ch = (char)c;
-
-          if (ch == delimiter) {
-            base.Read();
-            break;
-          }
-          else if (ch == Chars.CR || ch == Chars.LF) {
-            break;
-          }
-          else {
-            field.Append((char)base.Read());
-          }
-        }
-      }
-
-      return field.ToString();
-    }
-
-    public new string[] ReadLine()
-    {
-      var record = new List<string>();
-
-      try {
-        for (;;) {
-          bool escaped;
-          var field = ReadField(out escaped);
-
-          if (field == null)
-            return null;
-
-          if (!escaped && 1 <= field.Length && (field[0] == Chars.CR || field[0] == Chars.LF))
-            // newline
-            break;
-          else
-            record.Add(field);
-        }
-
-        return record.ToArray();
-      }
-      catch (InvalidDataException ex) {
-        throw new InvalidDataException(string.Format("format exception after '{0}'", string.Join(", ", record.ToArray())), ex);
-      }
-    }
-
-    private char delimiter = Chars.Comma;
-    private char quotator = Chars.DQuote;
-    private bool escapeAlways = false;
   }
 }

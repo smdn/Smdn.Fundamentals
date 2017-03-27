@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 
+using Smdn.Text;
+
 namespace Smdn.Formats {
   public static class CsvRecord {
     // http://www.ietf.org/rfc/rfc4180.txt
@@ -40,7 +42,7 @@ namespace Smdn.Formats {
       var inQuote = false;
 
       for (var index = 0; index < csv.Length; index++) {
-        if (csv[index] == Chars.DQuote) {
+        if (csv[index] == Ascii.Chars.DQuote) {
           inQuote = !inQuote;
           quoted = true;
         }
@@ -48,7 +50,7 @@ namespace Smdn.Formats {
         if (inQuote)
           continue;
 
-        if (csv[index] != Chars.Comma)
+        if (csv[index] != Ascii.Chars.Comma)
           continue;
 
         if (quoted)

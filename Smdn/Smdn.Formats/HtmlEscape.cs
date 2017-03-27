@@ -27,100 +27,41 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Smdn.Formats {
+  [Obsolete("use Smdn.Formats.Html instead")]
   public static class HtmlEscape {
     public static string ToHtmlEscapedString(string str)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-
-      return ToXhtmlEscapedString(str, false);
+      return Smdn.Formats.Html.ToHtmlEscapedString(str);
     }
 
     public static string ToXhtmlEscapedString(string str)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-
-      return ToXhtmlEscapedString(str, true);
+      return Smdn.Formats.Html.ToXhtmlEscapedString(str);
     }
 
     public static string ToHtmlEscapedStringNullable(string str)
     {
-      if (str == null)
-        return null;
-      else
-        return ToXhtmlEscapedString(str, false);
+      return Smdn.Formats.Html.ToHtmlEscapedStringNullable(str);
     }
 
     public static string ToXhtmlEscapedStringNullable(string str)
     {
-      if (str == null)
-        return null;
-      else
-        return ToXhtmlEscapedString(str, true);
-    }
-
-    private static string ToXhtmlEscapedString(string str, bool xhtml)
-    {
-      var sb = new StringBuilder(str.Length);
-      var len = str.Length;
-
-      for (var i = 0; i < len; i++) {
-        var ch = str[i];
-
-        switch (ch) {
-          case Chars.Ampersand:   sb.Append("&amp;"); break;
-          case Chars.LessThan:    sb.Append("&lt;"); break;
-          case Chars.GreaterThan: sb.Append("&gt;"); break;
-          case Chars.DQuote:      sb.Append("&quot;"); break;
-          case Chars.Quote:
-            if (xhtml) sb.Append("&apos;");
-            else sb.Append(Chars.Quote);
-            break;
-          default: sb.Append(ch); break;
-        }
-      }
-
-      return sb.ToString();
+      return Smdn.Formats.Html.ToXhtmlEscapedStringNullable(str);
     }
 
     public static string FromHtmlEscapedString(string str)
     {
-      return FromXhtmlEscapedString(str, false);
+      return Smdn.Formats.Html.FromHtmlEscapedString(str);
     }
 
     public static string FromXhtmlEscapedString(string str)
     {
-      return FromXhtmlEscapedString(str, true);
-    }
-
-    private static string FromXhtmlEscapedString(string str, bool xhtml)
-    {
-      var sb = new StringBuilder(str);
-
-      sb.Replace("&lt;", "<");
-      sb.Replace("&gt;", ">");
-      sb.Replace("&quot;", "\"");
-
-      if (xhtml)
-        sb.Replace("&apos;", "'");
-
-      sb.Replace("&amp;", "&");
-
-      return sb.ToString();
+      return Smdn.Formats.Html.FromXhtmlEscapedString(str);
     }
 
     public static string FromNumericCharacterReference(string str)
     {
-      if (str == null)
-        throw new ArgumentNullException("str");
-
-      return Regex.Replace(str, @"&#(?<hex>x?)(?<number>[0-9a-fA-F]+);", delegate(Match m) {
-        if (m.Groups["hex"].Length == 0)
-          return ((char)Convert.ToUInt16(m.Groups["number"].Value, 10)).ToString();
-        else
-          return ((char)Convert.ToUInt16(m.Groups["number"].Value, 16)).ToString();
-      });
+      return Smdn.Formats.Html.FromNumericCharacterReference(str);
     }
   }
 }

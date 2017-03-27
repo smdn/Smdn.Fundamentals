@@ -26,5 +26,6 @@ using System;
 using System.Text;
 
 namespace Smdn.Formats {
+  [Obsolete("use Smdn.Text.Encodings.EncodingSelectionCallback instead")]
   public delegate Encoding EncodingSelectionCallback(string name);
 }

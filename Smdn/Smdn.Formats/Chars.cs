@@ -25,6 +25,7 @@
 using System;
 
 namespace Smdn.Formats {
+  [Obsolete("use Smdn.Text.Ascii.Chars instead")]
   public static class Chars {
     public const char NUL     = '\u0000';
     public const char CR      = '\u000d';
@@ -39,28 +40,14 @@ namespace Smdn.Formats {
     public const char Ampersand   = '&';
     public const string CRLF  = "\u000d\u000a";
 
-    internal static readonly char[] LowerCaseHexCharArray = new char[] {
-      '0', '1', '2', '3',
-      '4', '5', '6', '7',
-      '8', '9', 'a', 'b',
-      'c', 'd', 'e', 'f'
-    };
-
-    internal static readonly char[] UpperCaseHexCharArray = new char[] {
-      '0', '1', '2', '3',
-      '4', '5', '6', '7',
-      '8', '9', 'A', 'B',
-      'C', 'D', 'E', 'F'
-    };
-
     public static char[] GetLowerCaseHexChars()
     {
-      return (char[])LowerCaseHexCharArray.Clone();
+      return Smdn.Text.Ascii.Chars.GetLowerCaseHexChars();
     }
 
     public static char[] GetUpperCaseHexChars()
     {
-      return (char[])UpperCaseHexCharArray.Clone();
+      return Smdn.Text.Ascii.Chars.GetUpperCaseHexChars();
     }
   }
 }

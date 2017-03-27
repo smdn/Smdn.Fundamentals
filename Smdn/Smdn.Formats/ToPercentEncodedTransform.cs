@@ -34,181 +34,49 @@ namespace Smdn.Formats {
    * http://tools.ietf.org/html/rfc2396
    * RFC 2396 - Uniform Resource Identifiers (URI): Generic Syntax
    */
+  [Obsolete("use Smdn.Formats.PercentEncodings.ToPercentEncodedTransform instead")]
   public sealed class ToPercentEncodedTransform : ICryptoTransform {
-    //                                    "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-    // RFC 2396 unreserved characters:    "!      '()*  -. 0123456789     ?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[  ] _ abcdefghijklmnopqrstuvwxyz   ~";
-    // RFC 3986 unreserved characters:    "             -. 0123456789       ABCDEFGHIJKLMNOPQRSTUVWXYZ     _ abcdefghijklmnopqrstuvwxyz   ~";
-    // RFC 3986   reserved characters:    "!  #$ &'()*+,  /          :; = ?@                          [  ]                                 ";
-    private const string
-      rfc2396UriEscapeChars             = " \"  %                      < >                            [\\]^ `                          {|} ";
-    private const string
-      rfc3986UriEscapeChars             = " \"  %                      < >                             \\ ^ `                          {|} ";
-    private const string
-      rfc2396DataEscapeChars            = " \"#$%&    +,  /          :;<=>?@                          [\\]^ `                          {|} ";
-    private const string
-      rfc3986DataEscapeChars            = "!\"#$%&'()*+,  /          :;<=>?@                          [\\]^ `                          {|} ";
-
-    private const string
-      rfc5092AChars                     = " \"# %         /          :;< >?@                          [\\]^ `                          {|} ";
-    private const string
-      rfc5092BChars                     = " \"# %                     ;< >?                           [\\]^ `                          {|} ";
-
-    private byte[] GetEscapeOctets(string str)
-    {
-      var octets = new byte[0x80 - 0x20];
-      var count = 0;
-
-      octets[count++] = Octets.SP;
-
-      foreach (var c in str) {
-        if (c != Chars.SP)
-          octets[count++] = (byte)c;
-      }
-
-      Array.Resize(ref octets, count);
-
-      return octets;
-    }
-
     public bool CanTransformMultipleBlocks {
-      get { return true; }
+      get { return inst.CanTransformMultipleBlocks; }
     }
 
     public bool CanReuseTransform {
-      get { return true; }
+      get { return inst.CanReuseTransform; }
     }
 
     public int InputBlockSize {
-      get { return 1; }
+      get { return inst.InputBlockSize; }
     }
 
     public int OutputBlockSize {
-      get { return 3; }
+      get { return inst.OutputBlockSize; }
     }
 
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode)
     {
-      switch (mode & ToPercentEncodedTransformMode.ModeMask) {
-        case ToPercentEncodedTransformMode.Rfc2396Uri:
-          escapeOctets = GetEscapeOctets(rfc2396UriEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc2396Data:
-          escapeOctets = GetEscapeOctets(rfc2396DataEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc3986Uri:
-          escapeOctets = GetEscapeOctets(rfc3986UriEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc3986Data:
-          escapeOctets = GetEscapeOctets(rfc3986DataEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc5092Uri:
-          escapeOctets = GetEscapeOctets(rfc5092AChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc5092Path:
-          escapeOctets = GetEscapeOctets(rfc5092BChars);
-          break;
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
-      }
-
-      escapeSpaceToPlus = (int)(mode & ToPercentEncodedTransformMode.EscapeSpaceToPlus) != 0;
+      inst = new PercentEncodings.ToPercentEncodedTransform((PercentEncodings.ToPercentEncodedTransformMode)mode);
     }
 
     public void Clear()
     {
-      disposed = true;
+      inst.Clear();
     }
 
     void IDisposable.Dispose()
     {
-      Clear();
+      (inst as IDisposable).Dispose();
     }
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-
-      if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
-
-      if (outputBuffer == null)
-        throw new ArgumentNullException("outputBuffer");
-      if (outputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("outputOffset", outputOffset);
-      if (outputBuffer.Length - inputCount < outputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
-
-      var upperCaseHexOctets = Octets.GetUpperCaseHexOctets();
-      var ret = 0;
-
-      for (var i = 0; i < inputCount; i++) {
-        var octet = inputBuffer[inputOffset++];
-
-        var escape =
-          !((0x30 <= octet && octet <= 0x39) || // DIGIT
-            (0x41 <= octet && octet <= 0x5a) || // UPALPHA
-            (0x61 <= octet && octet <= 0x7a) // LOWALPHA
-           ) &&
-          (octet < 0x20 || 0x80 <= octet);
-
-        escape |= (0 <= Array.BinarySearch(escapeOctets, octet));
-
-        if (escape) {
-          if (octet == 0x20 && escapeSpaceToPlus) {
-            outputBuffer[outputOffset++] = 0x2b; // '+' 0x2b
-
-            ret += 1;
-          }
-          else {
-            outputBuffer[outputOffset++] = 0x25; // '%' 0x25
-            outputBuffer[outputOffset++] = upperCaseHexOctets[octet >> 4];
-            outputBuffer[outputOffset++] = upperCaseHexOctets[octet & 0xf];
-
-            ret += 3;
-          }
-        }
-        else {
-          outputBuffer[outputOffset++] = octet;
-
-          ret += 1;
-        }
-      }
-
-      return ret;
+      return inst.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
     }
 
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
     {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-      if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
-      if (InputBlockSize < inputCount)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("InputBlockSize", "inputCount", inputCount);
-
-      var outputBuffer = new byte[inputCount * OutputBlockSize];
-      var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputBuffer.Length);
-
-      Array.Resize(ref outputBuffer, len);
-
-      return outputBuffer;
+      return inst.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
     }
 
-    private bool disposed = false;
-    private byte[] escapeOctets;
-    private bool escapeSpaceToPlus;
+    private readonly Smdn.Formats.PercentEncodings.ToPercentEncodedTransform inst;
   }
 }

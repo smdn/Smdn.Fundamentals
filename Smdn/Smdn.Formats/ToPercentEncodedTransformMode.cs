@@ -25,6 +25,7 @@
 using System;
 
 namespace Smdn.Formats {
+  [Obsolete("use Smdn.Formats.PercentEncodings.ToPercentEncodedTransformMode instead")]
   [Flags]
   public enum ToPercentEncodedTransformMode : int {
     ModeMask        = (1 << 16) - 1,

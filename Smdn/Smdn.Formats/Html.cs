@@ -26,6 +26,8 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 
+using Smdn.Text;
+
 namespace Smdn.Formats {
   public static class Html {
     public static string ToHtmlEscapedString(string str)
@@ -69,13 +71,13 @@ namespace Smdn.Formats {
         var ch = str[i];
 
         switch (ch) {
-          case Chars.Ampersand:   sb.Append("&amp;"); break;
-          case Chars.LessThan:    sb.Append("&lt;"); break;
-          case Chars.GreaterThan: sb.Append("&gt;"); break;
-          case Chars.DQuote:      sb.Append("&quot;"); break;
-          case Chars.Quote:
+          case Ascii.Chars.Ampersand:   sb.Append("&amp;"); break;
+          case Ascii.Chars.LessThan:    sb.Append("&lt;"); break;
+          case Ascii.Chars.GreaterThan: sb.Append("&gt;"); break;
+          case Ascii.Chars.DQuote:      sb.Append("&quot;"); break;
+          case Ascii.Chars.Quote:
             if (xhtml) sb.Append("&apos;");
-            else sb.Append(Chars.Quote);
+            else sb.Append(Ascii.Chars.Quote);
             break;
           default: sb.Append(ch); break;
         }
