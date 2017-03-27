@@ -26,8 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Smdn {
-  public static class ConvertUtils {
+namespace Smdn.Text {
+  public static class StringConversion {
     public static Uri ToUri(string val)
     {
       if (val == null)
@@ -74,11 +74,6 @@ namespace Smdn {
       return (val == null) ? null : val.Value.ToString().ToLowerInvariant();
     }
 
-    public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct /*instead of Enum*/
-    {
-      return (val == null) ? (TEnum?)null : EnumUtils.Parse<TEnum>(val, true);
-    }
-
     public static string ToJoinedString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
     {
       const string separator = ", ";
@@ -87,6 +82,29 @@ namespace Smdn {
         return null;
 
       return string.Join(separator, pairs.Select(pair => string.Concat("{", pair.Key, " => ", pair.Value, "}")));
+    }
+
+    /*
+     * enum parsing
+     */
+    public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct /*instead of Enum*/
+    {
+      return (val == null) ? (TEnum?)null : ToEnum<TEnum>(val, true);
+    }
+
+    public static TEnum ToEnum<TEnum>(string value) where TEnum : struct /*instead of Enum*/
+    {
+      return ToEnum<TEnum>(value, false);
+    }
+
+    public static TEnum ToEnumIgnoreCase<TEnum>(string value) where TEnum : struct /*instead of Enum*/
+    {
+      return ToEnum<TEnum>(value, true);
+    }
+
+    public static TEnum ToEnum<TEnum>(string value, bool ignoreCase) where TEnum : struct /*instead of Enum*/
+    {
+      return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
     }
   }
 }

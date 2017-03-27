@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using Smdn.Collections;
 using NUnit.Framework;
 
-namespace Smdn {
+namespace Smdn.Text {
   [TestFixture]
-  public class ConvertUtilsTests {
+  public class StringConversionTests {
     [Test]
     public void TestToJoinedStringArgumentSingle()
     {
       var pairs = new[] {KeyValuePair.Create("key", "value")};
 
-      Assert.AreEqual("{key => value}", ConvertUtils.ToJoinedString(pairs));
+      Assert.AreEqual("{key => value}", StringConversion.ToJoinedString(pairs));
     }
 
     [Test]
@@ -22,7 +22,7 @@ namespace Smdn {
         KeyValuePair.Create("key2", "value2"),
       };
 
-      Assert.AreEqual("{key1 => value1}, {key2 => value2}", ConvertUtils.ToJoinedString(pairs));
+      Assert.AreEqual("{key1 => value1}, {key2 => value2}", StringConversion.ToJoinedString(pairs));
     }
 
     [Test]
@@ -34,7 +34,7 @@ namespace Smdn {
         KeyValuePair.Create((string)null, (string)null),
       };
 
-      Assert.AreEqual("{key1 => }, { => value2}, { => }", ConvertUtils.ToJoinedString(pairs));
+      Assert.AreEqual("{key1 => }, { => value2}, { => }", StringConversion.ToJoinedString(pairs));
     }
 
     [Test]
@@ -42,7 +42,7 @@ namespace Smdn {
     {
       var pairs = new KeyValuePair<string, string>[] { };
 
-      Assert.IsEmpty(ConvertUtils.ToJoinedString(pairs));
+      Assert.IsEmpty(StringConversion.ToJoinedString(pairs));
     }
 
     [Test]
@@ -50,7 +50,33 @@ namespace Smdn {
     {
       IEnumerable<KeyValuePair<string, string>> pairs = null;
 
-      Assert.IsNull(ConvertUtils.ToJoinedString(pairs));
+      Assert.IsNull(StringConversion.ToJoinedString(pairs));
+    }
+
+    [Test]
+    public void TestToEnum()
+    {
+      Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnum<DayOfWeek>("Sunday"));
+      Assert.AreEqual(DayOfWeek.Monday, StringConversion.ToEnum<DayOfWeek>("Monday"));
+      Assert.AreEqual(DayOfWeek.Tuesday, StringConversion.ToEnum<DayOfWeek>("Tuesday"));
+      Assert.AreEqual(DayOfWeek.Wednesday, StringConversion.ToEnum<DayOfWeek>("Wednesday"));
+
+      Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnum<DayOfWeek>("sUndaY", true));
+      Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnumIgnoreCase<DayOfWeek>("sUndaY"));
+
+      try {
+        Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnum<DayOfWeek>("sUndaY"));
+        Assert.Fail("exception not thrown");
+      }
+      catch {
+      }
+
+      try {
+        Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnum<DayOfWeek>("sUndaY", false));
+        Assert.Fail("exception not thrown");
+      }
+      catch {
+      }
     }
   }
 }

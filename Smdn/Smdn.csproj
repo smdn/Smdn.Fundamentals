@@ -151,6 +151,7 @@
     <Compile Include="Smdn.Text\Ascii+Octets.cs" />
     <Compile Include="Smdn.Text\ByteString.cs" />
     <Compile Include="Smdn.Text\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.Text\StringConversion.cs" />
     <Compile Include="Smdn\BinaryConvertExtensions.cs" />
     <Compile Include="Smdn\EnvironmentUtils.cs" />
     <Compile Include="Smdn\FourCC.cs" />

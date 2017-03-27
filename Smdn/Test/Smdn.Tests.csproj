@@ -108,6 +108,7 @@
     <Compile Include="Smdn.Text\Ascii+Hexadecimals.cs" />
     <Compile Include="Smdn.Text\ByteString.cs" />
     <Compile Include="Smdn.Text\ByteStringBuilder.cs" />
+    <Compile Include="Smdn.Text\StringConversion.cs" />
     <Compile Include="Smdn\ArrayExtensions.cs" />
     <Compile Include="Smdn\BinaryConvertExtensions.cs" />
     <Compile Include="Smdn\ConvertUtils.cs" />
