@@ -105,6 +105,7 @@
     <Compile Include="Smdn.Formats\UriQuery.cs" />
     <Compile Include="Smdn.IO.Binary\BigEndianBinaryReader.cs" />
     <Compile Include="Smdn.IO.Binary\BigEndianBinaryWriter.cs" />
+    <Compile Include="Smdn.IO.Binary\BinaryConversion.cs" />
     <Compile Include="Smdn.IO.Binary\BinaryReader.cs" />
     <Compile Include="Smdn.IO.Binary\BinaryReaderBase.cs" />
     <Compile Include="Smdn.IO.Binary\BinaryWriter.cs" />
