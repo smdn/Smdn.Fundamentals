@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Binary {
-  public class BigEndianBinaryReader : Smdn.IO.BinaryReader {
+  public class BigEndianBinaryReader : Smdn.IO.Binary.BinaryReader {
     public BigEndianBinaryReader(Stream stream)
       : this(stream, false)
     {
@@ -46,7 +46,7 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConvert.ToInt16BE(Storage, 0);
+      return BinaryConversion.ToInt16BE(Storage, 0);
     }
 
     [CLSCompliant(false)]
@@ -54,14 +54,14 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConvert.ToUInt16BE(Storage, 0);
+      return BinaryConversion.ToUInt16BE(Storage, 0);
     }
 
     public override int ReadInt32()
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConvert.ToInt32BE(Storage, 0);
+      return BinaryConversion.ToInt32BE(Storage, 0);
     }
 
     [CLSCompliant(false)]
@@ -69,14 +69,14 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConvert.ToUInt32BE(Storage, 0);
+      return BinaryConversion.ToUInt32BE(Storage, 0);
     }
 
     public override long ReadInt64()
     {
       ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConvert.ToInt64BE(Storage, 0);
+      return BinaryConversion.ToInt64BE(Storage, 0);
     }
 
     [CLSCompliant(false)]
@@ -84,21 +84,21 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConvert.ToUInt64BE(Storage, 0);
+      return BinaryConversion.ToUInt64BE(Storage, 0);
     }
 
     public override UInt24 ReadUInt24()
     {
       ReadBytesUnchecked(Storage, 0, 3, true);
 
-      return BinaryConvertExtensions.ToUInt24BE(Storage, 0);
+      return BinaryConversion.ToUInt24BE(Storage, 0);
     }
 
     public override UInt48 ReadUInt48()
     {
       ReadBytesUnchecked(Storage, 0, 6, true);
 
-      return BinaryConvertExtensions.ToUInt48BE(Storage, 0);
+      return BinaryConversion.ToUInt48BE(Storage, 0);
     }
   }
 }

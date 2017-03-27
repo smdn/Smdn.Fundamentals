@@ -25,6 +25,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.UUEncodings {
   public sealed class UUDecodingTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
@@ -89,7 +91,7 @@ namespace Smdn.Formats.UUEncodings {
 
         var octet = inputBuffer[inputOffset++];
 
-        if (octet == Octets.CR || octet == Octets.LF) {
+        if (octet == Ascii.Octets.CR || octet == Ascii.Octets.LF) {
           /*
            * <newline>
            */

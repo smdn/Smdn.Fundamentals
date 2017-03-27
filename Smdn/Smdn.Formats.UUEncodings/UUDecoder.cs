@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using Smdn.IO;
+using Smdn.IO.Streams;
 
 namespace Smdn.Formats.UUEncodings {
   public static class UUDecoder {

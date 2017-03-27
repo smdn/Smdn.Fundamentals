@@ -25,7 +25,7 @@
 using System;
 using System.IO;
 
-using Smdn.Formats;
+using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   public class LineOrientedStream : Stream {
@@ -182,11 +182,11 @@ namespace Smdn.IO.Streams.LineOriented {
           }
         }
         else {
-          if (buffer[bufOffset] == Octets.CR) {
+          if (buffer[bufOffset] == Ascii.Octets.CR) {
             eol = EolState.CR;
             newLineOffset = 1;
           }
-          else if (buffer[bufOffset] == Octets.LF) {
+          else if (buffer[bufOffset] == Ascii.Octets.LF) {
             eol = EolState.LF;
             newLineOffset = 1;
           }
@@ -226,7 +226,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       var retLength = retCount + (bufOffset - bufCopyFrom);
 
-      if (eol == EolState.CR && buffer[bufOffset] == Octets.LF) {
+      if (eol == EolState.CR && buffer[bufOffset] == Ascii.Octets.LF) {
         // CRLF
         retLength++;
         newLineOffset++;

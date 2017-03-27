@@ -25,6 +25,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.PercentEncodings {
   /*
    * http://tools.ietf.org/html/rfc3986
@@ -58,10 +60,10 @@ namespace Smdn.Formats.PercentEncodings {
       var octets = new byte[0x80 - 0x20];
       var count = 0;
 
-      octets[count++] = Octets.SP;
+      octets[count++] = Ascii.Octets.SP;
 
       foreach (var c in str) {
-        if (c != Chars.SP)
+        if (c != Ascii.Chars.SP)
           octets[count++] = (byte)c;
       }
 
@@ -145,7 +147,7 @@ namespace Smdn.Formats.PercentEncodings {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
 
-      var upperCaseHexOctets = Octets.GetUpperCaseHexOctets();
+      var upperCaseHexOctets = Ascii.Octets.GetUpperCaseHexOctets();
       var ret = 0;
 
       for (var i = 0; i < inputCount; i++) {

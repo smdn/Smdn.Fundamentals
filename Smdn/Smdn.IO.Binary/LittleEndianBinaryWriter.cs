@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Binary {
-  public class LittleEndianBinaryWriter : Smdn.IO.BinaryWriter {
+  public class LittleEndianBinaryWriter : Smdn.IO.Binary.BinaryWriter {
     public LittleEndianBinaryWriter(Stream stream)
       : this(stream, false)
     {
@@ -44,7 +44,7 @@ namespace Smdn.IO.Binary {
 
     public override void Write(short @value)
     {
-      BinaryConvert.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 2);
     }
@@ -52,14 +52,14 @@ namespace Smdn.IO.Binary {
     [CLSCompliant(false)]
     public override void Write(ushort @value)
     {
-      BinaryConvert.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 2);
     }
 
     public override void Write(int @value)
     {
-      BinaryConvert.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 4);
     }
@@ -67,14 +67,14 @@ namespace Smdn.IO.Binary {
     [CLSCompliant(false)]
     public override void Write(uint @value)
     {
-      BinaryConvert.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 4);
     }
 
     public override void Write(long @value)
     {
-      BinaryConvert.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       Write(Storage, 0, 8);
     }
@@ -82,21 +82,21 @@ namespace Smdn.IO.Binary {
     [CLSCompliant(false)]
     public override void Write(ulong @value)
     {
-      BinaryConvert.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 8);
     }
 
     public override void Write(UInt24 @value)
     {
-      BinaryConvertExtensions.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 3);
     }
 
     public override void Write(UInt48 @value)
     {
-      BinaryConvertExtensions.GetBytesLE(@value, Storage, 0);
+      BinaryConversion.GetBytesLE(@value, Storage, 0);
 
       WriteUnchecked(Storage, 0, 6);
     }

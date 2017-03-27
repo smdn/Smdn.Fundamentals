@@ -25,6 +25,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.PercentEncodings {
   public sealed class FromPercentEncodedTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
@@ -91,7 +93,7 @@ namespace Smdn.Formats.PercentEncodings {
 
         if (bufferOffset == 0) {
           if (decodePlusToSpace && octet == 0x2b) { // '+' 0x2b
-            outputBuffer[outputOffset++] = Octets.SP;
+            outputBuffer[outputOffset++] = Ascii.Octets.SP;
             ret++;
           }
           else if (octet == 0x25) { // '%' 0x25

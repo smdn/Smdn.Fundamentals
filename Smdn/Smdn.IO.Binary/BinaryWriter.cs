@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Binary {
-  public class BinaryWriter : BinaryWriterBase {
+  public class BinaryWriter : Smdn.IO.Binary.BinaryWriterBase {
     private const int defaultStorageSize = 8;
 
     public Endianness Endianness {
@@ -75,7 +75,7 @@ namespace Smdn.IO.Binary {
 
     public override void Write(short @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 2);
     }
@@ -83,14 +83,14 @@ namespace Smdn.IO.Binary {
     [CLSCompliant(false)]
     public override void Write(ushort @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 2);
     }
 
     public override void Write(int @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 4);
     }
@@ -98,14 +98,14 @@ namespace Smdn.IO.Binary {
     [CLSCompliant(false)]
     public override void Write(uint @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 4);
     }
 
     public override void Write(long @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       Write(Storage, 0, 8);
     }
@@ -113,21 +113,21 @@ namespace Smdn.IO.Binary {
     [CLSCompliant(false)]
     public override void Write(ulong @value)
     {
-      BinaryConvert.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 8);
     }
 
     public virtual void Write(UInt24 @value)
     {
-      BinaryConvertExtensions.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 3);
     }
 
     public virtual void Write(UInt48 @value)
     {
-      BinaryConvertExtensions.GetBytes(@value, endianness, Storage, 0);
+      BinaryConversion.GetBytes(@value, endianness, Storage, 0);
 
       WriteUnchecked(Storage, 0, 6);
     }

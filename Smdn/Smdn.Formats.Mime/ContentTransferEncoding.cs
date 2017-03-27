@@ -28,7 +28,10 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-using Smdn.Formats.UUEncoding;
+using Smdn.Formats.UUEncodings;
+using Smdn.Formats.QuotedPrintable;
+using Smdn.IO.Streams;
+using Smdn.Text;
 
 namespace Smdn.Formats.Mime {
   public static class ContentTransferEncoding {
@@ -127,7 +130,7 @@ namespace Smdn.Formats.Mime {
           break;
         case ContentTransferEncodingMethod.QuotedPrintable:
           decodingStream = new CryptoStream(stream,
-                                            new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
+                                            new global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransformMode.ContentTransferEncoding),
                                             CryptoStreamMode.Read);
           break;
         case ContentTransferEncodingMethod.UUEncode:
@@ -140,7 +143,7 @@ namespace Smdn.Formats.Mime {
       }
 
       if (leaveStreamOpen)
-        return new Smdn.IO.NonClosingStream(decodingStream);
+        return new NonClosingStream(decodingStream);
       else
         return decodingStream;
     }
@@ -156,7 +159,7 @@ namespace Smdn.Formats.Mime {
                               GetEncodingMethodThrowException(encoding),
                               charset == null
                                 ? Encoding.GetEncoding("ISO-8859-1")
-                                : EncodingUtils.GetEncodingThrowException(charset),
+                                : global::Smdn.Text.Encodings.EncodingUtils.GetEncodingThrowException(charset),
                               leaveStreamOpen);
     }
 

@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.Csv {
   public class CsvReader : StreamReader {
     public char Delimiter {
@@ -96,19 +98,19 @@ namespace Smdn.Formats.Csv {
         // empty column
         return string.Empty;
       }
-      else if (ch == Chars.CR) {
+      else if (ch == Ascii.Chars.CR) {
         // unescaped newline
-        if ((int)Chars.LF == base.Peek()) {
+        if ((int)Ascii.Chars.LF == base.Peek()) {
           base.Read(); // CRLF
-          return Chars.CRLF;
+          return Ascii.Chars.CRLF;
         }
         else {
-          return new string(Chars.LF, 1);
+          return new string(Ascii.Chars.LF, 1);
         }
       }
-      else if (ch == Chars.LF) {
+      else if (ch == Ascii.Chars.LF) {
         // unescaped newline
-        return new string(Chars.CR, 1);
+        return new string(Ascii.Chars.CR, 1);
       }
 
       if (escaped) {
@@ -142,7 +144,7 @@ namespace Smdn.Formats.Csv {
               base.Read();
               break;
             }
-            else if (quot == 0 && (ch == Chars.CR || ch == Chars.LF)) {
+            else if (quot == 0 && (ch == Ascii.Chars.CR || ch == Ascii.Chars.LF)) {
               break;
             }
             else {
@@ -169,7 +171,7 @@ namespace Smdn.Formats.Csv {
             base.Read();
             break;
           }
-          else if (ch == Chars.CR || ch == Chars.LF) {
+          else if (ch == Ascii.Chars.CR || ch == Ascii.Chars.LF) {
             break;
           }
           else {
@@ -193,7 +195,7 @@ namespace Smdn.Formats.Csv {
           if (field == null)
             return null;
 
-          if (!escaped && 1 <= field.Length && (field[0] == Chars.CR || field[0] == Chars.LF))
+          if (!escaped && 1 <= field.Length && (field[0] == Ascii.Chars.CR || field[0] == Ascii.Chars.LF))
             // newline
             break;
           else
@@ -207,8 +209,8 @@ namespace Smdn.Formats.Csv {
       }
     }
 
-    private char delimiter = Chars.Comma;
-    private char quotator = Chars.DQuote;
+    private char delimiter = Ascii.Chars.Comma;
+    private char quotator = Ascii.Chars.DQuote;
     private bool escapeAlways = false;
   }
 }

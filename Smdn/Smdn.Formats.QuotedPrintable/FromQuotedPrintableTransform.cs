@@ -25,6 +25,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.QuotedPrintable {
   public sealed class FromQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
@@ -113,11 +115,11 @@ namespace Smdn.Formats.QuotedPrintable {
 
         if (bufferOffset == 3) {
           // dequote
-          if (buffer[1] == Octets.CR && buffer[2] == Octets.LF) {
+          if (buffer[1] == Ascii.Octets.CR && buffer[2] == Ascii.Octets.LF) {
             // soft newline (CRLF)
             bufferOffset = 0;
           }
-          else if (buffer[1] == Octets.CR || buffer[1] == Octets.LF) {
+          else if (buffer[1] == Ascii.Octets.CR || buffer[1] == Ascii.Octets.LF) {
             // soft newline (CR, LF)
             if (buffer[2] == 0x3d) {
               bufferOffset = 1;

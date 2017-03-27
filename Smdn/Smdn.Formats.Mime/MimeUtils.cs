@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using Smdn.IO;
+using Smdn.IO.Streams.LineOriented;
 using Smdn.Text;
 
 namespace Smdn.Formats.Mime {
@@ -100,7 +100,7 @@ namespace Smdn.Formats.Mime {
       if (stream == null)
         throw new ArgumentNullException("stream");
 
-      ByteStringBuilder header = null;
+      global::Smdn.Text.ByteStringBuilder header = null;
       var indexOfDelimiter = -1;
 
       for (;;) {
@@ -143,7 +143,7 @@ namespace Smdn.Formats.Mime {
             header = null;
           }
           else {
-            header = new ByteStringBuilder(line.Length);
+            header = new global::Smdn.Text.ByteStringBuilder(line.Length);
             header.Append(line);
           }
         }

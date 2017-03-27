@@ -28,6 +28,7 @@ using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
+using Smdn.Text;
 
 namespace Smdn.Formats.Mime {
   /*
@@ -79,7 +80,7 @@ namespace Smdn.Formats.Mime {
       return Encode(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
     }
 
-    private static readonly string mimeEncodingFoldingString = Chars.CRLF + Chars.HT;
+    private static readonly string mimeEncodingFoldingString = Ascii.Chars.CRLF + Ascii.Chars.HT;
     private static readonly byte[] mimeEncodingPostamble = new byte[] {0x3f, 0x3d}; // "?="
 
     private static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
@@ -108,7 +109,7 @@ namespace Smdn.Formats.Mime {
           encodingChar = 'b';
           break;
         case MimeEncodingMethod.QuotedPrintable:
-          transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding);
+          transform = new global::Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransformMode.MimeEncoding);
           encodingChar = 'q';
           break;
         default:
@@ -280,10 +281,10 @@ namespace Smdn.Formats.Mime {
           // charset
           var charsetString = m.Groups["charset"].Value;
 
-          lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
+          lastCharset = global::Smdn.Text.Encodings.EncodingUtils.GetEncoding(charsetString, name => selectFallbackEncoding == null ? null : selectFallbackEncoding(name));
 
           if (lastCharset == null)
-            throw new EncodingNotSupportedException(charsetString,
+            throw new global::Smdn.Text.Encodings.EncodingNotSupportedException(charsetString,
                                                     string.Format("'{0}' is an unsupported or invalid charset", charsetString));
 
           // encoding
@@ -300,7 +301,7 @@ namespace Smdn.Formats.Mime {
             case "q":
             case "Q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
-              transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
+              transform = new global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransformMode.MimeEncoding);
               break;
             default:
               if (decodeMalformedOrUnsupported == null)

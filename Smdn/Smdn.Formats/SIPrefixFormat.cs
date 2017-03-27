@@ -31,11 +31,11 @@ namespace Smdn.Formats {
   public class SIPrefixFormat : SIPrefixNumberFormatter {
     private static readonly SIPrefixFormat invaliantInfo = new SIPrefixFormat(CultureInfo.InvariantCulture, true);
 
-    public static SIPrefixFormat CurrentInfo {
+    public new static SIPrefixFormat CurrentInfo {
       get { return new SIPrefixFormat(CultureInfo.CurrentCulture, true); }
     }
 
-    public static SIPrefixFormat InvaliantInfo {
+    public new static SIPrefixFormat InvaliantInfo {
       get { return invaliantInfo; }
     }
 

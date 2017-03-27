@@ -25,6 +25,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.QuotedPrintable {
   public sealed class ToQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
@@ -88,7 +90,7 @@ namespace Smdn.Formats.QuotedPrintable {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
 
-      var upperCaseHexOctets = Octets.GetUpperCaseHexOctets();
+      var upperCaseHexOctets = Ascii.Octets.GetUpperCaseHexOctets();
       var ret = 0;
 
       for (var i = 0; i < inputCount; i++) {
@@ -96,8 +98,8 @@ namespace Smdn.Formats.QuotedPrintable {
         var quote = false;
 
         switch (octet) {
-          case Octets.HT:
-          case Octets.SP:
+          case Ascii.Octets.HT:
+          case Ascii.Octets.SP:
           case 0x3f: // '?'
           case 0x5f: // '_'
             quote = quoteWhitespaces;

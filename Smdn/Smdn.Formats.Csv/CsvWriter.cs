@@ -27,6 +27,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using Smdn.Text;
+
 namespace Smdn.Formats.Csv {
   public class CsvWriter : StreamWriter {
     public char Delimiter {
@@ -56,7 +58,7 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(string path, Encoding encoding)
       : base(path, false, encoding)
     {
-      base.NewLine = Chars.CRLF;
+      base.NewLine = Ascii.Chars.CRLF;
     }
 
     public CsvWriter(Stream stream)
@@ -67,7 +69,7 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(Stream stream, Encoding encoding)
       : base(stream, encoding)
     {
-      base.NewLine = Chars.CRLF;
+      base.NewLine = Ascii.Chars.CRLF;
     }
 
     public CsvWriter(StreamWriter writer)
@@ -78,7 +80,7 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(StreamWriter writer, Encoding encoding)
       : base(writer.BaseStream, encoding)
     {
-      base.NewLine = Chars.CRLF;
+      base.NewLine = Ascii.Chars.CRLF;
     }
 
     public void WriteLine(params string[] columns)
@@ -97,8 +99,8 @@ namespace Smdn.Formats.Csv {
         var escape = escapeAlways ||
           (0 <= column.IndexOf(delimiter) ||
            0 <= column.IndexOf(quotator) ||
-           0 <= column.IndexOf(Chars.CR) ||
-           0 <= column.IndexOf(Chars.LF));
+           0 <= column.IndexOf(Ascii.Chars.CR) ||
+           0 <= column.IndexOf(Ascii.Chars.LF));
 
         if (escape) {
           base.Write(quotator);
@@ -127,9 +129,9 @@ namespace Smdn.Formats.Csv {
       WriteLine(c.ToArray());
     }
 
-    private char delimiter = Chars.Comma;
-    private string quotator = new string(Chars.DQuote, 1);
-    private string escapedQuotator = new string(Chars.DQuote, 2);
+    private char delimiter = Ascii.Chars.Comma;
+    private string quotator = new string(Ascii.Chars.DQuote, 1);
+    private string escapedQuotator = new string(Ascii.Chars.DQuote, 2);
     private bool escapeAlways = false;
   }
 }

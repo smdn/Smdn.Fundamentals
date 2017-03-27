@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Binary {
-  public class BinaryReader : BinaryReaderBase {
+  public class BinaryReader : Smdn.IO.Binary.BinaryReaderBase {
     private const int defaultStorageSize = 8;
 
     public Endianness Endianness {
@@ -77,7 +77,7 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConvert.ToInt16(Storage, 0, endianness);
+      return BinaryConversion.ToInt16(Storage, 0, endianness);
     }
 
     [CLSCompliant(false)]
@@ -85,14 +85,14 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConvert.ToUInt16(Storage, 0, endianness);
+      return BinaryConversion.ToUInt16(Storage, 0, endianness);
     }
 
     public override int ReadInt32()
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConvert.ToInt32(Storage, 0, endianness);
+      return BinaryConversion.ToInt32(Storage, 0, endianness);
     }
 
     [CLSCompliant(false)]
@@ -100,14 +100,14 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConvert.ToUInt32(Storage, 0, endianness);
+      return BinaryConversion.ToUInt32(Storage, 0, endianness);
     }
 
     public override long ReadInt64()
     {
       ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConvert.ToInt64(Storage, 0, endianness);
+      return BinaryConversion.ToInt64(Storage, 0, endianness);
     }
 
     [CLSCompliant(false)]
@@ -115,21 +115,21 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConvert.ToUInt64(Storage, 0, endianness);
+      return BinaryConversion.ToUInt64(Storage, 0, endianness);
     }
 
     public virtual UInt24 ReadUInt24()
     {
       ReadBytesUnchecked(Storage, 0, 3, true);
 
-      return BinaryConvertExtensions.ToUInt24(Storage, 0, endianness);
+      return BinaryConversion.ToUInt24(Storage, 0, endianness);
     }
 
     public virtual UInt48 ReadUInt48()
     {
       ReadBytesUnchecked(Storage, 0, 6, true);
 
-      return BinaryConvertExtensions.ToUInt48(Storage, 0, endianness);
+      return BinaryConversion.ToUInt48(Storage, 0, endianness);
     }
 
     public virtual FourCC ReadFourCC()

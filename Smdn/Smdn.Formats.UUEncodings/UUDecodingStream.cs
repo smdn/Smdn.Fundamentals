@@ -26,8 +26,9 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
-using Smdn.IO;
+using Smdn.IO.Streams.LineOriented;
 using Smdn.Security.Cryptography;
+using Smdn.Text;
 
 namespace Smdn.Formats.UUEncodings {
   public class UUDecodingStream : Stream {
@@ -153,7 +154,7 @@ namespace Smdn.Formats.UUEncodings {
           break;
         }
 
-        var line = ByteString.CreateImmutable(l);
+        var line = global::Smdn.Text.ByteString.CreateImmutable(l);
 
         if (line.StartsWith("begin ")) {
           var match = regexHeaderLine.Match(line.ToString().TrimEnd());
