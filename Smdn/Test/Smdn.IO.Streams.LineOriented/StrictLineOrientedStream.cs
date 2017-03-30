@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-using Smdn.Formats;
+using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   [TestFixture]
@@ -23,7 +23,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadAndReadLine()
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
       var buffer = new byte[8];
 
@@ -44,7 +44,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadLineCRLF()
     {
-      var data = new byte[] {0x40, Octets.CR, 0x42, Octets.LF, 0x44, Octets.LF, Octets.CR, 0x47, Octets.CR, Octets.LF, 0x50};
+      var data = new byte[] {0x40, Ascii.Octets.CR, 0x42, Ascii.Octets.LF, 0x44, Ascii.Octets.LF, Ascii.Octets.CR, 0x47, Ascii.Octets.CR, Ascii.Octets.LF, 0x50};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
@@ -62,7 +62,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadLineDiscardEOL()
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
@@ -80,7 +80,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadLineKeepEOL()
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
@@ -98,7 +98,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineLongerThanBufferDiscardEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, Octets.CR, Octets.LF,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, Ascii.Octets.CR, Ascii.Octets.LF,
         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
@@ -119,7 +119,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineLongerThanBufferKeepEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, Octets.CR, Octets.LF,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, Ascii.Octets.CR, Ascii.Octets.LF,
         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
@@ -140,10 +140,10 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineEOLSplittedBetweenBufferDiscardEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR,
-        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Octets.CR,
-        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Octets.LF,
-        Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Ascii.Octets.CR,
+        Ascii.Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Ascii.Octets.CR,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Ascii.Octets.LF,
+        Ascii.Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
@@ -163,10 +163,10 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineEOLSplittedBetweenBufferKeepEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Octets.CR,
-        Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Octets.CR,
-        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Octets.LF,
-        Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Ascii.Octets.CR,
+        Ascii.Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Ascii.Octets.CR,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Ascii.Octets.LF,
+        Ascii.Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
@@ -186,13 +186,13 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineIncompleteEOLDiscardEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, Octets.CR,
+        0x40, 0x41, 0x42, Ascii.Octets.CR,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, Octets.CR}, stream.ReadLine(false));
+      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, Ascii.Octets.CR}, stream.ReadLine(false));
       Assert.AreEqual(4L, stream.Position, "Position");
     }
 
@@ -200,13 +200,13 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineIncompleteEOLKeepEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, Octets.CR,
+        0x40, 0x41, 0x42, Ascii.Octets.CR,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, Octets.CR}, stream.ReadLine(true));
+      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, Ascii.Octets.CR}, stream.ReadLine(true));
 
       Assert.AreEqual(4L, stream.Position, "Position");
     }

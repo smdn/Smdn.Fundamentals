@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 
-using Smdn.IO;
+using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime {
   [TestFixture]

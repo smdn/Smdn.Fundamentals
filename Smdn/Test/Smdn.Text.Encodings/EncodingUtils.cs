@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using NUnit.Framework;
 
-namespace Smdn.Formats {
+namespace Smdn.Text.Encodings {
   [TestFixture]
   public class EncodingUtilsTests {
     [Test]

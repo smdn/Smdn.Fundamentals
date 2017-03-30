@@ -40,7 +40,7 @@ namespace Smdn.IO.Binary {
     public void TestConstructWithNonReadableStream()
     {
       try {
-        using (var reader = new Smdn.IO.BinaryReader(new NonReadableStream())) {
+        using (var reader = new Smdn.IO.Binary.BinaryReader(new NonReadableStream())) {
           Assert.Fail("ArgumentException not thrown");
         }
       }
@@ -62,7 +62,7 @@ namespace Smdn.IO.Binary {
 
     private void TestCloseDispose(bool close)
     {
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(new byte[0]))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[0]))) {
         Assert.IsNotNull(reader.BaseStream);
         Assert.IsFalse(reader.LeaveBaseStreamOpen);
 
@@ -102,7 +102,7 @@ namespace Smdn.IO.Binary {
           Assert.Fail("ObjectDisposedException thrown by base stream");
         }
 
-        using (var reader = new Smdn.IO.BinaryReader(stream)) {
+        using (var reader = new Smdn.IO.Binary.BinaryReader(stream)) {
           Assert.IsNotNull(reader.BaseStream);
           Assert.IsFalse(reader.LeaveBaseStreamOpen);
         }
@@ -116,7 +116,7 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    private class BinaryReaderEx : Smdn.IO.BinaryReader {
+    private class BinaryReaderEx : Smdn.IO.Binary.BinaryReader {
       public BinaryReaderEx(Stream stream)
         : base(stream, true)
       {
@@ -157,14 +157,14 @@ namespace Smdn.IO.Binary {
     {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.IsFalse(reader.EndOfStream);
 
         Assert.AreEqual(actual, reader.ReadToEnd());
         Assert.IsTrue(reader.EndOfStream);
       }
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         reader.ReadInt16();
 
         Assert.IsFalse(reader.EndOfStream);
@@ -172,7 +172,7 @@ namespace Smdn.IO.Binary {
         Assert.IsTrue(reader.EndOfStream);
       }
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         reader.ReadToEnd();
         Assert.IsTrue(reader.EndOfStream);
 
@@ -203,7 +203,7 @@ namespace Smdn.IO.Binary {
       using (var decompressStream = new System.IO.Compression.DeflateStream(new MemoryStream(actualCompressed), System.IO.Compression.CompressionMode.Decompress)) {
         Assert.IsFalse(decompressStream.CanSeek);
 
-        var reader = new Smdn.IO.BinaryReader(decompressStream);
+        var reader = new Smdn.IO.Binary.BinaryReader(decompressStream);
 
         Assert.AreEqual(actual, reader.ReadToEnd());
       }
@@ -214,15 +214,15 @@ namespace Smdn.IO.Binary {
     {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual, reader.ReadBytes((int)reader.BaseStream.Length));
       }
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual, reader.ReadBytes(reader.BaseStream.Length));
       }
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual.Slice(0, 3), reader.ReadBytes(3L));
         Assert.AreEqual(actual.Slice(3, 3), reader.ReadBytes(3L));
         Assert.AreEqual(actual.Slice(6, 2), reader.ReadBytes(3L));
@@ -235,7 +235,7 @@ namespace Smdn.IO.Binary {
     {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual, reader.ReadExactBytes((int)reader.BaseStream.Length));
 
         try {
@@ -246,7 +246,7 @@ namespace Smdn.IO.Binary {
         }
       }
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual, reader.ReadExactBytes(reader.BaseStream.Length));
 
         try {
@@ -257,7 +257,7 @@ namespace Smdn.IO.Binary {
         }
       }
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual.Slice(0, 3), reader.ReadExactBytes(3L));
         Assert.AreEqual(actual.Slice(3, 3), reader.ReadExactBytes(3L));
 
@@ -275,7 +275,7 @@ namespace Smdn.IO.Binary {
     {
       var zero = new byte[0];
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
         Assert.AreEqual(0L, reader.BaseStream.Position);
 
         CollectionAssert.AreEqual(zero, reader.ReadBytes(0));
@@ -309,7 +309,7 @@ namespace Smdn.IO.Binary {
     {
       var zero = new byte[0];
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
         Assert.AreEqual(0L, reader.BaseStream.Position);
 
         CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0));
@@ -341,7 +341,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestReadInt32()
     {
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(new byte[] {0x11, 0x22, 0x33, 0x44}))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0x11, 0x22, 0x33, 0x44}))) {
         switch (Platform.Endianness) {
           case Endianness.BigEndian:
             Assert.AreEqual(0x11223344, reader.ReadInt32());
@@ -363,7 +363,7 @@ namespace Smdn.IO.Binary {
     {
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         var type = reader.GetType();
 
         foreach (var test in new[] {
@@ -414,7 +414,7 @@ namespace Smdn.IO.Binary {
         new {Method = "ReadUInt48", Count = 6},
         new {Method = "ReadFourCC", Count = 4},
       }) {
-        using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+        using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
           reader.Close();
 
           try {
@@ -439,7 +439,7 @@ namespace Smdn.IO.Binary {
     {
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
-      using (var reader = new Smdn.IO.BinaryReader(new MemoryStream(actual))) {
+      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         var type = reader.GetType();
 
         foreach (var test in new[] {

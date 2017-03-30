@@ -40,7 +40,7 @@ namespace Smdn.IO.Binary {
     public void TestConstructWithNonWritableStream()
     {
       try {
-        using (var writer = new Smdn.IO.BinaryWriter(new NonWritableStream())) {
+        using (var writer = new Smdn.IO.Binary.BinaryWriter(new NonWritableStream())) {
           Assert.Fail("ArgumentException not thrown");
         }
       }
@@ -62,7 +62,7 @@ namespace Smdn.IO.Binary {
 
     private void TestCloseDispose(bool close)
     {
-      using (var writer = new Smdn.IO.BinaryWriter(new MemoryStream())) {
+      using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
         Assert.IsNotNull(writer.BaseStream);
         Assert.IsFalse(writer.LeaveBaseStreamOpen);
 
@@ -102,7 +102,7 @@ namespace Smdn.IO.Binary {
           Assert.Fail("ObjectDisposedException thrown by base stream");
         }
 
-        using (var writer = new Smdn.IO.BinaryWriter(stream)) {
+        using (var writer = new Smdn.IO.Binary.BinaryWriter(stream)) {
           Assert.IsNotNull(writer.BaseStream);
           Assert.IsFalse(writer.LeaveBaseStreamOpen);
         }
@@ -116,7 +116,7 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    private class BinaryWriterEx : Smdn.IO.BinaryWriter {
+    private class BinaryWriterEx : Smdn.IO.Binary.BinaryWriter {
       public BinaryWriterEx(Stream stream)
         : base(stream, true)
       {
@@ -155,7 +155,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestFlush()
     {
-      using (var writer = new Smdn.IO.BinaryWriter(new MemoryStream())) {
+      using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
         writer.Write((int)0);
@@ -180,7 +180,7 @@ namespace Smdn.IO.Binary {
       var data = new byte[] {0x11, 0x22, 0x33, 0x44};
 
       using (var stream = new MemoryStream()) {
-        var writer = new Smdn.IO.BinaryWriter(stream);
+        var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
@@ -202,7 +202,7 @@ namespace Smdn.IO.Binary {
       }
 
       using (var stream = new MemoryStream()) {
-        var writer = new Smdn.IO.BinaryWriter(stream);
+        var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
@@ -230,7 +230,7 @@ namespace Smdn.IO.Binary {
       var data = new byte[] {0x11, 0x22, 0x33, 0x44};
 
       using (var stream = new MemoryStream()) {
-        var writer = new Smdn.IO.BinaryWriter(stream);
+        var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
@@ -252,7 +252,7 @@ namespace Smdn.IO.Binary {
       }
 
       using (var stream = new MemoryStream()) {
-        var writer = new Smdn.IO.BinaryWriter(stream);
+        var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
@@ -278,7 +278,7 @@ namespace Smdn.IO.Binary {
     public void TestWriteArraySegmentOfByteEmpty()
     {
       using (var stream = new MemoryStream()) {
-        var writer = new Smdn.IO.BinaryWriter(stream);
+        var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
@@ -312,7 +312,7 @@ namespace Smdn.IO.Binary {
         byte[] arr;
 
         using (var stream = new MemoryStream(0x10)) {
-          var writer = new Smdn.IO.BinaryWriter(stream);
+          var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
           writer.WriteZero(len);
           writer.Flush();
@@ -335,7 +335,7 @@ namespace Smdn.IO.Binary {
     {
       var zero = new byte[0];
 
-      using (var writer = new Smdn.IO.BinaryWriter(new MemoryStream())) {
+      using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
         writer.Write(zero);
@@ -356,7 +356,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestWriteZeroZeroLength()
     {
-      using (var writer = new Smdn.IO.BinaryWriter(new MemoryStream())) {
+      using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
         writer.WriteZero(0);
@@ -389,7 +389,7 @@ namespace Smdn.IO.Binary {
     public void TestWriteInt32()
     {
       using (var stream = new MemoryStream()) {
-        using (var writer = new Smdn.IO.BinaryWriter(stream)) {
+        using (var writer = new Smdn.IO.Binary.BinaryWriter(stream)) {
           writer.Write((int)0x11223344);
           writer.Close();
         }
@@ -415,7 +415,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestWrite()
     {
-      using (var writer = new Smdn.IO.BinaryWriter(new MemoryStream())) {
+      using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
         var type = writer.GetType();
 
         foreach (var test in new[] {
@@ -467,7 +467,7 @@ namespace Smdn.IO.Binary {
         UInt48.Zero,
         FourCC.Empty,
       }) {
-        using (var writer = new Smdn.IO.BinaryWriter(new MemoryStream())) {
+        using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
           writer.Close();
 
           try {

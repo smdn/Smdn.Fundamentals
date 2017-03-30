@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 using Smdn;
 
-namespace Smdn.IO {
+namespace Smdn.IO.Streams.Caching {
   [TestFixture]
   public class PersistentCachedStreamTests : CachedStreamBaseTests {
     protected override CachedStreamBase CreateCachedStream(Stream innerStream, int blockSize, bool leaveInnerStreamOpen)

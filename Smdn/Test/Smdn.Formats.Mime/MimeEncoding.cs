@@ -2,6 +2,8 @@ using System;
 using System.Text;
 using NUnit.Framework;
 
+using Smdn.Text.Encodings;
+
 namespace Smdn.Formats.Mime {
   [TestFixture]
   public class MimeEncodingTests {

@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using NUnit.Framework;
 
+using Smdn.OperatingSystem;
+
 namespace Smdn {
   [TestFixture()]
   public class RuntimeTests {

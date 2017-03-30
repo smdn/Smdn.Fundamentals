@@ -3,31 +3,31 @@ using System.Text;
 
 using NUnit.Framework;
 
-namespace Smdn.Net {
+namespace Smdn.Text.Encodings {
   [TestFixture]
-  public class NetworkTransferEncodingTests {
+  public class OctetEncodingTests {
     [Test]
     public void TestEncodeTransfer7BitValidChar()
     {
-      NetworkTransferEncoding.Transfer7Bit.GetBytes("0004 append \"INBOX\" (\\Seen) {33}\r\n\x00\x20\x40\x60\x7f");
+      OctetEncoding.SevenBits.GetBytes("0004 append \"INBOX\" (\\Seen) {33}\r\n\x00\x20\x40\x60\x7f");
     }
 
     [Test]
     public void TestEncodeTransfer8BitValidChar()
     {
-      NetworkTransferEncoding.Transfer8Bit.GetBytes("0004 append \"INBOX\" (\\Seen) {33}\r\n\x00\x20\x40\x60\x80\xa0\xc0\xe0\xff");
+      OctetEncoding.EightBits.GetBytes("0004 append \"INBOX\" (\\Seen) {33}\r\n\x00\x20\x40\x60\x80\xa0\xc0\xe0\xff");
     }
 
     [Test]
     public void TestEncodeTransfer7BitInvalidChar()
     {
-      Assert.Throws<EncoderFallbackException>(() => NetworkTransferEncoding.Transfer7Bit.GetBytes("\x20\x40\x60\x80"));
+      Assert.Throws<EncoderFallbackException>(() => OctetEncoding.SevenBits.GetBytes("\x20\x40\x60\x80"));
     }
 
     [Test]
     public void TestEncodeTransfer8BitInvalidChar()
     {
-      Assert.Throws<EncoderFallbackException>(() => NetworkTransferEncoding.Transfer8Bit.GetBytes("INBOX.日本語"));
+      Assert.Throws<EncoderFallbackException>(() => OctetEncoding.EightBits.GetBytes("INBOX.日本語"));
     }
   }
 }

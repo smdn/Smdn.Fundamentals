@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Formats {
+namespace Smdn.Text.Encodings {
   [TestFixture]
   public class EncodingNotSupportedExceptionTests {
     [Test]
@@ -45,7 +45,7 @@ namespace Smdn.Formats {
 
       Assert.IsNull(ex1.EncodingName);
 
-      TestUtils.SerializeBinary(ex1, delegate(EncodingNotSupportedException deserialized) {
+      Smdn.Formats.TestUtils.SerializeBinary(ex1, delegate(EncodingNotSupportedException deserialized) {
         Assert.IsNull(deserialized.EncodingName);
       });
 
@@ -53,7 +53,7 @@ namespace Smdn.Formats {
 
       Assert.AreEqual("x-unsupported-encoding", ex2.EncodingName);
 
-      TestUtils.SerializeBinary(ex2, delegate(EncodingNotSupportedException deserialized) {
+      Smdn.Formats.TestUtils.SerializeBinary(ex2, delegate(EncodingNotSupportedException deserialized) {
         Assert.AreEqual("x-unsupported-encoding", deserialized.EncodingName);
       });
     }

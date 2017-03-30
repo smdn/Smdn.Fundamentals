@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using NUnit.Framework;
 
-using Smdn.Formats;
+using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   [TestFixture]
@@ -33,7 +33,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestConstructFromMemoryStream(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
 
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
         Assert.IsTrue(stream.CanRead, "can read");
@@ -49,7 +49,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadByte(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
       var stream = CreateStream(type, new MemoryStream(data), 8);
       var index = 0;
 
@@ -73,7 +73,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadToStreamBufferEmpty(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var copyStream = new MemoryStream();
@@ -91,7 +91,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadLessThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
 
       var line = stream.ReadLine(true);
@@ -113,7 +113,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadLongerThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
       
       var line = stream.ReadLine(true);
@@ -135,7 +135,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadToStreamLessThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
 
       var line = stream.ReadLine(true);
@@ -159,7 +159,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadToStreamLongerThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Octets.CR, Octets.LF, 0x42, 0x43, 0x44, Octets.CR, Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var line = stream.ReadLine(true);
@@ -183,7 +183,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestClose(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
 
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
         stream.Close();
@@ -214,7 +214,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestCloseLeaveStreamOpen(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Octets.CR, Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
 
       using (var baseStream = new MemoryStream(data)) {
         var stream = CreateStream(type, baseStream, 8, true);
