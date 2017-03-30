@@ -29,7 +29,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Smdn.Formats.UUEncodings;
-using Smdn.Formats.QuotedPrintable;
+using Smdn.Formats.QuotedPrintableEncodings;
 using Smdn.IO.Streams;
 using Smdn.Text;
 
@@ -130,7 +130,7 @@ namespace Smdn.Formats.Mime {
           break;
         case ContentTransferEncodingMethod.QuotedPrintable:
           decodingStream = new CryptoStream(stream,
-                                            new global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransformMode.ContentTransferEncoding),
+                                            new global::Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransformMode.ContentTransferEncoding),
                                             CryptoStreamMode.Read);
           break;
         case ContentTransferEncodingMethod.UUEncode:

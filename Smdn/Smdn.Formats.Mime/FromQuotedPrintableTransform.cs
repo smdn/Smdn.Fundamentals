@@ -26,7 +26,7 @@ using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.Mime {
-  [Obsolete("use Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform instead")]
+  [Obsolete("use Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform instead")]
   public sealed class FromQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return inst.CanTransformMultipleBlocks; }
@@ -46,7 +46,7 @@ namespace Smdn.Formats.Mime {
 
     public FromQuotedPrintableTransform(FromQuotedPrintableTransformMode mode)
     {
-      inst = new QuotedPrintable.FromQuotedPrintableTransform((QuotedPrintable.FromQuotedPrintableTransformMode)mode);
+      inst = new QuotedPrintableEncodings.FromQuotedPrintableTransform((QuotedPrintableEncodings.FromQuotedPrintableTransformMode)mode);
     }
 
     public void Clear()
@@ -69,6 +69,6 @@ namespace Smdn.Formats.Mime {
       return inst.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
     }
 
-    private readonly Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform inst;
+    private readonly Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform inst;
   }
 }

@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using NUnit.Framework;
 
-namespace Smdn.Formats.QuotedPrintable {
+namespace Smdn.Formats.QuotedPrintableEncodings {
   [TestFixture]
   public class QuotedPrintableEncodingTests {
     [Test]

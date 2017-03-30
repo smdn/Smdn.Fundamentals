@@ -109,7 +109,7 @@ namespace Smdn.Formats.Mime {
           encodingChar = 'b';
           break;
         case MimeEncodingMethod.QuotedPrintable:
-          transform = new global::Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransformMode.MimeEncoding);
+          transform = new global::Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransformMode.MimeEncoding);
           encodingChar = 'q';
           break;
         default:
@@ -301,7 +301,7 @@ namespace Smdn.Formats.Mime {
             case "q":
             case "Q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
-              transform = new global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintable.FromQuotedPrintableTransformMode.MimeEncoding);
+              transform = new global::Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransformMode.MimeEncoding);
               break;
             default:
               if (decodeMalformedOrUnsupported == null)

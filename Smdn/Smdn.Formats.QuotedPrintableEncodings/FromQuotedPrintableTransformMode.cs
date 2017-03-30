@@ -24,7 +24,7 @@
 
 using System;
 
-namespace Smdn.Formats.QuotedPrintable {
+namespace Smdn.Formats.QuotedPrintableEncodings {
   public enum FromQuotedPrintableTransformMode {
     ContentTransferEncoding,
     MimeEncoding,

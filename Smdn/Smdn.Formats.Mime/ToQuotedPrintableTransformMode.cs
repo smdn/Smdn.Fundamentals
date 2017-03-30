@@ -25,7 +25,7 @@
 using System;
 
 namespace Smdn.Formats.Mime {
-  [Obsolete("use Smdn.Formats.QuotedPrintable.ToQuotedPrintableTransformMode instead")]
+  [Obsolete("use Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransformMode instead")]
   public enum ToQuotedPrintableTransformMode {
     ContentTransferEncoding,
     MimeEncoding,
