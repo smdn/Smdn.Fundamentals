@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using NUnit.Framework;
 
-namespace Smdn.Formats {
+namespace Smdn {
   public static class TestUtils {
     public static class Encodings {
       public static readonly Encoding Jis = Encoding.GetEncoding("iso-2022-jp");

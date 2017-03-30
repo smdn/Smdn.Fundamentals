@@ -45,7 +45,7 @@ namespace Smdn.Text.Encodings {
 
       Assert.IsNull(ex1.EncodingName);
 
-      Smdn.Formats.TestUtils.SerializeBinary(ex1, delegate(EncodingNotSupportedException deserialized) {
+      TestUtils.SerializeBinary(ex1, delegate(EncodingNotSupportedException deserialized) {
         Assert.IsNull(deserialized.EncodingName);
       });
 
@@ -53,7 +53,7 @@ namespace Smdn.Text.Encodings {
 
       Assert.AreEqual("x-unsupported-encoding", ex2.EncodingName);
 
-      Smdn.Formats.TestUtils.SerializeBinary(ex2, delegate(EncodingNotSupportedException deserialized) {
+      TestUtils.SerializeBinary(ex2, delegate(EncodingNotSupportedException deserialized) {
         Assert.AreEqual("x-unsupported-encoding", deserialized.EncodingName);
       });
     }

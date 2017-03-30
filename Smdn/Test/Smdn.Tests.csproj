@@ -60,7 +60,6 @@
     <Compile Include="Smdn.Formats\DateTimeFormat.cs" />
     <Compile Include="Smdn.Formats\Html.cs" />
     <Compile Include="Smdn.Formats\SIPrefixNumberFormatter.cs" />
-    <Compile Include="Smdn.Formats\TestUtils.cs" />
     <Compile Include="Smdn.Formats\UriQuery.cs" />
     <Compile Include="Smdn.IO.Binary\BigEndianBinaryReader.cs" />
     <Compile Include="Smdn.IO.Binary\BigEndianBinaryWriter.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="Smdn\UInt24.cs" />
     <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn\Uuid.cs" />
+    <Compile Include="TestUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
