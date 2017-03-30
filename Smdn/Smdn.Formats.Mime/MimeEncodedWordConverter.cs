@@ -26,6 +26,10 @@ using System;
 using System.Text;
 
 namespace Smdn {
+  [Obsolete("use Smdn.Formats.Mime.MimeEncodedWordConverter instead")]
   public delegate string MimeEncodedWordConverter(Encoding charset, string encodingMethod, string encodedText);
 }
 
+namespace Smdn.Formats.Mime {
+  public delegate string MimeEncodedWordConverter(Encoding charset, string encodingMethod, string encodedText);
+}
