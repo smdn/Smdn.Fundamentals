@@ -80,6 +80,7 @@
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn.OperatingSystem\Shell.cs" />
     <Compile Include="Smdn.OperatingSystem\ShellString.cs" />
+    <Compile Include="Smdn.Text.Encodings\EncodingNotSupportedException.cs" />
     <Compile Include="Smdn.Text.Encodings\EncodingUtils.cs" />
     <Compile Include="Smdn.Text.Encodings\OctetEncoding.cs" />
     <Compile Include="Smdn.Text\Ascii+Hexadecimals.cs" />
