@@ -154,7 +154,7 @@ namespace Smdn.Formats.UUEncodings {
           break;
         }
 
-        var line = global::Smdn.Text.ByteString.CreateImmutable(l);
+        var line = ByteString.CreateImmutable(l);
 
         if (line.StartsWith("begin ")) {
           var match = regexHeaderLine.Match(line.ToString().TrimEnd());

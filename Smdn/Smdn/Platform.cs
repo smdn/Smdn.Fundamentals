@@ -57,7 +57,7 @@ namespace Smdn {
 
           try {
             if (Runtime.IsRunningOnUnix)
-              kernelName = global::Smdn.OperatingSystem.Shell.Execute("uname -srvom").Trim();
+              kernelName = Shell.Execute("uname -srvom").Trim();
           }
           catch {
             // ignore exceptions
@@ -78,7 +78,7 @@ namespace Smdn {
 
           try {
             if (Runtime.IsRunningOnUnix)
-              distributionName = global::Smdn.OperatingSystem.Shell.Execute("lsb_release -ds").Trim();
+              distributionName = Shell.Execute("lsb_release -ds").Trim();
           }
           catch {
             // ignore exceptions

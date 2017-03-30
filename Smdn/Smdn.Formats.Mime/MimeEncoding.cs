@@ -27,6 +27,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 
+using Smdn.Formats.QuotedPrintableEncodings;
 using Smdn.Security.Cryptography;
 using Smdn.Text;
 using Smdn.Text.Encodings;
@@ -110,7 +111,7 @@ namespace Smdn.Formats.Mime {
           encodingChar = 'b';
           break;
         case MimeEncodingMethod.QuotedPrintable:
-          transform = new global::Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransformMode.MimeEncoding);
+          transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding);
           encodingChar = 'q';
           break;
         default:
@@ -282,10 +283,10 @@ namespace Smdn.Formats.Mime {
           // charset
           var charsetString = m.Groups["charset"].Value;
 
-          lastCharset = global::Smdn.Text.Encodings.EncodingUtils.GetEncoding(charsetString, name => selectFallbackEncoding == null ? null : selectFallbackEncoding(name));
+          lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
 
           if (lastCharset == null)
-            throw new global::Smdn.Text.Encodings.EncodingNotSupportedException(charsetString,
+            throw new EncodingNotSupportedException(charsetString,
                                                     string.Format("'{0}' is an unsupported or invalid charset", charsetString));
 
           // encoding
@@ -302,7 +303,7 @@ namespace Smdn.Formats.Mime {
             case "q":
             case "Q":
               lastEncoding = MimeEncodingMethod.QuotedPrintable;
-              transform = new global::Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform(global::Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransformMode.MimeEncoding);
+              transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
               break;
             default:
               if (decodeMalformedOrUnsupported == null)

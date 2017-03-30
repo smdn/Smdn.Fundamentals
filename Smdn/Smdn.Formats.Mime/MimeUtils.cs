@@ -69,16 +69,16 @@ namespace Smdn.Formats.Mime {
 
     public struct HeaderField
     {
-      public Smdn.Text.ByteString RawData {
+      public ByteString RawData {
         get { return rawData; }
       }
 
-      public Smdn.Text.ByteString Name {
-        get { return Smdn.Text.ByteString.CreateImmutable(rawData.Segment.Array, 0, indexOfDelmiter); }
+      public ByteString Name {
+        get { return ByteString.CreateImmutable(rawData.Segment.Array, 0, indexOfDelmiter); }
       }
 
-      public Smdn.Text.ByteString Value {
-        get { return Smdn.Text.ByteString.CreateImmutable(rawData.Segment.Array, indexOfDelmiter + 1); }
+      public ByteString Value {
+        get { return ByteString.CreateImmutable(rawData.Segment.Array, indexOfDelmiter + 1); }
       }
 
       public int IndexOfDelimiter {
@@ -91,7 +91,7 @@ namespace Smdn.Formats.Mime {
         this.indexOfDelmiter = indexOfDelimiter;
       }
 
-      private readonly Smdn.Text.ByteString rawData;
+      private readonly ByteString rawData;
       private readonly int indexOfDelmiter;
     }
 
@@ -100,7 +100,7 @@ namespace Smdn.Formats.Mime {
       if (stream == null)
         throw new ArgumentNullException("stream");
 
-      global::Smdn.Text.ByteStringBuilder header = null;
+      ByteStringBuilder header = null;
       var indexOfDelimiter = -1;
 
       for (;;) {
@@ -143,7 +143,7 @@ namespace Smdn.Formats.Mime {
             header = null;
           }
           else {
-            header = new global::Smdn.Text.ByteStringBuilder(line.Length);
+            header = new ByteStringBuilder(line.Length);
             header.Append(line);
           }
         }
