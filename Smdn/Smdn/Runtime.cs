@@ -2,7 +2,7 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2014 smdn
+// Copyright (c) 2009-2017 smdn
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -76,14 +76,6 @@ namespace Smdn {
 
         return (platform == 4 || platform == 6 || platform == 128);
       }
-    }
-
-    public static int SimdRuntimeAccelMode {
-      get { return Mono.Simd.SimdRuntime.AccelMode; }
-    }
-
-    public static bool IsSimdRuntimeAvailable {
-      get { return 0 < Mono.Simd.SimdRuntime.AccelMode; }
     }
 
     private static string versionString = null;

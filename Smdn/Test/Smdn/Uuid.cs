@@ -75,13 +75,6 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestConstructFromUrn()
-    {
-      Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Uuid(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
-      Assert.AreEqual(new Uuid("f81d4fae-7dec-11d0-a765-00a0c91e6bf6"), new Uuid(new Uri("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")));
-    }
-
-    [Test]
     public void TestCreateTimeBased1()
     {
       var uuid = Uuid.CreateTimeBased((new DateTime(1997, 2, 3, 17, 43, 12, 216, DateTimeKind.Utc)).AddTicks(8750), 10085, new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6});
@@ -286,13 +279,6 @@ namespace Smdn {
       }
       catch (ArgumentException) {
       }
-    }
-
-    [Test]
-    public void TestToUrn()
-    {
-      StringAssert.AreEqualIgnoringCase((new Uri("urn:uuid:00000000-0000-0000-0000-000000000000")).ToString(), Uuid.Nil.ToUrn().ToString());
-      StringAssert.AreEqualIgnoringCase((new Uri("urn:uuid:6ba7b810-9dad-11d1-80b4-00c04fd430c8")).ToString(), Uuid.RFC4122NamespaceDns.ToUrn().ToString());
     }
 
     [Test]

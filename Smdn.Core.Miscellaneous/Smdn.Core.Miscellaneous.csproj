@@ -44,14 +44,10 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Formats\SIPrefixFormat.cs" />
     <Compile Include="Smdn\ConsoleUtils.cs" />
-    <Compile Include="Smdn\EnvironmentUtils.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
     <Compile Include="Smdn.IO\FileDialogFilter.cs" />
     <Compile Include="Smdn.IO\FileManager.cs" />
-    <Compile Include="Smdn.IO\PipeOutStream.cs" />
-    <Compile Include="Smdn.IO\ShellString.cs" />
     <Compile Include="Smdn.Threading\ProcessLock.cs" />
     <Compile Include="Smdn.Threading\QueueingBackgroundWorker.cs">
       <SubType>Component</SubType>

@@ -44,20 +44,6 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn\UInt24.cs" />
-    <Compile Include="Smdn\UInt48.cs" />
-    <Compile Include="Smdn.IO\BigEndianBinaryReader.cs" />
-    <Compile Include="Smdn.IO\BigEndianBinaryWriter.cs" />
-    <Compile Include="Smdn.IO\BinaryReader.cs" />
-    <Compile Include="Smdn.IO\BinaryWriter.cs" />
-    <Compile Include="Smdn.IO\LittleEndianBinaryReader.cs" />
-    <Compile Include="Smdn.IO\LittleEndianBinaryWriter.cs" />
-    <Compile Include="Smdn\FourCC.cs" />
-    <Compile Include="Smdn.IO\ExtendStream.cs" />
-    <Compile Include="Smdn.IO\ExtendStreamBase.cs" />
-    <Compile Include="Smdn.IO\BinaryReaderBase.cs" />
-    <Compile Include="Smdn.IO\BinaryWriterBase.cs" />
-    <Compile Include="Smdn\BinaryConvertExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

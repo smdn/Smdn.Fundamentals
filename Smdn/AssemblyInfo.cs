@@ -2,7 +2,7 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2014 smdn
+// Copyright (c) 2009-2017 smdn
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle(AssemblyInfo.Name)]
 [assembly: AssemblyProduct(AssemblyInfo.Name + "-" + AssemblyInfo.VersionString + AssemblyInfo.Suffix)]
-[assembly: AssemblyCopyright("Copyright(C) 2009-2014 smdn")]
+[assembly: AssemblyCopyright("Copyright(C) 2009-2017 smdn")]
 [assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
@@ -50,6 +50,6 @@ using System.Runtime.CompilerServices;
 
 internal static class AssemblyInfo {
   public const string Name = "Smdn";
-  public const string VersionString = "2.02";
+  public const string VersionString = "3.00";
   public const string Suffix = "";
 }

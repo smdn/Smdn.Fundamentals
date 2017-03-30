@@ -44,39 +44,6 @@
   -->
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Formats\FromPercentEncodedTransform.cs" />
-    <Compile Include="Smdn.Formats\FromRFC2152ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\FromRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\ToPercentEncodedTransform.cs" />
-    <Compile Include="Smdn.Formats\ToRFC2152ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\ToRFC3501ModifiedBase64Transform.cs" />
-    <Compile Include="Smdn.Formats\CsvReader.cs" />
-    <Compile Include="Smdn.Formats\CsvWriter.cs" />
-    <Compile Include="Smdn.Formats\DateTimeConvert.cs" />
-    <Compile Include="Smdn.IO\LineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\LooseLineOrientedStream.cs" />
-    <Compile Include="Smdn.IO\StrictLineOrientedStream.cs" />
-    <Compile Include="Smdn.Formats\ToPercentEncodedTransformMode.cs" />
-    <Compile Include="Smdn.Formats\EncodingUtils.cs" />
-    <Compile Include="Smdn.Formats\PercentEncoding.cs" />
-    <Compile Include="Smdn.Formats\ModifiedUTF7.cs" />
-    <Compile Include="Smdn.Formats.Mime\ToQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Formats.Mime\FromQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
-    <Compile Include="Smdn.Formats.Mime\MimeEncodingMethod.cs" />
-    <Compile Include="Smdn.Formats.Mime\QuotedPrintableEncoding.cs" />
-    <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
-    <Compile Include="Smdn.Formats.Mime\ContentTransferEncodingMethod.cs" />
-    <Compile Include="Smdn.Formats\HtmlEscape.cs" />
-    <Compile Include="Smdn.Formats\EncodingNotSupportedException.cs" />
-    <Compile Include="Smdn.Formats\EncodingSelectionCallback.cs" />
-    <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
-    <Compile Include="Smdn.Formats.Mime\FromQuotedPrintableTransformMode.cs" />
-    <Compile Include="Smdn.Formats.Mime\ToQuotedPrintableTransformMode.cs" />
-    <Compile Include="Smdn.Formats.Mime\MimeEncodedWordConverter.cs" />
-    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingStream.cs" />
-    <Compile Include="Smdn.Formats.UUEncoding\UUDecodingTransform.cs" />
-    <Compile Include="Smdn.Formats.UUEncoding\UUDecoder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -2,7 +2,7 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2014 smdn
+// Copyright (c) 2009-2017 smdn
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,8 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
-using Smdn.Formats;
+using Smdn.IO.Binary;
+using Smdn.Text;
 
 namespace Smdn {
   /*
@@ -621,9 +622,9 @@ namespace Smdn {
       if (octets.Length - 16 < index)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", octets, index, 16);
 
-      this.time_low                   = BinaryConvert.ToUInt32(octets, index + 0, endian);
-      this.time_mid                   = BinaryConvert.ToUInt16(octets, index + 4, endian);
-      this.time_hi_and_version        = BinaryConvert.ToUInt16(octets, index + 6, endian);
+      this.time_low                   = BinaryConversion.ToUInt32(octets, index + 0, endian);
+      this.time_mid                   = BinaryConversion.ToUInt16(octets, index + 4, endian);
+      this.time_hi_and_version        = BinaryConversion.ToUInt16(octets, index + 6, endian);
       this.clock_seq_hi_and_reserved  = octets[index +  8];
       this.clock_seq_low              = octets[index +  9];
       this.node.N0                    = octets[index + 10];
@@ -632,11 +633,6 @@ namespace Smdn {
       this.node.N3                    = octets[index + 13];
       this.node.N4                    = octets[index + 14];
       this.node.N5                    = octets[index + 15];
-    }
-
-    public Uuid(Uri uuidUrn)
-      : this(Urn.GetNamespaceSpecificString(uuidUrn, Urn.NamespaceUuid))
-    {
     }
 
     public Uuid(string uuid)
@@ -666,7 +662,7 @@ namespace Smdn {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
 
       try {
-        var n = Hexadecimals.ToByteArray(fields[4]);
+        var n = Ascii.Hexadecimals.ToByteArray(fields[4]);
 
         this.node = new _Node(n[0], n[1], n[2], n[3], n[4], n[5]);
       }
@@ -797,11 +793,6 @@ namespace Smdn {
       return new Guid(ToString(null, null));
     }
 
-    public Uri ToUrn()
-    {
-      return Urn.Create(Urn.NamespaceUuid, ToString(null, null));
-    }
-
     public void GetBytes(byte[] buffer, int startIndex)
     {
       GetBytes(buffer, startIndex, Platform.Endianness);
@@ -816,9 +807,9 @@ namespace Smdn {
       if (buffer.Length - 16 < startIndex)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", buffer, startIndex, 16);
 
-      BinaryConvert.GetBytes(time_low,            endian, buffer, startIndex + 0);
-      BinaryConvert.GetBytes(time_mid,            endian, buffer, startIndex + 4);
-      BinaryConvert.GetBytes(time_hi_and_version, endian, buffer, startIndex + 6);
+      BinaryConversion.GetBytes(time_low,            endian, buffer, startIndex + 0);
+      BinaryConversion.GetBytes(time_mid,            endian, buffer, startIndex + 4);
+      BinaryConversion.GetBytes(time_hi_and_version, endian, buffer, startIndex + 6);
 
       buffer[startIndex +  8] = clock_seq_hi_and_reserved;
       buffer[startIndex +  9] = clock_seq_low;

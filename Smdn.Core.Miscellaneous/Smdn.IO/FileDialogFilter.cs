@@ -51,7 +51,7 @@ namespace Smdn.IO {
 
       public override string ToString()
       {
-        return string.Format("{0} ({1}){2}{1}", Description, string.Join(PatternDelimiter, Patterns ?? EmptyArray<string>.Instance), DescriptionPatternDelimiter);
+        return string.Format("{0} ({1}){2}{1}", Description, string.Join(PatternDelimiter, Patterns ?? Array.Empty<string>()), DescriptionPatternDelimiter);
       }
     }
 
