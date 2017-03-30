@@ -53,7 +53,7 @@
     <Compile Include="Smdn.Formats.ModifiedBase64\ToRFC2152ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats.ModifiedBase64\ToRFC3501ModifiedBase64Transform.cs" />
     <Compile Include="Smdn.Formats.PercentEncodings\PercentEncoding.cs" />
-    <Compile Include="Smdn.Formats.QuotedPrintable\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats.QuotedPrintableEncodings\QuotedPrintableEncoding.cs" />
     <Compile Include="Smdn.Formats.UUEncodings\UUDecoder.cs" />
     <Compile Include="Smdn.Formats.UUEncodings\UUDecodingStream.cs" />
     <Compile Include="Smdn.Formats.UUEncodings\UUDecodingTransform.cs" />

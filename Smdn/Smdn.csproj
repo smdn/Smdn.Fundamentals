@@ -68,11 +68,11 @@
     <Compile Include="Smdn.Formats.PercentEncodings\PercentEncoding.cs" />
     <Compile Include="Smdn.Formats.PercentEncodings\ToPercentEncodedTransform.cs" />
     <Compile Include="Smdn.Formats.PercentEncodings\ToPercentEncodedTransformMode.cs" />
-    <Compile Include="Smdn.Formats.QuotedPrintable\FromQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Formats.QuotedPrintable\FromQuotedPrintableTransformMode.cs" />
-    <Compile Include="Smdn.Formats.QuotedPrintable\QuotedPrintableEncoding.cs" />
-    <Compile Include="Smdn.Formats.QuotedPrintable\ToQuotedPrintableTransform.cs" />
-    <Compile Include="Smdn.Formats.QuotedPrintable\ToQuotedPrintableTransformMode.cs" />
+    <Compile Include="Smdn.Formats.QuotedPrintableEncodings\FromQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats.QuotedPrintableEncodings\FromQuotedPrintableTransformMode.cs" />
+    <Compile Include="Smdn.Formats.QuotedPrintableEncodings\QuotedPrintableEncoding.cs" />
+    <Compile Include="Smdn.Formats.QuotedPrintableEncodings\ToQuotedPrintableTransform.cs" />
+    <Compile Include="Smdn.Formats.QuotedPrintableEncodings\ToQuotedPrintableTransformMode.cs" />
     <Compile Include="Smdn.Formats.UUEncodings\UUDecoder.cs" />
     <Compile Include="Smdn.Formats.UUEncodings\UUDecodingStream.cs" />
     <Compile Include="Smdn.Formats.UUEncodings\UUDecodingTransform.cs" />
