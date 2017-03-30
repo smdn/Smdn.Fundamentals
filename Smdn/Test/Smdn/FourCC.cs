@@ -12,21 +12,21 @@ namespace Smdn {
     }
 
     [Test]
-    public void ConstructFromInt()
+    public void TestConstructFromInt()
     {
       Assert.AreEqual("RIFF", FourCC.CreateLittleEndian(0x46464952).ToString());
       Assert.AreEqual("isom", FourCC.CreateBigEndian(0x69736f6d).ToString());
     }
 
     [Test]
-    public void ConstructFromByteArray()
+    public void TestConstructFromByteArray()
     {
       Assert.AreEqual("RIFF", (new FourCC(new byte[] {0x00, 0x52, 0x49, 0x46, 0x46, 0x00}, 1)).ToString());
       Assert.AreEqual("isom", (new FourCC(new byte[] {0x69, 0x73, 0x6f, 0x6d})).ToString());
     }
 
     [Test]
-    public void ConstructFromString()
+    public void TestConstructFromString()
     {
       Assert.AreEqual("RIFF", (new FourCC("RIFF")).ToString());
       Assert.AreEqual("isom", (new FourCC("isom")).ToString());

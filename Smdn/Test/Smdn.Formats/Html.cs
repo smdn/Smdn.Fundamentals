@@ -23,7 +23,7 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TesFromHtmlEscapedString()
+    public void TestFromHtmlEscapedString()
     {
       Assert.AreEqual("<>&\"&apos;#", Html.FromHtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"));
     }
