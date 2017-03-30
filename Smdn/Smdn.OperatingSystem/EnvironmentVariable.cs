@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Smdn.OperatingSystem {
-  public static class EnvironmentUtils {
+  public static class EnvironmentVariable {
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables)
     {
       return ParseEnvironmentVariables(variables, true);
