@@ -27,7 +27,7 @@ using System.Runtime.Serialization;
 
 namespace Smdn.Text.Encodings {
   [Serializable]
-  public class EncodingNotSupportedException : Smdn.Formats.EncodingNotSupportedException /*NotSupportedException*/ {
+  public class EncodingNotSupportedException : NotSupportedException {
     /*
      * XXX: code page not supported
     public int CodePage {
@@ -35,7 +35,6 @@ namespace Smdn.Text.Encodings {
     }
     */
 
-#if false
     public string EncodingName {
       get; private set;
     }
@@ -83,42 +82,6 @@ namespace Smdn.Text.Encodings {
       base.GetObjectData(info, context);
 
       info.AddValue("EncodingName", EncodingName);
-    }
-#endif
-
-    public EncodingNotSupportedException()
-      : base()
-    {
-    }
-
-    public EncodingNotSupportedException(string encodingName)
-      : base(encodingName)
-    {
-    }
-
-    public EncodingNotSupportedException(string encodingName, Exception innerException)
-      : base(encodingName, innerException)
-    {
-    }
-
-    public EncodingNotSupportedException(string encodingName, string message)
-      : base(encodingName, message)
-    {
-    }
-
-    public EncodingNotSupportedException(string encodingName, string message, Exception innerException)
-      : base(encodingName, message, innerException)
-    {
-    }
-
-    protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-    }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
     }
   }
 }

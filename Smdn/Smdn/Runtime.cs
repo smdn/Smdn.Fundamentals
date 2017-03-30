@@ -78,16 +78,6 @@ namespace Smdn {
       }
     }
 
-    [Obsolete("This member is deprecated.", true)]
-    public static int SimdRuntimeAccelMode {
-      get { throw new NotSupportedException("This member is deprecated."); }
-    }
-
-    [Obsolete("This member is deprecated.", true)]
-    public static bool IsSimdRuntimeAvailable {
-      get { throw new NotSupportedException("This member is deprecated."); }
-    }
-
     private static string versionString = null;
 
     public static string VersionString {

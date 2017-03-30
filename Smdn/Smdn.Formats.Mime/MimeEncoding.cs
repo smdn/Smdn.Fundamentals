@@ -29,6 +29,7 @@ using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
 using Smdn.Text;
+using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.Mime {
   /*
@@ -226,7 +227,7 @@ namespace Smdn.Formats.Mime {
       return Decode(str, selectFallbackEncoding, null, out discard1, out discard2);
     }
 
-    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, Smdn.MimeEncodedWordConverter decodeMalformedOrUnsupported)
+    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
     {
       MimeEncodingMethod discard1;
       Encoding discard2;
@@ -263,7 +264,7 @@ namespace Smdn.Formats.Mime {
 
     public static string Decode(string str,
                                 EncodingSelectionCallback selectFallbackEncoding,
-                                Smdn.MimeEncodedWordConverter decodeMalformedOrUnsupported,
+                                MimeEncodedWordConverter decodeMalformedOrUnsupported,
                                 out MimeEncodingMethod encoding,
                                 out Encoding charset)
     {
@@ -350,7 +351,7 @@ namespace Smdn.Formats.Mime {
       return Decode(str, selectFallbackEncoding, null, out discard1, out discard2);
     }
 
-    public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, Smdn.MimeEncodedWordConverter decodeMalformedOrUnsupported)
+    public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
     {
       if (str == null)
         return null;
@@ -392,7 +393,7 @@ namespace Smdn.Formats.Mime {
 
     public static string DecodeNullable(string str,
                                         EncodingSelectionCallback selectFallbackEncoding,
-                                        Smdn.MimeEncodedWordConverter decodeMalformedOrUnsupported,
+                                        MimeEncodedWordConverter decodeMalformedOrUnsupported,
                                         out MimeEncodingMethod encoding,
                                         out Encoding charset)
     {
