@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture]
-  public class MathUtilsTest {
+  public class MathUtilsTests {
     [Test]
     public void TestHypot()
     {

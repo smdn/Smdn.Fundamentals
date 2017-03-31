@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Smdn.IO.Binary {
   [TestFixture]
-  public class BinaryWriterTest {
+  public class BinaryWriterTests {
     private class NonWritableStream : Stream {
       public override bool CanRead {
         get { return true; }

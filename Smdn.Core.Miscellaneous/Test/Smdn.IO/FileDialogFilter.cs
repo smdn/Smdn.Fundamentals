@@ -4,9 +4,9 @@ using NUnit.Framework;
 
 namespace Smdn.IO {
   [TestFixture]
-  public class FileDialogFilterTest {
+  public class FileDialogFilterTests {
     [Test]
-    public void CreateFilterStringFromStringArray()
+    public void TestCreateFilterStringFromStringArray()
     {
       Assert.AreEqual("Text files (*.txt)|*.txt|Image files (*.jpg;*.png;*.bmp)|*.jpg;*.png;*.bmp|All files (*.*)|*.*", FileDialogFilter.CreateFilterString(new string[][] {
         new[] {"Text files", "*.txt"},
@@ -16,7 +16,7 @@ namespace Smdn.IO {
     }
 
     [Test]
-    public void CreateFilterStringFromDictionary()
+    public void TestCreateFilterStringFromDictionary()
     {
       Assert.AreEqual("Text files (*.txt)|*.txt|Image files (*.jpg;*.png;*.bmp)|*.jpg;*.png;*.bmp|All files (*.*)|*.*", FileDialogFilter.CreateFilterString(new Dictionary<string, string>() {
         {"Text files", "*.txt"},
@@ -26,7 +26,7 @@ namespace Smdn.IO {
     }
 
     [Test]
-    public void CreateFilterStringFromFilter()
+    public void TestCreateFilterStringFromFilter()
     {
       Assert.AreEqual("Text files (*.txt)|*.txt|Image files (*.jpg;*.png;*.bmp)|*.jpg;*.png;*.bmp|All files (*.*)|*.*", FileDialogFilter.CreateFilterString(new[] {
         new FileDialogFilter.Filter("Text files", "*.txt"),

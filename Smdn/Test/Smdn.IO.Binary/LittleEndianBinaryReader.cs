@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace Smdn.IO.Binary {
   [TestFixture]
-  public class LittleEndianBinaryReaderTest {
+  public class LittleEndianBinaryReaderTests {
     [Test]
     public void TestReadUnsignedInt()
     {

@@ -6,7 +6,7 @@ using Smdn.Formats;
 
 namespace Smdn.IO {
   [TestFixture]
-  public class TextReaderExtensions {
+  public class TextReaderExtensionsTests {
     [Test]
     public void TestReadLines()
     {
