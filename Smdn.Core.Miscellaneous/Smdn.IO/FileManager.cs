@@ -27,6 +27,8 @@ using System.IO;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
+using Smdn.OperatingSystem;
+
 namespace Smdn.IO {
   public static class FileManager {
     [DllImport("shell32.dll")]
