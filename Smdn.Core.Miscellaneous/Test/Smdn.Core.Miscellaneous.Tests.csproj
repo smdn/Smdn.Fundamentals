@@ -41,11 +41,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\Smdn.csproj">
+    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Smdn.Core.Miscellaneous.csproj">
+    <ProjectReference Include="..\src\Smdn.Core.Miscellaneous.csproj">
       <Project>{C13BB092-5F69-45E6-831A-CB2E14DA7AFB}</Project>
       <Name>Smdn.Core.Miscellaneous</Name>
     </ProjectReference>
