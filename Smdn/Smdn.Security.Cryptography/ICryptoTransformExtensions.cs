@@ -26,6 +26,8 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.Text.Encodings;
+
 namespace Smdn.Security.Cryptography {
   public static class ICryptoTransformExtensions {
     public static string TransformStringTo(this ICryptoTransform transform, string str, Encoding encoding)
@@ -37,7 +39,7 @@ namespace Smdn.Security.Cryptography {
 
       var bytes = encoding.GetBytes(str);
 
-      return Encoding.ASCII.GetString(TransformBytes(transform, bytes, 0, bytes.Length));
+      return OctetEncoding.EightBits.GetString(TransformBytes(transform, bytes, 0, bytes.Length));
     }
 
     public static string TransformStringFrom(this ICryptoTransform transform, string str, Encoding encoding)
@@ -47,7 +49,7 @@ namespace Smdn.Security.Cryptography {
       if (encoding == null)
         throw new ArgumentNullException("encoding");
 
-      var bytes = Encoding.ASCII.GetBytes(str);
+      var bytes = OctetEncoding.EightBits.GetBytes(str);
 
       return encoding.GetString(TransformBytes(transform, bytes, 0, bytes.Length));
     }
