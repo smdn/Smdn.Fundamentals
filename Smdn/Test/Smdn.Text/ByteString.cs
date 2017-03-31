@@ -87,33 +87,13 @@ namespace Smdn.Text {
       Assert.AreEqual(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65}, str.ToArray(0, 5));
       Assert.AreEqual(new byte[] {}, str.ToArray(5, 0));
 
-      try {
-        str.ToArray(-1, 6);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.ToArray(-1, 6));
 
-      try {
-        str.ToArray(6, -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.ToArray(6, -1));
 
-      try {
-        str.ToArray(0, 6);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.ToArray(0, 6));
 
-      try {
-        str.ToArray(6, 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.ToArray(6, 0));
     }
 
     [Test]
@@ -151,54 +131,19 @@ namespace Smdn.Text {
 
       buffer = alloc();
 
-      try {
-        str.CopyTo(0, null, 0, 5);
-        Assert.Fail("ArgumentNullException not thrown");
-      }
-      catch (ArgumentNullException) {
-      }
+      Assert.Throws<ArgumentNullException>(() => str.CopyTo(0, null, 0, 5));
 
-      try {
-        str.CopyTo(-1, buffer, 0, 6);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.CopyTo(-1, buffer, 0, 6));
 
-      try {
-        str.CopyTo(6, buffer, 0, -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.CopyTo(6, buffer, 0, -1));
 
-      try {
-        str.CopyTo(0, buffer, -1, 5);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.CopyTo(0, buffer, -1, 5));
 
-      try {
-        str.CopyTo(0, buffer, 0, 6);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.CopyTo(0, buffer, 0, 6));
 
-      try {
-        str.CopyTo(6, buffer, 0, 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.CopyTo(6, buffer, 0, 0));
 
-      try {
-        str.CopyTo(0, buffer, 3, 5);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.CopyTo(0, buffer, 3, 5));
     }
 
     [Test]
@@ -209,33 +154,13 @@ namespace Smdn.Text {
       Assert.AreEqual(new byte[] {0x62}, ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 1, 1).ToArray());
       Assert.AreEqual(new byte[] {}, ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 1, 0).ToArray());
 
-      try {
-        ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 0, 4);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 0, 4));
 
-      try {
-        ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 4, 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 4, 0));
 
-      try {
-        ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, -1, 4);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, -1, 4));
 
-      try {
-        ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 4, -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 4, -1));
     }
 
     [Test]
@@ -283,40 +208,15 @@ namespace Smdn.Text {
 
       Assert.AreEqual(new byte[0], bytes);
 
-      try {
-        ByteString.ToByteArray(null, 0, 0);
-        Assert.Fail("ArgumentNullException not thrown");
-      }
-      catch (ArgumentNullException) {
-      }
+      Assert.Throws<ArgumentNullException>(() => ByteString.ToByteArray(null, 0, 0));
 
-      try {
-        ByteString.ToByteArray("abc", -1, 3);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => ByteString.ToByteArray("abc", -1, 3));
 
-      try {
-        ByteString.ToByteArray("abc", 0, -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => ByteString.ToByteArray("abc", 0, -1));
 
-      try {
-        ByteString.ToByteArray("abc", 0, 4);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => ByteString.ToByteArray("abc", 0, 4));
 
-      try {
-        ByteString.ToByteArray("abc", 4, 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => ByteString.ToByteArray("abc", 4, 0));
     }
 
     [Test]
@@ -333,21 +233,13 @@ namespace Smdn.Text {
 
         byte b = 0x00;
 
-        try {
-          b = str[-1];
-          Assert.Fail("IndexOutOfRangeException not thrown");
-        }
-        catch (IndexOutOfRangeException) {
-          Assert.AreEqual(0x00, b);
-        }
+        Assert.Throws<IndexOutOfRangeException>(() => { b = str[-1]; });
 
-        try {
-          b = str[-4];
-          Assert.Fail("IndexOutOfRangeException not thrown");
-        }
-        catch (IndexOutOfRangeException) {
-          Assert.AreEqual(0x00, b);
-        }
+        Assert.AreEqual(0x00, b);
+
+        Assert.Throws<IndexOutOfRangeException>(() => { b = str[-4]; });
+
+        Assert.AreEqual(0x00, b);
       }
     }
 
@@ -369,12 +261,7 @@ namespace Smdn.Text {
       var str = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), false);
 
       for (var i = -1; i < str.Length + 1; i++) {
-        try {
-          str[i] = 0x41;
-          Assert.Fail("NotSupportedException not thrown");
-        }
-        catch (NotSupportedException) {
-        }
+        Assert.Throws<NotSupportedException>(() => str[i] = 0x41);
       }
 
       Assert.AreEqual("abc", str.ToString());
@@ -606,33 +493,13 @@ namespace Smdn.Text {
       Assert.AreEqual(ByteString.CreateImmutable(""), str.Substring(5));
       Assert.AreEqual(ByteString.CreateImmutable(""), str.Substring(5, 0));
 
-      try {
-        str.Substring(-1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.Substring(-1));
 
-      try {
-        str.Substring(5, -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.Substring(5, -1));
 
-      try {
-        str.Substring(0, 6);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.Substring(0, 6));
 
-      try {
-        str.Substring(5, 1);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.Substring(5, 1));
     }
 
     [Test]
@@ -884,15 +751,10 @@ namespace Smdn.Text {
         "0x0123456",
         "1234567890a",
       }) {
-        try {
-          if (bits == 32)
-            ByteString.CreateImmutable(test).ToUInt32();
-          else if (bits == 64)
-            ByteString.CreateImmutable(test).ToUInt64();
-          Assert.Fail("FormatException not thrown");
-        }
-        catch (FormatException) {
-        }
+        if (bits == 32)
+          Assert.Throws<FormatException>(() => ByteString.CreateImmutable(test).ToUInt32());
+        else if (bits == 64)
+          Assert.Throws<FormatException>(() => ByteString.CreateImmutable(test).ToUInt64());
       }
     }
 
@@ -1158,26 +1020,11 @@ namespace Smdn.Text {
       Assert.AreEqual("defghi", str.ToString(3, 6));
       Assert.AreEqual("i", str.ToString(8, 1));
 
-      try {
-        str.ToString(-1, 10);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.ToString(-1, 10));
 
-      try {
-        str.ToString(10, -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.ToString(10, -1));
 
-      try {
-        str.ToString(9, 1);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => str.ToString(9, 1));
     }
 
     [Test]
@@ -1217,12 +1064,7 @@ namespace Smdn.Text {
 
       Assert.IsFalse(ByteString.IsTerminatedByCRLF(ByteString.CreateImmutable("")));
 
-      try {
-        ByteString.IsTerminatedByCRLF(null);
-        Assert.Fail("ArgumentNullException not thrown");
-      }
-      catch (ArgumentNullException) {
-      }
+      Assert.Throws<ArgumentNullException>(() => ByteString.IsTerminatedByCRLF(null));
     }
 
     [Test]

@@ -42,26 +42,9 @@ namespace Smdn.Text {
       Assert.AreEqual(new byte[] {}, Ascii.Hexadecimals.ToByteArrayFromLowerString(""), "empty");
       Assert.AreEqual(new byte[] {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}, Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdef"));
 
-      try {
-        Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcde");
-        Assert.Fail("invalid length, FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
-
-      try {
-        Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeg");
-        Assert.Fail("FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
-
-      try {
-        Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeF");
-        Assert.Fail("FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
+      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcde"), "#1");
+      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeg"), "#2");
+      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeF"), "#3");
     }
 
     [Test]
@@ -70,26 +53,9 @@ namespace Smdn.Text {
       Assert.AreEqual(new byte[] {}, Ascii.Hexadecimals.ToByteArrayFromUpperString(""), "empty");
       Assert.AreEqual(new byte[] {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}, Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEF"));
 
-      try {
-        Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDE");
-        Assert.Fail("FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
-
-      try {
-        Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEG");
-        Assert.Fail("FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
-
-      try {
-        Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEf");
-        Assert.Fail("FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
+      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDE"), "#1");
+      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEG"), "#2");
+      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEf"), "#3");
     }
 
     [Test]

@@ -169,12 +169,7 @@ namespace Smdn {
       Assert.AreEqual("(00000000-0000-0000-0000-000000000000)", Uuid.Nil.ToString("P", null));
       Assert.AreEqual("{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}", Uuid.Nil.ToString("X", null));
 
-      try {
-        Uuid.Nil.ToString("Z", null);
-        Assert.Fail("FormatException not thrown");
-      }
-      catch (FormatException) {
-      }
+      Assert.Throws<FormatException>(() => Uuid.Nil.ToString("Z", null));
     }
 
     [Test]
@@ -252,33 +247,10 @@ namespace Smdn {
       CollectionAssert.AreEqual(new[] {0xcc, 0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc},
                                 buffer);
 
-      try {
-        Uuid.RFC4122NamespaceDns.GetBytes(null, 0);
-        Assert.Fail("ArgumentNullException not thrown");
-      }
-      catch (ArgumentNullException) {
-      }
-
-      try {
-        Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
-
-      try {
-        Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
-
-      try {
-        Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentNullException>(() => Uuid.RFC4122NamespaceDns.GetBytes(null, 0));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], -1));
+      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0));
+      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1));
     }
 
     [Test]
@@ -352,12 +324,7 @@ namespace Smdn {
       Assert.AreEqual(1, Uuid.RFC4122NamespaceDns.CompareTo(null));
       Assert.AreNotEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty));
 
-      try {
-        Uuid.RFC4122NamespaceDns.CompareTo(1);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.CompareTo(1));
 
       var ux = new Uuid("00000000-0000-0000-0000-000000000000");
       var uy = new Uuid("00000001-0000-0000-0000-000000000000");

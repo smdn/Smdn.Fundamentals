@@ -34,21 +34,11 @@ namespace Smdn.Text {
       Assert.AreEqual(0x61, b[1]);
       Assert.AreEqual(0x62, b[2]);
 
-      try {
 #pragma warning disable 168
-        var val = b[3];
+      Assert.Throws<IndexOutOfRangeException>(() => { var val = b[3]; });
 #pragma warning restore 168
-        Assert.Fail("IndexOutOfRangeException not thrown");
-      }
-      catch (IndexOutOfRangeException) {
-      }
 
-      try {
-        b[3] = (byte)0x61;
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => b[3] = (byte)0x61);
     }
 
     [Test]

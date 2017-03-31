@@ -184,12 +184,7 @@ namespace Smdn.IO.Streams {
         Assert.IsFalse(stream.CanSeek, "CanSeek");
         Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
-        try {
-          stream.ReadByte();
-          Assert.Fail("ObjectDisposedException not thrown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
 
       Assert.AreEqual(results[0], results[1]);
@@ -206,19 +201,9 @@ namespace Smdn.IO.Streams {
         Assert.IsFalse(stream.CanSeek, "CanSeek");
         Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
-        try {
-          stream.ReadByte();
-          Assert.Fail("ObjectDisposedException not thrown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
 
-        try {
-          stream.WriteByte(0x00);
-          Assert.Fail("ObjectDisposedException not thrown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
 
         stream.Close();
       }
@@ -234,12 +219,7 @@ namespace Smdn.IO.Streams {
           Assert.AreEqual((long)i + 1, stream.Position);
         }
 
-        try {
-          stream.Position = -1L;
-          Assert.Fail("ArgumentOutOfRangeException not thrown");
-        }
-        catch (ArgumentOutOfRangeException) {
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -1L);
 
         for (var expected = 0L; expected < 12L; expected++) {
           stream.Position = expected;
@@ -350,12 +330,7 @@ namespace Smdn.IO.Streams {
 
         Assert.AreEqual(0x40, stream.Seek(0x40, SeekOrigin.Begin));
 
-        try {
-          stream.Seek(-1, SeekOrigin.Begin);
-          Assert.Fail("IOException not thrown");
-        }
-        catch (IOException) {
-        }
+        Assert.Throws<IOException>(() => stream.Seek(-1, SeekOrigin.Begin));
       }
     }
 
@@ -378,12 +353,7 @@ namespace Smdn.IO.Streams {
 
         Assert.AreEqual(0x40, stream.Seek(+0x30, SeekOrigin.Current));
 
-        try {
-          stream.Seek(-0x41, SeekOrigin.Current);
-          Assert.Fail("IOException not thrown");
-        }
-        catch (IOException) {
-        }
+        Assert.Throws<IOException>(() => stream.Seek(-0x41, SeekOrigin.Current));
       }
     }
 
@@ -406,12 +376,7 @@ namespace Smdn.IO.Streams {
 
         Assert.AreEqual(0x40, stream.Seek(+0x20, SeekOrigin.End));
 
-        try {
-          stream.Seek(-0x41, SeekOrigin.End);
-          Assert.Fail("IOException not thrown");
-        }
-        catch (IOException) {
-        }
+        Assert.Throws<IOException>(() => stream.Seek(-0x41, SeekOrigin.End));
       }
     }
 

@@ -97,14 +97,7 @@ namespace Smdn {
         new {Value = (short)-1},
         new {Value = Int16.MinValue},
       }) {
-        try {
-          UInt24 val = (UInt24)test.Value;
-
-          Assert.Fail("OverflowException not thrown: value = {0}", test.Value);
-          Assert.AreNotEqual(0, val.ToInt32());
-        }
-        catch (OverflowException) {
-        }
+        Assert.Throws<OverflowException>(() => { UInt24 val = (UInt24)test.Value; });
       }
     }
 
@@ -133,14 +126,7 @@ namespace Smdn {
         new {Value = Int32.MaxValue},
         new {Value = Int32.MinValue},
       }) {
-        try {
-          UInt24 val = (UInt24)test.Value;
-
-          Assert.Fail("OverflowException not thrown: value = {0}", test.Value);
-          Assert.AreNotEqual(0, val.ToInt32());
-        }
-        catch (OverflowException) {
-        }
+        Assert.Throws<OverflowException>(() => { UInt24 val = (UInt24)test.Value; });
       }
     }
 
@@ -169,14 +155,7 @@ namespace Smdn {
         new {Value = (uint)0xffffffff},
         new {Value = UInt32.MaxValue},
       }) {
-        try {
-          UInt24 val = (UInt24)test.Value;
-
-          Assert.Fail("OverflowException not thrown: value = {0}", test.Value);
-          Assert.AreNotEqual(0u, val.ToUInt32());
-        }
-        catch (OverflowException) {
-        }
+        Assert.Throws<OverflowException>(() => { UInt24 val = (UInt24)test.Value; });
       }
     }
 
@@ -205,12 +184,7 @@ namespace Smdn {
       }) {
         Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
 
-        try {
-          Assert.IsFalse((short)0 == (short)test.Value);
-          Assert.Fail("OverflowException not thrown: value = {0}", test.ExpectedHex);
-        }
-        catch (OverflowException) {
-        }
+        Assert.Throws<OverflowException>(() => { var s = (short)test.Value; });
       }
     }
 
@@ -241,12 +215,7 @@ namespace Smdn {
       }) {
         Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
 
-        try {
-          Assert.IsFalse((ushort)0 == (ushort)test.Value);
-          Assert.Fail("OverflowException not thrown: value = {0}", test.ExpectedHex);
-        }
-        catch (OverflowException) {
-        }
+        Assert.Throws<OverflowException>(() => { var us = (ushort)test.Value; });
       }
     }
 
@@ -331,12 +300,7 @@ namespace Smdn {
         typeof(short),
         typeof(ushort),
       }) {
-        try {
-          Convert.ChangeType(UInt24.MaxValue, t);
-          Assert.Fail("OverflowException not thrown: type {0}", t);
-        }
-        catch (OverflowException) {
-        }
+        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName);
       }
 
       foreach (var t in new[] {
@@ -345,12 +309,7 @@ namespace Smdn {
         typeof(long),
         typeof(ulong),
       }) {
-        try {
-          Convert.ChangeType(UInt24.MaxValue, t);
-        }
-        catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: type {0}", t);
-        }
+        Assert.DoesNotThrow(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName);
       }
     }
 

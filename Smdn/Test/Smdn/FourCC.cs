@@ -94,43 +94,40 @@ namespace Smdn {
     public void TestGetBytes()
     {
       var fourcc = new FourCC("RIFF");
-      var buffer = new byte[] {0xcc, 0xdd, 0xcc, 0xdd, 0xcc};
+      var buffer = new byte[] { 0xcc, 0xdd, 0xcc, 0xdd, 0xcc };
 
       fourcc.GetBytes(buffer, 1);
 
-      Assert.AreEqual(new byte[] {0xcc, 0x52, 0x49, 0x46, 0x46}, buffer);
+      Assert.AreEqual(new byte[] { 0xcc, 0x52, 0x49, 0x46, 0x46 }, buffer);
 
       fourcc.GetBytes(buffer, 0);
 
-      Assert.AreEqual(new byte[] {0x52, 0x49, 0x46, 0x46, 0x46}, buffer);
+      Assert.AreEqual(new byte[] { 0x52, 0x49, 0x46, 0x46, 0x46 }, buffer);
+    }
 
-      try {
-        fourcc.GetBytes(null, 0);
-        Assert.Fail("ArgumentNullException not thrown");
-      }
-      catch (ArgumentNullException) {
-      }
+    [Test]
+    public void TestGetBytes_ArgumentNull()
+    {
+      var fourcc = new FourCC("RIFF");
 
-      try {
-        fourcc.GetBytes(new byte[3], -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown");
-      }
-      catch (ArgumentOutOfRangeException) {
-      }
+      Assert.Throws<ArgumentNullException>(() => fourcc.GetBytes(null, 0));
+    }
 
-      try {
-        fourcc.GetBytes(new byte[4], 1);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+    [Test]
+    public void TestGetBytes_ArgumentOutOfRange()
+    {
+      var fourcc = new FourCC("RIFF");
 
-      try {
-        fourcc.GetBytes(new byte[3], 0);
-        Assert.Fail("ArgumentException not thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentOutOfRangeException>(() => fourcc.GetBytes(new byte[3], -1));
+    }
+
+    [Test]
+    public void TestGetBytes_ArgumentInvalid()
+    {
+      var fourcc = new FourCC("RIFF");
+
+      Assert.Throws<ArgumentException>(() => fourcc.GetBytes(new byte[4], 1), "#1");
+      Assert.Throws<ArgumentException>(() => fourcc.GetBytes(new byte[3], 0), "#2");
     }
 
     [Test]

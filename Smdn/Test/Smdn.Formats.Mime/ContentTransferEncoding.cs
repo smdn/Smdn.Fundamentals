@@ -45,12 +45,7 @@ namespace Smdn.Formats.Mime {
         "unknown",
         "base32",
       }) {
-        try {
-          ContentTransferEncoding.GetEncodingMethodThrowException(name);
-          Assert.Fail("NotSupportedException not thrown");
-        }
-        catch (NotSupportedException) {
-        }
+        Assert.Throws<NotSupportedException>(() => ContentTransferEncoding.GetEncodingMethodThrowException(name), name);
       }
     }
 
@@ -109,13 +104,7 @@ namespace Smdn.Formats.Mime {
 
         reader.Close();
 
-        try {
-          stream.ReadByte();
-
-          Assert.Fail("InvalidOperationException not thrown");
-        }
-        catch (InvalidOperationException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
     }
 
@@ -182,13 +171,7 @@ namespace Smdn.Formats.Mime {
 
         reader.Close();
 
-        try {
-          stream.ReadByte();
-          
-          Assert.Fail("InvalidOperationException not thrown");
-        }
-        catch (InvalidOperationException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
     }
 

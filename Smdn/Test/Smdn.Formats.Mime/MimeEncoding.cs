@@ -43,23 +43,13 @@ namespace Smdn.Formats.Mime {
     [Test]
     public void TestEncodeInvalidCharset()
     {
-      try {
-        MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null);
-        Assert.Fail("no exceptions thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentNullException>(() => MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null));
     }
 
     [Test]
     public void TestEncodeInvalidEncoding()
     {
-      try {
-        MimeEncoding.Encode("漢字abcかな123カナ", (MimeEncodingMethod)0x7fffffff, Encoding.UTF8);
-        Assert.Fail("no exceptions thrown");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.Throws<ArgumentException>(() => MimeEncoding.Encode("漢字abcかな123カナ", (MimeEncodingMethod)0x7fffffff, Encoding.UTF8));
     }
 
     [Test]
@@ -277,16 +267,9 @@ namespace Smdn.Formats.Mime {
     [Test]
     public void TestDecodeInvalidCharset()
     {
-      try {
-        Assert.AreEqual("漢字abcかな123カナ",
-                        MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
-                        "utf8");
+      var ex = Assert.Throws<EncodingNotSupportedException>(() => MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="));
 
-        Assert.Fail("EncodingNotSupportedException not thrown");
-      }
-      catch (EncodingNotSupportedException ex) {
-        Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
-      }
+      Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
     }
 
     [Test]
@@ -346,18 +329,11 @@ namespace Smdn.Formats.Mime {
       MimeEncodingMethod encoding = MimeEncodingMethod.None;
       Encoding charset = null;
 
-      try {
-        MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
-                            callback,
-                            out encoding,
-                            out charset);
-
-        Assert.Fail("EncodingNotSupportedException not thrown");
-      }
-      catch (EncodingNotSupportedException ex) {
-        Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
-      }
-
+      var ex = Assert.Throws<EncodingNotSupportedException>(() => MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
+                                                                                      callback,
+                                                                                      out encoding,
+                                                                                      out charset));
+      Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
       Assert.IsTrue(called);
       Assert.AreEqual(MimeEncodingMethod.None, encoding);
       Assert.IsNull(charset);

@@ -39,13 +39,10 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestConstructWithNonWritableStream()
     {
-      try {
+      Assert.Throws<ArgumentException>(() => {
         using (var writer = new Smdn.IO.Binary.BinaryWriter(new NonWritableStream())) {
-          Assert.Fail("ArgumentException not thrown");
         }
-      }
-      catch (ArgumentException) {
-      }
+      });
     }
 
     [Test]
@@ -75,19 +72,9 @@ namespace Smdn.IO.Binary {
         else
           (writer as IDisposable).Dispose();
 
-        try {
-          Assert.IsNull(writer.BaseStream);
-          Assert.Fail("ObjectDisposedException not thrown by writer");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
 
-        try {
-          baseStream.WriteByte(0x00);
-          Assert.Fail("ObjectDisposedException not thrown by base stream");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => baseStream.WriteByte(0x00));
       }
     }
 
@@ -107,12 +94,7 @@ namespace Smdn.IO.Binary {
           Assert.IsFalse(writer.LeaveBaseStreamOpen);
         }
 
-        try {
-          stream.WriteByte(0x00);
-          Assert.Fail("ObjectDisposedException not thrown by base stream");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
       }
     }
 
@@ -136,12 +118,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        try {
-          Assert.IsNull(writer.BaseStream);
-          Assert.Fail("ObjectDisposedException not thrown by reader");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
 
         try {
           baseStream.WriteByte(0x00);
@@ -165,12 +142,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        try {
-          writer.Flush();
-          Assert.Fail("ObjectDisposedException not thown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => writer.Flush());
       }
     }
 
@@ -193,12 +165,7 @@ namespace Smdn.IO.Binary {
 
         CollectionAssert.AreEqual(data, stream.ToArray());
 
-        try {
-          writer.Write(data);
-          Assert.Fail("ObjectDisposedException not thown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => writer.Write(data));
       }
 
       using (var stream = new MemoryStream()) {
@@ -215,12 +182,7 @@ namespace Smdn.IO.Binary {
 
         CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
 
-        try {
-          writer.Write(data, 1, 2);
-          Assert.Fail("ObjectDisposedException not thown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => writer.Write(data, 1, 2));
       }
     }
 
@@ -243,12 +205,7 @@ namespace Smdn.IO.Binary {
 
         CollectionAssert.AreEqual(data, stream.ToArray());
 
-        try {
-          writer.Write(data);
-          Assert.Fail("ObjectDisposedException not thown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => writer.Write(data));
       }
 
       using (var stream = new MemoryStream()) {
@@ -265,12 +222,7 @@ namespace Smdn.IO.Binary {
 
         CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
 
-        try {
-          writer.Write(new ArraySegment<byte>(data, 1, 2));
-          Assert.Fail("ObjectDisposedException not thown");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => writer.Write(new ArraySegment<byte>(data, 1, 2)));
       }
     }
 
@@ -282,12 +234,7 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
-        try {
-          writer.Write(new ArraySegment<byte>());
-          Assert.Fail("ArgumentException not thrown");
-        }
-        catch (ArgumentException) {
-        }
+        Assert.Throws<ArgumentException>(() => writer.Write(new ArraySegment<byte>()));
 
         writer.Flush();
 
@@ -470,19 +417,15 @@ namespace Smdn.IO.Binary {
         using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
           writer.Close();
 
-          try {
+          var ex = Assert.Throws<TargetInvocationException>(() => {
             writer.GetType().InvokeMember("Write",
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,
                                           writer,
-                                          new[] {arg});
+                                          new[] { arg });
+          });
 
-            Assert.Fail("ObjectDisposedException not thrown; arg type = {0}", arg.GetType());
-          }
-          catch (TargetInvocationException ex) {
-            if (!(ex.InnerException is ObjectDisposedException))
-              Assert.Fail("unexpected exception: {0}", ex);
-          }
+          Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
         }
       }
     }

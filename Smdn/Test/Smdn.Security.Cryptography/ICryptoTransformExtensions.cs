@@ -27,47 +27,17 @@ namespace Smdn.Security.Cryptography {
       var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
 
       using (var transform = new ToBase64Transform()) {
-        try {
-          ICryptoTransformExtensions.TransformBytes(null, buffer, 0, 9);
-          Assert.Fail("ArgumentNullException");
-        }
-        catch (ArgumentNullException) {
-        }
+        Assert.Throws<ArgumentNullException>(() => ICryptoTransformExtensions.TransformBytes(null, buffer, 0, 9));
 
-        try {
-          ICryptoTransformExtensions.TransformBytes(transform, null, 0, 9);
-          Assert.Fail("ArgumentNullException");
-        }
-        catch (ArgumentNullException) {
-        }
+        Assert.Throws<ArgumentNullException>(() => ICryptoTransformExtensions.TransformBytes(transform, null, 0, 9));
 
-        try {
-          ICryptoTransformExtensions.TransformBytes(transform, buffer, -1, 10);
-          Assert.Fail("ArgumentOutOfRangeException");
-        }
-        catch (ArgumentOutOfRangeException) {
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => ICryptoTransformExtensions.TransformBytes(transform, buffer, -1, 10));
 
-        try {
-          ICryptoTransformExtensions.TransformBytes(transform, buffer, 10, -1);
-          Assert.Fail("ArgumentOutOfRangeException");
-        }
-        catch (ArgumentOutOfRangeException) {
-        }
+        Assert.Throws<ArgumentOutOfRangeException>(() => ICryptoTransformExtensions.TransformBytes(transform, buffer, 10, -1));
 
-        try {
-          ICryptoTransformExtensions.TransformBytes(transform, buffer, 1, 9);
-          Assert.Fail("ArgumentException");
-        }
-        catch (ArgumentException) {
-        }
+        Assert.Throws<ArgumentException>(() => ICryptoTransformExtensions.TransformBytes(transform, buffer, 1, 9));
 
-        try {
-          ICryptoTransformExtensions.TransformBytes(transform, buffer, 9, 1);
-          Assert.Fail("ArgumentException");
-        }
-        catch (ArgumentException) {
-        }
+        Assert.Throws<ArgumentException>(() => ICryptoTransformExtensions.TransformBytes(transform, buffer, 9, 1));
       }
     }
 

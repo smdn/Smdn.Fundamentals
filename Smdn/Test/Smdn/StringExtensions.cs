@@ -120,38 +120,28 @@ namespace Smdn {
       Assert.AreEqual("", "abcdef".Slice(0, 0));
       Assert.AreEqual("abcdef", "abcdef".Slice(0, 6));
       Assert.AreEqual("f", "abcdef".Slice(5, 6));
+    }
 
-      try {
-        "abc".Slice(-1, 0);
-        Assert.Fail("ArgumentOutOfRangeException not thrown #1");
-      }
-      catch (ArgumentOutOfRangeException ex) {
-        Assert.AreEqual("from", ex.ParamName, "#1");
-      }
+    [Test]
+    public void TestSlice_ArgumentOutOfRange()
+    {
+      ArgumentOutOfRangeException ex;
 
-      try {
-        "abc".Slice(3, 4);
-        Assert.Fail("ArgumentOutOfRangeException not thrown #2");
-      }
-      catch (ArgumentOutOfRangeException ex) {
-        Assert.AreEqual("from", ex.ParamName, "#2");
-      }
+      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(-1, 0), "#1");
 
-      try {
-        "abc".Slice(1, 0);
-        Assert.Fail("ArgumentOutOfRangeException not thrown #3");
-      }
-      catch (ArgumentOutOfRangeException ex) {
-        Assert.AreEqual("to", ex.ParamName, "#3");
-      }
+      Assert.AreEqual("from", ex.ParamName, "#1");
 
-      try {
-        "abc".Slice(0, 4);
-        Assert.Fail("ArgumentOutOfRangeException not thrown #4");
-      }
-      catch (ArgumentOutOfRangeException ex) {
-        Assert.AreEqual("to", ex.ParamName, "#4");
-      }
+      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(3, 4), "#2");
+
+      Assert.AreEqual("from", ex.ParamName, "#2");
+
+      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(1, 0), "#3");
+
+      Assert.AreEqual("to", ex.ParamName, "#3");
+
+      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(0, 4), "#4");
+
+      Assert.AreEqual("to", ex.ParamName, "#4");
     }
 
     [Test]
@@ -169,20 +159,11 @@ namespace Smdn {
       Assert.AreEqual(-1, "aaaa".IndexOfNot('a', 2));
       Assert.AreEqual(-1, "aaaa".IndexOfNot('a', 4));
 
-      try {
-        "abc".IndexOfNot('a', -1);
-        Assert.Fail("ArgumentOutOfRangeException not thrown #1");
-      }
-      catch (ArgumentOutOfRangeException ex) {
-        Assert.AreEqual("startIndex", ex.ParamName, "#1");
-      }
+      var ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".IndexOfNot('a', -1));
 
-      try {
-        "abc".IndexOfNot('a', 4);
-        Assert.Fail("ArgumentException not thrown #2");
-      }
-      catch (ArgumentException) {
-      }
+      Assert.AreEqual("startIndex", ex.ParamName, "#1");
+
+      Assert.Throws<ArgumentException>(() => "abc".IndexOfNot('a', 4));
     }
   }
 }

@@ -165,15 +165,11 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingThrowException()
     {
-      try {
-        EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding");
-        Assert.Fail("EncodingNotSupportedException not thrown");
-      }
-      catch (EncodingNotSupportedException ex) {
-        Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
-        Assert.IsNotNull(ex.Message);
-        Assert.IsNull(ex.InnerException);
-      }
+      var ex = Assert.Throws<EncodingNotSupportedException>(() => EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding"));
+
+      Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
+      Assert.IsNotNull(ex.Message);
+      Assert.IsNull(ex.InnerException);
     }
 
     [Test]
@@ -193,19 +189,15 @@ namespace Smdn.Text.Encodings {
     {
       string encodingName = null;
 
-      try {
-        EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", delegate(string name) {
-          encodingName = name;
-          return null;
-        });
-        Assert.Fail("EncodingNotSupportedException not thrown");
-      }
-      catch (EncodingNotSupportedException ex) {
-        Assert.AreEqual("x-unkwnown-encoding", encodingName);
-        Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
-        Assert.IsNotNull(ex.Message);
-        Assert.IsNull(ex.InnerException);
-      }
+      var ex = Assert.Throws<EncodingNotSupportedException>(() => EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", delegate (string name) {
+        encodingName = name;
+        return null;
+      }));
+
+      Assert.AreEqual("x-unkwnown-encoding", encodingName);
+      Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
+      Assert.IsNotNull(ex.Message);
+      Assert.IsNull(ex.InnerException);
     }
   }
 }

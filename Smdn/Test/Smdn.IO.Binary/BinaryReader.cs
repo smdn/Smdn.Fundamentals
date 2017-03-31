@@ -39,13 +39,10 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestConstructWithNonReadableStream()
     {
-      try {
+      Assert.Throws<ArgumentException>(() => {
         using (var reader = new Smdn.IO.Binary.BinaryReader(new NonReadableStream())) {
-          Assert.Fail("ArgumentException not thrown");
         }
-      }
-      catch (ArgumentException) {
-      }
+      });
     }
 
     [Test]
@@ -75,19 +72,9 @@ namespace Smdn.IO.Binary {
         else
           (reader as IDisposable).Dispose();
 
-        try {
-          Assert.IsNull(reader.BaseStream);
-          Assert.Fail("ObjectDisposedException not thrown by reader");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
 
-        try {
-          baseStream.ReadByte();
-          Assert.Fail("ObjectDisposedException not thrown by base stream");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte());
       }
     }
 
@@ -107,12 +94,7 @@ namespace Smdn.IO.Binary {
           Assert.IsFalse(reader.LeaveBaseStreamOpen);
         }
 
-        try {
-          stream.ReadByte();
-          Assert.Fail("ObjectDisposedException not thrown by base stream");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
     }
 
@@ -136,12 +118,7 @@ namespace Smdn.IO.Binary {
 
         reader.Close();
 
-        try {
-          Assert.IsNull(reader.BaseStream);
-          Assert.Fail("ObjectDisposedException not thrown by reader");
-        }
-        catch (ObjectDisposedException) {
-        }
+        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
 
         try {
           baseStream.ReadByte();
@@ -238,35 +215,20 @@ namespace Smdn.IO.Binary {
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual, reader.ReadExactBytes((int)reader.BaseStream.Length));
 
-        try {
-          reader.ReadExactBytes((int)1);
-          Assert.Fail("EndOfStreamException not thrown");
-        }
-        catch (EndOfStreamException) {
-        }
+        Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes((int)1));
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual, reader.ReadExactBytes(reader.BaseStream.Length));
 
-        try {
-          reader.ReadExactBytes(1L);
-          Assert.Fail("EndOfStreamException not thrown");
-        }
-        catch (EndOfStreamException) {
-        }
+        Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(1L));
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.AreEqual(actual.Slice(0, 3), reader.ReadExactBytes(3L));
         Assert.AreEqual(actual.Slice(3, 3), reader.ReadExactBytes(3L));
 
-        try {
-          reader.ReadExactBytes(3L);
-          Assert.Fail("EndOfStreamException not thrown");
-        }
-        catch (EndOfStreamException) {
-        }
+        Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(3L));
       }
     }
 
@@ -417,19 +379,15 @@ namespace Smdn.IO.Binary {
         using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
           reader.Close();
 
-          try {
+          var ex = Assert.Throws<TargetInvocationException>(() => {
             reader.GetType().InvokeMember(test.Method,
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,
                                           reader,
                                           null);
+          });
 
-            Assert.Fail("ObjectDisposedException not thrown; method = {0}", test.Method);
-          }
-          catch (TargetInvocationException ex) {
-            if (!(ex.InnerException is ObjectDisposedException))
-              Assert.Fail("unexpected exception: {0}", ex);
-          }
+          Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
         }
       }
     }
@@ -462,19 +420,11 @@ namespace Smdn.IO.Binary {
           else
             Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", test.Method);
 
-          try {
-            type.InvokeMember(test.Method,
-                              BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                              null,
-                              reader,
-                              null);
-
-            Assert.Fail("EndOfStreamException not thrown: {0}", test.Method);
-          }
-          catch (TargetInvocationException ex) {
-            if (!(ex.InnerException is EndOfStreamException))
-              Assert.Fail("unexpected exception: {0}", ex);
-          }
+          Assert.Throws<TargetInvocationException>(() => type.InvokeMember(test.Method,
+                                                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
+                                                                           null,
+                                                                           reader,
+                                                                           null));
 
           Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", test.Method);
 
