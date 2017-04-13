@@ -10,8 +10,8 @@ namespace Smdn {
     [Test]
     public void TestSizeOfUuid()
     {
-      Assert.AreEqual(Marshal.SizeOf(typeof(Guid)),
-                      Marshal.SizeOf(typeof(Uuid)));
+      Assert.AreEqual(Marshal.SizeOf<Guid>(),
+                      Marshal.SizeOf<Uuid>());
     }
 
     [Test]
@@ -50,7 +50,9 @@ namespace Smdn {
       Assert.AreEqual((new DateTime(2004, 1, 15, 16, 22, 26, 376, DateTimeKind.Utc)).AddTicks(3221), uuid.Timestamp);
       Assert.AreEqual(15472, uuid.Clock);
       Assert.AreEqual("00:90:27:2f:f7:25", uuid.IEEE802MacAddress);
+#if NET46
       Assert.AreEqual(PhysicalAddress.Parse("00-90-27-2F-F7-25"), uuid.PhysicalAddress);
+#endif
     }
 
     [Test]
@@ -84,6 +86,7 @@ namespace Smdn {
       Assert.AreEqual(UuidVersion.Version1, uuid.Version);
     }
 
+#if NET46
     [Test]
     public void TestCreateTimeBased2()
     {
@@ -104,6 +107,7 @@ namespace Smdn {
       Assert.AreEqual(UuidVersion.Version1, uuid.Version);
       Assert.AreNotEqual(PhysicalAddress.None, uuid.PhysicalAddress);
     }
+#endif
 
     [Test]
     public void TestCreateNameBasedMD5()

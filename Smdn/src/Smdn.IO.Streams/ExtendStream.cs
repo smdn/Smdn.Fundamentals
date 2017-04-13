@@ -67,16 +67,41 @@ namespace Smdn.IO.Streams {
       this.closeExtensionStream = closeExtensionStream;
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (closeExtensionStream) {
-        if (prependStream != null)
+        if (prependStream != null) {
+#if NET46
           prependStream.Close();
-        if (appendStream != null)
+#else
+          prependStream.Dispose();
+#endif
+
+          // TODO: must be set to null
+          prependStream = null;
+        }
+
+        if (appendStream != null) {
+#if NET46
           appendStream.Close();
+#else
+          appendStream.Dispose();
+#endif
+
+          // TODO: must be set to null
+          appendStream = null;
+        }
       }
 
+#if NET46
       base.Close();
+#else
+      base.Dispose(disposing);
+#endif
     }
 
     protected override void SetPrependedDataPosition(long position)

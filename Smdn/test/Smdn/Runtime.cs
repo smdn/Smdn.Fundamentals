@@ -8,6 +8,7 @@ using Smdn.OperatingSystem;
 namespace Smdn {
   [TestFixture()]
   public class RuntimeTests {
+#if NET46
     [Test]
     public void TestVersionString()
     {
@@ -83,5 +84,6 @@ namespace Smdn {
         Assert.AreEqual(Environment.Version, Runtime.Version);
       }
     }
+#endif
   }
 }

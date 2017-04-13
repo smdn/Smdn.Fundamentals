@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Smdn.Text;
 
@@ -70,12 +71,7 @@ namespace Smdn.Formats {
       if (csv.Length == 0)
         return string.Empty;
 
-      return string.Join(",", Array.ConvertAll(csv, delegate(string s) {
-        if (s.Contains("\""))
-          return string.Concat("\"", s.Replace("\"", "\"\""), "\"");
-        else
-          return s;
-      }));
+      return string.Join(",", csv.Select(s => s.Contains("\"") ? string.Concat("\"", s.Replace("\"", "\"\""), "\"") : s));
     }
   }
 }

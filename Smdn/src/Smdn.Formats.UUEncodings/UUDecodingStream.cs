@@ -112,11 +112,20 @@ namespace Smdn.Formats.UUEncodings {
       this.transform = new UUDecodingTransform();
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (stream != null) {
-        if (!leaveStreamOpen)
+        if (!leaveStreamOpen) {
+#if NET46
           stream.Close();
+#else
+          stream.Dispose();
+#endif
+        }
 
         stream = null;
       }
@@ -125,6 +134,10 @@ namespace Smdn.Formats.UUEncodings {
         transform.Clear();
         transform = null;
       }
+
+#if !NET46
+      base.Dispose(disposing);
+#endif
     }
 
     public bool SeekToNextFile()

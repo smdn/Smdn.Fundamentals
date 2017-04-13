@@ -140,7 +140,7 @@ namespace Smdn.IO.Streams {
 
     private void TestClose(PartialStream stream)
     {
-      stream.Close();
+      stream.Dispose();
 
       Assert.IsFalse(stream.CanRead, "CanRead");
       Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -150,7 +150,7 @@ namespace Smdn.IO.Streams {
       Assert.Throws<ObjectDisposedException>(() =>stream.ReadByte());
       Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
 
-      stream.Close();
+      stream.Dispose();
     }
 
     [Test]

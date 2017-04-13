@@ -8,6 +8,7 @@ namespace Smdn.IO {
     [Test]
     public void TestChangeFileName()
     {
+#if NET46
       if (Runtime.IsRunningOnUnix) {
         Assert.AreEqual("/var/log/renamed.log", PathUtils.ChangeFileName("/var/log/test.log", "renamed"));
         Assert.AreEqual("../renamed.log", PathUtils.ChangeFileName("../test.log", "renamed"));
@@ -18,6 +19,9 @@ namespace Smdn.IO {
         Assert.AreEqual(@"..\renamed.ini", PathUtils.ChangeFileName(@"..\boot.ini", "renamed"));
         Assert.AreEqual(@"C:\WINDOWS\renamed", PathUtils.ChangeFileName(@"C:\WINDOWS\boot", "renamed"));
       }
+#else
+      Assert.Fail("platform specific");
+#endif
 
       Assert.AreEqual(@"renamed.ini", PathUtils.ChangeFileName(@"boot.ini", "renamed"));
       Assert.AreEqual("renamed", PathUtils.ChangeFileName("test", "renamed"));
@@ -26,6 +30,7 @@ namespace Smdn.IO {
     [Test]
     public void TestChangeDirectoryName()
     {
+#if NET46
       if (Runtime.IsRunningOnUnix) {
         Assert.AreEqual("/renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "/renamed"));
         Assert.AreEqual("../renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "../renamed"));
@@ -38,8 +43,12 @@ namespace Smdn.IO {
         Assert.AreEqual("boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", string.Empty));
         Assert.AreEqual(@".\boot.ini", PathUtils.ChangeDirectoryName(@"boot.ini", @".\"));
       }
+#else
+      Assert.Fail("platform specific");
+#endif
     }
 
+#if NET46
     [Test]
     public void TestArePathEqual()
     {
@@ -60,7 +69,9 @@ namespace Smdn.IO {
         Assert.IsTrue(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/windows"));
       }
     }
+#endif
 
+#if NET46
     [Test]
     public void TestAreExtensionEqual()
     {
@@ -95,6 +106,7 @@ namespace Smdn.IO {
         Assert.IsFalse(PathUtils.AreExtensionEqual(@"test.jpeg", "test.png"));
       }
     }
+#endif
 
     [Test]
     public void TestContainsShellEscapeChar()
@@ -142,6 +154,7 @@ namespace Smdn.IO {
       Assert.IsTrue(PathUtils.ContainsShellSpecialChars("ポケモン", shift_jis, ngchars));
     }
 
+#if NET46
     [Test]
     public void TestGetRelativePath()
     {
@@ -325,5 +338,6 @@ namespace Smdn.IO {
                       PathUtils.GetRelativePath("/root/dir/", "/root/兄弟/"),
                       "contains non ascii #1");
     }
+#endif
   }
 }

@@ -9,8 +9,6 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Tests</AssemblyName>
     <RootNamespace>Smdn.Tests</RootNamespace>
-    <OutputPath>bin\</OutputPath>
-    <IntermediateOutputPath>obj\</IntermediateOutputPath>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -18,9 +16,9 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <OutputPath>bin\Debug\net\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\net\</IntermediateOutputPath>
+    <DefineConstants>DEBUG;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -28,17 +26,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
-    <DefineConstants>
-    </DefineConstants>
+    <OutputPath>bin\Release\net\</OutputPath>
+    <IntermediateOutputPath>obj\Release\net\</IntermediateOutputPath>
+    <DefineConstants>NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup />

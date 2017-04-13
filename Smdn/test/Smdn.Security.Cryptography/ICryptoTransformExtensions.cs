@@ -50,8 +50,6 @@ namespace Smdn.Security.Cryptography {
 
     private byte[] TransformByCryptoStream(SymmetricAlgorithm algorithm, byte[] bytes, bool encrypt)
     {
-      algorithm.Clear();
-
       if (encrypt)
         return TransformByCryptoStream(algorithm.CreateEncryptor(), bytes);
       else
@@ -65,12 +63,13 @@ namespace Smdn.Security.Cryptography {
           cryptoStream.Write(bytes, 0, bytes.Length);
         }
 
-        memoryStream.Close();
+        memoryStream.Dispose();
 
         return memoryStream.ToArray();
       }
     }
 
+#if NET46
     [Test]
     public void TestTranformBytesWithHashAlgorithm()
     {
@@ -132,5 +131,6 @@ namespace Smdn.Security.Cryptography {
                         symmetricAlgorithm.GetType());
       }
     }
+#endif
   }
 }

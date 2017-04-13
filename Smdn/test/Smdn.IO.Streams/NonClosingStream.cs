@@ -29,7 +29,7 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(baseStream.Length, stream.Length, "Length");
         Assert.AreEqual(baseStream.Position, stream.Position, "Position");
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(delegate { Assert.IsNull(stream.InnerStream); }, "InnerStream");
         Assert.IsFalse(stream.CanRead, "CanRead");
@@ -61,7 +61,7 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(8L, stream.Length);
         Assert.AreEqual(baseStream.Length, stream.Length, "after");
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(delegate{ stream.SetLength(0L); });
       }
@@ -82,7 +82,7 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(2L, stream.Seek(-6L, SeekOrigin.End));
         Assert.AreEqual(2L, baseStream.Position);
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(delegate{ stream.Seek(0L, SeekOrigin.Begin); });
         Assert.Throws<ObjectDisposedException>(delegate{ stream.Seek(0L, SeekOrigin.Current); });
@@ -117,7 +117,7 @@ namespace Smdn.IO.Streams {
 
         stream.Position = 0L;
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(delegate{ stream.Read(buffer, 0, 6); });
         Assert.Throws<ObjectDisposedException>(delegate{ stream.ReadByte(); });
@@ -153,7 +153,7 @@ namespace Smdn.IO.Streams {
 
         stream.Position = 0L;
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(delegate{ stream.Write(new byte[] {0, 1, 2, 3}, 0, 4); });
         Assert.Throws<ObjectDisposedException>(delegate{ stream.WriteByte(4); });
@@ -166,12 +166,12 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream()) {
         var stream = new NonClosingStream(baseStream);
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.DoesNotThrow(delegate {baseStream.ReadByte();}, "ReadByte");
         Assert.DoesNotThrow(delegate {baseStream.WriteByte(1);}, "WriteByte");
 
-        Assert.DoesNotThrow(delegate {stream.Close();}, "Close again");
+        Assert.DoesNotThrow(delegate {stream.Dispose();}, "Dispose again");
       }
     }
 
@@ -201,7 +201,7 @@ namespace Smdn.IO.Streams {
 
         Assert.DoesNotThrow(delegate {stream.WriteByte(1);});
 
-        Assert.Throws<NotSupportedException>(delegate {stream.Close();});
+        Assert.Throws<NotSupportedException>(delegate {stream.Dispose();});
 
         Assert.DoesNotThrow(delegate {baseStream.WriteByte(1);});
       }
@@ -215,7 +215,7 @@ namespace Smdn.IO.Streams {
 
         Assert.DoesNotThrow(delegate {stream.ReadByte();});
 
-        Assert.DoesNotThrow(delegate {stream.Close();});
+        Assert.DoesNotThrow(delegate {stream.Dispose();});
 
         Assert.DoesNotThrow(delegate {baseStream.ReadByte();});
       }

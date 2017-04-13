@@ -48,14 +48,22 @@ namespace Smdn.IO.Streams.Caching {
     {
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (cachedBlocks != null) {
         cachedBlocks.Clear();
         cachedBlocks = null;
       }
 
+#if NET46
       base.Close();
+#else
+      base.Dispose(disposing);
+#endif
     }
 
     protected override byte[] GetBlock(long blockIndex)

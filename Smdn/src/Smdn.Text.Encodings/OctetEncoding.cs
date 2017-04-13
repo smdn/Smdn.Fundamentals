@@ -35,16 +35,17 @@ namespace Smdn.Text.Encodings {
 
     static OctetEncoding()
     {
-      SevenBits = (new OctetEncoding(7)).Clone() as Encoding;
-      SevenBits.DecoderFallback = new DecoderExceptionFallback();
-      SevenBits.EncoderFallback = new EncoderExceptionFallback();
-
-      EightBits = (new OctetEncoding(8)).Clone() as Encoding;
-      EightBits.DecoderFallback = new DecoderExceptionFallback();
-      EightBits.EncoderFallback = new EncoderExceptionFallback();
+      SevenBits = new OctetEncoding(7);
+      EightBits = new OctetEncoding(8);
     }
 
     public OctetEncoding(int bits)
+      : this(bits, new EncoderExceptionFallback(), new DecoderExceptionFallback())
+    {
+    }
+
+    public OctetEncoding(int bits, EncoderFallback encoderFallback, DecoderFallback decoderFallback)
+      : base(0, encoderFallback, decoderFallback)
     {
       if (bits < 1 || 8 < bits)
         throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, "bits", bits);

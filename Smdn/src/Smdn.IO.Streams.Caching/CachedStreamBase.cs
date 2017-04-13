@@ -96,14 +96,28 @@ namespace Smdn.IO.Streams.Caching {
       this.position = stream.Position;
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (stream != null) {
         if (!leaveInnerStreamOpen)
+#if NET46
           stream.Close();
+#else
+          stream.Dispose();
+#endif
+
         stream = null;
       }
+
+#if !NET46
+      base.Dispose(disposing);
+#endif
     }
+
 
     public override void SetLength(long @value)
     {
@@ -192,7 +206,11 @@ namespace Smdn.IO.Streams.Caching {
     private byte[] GetBlock(long offset, out int offsetInBlock)
     {
       long blockOffset;
+#if NET46
       var blockIndex = Math.DivRem(position, (long)blockSize, out blockOffset);
+#else
+      var blockIndex = MathUtils.DivRem(position, (long)blockSize, out blockOffset);
+#endif
 
       offsetInBlock = (int)blockOffset;
 

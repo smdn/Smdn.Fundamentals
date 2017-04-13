@@ -1,9 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using NUnit.Framework;
 
 namespace Smdn {
@@ -20,37 +18,30 @@ namespace Smdn {
       }
     }
 
-    private void TestOnSpecificUICulture(Action test)
+    private void TestOnSpecificUICulture(string cultureName, Action test)
     {
-      CultureInfo temporaryUICulture = null;
+      CultureInfo temporaryUICulture = CultureInfo.InvariantCulture;
 
-      var callerStackFrame = new StackFrame(1);
-      var caller = callerStackFrame.GetMethod();
+      if (!string.IsNullOrEmpty(cultureName))
+        temporaryUICulture = new CultureInfo(cultureName);
 
-      foreach (var attr in caller.GetCustomAttributes(false)) {
-        var uiCultureAttr = attr as SetUICultureAttribute;
-
-        if (uiCultureAttr != null)
-          temporaryUICulture = CultureInfo.GetCultureInfo(uiCultureAttr.Name);
-      }
-
-      var previousUICulture = Thread.CurrentThread.CurrentUICulture;
+      var previousUICulture = CultureInfo.CurrentUICulture;
 
       try {
         if (temporaryUICulture != null)
-          Thread.CurrentThread.CurrentUICulture = temporaryUICulture;
+          CultureInfo.CurrentUICulture = temporaryUICulture;
 
         test();
       }
       finally {
-        Thread.CurrentThread.CurrentUICulture = previousUICulture;
+        CultureInfo.CurrentUICulture = previousUICulture;
       }
     }
 
     [Test, SetUICulture("ja-JP")]
     public void TestCreate_JA_JP()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture("ja-JP", delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
         StringAssert.StartsWith("ゼロまたは正の値を指定してください", ex.Message);
@@ -60,7 +51,7 @@ namespace Smdn {
     [Test, SetUICulture("en-US")]
     public void TestCreate_EN_US()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture("en-US", delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
         StringAssert.StartsWith("must be zero or positive value", ex.Message);
@@ -70,7 +61,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreate_InvariantCulture()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
         StringAssert.StartsWith("must be zero or positive value", ex.Message);
@@ -80,7 +71,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonZeroPositive()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeNonZeroPositive("arg", 0);
 
         Assert.IsNull(ex.InnerException);
@@ -94,7 +85,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeZeroOrPositive()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
   
         Assert.IsNull(ex.InnerException);
@@ -108,7 +99,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThan()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeLessThan(2, "arg", 2);
   
         Assert.IsNull(ex.InnerException);
@@ -122,7 +113,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThanNullMaxValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeLessThan(null, "arg", 2);
   
         Assert.IsNotEmpty(ex.Message);
@@ -135,7 +126,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThanOrEqualTo()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(2, "arg", 3);
   
         Assert.IsNull(ex.InnerException);
@@ -149,7 +140,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeLessThanOrEqualToNullMaxValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(null, "arg", 2);
   
         Assert.IsNotEmpty(ex.Message);
@@ -162,7 +153,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThan()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeGreaterThan(2, "arg", 2);
   
         Assert.IsNull(ex.InnerException);
@@ -176,7 +167,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThanNullMaxValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeGreaterThan(null, "arg", 2);
   
         Assert.IsNotEmpty(ex.Message);
@@ -189,7 +180,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThanOrEqualTo()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(2, "arg", 1);
   
         Assert.IsNull(ex.InnerException);
@@ -203,7 +194,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeGreaterThanOrEqualToNullMaxValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(null, "arg", 2);
   
         Assert.IsNotEmpty(ex.Message);
@@ -216,7 +207,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeInRange()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeInRange(0, 3, "arg", -1);
   
         Assert.IsNull(ex.InnerException);
@@ -230,7 +221,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeInRangeNullFromValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeInRange(null, 3, "arg", 2);
   
         Assert.IsNotEmpty(ex.Message);
@@ -243,7 +234,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeInRangeNullToValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeInRange(0, null, "arg", 2);
   
         Assert.IsNotEmpty(ex.Message);
@@ -256,7 +247,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeMultipleOf()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeMultipleOf(2, "arg");
   
         Assert.IsNull(ex.InnerException);
@@ -269,7 +260,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyArray()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyArray("arg");
   
         Assert.IsNull(ex.InnerException);
@@ -282,7 +273,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentAttemptToAccessBeyondEndOfArray()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var array = new[] {0, 1, 2, 3};
         var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", array, 2, 4);
   
@@ -296,7 +287,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentAttemptToAccessBeyondEndOfArrayNullArray()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", null, 2, 4);
   
         Assert.IsNull(ex.InnerException);
@@ -309,7 +300,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyString()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyString("arg");
   
         Assert.IsNull(ex.InnerException);
@@ -322,7 +313,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeValidEnumValue1()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var origin = (SeekOrigin)(-1);
         var ex = ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
   
@@ -336,7 +327,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeValidEnumValue2()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var origin = (SeekOrigin)(-1);
         var ex = ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin, "invalid seek origin");
   
@@ -350,7 +341,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateNotSupportedEnumValue()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var endian = Endianness.Unknown;
         var ex = ExceptionUtils.CreateNotSupportedEnumValue(endian);
   
@@ -363,7 +354,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeReadableStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
   
         Assert.IsNull(ex.InnerException);
@@ -376,7 +367,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeWritableStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeWritableStream("baseStream");
   
         Assert.IsNull(ex.InnerException);
@@ -389,7 +380,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeSeekableStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeSeekableStream("baseStream");
   
         Assert.IsNull(ex.InnerException);
@@ -402,7 +393,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateNotSupportedReadingStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateNotSupportedReadingStream();
   
         Assert.IsNull(ex.InnerException);
@@ -414,7 +405,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateNotSupportedWritingStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateNotSupportedWritingStream();
   
         Assert.IsNull(ex.InnerException);
@@ -426,7 +417,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateNotSupportedSeekingStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateNotSupportedSeekingStream();
   
         Assert.IsNull(ex.InnerException);
@@ -438,7 +429,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateNotSupportedSettingStreamLength()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateNotSupportedSettingStreamLength();
   
         Assert.IsNull(ex.InnerException);
@@ -450,7 +441,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateIOAttemptToSeekBeforeStartOfStream()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
   
         Assert.IsNull(ex.InnerException);
@@ -462,7 +453,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeValidIAsyncResult()
     {
-      TestOnSpecificUICulture(delegate {
+      TestOnSpecificUICulture(null, delegate {
         var ex = ExceptionUtils.CreateArgumentMustBeValidIAsyncResult("asyncResult");
   
         Assert.IsNull(ex.InnerException);

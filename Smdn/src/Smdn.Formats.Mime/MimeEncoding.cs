@@ -118,7 +118,11 @@ namespace Smdn.Formats.Mime {
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("encoding", encoding);
       }
 
+#if NET46
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
+#else
+      var preambleText = string.Concat("=?", charset.WebName, "?", encodingChar, "?");
+#endif
 
       if (!doFold)
         return string.Concat(preambleText, transform.TransformStringTo(str, charset), "?=");

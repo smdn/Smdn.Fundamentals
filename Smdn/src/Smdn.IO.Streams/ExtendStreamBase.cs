@@ -117,12 +117,26 @@ namespace Smdn.IO.Streams {
       this.leaveInnerStreamOpen = leaveInnerStreamOpen;
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (!leaveInnerStreamOpen)
+#if NET46
         stream.Close();
+#else
+        stream.Dispose();
+#endif
 
-      stream = null;
+        stream = null;
+
+#if NET46
+      base.Close();
+#else
+      base.Dispose(disposing);
+#endif
     }
 
     public override void SetLength(long @value)

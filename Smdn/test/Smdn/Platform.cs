@@ -13,6 +13,7 @@ namespace Smdn {
         Assert.AreNotEqual(Endianness.LittleEndian, Platform.Endianness); // XXX
     }
 
+#if NET46
     [Test]
     public void TestDistributionName()
     {
@@ -46,5 +47,6 @@ namespace Smdn {
       Assert.IsNotNull(Platform.ProcessorName);
       Assert.IsNotNull(Platform.ProcessorName);
     }
+#endif
   }
 }

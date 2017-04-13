@@ -82,7 +82,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(12L, stream.Position, "Position");
 
-      copyStream.Close();
+      copyStream.Dispose();
 
       Assert.AreEqual(data, copyStream.ToArray());
     }
@@ -150,7 +150,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(8L, stream.Position, "Position");
 
-      copyStream.Close();
+      copyStream.Dispose();
 
       Assert.AreEqual(data.Slice(4, 4), copyStream.ToArray());
     }
@@ -174,7 +174,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(12L, stream.Position, "Position");
 
-      copyStream.Close();
+      copyStream.Dispose();
 
       Assert.AreEqual(data.Slice(4, 8), copyStream.ToArray());
     }
@@ -186,7 +186,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
 
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-        stream.Close();
+        stream.Dispose();
 
         Assert.IsFalse(stream.CanRead, "CanRead");
         Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -206,7 +206,7 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
         Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
 
-        stream.Close();
+        stream.Dispose();
       }
     }
 
@@ -219,7 +219,7 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var baseStream = new MemoryStream(data)) {
         var stream = CreateStream(type, baseStream, 8, true);
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.IsFalse(stream.CanRead, "CanRead");
         Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -232,7 +232,7 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.DoesNotThrow(() => baseStream.ReadByte());
         Assert.DoesNotThrow(() => baseStream.WriteByte(0x00));
 
-        stream.Close();
+        stream.Dispose();
       }
     }
   }

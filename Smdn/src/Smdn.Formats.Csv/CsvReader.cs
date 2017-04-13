@@ -47,17 +47,25 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(string path)
+#if NET46
       : this(path, Encoding.Default)
+#else
+      : this(path, Encoding.UTF8)
+#endif
     {
     }
 
     public CsvReader(string path, Encoding encoding)
-      : base(path, encoding)
+      : base(File.OpenRead(path), encoding)
     {
     }
 
     public CsvReader(Stream stream)
+#if NET46
       : this(stream, Encoding.Default)
+#else
+      : this(stream, Encoding.UTF8)
+#endif
     {
     }
 

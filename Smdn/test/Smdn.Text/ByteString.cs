@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+#if NET46
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 using System.Text;
 using NUnit.Framework;
 
@@ -1067,6 +1069,7 @@ namespace Smdn.Text {
       Assert.Throws<ArgumentNullException>(() => ByteString.IsTerminatedByCRLF(null));
     }
 
+#if NET46
     [Test]
     public void TestBinarySerialization()
     {
@@ -1096,5 +1099,6 @@ namespace Smdn.Text {
         }
       }
     }
+#endif
   }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+#if NET46
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+#endif
 using System.Text;
 using NUnit.Framework;
 
@@ -13,6 +15,7 @@ namespace Smdn {
       public static readonly Encoding EucJP = Encoding.GetEncoding("euc-jp");
     }
 
+#if NET46
     public static void SerializeBinary<TSerializable>(TSerializable obj)
       where TSerializable : ISerializable
     {
@@ -41,5 +44,6 @@ namespace Smdn {
           action((TSerializable)deserialized);
       }
     }
+#endif
   }
 }

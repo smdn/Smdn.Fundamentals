@@ -105,13 +105,20 @@ namespace Smdn.IO.Streams.LineOriented {
     protected override void Dispose(bool disposing)
     {
       if (disposing) {
-        if (stream != null && !leaveStreamOpen)
+        if (stream != null && !leaveStreamOpen) {
+#if NET46
           stream.Close();
+#else
+          stream.Dispose();
+#endif
+        }
       }
 
       stream = null;
       newLine = null;
       buffer = null;
+
+      base.Dispose(disposing);
     }
 
     public override void SetLength(long @value)

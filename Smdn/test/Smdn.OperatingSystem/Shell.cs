@@ -4,6 +4,7 @@ using NUnit.Framework;
 namespace Smdn.OperatingSystem {
   [TestFixture()]
   public class ShellTests {
+#if NET46
     [Test]
     public void TestCreateProcessStartInfo()
     {
@@ -13,5 +14,6 @@ namespace Smdn.OperatingSystem {
       Assert.DoesNotThrow(() => Shell.CreateProcessStartInfo("foo", (string)null), "#3");
       Assert.DoesNotThrow(() => Shell.CreateProcessStartInfo("foo", (string[])null), "#4");
     }
+#endif
   }
 }

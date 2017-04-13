@@ -102,7 +102,7 @@ namespace Smdn.Formats.Mime {
 
         stream.Position = 0L;
 
-        reader.Close();
+        reader.Dispose();
 
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
@@ -125,7 +125,7 @@ namespace Smdn.Formats.Mime {
 
         stream.Position = 0L;
 
-        reader1.Close();
+        reader1.Dispose();
 
         var reader2 = ContentTransferEncoding.CreateTextReader(stream,
                                                                cte,
@@ -169,7 +169,7 @@ namespace Smdn.Formats.Mime {
 
         stream.Position = 0L;
 
-        reader.Close();
+        reader.Dispose();
 
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
@@ -194,7 +194,7 @@ namespace Smdn.Formats.Mime {
 
         stream.Position = 0L;
 
-        reader1.Close();
+        reader1.Dispose();
 
         var reader2 = ContentTransferEncoding.CreateBinaryReader(stream,
                                                                  cte,

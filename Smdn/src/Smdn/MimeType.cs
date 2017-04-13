@@ -130,6 +130,7 @@ namespace Smdn {
       return new MimeType("multipart", subtype);
     }
 
+#if NET46
     public static MimeType FindMimeTypeByExtension(string extensionOrPath)
     {
       return FindMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
@@ -282,6 +283,8 @@ namespace Smdn {
 
       return found.ToArray();
     }
+#endif
+
 
     /*
      * instance members

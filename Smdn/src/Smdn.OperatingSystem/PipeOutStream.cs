@@ -27,6 +27,7 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Smdn.OperatingSystem {
+#if NET46
   public class PipeOutStream : Stream {
     public override bool CanSeek {
       get { return /*!disposed &&*/ false; }
@@ -207,4 +208,5 @@ namespace Smdn.OperatingSystem {
     private DataReceivedEventHandler onErrorDataReceived;
     private int waitForExitTimeout = 1000;
   }
+#endif
 }

@@ -67,10 +67,16 @@ namespace Smdn.IO.Binary {
 
         Assert.IsNotNull(baseStream);
 
-        if (close)
+        if (close) {
+#if NET46
           reader.Close();
-        else
+#else
+          reader.Dispose();
+#endif
+        }
+        else {
           (reader as IDisposable).Dispose();
+        }
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
 
@@ -116,7 +122,11 @@ namespace Smdn.IO.Binary {
 
         Assert.IsNotNull(baseStream);
 
+#if NET46
         reader.Close();
+#else
+        reader.Dispose();
+#endif
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
 
@@ -172,7 +182,7 @@ namespace Smdn.IO.Binary {
           compressStream.Flush();
         }
 
-        compressedMemoryStream.Close();
+        compressedMemoryStream.Dispose();
 
         actualCompressed = compressedMemoryStream.ToArray();
       }
@@ -248,7 +258,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, reader.BaseStream.Position);
 
+#if NET46
         reader.Close();
+#else
+        reader.Dispose();
+#endif
 
         try {
           CollectionAssert.AreEqual(zero, reader.ReadBytes(0));
@@ -282,7 +296,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, reader.BaseStream.Position);
 
+#if NET46
         reader.Close();
+#else
+        reader.Dispose();
+#endif
 
         try {
           CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0));
@@ -323,6 +341,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestRead()
     {
+#if NET46
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
@@ -356,11 +375,15 @@ namespace Smdn.IO.Binary {
           Assert.AreEqual((long)test.Count, reader.BaseStream.Position);
         }
       }
+#else
+      Assert.Fail("test code not implemented");
+#endif
     }
 
     [Test]
     public void TestReadFromClosedReader()
     {
+#if NET46
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
       foreach (var test in new[] {
@@ -377,7 +400,11 @@ namespace Smdn.IO.Binary {
         new {Method = "ReadFourCC", Count = 4},
       }) {
         using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
+#if NET46
           reader.Close();
+#else
+          reader.Dispose();
+#endif
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
             reader.GetType().InvokeMember(test.Method,
@@ -390,11 +417,15 @@ namespace Smdn.IO.Binary {
           Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
         }
       }
+#else
+      Assert.Fail("test code not implemented");
+#endif
     }
 
     [Test]
     public void TestReadEndOfStreamException()
     {
+#if NET46
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
@@ -431,6 +462,9 @@ namespace Smdn.IO.Binary {
           Assert.IsTrue(reader.EndOfStream, "EndOfStream after read: {0}", test.Method);
         }
       }
+#else
+      Assert.Fail("test code not implemented");
+#endif
     }
   }
 }

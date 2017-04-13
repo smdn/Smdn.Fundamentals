@@ -52,7 +52,7 @@ namespace Smdn.IO.Streams.Caching {
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          stream.Close();
+          stream.Dispose();
 
           Assert.IsFalse(stream.CanRead, "CanRead");
           Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -62,7 +62,7 @@ namespace Smdn.IO.Streams.Caching {
           Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
           Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
 
-          stream.Close();
+          stream.Dispose();
         }
       }
     }

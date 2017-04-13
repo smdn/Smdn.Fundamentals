@@ -33,7 +33,7 @@ end";
         Assert.Throws<NotSupportedException>(() => Assert.AreEqual(-1, stream.Length), "Length");
         Assert.Throws<NotSupportedException>(() => Assert.AreEqual(-1, stream.Position), "Position");
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.IsFalse(stream.CanRead, "CanRead");
         Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -59,7 +59,7 @@ end";
         Assert.Throws<NotSupportedException>(() => stream.Seek(0L, SeekOrigin.Begin));
         Assert.Throws<NotSupportedException>(() => stream.SetLength(0L));
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(() => stream.Write(new byte[] {0x00}, 0, 1));
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte((byte)0x00));
@@ -98,7 +98,7 @@ end";
           Assert.DoesNotThrow(() => stream.Read(buffer, 0, 1), "Read");
           Assert.DoesNotThrow(() => stream.ReadByte(), "ReadByte");
 
-          stream.Close();
+          stream.Dispose();
 
           Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 1), "Read");
           Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
@@ -108,7 +108,7 @@ end";
 
           Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte(), "baseStream.ReadByte()");
 
-          Assert.DoesNotThrow(() => stream.Close(), "Close() again");
+          Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() again");
         }
       }
     }
@@ -123,11 +123,11 @@ end";
 
       using (var baseStream = CreateStream(input)) {
         using (var stream = new UUDecodingStream(baseStream, true)) {
-          stream.Close();
+          stream.Dispose();
 
           Assert.DoesNotThrow(() => baseStream.ReadByte(), "baseStream.ReadByte()");
 
-          Assert.DoesNotThrow(() => stream.Close(), "Close() again");
+          Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() again");
         }
       }
     }

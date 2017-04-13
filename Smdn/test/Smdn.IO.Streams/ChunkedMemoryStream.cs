@@ -54,7 +54,7 @@ namespace Smdn.IO.Streams {
       })) {
         Assert.AreEqual(0, allocated.Count, "first chunk");
 
-        stream.Close();
+        stream.Dispose();
 
         Assert.AreEqual(0, allocated.Count, "closed");
       }
@@ -177,7 +177,7 @@ namespace Smdn.IO.Streams {
 
         results.Add(reader.ReadBytes((int)stream.Length));
 
-        reader.Close();
+        reader.Dispose();
 
         Assert.IsFalse(stream.CanRead, "CanRead");
         Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -194,7 +194,7 @@ namespace Smdn.IO.Streams {
     public void TestClose()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        stream.Close();
+        stream.Dispose();
 
         Assert.IsFalse(stream.CanRead, "CanRead");
         Assert.IsFalse(stream.CanWrite, "CanWrite");
@@ -205,7 +205,7 @@ namespace Smdn.IO.Streams {
 
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
 
-        stream.Close();
+        stream.Dispose();
       }
     }
 

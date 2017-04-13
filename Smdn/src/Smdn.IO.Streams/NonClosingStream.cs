@@ -68,12 +68,20 @@ namespace Smdn.IO.Streams {
       this.stream = innerStream;
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (stream != null && stream.CanWrite)
         stream.Flush();
 
       stream = null;
+
+#if !NET46
+      base.Dispose(disposing);
+#endif
     }
 
     public override void SetLength(long @value)

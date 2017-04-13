@@ -26,7 +26,12 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Streams {
-  public class PartialStream : Stream, ICloneable {
+  public class PartialStream : 
+    Stream
+#if NET46
+    , ICloneable
+#endif
+  {
 #region "class members"
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
     {
@@ -175,18 +180,33 @@ namespace Smdn.IO.Streams {
         this.Position = 0;
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
-      if (!leaveInnerStreamOpen && stream != null)
+      if (!leaveInnerStreamOpen && stream != null) {
+#if NET46
         stream.Close();
+#else
+        stream.Dispose();
+#endif
+      }
 
       stream = null;
+
+#if !NET46
+      base.Dispose(disposing);
+#endif
     }
 
+#if NET46
     object ICloneable.Clone()
     {
       return Clone();
     }
+#endif
 
     public PartialStream Clone()
     {

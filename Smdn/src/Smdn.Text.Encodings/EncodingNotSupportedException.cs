@@ -23,10 +23,14 @@
 // THE SOFTWARE.
 
 using System;
+#if NET46
 using System.Runtime.Serialization;
+#endif
 
 namespace Smdn.Text.Encodings {
+#if NET46
   [Serializable]
+#endif
   public class EncodingNotSupportedException : NotSupportedException {
     /*
      * XXX: code page not supported
@@ -71,6 +75,7 @@ namespace Smdn.Text.Encodings {
       EncodingName = encodingName;
     }
 
+#if NET46
     protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
@@ -83,6 +88,7 @@ namespace Smdn.Text.Encodings {
 
       info.AddValue("EncodingName", EncodingName);
     }
+#endif
   }
 }
 

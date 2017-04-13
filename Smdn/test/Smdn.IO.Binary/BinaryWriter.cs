@@ -67,10 +67,16 @@ namespace Smdn.IO.Binary {
 
         Assert.IsNotNull(baseStream);
 
-        if (close)
+        if (close) {
+#if NET46
           writer.Close();
-        else
+#else
+          writer.Dispose();
+#endif
+        }
+        else {
           (writer as IDisposable).Dispose();
+        }
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
 
@@ -116,7 +122,11 @@ namespace Smdn.IO.Binary {
 
         Assert.IsNotNull(baseStream);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
 
@@ -140,7 +150,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(4L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         Assert.Throws<ObjectDisposedException>(() => writer.Flush());
       }
@@ -161,7 +175,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(4L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         CollectionAssert.AreEqual(data, stream.ToArray());
 
@@ -178,7 +196,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(2L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
 
@@ -201,7 +223,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(4L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         CollectionAssert.AreEqual(data, stream.ToArray());
 
@@ -218,7 +244,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(2L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
 
@@ -266,8 +296,13 @@ namespace Smdn.IO.Binary {
 
           Assert.AreEqual(len, writer.BaseStream.Position);
 
+#if NET46
           writer.Close();
-          stream.Close();
+#else
+          writer.Dispose();
+#endif
+
+          stream.Dispose();
 
           arr = stream.ToArray();
 
@@ -289,7 +324,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         try {
           writer.Write(zero);
@@ -314,7 +353,11 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, writer.BaseStream.Position);
 
+#if NET46
         writer.Close();
+#else
+        writer.Dispose();
+#endif
 
         try {
           writer.WriteZero(0);
@@ -338,10 +381,15 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         using (var writer = new Smdn.IO.Binary.BinaryWriter(stream)) {
           writer.Write((int)0x11223344);
+
+#if NET46
           writer.Close();
+#else
+          writer.Dispose();
+#endif
         }
 
-        switch (Platform.Endianness) {
+          switch (Platform.Endianness) {
           case Endianness.BigEndian:
             CollectionAssert.AreEqual(new byte[] {0x11, 0x22, 0x33, 0x44},
                                       stream.ToArray());
@@ -362,6 +410,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestWrite()
     {
+#if NET46
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
         var type = writer.GetType();
 
@@ -396,11 +445,15 @@ namespace Smdn.IO.Binary {
           Assert.AreEqual(test.Item2, writer.BaseStream.Position);
         }
       }
+#else
+      Assert.Fail("test code not implemented");
+#endif
     }
 
     [Test]
     public void TestWriteToClosedWriter()
     {
+#if NET46
       foreach (var arg in new object[] {
         (byte)0,
         (sbyte)0,
@@ -415,7 +468,11 @@ namespace Smdn.IO.Binary {
         FourCC.Empty,
       }) {
         using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
+#if NET46
           writer.Close();
+#else
+          writer.Dispose();
+#endif
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
             writer.GetType().InvokeMember("Write",
@@ -428,6 +485,9 @@ namespace Smdn.IO.Binary {
           Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
         }
       }
+#else
+      Assert.Fail("test code not implemented");
+#endif
     }
   }
 }

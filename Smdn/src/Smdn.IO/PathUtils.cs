@@ -44,6 +44,7 @@ namespace Smdn.IO {
       return Path.Combine(newDirectoryName, Path.GetFileName(path));
     }
 
+#if NET46
     public static bool ArePathEqual(string pathX, string pathY)
     {
       pathX = Path.GetFullPath(pathX);
@@ -61,6 +62,7 @@ namespace Smdn.IO {
 
       return string.Equals(pathX, pathY, Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
     }
+#endif
 
     public static bool AreSameFile(string pathX, string pathY)
     {
@@ -71,13 +73,15 @@ namespace Smdn.IO {
         return false;
     }
 
+#if NET46
     /// <param name="pathOrExtension">extension must contain "."</param>
     public static bool AreExtensionEqual(string path, string pathOrExtension)
     {
       return string.Equals(Path.GetExtension(path),
-                             Path.GetExtension(pathOrExtension),
-                             Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+                           Path.GetExtension(pathOrExtension),
+                           Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
     }
+#endif
 
     public static string RemoveInvalidPathChars(string path)
     {
@@ -123,20 +127,24 @@ namespace Smdn.IO {
       return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
     }
 
+#if NET46
     public static bool ContainsShellEscapeChar(string path)
     {
       return ContainsShellEscapeChar(path, Encoding.Default);
     }
+#endif
 
     public static bool ContainsShellEscapeChar(string path, Encoding encoding)
     {
       return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
     }
 
+#if NET46
     public static bool ContainsShellPipeChar(string path)
     {
       return ContainsShellPipeChar(path, Encoding.Default);
     }
+#endif
 
     public static bool ContainsShellPipeChar(string path, Encoding encoding)
     {
@@ -176,7 +184,7 @@ namespace Smdn.IO {
         }
         catch (ArgumentException) {
           if (0x100 <= buffer.Length) {
-            throw new SystemException(); // XXX
+            throw new InvalidDataException();
           }
           else {
             Array.Resize(ref buffer, buffer.Length * 2);
@@ -188,6 +196,7 @@ namespace Smdn.IO {
       return false;
     }
 
+#if NET46
     public static string RenameUnique(string file)
     {
       if (file == null)
@@ -224,7 +233,9 @@ namespace Smdn.IO {
         }
       }
     }
+#endif
 
+#if NET46
     public static string GetRelativePath(string basePath, string path)
     {
       if (basePath == null)
@@ -253,5 +264,6 @@ namespace Smdn.IO {
 
       return relativePath.Replace("%25", "%" /*decode*/);
     }
+#endif
   }
 }

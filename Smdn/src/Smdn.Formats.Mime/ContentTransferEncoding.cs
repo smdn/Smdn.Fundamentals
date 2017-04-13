@@ -34,6 +34,10 @@ using Smdn.IO.Streams;
 using Smdn.Text;
 using Smdn.Text.Encodings;
 
+#if !NET46
+using Smdn.Security.Cryptography;
+#endif
+
 namespace Smdn.Formats.Mime {
   public static class ContentTransferEncoding {
     public const string HeaderName = "Content-Transfer-Encoding";

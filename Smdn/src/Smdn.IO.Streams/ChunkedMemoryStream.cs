@@ -271,7 +271,11 @@ namespace Smdn.IO.Streams {
       public byte[] ToArray()
       {
         var buffer = new byte[Length];
-        var offset = 0L;
+#if NET46
+        long offset = 0L;
+#else
+        int offset = 0;
+#endif
         var chunk = TryGetFirstChunk(false);
 
         if (chunk == null)
@@ -371,14 +375,22 @@ namespace Smdn.IO.Streams {
       this.chain = new ChunkChain(chunkSize, allocator);
     }
 
+#if NET46
     public override void Close()
+#else
+    protected override void Dispose(bool disposing)
+#endif
     {
       if (chain != null) {
         chain.Dispose();
         chain = null;
       }
 
+#if NET46
       base.Close();
+#else
+      base.Dispose(disposing);
+#endif
     }
 
     public override void SetLength(long @value)

@@ -25,6 +25,10 @@
 using System;
 using System.Security.Cryptography;
 
+#if !NET46
+using Smdn.Security.Cryptography;
+#endif
+
 namespace Smdn.Formats.ModifiedBase64 {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152

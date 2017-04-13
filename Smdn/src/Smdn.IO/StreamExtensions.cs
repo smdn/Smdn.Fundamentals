@@ -75,7 +75,11 @@ namespace Smdn.IO {
       using (var outStream = new MemoryStream(initialCapacity)) {
         stream.CopyTo(outStream, readBufferSize);
 
+#if NET46
         outStream.Close();
+#else
+        outStream.Dispose();
+#endif
 
         return outStream.ToArray();
       }

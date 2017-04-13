@@ -51,18 +51,30 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvWriter(string path)
+#if NET46
       : this(path, Encoding.Default)
+#else
+      : this(path, Encoding.UTF8)
+#endif
     {
     }
 
     public CsvWriter(string path, Encoding encoding)
+#if NET46
       : base(path, false, encoding)
+#else
+      : base(File.Open(path, FileMode.Create), encoding)
+#endif
     {
       base.NewLine = Ascii.Chars.CRLF;
     }
 
     public CsvWriter(Stream stream)
+#if NET46
       : this(stream, Encoding.Default)
+#else
+      : this(stream, Encoding.UTF8)
+#endif
     {
     }
 

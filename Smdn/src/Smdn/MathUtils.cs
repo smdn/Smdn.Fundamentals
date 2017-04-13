@@ -93,6 +93,24 @@ namespace Smdn {
       return (m * n) / Gcd(m, n);
     }
 
+    public static int DivRem(int a, int b, out int result)
+    {
+      int quotient = a / b;
+
+      result = a - b * quotient;
+
+      return quotient;
+    }
+
+    public static long DivRem(long a, long b, out long result)
+    {
+      long quotient = a / b;
+
+      result = a - b * quotient;
+
+      return quotient;
+    }
+
     private static readonly long[] primeNumbers = new long[] {
       2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,
       59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127,

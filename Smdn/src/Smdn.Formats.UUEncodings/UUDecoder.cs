@@ -48,7 +48,11 @@ namespace Smdn.Formats.UUEncodings {
       public void Dispose()
       {
         if (stream != null) {
+#if NET46
           stream.Close();
+#else
+          stream.Dispose();
+#endif
           stream = null;
         }
       }

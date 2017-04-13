@@ -74,7 +74,11 @@ namespace Smdn.IO.Binary {
       Dispose(true);
     }
 
+#if NET46
     void IDisposable.Dispose()
+#else
+    public void Dispose()
+#endif
     {
       Dispose(true);
     }
@@ -82,8 +86,13 @@ namespace Smdn.IO.Binary {
     protected virtual void Dispose(bool disposing)
     {
       if (disposing && stream != null) {
-        if (!LeaveBaseStreamOpen)
+        if (!LeaveBaseStreamOpen) {
+#if NET46
           stream.Close();
+#else
+          stream.Dispose();
+#endif
+        }
 
         stream = null;
       }

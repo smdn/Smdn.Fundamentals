@@ -29,7 +29,7 @@ namespace Smdn.Formats {
   public static class DateTimeFormat {
     public static string GetCurrentTimeZoneOffsetString(bool delimiter)
     {
-      var offset = TimeZone.CurrentTimeZone.GetUtcOffset(DateTime.Now);
+      var offset = TimeZoneInfo.Local.BaseUtcOffset;
 
       if (delimiter) {
         if (TimeSpan.Zero <= offset)

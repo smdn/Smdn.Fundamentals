@@ -18,7 +18,7 @@ namespace Smdn.IO {
 
       Assert.AreEqual(8, outputStream.Length);
 
-      outputStream.Close();
+      outputStream.Dispose();
 
       Assert.AreEqual(inputData, outputStream.ToArray());
     }
@@ -34,7 +34,7 @@ namespace Smdn.IO {
 
       Assert.AreEqual(8, outputStream.Length);
 
-      outputStream.Close();
+      outputStream.Dispose();
 
       Assert.AreEqual(inputData, outputStream.ToArray());
     }
@@ -53,7 +53,7 @@ namespace Smdn.IO {
 
       Assert.AreEqual(12, outputStream.Length);
 
-      outputStream.Close();
+      outputStream.Dispose();
 
       Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}, outputStream.ToArray());
     }
@@ -104,7 +104,7 @@ namespace Smdn.IO {
 
       Assert.AreEqual(8, outputStream.Length);
 
-      outputStream.Close();
+      outputStream.Dispose();
 
       Assert.AreEqual(inputData, outputStream.ToArray());
     }

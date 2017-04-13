@@ -111,8 +111,8 @@ namespace Smdn.Formats {
       //this.cultureInfo = cultureInfo;
       const string singleSpace = " ";
 
-      switch (cultureInfo.LCID) {
-        case 0x00000411: // ja
+      switch (cultureInfo.TwoLetterISOLanguageName) {
+        case "ja":
           byteUnit = "バイト";
           valuePrefixDelimiter = singleSpace;
           prefixUnitDelimiter = string.Empty;
@@ -120,8 +120,6 @@ namespace Smdn.Formats {
           BinaryPrefixes  = new[] {string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ"};
           break;
 
-        // case 0x00000409: // en-us
-        // case 0x00000809: // en-gb
         default:
           byteUnit = "Bytes";
           valuePrefixDelimiter = singleSpace;

@@ -26,17 +26,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+#if NET46
 using System.Runtime.Serialization;
+#endif
 using System.Text;
 
 namespace Smdn.Text {
+#if NET46
   [Serializable]
+#endif
   public class ByteString :
     IEquatable<ByteString>,
     IEquatable<byte[]>,
     IEquatable<ArraySegment<byte>>,
-    IEquatable<string>,
+    IEquatable<string>
+#if NET46
+    ,
     ISerializable
+#endif
   {
     [IndexerName("Bytes")]
     public byte this[int index] {
@@ -215,6 +222,7 @@ namespace Smdn.Text {
       this.isMutable = asMutable;
     }
 
+#if NET46
     protected ByteString(SerializationInfo info, StreamingContext context)
     {
       this.segment = (ArraySegment<byte>)info.GetValue("segment", typeof(ArraySegment<byte>));
@@ -226,6 +234,7 @@ namespace Smdn.Text {
       info.AddValue("segment", segment);
       info.AddValue("isMutable", isMutable);
     }
+#endif
 
     public bool Contains(ByteString @value)
     {

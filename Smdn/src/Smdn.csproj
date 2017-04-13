@@ -9,8 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn</AssemblyName>
-    <OutputPath>..\build\bin\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -18,11 +16,11 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputPath>..\build\bin\Debug\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\Debug\</IntermediateOutputPath>
+    <OutputPath>..\build\bin\Debug\net\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\net\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,11 +28,10 @@
     <Optimize>True</Optimize>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputPath>..\build\bin\Release\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\Release\</IntermediateOutputPath>
+    <OutputPath>..\build\bin\Release\net\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\net\</IntermediateOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants>NET46</DefineConstants>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

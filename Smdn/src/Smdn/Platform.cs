@@ -47,6 +47,7 @@ namespace Smdn {
 
     public static readonly Endianness Endianness;
 
+#if NET46
     private static string kernelName = null;
 
     public static string KernelName {
@@ -118,5 +119,6 @@ namespace Smdn {
         return processorName;
       }
     }
+#endif
   }
 }

@@ -96,7 +96,13 @@ namespace Smdn {
       private static Dictionary<string, string> LoadCatalog(string resourceName)
       {
         try {
-          using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName)) {
+#if NET46
+          var executingAssembly = Assembly.GetExecutingAssembly();
+#else
+          var executingAssembly = typeof(ExceptionUtils).GetTypeInfo().Assembly;
+#endif
+
+          using (var stream = executingAssembly.GetManifestResourceStream(resourceName)) {
             var catalog = new Dictionary<string, string>(StringComparer.Ordinal);
             var reader = new StreamReader(stream, Encoding.UTF8);
 
@@ -143,7 +149,7 @@ namespace Smdn {
         }
       }
 #endif
-    }
+        }
 
     /*
      * scalar value

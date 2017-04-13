@@ -65,6 +65,7 @@ namespace Smdn {
       get { return runtimeEnvironment == RuntimeEnvironment.Mono; }
     }
 
+#if NET46
     public static bool IsRunningOnWindows {
       get { return (int)Environment.OSVersion.Platform < 4; }
     }
@@ -124,5 +125,6 @@ namespace Smdn {
         return Environment.Version;
       }
     }
+#endif
   }
 }
