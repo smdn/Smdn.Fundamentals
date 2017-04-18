@@ -75,6 +75,8 @@
     <Compile Include="Smdn.IO\PathUtils.cs" />
     <Compile Include="Smdn.OperatingSystem\Shell.cs" />
     <Compile Include="Smdn.OperatingSystem\ShellString.cs" />
+    <Compile Include="Smdn.Security.Cryptography\FromBase64Transform.cs" />
+    <Compile Include="Smdn.Security.Cryptography\ToBase64Transform.cs" />
     <Compile Include="Smdn.Text.Encodings\EncodingNotSupportedException.cs" />
     <Compile Include="Smdn.Text.Encodings\EncodingUtils.cs" />
     <Compile Include="Smdn.Text.Encodings\OctetEncoding.cs" />
