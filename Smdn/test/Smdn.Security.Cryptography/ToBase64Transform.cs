@@ -34,6 +34,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
+#if NET46
     [Test]
     public void TestClear()
     {
@@ -46,6 +47,7 @@ namespace Smdn.Security.Cryptography {
         Assert.DoesNotThrow(() => t.TransformBlock(input, 0, input.Length, output, 0));
       }
     }
+#endif
 
 #if false
       foreach (var pattern in new[] {
