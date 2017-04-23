@@ -74,8 +74,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(4, transformedLength);
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength));
+          Assert.AreEqual(4, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
         }
       }
     }
@@ -91,7 +91,7 @@ namespace Smdn.Security.Cryptography {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[4];
 
-          Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0));
+          Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
         }
       }
     }
@@ -145,7 +145,15 @@ namespace Smdn.Security.Cryptography {
     }
 
     [Test]
-    public void TestTransformBlock_OutputBufferInvalidOffset()
+    public void TestTransformBlock_OutputBufferInvalidOffset1()
+    {
+      using (var t = new ToBase64Transform()) {
+        Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[3], 0, 3, new byte[4], 4));
+      }
+    }
+
+    [Test]
+    public void TestTransformBlock_OutputBufferInvalidOffset2()
     {
       using (var t = new ToBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[3], 0, 3, new byte[4], 1));
@@ -173,8 +181,8 @@ namespace Smdn.Security.Cryptography {
 
           var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
 
-          Assert.AreEqual(pattern.Output.Length, ret.Length);
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(ret));
+          Assert.AreEqual(pattern.Output.Length, ret.Length, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(ret), $"input: {pattern.Input}");
         }
       }
     }
@@ -197,7 +205,7 @@ namespace Smdn.Security.Cryptography {
         using (var t = new ToBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
 
-          Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length));
+          Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), $"input: {pattern.Input}");
         }
       }
     }

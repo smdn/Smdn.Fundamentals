@@ -76,8 +76,24 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength);
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength));
+          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+        }
+      }
+    }
+
+    [Test]
+    public void TestTransformBlock_InvalidFormat()
+    {
+      foreach (var pattern in new[] {
+        new {Output = "xxxx",  Input = "===="},
+        new {Output = "xxxx",  Input = "Q==="},
+      }) {
+        using (var t = new FromBase64Transform()) {
+          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+          var outputBuffer = new byte[8];
+
+          Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
         }
       }
     }
@@ -102,8 +118,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength);
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength));
+          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
         }
       }
     }
@@ -126,7 +142,7 @@ namespace Smdn.Security.Cryptography {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
-          Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), "input = " + pattern.Input);
+          Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
         }
       }
     }
@@ -151,8 +167,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength);
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength));
+          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
         }
       }
     }
@@ -172,7 +188,7 @@ namespace Smdn.Security.Cryptography {
 
           var length = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(0, length);
+          Assert.AreEqual(0, length, $"input: {pattern.Input}");
         }
       }
     }
@@ -257,8 +273,24 @@ namespace Smdn.Security.Cryptography {
 
           var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
 
-          Assert.AreEqual(pattern.Output.Length, ret.Length);
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(ret));
+          Assert.AreEqual(pattern.Output.Length, ret.Length, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(ret), $"input: {pattern.Input}");
+        }
+      }
+    }
+
+    [Test]
+    public void TestTransformFinalBlock_InvalidFormat()
+    {
+      foreach (var pattern in new[] {
+        new {Output = "xxxx", Input = "QVN=SQ=="},
+        new {Output = "xxxx", Input = "QV==SQ=="},
+      }) {
+        using (var t = new FromBase64Transform()) {
+          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+          var outputBuffer = new byte[8];
+
+          Assert.Throws<FormatException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), $"input: {pattern.Input}");
         }
       }
     }
