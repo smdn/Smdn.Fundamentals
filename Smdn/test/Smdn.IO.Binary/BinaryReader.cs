@@ -341,12 +341,9 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestRead()
     {
-#if NET46
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        var type = reader.GetType();
-
         foreach (var test in new[] {
           new {Method = "ReadByte",   Count = 1},
           new {Method = "ReadSByte",  Count = 1},
@@ -365,25 +362,27 @@ namespace Smdn.IO.Binary {
           Assert.IsFalse(reader.EndOfStream);
           Assert.AreEqual(0L, reader.BaseStream.Position);
 
-          var ret = type.InvokeMember(test.Method,
-                                      BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                      null,
-                                      reader,
-                                      null);
+#if NET46
+          var ret = reader.GetType().InvokeMember(test.Method,
+                                                  BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
+                                                  null,
+                                                  reader,
+                                                  null);
+#else
+          var ret = typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
+                                                       .GetDeclaredMethod(test.Method)
+                                                       .Invoke(reader, null);
+#endif
 
           Assert.AreNotEqual(0, ret, "read value must be non-zero value");
           Assert.AreEqual((long)test.Count, reader.BaseStream.Position);
         }
       }
-#else
-      Assert.Fail("test code not implemented");
-#endif
     }
 
     [Test]
     public void TestReadFromClosedReader()
     {
-#if NET46
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
       foreach (var test in new[] {
@@ -407,30 +406,30 @@ namespace Smdn.IO.Binary {
 #endif
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
+#if NET46
             reader.GetType().InvokeMember(test.Method,
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,
                                           reader,
                                           null);
+#else
+            typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
+                                               .GetDeclaredMethod(test.Method)
+                                               .Invoke(reader, null);
+#endif
           });
 
           Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
         }
       }
-#else
-      Assert.Fail("test code not implemented");
-#endif
     }
 
     [Test]
     public void TestReadEndOfStreamException()
     {
-#if NET46
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        var type = reader.GetType();
-
         foreach (var test in new[] {
           new {Method = "ReadByte",   Count = 1},
           new {Method = "ReadSByte",  Count = 1},
@@ -451,20 +450,25 @@ namespace Smdn.IO.Binary {
           else
             Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", test.Method);
 
-          Assert.Throws<TargetInvocationException>(() => type.InvokeMember(test.Method,
-                                                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                                                           null,
-                                                                           reader,
-                                                                           null));
+          Assert.Throws<TargetInvocationException>(() => {
+#if NET46
+            reader.GetType().InvokeMember(test.Method,
+                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
+                                          null,
+                                          reader,
+                                          null);
+#else
+            typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
+                                               .GetDeclaredMethod(test.Method)
+                                               .Invoke(reader, null);
+#endif
+          });
 
           Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", test.Method);
 
           Assert.IsTrue(reader.EndOfStream, "EndOfStream after read: {0}", test.Method);
         }
       }
-#else
-      Assert.Fail("test code not implemented");
-#endif
     }
   }
 }

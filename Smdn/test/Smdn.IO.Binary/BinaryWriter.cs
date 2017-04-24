@@ -410,10 +410,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestWrite()
     {
-#if NET46
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        var type = writer.GetType();
-
         foreach (var test in new[] {
           Tuple.Create<object, long>((byte)0,       1L),
           Tuple.Create<object, long>((sbyte)0,      1L),
@@ -432,11 +429,19 @@ namespace Smdn.IO.Binary {
           Assert.AreEqual(0L, writer.BaseStream.Position);
 
           try {
-            type.InvokeMember("Write",
-                              BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                              null,
-                              writer,
-                              new[] {test.Item1});
+#if NET46
+            writer.GetType().InvokeMember("Write",
+                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
+                                          null,
+                                          writer,
+                                          new[] {test.Item1});
+#else
+            typeof(Smdn.IO.Binary.BinaryWriter).GetTypeInfo()
+                                               .GetMethod("Write",
+                                                          new[] {test.Item1.GetType()},
+                                                          null)
+                                               .Invoke(writer, new[] {test.Item1});
+#endif
           }
           catch (MissingMethodException) {
             Assert.Fail("invocation failed: type = {0}", test.Item1.GetType().FullName);
@@ -445,15 +450,11 @@ namespace Smdn.IO.Binary {
           Assert.AreEqual(test.Item2, writer.BaseStream.Position);
         }
       }
-#else
-      Assert.Fail("test code not implemented");
-#endif
     }
 
     [Test]
     public void TestWriteToClosedWriter()
     {
-#if NET46
       foreach (var arg in new object[] {
         (byte)0,
         (sbyte)0,
@@ -475,19 +476,24 @@ namespace Smdn.IO.Binary {
 #endif
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
+#if NET46
             writer.GetType().InvokeMember("Write",
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,
                                           writer,
                                           new[] { arg });
+#else
+            typeof(Smdn.IO.Binary.BinaryWriter).GetTypeInfo()
+                                               .GetMethod("Write",
+                                                          new[] {arg.GetType()},
+                                                          null)
+                                               .Invoke(writer, new[] {arg});
+#endif
           });
 
           Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
         }
       }
-#else
-      Assert.Fail("test code not implemented");
-#endif
     }
   }
 }
