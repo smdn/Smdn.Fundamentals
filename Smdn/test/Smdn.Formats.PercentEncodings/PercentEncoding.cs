@@ -65,8 +65,6 @@ namespace Smdn.Formats.PercentEncodings {
       Assert.AreEqual(ToPercentEncodedTransformMode.Rfc3986Uri,
                       ToPercentEncodedTransformMode.UriEscapeUriString);
 
-      Assert.Ignore("incompatible: Mono System.dll 2.0, .NET System.dll 4.0");
-
       Assert.AreEqual(Uri.EscapeUriString(text),
                       actual,
                       "same as Uri.EscapeDataString");
@@ -82,8 +80,6 @@ namespace Smdn.Formats.PercentEncodings {
 
       Assert.AreEqual(ToPercentEncodedTransformMode.Rfc3986Data,
                       ToPercentEncodedTransformMode.UriEscapeDataString);
-
-      Assert.Ignore("incompatible: Mono System.dll 2.0, .NET System.dll 4.0");
 
       Assert.AreEqual(Uri.EscapeDataString(text),
                       actual,
