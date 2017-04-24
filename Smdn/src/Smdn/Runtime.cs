@@ -25,6 +25,10 @@
 using System;
 using System.Reflection;
 
+#if !NET46
+using System.Runtime.InteropServices;
+#endif
+
 namespace Smdn {
   public static class Runtime {
     private static readonly RuntimeEnvironment runtimeEnvironment;
@@ -45,7 +49,12 @@ namespace Smdn {
       }
       else {
         runtimeEnvironment = RuntimeEnvironment.Unknown;
+
+#if NET46
         name = ".NET Framework compatible";
+#else
+        name = RuntimeInformation.FrameworkDescription;
+#endif
       }
     }
 
@@ -65,25 +74,38 @@ namespace Smdn {
       get { return runtimeEnvironment == RuntimeEnvironment.Mono; }
     }
 
-#if NET46
     public static bool IsRunningOnWindows {
-      get { return (int)Environment.OSVersion.Platform < 4; }
+      get {
+#if NET46
+        return (int)Environment.OSVersion.Platform < 4;
+#else
+        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#endif
+      }
     }
 
     public static bool IsRunningOnUnix {
       get
       {
+#if NET46
         var platform = (int)Environment.OSVersion.Platform;
 
         return (platform == 4 || platform == 6 || platform == 128);
+#else
+        return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
+               RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+#endif
       }
     }
 
+#if NET46
     private static string versionString = null;
+#endif
 
     public static string VersionString {
       get
       {
+#if NET46
         if (versionString == null) {
           versionString = string.Format("{0} {1}", name, Environment.Version); // default
 
@@ -99,9 +121,13 @@ namespace Smdn {
         }
 
         return versionString;
+#else
+        return RuntimeInformation.FrameworkDescription;
+#endif
       }
     }
 
+#if NET46
     public static Version Version {
       get
       {

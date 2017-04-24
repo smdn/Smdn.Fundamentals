@@ -27,6 +27,10 @@ using System.IO;
 
 using Smdn.OperatingSystem;
 
+#if !NET46
+using System.Runtime.InteropServices;
+#endif
+
 namespace Smdn {
   public static class Platform {
     static Platform()
@@ -68,12 +72,16 @@ namespace Smdn {
         return kernelName;
       }
     }
+#endif
 
+#if NET46
     private static string distributionName = null;
+#endif
 
     public static string DistributionName {
       get
       {
+#if NET46
         if (distributionName == null) {
           distributionName = Environment.OSVersion.VersionString; // default
 
@@ -87,9 +95,13 @@ namespace Smdn {
         }
 
         return distributionName;
+#else
+        return RuntimeInformation.OSDescription;
+#endif
       }
     }
 
+#if NET46
     private static string processorName = null;
 
     public static string ProcessorName {
