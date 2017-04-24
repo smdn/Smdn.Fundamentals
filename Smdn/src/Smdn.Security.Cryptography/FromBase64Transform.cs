@@ -108,7 +108,7 @@ namespace Smdn.Security.Cryptography {
             throw new FormatException($"invalid octet: 0x{octet:X2}");
         }
 
-        if (0x40 == buffer[0] || 0x40 == buffer[1])
+        if (PAD == buffer[0] || PAD == buffer[1])
           throw new FormatException("incorrect padding");
 
         if (outputBuffer.Length <= outputOffset)
@@ -117,7 +117,7 @@ namespace Smdn.Security.Cryptography {
         outputBuffer[outputOffset++] = (byte)((buffer[0] << 2) | (buffer[1] >> 4));
         ret++;
 
-        if (0x40 == buffer[2]) {
+        if (PAD == buffer[2]) {
           paddedBlockDecoded = true;
           continue;
         }
@@ -128,7 +128,7 @@ namespace Smdn.Security.Cryptography {
         outputBuffer[outputOffset++] = (byte)((buffer[1] << 4) | (buffer[2] >> 2));
         ret++;
 
-        if (0x40 == buffer[3]) {
+        if (PAD == buffer[3]) {
           paddedBlockDecoded = true;
           continue;
         }
@@ -164,13 +164,14 @@ namespace Smdn.Security.Cryptography {
     }
 
     private const byte NUL = 0xff;
+    private const byte PAD = 0x40;
 
     private static readonly byte[] fromBase64Table = new byte[] {
     /*0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,*/
        NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x00
        NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x10
        NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL, 0x3e,  NUL,  NUL,  NUL, 0x3f, // 0x20
-      0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d,  NUL,  NUL,  NUL, 0x40,  NUL,  NUL, // 0x30
+      0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x3c, 0x3d,  NUL,  NUL,  NUL,  PAD,  NUL,  NUL, // 0x30
        NUL, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, // 0x40
       0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x50
        NUL, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, // 0x60
