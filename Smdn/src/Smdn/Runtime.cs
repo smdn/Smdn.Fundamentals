@@ -48,11 +48,11 @@ namespace Smdn {
         name = ".NET Framework";
       }
       else {
-        runtimeEnvironment = RuntimeEnvironment.Unknown;
-
 #if NET46
+        runtimeEnvironment = RuntimeEnvironment.Unknown;
         name = ".NET Framework compatible";
 #else
+        runtimeEnvironment = RuntimeEnvironment.NetCore; // XXX
         name = RuntimeInformation.FrameworkDescription;
 #endif
       }
@@ -68,6 +68,10 @@ namespace Smdn {
 
     public static bool IsRunningOnNetFx {
       get { return runtimeEnvironment == RuntimeEnvironment.NetFx; }
+    }
+
+    public static bool IsRunningOnNetCore {
+      get { return runtimeEnvironment == RuntimeEnvironment.NetCore; }
     }
 
     public static bool IsRunningOnMono {

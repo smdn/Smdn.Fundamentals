@@ -32,5 +32,7 @@ namespace Smdn {
     NetFx,
     /// <summary>Mono</summary>
     Mono,
+    /// <summary>.NET Core</summary>
+    NetCore,
   }
 }

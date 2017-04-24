@@ -93,6 +93,9 @@ namespace Smdn {
         case RuntimeEnvironment.NetFx:
           StringAssert.Contains(".net", name);
           break;
+        case RuntimeEnvironment.NetCore:
+          StringAssert.Contains(".net core", name);
+          break;
         default:
 #if NET46
           StringAssert.Contains("compatible", name);
