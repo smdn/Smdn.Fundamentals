@@ -44,7 +44,6 @@ namespace Smdn.IO {
       return Path.Combine(newDirectoryName, Path.GetFileName(path));
     }
 
-#if NET46
     public static bool ArePathEqual(string pathX, string pathY)
     {
       pathX = Path.GetFullPath(pathX);
@@ -62,7 +61,6 @@ namespace Smdn.IO {
 
       return string.Equals(pathX, pathY, Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
     }
-#endif
 
     public static bool AreSameFile(string pathX, string pathY)
     {
@@ -73,7 +71,6 @@ namespace Smdn.IO {
         return false;
     }
 
-#if NET46
     /// <param name="pathOrExtension">extension must contain "."</param>
     public static bool AreExtensionEqual(string path, string pathOrExtension)
     {
@@ -81,7 +78,6 @@ namespace Smdn.IO {
                            Path.GetExtension(pathOrExtension),
                            Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
     }
-#endif
 
     public static string RemoveInvalidPathChars(string path)
     {
@@ -235,7 +231,6 @@ namespace Smdn.IO {
     }
 #endif
 
-#if NET46
     public static string GetRelativePath(string basePath, string path)
     {
       if (basePath == null)
@@ -250,8 +245,13 @@ namespace Smdn.IO {
       path = path.Replace("%", "%25" /*encode*/);
 
       if (!Runtime.IsRunningOnWindows) {
+#if NET46 // || NETSTANDARD20
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + path.Replace(":", "%3A");
+#else
+        basePath = "file://" + basePath.Replace(":", "%3A");
+        path     = "file://" + path.Replace(":", "%3A");
+#endif
       }
 
       var uriBase = new Uri(basePath);
@@ -264,6 +264,5 @@ namespace Smdn.IO {
 
       return relativePath.Replace("%25", "%" /*decode*/);
     }
-#endif
   }
 }
