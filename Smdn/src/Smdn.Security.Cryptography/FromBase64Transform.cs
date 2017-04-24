@@ -68,78 +68,77 @@ namespace Smdn.Security.Cryptography {
       if (outputBuffer.Length <= outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, outputBuffer.Length);
 
+      return UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset, false);
+    }
+
+    private int UncheckedTransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset, bool transformFinalBlock)
+    {
       var ret = 0;
-      var padded = false;
-      var decoded = new int[4];
+      var paddedBlockDecoded = false;
 
-      for(;;) {
-        if (inputCount < 4)
-          break;
-
-        if (padded)
-          throw new FormatException("incorrect padding");
-
-        for (var b = 0; b < 4;) {
+      for (;;) {
+        for (; bufferOffset < 4;) {
           if (inputCount <= 0)
-            throw new FormatException("invalid format");
+            return ret;
+
+          if (paddedBlockDecoded && transformFinalBlock)
+            throw new FormatException("multiple base64 block");
 
           var octet = inputBuffer[inputOffset++];
 
           inputCount--;
 
+          if (ignoreWhiteSpaces && Char.IsWhiteSpace((char)octet))
+            continue;
+
+          buffer[bufferOffset++] = octet;
+        }
+
+        bufferOffset = 0;
+
+        for (var b = 0; b < 4; b++) {
+          var octet = buffer[b];
+
           if (0x80 <= octet)
             throw new FormatException($"invalid octet: 0x{octet:X2}");
 
-          decoded[b] = fromBase64Table[octet];
+          buffer[b] = fromBase64Table[octet];
 
-          if (decoded[b] == NUL) {
-            if (Char.IsWhiteSpace((char)octet)) {
-              if (ignoreWhiteSpaces)
-                continue;
-              else
-                throw new FormatException($"invalid octet: 0x{octet:X2}");
-            }
-            else {
-              throw new FormatException($"invalid octet: 0x{octet:X2}");
-            }
-          }
-
-          b++;
+          if (buffer[b] == NUL)
+            throw new FormatException($"invalid octet: 0x{octet:X2}");
         }
 
-        if (0x40 == decoded[0] || 0x40 == decoded[1])
+        if (0x40 == buffer[0] || 0x40 == buffer[1])
           throw new FormatException("incorrect padding");
 
         if (outputBuffer.Length <= outputOffset)
           throw new FormatException("attempt to access beyond end of array"); // NET46 spec
 
-        outputBuffer[outputOffset++] = (byte)((decoded[0] << 2) | (decoded[1] >> 4));
+        outputBuffer[outputOffset++] = (byte)((buffer[0] << 2) | (buffer[1] >> 4));
         ret++;
 
-        if (0x40 == decoded[2]) {
-          padded = true;
+        if (0x40 == buffer[2]) {
+          paddedBlockDecoded = true;
           continue;
         }
 
         if (outputBuffer.Length <= outputOffset)
           throw new FormatException("attempt to access beyond end of array"); // NET46 spec
 
-        outputBuffer[outputOffset++] = (byte)((decoded[1] << 4) | (decoded[2] >> 2));
+        outputBuffer[outputOffset++] = (byte)((buffer[1] << 4) | (buffer[2] >> 2));
         ret++;
 
-        if (0x40 == decoded[3]) {
-          padded = true;
+        if (0x40 == buffer[3]) {
+          paddedBlockDecoded = true;
           continue;
         }
 
         if (outputBuffer.Length <= outputOffset)
           throw new FormatException("attempt to access beyond end of array"); // NET46 spec
 
-        outputBuffer[outputOffset++] = (byte)((decoded[2] << 6) | decoded[3]);
+        outputBuffer[outputOffset++] = (byte)((buffer[2] << 6) | buffer[3]);
         ret++;
       }
-
-      return ret;
     }
 
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
@@ -157,7 +156,7 @@ namespace Smdn.Security.Cryptography {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
 
       var ret = new byte[(inputCount / 4 + 1) * 3];
-      var len = TransformBlock(inputBuffer, inputOffset, inputCount, ret, 0);
+      var len = UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, ret, 0, true);
 
       Array.Resize(ref ret, len);
 
@@ -180,5 +179,7 @@ namespace Smdn.Security.Cryptography {
 
     private bool disposed = false;
     private readonly bool ignoreWhiteSpaces;
+    private readonly byte[] buffer = new byte[4];
+    private int bufferOffset = 0;
   }
 }
