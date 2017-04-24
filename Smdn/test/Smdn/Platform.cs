@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 namespace Smdn {
   [TestFixture]
@@ -13,7 +14,6 @@ namespace Smdn {
         Assert.AreNotEqual(Endianness.LittleEndian, Platform.Endianness); // XXX
     }
 
-#if NET46
     [Test]
     public void TestDistributionName()
     {
@@ -25,11 +25,12 @@ namespace Smdn {
       var dist = Platform.DistributionName.ToLower();
 
       if (Runtime.IsRunningOnUnix)
-        Assert.IsFalse(dist.Contains("windows"));
+        Assert.That(dist, Does.Not.Contain("windows"));
       else
-        Assert.IsTrue(dist.Contains("windows"));
+        StringAssert.Contains("windows", dist);
     }
 
+#if NET46
     [Test]
     public void TestKernelName()
     {

@@ -3,7 +3,13 @@ using System.Reflection;
 using System.Collections.Generic;
 using NUnit.Framework;
 
+#if NET46
 using Smdn.OperatingSystem;
+#endif
+
+#if !NET46
+using System.Runtime.InteropServices;
+#endif
 
 namespace Smdn {
   [TestFixture()]
@@ -21,30 +27,53 @@ namespace Smdn {
 
       switch (Runtime.RuntimeEnvironment) {
         case RuntimeEnvironment.Mono:
-          Assert.IsTrue(version.Contains("mono"));
+          StringAssert.Contains("mono", version);
           break;
         default:
-          Assert.IsTrue(version.Contains(".net"));
+          StringAssert.Contains(".net", version);
           break;
       }
     }
+#endif
 
     [Test]
     public void TestIsRunningOnUnix()
     {
+#if NET46
       if (string.Empty.Equals(Shell.Execute("uname")))
         Assert.IsFalse(Runtime.IsRunningOnUnix);
       else
         Assert.IsTrue(Runtime.IsRunningOnUnix);
+#else
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        Assert.IsTrue(Runtime.IsRunningOnUnix);
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        Assert.IsTrue(Runtime.IsRunningOnUnix);
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        Assert.IsFalse(Runtime.IsRunningOnUnix);
+      else
+        Assert.Ignore("unknown OSPlatform");
+#endif
     }
 
     [Test]
     public void TestIsRunningOnWindows()
     {
+#if NET46
       if (string.Empty.Equals(Shell.Execute("VER")))
         Assert.IsFalse(Runtime.IsRunningOnWindows);
       else
         Assert.IsTrue(Runtime.IsRunningOnWindows);
+#else
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        Assert.IsFalse(Runtime.IsRunningOnWindows);
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        Assert.IsFalse(Runtime.IsRunningOnWindows);
+      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        Assert.IsTrue(Runtime.IsRunningOnWindows);
+      else
+        Assert.Ignore("unknown OSPlatform");
+#endif
     }
 
     [Test]
@@ -59,17 +88,22 @@ namespace Smdn {
 
       switch (Runtime.RuntimeEnvironment) {
         case RuntimeEnvironment.Mono:
-          Assert.IsTrue(name.Contains("mono"));
+          StringAssert.Contains("mono", name);
           break;
         case RuntimeEnvironment.NetFx:
-          Assert.IsTrue(name.Contains(".net"));
+          StringAssert.Contains(".net", name);
           break;
         default:
-          Assert.IsTrue(name.Contains("unknown"));
+#if NET46
+          StringAssert.Contains("compatible", name);
+#else
+          StringAssert.Contains(".net", name);
+#endif
           break;
       }
     }
 
+#if NET46
     [Test]
     public void TestVersion()
     {
