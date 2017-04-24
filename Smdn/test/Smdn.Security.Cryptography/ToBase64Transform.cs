@@ -64,9 +64,10 @@ namespace Smdn.Security.Cryptography {
     public void TestTransformBlock()
     {
       foreach (var pattern in new[] {
-        new {Input = "ASC",   Output = "QVND"},
-        new {Input = "ASCI",  Output = "QVND"},
-        new {Input = "ASCII", Output = "QVND"},
+        new {Input = "ASC",    Output = "QVND"},
+        new {Input = "ASCI",   Output = "QVND"},
+        new {Input = "ASCII",  Output = "QVND"},
+        new {Input = "ASCII_", Output = "QVND"},
       }) {
         using (var t = new ToBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);

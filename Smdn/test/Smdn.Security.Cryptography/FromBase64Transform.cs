@@ -83,6 +83,32 @@ namespace Smdn.Security.Cryptography {
     }
 
     [Test]
+    public void TestTransformBlock_ChunkedInput()
+    {
+      using (var t = new FromBase64Transform()) {
+        foreach (var pattern in new[] {
+        //new {Output = "ASCII", Input = "QVNDSUk="},
+          new {Output = "",      Input = "Q"},
+          new {Output = "",      Input = "V"},
+          new {Output = "",      Input = "N"},
+          new {Output = "ASC",   Input = "D"},
+          new {Output = "",      Input = "S"},
+          new {Output = "",      Input = "U"},
+          new {Output = "",      Input = "k"},
+          new {Output = "II",    Input = "="},
+        }) {
+          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+          var outputBuffer = new byte[8];
+
+          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+
+          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+        }
+      }
+    }
+
+    [Test]
     public void TestTransformBlock_InvalidFormat()
     {
       foreach (var pattern in new[] {
