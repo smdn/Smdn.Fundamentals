@@ -10,9 +10,22 @@ using NUnit.Framework;
 namespace Smdn {
   public static class TestUtils {
     public static class Encodings {
-      public static readonly Encoding Jis = Encoding.GetEncoding("iso-2022-jp");
-      public static readonly Encoding ShiftJis = Encoding.GetEncoding("shift_jis");
-      public static readonly Encoding EucJP = Encoding.GetEncoding("euc-jp");
+      static Encodings()
+      {
+#if !NET46
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
+
+        Latin1    = Encoding.GetEncoding("latin1");
+        Jis       = Encoding.GetEncoding("iso-2022-jp");
+        ShiftJis  = Encoding.GetEncoding("shift_jis");
+        EucJP     = Encoding.GetEncoding("euc-jp");
+      }
+
+      public static readonly Encoding Latin1;
+      public static readonly Encoding Jis;
+      public static readonly Encoding ShiftJis;
+      public static readonly Encoding EucJP;
     }
 
 #if NET46

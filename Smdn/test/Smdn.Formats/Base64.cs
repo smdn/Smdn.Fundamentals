@@ -26,7 +26,7 @@ namespace Smdn.Formats {
         new {ExpectedString = "\xfb\xf0",     ExpectedBytes = new byte[] {0xfb, 0xf0},        Data = "+/A="},
         new {ExpectedString = "\xfb\xf0\x00", ExpectedBytes = new byte[] {0xfb, 0xf0, 0x00},  Data = "+/AA"},
       }) {
-        Assert.AreEqual(test.ExpectedString, Base64.GetDecodedString(test.Data, Encoding.GetEncoding("latin1")));
+        Assert.AreEqual(test.ExpectedString, Base64.GetDecodedString(test.Data, TestUtils.Encodings.Latin1));
         Assert.AreEqual(test.ExpectedBytes,  Base64.Decode(test.Data));
       }
     }
@@ -53,10 +53,10 @@ namespace Smdn.Formats {
     public void TestEncodeDecodeWithSpecificEncoding()
     {
       foreach (var test in new[] {
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "5ryi5a2XYWJj44GL44GqMTIz44Kr44OK", Encoding = Encoding.UTF8},
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "tMG7+mFiY6SrpMoxMjOlq6XK", Encoding = Encoding.GetEncoding("euc-jp")},
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC", Encoding = Encoding.GetEncoding("iso-2022-jp")},
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "ir+OmmFiY4KpgsgxMjODSoNp", Encoding = Encoding.GetEncoding("shift_jis")},
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "5ryi5a2XYWJj44GL44GqMTIz44Kr44OK", Encoding = (Encoding)Encoding.UTF8},
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "tMG7+mFiY6SrpMoxMjOlq6XK", Encoding = TestUtils.Encodings.EucJP},
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC", Encoding = TestUtils.Encodings.Jis},
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "ir+OmmFiY4KpgsgxMjODSoNp", Encoding = TestUtils.Encodings.ShiftJis},
       }) {
         Assert.AreEqual(test.PlainText, Base64.GetDecodedString(test.Base64Text, test.Encoding), test.Encoding.WebName);
         Assert.AreEqual(test.Base64Text, Base64.GetEncodedString(test.PlainText, test.Encoding), test.Encoding.WebName);

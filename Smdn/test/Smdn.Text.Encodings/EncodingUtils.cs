@@ -58,7 +58,7 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingShiftJIS()
     {
-      var expected = Encoding.GetEncoding("shift_jis");
+      var expected = TestUtils.Encodings.ShiftJis;
 
       foreach (var name in new[] {
         "shiftjis",
@@ -81,7 +81,7 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingISO2022JP()
     {
-      var expected = Encoding.GetEncoding("iso-2022-jp");
+      var expected = TestUtils.Encodings.Jis;
 
       foreach (var name in new[] {
         "iso-2022-jp",
@@ -98,7 +98,7 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingEUCJP()
     {
-      var expected = Encoding.GetEncoding("euc-jp");
+      var expected = TestUtils.Encodings.EucJP;
 
       foreach (var name in new[] {
         "euc-jp",
