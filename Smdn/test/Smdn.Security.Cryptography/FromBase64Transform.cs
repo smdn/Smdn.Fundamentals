@@ -109,6 +109,25 @@ namespace Smdn.Security.Cryptography {
     }
 
     [Test]
+    public void TestTransformBlock_MultipleBlock()
+    {
+      using (var t = new FromBase64Transform()) {
+        foreach (var pattern in new[] {
+          new {Output = "A",     Input = "QQ=="},
+          new {Output = "A",     Input = "QQ=="},
+        }) {
+          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+          var outputBuffer = new byte[8];
+
+          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+
+          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+        }
+      }
+    }
+
+    [Test]
     public void TestTransformBlock_InvalidFormat()
     {
       foreach (var pattern in new[] {
@@ -121,6 +140,32 @@ namespace Smdn.Security.Cryptography {
 
           Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
         }
+      }
+    }
+
+    [Test]
+    public void TestTransformBlock_InvalidFormat_Chunked()
+    {
+      using (var t = new FromBase64Transform()) {
+        byte[] inputBuffer;
+        var outputBuffer = new byte[8];
+
+        foreach (var pattern in new[] {
+          new {Output = "",      Input = "="},
+          new {Output = "",      Input = "="},
+          new {Output = "",      Input = "="},
+        }) {
+          inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+
+          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+
+          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
+          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+        }
+
+        inputBuffer = Encoding.ASCII.GetBytes("=");
+
+        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0));
       }
     }
 
