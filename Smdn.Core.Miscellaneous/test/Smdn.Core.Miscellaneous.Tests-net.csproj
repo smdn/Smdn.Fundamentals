@@ -16,8 +16,8 @@
     <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <IntermediateOutputPath>obj\Debug\</IntermediateOutputPath>
+    <OutputPath>bin\Debug\net\</OutputPath>
+    <IntermediateOutputPath>obj\Debug\net\</IntermediateOutputPath>
     <DefineConstants>DEBUG;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,8 +27,8 @@
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
     <DefineConstants>NET46</DefineConstants>
-    <OutputPath>bin\Release\</OutputPath>
-    <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
+    <OutputPath>bin\Release\net\</OutputPath>
+    <IntermediateOutputPath>obj\Release\net\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
