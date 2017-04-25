@@ -63,7 +63,7 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\Smdn\Smdn-net.csproj">
+    <ProjectReference Include="..\..\Smdn\src\Smdn-net.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
