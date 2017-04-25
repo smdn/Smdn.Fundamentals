@@ -19,8 +19,8 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputPath>..\build\bin\Debug\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\Debug\</IntermediateOutputPath>
+    <OutputPath>..\build\bin\Debug\net\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Debug\net\</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -28,8 +28,8 @@
     <DefineConstants></DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
-    <OutputPath>..\build\bin\Release\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\Release\</IntermediateOutputPath>
+    <OutputPath>..\build\bin\Release\net\</OutputPath>
+    <IntermediateOutputPath>..\build\obj\Release\net\</IntermediateOutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
