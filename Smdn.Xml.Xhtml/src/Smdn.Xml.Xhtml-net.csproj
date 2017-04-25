@@ -43,6 +43,7 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Smdn.Xml.Xhtml\XhtmlUtils.cs" />
     <Compile Include="Smdn.Xml.Xhtml\XhtmlDocument.cs" />
