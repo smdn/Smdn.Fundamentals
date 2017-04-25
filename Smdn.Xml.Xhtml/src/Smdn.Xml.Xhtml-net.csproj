@@ -9,8 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
     <AssemblyName>Smdn.Xml.Xhtml</AssemblyName>
-    <OutputPath>..\build\bin\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>

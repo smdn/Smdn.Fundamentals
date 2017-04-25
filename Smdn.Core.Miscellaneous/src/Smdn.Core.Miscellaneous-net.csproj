@@ -10,8 +10,6 @@
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn.Core.Miscellaneous</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <OutputPath>..\build\bin\</OutputPath>
-    <IntermediateOutputPath>..\build\obj\</IntermediateOutputPath>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
