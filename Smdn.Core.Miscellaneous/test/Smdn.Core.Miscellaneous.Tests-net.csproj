@@ -9,8 +9,6 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Core.Miscellaneous.Tests</AssemblyName>
     <RootNamespace>Smdn.Core.Miscellaneous.Tests</RootNamespace>
-    <OutputPath>bin\</OutputPath>
-    <IntermediateOutputPath>obj\</IntermediateOutputPath>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -28,8 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <DefineConstants>
-    </DefineConstants>
+    <DefineConstants></DefineConstants>
     <OutputPath>bin\Release\</OutputPath>
     <IntermediateOutputPath>obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
