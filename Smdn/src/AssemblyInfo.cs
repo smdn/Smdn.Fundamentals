@@ -24,32 +24,12 @@
 
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(true)]
 
-// Information about this assembly is defined by the following attributes.
-// Change them to the values specific to your project.
-
-[assembly: AssemblyTitle(AssemblyInfo.Name)]
-[assembly: AssemblyProduct(AssemblyInfo.Name + "-" + AssemblyInfo.VersionString + AssemblyInfo.Suffix)]
-[assembly: AssemblyCopyright("Copyright(C) 2009-2017 smdn")]
-[assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
-
-// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
-// The form "{Major}.{Minor}.*" will automatically update the build and revision,
-// and "{Major}.{Minor}.{Build}.*" will update just the revision.
-
-[assembly: AssemblyVersion(AssemblyInfo.VersionString)]
-[assembly: AssemblyInformationalVersion(AssemblyInfo.VersionString + AssemblyInfo.Suffix)]
-
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-[assembly: AssemblyDelaySign(false)]
-[assembly: AssemblyKeyFile("")]
-
-internal static class AssemblyInfo {
-  public const string Name = "Smdn";
-  public const string VersionString = "3.00";
-  public const string Suffix = "";
+internal static partial class AssemblyInfo {
+  internal const string Name = "Smdn";
+  internal const string Version = "3.0";
+  internal const string VersionSuffix = "";
+  internal const string Copyright = "Copyright (C) 2009-2017 smdn";
 }

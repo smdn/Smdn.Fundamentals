@@ -18,6 +18,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="resources\exceptions-ja.txt" />
   </ItemGroup>
 
