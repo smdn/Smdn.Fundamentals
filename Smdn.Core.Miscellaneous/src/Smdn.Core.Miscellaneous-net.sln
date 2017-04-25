@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.Miscellaneous.Tests", "Smdn.Core.Miscellaneous.Tests-net.csproj", "{F297B4E9-7A3F-430A-B5AA-B0BC5BB435E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Core.Miscellaneous.Tests", "..\test\Smdn.Core.Miscellaneous.Tests-net.csproj", "{F297B4E9-7A3F-430A-B5AA-B0BC5BB435E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn", "..\..\Smdn\src\Smdn-net.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
 EndProject
