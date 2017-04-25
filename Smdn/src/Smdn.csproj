@@ -42,6 +42,7 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Smdn.Formats.Csv\CsvReader.cs" />
     <Compile Include="Smdn.Formats.Csv\CsvWriter.cs" />
