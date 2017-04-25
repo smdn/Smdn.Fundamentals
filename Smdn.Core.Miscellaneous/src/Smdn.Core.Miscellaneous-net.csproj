@@ -72,7 +72,7 @@
   </ProjectExtensions>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
+    <ProjectReference Include="..\..\Smdn\src\Smdn-net.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
