@@ -13,4 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Smdn-netstandard.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NUnitLiteTestRunner.cs" />
+  </ItemGroup>
 </Project>
