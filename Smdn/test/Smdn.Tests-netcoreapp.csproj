@@ -15,5 +15,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\NUnitLiteTestRunner.cs" />
+    <Compile Include="..\..\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
   </ItemGroup>
 </Project>
