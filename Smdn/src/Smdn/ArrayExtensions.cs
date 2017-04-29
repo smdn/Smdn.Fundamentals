@@ -40,7 +40,7 @@ namespace Smdn {
         throw new ArgumentNullException("elements");
 
       if (array.Length == 0 && elements.Length == 0)
-        return new T[] {element};
+        return new T[] { element };
 
       var appended = new T[array.Length + 1 + elements.Length];
 
@@ -62,7 +62,7 @@ namespace Smdn {
         throw new ArgumentNullException("elements");
 
       if (array.Length == 0 && elements.Length == 0)
-        return new T[] {element};
+        return new T[] { element };
 
       var prepended = new T[array.Length + 1 + elements.Length];
 
@@ -153,12 +153,35 @@ namespace Smdn {
       for (var i = 1; i < shuffled.Length; i++) {
         var j = random.Next(0, i + 1);
 
-        var temp    = shuffled[i];
+        var temp = shuffled[i];
         shuffled[i] = shuffled[j];
         shuffled[j] = temp;
       }
 
       return shuffled;
+    }
+
+    public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter)
+    {
+#if NET46
+      return Array.ConvertAll<TInput, TOutput>(array, converter);
+#else
+      if (array == null)
+        throw new ArgumentNullException(nameof(array));
+      if (converter == null)
+        throw new ArgumentNullException(nameof(converter));
+
+      if (array.Length == 0)
+        return Array.Empty<TOutput>();
+
+      var ret = new TOutput[array.Length];
+
+      for (var index = 0; index < array.Length; index++) {
+        ret[index] = converter(array[index]);
+      }
+
+      return ret;
+#endif
     }
   }
 }
