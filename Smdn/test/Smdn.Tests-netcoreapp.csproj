@@ -16,5 +16,6 @@
   <ItemGroup>
     <Compile Include="..\..\NUnitLiteTestRunner.cs" />
     <Compile Include="..\..\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
+    <Compile Include="..\..\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
   </ItemGroup>
 </Project>
