@@ -206,7 +206,7 @@ namespace Smdn.IO.Streams.Caching {
     private byte[] GetBlock(long offset, out int offsetInBlock)
     {
       long blockOffset;
-#if NET46
+#if NET46 || NETSTANDARD20
       var blockIndex = Math.DivRem(position, (long)blockSize, out blockOffset);
 #else
       var blockIndex = MathUtils.DivRem(position, (long)blockSize, out blockOffset);

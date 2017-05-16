@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Smdn.OperatingSystem {
-#if NET46
+#if NET46 || NETSTANDARD20
   public class PipeOutStream : Stream {
     public override bool CanSeek {
       get { return /*!disposed &&*/ false; }

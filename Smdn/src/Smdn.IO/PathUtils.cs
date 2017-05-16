@@ -192,7 +192,7 @@ namespace Smdn.IO {
       return false;
     }
 
-#if NET46
+#if NET46 || NETSTANDARD20
     public static string RenameUnique(string file)
     {
       if (file == null)
@@ -245,7 +245,7 @@ namespace Smdn.IO {
       path = path.Replace("%", "%25" /*encode*/);
 
       if (!Runtime.IsRunningOnWindows) {
-#if NET46 // || NETSTANDARD20
+#if NET46 || NETSTANDARD20
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + path.Replace(":", "%3A");
 #else

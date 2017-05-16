@@ -118,7 +118,7 @@ namespace Smdn.Formats.Mime {
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("encoding", encoding);
       }
 
-#if NET46
+#if NET46 || NETSTANDARD20
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
 #else
       var preambleText = string.Concat("=?", charset.WebName, "?", encodingChar, "?");

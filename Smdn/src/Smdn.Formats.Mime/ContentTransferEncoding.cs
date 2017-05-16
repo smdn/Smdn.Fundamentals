@@ -34,7 +34,7 @@ using Smdn.IO.Streams;
 using Smdn.Text;
 using Smdn.Text.Encodings;
 
-#if !NET46
+#if !(NET46 || NETSTANDARD20)
 using Smdn.Security.Cryptography;
 #endif
 

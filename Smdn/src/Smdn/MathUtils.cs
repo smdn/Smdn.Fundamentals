@@ -93,6 +93,7 @@ namespace Smdn {
       return (m * n) / Gcd(m, n);
     }
 
+#if !(NET46 || NETSTANDARD20)
     public static int DivRem(int a, int b, out int result)
     {
       int quotient = a / b;
@@ -110,6 +111,7 @@ namespace Smdn {
 
       return quotient;
     }
+#endif
 
     private static readonly long[] primeNumbers = new long[] {
       2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,

@@ -22,9 +22,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if !(NET46 || NETSTANDARD20)
 namespace Smdn.Security.Cryptography {
   public enum FromBase64TransformMode {
     IgnoreWhiteSpaces = 0,
     DoNotIgnoreWhiteSpaces = 1,
   }
 }
+#endif

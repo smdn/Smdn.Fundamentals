@@ -51,7 +51,7 @@ namespace Smdn {
 
     public static readonly Endianness Endianness;
 
-#if NET46
+#if NET46 || NETSTANDARD20
     private static string kernelName = null;
 
     public static string KernelName {
@@ -74,14 +74,14 @@ namespace Smdn {
     }
 #endif
 
-#if NET46
+#if NET46 || NETSTANDARD20
     private static string distributionName = null;
 #endif
 
     public static string DistributionName {
       get
       {
-#if NET46
+#if NET46 || NETSTANDARD20
         if (distributionName == null) {
           distributionName = Environment.OSVersion.VersionString; // default
 
