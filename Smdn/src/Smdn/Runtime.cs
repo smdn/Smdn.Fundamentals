@@ -131,10 +131,10 @@ namespace Smdn {
       }
     }
 
-#if NET46
     public static Version Version {
       get
       {
+#if NET46
         switch (runtimeEnvironment) {
           case RuntimeEnvironment.Mono: {
             var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
@@ -153,8 +153,10 @@ namespace Smdn {
         }
 
         return Environment.Version;
+#else
+        throw new PlatformNotSupportedException();
+#endif
       }
     }
-#endif
   }
 }

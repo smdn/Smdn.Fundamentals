@@ -130,7 +130,6 @@ namespace Smdn {
       return new MimeType("multipart", subtype);
     }
 
-#if NET46
     public static MimeType FindMimeTypeByExtension(string extensionOrPath)
     {
       return FindMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
@@ -156,24 +155,18 @@ namespace Smdn {
 
     private static IEnumerable<KeyValuePair<string, string[]>> ReadMimeTypesFileLines(string mimeTypesFile)
     {
-      using (var reader = new StreamReader(mimeTypesFile)) {
-        for (;;) {
-          var line = reader.ReadLine();
+      foreach (var line in File.ReadLines(mimeTypesFile)) {
+        if (line.Length == 0)
+          continue;
+        else if (line.StartsWith('#'))
+          continue;
 
-          if (line == null)
-            break;
-          else if (line.Length == 0)
-            continue;
-          else if (line.StartsWith('#'))
-            continue;
+        var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
 
-          var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
+        if (entry.Length <= 1)
+          continue;
 
-          if (entry.Length <= 1)
-            continue;
-
-          yield return new KeyValuePair<string, string[]>(entry[0], entry);
-        }
+        yield return new KeyValuePair<string, string[]>(entry[0], entry);
       }
     }
 
@@ -204,6 +197,7 @@ namespace Smdn {
       if (extension.Length <= 1)
         return null; // if "" or "."
 
+#if NET46
       using (var key = Registry.ClassesRoot.OpenSubKey(extension)) {
         if (key == null)
           return null;
@@ -215,6 +209,9 @@ namespace Smdn {
         else
           return new MimeType((string)mimeType);
       }
+#else
+      throw new PlatformNotSupportedException();
+#endif
     }
 
     public static string[] FindExtensionsByMimeType(MimeType mimeType)
@@ -269,6 +266,7 @@ namespace Smdn {
 
     private static string[] FindExtensionsByMimeTypeWin(string mimeType)
     {
+#if NET46
       var found = new List<string>();
 
       foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
@@ -282,9 +280,10 @@ namespace Smdn {
       }
 
       return found.ToArray();
-    }
+#else
+      throw new PlatformNotSupportedException();
 #endif
-
+    }
 
     /*
      * instance members
