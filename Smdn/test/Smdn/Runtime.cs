@@ -14,6 +14,17 @@ using System.Runtime.InteropServices;
 namespace Smdn {
   [TestFixture()]
   public class RuntimeTests {
+    [Test]
+    public void TestRuntimeEnvironment()
+    {
+      Console.WriteLine("RuntimeEnvironment: {0} ({1})\r\nRuntimeVersion: {2}\r\n",
+                        Runtime.RuntimeEnvironment,
+                        Runtime.VersionString,
+                        Runtime.Version);
+
+      Assert.Inconclusive("see output");
+    }
+
 #if NET46
     [Test]
     public void TestVersionString()

@@ -24,6 +24,7 @@
 
 using System;
 using System.Reflection;
+using System.Linq;
 
 #if !NET46
 using System.Runtime.InteropServices;
@@ -47,14 +48,14 @@ namespace Smdn {
         runtimeEnvironment = RuntimeEnvironment.NetFx;
         name = ".NET Framework";
       }
+      // XXX
+      else if (typeof(Runtime).GetTypeInfo().Assembly.GetReferencedAssemblies().Any(n => n.Name.Equals("System.Runtime", StringComparison.Ordinal))) {
+        runtimeEnvironment = RuntimeEnvironment.NetCore;
+        name = ".NET Core";
+      }
       else {
-#if NET46
         runtimeEnvironment = RuntimeEnvironment.Unknown;
         name = ".NET Framework compatible";
-#else
-        runtimeEnvironment = RuntimeEnvironment.NetCore; // XXX
-        name = RuntimeInformation.FrameworkDescription;
-#endif
       }
     }
 
