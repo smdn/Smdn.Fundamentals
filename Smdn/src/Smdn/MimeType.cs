@@ -22,7 +22,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if NET46 || NETCORE10
 using Microsoft.Win32;
+#endif
 
 using System;
 using System.Collections.Generic;
@@ -197,7 +199,7 @@ namespace Smdn {
       if (extension.Length <= 1)
         return null; // if "" or "."
 
-#if NET46
+#if NET46 || NETCORE10
       using (var key = Registry.ClassesRoot.OpenSubKey(extension)) {
         if (key == null)
           return null;
@@ -266,7 +268,7 @@ namespace Smdn {
 
     private static string[] FindExtensionsByMimeTypeWin(string mimeType)
     {
-#if NET46
+#if NET46 || NETCORE10
       var found = new List<string>();
 
       foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
