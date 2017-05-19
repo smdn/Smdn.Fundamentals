@@ -39,6 +39,12 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Compile Include="..\..\NUnitTestUtils.cs">
+      <Link>NUnitTestUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NUnitTestUtils.Encodings.cs">
+      <Link>NUnitTestUtils.Encodings.cs</Link>
+    </Compile>
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeEncoding.cs" />
     <Compile Include="Smdn.Formats.Mime\MimeUtils.cs" />
@@ -100,7 +106,6 @@
     <Compile Include="Smdn\UInt24.cs" />
     <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn\Uuid.cs" />
-    <Compile Include="TestUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
