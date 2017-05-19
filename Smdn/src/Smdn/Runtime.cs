@@ -134,10 +134,13 @@ namespace Smdn {
     public static Version Version {
       get
       {
-#if NET46
         switch (runtimeEnvironment) {
           case RuntimeEnvironment.Mono: {
+#if NET46
             var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
+#else
+            var displayName = (string)Type.GetType("Mono.Runtime").GetTypeInfo().GetDeclaredMethod("GetDisplayName").Invoke(null, null);
+#endif
 
             foreach (var s in displayName.Split(' ')) {
               try {
@@ -152,9 +155,10 @@ namespace Smdn {
           }
         }
 
+#if NET46 || NETSTANDARD20
         return Environment.Version;
 #else
-        throw new PlatformNotSupportedException();
+        return null;
 #endif
       }
     }

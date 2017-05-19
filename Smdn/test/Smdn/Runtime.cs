@@ -109,7 +109,6 @@ namespace Smdn {
     [Test]
     public void TestVersion()
     {
-#if NET46
       if (Runtime.IsRunningOnMono) {
         var version = Runtime.Version;
 
@@ -118,11 +117,10 @@ namespace Smdn {
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
       }
       else {
+#if NET46 || NETSTANDARD20
         Assert.AreEqual(Environment.Version, Runtime.Version);
-      }
-#else
-      Assert.Fail("platform not supported");
 #endif
+      }
     }
   }
 }
