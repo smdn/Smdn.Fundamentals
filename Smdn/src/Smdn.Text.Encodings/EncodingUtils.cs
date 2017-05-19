@@ -33,6 +33,8 @@ namespace Smdn.Text.Encodings {
       return GetEncoding(name, null);
     }
 
+    private static readonly char[] whiteSpaceChars = new[] {'-', '_', ' '};
+
     public static Encoding GetEncoding(string name,
                                        EncodingSelectionCallback selectFallbackEncoding)
     {
@@ -44,7 +46,7 @@ namespace Smdn.Text.Encodings {
 
       string encodingName;
 
-      if (!encodingCollationTable.TryGetValue(name.RemoveChars('-', '_', ' '), out encodingName))
+      if (!encodingCollationTable.TryGetValue(name.RemoveChars(whiteSpaceChars), out encodingName))
         encodingName = name;
 
       try {
