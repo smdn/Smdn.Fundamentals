@@ -21,6 +21,13 @@ namespace Smdn.IO.Streams {
       }
     }
 
+    private static void WriteLog(string format, params object[] arg)
+    {
+#if false
+      Console.WriteLine(format, arg);
+#endif
+    }
+
     private class TestChunk : ChunkedMemoryStream.Chunk {
       public TestChunk(int size, List<TestChunk> list)
       {
@@ -29,14 +36,14 @@ namespace Smdn.IO.Streams {
         base.Data = new byte[size];
         list.Add(this);
 
-        Console.WriteLine("allocated [{0}]", index);
+        WriteLog("allocated [{0}]", index);
       }
 
       public override void Dispose()
       {
         list.Remove(this);
 
-        Console.WriteLine("disposed [{0}]", index);
+        WriteLog("disposed [{0}]", index);
       }
 
       private int index;
@@ -95,37 +102,37 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(9L, stream.Length);
         Assert.AreEqual(3, allocated.Count, "SetLength(stream.Length)");
 
-        Console.WriteLine("set length 12");
+        WriteLog("set length 12");
         stream.SetLength(12L);
         Assert.AreEqual(12L, stream.Length);
         Assert.AreEqual(4, allocated.Count, "extended by SetLength 1");
 
-        Console.WriteLine("set length 8");
+        WriteLog("set length 8");
         stream.SetLength(8L);
         Assert.AreEqual(8L, stream.Length);
         Assert.AreEqual(3, allocated.Count, "shorten by SetLength 1");
 
-        Console.WriteLine("set length 7");
+        WriteLog("set length 7");
         stream.SetLength(7L);
         Assert.AreEqual(7L, stream.Length);
         Assert.AreEqual(2, allocated.Count, "shorten by SetLength 2");
 
-        Console.WriteLine("set length 3");
+        WriteLog("set length 3");
         stream.SetLength(3L);
         Assert.AreEqual(3L, stream.Length);
         Assert.AreEqual(1, allocated.Count, "shorten by SetLength 3");
 
-        Console.WriteLine("set length 0");
+        WriteLog("set length 0");
         stream.SetLength(0L);
         Assert.AreEqual(0L, stream.Length);
         Assert.AreEqual(1, allocated.Count, "shorten by SetLength 4");
 
-        Console.WriteLine("set length 12");
+        WriteLog("set length 12");
         stream.SetLength(12L);
         Assert.AreEqual(12L, stream.Length);
         Assert.AreEqual(4, allocated.Count, "extended by SetLength 2");
 
-        Console.WriteLine("set length 0");
+        WriteLog("set length 0");
         stream.SetLength(0L);
         Assert.AreEqual(0L, stream.Length);
         Assert.AreEqual(1, allocated.Count, "shorten by SetLength 5");
