@@ -103,9 +103,7 @@ namespace Smdn {
       }
     }
 
-#if NET46
     private static string versionString = null;
-#endif
 
     public static string VersionString {
       get {
