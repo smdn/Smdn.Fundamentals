@@ -108,27 +108,16 @@ namespace Smdn {
 #endif
 
     public static string VersionString {
-      get
-      {
-#if NET46
+      get {
         if (versionString == null) {
-          versionString = string.Format("{0} {1}", name, Environment.Version); // default
-
-          try {
-            var monoRuntime = Type.GetType("Mono.Runtime");
-
-            if (monoRuntime != null)
-              versionString = string.Format("Mono ({0})", monoRuntime.InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes));
-          }
-          catch {
-            // ignore exceptions
-          }
+#if NET46
+          versionString = string.Format("{0} {1}", name, Version);
+#else
+          versionString = RuntimeInformation.FrameworkDescription;
+#endif
         }
 
         return versionString;
-#else
-        return RuntimeInformation.FrameworkDescription;
-#endif
       }
     }
 
