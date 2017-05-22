@@ -76,11 +76,7 @@ namespace Smdn.IO.Binary {
       Dispose(true);
     }
 
-#if NET46
     void IDisposable.Dispose()
-#else
-    public void Dispose()
-#endif
     {
       Dispose(true);
     }

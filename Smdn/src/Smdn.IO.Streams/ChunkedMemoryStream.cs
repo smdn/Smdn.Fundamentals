@@ -271,7 +271,7 @@ namespace Smdn.IO.Streams {
       public byte[] ToArray()
       {
         var buffer = new byte[Length];
-#if NET46
+#if NET46 || NETSTANDARD20
         long offset = 0L;
 #else
         int offset = 0;

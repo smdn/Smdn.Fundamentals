@@ -393,10 +393,10 @@ namespace Smdn {
         return uuid;
       }
       finally {
-#if NET46
-        hashAlgorithm.Clear();
+#if NET46 || NETSTANDARD20
+        hashAlgorithm?.Clear();
 #else
-        hashAlgorithm.Dispose();
+        hashAlgorithm?.Dispose();
 #endif
         hashAlgorithm = null;
       }
