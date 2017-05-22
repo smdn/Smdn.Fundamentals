@@ -27,6 +27,16 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
+#if !(NET46 || NETSTANDARD20)
+    public static void Close(this Stream stream)
+    {
+      if (stream == null)
+        throw new ArgumentNullException("stream");
+
+      stream.Dispose();
+    }
+#endif
+
     public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer)
     {
       CopyTo(stream, writer, 10 * 1024);
@@ -75,11 +85,7 @@ namespace Smdn.IO {
       using (var outStream = new MemoryStream(initialCapacity)) {
         stream.CopyTo(outStream, readBufferSize);
 
-#if NET46
         outStream.Close();
-#else
-        outStream.Dispose();
-#endif
 
         return outStream.ToArray();
       }

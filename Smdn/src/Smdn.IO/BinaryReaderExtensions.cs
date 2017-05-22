@@ -28,35 +28,15 @@ using System.IO;
 using System.Linq;
 
 namespace Smdn.IO {
-  public static class TextReaderExtensions {
 #if !(NET46 || NETSTANDARD20)
-    public static void Close(this TextReader reader)
+  public static class BinaryReaderExtensions {
+    public static void Close(this BinaryReader reader)
     {
       if (reader == null)
         throw new ArgumentNullException("reader");
 
       reader.Dispose();
     }
-#endif
-
-    public static IEnumerable<string> ReadLines(this TextReader reader)
-    {
-      if (reader == null)
-        throw new ArgumentNullException("reader");
-
-      for (;;) {
-        var line = reader.ReadLine();
-
-        if (line == null)
-          yield break;
-        else
-          yield return line;
-      }
-    }
-
-    public static string[] ReadAllLines(this TextReader reader)
-    {
-      return ReadLines(reader).ToArray();
-    }
   }
+#endif
 }

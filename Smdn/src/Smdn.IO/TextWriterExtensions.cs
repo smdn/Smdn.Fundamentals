@@ -23,40 +23,18 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Smdn.IO {
-  public static class TextReaderExtensions {
 #if !(NET46 || NETSTANDARD20)
-    public static void Close(this TextReader reader)
+  public static class TextWriterExtensions {
+    public static void Close(this TextWriter writer)
     {
-      if (reader == null)
-        throw new ArgumentNullException("reader");
+      if (writer == null)
+        throw new ArgumentNullException("writer");
 
-      reader.Dispose();
-    }
-#endif
-
-    public static IEnumerable<string> ReadLines(this TextReader reader)
-    {
-      if (reader == null)
-        throw new ArgumentNullException("reader");
-
-      for (;;) {
-        var line = reader.ReadLine();
-
-        if (line == null)
-          yield break;
-        else
-          yield return line;
-      }
-    }
-
-    public static string[] ReadAllLines(this TextReader reader)
-    {
-      return ReadLines(reader).ToArray();
+      writer.Dispose();
     }
   }
+#endif
 }
