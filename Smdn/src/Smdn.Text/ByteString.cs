@@ -22,17 +22,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if NET46 || NETSTANDARD20
+#define SERIALIZATION
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-#if NET46
+#if SERIALIZATION
 using System.Runtime.Serialization;
 #endif
 using System.Text;
 
 namespace Smdn.Text {
-#if NET46
+#if SERIALIZATION
   [Serializable]
 #endif
   public class ByteString :
@@ -40,9 +44,8 @@ namespace Smdn.Text {
     IEquatable<byte[]>,
     IEquatable<ArraySegment<byte>>,
     IEquatable<string>
-#if NET46
-    ,
-    ISerializable
+#if SERIALIZATION
+    , ISerializable
 #endif
   {
     [IndexerName("Bytes")]
@@ -222,7 +225,7 @@ namespace Smdn.Text {
       this.isMutable = asMutable;
     }
 
-#if NET46
+#if SERIALIZATION
     protected ByteString(SerializationInfo info, StreamingContext context)
     {
       this.segment = (ArraySegment<byte>)info.GetValue("segment", typeof(ArraySegment<byte>));

@@ -22,13 +22,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if NET46 || NETSTANDARD20
+#define SERIALIZATION
+#endif
+
 using System;
-#if NET46
+#if SERIALIZATION
 using System.Runtime.Serialization;
 #endif
 
 namespace Smdn.Text.Encodings {
-#if NET46
+#if SERIALIZATION
   [Serializable]
 #endif
   public class EncodingNotSupportedException : NotSupportedException {
@@ -75,7 +79,7 @@ namespace Smdn.Text.Encodings {
       EncodingName = encodingName;
     }
 
-#if NET46
+#if SERIALIZATION
     protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
