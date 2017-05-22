@@ -1,9 +1,4 @@
 using System;
-using System.IO;
-#if NET46
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-#endif
 using System.Text;
 using NUnit.Framework;
 
@@ -1069,7 +1064,6 @@ namespace Smdn.Text {
       Assert.Throws<ArgumentNullException>(() => ByteString.IsTerminatedByCRLF(null));
     }
 
-#if NET46
     [Test]
     public void TestBinarySerialization()
     {
@@ -1080,25 +1074,15 @@ namespace Smdn.Text {
         new {String = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), true), Test = "ArraySegment mutable"},
         new {String = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), false), Test = "ArraySegment immutable"},
       }) {
-        using (var stream = new MemoryStream()) {
-          var serializeFormatter = new BinaryFormatter();
-          var deserializeFormatter = new BinaryFormatter();
-
-          serializeFormatter.Serialize(stream, test.String);
-
-          stream.Position = 0L;
-
-          var deserialized = (ByteString)deserializeFormatter.Deserialize(stream);
-
+        TestUtils.Assert.IsSerializableBinaryFormat(test.String, deserialized => {
           Assert.AreNotSame(test.String, deserialized, test.Test);
           Assert.AreEqual(test.String, deserialized, test.Test);
           Assert.IsTrue(test.String.Equals(deserialized), test.Test);
           Assert.IsTrue(deserialized.Equals(test.String), test.Test);
           Assert.AreEqual(test.String.IsMutable, deserialized.IsMutable, test.Test);
           AssertSegmentsAreEquivalent(test.String.Segment, deserialized.Segment);
-        }
+        });
       }
     }
-#endif
   }
 }
