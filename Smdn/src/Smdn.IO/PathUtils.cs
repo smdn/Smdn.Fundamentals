@@ -123,7 +123,7 @@ namespace Smdn.IO {
       return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
     }
 
-#if NET46
+#if NET46 || NETSTANDARD20
     public static bool ContainsShellEscapeChar(string path)
     {
       return ContainsShellEscapeChar(path, Encoding.Default);
@@ -135,7 +135,7 @@ namespace Smdn.IO {
       return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
     }
 
-#if NET46
+#if NET46 || NETSTANDARD20
     public static bool ContainsShellPipeChar(string path)
     {
       return ContainsShellPipeChar(path, Encoding.Default);

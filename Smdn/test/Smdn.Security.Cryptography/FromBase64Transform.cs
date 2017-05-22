@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-#if NET46
+#if NET46 || NETSTANDARD20
 using System.Security.Cryptography;
 #else
 using Smdn.Security.Cryptography;
