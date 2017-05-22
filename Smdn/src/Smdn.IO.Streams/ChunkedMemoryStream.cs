@@ -375,7 +375,7 @@ namespace Smdn.IO.Streams {
       this.chain = new ChunkChain(chunkSize, allocator);
     }
 
-#if NET46
+#if NET46 || NETSTANDARD20
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -386,7 +386,7 @@ namespace Smdn.IO.Streams {
         chain = null;
       }
 
-#if NET46
+#if NET46 || NETSTANDARD20
       base.Close();
 #else
       base.Dispose(disposing);
