@@ -28,7 +28,7 @@ using System.IO;
 namespace Smdn.IO.Streams {
   public class PartialStream : 
     Stream
-#if NET46
+#if NET46 || NETSTANDARD20
     , ICloneable
 #endif
   {
@@ -201,7 +201,7 @@ namespace Smdn.IO.Streams {
 #endif
     }
 
-#if NET46
+#if NET46 || NETSTANDARD20
     object ICloneable.Clone()
     {
       return Clone();
