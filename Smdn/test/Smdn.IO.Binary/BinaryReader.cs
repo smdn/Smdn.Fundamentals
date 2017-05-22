@@ -68,11 +68,7 @@ namespace Smdn.IO.Binary {
         Assert.IsNotNull(baseStream);
 
         if (close) {
-#if NET46
           reader.Close();
-#else
-          reader.Dispose();
-#endif
         }
         else {
           (reader as IDisposable).Dispose();
@@ -122,11 +118,7 @@ namespace Smdn.IO.Binary {
 
         Assert.IsNotNull(baseStream);
 
-#if NET46
         reader.Close();
-#else
-        reader.Dispose();
-#endif
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
 
@@ -258,11 +250,7 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, reader.BaseStream.Position);
 
-#if NET46
         reader.Close();
-#else
-        reader.Dispose();
-#endif
 
         try {
           CollectionAssert.AreEqual(zero, reader.ReadBytes(0));
@@ -296,11 +284,7 @@ namespace Smdn.IO.Binary {
 
         Assert.AreEqual(0L, reader.BaseStream.Position);
 
-#if NET46
         reader.Close();
-#else
-        reader.Dispose();
-#endif
 
         try {
           CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0));
@@ -399,11 +383,7 @@ namespace Smdn.IO.Binary {
         new {Method = "ReadFourCC", Count = 4},
       }) {
         using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-#if NET46
           reader.Close();
-#else
-          reader.Dispose();
-#endif
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
 #if NET46
