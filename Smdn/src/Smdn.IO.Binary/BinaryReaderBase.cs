@@ -25,6 +25,8 @@
 using System;
 using System.IO;
 
+using Smdn.IO;
+
 namespace Smdn.IO.Binary {
   public abstract class BinaryReaderBase : IDisposable {
     public bool LeaveBaseStreamOpen {
@@ -86,13 +88,8 @@ namespace Smdn.IO.Binary {
     protected virtual void Dispose(bool disposing)
     {
       if (disposing && stream != null) {
-        if (!LeaveBaseStreamOpen) {
-#if NET46
+        if (!LeaveBaseStreamOpen)
           stream.Close();
-#else
-          stream.Dispose();
-#endif
-        }
 
         stream = null;
       }

@@ -25,6 +25,8 @@
 using System;
 using System.IO;
 
+using Smdn.IO;
+
 namespace Smdn.IO.Streams {
   public class PartialStream : 
     Stream
@@ -186,17 +188,14 @@ namespace Smdn.IO.Streams {
     protected override void Dispose(bool disposing)
 #endif
     {
-      if (!leaveInnerStreamOpen && stream != null) {
-#if NET46
-        stream.Close();
-#else
-        stream.Dispose();
-#endif
-      }
+      if (!leaveInnerStreamOpen)
+        stream?.Close();
 
       stream = null;
 
-#if !NET46
+#if NET46
+      base.Close();
+#else
       base.Dispose(disposing);
 #endif
     }

@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using Smdn.IO;
 using Smdn.IO.Streams;
 
 namespace Smdn.Formats.UUEncodings {
@@ -47,14 +48,8 @@ namespace Smdn.Formats.UUEncodings {
 
       public void Dispose()
       {
-        if (stream != null) {
-#if NET46
-          stream.Close();
-#else
-          stream.Dispose();
-#endif
-          stream = null;
-        }
+        stream?.Close();
+        stream = null;
       }
 
       private void CheckDisposed()

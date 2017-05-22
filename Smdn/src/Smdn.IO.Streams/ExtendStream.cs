@@ -25,6 +25,8 @@
 using System;
 using System.IO;
 
+using Smdn.IO;
+
 namespace Smdn.IO.Streams {
   public class ExtendStream : ExtendStreamBase {
     protected override bool CanSeekPrependedData {
@@ -74,27 +76,11 @@ namespace Smdn.IO.Streams {
 #endif
     {
       if (closeExtensionStream) {
-        if (prependStream != null) {
-#if NET46
-          prependStream.Close();
-#else
-          prependStream.Dispose();
-#endif
+        prependStream?.Close();
+        prependStream = null;
 
-          // TODO: must be set to null
-          prependStream = null;
-        }
-
-        if (appendStream != null) {
-#if NET46
-          appendStream.Close();
-#else
-          appendStream.Dispose();
-#endif
-
-          // TODO: must be set to null
-          appendStream = null;
-        }
+        appendStream?.Close();
+        appendStream = null;
       }
 
 #if NET46

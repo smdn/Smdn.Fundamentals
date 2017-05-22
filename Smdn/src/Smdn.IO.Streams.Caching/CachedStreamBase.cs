@@ -26,6 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+using Smdn.IO;
+
 namespace Smdn.IO.Streams.Caching {
   public abstract class CachedStreamBase : Stream {
     public Stream InnerStream {
@@ -102,18 +104,14 @@ namespace Smdn.IO.Streams.Caching {
     protected override void Dispose(bool disposing)
 #endif
     {
-      if (stream != null) {
-        if (!leaveInnerStreamOpen)
+      if (!leaveInnerStreamOpen)
+        stream?.Close();
+
+      stream = null;
+
 #if NET46
-          stream.Close();
+      base.Close();
 #else
-          stream.Dispose();
-#endif
-
-        stream = null;
-      }
-
-#if !NET46
       base.Dispose(disposing);
 #endif
     }

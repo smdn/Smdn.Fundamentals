@@ -25,6 +25,7 @@
 using System;
 using System.IO;
 
+using Smdn.IO;
 using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
@@ -105,13 +106,8 @@ namespace Smdn.IO.Streams.LineOriented {
     protected override void Dispose(bool disposing)
     {
       if (disposing) {
-        if (stream != null && !leaveStreamOpen) {
-#if NET46
-          stream.Close();
-#else
-          stream.Dispose();
-#endif
-        }
+        if (!leaveStreamOpen)
+          stream?.Close();
       }
 
       stream = null;

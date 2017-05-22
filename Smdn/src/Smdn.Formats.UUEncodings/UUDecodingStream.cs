@@ -26,6 +26,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 
+using Smdn.IO;
 using Smdn.IO.Streams.LineOriented;
 using Smdn.Security.Cryptography;
 using Smdn.Text;
@@ -119,13 +120,8 @@ namespace Smdn.Formats.UUEncodings {
 #endif
     {
       if (stream != null) {
-        if (!leaveStreamOpen) {
-#if NET46
+        if (!leaveStreamOpen)
           stream.Close();
-#else
-          stream.Dispose();
-#endif
-        }
 
         stream = null;
       }

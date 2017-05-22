@@ -25,6 +25,8 @@
 using System;
 using System.IO;
 
+using Smdn.IO;
+
 namespace Smdn.IO.Streams {
   public abstract class ExtendStreamBase : Stream {
     protected enum Range {
@@ -124,13 +126,9 @@ namespace Smdn.IO.Streams {
 #endif
     {
       if (!leaveInnerStreamOpen)
-#if NET46
-        stream.Close();
-#else
-        stream.Dispose();
-#endif
+        stream?.Close();
 
-        stream = null;
+      stream = null;
 
 #if NET46
       base.Close();
