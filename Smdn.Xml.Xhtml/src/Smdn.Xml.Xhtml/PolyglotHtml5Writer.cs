@@ -51,6 +51,7 @@ namespace Smdn.Xml.Xhtml {
       public readonly bool IsInNonIndenting;
       public bool IsMixedContent = false;
       public bool IsEmpty = true;
+      public bool IsClosed = false;
 
       public ElementContext(string localName, bool isInNonIndenting)
       {
@@ -127,6 +128,7 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteStartElement(string prefix, string localName, string ns)
     {
+      var isMixedContent = false;
       var isInNonIndenting = false;
 
       if (currentElementContext != null) {
@@ -134,10 +136,13 @@ namespace Smdn.Xml.Xhtml {
         if (Array.BinarySearch(voidElements, currentElementContext.LocalName) < 0)
           currentElementContext.IsEmpty = false;
 
+        if (!currentElementContext.IsClosed)
+          isMixedContent = currentElementContext.IsMixedContent;
+
         isInNonIndenting = currentElementContext.IsInNonIndenting;
       }
  
-      if (!isInNonIndenting)
+      if (!(isMixedContent || isInNonIndenting))
         WriteIndent();
 
       baseWriter.WriteStartElement(prefix, localName, ns);
@@ -167,6 +172,8 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteFullEndElement()
     {
+      currentElementContext.IsClosed = true;
+
       currentElementContext = elementContextStack.Pop();
 
       if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting)) {
@@ -213,41 +220,50 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteBase64(byte[] buffer, int index, int count)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteBase64(buffer, index, count);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteCData(string text)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteCData(text);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteCharEntity(char ch)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteCharEntity(ch);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteChars(char[] buffer, int index, int count)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteChars(buffer, index, count);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteComment(string text)
     {
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteComment(text);
+
+      if (baseWriter.WriteState == WriteState.Content)
+        currentElementContext.IsEmpty = false;
     }
 
     public override void WriteEndAttribute()
@@ -262,35 +278,42 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteEntityRef(string name)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteEntityRef(name);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteProcessingInstruction(string name, string text)
     {
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteProcessingInstruction(name, text);
+
+      if (baseWriter.WriteState == WriteState.Content)
+        currentElementContext.IsEmpty = false;
 
       shouldEmitIndent = true;
     }
 
     public override void WriteRaw(char[] buffer, int index, int count)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteRaw(buffer, index, count);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteRaw(string data)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteRaw(data);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteStartAttribute(string prefix, string localName, string ns)
@@ -310,25 +333,30 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteString(string text)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteString(text);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteSurrogateCharEntity(char lowChar, char highChar)
     {
-      currentElementContext.IsMixedContent = true;
-      currentElementContext.IsEmpty = false;
-
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
+
+      if (baseWriter.WriteState == WriteState.Content) {
+        currentElementContext.IsMixedContent = true;
+        currentElementContext.IsEmpty = false;
+      }
     }
 
     public override void WriteWhitespace(string ws)
     {
-      currentElementContext.IsMixedContent = true;
-
       baseWriter.WriteWhitespace(ws);
+
+      if (baseWriter.WriteState == WriteState.Content)
+        currentElementContext.IsMixedContent = true;
     }
 
     public override WriteState          WriteState  => baseWriter.WriteState;

@@ -85,6 +85,69 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWrite_Html5Document()
+    {
+      var doc = new XDocument(
+        new XDocumentType("html", null, null, null),
+        new XElement(
+          "html",
+          new XElement(
+            "head",
+            new XElement(
+              "meta",
+              new XAttribute("charset", "utf-8")
+            ),
+            new XElement(
+              "title",
+              "title"
+            ),
+            new XElement(
+              "link",
+              new XAttribute("rel", "canonical"),
+              new XAttribute("href", "http://example.com/")
+            )
+          ),
+          new XElement(
+            "body",
+            new XElement(
+              "p",
+              new XElement(
+                "span",
+                new XAttribute("style", "display:none;"),
+                new XText("p1")
+              )
+            ),
+            new XElement(
+              "p",
+              new XText("p2-1"),
+              new XElement(
+                "span",
+                new XText("p2-2")
+              )
+            )
+          )
+        )
+      );
+
+      const string expected = @"<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset=""utf-8"" />
+  <title>title</title>
+  <link rel=""canonical"" href=""http://example.com/"" />
+ </head>
+ <body>
+  <p>
+   <span style=""display:none;"">p1</span>
+  </p>
+  <p>p2-1<span>p2-2</span></p>
+ </body>
+</html>";
+
+      Assert.AreEqual(expected, ToString(doc));
+    }
+
+    [Test]
     public void TestWriteDocType_XDocument()
     {
       var doc = new XDocument(
@@ -151,7 +214,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteNonIndentingElements_MixedContent()
+    public void TestWriteNonIndentingElements_MixedContent1()
     {
       var doc = new XDocument(
         new XElement(
@@ -166,6 +229,24 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual("<p>\n <pre>text <span>span</span> text</pre>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteNonIndentingElements_MixedContent2()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "pre",
+            "text",
+            new XElement("span", "span")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <pre>text<span>span</span></pre>\n</p>",
                       ToString(doc));
     }
 
@@ -203,6 +284,60 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
+    [Test]
+    public void TestWriteIndentingElements_MixedContent_TextOnly()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "p",
+            "text"
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <p>text</p>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndentingElements_MixedContent1()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "p",
+            new XText("text "),
+            new XElement("span", "span"),
+            new XText(" text")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <p>text <span>span</span> text</p>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndentingElements_MixedContent2()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "p",
+            new XText("text"),
+            new XElement("span", "span")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <p>text<span>span</span></p>\n</p>",
+                      ToString(doc));
+    }
+
     [TestCase("area")]
     [TestCase("base")]
     [TestCase("br")]
@@ -236,6 +371,47 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual(string.Format("<p>\n <{0} />\n <{0} />\n <{0} />\n</p>", voidElement),
+                      ToString(doc));
+    }
+
+    [TestCase("area")]
+    [TestCase("base")]
+    [TestCase("br")]
+    [TestCase("col")]
+    [TestCase("embed")]
+    [TestCase("hr")]
+    [TestCase("img")]
+    [TestCase("input")]
+    [TestCase("keygen")]
+    [TestCase("link")]
+    [TestCase("meta")]
+    [TestCase("param")]
+    [TestCase("source")]
+    [TestCase("track")]
+    [TestCase("wbr")]
+    public void TestWriteVoidElements_WithAttribute(string voidElement)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            voidElement,
+            new XAttribute("id", "v1")
+          ),
+          new XElement(
+            voidElement
+          ),
+          new XElement(
+            voidElement,
+            new XAttribute("id", "v3")
+          ),
+          new XElement(
+            voidElement
+          )
+        )
+      );
+
+      Assert.AreEqual(string.Format("<p>\n <{0} id=\"v1\" />\n <{0} />\n <{0} id=\"v3\" />\n <{0} />\n</p>", voidElement),
                       ToString(doc));
     }
 
