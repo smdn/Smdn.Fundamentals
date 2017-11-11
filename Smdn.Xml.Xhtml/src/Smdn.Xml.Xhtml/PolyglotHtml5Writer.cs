@@ -213,6 +213,31 @@ namespace Smdn.Xml.Xhtml {
       return baseWriter.LookupPrefix(ns);
     }
 
+    public override void WriteStartDocument()
+    {
+      baseWriter.WriteStartDocument();
+    }
+
+    public override void WriteStartDocument(bool standalone)
+    {
+      baseWriter.WriteStartDocument(standalone);
+    }
+
+    public override void WriteEndDocument()
+    {
+      baseWriter.WriteEndDocument();
+    }
+
+    public override void WriteStartAttribute(string prefix, string localName, string ns)
+    {
+      baseWriter.WriteStartAttribute(prefix, localName, ns);
+    }
+
+    public override void WriteEndAttribute()
+    {
+      baseWriter.WriteEndAttribute();
+    }
+
     public override void WriteBase64(byte[] buffer, int index, int count)
     {
       baseWriter.WriteBase64(buffer, index, count);
@@ -261,16 +286,6 @@ namespace Smdn.Xml.Xhtml {
         currentElementContext.IsEmpty = false;
     }
 
-    public override void WriteEndAttribute()
-    {
-      baseWriter.WriteEndAttribute();
-    }
-
-    public override void WriteEndDocument()
-    {
-      baseWriter.WriteEndDocument();
-    }
-
     public override void WriteEntityRef(string name)
     {
       baseWriter.WriteEntityRef(name);
@@ -309,21 +324,6 @@ namespace Smdn.Xml.Xhtml {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
-    }
-
-    public override void WriteStartAttribute(string prefix, string localName, string ns)
-    {
-      baseWriter.WriteStartAttribute(prefix, localName, ns);
-    }
-
-    public override void WriteStartDocument()
-    {
-      baseWriter.WriteStartDocument();
-    }
-
-    public override void WriteStartDocument(bool standalone)
-    {
-      baseWriter.WriteStartDocument(standalone);
     }
 
     public override void WriteString(string text)
