@@ -29,39 +29,44 @@ using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
   public class PolyglotHtml5Writer : XmlWriter {
-    private static readonly string[] voidElements = {
-      "area", "base", "br", "col", "embed",
-      "hr", "img", "input", "keygen", "link",
-      "meta", "param", "source", "track", "wbr"
-    };
-
-    static PolyglotHtml5Writer()
-    {
-      Array.Sort(voidElements, StringComparer.Ordinal);
-    }
+    public override XmlWriterSettings Settings  => settings;
+    public override WriteState WriteState       => baseWriter.WriteState;
+    public override string XmlLang              => baseWriter.XmlLang;
+    public override XmlSpace XmlSpace           => baseWriter.XmlSpace;
+    protected virtual XmlWriter BaseWriter      => baseWriter;
 
     private readonly XmlWriter baseWriter;
     private readonly XmlWriterSettings settings;
     private bool shouldEmitIndent = false;
 
-    public override XmlWriterSettings Settings => settings;
+    private ElementContext currentElementContext = null;
+    private readonly Stack<ElementContext> elementContextStack = new Stack<ElementContext>(4 /*nest level*/);
 
     private class ElementContext {
+      private static readonly HashSet<string> voidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+        "area", "base", "br", "col", "embed",
+        "hr", "img", "input", "keygen", "link",
+        "meta", "param", "source", "track", "wbr"
+      };
+
       public readonly string LocalName;
       public readonly bool IsInNonIndenting;
       public bool IsMixedContent = false;
       public bool IsEmpty = true;
       public bool IsClosed = false;
 
+      public bool IsNonVoidElement {
+        get {
+          return !voidElements.Contains(LocalName);
+        }
+      }
+
       public ElementContext(string localName, bool isInNonIndenting)
       {
         this.LocalName = localName;
-        this.IsInNonIndenting = isInNonIndenting;
+        this.IsInNonIndenting = isInNonIndenting | string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase);
       }
     }
-
-    private ElementContext currentElementContext = null;
-    private readonly Stack<ElementContext> elementContextStack = new Stack<ElementContext>(4 /*nest level*/);
 
     private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
     {
@@ -132,9 +137,8 @@ namespace Smdn.Xml.Xhtml {
       var isInNonIndenting = false;
 
       if (currentElementContext != null) {
-        // TODO: compare namespace
-        if (Array.BinarySearch(voidElements, currentElementContext.LocalName) < 0)
-          currentElementContext.IsEmpty = false;
+        if (currentElementContext.IsNonVoidElement)
+          currentElementContext.IsEmpty = false; // has child elements
 
         if (!currentElementContext.IsClosed)
           isMixedContent = currentElementContext.IsMixedContent;
@@ -143,12 +147,9 @@ namespace Smdn.Xml.Xhtml {
       }
  
       if (!(isMixedContent || isInNonIndenting))
-        WriteIndent();
+        WriteIndent(elementContextStack.Count);
 
       baseWriter.WriteStartElement(prefix, localName, ns);
-
-      // TODO: compare namespace
-      isInNonIndenting |= string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase);
 
       currentElementContext = new ElementContext(localName, isInNonIndenting);
 
@@ -159,9 +160,8 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteEndElement()
     {
-      // TODO: compare namespace
-      if (Array.BinarySearch(voidElements, currentElementContext.LocalName) < 0)
-        // prepend empty text node if element is self-closing
+      if (currentElementContext.IsNonVoidElement)
+        // prepend empty text node to avoid emitting self closing tags <.../>
         baseWriter.WriteString(string.Empty);
 
       baseWriter.WriteEndElement();
@@ -180,15 +180,10 @@ namespace Smdn.Xml.Xhtml {
         if (currentElementContext.IsEmpty)
           WriteIndent(elementContextStack.Count - 1);
         else
-          WriteIndent();
+          WriteIndent(elementContextStack.Count);
       }
 
       baseWriter.WriteFullEndElement();
-    }
-
-    private void WriteIndent()
-    {
-      WriteIndent(elementContextStack.Count);
     }
 
     protected virtual void WriteIndent(int indentLevel)
@@ -358,9 +353,5 @@ namespace Smdn.Xml.Xhtml {
       if (baseWriter.WriteState == WriteState.Content)
         currentElementContext.IsMixedContent = true;
     }
-
-    public override WriteState          WriteState  => baseWriter.WriteState;
-    public override string              XmlLang     => baseWriter.XmlLang;
-    public override XmlSpace            XmlSpace    => baseWriter.XmlSpace;
   }
 }
