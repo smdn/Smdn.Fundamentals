@@ -75,5 +75,75 @@ namespace Smdn.Xml.Xhtml {
       Assert.AreEqual("<!DOCTYPE html>\n<html />",
                       ToString(doc));
     }
+
+    [Test]
+    public void TestWriteNonIndentingElements_MixedContent_TextOnly()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "pre",
+            " text "
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <pre> text </pre>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteNonIndentingElements_MixedContent()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "pre",
+            "text ",
+            new XElement("span", "span"),
+            " text"
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <pre>text <span>span</span> text</pre>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteNonIndentingElements_NonMixedContent()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "pre",
+            new XElement("span", "span")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <pre><span>span</span></pre>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndentingElements_NonMixedContent()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "p",
+            new XElement("span", "span")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <p>\n  <span>span</span>\n </p>\n</p>",
+                      ToString(doc));
+    }
   }
 }

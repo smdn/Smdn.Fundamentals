@@ -30,33 +30,63 @@ using System.Xml;
 namespace Smdn.Xml.Xhtml {
   public class PolyglotHtml5Writer : XmlWriter {
     private readonly XmlWriter baseWriter;
+    private readonly XmlWriterSettings settings;
+    private bool shouldEmitIndent = false;
+
+    public override XmlWriterSettings Settings => settings;
+
+    private class ElementContext {
+      public bool IsMixedContent = false;
+      public readonly bool IsInNonIndenting;
+
+      public ElementContext(bool isInNonIndenting)
+      {
+        this.IsInNonIndenting = isInNonIndenting;
+      }
+    }
+
+    private readonly Stack<ElementContext> elementContextStack = new Stack<ElementContext>(4 /*nest level*/);
+
+    private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
+    {
+      var s = settings.Clone();
+
+      s.Indent = false;
+      s.IndentChars = string.Empty;
+      s.NewLineChars = string.Empty;
+
+      s.NewLineHandling = NewLineHandling.None;
+
+      return s;
+    }
 
     public PolyglotHtml5Writer(string outputFileName, XmlWriterSettings settings)
-        : this(Create(outputFileName, settings))
-      {
+      : this(Create(outputFileName, ToNonIndentingSettings(settings)), settings)
+    {
     }
 
     public PolyglotHtml5Writer(StringBuilder output, XmlWriterSettings settings)
-        : this(Create(output, settings))
-      {
+      : this(Create(output, ToNonIndentingSettings(settings)), settings)
+    {
     }
 
     public PolyglotHtml5Writer(Stream output, XmlWriterSettings settings)
-        : this(Create(output, settings))
-      {
+      : this(Create(output, ToNonIndentingSettings(settings)), settings)
+    {
     }
 
     public PolyglotHtml5Writer(TextWriter output, XmlWriterSettings settings)
-        : this(Create(output, settings))
-      {
+      : this(Create(output, ToNonIndentingSettings(settings)), settings)
+    {
     }
 
-    public PolyglotHtml5Writer(XmlWriter baseWriter)
+    private PolyglotHtml5Writer(XmlWriter baseWriter, XmlWriterSettings settings)
     {
       if (baseWriter == null)
         throw new ArgumentNullException(nameof(baseWriter));
 
       this.baseWriter = baseWriter;
+      this.settings = settings;
     }
 
     protected override void Dispose(bool disposing)
@@ -72,12 +102,49 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteDocType(string name, string pubid, string sysid, string subset)
     {
-      if (pubid == null && sysid == null && subset == null) {
+      if (pubid == null && sysid == null && subset == null)
         baseWriter.WriteRaw("<!DOCTYPE " + name + ">");
-        baseWriter.WriteRaw(Settings.NewLineChars);
-      }
-      else {
+      else
         baseWriter.WriteDocType(name, pubid, sysid, subset);
+
+      shouldEmitIndent = true;
+    }
+
+    public override void WriteStartElement(string prefix, string localName, string ns)
+    {
+      var isInNonIndenting = 0 < elementContextStack.Count && elementContextStack.Peek().IsInNonIndenting;
+
+      if (!isInNonIndenting)
+        WriteIndent();
+
+      baseWriter.WriteStartElement(prefix, localName, ns);
+
+      elementContextStack.Push(new ElementContext(isInNonIndenting || string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase)));
+
+      shouldEmitIndent = true;
+    }
+
+    public override void WriteFullEndElement()
+    {
+      var element = elementContextStack.Pop();
+
+      if (!(element.IsMixedContent || element.IsInNonIndenting))
+        WriteIndent();
+
+      baseWriter.WriteFullEndElement();
+    }
+
+    protected virtual void WriteIndent()
+    {
+      if (!shouldEmitIndent)
+        return;
+
+      baseWriter.WriteRaw(settings.NewLineChars);
+
+      if (settings.Indent) {
+        for (var i = 0; i < elementContextStack.Count; i++) {
+          baseWriter.WriteRaw(settings.IndentChars);
+        }
       }
     }
 
@@ -101,16 +168,22 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteCData(string text)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteCData(text);
     }
 
     public override void WriteCharEntity(char ch)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteCharEntity(ch);
     }
 
     public override void WriteChars(char[] buffer, int index, int count)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteChars(buffer, index, count);
     }
 
@@ -136,26 +209,29 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteEntityRef(string name)
     {
-      baseWriter.WriteEntityRef(name);
-    }
+      elementContextStack.Peek().IsMixedContent = true;
 
-    public override void WriteFullEndElement()
-    {
-      baseWriter.WriteFullEndElement();
+      baseWriter.WriteEntityRef(name);
     }
 
     public override void WriteProcessingInstruction(string name, string text)
     {
       baseWriter.WriteProcessingInstruction(name, text);
+
+      shouldEmitIndent = true;
     }
 
     public override void WriteRaw(char[] buffer, int index, int count)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteRaw(buffer, index, count);
     }
 
     public override void WriteRaw(string data)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteRaw(data);
     }
 
@@ -174,28 +250,28 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteStartDocument(standalone);
     }
 
-    public override void WriteStartElement(string prefix, string localName, string ns)
-    {
-      baseWriter.WriteStartElement(prefix, localName, ns);
-    }
-
     public override void WriteString(string text)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteString(text);
     }
 
     public override void WriteSurrogateCharEntity(char lowChar, char highChar)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
     }
 
     public override void WriteWhitespace(string ws)
     {
+      elementContextStack.Peek().IsMixedContent = true;
+
       baseWriter.WriteWhitespace(ws);
     }
 
     public override WriteState          WriteState  => baseWriter.WriteState;
-    public override XmlWriterSettings   Settings    => baseWriter.Settings;
     public override string              XmlLang     => baseWriter.XmlLang;
     public override XmlSpace            XmlSpace    => baseWriter.XmlSpace;
   }
