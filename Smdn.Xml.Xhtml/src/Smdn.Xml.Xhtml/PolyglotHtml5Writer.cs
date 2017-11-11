@@ -50,21 +50,20 @@ namespace Smdn.Xml.Xhtml {
       };
 
       public readonly string LocalName;
+      public readonly string Namespace;
       public readonly bool IsInNonIndenting;
       public bool IsMixedContent = false;
       public bool IsEmpty = true;
       public bool IsClosed = false;
 
-      public bool IsNonVoidElement {
-        get {
-          return !voidElements.Contains(LocalName);
-        }
-      }
+      public bool IsNonVoidElement => !(voidElements.Contains(LocalName) && IsNamespaceXhtml);
+      private bool IsNamespaceXhtml => string.IsNullOrEmpty(Namespace) || string.Equals(Namespace, W3CNamespaces.Xhtml, StringComparison.Ordinal);
 
-      public ElementContext(string localName, bool isInNonIndenting)
+      public ElementContext(string localName, string ns, bool isInNonIndenting)
       {
         this.LocalName = localName;
-        this.IsInNonIndenting = isInNonIndenting | string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase);
+        this.Namespace = ns;
+        this.IsInNonIndenting = isInNonIndenting | (IsNamespaceXhtml && string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase));
       }
     }
 
@@ -151,7 +150,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteStartElement(prefix, localName, ns);
 
-      currentElementContext = new ElementContext(localName, isInNonIndenting);
+      currentElementContext = new ElementContext(localName, ns, isInNonIndenting);
 
       elementContextStack.Push(currentElementContext);
 

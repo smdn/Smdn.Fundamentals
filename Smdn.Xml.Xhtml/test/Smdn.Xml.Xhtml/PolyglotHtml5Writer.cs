@@ -280,6 +280,25 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteNonIndentingElements_NonMixedContent_WithXhtmlNamespace()
+    {
+      var ns = (XNamespace)W3CNamespaces.Xhtml;
+
+      var doc = new XDocument(
+        new XElement(
+          ns + "p",
+          new XElement(
+            ns + "pre",
+            new XElement(ns + "span", "span")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <pre><span>span</span></pre>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteIndentingElements_NonMixedContent()
     {
       var doc = new XDocument(
@@ -293,6 +312,25 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual("<p>\n <p>\n  <span>span</span>\n </p>\n</p>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndentingElements_NonMixedContent_WithXhtmlNamespace()
+    {
+      var ns = (XNamespace)W3CNamespaces.Xhtml;
+
+      var doc = new XDocument(
+        new XElement(
+          ns + "p",
+          new XElement(
+            ns + "p",
+            new XElement(ns + "span", "span")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <p>\n  <span>span</span>\n </p>\n</p>",
                       ToString(doc));
     }
 
@@ -383,6 +421,44 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual(string.Format("<p>\n <{0} />\n <{0} />\n <{0} />\n</p>", voidElement),
+                      ToString(doc));
+    }
+
+    [TestCase("area")]
+    [TestCase("base")]
+    [TestCase("br")]
+    [TestCase("col")]
+    [TestCase("embed")]
+    [TestCase("hr")]
+    [TestCase("img")]
+    [TestCase("input")]
+    [TestCase("keygen")]
+    [TestCase("link")]
+    [TestCase("meta")]
+    [TestCase("param")]
+    [TestCase("source")]
+    [TestCase("track")]
+    [TestCase("wbr")]
+    public void TestWriteVoidElements_WithXhtmlNamespace(string voidElement)
+    {
+      var ns = (XNamespace)W3CNamespaces.Xhtml;
+
+      var doc = new XDocument(
+        new XElement(
+          ns + "p",
+          new XElement(
+            ns + voidElement
+          ),
+          new XElement(
+            ns + voidElement
+          ),
+          new XElement(
+            ns + voidElement
+          )
+        )
+      );
+
+      Assert.AreEqual(string.Format("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <{0} />\n <{0} />\n <{0} />\n</p>", voidElement),
                       ToString(doc));
     }
 
