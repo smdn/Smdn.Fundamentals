@@ -29,6 +29,17 @@ using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
   public class PolyglotHtml5Writer : XmlWriter {
+    private static readonly string[] voidElements = {
+      "area", "base", "br", "col", "embed",
+      "hr", "img", "input", "keygen", "link",
+      "meta", "param", "source", "track", "wbr"
+    };
+
+    static PolyglotHtml5Writer()
+    {
+      Array.Sort(voidElements, StringComparer.Ordinal);
+    }
+
     private readonly XmlWriter baseWriter;
     private readonly XmlWriterSettings settings;
     private bool shouldEmitIndent = false;
@@ -36,15 +47,19 @@ namespace Smdn.Xml.Xhtml {
     public override XmlWriterSettings Settings => settings;
 
     private class ElementContext {
-      public bool IsMixedContent = false;
+      public readonly string LocalName;
       public readonly bool IsInNonIndenting;
+      public bool IsMixedContent = false;
+      public bool IsEmpty = true;
 
-      public ElementContext(bool isInNonIndenting)
+      public ElementContext(string localName, bool isInNonIndenting)
       {
+        this.LocalName = localName;
         this.IsInNonIndenting = isInNonIndenting;
       }
     }
 
+    private ElementContext currentElementContext = null;
     private readonly Stack<ElementContext> elementContextStack = new Stack<ElementContext>(4 /*nest level*/);
 
     private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
@@ -112,29 +127,59 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteStartElement(string prefix, string localName, string ns)
     {
-      var isInNonIndenting = 0 < elementContextStack.Count && elementContextStack.Peek().IsInNonIndenting;
+      var isInNonIndenting = false;
 
+      if (currentElementContext != null) {
+        currentElementContext.IsEmpty = false;
+
+        isInNonIndenting = currentElementContext.IsInNonIndenting;
+      }
+ 
       if (!isInNonIndenting)
         WriteIndent();
 
       baseWriter.WriteStartElement(prefix, localName, ns);
 
-      elementContextStack.Push(new ElementContext(isInNonIndenting || string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase)));
+      // TODO: compare namespace
+      isInNonIndenting |= string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase);
+
+      currentElementContext = new ElementContext(localName, isInNonIndenting);
+
+      elementContextStack.Push(currentElementContext);
 
       shouldEmitIndent = true;
     }
 
+    public override void WriteEndElement()
+    {
+      // TODO: compare namespace
+      if (Array.BinarySearch(voidElements, currentElementContext.LocalName) < 0)
+        // prepend empty text node if element is self-closing
+        baseWriter.WriteString(string.Empty);
+
+      baseWriter.WriteEndElement();
+    }
+
     public override void WriteFullEndElement()
     {
-      var element = elementContextStack.Pop();
+      currentElementContext = elementContextStack.Pop();
 
-      if (!(element.IsMixedContent || element.IsInNonIndenting))
-        WriteIndent();
+      if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting)) {
+        if (currentElementContext.IsEmpty)
+          WriteIndent(elementContextStack.Count - 1);
+        else
+          WriteIndent();
+      }
 
       baseWriter.WriteFullEndElement();
     }
 
-    protected virtual void WriteIndent()
+    private void WriteIndent()
+    {
+      WriteIndent(elementContextStack.Count);
+    }
+
+    protected virtual void WriteIndent(int indentLevel)
     {
       if (!shouldEmitIndent)
         return;
@@ -142,7 +187,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteRaw(settings.NewLineChars);
 
       if (settings.Indent) {
-        for (var i = 0; i < elementContextStack.Count; i++) {
+        for (var i = 0; i < indentLevel; i++) {
           baseWriter.WriteRaw(settings.IndentChars);
         }
       }
@@ -163,32 +208,40 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteBase64(byte[] buffer, int index, int count)
     {
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
+
       baseWriter.WriteBase64(buffer, index, count);
     }
 
     public override void WriteCData(string text)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteCData(text);
     }
 
     public override void WriteCharEntity(char ch)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteCharEntity(ch);
     }
 
     public override void WriteChars(char[] buffer, int index, int count)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteChars(buffer, index, count);
     }
 
     public override void WriteComment(string text)
     {
+      currentElementContext.IsEmpty = false;
+
       baseWriter.WriteComment(text);
     }
 
@@ -202,20 +255,18 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteEndDocument();
     }
 
-    public override void WriteEndElement()
-    {
-      baseWriter.WriteEndElement();
-    }
-
     public override void WriteEntityRef(string name)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteEntityRef(name);
     }
 
     public override void WriteProcessingInstruction(string name, string text)
     {
+      currentElementContext.IsEmpty = false;
+
       baseWriter.WriteProcessingInstruction(name, text);
 
       shouldEmitIndent = true;
@@ -223,14 +274,16 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteRaw(char[] buffer, int index, int count)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteRaw(buffer, index, count);
     }
 
     public override void WriteRaw(string data)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteRaw(data);
     }
@@ -252,21 +305,23 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteString(string text)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteString(text);
     }
 
     public override void WriteSurrogateCharEntity(char lowChar, char highChar)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
+      currentElementContext.IsEmpty = false;
 
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
     }
 
     public override void WriteWhitespace(string ws)
     {
-      elementContextStack.Peek().IsMixedContent = true;
+      currentElementContext.IsMixedContent = true;
 
       baseWriter.WriteWhitespace(ws);
     }

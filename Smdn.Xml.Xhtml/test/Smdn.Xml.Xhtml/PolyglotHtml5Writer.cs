@@ -72,7 +72,7 @@ namespace Smdn.Xml.Xhtml {
         new XElement("html")
       );
 
-      Assert.AreEqual("<!DOCTYPE html>\n<html />",
+      Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
                       ToString(doc));
     }
 
@@ -143,6 +143,57 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual("<p>\n <p>\n  <span>span</span>\n </p>\n</p>",
+                      ToString(doc));
+    }
+
+    [TestCase("area")]
+    [TestCase("base")]
+    [TestCase("br")]
+    [TestCase("col")]
+    [TestCase("embed")]
+    [TestCase("hr")]
+    [TestCase("img")]
+    [TestCase("input")]
+    [TestCase("keygen")]
+    [TestCase("link")]
+    [TestCase("meta")]
+    [TestCase("param")]
+    [TestCase("source")]
+    [TestCase("track")]
+    [TestCase("wbr")]
+    public void TestWriteVoidElements(string voidElement)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            voidElement
+          )
+        )
+      );
+
+      Assert.AreEqual(string.Format("<p>\n <{0} />\n</p>", voidElement),
+                      ToString(doc));
+    }
+
+    [TestCase("div")]
+    [TestCase("span")]
+    [TestCase("script")]
+    [TestCase("html")]
+    [TestCase("body")]
+    [TestCase("head")]
+    public void TestWriteSelfClosingElements(string selfClosingElement)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            selfClosingElement
+          )
+        )
+      );
+
+      Assert.AreEqual(string.Format("<p>\n <{0}></{0}>\n</p>", selfClosingElement),
                       ToString(doc));
     }
   }
