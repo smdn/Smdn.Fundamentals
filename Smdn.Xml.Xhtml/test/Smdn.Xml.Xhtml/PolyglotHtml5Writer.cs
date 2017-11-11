@@ -77,6 +77,31 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndent()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XElement(
+            "p",
+            "text"
+          ),
+          new XElement(
+            "p",
+            "text"
+          ),
+          new XElement(
+            "p",
+            "text"
+          )
+        )
+      );
+
+      Assert.AreEqual("<div>\n <p>text</p>\n <p>text</p>\n <p>text</p>\n</div>",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteNonIndentingElements_MixedContent_TextOnly()
     {
       var doc = new XDocument(
@@ -168,11 +193,17 @@ namespace Smdn.Xml.Xhtml {
           "p",
           new XElement(
             voidElement
+          ),
+          new XElement(
+            voidElement
+          ),
+          new XElement(
+            voidElement
           )
         )
       );
 
-      Assert.AreEqual(string.Format("<p>\n <{0} />\n</p>", voidElement),
+      Assert.AreEqual(string.Format("<p>\n <{0} />\n <{0} />\n <{0} />\n</p>", voidElement),
                       ToString(doc));
     }
 
@@ -189,11 +220,17 @@ namespace Smdn.Xml.Xhtml {
           "p",
           new XElement(
             selfClosingElement
+          ),
+          new XElement(
+            selfClosingElement
+          ),
+          new XElement(
+            selfClosingElement
           )
         )
       );
 
-      Assert.AreEqual(string.Format("<p>\n <{0}></{0}>\n</p>", selfClosingElement),
+      Assert.AreEqual(string.Format("<p>\n <{0}></{0}>\n <{0}></{0}>\n <{0}></{0}>\n</p>", selfClosingElement),
                       ToString(doc));
     }
   }

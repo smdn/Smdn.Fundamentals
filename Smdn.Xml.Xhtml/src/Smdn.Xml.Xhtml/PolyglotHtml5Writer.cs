@@ -130,7 +130,9 @@ namespace Smdn.Xml.Xhtml {
       var isInNonIndenting = false;
 
       if (currentElementContext != null) {
-        currentElementContext.IsEmpty = false;
+        // TODO: compare namespace
+        if (Array.BinarySearch(voidElements, currentElementContext.LocalName) < 0)
+          currentElementContext.IsEmpty = false;
 
         isInNonIndenting = currentElementContext.IsInNonIndenting;
       }
@@ -158,6 +160,9 @@ namespace Smdn.Xml.Xhtml {
         baseWriter.WriteString(string.Empty);
 
       baseWriter.WriteEndElement();
+
+      if (currentElementContext.IsEmpty)
+        currentElementContext = elementContextStack.Pop();
     }
 
     public override void WriteFullEndElement()
