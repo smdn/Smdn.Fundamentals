@@ -64,13 +64,45 @@ namespace Smdn.Xml.Xhtml {
       return output.ToString();
     }
 
+    private static string ToString(XmlDocument doc)
+    {
+      var settings = new XmlWriterSettings();
+
+      settings.ConformanceLevel = ConformanceLevel.Document;
+      settings.Indent = true;
+      settings.IndentChars = " ";
+      settings.NewLineChars = "\n";
+      settings.NewLineOnAttributes = false;
+      settings.OmitXmlDeclaration = true;
+
+      var output = new StringBuilder();
+
+      using (var writer = new PolyglotHtml5Writer(output, settings)) {
+        doc.Save(writer);
+      }
+
+      return output.ToString();
+    }
+
     [Test]
-    public void TestWriteDocType()
+    public void TestWriteDocType_XDocument()
     {
       var doc = new XDocument(
         new XDocumentType("html", null, null, null),
         new XElement("html")
       );
+
+      Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteDocType_XmlDocument()
+    {
+      var doc = new XmlDocument();
+
+      doc.AppendChild(doc.CreateDocumentType("html", null, null, null));
+      doc.AppendChild(doc.CreateElement("html"));
 
       Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
                       ToString(doc));
