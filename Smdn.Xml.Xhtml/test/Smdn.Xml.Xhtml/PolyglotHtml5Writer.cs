@@ -388,6 +388,24 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
+    [Test]
+    public void TestWriteIndentingElements_MixedContent3()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "p",
+            new XElement("span", "span"),
+            new XText("text")
+          )
+        )
+      );
+
+      Assert.AreEqual("<p>\n <p>\n  <span>span</span>text</p>\n</p>",
+                      ToString(doc));
+    }
+
     [TestCase("area")]
     [TestCase("base")]
     [TestCase("br")]
