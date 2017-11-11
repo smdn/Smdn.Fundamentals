@@ -247,7 +247,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteBase64(buffer, index, count);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -257,7 +257,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteCData(text);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -267,7 +267,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteCharEntity(ch);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -277,7 +277,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteChars(buffer, index, count);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -285,17 +285,22 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteComment(string text)
     {
+      if (shouldEmitIndent)
+        WriteIndent(elementContextStack.Count + (currentElementContext == null ? 0 : 1));
+
       baseWriter.WriteComment(text);
 
-      if (baseWriter.WriteState == WriteState.Content)
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
         currentElementContext.IsEmpty = false;
+
+      shouldEmitIndent = true;
     }
 
     public override void WriteEntityRef(string name)
     {
       baseWriter.WriteEntityRef(name);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -305,7 +310,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteProcessingInstruction(name, text);
 
-      if (baseWriter.WriteState == WriteState.Content)
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
         currentElementContext.IsEmpty = false;
 
       shouldEmitIndent = true;
@@ -315,7 +320,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteRaw(buffer, index, count);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -325,7 +330,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteRaw(data);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -335,7 +340,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteString(text);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -345,7 +350,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
 
-      if (baseWriter.WriteState == WriteState.Content) {
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
         currentElementContext.IsMixedContent = true;
         currentElementContext.IsEmpty = false;
       }
@@ -355,7 +360,7 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteWhitespace(ws);
 
-      if (baseWriter.WriteState == WriteState.Content)
+      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
         currentElementContext.IsMixedContent = true;
     }
   }
