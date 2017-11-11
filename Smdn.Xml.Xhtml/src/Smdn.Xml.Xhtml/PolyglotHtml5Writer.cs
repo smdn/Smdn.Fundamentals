@@ -132,27 +132,31 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteStartElement(string prefix, string localName, string ns)
     {
-      var isMixedContent = false;
       var isInNonIndenting = false;
 
-      if (currentElementContext != null) {
-        if (currentElementContext.IsNonVoidElement)
+      if (currentElementContext == null) {
+        if (shouldEmitIndent) {
+          WriteIndent(0);
+
+          shouldEmitIndent = false;
+        }
+      }
+      else {
+        if (!currentElementContext.IsClosed) {
           currentElementContext.IsEmpty = false; // has child elements
 
-        if (!currentElementContext.IsClosed)
-          isMixedContent = currentElementContext.IsMixedContent;
+          isInNonIndenting = currentElementContext.IsInNonIndenting;
 
-        isInNonIndenting = currentElementContext.IsInNonIndenting;
+          elementContextStack.Push(currentElementContext);
+        }
+
+        if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting))
+          WriteIndent(elementContextStack.Count);
       }
- 
-      if (!(isMixedContent || isInNonIndenting))
-        WriteIndent(elementContextStack.Count);
 
       baseWriter.WriteStartElement(prefix, localName, ns);
 
       currentElementContext = new ElementContext(localName, ns, isInNonIndenting);
-
-      elementContextStack.Push(currentElementContext);
 
       shouldEmitIndent = true;
     }
@@ -165,31 +169,33 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteEndElement();
 
-      if (currentElementContext.IsEmpty)
-        currentElementContext = elementContextStack.Pop();
+      if (currentElementContext.IsEmpty) {
+        currentElementContext.IsClosed = true;
+
+        if (0 < elementContextStack.Count)
+          currentElementContext = elementContextStack.Pop();
+        else
+          currentElementContext = null;
+      }
     }
 
     public override void WriteFullEndElement()
     {
       currentElementContext.IsClosed = true;
 
-      currentElementContext = elementContextStack.Pop();
+      if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting))
+        WriteIndent(elementContextStack.Count);
 
-      if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting)) {
-        if (currentElementContext.IsEmpty)
-          WriteIndent(elementContextStack.Count - 1);
-        else
-          WriteIndent(elementContextStack.Count);
-      }
+      if (0 < elementContextStack.Count)
+        currentElementContext = elementContextStack.Pop();
+      else
+        currentElementContext = null;
 
       baseWriter.WriteFullEndElement();
     }
 
     protected virtual void WriteIndent(int indentLevel)
     {
-      if (!shouldEmitIndent)
-        return;
-
       baseWriter.WriteRaw(settings.NewLineChars);
 
       if (settings.Indent) {
