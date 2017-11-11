@@ -148,10 +148,22 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteDocType_XDocument()
+    public void TestWriteDocType_XDocument_NullId()
     {
       var doc = new XDocument(
         new XDocumentType("html", null, null, null),
+        new XElement("html")
+      );
+
+      Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteDocType_XDocument_EmptyId()
+    {
+      var doc = new XDocument(
+        new XDocumentType("html", string.Empty, string.Empty, string.Empty),
         new XElement("html")
       );
 

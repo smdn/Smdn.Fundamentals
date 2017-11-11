@@ -123,7 +123,7 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteDocType(string name, string pubid, string sysid, string subset)
     {
-      if (pubid == null && sysid == null && subset == null)
+      if (string.IsNullOrEmpty(pubid) && string.IsNullOrEmpty(sysid) && string.IsNullOrEmpty(subset))
         baseWriter.WriteRaw("<!DOCTYPE " + name + ">");
       else
         baseWriter.WriteDocType(name, pubid, sysid, subset);
