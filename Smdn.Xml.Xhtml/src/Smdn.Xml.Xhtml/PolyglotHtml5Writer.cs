@@ -181,10 +181,6 @@ namespace Smdn.Xml.Xhtml {
         case ExtendedWriteState.ElementClosed:
           state = ExtendedWriteState.ElementContent;
           break;
-
-        default:
-          Console.WriteLine(state);
-          break;
       }
 
       WriteIndent();
