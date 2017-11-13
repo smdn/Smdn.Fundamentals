@@ -278,6 +278,23 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
+    [TestCase(NewLineHandling.None)]
+    [TestCase(NewLineHandling.Entitize)]
+    [TestCase(NewLineHandling.Replace)]
+    public void TestWriteAttribute_ValueEscaped(NewLineHandling newLineHandling)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "meta",
+          new XAttribute("name", "description"),
+          new XAttribute("content", "<>&\"\'")
+        )
+      );
+
+      Assert.AreEqual("<meta name=\"description\" content=\"&lt;&gt;&amp;&quot;\'\" />",
+                      ToString(doc, newLineHandling));
+    }
+
     [Test]
     public void TestWriteAttribute_NewLineHandling_None()
     {
@@ -306,6 +323,22 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual("<meta name=\"description\" content=\"&#xD;&#xA;&#x9;\" />",
+                      ToString(doc, newLineHandling));
+    }
+
+    [TestCase(NewLineHandling.None)]
+    [TestCase(NewLineHandling.Entitize)]
+    [TestCase(NewLineHandling.Replace)]
+    public void TestWriteTextNode_TextEscaped(NewLineHandling newLineHandling)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XText("<>&\"\'")
+        )
+      );
+
+      Assert.AreEqual("<div>&lt;&gt;&amp;\"\'</div>",
                       ToString(doc, newLineHandling));
     }
 
