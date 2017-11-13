@@ -37,7 +37,26 @@ namespace Smdn.Xml.Xhtml {
 
     private readonly XmlWriter baseWriter;
     private readonly XmlWriterSettings settings;
-    private bool shouldEmitIndent = false;
+
+    protected enum ExtendedWriteState {
+      Start,
+      DocumentStart,
+      Prolog,
+      ElementOpening,
+      AttributeStart,
+      AttributeValue,
+      AttributeEnd,
+      ElementOpened,
+      ElementContent,
+      ElementClosing,
+      ElementClosed,
+      DocumentEnd,
+      Closed,
+    }
+
+    protected ExtendedWriteState ExtendedState => state;
+
+    private ExtendedWriteState state = ExtendedWriteState.Start;
 
     private ElementContext currentElementContext = null;
     private readonly Stack<ElementContext> elementContextStack = new Stack<ElementContext>(4 /*nest level*/);
@@ -139,6 +158,8 @@ namespace Smdn.Xml.Xhtml {
       }
       finally {
         base.Dispose(disposing);
+
+        state = ExtendedWriteState.Closed;
       }
     }
 
@@ -149,36 +170,37 @@ namespace Smdn.Xml.Xhtml {
       else
         baseWriter.WriteDocType(name, pubid, sysid, subset);
 
-      shouldEmitIndent = true;
+      state = ExtendedWriteState.Prolog;
     }
 
     public override void WriteStartElement(string prefix, string localName, string ns)
     {
-      var parentElementContext = currentElementContext;
+      switch (state) {
+        case ExtendedWriteState.ElementOpening:
+        case ExtendedWriteState.AttributeEnd:
+        case ExtendedWriteState.ElementClosed:
+          state = ExtendedWriteState.ElementContent;
+          break;
 
-      if (currentElementContext == null) {
-        if (shouldEmitIndent) {
-          WriteIndent(0);
-
-          shouldEmitIndent = false;
-        }
+        default:
+          Console.WriteLine(state);
+          break;
       }
-      else {
-        if (!currentElementContext.IsClosed) {
-          currentElementContext.MarkAsNonEmpty(); // has child elements
 
-          elementContextStack.Push(currentElementContext);
-        }
-
-        if (!(XmlSpace == XmlSpace.Preserve || currentElementContext.IsMixedContent))
-          WriteIndent(elementContextStack.Count);
-      }
+      WriteIndent();
 
       baseWriter.WriteStartElement(prefix, localName, ns);
 
-      currentElementContext = new ElementContext(localName, ns, parentElementContext);
+      // is nested element start?
+      if (currentElementContext != null && !currentElementContext.IsClosed) {
+        currentElementContext.MarkAsNonEmpty(); // has child elements
 
-      shouldEmitIndent = true;
+        elementContextStack.Push(currentElementContext);
+      }
+
+      currentElementContext = new ElementContext(localName, ns, currentElementContext);
+
+      state = ExtendedWriteState.ElementOpening;
     }
 
     public override void WriteEndElement()
@@ -189,8 +211,12 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteEndElement();
 
+      state = ExtendedWriteState.ElementOpened;
+
       if (currentElementContext.IsEmpty) {
         currentElementContext.MarkAsClosed();
+
+        state = ExtendedWriteState.ElementClosed;
 
         if (0 < elementContextStack.Count)
           currentElementContext = elementContextStack.Pop();
@@ -203,8 +229,9 @@ namespace Smdn.Xml.Xhtml {
     {
       currentElementContext.MarkAsClosed();
 
-      if (!(XmlSpace == XmlSpace.Preserve || currentElementContext.IsMixedContent))
-        WriteIndent(elementContextStack.Count);
+      state = ExtendedWriteState.ElementClosing;
+
+      WriteIndent();
 
       if (0 < elementContextStack.Count)
         currentElementContext = elementContextStack.Pop();
@@ -212,16 +239,33 @@ namespace Smdn.Xml.Xhtml {
         currentElementContext = null;
 
       baseWriter.WriteFullEndElement();
+
+      state = ExtendedWriteState.ElementClosed;
     }
 
-    protected virtual void WriteIndent(int indentLevel)
+    protected virtual void WriteIndent()
     {
+      if (state == ExtendedWriteState.Start || state == ExtendedWriteState.DocumentStart)
+        return;
+
+      if (XmlSpace == XmlSpace.Preserve)
+        return;
+
+      if (currentElementContext != null && currentElementContext.IsMixedContent)
+        return;
+
       baseWriter.WriteRaw(settings.NewLineChars);
 
-      if (settings.Indent) {
-        for (var i = 0; i < indentLevel; i++) {
-          baseWriter.WriteRaw(settings.IndentChars);
-        }
+      if (!settings.Indent)
+        return;
+
+      var indentLevel = elementContextStack.Count;
+
+      if (state == ExtendedWriteState.ElementContent)
+        indentLevel += 1;
+
+      for (var i = 0; i < indentLevel; i++) {
+        baseWriter.WriteRaw(settings.IndentChars);
       }
     }
 
@@ -241,33 +285,73 @@ namespace Smdn.Xml.Xhtml {
     public override void WriteStartDocument()
     {
       baseWriter.WriteStartDocument();
+
+      state = ExtendedWriteState.DocumentStart;
     }
 
     public override void WriteStartDocument(bool standalone)
     {
       baseWriter.WriteStartDocument(standalone);
+
+      state = ExtendedWriteState.DocumentStart;
     }
 
     public override void WriteEndDocument()
     {
       baseWriter.WriteEndDocument();
+
+      state = ExtendedWriteState.DocumentEnd;
     }
 
     public override void WriteStartAttribute(string prefix, string localName, string ns)
     {
       baseWriter.WriteStartAttribute(prefix, localName, ns);
+
+      state = ExtendedWriteState.AttributeStart;
     }
 
     public override void WriteEndAttribute()
     {
       baseWriter.WriteEndAttribute();
+
+      state = ExtendedWriteState.AttributeEnd;
+    }
+
+    public override void WriteProcessingInstruction(string name, string text)
+    {
+      baseWriter.WriteProcessingInstruction(name, text);
+
+      if (state == ExtendedWriteState.ElementContent)
+        currentElementContext.MarkAsNonEmpty();
+    }
+
+    public override void WriteComment(string text)
+    {
+      switch (state) {
+        case ExtendedWriteState.ElementOpening:
+        case ExtendedWriteState.ElementOpened:
+        case ExtendedWriteState.AttributeEnd:
+          state = ExtendedWriteState.ElementContent;
+          break;
+      }
+
+      WriteIndent();
+
+      baseWriter.WriteComment(text);
+
+      if (state == ExtendedWriteState.DocumentStart)
+        state = ExtendedWriteState.Prolog;
+      else if (state == ExtendedWriteState.ElementContent)
+        currentElementContext.MarkAsNonEmpty();
     }
 
     public override void WriteBase64(byte[] buffer, int index, int count)
     {
+      SetWritingContentState();
+
       baseWriter.WriteBase64(buffer, index, count);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -275,9 +359,11 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteCData(string text)
     {
+      SetWritingContentState();
+
       baseWriter.WriteCData(text);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -285,9 +371,11 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteCharEntity(char ch)
     {
+      SetWritingContentState();
+
       baseWriter.WriteCharEntity(ch);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -295,58 +383,35 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteChars(char[] buffer, int index, int count)
     {
+      SetWritingContentState();
+
       baseWriter.WriteChars(buffer, index, count);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
-    }
-
-    public override void WriteComment(string text)
-    {
-      if (currentElementContext == null) {
-        if (shouldEmitIndent)
-          WriteIndent(0);
-      }
-      else {
-        if (!(XmlSpace == XmlSpace.Preserve || currentElementContext.IsMixedContent))
-          WriteIndent(elementContextStack.Count + 1);
-      }
-
-      baseWriter.WriteComment(text);
-
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
-        currentElementContext.MarkAsNonEmpty();
-
-      shouldEmitIndent = true;
     }
 
     public override void WriteEntityRef(string name)
     {
+      SetWritingContentState();
+
       baseWriter.WriteEntityRef(name);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
     }
 
-    public override void WriteProcessingInstruction(string name, string text)
-    {
-      baseWriter.WriteProcessingInstruction(name, text);
-
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
-        currentElementContext.MarkAsNonEmpty();
-
-      shouldEmitIndent = true;
-    }
-
     public override void WriteRaw(char[] buffer, int index, int count)
     {
+      SetWritingContentState();
+
       baseWriter.WriteRaw(buffer, index, count);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -354,9 +419,11 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteRaw(string data)
     {
+      SetWritingContentState();
+
       baseWriter.WriteRaw(data);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -364,9 +431,11 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteString(string text)
     {
+      SetWritingContentState();
+
       baseWriter.WriteString(text);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -374,9 +443,11 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteSurrogateCharEntity(char lowChar, char highChar)
     {
+      SetWritingContentState();
+
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
+      if (state == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -384,10 +455,28 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteWhitespace(string ws)
     {
+      SetWritingContentState();
+
       baseWriter.WriteWhitespace(ws);
 
-      if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
+      if (state == ExtendedWriteState.ElementContent)
         currentElementContext.MarkAsMixedContent();
+    }
+
+    private void SetWritingContentState()
+    {
+      switch (state) {
+        case ExtendedWriteState.ElementOpening:
+        case ExtendedWriteState.ElementOpened:
+        case ExtendedWriteState.AttributeEnd:
+        case ExtendedWriteState.ElementClosed:
+          state = ExtendedWriteState.ElementContent;
+          break;
+
+        case ExtendedWriteState.AttributeStart:
+          state = ExtendedWriteState.AttributeValue;
+          break;
+      }
     }
   }
 }

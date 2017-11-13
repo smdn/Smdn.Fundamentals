@@ -272,6 +272,23 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndent_CommentNode_AfterElementWithAttribute()
+    {
+      var doc = new XDocument(
+        new XComment("line1"),
+        new XElement(
+          "div",
+          new XAttribute("id", "body"),
+          new XComment("line2")
+        ),
+        new XComment("line3")
+      );
+
+      Assert.AreEqual("<!--line1-->\n<div id=\"body\">\n <!--line2-->\n</div>\n<!--line3-->",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteIndent_CommentNode_MixedContent()
     {
       var doc = new XDocument(
