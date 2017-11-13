@@ -178,7 +178,6 @@ namespace Smdn.Xml.Xhtml {
       switch (state) {
         case ExtendedWriteState.ElementOpening:
         case ExtendedWriteState.AttributeEnd:
-        case ExtendedWriteState.ElementClosed:
           state = ExtendedWriteState.ElementContent;
           break;
       }
@@ -209,36 +208,35 @@ namespace Smdn.Xml.Xhtml {
 
       state = ExtendedWriteState.ElementOpened;
 
-      if (currentElementContext.IsEmpty) {
-        currentElementContext.MarkAsClosed();
-
-        state = ExtendedWriteState.ElementClosed;
-
-        if (0 < elementContextStack.Count)
-          currentElementContext = elementContextStack.Pop();
-        else
-          currentElementContext = null;
-      }
+      if (currentElementContext.IsEmpty)
+        CloseCurrentElement();
     }
 
     public override void WriteFullEndElement()
     {
-      var prevElementContext = currentElementContext;
-
       state = ExtendedWriteState.ElementClosing;
 
       WriteIndent();
 
-      if (0 < elementContextStack.Count)
-        currentElementContext = elementContextStack.Pop();
-      else
-        currentElementContext = null;
-
       baseWriter.WriteFullEndElement();
 
-      prevElementContext.MarkAsClosed();
+      CloseCurrentElement();
+    }
+
+    private void CloseCurrentElement()
+    {
+      currentElementContext.MarkAsClosed();
 
       state = ExtendedWriteState.ElementClosed;
+
+      if (0 < elementContextStack.Count) {
+        currentElementContext = elementContextStack.Pop();
+
+        state = ExtendedWriteState.ElementContent;
+      }
+      else {
+        currentElementContext = null;
+      }
     }
 
     protected virtual void WriteIndent()
@@ -467,7 +465,6 @@ namespace Smdn.Xml.Xhtml {
         case ExtendedWriteState.ElementOpening:
         case ExtendedWriteState.ElementOpened:
         case ExtendedWriteState.AttributeEnd:
-        case ExtendedWriteState.ElementClosed:
           state = ExtendedWriteState.ElementContent;
           break;
 

@@ -262,12 +262,13 @@ namespace Smdn.Xml.Xhtml {
           new XElement(
             "div",
             new XComment("line4")
-          )
+          ),
+          new XComment("line5")
         ),
-        new XComment("line5")
+        new XComment("line6")
       );
 
-      Assert.AreEqual("<!--line1-->\n<div>\n <!--line2-->\n <!--line3-->\n <div>\n  <!--line4-->\n </div>\n</div>\n<!--line5-->",
+      Assert.AreEqual("<!--line1-->\n<div>\n <!--line2-->\n <!--line3-->\n <div>\n  <!--line4-->\n </div>\n <!--line5-->\n</div>\n<!--line6-->",
                       ToString(doc));
     }
 
