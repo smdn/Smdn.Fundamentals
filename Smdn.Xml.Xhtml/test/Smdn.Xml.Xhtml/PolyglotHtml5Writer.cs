@@ -116,7 +116,6 @@ namespace Smdn.Xml.Xhtml {
 
       settings.NewLineHandling = newLineHandling;
       settings.NewLineChars = newLineChars ?? "\n";
-      settings.OmitXmlDeclaration = true;
 
       return ToString(doc, settings);
     }
@@ -130,7 +129,6 @@ namespace Smdn.Xml.Xhtml {
         settings.Indent = true;
         settings.IndentChars = " ";
         settings.NewLineOnAttributes = false;
-        settings.OmitXmlDeclaration = true;
       }
 
 
@@ -152,7 +150,6 @@ namespace Smdn.Xml.Xhtml {
       settings.IndentChars = " ";
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = false;
-      settings.OmitXmlDeclaration = true;
 
       var output = new StringBuilder();
 
@@ -224,6 +221,25 @@ namespace Smdn.Xml.Xhtml {
 </html>";
 
       Assert.AreEqual(expected, ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteProlog_AlwaysOmitXmlDeclaration()
+    {
+      var doc = new XDocument(new XElement("html"));
+
+      var settings = new XmlWriterSettings();
+
+      settings.Indent = false;
+      settings.OmitXmlDeclaration = false;
+
+      Assert.AreEqual("<html></html>",
+                      ToString(doc, settings));
+
+      settings.OmitXmlDeclaration = true;
+
+      Assert.AreEqual("<html></html>",
+                      ToString(doc, settings));
     }
 
     [Test]

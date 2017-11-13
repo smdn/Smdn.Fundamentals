@@ -123,6 +123,7 @@ namespace Smdn.Xml.Xhtml {
       s.IndentChars = string.Empty;
       s.NewLineChars = settings.NewLineChars;
       s.NewLineHandling = settings.NewLineHandling;
+      s.OmitXmlDeclaration = true;
 
       return s;
     }
