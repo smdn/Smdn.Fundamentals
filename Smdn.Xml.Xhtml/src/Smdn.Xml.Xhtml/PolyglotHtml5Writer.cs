@@ -59,6 +59,8 @@ namespace Smdn.Xml.Xhtml {
       public bool IsNonVoidElement => !(voidElements.Contains(LocalName) && IsNamespaceXhtml);
       private bool IsNamespaceXhtml => string.IsNullOrEmpty(Namespace) || string.Equals(Namespace, W3CNamespaces.Xhtml, StringComparison.Ordinal);
 
+      public bool ShouldEmitIndent => !(IsMixedContent || IsInNonIndenting);
+
       public ElementContext(string localName, string ns, bool isInNonIndenting)
       {
         this.LocalName = localName;
@@ -150,7 +152,7 @@ namespace Smdn.Xml.Xhtml {
           elementContextStack.Push(currentElementContext);
         }
 
-        if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting))
+        if (currentElementContext.ShouldEmitIndent)
           WriteIndent(elementContextStack.Count);
       }
 
@@ -183,7 +185,7 @@ namespace Smdn.Xml.Xhtml {
     {
       currentElementContext.IsClosed = true;
 
-      if (!(currentElementContext.IsMixedContent || currentElementContext.IsInNonIndenting))
+      if (currentElementContext.ShouldEmitIndent)
         WriteIndent(elementContextStack.Count);
 
       if (0 < elementContextStack.Count)
@@ -285,8 +287,14 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteComment(string text)
     {
-      if (shouldEmitIndent)
-        WriteIndent(elementContextStack.Count + (currentElementContext == null ? 0 : 1));
+      if (currentElementContext == null) {
+        if (shouldEmitIndent)
+          WriteIndent(0);
+      }
+      else {
+        if (currentElementContext.ShouldEmitIndent)
+          WriteIndent(elementContextStack.Count + 1);
+      }
 
       baseWriter.WriteComment(text);
 

@@ -230,6 +230,23 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndent_CommentNode_MixedContent()
+    {
+      var doc = new XDocument(
+        new XComment("line1"),
+        new XElement(
+          "div",
+          new XText("text"),
+          new XComment("line2")
+        ),
+        new XComment("line3")
+      );
+
+      Assert.AreEqual("<!--line1-->\n<div>text<!--line2--></div>\n<!--line3-->",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteNonIndentingElements_MixedContent_TextOnly()
     {
       var doc = new XDocument(
