@@ -444,6 +444,30 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
+    [Test]
+    public void TestWriteIndentingElements_MixedContent4()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "ul",
+          new XElement(
+            "li",
+            new XText("1"),
+            new XElement(
+              "ul",
+              new XElement(
+                "li",
+                new XText("2")
+              )
+            )
+          )
+        )
+      );
+
+      Assert.AreEqual("<ul>\n <li>1<ul><li>2</li></ul></li>\n</ul>",
+                      ToString(doc));
+    }
+
     [TestCase("area")]
     [TestCase("base")]
     [TestCase("br")]

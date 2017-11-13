@@ -51,21 +51,31 @@ namespace Smdn.Xml.Xhtml {
 
       public readonly string LocalName;
       public readonly string Namespace;
-      public readonly bool IsInNonIndenting;
-      public bool IsMixedContent = false;
+      public bool IsMixedContent { get; private set; }
       public bool IsEmpty = true;
       public bool IsClosed = false;
 
       public bool IsNonVoidElement => !(voidElements.Contains(LocalName) && IsNamespaceXhtml);
       private bool IsNamespaceXhtml => string.IsNullOrEmpty(Namespace) || string.Equals(Namespace, W3CNamespaces.Xhtml, StringComparison.Ordinal);
 
-      public bool ShouldEmitIndent => !(IsMixedContent || IsInNonIndenting);
-
-      public ElementContext(string localName, string ns, bool isInNonIndenting)
+      public ElementContext(string localName, string ns, ElementContext parentElementContext)
       {
         this.LocalName = localName;
         this.Namespace = ns;
-        this.IsInNonIndenting = isInNonIndenting | (IsNamespaceXhtml && string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase));
+
+        if (parentElementContext == null)
+          IsMixedContent = false;
+        else
+          IsMixedContent = parentElementContext.IsMixedContent;
+
+        if (IsNamespaceXhtml && string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase))
+          // <pre> is treated as mixed content always
+          IsMixedContent = true;
+      }
+
+      public void MarkAsMixedContent()
+      {
+        IsMixedContent = true;
       }
     }
 
@@ -134,7 +144,7 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteStartElement(string prefix, string localName, string ns)
     {
-      var isInNonIndenting = false;
+      var parentElementContext = currentElementContext;
 
       if (currentElementContext == null) {
         if (shouldEmitIndent) {
@@ -147,18 +157,16 @@ namespace Smdn.Xml.Xhtml {
         if (!currentElementContext.IsClosed) {
           currentElementContext.IsEmpty = false; // has child elements
 
-          isInNonIndenting = currentElementContext.IsInNonIndenting;
-
           elementContextStack.Push(currentElementContext);
         }
 
-        if (currentElementContext.ShouldEmitIndent)
+        if (!currentElementContext.IsMixedContent)
           WriteIndent(elementContextStack.Count);
       }
 
       baseWriter.WriteStartElement(prefix, localName, ns);
 
-      currentElementContext = new ElementContext(localName, ns, isInNonIndenting);
+      currentElementContext = new ElementContext(localName, ns, parentElementContext);
 
       shouldEmitIndent = true;
     }
@@ -185,7 +193,7 @@ namespace Smdn.Xml.Xhtml {
     {
       currentElementContext.IsClosed = true;
 
-      if (currentElementContext.ShouldEmitIndent)
+      if (!currentElementContext.IsMixedContent)
         WriteIndent(elementContextStack.Count);
 
       if (0 < elementContextStack.Count)
@@ -250,7 +258,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteBase64(buffer, index, count);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -260,7 +268,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteCData(text);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -270,7 +278,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteCharEntity(ch);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -280,7 +288,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteChars(buffer, index, count);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -292,7 +300,7 @@ namespace Smdn.Xml.Xhtml {
           WriteIndent(0);
       }
       else {
-        if (currentElementContext.ShouldEmitIndent)
+        if (!currentElementContext.IsMixedContent)
           WriteIndent(elementContextStack.Count + 1);
       }
 
@@ -309,7 +317,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteEntityRef(name);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -329,7 +337,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteRaw(buffer, index, count);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -339,7 +347,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteRaw(data);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -349,7 +357,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteString(text);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -359,7 +367,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content) {
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
         currentElementContext.IsEmpty = false;
       }
     }
@@ -369,7 +377,7 @@ namespace Smdn.Xml.Xhtml {
       baseWriter.WriteWhitespace(ws);
 
       if (currentElementContext != null && baseWriter.WriteState == WriteState.Content)
-        currentElementContext.IsMixedContent = true;
+        currentElementContext.MarkAsMixedContent();
     }
   }
 }
