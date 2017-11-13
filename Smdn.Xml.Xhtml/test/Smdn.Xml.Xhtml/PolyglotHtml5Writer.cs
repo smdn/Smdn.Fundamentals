@@ -489,6 +489,87 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndent_AttributeNode_NewLineOnAttributes()
+    {
+      var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
+
+      var doc = new XDocument(
+        new XElement(
+          nsXhtml + "html",
+          new XAttribute((XName)"xmlns", nsXhtml.NamespaceName),
+          new XAttribute(XNamespace.Xml + "lang", "ja"),
+          new XAttribute("lang", "ja"),
+          new XElement(nsXhtml + "head")
+        )
+      );
+
+      var settings = new XmlWriterSettings();
+
+      settings.Indent = true;
+      settings.IndentChars = " ";
+      settings.NewLineChars = "\n";
+      settings.NewLineOnAttributes = true;
+
+      Assert.Throws<NotSupportedException>(() => {
+        Assert.AreEqual("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>",
+                        ToString(doc, settings));
+
+      });
+    }
+
+    [Test]
+    public void TestWriteIndent_AttributeNode_NoIndent()
+    {
+      var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
+
+      var doc = new XDocument(
+        new XElement(
+          nsXhtml + "html",
+          new XAttribute((XName)"xmlns", nsXhtml.NamespaceName),
+          new XAttribute(XNamespace.Xml + "lang", "ja"),
+          new XAttribute("lang", "ja"),
+          new XElement(nsXhtml + "head")
+        )
+      );
+
+      var settings = new XmlWriterSettings();
+
+      settings.Indent = false;
+      settings.IndentChars = " ";
+      settings.NewLineChars = "\n";
+      settings.NewLineOnAttributes = true;
+
+      Assert.AreEqual("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\"><head></head></html>",
+                      ToString(doc, settings));
+    }
+
+    [Test]
+    public void TestWriteIndent_AttributeNode_NoNewLineOnAttributes()
+    {
+      var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
+
+      var doc = new XDocument(
+        new XElement(
+          nsXhtml + "html",
+          new XAttribute((XName)"xmlns", nsXhtml.NamespaceName),
+          new XAttribute(XNamespace.Xml + "lang", "ja"),
+          new XAttribute("lang", "ja"),
+          new XElement(nsXhtml + "head")
+        )
+      );
+
+      var settings = new XmlWriterSettings();
+
+      settings.Indent = true;
+      settings.IndentChars = " ";
+      settings.NewLineChars = "\n";
+      settings.NewLineOnAttributes = false;
+
+      Assert.AreEqual("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\">\n <head></head>\n</html>",
+                      ToString(doc, settings));
+    }
+
+    [Test]
     public void TestWriteIndent_CommentNode()
     {
       var doc = new XDocument(

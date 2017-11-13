@@ -120,9 +120,6 @@ namespace Smdn.Xml.Xhtml {
       var s = settings.Clone();
 
       s.Indent = false;
-      s.IndentChars = string.Empty;
-      s.NewLineChars = settings.NewLineChars;
-      s.NewLineHandling = settings.NewLineHandling;
       s.OmitXmlDeclaration = true;
 
       return s;
@@ -305,6 +302,10 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteStartAttribute(string prefix, string localName, string ns)
     {
+      if (settings.Indent && settings.NewLineOnAttributes)
+        throw new NotSupportedException("NewLineOnAttributes is not supported");
+        //WriteIndent(); // causes InvalidOperationException
+
       baseWriter.WriteStartAttribute(prefix, localName, ns);
 
       state = ExtendedWriteState.AttributeStart;
