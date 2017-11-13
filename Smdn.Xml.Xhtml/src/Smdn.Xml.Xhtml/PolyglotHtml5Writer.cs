@@ -110,8 +110,13 @@ namespace Smdn.Xml.Xhtml {
       }
     }
 
+    private static readonly XmlWriterSettings defaultSettings = new XmlWriterSettings();
+
     private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
     {
+      if (settings == null)
+        settings = defaultSettings;
+
       var s = settings.Clone();
 
       s.Indent = false;
@@ -122,22 +127,22 @@ namespace Smdn.Xml.Xhtml {
       return s;
     }
 
-    public PolyglotHtml5Writer(string outputFileName, XmlWriterSettings settings)
+    public PolyglotHtml5Writer(string outputFileName, XmlWriterSettings settings = null)
       : this(Create(outputFileName, ToNonIndentingSettings(settings)), settings)
     {
     }
 
-    public PolyglotHtml5Writer(StringBuilder output, XmlWriterSettings settings)
+    public PolyglotHtml5Writer(StringBuilder output, XmlWriterSettings settings = null)
       : this(Create(output, ToNonIndentingSettings(settings)), settings)
     {
     }
 
-    public PolyglotHtml5Writer(Stream output, XmlWriterSettings settings)
+    public PolyglotHtml5Writer(Stream output, XmlWriterSettings settings = null)
       : this(Create(output, ToNonIndentingSettings(settings)), settings)
     {
     }
 
-    public PolyglotHtml5Writer(TextWriter output, XmlWriterSettings settings)
+    public PolyglotHtml5Writer(TextWriter output, XmlWriterSettings settings = null)
       : this(Create(output, ToNonIndentingSettings(settings)), settings)
     {
     }
@@ -148,7 +153,7 @@ namespace Smdn.Xml.Xhtml {
         throw new ArgumentNullException(nameof(baseWriter));
 
       this.baseWriter = baseWriter;
-      this.settings = settings;
+      this.settings = settings ?? defaultSettings.Clone();
     }
 
     protected override void Dispose(bool disposing)

@@ -9,6 +9,72 @@ namespace Smdn.Xml.Xhtml {
   [TestFixture]
   public class PolyglotHtml5WriterTests {
     [Test]
+    public void TestConstructor_SettingsNull()
+    {
+      var doc = new XDocument(new XElement("html"));
+
+      Assert.DoesNotThrow(() => {
+        var sb = new StringBuilder();
+
+        using (var writer = new PolyglotHtml5Writer(sb)) {
+          Assert.IsNotNull(writer.Settings);
+
+          doc.Save(writer);
+        }
+      });
+
+      Assert.DoesNotThrow(() => {
+        var sb = new StringBuilder();
+
+        using (var writer = new PolyglotHtml5Writer(sb, null)) {
+          Assert.IsNotNull(writer.Settings);
+
+          doc.Save(writer);
+        }
+      });
+
+      Assert.DoesNotThrow(() => {
+        var sb = new StringBuilder();
+
+        using (var writer = new PolyglotHtml5Writer(Stream.Null)) {
+          Assert.IsNotNull(writer.Settings);
+
+          doc.Save(writer);
+        }
+      });
+
+      Assert.DoesNotThrow(() => {
+        var sb = new StringBuilder();
+
+        using (var writer = new PolyglotHtml5Writer(Stream.Null, null)) {
+          Assert.IsNotNull(writer.Settings);
+
+          doc.Save(writer);
+        }
+      });
+
+      Assert.DoesNotThrow(() => {
+        var sb = new StringBuilder();
+
+        using (var writer = new PolyglotHtml5Writer(TextWriter.Null)) {
+          Assert.IsNotNull(writer.Settings);
+
+          doc.Save(writer);
+        }
+      });
+
+      Assert.DoesNotThrow(() => {
+        var sb = new StringBuilder();
+
+        using (var writer = new PolyglotHtml5Writer(TextWriter.Null, null)) {
+          Assert.IsNotNull(writer.Settings);
+
+          doc.Save(writer);
+        }
+      });
+    }
+
+    [Test]
     public void TestDispose_CloseOutput()
     {
       var doc = new XDocument(new XElement("html"));
