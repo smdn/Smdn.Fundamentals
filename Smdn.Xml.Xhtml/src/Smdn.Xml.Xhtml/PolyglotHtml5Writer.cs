@@ -170,7 +170,7 @@ namespace Smdn.Xml.Xhtml {
           elementContextStack.Push(currentElementContext);
         }
 
-        if (!currentElementContext.IsMixedContent)
+        if (!(XmlSpace == XmlSpace.Preserve || currentElementContext.IsMixedContent))
           WriteIndent(elementContextStack.Count);
       }
 
@@ -203,7 +203,7 @@ namespace Smdn.Xml.Xhtml {
     {
       currentElementContext.MarkAsClosed();
 
-      if (!currentElementContext.IsMixedContent)
+      if (!(XmlSpace == XmlSpace.Preserve || currentElementContext.IsMixedContent))
         WriteIndent(elementContextStack.Count);
 
       if (0 < elementContextStack.Count)
@@ -310,7 +310,7 @@ namespace Smdn.Xml.Xhtml {
           WriteIndent(0);
       }
       else {
-        if (!currentElementContext.IsMixedContent)
+        if (!(XmlSpace == XmlSpace.Preserve || currentElementContext.IsMixedContent))
           WriteIndent(elementContextStack.Count + 1);
       }
 

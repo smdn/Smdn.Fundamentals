@@ -209,6 +209,48 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndent_XmlSpace_Default()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XElement(
+            "p",
+            new XAttribute(XNamespace.Xml + "space", "default"),
+            new XElement(
+              "span",
+              "text"
+            )
+          )
+        )
+      );
+
+      Assert.AreEqual("<div>\n <p xml:space=\"default\">\n  <span>text</span>\n </p>\n</div>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndent_XmlSpace_Preserve()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XElement(
+            "p",
+            new XAttribute(XNamespace.Xml + "space", "preserve"),
+            new XElement(
+              "span",
+              "text"
+            )
+          )
+        )
+      );
+
+      Assert.AreEqual("<div>\n <p xml:space=\"preserve\"><span>text</span></p>\n</div>",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteIndent_CommentNode()
     {
       var doc = new XDocument(
@@ -243,6 +285,23 @@ namespace Smdn.Xml.Xhtml {
       );
 
       Assert.AreEqual("<!--line1-->\n<div>text<!--line2--></div>\n<!--line3-->",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndent_CommentNode_XmlSpace_Preserve()
+    {
+      var doc = new XDocument(
+        new XComment("line1"),
+        new XElement(
+          "div",
+          new XAttribute(XNamespace.Xml + "space", "preserve"),
+          new XComment("line2")
+        ),
+        new XComment("line3")
+      );
+
+      Assert.AreEqual("<!--line1-->\n<div xml:space=\"preserve\"><!--line2--></div>\n<!--line3-->",
                       ToString(doc));
     }
 
