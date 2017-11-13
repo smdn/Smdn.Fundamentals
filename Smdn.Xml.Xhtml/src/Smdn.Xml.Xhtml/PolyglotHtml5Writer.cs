@@ -223,8 +223,6 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteFullEndElement()
     {
-      currentElementContext.MarkAsClosed();
-
       state = ExtendedWriteState.ElementClosing;
 
       WriteIndent();
@@ -235,6 +233,8 @@ namespace Smdn.Xml.Xhtml {
         currentElementContext = null;
 
       baseWriter.WriteFullEndElement();
+
+      currentElementContext.MarkAsClosed();
 
       state = ExtendedWriteState.ElementClosed;
     }
