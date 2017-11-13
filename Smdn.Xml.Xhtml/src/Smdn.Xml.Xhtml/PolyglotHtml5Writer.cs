@@ -27,6 +27,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+using System.Linq;
+
 namespace Smdn.Xml.Xhtml {
   public class PolyglotHtml5Writer : XmlWriter {
     public override XmlWriterSettings Settings  => settings;
@@ -114,9 +116,8 @@ namespace Smdn.Xml.Xhtml {
 
       s.Indent = false;
       s.IndentChars = string.Empty;
-      s.NewLineChars = string.Empty;
-
-      s.NewLineHandling = NewLineHandling.None;
+      s.NewLineChars = settings.NewLineChars;
+      s.NewLineHandling = settings.NewLineHandling;
 
       return s;
     }

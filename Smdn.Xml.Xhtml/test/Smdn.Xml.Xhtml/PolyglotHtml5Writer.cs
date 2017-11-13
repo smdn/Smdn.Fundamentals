@@ -44,14 +44,26 @@ namespace Smdn.Xml.Xhtml {
       }
     }
 
-    private static string ToString(XDocument doc)
+    private static string ToString(XDocument doc, NewLineHandling newLineHandling, string newLineChars = null)
     {
       var settings = new XmlWriterSettings();
+
+      settings.NewLineHandling = newLineHandling;
+      settings.NewLineChars = newLineChars ?? "\n";
+
+      return ToString(doc, settings);
+    }
+
+    private static string ToString(XDocument doc, XmlWriterSettings settings = null)
+    {
+      if (settings == null) {
+        settings = new XmlWriterSettings();
+        settings.NewLineChars = "\n";
+      }
 
       settings.ConformanceLevel = ConformanceLevel.Document;
       settings.Indent = true;
       settings.IndentChars = " ";
-      settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = false;
       settings.OmitXmlDeclaration = true;
 
@@ -181,6 +193,81 @@ namespace Smdn.Xml.Xhtml {
 
       Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
                       ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteAttribute_NewLineHandling_None()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "meta",
+          new XAttribute("name", "description"),
+          new XAttribute("content", "\r\n\t")
+        )
+      );
+
+      Assert.AreEqual("<meta name=\"description\" content=\"\r\n\t\" />",
+                      ToString(doc, NewLineHandling.None));
+    }
+
+    [TestCase(NewLineHandling.Entitize)]
+    [TestCase(NewLineHandling.Replace)]
+    public void TestWriteAttribute_NewLineHandling_EntitizeAndReplace(NewLineHandling newLineHandling)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "meta",
+          new XAttribute("name", "description"),
+          new XAttribute("content", "\r\n\t")
+        )
+      );
+
+      Assert.AreEqual("<meta name=\"description\" content=\"&#xD;&#xA;&#x9;\" />",
+                      ToString(doc, newLineHandling));
+    }
+
+    [Test]
+    public void TestWriteTextNode_NewLineHandling_None()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XText("\r\n\t")
+        )
+      );
+
+      Assert.AreEqual("<div>\r\n\t</div>",
+                      ToString(doc, NewLineHandling.None));
+    }
+
+    [Test]
+    public void TestWriteTextNode_NewLineHandling_Entitize()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XText("\r\n")
+        )
+      );
+
+      Assert.AreEqual("<div>&#xD;\n</div>",
+                      ToString(doc, NewLineHandling.Entitize));
+    }
+
+    [Test]
+    public void TestWriteTextNode_NewLineHandling_Replace()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XText("\r\n-\r-\n")
+        )
+      );
+
+      Assert.AreEqual("<div>\n-\n-\n</div>",
+                      ToString(doc, NewLineHandling.Replace, "\n"));
+      Assert.AreEqual("<div>\r\n-\r\n-\r\n</div>",
+                      ToString(doc, NewLineHandling.Replace, "\r\n"));
     }
 
     [Test]
