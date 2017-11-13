@@ -247,19 +247,16 @@ namespace Smdn.Xml.Xhtml {
 
     protected virtual void WriteIndent()
     {
+      if (!settings.Indent)
+        return;
       if (state == ExtendedWriteState.Start || state == ExtendedWriteState.DocumentStart)
         return;
-
       if (XmlSpace == XmlSpace.Preserve)
         return;
-
       if (currentElementContext != null && currentElementContext.IsMixedContent)
         return;
 
       baseWriter.WriteRaw(settings.NewLineChars);
-
-      if (!settings.Indent)
-        return;
 
       var indentLevel = elementContextStack.Count;
 

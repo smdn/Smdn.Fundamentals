@@ -116,6 +116,7 @@ namespace Smdn.Xml.Xhtml {
 
       settings.NewLineHandling = newLineHandling;
       settings.NewLineChars = newLineChars ?? "\n";
+      settings.OmitXmlDeclaration = true;
 
       return ToString(doc, settings);
     }
@@ -125,13 +126,13 @@ namespace Smdn.Xml.Xhtml {
       if (settings == null) {
         settings = new XmlWriterSettings();
         settings.NewLineChars = "\n";
+        settings.ConformanceLevel = ConformanceLevel.Document;
+        settings.Indent = true;
+        settings.IndentChars = " ";
+        settings.NewLineOnAttributes = false;
+        settings.OmitXmlDeclaration = true;
       }
 
-      settings.ConformanceLevel = ConformanceLevel.Document;
-      settings.Indent = true;
-      settings.IndentChars = " ";
-      settings.NewLineOnAttributes = false;
-      settings.OmitXmlDeclaration = true;
 
       var output = new StringBuilder();
 
@@ -359,6 +360,41 @@ namespace Smdn.Xml.Xhtml {
 
       Assert.AreEqual("<div>\n <p>text</p>\n <p>text</p>\n <p>text</p>\n</div>",
                       ToString(doc));
+    }
+
+    [Test]
+    public void TestIndent_NoIndent()
+    {
+      var settings = new XmlWriterSettings();
+
+      settings.Indent = false;
+      settings.IndentChars = "\t";
+      settings.NewLineChars = "\r\n";
+      settings.NewLineOnAttributes = true;
+      settings.NewLineHandling = NewLineHandling.Replace;
+      settings.OmitXmlDeclaration = true;
+
+      var doc = new XDocument(
+        new XElement(
+          "div",
+          new XElement(
+            "p",
+            "text"
+          ),
+          new XElement(
+            "p",
+            "text"
+          ),
+          new XElement(
+            "p",
+            new XAttribute("translate", "no"),
+            "text"
+          )
+        )
+      );
+
+      Assert.AreEqual("<div><p>text</p><p>text</p><p translate=\"no\">text</p></div>",
+                      ToString(doc, settings));
     }
 
     [Test]
