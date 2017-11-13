@@ -450,6 +450,39 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndentingElements_EmptyElement_WithNoAttribute()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "head",
+          new XElement(
+            "script"
+          )
+        )
+      );
+
+      Assert.AreEqual("<head>\n <script></script>\n</head>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndentingElements_EmptyElement_WithAttribute()
+    {
+      var doc = new XDocument(
+        new XElement(
+          "head",
+          new XElement(
+            "script",
+            new XAttribute("async", "async")
+          )
+        )
+      );
+
+      Assert.AreEqual("<head>\n <script async=\"async\"></script>\n</head>",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteIndentingElements_MixedContent_TextOnly()
     {
       var doc = new XDocument(
