@@ -34,6 +34,12 @@ namespace Smdn.Formats {
     // Common Format and MIME Type for Comma-Separated Values (CSV) Files
     public static string[] ToSplitted(string csv)
     {
+      if (csv == null)
+        throw new ArgumentNullException(nameof(csv));
+
+      if (csv.Length == 0)
+        return Array.Empty<string>();
+
       // append dummy splitter
       csv += ",";
 
@@ -68,6 +74,9 @@ namespace Smdn.Formats {
 
     public static string ToJoined(params string[] csv)
     {
+      if (csv == null)
+        throw new ArgumentNullException(null);
+      
       if (csv.Length == 0)
         return string.Empty;
 
