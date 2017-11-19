@@ -13,11 +13,27 @@ namespace Smdn.Formats {
     }
 
     [Test]
+    public void TestToXhtmlEscapedStringNullable()
+    {
+      Assert.IsNull(Html.ToXhtmlEscapedStringNullable(null));
+
+      Assert.AreEqual("&lt;&gt;&amp;&quot;&apos;#", Html.ToXhtmlEscapedStringNullable("<>&\"\'#"));
+    }
+
+    [Test]
     public void TestToHtmlEscapedString()
     {
       Assert.Throws<ArgumentNullException>(() => Html.ToHtmlEscapedString(null));
 
       Assert.AreEqual("&lt;&gt;&amp;&quot;'#", Html.ToHtmlEscapedString("<>&\"\'#"));
+    }
+
+    [Test]
+    public void TestToHtmlEscapedStringNullable()
+    {
+      Assert.IsNull(Html.ToHtmlEscapedStringNullable(null));
+
+      Assert.AreEqual("&lt;&gt;&amp;&quot;'#", Html.ToHtmlEscapedStringNullable("<>&\"\'#"));
     }
 
     [Test]
