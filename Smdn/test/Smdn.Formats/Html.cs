@@ -7,12 +7,16 @@ namespace Smdn.Formats {
     [Test]
     public void TestToXhtmlEscapedString()
     {
+      Assert.Throws<ArgumentNullException>(() => Html.ToXhtmlEscapedString(null));
+
       Assert.AreEqual("&lt;&gt;&amp;&quot;&apos;#", Html.ToXhtmlEscapedString("<>&\"\'#"));
     }
 
     [Test]
     public void TestToHtmlEscapedString()
     {
+      Assert.Throws<ArgumentNullException>(() => Html.ToHtmlEscapedString(null));
+
       Assert.AreEqual("&lt;&gt;&amp;&quot;'#", Html.ToHtmlEscapedString("<>&\"\'#"));
     }
 

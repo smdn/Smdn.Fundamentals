@@ -98,6 +98,9 @@ namespace Smdn.Formats {
 
     private static string FromXhtmlEscapedString(string str, bool xhtml)
     {
+      if (str == null)
+        throw new ArgumentNullException(nameof(str));
+
       var sb = new StringBuilder(str);
 
       sb.Replace("&lt;", "<");
