@@ -91,9 +91,25 @@ namespace Smdn.Formats {
       return FromXhtmlEscapedString(str, false);
     }
 
+    public static string FromHtmlEscapedStringNullable(string str)
+    {
+      if (str == null)
+        return null;
+      else
+        return FromXhtmlEscapedString(str, false);
+    }
+
     public static string FromXhtmlEscapedString(string str)
     {
       return FromXhtmlEscapedString(str, true);
+    }
+
+    public static string FromXhtmlEscapedStringNullable(string str)
+    {
+      if (str == null)
+        return null;
+      else
+        return FromXhtmlEscapedString(str, true);
     }
 
     private static string FromXhtmlEscapedString(string str, bool xhtml)
@@ -113,6 +129,14 @@ namespace Smdn.Formats {
       sb.Replace("&amp;", "&");
 
       return sb.ToString();
+    }
+
+    public static string FromNumericCharacterReferenceNullable(string str)
+    {
+      if (str == null)
+        return null;
+      else
+        return FromNumericCharacterReference(str);
     }
 
     public static string FromNumericCharacterReference(string str)
