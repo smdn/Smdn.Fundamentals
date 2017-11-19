@@ -33,7 +33,7 @@ namespace Smdn.Formats {
     public static string ToHtmlEscapedString(string str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       return ToXhtmlEscapedString(str, false);
     }
@@ -41,7 +41,7 @@ namespace Smdn.Formats {
     public static string ToXhtmlEscapedString(string str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       return ToXhtmlEscapedString(str, true);
     }
@@ -142,7 +142,7 @@ namespace Smdn.Formats {
     public static string FromNumericCharacterReference(string str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       return Regex.Replace(str, @"&#(?<hex>x?)(?<number>[0-9a-fA-F]+);", delegate(Match m) {
         if (m.Groups["hex"].Length == 0)
