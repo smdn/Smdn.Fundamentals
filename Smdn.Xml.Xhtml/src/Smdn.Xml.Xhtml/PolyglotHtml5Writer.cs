@@ -243,6 +243,8 @@ namespace Smdn.Xml.Xhtml {
       }
     }
 
+    private readonly List<string> indentStrings = new List<string>(4);
+
     protected virtual void WriteIndent()
     {
       if (!settings.Indent)
@@ -260,16 +262,24 @@ namespace Smdn.Xml.Xhtml {
           return;
       }
 
-      baseWriter.WriteRaw(settings.NewLineChars);
-
       var indentLevel = elementContextStack.Count;
 
       if (state == ExtendedWriteState.ElementContent)
         indentLevel += 1;
 
-      for (var i = 0; i < indentLevel; i++) {
-        baseWriter.WriteRaw(settings.IndentChars);
+      // create indent string (NewLineChars + IndentChars * IndentLevel)
+      if (indentStrings.Count <= indentLevel) {
+        for (var level = indentStrings.Count; level <= indentLevel; level++) {
+          var indentString = settings.NewLineChars;
+
+          for (var l = 0; l < level; l++)
+            indentString += settings.IndentChars;
+
+          indentStrings.Add(indentString);
+        }
       }
+
+      baseWriter.WriteRaw(indentStrings[indentLevel]);
     }
 
     /*
