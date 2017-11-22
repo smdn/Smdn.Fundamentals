@@ -489,6 +489,28 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestWriteIndent_AvoidIndentingEmptyElement_XDocument()
+    {
+      var content = "<body><p></p></body>";
+      var doc = XDocument.Load(new StringReader(content));
+
+      Assert.AreEqual("<body>\n <p></p>\n</body>",
+                      ToString(doc));
+    }
+
+    [Test]
+    public void TestWriteIndent_AvoidIndentingEmptyElement_XmlDocument()
+    {
+      var content = "<body><p></p></body>";
+      var doc = new XmlDocument();
+
+      doc.Load(new StringReader(content));
+
+      Assert.AreEqual("<body>\n <p></p>\n</body>",
+                      ToString(doc));
+    }
+
+    [Test]
     public void TestWriteIndent_AttributeNode_NewLineOnAttributes()
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";

@@ -251,8 +251,14 @@ namespace Smdn.Xml.Xhtml {
         return;
       if (XmlSpace == XmlSpace.Preserve)
         return;
-      if (currentElementContext != null && currentElementContext.IsMixedContent)
-        return;
+      if (currentElementContext != null) {
+        if (currentElementContext.IsMixedContent)
+          return;
+        if (state == ExtendedWriteState.ElementClosing &&
+            currentElementContext.IsEmpty &&
+            currentElementContext.IsNonVoidElement)
+          return;
+      }
 
       baseWriter.WriteRaw(settings.NewLineChars);
 
