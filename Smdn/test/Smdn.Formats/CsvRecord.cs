@@ -16,6 +16,14 @@ namespace Smdn.Formats {
     }
 
     [Test]
+    public void TestToJoinedNullable()
+    {
+      Assert.AreEqual("a,b,c", CsvRecord.ToJoinedNullable("a", "b", "c"));
+
+      Assert.IsNull(CsvRecord.ToJoinedNullable((string[])null), "argument null");
+    }
+
+    [Test]
     public void TestToSplitted()
     {
       Assert.AreEqual(new[] {"a", "b", "c"}, CsvRecord.ToSplitted("a,b,c"));
@@ -24,6 +32,14 @@ namespace Smdn.Formats {
       Assert.AreEqual(Array.Empty<string>(), CsvRecord.ToSplitted(string.Empty), "argument empty");
 
       Assert.Throws<ArgumentNullException>(() => CsvRecord.ToSplitted(null), "argument null");
+    }
+
+    [Test]
+    public void TestToSplittedNullable()
+    {
+      Assert.AreEqual(new[] { "a", "b", "c" }, CsvRecord.ToSplittedNullable("a,b,c"));
+
+      Assert.IsNull(CsvRecord.ToSplittedNullable(null), "argument null");
     }
   }
 }

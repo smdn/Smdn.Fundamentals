@@ -32,6 +32,14 @@ namespace Smdn.Formats {
   public static class CsvRecord {
     // http://www.ietf.org/rfc/rfc4180.txt
     // Common Format and MIME Type for Comma-Separated Values (CSV) Files
+    public static string[] ToSplittedNullable(string csv)
+    {
+      if (csv == null)
+        return null;
+      else
+        return ToSplitted(csv);
+    }
+
     public static string[] ToSplitted(string csv)
     {
       if (csv == null)
@@ -70,6 +78,14 @@ namespace Smdn.Formats {
       }
 
       return splitted.ToArray();
+    }
+
+    public static string ToJoinedNullable(params string[] csv)
+    {
+      if (csv == null)
+        return null;
+      else
+        return ToJoined(csv);
     }
 
     public static string ToJoined(params string[] csv)
