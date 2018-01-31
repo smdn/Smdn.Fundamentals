@@ -131,6 +131,7 @@
     <Compile Include="Smdn.Security.Cryptography\ICryptoTransformExtensions.cs" />
     <Compile Include="Smdn\ExceptionUtils.cs" />
     <Compile Include="Smdn.Collections\KeyValuePair.cs" />
+    <Compile Include="Smdn.Text.RegularExpressions\RegexExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
