@@ -2,8 +2,8 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2013 smdn
-// 
+// Copyright (c) 2018 smdn
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -22,19 +22,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
+using System.Xml.Linq;
 
-namespace Smdn.Xml.Xhtml {
-  public static class W3CNamespaces {
-    public const string Xhtml = "http://www.w3.org/1999/xhtml";
+namespace Smdn.Xml.Linq.Xhtml {
+  // HTML 5.2
+  // W3C Recommendation, 14 December 2017
+  // https://www.w3.org/TR/html52/
+  public static class XHtmlAttributeNames {
+    // 3.2.5 Global attributes
+    public static readonly XName AccessKey = "accesskey";
+    public static readonly XName Class = "class";
+    public static readonly XName ContentEditable = "contenteditable";
+    public static readonly XName Dir = "dir";
+    public static readonly XName Draggable = "draggable";
+    public static readonly XName Hidden = "hidden";
+    public static readonly XName Id = "id";
+    public static readonly XName Lang = "lang";
+    public static readonly XName SpellCheck = "spellcheck";
+    public static readonly XName Style = "style";
+    public static readonly XName TabIndex = "tabindex";
+    public static readonly XName Title = "title";
+    public static readonly XName Translate = "translate";
 
-    // HTML 5.2
-    // W3C Recommendation, 14 December 2017
-    // https://www.w3.org/TR/html52/
-    // 2.8 Namespaces
-    public const string Html = "http://www.w3.org/1999/xhtml";
-    public const string MathML = "http://www.w3.org/1998/Math/MathML";
-    public const string Svg = "http://www.w3.org/2000/svg";
-    public const string XLinq = "http://www.w3.org/1999/xlink";
+    public static readonly XName Href = "href";
+    public static readonly XName Alt = "alt";
+    public static readonly XName Src = "src";
   }
 }

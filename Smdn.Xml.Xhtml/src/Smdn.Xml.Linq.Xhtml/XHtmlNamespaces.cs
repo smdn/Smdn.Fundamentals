@@ -2,8 +2,8 @@
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
-// Copyright (c) 2009-2013 smdn
-// 
+// Copyright (c) 2018 smdn
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -22,19 +22,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
+using System.Xml.Linq;
 
-namespace Smdn.Xml.Xhtml {
-  public static class W3CNamespaces {
-    public const string Xhtml = "http://www.w3.org/1999/xhtml";
+using Smdn.Xml.Xhtml;
 
-    // HTML 5.2
-    // W3C Recommendation, 14 December 2017
-    // https://www.w3.org/TR/html52/
-    // 2.8 Namespaces
-    public const string Html = "http://www.w3.org/1999/xhtml";
-    public const string MathML = "http://www.w3.org/1998/Math/MathML";
-    public const string Svg = "http://www.w3.org/2000/svg";
-    public const string XLinq = "http://www.w3.org/1999/xlink";
+namespace Smdn.Xml.Linq.Xhtml {
+  public static class XHtmlNamespaces {
+    public static readonly XNamespace Html = (XNamespace)W3CNamespaces.Html;
+    public static readonly XNamespace MathML = (XNamespace)W3CNamespaces.MathML;
+    public static readonly XNamespace Svg = (XNamespace)W3CNamespaces.Svg;
+    public static readonly XNamespace XLink = (XNamespace)W3CNamespaces.XLinq;
   }
 }

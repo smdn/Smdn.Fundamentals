@@ -47,11 +47,18 @@
     <Compile Include="Smdn.Xml.Xhtml\W3CNamespaces.cs" />
     <Compile Include="Smdn.Xml.Xhtml\XmlElementExtensions.cs" />
     <Compile Include="Smdn.Xml.Xhtml\PolyglotHtml5Writer.cs" />
+    <Compile Include="Smdn.Xml.Linq\XEntityReference.cs" />
+    <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlAttributeNames.cs" />
+    <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlClassAttribute.cs" />
+    <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlElementNames.cs" />
+    <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlNamespaces.cs" />
+    <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlStyleAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
