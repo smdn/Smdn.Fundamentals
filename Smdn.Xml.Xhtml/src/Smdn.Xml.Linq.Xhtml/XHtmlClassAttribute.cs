@@ -28,7 +28,7 @@ using System.Xml.Linq;
 
 namespace Smdn.Xml.Linq.Xhtml {
   public class XHtmlClassAttribute : XAttribute {
-    protected static string ToJoined(IEnumerable<string> classList)
+    public static string JoinClassList(IEnumerable<string> classList)
     {
       if (classList == null)
         throw new ArgumentNullException(nameof(classList));
@@ -42,12 +42,12 @@ namespace Smdn.Xml.Linq.Xhtml {
     }
 
     public XHtmlClassAttribute(params string[] classList)
-      : base(XHtmlAttributeNames.Class, ToJoined(classList))
+      : base(XHtmlAttributeNames.Class, JoinClassList(classList))
     {
     }
 
     public XHtmlClassAttribute(IEnumerable<string> classList)
-      : base(XHtmlAttributeNames.Class, ToJoined(classList))
+      : base(XHtmlAttributeNames.Class, JoinClassList(classList))
     {
     }
   }
