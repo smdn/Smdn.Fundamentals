@@ -42,10 +42,8 @@
   <ItemGroup>
     <Compile Include="..\..\CommonAssemblyInfo.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Smdn.Xml.Xhtml\XhtmlUtils.cs" />
     <Compile Include="Smdn.Xml.Xhtml\XhtmlDocument.cs" />
     <Compile Include="Smdn.Xml.Xhtml\W3CNamespaces.cs" />
-    <Compile Include="Smdn.Xml.Xhtml\XmlElementExtensions.cs" />
     <Compile Include="Smdn.Xml.Xhtml\PolyglotHtml5Writer.cs" />
     <Compile Include="Smdn.Xml.Linq\XEntityReference.cs" />
     <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlAttributeNames.cs" />
