@@ -41,6 +41,11 @@ namespace Smdn.Xml.Linq.Xhtml {
     {
     }
 
+    public XHtmlClassAttribute(params string[] classList)
+      : base(XHtmlAttributeNames.Class, ToJoined(classList))
+    {
+    }
+
     public XHtmlClassAttribute(IEnumerable<string> classList)
       : base(XHtmlAttributeNames.Class, ToJoined(classList))
     {

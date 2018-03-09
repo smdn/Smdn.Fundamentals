@@ -49,6 +49,11 @@ namespace Smdn.Xml.Linq.Xhtml {
     {
     }
 
+    public XHtmlStyleAttribute(params KeyValuePair<string, string>[] styles)
+      : base(XHtmlAttributeNames.Style, ToJoined(styles))
+    {
+    }
+
     public XHtmlStyleAttribute(KeyValuePair<string, string> style)
       : base(XHtmlAttributeNames.Style, ToJoined(style))
     {
