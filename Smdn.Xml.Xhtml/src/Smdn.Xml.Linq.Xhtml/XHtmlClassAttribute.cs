@@ -32,7 +32,7 @@ namespace Smdn.Xml.Linq.Xhtml {
 
     internal static string[] SplitClassList(string classList)
     {
-      return classList?.Split(classListSeparator, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>(),
+      return classList?.Split(classListSeparator, StringSplitOptions.RemoveEmptyEntries);
     }
 
     public static string JoinClassList(IEnumerable<string> classList)
