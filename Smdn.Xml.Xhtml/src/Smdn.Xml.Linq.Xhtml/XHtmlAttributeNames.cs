@@ -45,11 +45,14 @@ namespace Smdn.Xml.Linq.Xhtml {
     public static readonly XName Translate = "translate";
 
     public static readonly XName Href = "href";
+    public static readonly XName HrefLang = "hreflang";
     public static readonly XName Alt = "alt";
     public static readonly XName Src = "src";
     public static readonly XName Rel = "rel";
     public static readonly XName Cite = "cite";
     public static readonly XName Type = "type";
+    public static readonly XName Target = "target";
+    public static readonly XName Media = "media";
     public static readonly XName Download = "download";
   }
 }
