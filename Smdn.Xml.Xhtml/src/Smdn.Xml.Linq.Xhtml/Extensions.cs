@@ -1,4 +1,4 @@
-// 
+﻿// 
 // Author:
 //       smdn <smdn@smdn.jp>
 // 
@@ -24,38 +24,37 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Smdn.Xml.Linq.Xhtml {
-  public class XHtmlClassAttribute : XAttribute {
-    private static readonly char[] classListSeparator = { ' ' };
-
-    internal static string[] SplitClassList(string classList)
+  public static class Extensions {
+    public static XElement GetElementById(this XContainer container, string id)
     {
-      return classList?.Split(classListSeparator, StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>(),
+      return container.Descendants()
+                      .Attributes(XHtmlAttributeNames.Id)
+                      .FirstOrDefault(a => string.Equals(a.Value, id, StringComparison.Ordinal))
+                      ?.Parent;
     }
 
-    public static string JoinClassList(IEnumerable<string> classList)
+    public static bool HasHtmlClass(this XElement element, string @class)
     {
-      if (classList == null)
-        throw new ArgumentNullException(nameof(classList));
+      var attr = element.Attribute(XHtmlAttributeNames.Class);
 
-      return string.Join(" ", classList);
+      if (attr == null)
+        return false;
+
+      return string.Concat(" ", attr.Value, " ").Contains(string.Concat(" ", @class, " "));
     }
 
-    public XHtmlClassAttribute(string @class)
-      : base(XHtmlAttributeNames.Class, @class)
+    public static bool HasHtmlClass(this XElement element, IEnumerable<string> classList)
     {
-    }
+      var l = element.GetAttributeValue(XHtmlAttributeNames.Class, XHtmlClassAttribute.SplitClassList);
 
-    public XHtmlClassAttribute(params string[] classList)
-      : base(XHtmlAttributeNames.Class, JoinClassList(classList))
-    {
-    }
+      if (l == null)
+        return false;
 
-    public XHtmlClassAttribute(IEnumerable<string> classList)
-      : base(XHtmlAttributeNames.Class, JoinClassList(classList))
-    {
+      return (new HashSet<string>(l, StringComparer.Ordinal)).IsSupersetOf(classList);
     }
   }
 }

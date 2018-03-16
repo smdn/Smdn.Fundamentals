@@ -51,6 +51,8 @@
     <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlElementNames.cs" />
     <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlNamespaces.cs" />
     <Compile Include="Smdn.Xml.Linq.Xhtml\XHtmlStyleAttribute.cs" />
+    <Compile Include="Smdn.Xml.Linq\Extensions.cs" />
+    <Compile Include="Smdn.Xml.Linq.Xhtml\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
