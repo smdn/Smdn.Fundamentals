@@ -26,6 +26,7 @@ using System;
 using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
+#if NET46
   public class XhtmlDocument : XmlDocument {
     public XhtmlDocument()
       : base()
@@ -133,4 +134,5 @@ namespace Smdn.Xml.Xhtml {
         return attrId.OwnerElement;
     }
   }
+#endif
 }

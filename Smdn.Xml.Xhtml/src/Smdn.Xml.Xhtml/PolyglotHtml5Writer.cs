@@ -125,6 +125,15 @@ namespace Smdn.Xml.Xhtml {
       return s;
     }
 
+#if !(NET46 || NETSTANDARD20)
+    private static XmlWriter Create(string outputFileName, XmlWriterSettings settings)
+    {
+      settings.CloseOutput = true;
+
+      return Create(File.OpenWrite(outputFileName), settings);
+    }
+#endif
+
     public PolyglotHtml5Writer(string outputFileName, XmlWriterSettings settings = null)
       : this(Create(outputFileName, ToNonIndentingSettings(settings)), settings)
     {
@@ -158,7 +167,11 @@ namespace Smdn.Xml.Xhtml {
     {
       try {
         if (disposing)
+#if !(NET46 || NETSTANDARD20)
+          baseWriter.Dispose();
+#else
           baseWriter.Close();
+#endif
       }
       finally {
         base.Dispose(disposing);

@@ -220,7 +220,7 @@ namespace Smdn.Xml.Xhtml {
  </body>
 </html>";
 
-      Assert.AreEqual(expected, ToString(doc));
+      Assert.AreEqual(expected.Replace("\r\n", "\n"), ToString(doc));
     }
 
     [Test]
@@ -266,6 +266,7 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
+#if NET46 || NETSTANDARD20
     [Test]
     public void TestWriteDocType_XmlDocument()
     {
@@ -277,6 +278,7 @@ namespace Smdn.Xml.Xhtml {
       Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
                       ToString(doc));
     }
+#endif
 
     [TestCase(NewLineHandling.None)]
     [TestCase(NewLineHandling.Entitize)]
