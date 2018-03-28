@@ -130,7 +130,7 @@ namespace Smdn.Xml.Xhtml {
     {
       settings.CloseOutput = true;
 
-      return Create(File.OpenWrite(outputFileName), settings);
+      return Create(File.Create(outputFileName), settings);
     }
 #endif
 
