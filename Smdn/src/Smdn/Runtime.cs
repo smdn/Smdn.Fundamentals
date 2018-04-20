@@ -37,6 +37,24 @@ namespace Smdn {
 
     static Runtime()
     {
+#if NET471 || NETSTANDARD2_0
+      if (RuntimeInformation.FrameworkDescription.Contains(".NET Framework")) {
+        runtimeEnvironment = RuntimeEnvironment.NetFx;
+        name = ".NET Framework";
+        return;
+      }
+      else if (RuntimeInformation.FrameworkDescription.Contains(".NET Core")) {
+        runtimeEnvironment = RuntimeEnvironment.NetCore;
+        name = ".NET Core";
+        return;
+      }
+      else if (RuntimeInformation.FrameworkDescription.Contains("Mono")) {
+        runtimeEnvironment = RuntimeEnvironment.Mono;
+        name = "Mono";
+        //return; // mono?
+      }
+#endif
+
       if (Type.GetType("Mono.Runtime") != null) {
         /*
          * http://mono-project.com/FAQ:_Technical
@@ -143,7 +161,7 @@ namespace Smdn {
           }
         }
 
-#if NET46 || NETSTANDARD20
+#if NET46 || NETSTANDARD2_0
         return Environment.Version;
 #else
         return null;
