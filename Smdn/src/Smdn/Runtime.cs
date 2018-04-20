@@ -99,10 +99,10 @@ namespace Smdn {
 
     public static bool IsRunningOnWindows {
       get {
-#if NET46
-        return (int)Environment.OSVersion.Platform < 4;
-#else
+#if NET471 || NETSTANDARD2_0
         return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#else
+        return (int)Environment.OSVersion.Platform < 4;
 #endif
       }
     }
@@ -110,13 +110,13 @@ namespace Smdn {
     public static bool IsRunningOnUnix {
       get
       {
-#if NET46
+#if NET471 || NETSTANDARD2_0
+        return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
+               RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+#else
         var platform = (int)Environment.OSVersion.Platform;
 
         return (platform == 4 || platform == 6 || platform == 128);
-#else
-        return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
-               RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 #endif
       }
     }
@@ -126,10 +126,10 @@ namespace Smdn {
     public static string VersionString {
       get {
         if (versionString == null) {
-#if NET46
-          versionString = string.Format("{0} {1}", name, Version);
-#else
+#if NET471 || NETSTANDARD2_0
           versionString = RuntimeInformation.FrameworkDescription;
+#else
+          versionString = string.Format("{0} {1}", name, Version);
 #endif
         }
 
