@@ -99,7 +99,7 @@ namespace Smdn {
 
     public static bool IsRunningOnWindows {
       get {
-#if NET471 || NETSTANDARD2_0
+#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
         return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 #else
         return (int)Environment.OSVersion.Platform < 4;
@@ -110,7 +110,7 @@ namespace Smdn {
     public static bool IsRunningOnUnix {
       get
       {
-#if NET471 || NETSTANDARD2_0
+#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
                RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 #else
