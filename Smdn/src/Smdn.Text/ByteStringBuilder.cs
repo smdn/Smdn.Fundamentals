@@ -37,7 +37,7 @@ namespace Smdn.Text {
       set
       {
         if (index < 0 || length <= index)
-          throw new ArgumentOutOfRangeException("index", index, "index out of range");
+          throw new ArgumentOutOfRangeException(nameof(index), index, "index out of range");
         buffer[index] = value;
       }
     }

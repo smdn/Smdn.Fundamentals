@@ -138,7 +138,7 @@ namespace Smdn.Formats.Mime {
       var outputLimit = foldingLimit - (foldingOffset + ambleLength);
 
       if (outputLimit <= 0)
-        throw new ArgumentOutOfRangeException("foldingLimit", foldingLimit, "too short");
+        throw new ArgumentOutOfRangeException(nameof(foldingLimit), foldingLimit, "too short");
 
       // copy preamble to buffer
       Buffer.BlockCopy(preamble, 0, outputBuffer, 0, preamble.Length);
@@ -182,7 +182,7 @@ namespace Smdn.Formats.Mime {
         }
 
         if (outputBuffer.Length < ambleLength + transformed.Length)
-          throw new ArgumentOutOfRangeException("foldingLimit",
+          throw new ArgumentOutOfRangeException(nameof(foldingLimit),
                                                 foldingLimit,
                                                 string.Format("too short, at least {0} is required", ambleLength + transformed.Length));
 

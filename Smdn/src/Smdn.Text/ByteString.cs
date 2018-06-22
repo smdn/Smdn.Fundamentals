@@ -61,7 +61,7 @@ namespace Smdn.Text {
       {
         if (isMutable) {
           if (index < 0 || segment.Count <= index)
-            throw new ArgumentOutOfRangeException("index", index, "index out of range");
+            throw new ArgumentOutOfRangeException(nameof(index), index, "index out of range");
 
           segment.Array[segment.Offset + index] = value;
         }

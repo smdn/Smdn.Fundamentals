@@ -189,7 +189,7 @@ namespace Smdn {
         throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(timestampEpoch, "timestamp", timestamp);
 
       if (clock < 0 || 0x3fff <= clock)
-        throw new ArgumentOutOfRangeException("clock", clock, "must be 14-bit unsigned integer");
+        throw new ArgumentOutOfRangeException(nameof(clock), clock, "must be 14-bit unsigned integer");
 
       if (node == null)
         throw new ArgumentNullException(nameof(node));
