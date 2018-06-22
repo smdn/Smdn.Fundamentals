@@ -35,9 +35,9 @@ namespace Smdn {
     public static T[] Append<T>(this T[] array, T element, params T[] elements)
     {
       if (array == null)
-        throw new ArgumentNullException("array");
+        throw new ArgumentNullException(nameof(array));
       if (elements == null)
-        throw new ArgumentNullException("elements");
+        throw new ArgumentNullException(nameof(elements));
 
       if (array.Length == 0 && elements.Length == 0)
         return new T[] { element };
@@ -57,9 +57,9 @@ namespace Smdn {
     public static T[] Prepend<T>(this T[] array, T element, params T[] elements)
     {
       if (array == null)
-        throw new ArgumentNullException("array");
+        throw new ArgumentNullException(nameof(array));
       if (elements == null)
-        throw new ArgumentNullException("elements");
+        throw new ArgumentNullException(nameof(elements));
 
       if (array.Length == 0 && elements.Length == 0)
         return new T[] { element };
@@ -79,7 +79,7 @@ namespace Smdn {
     public static T[] Concat<T>(this T[] array, params T[][] arrays)
     {
       if (array == null)
-        throw new ArgumentNullException("array");
+        throw new ArgumentNullException(nameof(array));
 
       if (arrays == null || arrays.Length == 0)
         return array;
@@ -109,7 +109,7 @@ namespace Smdn {
     public static T[] Slice<T>(this T[] array, int start)
     {
       if (array == null)
-        throw new ArgumentNullException("array");
+        throw new ArgumentNullException(nameof(array));
 
       return Slice(array, start, array.Length - start);
     }
@@ -117,7 +117,7 @@ namespace Smdn {
     public static T[] Slice<T>(this T[] array, int start, int count)
     {
       if (array == null)
-        throw new ArgumentNullException("array");
+        throw new ArgumentNullException(nameof(array));
       if (start < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("start", start);
       if (count < 0)
@@ -140,9 +140,9 @@ namespace Smdn {
     public static T[] Shuffle<T>(this T[] array, Random random)
     {
       if (array == null)
-        throw new ArgumentNullException("array");
+        throw new ArgumentNullException(nameof(array));
       if (random == null)
-        throw new ArgumentNullException("random");
+        throw new ArgumentNullException(nameof(random));
 
       var shuffled = (T[])array.Clone();
 

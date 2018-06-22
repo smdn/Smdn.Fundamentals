@@ -145,7 +145,7 @@ namespace Smdn {
     public static Uuid CreateTimeBased(PhysicalAddress node)
     {
       if (node == null)
-        throw new ArgumentNullException("node");
+        throw new ArgumentNullException(nameof(node));
 
       return CreateTimeBased(node.GetAddressBytes());
     }
@@ -153,7 +153,7 @@ namespace Smdn {
     public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node)
     {
       if (node == null)
-        throw new ArgumentNullException("node");
+        throw new ArgumentNullException(nameof(node));
 
       return CreateTimeBased(timestamp, clock, node.GetAddressBytes());
     }
@@ -192,7 +192,7 @@ namespace Smdn {
         throw new ArgumentOutOfRangeException("clock", clock, "must be 14-bit unsigned integer");
 
       if (node == null)
-        throw new ArgumentNullException("node");
+        throw new ArgumentNullException(nameof(node));
       if (node.Length != 6)
         throw new ArgumentException("must be 48-bit length", "node");
 
@@ -256,7 +256,7 @@ namespace Smdn {
     public static Uuid CreateNameBasedMD5(Uri url)
     {
       if (url == null)
-        throw new ArgumentNullException("url");
+        throw new ArgumentNullException(nameof(url));
 
       return CreateNameBasedMD5(url.ToString(), Namespace.RFC4122Url);
     }
@@ -274,7 +274,7 @@ namespace Smdn {
     public static Uuid CreateNameBasedSHA1(Uri url)
     {
       if (url == null)
-        throw new ArgumentNullException("url");
+        throw new ArgumentNullException(nameof(url));
 
       return CreateNameBasedSHA1(url.ToString(), Namespace.RFC4122Url);
     }
@@ -292,7 +292,7 @@ namespace Smdn {
     public static Uuid CreateNameBased(Uri url, UuidVersion version)
     {
       if (url == null)
-        throw new ArgumentNullException("url");
+        throw new ArgumentNullException(nameof(url));
 
       return CreateNameBased(url.ToString(), Namespace.RFC4122Url, version);
     }
@@ -321,7 +321,7 @@ namespace Smdn {
     public static Uuid CreateNameBased(byte[] name, Uuid namespaceId, UuidVersion version)
     {
       if (name == null)
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
 
       /*
        * 4.3. Algorithm for Creating a Name-Based UUID
@@ -410,7 +410,7 @@ namespace Smdn {
     public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng)
     {
       if (rng == null)
-        throw new ArgumentNullException("rng");
+        throw new ArgumentNullException(nameof(rng));
 
       var randomNumber = new byte[16];
 
@@ -431,7 +431,7 @@ namespace Smdn {
        *       values.
        */
       if (randomNumber == null)
-        throw new ArgumentNullException("randomNumber");
+        throw new ArgumentNullException(nameof(randomNumber));
       else if (randomNumber.Length != 16)
         throw new ArgumentException("length must be 16", "randomNumber");
 
@@ -628,7 +628,7 @@ namespace Smdn {
       : this()
     {
       if (octets == null)
-        throw new ArgumentNullException("octets");
+        throw new ArgumentNullException(nameof(octets));
       if (index < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
       if (octets.Length - 16 < index)
@@ -651,7 +651,7 @@ namespace Smdn {
       : this()
     {
       if (uuid == null)
-        throw new ArgumentNullException("uuid");
+        throw new ArgumentNullException(nameof(uuid));
 
       // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
       var fields = uuid.Split('-');
@@ -813,7 +813,7 @@ namespace Smdn {
     public void GetBytes(byte[] buffer, int startIndex, Endianness endian)
     {
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (buffer.Length - 16 < startIndex)

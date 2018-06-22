@@ -104,7 +104,7 @@ namespace Smdn.Formats.UUEncodings {
     public UUDecodingStream(Stream baseStream, bool leaveStreamOpen)
     {
       if (baseStream == null)
-        throw new ArgumentNullException("baseStream");
+        throw new ArgumentNullException(nameof(baseStream));
       if (!baseStream.CanRead)
         throw ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
 
@@ -209,7 +209,7 @@ namespace Smdn.Formats.UUEncodings {
       CheckDisposed();
 
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)

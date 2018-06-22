@@ -88,9 +88,9 @@ namespace Smdn.Formats.Mime {
     private static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (charset == null)
-        throw new ArgumentNullException("charset");
+        throw new ArgumentNullException(nameof(charset));
       if (doFold) {
         if (foldingLimit < 1)
           throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(1, "foldingLimit", foldingLimit);
@@ -99,7 +99,7 @@ namespace Smdn.Formats.Mime {
         if (foldingLimit <= foldingOffset)
           throw ExceptionUtils.CreateArgumentMustBeLessThan("'foldingLimit'", "foldingOffset", foldingOffset);
         if (foldingString == null)
-          throw new ArgumentNullException("foldingString");
+          throw new ArgumentNullException(nameof(foldingString));
       }
 
       ICryptoTransform transform;
@@ -274,7 +274,7 @@ namespace Smdn.Formats.Mime {
                                 out Encoding charset)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       charset = null;
       encoding = MimeEncodingMethod.None;

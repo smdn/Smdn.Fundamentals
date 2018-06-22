@@ -118,9 +118,9 @@ namespace Smdn.Text.Encodings {
     public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
     {
       if (chars == null)
-        throw new ArgumentNullException("chars");
+        throw new ArgumentNullException(nameof(chars));
       if (bytes == null)
-        throw new ArgumentNullException("chars");
+        throw new ArgumentNullException(nameof(chars));
       if (charIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("charIndex", charIndex);
       if (charCount < 0)
@@ -171,9 +171,9 @@ namespace Smdn.Text.Encodings {
     public override int GetChars(byte[] bytes, int byteIndex, int byteCount, char[] chars, int charIndex)
     {
       if (bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
       if (chars == null)
-        throw new ArgumentNullException("chars");
+        throw new ArgumentNullException(nameof(chars));
       if (byteIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("byteIndex", byteIndex);
       if (byteCount < 0)

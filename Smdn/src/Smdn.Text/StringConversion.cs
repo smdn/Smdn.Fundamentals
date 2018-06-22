@@ -31,7 +31,7 @@ namespace Smdn.Text {
     public static Uri ToUri(string val)
     {
       if (val == null)
-        throw new ArgumentNullException("val");
+        throw new ArgumentNullException(nameof(val));
 
       return new Uri(val);
     }
@@ -44,7 +44,7 @@ namespace Smdn.Text {
     public static string ToString(Uri val)
     {
       if (val == null)
-        throw new ArgumentNullException("val");
+        throw new ArgumentNullException(nameof(val));
 
       return val.ToString();
     }

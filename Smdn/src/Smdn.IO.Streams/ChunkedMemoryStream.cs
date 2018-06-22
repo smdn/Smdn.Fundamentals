@@ -370,7 +370,7 @@ namespace Smdn.IO.Streams {
       if (chunkSize <= 0)
         throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("chunkSize", chunkSize);
       if (allocator == null)
-        throw new ArgumentNullException("allocator");
+        throw new ArgumentNullException(nameof(allocator));
 
       this.chain = new ChunkChain(chunkSize, allocator);
     }
@@ -440,7 +440,7 @@ namespace Smdn.IO.Streams {
       CheckDisposed();
 
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)
@@ -466,7 +466,7 @@ namespace Smdn.IO.Streams {
       CheckDisposed();
 
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)

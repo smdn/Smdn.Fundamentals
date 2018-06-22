@@ -36,7 +36,7 @@ namespace Smdn.OperatingSystem {
     public static ProcessStartInfo CreateProcessStartInfo(string command, string arguments)
     {
       if (command == null)
-        throw new ArgumentNullException("command");
+        throw new ArgumentNullException(nameof(command));
 
       ProcessStartInfo psi;
 

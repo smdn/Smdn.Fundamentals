@@ -134,7 +134,7 @@ namespace Smdn.Formats {
     private static DateTime FromDateTimeString(string s, string[] formats, string universalTimeString)
     {
       if (s == null)
-        throw new ArgumentNullException("s");
+        throw new ArgumentNullException(nameof(s));
 
       var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
       var styles = DateTimeStyles.AllowWhiteSpaces;
@@ -151,7 +151,7 @@ namespace Smdn.Formats {
     private static DateTimeOffset FromDateTimeOffsetString(string s, string[] formats, string universalTimeString)
     {
       if (s == null)
-        throw new ArgumentNullException("s");
+        throw new ArgumentNullException(nameof(s));
 
       var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
       var styles = DateTimeStyles.AllowWhiteSpaces;

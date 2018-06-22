@@ -104,7 +104,7 @@ namespace Smdn.Formats {
     protected SIPrefixNumberFormatter(CultureInfo cultureInfo, bool isReadOnly)
     {
       if (cultureInfo == null)
-        throw new ArgumentNullException("cultureInfo");
+        throw new ArgumentNullException(nameof(cultureInfo));
 
       this.isReadOnly = isReadOnly;
 

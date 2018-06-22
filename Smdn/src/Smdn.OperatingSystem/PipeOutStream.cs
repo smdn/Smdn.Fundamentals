@@ -86,7 +86,7 @@ namespace Smdn.OperatingSystem {
     public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onOutputDataReceived, DataReceivedEventHandler onErrorDataReceived)
     {
       if (startInfo == null)
-        throw new ArgumentNullException("startInfo");
+        throw new ArgumentNullException(nameof(startInfo));
 
       this.startInfo = startInfo;
       this.onOutputDataReceived = onOutputDataReceived;

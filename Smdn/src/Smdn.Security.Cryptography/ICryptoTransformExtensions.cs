@@ -33,9 +33,9 @@ namespace Smdn.Security.Cryptography {
     public static string TransformStringTo(this ICryptoTransform transform, string str, Encoding encoding)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       var bytes = encoding.GetBytes(str);
 
@@ -45,9 +45,9 @@ namespace Smdn.Security.Cryptography {
     public static string TransformStringFrom(this ICryptoTransform transform, string str, Encoding encoding)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       var bytes = OctetEncoding.EightBits.GetBytes(str);
 
@@ -57,7 +57,7 @@ namespace Smdn.Security.Cryptography {
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer)
     {
       if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
+        throw new ArgumentNullException(nameof(inputBuffer));
 
       return TransformBytes(transform, inputBuffer, 0, inputBuffer.Length);
     }
@@ -65,10 +65,10 @@ namespace Smdn.Security.Cryptography {
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer, int inputOffset, int inputCount)
     {
       if (transform == null)
-        throw new ArgumentNullException("transform");
+        throw new ArgumentNullException(nameof(transform));
 
       if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
+        throw new ArgumentNullException(nameof(inputBuffer));
       if (inputOffset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
       if (inputCount < 0)

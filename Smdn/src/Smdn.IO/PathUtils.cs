@@ -31,7 +31,7 @@ namespace Smdn.IO {
     public static string ChangeFileName(string path, string newFileName)
     {
       if (newFileName == null)
-        throw new ArgumentNullException("newFileName");
+        throw new ArgumentNullException(nameof(newFileName));
 
       var dir = Path.GetDirectoryName(path);
       var ext = Path.GetExtension(path);
@@ -150,11 +150,11 @@ namespace Smdn.IO {
     public static bool ContainsShellSpecialChars(string path, Encoding encoding, params byte[] specialChars)
     {
       if (path == null)
-        throw new ArgumentNullException("path");
+        throw new ArgumentNullException(nameof(path));
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
       if (specialChars == null)
-        throw new ArgumentNullException("specialChars");
+        throw new ArgumentNullException(nameof(specialChars));
 
       if (specialChars.Length == 0)
         return false;
@@ -196,7 +196,7 @@ namespace Smdn.IO {
     public static string RenameUnique(string file)
     {
       if (file == null)
-        throw new ArgumentNullException("file");
+        throw new ArgumentNullException(nameof(file));
       if (!File.Exists(file))
         throw new DirectoryNotFoundException(string.Format("file '{0}' not found", file));
 
@@ -234,9 +234,9 @@ namespace Smdn.IO {
     public static string GetRelativePath(string basePath, string path)
     {
       if (basePath == null)
-        throw new ArgumentNullException("basePath");
+        throw new ArgumentNullException(nameof(basePath));
       if (path == null)
-        throw new ArgumentNullException("path");
+        throw new ArgumentNullException(nameof(path));
 
       if (Runtime.IsRunningOnWindows && !Path.IsPathRooted(basePath))
         throw new ArgumentException("must be absolute path", "basePath");

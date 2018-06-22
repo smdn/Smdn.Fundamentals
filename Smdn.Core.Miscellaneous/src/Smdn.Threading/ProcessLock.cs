@@ -50,7 +50,7 @@ namespace Smdn.Threading {
     public ProcessLock(string mutexName, bool global)
     {
       if (mutexName == null)
-        throw new ArgumentNullException("mutexName");
+        throw new ArgumentNullException(nameof(mutexName));
 
       bool createdNew = false;
 

@@ -33,7 +33,7 @@ namespace Smdn.IO {
     public static void Close(this TextReader reader)
     {
       if (reader == null)
-        throw new ArgumentNullException("reader");
+        throw new ArgumentNullException(nameof(reader));
 
       reader.Dispose();
     }
@@ -42,7 +42,7 @@ namespace Smdn.IO {
     public static IEnumerable<string> ReadLines(this TextReader reader)
     {
       if (reader == null)
-        throw new ArgumentNullException("reader");
+        throw new ArgumentNullException(nameof(reader));
 
       for (;;) {
         var line = reader.ReadLine();

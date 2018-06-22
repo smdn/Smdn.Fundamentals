@@ -101,7 +101,7 @@ namespace Smdn.Text {
     public static ByteString CreateMutable(byte[] @value, int offset)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), true);
     }
@@ -133,7 +133,7 @@ namespace Smdn.Text {
     public static ByteString CreateImmutable(byte[] @value, int offset)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), false);
     }
@@ -165,7 +165,7 @@ namespace Smdn.Text {
     public static ByteString Create(bool asMutable, byte[] @value, int offset)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), asMutable);
     }
@@ -178,7 +178,7 @@ namespace Smdn.Text {
     public static byte[] ToByteArray(string @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return ToByteArray(@value, 0, @value.Length);
     }
@@ -186,7 +186,7 @@ namespace Smdn.Text {
     public static byte[] ToByteArray(string @value, int startIndex, int count)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (count < 0)
@@ -242,7 +242,7 @@ namespace Smdn.Text {
     public bool Contains(ByteString @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return 0 <= IndexOf(@value.segment, 0);
     }
@@ -255,7 +255,7 @@ namespace Smdn.Text {
     public bool StartsWith(ByteString @value)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return StartsWith(@value.segment);
     }
@@ -263,7 +263,7 @@ namespace Smdn.Text {
     public bool StartsWith(byte[] @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return StartsWith(new ArraySegment<byte>(@value));
     }
@@ -290,7 +290,7 @@ namespace Smdn.Text {
     public bool StartsWithIgnoreCase(ByteString @value)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return StartsWithIgnoreCase(@value.segment);
     }
@@ -298,7 +298,7 @@ namespace Smdn.Text {
     public bool StartsWithIgnoreCase(byte[] @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return StartsWithIgnoreCase(new ArraySegment<byte>(@value));
     }
@@ -326,7 +326,7 @@ namespace Smdn.Text {
     public unsafe bool StartsWith(string @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       if (segment.Count < @value.Length)
         return false;
@@ -346,7 +346,7 @@ namespace Smdn.Text {
     public bool EndsWith(ByteString @value)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return EndsWith(@value.segment);
     }
@@ -354,7 +354,7 @@ namespace Smdn.Text {
     public bool EndsWith(byte[] @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return EndsWith(new ArraySegment<byte>(@value));
     }
@@ -381,7 +381,7 @@ namespace Smdn.Text {
     public unsafe bool EndsWith(string @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       if (segment.Count < @value.Length)
         return false;
@@ -401,7 +401,7 @@ namespace Smdn.Text {
     public bool IsPrefixOf(ByteString @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IsPrefixOf(@value.segment);
     }
@@ -409,7 +409,7 @@ namespace Smdn.Text {
     public bool IsPrefixOf(byte[] @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IsPrefixOf(new ArraySegment<byte>(@value));
     }
@@ -476,7 +476,7 @@ namespace Smdn.Text {
     public int IndexOf(byte[] @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOf(new ArraySegment<byte>(@value), 0);
     }
@@ -484,7 +484,7 @@ namespace Smdn.Text {
     public int IndexOf(byte[] @value, int startIndex)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOf(new ArraySegment<byte>(@value), startIndex);
     }
@@ -492,7 +492,7 @@ namespace Smdn.Text {
     public int IndexOfIgnoreCase(byte[] @value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(new ArraySegment<byte>(@value), 0);
     }
@@ -500,7 +500,7 @@ namespace Smdn.Text {
     public int IndexOfIgnoreCase(byte[] @value, int startIndex)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(new ArraySegment<byte>(@value), startIndex);
     }
@@ -508,7 +508,7 @@ namespace Smdn.Text {
     public int IndexOf(ByteString @value)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOf(@value.segment, 0);
     }
@@ -516,7 +516,7 @@ namespace Smdn.Text {
     public int IndexOf(ByteString @value, int startIndex)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOf(@value.segment, startIndex);
     }
@@ -524,7 +524,7 @@ namespace Smdn.Text {
     public int IndexOfIgnoreCase(ByteString @value)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(@value.segment, 0);
     }
@@ -532,7 +532,7 @@ namespace Smdn.Text {
     public int IndexOfIgnoreCase(ByteString @value, int startIndex)
     {
       if ((object)@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(@value.segment, startIndex);
     }
@@ -616,7 +616,7 @@ namespace Smdn.Text {
     public unsafe int IndexOf(string @value, int startIndex)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
 
@@ -898,7 +898,7 @@ namespace Smdn.Text {
     public static bool IsTerminatedByCRLF(ByteString str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       else if (str.segment.Count < 2)
         return false;
 
@@ -1041,9 +1041,9 @@ namespace Smdn.Text {
     public static ByteString operator + (ByteString x, ByteString y)
     {
       if (x == null)
-        throw new ArgumentNullException("x");
+        throw new ArgumentNullException(nameof(x));
       if (y == null)
-        throw new ArgumentNullException("y");
+        throw new ArgumentNullException(nameof(y));
 
       return Concat(x, y);
     }
@@ -1051,7 +1051,7 @@ namespace Smdn.Text {
     public static ByteString operator * (ByteString x, int y)
     {
       if (x == null)
-        throw new ArgumentNullException("x");
+        throw new ArgumentNullException(nameof(x));
       if (y < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("y", y);
 
@@ -1085,7 +1085,7 @@ namespace Smdn.Text {
     public static ByteString Concat(bool asMutable, params ByteString[] values)
     {
       if (values == null)
-        throw new ArgumentNullException("values");
+        throw new ArgumentNullException(nameof(values));
 
       var length = 0;
 
@@ -1184,7 +1184,7 @@ namespace Smdn.Text {
         throw new ArgumentException("startIndex + count is larger than length"); // XXXX
 
       if (dest == null)
-        throw new ArgumentNullException("dest");
+        throw new ArgumentNullException(nameof(dest));
       if (destOffset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("destOffset", destOffset);
       if (dest.Length - count < destOffset)
@@ -1211,7 +1211,7 @@ namespace Smdn.Text {
     public string ToString(Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       return ToString(encoding, segment, 0, segment.Count);
     }
@@ -1219,7 +1219,7 @@ namespace Smdn.Text {
     public string ToString(Encoding encoding, int startIndex)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       return ToString(encoding, segment, startIndex, segment.Count - startIndex);
     }
@@ -1227,7 +1227,7 @@ namespace Smdn.Text {
     public string ToString(Encoding encoding, int startIndex, int count)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       return ToString(encoding, segment, startIndex, count);
     }

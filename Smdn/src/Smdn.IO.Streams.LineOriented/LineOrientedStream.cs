@@ -85,10 +85,10 @@ namespace Smdn.IO.Streams.LineOriented {
     protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize, bool leaveStreamOpen)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       if (strictEOL) {
         if (newLine == null)
-          throw new ArgumentNullException("newLine");
+          throw new ArgumentNullException(nameof(newLine));
         if (newLine.Length == 0)
           throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray("newLine");
       }
@@ -267,7 +267,7 @@ namespace Smdn.IO.Streams.LineOriented {
       if (length < 0L)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("length", length);
       if (targetStream == null)
-        throw new ArgumentNullException("targetStream");
+        throw new ArgumentNullException(nameof(targetStream));
 
       if (length <= bufRemain) {
         var count = (int)length;
@@ -315,7 +315,7 @@ namespace Smdn.IO.Streams.LineOriented {
       CheckDisposed();
 
       if (dest == null)
-        throw new ArgumentNullException("dest");
+        throw new ArgumentNullException(nameof(dest));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)

@@ -65,7 +65,7 @@ namespace Smdn.Formats.PercentEncodings {
     public static byte[] Encode(string str, ToPercentEncodedTransformMode mode, Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       var bytes = encoding.GetBytes(str);
 

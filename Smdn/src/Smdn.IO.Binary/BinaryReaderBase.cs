@@ -63,7 +63,7 @@ namespace Smdn.IO.Binary {
     protected BinaryReaderBase(Stream baseStream, bool leaveBaseStreamOpen)
     {
       if (baseStream == null)
-        throw new ArgumentNullException("baseStream");
+        throw new ArgumentNullException(nameof(baseStream));
       if (!baseStream.CanRead)
         throw ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
 
@@ -194,7 +194,7 @@ namespace Smdn.IO.Binary {
     protected int ReadBytes(byte[] buffer, int index, int count, bool readExactBytes)
     {
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (index < 0)

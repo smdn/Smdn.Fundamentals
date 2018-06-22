@@ -98,7 +98,7 @@ namespace Smdn.Formats.Mime {
     public static IEnumerable<HeaderField> ParseHeaderRaw(LineOrientedStream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       ByteStringBuilder header = null;
       var indexOfDelimiter = -1;

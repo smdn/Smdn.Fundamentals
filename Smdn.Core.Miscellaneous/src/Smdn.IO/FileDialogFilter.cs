@@ -83,7 +83,7 @@ namespace Smdn.IO {
     public static string CreateFilterString(IEnumerable<Filter> filters)
     {
       if (filters == null)
-        throw new ArgumentNullException("filters");
+        throw new ArgumentNullException(nameof(filters));
 
       return CreateFilterString(filters.ToArray());
     }

@@ -44,7 +44,7 @@ namespace Smdn.IO.Binary {
     protected BinaryWriterBase(Stream baseStream, bool leaveBaseStreamOpen)
     {
       if (baseStream == null)
-        throw new ArgumentNullException("baseStream");
+        throw new ArgumentNullException(nameof(baseStream));
       if (!baseStream.CanWrite)
         throw ExceptionUtils.CreateArgumentMustBeWritableStream("baseStream");
 
@@ -119,7 +119,7 @@ namespace Smdn.IO.Binary {
     public void Write(byte[] buffer)
     {
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
 
       Write(buffer, 0, buffer.Length);
     }
@@ -127,7 +127,7 @@ namespace Smdn.IO.Binary {
     public void Write(byte[] buffer, int index, int count)
     {
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
       if (index < 0)

@@ -66,7 +66,7 @@ namespace Smdn.Formats.UUEncodings {
       public void Save(string path)
       {
         if (path == null)
-          throw new ArgumentNullException("path");
+          throw new ArgumentNullException(nameof(path));
 
         using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write)) {
           stream.CopyTo(fileStream);
@@ -79,7 +79,7 @@ namespace Smdn.Formats.UUEncodings {
     public static IEnumerable<FileEntry> ExtractFiles(Stream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       using (var decodingStream = new UUDecodingStream(stream, true)) {
         while (decodingStream.SeekToNextFile()) {
@@ -103,7 +103,7 @@ namespace Smdn.Formats.UUEncodings {
     public static void ExtractFiles(Stream stream, Action<FileEntry> extractAction)
     {
       if (extractAction == null)
-        throw new ArgumentNullException("extractAction");
+        throw new ArgumentNullException(nameof(extractAction));
 
       foreach (var file in ExtractFiles(stream)) {
         try {

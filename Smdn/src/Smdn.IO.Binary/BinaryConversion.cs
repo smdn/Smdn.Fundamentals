@@ -28,7 +28,7 @@ namespace Smdn.IO.Binary {
     private static void CheckSourceArray(byte[] @value, int startIndex, int count)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (@value.Length - count < startIndex)
@@ -38,7 +38,7 @@ namespace Smdn.IO.Binary {
     private static void CheckDestArray(byte[] @bytes, int startIndex, int count)
     {
       if (@bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (@bytes.Length - count < startIndex)

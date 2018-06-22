@@ -102,7 +102,7 @@ namespace Smdn.IO.Streams {
     protected ExtendStreamBase(Stream innerStream, long prependLength, long appendLength, bool leaveInnerStreamOpen)
     {
       if (innerStream == null)
-        throw new ArgumentNullException("innerStream");
+        throw new ArgumentNullException(nameof(innerStream));
       if (!innerStream.CanRead)
         throw ExceptionUtils.CreateArgumentMustBeReadableStream("innerStream");
       if (prependLength < 0L)
@@ -220,7 +220,7 @@ namespace Smdn.IO.Streams {
       CheckDisposed();
 
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)

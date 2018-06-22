@@ -40,7 +40,7 @@ namespace Smdn.Net {
     public static string CreateWsseUsernameToken(NetworkCredential credential, DateTimeOffset createdDateTime)
     {
       if (credential == null)
-        throw new ArgumentNullException("credential");
+        throw new ArgumentNullException(nameof(credential));
 
       var nonce = MathUtils.GetRandomBytes(40);
       var createdDateTimeString = createdDateTime.ToString("o");

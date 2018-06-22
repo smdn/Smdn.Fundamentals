@@ -132,7 +132,7 @@ namespace Smdn.Formats.PercentEncodings {
         throw new ObjectDisposedException(GetType().FullName);
 
       if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
+        throw new ArgumentNullException(nameof(inputBuffer));
       if (inputOffset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
       if (inputCount < 0)
@@ -141,7 +141,7 @@ namespace Smdn.Formats.PercentEncodings {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
 
       if (outputBuffer == null)
-        throw new ArgumentNullException("outputBuffer");
+        throw new ArgumentNullException(nameof(outputBuffer));
       if (outputOffset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("outputOffset", outputOffset);
       if (outputBuffer.Length - inputCount < outputOffset)
@@ -191,7 +191,7 @@ namespace Smdn.Formats.PercentEncodings {
       if (disposed)
         throw new ObjectDisposedException(GetType().FullName);
       if (inputBuffer == null)
-        throw new ArgumentNullException("inputBuffer");
+        throw new ArgumentNullException(nameof(inputBuffer));
       if (inputOffset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
       if (inputCount < 0)

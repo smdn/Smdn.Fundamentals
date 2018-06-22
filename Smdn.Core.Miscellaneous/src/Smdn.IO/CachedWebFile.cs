@@ -44,9 +44,9 @@ namespace Smdn.IO {
     public CachedWebFile(Uri fileUri, string cachePath, TimeSpan expirationInterval)
     {
       if (fileUri == null)
-        throw new ArgumentNullException("fileUri");
+        throw new ArgumentNullException(nameof(fileUri));
       if (cachePath == null)
-        throw new ArgumentNullException("cachePath");
+        throw new ArgumentNullException(nameof(cachePath));
       if (expirationInterval < TimeSpan.Zero)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("expirationInterval", expirationInterval);
 
@@ -128,7 +128,7 @@ namespace Smdn.IO {
     public string[] ReadAllLines(Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       return ReadAllLinesCore(encoding);
     }
@@ -161,7 +161,7 @@ namespace Smdn.IO {
     public string ReadAllText(Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       return ReadAllTextCore(encoding);
     }

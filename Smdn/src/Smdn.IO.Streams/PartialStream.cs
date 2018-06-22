@@ -53,7 +53,7 @@ namespace Smdn.IO.Streams {
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
     {
       if (innerOrPartialStream == null)
-        throw new ArgumentNullException("innerOrPartialStream");
+        throw new ArgumentNullException(nameof(innerOrPartialStream));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
 
@@ -164,7 +164,7 @@ namespace Smdn.IO.Streams {
     private PartialStream(Stream innerStream, long offset, long? length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
     {
       if (innerStream == null)
-        throw new ArgumentNullException("innerStream");
+        throw new ArgumentNullException(nameof(innerStream));
       if (!innerStream.CanSeek)
         throw ExceptionUtils.CreateArgumentMustBeSeekableStream("innerStream");
       if (offset < 0)

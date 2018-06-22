@@ -94,7 +94,7 @@ namespace Smdn.Text {
     public ByteStringBuilder Append(ByteString str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       return Append(str.Segment);
     }
@@ -102,7 +102,7 @@ namespace Smdn.Text {
     public ByteStringBuilder Append(ByteString str, int startIndex, int count)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       return Append(str.GetSubSegment(startIndex, count));
     }
@@ -134,7 +134,7 @@ namespace Smdn.Text {
     public ByteStringBuilder Append(string str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       if (str.Length == 0)
         return this;

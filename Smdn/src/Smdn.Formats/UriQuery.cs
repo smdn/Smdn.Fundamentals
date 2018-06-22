@@ -34,7 +34,7 @@ namespace Smdn.Formats {
     public static string JoinQueryParameters(IEnumerable<KeyValuePair<string, string>> queryParameters)
     {
       if (queryParameters == null)
-        throw new ArgumentNullException("queryParameters");
+        throw new ArgumentNullException(nameof(queryParameters));
 
       var sb = new StringBuilder();
 
@@ -61,9 +61,9 @@ namespace Smdn.Formats {
     public static IDictionary<string, string> SplitQueryParameters(string queryParameters, IEqualityComparer<string> comparer)
     {
       if (queryParameters == null)
-        throw new ArgumentNullException("queryParameters");
+        throw new ArgumentNullException(nameof(queryParameters));
       if (comparer == null)
-        throw new ArgumentNullException("comparer");
+        throw new ArgumentNullException(nameof(comparer));
 
       var ret = new Dictionary<string, string>(comparer);
 

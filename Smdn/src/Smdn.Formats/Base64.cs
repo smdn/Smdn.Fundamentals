@@ -39,7 +39,7 @@ namespace Smdn.Formats {
     public static string GetEncodedString(string str, Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       var bytes = encoding.GetBytes(str);
 
@@ -72,7 +72,7 @@ namespace Smdn.Formats {
     public static byte[] Encode(string str, Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       var bytes = encoding.GetBytes(str);
 
@@ -82,7 +82,7 @@ namespace Smdn.Formats {
     public static byte[] Encode(byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
 
       return Encode(bytes, 0, bytes.Length);
     }
@@ -102,7 +102,7 @@ namespace Smdn.Formats {
     public static string GetDecodedString(string str, Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       return encoding.GetString(Decode(str));
     }
@@ -110,7 +110,7 @@ namespace Smdn.Formats {
     public static string GetDecodedString(byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
 
       return GetDecodedString(bytes, 0, bytes.Length);
     }
@@ -128,7 +128,7 @@ namespace Smdn.Formats {
     public static byte[] Decode(byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
 
       return Decode(bytes, 0, bytes.Length);
     }
@@ -143,7 +143,7 @@ namespace Smdn.Formats {
     public static Stream CreateEncodingStream(Stream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       return new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Write);
     }
@@ -151,7 +151,7 @@ namespace Smdn.Formats {
     public static Stream CreateDecodingStream(Stream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       return new CryptoStream(stream, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), CryptoStreamMode.Read);
     }

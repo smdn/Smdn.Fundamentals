@@ -112,7 +112,7 @@ namespace Smdn.IO {
     public static void ShowProperty(string path, IntPtr hWnd)
     {
       if (path == null)
-        throw new ArgumentNullException("path");
+        throw new ArgumentNullException(nameof(path));
 
       if (Runtime.IsRunningOnWindows) {
         const int SHOP_FILEPATH = 0x2;
@@ -149,7 +149,7 @@ namespace Smdn.IO {
     public static void Open(string path)
     {
       if (path == null)
-        throw new ArgumentNullException("path");
+        throw new ArgumentNullException(nameof(path));
 
       var psi = new ProcessStartInfo();
 

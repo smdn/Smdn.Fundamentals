@@ -63,7 +63,7 @@ namespace Smdn.IO.Streams {
     public NonClosingStream(Stream innerStream)
     {
       if (innerStream == null)
-        throw new ArgumentNullException("innerStream");
+        throw new ArgumentNullException(nameof(innerStream));
 
       this.stream = innerStream;
     }

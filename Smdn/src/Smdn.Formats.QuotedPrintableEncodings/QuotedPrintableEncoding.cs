@@ -46,7 +46,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public static string GetEncodedString(byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
 
       return GetEncodedString(bytes, 0, bytes.Length);
     }
@@ -67,7 +67,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public static byte[] Encode(string str, Encoding encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       var bytes = encoding.GetBytes(str);
 
@@ -102,7 +102,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public static Stream CreateEncodingStream(Stream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       // TODO: impl
       throw new NotImplementedException();
@@ -111,7 +111,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public static Stream CreateDecodingStream(Stream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
     }

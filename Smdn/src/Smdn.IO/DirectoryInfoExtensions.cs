@@ -61,7 +61,7 @@ namespace Smdn.IO {
     private static IEnumerable<TFileSystemInfo> FindFileSystemEntries<TFileSystemInfo>(this DirectoryInfo directory, SearchOption searchOption, Predicate<TFileSystemInfo> searchPattern) where TFileSystemInfo : FileSystemInfo
     {
       if (searchPattern == null)
-        throw new ArgumentNullException("searchPattern");
+        throw new ArgumentNullException(nameof(searchPattern));
 
       var matched = new List<TFileSystemInfo>();
       var recursive = (searchOption == SearchOption.AllDirectories);

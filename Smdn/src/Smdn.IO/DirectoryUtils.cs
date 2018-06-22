@@ -39,7 +39,7 @@ namespace Smdn.IO {
       if (!Directory.Exists(directory))
         throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
       if (searchPattern == null)
-        throw new ArgumentNullException("searchPattern");
+        throw new ArgumentNullException(nameof(searchPattern));
 
       return (new DirectoryInfo(directory)).GetFiles(searchOption, delegate(FileInfo file) {
         return searchPattern(file.FullName);
@@ -58,7 +58,7 @@ namespace Smdn.IO {
       if (!Directory.Exists(directory))
         throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
       if (searchPattern == null)
-        throw new ArgumentNullException("searchPattern");
+        throw new ArgumentNullException(nameof(searchPattern));
 
       return (new DirectoryInfo(directory)).GetDirectories(searchOption, delegate(DirectoryInfo dir) {
         return searchPattern(dir.FullName);

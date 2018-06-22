@@ -64,7 +64,7 @@ namespace Smdn {
     {
       if (mimeType == null) {
         if (throwException)
-          throw new ArgumentNullException("mimeType");
+          throw new ArgumentNullException(nameof(mimeType));
         else
           return null;
       }
@@ -140,14 +140,14 @@ namespace Smdn {
     public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
     {
       if (extensionOrPath == null)
-        throw new ArgumentNullException("extensionOrPath");
+        throw new ArgumentNullException(nameof(extensionOrPath));
 
       if (Runtime.IsRunningOnWindows) {
         return FindMimeTypeByExtensionWin(extensionOrPath);
       }
       else {
         if (mimeTypesFile == null)
-          throw new ArgumentNullException("mimeTypesFile");
+          throw new ArgumentNullException(nameof(mimeTypesFile));
 
         return FindMimeTypeByExtensionUnix(mimeTypesFile, extensionOrPath);
       }
@@ -224,7 +224,7 @@ namespace Smdn {
     public static string[] FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile)
     {
       if (mimeType == null)
-        throw new ArgumentNullException("mimeType");
+        throw new ArgumentNullException(nameof(mimeType));
 
       return FindExtensionsByMimeType(mimeType.ToString());
     }
@@ -237,7 +237,7 @@ namespace Smdn {
     public static string[] FindExtensionsByMimeType(string mimeType, string mimeTypesFile)
     {
       if (mimeType == null)
-        throw new ArgumentNullException("mimeType");
+        throw new ArgumentNullException(nameof(mimeType));
       if (mimeType.Length == 0)
         throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("mimeType");
 
@@ -246,7 +246,7 @@ namespace Smdn {
       }
       else {
         if (mimeTypesFile == null)
-          throw new ArgumentNullException("mimeTypesFile");
+          throw new ArgumentNullException(nameof(mimeTypesFile));
 
         return FindExtensionsByMimeTypeUnix(mimeType, mimeTypesFile);
       }
@@ -306,9 +306,9 @@ namespace Smdn {
     public MimeType(string type, string subType)
     {
       if (type == null)
-        throw new ArgumentNullException("type");
+        throw new ArgumentNullException(nameof(type));
       if (subType == null)
-        throw new ArgumentNullException("subType");
+        throw new ArgumentNullException(nameof(subType));
 
       this.Type = type;
       this.SubType = subType;

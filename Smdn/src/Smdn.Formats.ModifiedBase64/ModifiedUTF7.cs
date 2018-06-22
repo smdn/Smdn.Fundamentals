@@ -38,7 +38,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     public static string Encode(string str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (str.Length == 0)
         return string.Empty;
 
@@ -87,7 +87,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     public static string Decode(string str)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (str.Length == 0)
         return string.Empty;
 

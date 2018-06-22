@@ -82,7 +82,7 @@ namespace Smdn.IO.Streams.Caching {
     protected CachedStreamBase(Stream innerStream, int blockSize, bool leaveInnerStreamOpen)
     {
       if (innerStream == null)
-        throw new ArgumentNullException("innerStream");
+        throw new ArgumentNullException(nameof(innerStream));
       else if (!innerStream.CanSeek)
         throw ExceptionUtils.CreateArgumentMustBeSeekableStream("innerStream");
       else if (!innerStream.CanRead)
@@ -170,7 +170,7 @@ namespace Smdn.IO.Streams.Caching {
       CheckDisposed();
 
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
       if (count < 0)

@@ -189,7 +189,7 @@ namespace Smdn {
     public static void GetRandomBytes(byte[] bytes)
     {
       if (bytes == null)
-        throw new ArgumentNullException("bytes");
+        throw new ArgumentNullException(nameof(bytes));
 
       LazyInitializer.EnsureInitialized(ref defaultRng, () => RandomNumberGenerator.Create());
 

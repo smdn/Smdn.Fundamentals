@@ -64,7 +64,7 @@ namespace Smdn.Formats.Mime {
     public static ContentTransferEncodingMethod GetEncodingMethod(string encoding)
     {
       if (encoding == null)
-        throw new ArgumentNullException("encoding");
+        throw new ArgumentNullException(nameof(encoding));
 
       ContentTransferEncodingMethod method;
 
@@ -118,7 +118,7 @@ namespace Smdn.Formats.Mime {
     public static Stream CreateDecodingStream(Stream stream, ContentTransferEncodingMethod encoding, bool leaveStreamOpen)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       Stream decodingStream = null;
 

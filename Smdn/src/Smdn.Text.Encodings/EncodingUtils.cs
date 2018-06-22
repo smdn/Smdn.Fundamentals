@@ -39,7 +39,7 @@ namespace Smdn.Text.Encodings {
                                        EncodingSelectionCallback selectFallbackEncoding)
     {
       if (name == null)
-        throw new ArgumentNullException("name");
+        throw new ArgumentNullException(nameof(name));
 
       // remove leading and trailing whitespaces (\x20, \n, \t, etc.)
       name = name.Trim();

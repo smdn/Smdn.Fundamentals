@@ -43,7 +43,7 @@ namespace Smdn {
     public static string Replace(this string str, char[] oldChars, ReplaceCharEvaluator evaluator)
     {
       if (evaluator == null)
-        throw new ArgumentNullException("evaluator");
+        throw new ArgumentNullException(nameof(evaluator));
 
       return ReplaceInternal(str, oldChars, evaluator);
     }
@@ -51,9 +51,9 @@ namespace Smdn {
     private static string ReplaceInternal(string str, char[] oldChars, ReplaceCharEvaluator evaluator)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (oldChars == null)
-        throw new ArgumentNullException("oldChars");
+        throw new ArgumentNullException(nameof(oldChars));
 
       var lastIndex = 0;
       var sb = new StringBuilder(str.Length);
@@ -81,7 +81,7 @@ namespace Smdn {
     public static string Replace(this string str, string[] oldValues, ReplaceStringEvaluator evaluator)
     {
       if (evaluator == null)
-        throw new ArgumentNullException("evaluator");
+        throw new ArgumentNullException(nameof(evaluator));
 
       return ReplaceInternal(str, oldValues, evaluator);
     }
@@ -89,9 +89,9 @@ namespace Smdn {
     private static string ReplaceInternal(string str, string[] oldValues, ReplaceStringEvaluator evaluator)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (oldValues == null)
-        throw new ArgumentNullException("oldValues");
+        throw new ArgumentNullException(nameof(oldValues));
 
       foreach (var oldValue in oldValues) {
         var lastIndex = 0;
@@ -126,7 +126,7 @@ namespace Smdn {
     public static bool StartsWith(this string str, char @value)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       if (str.Length == 0)
         return false;
@@ -137,7 +137,7 @@ namespace Smdn {
     public static bool EndsWith(this string str, char @value)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       if (str.Length == 0)
         return false;
@@ -148,7 +148,7 @@ namespace Smdn {
     public static int Count(this string str, char c)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
 
       var count = 0;
 
@@ -163,9 +163,9 @@ namespace Smdn {
     public static int Count(this string str, string substr)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (substr == null)
-        throw new ArgumentNullException("substr");
+        throw new ArgumentNullException(nameof(substr));
       if (substr.Length == 0)
         throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("substr");
 
@@ -182,7 +182,7 @@ namespace Smdn {
     public static string Slice(this string str, int from, int to)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (from < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("from", from);
       if (str.Length <= from)
@@ -203,7 +203,7 @@ namespace Smdn {
     public static int IndexOfNot(this string str, char @value, int startIndex)
     {
       if (str == null)
-        throw new ArgumentNullException("str");
+        throw new ArgumentNullException(nameof(str));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (str.Length < startIndex)

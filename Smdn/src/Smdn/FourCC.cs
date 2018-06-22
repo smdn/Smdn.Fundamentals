@@ -56,7 +56,7 @@ namespace Smdn {
     public FourCC(byte[] @value, int startIndex)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (@value.Length - 4 < startIndex)
@@ -71,7 +71,7 @@ namespace Smdn {
     public FourCC(string value)
     {
       if (@value == null)
-        throw new ArgumentNullException("value");
+        throw new ArgumentNullException(nameof(value));
       if (@value.Length != 4)
         throw new ArgumentException("value", "length must be 4");
 
@@ -137,7 +137,7 @@ namespace Smdn {
     public void GetBytes(byte[] buffer, int startIndex)
     {
       if (buffer == null)
-        throw new ArgumentNullException("buffer");
+        throw new ArgumentNullException(nameof(buffer));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
       if (buffer.Length - 4 < startIndex)

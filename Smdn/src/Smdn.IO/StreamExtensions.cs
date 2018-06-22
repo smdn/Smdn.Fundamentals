@@ -31,7 +31,7 @@ namespace Smdn.IO {
     public static void Close(this Stream stream)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       stream.Dispose();
     }
@@ -45,9 +45,9 @@ namespace Smdn.IO {
     public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer, int bufferSize)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       if (writer == null)
-        throw new ArgumentNullException("writer");
+        throw new ArgumentNullException(nameof(writer));
       if (bufferSize <= 0)
         throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("bufferSize", bufferSize);
 
@@ -76,7 +76,7 @@ namespace Smdn.IO {
     public static byte[] ReadToEnd(this Stream stream, int readBufferSize, int initialCapacity)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
       if (readBufferSize <= 0)
         throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("readBufferSize", readBufferSize);
       if (initialCapacity < 0)
@@ -94,7 +94,7 @@ namespace Smdn.IO {
     public static void Write(this Stream stream, ArraySegment<byte> segment)
     {
       if (stream == null)
-        throw new ArgumentNullException("stream");
+        throw new ArgumentNullException(nameof(stream));
 
       stream.Write(segment.Array, segment.Offset, segment.Count);
     }

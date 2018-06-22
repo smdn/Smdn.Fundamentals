@@ -37,7 +37,7 @@ namespace Smdn.Xml {
     public XmlCachedUrlResolver(string cacheDirectory, TimeSpan cacheExpirationInterval)
     {
       if (cacheDirectory == null)
-        throw new ArgumentNullException("cacheDirectory");
+        throw new ArgumentNullException(nameof(cacheDirectory));
       if (cacheExpirationInterval < TimeSpan.Zero)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("cacheExpirationInterval", cacheExpirationInterval);
 
@@ -48,7 +48,7 @@ namespace Smdn.Xml {
     public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
     {
       if (absoluteUri == null)
-        throw new ArgumentNullException("absoluteUri");
+        throw new ArgumentNullException(nameof(absoluteUri));
       if (!absoluteUri.IsAbsoluteUri)
         throw new UriFormatException("absoluteUri is not absolute URI");
       if (ofObjectToReturn != null && !typeof(Stream).IsAssignableFrom(ofObjectToReturn))
