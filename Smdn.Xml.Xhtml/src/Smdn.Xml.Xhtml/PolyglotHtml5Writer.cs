@@ -1,4 +1,4 @@
-﻿// Author:
+// Author:
 //       smdn <smdn@smdn.jp>
 // 
 // Copyright (c) 2009-2017 smdn
