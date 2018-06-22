@@ -284,7 +284,7 @@ namespace Smdn {
       else if (obj is long)
         return CompareTo((long)obj);
       else
-        throw new ArgumentException("ojb is not UInt48");
+        throw new ArgumentException("ojb is not UInt48", nameof(obj));
     }
 
     public int CompareTo(UInt48 other)

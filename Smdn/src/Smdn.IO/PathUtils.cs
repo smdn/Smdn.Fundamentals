@@ -239,7 +239,7 @@ namespace Smdn.IO {
         throw new ArgumentNullException(nameof(path));
 
       if (Runtime.IsRunningOnWindows && !Path.IsPathRooted(basePath))
-        throw new ArgumentException("must be absolute path", "basePath");
+        throw new ArgumentException("must be absolute path", nameof(basePath));
 
       basePath = basePath.Replace("%", "%25" /*encode*/);
       path = path.Replace("%", "%25" /*encode*/);

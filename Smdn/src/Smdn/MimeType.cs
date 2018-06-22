@@ -80,21 +80,21 @@ namespace Smdn {
 
       if (type.Length != 2) {
         if (throwException)
-          throw new ArgumentException(string.Format("invalid type: {0}", mimeType), "mimeType");
+          throw new ArgumentException(string.Format("invalid type: {0}", mimeType), nameof(mimeType));
         else
           return null;
       }
 
       if (type[0].Length == 0) {
         if (throwException)
-          throw new ArgumentException("type must be non-empty string", "mimeType");
+          throw new ArgumentException("type must be non-empty string", nameof(mimeType));
         else
           return null;
       }
 
       if (type[1].Length == 0) {
         if (throwException)
-          throw new ArgumentException("subtype must be non-empty string", "mimeType");
+          throw new ArgumentException("subtype must be non-empty string", nameof(mimeType));
         else
           return null;
       }

@@ -194,7 +194,7 @@ namespace Smdn {
       if (node == null)
         throw new ArgumentNullException(nameof(node));
       if (node.Length != 6)
-        throw new ArgumentException("must be 48-bit length", "node");
+        throw new ArgumentException("must be 48-bit length", nameof(node));
 
       var ts = timestamp.Subtract(timestampEpoch).Ticks;
       var uuid = new Uuid();
@@ -433,7 +433,7 @@ namespace Smdn {
       if (randomNumber == null)
         throw new ArgumentNullException(nameof(randomNumber));
       else if (randomNumber.Length != 16)
-        throw new ArgumentException("length must be 16", "randomNumber");
+        throw new ArgumentException("length must be 16", nameof(randomNumber));
 
       var uuid = new Uuid(randomNumber);
 
@@ -713,7 +713,7 @@ namespace Smdn {
       else if (obj is Guid)
         return CompareTo((Guid)obj);
       else
-        throw new ArgumentException("obj is not Uuid", "obj");
+        throw new ArgumentException("obj is not Uuid", nameof(obj));
     }
 
     public int CompareTo(Guid other)

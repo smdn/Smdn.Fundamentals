@@ -260,7 +260,7 @@ namespace Smdn {
       else if (obj is int)
         return CompareTo((int)obj);
       else
-        throw new ArgumentException("ojb is not UInt24");
+        throw new ArgumentException("ojb is not UInt24", nameof(obj));
     }
 
     public int CompareTo(UInt24 other)

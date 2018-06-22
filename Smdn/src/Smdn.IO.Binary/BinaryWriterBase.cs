@@ -144,7 +144,7 @@ namespace Smdn.IO.Binary {
     public void Write(ArraySegment<byte> @value)
     {
       if (@value.Array == null)
-        throw new ArgumentException("value.Array is null", "value");
+        throw new ArgumentException("value.Array is null", nameof(value));
 
       if (@value.Count == 0)
         return;

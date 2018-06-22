@@ -73,7 +73,7 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException(nameof(value));
       if (@value.Length != 4)
-        throw new ArgumentException("value", "length must be 4");
+        throw new ArgumentException("length must be 4", nameof(value));
 
       checked {
         this.fourcc = (byte)@value[0] << 24 |
