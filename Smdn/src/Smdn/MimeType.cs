@@ -226,7 +226,7 @@ namespace Smdn {
       if (mimeType == null)
         throw new ArgumentNullException(nameof(mimeType));
 
-      return FindExtensionsByMimeType(mimeType.ToString());
+      return FindExtensionsByMimeType(mimeType.ToString(), mimeTypesFile);
     }
 
     public static string[] FindExtensionsByMimeType(string mimeType)
