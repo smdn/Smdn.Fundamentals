@@ -70,11 +70,11 @@ namespace Smdn.Security.Cryptography {
       if (inputBuffer == null)
         throw new ArgumentNullException(nameof(inputBuffer));
       if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
       if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
       if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
 
       var outputBuffer = new byte[inputCount * transform.OutputBlockSize];
       var outputOffset = 0;

@@ -336,7 +336,7 @@ namespace Smdn.IO.Streams {
         CheckDisposed();
 
         if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
 
         chain.SetPosition(value);
       }
@@ -368,7 +368,7 @@ namespace Smdn.IO.Streams {
     public ChunkedMemoryStream(int chunkSize, Allocator allocator)
     {
       if (chunkSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("chunkSize", chunkSize);
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(chunkSize), chunkSize);
       if (allocator == null)
         throw new ArgumentNullException(nameof(allocator));
 
@@ -398,7 +398,7 @@ namespace Smdn.IO.Streams {
       CheckDisposed();
 
       if (@value < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("value", @value);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(value), @value);
 
       chain.SetLength(@value);
     }
@@ -424,7 +424,7 @@ namespace Smdn.IO.Streams {
           return chain.Position;
 
         default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
     }
 
@@ -442,11 +442,11 @@ namespace Smdn.IO.Streams {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (count == 0)
         return 0;
@@ -468,11 +468,11 @@ namespace Smdn.IO.Streams {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (count == 0)
         return;

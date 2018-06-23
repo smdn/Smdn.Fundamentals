@@ -47,7 +47,7 @@ namespace Smdn.Text {
       set
       {
         if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Length", value);
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Length), value);
         length = value;
       }
     }
@@ -73,9 +73,9 @@ namespace Smdn.Text {
     public ByteStringBuilder(int capacity, int maxCapacity)
     {
       if (capacity <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("capacity", capacity);
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(capacity), capacity);
       if (maxCapacity < capacity)
-        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo("'capacity'", "maxCapacity", maxCapacity);
+        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(nameof(capacity), nameof(maxCapacity), maxCapacity);
 
       this.buffer = new byte[capacity];
       this.length = 0;
@@ -156,7 +156,7 @@ namespace Smdn.Text {
       capacity = Math.Max(capacity, buffer.Length * 2);
 
       if (maxCapacity < capacity)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'MaxCapacity'", "capacity", capacity);
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(MaxCapacity), nameof(capacity), capacity);
 
       var newBuffer = new byte[capacity];
 
@@ -173,9 +173,9 @@ namespace Smdn.Text {
     public ArraySegment<byte> GetSegment(int offset, int count)
     {
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (length - count < offset)
         throw new ArgumentException("index + count is larger than length");
 

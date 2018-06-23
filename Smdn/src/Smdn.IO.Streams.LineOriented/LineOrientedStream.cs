@@ -90,11 +90,11 @@ namespace Smdn.IO.Streams.LineOriented {
         if (newLine == null)
           throw new ArgumentNullException(nameof(newLine));
         if (newLine.Length == 0)
-          throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray("newLine");
+          throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine));
       }
 
       if (bufferSize < MinimumBufferSize)
-        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(MinimumBufferSize, "bufferSize", bufferSize);
+        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(MinimumBufferSize, nameof(bufferSize), bufferSize);
 
       this.stream = stream;
       this.strictEOL = strictEOL;
@@ -265,7 +265,7 @@ namespace Smdn.IO.Streams.LineOriented {
       CheckDisposed();
 
       if (length < 0L)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("length", length);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length);
       if (targetStream == null)
         throw new ArgumentNullException(nameof(targetStream));
 
@@ -317,11 +317,11 @@ namespace Smdn.IO.Streams.LineOriented {
       if (dest == null)
         throw new ArgumentNullException(nameof(dest));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (dest.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", dest, offset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), dest, offset, count);
 
       if (count <= bufRemain) {
         Buffer.BlockCopy(buffer, bufOffset, dest, offset, count);

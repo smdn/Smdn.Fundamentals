@@ -48,7 +48,7 @@ namespace Smdn.Text.Encodings {
       : base(0, encoderFallback, decoderFallback)
     {
       if (bits < 1 || 8 < bits)
-        throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, "bits", bits);
+        throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
 
       maxValue = (char)(1 << bits);
     }
@@ -56,7 +56,7 @@ namespace Smdn.Text.Encodings {
     public override int GetMaxCharCount(int byteCount)
     {
       if (byteCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("byteCount", byteCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteCount), byteCount);
 
       return byteCount;
     }
@@ -64,7 +64,7 @@ namespace Smdn.Text.Encodings {
     public override int GetMaxByteCount(int charCount)
     {
       if (charCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("charCount", charCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(charCount), charCount);
 
       return charCount;
     }
@@ -72,9 +72,9 @@ namespace Smdn.Text.Encodings {
     public override int GetByteCount(char[] chars, int index, int count)
     {
       if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
       if (EncoderFallback == null)
         return count - index;
@@ -108,9 +108,9 @@ namespace Smdn.Text.Encodings {
     public override int GetCharCount(byte[] bytes, int index, int count)
     {
       if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
       return count;
     }
@@ -122,13 +122,13 @@ namespace Smdn.Text.Encodings {
       if (bytes == null)
         throw new ArgumentNullException(nameof(chars));
       if (charIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("charIndex", charIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(charIndex), charIndex);
       if (charCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("charCount", charCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(charCount), charCount);
       if (chars.Length - charCount < charIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("charIndex", chars, charIndex, charCount);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(charIndex), chars, charIndex, charCount);
       if (byteIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("byteIndex", byteIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteIndex), byteIndex);
 
       var byteCount = 0;
 
@@ -175,13 +175,13 @@ namespace Smdn.Text.Encodings {
       if (chars == null)
         throw new ArgumentNullException(nameof(chars));
       if (byteIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("byteIndex", byteIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteIndex), byteIndex);
       if (byteCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("byteCount", byteCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteCount), byteCount);
       if (bytes.Length - byteCount < byteIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("byteIndex", bytes, byteIndex, byteCount);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(byteIndex), bytes, byteIndex, byteCount);
       if (charIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("charIndex", charIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(charIndex), charIndex);
 
       var charCount = 0;
 

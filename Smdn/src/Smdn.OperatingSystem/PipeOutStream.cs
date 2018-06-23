@@ -68,7 +68,7 @@ namespace Smdn.OperatingSystem {
       private set
       {
         if (value < -1)
-          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, "WaitForExitTimeout", value);
+          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, nameof(WaitForExitTimeout), value);
         waitForExitTimeout = value;
       }
     }

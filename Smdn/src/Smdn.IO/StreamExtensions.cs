@@ -49,7 +49,7 @@ namespace Smdn.IO {
       if (writer == null)
         throw new ArgumentNullException(nameof(writer));
       if (bufferSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("bufferSize", bufferSize);
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(bufferSize), bufferSize);
 
       var buffer = new byte[bufferSize];
 
@@ -78,9 +78,9 @@ namespace Smdn.IO {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
       if (readBufferSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("readBufferSize", readBufferSize);
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(readBufferSize), readBufferSize);
       if (initialCapacity < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("initialCapacity", initialCapacity);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(initialCapacity), initialCapacity);
 
       using (var outStream = new MemoryStream(initialCapacity)) {
         stream.CopyTo(outStream, readBufferSize);

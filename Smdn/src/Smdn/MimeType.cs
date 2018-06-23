@@ -71,7 +71,7 @@ namespace Smdn {
 
       if (mimeType.Length == 0) {
         if (throwException)
-          throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("mimeType");
+          throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(mimeType));
         else
           return null;
       }
@@ -239,7 +239,7 @@ namespace Smdn {
       if (mimeType == null)
         throw new ArgumentNullException(nameof(mimeType));
       if (mimeType.Length == 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("mimeType");
+        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(mimeType));
 
       if (Runtime.IsRunningOnWindows) {
         return FindExtensionsByMimeTypeWin(mimeType);

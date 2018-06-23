@@ -67,18 +67,18 @@ namespace Smdn.Formats.UUEncodings {
       if (inputBuffer == null)
         throw new ArgumentNullException(nameof(inputBuffer));
       if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
       if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
       if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
 
       if (outputBuffer == null)
         throw new ArgumentNullException(nameof(outputBuffer));
       if (outputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("outputOffset", outputOffset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
       if (outputBuffer.Length - inputCount < outputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, inputCount);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
       var ret = 0;
 
@@ -165,13 +165,13 @@ namespace Smdn.Formats.UUEncodings {
       if (inputBuffer == null)
         throw new ArgumentNullException(nameof(inputBuffer));
       if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
       if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
       if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
       if (InputBlockSize < inputCount)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("InputBlockSize", "inputCount", inputCount);
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(InputBlockSize), nameof(inputCount), inputCount);
 
       var outputBuffer = new byte[inputCount * OutputBlockSize];
       var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);

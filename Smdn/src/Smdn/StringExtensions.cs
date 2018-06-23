@@ -167,7 +167,7 @@ namespace Smdn {
       if (substr == null)
         throw new ArgumentNullException(nameof(substr));
       if (substr.Length == 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("substr");
+        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(substr));
 
       for (int count = 0, lastIndex = 0;; count++) {
         var index = str.IndexOf(substr, lastIndex);
@@ -184,13 +184,13 @@ namespace Smdn {
       if (str == null)
         throw new ArgumentNullException(nameof(str));
       if (from < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("from", from);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(from), from);
       if (str.Length <= from)
-        throw ExceptionUtils.CreateArgumentMustBeLessThan("'str.Length'", "from", from);
+        throw ExceptionUtils.CreateArgumentMustBeLessThan(nameof(str.Length), nameof(from), from);
       if (to < from)
-        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo("'from'", "to", to);
+        throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(nameof(from), nameof(to), to);
       if (str.Length < to)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'str.Length'", "to", to);
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(str.Length), nameof(to), to);
 
       return str.Substring(from, to - from);
     }
@@ -205,7 +205,7 @@ namespace Smdn {
       if (str == null)
         throw new ArgumentNullException(nameof(str));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (str.Length < startIndex)
         //throw new ArgumentException("startIndex + count is larger than length");
         throw new ArgumentException("startIndex is larger than length");

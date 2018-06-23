@@ -55,7 +55,7 @@ namespace Smdn.IO.Streams {
       if (innerOrPartialStream == null)
         throw new ArgumentNullException(nameof(innerOrPartialStream));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
 
       var partialStream = innerOrPartialStream as PartialStream;
 
@@ -101,7 +101,7 @@ namespace Smdn.IO.Streams {
         CheckDisposed();
 
         if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
         stream.Position = value + offset;
       }
     }
@@ -166,11 +166,11 @@ namespace Smdn.IO.Streams {
       if (innerStream == null)
         throw new ArgumentNullException(nameof(innerStream));
       if (!innerStream.CanSeek)
-        throw ExceptionUtils.CreateArgumentMustBeSeekableStream("innerStream");
+        throw ExceptionUtils.CreateArgumentMustBeSeekableStream(nameof(innerStream));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (length.HasValue && length.Value < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("length", length.Value);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length.Value);
 
       this.stream = innerStream;
       this.offset = offset;
@@ -242,7 +242,7 @@ namespace Smdn.IO.Streams {
             return stream.Seek(this.offset + position, SeekOrigin.Begin) - this.offset;
         }
         default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
 
       throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
@@ -278,7 +278,7 @@ namespace Smdn.IO.Streams {
       CheckDisposed();
 
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
       var remainder = GetRemainderLength();
 
@@ -294,7 +294,7 @@ namespace Smdn.IO.Streams {
       CheckWritable();
 
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
       var remainder = GetRemainderLength() - count;
 

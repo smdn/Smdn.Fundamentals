@@ -58,9 +58,9 @@ namespace Smdn {
       if (@value == null)
         throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (@value.Length - 4 < startIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", @value, startIndex, 4);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), @value, startIndex, 4);
 
       this.fourcc = @value[startIndex + 0] << 24 |
                     @value[startIndex + 1] << 16 |
@@ -139,9 +139,9 @@ namespace Smdn {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (buffer.Length - 4 < startIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", buffer, startIndex, 4);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, 4);
 
       unchecked {
         buffer[startIndex++] = (byte)(fourcc >> 24);

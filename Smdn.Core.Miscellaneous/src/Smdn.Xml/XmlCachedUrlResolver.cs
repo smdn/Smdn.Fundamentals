@@ -39,7 +39,7 @@ namespace Smdn.Xml {
       if (cacheDirectory == null)
         throw new ArgumentNullException(nameof(cacheDirectory));
       if (cacheExpirationInterval < TimeSpan.Zero)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("cacheExpirationInterval", cacheExpirationInterval);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(cacheExpirationInterval), cacheExpirationInterval);
 
       this.cacheDirectory = cacheDirectory;
       this.cacheExpirationInterval = cacheExpirationInterval;

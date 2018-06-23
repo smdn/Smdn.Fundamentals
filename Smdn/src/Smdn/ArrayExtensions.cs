@@ -119,11 +119,11 @@ namespace Smdn {
       if (array == null)
         throw new ArgumentNullException(nameof(array));
       if (start < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("start", start);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(start), start);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (array.Length - count < start)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("start", array, start, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(start), array, start, count);
 
       var cut = new T[count];
 

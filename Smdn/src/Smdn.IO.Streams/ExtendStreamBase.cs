@@ -68,7 +68,7 @@ namespace Smdn.IO.Streams {
         CheckSeekable();
 
         if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
         position = value;
         SetPosition();
       }
@@ -104,11 +104,11 @@ namespace Smdn.IO.Streams {
       if (innerStream == null)
         throw new ArgumentNullException(nameof(innerStream));
       if (!innerStream.CanRead)
-        throw ExceptionUtils.CreateArgumentMustBeReadableStream("innerStream");
+        throw ExceptionUtils.CreateArgumentMustBeReadableStream(nameof(innerStream));
       if (prependLength < 0L)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("prependLength", prependLength);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(prependLength), prependLength);
       if (appendLength < 0L)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("appendLength", appendLength);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(appendLength), appendLength);
 
       this.stream = innerStream;
       this.prependLength = prependLength;
@@ -180,7 +180,7 @@ namespace Smdn.IO.Streams {
           return position;
 
         default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
 
       throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
@@ -222,11 +222,11 @@ namespace Smdn.IO.Streams {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       var ret = 0;
 

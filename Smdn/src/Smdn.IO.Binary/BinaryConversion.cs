@@ -30,9 +30,9 @@ namespace Smdn.IO.Binary {
       if (@value == null)
         throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (@value.Length - count < startIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", @value, startIndex, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), @value, startIndex, count);
     }
 
     private static void CheckDestArray(byte[] @bytes, int startIndex, int count)
@@ -40,9 +40,9 @@ namespace Smdn.IO.Binary {
       if (@bytes == null)
         throw new ArgumentNullException(nameof(bytes));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (@bytes.Length - count < startIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("startIndex", @bytes, startIndex, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), @bytes, startIndex, count);
     }
 
     private static Exception GetUnsupportedEndianException(Endianness endian)

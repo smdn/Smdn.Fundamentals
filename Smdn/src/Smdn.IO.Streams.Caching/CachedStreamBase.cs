@@ -65,7 +65,7 @@ namespace Smdn.IO.Streams.Caching {
         CheckDisposed();
 
         if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("Position", value);
+          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
 
         position = value;
       }
@@ -84,12 +84,12 @@ namespace Smdn.IO.Streams.Caching {
       if (innerStream == null)
         throw new ArgumentNullException(nameof(innerStream));
       else if (!innerStream.CanSeek)
-        throw ExceptionUtils.CreateArgumentMustBeSeekableStream("innerStream");
+        throw ExceptionUtils.CreateArgumentMustBeSeekableStream(nameof(innerStream));
       else if (!innerStream.CanRead)
-        throw ExceptionUtils.CreateArgumentMustBeReadableStream("innerStream");
+        throw ExceptionUtils.CreateArgumentMustBeReadableStream(nameof(innerStream));
 
       if (blockSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("blockSize", blockSize);
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(blockSize), blockSize);
 
       this.stream = innerStream;
       this.blockSize = blockSize;
@@ -145,7 +145,7 @@ namespace Smdn.IO.Streams.Caching {
           return position;
 
         default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
     }
 
@@ -172,11 +172,11 @@ namespace Smdn.IO.Streams.Caching {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       var ret = 0;
 

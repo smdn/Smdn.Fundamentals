@@ -106,7 +106,7 @@ namespace Smdn.Formats.UUEncodings {
       if (baseStream == null)
         throw new ArgumentNullException(nameof(baseStream));
       if (!baseStream.CanRead)
-        throw ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
+        throw ExceptionUtils.CreateArgumentMustBeReadableStream(nameof(baseStream));
 
       this.leaveStreamOpen = leaveStreamOpen;
       this.stream = new LooseLineOrientedStream(baseStream, leaveStreamOpen);
@@ -211,11 +211,11 @@ namespace Smdn.Formats.UUEncodings {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("offset", offset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("offset", buffer, offset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (count == 0)
         return 0;

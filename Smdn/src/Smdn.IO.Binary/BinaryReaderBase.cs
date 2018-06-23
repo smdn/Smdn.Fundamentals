@@ -65,7 +65,7 @@ namespace Smdn.IO.Binary {
       if (baseStream == null)
         throw new ArgumentNullException(nameof(baseStream));
       if (!baseStream.CanRead)
-        throw ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
+        throw ExceptionUtils.CreateArgumentMustBeReadableStream(nameof(baseStream));
 
       this.stream = baseStream;
       this.leaveBaseStreamOpen = leaveBaseStreamOpen;
@@ -138,7 +138,7 @@ namespace Smdn.IO.Binary {
     public byte[] ReadBytes(int count)
     {
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
         return Array.Empty<byte>();
 
@@ -162,7 +162,7 @@ namespace Smdn.IO.Binary {
     public byte[] ReadExactBytes(int count)
     {
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
         return Array.Empty<byte>();
 
@@ -196,11 +196,11 @@ namespace Smdn.IO.Binary {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("index", index);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
       if (buffer.Length - count < index)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", buffer, index, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(index), buffer, index, count);
 
       return ReadBytesUnchecked(buffer, index, count, readExactBytes);
     }

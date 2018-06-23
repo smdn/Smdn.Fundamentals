@@ -188,9 +188,9 @@ namespace Smdn.Text {
       if (@value == null)
         throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (@value.Length - count < startIndex)
         throw new ArgumentException("attempt to access beyond the end of the string"); // XXX
 
@@ -545,7 +545,7 @@ namespace Smdn.Text {
     public unsafe int IndexOf(ArraySegment<byte> @value, int startIndex)
     {
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
 
       if (segment.Count < @value.Count)
         return -1;
@@ -580,7 +580,7 @@ namespace Smdn.Text {
     public unsafe int IndexOfIgnoreCase(ArraySegment<byte> @value, int startIndex)
     {
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
 
       if (segment.Count < @value.Count)
         return -1;
@@ -618,7 +618,7 @@ namespace Smdn.Text {
       if (@value == null)
         throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
 
       if (segment.Count < @value.Length)
         return -1;
@@ -695,7 +695,7 @@ namespace Smdn.Text {
     public ByteString Substring(int startIndex, int count)
     {
       if (segment.Count < count)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'Length'", "count", count);
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(Length), nameof(count), count);
 
       return new ByteString(new ArraySegment<byte>(segment.Array,
                                                    segment.Offset + startIndex,
@@ -713,7 +713,7 @@ namespace Smdn.Text {
     public ArraySegment<byte> GetSubSegment(int startIndex, int count)
     {
       if (segment.Count < count)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo("'Length'", "count", count);
+        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(Length), nameof(count), count);
 
       return new ArraySegment<byte>(segment.Array,
                                     segment.Offset + startIndex,
@@ -1053,7 +1053,7 @@ namespace Smdn.Text {
       if (x == null)
         throw new ArgumentNullException(nameof(x));
       if (y < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("y", y);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(y), y);
 
       if (x == null)
         return CreateEmpty();
@@ -1136,9 +1136,9 @@ namespace Smdn.Text {
     public byte[] ToArray(int startIndex, int count)
     {
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (segment.Count - count < startIndex)
         throw new ArgumentException("startIndex + count is larger than length"); // XXXX
 
@@ -1177,18 +1177,18 @@ namespace Smdn.Text {
     public void CopyTo(int startIndex, byte[] dest, int destOffset, int count)
     {
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (segment.Count - count < startIndex)
         throw new ArgumentException("startIndex + count is larger than length"); // XXXX
 
       if (dest == null)
         throw new ArgumentNullException(nameof(dest));
       if (destOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("destOffset", destOffset);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(destOffset), destOffset);
       if (dest.Length - count < destOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("destOffset", dest, destOffset, count);
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(destOffset), dest, destOffset, count);
 
       Buffer.BlockCopy(segment.Array, segment.Offset + startIndex, dest, destOffset, count);
     }
@@ -1235,9 +1235,9 @@ namespace Smdn.Text {
     internal unsafe static string ToString(Encoding encoding, ArraySegment<byte> segment, int startIndex, int count)
     {
       if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("startIndex", startIndex);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("count", count);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (segment.Count - count < startIndex)
         throw new ArgumentException("startIndex + count is larger than length"); // XXXX
 

@@ -52,7 +52,7 @@ namespace Smdn.IO.Binary {
       : base(baseStream, leaveBaseStreamOpen)
     {
       if (storageSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive("storageSize", storageSize);
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(storageSize), storageSize);
 
       this.endianness = endianness;
       this.Storage = new byte[storageSize];

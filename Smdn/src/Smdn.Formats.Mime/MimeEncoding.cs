@@ -93,11 +93,11 @@ namespace Smdn.Formats.Mime {
         throw new ArgumentNullException(nameof(charset));
       if (doFold) {
         if (foldingLimit < 1)
-          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(1, "foldingLimit", foldingLimit);
+          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(1, nameof(foldingLimit), foldingLimit);
         if (foldingOffset < 0)
-          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(0, "foldingOffset", foldingOffset);
+          throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(0, nameof(foldingOffset), foldingOffset);
         if (foldingLimit <= foldingOffset)
-          throw ExceptionUtils.CreateArgumentMustBeLessThan("'foldingLimit'", "foldingOffset", foldingOffset);
+          throw ExceptionUtils.CreateArgumentMustBeLessThan(nameof(foldingLimit), nameof(foldingOffset), foldingOffset);
         if (foldingString == null)
           throw new ArgumentNullException(nameof(foldingString));
       }
@@ -115,7 +115,7 @@ namespace Smdn.Formats.Mime {
           encodingChar = 'q';
           break;
         default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue("encoding", encoding);
+          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding);
       }
 
 #if NET46 || NETSTANDARD20

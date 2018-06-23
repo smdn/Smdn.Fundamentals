@@ -48,7 +48,7 @@ namespace Smdn.IO {
       if (cachePath == null)
         throw new ArgumentNullException(nameof(cachePath));
       if (expirationInterval < TimeSpan.Zero)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("expirationInterval", expirationInterval);
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(expirationInterval), expirationInterval);
 
       this.FileUri = fileUri;
       this.CachePath = cachePath;
