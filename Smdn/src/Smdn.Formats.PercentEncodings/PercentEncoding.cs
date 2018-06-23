@@ -44,7 +44,7 @@ namespace Smdn.Formats.PercentEncodings {
     public static string GetEncodedString(byte[] bytes, ToPercentEncodedTransformMode mode)
     {
       if (bytes == null)
-        throw new ArgumentNullException();
+        throw new ArgumentNullException(nameof(bytes));
 
       return GetEncodedString(bytes, 0, bytes.Length, mode);
     }

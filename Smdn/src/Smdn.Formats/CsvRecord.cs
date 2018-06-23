@@ -91,7 +91,7 @@ namespace Smdn.Formats {
     public static string ToJoined(params string[] csv)
     {
       if (csv == null)
-        throw new ArgumentNullException(null);
+        throw new ArgumentNullException(nameof(csv));
       
       if (csv.Length == 0)
         return string.Empty;
