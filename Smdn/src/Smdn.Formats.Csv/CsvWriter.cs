@@ -110,7 +110,7 @@ namespace Smdn.Formats.Csv {
 
         var escape = escapeAlways ||
           (0 <= column.IndexOf(delimiter) ||
-           0 <= column.IndexOf(quotator) ||
+           0 <= column.IndexOf(quotator, StringComparison.Ordinal) ||
            0 <= column.IndexOf(Ascii.Chars.CR) ||
            0 <= column.IndexOf(Ascii.Chars.LF));
 
