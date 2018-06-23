@@ -36,7 +36,7 @@ namespace Smdn.Xml.Linq.Xhtml {
       if (styles == null)
         throw new ArgumentNullException(nameof(styles));
 
-      return string.Join(" ", styles.Select(style => ToJoined(style)));
+      return string.Join(" ", styles.Select(ToJoined));
     }
 
     public XHtmlStyleAttribute(IReadOnlyDictionary<string, string> styles)
