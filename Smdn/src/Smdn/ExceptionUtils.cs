@@ -67,9 +67,7 @@ namespace Smdn {
         if (table == null)
           return msgid;
 
-        string msgstr;
-
-        if (table.TryGetValue(msgid, out msgstr))
+        if (table.TryGetValue(msgid, out var msgstr))
           return msgstr;
         else
           return msgid;

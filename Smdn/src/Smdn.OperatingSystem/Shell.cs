@@ -58,18 +58,14 @@ namespace Smdn.OperatingSystem {
 
     public static string Execute(string command)
     {
-      string stdout;
-
-      Execute(command, out stdout);
+      Execute(command, out var stdout);
 
       return stdout;
     }
 
     public static int Execute(string command, out string stdout)
     {
-      string discard;
-
-      return Execute(command, out stdout, out discard);
+      return Execute(command, out stdout, out _);
     }
 
     public static int Execute(string command, out string stdout, out string stderr)

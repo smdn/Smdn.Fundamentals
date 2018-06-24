@@ -197,8 +197,7 @@ namespace Smdn.Formats.Csv {
 
       try {
         for (;;) {
-          bool escaped;
-          var field = ReadField(out escaped);
+          var field = ReadField(out var escaped);
 
           if (field == null)
             return null;

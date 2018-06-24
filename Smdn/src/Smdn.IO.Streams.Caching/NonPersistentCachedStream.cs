@@ -68,10 +68,9 @@ namespace Smdn.IO.Streams.Caching {
 
     protected override byte[] GetBlock(long blockIndex)
     {
-      WeakReference<byte[]> blockReference = null;
       byte[] block = null;
 
-      if (cachedBlocks.TryGetValue(blockIndex, out blockReference))
+      if (cachedBlocks.TryGetValue(blockIndex, out var blockReference))
         blockReference.TryGetTarget(out block);
 
       if (block == null) {

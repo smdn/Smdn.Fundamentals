@@ -218,26 +218,17 @@ namespace Smdn.Formats.Mime {
 
     public static string Decode(string str)
     {
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return Decode(str, null, null, out discard1, out discard2);
+      return Decode(str, null, null, out _, out _);
     }
 
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding)
     {
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return Decode(str, selectFallbackEncoding, null, out discard1, out discard2);
+      return Decode(str, selectFallbackEncoding, null, out _, out _);
     }
 
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
     {
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out discard1, out discard2);
+      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out _, out _);
     }
 
     public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
@@ -339,10 +330,7 @@ namespace Smdn.Formats.Mime {
       if (str == null)
         return null;
 
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return Decode(str, null, null, out discard1, out discard2);
+      return Decode(str, null, null, out _, out _);
     }
 
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding)
@@ -350,10 +338,7 @@ namespace Smdn.Formats.Mime {
       if (str == null)
         return null;
 
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return Decode(str, selectFallbackEncoding, null, out discard1, out discard2);
+      return Decode(str, selectFallbackEncoding, null, out _, out _);
     }
 
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
@@ -361,10 +346,7 @@ namespace Smdn.Formats.Mime {
       if (str == null)
         return null;
 
-      MimeEncodingMethod discard1;
-      Encoding discard2;
-
-      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out discard1, out discard2);
+      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out _, out _);
     }
 
     public static string DecodeNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)

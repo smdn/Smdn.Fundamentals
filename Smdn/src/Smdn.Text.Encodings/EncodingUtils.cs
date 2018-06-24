@@ -44,9 +44,7 @@ namespace Smdn.Text.Encodings {
       // remove leading and trailing whitespaces (\x20, \n, \t, etc.)
       name = name.Trim();
 
-      string encodingName;
-
-      if (!encodingCollationTable.TryGetValue(name.RemoveChars(whiteSpaceChars), out encodingName))
+      if (!encodingCollationTable.TryGetValue(name.RemoveChars(whiteSpaceChars), out var encodingName))
         encodingName = name;
 
       try {

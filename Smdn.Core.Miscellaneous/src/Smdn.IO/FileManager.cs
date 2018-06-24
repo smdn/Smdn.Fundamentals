@@ -66,9 +66,7 @@ namespace Smdn.IO {
         }
       }
       else if (Runtime.IsRunningOnUnix) {
-        string filemanager;
-
-        if (FindNautilus(out filemanager)) {
+        if (FindNautilus(out var filemanager)) {
           psi = new ProcessStartInfo(filemanager);
           psi.UseShellExecute = false;
 

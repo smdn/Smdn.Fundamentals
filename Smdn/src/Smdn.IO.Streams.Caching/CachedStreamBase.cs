@@ -153,8 +153,7 @@ namespace Smdn.IO.Streams.Caching {
     {
       CheckDisposed();
 
-      int blockOffset;
-      var block = GetBlock(position, out blockOffset);
+      var block = GetBlock(position, out var blockOffset);
 
       if (block.Length <= blockOffset) {
         return -1;
@@ -181,9 +180,7 @@ namespace Smdn.IO.Streams.Caching {
       var ret = 0;
 
       for (;;) {
-        int blockOffset;
-        var block = GetBlock(position, out blockOffset);
-
+        var block = GetBlock(position, out var blockOffset);
         var bytesToCopy = Math.Min(block.Length - blockOffset, count);
 
         if (bytesToCopy <= 0)
@@ -203,11 +200,10 @@ namespace Smdn.IO.Streams.Caching {
 
     private byte[] GetBlock(long offset, out int offsetInBlock)
     {
-      long blockOffset;
 #if NET46 || NETSTANDARD20
-      var blockIndex = Math.DivRem(position, (long)blockSize, out blockOffset);
+      var blockIndex = Math.DivRem(position, (long)blockSize, out var blockOffset);
 #else
-      var blockIndex = MathUtils.DivRem(position, (long)blockSize, out blockOffset);
+      var blockIndex = MathUtils.DivRem(position, (long)blockSize, out var blockOffset);
 #endif
 
       offsetInBlock = (int)blockOffset;

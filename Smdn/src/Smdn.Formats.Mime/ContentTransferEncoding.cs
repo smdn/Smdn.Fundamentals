@@ -66,9 +66,7 @@ namespace Smdn.Formats.Mime {
       if (encoding == null)
         throw new ArgumentNullException(nameof(encoding));
 
-      ContentTransferEncodingMethod method;
-
-      if (contentTransferEncodingMethods.TryGetValue(encoding, out method))
+      if (contentTransferEncodingMethods.TryGetValue(encoding, out var method))
         return method;
       else
         return ContentTransferEncodingMethod.Unknown;
