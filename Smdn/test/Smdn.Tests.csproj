@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net461;net46;netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
+    <AssemblyName>Smdn.Tests</AssemblyName>
+    <RootNamespace>Smdn</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <DefineConstants>$(DefineConstants);NET</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnitLite" Version="3.10.1" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\src\Smdn.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NUnitLiteTestRunner.cs" />
+    <Compile Include="..\..\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
+    <Compile Include="..\..\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
+  </ItemGroup>
+</Project>
