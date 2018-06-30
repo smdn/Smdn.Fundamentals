@@ -74,14 +74,14 @@ namespace Smdn {
     }
 #endif
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     private static string distributionName = null;
 #endif
 
     public static string DistributionName {
       get
       {
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
         if (distributionName == null) {
           distributionName = Environment.OSVersion.VersionString; // default
 

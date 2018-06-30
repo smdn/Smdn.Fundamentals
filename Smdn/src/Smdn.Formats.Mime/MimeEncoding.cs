@@ -32,6 +32,16 @@ using Smdn.Security.Cryptography;
 using Smdn.Text;
 using Smdn.Text.Encodings;
 
+#if NET || NETSTANDARD20
+using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
+using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
+using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
+#else
+using FromBase64Transform = Smdn.Security.Cryptography.FromBase64Transform;
+using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
+using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
+#endif
+
 namespace Smdn.Formats.Mime {
   /*
    * http://tools.ietf.org/html/rfc2047

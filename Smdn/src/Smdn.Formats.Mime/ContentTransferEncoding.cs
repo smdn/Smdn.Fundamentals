@@ -34,8 +34,12 @@ using Smdn.IO.Streams;
 using Smdn.Text;
 using Smdn.Text.Encodings;
 
-#if !(NET46 || NETSTANDARD20)
-using Smdn.Security.Cryptography;
+#if NET || NETSTANDARD20
+using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
+using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
+#else
+using FromBase64Transform = Smdn.Security.Cryptography.FromBase64Transform;
+using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
 #endif
 
 namespace Smdn.Formats.Mime {

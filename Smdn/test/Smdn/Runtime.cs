@@ -3,11 +3,11 @@ using System.Reflection;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-#if NET46
+#if NET
 using Smdn.OperatingSystem;
 #endif
 
-#if !NET46
+#if !NET
 using System.Runtime.InteropServices;
 #endif
 
@@ -25,7 +25,7 @@ namespace Smdn {
       Assert.Inconclusive("see output");
     }
 
-#if NET46
+#if NET
     [Test]
     public void TestVersionString()
     {
@@ -50,7 +50,7 @@ namespace Smdn {
     [Test]
     public void TestIsRunningOnUnix()
     {
-#if NET46
+#if NET
       if (string.Empty.Equals(Shell.Execute("uname")))
         Assert.IsFalse(Runtime.IsRunningOnUnix);
       else
@@ -70,7 +70,7 @@ namespace Smdn {
     [Test]
     public void TestIsRunningOnWindows()
     {
-#if NET46
+#if NET
       if (string.Empty.Equals(Shell.Execute("VER")))
         Assert.IsFalse(Runtime.IsRunningOnWindows);
       else
@@ -108,7 +108,7 @@ namespace Smdn {
           StringAssert.Contains(".net core", name);
           break;
         default:
-#if NET46
+#if NET
           StringAssert.Contains("compatible", name);
 #else
           StringAssert.Contains(".net", name);
@@ -128,7 +128,7 @@ namespace Smdn {
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
       }
       else {
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
         Assert.AreEqual(Environment.Version, Runtime.Version);
 #endif
       }

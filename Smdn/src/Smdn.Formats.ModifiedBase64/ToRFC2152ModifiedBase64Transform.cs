@@ -25,8 +25,10 @@
 using System;
 using System.Security.Cryptography;
 
-#if !(NET46 || NETSTANDARD20)
-using Smdn.Security.Cryptography;
+#if NET || NETSTANDARD20
+using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
+#else
+using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
 #endif
 
 namespace Smdn.Formats.ModifiedBase64 {

@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
-using Smdn.Collections;
 using NUnit.Framework;
+
+#if NETCOREAPP2_0
+using KeyValuePair = System.Collections.Generic.KeyValuePair;
+#else
+using KeyValuePair = Smdn.Collections.KeyValuePair;
+#endif
 
 namespace Smdn.Text {
   [TestFixture]

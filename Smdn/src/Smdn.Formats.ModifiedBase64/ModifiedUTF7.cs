@@ -28,6 +28,12 @@ using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
 
+#if NET || NETSTANDARD20
+using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
+#else
+using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
+#endif
+
 namespace Smdn.Formats.ModifiedBase64 {
   /*
    * RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1

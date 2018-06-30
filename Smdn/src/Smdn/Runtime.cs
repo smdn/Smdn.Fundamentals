@@ -142,7 +142,7 @@ namespace Smdn {
       {
         switch (runtimeEnvironment) {
           case RuntimeEnvironment.Mono: {
-#if NET46
+#if NET
             var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
 #else
             var displayName = (string)Type.GetType("Mono.Runtime").GetTypeInfo().GetDeclaredMethod("GetDisplayName").Invoke(null, null);
@@ -161,7 +161,7 @@ namespace Smdn {
           }
         }
 
-#if NET46 || NETSTANDARD2_0
+#if NET || NETSTANDARD2_0
         return Environment.Version;
 #else
         return null;

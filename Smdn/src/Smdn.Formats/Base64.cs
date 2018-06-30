@@ -29,6 +29,16 @@ using System.Text;
 
 using Smdn.Security.Cryptography;
 
+#if NET || NETSTANDARD20
+using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
+using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
+using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
+#else
+using FromBase64Transform = Smdn.Security.Cryptography.FromBase64Transform;
+using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
+using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
+#endif
+
 namespace Smdn.Formats {
   public static class Base64 {
     public static string GetEncodedString(string str)
