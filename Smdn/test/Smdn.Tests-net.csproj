@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Tests</AssemblyName>
     <RootNamespace>Smdn.Tests</RootNamespace>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,7 +18,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\net\</OutputPath>
     <IntermediateOutputPath>obj\Debug\net\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;NET46</DefineConstants>
+    <DefineConstants>DEBUG;NET;NET461</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -28,7 +28,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Release\net\</OutputPath>
     <IntermediateOutputPath>obj\Release\net\</IntermediateOutputPath>
-    <DefineConstants>NET46</DefineConstants>
+    <DefineConstants>NET;NET461</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -110,7 +110,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\src\Smdn-net.csproj">
+    <ProjectReference Include="..\src\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
