@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn.Core.Miscellaneous</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -69,7 +69,7 @@
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\src\Smdn-net.csproj">
+    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>

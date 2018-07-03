@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Core.Miscellaneous.Tests</AssemblyName>
     <RootNamespace>Smdn.Core.Miscellaneous.Tests</RootNamespace>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,7 +38,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\src\Smdn-net.csproj">
+    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
@@ -50,7 +50,7 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <PackageReference Include="NUnit">
-      <Version>3.6.1</Version>
+      <Version>3.10.1</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
