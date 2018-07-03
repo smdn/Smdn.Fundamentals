@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Xml.Xhtml.Tests</AssemblyName>
     <RootNamespace>Smdn.Xml.Xhtml.Tests</RootNamespace>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,7 +18,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\net\</OutputPath>
     <IntermediateOutputPath>obj\Debug\net\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;NET46</DefineConstants>
+    <DefineConstants>DEBUG;NET;NET461</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -28,7 +28,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Release\net\</OutputPath>
     <IntermediateOutputPath>obj\Release\net\</IntermediateOutputPath>
-    <DefineConstants>NET46</DefineConstants>
+    <DefineConstants>NET;NET461</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -54,17 +54,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn.Xml.Xhtml\src\Smdn.Xml.Xhtml-net.csproj">
+    <ProjectReference Include="..\..\Smdn.Xml.Xhtml\src\Smdn.Xml.Xhtml.csproj">
       <Project>{A13C4BB2-2E47-479C-A19C-6D218AE02D14}</Project>
-      <Name>Smdn.Xml.Xhtml-net</Name>
+      <Name>Smdn.Xml.Xhtml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Smdn.Xml\src\Smdn.Xml-net.csproj">
+    <ProjectReference Include="..\..\Smdn.Xml\src\Smdn.Xml.csproj">
       <Project>{56316310-7B70-4143-9EB4-3001BCE6E40B}</Project>
       <Name>Smdn.Xml-net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Smdn\src\Smdn-net.csproj">
+    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
-      <Name>Smdn-net</Name>
+      <Name>Smdn</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
