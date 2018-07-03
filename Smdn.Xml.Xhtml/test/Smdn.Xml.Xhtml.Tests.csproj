@@ -2,8 +2,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>net461;net46;netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
-    <AssemblyName>Smdn.Tests</AssemblyName>
-    <RootNamespace>Smdn</RootNamespace>
+    <AssemblyName>Smdn.Xml.Xhtml.Tests</AssemblyName>
+    <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
@@ -11,16 +11,18 @@
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.10.1" />
     <PackageReference Include="NUnitLite" Version="3.10.1" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
-  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))" />
   <ItemGroup>
-    <ProjectReference Include="..\src\Smdn.csproj" />
+    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj" />
+    <ProjectReference Include="..\src\Smdn.Xml.Xhtml.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\NUnitLiteTestRunner.cs" />
     <Compile Include="..\..\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
-    <Compile Include="..\..\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 </Project>
