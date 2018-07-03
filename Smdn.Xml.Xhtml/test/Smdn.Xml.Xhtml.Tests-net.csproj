@@ -58,10 +58,6 @@
       <Project>{A13C4BB2-2E47-479C-A19C-6D218AE02D14}</Project>
       <Name>Smdn.Xml.Xhtml</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Smdn.Xml\src\Smdn.Xml.csproj">
-      <Project>{56316310-7B70-4143-9EB4-3001BCE6E40B}</Project>
-      <Name>Smdn.Xml-net</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
