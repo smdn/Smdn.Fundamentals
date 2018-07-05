@@ -28,7 +28,7 @@ using System.IO;
 using System.Linq;
 
 namespace Smdn.IO {
-#if !(NET46 || NETSTANDARD20)
+#if !(NET || NETSTANDARD20)
   public static class BinaryReaderExtensions {
     public static void Close(this BinaryReader reader)
     {

@@ -47,7 +47,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(string path)
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
       : this(path, Encoding.Default)
 #else
       : this(path, Encoding.UTF8)
@@ -61,7 +61,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(Stream stream)
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
       : this(stream, Encoding.Default)
 #else
       : this(stream, Encoding.UTF8)

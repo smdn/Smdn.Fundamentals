@@ -346,7 +346,7 @@ namespace Smdn.IO.Binary {
           Assert.IsFalse(reader.EndOfStream);
           Assert.AreEqual(0L, reader.BaseStream.Position);
 
-#if NET46
+#if NET
           var ret = reader.GetType().InvokeMember(test.Method,
                                                   BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                                   null,
@@ -386,7 +386,7 @@ namespace Smdn.IO.Binary {
           reader.Close();
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
-#if NET46
+#if NET
             reader.GetType().InvokeMember(test.Method,
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,
@@ -431,7 +431,7 @@ namespace Smdn.IO.Binary {
             Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", test.Method);
 
           Assert.Throws<TargetInvocationException>(() => {
-#if NET46
+#if NET
             reader.GetType().InvokeMember(test.Method,
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,

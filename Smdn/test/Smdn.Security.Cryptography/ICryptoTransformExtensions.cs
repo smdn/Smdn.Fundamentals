@@ -69,7 +69,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-#if NET46
+#if NET
     [Test]
     public void TestTranformBytesWithHashAlgorithm()
     {

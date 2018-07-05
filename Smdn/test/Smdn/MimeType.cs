@@ -84,7 +84,7 @@ namespace Smdn {
     public void TestFindMimeTypeByExtension()
     {
       if (Runtime.IsRunningOnWindows) {
-#if !NET46
+#if !NET
         Assert.Throws<PlatformNotSupportedException>(() => MimeType.FindMimeTypeByExtension("hoge.txt"));
         return;
 #endif
@@ -109,7 +109,7 @@ namespace Smdn {
     public void TestFindExtensionsByMimeType()
     {
       if (Runtime.IsRunningOnWindows) {
-#if !NET46
+#if !NET
         Assert.Throws<PlatformNotSupportedException>(() => MimeType.FindExtensionsByMimeType("text/plain"));
         return;
 #endif

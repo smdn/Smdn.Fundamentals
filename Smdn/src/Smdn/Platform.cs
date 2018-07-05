@@ -27,7 +27,7 @@ using System.IO;
 
 using Smdn.OperatingSystem;
 
-#if !NET46
+#if !NET
 using System.Runtime.InteropServices;
 #endif
 
@@ -51,7 +51,7 @@ namespace Smdn {
 
     public static readonly Endianness Endianness;
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     private static string kernelName = null;
 
     public static string KernelName {
@@ -101,7 +101,7 @@ namespace Smdn {
       }
     }
 
-#if NET46
+#if NET
     private static string processorName = null;
 
     public static string ProcessorName {

@@ -93,7 +93,7 @@ namespace Smdn {
       return (m * n) / Gcd(m, n);
     }
 
-#if !(NET46 || NETSTANDARD20)
+#if !(NET || NETSTANDARD20)
     public static int DivRem(int a, int b, out int result)
     {
       int quotient = a / b;

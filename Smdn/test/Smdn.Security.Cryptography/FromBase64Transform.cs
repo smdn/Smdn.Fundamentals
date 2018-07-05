@@ -34,7 +34,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     [Test]
     public void TestClear()
     {

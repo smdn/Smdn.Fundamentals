@@ -58,7 +58,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes)
     {
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
       return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes);
@@ -67,7 +67,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes, int offset, int count)
     {
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
       return System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes, offset, count);

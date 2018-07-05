@@ -26,7 +26,7 @@ using System;
 using System.Reflection;
 using System.Linq;
 
-#if !NET46
+#if !NET
 using System.Runtime.InteropServices;
 #endif
 

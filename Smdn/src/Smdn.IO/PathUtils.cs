@@ -123,7 +123,7 @@ namespace Smdn.IO {
       return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
     }
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     public static bool ContainsShellEscapeChar(string path)
     {
       return ContainsShellEscapeChar(path, Encoding.Default);
@@ -135,7 +135,7 @@ namespace Smdn.IO {
       return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
     }
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     public static bool ContainsShellPipeChar(string path)
     {
       return ContainsShellPipeChar(path, Encoding.Default);
@@ -192,7 +192,7 @@ namespace Smdn.IO {
       return false;
     }
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     public static string RenameUnique(string file)
     {
       if (file == null)
@@ -245,7 +245,7 @@ namespace Smdn.IO {
       path = path.Replace("%", "%25" /*encode*/);
 
       if (!Runtime.IsRunningOnWindows) {
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + path.Replace(":", "%3A");
 #else

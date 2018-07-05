@@ -385,7 +385,7 @@ namespace Smdn.IO.Binary {
           Assert.AreEqual(0L, writer.BaseStream.Position);
 
           try {
-#if NET46
+#if NET
             writer.GetType().InvokeMember("Write",
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,
@@ -428,7 +428,7 @@ namespace Smdn.IO.Binary {
           writer.Close();
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
-#if NET46
+#if NET
             writer.GetType().InvokeMember("Write",
                                           BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
                                           null,

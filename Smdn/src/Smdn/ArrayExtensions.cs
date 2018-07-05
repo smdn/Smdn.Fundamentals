@@ -163,7 +163,7 @@ namespace Smdn {
 
     public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter)
     {
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
       return Array.ConvertAll<TInput, TOutput>(array, converter);
 #else
       if (array == null)

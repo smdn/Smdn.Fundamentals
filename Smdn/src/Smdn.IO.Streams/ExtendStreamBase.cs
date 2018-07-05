@@ -119,7 +119,7 @@ namespace Smdn.IO.Streams {
       this.leaveInnerStreamOpen = leaveInnerStreamOpen;
     }
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -130,7 +130,7 @@ namespace Smdn.IO.Streams {
 
       stream = null;
 
-#if NET46 || NETSTANDARD20
+#if NET || NETSTANDARD20
       base.Close();
 #else
       base.Dispose(disposing);
