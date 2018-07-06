@@ -317,10 +317,6 @@ namespace Smdn.IO {
                       PathUtils.GetRelativePath(@"/root/foo:bar", @"/root/foo"),
                       "contains ':' #3");
 
-      ///home/smdn/Pictures/temp/いおり/
-      ///home/smdn/Pictures/temp/いおり/
-
-
       Assert.AreEqual("../兄弟/",
                       PathUtils.GetRelativePath("/root/dir/", "/root/兄弟/"),
                       "contains non ascii #1");
