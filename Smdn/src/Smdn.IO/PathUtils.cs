@@ -231,6 +231,7 @@ namespace Smdn.IO {
     }
 #endif
 
+    // #if !(NETCOREAPP2_0 || NETCOREAPP2_1)
     public static string GetRelativePath(string basePath, string path)
     {
       if (basePath == null)
@@ -246,11 +247,11 @@ namespace Smdn.IO {
 
       if (!Runtime.IsRunningOnWindows) {
 #if NET || NETSTANDARD20
-        basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + basePath.Replace(":", "%3A");
-        path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + path.Replace(":", "%3A");
+        basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + basePath.Replace(":", "%3A");
+        path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + path.Replace(":", "%3A");
 #else
-        basePath = "file://" + basePath.Replace(":", "%3A");
-        path     = "file://" + path.Replace(":", "%3A");
+        basePath = "file://localhost" + basePath.Replace(":", "%3A");
+        path     = "file://localhost" + path.Replace(":", "%3A");
 #endif
       }
 
