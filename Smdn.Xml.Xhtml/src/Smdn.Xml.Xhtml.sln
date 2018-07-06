@@ -4,9 +4,7 @@ VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn", "..\..\Smdn\src\Smdn.csproj", "{B9068594-64C2-4976-AF65-D7FA9BBE0522}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Xml", "..\..\Smdn.Xml\src\Smdn.Xml.csproj", "{56316310-7B70-4143-9EB4-3001BCE6E40B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Xml.Xhtml", "..\..\Smdn.Xml.Xhtml\src\Smdn.Xml.Xhtml.csproj", "{A13C4BB2-2E47-479C-A19C-6D218AE02D14}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Xml.Xhtml", "Smdn.Xml.Xhtml.csproj", "{A13C4BB2-2E47-479C-A19C-6D218AE02D14}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Xml.Xhtml.Tests", "..\test\Smdn.Xml.Xhtml.Tests.csproj", "{B91C121C-CAAB-47D1-96BA-BC26D74E063E}"
 EndProject
@@ -20,10 +18,6 @@ Global
 		{B9068594-64C2-4976-AF65-D7FA9BBE0522}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9068594-64C2-4976-AF65-D7FA9BBE0522}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9068594-64C2-4976-AF65-D7FA9BBE0522}.Release|Any CPU.Build.0 = Release|Any CPU
-		{56316310-7B70-4143-9EB4-3001BCE6E40B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{56316310-7B70-4143-9EB4-3001BCE6E40B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{56316310-7B70-4143-9EB4-3001BCE6E40B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{56316310-7B70-4143-9EB4-3001BCE6E40B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A13C4BB2-2E47-479C-A19C-6D218AE02D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A13C4BB2-2E47-479C-A19C-6D218AE02D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A13C4BB2-2E47-479C-A19C-6D218AE02D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
