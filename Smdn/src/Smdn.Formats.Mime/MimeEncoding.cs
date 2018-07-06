@@ -32,7 +32,7 @@ using Smdn.Security.Cryptography;
 using Smdn.Text;
 using Smdn.Text.Encodings;
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
 using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
 using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
 using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
@@ -128,7 +128,7 @@ namespace Smdn.Formats.Mime {
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding);
       }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
 #else
       var preambleText = string.Concat("=?", charset.WebName, "?", encodingChar, "?");

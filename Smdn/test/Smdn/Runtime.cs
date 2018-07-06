@@ -128,7 +128,7 @@ namespace Smdn {
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
       }
       else {
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
         Assert.AreEqual(Environment.Version, Runtime.Version);
 #endif
       }

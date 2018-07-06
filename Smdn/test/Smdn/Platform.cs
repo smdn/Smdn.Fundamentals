@@ -30,7 +30,7 @@ namespace Smdn {
         StringAssert.Contains("windows", dist);
     }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     [Test]
     public void TestKernelName()
     {

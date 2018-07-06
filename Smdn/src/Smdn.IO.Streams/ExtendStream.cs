@@ -69,7 +69,7 @@ namespace Smdn.IO.Streams {
       this.closeExtensionStream = closeExtensionStream;
     }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -83,7 +83,7 @@ namespace Smdn.IO.Streams {
         appendStream = null;
       }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       base.Close();
 #else
       base.Dispose(disposing);

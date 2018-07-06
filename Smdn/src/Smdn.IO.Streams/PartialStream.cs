@@ -30,7 +30,7 @@ using Smdn.IO;
 namespace Smdn.IO.Streams {
   public class PartialStream : 
     Stream
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     , ICloneable
 #endif
   {
@@ -182,7 +182,7 @@ namespace Smdn.IO.Streams {
         this.Position = 0;
     }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -193,14 +193,14 @@ namespace Smdn.IO.Streams {
 
       stream = null;
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       base.Close();
 #else
       base.Dispose(disposing);
 #endif
     }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     object ICloneable.Clone()
     {
       return Clone();

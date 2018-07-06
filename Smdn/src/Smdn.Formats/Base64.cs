@@ -29,7 +29,7 @@ using System.Text;
 
 using Smdn.Security.Cryptography;
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
 using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
 using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
 using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
@@ -58,7 +58,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes)
     {
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes);
@@ -67,7 +67,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes, int offset, int count)
     {
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       return System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes, offset, count);

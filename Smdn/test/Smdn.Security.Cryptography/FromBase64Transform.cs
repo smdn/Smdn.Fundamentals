@@ -1,6 +1,6 @@
 using System;
 using System.Text;
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
 using System.Security.Cryptography;
 #else
 using Smdn.Security.Cryptography;
@@ -34,7 +34,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     [Test]
     public void TestClear()
     {

@@ -51,7 +51,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvWriter(string path)
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       : this(path, Encoding.Default)
 #else
       : this(path, Encoding.UTF8)
@@ -60,7 +60,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvWriter(string path, Encoding encoding)
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       : base(path, false, encoding)
 #else
       : base(File.Open(path, FileMode.Create), encoding)
@@ -70,7 +70,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvWriter(Stream stream)
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
       : this(stream, Encoding.Default)
 #else
       : this(stream, Encoding.UTF8)

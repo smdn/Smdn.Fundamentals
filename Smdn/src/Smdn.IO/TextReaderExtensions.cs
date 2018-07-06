@@ -29,7 +29,7 @@ using System.Linq;
 
 namespace Smdn.IO {
   public static class TextReaderExtensions {
-#if !(NET || NETSTANDARD20)
+#if !(NET || NETSTANDARD2_0)
     public static void Close(this TextReader reader)
     {
       if (reader == null)

@@ -23,7 +23,7 @@
 // THE SOFTWARE.
 
 namespace Smdn {
-#if !(NET || NETSTANDARD20)
+#if !(NET || NETSTANDARD2_0)
   public delegate TOutput Converter<in TInput, out TOutput>(TInput input);
 #endif
 }

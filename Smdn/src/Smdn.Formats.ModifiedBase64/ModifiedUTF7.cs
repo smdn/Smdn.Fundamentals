@@ -28,7 +28,7 @@ using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
 using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
 #else
 using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;

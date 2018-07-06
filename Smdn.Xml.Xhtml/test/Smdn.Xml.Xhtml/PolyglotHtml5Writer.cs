@@ -266,7 +266,7 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
     [Test]
     public void TestWriteDocType_XmlDocument()
     {

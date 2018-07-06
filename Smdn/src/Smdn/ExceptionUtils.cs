@@ -94,7 +94,7 @@ namespace Smdn {
       private static Dictionary<string, string> LoadCatalog(string resourceName)
       {
         try {
-#if NET || NETSTANDARD20
+#if NET || NETSTANDARD2_0
           var executingAssembly = Assembly.GetExecutingAssembly();
 #else
           var executingAssembly = typeof(ExceptionUtils).GetTypeInfo().Assembly;
