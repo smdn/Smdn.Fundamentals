@@ -41,9 +41,11 @@ namespace Smdn {
     [Test]
     public void TestStartsWith()
     {
+#if !(NETCOREAPP2_0 || NETCOREAPP2_1)
       string nullString = null;
 
       Assert.Throws<ArgumentNullException>(() => nullString.StartsWith('a'));
+#endif
 
       Assert.IsFalse(string.Empty.StartsWith('a'));
       Assert.IsTrue("a".StartsWith('a'));
@@ -70,9 +72,11 @@ namespace Smdn {
     [Test]
     public void TestEndsWith()
     {
+#if !(NETCOREAPP2_0 || NETCOREAPP2_1)
       string nullString = null;
 
       Assert.Throws<ArgumentNullException>(() => nullString.EndsWith('a'));
+#endif
 
       Assert.IsFalse(string.Empty.EndsWith('a'));
       Assert.IsTrue("a".EndsWith('a'));
