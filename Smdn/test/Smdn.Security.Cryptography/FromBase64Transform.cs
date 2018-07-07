@@ -1,11 +1,7 @@
 using System;
 using System.Text;
-#if NET || NETCOREAPP2_0
-using System.Security.Cryptography;
-#else
-using Smdn.Security.Cryptography;
-#endif
 using NUnit.Framework;
+using Smdn.Formats;
 
 namespace Smdn.Security.Cryptography {
   [TestFixture]
@@ -13,7 +9,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestProperties()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.IsTrue(t.CanReuseTransform);
         Assert.IsFalse(t.CanTransformMultipleBlocks);
         Assert.AreEqual(1, t.InputBlockSize);
@@ -24,7 +20,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestDispose()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         t.Dispose();
 
         var input = new byte[1];
@@ -34,11 +30,12 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-#if NET || NETCOREAPP2_0
+    // cannot test Clear() with ICryptoTransfrom
+#if false // NET || NETCOREAPP2_0
     [Test]
     public void TestClear()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         t.Clear();
 
         var input = new byte[1];
@@ -70,7 +67,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "ASCI",  Input = "QVNDSQ=="},
         new {Output = "ASCII", Input = "QVNDSUk="},
       }) {
-        using (var t = new FromBase64Transform()) {
+        using (var t = Base64.CreateFromBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -85,7 +82,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_ChunkedInput()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         foreach (var pattern in new[] {
         //new {Output = "ASCII", Input = "QVNDSUk="},
           new {Output = "",      Input = "Q"},
@@ -111,7 +108,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_MultipleBlock()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         foreach (var pattern in new[] {
           new {Output = "A",     Input = "QQ=="},
           new {Output = "A",     Input = "QQ=="},
@@ -134,7 +131,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "xxxx",  Input = "===="},
         new {Output = "xxxx",  Input = "Q==="},
       }) {
-        using (var t = new FromBase64Transform()) {
+        using (var t = Base64.CreateFromBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -146,7 +143,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_InvalidFormat_Chunked()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         byte[] inputBuffer;
         var outputBuffer = new byte[8];
 
@@ -183,7 +180,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "ASCII", Input = "QVND\rSUk="},
         new {Output = "ASCII", Input = "QVND\r\nSUk="},
       }) {
-        using (var t = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces)) {
+        using (var t = Base64.CreateFromBase64Transform(true)) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -209,7 +206,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "ASCII", Input = "QVND\rSUk="},
         new {Output = "ASCII", Input = "QVND\r\nSUk="},
       }) {
-        using (var t = new FromBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces)) {
+        using (var t = Base64.CreateFromBase64Transform(false)) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -232,7 +229,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "ASCII", Input = "QVNDSUk=\n"},
         new {Output = "ASCII", Input = "QVNDSUk=\r\n"},
       }) {
-        using (var t = new FromBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces)) {
+        using (var t = Base64.CreateFromBase64Transform(false)) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -253,7 +250,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "A",     Input = "QQ"},
         new {Output = "A",     Input = "QQ="},
       }) {
-        using (var t = new FromBase64Transform()) {
+        using (var t = Base64.CreateFromBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[3];
 
@@ -267,7 +264,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_InputBufferNull()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentNullException>(() => t.TransformBlock(null, 0, 1, new byte[3], 0));
       }
     }
@@ -275,7 +272,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_InputBufferInvalidLength()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[1], 0, 2, new byte[3], 0));
       }
     }
@@ -283,7 +280,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_InputBufferInvalidOffset()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[1], 1, 1, new byte[3], 0));
       }
     }
@@ -291,7 +288,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_InputBufferRangeNegative()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(new byte[1], -1, 1, new byte[3], 0));
       }
     }
@@ -299,7 +296,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_InputBufferRangeOverflow()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[1], 1, int.MaxValue, new byte[3], 0));
       }
     }
@@ -307,7 +304,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_OutputBufferNull()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentNullException>(() => t.TransformBlock(new byte[4] { 0x41, 0x41, 0x41, 0x41 }, 0, 4, null, 0));
       }
     }
@@ -315,7 +312,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_OutputBufferInvalidOffset()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[4] { 0x41, 0x41, 0x41, 0x41 }, 0, 4, new byte[3], 4));
       }
     }
@@ -323,7 +320,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformBlock_OutputBufferRangeNegative()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(new byte[4] { 0x41, 0x41, 0x41, 0x41 }, 0, 4, new byte[3], -1));
       }
     }
@@ -338,7 +335,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "ASCI",  Input = "QVNDSQ=="},
         new {Output = "ASCII", Input = "QVNDSUk="},
       }) {
-        using (var t = new FromBase64Transform()) {
+        using (var t = Base64.CreateFromBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -357,7 +354,7 @@ namespace Smdn.Security.Cryptography {
         new {Output = "xxxx", Input = "QVN=SQ=="},
         new {Output = "xxxx", Input = "QV==SQ=="},
       }) {
-        using (var t = new FromBase64Transform()) {
+        using (var t = Base64.CreateFromBase64Transform()) {
           var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
           var outputBuffer = new byte[8];
 
@@ -369,7 +366,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformFinalBlock_InputBufferEmpty()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.IsEmpty(t.TransformFinalBlock(new byte[0], 0, 0));
       }
     }
@@ -377,7 +374,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformFinalBlock_InputBufferNull()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentNullException>(() => t.TransformFinalBlock(null, 0, 1));
       }
     }
@@ -385,7 +382,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformFinalBlock_InputBufferInvalidLength()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformFinalBlock(new byte[1], 0, 2));
       }
     }
@@ -393,7 +390,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformFinalBlock_InputBufferInvalidOffset()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformFinalBlock(new byte[1], 1, 1));
       }
     }
@@ -401,7 +398,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformFinalBlock_InputBufferRangeNegative()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformFinalBlock(new byte[1], -1, 1));
       }
     }
@@ -409,7 +406,7 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTransformFinalBlock_InputBufferRangeOverflow()
     {
-      using (var t = new FromBase64Transform()) {
+      using (var t = Base64.CreateFromBase64Transform()) {
         Assert.Throws<ArgumentException>(() => t.TransformFinalBlock(new byte[1], 1, int.MaxValue));
       }
     }

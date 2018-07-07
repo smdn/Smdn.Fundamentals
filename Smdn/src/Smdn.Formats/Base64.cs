@@ -29,16 +29,6 @@ using System.Text;
 
 using Smdn.Security.Cryptography;
 
-#if NET || NETSTANDARD2_0
-using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
-using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
-using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
-#else
-using FromBase64Transform = Smdn.Security.Cryptography.FromBase64Transform;
-using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
-using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
-#endif
-
 namespace Smdn.Formats {
   public static class Base64 {
     public static string GetEncodedString(string str)
@@ -99,7 +89,7 @@ namespace Smdn.Formats {
 
     public static byte[] Encode(byte[] bytes, int offset, int count)
     {
-      using (var transform = new ToBase64Transform()) {
+      using (var transform = CreateToBase64Transform()) {
         return ICryptoTransformExtensions.TransformBytes(transform, bytes, offset, count);
       }
     }
@@ -145,7 +135,7 @@ namespace Smdn.Formats {
 
     public static byte[] Decode(byte[] bytes, int offset, int count)
     {
-      using (var transform = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces)) {
+      using (var transform = CreateFromBase64Transform(ignoreWhiteSpaces: true)) {
         return ICryptoTransformExtensions.TransformBytes(transform, bytes, offset, count);
       }
     }
@@ -155,7 +145,7 @@ namespace Smdn.Formats {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      return new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Write);
+      return new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write);
     }
 
     public static Stream CreateDecodingStream(Stream stream)
@@ -163,7 +153,36 @@ namespace Smdn.Formats {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      return new CryptoStream(stream, new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces), CryptoStreamMode.Read);
+      return new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read);
+    }
+
+    public static ICryptoTransform CreateFromBase64Transform(bool ignoreWhiteSpaces = true)
+    {
+#if NET
+      var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
+
+      return new System.Security.Cryptography.FromBase64Transform(mode);
+#else
+      if (Runtime.IsRunningOnNetCore/* && Runtime.Version < new Version(2, 2)*/) {
+        var mode = ignoreWhiteSpaces ? Smdn.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : Smdn.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
+
+        return new Smdn.Security.Cryptography.FromBase64Transform(mode);
+      }
+      else {
+        var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
+
+        return new System.Security.Cryptography.FromBase64Transform(mode);
+      }
+#endif
+    }
+
+    public static ICryptoTransform CreateToBase64Transform()
+    {
+#if NET || NETSTANDARD2_0
+      return new System.Security.Cryptography.ToBase64Transform();
+#else
+      return new Smdn.Security.Cryptography.ToBase64Transform();
+#endif
     }
   }
 }

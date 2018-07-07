@@ -27,7 +27,7 @@ using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Security.Cryptography {
-  public class ToBase64Transform : ICryptoTransform {
+  internal class ToBase64Transform : ICryptoTransform {
     public bool CanReuseTransform => true;
     public bool CanTransformMultipleBlocks => false;
     public int InputBlockSize => 3;

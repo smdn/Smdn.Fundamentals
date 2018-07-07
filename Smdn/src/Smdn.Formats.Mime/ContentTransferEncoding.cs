@@ -28,19 +28,11 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.Formats;
 using Smdn.Formats.UUEncodings;
 using Smdn.Formats.QuotedPrintableEncodings;
 using Smdn.IO.Streams;
-using Smdn.Text;
 using Smdn.Text.Encodings;
-
-#if NET || NETSTANDARD2_0
-using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
-using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
-#else
-using FromBase64Transform = Smdn.Security.Cryptography.FromBase64Transform;
-using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
-#endif
 
 namespace Smdn.Formats.Mime {
   public static class ContentTransferEncoding {
@@ -132,7 +124,7 @@ namespace Smdn.Formats.Mime {
           break;
         case ContentTransferEncodingMethod.Base64:
           decodingStream = new CryptoStream(stream,
-                                            new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces),
+                                            Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true),
                                             CryptoStreamMode.Read);
           break;
         case ContentTransferEncodingMethod.QuotedPrintable:

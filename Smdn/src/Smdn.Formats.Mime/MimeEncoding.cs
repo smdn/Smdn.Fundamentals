@@ -27,20 +27,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Security.Cryptography;
 
+using Smdn.Formats;
 using Smdn.Formats.QuotedPrintableEncodings;
 using Smdn.Security.Cryptography;
 using Smdn.Text;
 using Smdn.Text.Encodings;
-
-#if NET || NETSTANDARD2_0
-using FromBase64Transform = System.Security.Cryptography.FromBase64Transform;
-using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
-using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
-#else
-using FromBase64Transform = Smdn.Security.Cryptography.FromBase64Transform;
-using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
-using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
-#endif
 
 namespace Smdn.Formats.Mime {
   /*
@@ -117,7 +108,7 @@ namespace Smdn.Formats.Mime {
 
       switch (encoding) {
         case MimeEncodingMethod.Base64:
-          transform = new ToBase64Transform();
+          transform = Base64.CreateToBase64Transform();
           encodingChar = 'b';
           break;
         case MimeEncodingMethod.QuotedPrintable:
@@ -303,7 +294,7 @@ namespace Smdn.Formats.Mime {
             case "b":
             case "B":
               lastEncoding = MimeEncodingMethod.Base64;
-              transform = new FromBase64Transform(FromBase64TransformMode.IgnoreWhiteSpaces);
+              transform = Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true);
               break;
             case "q":
             case "Q":

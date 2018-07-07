@@ -22,12 +22,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if !(NET || NETSTANDARD2_0)
+#if !NET
 using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Security.Cryptography {
-  public class FromBase64Transform : ICryptoTransform {
+  internal class FromBase64Transform : ICryptoTransform {
     public bool CanReuseTransform => true;
     public bool CanTransformMultipleBlocks => false;
     public int InputBlockSize => 1;
