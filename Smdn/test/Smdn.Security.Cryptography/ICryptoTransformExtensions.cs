@@ -13,7 +13,7 @@ namespace Smdn.Security.Cryptography {
       var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
       var expected = new byte[] {0x59, 0x57, 0x4a, 0x6a, 0x5a, 0x47, 0x55, 0x3d};
 
-      using (var transform = new ToBase64Transform()) {
+      using (var transform = Smdn.Formats.Base64.CreateToBase64Transform()) {
         Assert.AreEqual(expected,
                         ICryptoTransformExtensions.TransformBytes(transform, buffer.Slice(2, 5)));
         Assert.AreEqual(expected,
@@ -26,7 +26,7 @@ namespace Smdn.Security.Cryptography {
     {
       var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
 
-      using (var transform = new ToBase64Transform()) {
+      using (var transform = Smdn.Formats.Base64.CreateToBase64Transform()) {
         Assert.Throws<ArgumentNullException>(() => ICryptoTransformExtensions.TransformBytes(null, buffer, 0, 9));
 
         Assert.Throws<ArgumentNullException>(() => ICryptoTransformExtensions.TransformBytes(transform, null, 0, 9));
