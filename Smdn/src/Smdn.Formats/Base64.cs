@@ -162,7 +162,7 @@ namespace Smdn.Formats {
       var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
 
       return new System.Security.Cryptography.FromBase64Transform(mode);
-#else
+#elif NETSTANDARD2_0
       if (Runtime.IsRunningOnNetCore/* && Runtime.Version < new Version(2, 2)*/) {
         var mode = ignoreWhiteSpaces ? Smdn.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : Smdn.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
 
@@ -173,6 +173,10 @@ namespace Smdn.Formats {
 
         return new System.Security.Cryptography.FromBase64Transform(mode);
       }
+#else
+      var mode = ignoreWhiteSpaces ? Smdn.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : Smdn.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
+
+      return new Smdn.Security.Cryptography.FromBase64Transform(mode);
 #endif
     }
 
