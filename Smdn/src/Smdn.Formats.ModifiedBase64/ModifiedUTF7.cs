@@ -24,15 +24,8 @@
 
 using System;
 using System.Text;
-using System.Security.Cryptography;
 
 using Smdn.Security.Cryptography;
-
-#if NET || NETSTANDARD2_0
-using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
-#else
-using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
-#endif
 
 namespace Smdn.Formats.ModifiedBase64 {
   /*
@@ -97,7 +90,7 @@ namespace Smdn.Formats.ModifiedBase64 {
       if (str.Length == 0)
         return string.Empty;
 
-      using (var transform = new FromRFC3501ModifiedBase64Transform(FromBase64TransformMode.DoNotIgnoreWhiteSpaces)) {
+      using (var transform = new FromRFC3501ModifiedBase64Transform(ignoreWhiteSpaces: false)) {
         var decoded = new StringBuilder(str.Length);
 
         for (var index = 0; index < str.Length; index++) {

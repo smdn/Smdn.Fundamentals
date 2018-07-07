@@ -25,12 +25,6 @@
 using System;
 using System.Security.Cryptography;
 
-#if NET || NETSTANDARD2_0
-using FromBase64TransformMode = System.Security.Cryptography.FromBase64TransformMode;
-#else
-using FromBase64TransformMode = Smdn.Security.Cryptography.FromBase64TransformMode;
-#endif
-
 namespace Smdn.Formats.ModifiedBase64 {
   // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
   // 5.1.3. Mailbox International Naming Convention
@@ -41,8 +35,15 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-    public FromRFC3501ModifiedBase64Transform(FromBase64TransformMode whitespaces)
-      : base(whitespaces)
+#if NET || NETSTANDARD2_0
+    public FromRFC3501ModifiedBase64Transform(FromBase64TransformMode mode)
+      : base(mode)
+    {
+    }
+#endif
+
+    public FromRFC3501ModifiedBase64Transform(bool ignoreWhiteSpaces)
+      : base(ignoreWhiteSpaces)
     {
     }
 

@@ -34,19 +34,41 @@ using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
 namespace Smdn.Formats.ModifiedBase64 {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152
-  public class ToRFC2152ModifiedBase64Transform : ToBase64Transform, ICryptoTransform {
+  public class ToRFC2152ModifiedBase64Transform : ICryptoTransform {
+    public bool CanReuseTransform => true;
+    public bool CanTransformMultipleBlocks => false;
+    public int InputBlockSize => 3;
+    public int OutputBlockSize => 4;
+
     public ToRFC2152ModifiedBase64Transform()
-      : base()
     {
+      this.toBase64Transform = Base64.CreateToBase64Transform();
     }
 
-    public virtual new byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+    public void Dispose()
     {
+      toBase64Transform?.Dispose();
+      toBase64Transform = null;
+    }
+
+    public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+    {
+      if (toBase64Transform == null)
+        throw new ObjectDisposedException(GetType().FullName);
+
+      return toBase64Transform.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
+    }
+
+    public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+    {
+      if (toBase64Transform == null)
+        throw new ObjectDisposedException(GetType().FullName);
+
       // The pad character "=" is not used when encoding
       // Modified Base64 because of the conflict with its use as an escape
       // character for the Q content transfer encoding in RFC 2047 header
       // fields, as mentioned above.
-      var transformed = base.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
+      var transformed = toBase64Transform.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
 
       int padding = -1;
 
@@ -62,5 +84,7 @@ namespace Smdn.Formats.ModifiedBase64 {
 
       return transformed;
     }
+
+    private ICryptoTransform toBase64Transform;
   }
 }

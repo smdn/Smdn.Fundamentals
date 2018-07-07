@@ -50,7 +50,7 @@ namespace Smdn.Formats.ModifiedBase64 {
       }
     }
 
-    public new int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+    public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
       var outputCount = base.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
 
