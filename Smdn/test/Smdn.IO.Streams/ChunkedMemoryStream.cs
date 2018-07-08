@@ -24,7 +24,7 @@ namespace Smdn.IO.Streams {
     private static void WriteLog(string format, params object[] arg)
     {
 #if false
-      Console.WriteLine(format, arg);
+      TestContext.Out.WriteLine(format, arg);
 #endif
     }
 

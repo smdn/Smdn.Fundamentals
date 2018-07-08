@@ -17,10 +17,10 @@ namespace Smdn {
     [Test]
     public void TestRuntimeEnvironment()
     {
-      Console.WriteLine("RuntimeEnvironment: {0} ({1})\r\nRuntimeVersion: {2}\r\n",
-                        Runtime.RuntimeEnvironment,
-                        Runtime.VersionString,
-                        Runtime.Version);
+      TestContext.Out.WriteLine("RuntimeEnvironment: {0} ({1})\r\nRuntimeVersion: {2}\r\n",
+                                Runtime.RuntimeEnvironment,
+                                Runtime.VersionString,
+                                Runtime.Version);
 
       Assert.Inconclusive("see output");
     }

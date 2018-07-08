@@ -23,7 +23,7 @@ namespace Smdn.Threading {
           var arg = (int)e.Argument;
 
           ranWorkers[arg] = true;
-          Console.WriteLine("DoWork {0}", e.Argument);
+          TestContext.Out.WriteLine("DoWork {0}", e.Argument);
 
           if (arg == 5)
             throw new InvalidOperationException(arg.ToString());
@@ -34,7 +34,7 @@ namespace Smdn.Threading {
           doneWorkers[arg] = true;
         };
         worker.RunWorkerCompleted += delegate(object sender, RunWorkerCompletedEventArgs e) {
-          Console.WriteLine("RunWorkerCompleted");
+          TestContext.Out.WriteLine("RunWorkerCompleted");
 
           if (e.Error == null) {
             var result = (int)e.Result;
@@ -47,7 +47,7 @@ namespace Smdn.Threading {
         };
         worker.AllWorkerCompleted += delegate(object sender, EventArgs e) {
           allDone = true;
-          Console.WriteLine("AllWorkerCompleted");
+          TestContext.Out.WriteLine("AllWorkerCompleted");
         };
 
         for (var i = 0; i < 10; i++) {
