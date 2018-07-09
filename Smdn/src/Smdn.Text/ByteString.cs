@@ -89,7 +89,15 @@ namespace Smdn.Text {
 
     public static ByteString CreateEmpty()
     {
-      return new ByteString(new ArraySegment<byte>(Array.Empty<byte>()), true);
+
+      return new ByteString(
+#if NET45
+                            new ArraySegment<byte>(ArrayExtensions.Empty<byte>()),
+#else
+                            new ArraySegment<byte>(Array.Empty<byte>()),
+#endif
+                            true
+                           );
       //return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
     }
 

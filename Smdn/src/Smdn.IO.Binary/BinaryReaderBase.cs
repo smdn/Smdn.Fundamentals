@@ -140,7 +140,11 @@ namespace Smdn.IO.Binary {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
+#if NET45
+        return ArrayExtensions.Empty<byte>();
+#else
         return Array.Empty<byte>();
+#endif
 
       var buffer = new byte[count];
       var read = ReadBytes(buffer, 0, count, false);
@@ -164,7 +168,11 @@ namespace Smdn.IO.Binary {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
+#if NET45
+        return ArrayExtensions.Empty<byte>();
+#else
         return Array.Empty<byte>();
+#endif
 
       var buffer = new byte[count];
 
@@ -238,7 +246,11 @@ namespace Smdn.IO.Binary {
         var remain = stream.Length - stream.Position;
 
         if (remain <= 0) {
+#if NET45
+          return ArrayExtensions.Empty<byte>();
+#else
           return Array.Empty<byte>();
+#endif
         }
         else {
           var bufferSize = (int)Math.Min(4096L, remain);

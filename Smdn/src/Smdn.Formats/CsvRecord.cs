@@ -46,7 +46,11 @@ namespace Smdn.Formats {
         throw new ArgumentNullException(nameof(csv));
 
       if (csv.Length == 0)
+#if NET45
+        return ArrayExtensions.Empty<string>();
+#else
         return Array.Empty<string>();
+#endif
 
       // append dummy splitter
       csv += ",";

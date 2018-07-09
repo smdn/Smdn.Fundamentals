@@ -183,5 +183,19 @@ namespace Smdn {
       return ret;
 #endif
     }
+
+#if NET45
+    public static T[] Empty<T>()
+    {
+      return EmptyArray<T>.Instance;
+    }
+
+    internal static class EmptyArray<T> {
+      public static readonly T[] Instance = (
+        Runtime.RuntimeEnvironment == RuntimeEnvironment.NetFx ? System.Linq.Enumerable.Empty<T>() as T[] :
+        Runtime.RuntimeEnvironment == RuntimeEnvironment.Mono  ? System.Linq.Enumerable.Empty<T>() as T[] :
+        null) ?? new T[0];
+    }
+#endif
   }
 }
