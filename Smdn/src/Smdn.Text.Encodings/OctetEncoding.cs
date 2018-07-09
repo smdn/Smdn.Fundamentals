@@ -35,10 +35,29 @@ namespace Smdn.Text.Encodings {
 
     static OctetEncoding()
     {
+#if NET45
+      SevenBits = (new OctetEncoding(7)).Clone() as Encoding;
+      SevenBits.DecoderFallback = new DecoderExceptionFallback();
+      SevenBits.EncoderFallback = new EncoderExceptionFallback();
+
+      EightBits = (new OctetEncoding(8)).Clone() as Encoding;
+      EightBits.DecoderFallback = new DecoderExceptionFallback();
+      EightBits.EncoderFallback = new EncoderExceptionFallback();
+#else
       SevenBits = new OctetEncoding(7);
       EightBits = new OctetEncoding(8);
+#endif
     }
 
+#if NET45
+    public OctetEncoding(int bits)
+    {
+      if (bits < 1 || 8 < bits)
+        throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
+
+      maxValue = (char)(1 << bits);
+    }
+#else
     public OctetEncoding(int bits)
       : this(bits, new EncoderExceptionFallback(), new DecoderExceptionFallback())
     {
@@ -52,6 +71,7 @@ namespace Smdn.Text.Encodings {
 
       maxValue = (char)(1 << bits);
     }
+#endif
 
     public override int GetMaxCharCount(int byteCount)
     {
