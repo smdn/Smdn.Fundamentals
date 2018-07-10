@@ -1,6 +1,9 @@
 using System;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
+
+#if !(NET || NETSTANDARD2_0)
+using System.Runtime.InteropServices;
+#endif
 
 namespace Smdn {
   [TestFixture]

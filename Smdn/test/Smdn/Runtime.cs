@@ -106,17 +106,14 @@ namespace Smdn {
     [Test]
     public void TestVersion()
     {
+      Assert.IsNotNull(Runtime.Version);
+
       if (Runtime.IsRunningOnMono) {
         var version = Runtime.Version;
 
         Assert.IsTrue(version.Major != 0 || version.Minor != 0);
 
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
-      }
-      else {
-#if NET || NETSTANDARD2_0
-        Assert.AreEqual(Environment.Version, Runtime.Version);
-#endif
       }
     }
   }

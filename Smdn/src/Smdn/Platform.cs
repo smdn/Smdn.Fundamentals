@@ -75,14 +75,18 @@ namespace Smdn {
     public static StringComparison PathStringComparison => IsRunningOnWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
     public static StringComparer PathStringComparer => IsRunningOnWindows ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
 
-#if NET || NETSTANDARD2_0
     private static string kernelName = null;
 
     public static string KernelName {
       get {
         if (kernelName == null) {
+#if RUNTIME_INFORMATION
+          kernelName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture}"; // default
+#else
           kernelName = Environment.OSVersion.Platform.ToString(); // default
+#endif
 
+#if NET || NETSTANDARD2_0
           try {
             if (IsRunningOnUnix)
               kernelName = Shell.Execute("uname -srvom").Trim();
@@ -90,12 +94,12 @@ namespace Smdn {
           catch {
             // ignore exceptions
           }
+#endif
         }
 
         return kernelName;
       }
     }
-#endif
 
 #if !RUNTIME_INFORMATION
     private static string distributionName = null;
@@ -131,7 +135,11 @@ namespace Smdn {
       get
       {
         if (processorName == null) {
+#if RUNTIME_INFORMATION
+          processorName = RuntimeInformation.OSArchitecture.ToString(); // default
+#else
           processorName = string.Empty; // default
+#endif
 
           try {
             if (IsRunningOnUnix) {

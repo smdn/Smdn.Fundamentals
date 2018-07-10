@@ -124,6 +124,17 @@ namespace Smdn {
       get
       {
         switch (runtimeEnvironment) {
+#if RUNTIME_INFORMATION
+          case RuntimeEnvironment.NetFx:
+          case RuntimeEnvironment.NetCore: {
+            foreach (var s in RuntimeInformation.FrameworkDescription.Split(' ')) {
+              if (Version.TryParse(s, out var v))
+                return v;
+            }
+            break;
+          }
+#endif
+
           case RuntimeEnvironment.Mono: {
 #if NET
             var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
@@ -132,12 +143,8 @@ namespace Smdn {
 #endif
 
             foreach (var s in displayName.Split(' ')) {
-              try {
-                return new Version(s);
-              }
-              catch (ArgumentException) {
-                // ignore
-              }
+              if (Version.TryParse(s, out var v))
+                return v;
             }
 
             break;
