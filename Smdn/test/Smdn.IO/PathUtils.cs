@@ -8,7 +8,7 @@ namespace Smdn.IO {
     [Test]
     public void TestChangeFileName()
     {
-      if (Runtime.IsRunningOnUnix) {
+      if (Platform.IsRunningOnUnix) {
         Assert.AreEqual("/var/log/renamed.log", PathUtils.ChangeFileName("/var/log/test.log", "renamed"));
         Assert.AreEqual("../renamed.log", PathUtils.ChangeFileName("../test.log", "renamed"));
         Assert.AreEqual("/var/log/renamed", PathUtils.ChangeFileName("/var/log/test", "renamed"));
@@ -26,7 +26,7 @@ namespace Smdn.IO {
     [Test]
     public void TestChangeDirectoryName()
     {
-      if (Runtime.IsRunningOnUnix) {
+      if (Platform.IsRunningOnUnix) {
         Assert.AreEqual("/renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "/renamed"));
         Assert.AreEqual("../renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "../renamed"));
         Assert.AreEqual("test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", string.Empty));
@@ -43,7 +43,7 @@ namespace Smdn.IO {
     [Test]
     public void TestArePathEqual()
     {
-      if (Runtime.IsRunningOnUnix) {
+      if (Platform.IsRunningOnUnix) {
         Assert.IsTrue(PathUtils.ArePathEqual("/var/log/", "/var/log/"));
         Assert.IsTrue(PathUtils.ArePathEqual("/var/log/", "/var/log"));
         Assert.IsFalse(PathUtils.ArePathEqual("/var/log/", "/var/Log/"));
@@ -64,7 +64,7 @@ namespace Smdn.IO {
     [Test]
     public void TestAreExtensionEqual()
     {
-      if (Runtime.IsRunningOnUnix) {
+      if (Platform.IsRunningOnUnix) {
         Assert.IsTrue(PathUtils.AreExtensionEqual("/etc/conf.ini", ".ini"));
         Assert.IsFalse(PathUtils.AreExtensionEqual("/etc/CONF.INI", ".ini"));
         Assert.IsFalse(PathUtils.AreExtensionEqual("/etc/Conf.Ini", ".ini"));
@@ -145,7 +145,7 @@ namespace Smdn.IO {
     [Test]
     public void TestGetRelativePath()
     {
-      if (Runtime.IsRunningOnWindows)
+      if (Platform.IsRunningOnWindows)
         GetRelativePathWin();
       else
         GetRelativePathUnix();

@@ -52,6 +52,26 @@ namespace Smdn {
 
     public static readonly Endianness Endianness;
 
+    public static bool IsRunningOnWindows =>
+#if RUNTIME_INFORMATION
+      RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+#else
+      (int)Environment.OSVersion.Platform < 4;
+#endif
+
+    public static bool IsRunningOnUnix
+#if RUNTIME_INFORMATION
+      => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+#else
+    {
+      get {
+        var platform = (int)Environment.OSVersion.Platform;
+
+        return (platform == 4 || platform == 6 || platform == 128);
+      }
+    }
+#endif
+
 #if NET || NETSTANDARD2_0
     private static string kernelName = null;
 
@@ -61,7 +81,7 @@ namespace Smdn {
           kernelName = Environment.OSVersion.Platform.ToString(); // default
 
           try {
-            if (Runtime.IsRunningOnUnix)
+            if (IsRunningOnUnix)
               kernelName = Shell.Execute("uname -srvom").Trim();
           }
           catch {
@@ -88,7 +108,7 @@ namespace Smdn {
 
 #if NET || NETSTANDARD2_0
           try {
-            if (Runtime.IsRunningOnUnix)
+            if (IsRunningOnUnix)
               distributionName = Shell.Execute("lsb_release -ds").Trim();
           }
           catch {
@@ -111,7 +131,7 @@ namespace Smdn {
           processorName = string.Empty; // default
 
           try {
-            if (Runtime.IsRunningOnUnix) {
+            if (IsRunningOnUnix) {
               foreach (var line in File.ReadAllLines("/proc/cpuinfo")) {
                 if (line.StartsWith("model name", StringComparison.Ordinal)) {
                   processorName = line.Substring(line.IndexOf(':') + 1).Trim();

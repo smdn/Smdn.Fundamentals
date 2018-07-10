@@ -3,14 +3,6 @@ using System.Reflection;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-#if NET
-using Smdn.OperatingSystem;
-#endif
-
-#if !NET
-using System.Runtime.InteropServices;
-#endif
-
 namespace Smdn {
   [TestFixture()]
   public class RuntimeTests {
@@ -80,46 +72,6 @@ namespace Smdn {
       }
     }
 #endif
-
-    [Test]
-    public void TestIsRunningOnUnix()
-    {
-#if NET
-      if (string.Empty.Equals(Shell.Execute("uname")))
-        Assert.IsFalse(Runtime.IsRunningOnUnix);
-      else
-        Assert.IsTrue(Runtime.IsRunningOnUnix);
-#else
-      if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        Assert.IsTrue(Runtime.IsRunningOnUnix);
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        Assert.IsTrue(Runtime.IsRunningOnUnix);
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        Assert.IsFalse(Runtime.IsRunningOnUnix);
-      else
-        Assert.Ignore("unknown OSPlatform");
-#endif
-    }
-
-    [Test]
-    public void TestIsRunningOnWindows()
-    {
-#if NET
-      if (string.Empty.Equals(Shell.Execute("VER")))
-        Assert.IsFalse(Runtime.IsRunningOnWindows);
-      else
-        Assert.IsTrue(Runtime.IsRunningOnWindows);
-#else
-      if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        Assert.IsFalse(Runtime.IsRunningOnWindows);
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        Assert.IsFalse(Runtime.IsRunningOnWindows);
-      else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        Assert.IsTrue(Runtime.IsRunningOnWindows);
-      else
-        Assert.Ignore("unknown OSPlatform");
-#endif
-    }
 
     [Test]
     public void TestName()

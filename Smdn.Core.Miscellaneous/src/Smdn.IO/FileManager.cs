@@ -51,7 +51,7 @@ namespace Smdn.IO {
     {
       ProcessStartInfo psi = null;
 
-      if (Runtime.IsRunningOnWindows) {
+      if (Platform.IsRunningOnWindows) {
         psi = new ProcessStartInfo("explorer.exe");
         psi.UseShellExecute = false;
 
@@ -65,7 +65,7 @@ namespace Smdn.IO {
             psi.Arguments = path;
         }
       }
-      else if (Runtime.IsRunningOnUnix) {
+      else if (Platform.IsRunningOnUnix) {
         if (FindNautilus(out var filemanager)) {
           psi = new ProcessStartInfo(filemanager);
           psi.UseShellExecute = false;
@@ -112,7 +112,7 @@ namespace Smdn.IO {
       if (path == null)
         throw new ArgumentNullException(nameof(path));
 
-      if (Runtime.IsRunningOnWindows) {
+      if (Platform.IsRunningOnWindows) {
         const int SHOP_FILEPATH = 0x2;
 
         SHObjectProperties(IntPtr.Zero,
@@ -131,7 +131,7 @@ namespace Smdn.IO {
     {
       path = null;
 
-      if (!Runtime.IsRunningOnUnix)
+      if (!Platform.IsRunningOnUnix)
         return false;
 
       if (0 == Shell.Execute("which nautilus", out path)) {

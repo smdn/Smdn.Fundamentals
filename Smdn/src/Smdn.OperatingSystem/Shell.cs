@@ -40,7 +40,7 @@ namespace Smdn.OperatingSystem {
 
       ProcessStartInfo psi;
 
-      if (Runtime.IsRunningOnUnix) {
+      if (Platform.IsRunningOnUnix) {
         if (arguments != null)
           arguments = arguments.Replace("\"", "\\\"");
 

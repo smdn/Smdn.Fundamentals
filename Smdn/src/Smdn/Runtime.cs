@@ -98,29 +98,11 @@ namespace Smdn {
       get { return runtimeEnvironment == RuntimeEnvironment.Mono; }
     }
 
-    public static bool IsRunningOnWindows {
-      get {
-#if RUNTIME_INFORMATION
-        return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-#else
-        return (int)Environment.OSVersion.Platform < 4;
-#endif
-      }
-    }
+    [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
+    public static bool IsRunningOnWindows => Platform.IsRunningOnWindows;
 
-    public static bool IsRunningOnUnix {
-      get
-      {
-#if RUNTIME_INFORMATION
-        return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
-               RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
-#else
-        var platform = (int)Environment.OSVersion.Platform;
-
-        return (platform == 4 || platform == 6 || platform == 128);
-#endif
-      }
-    }
+    [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
+    public static bool IsRunningOnUnix => Platform.IsRunningOnUnix;
 
     private static string versionString = null;
 

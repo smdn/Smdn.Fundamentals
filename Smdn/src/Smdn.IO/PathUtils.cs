@@ -239,13 +239,13 @@ namespace Smdn.IO {
       if (path == null)
         throw new ArgumentNullException(nameof(path));
 
-      if (Runtime.IsRunningOnWindows && !Path.IsPathRooted(basePath))
+      if (Platform.IsRunningOnWindows && !Path.IsPathRooted(basePath))
         throw new ArgumentException("must be absolute path", nameof(basePath));
 
       basePath = basePath.Replace("%", "%25" /*encode*/);
       path = path.Replace("%", "%25" /*encode*/);
 
-      if (!Runtime.IsRunningOnWindows) {
+      if (!Platform.IsRunningOnWindows) {
 #if NET || NETSTANDARD2_0
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + path.Replace(":", "%3A");

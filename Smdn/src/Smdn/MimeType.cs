@@ -142,7 +142,7 @@ namespace Smdn {
       if (extensionOrPath == null)
         throw new ArgumentNullException(nameof(extensionOrPath));
 
-      if (Runtime.IsRunningOnWindows) {
+      if (Platform.IsRunningOnWindows) {
         return FindMimeTypeByExtensionWin(extensionOrPath);
       }
       else {
@@ -241,7 +241,7 @@ namespace Smdn {
       if (mimeType.Length == 0)
         throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(mimeType));
 
-      if (Runtime.IsRunningOnWindows) {
+      if (Platform.IsRunningOnWindows) {
         return FindExtensionsByMimeTypeWin(mimeType);
       }
       else {
