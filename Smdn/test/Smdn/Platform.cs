@@ -68,6 +68,26 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestPathStringComparison()
+    {
+      if (Platform.IsRunningOnWindows)
+        Assert.IsTrue(string.Equals("C:\\path", "C:\\Path", Platform.PathStringComparison));
+      else
+        Assert.IsFalse(string.Equals("/path", "/Path", Platform.PathStringComparison));
+    }
+
+    [Test]
+    public void TestPathStringComparer()
+    {
+      Assert.IsNotNull(Platform.PathStringComparer);
+
+      if (Platform.IsRunningOnWindows)
+        Assert.IsTrue(Platform.PathStringComparer.Equals("C:\\path", "C:\\Path"));
+      else
+        Assert.IsFalse(Platform.PathStringComparer.Equals("/path", "/Path"));
+    }
+
+    [Test]
     public void TestDistributionName()
     {
       // returns non-null value always

@@ -72,6 +72,9 @@ namespace Smdn {
     }
 #endif
 
+    public static StringComparison PathStringComparison => IsRunningOnWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+    public static StringComparer PathStringComparer => IsRunningOnWindows ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+
 #if NET || NETSTANDARD2_0
     private static string kernelName = null;
 

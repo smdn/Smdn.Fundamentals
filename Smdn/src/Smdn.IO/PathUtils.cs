@@ -59,7 +59,7 @@ namespace Smdn.IO {
       else if (pathY.EndsWith(Path.AltDirectorySeparatorChar))
         pathY = pathY.Substring(0, pathY.Length - 1);
 
-      return string.Equals(pathX, pathY, Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+      return string.Equals(pathX, pathY, Platform.PathStringComparison);
     }
 
     public static bool AreSameFile(string pathX, string pathY)
@@ -76,7 +76,7 @@ namespace Smdn.IO {
     {
       return string.Equals(Path.GetExtension(path),
                            Path.GetExtension(pathOrExtension),
-                           Runtime.IsRunningOnWindows ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+                           Platform.PathStringComparison);
     }
 
     public static string RemoveInvalidPathChars(string path)
