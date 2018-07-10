@@ -107,6 +107,7 @@
     <Compile Include="Smdn\UInt48.cs" />
     <Compile Include="Smdn\Uuid.cs" />
     <Compile Include="Smdn.Text.RegularExpressions\RegexExtensions.cs" />
+    <Compile Include="AssemblyInfoTest.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
