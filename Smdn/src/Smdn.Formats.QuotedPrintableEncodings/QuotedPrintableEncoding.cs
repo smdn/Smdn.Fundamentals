@@ -27,6 +27,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.IO.Streams;
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
@@ -35,7 +36,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     {
       return GetEncodedString(str, Encoding.ASCII);
     }
-    
+
     public static string GetEncodedString(string str, Encoding encoding)
     {
       return ICryptoTransformExtensions.TransformStringTo(new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
@@ -99,7 +100,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
                                                        bytes.Length);
     }
 
-    public static Stream CreateEncodingStream(Stream stream)
+    public static Stream CreateEncodingStream(Stream stream, bool leaveStreamOpen = false)
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
@@ -108,12 +109,21 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       throw new NotImplementedException();
     }
 
-    public static Stream CreateDecodingStream(Stream stream)
+    public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false)
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
+#if NET472
+      return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read, leaveStreamOpen);
+#else
+      var s = new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
+
+      if (leaveStreamOpen)
+        return new NonClosingStream(s);
+      else
+        return s;
+#endif
     }
   }
 }

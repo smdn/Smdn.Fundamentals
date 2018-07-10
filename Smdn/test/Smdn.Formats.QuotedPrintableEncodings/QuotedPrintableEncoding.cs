@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using NUnit.Framework;
 
@@ -74,6 +75,39 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     {
       Assert.AreEqual("Now's the time for all folk to come to the aid of their country.",
                       QuotedPrintableEncoding.GetDecodedString("Now's the=\n time =\rfor all folk to come =\r\nto the aid=\r=\n of their country."));
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestCreateEncodingStream_LeaveStreamOpen(bool leaveStreamOpen)
+    {
+      using (var stream = new MemoryStream()) {
+        Assert.Throws<NotImplementedException>(() => QuotedPrintableEncoding.CreateEncodingStream(stream, leaveStreamOpen));
+#if false
+        using (var s = QuotedPrintableEncoding.CreateEncodingStream(stream, leaveStreamOpen)) {
+        }
+
+        if (leaveStreamOpen)
+          Assert.DoesNotThrow(() => stream.WriteByte(0));
+        else
+          Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0));
+#endif
+      }
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestCreateDecodingStream_LeaveStreamOpen(bool leaveStreamOpen)
+    {
+      using (var stream = new MemoryStream()) {
+        using (var s = QuotedPrintableEncoding.CreateDecodingStream(stream, leaveStreamOpen)) {
+        }
+
+        if (leaveStreamOpen)
+          Assert.DoesNotThrow(() => stream.ReadByte());
+        else
+          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+      }
     }
   }
 }

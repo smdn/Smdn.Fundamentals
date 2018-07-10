@@ -120,31 +120,26 @@ namespace Smdn.Formats.Mime {
         case ContentTransferEncodingMethod.SevenBit:
         case ContentTransferEncodingMethod.EightBit:
         case ContentTransferEncodingMethod.Binary:
-          decodingStream = stream;
+          if (leaveStreamOpen)
+            decodingStream = new NonClosingStream(stream);
+          else
+            decodingStream = stream;
           break;
         case ContentTransferEncodingMethod.Base64:
-          decodingStream = new CryptoStream(stream,
-                                            Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true),
-                                            CryptoStreamMode.Read);
+          decodingStream = Base64.CreateDecodingStream(stream, leaveStreamOpen);
           break;
         case ContentTransferEncodingMethod.QuotedPrintable:
-          decodingStream = new CryptoStream(stream,
-                                            new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
-                                            CryptoStreamMode.Read);
+          decodingStream = QuotedPrintableEncoding.CreateDecodingStream(stream, leaveStreamOpen);
           break;
         case ContentTransferEncodingMethod.UUEncode:
           decodingStream = new UUDecodingStream(stream, leaveStreamOpen);
-          leaveStreamOpen = false;
           break;
         case ContentTransferEncodingMethod.GZip64:
         default:
           throw ExceptionUtils.CreateNotSupportedEnumValue(encoding);
       }
 
-      if (leaveStreamOpen)
-        return new NonClosingStream(decodingStream);
-      else
-        return decodingStream;
+      return decodingStream;
     }
 
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset)

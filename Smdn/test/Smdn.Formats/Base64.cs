@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using NUnit.Framework;
 
@@ -60,6 +61,36 @@ namespace Smdn.Formats {
       }) {
         Assert.AreEqual(test.PlainText, Base64.GetDecodedString(test.Base64Text, test.Encoding), test.Encoding.WebName);
         Assert.AreEqual(test.Base64Text, Base64.GetEncodedString(test.PlainText, test.Encoding), test.Encoding.WebName);
+      }
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestCreateEncodingStream_LeaveStreamOpen(bool leaveStreamOpen)
+    {
+      using (var stream = new MemoryStream()) {
+        using (var s = Base64.CreateEncodingStream(stream, leaveStreamOpen)) {
+        }
+
+        if (leaveStreamOpen)
+          Assert.DoesNotThrow(() => stream.WriteByte(0));
+        else
+          Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0));
+      }
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestCreateDecodingStream_LeaveStreamOpen(bool leaveStreamOpen)
+    {
+      using (var stream = new MemoryStream()) {
+        using (var s = Base64.CreateDecodingStream(stream, leaveStreamOpen)) {
+        }
+
+        if (leaveStreamOpen)
+          Assert.DoesNotThrow(() => stream.ReadByte());
+        else
+          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
     }
   }

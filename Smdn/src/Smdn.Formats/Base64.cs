@@ -27,6 +27,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.IO.Streams;
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats {
@@ -140,20 +141,38 @@ namespace Smdn.Formats {
       }
     }
 
-    public static Stream CreateEncodingStream(Stream stream)
+    public static Stream CreateEncodingStream(Stream stream, bool leaveStreamOpen = false)
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      return new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write);
+#if NET472
+      return new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write, leaveStreamOpen);
+#else
+      var s = new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write);
+
+      if (leaveStreamOpen)
+        return new NonClosingStream(s);
+      else
+        return s;
+#endif
     }
 
-    public static Stream CreateDecodingStream(Stream stream)
+    public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false)
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      return new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read);
+#if NET472
+      return new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read, leaveStreamOpen);
+#else
+      var s = new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read);
+
+      if (leaveStreamOpen)
+        return new NonClosingStream(s);
+      else
+        return s;
+#endif
     }
 
     public static ICryptoTransform CreateFromBase64Transform(bool ignoreWhiteSpaces = true)
