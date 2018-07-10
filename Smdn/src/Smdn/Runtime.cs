@@ -22,13 +22,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
+#define RUNTIME_INFORMATION
+using System.Runtime.InteropServices;
+#endif
+
 using System;
 using System.Reflection;
 using System.Linq;
-
-#if !NET
-using System.Runtime.InteropServices;
-#endif
 
 namespace Smdn {
   public static class Runtime {
@@ -37,7 +38,7 @@ namespace Smdn {
 
     static Runtime()
     {
-#if NET471 || NETSTANDARD2_0
+#if RUNTIME_INFORMATION
       if (RuntimeInformation.FrameworkDescription.Contains(".NET Framework")) {
         runtimeEnvironment = RuntimeEnvironment.NetFx;
         name = ".NET Framework";
@@ -99,7 +100,7 @@ namespace Smdn {
 
     public static bool IsRunningOnWindows {
       get {
-#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
+#if RUNTIME_INFORMATION
         return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 #else
         return (int)Environment.OSVersion.Platform < 4;
@@ -110,7 +111,7 @@ namespace Smdn {
     public static bool IsRunningOnUnix {
       get
       {
-#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
+#if RUNTIME_INFORMATION
         return RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
                RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 #else
@@ -126,7 +127,7 @@ namespace Smdn {
     public static string VersionString {
       get {
         if (versionString == null) {
-#if NET471 || NETSTANDARD2_0
+#if RUNTIME_INFORMATION
           versionString = RuntimeInformation.FrameworkDescription;
 #else
           versionString = string.Format("{0} {1}", name, Version);
