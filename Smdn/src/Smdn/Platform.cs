@@ -101,17 +101,16 @@ namespace Smdn {
       }
     }
 
-#if !RUNTIME_INFORMATION
     private static string distributionName = null;
-#endif
 
     public static string DistributionName {
       get {
-#if RUNTIME_INFORMATION
-        return RuntimeInformation.OSDescription;
-#else
         if (distributionName == null) {
+#if RUNTIME_INFORMATION
+          distributionName = RuntimeInformation.OSDescription; // default
+#else
           distributionName = Environment.OSVersion.VersionString; // default
+#endif
 
 #if NET || NETSTANDARD2_0
           try {
@@ -125,7 +124,6 @@ namespace Smdn {
         }
 
         return distributionName;
-#endif
       }
     }
 
