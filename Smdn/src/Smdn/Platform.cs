@@ -22,14 +22,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
+#define RUNTIME_INFORMATION
+using System.Runtime.InteropServices;
+#endif
+
 using System;
 using System.IO;
 
 using Smdn.OperatingSystem;
-
-#if !NET
-using System.Runtime.InteropServices;
-#endif
 
 namespace Smdn {
   public static class Platform {
@@ -55,8 +56,7 @@ namespace Smdn {
     private static string kernelName = null;
 
     public static string KernelName {
-      get
-      {
+      get {
         if (kernelName == null) {
           kernelName = Environment.OSVersion.Platform.ToString(); // default
 
@@ -74,17 +74,19 @@ namespace Smdn {
     }
 #endif
 
-#if NET || NETSTANDARD2_0
+#if !RUNTIME_INFORMATION
     private static string distributionName = null;
 #endif
 
     public static string DistributionName {
-      get
-      {
-#if NET || NETSTANDARD2_0
+      get {
+#if RUNTIME_INFORMATION
+        return RuntimeInformation.OSDescription;
+#else
         if (distributionName == null) {
           distributionName = Environment.OSVersion.VersionString; // default
 
+#if NET || NETSTANDARD2_0
           try {
             if (Runtime.IsRunningOnUnix)
               distributionName = Shell.Execute("lsb_release -ds").Trim();
@@ -92,16 +94,14 @@ namespace Smdn {
           catch {
             // ignore exceptions
           }
+#endif
         }
 
         return distributionName;
-#else
-        return RuntimeInformation.OSDescription;
 #endif
       }
     }
 
-#if NET
     private static string processorName = null;
 
     public static string ProcessorName {
@@ -131,6 +131,5 @@ namespace Smdn {
         return processorName;
       }
     }
-#endif
   }
 }

@@ -6,6 +6,16 @@ namespace Smdn {
   [TestFixture]
   public class PlatformTests {
     [Test]
+    public void Test()
+    {
+      TestContext.Out.WriteLine("DistributionName: {0}", Platform.DistributionName);
+      TestContext.Out.WriteLine("KernelName: {0}", Platform.KernelName);
+      TestContext.Out.WriteLine("ProcessorName: {0}", Platform.ProcessorName);
+
+      Assert.Inconclusive("see output");
+    }
+
+    [Test]
     public void TestEndianness()
     {
       if (BitConverter.IsLittleEndian)
@@ -30,7 +40,6 @@ namespace Smdn {
         StringAssert.Contains("windows", dist);
     }
 
-#if NET || NETSTANDARD2_0
     [Test]
     public void TestKernelName()
     {
@@ -48,6 +57,5 @@ namespace Smdn {
       Assert.IsNotNull(Platform.ProcessorName);
       Assert.IsNotNull(Platform.ProcessorName);
     }
-#endif
   }
 }
