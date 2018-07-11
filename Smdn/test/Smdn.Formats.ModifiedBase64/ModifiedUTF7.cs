@@ -1,34 +1,60 @@
 using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace Smdn.Formats.ModifiedBase64 {
   [TestFixture]
   public class ModifiedUTF7Tests {
+    private struct TestCase {
+      public string PlainText;
+      public string ModifiedUTF7Text;
+      public string Description;
+    }
+
+    private IEnumerable<TestCase> GenerateTestCases()
+    {
+      yield return new TestCase() { PlainText = string.Empty, ModifiedUTF7Text = string.Empty, Description = "(empty string)" };
+
+      yield return new TestCase() { PlainText = "INBOX.日本語", ModifiedUTF7Text = "INBOX.&ZeVnLIqe-", Description = "日本語1" };
+      yield return new TestCase() { PlainText = "INBOX.日本語.child", ModifiedUTF7Text = "INBOX.&ZeVnLIqe-.child", Description = "日本語2" };
+      yield return new TestCase() { PlainText = "&日&-本-&語-", ModifiedUTF7Text = "&-&ZeU-&--&Zyw--&-&ip4--", Description = "日本語3" };
+      yield return new TestCase() { PlainText = "~peter/mail/台北/日本語", ModifiedUTF7Text = "~peter/mail/&U,BTFw-/&ZeVnLIqe-", Description = "日本語4" };
+      yield return new TestCase() { PlainText = "☺!", ModifiedUTF7Text = "&Jjo-!", Description = "☺" };
+      yield return new TestCase() { PlainText = "📧", ModifiedUTF7Text = "&2D3c5w-", Description = "U+1F4E7 'E-MAIL SYMBOL'" };
+      yield return new TestCase() { PlainText = "\U0001F4E7", ModifiedUTF7Text = "&2D3c5w-", Description = "U+1F4E7 'E-MAIL SYMBOL' (escape sequence)" };
+      yield return new TestCase() { PlainText = "mail📧mail", ModifiedUTF7Text = "mail&2D3c5w-mail", Description = "mail U+1F4E7 'E-MAIL SYMBOL' mail" };
+
+      yield return new TestCase() { PlainText = "下書き", ModifiedUTF7Text = "&Tgtm+DBN-", Description = "padding: 0" };
+      yield return new TestCase() { PlainText = "サポート", ModifiedUTF7Text = "&MLUw3TD8MMg-", Description = "padding: 1" };
+      yield return new TestCase() { PlainText = "迷惑メール", ModifiedUTF7Text = "&j,dg0TDhMPww6w-", Description = "padding: 2" };
+    }
+
     [Test]
     public void TestDecode()
     {
-      Assert.AreEqual("INBOX.日本語", ModifiedUTF7.Decode("INBOX.&ZeVnLIqe-"));
+      foreach (var testCase in GenerateTestCases()) {
+        Assert.AreEqual(testCase.PlainText, ModifiedUTF7.Decode(testCase.ModifiedUTF7Text), testCase.Description);
+      }
+    }
 
-      Assert.AreEqual("INBOX.日本語.child", ModifiedUTF7.Decode("INBOX.&ZeVnLIqe-.child"));
+    [Test]
+    public void TestEncode()
+    {
+      foreach (var testCase in GenerateTestCases()) {
+        Assert.AreEqual(testCase.ModifiedUTF7Text, ModifiedUTF7.Encode(testCase.PlainText), testCase.Description);
+      }
+    }
 
-      Assert.AreEqual("&日&-本-&語-", ModifiedUTF7.Decode("&-&ZeU-&--&Zyw--&-&ip4--"));
+    [Test]
+    public void TestDecodeArgumentNull()
+    {
+      Assert.Throws<ArgumentNullException>(() => ModifiedUTF7.Decode(null));
+    }
 
-      Assert.AreEqual("~peter/mail/台北/日本語", ModifiedUTF7.Decode("~peter/mail/&U,BTFw-/&ZeVnLIqe-"));
-
-      Assert.AreEqual("☺!", ModifiedUTF7.Decode("&Jjo-!"), "☺");
-
-      Assert.AreEqual("📧", ModifiedUTF7.Decode("&2D3c5w-"), "U+1F4E7 'E-MAIL SYMBOL'");　
-      Assert.AreEqual("\U0001F4E7", ModifiedUTF7.Decode("&2D3c5w-"), "U+1F4E7 'E-MAIL SYMBOL' (escape sequence)");　
-      Assert.AreEqual("mail📧mail", ModifiedUTF7.Decode("mail&2D3c5w-mail"), "mail U+1F4E7 'E-MAIL SYMBOL' mail");　
-
-      Assert.AreEqual(string.Empty, ModifiedUTF7.Decode(string.Empty), "(empty string)");
-
-      // padding: 0
-      Assert.AreEqual("下書き", ModifiedUTF7.Decode("&Tgtm+DBN-"));
-      // padding: 1
-      Assert.AreEqual("サポート", ModifiedUTF7.Decode("&MLUw3TD8MMg-"));
-      // padding: 2
-      Assert.AreEqual("迷惑メール", ModifiedUTF7.Decode("&j,dg0TDhMPww6w-"));
+    [Test]
+    public void TestEncodeArgumentNull()
+    {
+      Assert.Throws<ArgumentNullException>(() => ModifiedUTF7.Encode(null));
     }
 
     [Test]
@@ -42,33 +68,6 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
       Assert.AreEqual("下書き", ModifiedUTF7.Decode("&Tgtm+DBN"));
       Assert.AreEqual("Tgtm+DBN-", ModifiedUTF7.Decode("Tgtm+DBN-"));
-    }
-
-    [Test]
-    public void TestEncode()
-    {
-      Assert.AreEqual("INBOX.&ZeVnLIqe-", ModifiedUTF7.Encode("INBOX.日本語"));
-
-      Assert.AreEqual("INBOX.&ZeVnLIqe-.child", ModifiedUTF7.Encode("INBOX.日本語.child"));
-
-      Assert.AreEqual("&-&ZeU-&--&Zyw--&-&ip4--", ModifiedUTF7.Encode("&日&-本-&語-"));
-
-      Assert.AreEqual("~peter/mail/&U,BTFw-/&ZeVnLIqe-", ModifiedUTF7.Encode("~peter/mail/台北/日本語"));
-
-      Assert.AreEqual("&Jjo-!", ModifiedUTF7.Encode("☺!"), "☺");
-
-      Assert.AreEqual("&2D3c5w-", ModifiedUTF7.Encode("📧"), "U+1F4E7 'E-MAIL SYMBOL'");　
-      Assert.AreEqual("&2D3c5w-", ModifiedUTF7.Encode("\U0001F4E7"), "U+1F4E7 'E-MAIL SYMBOL' (escape sequence)");　
-      Assert.AreEqual("mail&2D3c5w-mail", ModifiedUTF7.Encode("mail📧mail"), "mail U+1F4E7 'E-MAIL SYMBOL' mail");　
-
-      Assert.AreEqual(string.Empty, ModifiedUTF7.Encode(string.Empty), "(empty string)");
-
-      // padding: 0
-      Assert.AreEqual("&Tgtm+DBN-", ModifiedUTF7.Encode("下書き"));
-      // padding: 1
-      Assert.AreEqual("&MLUw3TD8MMg-", ModifiedUTF7.Encode("サポート"));
-      // padding: 2
-      Assert.AreEqual("&j,dg0TDhMPww6w-", ModifiedUTF7.Encode("迷惑メール"));
     }
   }
 }
