@@ -17,6 +17,10 @@ namespace Smdn.Formats.ModifiedBase64 {
 
       Assert.AreEqual("☺!", ModifiedUTF7.Decode("&Jjo-!"), "☺");
 
+      Assert.AreEqual("📧", ModifiedUTF7.Decode("&2D3c5w-"), "U+1F4E7 'E-MAIL SYMBOL'");　
+      Assert.AreEqual("\U0001F4E7", ModifiedUTF7.Decode("&2D3c5w-"), "U+1F4E7 'E-MAIL SYMBOL' (escape sequence)");　
+      Assert.AreEqual("mail📧mail", ModifiedUTF7.Decode("mail&2D3c5w-mail"), "mail U+1F4E7 'E-MAIL SYMBOL' mail");　
+
       Assert.AreEqual(string.Empty, ModifiedUTF7.Decode(string.Empty), "(empty string)");
 
       // padding: 0
@@ -52,6 +56,10 @@ namespace Smdn.Formats.ModifiedBase64 {
       Assert.AreEqual("~peter/mail/&U,BTFw-/&ZeVnLIqe-", ModifiedUTF7.Encode("~peter/mail/台北/日本語"));
 
       Assert.AreEqual("&Jjo-!", ModifiedUTF7.Encode("☺!"), "☺");
+
+      Assert.AreEqual("&2D3c5w-", ModifiedUTF7.Encode("📧"), "U+1F4E7 'E-MAIL SYMBOL'");　
+      Assert.AreEqual("&2D3c5w-", ModifiedUTF7.Encode("\U0001F4E7"), "U+1F4E7 'E-MAIL SYMBOL' (escape sequence)");　
+      Assert.AreEqual("mail&2D3c5w-mail", ModifiedUTF7.Encode("mail📧mail"), "mail U+1F4E7 'E-MAIL SYMBOL' mail");　
 
       Assert.AreEqual(string.Empty, ModifiedUTF7.Encode(string.Empty), "(empty string)");
 
