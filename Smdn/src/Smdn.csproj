@@ -5,6 +5,8 @@
     <RootNamespace>Smdn</RootNamespace>
     <VersionPrefix>3.0</VersionPrefix>
     <VersionSuffix>rc1</VersionSuffix>
+    <BaseOutputPath>..\build\bin\</BaseOutputPath>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
@@ -26,17 +28,10 @@
     <PackageIconUrl>https://smdn.jp/resources/images/smdn-64x64.png</PackageIconUrl>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\build\bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\build\bin\Release\</OutputPath>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
   </PropertyGroup>
+
   <ItemGroup>
     <None Remove="resources\exceptions-ja.txt" />
   </ItemGroup>
