@@ -3,8 +3,29 @@
     <TargetFrameworks>net471;net45;netstandard2.0;netstandard1.6</TargetFrameworks>
     <AssemblyName>Smdn</AssemblyName>
     <RootNamespace>Smdn</RootNamespace>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <VersionPrefix>3.0</VersionPrefix>
+    <VersionSuffix>rc1</VersionSuffix>
   </PropertyGroup>
+
+  <PropertyGroup Label="metadata">
+    <Title>Smdn.dll</Title>
+    <Description>Smdn fundamental utility library</Description>
+    <Company>smdn:総武ソフトウェア推進所</Company>
+    <Copyright>Copyright © 2009-2017 smdn</Copyright>
+
+    <!-- AssemblyInfo -->
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <InformationalVersion>$(VersionPrefix)$(VersionSuffix) ($(TargetFramework))</InformationalVersion>
+    <Product>$(AssemblyName)-$(InformationalVersion)</Product>
+
+    <!-- NuGet -->
+    <Authors>smdn</Authors>
+    <Owners>$(Authors)</Owners>
+    <PackageProjectUrl>https://smdn.jp/works/libs/</PackageProjectUrl>
+    <PackageLicenseUrl>https://smdn.jp/misc/license/MIT/</PackageLicenseUrl>
+    <PackageIconUrl>https://smdn.jp/resources/images/smdn-64x64.png</PackageIconUrl>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\build\bin\Debug\</OutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -16,9 +37,6 @@
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="..\..\CommonAssemblyInfo.cs" />
-  </ItemGroup>
   <ItemGroup>
     <None Remove="resources\exceptions-ja.txt" />
   </ItemGroup>
