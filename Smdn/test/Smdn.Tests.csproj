@@ -19,8 +19,8 @@
     <ProjectReference Include="..\src\Smdn.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\NUnitLiteTestRunner.cs" />
-    <Compile Include="..\..\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
-    <Compile Include="..\..\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
+    <Compile Include="..\..\NUnit\NUnitLiteTestRunner.cs" />
+    <Compile Include="..\..\NUnit\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
+    <Compile Include="..\..\NUnit\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
   </ItemGroup>
 </Project>

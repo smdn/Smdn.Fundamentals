@@ -39,10 +39,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="..\..\NUnitTestUtils.cs">
+    <Compile Include="..\..\NUnit\NUnitTestUtils.cs">
       <Link>NUnitTestUtils.cs</Link>
     </Compile>
-    <Compile Include="..\..\NUnitTestUtils.Encodings.cs">
+    <Compile Include="..\..\NUnit\NUnitTestUtils.Encodings.cs">
       <Link>NUnitTestUtils.Encodings.cs</Link>
     </Compile>
     <Compile Include="Smdn.Formats.Mime\ContentTransferEncoding.cs" />
