@@ -22,14 +22,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Reflection;
+[assembly: System.CLSCompliant(true)]
 
-[assembly: CLSCompliant(true)]
-
-internal static partial class AssemblyInfo {
-  internal const string Name = "Smdn.Xml.Xhtml";
-  internal const string Version = "0.10";
-  internal const string VersionSuffix = "";
-  internal const string Copyright = "Copyright (C) 2009-2012 smdn";
-}
