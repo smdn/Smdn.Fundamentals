@@ -4,7 +4,7 @@
     <AssemblyName>Smdn</AssemblyName>
     <RootNamespace>Smdn</RootNamespace>
     <VersionPrefix>3.0</VersionPrefix>
-    <VersionSuffix>rc1</VersionSuffix>
+    <VersionSuffix>beta1</VersionSuffix>
     <BaseOutputPath>..\build\bin\</BaseOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
