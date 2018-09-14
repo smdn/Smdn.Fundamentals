@@ -95,8 +95,6 @@ namespace Smdn.Security.Cryptography {
           cryptoStream.Write(bytes, 0, bytes.Length);
         }
 
-        memoryStream.Close();
-
         return memoryStream.ToArray();
       }
     }
@@ -127,9 +125,6 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestTranformBytesWithSymmetricAlgorithm()
     {
-      if (Runtime.IsRunningOnNetFx)
-        Assert.Ignore("this test will fail on .NET Framework");
-
       var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
       var symmetricAlgorithms = new SymmetricAlgorithm[] {
@@ -140,6 +135,7 @@ namespace Smdn.Security.Cryptography {
       };
 
       foreach (var symmetricAlgorithm in symmetricAlgorithms) {
+        symmetricAlgorithm.Padding = PaddingMode.Zeros;
         symmetricAlgorithm.Key = MathUtils.GetRandomBytes(symmetricAlgorithm.KeySize / 8);
         symmetricAlgorithm.GenerateIV();
 
@@ -147,8 +143,8 @@ namespace Smdn.Security.Cryptography {
 
         var encrypted = symmetricAlgorithm.CreateEncryptor().TransformBytes(bytes);
 
-        Assert.AreEqual(TransformByCryptoStream(symmetricAlgorithm, bytes, true),
-                        encrypted,
+        Assert.AreEqual(BitConverter.ToString(TransformByCryptoStream(symmetricAlgorithm, bytes, true)),
+                        BitConverter.ToString(encrypted),
                         "SymmetricAlgorithm (Encrypt): {0}",
                         symmetricAlgorithm.GetType());
 
