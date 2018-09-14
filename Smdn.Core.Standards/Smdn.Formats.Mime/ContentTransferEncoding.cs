@@ -205,7 +205,8 @@ namespace Smdn.Formats.Mime {
     {
       return CreateBinaryReader(stream,
                                 encoding,
-                                null);
+                                null,
+                                leaveStreamOpen);
     }
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset)
