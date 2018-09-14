@@ -101,7 +101,7 @@ namespace Smdn {
           continue;
 
         for (;;) {
-          var index = str.IndexOf(oldValue, lastIndex);
+          var index = str.IndexOf(oldValue, lastIndex, StringComparison.Ordinal);
 
           if (index < 0) {
             sb.Append(str.Substring(lastIndex));
@@ -170,7 +170,7 @@ namespace Smdn {
         throw ExceptionUtils.CreateArgumentMustBeNonEmptyString("substr");
 
       for (int count = 0, lastIndex = 0;; count++) {
-        var index = str.IndexOf(substr, lastIndex);
+        var index = str.IndexOf(substr, lastIndex, StringComparison.Ordinal);
 
         if (index < 0)
           return count;
