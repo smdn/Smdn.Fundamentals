@@ -231,9 +231,12 @@ namespace Smdn.Formats.Mime {
                                           " /=?ISO-2022-JP?B?GyRCPzdAODNoJTklPyE8JUghI0VQTz9GYk1GJE5KUTk5GyhC?=" +
                                           " =?ISO-2022-JP?B?GyRCJHIhKhsoQg==?="));
 
-      if (Runtime.IsRunningOnMono)
-        Assert.AreEqual("てすと①",
-                        MimeEncoding.Decode("=?cp932?B?gsSCt4LGh0A=?="));
+      try {
+        Assert.AreEqual("てすと①", MimeEncoding.Decode("=?cp932?B?gsSCt4LGh0A=?="));
+      }
+      catch (EncodingNotSupportedException ex) {
+        Assert.Inconclusive("EncodingNotSupportedException: " + ex.Message);
+      }
     }
 
     [Test, ExpectedException(typeof(FormatException))]
