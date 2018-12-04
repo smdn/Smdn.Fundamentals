@@ -13,7 +13,7 @@
     <Title>Smdn.dll</Title>
     <Description>Smdn fundamental utility library</Description>
     <Company>smdn:総武ソフトウェア推進所</Company>
-    <Copyright>Copyright © 2009-2017 smdn</Copyright>
+    <Copyright>Copyright © 2009 smdn</Copyright>
 
     <!-- AssemblyInfo -->
     <AssemblyVersion>$(Version)</AssemblyVersion>
@@ -23,9 +23,9 @@
     <!-- NuGet -->
     <Authors>smdn</Authors>
     <Owners>$(Authors)</Owners>
-    <PackageProjectUrl>https://smdn.jp/works/libs/</PackageProjectUrl>
-    <PackageLicenseUrl>https://smdn.jp/misc/license/MIT/</PackageLicenseUrl>
-    <PackageIconUrl>https://smdn.jp/resources/images/smdn-64x64.png</PackageIconUrl>
+    <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.dll/</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIconUrl>https://works/libs/Smdn.dll/Smdn-3.0_64x64.png</PackageIconUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
