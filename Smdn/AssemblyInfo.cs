@@ -33,7 +33,7 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyTitle(AssemblyInfo.Name)]
 [assembly: AssemblyProduct(AssemblyInfo.Name + "-" + AssemblyInfo.VersionString + AssemblyInfo.Suffix)]
-[assembly: AssemblyCopyright("Copyright(C) 2009-2014 smdn")]
+[assembly: AssemblyCopyright("Copyright(C) 2009-2018 smdn")]
 [assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
