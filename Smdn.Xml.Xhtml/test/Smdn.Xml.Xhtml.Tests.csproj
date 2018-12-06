@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net461;net46;netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net471;net461;net46;netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
     <AssemblyName>Smdn.Xml.Xhtml.Tests</AssemblyName>
     <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
   </PropertyGroup>

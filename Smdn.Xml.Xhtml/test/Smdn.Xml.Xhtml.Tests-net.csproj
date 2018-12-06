@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Xml.Xhtml.Tests</AssemblyName>
     <RootNamespace>Smdn.Xml.Xhtml.Tests</RootNamespace>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,7 +18,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\net\</OutputPath>
     <IntermediateOutputPath>obj\Debug\net\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;NET;NET461</DefineConstants>
+    <DefineConstants>DEBUG;NET;NET471</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -28,7 +28,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Release\net\</OutputPath>
     <IntermediateOutputPath>obj\Release\net\</IntermediateOutputPath>
-    <DefineConstants>NET;NET461</DefineConstants>
+    <DefineConstants>NET;NET471</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>

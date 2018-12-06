@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>Smdn.Core.Miscellaneous.Tests</AssemblyName>
     <RootNamespace>Smdn.Core.Miscellaneous.Tests</RootNamespace>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,7 +18,7 @@
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug\net\</OutputPath>
     <IntermediateOutputPath>obj\Debug\net\</IntermediateOutputPath>
-    <DefineConstants>DEBUG;NET;NET461</DefineConstants>
+    <DefineConstants>DEBUG;NET;NET471</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>False</Optimize>
-    <DefineConstants>NET;NET461</DefineConstants>
+    <DefineConstants>NET;NET471</DefineConstants>
     <OutputPath>bin\Release\net\</OutputPath>
     <IntermediateOutputPath>obj\Release\net\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
