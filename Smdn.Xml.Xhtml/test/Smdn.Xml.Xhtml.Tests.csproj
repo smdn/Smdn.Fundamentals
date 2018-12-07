@@ -9,8 +9,8 @@
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.10.1" />
-    <PackageReference Include="NUnitLite" Version="3.10.1" />
+    <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnitLite" Version="3.11.0" />
     <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))" />
