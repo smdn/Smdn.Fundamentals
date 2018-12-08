@@ -46,7 +46,7 @@ namespace Smdn.Formats {
         throw new ArgumentNullException(nameof(csv));
 
       if (csv.Length == 0)
-#if NET45
+#if NET45 || NET452
         return ArrayExtensions.Empty<string>();
 #else
         return Array.Empty<string>();

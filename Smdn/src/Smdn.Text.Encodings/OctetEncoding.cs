@@ -35,7 +35,7 @@ namespace Smdn.Text.Encodings {
 
     static OctetEncoding()
     {
-#if NET45
+#if NET45 || NET452
       SevenBits = (new OctetEncoding(7)).Clone() as Encoding;
       SevenBits.DecoderFallback = new DecoderExceptionFallback();
       SevenBits.EncoderFallback = new EncoderExceptionFallback();
@@ -49,7 +49,7 @@ namespace Smdn.Text.Encodings {
 #endif
     }
 
-#if NET45
+#if NET45 || NET452
     public OctetEncoding(int bits)
     {
       if (bits < 1 || 8 < bits)

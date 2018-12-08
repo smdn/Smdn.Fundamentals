@@ -7,7 +7,7 @@ namespace Smdn {
     [Test]
     public void TestSizeOfStructure()
     {
-      Assert.AreEqual(3, System.Runtime.InteropServices.Marshal.SizeOf<UInt24>());
+      Assert.AreEqual(3, System.Runtime.InteropServices.Marshal.SizeOf(typeof(UInt24)));
     }
 
     [Test]

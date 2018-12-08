@@ -128,7 +128,7 @@ namespace Smdn {
     [Test]
     public void TestConvert_ArgumentArrayEmpty()
     {
-      Assert.IsEmpty(Array.Empty<int>().Convert(i => i));
+      Assert.IsEmpty(Enumerable.Empty<int>().ToArray().Convert(i => i));
     }
 
     [Test]

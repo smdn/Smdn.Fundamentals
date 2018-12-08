@@ -140,7 +140,7 @@ namespace Smdn.IO.Binary {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
-#if NET45
+#if NET45 || NET452
         return ArrayExtensions.Empty<byte>();
 #else
         return Array.Empty<byte>();
@@ -168,7 +168,7 @@ namespace Smdn.IO.Binary {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
-#if NET45
+#if NET45 || NET452
         return ArrayExtensions.Empty<byte>();
 #else
         return Array.Empty<byte>();
@@ -246,7 +246,7 @@ namespace Smdn.IO.Binary {
         var remain = stream.Length - stream.Position;
 
         if (remain <= 0) {
-#if NET45
+#if NET45 || NET452
           return ArrayExtensions.Empty<byte>();
 #else
           return Array.Empty<byte>();

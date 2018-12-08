@@ -96,7 +96,7 @@ namespace Smdn.Formats.ModifiedBase64 {
           throw new FormatException("incorrect form");
 
         default: // case 4
-#if NET45
+#if NET45 || NET452
           return ArrayExtensions.Empty<byte>();
 #else
           return Array.Empty<byte>();

@@ -10,8 +10,8 @@ namespace Smdn {
     [Test]
     public void TestSizeOfUuid()
     {
-      Assert.AreEqual(Marshal.SizeOf<Guid>(),
-                      Marshal.SizeOf<Uuid>());
+      Assert.AreEqual(Marshal.SizeOf(typeof(Guid)),
+                      Marshal.SizeOf(typeof(Uuid)));
     }
 
     [Test]

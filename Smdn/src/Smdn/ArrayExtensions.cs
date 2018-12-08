@@ -184,7 +184,7 @@ namespace Smdn {
 #endif
     }
 
-#if NET45
+#if NET45 || NET452
     public static T[] Empty<T>()
     {
       return EmptyArray<T>.Instance;

@@ -91,7 +91,7 @@ namespace Smdn.Text {
     {
 
       return new ByteString(
-#if NET45
+#if NET45 || NET452
                             new ArraySegment<byte>(ArrayExtensions.Empty<byte>()),
 #else
                             new ArraySegment<byte>(Array.Empty<byte>()),
