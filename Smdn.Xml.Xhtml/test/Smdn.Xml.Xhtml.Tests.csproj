@@ -5,6 +5,10 @@
     <AssemblyName>Smdn.Xml.Xhtml.Tests</AssemblyName>
     <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(MSBuildRuntimeType)' == 'Mono'">
+    <!-- for MonoDevelop test runner -->
+    <OutputType>Library</OutputType>
+  </PropertyGroup>
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <DefineConstants>$(DefineConstants);NET</DefineConstants>
   </PropertyGroup>
@@ -20,7 +24,7 @@
     <ProjectReference Include="..\src\Smdn.Xml.Xhtml.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\NUnit\NUnitLiteTestRunner.cs" />
+    <Compile Include="..\..\NUnit\NUnitLiteTestRunner.cs" Link="NUnitLiteTestRunner.cs" Condition="$(OutputType) == 'Exe'" />
     <Compile Include="..\..\NUnit\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
   </ItemGroup>
   <ItemGroup>
