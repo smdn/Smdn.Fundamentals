@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if !NET
+#if !NETFRAMEWORK
 namespace Smdn.Security.Cryptography {
   internal enum FromBase64TransformMode {
     IgnoreWhiteSpaces = 0,

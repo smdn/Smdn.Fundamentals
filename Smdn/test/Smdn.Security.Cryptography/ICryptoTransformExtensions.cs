@@ -67,7 +67,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-#if NET || NETCOREAPP2_0
+#if NETFRAMEWORK || NETCOREAPP2_0
     [Test]
     public void TestTranformBytesWithHashAlgorithm()
     {
@@ -78,7 +78,7 @@ namespace Smdn.Security.Cryptography {
         new HMACSHA512(),
         MD5.Create(),
         new SHA512Managed(),
-#if NET
+#if NETFRAMEWORK
         new RIPEMD160Managed(),
 #endif
       };

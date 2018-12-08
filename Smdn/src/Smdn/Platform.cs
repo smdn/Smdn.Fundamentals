@@ -86,7 +86,7 @@ namespace Smdn {
           kernelName = Environment.OSVersion.Platform.ToString(); // default
 #endif
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
           try {
             if (IsRunningOnUnix)
               kernelName = Shell.Execute("uname -srvom").Trim();
@@ -112,7 +112,7 @@ namespace Smdn {
           distributionName = Environment.OSVersion.VersionString; // default
 #endif
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
           try {
             if (IsRunningOnUnix)
               distributionName = Shell.Execute("lsb_release -ds").Trim();

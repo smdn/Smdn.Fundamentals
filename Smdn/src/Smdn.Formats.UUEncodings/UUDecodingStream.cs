@@ -113,7 +113,7 @@ namespace Smdn.Formats.UUEncodings {
       this.transform = new UUDecodingTransform();
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -131,7 +131,7 @@ namespace Smdn.Formats.UUEncodings {
         transform = null;
       }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       base.Close();
 #else
       base.Dispose(disposing);

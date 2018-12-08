@@ -31,7 +31,7 @@ namespace Smdn.Security.Cryptography {
     }
 
     // cannot test Clear() with ICryptoTransfrom
-#if false // NET || NETCOREAPP2_0
+#if false // NETFRAMEWORK || NETCOREAPP2_0
     [Test]
     public void TestClear()
     {

@@ -119,7 +119,7 @@ namespace Smdn.Formats.Mime {
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding);
       }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
 #else
       var preambleText = string.Concat("=?", charset.WebName, "?", encodingChar, "?");

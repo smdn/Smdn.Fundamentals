@@ -1,7 +1,7 @@
 using System;
 using NUnit.Framework;
 
-#if !(NET || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0)
 using System.Runtime.InteropServices;
 #endif
 
@@ -33,7 +33,7 @@ namespace Smdn {
     [Test]
     public void TestIsRunningOnUnix()
     {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       if (string.Empty.Equals(Smdn.OperatingSystem.Shell.Execute("uname")))
         Assert.IsFalse(Platform.IsRunningOnUnix);
       else
@@ -53,7 +53,7 @@ namespace Smdn {
     [Test]
     public void TestIsRunningOnWindows()
     {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       if (string.Empty.Equals(Smdn.OperatingSystem.Shell.Execute("VER")))
         Assert.IsFalse(Platform.IsRunningOnWindows);
       else

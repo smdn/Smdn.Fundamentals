@@ -271,7 +271,7 @@ namespace Smdn.IO.Streams {
       public byte[] ToArray()
       {
         var buffer = new byte[Length];
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
         long offset = 0L;
 #else
         int offset = 0;
@@ -375,7 +375,7 @@ namespace Smdn.IO.Streams {
       this.chain = new ChunkChain(chunkSize, allocator);
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -386,7 +386,7 @@ namespace Smdn.IO.Streams {
         chain = null;
       }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       base.Close();
 #else
       base.Dispose(disposing);

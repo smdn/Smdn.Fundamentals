@@ -49,7 +49,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes)
     {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes);
@@ -58,7 +58,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes, int offset, int count)
     {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       return System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes, offset, count);
@@ -177,7 +177,7 @@ namespace Smdn.Formats {
 
     public static ICryptoTransform CreateFromBase64Transform(bool ignoreWhiteSpaces = true)
     {
-#if NET
+#if NETFRAMEWORK
       var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
 
       return new System.Security.Cryptography.FromBase64Transform(mode);
@@ -201,7 +201,7 @@ namespace Smdn.Formats {
 
     public static ICryptoTransform CreateToBase64Transform()
     {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       return new System.Security.Cryptography.ToBase64Transform();
 #else
       return new Smdn.Security.Cryptography.ToBase64Transform();

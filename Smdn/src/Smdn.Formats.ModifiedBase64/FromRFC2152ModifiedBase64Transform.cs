@@ -39,7 +39,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public FromRFC2152ModifiedBase64Transform(FromBase64TransformMode mode)
       : this(mode == FromBase64TransformMode.IgnoreWhiteSpaces)
     {

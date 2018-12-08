@@ -96,7 +96,7 @@ namespace Smdn {
     public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
     public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public static Uuid NewUuid()
     {
       return CreateTimeBased();
@@ -115,7 +115,7 @@ namespace Smdn {
       throw new NotImplementedException();
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     private static PhysicalAddress GetNode()
     {
       var nic = Array.Find(NetworkInterface.GetAllNetworkInterfaces(), delegate(NetworkInterface networkInterface) {
@@ -393,7 +393,7 @@ namespace Smdn {
         return uuid;
       }
       finally {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
         hashAlgorithm?.Clear();
 #else
         hashAlgorithm?.Dispose();
@@ -537,7 +537,7 @@ namespace Smdn {
       get { return string.Format("{0:x2}:{1:x2}:{2:x2}:{3:x2}:{4:x2}:{5:x2}", node.N0, node.N1, node.N2, node.N3, node.N4, node.N5); }
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public PhysicalAddress PhysicalAddress {
       get { return new PhysicalAddress(Node); }
     }
@@ -578,7 +578,7 @@ namespace Smdn {
       }
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     [CLSCompliant(false)]
     public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
                 PhysicalAddress node)

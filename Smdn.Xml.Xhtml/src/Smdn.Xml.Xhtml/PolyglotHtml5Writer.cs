@@ -125,7 +125,7 @@ namespace Smdn.Xml.Xhtml {
       return s;
     }
 
-#if !(NET || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0)
     private static XmlWriter Create(string outputFileName, XmlWriterSettings settings)
     {
       settings.CloseOutput = true;
@@ -167,7 +167,7 @@ namespace Smdn.Xml.Xhtml {
     {
       try {
         if (disposing)
-#if !(NET || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0)
           baseWriter.Dispose();
 #else
           baseWriter.Close();

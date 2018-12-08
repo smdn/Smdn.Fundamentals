@@ -48,7 +48,7 @@ namespace Smdn.IO.Streams.Caching {
     {
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -59,7 +59,7 @@ namespace Smdn.IO.Streams.Caching {
         cachedBlocks = null;
       }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       base.Close();
 #else
       base.Dispose(disposing);

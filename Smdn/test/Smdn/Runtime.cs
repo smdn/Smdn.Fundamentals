@@ -51,7 +51,7 @@ namespace Smdn {
       Assert.Inconclusive("see output");
     }
 
-#if NET
+#if NETFRAMEWORK
     [Test]
     public void TestVersionString()
     {
@@ -94,7 +94,7 @@ namespace Smdn {
           StringAssert.Contains(".net core", name);
           break;
         default:
-#if NET
+#if NETFRAMEWORK
           StringAssert.Contains("compatible", name);
 #else
           StringAssert.Contains(".net", name);

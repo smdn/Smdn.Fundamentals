@@ -35,7 +35,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
     public FromRFC3501ModifiedBase64Transform(FromBase64TransformMode mode)
       : base(mode)
     {

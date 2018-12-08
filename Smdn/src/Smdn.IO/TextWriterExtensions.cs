@@ -26,7 +26,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-#if !(NET || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0)
   public static class TextWriterExtensions {
     public static void Close(this TextWriter writer)
     {

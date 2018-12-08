@@ -136,7 +136,7 @@ namespace Smdn {
 #endif
 
           case RuntimeEnvironment.Mono: {
-#if NET
+#if NETFRAMEWORK
             var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
 #else
             var displayName = (string)Type.GetType("Mono.Runtime").GetTypeInfo().GetDeclaredMethod("GetDisplayName").Invoke(null, null);
@@ -151,7 +151,7 @@ namespace Smdn {
           }
         }
 
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
         return Environment.Version;
 #else
         return null;

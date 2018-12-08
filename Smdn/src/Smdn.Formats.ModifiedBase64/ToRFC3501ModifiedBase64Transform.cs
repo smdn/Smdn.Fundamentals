@@ -25,7 +25,7 @@
 using System;
 using System.Security.Cryptography;
 
-#if !(NET || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0)
 using Smdn.Security.Cryptography;
 #endif
 

@@ -163,7 +163,7 @@ namespace Smdn {
 
     public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter)
     {
-#if NET || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0
       return Array.ConvertAll<TInput, TOutput>(array, converter);
 #else
       if (array == null)
