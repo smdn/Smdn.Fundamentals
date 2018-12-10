@@ -123,7 +123,7 @@ namespace Smdn.IO {
       return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public static bool ContainsShellEscapeChar(string path)
     {
       return ContainsShellEscapeChar(path, Encoding.Default);
@@ -135,7 +135,7 @@ namespace Smdn.IO {
       return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public static bool ContainsShellPipeChar(string path)
     {
       return ContainsShellPipeChar(path, Encoding.Default);
@@ -192,7 +192,7 @@ namespace Smdn.IO {
       return false;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public static string RenameUnique(string file)
     {
       if (file == null)
@@ -246,7 +246,7 @@ namespace Smdn.IO {
       path = path.Replace("%", "%25" /*encode*/);
 
       if (!Platform.IsRunningOnWindows) {
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + path.Replace(":", "%3A");
 #else

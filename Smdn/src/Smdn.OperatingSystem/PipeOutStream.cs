@@ -27,7 +27,7 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Smdn.OperatingSystem {
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
   public class PipeOutStream : Stream {
     public override bool CanSeek {
       get { return /*!disposed &&*/ false; }

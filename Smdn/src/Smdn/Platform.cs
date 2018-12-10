@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
+#if NET471 || NETSTANDARD1_6 || NETSTANDARD2_0 ||  NETSTANDARD2_1
 #define RUNTIME_INFORMATION
 using System.Runtime.InteropServices;
 #endif
@@ -86,7 +86,7 @@ namespace Smdn {
           kernelName = Environment.OSVersion.Platform.ToString(); // default
 #endif
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
           try {
             if (IsRunningOnUnix)
               kernelName = Shell.Execute("uname -srvom").Trim();
@@ -112,7 +112,7 @@ namespace Smdn {
           distributionName = Environment.OSVersion.VersionString; // default
 #endif
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
           try {
             if (IsRunningOnUnix)
               distributionName = Shell.Execute("lsb_release -ds").Trim();

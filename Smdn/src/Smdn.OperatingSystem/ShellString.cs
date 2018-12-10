@@ -26,7 +26,7 @@ using System;
 
 namespace Smdn.OperatingSystem {
   public class ShellString :
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     ICloneable,
 #endif
     IEquatable<string>,
@@ -60,7 +60,7 @@ namespace Smdn.OperatingSystem {
       return new ShellString(this.Raw);
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     object ICloneable.Clone()
     {
       return Clone();

@@ -26,7 +26,7 @@ using System;
 using System.Diagnostics;
 
 namespace Smdn.OperatingSystem {
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
   public static class Shell {
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
     {

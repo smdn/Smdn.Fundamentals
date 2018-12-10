@@ -27,7 +27,7 @@ using System.IO;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
-#if !(NETFRAMEWORK || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
     public static void Close(this Stream stream)
     {
       if (stream == null)

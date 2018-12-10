@@ -93,7 +93,7 @@ namespace Smdn {
       return (m * n) / Gcd(m, n);
     }
 
-#if !(NETFRAMEWORK || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
     public static int DivRem(int a, int b, out int result)
     {
       int quotient = a / b;

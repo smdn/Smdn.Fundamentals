@@ -68,7 +68,7 @@ namespace Smdn.IO.Streams {
       this.stream = innerStream;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -79,7 +79,7 @@ namespace Smdn.IO.Streams {
 
       stream = null;
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       base.Close();
 #else
       base.Dispose(disposing);

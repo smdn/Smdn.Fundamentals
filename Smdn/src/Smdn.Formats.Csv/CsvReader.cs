@@ -47,7 +47,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(string path)
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       : this(path, Encoding.Default)
 #else
       : this(path, Encoding.UTF8)
@@ -61,7 +61,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(Stream stream)
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       : this(stream, Encoding.Default)
 #else
       : this(stream, Encoding.UTF8)

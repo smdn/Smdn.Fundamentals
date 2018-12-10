@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET471 || NETSTANDARD2_0 || NETSTANDARD1_6
+#if NET471 || NETSTANDARD1_6 || NETSTANDARD2_0 || NETSTANDARD2_1
 #define RUNTIME_INFORMATION
 using System.Runtime.InteropServices;
 #endif
@@ -151,7 +151,7 @@ namespace Smdn {
           }
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
         return Environment.Version;
 #else
         return null;
