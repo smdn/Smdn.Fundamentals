@@ -94,11 +94,7 @@ namespace Smdn {
       private static Dictionary<string, string> LoadCatalog(string resourceName)
       {
         try {
-#if NETFRAMEWORK || NETSTANDARD2_0
-          var executingAssembly = Assembly.GetExecutingAssembly();
-#else
           var executingAssembly = typeof(ExceptionUtils).GetTypeInfo().Assembly;
-#endif
 
           using (var stream = executingAssembly.GetManifestResourceStream(resourceName)) {
             var catalog = new Dictionary<string, string>(StringComparer.Ordinal);
