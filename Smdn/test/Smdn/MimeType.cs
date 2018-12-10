@@ -14,6 +14,16 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstructor_Tuple()
+    {
+      var m = ("text", "plain");
+      var mime = new MimeType(m);
+
+      Assert.AreEqual("text", mime.Type);
+      Assert.AreEqual("plain", mime.SubType);
+    }
+
+    [Test]
     public void TestConstructorInvalidArgument()
     {
       Assert.Throws<ArgumentNullException>(() => new MimeType((string)null), "#1");
@@ -22,6 +32,27 @@ namespace Smdn {
       Assert.Throws<ArgumentException>(() => new MimeType("text/"), "#4");
       Assert.Throws<ArgumentException>(() => new MimeType("/plain"), "#5");
       Assert.Throws<ArgumentException>(() => new MimeType("text/plain/hoge"), "#6");
+
+      Assert.Throws<ArgumentNullException>(() => new MimeType(null, "foo"), "#7");
+      Assert.Throws<ArgumentException>(() => new MimeType(string.Empty, "foo"), "#8");
+
+      Assert.Throws<ArgumentNullException>(() => new MimeType("foo", null), "#9");
+      Assert.Throws<ArgumentException>(() => new MimeType("foo", string.Empty), "#10");
+
+      Assert.Throws<ArgumentNullException>(() => new MimeType((null, "foo")), "#11");
+      Assert.Throws<ArgumentException>(() => new MimeType((string.Empty, "foo")), "#12");
+
+      Assert.Throws<ArgumentNullException>(() => new MimeType(("foo", null)), "#13");
+      Assert.Throws<ArgumentException>(() => new MimeType(("foo", string.Empty)), "#14");
+    }
+
+    [Test]
+    public void TestDeconstruct()
+    {
+      var (type, subType) = MimeType.TextPlain;
+
+      Assert.AreEqual("text", type);
+      Assert.AreEqual("plain", subType);
     }
 
     [Test]
@@ -180,6 +211,28 @@ namespace Smdn {
 
       Assert.IsTrue(MimeType.TryParse("text/plain", out result), "#7");
       Assert.AreEqual(MimeType.TextPlain, result, "#7");
+    }
+
+    [Test]
+    public void TestTryParse_Tuple()
+    {
+      Assert.IsTrue(MimeType.TryParse("text/plain", out (string type, string subType) result));
+      Assert.AreEqual("text", result.type);
+      Assert.AreEqual("plain", result.subType);
+    }
+
+    [Test]
+    public void TestParse_Tuple()
+    {
+      (var type, var subType) = MimeType.Parse("text/plain");
+
+      Assert.AreEqual("text", type);
+      Assert.AreEqual("plain", subType);
+
+      Assert.Throws<ArgumentNullException>(() => MimeType.Parse(null));
+      Assert.Throws<ArgumentException>(() => MimeType.Parse(string.Empty));
+      Assert.Throws<ArgumentException>(() => MimeType.Parse("text/"));
+      Assert.Throws<ArgumentException>(() => MimeType.Parse("/plain"));
     }
   }
 }

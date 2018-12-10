@@ -36,62 +36,59 @@ namespace Smdn {
     public static readonly MimeType MessagePartial              = new MimeType("message", "partial");
     public static readonly MimeType MessageExternalBody         = new MimeType("message", "external-body");
 
+    public static bool TryParse(string s, out (string type, string subType) result)
+    {
+      return Parse(s, nameof(s), true, out result);
+    }
+
     public static bool TryParse(string s, out MimeType result)
     {
-      var type = Parse(s, false);
+      result = null;
 
-      if (type == null) {
-        result = null;
-        return false;
-      }
-      else {
-        result = new MimeType(type);
+      if (Parse(s, nameof(s), true, out var ret)) {
+        result = new MimeType(ret);
         return true;
       }
+
+      return false;
+    }
+
+    public static (string type, string subType) Parse(string s)
+    {
+      return Parse(s, nameof(s));
+    }
+
+    private static (string type, string subType) Parse(string s, string paramName)
+    {
+      Parse(s, paramName, false, out var ret);
+
+      return ret;
     }
 
     private static readonly char[] typeSubtypeDelimiters = new char[] {'/'};
 
-    private static Tuple<string, string> Parse(string mimeType, bool throwException)
+    private static bool Parse(string s, string paramName, bool continueWhetherInvalid, out (string type, string subType) result)
     {
-      if (mimeType == null) {
-        if (throwException)
-          throw new ArgumentNullException(nameof(mimeType));
-        else
-          return null;
-      }
+      result = default;
 
-      if (mimeType.Length == 0) {
-        if (throwException)
-          throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(mimeType));
-        else
-          return null;
-      }
+      if (s == null)
+        return continueWhetherInvalid ? false : throw new ArgumentNullException(paramName);
+      if (s.Length == 0)
+        return continueWhetherInvalid ? false : throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(paramName);
 
-      var type = mimeType.Split(typeSubtypeDelimiters);
+      var type = s.Split(typeSubtypeDelimiters);
 
-      if (type.Length != 2) {
-        if (throwException)
-          throw new ArgumentException(string.Format("invalid type: {0}", mimeType), nameof(mimeType));
-        else
-          return null;
-      }
+      if (type.Length != 2)
+        return continueWhetherInvalid ? false : throw new ArgumentException("invalid type: " + s, paramName);
 
-      if (type[0].Length == 0) {
-        if (throwException)
-          throw new ArgumentException("type must be non-empty string", nameof(mimeType));
-        else
-          return null;
-      }
+      result = (type[0], type[1]);
 
-      if (type[1].Length == 0) {
-        if (throwException)
-          throw new ArgumentException("subtype must be non-empty string", nameof(mimeType));
-        else
-          return null;
-      }
+      if (result.type.Length == 0)
+        return continueWhetherInvalid ? false : throw new ArgumentException("type must be non-empty string", paramName);
+      if (result.subType.Length == 0)
+        return continueWhetherInvalid ? false : throw new ArgumentException("sub type must be non-empty string", paramName);
 
-      return Tuple.Create(type[0], type[1]);
+      return true;
     }
 
     public static MimeType CreateTextType(string subtype)
@@ -136,7 +133,12 @@ namespace Smdn {
     }
 
     public MimeType(string mimeType)
-      : this(Parse(mimeType, true))
+      : this(Parse(mimeType, nameof(mimeType)))
+    {
+    }
+
+    public MimeType((string type, string subType) mimeType)
+      : this(mimeType.type, mimeType.subType)
     {
     }
 
@@ -144,17 +146,21 @@ namespace Smdn {
     {
       if (type == null)
         throw new ArgumentNullException(nameof(type));
+      if (type.Length == 0)
+        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(type));
       if (subType == null)
         throw new ArgumentNullException(nameof(subType));
+      if (subType.Length == 0)
+        throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(subType));
 
       this.Type = type;
       this.SubType = subType;
     }
 
-    private MimeType(Tuple<string, string> type)
+    public void Deconstruct(out string type, out string subType)
     {
-      this.Type = type.Item1;
-      this.SubType = type.Item2;
+      type = this.Type;
+      subType = this.SubType;
     }
 
     public bool TypeEquals(MimeType mimeType)
