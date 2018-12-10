@@ -87,22 +87,22 @@ namespace Smdn.Text {
     /*
      * enum parsing
      */
-    public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct /*instead of Enum*/
+    public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct, Enum
     {
-      return (val == null) ? (TEnum?)null : ToEnum<TEnum>(val, true);
+      return (val == null) ? null : (TEnum?)ToEnum<TEnum>(val, true);
     }
 
-    public static TEnum ToEnum<TEnum>(string value) where TEnum : struct /*instead of Enum*/
+    public static TEnum ToEnum<TEnum>(string value) where TEnum : Enum
     {
       return ToEnum<TEnum>(value, false);
     }
 
-    public static TEnum ToEnumIgnoreCase<TEnum>(string value) where TEnum : struct /*instead of Enum*/
+    public static TEnum ToEnumIgnoreCase<TEnum>(string value) where TEnum : Enum
     {
       return ToEnum<TEnum>(value, true);
     }
 
-    public static TEnum ToEnum<TEnum>(string value, bool ignoreCase) where TEnum : struct /*instead of Enum*/
+    public static TEnum ToEnum<TEnum>(string value, bool ignoreCase) where TEnum : Enum
     {
       return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
     }

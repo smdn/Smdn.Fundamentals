@@ -252,7 +252,7 @@ namespace Smdn {
      */
     public static ArgumentException CreateArgumentMustBeValidEnumValue<TEnum>(string paramName,
                                                                               TEnum invalidValue)
-      where TEnum : struct /*instead of Enum*/
+      where TEnum : Enum
     {
       return CreateArgumentMustBeValidEnumValue(paramName, invalidValue, null);
     }
@@ -260,7 +260,7 @@ namespace Smdn {
     public static ArgumentException CreateArgumentMustBeValidEnumValue<TEnum>(string paramName,
                                                                               TEnum invalidValue,
                                                                               string additionalMessage)
-      where TEnum : struct /*instead of Enum*/
+      where TEnum : Enum
     {
       return new ArgumentException(Locale.GetText("invalid enum value ({0} value={1}, type={2})",
                                                   additionalMessage,
@@ -270,7 +270,7 @@ namespace Smdn {
     }
 
     public static NotSupportedException CreateNotSupportedEnumValue<TEnum>(TEnum unsupportedValue)
-      where TEnum : struct /*instead of Enum*/
+      where TEnum : Enum
     {
       return new NotSupportedException(Locale.GetText("'{0}' ({1}) is not supported",
                                                       unsupportedValue,
