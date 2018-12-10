@@ -35,4 +35,7 @@
   <ItemGroup>
     <EmbeddedResource Include="resources\exceptions-ja.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
 </Project>
