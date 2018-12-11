@@ -24,6 +24,7 @@
     <!-- NuGet -->
     <Authors>smdn</Authors>
     <Owners>$(Authors)</Owners>
+    <PackageTags>smdn.jp;utility;utils;extensions;mono;netframework;dotnet-core;dotnet-standard</PackageTags>
     <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.dll/</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIconUrl>https://works/libs/Smdn.dll/Smdn-3.0_64x64.png</PackageIconUrl>
