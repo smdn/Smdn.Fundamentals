@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Description>Smdn (X)HTML library</Description>
+    <Description>(X)HTML utility and extension library</Description>
     <Company>smdn:総武ソフトウェア推進所</Company>
     <Copyright>Copyright © 2009 smdn</Copyright>
 
