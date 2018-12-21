@@ -115,12 +115,12 @@ namespace Smdn {
 #endif
     }
 
-    public static string[] FindExtensionsByMimeType(MimeType mimeType)
+    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType)
     {
       return FindExtensionsByMimeType(mimeType, defaultMimeTypesFile);
     }
 
-    public static string[] FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile)
+    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile)
     {
       if (mimeType == null)
         throw new ArgumentNullException(nameof(mimeType));
@@ -128,12 +128,12 @@ namespace Smdn {
       return FindExtensionsByMimeType(mimeType.ToString(), mimeTypesFile);
     }
 
-    public static string[] FindExtensionsByMimeType(string mimeType)
+    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType)
     {
       return FindExtensionsByMimeType(mimeType, defaultMimeTypesFile);
     }
 
-    public static string[] FindExtensionsByMimeType(string mimeType, string mimeTypesFile)
+    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType, string mimeTypesFile)
     {
       if (mimeType == null)
         throw new ArgumentNullException(nameof(mimeType));
@@ -151,36 +151,28 @@ namespace Smdn {
       }
     }
 
-    private static string[] FindExtensionsByMimeTypeUnix(string mimeType, string mimeTypesFile)
+    private static IEnumerable<string> FindExtensionsByMimeTypeUnix(string mimeType, string mimeTypesFile)
     {
-      var found = new List<string>();
-
       foreach (var entry in ReadMimeTypesFileLines(mimeTypesFile)) {
         if (string.Equals(entry.Key, mimeType, StringComparison.OrdinalIgnoreCase)) {
           for (var index = 1; index < entry.Value.Length; index++)
-            found.Add("." + entry.Value[index]);
+            yield return "." + entry.Value[index];
         }
       }
-
-      return found.ToArray();
     }
 
-    private static string[] FindExtensionsByMimeTypeWin(string mimeType)
+    private static IEnumerable<string> FindExtensionsByMimeTypeWin(string mimeType)
     {
 #if NETFRAMEWORK || NETCORE10
-      var found = new List<string>();
-
       foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
         using (var key = Registry.ClassesRoot.OpenSubKey(name)) {
           if (key == null)
             continue;
 
           if (string.Equals((string)key.GetValue("Content Type"), mimeType, StringComparison.OrdinalIgnoreCase))
-            found.Add(name);
+            yield return name;
         }
       }
-
-      return found.ToArray();
 #else
       throw new PlatformNotSupportedException();
 #endif
