@@ -20,9 +20,9 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
-using Smdn.IO;
 using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
@@ -67,8 +67,8 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return stream.Length; }
     }
 
-    public byte[] NewLine {
-      get { CheckDisposed(); return (newLine == null) ? null : (byte[])newLine.Clone(); }
+    public IReadOnlyList<byte> NewLine {
+      get { CheckDisposed(); return newLine; }
     }
 
     public int BufferSize {

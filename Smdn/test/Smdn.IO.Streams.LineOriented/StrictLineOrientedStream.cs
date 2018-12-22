@@ -11,12 +11,8 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestNewLine()
     {
       using (var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
-        var newLine = stream.NewLine;
-
-        Assert.IsNotNull(newLine);
-        Assert.AreEqual(new byte[] {0x0d, 0x0a}, newLine, "must return CRLF");
-
-        Assert.AreNotSame(newLine, stream.NewLine, "must be different instance");
+        Assert.IsNotNull(stream.NewLine);
+        CollectionAssert.AreEqual(new byte[] {0x0d, 0x0a}, stream.NewLine, "must return CRLF");
       }
     }
 
