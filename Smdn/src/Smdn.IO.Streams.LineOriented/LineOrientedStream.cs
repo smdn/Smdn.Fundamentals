@@ -108,7 +108,6 @@ namespace Smdn.IO.Streams.LineOriented {
       }
 
       stream = null;
-      newLine = null;
       buffer = null;
 
       base.Dispose(disposing);
@@ -380,8 +379,8 @@ namespace Smdn.IO.Streams.LineOriented {
     }
 
     private Stream stream;
-    private byte[] newLine;
-    private bool strictEOL;
+    private readonly byte[] newLine;
+    private readonly bool strictEOL;
     private readonly bool leaveStreamOpen;
     private byte[] buffer;
     private int bufOffset = 0;
