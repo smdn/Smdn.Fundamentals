@@ -306,21 +306,21 @@ namespace Smdn.IO.Streams.LineOriented {
       return read;
     }
 
-    public override int Read(byte[] dest, int offset, int count)
+    public override int Read(byte[] buffer, int offset, int count)
     {
       CheckDisposed();
 
-      if (dest == null)
-        throw new ArgumentNullException(nameof(dest));
+      if (buffer == null)
+        throw new ArgumentNullException(nameof(buffer));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-      if (dest.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), dest, offset, count);
+      if (buffer.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (count <= bufRemain) {
-        Buffer.BlockCopy(buffer, bufOffset, dest, offset, count);
+        Buffer.BlockCopy(this.buffer, bufOffset, buffer, offset, count);
         bufOffset += count;
         bufRemain -= count;
 
@@ -330,7 +330,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var read = 0;
 
       if (bufRemain != 0) {
-        Buffer.BlockCopy(buffer, bufOffset, dest, offset, bufRemain);
+        Buffer.BlockCopy(this.buffer, bufOffset, buffer, offset, bufRemain);
 
         read    = bufRemain;
         offset += bufRemain;
@@ -344,7 +344,7 @@ namespace Smdn.IO.Streams.LineOriented {
         if (count <= 0)
           break;
 
-        var r = stream.Read(dest, offset, count);
+        var r = stream.Read(buffer, offset, count);
 
         if (r <= 0)
           break;
