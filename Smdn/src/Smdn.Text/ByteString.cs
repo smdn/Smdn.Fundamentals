@@ -319,8 +319,8 @@ namespace Smdn.Text {
         var len = @value.Count;
 
         for (var index = 0; index < len; index++) {
-          if (Ascii.Octets.ToLowerCaseAsciiTable[str[index]] !=
-              Ascii.Octets.ToLowerCaseAsciiTable[substr[index]])
+          if (Ascii.Octets.ToLowerCaseAsciiTableArray[str[index]] !=
+              Ascii.Octets.ToLowerCaseAsciiTableArray[substr[index]])
             return false;
         }
       }
@@ -598,8 +598,8 @@ namespace Smdn.Text {
 
         for (var index = startIndex; index < len; index++) {
         recheck:
-          if (Ascii.Octets.ToLowerCaseAsciiTable[str[index]] ==
-              Ascii.Octets.ToLowerCaseAsciiTable[substr[matchedIndex]]) {
+          if (Ascii.Octets.ToLowerCaseAsciiTableArray[str[index]] ==
+              Ascii.Octets.ToLowerCaseAsciiTableArray[substr[matchedIndex]]) {
             if (@value.Count == ++matchedIndex)
               return index - matchedIndex + 1;
           }
@@ -769,7 +769,7 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          uppercased[index] = Ascii.Octets.ToUpperCaseAsciiTable[str[index]];
+          uppercased[index] = Ascii.Octets.ToUpperCaseAsciiTableArray[str[index]];
         }
       }
 
@@ -786,7 +786,7 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          lowercased[index] = Ascii.Octets.ToLowerCaseAsciiTable[str[index]];
+          lowercased[index] = Ascii.Octets.ToLowerCaseAsciiTableArray[str[index]];
         }
       }
 
@@ -1024,8 +1024,8 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          if (Ascii.Octets.ToLowerCaseAsciiTable[strX[index]] !=
-              Ascii.Octets.ToLowerCaseAsciiTable[strY[index]])
+          if (Ascii.Octets.ToLowerCaseAsciiTableArray[strX[index]] !=
+              Ascii.Octets.ToLowerCaseAsciiTableArray[strY[index]])
             return false;
         }
       }

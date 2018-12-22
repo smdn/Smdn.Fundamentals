@@ -27,22 +27,22 @@ using Smdn.Text;
 namespace Smdn.IO.Streams.LineOriented {
   public class StrictLineOrientedStream : LineOrientedStream {
     public StrictLineOrientedStream(Stream stream)
-      : base(stream, Ascii.Octets.GetCRLF(), true, DefaultBufferSize, DefaultLeaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, true, DefaultBufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, int bufferSize)
-      : base(stream, Ascii.Octets.GetCRLF(), true, bufferSize, DefaultLeaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, true, bufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.GetCRLF(), true, DefaultBufferSize, leaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, true, DefaultBufferSize, leaveStreamOpen)
     {
     }
     
     public StrictLineOrientedStream(Stream stream, int bufferSize, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.GetCRLF(), true, bufferSize, leaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, true, bufferSize, leaveStreamOpen)
     {
     }
 

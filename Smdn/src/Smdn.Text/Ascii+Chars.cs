@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
 namespace Smdn.Text {
   public static partial class Ascii {
@@ -51,11 +52,16 @@ namespace Smdn.Text {
         'C', 'D', 'E', 'F'
       };
 
+      public static IReadOnlyList<char> LowerCaseHexChars => LowerCaseHexCharArray;
+      public static IReadOnlyList<char> UpperCaseHexChars => UpperCaseHexCharArray;
+
+      [Obsolete("use LowerCaseHexChars instead")]
       public static char[] GetLowerCaseHexChars()
       {
         return (char[])LowerCaseHexCharArray.Clone();
       }
 
+      [Obsolete("use UpperCaseHexChars instead")]
       public static char[] GetUpperCaseHexChars()
       {
         return (char[])UpperCaseHexCharArray.Clone();

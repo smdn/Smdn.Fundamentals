@@ -144,7 +144,6 @@ namespace Smdn.Formats.PercentEncodings {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
-      var upperCaseHexOctets = Ascii.Octets.GetUpperCaseHexOctets();
       var ret = 0;
 
       for (var i = 0; i < inputCount; i++) {
@@ -167,8 +166,8 @@ namespace Smdn.Formats.PercentEncodings {
           }
           else {
             outputBuffer[outputOffset++] = 0x25; // '%' 0x25
-            outputBuffer[outputOffset++] = upperCaseHexOctets[octet >> 4];
-            outputBuffer[outputOffset++] = upperCaseHexOctets[octet & 0xf];
+            outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet >> 4];
+            outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet & 0xf];
 
             ret += 3;
           }

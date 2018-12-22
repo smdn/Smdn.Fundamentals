@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 
 namespace Smdn.Text {
   public static partial class Ascii {
@@ -32,6 +33,9 @@ namespace Smdn.Text {
 
       internal static readonly byte[] CRLFArray = new byte[] { 0x0d, 0x0a };
 
+      public static IReadOnlyList<byte> CRLF => CRLFArray;
+
+      [Obsolete("use CRLF instead")]
       public static byte[] GetCRLF()
       {
         return (byte[])CRLFArray.Clone();
@@ -51,17 +55,22 @@ namespace Smdn.Text {
         0x43, 0x44, 0x45, 0x46,
       };
 
+      public static IReadOnlyList<byte> LowerCaseHexOctets => LowerCaseHexOctetArray;
+      public static IReadOnlyList<byte> UpperCaseHexOctets => UpperCaseHexOctetArray;
+
+      [Obsolete("use LowerCaseHexOctets instead")]
       public static byte[] GetLowerCaseHexOctets()
       {
         return (byte[])LowerCaseHexOctetArray.Clone();
       }
 
+      [Obsolete("use UpperCaseHexOctets instead")]
       public static byte[] GetUpperCaseHexOctets()
       {
         return (byte[])UpperCaseHexOctetArray.Clone();
       }
 
-      internal static readonly byte[] ToLowerCaseAsciiTable = new byte[] {
+      internal static readonly byte[] ToLowerCaseAsciiTableArray = new byte[] {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
         0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
         0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
@@ -82,7 +91,7 @@ namespace Smdn.Text {
         0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff,
       };
 
-      internal static readonly byte[] ToUpperCaseAsciiTable = new byte[] {
+      internal static readonly byte[] ToUpperCaseAsciiTableArray = new byte[] {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
         0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
         0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f,
@@ -103,14 +112,19 @@ namespace Smdn.Text {
         0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff,
       };
 
+      public static IReadOnlyList<byte> ToLowerCaseAsciiTable => ToLowerCaseAsciiTableArray;
+      public static IReadOnlyList<byte> ToUpperCaseAsciiTable => ToUpperCaseAsciiTableArray;
+
+      [Obsolete("use ToLowerCaseAsciiTable instead")]
       public static byte[] GetToLowerCaseAsciiTable()
       {
-        return (byte[])ToLowerCaseAsciiTable.Clone();
+        return (byte[])ToLowerCaseAsciiTableArray.Clone();
       }
 
+      [Obsolete("use ToUpperCaseAsciiTable instead")]
       public static byte[] GetToUpperCaseAsciiTable()
       {
-        return (byte[])ToUpperCaseAsciiTable.Clone();
+        return (byte[])ToUpperCaseAsciiTableArray.Clone();
       }
 
       public static bool IsDecimalNumber(byte b)

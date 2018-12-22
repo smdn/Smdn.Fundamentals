@@ -87,7 +87,6 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
-      var upperCaseHexOctets = Ascii.Octets.GetUpperCaseHexOctets();
       var ret = 0;
 
       for (var i = 0; i < inputCount; i++) {
@@ -115,8 +114,8 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         if (quote) {
           // '=' 0x3d or non printable char
           outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
-          outputBuffer[outputOffset++] = upperCaseHexOctets[octet >> 4];
-          outputBuffer[outputOffset++] = upperCaseHexOctets[octet & 0xf];
+          outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet >> 4];
+          outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet & 0xf];
 
           ret += 3;
         }
