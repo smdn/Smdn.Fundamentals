@@ -225,6 +225,17 @@ namespace Smdn {
     }
 
     [Test, SetUICulture("")]
+    public void TestCreateAllItemsOfArgumentMustBeNonNull()
+    {
+      var ex = ExceptionUtils.CreateAllItemsOfArgumentMustBeNonNull("list");
+
+      Assert.IsNull(ex.InnerException);
+      StringAssert.StartsWith("all items in the collection must be non-null", ex.Message);
+      Assert.AreEqual("list", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyString()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyString("arg");

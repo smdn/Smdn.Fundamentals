@@ -236,6 +236,15 @@ namespace Smdn {
     }
 
     /*
+     * collection
+     */
+    public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName)
+    {
+      return new ArgumentException(Locale.GetText("all items in the collection must be non-null"),
+                                   paramName);
+    }
+
+    /*
      * string
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyString(string paramName)
