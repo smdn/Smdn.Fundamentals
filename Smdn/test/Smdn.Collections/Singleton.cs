@@ -17,7 +17,7 @@ namespace Smdn.Collections {
         Assert.AreEqual(1, list.Count);
         Assert.AreEqual(1, list.Count());
         Assert.IsNotEmpty(list);
-        CollectionAssert.AreEquivalent(new[] { 42 }, list);
+        CollectionAssert.AreEqual(new[] { 42 }, list);
       }
     }
 
@@ -32,7 +32,7 @@ namespace Smdn.Collections {
         Assert.AreEqual(1, list.Count);
         Assert.AreEqual(1, list.Count());
         Assert.IsNotEmpty(list);
-        CollectionAssert.AreEquivalent(new[] { "foo" }, list);
+        CollectionAssert.AreEqual(new[] { "foo" }, list);
       }
     }
 
@@ -47,7 +47,7 @@ namespace Smdn.Collections {
         Assert.AreEqual(1, list.Count);
         Assert.AreEqual(1, list.Count());
         Assert.IsNotEmpty(list);
-        CollectionAssert.AreEquivalent(new string[] { null }, list);
+        CollectionAssert.AreEqual(new string[] { null }, list);
       }
     }
 
@@ -67,6 +67,20 @@ namespace Smdn.Collections {
 
         Assert.AreEqual("index", ex2.ParamName);
         //Assert.AreEqual(-1, ex2.ActualValue);
+      }
+    }
+
+    [Test]
+    public void TestBinarySerialization()
+    {
+      foreach (var test in new[] {
+        new {List = Singleton.CreateList(42), Test = "Singleton"},
+        new {List = (IReadOnlyList<int>)new List<int> { 42 }, Test = "List<T>"},
+      }) {
+        TestUtils.Assert.IsSerializableBinaryFormat(test.List, deserialized => {
+          Assert.AreNotSame(test.List, deserialized, test.Test);
+          CollectionAssert.AreEqual(test.List, deserialized, test.Test);
+        });
       }
     }
   }
