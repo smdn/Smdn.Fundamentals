@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 #if NETCOREAPP2_0
@@ -71,6 +72,50 @@ namespace Smdn.Text {
 
       Assert.Throws<ArgumentException>(() => StringConversion.ToEnum<DayOfWeek>("sUndaY"), "#1");
       Assert.Throws<ArgumentException>(() => StringConversion.ToEnum<DayOfWeek>("sUndaY", false), "#2");
+    }
+
+    private class TestObject1 {
+      public int MI = 42;
+      public string MS1 = null;
+      public string MS2 = string.Empty;
+      public string MS3 = "foo";
+
+      public override string ToString()
+      {
+        return StringConversion.ToString(GetType(), new(string, object)[] {
+          (nameof(MI), MI),
+          (nameof(MS1), MS1),
+          (nameof(MS2), MS2),
+          (nameof(MS3), MS3),
+        });
+      }
+    }
+
+    private class TestObject_Empty {
+      public override string ToString()
+      {
+        return StringConversion.ToString(GetType(), Enumerable.Empty<(string, object)>());
+      }
+    }
+
+    private class TestObject_Null {
+      public override string ToString()
+      {
+        return StringConversion.ToString(GetType(), null);
+      }
+    }
+
+    [Test]
+    public void TestToString_Object()
+    {
+      Assert.AreEqual("{TestObject1: MI='42', MS1=(null), MS2='', MS3='foo'}", new TestObject1().ToString());
+      Assert.AreEqual("{TestObject_Empty: }", new TestObject_Empty().ToString());
+    }
+
+    [Test]
+    public void TestToString_Object_NameAndValuePairsNull()
+    {
+      Assert.AreEqual("{TestObject_Null}", new TestObject_Null().ToString());
     }
   }
 }

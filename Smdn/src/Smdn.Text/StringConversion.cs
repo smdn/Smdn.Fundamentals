@@ -82,6 +82,29 @@ namespace Smdn.Text {
     }
 
     /*
+     * Object.ToString()
+     */
+    public static string ToString(Type type, IEnumerable<(string name, object value)> nameAndValuePairs)
+    {
+      if (nameAndValuePairs == null)
+        return string.Concat("{", type?.Name, "}");
+      else
+        return string.Concat("{",
+                             type?.Name,
+                             ": ",
+                             string.Join(", ", nameAndValuePairs.Select(((string n, object v) p) => string.Concat(p.n, "=", ValueToString(p.v)))),
+                             "}");
+
+      string ValueToString(object val)
+      {
+        if (val == null)
+          return "(null)";
+        else
+          return string.Concat("'", val, "'");
+      }
+    }
+
+    /*
      * enum parsing
      */
     public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct, Enum
