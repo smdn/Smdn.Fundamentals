@@ -238,6 +238,12 @@ namespace Smdn {
     /*
      * collection
      */
+    public static ArgumentException CreateArgumentMustBeNonEmptyCollection(string paramName)
+    {
+      return new ArgumentException(Locale.GetText("must be a non-empty collection"),
+                                   paramName);
+    }
+
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName)
     {
       return new ArgumentException(Locale.GetText("all items in the collection must be non-null"),

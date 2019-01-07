@@ -29,6 +29,9 @@ msgstr "空ではない配列を指定してください"
 msgid "attempt to access beyond the end of an array (length={0}, offset={1}, count={2})"
 msgstr "配列の末尾を越えてアクセスしようとしています (length={0}, offset={1}, count={2})"
 
+msgid "must be a non-empty collection"
+msgstr "空ではないコレクションを指定してください"
+
 msgid "all items in the collection must be non-null"
 msgstr "コレクション内のすべての項目は非nullでなければなりません"
 
