@@ -244,6 +244,18 @@ namespace Smdn {
                                    paramName);
     }
 
+    public static ArgumentException CreateArgumentAttemptToAccessBeyondEndOfCollection<T>(string paramName,
+                                                                                          IReadOnlyCollection<T> collection,
+                                                                                          long offsetValue,
+                                                                                          long countValue)
+    {
+      return new ArgumentException(Locale.GetText("attempt to access beyond the end of a collection (length={0}, offset={1}, count={2})",
+                                                  collection?.Count,
+                                                  offsetValue,
+                                                  countValue),
+                                   paramName);
+    }
+
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName)
     {
       return new ArgumentException(Locale.GetText("all items in the collection must be non-null"),

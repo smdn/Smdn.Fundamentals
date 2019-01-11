@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 
@@ -232,6 +233,29 @@ namespace Smdn {
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be a non-empty collection", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
+    public void TestCreateArgumentAttemptToAccessBeyondEndOfCollection()
+    {
+      var collection = (IReadOnlyCollection<int>)new[] {0, 1, 2, 3};
+      var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection("index", collection, 2, 4);
+
+      Assert.IsNull(ex.InnerException);
+      StringAssert.StartsWith("attempt to access beyond the end of a collection (length=4, offset=2, count=4)", ex.Message);
+      Assert.AreEqual("index", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
+    public void TestCreateArgumentAttemptToAccessBeyondEndOfCollection_CollectionNull()
+    {
+      var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection("index", (IReadOnlyList<int>)null, 2, 4);
+
+      Assert.IsNull(ex.InnerException);
+      Assert.IsNotEmpty(ex.Message);
+      Assert.AreEqual("index", ex.ParamName);
       Assert.IsInstanceOf<ArgumentException>(ex);
     }
 
