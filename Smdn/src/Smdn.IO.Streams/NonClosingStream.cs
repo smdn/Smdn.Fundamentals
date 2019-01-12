@@ -37,7 +37,7 @@ namespace Smdn.IO.Streams {
     }
 
     public override bool CanWrite {
-      get { return !IsClosed && stream.CanWrite; }
+      get { return !IsClosed && !readOnly && stream.CanWrite; }
     }
 
     public override bool CanTimeout {
@@ -58,11 +58,14 @@ namespace Smdn.IO.Streams {
     }
 
     public NonClosingStream(Stream innerStream)
+      : this(innerStream, true)
     {
-      if (innerStream == null)
-        throw new ArgumentNullException(nameof(innerStream));
+    }
 
-      this.stream = innerStream;
+    public NonClosingStream(Stream innerStream, bool writable)
+    {
+      this.stream = innerStream ?? throw new ArgumentNullException(nameof(innerStream));
+      this.readOnly = !writable;
     }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -86,6 +89,9 @@ namespace Smdn.IO.Streams {
     public override void SetLength(long @value)
     {
       CheckDisposed();
+
+      if (readOnly)
+        throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
 
       stream.SetLength(@value);
     }
@@ -115,6 +121,9 @@ namespace Smdn.IO.Streams {
     {
       CheckDisposed();
 
+      if (readOnly)
+        throw ExceptionUtils.CreateNotSupportedWritingStream();
+
       stream.Write(buffer, offset, count);
     }
 
@@ -125,5 +134,6 @@ namespace Smdn.IO.Streams {
     }
 
     private Stream stream;
+    private readonly bool readOnly;
   }
 }

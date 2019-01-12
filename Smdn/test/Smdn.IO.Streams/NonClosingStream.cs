@@ -49,6 +49,24 @@ namespace Smdn.IO.Streams {
     }
 
     [Test]
+    public void TestProperties_ReadOnly()
+    {
+      using (var baseStream = new MemoryStream(new byte[8])) {
+        var initialCanWrite = baseStream.CanWrite;
+
+        var stream = new NonClosingStream(baseStream, writable: false);
+
+        Assert.IsFalse(stream.CanWrite, "CanWrite");
+
+        stream.Dispose();
+
+        Assert.IsFalse(stream.CanWrite, "CanWrite");
+
+        Assert.AreEqual(initialCanWrite, baseStream.CanWrite, "CanWrite");
+      }
+    }
+
+    [Test]
     public void TestSetLength()
     {
       using (var baseStream = new MemoryStream()) {
@@ -64,6 +82,26 @@ namespace Smdn.IO.Streams {
         stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(delegate{ stream.SetLength(0L); });
+      }
+    }
+
+    [Test]
+    public void TestSetLength_ReadOnly()
+    {
+      using (var baseStream = new MemoryStream()) {
+        var stream = new NonClosingStream(baseStream, writable: false);
+
+        Assert.AreEqual(0L, baseStream.Length);
+        Assert.AreEqual(0L, stream.Length);
+
+        Assert.Throws<NotSupportedException>(() => stream.SetLength(8L));
+
+        Assert.AreEqual(0L, baseStream.Length);
+        Assert.AreEqual(0L, stream.Length);
+
+        stream.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => stream.SetLength(0L));
       }
     }
 
@@ -157,6 +195,38 @@ namespace Smdn.IO.Streams {
 
         Assert.Throws<ObjectDisposedException>(delegate{ stream.Write(new byte[] {0, 1, 2, 3}, 0, 4); });
         Assert.Throws<ObjectDisposedException>(delegate{ stream.WriteByte(4); });
+      }
+    }
+
+    [Test]
+    public void TestWrite_ReadOnly()
+    {
+      using (var baseStream = new MemoryStream()) {
+        var stream = new NonClosingStream(baseStream, writable: false);
+
+        Assert.AreEqual(0L, baseStream.Length);
+        Assert.AreEqual(0L, baseStream.Position);
+
+        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] { 1 }, 0, 1));
+
+        Assert.AreEqual(0L, baseStream.Length);
+        Assert.AreEqual(0L, baseStream.Position);
+
+        Assert.Throws<NotSupportedException>(() => stream.WriteByte(2));
+
+        Assert.AreEqual(0L, baseStream.Length);
+        Assert.AreEqual(0L, baseStream.Position);
+
+        Assert.Throws<NotSupportedException>(() => stream.BeginWrite(new byte[] { 1 }, 0, 1, null, null));
+        Assert.Throws<NotSupportedException>(() => stream.WriteAsync(new byte[] { 1 }, 0, 1).Wait());
+
+        Assert.DoesNotThrow(stream.Flush);
+        Assert.DoesNotThrow(() => stream.FlushAsync().Wait());
+
+        stream.Dispose();
+
+        Assert.Throws<ObjectDisposedException>(() => stream.Write(new byte[] { 1 }, 0, 1));
+        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(2));
       }
     }
 
