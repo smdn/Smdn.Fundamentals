@@ -117,5 +117,72 @@ namespace Smdn.Text {
     {
       Assert.AreEqual("{TestObject_Null}", new TestObject_Null().ToString());
     }
+
+    [Test]
+    public void TestToString_IEnumerable()
+    {
+      var str = StringConversion.ToString(typeof(void), new (string, object)[] {
+        ("e1", new[] { 0, 1, 2 }),
+        ("e2", new List<int> { 0, 1, 2 }),
+      });
+
+      Assert.AreEqual("{Void: e1=['0', '1', '2'], e2=['0', '1', '2']}", str);
+    }
+
+    [Test]
+    public void TestToString_IEnumerable_Empty()
+    {
+      var str = StringConversion.ToString(typeof(void), new (string, object)[] {
+        ("e", new List<int>()),
+      });
+
+      Assert.AreEqual("{Void: e=[]}", str);
+    }
+
+    [Test]
+    public void TestToString_KeyValuePair()
+    {
+      var str = StringConversion.ToString(typeof(void), new (string, object)[] {
+        ("p1", KeyValuePair.Create("x", 1)),
+        ("p2", KeyValuePair.Create(2, "y")),
+        ("p3", KeyValuePair.Create((string)null, KeyValuePair.Create("key", (string)null))),
+      });
+
+      Assert.AreEqual("{Void: p1={'x' => '1'}, p2={'2' => 'y'}, p3={(null) => {'key' => (null)}}}", str);
+    }
+
+    [Test]
+    public void TestToString_IEnumerableOfKeyValuePair()
+    {
+      var str = StringConversion.ToString(typeof(void), new (string, object)[] {
+        ("p1", new[] {
+          KeyValuePair.Create("x", 1),
+          KeyValuePair.Create("y", 2),
+          KeyValuePair.Create("z", 3),
+        }),
+        ("p2", new Dictionary<string, int> {
+          { "x", 1 },
+          { "y", 2 },
+          { "z", 3 },
+        }),
+      });
+
+      Assert.AreEqual("{Void: p1=[{'x' => '1'}, {'y' => '2'}, {'z' => '3'}], p2=[{'x' => '1'}, {'y' => '2'}, {'z' => '3'}]}", str);
+    }
+
+    [Test]
+    public void TestToString_IEnumerable_ContainsNullOrEmpty()
+    {
+      var str = StringConversion.ToString(typeof(void), new (string, object)[] {
+        ("e", new[] { "x", null, "" }),
+        ("p", new Dictionary<int, string> {
+          { 0, "x" },
+          { 1, null },
+          { 2, "" },
+        }),
+      });
+
+      Assert.AreEqual("{Void: e=['x', (null), ''], p=[{'0' => 'x'}, {'1' => (null)}, {'2' => ''}]}", str);
+    }
   }
 }

@@ -20,8 +20,10 @@
 // THE SOFTWARE.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Smdn.Text {
   public static class StringConversion {
@@ -97,10 +99,41 @@ namespace Smdn.Text {
 
       string ValueToString(object val)
       {
-        if (val == null)
+        if (val is null)
           return "(null)";
-        else
-          return string.Concat("'", val, "'");
+
+        if (val is string s)
+          return string.Concat("'", s, "'");
+
+        var typeOfValue = val.GetType();
+
+        // KeyValuePair<TKey, TValue>
+        if (typeOfValue.IsConstructedGenericType && typeOfValue.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+          return string.Concat("{",
+                               ValueToString(typeOfValue.GetProperty("Key")?.GetValue(val)),
+                               " => ",
+                               ValueToString(typeOfValue.GetProperty("Value")?.GetValue(val)),
+                               "}");
+
+        // IEnumerable, IEnumerable<T>
+        if (val is IEnumerable enumerable) {
+          var sb = new StringBuilder();
+
+          sb.Append("[");
+
+          foreach (object v in enumerable) {
+            if (1 < sb.Length)
+              sb.Append(", ");
+
+            sb.Append(ValueToString(v));
+          }
+
+          sb.Append("]");
+
+          return sb.ToString();
+        }
+
+        return string.Concat("'", val, "'");
       }
     }
 
