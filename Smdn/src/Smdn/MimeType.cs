@@ -32,6 +32,7 @@ namespace Smdn {
     public static readonly MimeType ApplicationOctetStream      = MimeType.CreateApplicationType("octet-stream");
     public static readonly MimeType MessagePartial              = new MimeType("message", "partial");
     public static readonly MimeType MessageExternalBody         = new MimeType("message", "external-body");
+    public static readonly MimeType MessageRfc822               = new MimeType("message", "rfc822");
 
     public static bool TryParse(string s, out (string type, string subType) result)
     {
