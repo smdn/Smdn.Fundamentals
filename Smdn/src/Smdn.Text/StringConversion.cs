@@ -24,6 +24,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
 
 namespace Smdn.Text {
   public static class StringConversion {
@@ -110,9 +111,9 @@ namespace Smdn.Text {
         // KeyValuePair<TKey, TValue>
         if (typeOfValue.IsConstructedGenericType && typeOfValue.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
           return string.Concat("{",
-                               ValueToString(typeOfValue.GetProperty("Key")?.GetValue(val)),
+                               ValueToString(typeOfValue.GetTypeInfo().GetProperty("Key")?.GetValue(val)),
                                " => ",
-                               ValueToString(typeOfValue.GetProperty("Value")?.GetValue(val)),
+                               ValueToString(typeOfValue.GetTypeInfo().GetProperty("Value")?.GetValue(val)),
                                "}");
 
         // IEnumerable, IEnumerable<T>
