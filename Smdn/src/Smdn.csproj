@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="!$(TargetFramework.StartsWith('netstandard1'))">
-    <DefineConstants>$(DefineConsntants);SERIALIZATION</DefineConstants>
+    <DefineConstants>$(DefineConstants);SERIALIZATION</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
