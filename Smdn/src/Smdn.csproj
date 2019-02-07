@@ -8,6 +8,9 @@
     <VersionSuffix>beta3</VersionSuffix>
     <BaseOutputPath>..\build\bin\</BaseOutputPath>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <DefineConstants Condition="!$(TargetFramework.StartsWith('netstandard1'))">
+      $(DefineConsntants);SERIALIZATION
+    </DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
