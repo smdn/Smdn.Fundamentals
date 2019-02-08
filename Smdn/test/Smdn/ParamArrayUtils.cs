@@ -15,6 +15,7 @@ namespace Smdn {
       CollectionAssert.AreEqual(new[] { "foo", null, "bar" }, ParamArrayUtils.ToEnumerable("foo", (string)null, "bar"));
 
       CollectionAssert.AreEqual(new[] { "foo" }, ParamArrayUtils.ToEnumerable("foo", (string[])null));
+      CollectionAssert.AreEqual(new[] { "foo" }, ParamArrayUtils.ToEnumerable("foo", new string[0]));
       CollectionAssert.AreEqual(new[] { "foo", "bar" }, ParamArrayUtils.ToEnumerable("foo", new[] { "bar" }));
       CollectionAssert.AreEqual(new[] { "foo", null, "bar" }, ParamArrayUtils.ToEnumerable("foo", new[] { null, "bar" }));
     }
@@ -27,6 +28,7 @@ namespace Smdn {
       CollectionAssert.AreEqual(new[] { 0, 1, 2 }, ParamArrayUtils.ToEnumerable(0, 1, 2));
 
       CollectionAssert.AreEqual(new[] { 0 }, ParamArrayUtils.ToEnumerable(0, (int[])null));
+      CollectionAssert.AreEqual(new[] { 0 }, ParamArrayUtils.ToEnumerable(0, new int[0]));
       CollectionAssert.AreEqual(new[] { 0, 1 }, ParamArrayUtils.ToEnumerable(0, new[] { 1 }));
     }
 
@@ -40,6 +42,7 @@ namespace Smdn {
       CollectionAssert.AreEqual(new[] { "foo", "bar", "baz" }, ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", "bar", "baz"));
 
       CollectionAssert.AreEqual(new[] { "foo" }, ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", (string[])null));
+      CollectionAssert.AreEqual(new[] { "foo" }, ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", new string[0]));
       CollectionAssert.AreEqual(new[] { "foo", "bar" }, ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", new[] { "bar" }));
     }
 
