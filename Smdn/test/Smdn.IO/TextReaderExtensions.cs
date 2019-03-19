@@ -1,8 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-
-using Smdn.Formats;
 
 namespace Smdn.IO {
   [TestFixture]
@@ -30,8 +29,9 @@ line3
       Assert.AreEqual(expectedLines.Length, index);
     }
 
-    [Test]
-    public void TestReadAllLines()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestReadAllLines(bool runAsync)
     {
       var text = @"line1
 line2
@@ -44,13 +44,36 @@ line3
       };
 
       var reader = new StringReader(text);
-      var lines = reader.ReadAllLines();
+      IReadOnlyList<string> actualLines = null;
 
-      Assert.AreEqual(expectedLines.Length, lines.Length);
+      if (runAsync)
+        Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
+      else
+        Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      for (var i = 0; i < lines.Length; i++) {
-        Assert.AreEqual(expectedLines[i], lines[i]);
-      }
+      CollectionAssert.AreEqual(expectedLines, actualLines);
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestReadAllLines_Empty(bool runAsync)
+    {
+      var reader = new StreamReader(Stream.Null);
+      IReadOnlyList<string> actualLines = null;
+
+      if (runAsync)
+        Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
+      else
+        Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
+
+      CollectionAssert.IsEmpty(actualLines);
+    }
+
+    [Test]
+    public void TestReadAllLines_ReaderNull()
+    {
+      Assert.Throws<ArgumentNullException>(() => TextReaderExtensions.ReadAllLines(null));
+      Assert.Throws<ArgumentNullException>(() => TextReaderExtensions.ReadAllLinesAsync(null));
     }
   }
 }

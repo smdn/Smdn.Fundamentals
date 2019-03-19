@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Smdn.IO {
   public static class TextReaderExtensions {
@@ -54,6 +55,27 @@ namespace Smdn.IO {
     public static string[] ReadAllLines(this TextReader reader)
     {
       return ReadLines(reader).ToArray();
+    }
+
+    public static Task<IReadOnlyList<string>> ReadAllLinesAsync(this TextReader reader)
+    {
+      return _ReadAllLinesAsync(reader ?? throw new ArgumentNullException(nameof(reader)));
+
+      async Task<IReadOnlyList<string>> _ReadAllLinesAsync(TextReader r)
+      {
+        var ret = new List<string>();
+
+        for (; ; ) {
+          var line = await reader.ReadLineAsync().ConfigureAwait(false);
+
+          if (line == null)
+            break;
+
+          ret.Add(line);
+        }
+
+        return ret;
+      }
     }
   }
 }
