@@ -34,12 +34,11 @@ namespace Smdn.IO {
     }
 #endif
 
-    public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer)
-    {
-      CopyTo(stream, writer, 10 * 1024);
-    }
-
-    public static void CopyTo(this Stream stream, System.IO.BinaryWriter writer, int bufferSize)
+    public static void CopyTo(
+      this Stream stream,
+      System.IO.BinaryWriter writer,
+      int bufferSize = 10 * 1024
+    )
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
@@ -60,17 +59,11 @@ namespace Smdn.IO {
       }
     }
 
-    public static byte[] ReadToEnd(this Stream stream)
-    {
-      return ReadToEnd(stream, 4096, 4096);
-    }
-
-    public static byte[] ReadToEnd(this Stream stream, int initialCapacity)
-    {
-      return ReadToEnd(stream, 4096, initialCapacity);
-    }
-
-    public static byte[] ReadToEnd(this Stream stream, int readBufferSize, int initialCapacity)
+    public static byte[] ReadToEnd(
+      this Stream stream,
+      int readBufferSize = 4096,
+      int initialCapacity = 4096
+    )
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
