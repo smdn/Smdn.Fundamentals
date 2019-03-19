@@ -21,6 +21,8 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
@@ -34,10 +36,12 @@ namespace Smdn.IO {
     }
 #endif
 
+    private const int defaultCopyBufferSize = 10 * 1024;
+
     public static void CopyTo(
       this Stream stream,
       System.IO.BinaryWriter writer,
-      int bufferSize = 10 * 1024
+      int bufferSize = defaultCopyBufferSize
     )
     {
       if (stream == null)
@@ -47,7 +51,7 @@ namespace Smdn.IO {
       if (bufferSize <= 0)
         throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(bufferSize), bufferSize);
 
-      var buffer = new byte[bufferSize];
+      var buffer = new byte[bufferSize]; // TODO: array pool
 
       for (;;) {
         var read = stream.Read(buffer, 0, bufferSize);
@@ -59,10 +63,44 @@ namespace Smdn.IO {
       }
     }
 
+    public static Task CopyToAsync(
+      this Stream stream,
+      System.IO.BinaryWriter writer,
+      int bufferSize = defaultCopyBufferSize,
+      CancellationToken cancellationToken = default
+    )
+    {
+      if (stream == null)
+        throw new ArgumentNullException(nameof(stream));
+      if (writer == null)
+        throw new ArgumentNullException(nameof(writer));
+      if (bufferSize <= 0)
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(bufferSize), bufferSize);
+
+      return _CopyToAsync();
+
+      async Task _CopyToAsync()
+      {
+        var buffer = new byte[bufferSize]; // TODO: array pool
+
+        for (; ; ) {
+          var read = await stream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false);
+
+          if (read <= 0)
+            break;
+
+          writer.Write(buffer, 0, read/*, cancellationToken*/);
+        }
+      }
+    }
+
+    private const int defaultReadBufferSize = 4096;
+    private const int defaultInitialBufferCapacity = 4096;
+
     public static byte[] ReadToEnd(
       this Stream stream,
-      int readBufferSize = 4096,
-      int initialCapacity = 4096
+      int readBufferSize = defaultReadBufferSize,
+      int initialCapacity = defaultInitialBufferCapacity
     )
     {
       if (stream == null)
@@ -78,6 +116,34 @@ namespace Smdn.IO {
         outStream.Close();
 
         return outStream.ToArray();
+      }
+    }
+
+    public static Task<byte[]> ReadToEndAsync(
+      this Stream stream,
+      int readBufferSize = defaultReadBufferSize,
+      int initialCapacity = defaultInitialBufferCapacity,
+      CancellationToken cancellationToken = default
+    )
+    {
+      if (stream == null)
+        throw new ArgumentNullException(nameof(stream));
+      if (readBufferSize <= 0)
+        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(readBufferSize), readBufferSize);
+      if (initialCapacity < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(initialCapacity), initialCapacity);
+
+      return _ReadToEndAsync();
+
+      async Task<byte[]> _ReadToEndAsync()
+      {
+        using (var outStream = new MemoryStream(initialCapacity)) {
+          await stream.CopyToAsync(outStream, readBufferSize, cancellationToken).ConfigureAwait(false);
+
+          outStream.Close();
+
+          return outStream.ToArray();
+        }
       }
     }
 
