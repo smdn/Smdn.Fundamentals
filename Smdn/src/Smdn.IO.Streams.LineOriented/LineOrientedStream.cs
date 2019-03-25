@@ -20,8 +20,11 @@
 // THE SOFTWARE.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Smdn.Text;
 
@@ -150,16 +153,17 @@ namespace Smdn.IO.Streams.LineOriented {
       return buffer[bufOffset++];
     }
 
-    public byte[] ReadLine()
-    {
-      return ReadLine(true);
-    }
+    public byte[] ReadLine(bool keepEOL = true)
+      => ReadLineAsync(keepEOL: keepEOL).GetAwaiter().GetResult()?.ToArray();
 
-    public byte[] ReadLine(bool keepEOL)
+    public async Task<ReadOnlySequence<byte>?> ReadLineAsync(
+      bool keepEOL = true,
+      CancellationToken cancellationToken = default
+    )
     {
       CheckDisposed();
 
-      if (bufRemain == 0 && FillBuffer() <= 0)
+      if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
         // end of stream
         return null;
 
@@ -168,7 +172,8 @@ namespace Smdn.IO.Streams.LineOriented {
       var eol = EolState.NotMatched;
       var eos = false;
       var retCount = 0;
-      byte[] retBuffer = null;
+      LineSequenceSegment segmentHead = null;
+      LineSequenceSegment segmentTail = null;
 
       for (;;) {
         if (strictEOL) {
@@ -198,23 +203,12 @@ namespace Smdn.IO.Streams.LineOriented {
             (eol == EolState.NotMatched || eol == EolState.CR /* read ahead; CRLF */)) {
           var count = bufOffset - bufCopyFrom;
 
-          if (retBuffer == null) {
-            retBuffer = new byte[count + BufferSize];
-
-            Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, 0, count);
-          }
-          else {
-            var newRetBuffer = new byte[retBuffer.Length + BufferSize];
-
-            Buffer.BlockCopy(retBuffer, 0, newRetBuffer, 0, retCount);
-            Buffer.BlockCopy(buffer, bufCopyFrom, newRetBuffer, retCount, count);
-
-            retBuffer = newRetBuffer;
-          }
+          segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, count).ToArray()); // XXX
+          segmentHead = segmentHead ?? segmentTail;
 
           retCount += count;
 
-          eos = (FillBuffer() <= 0);
+          eos = (await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0);
 
           bufCopyFrom = bufOffset;
         }
@@ -237,22 +231,26 @@ namespace Smdn.IO.Streams.LineOriented {
       if (!keepEOL && eol != EolState.NotMatched)
         retLength -= newLineOffset;
 
-      if (retBuffer == null || 0 < retLength - retCount) {
-        if (retBuffer == null)
-          retBuffer = new byte[retLength];
-
-        Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retCount, retLength - retCount);
+      if (segmentHead == null || 0 < retLength - retCount) {
+        segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray()); // XXX
+        segmentHead = segmentHead ?? segmentTail;
       }
 
-      if (retLength == retBuffer.Length) {
-        return retBuffer;
-      }
-      else {
-        var ret = new byte[retLength];
+      return new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength);
+    }
 
-        Buffer.BlockCopy(retBuffer, 0, ret, 0, retLength);
+    private class LineSequenceSegment : ReadOnlySequenceSegment<byte> {
+      public LineSequenceSegment(LineSequenceSegment prev, ReadOnlyMemory<byte> memory)
+      {
+        Memory = memory;
 
-        return ret;
+        if (prev == null) {
+          RunningIndex = 0;
+        }
+        else {
+          RunningIndex = prev.RunningIndex + prev.Memory.Length;
+          prev.Next = this;
+        }
       }
     }
 
@@ -361,6 +359,14 @@ namespace Smdn.IO.Streams.LineOriented {
     {
       bufOffset = 0;
       bufRemain = stream.Read(buffer, 0, buffer.Length);
+
+      return bufRemain;
+    }
+
+    private async Task<int> FillBufferAsync(CancellationToken cancellationToken)
+    {
+      bufOffset = 0;
+      bufRemain = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
 
       return bufRemain;
     }
