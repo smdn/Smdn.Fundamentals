@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -1196,17 +1197,17 @@ namespace Smdn.Text {
 
     public override string ToString()
     {
-      return ToString(null, segment, 0, segment.Count);
+      return ToString(null, segment.AsSpan(0, segment.Count));
     }
 
     public string ToString(int startIndex)
     {
-      return ToString(null, segment, startIndex, segment.Count - startIndex);
+      return ToString(null, segment.AsSpan(startIndex, segment.Count - startIndex));
     }
 
     public string ToString(int startIndex, int count)
     {
-      return ToString(null, segment, startIndex, count);
+      return ToString(null, segment.AsSpan(startIndex, count));
     }
 
     public string ToString(Encoding encoding)
@@ -1214,7 +1215,7 @@ namespace Smdn.Text {
       if (encoding == null)
         throw new ArgumentNullException(nameof(encoding));
 
-      return ToString(encoding, segment, 0, segment.Count);
+      return ToString(encoding, segment.AsSpan(0, segment.Count));
     }
 
     public string ToString(Encoding encoding, int startIndex)
@@ -1222,7 +1223,7 @@ namespace Smdn.Text {
       if (encoding == null)
         throw new ArgumentNullException(nameof(encoding));
 
-      return ToString(encoding, segment, startIndex, segment.Count - startIndex);
+      return ToString(encoding, segment.AsSpan(startIndex, segment.Count - startIndex));
     }
 
     public string ToString(Encoding encoding, int startIndex, int count)
@@ -1230,34 +1231,42 @@ namespace Smdn.Text {
       if (encoding == null)
         throw new ArgumentNullException(nameof(encoding));
 
-      return ToString(encoding, segment, startIndex, count);
+      return ToString(encoding, segment.AsSpan(startIndex, count));
     }
 
-    internal unsafe static string ToString(Encoding encoding, ArraySegment<byte> segment, int startIndex, int count)
+    internal unsafe static string ToString(Encoding encoding, ReadOnlySpan<byte> sequence)
     {
-      if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-      if (segment.Count - count < startIndex)
-        throw new ArgumentException("startIndex + count is larger than length"); // XXXX
+      fixed (byte* str0 = sequence) {
+        if (encoding != null)
+          return encoding.GetString(str0, sequence.Length);
 
-      var index = startIndex + segment.Offset;
+        var chars = new char[sequence.Length];
 
-      if (encoding == null) {
-        var chars = new char[count];
-
-        fixed (byte* str0 = segment.Array) {
-          for (var i = 0; 0 < count; count--) {
-            chars[i++] = (char)str0[index++];
-          }
+        for (var i = 0; i < sequence.Length; i++) {
+          chars[i] = (char)str0[i];
         }
 
         return new string(chars);
       }
-      else {
-        return encoding.GetString(segment.Array, index, count);
+    }
+
+    internal unsafe static string ToString(Encoding encoding, ReadOnlySequence<byte> sequence)
+    {
+      if (encoding != null)
+        return encoding.GetString(sequence.ToArray());
+
+      var chars = new char[sequence.Length];
+      var index = 0;
+
+      foreach (var segment in sequence) {
+        fixed (byte* str0 = segment.Span) {
+          for (var i = 0; i < segment.Length; i++) {
+            chars[index++] = (char)str0[i];
+          }
+        }
       }
+
+      return new string(chars);
     }
 
     private readonly ArraySegment<byte> segment;

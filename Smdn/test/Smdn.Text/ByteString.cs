@@ -1021,7 +1021,8 @@ namespace Smdn.Text {
 
       Assert.Throws<ArgumentOutOfRangeException>(() => str.ToString(10, -1));
 
-      Assert.Throws<ArgumentException>(() => str.ToString(9, 1));
+      //Assert.Throws<ArgumentException>(() => str.ToString(9, 1));
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.ToString(9, 1));
     }
 
     [Test]
