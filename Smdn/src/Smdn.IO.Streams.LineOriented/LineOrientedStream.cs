@@ -154,20 +154,44 @@ namespace Smdn.IO.Streams.LineOriented {
     }
 
     public byte[] ReadLine(bool keepEOL = true)
-      => ReadLineAsync(keepEOL: keepEOL).GetAwaiter().GetResult()?.ToArray();
+      => ReadLineAsync().GetAwaiter().GetResult().GetLine(keepEOL)?.ToArray();
 
-    public async Task<ReadOnlySequence<byte>?> ReadLineAsync(
-      bool keepEOL = true,
-      CancellationToken cancellationToken = default
-    )
+    public readonly struct ReadLineResult {
+      internal static readonly ReadLineResult EndOfStream = default;
+
+      private readonly ReadOnlySequence<byte>? lineWithNewLine;
+      public long LengthOfNewLine { get; }
+
+      public bool IsEndOfStream => lineWithNewLine == null;
+      public ReadOnlySequence<byte> LineWithNewLine => lineWithNewLine ?? throw CreateEOSException();
+      public ReadOnlySequence<byte> Line => lineWithNewLine?.Slice(0, lineWithNewLine.Value.Length - LengthOfNewLine) ?? throw CreateEOSException();
+      public bool IsEmptyLine => lineWithNewLine.HasValue ? lineWithNewLine.Value.Length == LengthOfNewLine : throw CreateEOSException();
+
+      private static Exception CreateEOSException() => new InvalidOperationException("has reached to end of the stream");
+
+      internal ReadLineResult(ReadOnlySequence<byte>? lineWithNewLine, int lengthOfNewLine)
+      {
+        this.lineWithNewLine = lineWithNewLine;
+        LengthOfNewLine = lengthOfNewLine;
+      }
+
+      internal ReadOnlySequence<byte>? GetLine(bool keepEOL)
+      {
+        if (IsEndOfStream)
+          return null;
+
+        return keepEOL ? LineWithNewLine : Line;
+      }
+    }
+
+    public async Task<ReadLineResult> ReadLineAsync(CancellationToken cancellationToken = default)
     {
       CheckDisposed();
 
       if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
-        // end of stream
-        return null;
+        return ReadLineResult.EndOfStream;
 
-      var newLineOffset = 0;
+      var newLineLength = 0;
       var bufCopyFrom = bufOffset;
       var eol = EolState.NotMatched;
       var eos = false;
@@ -177,22 +201,22 @@ namespace Smdn.IO.Streams.LineOriented {
 
       for (;;) {
         if (strictEOL) {
-          if (buffer[bufOffset] == newLine[newLineOffset]) {
-            if (newLine.Length == ++newLineOffset)
+          if (buffer[bufOffset] == newLine[newLineLength]) {
+            if (newLine.Length == ++newLineLength)
               eol = EolState.NewLine;
           }
           else {
-            newLineOffset = 0;
+            newLineLength = 0;
           }
         }
         else {
           if (buffer[bufOffset] == Ascii.Octets.CR) {
             eol = EolState.CR;
-            newLineOffset = 1;
+            newLineLength = 1;
           }
           else if (buffer[bufOffset] == Ascii.Octets.LF) {
             eol = EolState.LF;
-            newLineOffset = 1;
+            newLineLength = 1;
           }
         }
 
@@ -222,21 +246,24 @@ namespace Smdn.IO.Streams.LineOriented {
       if (eol == EolState.CR && buffer[bufOffset] == Ascii.Octets.LF) {
         // CRLF
         retLength++;
-        newLineOffset++;
+        newLineLength++;
 
         bufOffset++;
         bufRemain--;
       }
 
-      if (!keepEOL && eol != EolState.NotMatched)
-        retLength -= newLineOffset;
+      if (eol == EolState.NotMatched)
+        newLineLength = 0;
 
       if (segmentHead == null || 0 < retLength - retCount) {
         segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray()); // XXX
         segmentHead = segmentHead ?? segmentTail;
       }
 
-      return new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength);
+      return new ReadLineResult(
+        lineWithNewLine: new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength),
+        lengthOfNewLine: newLineLength
+      );
     }
 
     private class LineSequenceSegment : ReadOnlySequenceSegment<byte> {

@@ -1,5 +1,7 @@
 using System;
+using System.Buffers;
 using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 using Smdn.Text;
@@ -42,6 +44,84 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.IsFalse(stream.CanTimeout, "can timeout");
         Assert.AreEqual(8L, stream.Length);
         Assert.AreEqual(0L, stream.Position);
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestReadLineAsync_EndOfStream(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43};
+
+      using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
+        stream.ReadToEnd();
+
+        var ret = await stream.ReadLineAsync();
+
+        Assert.IsTrue(ret.IsEndOfStream);
+        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.IsEmptyLine));
+        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.LineWithNewLine));
+        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.Line));
+        Assert.AreEqual(0, ret.LengthOfNewLine);
+      }
+    }
+
+    [TestCase(StreamType.Strict, false)]
+    [TestCase(StreamType.Strict, true)]
+    [TestCase(StreamType.Loose, false)]
+    [TestCase(StreamType.Loose, true)]
+    public async Task TestReadLineAsync_EndOfStream_NothingBuffered(StreamType type, bool keepEOL)
+    {
+      using (var stream = CreateStream(type, Stream.Null, 8)) {
+        var ret = await stream.ReadLineAsync();
+
+        Assert.IsTrue(ret.IsEndOfStream);
+        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.IsEmptyLine));
+        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.LineWithNewLine));
+        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.Line));
+        Assert.AreEqual(0, ret.LengthOfNewLine);
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestReadLineAsync_SingleSegment(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF};
+
+      using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
+        var ret = await stream.ReadLineAsync();
+
+        Assert.IsFalse(ret.IsEndOfStream);
+        Assert.IsFalse(ret.IsEmptyLine);
+        Assert.IsTrue(ret.LineWithNewLine.IsSingleSegment);
+        Assert.IsTrue(ret.Line.IsSingleSegment);
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.LineWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43 },
+                                  ret.Line.ToArray());
+      }
+    }
+
+    [TestCase(StreamType.Strict, false)]
+    [TestCase(StreamType.Strict, true)]
+    [TestCase(StreamType.Loose, false)]
+    [TestCase(StreamType.Loose, true)]
+    public async Task TestReadLineAsync_MultipleSegment(StreamType type, bool keepEOL)
+    {
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, Ascii.Octets.CR, Ascii.Octets.LF};
+
+      using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
+        var ret = await stream.ReadLineAsync();
+
+        Assert.IsFalse(ret.IsEndOfStream);
+        Assert.IsFalse(ret.IsEmptyLine);
+        Assert.IsFalse(ret.LineWithNewLine.IsSingleSegment);
+        Assert.IsFalse(ret.Line.IsSingleSegment);
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.LineWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f },
+                                  ret.Line.ToArray());
       }
     }
 

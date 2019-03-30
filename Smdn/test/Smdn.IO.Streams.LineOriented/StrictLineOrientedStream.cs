@@ -1,5 +1,7 @@
 using System;
+using System.Buffers;
 using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 using Smdn.Text;
@@ -13,6 +15,48 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
         Assert.IsNotNull(stream.NewLine);
         CollectionAssert.AreEqual(new byte[] {0x0d, 0x0a}, stream.NewLine, "must return CRLF");
+      }
+    }
+
+    [Test]
+    public async Task TestReadLineAsync()
+    {
+      var data = new byte[] {
+        0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF,
+        Ascii.Octets.CR, Ascii.Octets.LF,
+        0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF,
+      };
+
+      using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
+        // CRLF
+        var ret = await stream.ReadLineAsync();
+
+        Assert.IsFalse(ret.IsEndOfStream);
+        Assert.IsFalse(ret.IsEmptyLine);
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.LineWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
+                                  ret.Line.ToArray());
+
+        // CRLF (empty line)
+        ret = await stream.ReadLineAsync();
+
+        Assert.IsFalse(ret.IsEndOfStream);
+        Assert.IsTrue(ret.IsEmptyLine);
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.LineWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[0],
+                                  ret.Line.ToArray());
+
+        // <EOS>
+        ret = await stream.ReadLineAsync();
+
+        Assert.IsFalse(ret.IsEndOfStream);
+        Assert.IsFalse(ret.IsEmptyLine);
+        CollectionAssert.AreEqual(new byte[] { 0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF, },
+                                  ret.LineWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF, },
+                                  ret.Line.ToArray());
       }
     }
 
