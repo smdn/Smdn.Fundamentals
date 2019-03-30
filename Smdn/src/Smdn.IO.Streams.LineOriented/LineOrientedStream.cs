@@ -141,6 +141,13 @@ namespace Smdn.IO.Streams.LineOriented {
       stream.Flush();
     }
 
+    public override Task FlushAsync(CancellationToken cancellationToken)
+    {
+      CheckDisposed();
+
+      return stream.FlushAsync(cancellationToken);
+    }
+
     public override int ReadByte()
     {
       CheckDisposed();
@@ -468,6 +475,20 @@ namespace Smdn.IO.Streams.LineOriented {
       CheckDisposed();
 
       stream.Write(buffer, offset, count);
+    }
+
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+      CheckDisposed();
+
+      return stream.WriteAsync(buffer, offset, count, cancellationToken);
+    }
+
+    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
+    {
+      CheckDisposed();
+
+      return stream.CopyToAsync(destination, bufferSize, cancellationToken);
     }
 
     private void CheckDisposed()
