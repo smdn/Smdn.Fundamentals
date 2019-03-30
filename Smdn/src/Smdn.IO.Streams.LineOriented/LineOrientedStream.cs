@@ -184,10 +184,15 @@ namespace Smdn.IO.Streams.LineOriented {
       }
     }
 
-    public async Task<ReadLineResult> ReadLineAsync(CancellationToken cancellationToken = default)
+    public Task<ReadLineResult> ReadLineAsync(CancellationToken cancellationToken = default)
     {
       CheckDisposed();
 
+      return ReadLineAsyncCore(cancellationToken: cancellationToken);
+    }
+
+    private async Task<ReadLineResult> ReadLineAsyncCore(CancellationToken cancellationToken = default)
+    {
       if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
         return ReadLineResult.EndOfStream;
 
