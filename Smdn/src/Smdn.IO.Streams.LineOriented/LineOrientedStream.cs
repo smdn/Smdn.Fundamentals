@@ -389,8 +389,8 @@ namespace Smdn.IO.Streams.LineOriented {
       if (count == 0L)
         return Task.FromResult(0); // do nothing
 
-      return ReadAsync(
-        buffer: buffer,
+      return ReadAsyncCore(
+        destination: buffer,
         offset: offset,
         count: count,
         cancellationToken: cancellationToken
