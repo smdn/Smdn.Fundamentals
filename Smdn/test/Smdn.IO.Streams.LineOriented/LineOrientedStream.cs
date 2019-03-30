@@ -1,6 +1,7 @@
 using System;
 using System.Buffers;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -151,7 +152,78 @@ namespace Smdn.IO.Streams.LineOriented {
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
-    public void TestReadToStreamBufferEmpty(StreamType type)
+    public void TestReadToStream_ArgumentNull_TargetStream(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+
+      Assert.Throws<ArgumentNullException>(() => stream.Read(null, 16L));
+      Assert.Throws<ArgumentNullException>(() => stream.ReadAsync(null, 16L));
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadToStream_ArgumentOutOfRange_Length(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+
+      Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(Stream.Null, -1L));
+      Assert.Throws<ArgumentOutOfRangeException>(() => stream.ReadAsync(Stream.Null, -1L));
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadToStream_LengthZero(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+      var copyStream = new MemoryStream();
+
+      Assert.AreEqual(0L, stream.Read(copyStream, 0L));
+      Assert.AreEqual(0L, stream.Position, "Position");
+
+      copyStream.Dispose();
+
+      Assert.AreEqual(new byte[0], copyStream.ToArray());
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadToStreamAsync_LengthZero(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+      var copyStream = new MemoryStream();
+
+      var t = stream.ReadAsync(copyStream, 0L);
+
+      Assert.IsTrue(t.IsCompleted);
+      Assert.AreEqual(0L, t.GetAwaiter().GetResult());
+      Assert.AreEqual(0L, stream.Position, "Position");
+
+      copyStream.Dispose();
+
+      Assert.AreEqual(new byte[0], copyStream.ToArray());
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadToStreamAsync_CancelledToken(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+
+      using (var cts = new CancellationTokenSource()) {
+        cts.Cancel();
+
+        var t = stream.ReadAsync(Stream.Null, 0L, cts.Token);
+
+        Assert.IsTrue(t.IsCanceled);
+        Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
+
+        Assert.AreEqual(0L, stream.Position, "Position");
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadToStream_BufferEmpty(StreamType type)
     {
       var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -169,7 +241,23 @@ namespace Smdn.IO.Streams.LineOriented {
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
-    public void TestReadLessThanBuffered(StreamType type)
+    public void TestRead_BufferEmpty(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var stream = CreateStream(type, new MemoryStream(data), 8);
+
+      var buffer = new byte[12];
+
+      Assert.AreEqual(12L, stream.Read(buffer, 0, 12));
+
+      Assert.AreEqual(12L, stream.Position, "Position");
+
+      Assert.AreEqual(data, buffer);
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestRead_LessThanBuffered(StreamType type)
     {
       var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
@@ -191,7 +279,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
-    public void TestReadLongerThanBuffered(StreamType type)
+    public void TestRead_LongerThanBuffered(StreamType type)
     {
       var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -213,7 +301,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
-    public void TestReadToStreamLessThanBuffered(StreamType type)
+    public void TestReadToStream_LessThanBuffered(StreamType type)
     {
       var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
@@ -237,7 +325,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
-    public void TestReadToStreamLongerThanBuffered(StreamType type)
+    public void TestReadToStream_LongerThanBuffered(StreamType type)
     {
       var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -257,6 +345,50 @@ namespace Smdn.IO.Streams.LineOriented {
       copyStream.Dispose();
 
       Assert.AreEqual(data.Slice(4, 8), copyStream.ToArray());
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestRead_LengthZero(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+      var buffer = new byte[1];
+
+      Assert.AreEqual(0, stream.Read(buffer, 0, 0));
+
+      Assert.AreEqual(0L, stream.Position, "Position");
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadAsync_LengthZero(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+      var buffer = new byte[1];
+
+      var t = stream.ReadAsync(buffer, 0, 0);
+
+      Assert.IsTrue(t.IsCompleted);
+      Assert.AreEqual(0L, t.GetAwaiter().GetResult());
+      Assert.AreEqual(0L, stream.Position, "Position");
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestReadAsync_CancelledToken(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+
+      using (var cts = new CancellationTokenSource()) {
+        cts.Cancel();
+
+        var t = stream.ReadAsync(new byte[1], 0, 1, cts.Token);
+
+        Assert.IsTrue(t.IsCanceled);
+        Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
+
+        Assert.AreEqual(0L, stream.Position, "Position");
+      }
     }
 
     [TestCase(StreamType.Strict)]
@@ -281,10 +413,18 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream));
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.NewLine));
         Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
         Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
+        Assert.Throws<ObjectDisposedException>(() => stream.Read(Stream.Null, 8));
+        Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Stream.Null, 8));
+        Assert.Throws<ObjectDisposedException>(() => stream.Flush());
+        Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync());
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
         Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
+        Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(buffer, 0, 8));
+        Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
 
         stream.Dispose();
       }
