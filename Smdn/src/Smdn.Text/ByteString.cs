@@ -1256,12 +1256,21 @@ namespace Smdn.Text {
         return encoding.GetString(sequence.ToArray());
 
       var chars = new char[sequence.Length];
-      var index = 0;
 
-      foreach (var segment in sequence) {
-        fixed (byte* str0 = segment.Span) {
-          for (var i = 0; i < segment.Length; i++) {
-            chars[index++] = (char)str0[i];
+      fixed (char* c0 = chars) {
+        char* c = c0;
+
+        var position = sequence.Start;
+
+        while (sequence.TryGet(ref position, out var memory, advance: true)) {
+          var span = memory.Span;
+
+          fixed (byte* s0 = span) {
+            byte* s = s0;
+
+            for (var i = 0; i < span.Length; i++) {
+              *c++ = (char)*s++;
+            }
           }
         }
       }
