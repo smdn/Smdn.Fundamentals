@@ -360,6 +360,14 @@ namespace Smdn.IO.Streams.LineOriented {
     }
 
     public override int Read(byte[] buffer, int offset, int count)
+      => ReadAsync(buffer, offset, count, default).GetAwaiter().GetResult();
+
+    public override Task<int> ReadAsync(
+      byte[] buffer,
+      int offset,
+      int count,
+      CancellationToken cancellationToken
+    )
     {
       CheckDisposed();
 
@@ -372,8 +380,32 @@ namespace Smdn.IO.Streams.LineOriented {
       if (buffer.Length - count < offset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
+      if (cancellationToken.IsCancellationRequested)
+#if NET45
+        return new Task<int>(() => default, cancellationToken);
+#else
+        return Task.FromCanceled<int>(cancellationToken);
+#endif
+      if (count == 0L)
+        return Task.FromResult(0); // do nothing
+
+      return ReadAsync(
+        buffer: buffer,
+        offset: offset,
+        count: count,
+        cancellationToken: cancellationToken
+      );
+    }
+
+    private async Task<int> ReadAsyncCore(
+      byte[] destination,
+      int offset,
+      int count,
+      CancellationToken cancellationToken
+    )
+    {
       if (count <= bufRemain) {
-        Buffer.BlockCopy(this.buffer, bufOffset, buffer, offset, count);
+        Buffer.BlockCopy(buffer, bufOffset, destination, offset, count);
         bufOffset += count;
         bufRemain -= count;
 
@@ -383,7 +415,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var read = 0;
 
       if (bufRemain != 0) {
-        Buffer.BlockCopy(this.buffer, bufOffset, buffer, offset, bufRemain);
+        Buffer.BlockCopy(buffer, bufOffset, destination, offset, bufRemain);
 
         read    = bufRemain;
         offset += bufRemain;
@@ -397,7 +429,7 @@ namespace Smdn.IO.Streams.LineOriented {
         if (count <= 0)
           break;
 
-        var r = stream.Read(buffer, offset, count);
+        var r = await stream.ReadAsync(destination, offset, count, cancellationToken).ConfigureAwait(false);
 
         if (r <= 0)
           break;
