@@ -282,18 +282,46 @@ namespace Smdn.IO.Streams.LineOriented {
     }
 
     public long Read(Stream targetStream, long length)
+      => ReadAsync(targetStream, length).GetAwaiter().GetResult();
+
+    public Task<long> ReadAsync(
+      Stream targetStream,
+      long length,
+      CancellationToken cancellationToken = default
+    )
     {
       CheckDisposed();
 
-      if (length < 0L)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length);
       if (targetStream == null)
         throw new ArgumentNullException(nameof(targetStream));
+      if (cancellationToken.IsCancellationRequested)
+#if NET45
+        return new Task<long>(() => default, cancellationToken);
+#else
+        return Task.FromCanceled<long>(cancellationToken);
+#endif
+      if (length == 0L)
+        return Task.FromResult(0L); // do nothing
+      if (length < 0L)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length);
 
+      return ReadAsyncCore(
+        targetStream,
+        length,
+        cancellationToken
+      );
+    }
+
+    private async Task<long> ReadAsyncCore(
+      Stream targetStream,
+      long length,
+      CancellationToken cancellationToken = default
+    )
+    {
       if (length <= bufRemain) {
         var count = (int)length;
 
-        targetStream.Write(buffer, bufOffset, count);
+        await targetStream.WriteAsync(buffer, bufOffset, count, cancellationToken).ConfigureAwait(false);
 
         bufOffset += count;
         bufRemain -= count;
@@ -304,7 +332,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var read = 0L;
 
       if (bufRemain != 0) {
-        targetStream.Write(buffer, bufOffset, bufRemain);
+        await targetStream.WriteAsync(buffer, bufOffset, bufRemain, cancellationToken).ConfigureAwait(false);
 
         read    = bufRemain;
         length -= bufRemain;
@@ -314,18 +342,18 @@ namespace Smdn.IO.Streams.LineOriented {
 
       // read from base stream
       for (;;) {
-        var r = stream.Read(buffer, 0, (int)Math.Min(length, buffer.Length));
+        if (length <= 0)
+          break;
+
+        var r = await stream.ReadAsync(buffer, 0, (int)Math.Min(length, buffer.Length)).ConfigureAwait(false);
 
         if (r <= 0)
           break;
 
-        targetStream.Write(buffer, 0, r);
+        await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
 
         length -= r;
         read   += r;
-
-        if (length <= 0)
-          break;
       }
 
       return read;
