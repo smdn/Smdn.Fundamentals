@@ -187,51 +187,51 @@ namespace Smdn.Formats.Mime {
       var offsetOfDelimiter = -1;
 
       for (;;) {
-        var l = await stream.ReadLineAsync(
-          keepEOL: true,
-          cancellationToken: cancellationToken
-        ).ConfigureAwait(false);
+        var ret = await stream.ReadLineAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        if (l == null)
-          break; // end of stream
+        if (ret.IsEndOfStream)
+          break;
+        if (ret.IsEmptyLine)
+          break;
 
-        var line = (ReadOnlyMemory<byte>)l.Value.ToArray(); // TODO: use SequenceReader
-        var firstByteOfLine = line.Span[0];
-
-        if ((line.Length == 1 && (firstByteOfLine == Ascii.Octets.CR || firstByteOfLine == Ascii.Octets.LF)) ||
-            (line.Length == 2 && (firstByteOfLine == Ascii.Octets.CR && line.Span[1] == Ascii.Octets.LF)))
-          break; // end of header
+        var line = ret.LineWithNewLine;
+        var firstByteOfLine = line.First.Span[0];
 
         if (firstByteOfLine == Ascii.Octets.HT || firstByteOfLine == Ascii.Octets.SP) { // LWSP-char
           // folding
           if (lineFirst == null) {
             if (ignoreMalformed)
               continue;
-            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, line.Span)}'");
+            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Line)}'");
           }
 
-          lineLast = new HeaderFieldLineSegment(lineLast, line);
+          lineLast = HeaderFieldLineSegment.Append(lineLast, line, out _);
         }
         else {
-          if (0 < offsetOfDelimiter)
+          if (lineFirst != null)
             headerFields.Add(Result());
 
           // field       =  field-name ":" [ field-body ] CRLF
           // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
           const byte nameBodyDelimiter = (byte)':';
 
-          offsetOfDelimiter = line.Span.IndexOf(nameBodyDelimiter);
+          var posOfDelim = line.PositionOf(nameBodyDelimiter);
+
+          if (posOfDelim.HasValue)
+            offsetOfDelimiter = (int)line.Slice(0, posOfDelim.Value).Length;
+          else
+            offsetOfDelimiter = -1;
 
           if (0 < offsetOfDelimiter)
-            lineFirst = lineLast = new HeaderFieldLineSegment(null, line);
+            lineLast = HeaderFieldLineSegment.Append(null, line, out lineFirst);
           else if (ignoreMalformed)
             lineFirst = null;
           else
-            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, line.Span)}'");
+            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Line)}'");
         }
       }
 
-      if (0 < offsetOfDelimiter)
+      if (lineFirst != null)
         headerFields.Add(Result());
 
       return headerFields;
@@ -250,7 +250,23 @@ namespace Smdn.Formats.Mime {
     }
 
     private class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
-      public HeaderFieldLineSegment(HeaderFieldLineSegment prev, ReadOnlyMemory<byte> memory)
+      public static HeaderFieldLineSegment Append(HeaderFieldLineSegment last, ReadOnlySequence<byte> line, out HeaderFieldLineSegment first)
+      {
+        first = null;
+
+        var position = line.Start;
+
+        while (line.TryGet(ref position, out var memory, advance: true)) {
+          last = new HeaderFieldLineSegment(last, memory);
+
+          if (first == null)
+            first = last;
+        }
+
+        return last;
+      }
+
+      private HeaderFieldLineSegment(HeaderFieldLineSegment prev, ReadOnlyMemory<byte> memory)
       {
         Memory = memory;
 
