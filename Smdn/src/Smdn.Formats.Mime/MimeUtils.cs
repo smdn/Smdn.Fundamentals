@@ -206,29 +206,30 @@ namespace Smdn.Formats.Mime {
           }
 
           lineLast = HeaderFieldLineSegment.Append(lineLast, line, out _);
+
+          continue;
         }
-        else {
-          if (lineFirst != null)
-            headerFields.Add(Result());
 
-          // field       =  field-name ":" [ field-body ] CRLF
-          // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
-          const byte nameBodyDelimiter = (byte)':';
+        if (lineFirst != null)
+          headerFields.Add(Result());
 
-          var posOfDelim = line.PositionOf(nameBodyDelimiter);
+        // field       =  field-name ":" [ field-body ] CRLF
+        // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
+        const byte nameBodyDelimiter = (byte)':';
 
-          if (posOfDelim.HasValue)
-            offsetOfDelimiter = (int)line.Slice(0, posOfDelim.Value).Length;
-          else
-            offsetOfDelimiter = -1;
+        var posOfDelim = line.PositionOf(nameBodyDelimiter);
 
-          if (0 < offsetOfDelimiter)
-            lineLast = HeaderFieldLineSegment.Append(null, line, out lineFirst);
-          else if (ignoreMalformed)
-            lineFirst = null;
-          else
-            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Line)}'");
-        }
+        if (posOfDelim.HasValue)
+          offsetOfDelimiter = (int)line.Slice(0, posOfDelim.Value).Length;
+        else
+          offsetOfDelimiter = -1;
+
+        if (0 < offsetOfDelimiter)
+          lineLast = HeaderFieldLineSegment.Append(null, line, out lineFirst);
+        else if (ignoreMalformed)
+          lineFirst = null;
+        else
+          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Line)}'");
       }
 
       if (lineFirst != null)
