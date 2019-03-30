@@ -152,7 +152,7 @@ namespace Smdn.IO.Streams.LineOriented {
     {
       CheckDisposed();
 
-      if (bufRemain == 0 && FillBuffer() <= 0)
+      if (bufRemain == 0 && FillBufferAsync(default).GetAwaiter().GetResult() <= 0)
         return -1;
 
       bufRemain--;
@@ -452,14 +452,6 @@ namespace Smdn.IO.Streams.LineOriented {
       }
 
       return read;
-    }
-
-    private int FillBuffer()
-    {
-      bufOffset = 0;
-      bufRemain = stream.Read(buffer, 0, buffer.Length);
-
-      return bufRemain;
     }
 
     private async Task<int> FillBufferAsync(CancellationToken cancellationToken)
