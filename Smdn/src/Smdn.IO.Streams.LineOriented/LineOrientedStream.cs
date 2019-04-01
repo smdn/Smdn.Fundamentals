@@ -326,12 +326,12 @@ namespace Smdn.IO.Streams.LineOriented {
 
     private async Task<long> ReadAsyncCore(
       Stream targetStream,
-      long length,
+      long? bytesToRead,
       CancellationToken cancellationToken = default
     )
     {
-      if (length <= bufRemain) {
-        var count = (int)length;
+      if (bytesToRead.HasValue && bytesToRead <= bufRemain) {
+        var count = (int)bytesToRead;
 
         await targetStream.WriteAsync(buffer, bufOffset, count, cancellationToken).ConfigureAwait(false);
 
@@ -343,29 +343,43 @@ namespace Smdn.IO.Streams.LineOriented {
 
       var read = 0L;
 
-      if (bufRemain != 0) {
+      if (0 < bufRemain) {
         await targetStream.WriteAsync(buffer, bufOffset, bufRemain, cancellationToken).ConfigureAwait(false);
 
-        read    = bufRemain;
-        length -= bufRemain;
+        read         = bufRemain;
+        bytesToRead -= bufRemain;
 
         bufRemain = 0;
       }
 
       // read from base stream
-      for (;;) {
-        if (length <= 0)
-          break;
+      if (bytesToRead.HasValue) {
+        for (;;) {
+          if (bytesToRead <= 0)
+            break;
 
-        var r = await stream.ReadAsync(buffer, 0, (int)Math.Min(length, buffer.Length)).ConfigureAwait(false);
+          var r = await stream.ReadAsync(buffer, 0, (int)Math.Min(bytesToRead.Value, buffer.Length)).ConfigureAwait(false);
 
-        if (r <= 0)
-          break;
+          if (r <= 0)
+            break;
 
-        await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
+          await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
 
-        length -= r;
-        read   += r;
+          bytesToRead -= r;
+          read        += r;
+        }
+      }
+      else {
+        for (;;) {
+          var r = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+
+          await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
+
+          read += r;
+
+          if (r < buffer.Length)
+            break;
+        }
       }
 
       return read;
@@ -476,11 +490,19 @@ namespace Smdn.IO.Streams.LineOriented {
       return stream.WriteAsync(buffer, offset, count, cancellationToken);
     }
 
-    public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken)
+    public override Task CopyToAsync(
+      Stream destination,
+      int bufferSize = 0, // don't care
+      CancellationToken cancellationToken = default
+    )
     {
       CheckDisposed();
 
-      return stream.CopyToAsync(destination, bufferSize, cancellationToken);
+      return ReadAsyncCore(
+        destination ?? throw new ArgumentNullException(nameof(destination)),
+        null, // read to end
+        cancellationToken
+      );
     }
 
     private void CheckDisposed()

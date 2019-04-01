@@ -134,7 +134,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var stream = CreateStream(type, new MemoryStream(data), 8);
       var index = 0;
 
-      for (;;) {
+      for (; ; ) {
         var val = stream.ReadByte();
 
         if (index == data.Length) {
@@ -283,7 +283,7 @@ namespace Smdn.IO.Streams.LineOriented {
     {
       var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
-      
+
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
@@ -388,6 +388,83 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
         Assert.AreEqual(0L, stream.Position, "Position");
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestCopyToAsync(StreamType type)
+    {
+      var data = new byte[] {
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
+      };
+
+      using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
+        Assert.AreEqual(data[0], stream.ReadByte());
+
+        var targetStream = new MemoryStream();
+
+        await stream.CopyToAsync(targetStream, 0, cancellationToken: default);
+
+        CollectionAssert.AreEqual(data.Slice(1), targetStream.ToArray());
+
+        Assert.AreEqual(-1, stream.ReadByte());
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestCopyToAsync_NothingBuffered(StreamType type)
+    {
+      var data = new byte[] {
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
+      };
+
+      using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
+        var targetStream = new MemoryStream();
+
+        await stream.CopyToAsync(targetStream, 0, cancellationToken: default);
+
+        CollectionAssert.AreEqual(data, targetStream.ToArray());
+
+        Assert.AreEqual(-1, stream.ReadByte());
+      }
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public void TestCopyToAsync_ArgumentNull_Destination(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+
+      Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null));
+      Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0));
+      Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0, cancellationToken: default));
+    }
+
+    [TestCase(StreamType.Strict, -1)]
+    [TestCase(StreamType.Loose, -1)]
+    [TestCase(StreamType.Strict, 0)]
+    [TestCase(StreamType.Loose, 0)]
+    [TestCase(StreamType.Strict, int.MaxValue)]
+    [TestCase(StreamType.Loose, int.MaxValue)]
+    public async Task TestCopyToAsync_BufferSizeShouldBeIgnored(StreamType type, int bufferSize)
+    {
+      var data = new byte[] {
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
+      };
+
+      using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
+        var targetStream = new MemoryStream();
+
+        await stream.CopyToAsync(targetStream, bufferSize: bufferSize, cancellationToken: default);
+
+        CollectionAssert.AreEqual(data, targetStream.ToArray());
+
+        Assert.AreEqual(-1, stream.ReadByte());
       }
     }
 
