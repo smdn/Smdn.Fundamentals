@@ -374,9 +374,9 @@ namespace Smdn.Text {
 
       Assert.IsTrue(str.StartsWith(ByteString.CreateImmutable("abc")));
       Assert.IsTrue(str.StartsWith(ByteString.CreateImmutable("abcde")));
-      Assert.IsTrue(str.StartsWith(ByteString.CreateImmutable("abcde")));
       Assert.IsFalse(str.StartsWith(ByteString.CreateImmutable("abd")));
       Assert.IsFalse(str.StartsWith(ByteString.CreateImmutable("abcdef")));
+      Assert.IsTrue(str.StartsWith(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -400,6 +400,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.StartsWithIgnoreCase(ByteString.CreateImmutable("AbC")));
       Assert.IsFalse(str.StartsWithIgnoreCase(ByteString.CreateImmutable("abd")));
       Assert.IsFalse(str.StartsWithIgnoreCase(ByteString.CreateImmutable("abcdef")));
+      Assert.IsTrue(str.StartsWithIgnoreCase(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -420,6 +421,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.StartsWith("abcde"));
       Assert.IsFalse(str.StartsWith("abd"));
       Assert.IsFalse(str.StartsWith("abcdef"));
+      Assert.IsTrue(str.StartsWith(string.Empty));
     }
 
     [Test]
@@ -431,6 +433,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.EndsWith(ByteString.CreateImmutable("abcde")));
       Assert.IsFalse(str.EndsWith(ByteString.CreateImmutable("cdd")));
       Assert.IsFalse(str.EndsWith(ByteString.CreateImmutable("abcdef")));
+      Assert.IsTrue(str.EndsWith(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -451,6 +454,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.EndsWith("abcde"));
       Assert.IsFalse(str.EndsWith("cdd"));
       Assert.IsFalse(str.EndsWith("abcdef"));
+      Assert.IsTrue(str.EndsWith(string.Empty));
     }
 
     [Test]
