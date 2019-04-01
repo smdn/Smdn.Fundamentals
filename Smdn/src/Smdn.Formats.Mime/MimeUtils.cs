@@ -173,6 +173,21 @@ namespace Smdn.Formats.Mime {
     private static THeaderField ParseHeaderConverter<THeaderField>(RawHeaderField header, Converter<RawHeaderField, THeaderField> converter)
       => converter(header);
 
+    public static /*IAsyncEnumerable<T>*/ Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField, TArg>(
+      LineOrientedStream stream,
+      Func<RawHeaderField, TArg, THeaderField> converter,
+      TArg arg,
+      bool ignoreMalformed = true,
+      CancellationToken cancellationToken = default
+    ) =>
+    ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: converter ?? throw new ArgumentNullException(nameof(converter)),
+      arg: arg,
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
+
     private static /*IAsyncEnumerable<T>*/ async Task<IReadOnlyList<THeaderField>> ParseHeaderAsyncCore<THeaderField, TArg>(
       LineOrientedStream stream,
       Func<RawHeaderField, TArg, THeaderField> converter,
