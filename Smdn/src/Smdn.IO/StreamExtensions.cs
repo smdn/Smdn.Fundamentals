@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -153,6 +154,72 @@ namespace Smdn.IO {
         throw new ArgumentNullException(nameof(stream));
 
       stream.Write(segment.Array, segment.Offset, segment.Count);
+    }
+
+    public static void Write(
+      this Stream stream,
+      ReadOnlySequence<byte> sequence
+    )
+    {
+      if (stream == null)
+        throw new ArgumentNullException(nameof(stream));
+
+      if (sequence.IsEmpty)
+        return;
+
+      var pos = sequence.Start;
+      byte[] buffer = null;
+
+      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
+#if NETSTANDARD2_1
+        stream.Write(memory.Span);
+#else
+        if (buffer == null || buffer.Length < memory.Length)
+          buffer = new byte[memory.Length]; // TODO: ArrayPool.Shared.Rent()
+
+        memory.CopyTo(buffer);
+
+        stream.Write(buffer, 0, memory.Length);
+#endif
+      }
+    }
+
+    public static Task WriteAsync(
+      this Stream stream,
+      ReadOnlySequence<byte> sequence,
+      CancellationToken cancellationToken = default
+    )
+    {
+      if (stream == null)
+        throw new ArgumentNullException(nameof(stream));
+
+      if (sequence.IsEmpty)
+        return Task.CompletedTask;
+      else
+        return WriteAsyncCore(stream, sequence, cancellationToken);
+    }
+
+    private static async Task WriteAsyncCore(
+      Stream stream,
+      ReadOnlySequence<byte> sequence,
+      CancellationToken cancellationToken
+    )
+    {
+      var pos = sequence.Start;
+      byte[] buffer = null;
+
+      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
+#if NETSTANDARD2_1
+        await stream.WriteAsync(memory.Span, cancellationToken).ConfigureAwait(false);
+#else
+        if (buffer == null || buffer.Length < memory.Length)
+          buffer = new byte[memory.Length]; // TODO: ArrayPool.Shared.Rent()
+
+        memory.CopyTo(buffer);
+
+        await stream.WriteAsync(buffer, 0, memory.Length, cancellationToken).ConfigureAwait(false);
+#endif
+      }
     }
   }
 }
