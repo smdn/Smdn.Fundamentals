@@ -35,23 +35,18 @@ namespace Smdn.IO.Streams.LineOriented {
     {
     }
 
-    private static byte[] ValidateNewLineArray(byte[] newLine)
-    {
-      if (newLine == null)
-        throw new ArgumentNullException(nameof(newLine));
-      if (newLine.Length == 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine));
-
-      return newLine;
-    }
-
     public StrictLineOrientedStream(
       Stream stream,
-      byte[] newLine,
+      ReadOnlySpan<byte> newLine,
       int bufferSize = DefaultBufferSize,
       bool leaveStreamOpen = DefaultLeaveStreamOpen
     )
-      : base(stream, ValidateNewLineArray(newLine), bufferSize, leaveStreamOpen)
+      : base(
+        stream,
+        newLine.IsEmpty ? throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine)) : newLine,
+        bufferSize,
+        leaveStreamOpen
+      )
     {
     }
   }
