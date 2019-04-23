@@ -79,6 +79,25 @@ namespace Smdn.Text {
 
     [TestCase(true)]
     [TestCase(false)]
+    public void TestReadOnlySequence_SequenceEqual(bool singleSegment)
+    {
+      var str = CreateSequence("abcde", singleSegment);
+
+      Assert.IsTrue(str.SequenceEqual(CreateSpan("abcde")));
+      Assert.IsFalse(str.SequenceEqual(CreateSpan("abcdef")));
+      Assert.IsFalse(str.SequenceEqual(CreateSpan("abcd")));
+      Assert.IsFalse(str.SequenceEqual(CreateSpan(string.Empty)));
+
+      Assert.AreEqual(str.IsSingleSegment, singleSegment);
+
+      str = CreateSequence(string.Empty, singleSegment);
+
+      Assert.IsTrue(str.SequenceEqual(CreateSpan(string.Empty)));
+      Assert.IsFalse(str.SequenceEqual(CreateSpan("a")));
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
     public void TestReadOnlySequence_StartsWith(bool singleSegment)
     {
       var str = CreateSequence("abcde", singleSegment);

@@ -29,6 +29,27 @@ namespace Smdn.Text {
       return new ReadOnlySequence<byte>(str.Segment.AsMemory());
     }
 
+    public static bool SequenceEqual(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
+    {
+      if (sequence.Length != value.Length)
+        return false;
+
+      var offset = 0;
+      var pos = sequence.Start;
+
+      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
+        if (memory.Length == 0)
+          continue; // XXX: never happen?
+
+        if (!value.Slice(offset, memory.Length).SequenceEqual(memory.Span))
+          return false;
+
+        offset += memory.Length;
+      }
+
+      return true;
+    }
+
     public static unsafe bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
     {
       if (value.Length == 0)
