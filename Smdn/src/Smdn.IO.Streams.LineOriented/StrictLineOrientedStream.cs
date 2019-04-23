@@ -27,42 +27,52 @@ using Smdn.Text;
 namespace Smdn.IO.Streams.LineOriented {
   public class StrictLineOrientedStream : LineOrientedStream {
     public StrictLineOrientedStream(Stream stream)
-      : base(stream, Ascii.Octets.CRLFArray, true, DefaultBufferSize, DefaultLeaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, DefaultBufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, int bufferSize)
-      : base(stream, Ascii.Octets.CRLFArray, true, bufferSize, DefaultLeaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, bufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.CRLFArray, true, DefaultBufferSize, leaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, DefaultBufferSize, leaveStreamOpen)
     {
     }
     
     public StrictLineOrientedStream(Stream stream, int bufferSize, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.CRLFArray, true, bufferSize, leaveStreamOpen)
+      : base(stream, Ascii.Octets.CRLFArray, bufferSize, leaveStreamOpen)
     {
     }
 
+    private static byte[] ValidateNewLineArray(byte[] newLine)
+    {
+      if (newLine == null)
+        throw new ArgumentNullException(nameof(newLine));
+      if (newLine.Length == 0)
+        throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine));
+
+      return newLine;
+    }
+
     public StrictLineOrientedStream(Stream stream, byte[] newLine)
-      : base(stream, newLine, true, DefaultBufferSize, DefaultLeaveStreamOpen)
+      : base(stream, ValidateNewLineArray(newLine), DefaultBufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize)
-      : base(stream, newLine, true, bufferSize, DefaultLeaveStreamOpen)
+      : base(stream, ValidateNewLineArray(newLine), bufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, byte[] newLine, bool leaveStreamOpen)
-      : base(stream, newLine, true, DefaultBufferSize, leaveStreamOpen)
+      : base(stream, ValidateNewLineArray(newLine), DefaultBufferSize, leaveStreamOpen)
     {
     }
 
     public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize, bool leaveStreamOpen)
-      : base(stream, newLine, true, bufferSize, leaveStreamOpen)
+      : base(stream, ValidateNewLineArray(newLine), bufferSize, leaveStreamOpen)
     {
     }
   }

@@ -21,7 +21,6 @@
 
 using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,7 +69,7 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return stream.Length; }
     }
 
-    public IReadOnlyList<byte> NewLine {
+    public ReadOnlySpan<byte> NewLine {
       get { CheckDisposed(); return newLine; }
     }
 
@@ -82,23 +81,15 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return stream; }
     }
 
-    protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize, bool leaveStreamOpen)
+    protected LineOrientedStream(Stream stream, ReadOnlySpan<byte> newLine, int bufferSize, bool leaveStreamOpen)
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
-      if (strictEOL) {
-        if (newLine == null)
-          throw new ArgumentNullException(nameof(newLine));
-        if (newLine.Length == 0)
-          throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine));
-      }
-
       if (bufferSize < MinimumBufferSize)
         throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(MinimumBufferSize, nameof(bufferSize), bufferSize);
 
       this.stream = stream;
-      this.strictEOL = strictEOL;
-      this.newLine = newLine;
+      this.newLine = newLine.IsEmpty ? null : newLine.ToArray(); // XXX: allocation
       this.buffer = new byte[bufferSize];
       this.leaveStreamOpen = leaveStreamOpen;
     }
@@ -212,16 +203,8 @@ namespace Smdn.IO.Streams.LineOriented {
       LineSequenceSegment segmentTail = null;
 
       for (;;) {
-        if (strictEOL) {
-          if (buffer[bufOffset] == newLine[newLineLength]) {
-            if (newLine.Length == ++newLineLength)
-              eol = EolState.NewLine;
-          }
-          else {
-            newLineLength = 0;
-          }
-        }
-        else {
+        if (newLine == null) {
+          // loose EOL (CR/LF/CRLF)
           if (buffer[bufOffset] == Ascii.Octets.CR) {
             eol = EolState.CR;
             newLineLength = 1;
@@ -229,6 +212,16 @@ namespace Smdn.IO.Streams.LineOriented {
           else if (buffer[bufOffset] == Ascii.Octets.LF) {
             eol = EolState.LF;
             newLineLength = 1;
+          }
+        }
+        else {
+          // strict EOL
+          if (buffer[bufOffset] == newLine[newLineLength]) {
+            if (newLine.Length == ++newLineLength)
+              eol = EolState.NewLine;
+          }
+          else {
+            newLineLength = 0;
           }
         }
 
@@ -513,7 +506,6 @@ namespace Smdn.IO.Streams.LineOriented {
 
     private Stream stream;
     private readonly byte[] newLine;
-    private readonly bool strictEOL;
     private readonly bool leaveStreamOpen;
     private byte[] buffer;
     private int bufOffset = 0;

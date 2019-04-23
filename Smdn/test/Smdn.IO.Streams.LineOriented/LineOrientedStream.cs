@@ -488,7 +488,7 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.Length));
         Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.BufferSize));
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream));
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.NewLine));
+        Assert.Throws<ObjectDisposedException>(() => Assert.IsFalse(stream.NewLine.IsEmpty));
         Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
         Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());

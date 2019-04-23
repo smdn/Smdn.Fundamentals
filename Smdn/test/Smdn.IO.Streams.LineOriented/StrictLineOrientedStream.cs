@@ -13,8 +13,8 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestNewLine()
     {
       using (var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
-        Assert.IsNotNull(stream.NewLine);
-        CollectionAssert.AreEqual(new byte[] {0x0d, 0x0a}, stream.NewLine, "must return CRLF");
+        Assert.IsFalse(stream.NewLine.IsEmpty);
+        CollectionAssert.AreEqual(new byte[] {0x0d, 0x0a}, stream.NewLine.ToArray(), "must return CRLF");
       }
     }
 

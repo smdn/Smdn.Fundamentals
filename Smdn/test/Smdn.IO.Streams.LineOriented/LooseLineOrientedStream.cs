@@ -13,7 +13,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestNewLine()
     {
       using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
-        Assert.IsNull(stream.NewLine);
+        Assert.IsTrue(stream.NewLine.IsEmpty);
       }
     }
 

@@ -25,22 +25,22 @@ using System.IO;
 namespace Smdn.IO.Streams.LineOriented {
   public class LooseLineOrientedStream : LineOrientedStream {
     public LooseLineOrientedStream(Stream stream)
-      : base(stream, null, false, DefaultBufferSize, DefaultLeaveStreamOpen)
+      : base(stream, default, DefaultBufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public LooseLineOrientedStream(Stream stream, int bufferSize)
-      : base(stream, null, false, bufferSize, DefaultLeaveStreamOpen)
+      : base(stream, default, bufferSize, DefaultLeaveStreamOpen)
     {
     }
 
     public LooseLineOrientedStream(Stream stream, bool leaveStreamOpen)
-      : base(stream, null, false, DefaultBufferSize, leaveStreamOpen)
+      : base(stream, default, DefaultBufferSize, leaveStreamOpen)
     {
     }
     
     public LooseLineOrientedStream(Stream stream, int bufferSize, bool leaveStreamOpen)
-      : base(stream, null, false, bufferSize, leaveStreamOpen)
+      : base(stream, default, bufferSize, leaveStreamOpen)
     {
     }
   }
