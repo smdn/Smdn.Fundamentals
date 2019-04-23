@@ -105,6 +105,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.StartsWith(CreateSpan("abc")));
       Assert.IsTrue(str.StartsWith(CreateSpan("abcde")));
       Assert.IsFalse(str.StartsWith(CreateSpan("abd")));
+      Assert.IsFalse(str.StartsWith(CreateSpan("xbc")));
       Assert.IsFalse(str.StartsWith(CreateSpan("abcdef")));
       Assert.IsTrue(str.StartsWith(CreateSpan(string.Empty)));
 

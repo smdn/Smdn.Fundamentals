@@ -50,33 +50,27 @@ namespace Smdn.Text {
       return true;
     }
 
-    public static unsafe bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
+    public static bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
     {
       if (value.Length == 0)
         return true;
       if (sequence.Length < value.Length)
         return false;
 
-      fixed (byte* substr0 = value) {
-        byte* substr = substr0;
-        byte* substrEnd = substr0 + value.Length;
+      var pos = sequence.Start;
 
-        var pos = sequence.Start;
+      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
+        if (memory.Length == 0)
+          continue; // XXX: never happen?
 
-        while (sequence.TryGet(ref pos, out var memory, advance: true)) {
-          if (memory.Length == 0)
-            continue; // XXX: never happen?
+        if (memory.Length < value.Length) {
+          if (!memory.Span.SequenceEqual(value.Slice(0, memory.Length)))
+            break;
 
-          fixed (byte* str0 = memory.Span) {
-            for (byte* str = str0, strEnd = str0 + memory.Length; ;) {
-              if (*str != *substr)
-                return false;
-              if (++substr == substrEnd)
-                return true;
-              if (++str == strEnd)
-                break;
-            }
-          }
+          value = value.Slice(memory.Length);
+        }
+        else {
+          return memory.Slice(0, value.Length).Span.SequenceEqual(value);
         }
       }
 
