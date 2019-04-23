@@ -73,6 +73,10 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return newLine; }
     }
 
+    public bool IsStrictNewLine {
+      get { CheckDisposed(); return newLine != null; }
+    }
+
     public int BufferSize {
       get { CheckDisposed(); return buffer.Length; }
     }

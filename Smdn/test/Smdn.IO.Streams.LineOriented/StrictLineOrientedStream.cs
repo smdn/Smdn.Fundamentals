@@ -19,6 +19,14 @@ namespace Smdn.IO.Streams.LineOriented {
     }
 
     [Test]
+    public void TestIsStrictNewLine()
+    {
+      using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
+        Assert.IsFalse(stream.IsStrictNewLine);
+      }
+    }
+
+    [Test]
     public async Task TestReadLineAsync()
     {
       var data = new byte[] {
