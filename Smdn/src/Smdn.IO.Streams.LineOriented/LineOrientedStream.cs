@@ -81,7 +81,12 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return stream; }
     }
 
-    protected LineOrientedStream(Stream stream, ReadOnlySpan<byte> newLine, int bufferSize, bool leaveStreamOpen)
+    public LineOrientedStream(
+      Stream stream,
+      ReadOnlySpan<byte> newLine,
+      int bufferSize = DefaultBufferSize,
+      bool leaveStreamOpen = DefaultLeaveStreamOpen
+    )
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
