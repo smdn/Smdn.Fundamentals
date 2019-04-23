@@ -26,22 +26,11 @@ using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   public class StrictLineOrientedStream : LineOrientedStream {
-    public StrictLineOrientedStream(Stream stream)
-      : base(stream, Ascii.Octets.CRLFArray, DefaultBufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, int bufferSize)
-      : base(stream, Ascii.Octets.CRLFArray, bufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.CRLFArray, DefaultBufferSize, leaveStreamOpen)
-    {
-    }
-    
-    public StrictLineOrientedStream(Stream stream, int bufferSize, bool leaveStreamOpen)
+    public StrictLineOrientedStream(
+      Stream stream,
+      int bufferSize = DefaultBufferSize,
+      bool leaveStreamOpen = DefaultLeaveStreamOpen
+    )
       : base(stream, Ascii.Octets.CRLFArray, bufferSize, leaveStreamOpen)
     {
     }
@@ -56,22 +45,12 @@ namespace Smdn.IO.Streams.LineOriented {
       return newLine;
     }
 
-    public StrictLineOrientedStream(Stream stream, byte[] newLine)
-      : base(stream, ValidateNewLineArray(newLine), DefaultBufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize)
-      : base(stream, ValidateNewLineArray(newLine), bufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine, bool leaveStreamOpen)
-      : base(stream, ValidateNewLineArray(newLine), DefaultBufferSize, leaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize, bool leaveStreamOpen)
+    public StrictLineOrientedStream(
+      Stream stream,
+      byte[] newLine,
+      int bufferSize = DefaultBufferSize,
+      bool leaveStreamOpen = DefaultLeaveStreamOpen
+    )
       : base(stream, ValidateNewLineArray(newLine), bufferSize, leaveStreamOpen)
     {
     }

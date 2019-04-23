@@ -29,9 +29,9 @@ using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   public class LineOrientedStream : Stream {
-    protected static readonly int DefaultBufferSize = 1024;
-    protected static readonly int MinimumBufferSize = 8;
-    protected static readonly bool DefaultLeaveStreamOpen = false;
+    protected const int DefaultBufferSize = 1024;
+    protected const int MinimumBufferSize = 8;
+    protected const bool DefaultLeaveStreamOpen = false;
 
     private enum EolState {
       NotMatched = 0,
