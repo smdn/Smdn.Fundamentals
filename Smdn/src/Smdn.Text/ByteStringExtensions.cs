@@ -57,24 +57,7 @@ namespace Smdn.Text {
       if (sequence.Length < value.Length)
         return false;
 
-      var pos = sequence.Start;
-
-      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
-        if (memory.Length == 0)
-          continue; // XXX: never happen?
-
-        if (memory.Length < value.Length) {
-          if (!memory.Span.SequenceEqual(value.Slice(0, memory.Length)))
-            break;
-
-          value = value.Slice(memory.Length);
-        }
-        else {
-          return memory.Slice(0, value.Length).Span.SequenceEqual(value);
-        }
-      }
-
-      return false;
+      return SequenceEqual(sequence.Slice(0, value.Length), value);
     }
   }
 }
