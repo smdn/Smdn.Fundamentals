@@ -30,8 +30,8 @@ namespace Smdn.Formats.Mime {
 
     public ReadOnlySequence<byte> Name => HeaderFieldSequence.Slice(0, OffsetOfDelimiter);
     public ReadOnlySequence<byte> Value => HeaderFieldSequence.Slice(OffsetOfDelimiter).Slice(1); // offset + 1
-    public string NameString => ByteString.ToString(encoding: null, Name);
-    public string ValueString => ByteString.ToString(encoding: null, Value);
+    public string NameString => ByteString.ToString(Name);
+    public string ValueString => ByteString.ToString(Value);
 
     internal RawHeaderField(ReadOnlySequence<byte> headerFieldSequence, int offsetOfDelimiter)
     {

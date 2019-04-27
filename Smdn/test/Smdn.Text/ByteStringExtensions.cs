@@ -37,7 +37,7 @@ namespace Smdn.Text {
 
     private static Span<byte> CreateSpan(string str) => ByteString.CreateImmutable(str).Segment.AsSpan();
 
-    private static ReadOnlySequence<byte> CreateSequence(string str, bool asSingleSegmentSequence = false)
+    internal static ReadOnlySequence<byte> CreateSequence(string str, bool asSingleSegmentSequence = false)
     {
       if (asSingleSegmentSequence) {
         return ByteString.CreateImmutable(str).AsReadOnlySequence();

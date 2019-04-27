@@ -1250,10 +1250,12 @@ namespace Smdn.Text {
       }
     }
 
-    internal unsafe static string ToString(Encoding encoding, ReadOnlySequence<byte> sequence)
+    public unsafe static string ToString(ReadOnlySequence<byte> sequence, Encoding encoding = null)
     {
+      if (sequence.IsEmpty)
+        return string.Empty;
       if (encoding != null)
-        return encoding.GetString(sequence.ToArray());
+        return encoding.GetString(sequence.ToArray()); // XXX: allocation
 
       var chars = new char[sequence.Length];
 

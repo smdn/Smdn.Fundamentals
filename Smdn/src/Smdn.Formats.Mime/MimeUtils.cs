@@ -217,7 +217,7 @@ namespace Smdn.Formats.Mime {
           if (lineFirst == null) {
             if (ignoreMalformed)
               continue;
-            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Value.Sequence)}'");
+            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(ret.Value.Sequence)}'");
           }
 
           lineLast = HeaderFieldLineSegment.Append(lineLast, line, out _);
@@ -244,7 +244,7 @@ namespace Smdn.Formats.Mime {
         else if (ignoreMalformed)
           lineFirst = null;
         else
-          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Value.Sequence)}'");
+          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(ret.Value.Sequence)}'");
       }
 
       if (lineFirst != null)
