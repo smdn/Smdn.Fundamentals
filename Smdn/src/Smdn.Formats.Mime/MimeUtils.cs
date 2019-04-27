@@ -204,20 +204,20 @@ namespace Smdn.Formats.Mime {
       for (;;) {
         var ret = await stream.ReadLineAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        if (ret.IsEndOfStream)
+        if (ret == null)
           break;
-        if (ret.IsEmptyLine)
+        if (ret.Value.IsEmpty)
           break;
 
-        var line = ret.LineWithNewLine;
-        var firstByteOfLine = line.First.Span[0];
+        var line = ret.Value.SequenceWithNewLine;
+        var firstByteOfLine = line.First.Span[0]; // XXX: use FirstSpan[0] (.NET Core 3.0)
 
         if (firstByteOfLine == Ascii.Octets.HT || firstByteOfLine == Ascii.Octets.SP) { // LWSP-char
           // folding
           if (lineFirst == null) {
             if (ignoreMalformed)
               continue;
-            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Line)}'");
+            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Value.Sequence)}'");
           }
 
           lineLast = HeaderFieldLineSegment.Append(lineLast, line, out _);
@@ -244,7 +244,7 @@ namespace Smdn.Formats.Mime {
         else if (ignoreMalformed)
           lineFirst = null;
         else
-          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Line)}'");
+          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(null, ret.Value.Sequence)}'");
       }
 
       if (lineFirst != null)

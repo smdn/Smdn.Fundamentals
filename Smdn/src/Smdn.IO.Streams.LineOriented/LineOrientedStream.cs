@@ -161,47 +161,36 @@ namespace Smdn.IO.Streams.LineOriented {
     }
 
     public byte[] ReadLine(bool keepEOL = true)
-      => ReadLineAsync().GetAwaiter().GetResult().GetLine(keepEOL)?.ToArray();
+      => ReadLineAsync().GetAwaiter().GetResult()?.GetLine(keepEOL)?.ToArray();
 
-    public readonly struct ReadLineResult {
-      internal static readonly ReadLineResult EndOfStream = default;
+    public readonly struct Line {
+      public ReadOnlySequence<byte> SequenceWithNewLine { get; }
+      public SequencePosition PositionOfNewLine { get; }
 
-      private readonly ReadOnlySequence<byte>? lineWithNewLine;
-      public long LengthOfNewLine { get; }
+      public ReadOnlySequence<byte> Sequence => SequenceWithNewLine.Slice(0, PositionOfNewLine);
+      public ReadOnlySequence<byte> NewLine => SequenceWithNewLine.Slice(PositionOfNewLine);
+      public bool IsEmpty => SequenceWithNewLine.IsEmpty || PositionOfNewLine.Equals(SequenceWithNewLine.Start);
 
-      public bool IsEndOfStream => lineWithNewLine == null;
-      public ReadOnlySequence<byte> LineWithNewLine => lineWithNewLine ?? throw CreateEOSException();
-      public ReadOnlySequence<byte> Line => lineWithNewLine?.Slice(0, lineWithNewLine.Value.Length - LengthOfNewLine) ?? throw CreateEOSException();
-      public bool IsEmptyLine => lineWithNewLine.HasValue ? lineWithNewLine.Value.Length == LengthOfNewLine : throw CreateEOSException();
-
-      private static Exception CreateEOSException() => new InvalidOperationException("has reached to end of the stream");
-
-      internal ReadLineResult(ReadOnlySequence<byte>? lineWithNewLine, int lengthOfNewLine)
+      public Line(ReadOnlySequence<byte> sequenceWithNewLine, SequencePosition positionOfNewLine)
       {
-        this.lineWithNewLine = lineWithNewLine;
-        LengthOfNewLine = lengthOfNewLine;
+        SequenceWithNewLine = sequenceWithNewLine;
+        PositionOfNewLine = positionOfNewLine;
       }
 
-      internal ReadOnlySequence<byte>? GetLine(bool keepEOL)
-      {
-        if (IsEndOfStream)
-          return null;
-
-        return keepEOL ? LineWithNewLine : Line;
-      }
+      internal ReadOnlySequence<byte>? GetLine(bool keepEOL) => keepEOL ? SequenceWithNewLine : Sequence;
     }
 
-    public Task<ReadLineResult> ReadLineAsync(CancellationToken cancellationToken = default)
+    public Task<Line?> ReadLineAsync(CancellationToken cancellationToken = default)
     {
       CheckDisposed();
 
       return ReadLineAsyncCore(cancellationToken: cancellationToken);
     }
 
-    private async Task<ReadLineResult> ReadLineAsyncCore(CancellationToken cancellationToken = default)
+    private async Task<Line?> ReadLineAsyncCore(CancellationToken cancellationToken = default)
     {
       if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
-        return ReadLineResult.EndOfStream;
+        return null;
 
       var newLineLength = 0;
       var bufCopyFrom = bufOffset;
@@ -274,9 +263,11 @@ namespace Smdn.IO.Streams.LineOriented {
         segmentHead = segmentHead ?? segmentTail;
       }
 
-      return new ReadLineResult(
-        lineWithNewLine: new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength),
-        lengthOfNewLine: newLineLength
+      var sequenceWithNewLine = new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength);
+
+      return new Line(
+        sequenceWithNewLine: sequenceWithNewLine,
+        positionOfNewLine: sequenceWithNewLine.GetPosition(retLength - newLineLength)
       );
     }
 

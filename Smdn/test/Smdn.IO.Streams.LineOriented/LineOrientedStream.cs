@@ -59,11 +59,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
         var ret = await stream.ReadLineAsync();
 
-        Assert.IsTrue(ret.IsEndOfStream);
-        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.IsEmptyLine));
-        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.LineWithNewLine));
-        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.Line));
-        Assert.AreEqual(0, ret.LengthOfNewLine);
+        Assert.IsNull(ret);
       }
     }
 
@@ -76,11 +72,7 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var stream = CreateStream(type, Stream.Null, 8)) {
         var ret = await stream.ReadLineAsync();
 
-        Assert.IsTrue(ret.IsEndOfStream);
-        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.IsEmptyLine));
-        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.LineWithNewLine));
-        Assert.Throws<InvalidOperationException>(() => Assert.IsNotNull(ret.Line));
-        Assert.AreEqual(0, ret.LengthOfNewLine);
+        Assert.IsNull(ret);
       }
     }
 
@@ -93,14 +85,14 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
         var ret = await stream.ReadLineAsync();
 
-        Assert.IsFalse(ret.IsEndOfStream);
-        Assert.IsFalse(ret.IsEmptyLine);
-        Assert.IsTrue(ret.LineWithNewLine.IsSingleSegment);
-        Assert.IsTrue(ret.Line.IsSingleSegment);
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
+        Assert.IsTrue(ret.Value.SequenceWithNewLine.IsSingleSegment);
+        Assert.IsTrue(ret.Value.Sequence.IsSingleSegment);
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF },
-                                  ret.LineWithNewLine.ToArray());
+                                  ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43 },
-                                  ret.Line.ToArray());
+                                  ret.Value.Sequence.ToArray());
       }
     }
 
@@ -115,14 +107,14 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
         var ret = await stream.ReadLineAsync();
 
-        Assert.IsFalse(ret.IsEndOfStream);
-        Assert.IsFalse(ret.IsEmptyLine);
-        Assert.IsFalse(ret.LineWithNewLine.IsSingleSegment);
-        Assert.IsFalse(ret.Line.IsSingleSegment);
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
+        Assert.IsFalse(ret.Value.SequenceWithNewLine.IsSingleSegment);
+        Assert.IsFalse(ret.Value.Sequence.IsSingleSegment);
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, Ascii.Octets.CR, Ascii.Octets.LF },
-                                  ret.LineWithNewLine.ToArray());
+                                  ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f },
-                                  ret.Line.ToArray());
+                                  ret.Value.Sequence.ToArray());
       }
     }
 

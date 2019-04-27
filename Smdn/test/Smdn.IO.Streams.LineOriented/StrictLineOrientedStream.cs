@@ -39,32 +39,38 @@ namespace Smdn.IO.Streams.LineOriented {
         // CRLF
         var ret = await stream.ReadLineAsync();
 
-        Assert.IsFalse(ret.IsEndOfStream);
-        Assert.IsFalse(ret.IsEmptyLine);
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF },
-                                  ret.LineWithNewLine.ToArray());
+                                  ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
-                                  ret.Line.ToArray());
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.Value.NewLine.ToArray());
 
         // CRLF (empty line)
         ret = await stream.ReadLineAsync();
 
-        Assert.IsFalse(ret.IsEndOfStream);
-        Assert.IsTrue(ret.IsEmptyLine);
+        Assert.IsNotNull(ret);
+        Assert.IsTrue(ret.Value.IsEmpty);
         CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
-                                  ret.LineWithNewLine.ToArray());
+                                  ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[0],
-                                  ret.Line.ToArray());
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.Value.NewLine.ToArray());
 
         // <EOS>
         ret = await stream.ReadLineAsync();
 
-        Assert.IsFalse(ret.IsEndOfStream);
-        Assert.IsFalse(ret.IsEmptyLine);
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
         CollectionAssert.AreEqual(new byte[] { 0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF, },
-                                  ret.LineWithNewLine.ToArray());
+                                  ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF, },
-                                  ret.Line.ToArray());
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[0],
+                                  ret.Value.NewLine.ToArray());
       }
     }
 
