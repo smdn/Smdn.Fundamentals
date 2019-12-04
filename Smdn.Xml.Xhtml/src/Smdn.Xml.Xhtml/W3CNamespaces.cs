@@ -32,6 +32,6 @@ namespace Smdn.Xml.Xhtml {
     public const string Html = "http://www.w3.org/1999/xhtml";
     public const string MathML = "http://www.w3.org/1998/Math/MathML";
     public const string Svg = "http://www.w3.org/2000/svg";
-    public const string XLinq = "http://www.w3.org/1999/xlink";
+    public const string XLink = "http://www.w3.org/1999/xlink";
   }
 }

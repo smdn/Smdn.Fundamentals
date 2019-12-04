@@ -28,6 +28,6 @@ namespace Smdn.Xml.Linq.Xhtml {
     public static readonly XNamespace Html = (XNamespace)W3CNamespaces.Html;
     public static readonly XNamespace MathML = (XNamespace)W3CNamespaces.MathML;
     public static readonly XNamespace Svg = (XNamespace)W3CNamespaces.Svg;
-    public static readonly XNamespace XLink = (XNamespace)W3CNamespaces.XLinq;
+    public static readonly XNamespace XLink = (XNamespace)W3CNamespaces.XLink;
   }
 }
