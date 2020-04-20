@@ -60,12 +60,18 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(StreamReader reader)
-      : this(reader.BaseStream, reader.CurrentEncoding)
+      : this(
+        reader ?? throw new ArgumentNullException(nameof(reader)),
+        reader.CurrentEncoding
+      )
     {
     }
 
     public CsvReader(StreamReader reader, Encoding encoding)
-      : base(reader.BaseStream, encoding)
+      : base(
+        (reader ?? throw new ArgumentNullException(nameof(reader))).BaseStream,
+        encoding
+      )
     {
     }
 
