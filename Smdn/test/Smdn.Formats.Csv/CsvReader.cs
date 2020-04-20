@@ -28,39 +28,39 @@ namespace Smdn.Formats.Csv {
 ";
 
       using (var reader = CreateReader(input)) {
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
     }
 
     [Test]
-    public void TestReadLine_HasNoEndOfLine()
+    public void TestReadRecord_HasNoEndOfLine()
     {
       var input = @"aaa,bbb,ccc";
 
       using (var reader = CreateReader(input)) {
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
@@ -69,24 +69,24 @@ namespace Smdn.Formats.Csv {
     [TestCase(',')]
     [TestCase('\t')]
     [TestCase('#')]
-    public void TestReadLine_SpecificDelimiter(char delimiter)
+    public void TestReadRecord_SpecificDelimiter(char delimiter)
     {
       var input = $"aaa{delimiter}bbb{delimiter}ccc";
 
       using (var reader = CreateReader(input)) {
         reader.Delimiter = delimiter;
 
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
@@ -96,58 +96,58 @@ namespace Smdn.Formats.Csv {
     [TestCase('\t')]
     [TestCase('#')]
     [Ignore("not implemented")]
-    public void TestReadLine_EndsWithEmptyField(char delimiter)
+    public void TestReadRecord_EndsWithEmptyField(char delimiter)
     {
       var input = $"aaa{delimiter}bbb{delimiter}ccc{delimiter}";
 
       using (var reader = CreateReader(input)) {
         reader.Delimiter = delimiter;
 
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(4, records.Length, "line #1");
+        Assert.AreEqual(4, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc", string.Empty },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
     }
 
     [Test]
-    public void TestReadLine_MultipleLines()
+    public void TestReadRecord_MultipleLines()
     {
       var input = @"aaa,bbb,ccc
 zzz,yyy,xxx
 ";
 
       using (var reader = CreateReader(input)) {
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #2");
-        Assert.AreEqual(3, records.Length, "line #2");
+        Assert.AreEqual(3, records.Count, "line #2");
         CollectionAssert.AreEqual(
           new[] { "zzz", "yyy", "xxx" },
           records,
           "line #2"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
@@ -155,90 +155,90 @@ zzz,yyy,xxx
 
     [Test]
     [Ignore("not implemented")]
-    public void TestReadLine_EmptyFields()
+    public void TestReadRecord_EmptyFields()
     {
       var input = @"
 ,
 ,,";
 
       using (var reader = CreateReader(input)) {
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(1, records.Length, "line #1");
+        Assert.AreEqual(1, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { string.Empty },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #2");
-        Assert.AreEqual(2, records.Length, "line #2");
+        Assert.AreEqual(2, records.Count, "line #2");
         CollectionAssert.AreEqual(
           new[] { string.Empty, string.Empty },
           records,
           "line #2"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #3");
-        Assert.AreEqual(3, records.Length, "line #3");
+        Assert.AreEqual(3, records.Count, "line #3");
         CollectionAssert.AreEqual(
           new[] { string.Empty, string.Empty },
           records,
           "line #3"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
     }
 
     [Test]
-    public void TestReadLine_FieldEnclosedByQuotator_DQuote()
+    public void TestReadRecord_FieldEnclosedByQuotator_DQuote()
     {
       var input = @"""aaa"",""bbb"",""ccc""";
 
       using (var reader = CreateReader(input)) {
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
     }
 
     [Test]
-    public void TestReadLine_FieldEnclosedByQuotator_SpecificQuotator()
+    public void TestReadRecord_FieldEnclosedByQuotator_SpecificQuotator()
     {
       var input = @"%aaa%,%bbb%,%ccc%";
 
       using (var reader = CreateReader(input)) {
         reader.Quotator = '%';
 
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", "bbb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
@@ -247,22 +247,22 @@ zzz,yyy,xxx
     [TestCase("\n")]
     [TestCase("\r")]
     [TestCase("\r\n")]
-    public void TestReadLine_FieldContainingLineBreaks(string lineBreak)
+    public void TestReadRecord_FieldContainingLineBreaks(string lineBreak)
     {
       var input = $"\"aaa\",\"b{lineBreak}bb\",\"ccc\"";
 
       using (var reader = CreateReader(input)) {
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", $"b{lineBreak}bb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }
@@ -270,24 +270,24 @@ zzz,yyy,xxx
 
     [TestCase('"')]
     [TestCase('%')]
-    public void TestReadLine_FieldContainingQuotetor(char quotator)
+    public void TestReadRecord_FieldContainingQuotetor(char quotator)
     {
       var input = $"{quotator}aaa{quotator},{quotator}b{quotator}{quotator}bb{quotator},{quotator}ccc{quotator}";
 
       using (var reader = CreateReader(input)) {
         reader.Quotator = quotator;
 
-        var records = reader.ReadLine();
+        var records = reader.ReadRecord();
 
         Assert.IsNotNull(records, "line #1");
-        Assert.AreEqual(3, records.Length, "line #1");
+        Assert.AreEqual(3, records.Count, "line #1");
         CollectionAssert.AreEqual(
           new[] { "aaa", $"b{quotator}bb", "ccc" },
           records,
           "line #1"
         );
 
-        records = reader.ReadLine();
+        records = reader.ReadRecord();
 
         Assert.IsNull(records, "end of stream");
       }

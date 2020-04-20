@@ -188,7 +188,7 @@ namespace Smdn.Formats.Csv {
       return field.ToString();
     }
 
-    public new string[] ReadLine()
+    public IReadOnlyList<string> ReadRecord()
     {
       List<string> record = null;
 
@@ -197,7 +197,7 @@ namespace Smdn.Formats.Csv {
           var field = ReadField(out var escaped);
 
           if (field == null)
-            return record?.ToArray(); // end of stream
+            return record; // end of stream
 
           if (!escaped && 1 <= field.Length && (field[0] == Ascii.Chars.CR || field[0] == Ascii.Chars.LF))
             break;
@@ -208,7 +208,7 @@ namespace Smdn.Formats.Csv {
           record.Add(field);
         }
 
-        return record?.ToArray();
+        return record;
       }
       catch (InvalidDataException ex) {
         throw new InvalidDataException(string.Format("format exception after '{0}'", string.Join(", ", record.ToArray())), ex);
