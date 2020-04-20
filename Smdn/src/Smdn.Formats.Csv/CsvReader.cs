@@ -28,15 +28,8 @@ using Smdn.Text;
 
 namespace Smdn.Formats.Csv {
   public class CsvReader : StreamReader {
-    public char Delimiter {
-      get { return delimiter; }
-      set { delimiter = value; }
-    }
-
-    public char Quotator {
-      get { return quotator; }
-      set { quotator = value; }
-    }
+    public char Delimiter { get; set; } = Ascii.Chars.Comma;
+    public char Quotator { get; set; } = Ascii.Chars.DQuote;
 
     public bool EscapeAlways {
       get { return escapeAlways; }
@@ -95,11 +88,11 @@ namespace Smdn.Formats.Csv {
       var ch = (char)c;
 
       // switch by first character
-      if (ch == quotator) {
+      if (ch == Quotator) {
         // escaped column
         escaped = true;
       }
-      else if (ch == delimiter) {
+      else if (ch == Delimiter) {
         // empty column
         return string.Empty;
       }
@@ -131,10 +124,10 @@ namespace Smdn.Formats.Csv {
 
           ch = (char)c;
 
-          if (ch == quotator) {
+          if (ch == Quotator) {
             if (quot == 0) {
               quot = 1;
-              if (prev == quotator)
+              if (prev == Quotator)
                 field.Append((char)base.Read());
               else
                 throw new InvalidDataException(string.Format("invalid quotation after '{0}'", field.ToString()));
@@ -145,7 +138,7 @@ namespace Smdn.Formats.Csv {
             }
           }
           else {
-            if (quot == 0 && ch == delimiter) {
+            if (quot == 0 && ch == Delimiter) {
               base.Read();
               break;
             }
@@ -172,7 +165,7 @@ namespace Smdn.Formats.Csv {
 
           ch = (char)c;
 
-          if (ch == delimiter) {
+          if (ch == Delimiter) {
             base.Read();
             break;
           }
@@ -227,8 +220,6 @@ namespace Smdn.Formats.Csv {
       }
     }
 
-    private char delimiter = Ascii.Chars.Comma;
-    private char quotator = Ascii.Chars.DQuote;
     private bool escapeAlways = false;
   }
 }
