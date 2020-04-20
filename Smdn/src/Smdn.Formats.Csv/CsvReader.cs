@@ -190,23 +190,25 @@ namespace Smdn.Formats.Csv {
 
     public new string[] ReadLine()
     {
-      var record = new List<string>();
+      List<string> record = null;
 
       try {
         for (;;) {
           var field = ReadField(out var escaped);
 
           if (field == null)
-            return null;
+            return record?.ToArray(); // end of stream
 
           if (!escaped && 1 <= field.Length && (field[0] == Ascii.Chars.CR || field[0] == Ascii.Chars.LF))
-            // newline
             break;
-          else
-            record.Add(field);
+
+          if (record == null)
+            record = new List<string>();
+
+          record.Add(field);
         }
 
-        return record.ToArray();
+        return record?.ToArray();
       }
       catch (InvalidDataException ex) {
         throw new InvalidDataException(string.Format("format exception after '{0}'", string.Join(", ", record.ToArray())), ex);
