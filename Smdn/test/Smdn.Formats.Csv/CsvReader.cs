@@ -292,5 +292,36 @@ zzz,yyy,xxx
         Assert.IsNull(records, "end of stream");
       }
     }
+
+    [Test]
+    public void TestReadRecords()
+    {
+      var input = @"aaa,bbb,ccc
+zzz,yyy,xxx
+";
+
+      using (var reader = CreateReader(input)) {
+        var records = reader.ReadRecords().ToList();
+
+        Assert.IsNotNull(records);
+        Assert.AreEqual(2, records.Count);
+
+        CollectionAssert.AreEqual(
+          new[] { "aaa", "bbb", "ccc" },
+          records[0],
+          "records[0]"
+        );
+
+        CollectionAssert.AreEqual(
+          new[] { "zzz", "yyy", "xxx" },
+          records[1],
+          "records[1]"
+        );
+
+        Assert.IsNull(reader.ReadRecord());
+
+        CollectionAssert.IsEmpty(reader.ReadRecords());
+      }
+    }
   }
 }

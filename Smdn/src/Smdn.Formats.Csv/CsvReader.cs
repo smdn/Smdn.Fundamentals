@@ -215,6 +215,18 @@ namespace Smdn.Formats.Csv {
       }
     }
 
+    public IEnumerable<IReadOnlyList<string>> ReadRecords()
+    {
+      for (;;) {
+        var record = ReadRecord();
+
+        if (record == null)
+          yield break;
+
+        yield return record;
+      }
+    }
+
     private char delimiter = Ascii.Chars.Comma;
     private char quotator = Ascii.Chars.DQuote;
     private bool escapeAlways = false;
