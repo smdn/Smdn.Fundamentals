@@ -31,11 +31,6 @@ namespace Smdn.Formats.Csv {
     public char Delimiter { get; set; } = Ascii.Chars.Comma;
     public char Quotator { get; set; } = Ascii.Chars.DQuote;
 
-    public bool EscapeAlways {
-      get { return escapeAlways; }
-      set { escapeAlways = value; }
-    }
-
     public CsvReader(string path)
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       : this(path, Encoding.Default)
@@ -219,7 +214,5 @@ namespace Smdn.Formats.Csv {
         yield return record;
       }
     }
-
-    private bool escapeAlways = false;
   }
 }
