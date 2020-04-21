@@ -106,7 +106,7 @@ namespace Smdn.Formats.UUEncodings {
         throw ExceptionUtils.CreateArgumentMustBeReadableStream(nameof(baseStream));
 
       this.leaveStreamOpen = leaveStreamOpen;
-      this.stream = new LooseLineOrientedStream(baseStream, leaveStreamOpen);
+      this.stream = new LooseLineOrientedStream(baseStream, leaveStreamOpen: leaveStreamOpen);
       this.transform = new UUDecodingTransform();
     }
 

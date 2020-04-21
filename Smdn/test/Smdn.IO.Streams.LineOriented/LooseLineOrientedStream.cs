@@ -1,5 +1,7 @@
 using System;
+using System.Buffers;
 using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 using Smdn.Text;
@@ -11,7 +13,89 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestNewLine()
     {
       using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
-        Assert.IsNull(stream.NewLine);
+        Assert.IsTrue(stream.NewLine.IsEmpty);
+      }
+    }
+
+    [Test]
+    public void TestIsStrictNewLine()
+    {
+      using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
+        Assert.IsFalse(stream.IsStrictNewLine);
+      }
+    }
+
+    [Test]
+    public async Task TestReadLineAsync()
+    {
+      var data = new byte[] {
+        0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF,
+        0x42, 0x43, Ascii.Octets.CR,
+        0x44, 0x45, Ascii.Octets.LF,
+        Ascii.Octets.LF,
+        0x46, 0x47
+      };
+
+      using (var stream = new LooseLineOrientedStream(new MemoryStream(data), 8)) {
+        // CRLF
+        var ret = await stream.ReadLineAsync();
+
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.Value.SequenceWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+                                  ret.Value.NewLine.ToArray());
+
+        // CR
+        ret = await stream.ReadLineAsync();
+
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
+        CollectionAssert.AreEqual(new byte[] { 0x42, 0x43, Ascii.Octets.CR },
+                                  ret.Value.SequenceWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x42, 0x43 },
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR },
+                                  ret.Value.NewLine.ToArray());
+
+        // LF
+        ret = await stream.ReadLineAsync();
+
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
+        CollectionAssert.AreEqual(new byte[] { 0x44, 0x45, Ascii.Octets.LF },
+                                  ret.Value.SequenceWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x44, 0x45 },
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.LF },
+                                  ret.Value.NewLine.ToArray());
+
+        // LF (empty line)
+        ret = await stream.ReadLineAsync();
+
+        Assert.IsNotNull(ret);
+        Assert.IsTrue(ret.Value.IsEmpty);
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.LF },
+                                  ret.Value.SequenceWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[0],
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.LF },
+                                  ret.Value.NewLine.ToArray());
+
+        // <EOS>
+        ret = await stream.ReadLineAsync();
+
+        Assert.IsNotNull(ret);
+        Assert.IsFalse(ret.Value.IsEmpty);
+        CollectionAssert.AreEqual(new byte[] { 0x46, 0x47 },
+                                  ret.Value.SequenceWithNewLine.ToArray());
+        CollectionAssert.AreEqual(new byte[] { 0x46, 0x47 },
+                                  ret.Value.Sequence.ToArray());
+        CollectionAssert.AreEqual(new byte[0],
+                                  ret.Value.NewLine.ToArray());
       }
     }
 

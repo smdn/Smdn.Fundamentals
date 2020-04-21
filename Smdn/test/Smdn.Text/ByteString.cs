@@ -374,9 +374,9 @@ namespace Smdn.Text {
 
       Assert.IsTrue(str.StartsWith(ByteString.CreateImmutable("abc")));
       Assert.IsTrue(str.StartsWith(ByteString.CreateImmutable("abcde")));
-      Assert.IsTrue(str.StartsWith(ByteString.CreateImmutable("abcde")));
       Assert.IsFalse(str.StartsWith(ByteString.CreateImmutable("abd")));
       Assert.IsFalse(str.StartsWith(ByteString.CreateImmutable("abcdef")));
+      Assert.IsTrue(str.StartsWith(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -400,6 +400,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.StartsWithIgnoreCase(ByteString.CreateImmutable("AbC")));
       Assert.IsFalse(str.StartsWithIgnoreCase(ByteString.CreateImmutable("abd")));
       Assert.IsFalse(str.StartsWithIgnoreCase(ByteString.CreateImmutable("abcdef")));
+      Assert.IsTrue(str.StartsWithIgnoreCase(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -420,6 +421,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.StartsWith("abcde"));
       Assert.IsFalse(str.StartsWith("abd"));
       Assert.IsFalse(str.StartsWith("abcdef"));
+      Assert.IsTrue(str.StartsWith(string.Empty));
     }
 
     [Test]
@@ -431,6 +433,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.EndsWith(ByteString.CreateImmutable("abcde")));
       Assert.IsFalse(str.EndsWith(ByteString.CreateImmutable("cdd")));
       Assert.IsFalse(str.EndsWith(ByteString.CreateImmutable("abcdef")));
+      Assert.IsTrue(str.EndsWith(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -451,6 +454,7 @@ namespace Smdn.Text {
       Assert.IsTrue(str.EndsWith("abcde"));
       Assert.IsFalse(str.EndsWith("cdd"));
       Assert.IsFalse(str.EndsWith("abcdef"));
+      Assert.IsTrue(str.EndsWith(string.Empty));
     }
 
     [Test]
@@ -1021,7 +1025,8 @@ namespace Smdn.Text {
 
       Assert.Throws<ArgumentOutOfRangeException>(() => str.ToString(10, -1));
 
-      Assert.Throws<ArgumentException>(() => str.ToString(9, 1));
+      //Assert.Throws<ArgumentException>(() => str.ToString(9, 1));
+      Assert.Throws<ArgumentOutOfRangeException>(() => str.ToString(9, 1));
     }
 
     [Test]
@@ -1038,6 +1043,34 @@ namespace Smdn.Text {
       Assert.AreEqual("b", ByteString.CreateImmutable(0x61, 0x62, 0x63).ToString(Encoding.ASCII, 1, 1));
       Assert.AreEqual("ｂｃ", ByteString.CreateImmutable(0xef, 0xbd, 0x81, 0xef, 0xbd, 0x82, 0xef, 0xbd, 0x83).ToString(Encoding.UTF8, 3));
       Assert.AreEqual("ｂ", ByteString.CreateImmutable(0xef, 0xbd, 0x81, 0xef, 0xbd, 0x82, 0xef, 0xbd, 0x83).ToString(Encoding.UTF8, 3, 3));
+    }
+
+    [TestCase("abcde", true)]
+    [TestCase("abcde", false)]
+    [TestCase("\0", true)]
+    [TestCase("\0", false)]
+    [TestCase("", true)]
+    [TestCase("", false)]
+    public void TestToString_ReadOnlySequence(string expected, bool singleSegment)
+    {
+      var str = ByteStringExtensionsTests.CreateSequence(expected, singleSegment);
+
+      Assert.AreEqual(expected, ByteString.ToString(str));
+      //Assert.AreEqual(str.IsSingleSegment, singleSegment);
+    }
+
+    [TestCase("abcde", "abcde", true)]
+    [TestCase("abcde", "abcde", false)]
+    [TestCase("\xef\xbd\x81\xef\xbd\x82\xef\xbd\x83", "ａｂｃ", true)]
+    [TestCase("\xef\xbd\x81\xef\xbd\x82\xef\xbd\x83", "ａｂｃ", false)]
+    [TestCase("", "", true)]
+    [TestCase("", "", false)]
+    public void TestToString_ReadOnlySequence_WithEncoding(string input, string expected, bool singleSegment)
+    {
+      var str = ByteStringExtensionsTests.CreateSequence(input, singleSegment);
+
+      Assert.AreEqual(expected, ByteString.ToString(str, encoding: Encoding.UTF8));
+      //Assert.AreEqual(str.IsSingleSegment, singleSegment);
     }
 
     [Test]

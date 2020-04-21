@@ -195,10 +195,7 @@ namespace Smdn.Text {
 
     public override string ToString()
     {
-      return ByteString.ToString(null,
-                                 new ArraySegment<byte>(buffer, 0, length),
-                                 0,
-                                 length);
+      return ByteString.ToString(null, buffer.AsSpan(0, length));
     }
 
     private byte[] buffer;

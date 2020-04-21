@@ -20,25 +20,32 @@
 // THE SOFTWARE.
 
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
+using Smdn.Collections;
 using Smdn.IO.Streams.LineOriented;
 using Smdn.Text;
 
 namespace Smdn.Formats.Mime {
   public static class MimeUtils {
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream)
     {
       return ParseHeader(new LooseLineOrientedStream(stream), false);
     }
 
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream, bool keepWhitespaces)
     {
       return ParseHeader(new LooseLineOrientedStream(stream), keepWhitespaces);
     }
 
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream)
     {
       return ParseHeader(stream, false);
@@ -46,6 +53,7 @@ namespace Smdn.Formats.Mime {
 
     private static readonly char[] lineDelmiters = new char[] {'\r', '\n'};
 
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream, bool keepWhitespaces)
     {
       foreach (var header in ParseHeaderRaw(stream)) {
@@ -64,6 +72,35 @@ namespace Smdn.Formats.Mime {
       }
     }
 
+    public static Task<IReadOnlyList<KeyValuePair<string, string>>> ParseHeaderAsNameValuePairsAsync(
+      LineOrientedStream stream,
+      bool keepWhitespaces = false,
+      bool ignoreMalformed = true,
+      CancellationToken cancellationToken = default
+    ) =>
+    ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: ParseHeaderAsNameValuePairsConverter,
+      arg: keepWhitespaces,
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
+
+    private static KeyValuePair<string, string> ParseHeaderAsNameValuePairsConverter(RawHeaderField header, bool keepWhitespaces)
+    {
+      if (keepWhitespaces)
+        return KeyValuePair.Create(header.NameString, header.ValueString);
+
+      var valueLines = header.ValueString.Split(lineDelmiters);
+
+      for (var i = 0; i < valueLines.Length; i++) {
+        valueLines[i] = valueLines[i].Trim();
+      }
+
+      return new KeyValuePair<string, string>(header.NameString.Trim(), string.Concat(valueLines));
+    }
+
+    [Obsolete("use ParseHeaderAsync() instead")]
     public struct HeaderField
     {
       public ByteString RawData {
@@ -88,66 +125,175 @@ namespace Smdn.Formats.Mime {
         this.indexOfDelmiter = indexOfDelimiter;
       }
 
+      internal static HeaderField FromRawHeaderField(RawHeaderField rawHeaderField)
+        => new HeaderField(ByteString.CreateImmutable(rawHeaderField.HeaderFieldSequence.ToArray()), rawHeaderField.OffsetOfDelimiter);
+
       private readonly ByteString rawData;
       private readonly int indexOfDelmiter;
     }
 
+    [Obsolete("use ParseHeaderAsync() instead")]
     public static IEnumerable<HeaderField> ParseHeaderRaw(LineOrientedStream stream)
-    {
-      if (stream == null)
-        throw new ArgumentNullException(nameof(stream));
+    => ParseHeaderAsync(
+      stream: stream,
+      converter: HeaderField.FromRawHeaderField,
+      ignoreMalformed: true,
+      cancellationToken: default
+    ).GetAwaiter().GetResult();
 
-      ByteStringBuilder header = null;
-      var indexOfDelimiter = -1;
+    public static Task<IReadOnlyList<RawHeaderField>> ParseHeaderAsync(
+      LineOrientedStream stream,
+      bool ignoreMalformed = true,
+      CancellationToken cancellationToken = default
+    ) =>
+    ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: ParseHeaderNullConverter,
+      arg: default(int),
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
+
+    private static RawHeaderField ParseHeaderNullConverter(RawHeaderField f, int _) => f;
+
+    public static /*IAsyncEnumerable<T>*/ Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField>(
+      LineOrientedStream stream,
+      Converter<RawHeaderField, THeaderField> converter,
+      bool ignoreMalformed = true,
+      CancellationToken cancellationToken = default
+    ) =>
+    ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: ParseHeaderConverter,
+      arg: converter ?? throw new ArgumentNullException(nameof(converter)),
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
+
+    private static THeaderField ParseHeaderConverter<THeaderField>(RawHeaderField header, Converter<RawHeaderField, THeaderField> converter)
+      => converter(header);
+
+    public static /*IAsyncEnumerable<T>*/ Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField, TArg>(
+      LineOrientedStream stream,
+      Func<RawHeaderField, TArg, THeaderField> converter,
+      TArg arg,
+      bool ignoreMalformed = true,
+      CancellationToken cancellationToken = default
+    ) =>
+    ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: converter ?? throw new ArgumentNullException(nameof(converter)),
+      arg: arg,
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
+
+    private static /*IAsyncEnumerable<T>*/ async Task<IReadOnlyList<THeaderField>> ParseHeaderAsyncCore<THeaderField, TArg>(
+      LineOrientedStream stream,
+      Func<RawHeaderField, TArg, THeaderField> converter,
+      TArg arg,
+      bool ignoreMalformed = true,
+      CancellationToken cancellationToken = default
+    )
+    {
+      var headerFields = new List<THeaderField>();
+      HeaderFieldLineSegment lineFirst = null;
+      HeaderFieldLineSegment lineLast = null;
+      var offsetOfDelimiter = -1;
 
       for (;;) {
-        var line = stream.ReadLine(true);
+        var ret = await stream.ReadLineAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-        if (line == null)
-          break; // unexpected end of stream
+        if (ret == null)
+          break;
+        if (ret.Value.IsEmpty)
+          break;
 
-        if ((line.Length == 1 && (line[0] == Ascii.Octets.CR || line[0] == Ascii.Octets.LF)) ||
-            (line.Length == 2 && (line[0] == Ascii.Octets.CR && line[1] == Ascii.Octets.LF)))
-          break; // end of headers
+        var line = ret.Value.SequenceWithNewLine;
+        var firstByteOfLine = line.First.Span[0]; // XXX: use FirstSpan[0] (.NET Core 3.0)
 
-        if (line[0] == Ascii.Octets.HT || line[0] == Ascii.Octets.SP) { // LWSP-char
+        if (firstByteOfLine == Ascii.Octets.HT || firstByteOfLine == Ascii.Octets.SP) { // LWSP-char
           // folding
-          if (header == null)
-            // ignore incorrect formed header
-            continue;
+          if (lineFirst == null) {
+            if (ignoreMalformed)
+              continue;
+            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(ret.Value.Sequence)}'");
+          }
 
-          header.Append(line);
+          lineLast = HeaderFieldLineSegment.Append(lineLast, line, out _);
+
+          continue;
         }
-        else {
-          if (0 < indexOfDelimiter)
-            yield return new HeaderField(header.ToByteString(true), indexOfDelimiter);
 
-          // field       =  field-name ":" [ field-body ] CRLF
-          // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
-          const byte nameBodyDelimiter = (byte)':';
+        if (lineFirst != null)
+          headerFields.Add(Result());
 
-          indexOfDelimiter = -1;
+        // field       =  field-name ":" [ field-body ] CRLF
+        // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
+        const byte nameBodyDelimiter = (byte)':';
 
-          for (var index = 0; index < line.Length; index++) {
-            if (line[index] == nameBodyDelimiter) {
-              indexOfDelimiter = index;
-              break;
-            }
-          }
+        var posOfDelim = line.PositionOf(nameBodyDelimiter);
 
-          if (indexOfDelimiter == -1) {
-            // ignore incorrect formed header
-            header = null;
-          }
-          else {
-            header = new ByteStringBuilder(line.Length);
-            header.Append(line);
-          }
-        }
+        if (posOfDelim.HasValue)
+          offsetOfDelimiter = (int)line.Slice(0, posOfDelim.Value).Length;
+        else
+          offsetOfDelimiter = -1;
+
+        if (0 < offsetOfDelimiter)
+          lineLast = HeaderFieldLineSegment.Append(null, line, out lineFirst);
+        else if (ignoreMalformed)
+          lineFirst = null;
+        else
+          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(ret.Value.Sequence)}'");
       }
 
-      if (0 < indexOfDelimiter)
-        yield return new HeaderField(header.ToByteString(true), indexOfDelimiter);
+      if (lineFirst != null)
+        headerFields.Add(Result());
+
+      return headerFields;
+
+      THeaderField Result()
+      {
+        var ret = new RawHeaderField(
+          new ReadOnlySequence<byte>(lineFirst, 0, lineLast, lineLast.Memory.Length),
+          offsetOfDelimiter
+        );
+
+        lineFirst = null;
+
+        return converter(ret, arg);
+      }
+    }
+
+    private class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
+      public static HeaderFieldLineSegment Append(HeaderFieldLineSegment last, ReadOnlySequence<byte> line, out HeaderFieldLineSegment first)
+      {
+        first = null;
+
+        var position = line.Start;
+
+        while (line.TryGet(ref position, out var memory, advance: true)) {
+          last = new HeaderFieldLineSegment(last, memory);
+
+          if (first == null)
+            first = last;
+        }
+
+        return last;
+      }
+
+      private HeaderFieldLineSegment(HeaderFieldLineSegment prev, ReadOnlyMemory<byte> memory)
+      {
+        Memory = memory;
+
+        if (prev == null) {
+          RunningIndex = 0;
+        }
+        else {
+          RunningIndex = prev.RunningIndex + prev.Memory.Length;
+          prev.Next = this;
+        }
+      }
     }
 
     /// <param name="val">header field value.</param>

@@ -26,43 +26,27 @@ using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   public class StrictLineOrientedStream : LineOrientedStream {
-    public StrictLineOrientedStream(Stream stream)
-      : base(stream, Ascii.Octets.CRLFArray, true, DefaultBufferSize, DefaultLeaveStreamOpen)
+    public StrictLineOrientedStream(
+      Stream stream,
+      int bufferSize = DefaultBufferSize,
+      bool leaveStreamOpen = DefaultLeaveStreamOpen
+    )
+      : base(stream, Ascii.Octets.CRLFArray, bufferSize, leaveStreamOpen)
     {
     }
 
-    public StrictLineOrientedStream(Stream stream, int bufferSize)
-      : base(stream, Ascii.Octets.CRLFArray, true, bufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.CRLFArray, true, DefaultBufferSize, leaveStreamOpen)
-    {
-    }
-    
-    public StrictLineOrientedStream(Stream stream, int bufferSize, bool leaveStreamOpen)
-      : base(stream, Ascii.Octets.CRLFArray, true, bufferSize, leaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine)
-      : base(stream, newLine, true, DefaultBufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize)
-      : base(stream, newLine, true, bufferSize, DefaultLeaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine, bool leaveStreamOpen)
-      : base(stream, newLine, true, DefaultBufferSize, leaveStreamOpen)
-    {
-    }
-
-    public StrictLineOrientedStream(Stream stream, byte[] newLine, int bufferSize, bool leaveStreamOpen)
-      : base(stream, newLine, true, bufferSize, leaveStreamOpen)
+    public StrictLineOrientedStream(
+      Stream stream,
+      ReadOnlySpan<byte> newLine,
+      int bufferSize = DefaultBufferSize,
+      bool leaveStreamOpen = DefaultLeaveStreamOpen
+    )
+      : base(
+        stream,
+        newLine.IsEmpty ? throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine)) : newLine,
+        bufferSize,
+        leaveStreamOpen
+      )
     {
     }
   }

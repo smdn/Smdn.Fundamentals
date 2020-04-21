@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using NUnit.Framework;
 
 using Smdn.IO.Streams.LineOriented;
@@ -9,20 +10,127 @@ using Smdn.IO.Streams.LineOriented;
 namespace Smdn.Formats.Mime {
   [TestFixture]
   public class MimeUtilsTests {
-    private void ParseHeader(string input, Action<IEnumerable<KeyValuePair<string, string>>, Stream> testAction)
+    private static void WithStream(string input, Action<LineOrientedStream> action)
     {
-      ParseHeader(input, false, testAction);
-    }
-
-    private void ParseHeader(string input, bool keepWhitespaces, Action<IEnumerable<KeyValuePair<string, string>>, Stream> testAction)
-    {
-      using (var stream = new LooseLineOrientedStream(new MemoryStream(Encoding.ASCII.GetBytes(input)))) {
-        testAction(MimeUtils.ParseHeader(stream, keepWhitespaces), stream);
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(input))) {
+        action(new LooseLineOrientedStream(stream));
       }
     }
 
     [Test]
-    public void TestParseHeader()
+    public void TestParseHeaderAsync()
+    {
+      var input =
+        "MIME-Version: 1.0\n" +
+        "Content-Type:text/plain\r" +
+        "Subject: line1\n\tline2\r \tline3\r\n"+
+        "\r\n"+
+        "line1\n" +
+        "line2\r" +
+        "line3\r\n";
+
+      WithStream(input, stream => {
+        IReadOnlyList<RawHeaderField> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream));
+
+        Assert.AreEqual(3, headers.Count);
+
+        Assert.AreEqual("MIME-Version", headers[0].NameString);
+        Assert.AreEqual(" 1.0\n", headers[0].ValueString);
+
+        Assert.AreEqual("Content-Type", headers[1].NameString);
+        Assert.AreEqual("text/plain\r", headers[1].ValueString);
+
+        Assert.AreEqual("Subject", headers[2].NameString);
+        Assert.AreEqual(" line1\n\tline2\r \tline3\r\n", headers[2].ValueString);
+
+        var reader = new StreamReader(stream, Encoding.ASCII);
+
+        Assert.AreEqual("line1\nline2\rline3\r\n", reader.ReadToEnd());
+      });
+    }
+
+    [Test]
+    public void TestParseHeaderAsync_ArgumentNull_Stream()
+    {
+      LineOrientedStream nullStream = null;
+
+      Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream: nullStream));
+    }
+
+    [Test]
+    public void TestParseHeaderAsync_ArgumentNull_Converter()
+    {
+      WithStream("MIME-Version: 1.0\r\n", stream => {
+        Converter<RawHeaderField, int> nullConverter = null;
+
+        Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream, converter: nullConverter));
+      });
+    }
+
+    [Test]
+    public void TestParseHeaderAsync_Cancellation()
+    {
+      WithStream("MIME-Version: 1.0\r\n", stream => {
+        using (var cts = new CancellationTokenSource()) {
+          cts.Cancel();
+
+          Assert.That(
+            async () => await MimeUtils.ParseHeaderAsync(stream, cancellationToken: cts.Token),
+            Throws.InstanceOf<OperationCanceledException>()
+          );
+        }
+      });
+    }
+
+    [TestCase("name:value\r\n" + "\rbody")]
+    [TestCase("name:value\r\n" + "\nbody")]
+    [TestCase("name:value\r\n" + "\r\nbody")]
+    [TestCase("\r" + "body")]
+    [TestCase("\n" + "body")]
+    [TestCase("\r\n" + "body")]
+    public void TestParseHeaderAsync_ReadToEndOfHeaderPart(string input)
+    {
+      WithStream(input, stream => {
+        Assert.DoesNotThrowAsync(async () => await MimeUtils.ParseHeaderAsync(stream));
+
+        var reader = new StreamReader(stream, Encoding.ASCII);
+
+        Assert.AreEqual("body", reader.ReadToEnd());
+      });
+    }
+
+    [TestCase("MIME-Version\r\n")]
+    [TestCase(":\r\nContent-Type:text/plain\r\n")]
+    [TestCase("Content-Type:text/plain\r\nMIME-Version\r\n")]
+    [TestCase("\tline\r\n")]
+    [TestCase(" line\r\n")]
+    public void TestParseHeaderAsync_ThrowIfMalformed(string input)
+    {
+      WithStream(input, stream => {
+        Assert.ThrowsAsync<InvalidDataException>(async () => await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: false));
+      });
+    }
+
+    [TestCase("MIME-Version\r\n", 0)]
+    [TestCase(":\r\nContent-Type:text/plain\r\n", 1)]
+    [TestCase("Content-Type:text/plain\r\nMIME-Version\r\n", 1)]
+    [TestCase("\tline\r\n", 0)]
+    [TestCase(" line\r\n", 0)]
+    public void TestParseHeaderAsync_IgnoreMalformed(string input, int expectedParsedHeaderCount)
+    {
+      WithStream(input, stream => {
+        IReadOnlyList<RawHeaderField> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: true));
+
+        Assert.AreEqual(expectedParsedHeaderCount, headers.Count);
+      });
+    }
+
+    [Test]
+    public void TestParseHeaderAsNameValuePairsAsync()
     {
       var input = @"MIME-Version: 1.0
 Content-Type: text/plain
@@ -32,8 +140,10 @@ line1
 line2
 line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
         Assert.AreEqual(3, headers.Count);
 
@@ -53,7 +163,15 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
     }
 
     [Test]
-    public void TestParseHeaderKeepWhitespaces()
+    public void TestParseHeaderAsNameValuePairsAsync_ArgumentNull_Stream()
+    {
+      LineOrientedStream nullStream = null;
+
+      Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsNameValuePairsAsync(stream: nullStream));
+    }
+
+    [Test]
+    public void TestParseHeaderAsNameValuePairsAsync_KeepWhitespaces()
     {
       var input = "MIME-Version: 1.0\r\n" +
 "Content-Type:\ttext/plain \r" +
@@ -63,8 +181,10 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
 "line2\n" +
 "line3\n";
 
-      ParseHeader(input, true, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
 
         Assert.AreEqual(3, headers.Count);
 
@@ -84,14 +204,16 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
     }
 
     [Test]
-    public void TestParseHeaderInputHasNoBody()
+    public void TestParseHeaderAsNameValuePairsAsync_InputHasNoBody()
     {
       var input = @"MIME-Version: 1.0
 Content-Type: text/plain
 ".Replace("\r\n", "\n").Replace("\n", "\r\n");
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
         Assert.AreEqual(2, headers.Count);
 
@@ -104,7 +226,7 @@ Content-Type: text/plain
     }
 
     [Test]
-    public void TestParseHeaderMixedNewLine()
+    public void TestParseHeaderAsNameValuePairsAsync_MixedNewLine()
     {
       var input = "MIME-Version: 1.0\r\n" +
         "Content-Type: text/plain\r" +
@@ -112,9 +234,10 @@ Content-Type: text/plain
         "From: from@example.com\n" +
         "\r";
 
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(input))) {
-        var ret = MimeUtils.ParseHeader(stream);
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
         Assert.AreEqual(4, headers.Count);
 
@@ -129,16 +252,18 @@ Content-Type: text/plain
 
         Assert.AreEqual("From", headers[3].Key);
         Assert.AreEqual("from@example.com", headers[3].Value);
-      }
+      });
     }
 
     [Test]
-    public void TestParseHeaderHeaderNameOnly()
+    public void TestParseHeaderAsNameValuePairsAsync_HeaderNameOnly()
     {
       var input = @"MIME-Version:";
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
         Assert.AreEqual(1, headers.Count);
 
@@ -147,62 +272,113 @@ Content-Type: text/plain
       });
     }
 
-    [TestCase(true)]
-    [TestCase(false)]
-    public void TestParseHeaderIgnoreInvalidHeaderNameOnly(bool keepWhitespaces)
+    [TestCase(true, true)]
+    [TestCase(true, false)]
+    [TestCase(false, true)]
+    [TestCase(false, false)]
+    public void TestParseHeaderAsNameValuePairsAsync_Malformed_NameOnly(bool keepWhitespaces, bool ignoreMalformed)
     {
       var input = @"X-Invalid-Header
 MIME-Version: 1.0
 X-Invalid-Header
 ";
 
-      ParseHeader(input, keepWhitespaces, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.AreEqual(1, headers.Count);
+        var testAction = new AsyncTestDelegate(async () => {
+          headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(
+            stream,
+            keepWhitespaces: keepWhitespaces,
+            ignoreMalformed: ignoreMalformed
+          );
+        });
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value.Trim());
+        if (ignoreMalformed) {
+          Assert.DoesNotThrowAsync(testAction);
+
+          Assert.AreEqual(1, headers.Count);
+
+          Assert.AreEqual("MIME-Version", headers[0].Key);
+          Assert.AreEqual("1.0", headers[0].Value.Trim());
+        }
+        else {
+          Assert.ThrowsAsync<InvalidDataException>(testAction);
+        }
       });
     }
 
-    [TestCase(true)]
-    [TestCase(false)]
-    public void TestParseHeaderIgnoreInvalidHeaderValueOnly1(bool keepWhitespaces)
+    [TestCase(true, true)]
+    [TestCase(true, false)]
+    [TestCase(false, true)]
+    [TestCase(false, false)]
+    public void TestParseHeaderAsNameValuePairsAsync_Malformed_ValueOnly1(bool keepWhitespaces, bool ignoreMalformed)
     {
       var input = @": invalid-header-value
 MIME-Version: 1.0
 : invalid-header-value";
 
-      ParseHeader(input, keepWhitespaces, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.AreEqual(1, headers.Count);
+        var testAction = new AsyncTestDelegate(async () => {
+          headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(
+            stream,
+            keepWhitespaces: keepWhitespaces,
+            ignoreMalformed: ignoreMalformed
+          );
+        });
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value.Trim());
+        if (ignoreMalformed) {
+          Assert.DoesNotThrowAsync(testAction);
+
+          Assert.AreEqual(1, headers.Count);
+
+          Assert.AreEqual("MIME-Version", headers[0].Key);
+          Assert.AreEqual("1.0", headers[0].Value.Trim());
+        }
+        else {
+          Assert.ThrowsAsync<InvalidDataException>(testAction);
+        }
       });
     }
 
-    [TestCase(true)]
-    [TestCase(false)]
-    public void TestParseHeaderIgnoreInvalidHeaderValueOnly2(bool keepWhitespaces)
+    [TestCase(true, true)]
+    [TestCase(true, false)]
+    [TestCase(false, true)]
+    [TestCase(false, false)]
+    public void TestParseHeaderAsNameValuePairsAsync_Malformed_ValueOnly2(bool keepWhitespaces, bool ignoreMalformed)
     {
       var input = @"   : invalid-header-value
 MIME-Version: 1.0";
 
-      ParseHeader(input, keepWhitespaces, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.AreEqual(1, headers.Count);
+        var testAction = new AsyncTestDelegate(async () => {
+          headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(
+            stream,
+            keepWhitespaces: keepWhitespaces,
+            ignoreMalformed: ignoreMalformed
+          );
+        });
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value.Trim());
+        if (ignoreMalformed) {
+          Assert.DoesNotThrowAsync(testAction);
+
+          Assert.AreEqual(1, headers.Count);
+
+          Assert.AreEqual("MIME-Version", headers[0].Key);
+          Assert.AreEqual("1.0", headers[0].Value.Trim());
+        }
+        else {
+          Assert.ThrowsAsync<InvalidDataException>(testAction);
+        }
       });
     }
 
     [Test]
-    public void TestParseHeaderMixedWhitespaces()
+    public void TestParseHeaderAsNameValuePairsAsync_MixedWhitespaces()
     {
       var input =
         "Content-Type\t\t\t:\t\t\ttext/plain\r\n" +
@@ -210,8 +386,10 @@ MIME-Version: 1.0";
         "To:to@example.com\r\n" +
         "Subject\t  : \tsubject\r\n";
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
         Assert.AreEqual(4, headers.Count);
 
@@ -230,7 +408,7 @@ MIME-Version: 1.0";
     }
 
     [Test]
-    public void TestParseHeaderMultilineValue()
+    public void TestParseHeaderAsNameValuePairsAsync_MultilineValue()
     {
       var input = 
         "Subject: line1\r\n" +
@@ -238,8 +416,10 @@ MIME-Version: 1.0";
         "\tline3\r\n" +
         "   \tline4\r\n";
 
-      ParseHeader(input, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
         Assert.AreEqual(1, headers.Count);
 
@@ -249,7 +429,7 @@ MIME-Version: 1.0";
     }
 
     [Test]
-    public void TestParseHeaderMultilineValueKeepWhitespace()
+    public void TestParseHeaderAsNameValuePairsAsync_MultilineValueKeepWhitespace()
     {
       var input = 
         "Subject: \t line1\r\n" +
@@ -257,8 +437,10 @@ MIME-Version: 1.0";
           "\tline3\r" +
           "   \tline4\r\n";
 
-      ParseHeader(input, true, delegate(IEnumerable<KeyValuePair<string, string>> ret, Stream stream) {
-        var headers = new List<KeyValuePair<string, string>>(ret);
+      WithStream(input, stream => {
+        IReadOnlyList<KeyValuePair<string, string>> headers = null;
+
+        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
 
         Assert.AreEqual(1, headers.Count);
 

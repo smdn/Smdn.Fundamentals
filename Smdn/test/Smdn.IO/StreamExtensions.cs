@@ -1,8 +1,8 @@
 using System;
+using System.Buffers;
 using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
-
-using Smdn.Formats;
 
 namespace Smdn.IO {
   [TestFixture]
@@ -184,7 +184,7 @@ namespace Smdn.IO {
     }
 
     [Test]
-    public void TestWriteArraySegment()
+    public void TestWrite_ArraySegment()
     {
       using (var stream = new MemoryStream()) {
         var segment = new ArraySegment<byte>(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04}, 1, 3);
@@ -192,6 +192,79 @@ namespace Smdn.IO {
         StreamExtensions.Write(stream, segment);
 
         Assert.AreEqual(new byte[] {0x01, 0x02, 0x03}, stream.ToArray());
+      }
+    }
+
+    private class SequenceSegment : ReadOnlySequenceSegment<byte> {
+      public SequenceSegment(Memory<byte> memory, int runningIndex, SequenceSegment next)
+      {
+        this.Memory = memory;
+        this.RunningIndex = runningIndex;
+        this.Next = next;
+      }
+    }
+
+    [Test]
+    public void TestWriteAsync_ReadOnlySequence_StreamNull()
+    {
+      Assert.Throws<ArgumentNullException>(() => StreamExtensions.Write(stream: null, sequence: default));
+      Assert.Throws<ArgumentNullException>(() => StreamExtensions.WriteAsync(stream: null, sequence: default));
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestWrite_ReadOnlySequence_SingleSegment(bool runAsync)
+    {
+      using (var stream = new MemoryStream()) {
+        var seg1 = new SequenceSegment(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }, 0, null);
+        var sequence = new ReadOnlySequence<byte>(seg1, 0, seg1, seg1.Memory.Length);
+
+        Assert.IsTrue(sequence.IsSingleSegment);
+
+        if (runAsync)
+          Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
+        else
+          Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
+
+        Assert.AreEqual(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }, stream.ToArray());
+      }
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestWrite_ReadOnlySequence_MultipleSegment(bool runAsync)
+    {
+      using (var stream = new MemoryStream()) {
+        var seg2 = new SequenceSegment(new byte[] { 0x02, 0x03, 0x04 }, 2, null);
+        var seg1 = new SequenceSegment(new byte[] { 0x00, 0x01 }, 0, seg2);
+        var sequence = new ReadOnlySequence<byte>(seg1, 0, seg2, seg2.Memory.Length);
+
+        Assert.IsFalse(sequence.IsSingleSegment);
+
+        if (runAsync)
+          Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
+        else
+          Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
+
+        Assert.AreEqual(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }, stream.ToArray());
+      }
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestWriteAsync_ReadOnlySequence_Empty(bool runAsync)
+    {
+      using (var stream = new MemoryStream()) {
+        var sequence = new ReadOnlySequence<byte>();
+
+        Assert.IsTrue(sequence.IsEmpty);
+
+        if (runAsync)
+          Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
+        else
+          Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
+
+        Assert.AreEqual(new byte[0], stream.ToArray());
       }
     }
   }

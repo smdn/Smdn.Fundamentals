@@ -1,5 +1,5 @@
 // 
-// Copyright (c) 2009 smdn <smdn@smdn.jp>
+// Copyright (c) 2019 smdn <smdn@smdn.jp>
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +20,23 @@
 // THE SOFTWARE.
 
 using System;
-using System.IO;
+using System.Buffers;
+using Smdn.Text;
 
-namespace Smdn.IO.Streams.LineOriented {
-  public class LooseLineOrientedStream : LineOrientedStream {
-    public LooseLineOrientedStream(
-      Stream stream,
-      int bufferSize = DefaultBufferSize,
-      bool leaveStreamOpen = DefaultLeaveStreamOpen
-    )
-      : base(stream, default, bufferSize, leaveStreamOpen)
+namespace Smdn.Formats.Mime {
+  public readonly struct RawHeaderField {
+    public ReadOnlySequence<byte> HeaderFieldSequence { get; }
+    public int OffsetOfDelimiter { get; }
+
+    public ReadOnlySequence<byte> Name => HeaderFieldSequence.Slice(0, OffsetOfDelimiter);
+    public ReadOnlySequence<byte> Value => HeaderFieldSequence.Slice(OffsetOfDelimiter).Slice(1); // offset + 1
+    public string NameString => ByteString.ToString(Name);
+    public string ValueString => ByteString.ToString(Value);
+
+    internal RawHeaderField(ReadOnlySequence<byte> headerFieldSequence, int offsetOfDelimiter)
     {
+      this.HeaderFieldSequence = headerFieldSequence;
+      this.OffsetOfDelimiter = offsetOfDelimiter;
     }
   }
 }

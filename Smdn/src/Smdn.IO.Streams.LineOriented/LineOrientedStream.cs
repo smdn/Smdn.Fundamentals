@@ -20,16 +20,18 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
+using System.Buffers;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   public class LineOrientedStream : Stream {
-    protected static readonly int DefaultBufferSize = 1024;
-    protected static readonly int MinimumBufferSize = 8;
-    protected static readonly bool DefaultLeaveStreamOpen = false;
+    protected const int DefaultBufferSize = 1024;
+    protected const int MinimumBufferSize = 8;
+    protected const bool DefaultLeaveStreamOpen = false;
 
     private enum EolState {
       NotMatched = 0,
@@ -67,8 +69,12 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return stream.Length; }
     }
 
-    public IReadOnlyList<byte> NewLine {
+    public ReadOnlySpan<byte> NewLine {
       get { CheckDisposed(); return newLine; }
+    }
+
+    public bool IsStrictNewLine {
+      get { CheckDisposed(); return newLine != null; }
     }
 
     public int BufferSize {
@@ -79,23 +85,20 @@ namespace Smdn.IO.Streams.LineOriented {
       get { CheckDisposed(); return stream; }
     }
 
-    protected LineOrientedStream(Stream stream, byte[] newLine, bool strictEOL, int bufferSize, bool leaveStreamOpen)
+    public LineOrientedStream(
+      Stream stream,
+      ReadOnlySpan<byte> newLine,
+      int bufferSize = DefaultBufferSize,
+      bool leaveStreamOpen = DefaultLeaveStreamOpen
+    )
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
-      if (strictEOL) {
-        if (newLine == null)
-          throw new ArgumentNullException(nameof(newLine));
-        if (newLine.Length == 0)
-          throw ExceptionUtils.CreateArgumentMustBeNonEmptyArray(nameof(newLine));
-      }
-
       if (bufferSize < MinimumBufferSize)
         throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(MinimumBufferSize, nameof(bufferSize), bufferSize);
 
       this.stream = stream;
-      this.strictEOL = strictEOL;
-      this.newLine = newLine;
+      this.newLine = newLine.IsEmpty ? null : newLine.ToArray(); // XXX: allocation
       this.buffer = new byte[bufferSize];
       this.leaveStreamOpen = leaveStreamOpen;
     }
@@ -138,11 +141,18 @@ namespace Smdn.IO.Streams.LineOriented {
       stream.Flush();
     }
 
+    public override Task FlushAsync(CancellationToken cancellationToken)
+    {
+      CheckDisposed();
+
+      return stream.FlushAsync(cancellationToken);
+    }
+
     public override int ReadByte()
     {
       CheckDisposed();
 
-      if (bufRemain == 0 && FillBuffer() <= 0)
+      if (bufRemain == 0 && FillBufferAsync(default).GetAwaiter().GetResult() <= 0)
         return -1;
 
       bufRemain--;
@@ -150,44 +160,66 @@ namespace Smdn.IO.Streams.LineOriented {
       return buffer[bufOffset++];
     }
 
-    public byte[] ReadLine()
-    {
-      return ReadLine(true);
+    public byte[] ReadLine(bool keepEOL = true)
+      => ReadLineAsync().GetAwaiter().GetResult()?.GetLine(keepEOL)?.ToArray();
+
+    public readonly struct Line {
+      public ReadOnlySequence<byte> SequenceWithNewLine { get; }
+      public SequencePosition PositionOfNewLine { get; }
+
+      public ReadOnlySequence<byte> Sequence => SequenceWithNewLine.Slice(0, PositionOfNewLine);
+      public ReadOnlySequence<byte> NewLine => SequenceWithNewLine.Slice(PositionOfNewLine);
+      public bool IsEmpty => SequenceWithNewLine.IsEmpty || PositionOfNewLine.Equals(SequenceWithNewLine.Start);
+
+      public Line(ReadOnlySequence<byte> sequenceWithNewLine, SequencePosition positionOfNewLine)
+      {
+        SequenceWithNewLine = sequenceWithNewLine;
+        PositionOfNewLine = positionOfNewLine;
+      }
+
+      internal ReadOnlySequence<byte>? GetLine(bool keepEOL) => keepEOL ? SequenceWithNewLine : Sequence;
     }
 
-    public byte[] ReadLine(bool keepEOL)
+    public Task<Line?> ReadLineAsync(CancellationToken cancellationToken = default)
     {
       CheckDisposed();
 
-      if (bufRemain == 0 && FillBuffer() <= 0)
-        // end of stream
+      return ReadLineAsyncCore(cancellationToken: cancellationToken);
+    }
+
+    private async Task<Line?> ReadLineAsyncCore(CancellationToken cancellationToken = default)
+    {
+      if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
         return null;
 
-      var newLineOffset = 0;
+      var newLineLength = 0;
       var bufCopyFrom = bufOffset;
       var eol = EolState.NotMatched;
       var eos = false;
       var retCount = 0;
-      byte[] retBuffer = null;
+      LineSequenceSegment segmentHead = null;
+      LineSequenceSegment segmentTail = null;
 
       for (;;) {
-        if (strictEOL) {
-          if (buffer[bufOffset] == newLine[newLineOffset]) {
-            if (newLine.Length == ++newLineOffset)
-              eol = EolState.NewLine;
-          }
-          else {
-            newLineOffset = 0;
-          }
-        }
-        else {
+        if (newLine == null) {
+          // loose EOL (CR/LF/CRLF)
           if (buffer[bufOffset] == Ascii.Octets.CR) {
             eol = EolState.CR;
-            newLineOffset = 1;
+            newLineLength = 1;
           }
           else if (buffer[bufOffset] == Ascii.Octets.LF) {
             eol = EolState.LF;
-            newLineOffset = 1;
+            newLineLength = 1;
+          }
+        }
+        else {
+          // strict EOL
+          if (buffer[bufOffset] == newLine[newLineLength]) {
+            if (newLine.Length == ++newLineLength)
+              eol = EolState.NewLine;
+          }
+          else {
+            newLineLength = 0;
           }
         }
 
@@ -198,23 +230,12 @@ namespace Smdn.IO.Streams.LineOriented {
             (eol == EolState.NotMatched || eol == EolState.CR /* read ahead; CRLF */)) {
           var count = bufOffset - bufCopyFrom;
 
-          if (retBuffer == null) {
-            retBuffer = new byte[count + BufferSize];
-
-            Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, 0, count);
-          }
-          else {
-            var newRetBuffer = new byte[retBuffer.Length + BufferSize];
-
-            Buffer.BlockCopy(retBuffer, 0, newRetBuffer, 0, retCount);
-            Buffer.BlockCopy(buffer, bufCopyFrom, newRetBuffer, retCount, count);
-
-            retBuffer = newRetBuffer;
-          }
+          segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, count).ToArray()); // XXX
+          segmentHead = segmentHead ?? segmentTail;
 
           retCount += count;
 
-          eos = (FillBuffer() <= 0);
+          eos = (await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0);
 
           bufCopyFrom = bufOffset;
         }
@@ -228,47 +249,84 @@ namespace Smdn.IO.Streams.LineOriented {
       if (eol == EolState.CR && buffer[bufOffset] == Ascii.Octets.LF) {
         // CRLF
         retLength++;
-        newLineOffset++;
+        newLineLength++;
 
         bufOffset++;
         bufRemain--;
       }
 
-      if (!keepEOL && eol != EolState.NotMatched)
-        retLength -= newLineOffset;
+      if (eol == EolState.NotMatched)
+        newLineLength = 0;
 
-      if (retBuffer == null || 0 < retLength - retCount) {
-        if (retBuffer == null)
-          retBuffer = new byte[retLength];
-
-        Buffer.BlockCopy(buffer, bufCopyFrom, retBuffer, retCount, retLength - retCount);
+      if (segmentHead == null || 0 < retLength - retCount) {
+        segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray()); // XXX
+        segmentHead = segmentHead ?? segmentTail;
       }
 
-      if (retLength == retBuffer.Length) {
-        return retBuffer;
-      }
-      else {
-        var ret = new byte[retLength];
+      var sequenceWithNewLine = new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength);
 
-        Buffer.BlockCopy(retBuffer, 0, ret, 0, retLength);
+      return new Line(
+        sequenceWithNewLine: sequenceWithNewLine,
+        positionOfNewLine: sequenceWithNewLine.GetPosition(retLength - newLineLength)
+      );
+    }
 
-        return ret;
+    private class LineSequenceSegment : ReadOnlySequenceSegment<byte> {
+      public LineSequenceSegment(LineSequenceSegment prev, ReadOnlyMemory<byte> memory)
+      {
+        Memory = memory;
+
+        if (prev == null) {
+          RunningIndex = 0;
+        }
+        else {
+          RunningIndex = prev.RunningIndex + prev.Memory.Length;
+          prev.Next = this;
+        }
       }
     }
 
     public long Read(Stream targetStream, long length)
+      => ReadAsync(targetStream, length).GetAwaiter().GetResult();
+
+    public Task<long> ReadAsync(
+      Stream targetStream,
+      long length,
+      CancellationToken cancellationToken = default
+    )
     {
       CheckDisposed();
 
-      if (length < 0L)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length);
       if (targetStream == null)
         throw new ArgumentNullException(nameof(targetStream));
+      if (cancellationToken.IsCancellationRequested)
+#if NET45
+        return new Task<long>(() => default, cancellationToken);
+#else
+        return Task.FromCanceled<long>(cancellationToken);
+#endif
+      if (length == 0L)
+        return Task.FromResult(0L); // do nothing
+      if (length < 0L)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length);
 
-      if (length <= bufRemain) {
-        var count = (int)length;
+      return ReadAsyncCore(
+        targetStream,
+        length,
+        cancellationToken
+      );
+    }
 
-        targetStream.Write(buffer, bufOffset, count);
+    private async Task<long> ReadAsyncCore(
+      Stream targetStream,
+      long? bytesToRead,
+      CancellationToken cancellationToken = default
+    )
+    {
+      if (bytesToRead.HasValue && bytesToRead <= bufRemain) {
+        var count = (int)bytesToRead;
+
+        await targetStream.WriteAsync(buffer, bufOffset, count, cancellationToken).ConfigureAwait(false);
 
         bufOffset += count;
         bufRemain -= count;
@@ -278,35 +336,57 @@ namespace Smdn.IO.Streams.LineOriented {
 
       var read = 0L;
 
-      if (bufRemain != 0) {
-        targetStream.Write(buffer, bufOffset, bufRemain);
+      if (0 < bufRemain) {
+        await targetStream.WriteAsync(buffer, bufOffset, bufRemain, cancellationToken).ConfigureAwait(false);
 
-        read    = bufRemain;
-        length -= bufRemain;
+        read         = bufRemain;
+        bytesToRead -= bufRemain;
 
         bufRemain = 0;
       }
 
       // read from base stream
-      for (;;) {
-        var r = stream.Read(buffer, 0, (int)Math.Min(length, buffer.Length));
+      if (bytesToRead.HasValue) {
+        for (;;) {
+          if (bytesToRead <= 0)
+            break;
 
-        if (r <= 0)
-          break;
+          var r = await stream.ReadAsync(buffer, 0, (int)Math.Min(bytesToRead.Value, buffer.Length)).ConfigureAwait(false);
 
-        targetStream.Write(buffer, 0, r);
+          if (r <= 0)
+            break;
 
-        length -= r;
-        read   += r;
+          await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
 
-        if (length <= 0)
-          break;
+          bytesToRead -= r;
+          read        += r;
+        }
+      }
+      else {
+        for (;;) {
+          var r = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+
+          await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
+
+          read += r;
+
+          if (r < buffer.Length)
+            break;
+        }
       }
 
       return read;
     }
 
     public override int Read(byte[] buffer, int offset, int count)
+      => ReadAsync(buffer, offset, count, default).GetAwaiter().GetResult();
+
+    public override Task<int> ReadAsync(
+      byte[] buffer,
+      int offset,
+      int count,
+      CancellationToken cancellationToken
+    )
     {
       CheckDisposed();
 
@@ -319,8 +399,32 @@ namespace Smdn.IO.Streams.LineOriented {
       if (buffer.Length - count < offset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
+      if (cancellationToken.IsCancellationRequested)
+#if NET45
+        return new Task<int>(() => default, cancellationToken);
+#else
+        return Task.FromCanceled<int>(cancellationToken);
+#endif
+      if (count == 0L)
+        return Task.FromResult(0); // do nothing
+
+      return ReadAsyncCore(
+        destination: buffer,
+        offset: offset,
+        count: count,
+        cancellationToken: cancellationToken
+      );
+    }
+
+    private async Task<int> ReadAsyncCore(
+      byte[] destination,
+      int offset,
+      int count,
+      CancellationToken cancellationToken
+    )
+    {
       if (count <= bufRemain) {
-        Buffer.BlockCopy(this.buffer, bufOffset, buffer, offset, count);
+        Buffer.BlockCopy(buffer, bufOffset, destination, offset, count);
         bufOffset += count;
         bufRemain -= count;
 
@@ -330,7 +434,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var read = 0;
 
       if (bufRemain != 0) {
-        Buffer.BlockCopy(this.buffer, bufOffset, buffer, offset, bufRemain);
+        Buffer.BlockCopy(buffer, bufOffset, destination, offset, bufRemain);
 
         read    = bufRemain;
         offset += bufRemain;
@@ -344,7 +448,7 @@ namespace Smdn.IO.Streams.LineOriented {
         if (count <= 0)
           break;
 
-        var r = stream.Read(buffer, offset, count);
+        var r = await stream.ReadAsync(destination, offset, count, cancellationToken).ConfigureAwait(false);
 
         if (r <= 0)
           break;
@@ -357,10 +461,10 @@ namespace Smdn.IO.Streams.LineOriented {
       return read;
     }
 
-    private int FillBuffer()
+    private async Task<int> FillBufferAsync(CancellationToken cancellationToken)
     {
       bufOffset = 0;
-      bufRemain = stream.Read(buffer, 0, buffer.Length);
+      bufRemain = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
 
       return bufRemain;
     }
@@ -372,6 +476,28 @@ namespace Smdn.IO.Streams.LineOriented {
       stream.Write(buffer, offset, count);
     }
 
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+      CheckDisposed();
+
+      return stream.WriteAsync(buffer, offset, count, cancellationToken);
+    }
+
+    public override Task CopyToAsync(
+      Stream destination,
+      int bufferSize = 0, // don't care
+      CancellationToken cancellationToken = default
+    )
+    {
+      CheckDisposed();
+
+      return ReadAsyncCore(
+        destination ?? throw new ArgumentNullException(nameof(destination)),
+        null, // read to end
+        cancellationToken
+      );
+    }
+
     private void CheckDisposed()
     {
       if (IsClosed)
@@ -380,7 +506,6 @@ namespace Smdn.IO.Streams.LineOriented {
 
     private Stream stream;
     private readonly byte[] newLine;
-    private readonly bool strictEOL;
     private readonly bool leaveStreamOpen;
     private byte[] buffer;
     private int bufOffset = 0;
