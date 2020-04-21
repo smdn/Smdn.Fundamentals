@@ -1,32 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Common\src\Common.props" />
+
   <PropertyGroup>
     <TargetFrameworks>net471;net461;net46;netstandard2.0;netstandard1.6</TargetFrameworks>
-    <AssemblyName>Smdn.Xml.Xhtml</AssemblyName>
     <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
     <VersionPrefix>0.10</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <BaseOutputPath>..\build\bin\</BaseOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
     <Description>(X)HTML utility and extension library</Description>
-    <Company>smdn:総武ソフトウェア推進所</Company>
-    <Copyright>Copyright © 2009 smdn</Copyright>
-
-    <!-- AssemblyInfo -->
-    <AssemblyVersion>$(Version)</AssemblyVersion>
-    <InformationalVersion>$(VersionPrefix)$(VersionSuffix) ($(TargetFramework))</InformationalVersion>
-    <Product>$(AssemblyName)-$(InformationalVersion)</Product>
+    <CopyrightYear>2009</CopyrightYear>
 
     <!-- NuGet -->
-    <Authors>smdn</Authors>
-    <Owners>$(Authors)</Owners>
-    <PackageProjectUrl>https://smdn.jp/</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIconUrl>https://smdn.jp/works/libs/Smdn.dll/Smdn-3.0_64x64.png</PackageIconUrl>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\src\Smdn.csproj" />
   </ItemGroup>
+
+  <Import Project="..\..\Common\src\Common.targets" />
 </Project>
