@@ -1,30 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\Common\test\Common.Tests.props" />
+  <Import Project="..\..\Common\test\Common.Tests.CodePages.props" />
+
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFrameworks>net471;net472;net47;net462;net46;net452;net45;netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
-    <LangVersion>latest</LangVersion>
-    <AssemblyName>Smdn.Tests</AssemblyName>
     <RootNamespace>Smdn</RootNamespace>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(MSBuildRuntimeType)' == 'Mono'">
-    <!-- for MonoDevelop test runner -->
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="NUnit" Version="3.11.0" />
-    <PackageReference Include="NUnitLite" Version="3.11.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.11.2" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-  </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\src\Smdn.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\NUnit\NUnitLiteTestRunner.cs" Link="NUnitLiteTestRunner.cs" Condition="$(OutputType) == 'Exe'" />
-    <Compile Include="..\..\NUnit\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
-    <Compile Include="..\..\NUnit\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 </Project>
