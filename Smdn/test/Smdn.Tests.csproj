@@ -3,7 +3,7 @@
   <Import Project="..\..\Common\test\Common.Tests.CodePages.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net471;net472;net47;net462;net46;net452;net45;netcoreapp2.0;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net471;net472;net47;net462;net46;net452;net45;netcoreapp2.1;netcoreapp1.1</TargetFrameworks>
     <RootNamespace>Smdn</RootNamespace>
   </PropertyGroup>
 
