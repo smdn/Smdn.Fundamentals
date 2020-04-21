@@ -3,6 +3,9 @@
     <LangVersion>latest</LangVersion>
     <Deterministic>true</Deterministic>
     <BaseOutputPath>$(MSBuildProjectDirectory)\..\build\bin\</BaseOutputPath>
+
+    <DebugType Condition=" '$(Configuration)' != 'Debug' ">None</DebugType>
+    <DebugSymbols Condition=" '$(Configuration)' != 'Debug' ">false</DebugSymbols>
   </PropertyGroup>
 
   <PropertyGroup Condition="!$(TargetFramework.StartsWith('netstandard1'))">
