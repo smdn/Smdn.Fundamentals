@@ -40,7 +40,7 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="..\..\CommonAssemblyInfo.cs" />
+    <Compile Include="..\..\Common\src\CommonAssemblyInfo.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Smdn\ConsoleUtils.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
