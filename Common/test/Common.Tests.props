@@ -12,6 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\NUnit\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\NUnitTestUtils.cs" Link="NUnitTestUtils.cs" />
   </ItemGroup>
 </Project>
