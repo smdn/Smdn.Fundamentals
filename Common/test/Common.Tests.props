@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <LangVersion>latest</LangVersion>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
