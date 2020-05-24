@@ -9,6 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Smdn</RootNamespace>
     <AssemblyName>Smdn.Core.Miscellaneous</AssemblyName>
+    <LangVersion>Latest</LangVersion>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
