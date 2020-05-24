@@ -24,7 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn.IO {
-  public static class FileDialogFilter {
+  static partial class FileDialogFilter {
     public const string Delimiter = "|";
 
     public readonly struct Filter {
