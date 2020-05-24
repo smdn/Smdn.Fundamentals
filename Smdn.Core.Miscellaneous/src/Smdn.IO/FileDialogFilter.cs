@@ -27,23 +27,23 @@ namespace Smdn.IO {
   public static class FileDialogFilter {
     public const string Delimiter = "|";
 
-    public struct Filter {
+    public readonly struct Filter {
       public const string PatternDelimiter = ";";
       public const string DescriptionPatternDelimiter = "|";
 
-      public string Description {
-        get; private set;
-      }
-
-      public string[] Patterns {
-        get; private set;
-      }
+      public string Description { get; }
+      public IReadOnlyList<string> Patterns { get; }
 
       public Filter(string description, params string[] patterns)
-        : this() // csc CS0843
       {
-        this.Description = description;
-        this.Patterns = patterns;
+        Description = description;
+        Patterns = patterns;
+      }
+
+      public Filter(string description, IReadOnlyList<string> patterns)
+      {
+        Description = description;
+        Patterns = patterns;
       }
 
       public override string ToString()
