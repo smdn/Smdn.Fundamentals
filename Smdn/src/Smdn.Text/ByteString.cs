@@ -1238,7 +1238,11 @@ namespace Smdn.Text {
     {
       fixed (byte* str0 = sequence) {
         if (encoding != null)
+#if NET45 || NET452
+          return encoding.GetString(sequence.ToArray());
+#else
           return encoding.GetString(str0, sequence.Length);
+#endif
 
         var chars = new char[sequence.Length];
 
