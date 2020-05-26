@@ -194,7 +194,11 @@ namespace Smdn.IO {
         throw new ArgumentNullException(nameof(stream));
 
       if (sequence.IsEmpty)
+#if NET45 || NET452
+        return Task.FromResult(0);
+#else
         return Task.CompletedTask;
+#endif
       else
         return WriteAsyncCore(stream, sequence, cancellationToken);
     }

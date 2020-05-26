@@ -300,7 +300,7 @@ namespace Smdn.IO.Streams.LineOriented {
       if (targetStream == null)
         throw new ArgumentNullException(nameof(targetStream));
       if (cancellationToken.IsCancellationRequested)
-#if NET45
+#if NET45 || NET452
         return new Task<long>(() => default, cancellationToken);
 #else
         return Task.FromCanceled<long>(cancellationToken);
@@ -400,7 +400,7 @@ namespace Smdn.IO.Streams.LineOriented {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (cancellationToken.IsCancellationRequested)
-#if NET45
+#if NET45 || NET452
         return new Task<int>(() => default, cancellationToken);
 #else
         return Task.FromCanceled<int>(cancellationToken);
