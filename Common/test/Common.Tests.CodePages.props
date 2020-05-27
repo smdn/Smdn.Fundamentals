@@ -1,6 +1,6 @@
 <Project>
   <ItemGroup>
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.5.0" Condition="$(TargetFramework.StartsWith('netcoreapp'))" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" Condition="$(TargetFramework.StartsWith('netcoreapp'))" />
     <Compile Include="$(MSBuildThisFileDirectory)\NUnitTestUtils.Encodings.cs" Link="NUnitTestUtils.Encodings.cs" />
   </ItemGroup>
 </Project>
