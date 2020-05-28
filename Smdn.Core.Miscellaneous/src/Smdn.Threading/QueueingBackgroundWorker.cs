@@ -103,20 +103,10 @@ namespace Smdn.Threading {
     }
 
     protected virtual void OnAllWorkerCompleted(EventArgs e)
-    {
-      var ev = this.AllWorkerCompleted;
-
-      if (ev != null)
-        ev(this, EventArgs.Empty);
-    }
+      => AllWorkerCompleted?.Invoke(this, EventArgs.Empty);
 
     protected virtual void OnCancelled(EventArgs e)
-    {
-      var ev = this.Cancelled;
-
-      if (ev != null)
-        ev(this, EventArgs.Empty);
-    }
+      => Cancelled?.Invoke(this, EventArgs.Empty);
 
     private Queue pendingWorkerArgs = new Queue();
     private bool cancelled = false;
