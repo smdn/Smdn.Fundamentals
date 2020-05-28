@@ -28,7 +28,7 @@ namespace Smdn.IO {
     public static void Close(this BinaryWriter writer)
     {
       if (writer == null)
-        throw new ArgumentNullException("writer");
+        throw new ArgumentNullException(nameof(writer));
 
       writer.Dispose();
     }
