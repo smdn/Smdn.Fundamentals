@@ -63,5 +63,64 @@ namespace Smdn.Collections {
       Assert.AreEqual(new int[] { }, list.Slice(0, 0).ToArray());
       Assert.AreEqual(new int[] { }, list.Slice(10).ToArray());
     }
+
+    [Test]
+    public void TestIndexOf_Array() => TestIndexOf<ArgumentException>(new int[] { 1, 1, 2, 1 });
+
+    [Test]
+    public void TestIndexOf_List() => TestIndexOf<ArgumentOutOfRangeException>(new List<int> { 1, 1, 2, 1 });
+
+    private void TestIndexOf<TExpectedArgumentException> (IReadOnlyList<int> list) where TExpectedArgumentException : ArgumentException
+    {
+      Assert.AreEqual(0, list.IndexOf(item: 1));
+      Assert.AreEqual(2, list.IndexOf(item: 2));
+      Assert.AreEqual(-1, list.IndexOf(item: 0));
+      Assert.AreEqual(0, list.IndexOf(item: 1, 0));
+      Assert.AreEqual(1, list.IndexOf(item: 1, 1));
+      Assert.AreEqual(3, list.IndexOf(item: 1, 2));
+      Assert.AreEqual(3, list.IndexOf(item: 1, 3));
+      Assert.AreEqual(2, list.IndexOf(item: 2, 0));
+      Assert.AreEqual(2, list.IndexOf(item: 2, 1));
+      Assert.AreEqual(2, list.IndexOf(item: 2, 2));
+      Assert.AreEqual(-1, list.IndexOf(item: 2, 3));
+      Assert.AreEqual(-1, list.IndexOf(item: 2, 0, 1));
+      Assert.AreEqual(-1, list.IndexOf(item: 2, 0, 2));
+      Assert.AreEqual(2, list.IndexOf(item: 2, 0, 3));
+      Assert.AreEqual(2, list.IndexOf(item: 2, 0, 4));
+      Assert.AreEqual(-1, list.IndexOf(item: 2, 4, 0));
+
+      Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, -1));
+      Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, 5));
+
+      Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, 0, -1));
+      Assert.Throws<TExpectedArgumentException>(() => list.IndexOf(default, 0, 5)); // List<T>.IndexOf() throws ArgumentOutOfRangeException
+      Assert.Throws<TExpectedArgumentException>(() => list.IndexOf(default, 1, 4)); // List<T>.IndexOf() throws ArgumentOutOfRangeException
+      Assert.Throws<TExpectedArgumentException>(() => list.IndexOf(default, 4, 1)); // List<T>.IndexOf() throws ArgumentOutOfRangeException
+    }
+
+    [Test]
+    public void TestIndexOf_WithEqualityComparer_Array() => TestIndexOf_WithEqualityComparer(new string[] { "A", "B", "c", "C" });
+
+    [Test]
+    public void TestIndexOf_WithEqualityComparer_List() => TestIndexOf_WithEqualityComparer(new List<string> { "A", "B", "c", "C" });
+
+    private void TestIndexOf_WithEqualityComparer(IReadOnlyList<string> list)
+    {
+      var equalityComparer = StringComparer.OrdinalIgnoreCase;
+
+      Assert.AreEqual(0, list.IndexOf(item: "A", equalityComparer));
+      Assert.AreEqual(0, list.IndexOf(item: "a", equalityComparer));
+      Assert.AreEqual(1, list.IndexOf(item: "B", equalityComparer));
+      Assert.AreEqual(1, list.IndexOf(item: "b", equalityComparer));
+      Assert.AreEqual(2, list.IndexOf(item: "C", equalityComparer));
+      Assert.AreEqual(2, list.IndexOf(item: "c", equalityComparer));
+      Assert.AreEqual(3, list.IndexOf(item: "C", index: 3, equalityComparer));
+      Assert.AreEqual(3, list.IndexOf(item: "c", index: 3, equalityComparer));
+      Assert.AreEqual(-1, list.IndexOf(item: "X", equalityComparer));
+      Assert.AreEqual(-1, list.IndexOf(item: "x", equalityComparer));
+
+      Assert.AreEqual(1, list.IndexOf(item: "B", StringComparer.Ordinal));
+      Assert.AreEqual(-1, list.IndexOf(item: "b", StringComparer.Ordinal));
+    }
   }
 }
