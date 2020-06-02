@@ -174,6 +174,11 @@ namespace Smdn.IO.Streams.Caching {
 
           Assert.AreEqual(1, stream.Read(buffer, 0, 6));
           Assert.AreEqual(17L, stream.Position);
+
+          stream.Position = stream.Length;
+
+          Assert.AreEqual(0, stream.Read(buffer, 0, 6));
+          Assert.AreEqual(17L, stream.Position);
         }
       }
     }
