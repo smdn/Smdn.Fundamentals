@@ -20,10 +20,8 @@
 // THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
+using System.Buffers;
 using System.IO;
-
-using Smdn.IO;
 
 namespace Smdn.IO.Streams.Caching {
   public abstract class CachedStreamBase : Stream {
@@ -150,15 +148,12 @@ namespace Smdn.IO.Streams.Caching {
     {
       CheckDisposed();
 
-      var block = GetBlock(position, out var blockOffset);
+      if (!TryGetBlock(position, out var block))
+        return -1; // end of stream
 
-      if (block.Length <= blockOffset) {
-        return -1;
-      }
-      else {
-        position++;
-        return block[blockOffset];
-      }
+      position++;
+
+      return block[0];
     }
 
     public override int Read(byte[] buffer, int offset, int count)
@@ -177,25 +172,24 @@ namespace Smdn.IO.Streams.Caching {
       var ret = 0;
 
       for (;;) {
-        var block = GetBlock(position, out var blockOffset);
-        var bytesToCopy = Math.Min(block.Length - blockOffset, count);
+        if (count <= 0)
+          return ret;
 
-        if (bytesToCopy <= 0)
+        if (!TryGetBlock(position, out var block))
           return ret; // end of stream
 
-        Buffer.BlockCopy(block, blockOffset, buffer, offset, bytesToCopy);
+        var bytesToCopy = Math.Min(block.Length, count);
+
+        block.Slice(0, bytesToCopy).CopyTo(buffer.AsSpan(offset));
 
         position  += bytesToCopy;
         ret       += bytesToCopy;
         offset    += bytesToCopy;
         count     -= bytesToCopy;
-
-        if (count <= 0)
-          return ret;
       }
     }
 
-    private byte[] GetBlock(long offset, out int offsetInBlock)
+    private bool TryGetBlock(long offset, out ReadOnlySpan<byte> block)
     {
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       var blockIndex = Math.DivRem(position, (long)blockSize, out var blockOffset);
@@ -203,9 +197,16 @@ namespace Smdn.IO.Streams.Caching {
       var blockIndex = MathUtils.DivRem(position, (long)blockSize, out var blockOffset);
 #endif
 
-      offsetInBlock = (int)blockOffset;
+      block = default;
 
-      return GetBlock(blockIndex);
+      var b = GetBlock(blockIndex);
+
+      if (b.Length <= blockOffset)
+        return false;
+
+      block = b.AsSpan((int)blockOffset);
+
+      return true;
     }
 
     protected abstract byte[] GetBlock(long blockIndex);
