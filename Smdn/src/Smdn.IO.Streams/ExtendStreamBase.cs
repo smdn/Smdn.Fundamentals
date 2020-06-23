@@ -279,6 +279,22 @@ namespace Smdn.IO.Streams {
       return ret;
     }
 
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+      ThrowIfDisposed();
+
+      if (buffer == null)
+        throw new ArgumentNullException(nameof(buffer));
+      if (offset < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+      if (buffer.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+
+      return base.ReadAsync(buffer, offset, count, cancellationToken); // TODO
+    }
+
     private long position;
     private readonly long prependLength;
     private readonly long appendLength;
