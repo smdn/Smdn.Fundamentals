@@ -31,6 +31,7 @@ namespace Smdn.IO.Streams {
       var baseStream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03});
 
       using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: true)) {
+        Assert.IsTrue(stream.LeaveInnerStreamOpen);
       }
 
       Assert.DoesNotThrow(() => baseStream.ReadByte());
@@ -42,6 +43,7 @@ namespace Smdn.IO.Streams {
       var baseStream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03});
 
       using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: false)) {
+        Assert.IsFalse(stream.LeaveInnerStreamOpen);
       }
 
       Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte());
@@ -53,6 +55,7 @@ namespace Smdn.IO.Streams {
       var baseStream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03});
 
       using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: true)) {
+        Assert.IsTrue(stream.LeaveInnerStreamOpen);
         TestClose(stream);
       }
     }
@@ -63,6 +66,7 @@ namespace Smdn.IO.Streams {
       var baseStream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03});
 
       using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: false)) {
+        Assert.IsFalse(stream.LeaveInnerStreamOpen);
         TestClose(stream);
       }
     }
@@ -76,6 +80,8 @@ namespace Smdn.IO.Streams {
       Assert.IsFalse(stream.CanSeek, nameof(stream.CanSeek));
       Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
 
+      Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream), nameof(stream.InnerStream));
+      Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.LeaveInnerStreamOpen), nameof(stream.LeaveInnerStreamOpen));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Read(Array.Empty<byte>(), 0, 0), nameof(stream.Read));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));

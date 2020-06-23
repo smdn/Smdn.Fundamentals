@@ -21,6 +21,8 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Smdn.IO;
 
@@ -33,50 +35,27 @@ namespace Smdn.IO.Streams {
       EndOfStream,
     }
 
-    public Stream InnerStream {
-      get { CheckDisposed(); return stream; }
-    }
-
-    public override bool CanSeek {
-      get { return !IsClosed && stream.CanSeek && CanSeekPrependedData && CanSeekAppendedData; }
-    }
-
-    public override bool CanRead {
-      get { return !IsClosed && stream.CanRead; }
-    }
-
-    public override bool CanWrite {
-      get { return /*!IsClosed &&*/ false; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
-
+    private Stream stream = null;
+    private bool IsClosed => stream == null;
+    public Stream InnerStream { get { ThrowIfDisposed(); return stream; } }
+    public bool LeaveInnerStreamOpen { get { ThrowIfDisposed(); return leaveInnerStreamOpen; } }
+    public override bool CanSeek => !IsClosed && stream.CanSeek && CanSeekPrependedData && CanSeekPrependedData;
+    public override bool CanRead => !IsClosed && stream.CanRead;
+    public override bool CanWrite => /*!IsClosed &&*/ false;
+    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+    public override long Length { get { ThrowIfDisposed(); return prependLength + stream.Length + appendLength; } }
     public override long Position {
-      get { CheckDisposed(); return position; }
-      set
-      {
-        CheckDisposed();
-        CheckSeekable();
+      get { ThrowIfDisposed(); return position; }
+      set {
+        ThrowIfDisposed();
+        ThrowIfNotSeekable();
 
         if (value < 0)
           throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
+
         position = value;
         SetPosition();
       }
-    }
-
-    public override long Length {
-      get { CheckDisposed(); return prependLength + stream.Length + appendLength; }
-    }
-
-    public bool LeaveInnerStreamOpen {
-      get { CheckDisposed(); return leaveInnerStreamOpen; }
     }
 
     protected abstract bool CanSeekPrependedData { get; }
@@ -85,15 +64,27 @@ namespace Smdn.IO.Streams {
     protected Range DataRange {
       get
       {
-        if (offsetEndOfStream <= position)
-          return Range.EndOfStream;
-        else if (offsetEndOfInnerStream <= position)
-          return Range.Appended;
-        else if (prependLength <= position)
-          return Range.InnerStream;
-        else
+        if (position < prependLength)
           return Range.Prepended;
+        if (position < offsetEndOfInnerStream)
+          return Range.InnerStream;
+        if (position < offsetEndOfStream)
+          return Range.Appended;
+
+        return Range.EndOfStream;
       }
+    }
+
+    protected void ThrowIfDisposed()
+    {
+      if (stream == null)
+        throw new ObjectDisposedException(GetType().FullName);
+    }
+
+    private void ThrowIfNotSeekable()
+    {
+      if (!CanSeek)
+        throw ExceptionUtils.CreateNotSupportedSeekingStream();
     }
 
     protected ExtendStreamBase(Stream innerStream, long prependLength, long appendLength, bool leaveInnerStreamOpen)
@@ -114,6 +105,8 @@ namespace Smdn.IO.Streams {
       this.offsetEndOfStream = offsetEndOfInnerStream + appendLength;
       this.position = 0L;
       this.leaveInnerStreamOpen = leaveInnerStreamOpen;
+
+      // TODO: innerStream position
     }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -134,44 +127,40 @@ namespace Smdn.IO.Streams {
 #endif
     }
 
-    public override void SetLength(long @value)
-    {
-      CheckDisposed();
+    private Task ThrowNotSupportedWritingStream() { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedWritingStream(); }
 
-      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
-    }
+    public override void Flush() => ThrowNotSupportedWritingStream();
+    public override Task FlushAsync(CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
 
-    public override void Flush()
-    {
-      CheckDisposed();
+    public override void Write(byte[] buffer, int offset, int count) => ThrowNotSupportedWritingStream();
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
 
-      // do nothing
-    }
+    public override void SetLength(long value) { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedSettingStreamLength(); }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-      CheckDisposed();
-      CheckSeekable();
+      ThrowIfDisposed();
+      ThrowIfNotSeekable();
 
       // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
       switch (origin) {
         case SeekOrigin.Begin:
           if (offset < 0L)
-            break;
+            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
           position = offset;
           SetPosition();
           return position;
 
         case SeekOrigin.Current:
           if (position + offset < 0L)
-            break;
+            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
           position += offset;
           SetPosition();
           return position;
 
         case SeekOrigin.End:
           if (Length + offset < 0L)
-            break;
+            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
           position = Length + offset;
           SetPosition();
           return position;
@@ -179,8 +168,6 @@ namespace Smdn.IO.Streams {
         default:
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
-
-      throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
     }
 
     protected abstract void SetPrependedDataPosition(long position);
@@ -214,7 +201,7 @@ namespace Smdn.IO.Streams {
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-      CheckDisposed();
+      ThrowIfDisposed();
 
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
@@ -292,26 +279,6 @@ namespace Smdn.IO.Streams {
       return ret;
     }
 
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-
-      throw ExceptionUtils.CreateNotSupportedWritingStream();
-    }
-
-    private void CheckDisposed()
-    {
-      if (IsClosed)
-        throw new ObjectDisposedException(GetType().FullName);
-    }
-
-    private void CheckSeekable()
-    {
-      if (!CanSeek)
-        throw ExceptionUtils.CreateNotSupportedSeekingStream();
-    }
-
-    private Stream stream;
     private long position;
     private readonly long prependLength;
     private readonly long appendLength;
