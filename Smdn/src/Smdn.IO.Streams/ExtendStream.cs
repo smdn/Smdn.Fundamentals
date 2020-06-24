@@ -42,7 +42,8 @@ namespace Smdn.IO.Streams {
         (prependData == null) ? null : new MemoryStream(prependData, false),
         (appendData == null) ? null : new MemoryStream(appendData, false),
         leaveInnerStreamOpen,
-        closeExtensionStream: true
+        leavePrependStreamOpen: false,
+        leaveAppendStreamOpen: false
       )
     {
     }
@@ -51,24 +52,9 @@ namespace Smdn.IO.Streams {
       Stream innerStream,
       Stream prependStream,
       Stream appendStream,
-      bool leaveInnerStreamOpen = true
-    )
-      : this(
-        innerStream,
-        prependStream,
-        appendStream,
-        leaveInnerStreamOpen,
-        closeExtensionStream: false
-      )
-    {
-    }
-
-    private ExtendStream(
-      Stream innerStream,
-      Stream prependStream,
-      Stream appendStream,
-      bool leaveInnerStreamOpen,
-      bool closeExtensionStream
+      bool leaveInnerStreamOpen = true,
+      bool leavePrependStreamOpen = true,
+      bool leaveAppendStreamOpen = true
     )
       : base(
         innerStream,
@@ -79,7 +65,8 @@ namespace Smdn.IO.Streams {
     {
       this.prependStream = prependStream;
       this.appendStream = appendStream;
-      this.closeExtensionStream = closeExtensionStream;
+      this.leavePrependStreamOpen = leavePrependStreamOpen;
+      this.leaveAppendStreamOpen = leaveAppendStreamOpen;
     }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -88,13 +75,15 @@ namespace Smdn.IO.Streams {
     protected override void Dispose(bool disposing)
 #endif
     {
-      if (closeExtensionStream) {
+      if (!leavePrependStreamOpen)
         prependStream?.Close();
-        prependStream = null;
 
+      prependStream = null;
+
+      if (!leaveAppendStreamOpen)
         appendStream?.Close();
-        appendStream = null;
-      }
+
+      appendStream = null;
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       base.Close();
@@ -127,8 +116,9 @@ namespace Smdn.IO.Streams {
     protected override Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
       => appendStream.ReadAsync(buffer, offset, count, cancellationToken);
 
-    private Stream appendStream;
     private Stream prependStream;
-    private readonly bool closeExtensionStream;
+    private Stream appendStream;
+    private readonly bool leavePrependStreamOpen;
+    private readonly bool leaveAppendStreamOpen;
   }
 }

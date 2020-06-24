@@ -25,28 +25,58 @@ namespace Smdn.IO.Streams {
       Assert.Throws<ArgumentNullException>(() => new ExtendStream(null, new byte[0], new byte[0]));
     }
 
-    [Test]
-    public void TestLeaveStreamOpen()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestConstruct_LeaveInnerStreamOpen(bool leaveOpen)
     {
       var baseStream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03});
 
-      using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: true)) {
-        Assert.IsTrue(stream.LeaveInnerStreamOpen);
+      using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: leaveOpen)) {
+        Assert.AreEqual(leaveOpen, stream.LeaveInnerStreamOpen);
       }
 
-      Assert.DoesNotThrow(() => baseStream.ReadByte());
+      if (leaveOpen)
+        Assert.DoesNotThrow(() => baseStream.ReadByte());
+      else
+        Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte());
     }
 
-    [Test]
-    public void TestLeaveStreamNotOpen()
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestConstruct_LeavePrependStreamOpen(bool leaveOpen)
     {
-      var baseStream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03});
+      var prependStream = new MemoryStream(new byte[] { 0x00, 0x01 });
+      var baseStream = new MemoryStream(new byte[] { 0x02, 0x03 });
+      var appendStream = new MemoryStream(new byte[] { 0x04, 0x05 });
 
-      using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: false)) {
-        Assert.IsFalse(stream.LeaveInnerStreamOpen);
+      using (var stream = new ExtendStream(baseStream, prependStream, appendStream, leavePrependStreamOpen: leaveOpen)) {
       }
 
-      Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte());
+      Assert.DoesNotThrow(() => appendStream.ReadByte(), "leave open as default");
+
+      if (leaveOpen)
+        Assert.DoesNotThrow(() => prependStream.ReadByte());
+      else
+        Assert.Throws<ObjectDisposedException>(() => prependStream.ReadByte());
+    }
+
+    [TestCase(true)]
+    [TestCase(false)]
+    public void TestConstruct_LeaveAppependStreamOpen(bool leaveOpen)
+    {
+      var prependStream = new MemoryStream(new byte[] { 0x00, 0x01 });
+      var baseStream = new MemoryStream(new byte[] { 0x02, 0x03 });
+      var appendStream = new MemoryStream(new byte[] { 0x04, 0x05 });
+
+      using (var stream = new ExtendStream(baseStream, prependStream, appendStream, leaveAppendStreamOpen: leaveOpen)) {
+      }
+
+      Assert.DoesNotThrow(() => prependStream.ReadByte(), "leave open as default");
+
+      if (leaveOpen)
+        Assert.DoesNotThrow(() => appendStream.ReadByte());
+      else
+        Assert.Throws<ObjectDisposedException>(() => appendStream.ReadByte());
     }
 
     [Test]
