@@ -36,14 +36,10 @@ namespace Smdn {
 
 #region "construction"
     public static FourCC CreateBigEndian(int bigEndianInt)
-    {
-      return new FourCC(bigEndianInt);
-    }
+      => new FourCC(bigEndianInt);
 
     public static FourCC CreateLittleEndian(int littleEndianInt)
-    {
-      return new FourCC(System.Net.IPAddress.HostToNetworkOrder(littleEndianInt));
-    }
+      => new FourCC(System.Net.IPAddress.HostToNetworkOrder(littleEndianInt));
 
     public FourCC(byte[] @value)
       : this(@value, 0)
@@ -88,48 +84,34 @@ namespace Smdn {
 
 #region "conversion"
     public static implicit operator FourCC(string fourccString)
-    {
-      return new FourCC(fourccString);
-    }
+      => new FourCC(fourccString);
 
     public static explicit operator string(FourCC fourcc)
-    {
-      return fourcc.ToString();
-    }
+      => fourcc.ToString();
 
     public static explicit operator FourCC(byte[] fourccByteArray)
-    {
-      return new FourCC(fourccByteArray);
-    }
+      => new FourCC(fourccByteArray);
 
     public static explicit operator byte[](FourCC fourcc)
-    {
-      return fourcc.ToByteArray();
-    }
+      => fourcc.ToByteArray();
 
     public int ToInt32LittleEndian()
-    {
-      return System.Net.IPAddress.NetworkToHostOrder(fourcc);
-    }
+      => System.Net.IPAddress.NetworkToHostOrder(fourcc);
 
     public int ToInt32BigEndian()
-    {
-      return fourcc;
-    }
+      => fourcc;
 
+    /*
+     * RFC 2361 - WAVE and AVI Codec Registries
+     * 4 Mapping Codec IDs to GUID Values
+     *    FourCC values are converted to GUIDs by inserting the FourCC value
+     *    into the XXXXXXXX part of the same template: {XXXXXXXX-0000-0010-
+     *    8000-00AA00389B71}. For example, a conversion of the FourCC value of
+     *    "H260" would result in the GUID value of {30363248-0000-0010-8000-
+     *    00AA00389B71}.
+     */
     public Guid ToCodecGuid()
-    {
-      /*
-       * RFC 2361 - WAVE and AVI Codec Registries
-       * 4 Mapping Codec IDs to GUID Values
-       *    FourCC values are converted to GUIDs by inserting the FourCC value
-       *    into the XXXXXXXX part of the same template: {XXXXXXXX-0000-0010-
-       *    8000-00AA00389B71}. For example, a conversion of the FourCC value of
-       *    "H260" would result in the GUID value of {30363248-0000-0010-8000-
-       *    00AA00389B71}.
-       */
-      return new Guid(ToInt32LittleEndian(), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-    }
+      => new Guid(ToInt32LittleEndian(), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 
     public void GetBytes(byte[] buffer, int startIndex)
     {
@@ -173,14 +155,10 @@ namespace Smdn {
 
 #region "comparison"
     public static bool operator == (FourCC x, FourCC y)
-    {
-      return x.fourcc == y.fourcc;
-    }
+      => x.fourcc == y.fourcc;
 
     public static bool operator != (FourCC x, FourCC y)
-    {
-      return x.fourcc != y.fourcc;
-    }
+      => x.fourcc != y.fourcc;
 
     public override bool Equals(object obj)
     {
@@ -195,28 +173,17 @@ namespace Smdn {
     }
 
     public bool Equals(FourCC other)
-    {
-      return other.fourcc == this.fourcc;
-    }
+      => other.fourcc == this.fourcc;
 
     public bool Equals(string other)
-    {
-      return string.Equals(this.ToString(), other);
-    }
+      => string.Equals(this.ToString(), other);
 
     public bool Equals(byte[] other)
-    {
-      if (other == null)
-        return false;
-      else
-        return other.SequenceEqual(this.ToByteArray());
-    }
+      => (other != null) && other.SequenceEqual(this.ToByteArray());
 #endregion
 
     public override int GetHashCode()
-    {
-      return fourcc;
-    }
+      => fourcc;
 
     private int fourcc; // big endian
   }
