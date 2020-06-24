@@ -28,22 +28,21 @@ using Smdn.IO;
 
 namespace Smdn.IO.Streams {
   public abstract class ExtendStreamBase : Stream {
-    protected enum Range {
-      Prepended,
-      InnerStream,
-      Appended,
-      EndOfStream,
-    }
-
     private Stream stream = null;
     private bool IsClosed => stream == null;
+
     public Stream InnerStream { get { ThrowIfDisposed(); return stream; } }
+
+    private readonly bool leaveInnerStreamOpen;
     public bool LeaveInnerStreamOpen { get { ThrowIfDisposed(); return leaveInnerStreamOpen; } }
+
     public override bool CanSeek => !IsClosed && stream.CanSeek && CanSeekPrependedData && CanSeekPrependedData;
     public override bool CanRead => !IsClosed && stream.CanRead;
     public override bool CanWrite => /*!IsClosed &&*/ false;
     public override bool CanTimeout => !IsClosed && stream.CanTimeout;
     public override long Length { get { ThrowIfDisposed(); return prependLength + stream.Length + appendLength; } }
+
+    private long position;
     public override long Position {
       get { ThrowIfDisposed(); return position; }
       set {
@@ -53,27 +52,24 @@ namespace Smdn.IO.Streams {
         if (value < 0)
           throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
 
-        position = value;
-        SetPosition();
+        SetPosition(value);
       }
     }
+
+    private readonly long prependLength;
+    private readonly long appendLength;
 
     protected abstract bool CanSeekPrependedData { get; }
     protected abstract bool CanSeekAppendedData { get; }
 
-    protected Range DataRange {
-      get
-      {
-        if (position < prependLength)
-          return Range.Prepended;
-        if (position < offsetEndOfInnerStream)
-          return Range.InnerStream;
-        if (position < offsetEndOfStream)
-          return Range.Appended;
-
-        return Range.EndOfStream;
-      }
+    protected enum StreamSection {
+      Prepend,
+      Stream,
+      Append,
+      EndOfStream,
     }
+
+    protected StreamSection Section { get; private set; }
 
     protected void ThrowIfDisposed()
     {
@@ -101,12 +97,9 @@ namespace Smdn.IO.Streams {
       this.stream = innerStream;
       this.prependLength = prependLength;
       this.appendLength = appendLength;
-      this.offsetEndOfInnerStream = prependLength + innerStream.Length;
-      this.offsetEndOfStream = offsetEndOfInnerStream + appendLength;
       this.position = 0L;
       this.leaveInnerStreamOpen = leaveInnerStreamOpen;
-
-      // TODO: innerStream position
+      this.Section = prependLength == 0L ? StreamSection.Stream : StreamSection.Prepend;
     }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -147,23 +140,17 @@ namespace Smdn.IO.Streams {
         case SeekOrigin.Begin:
           if (offset < 0L)
             throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          position = offset;
-          SetPosition();
-          return position;
+          return SetPosition(offset);
 
         case SeekOrigin.Current:
           if (position + offset < 0L)
             throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          position += offset;
-          SetPosition();
-          return position;
+          return SetPosition(position += offset);
 
         case SeekOrigin.End:
           if (Length + offset < 0L)
             throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          position = Length + offset;
-          SetPosition();
-          return position;
+          return SetPosition(Length + offset);
 
         default:
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
@@ -173,31 +160,31 @@ namespace Smdn.IO.Streams {
     protected abstract void SetPrependedDataPosition(long position);
     protected abstract void SetAppendedDataPosition(long position);
 
-    private void SetPosition()
+    private long SetPosition(long newPosition)
     {
-      switch (DataRange) {
-        case Range.Prepended:
-          stream.Seek(0L, SeekOrigin.Begin);
-          SetPrependedDataPosition(position);
-          break;
-
-        case Range.InnerStream:
-          stream.Seek(position - prependLength, SeekOrigin.Begin);
-          break;
-
-        case Range.Appended:
-          stream.Seek(0L, SeekOrigin.End);
-          SetAppendedDataPosition(position - offsetEndOfInnerStream);
-          break;
-
-        default:
-          stream.Seek(0L, SeekOrigin.End);
-          break;
+      if (0L < prependLength && newPosition < prependLength) {
+        Section = StreamSection.Prepend;
+        stream.Seek(0L, SeekOrigin.Begin);
+        SetPrependedDataPosition(newPosition);
       }
+      else if (newPosition < prependLength + stream.Length) {
+        Section = StreamSection.Stream;
+        stream.Seek(newPosition - prependLength, SeekOrigin.Begin);
+      }
+      else if (0L < appendLength && newPosition < prependLength + stream.Length + appendLength) {
+        Section = StreamSection.Append;
+        stream.Seek(0L, SeekOrigin.End);
+        SetAppendedDataPosition(newPosition - (stream.Length + appendLength));
+      }
+      else {
+        Section = StreamSection.EndOfStream;
+      }
+
+      return position = newPosition;
     }
 
-    protected abstract void ReadPrependedData(byte[] buffer, int offset, int count);
-    protected abstract void ReadAppendedData(byte[] buffer, int offset, int count);
+    protected abstract int ReadPrependedData(byte[] buffer, int offset, int count);
+    protected abstract int ReadAppendedData(byte[] buffer, int offset, int count);
 
     public override int Read(byte[] buffer, int offset, int count)
     {
@@ -215,46 +202,58 @@ namespace Smdn.IO.Streams {
       var ret = 0;
 
       while (0 < count) {
-        switch (DataRange) {
-          case Range.EndOfStream:
+        switch (Section) {
+          case StreamSection.Prepend: {
+            var readCount = ReadPrependedData(buffer, offset, count);
+
+            if (readCount == 0) {
+              Section = StreamSection.Stream;
+              continue;
+            }
+
+            ret       += readCount;
+            count     -= readCount;
+            offset    += readCount;
+            position  += readCount;
+
+            break;
+          }
+
+          case StreamSection.Stream: {
+            var readCount = stream.Read(buffer, offset, count);
+
+            if (readCount == 0) {
+              Section = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
+              continue;
+            }
+
+            ret       += readCount;
+            count     -= readCount;
+            offset    += readCount;
+            position  += readCount;
+
+            break;
+          }
+
+          case StreamSection.Append: {
+            var readCount = ReadAppendedData(buffer, offset, count);
+
+            if (readCount == 0) {
+              Section = StreamSection.EndOfStream;
+              continue;
+            }
+
+            ret       += readCount;
+            count     -= readCount;
+            offset    += readCount;
+            position  += readCount;
+
+            break;
+          }
+
+          default:
+          //case StreamSection.EndOfStream:
             return ret;
-
-          case Range.Prepended: {
-            var readCount = (int)Math.Min(prependLength - position, count);
-
-            ReadPrependedData(buffer, offset, readCount);
-
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
-
-            break;
-          }
-
-          case Range.InnerStream: {
-            var read = stream.Read(buffer, offset, count);
-
-            ret       += read;
-            count     -= read;
-            offset    += read;
-            position  += read;
-
-            break;
-          }
-
-          case Range.Appended: {
-            var readCount = (int)Math.Min(count, offsetEndOfStream - position);
-
-            ReadAppendedData(buffer, offset, readCount);
-
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
-
-            break;
-          }
         } // switch
       } // while
 
@@ -276,12 +275,5 @@ namespace Smdn.IO.Streams {
 
       return base.ReadAsync(buffer, offset, count, cancellationToken); // TODO
     }
-
-    private long position;
-    private readonly long prependLength;
-    private readonly long appendLength;
-    private readonly long offsetEndOfInnerStream;
-    private readonly long offsetEndOfStream;
-    private readonly bool leaveInnerStreamOpen;
   }
 }

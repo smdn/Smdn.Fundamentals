@@ -99,31 +99,11 @@ namespace Smdn.IO.Streams {
         appendStream.Position = position;
     }
 
-    protected override void ReadPrependedData(byte[] buffer, int offset, int count)
-    {
-      for (;;) {
-        var read = prependStream.Read(buffer, offset, count);
+    protected override int ReadPrependedData(byte[] buffer, int offset, int count)
+      => prependStream.Read(buffer, offset, count);
 
-        offset += read;
-        count  -= read;
-
-        if (read <= 0 || count <= 0)
-          break;
-      }
-    }
-
-    protected override void ReadAppendedData(byte[] buffer, int offset, int count)
-    {
-      for (;;) {
-        var read = appendStream.Read(buffer, offset, count);
-
-        offset += read;
-        count  -= read;
-
-        if (read <= 0 || count <= 0)
-          break;
-      }
-    }
+    protected override int ReadAppendedData(byte[] buffer, int offset, int count)
+      => appendStream.Read(buffer, offset, count);
 
     private Stream appendStream;
     private Stream prependStream;

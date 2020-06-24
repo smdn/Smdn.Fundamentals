@@ -234,6 +234,54 @@ namespace Smdn.IO.Streams {
       }
     }
 
+    [Test] public Task TestRead_AcrossRange_PrependAppendNull() => TestRead_AcrossRange_PrependAppendNull(runAsync: false);
+    [Test] public Task TestReadAsync_AcrossRange_PrependAppendNull() => TestRead_AcrossRange_PrependAppendNull(runAsync: true);
+
+    private async Task TestRead_AcrossRange_PrependAppendNull(bool runAsync)
+    {
+      var expected = new byte[] {0x04, 0x05, 0x06, 0x07};
+
+      // ExtendStream: <null> | 0x04 0x05 0x06 0x07 | <null>
+      // read          |- 1 bytes -|
+      // read                                  |- 1 bytes -|
+      // read          |---------- 5 bytes ---------|
+      // read                 |---------- 5 bytes ---------|
+
+      foreach (var len in new[] { 1, 4, 5 }) {
+        var buffer = new byte[len];
+
+        for (var offset = 0L; offset < 4; offset++) {
+          using (var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 })) {
+            using (var extended = new ExtendStream(innerStream, (byte[])null, (byte[])null)) {
+              extended.Position = offset;
+
+              var ret = runAsync
+                ? await extended.ReadAsync(buffer, 0, buffer.Length)
+                : extended.Read(buffer, 0, buffer.Length);
+
+              var expectedReadLength = Math.Min(buffer.Length, extended.Length - offset);
+              var expectedPosition = Math.Min(offset + buffer.Length, extended.Length);
+
+              Assert.AreEqual(expectedReadLength, ret, "read length {0}+{1}", offset, len);
+              Assert.AreEqual(
+                ArrayExtensions.Slice(expected, (int)offset, (int)expectedReadLength),
+                ArrayExtensions.Slice(buffer, 0, ret),
+                "read content {0}+{1}", offset, len
+              );
+              Assert.AreEqual(
+                expectedPosition,
+                extended.Position,
+                "position {0}+{1}", offset, len
+              );
+
+              if (ret < len)
+                Assert.AreEqual(-1, extended.ReadByte());
+            }
+          }
+        }
+      }
+    }
+
     [Test] public Task TestRead_ExtendedStream() => TestRead_ExtendedStream(runAsync: false);
     [Test] public Task TestReadAsync_ExtendedStream() => TestRead_ExtendedStream(runAsync: true);
 
