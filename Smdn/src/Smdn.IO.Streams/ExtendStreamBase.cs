@@ -235,6 +235,9 @@ namespace Smdn.IO.Streams {
       return ret;
     }
 
+    protected abstract Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
+    protected abstract Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
+
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
       ThrowIfDisposed();
@@ -248,7 +251,50 @@ namespace Smdn.IO.Streams {
       if (buffer.Length - count < offset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
-      return base.ReadAsync(buffer, offset, count, cancellationToken); // TODO
+      return ReadAsyncCore();
+
+      async Task<int> ReadAsyncCore()
+      {
+        var ret = 0;
+
+        while (0 < count) {
+          int readCount;
+          StreamSection nextSection;
+
+          switch (Section) {
+            case StreamSection.Prepend:
+              readCount = await ReadPrependedDataAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+              nextSection = StreamSection.Stream;
+              break;
+
+            case StreamSection.Stream:
+              readCount = await stream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+              nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
+              break;
+
+            case StreamSection.Append:
+              readCount = await ReadAppendedDataAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+              nextSection = StreamSection.EndOfStream;
+              break;
+
+            default:
+              //case StreamSection.EndOfStream:
+              return ret;
+          } // switch
+
+          if (readCount == 0) {
+            Section = nextSection;
+          }
+          else {
+            ret       += readCount;
+            count     -= readCount;
+            offset    += readCount;
+            position  += readCount;
+          }
+        } // while
+
+        return ret;
+      }
     }
   }
 }

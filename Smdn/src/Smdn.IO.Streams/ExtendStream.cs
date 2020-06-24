@@ -21,6 +21,8 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Smdn.IO;
 
@@ -102,8 +104,14 @@ namespace Smdn.IO.Streams {
     protected override int ReadPrependedData(byte[] buffer, int offset, int count)
       => prependStream.Read(buffer, offset, count);
 
+    protected override Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+      => prependStream.ReadAsync(buffer, offset, count, cancellationToken);
+
     protected override int ReadAppendedData(byte[] buffer, int offset, int count)
       => appendStream.Read(buffer, offset, count);
+
+    protected override Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+      => appendStream.ReadAsync(buffer, offset, count, cancellationToken);
 
     private Stream appendStream;
     private Stream prependStream;
