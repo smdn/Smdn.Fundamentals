@@ -197,59 +197,39 @@ namespace Smdn.IO.Streams {
       var ret = 0;
 
       while (0 < count) {
+        int readCount;
+        StreamSection nextSection;
+
         switch (Section) {
-          case StreamSection.Prepend: {
-            var readCount = ReadPrependedData(buffer, offset, count);
-
-            if (readCount == 0) {
-              Section = StreamSection.Stream;
-              continue;
-            }
-
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
-
+          case StreamSection.Prepend:
+            readCount = ReadPrependedData(buffer, offset, count);
+            nextSection = StreamSection.Stream;
             break;
-          }
 
-          case StreamSection.Stream: {
-            var readCount = stream.Read(buffer, offset, count);
-
-            if (readCount == 0) {
-              Section = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
-              continue;
-            }
-
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
-
+          case StreamSection.Stream:
+            readCount = stream.Read(buffer, offset, count);
+            nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
             break;
-          }
 
-          case StreamSection.Append: {
-            var readCount = ReadAppendedData(buffer, offset, count);
-
-            if (readCount == 0) {
-              Section = StreamSection.EndOfStream;
-              continue;
-            }
-
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
-
+          case StreamSection.Append:
+            readCount = ReadAppendedData(buffer, offset, count);
+            nextSection = StreamSection.EndOfStream;
             break;
-          }
 
           default:
           //case StreamSection.EndOfStream:
             return ret;
         } // switch
+
+        if (readCount == 0) {
+          Section = nextSection;
+        }
+        else {
+          ret       += readCount;
+          count     -= readCount;
+          offset    += readCount;
+          position  += readCount;
+        }
       } // while
 
       return ret;
