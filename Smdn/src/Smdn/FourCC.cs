@@ -20,6 +20,7 @@
 // THE SOFTWARE.
 
 using System;
+using System.Buffers;
 using System.Linq;
 
 namespace Smdn {
@@ -42,37 +43,43 @@ namespace Smdn {
       => new FourCC(System.Net.IPAddress.HostToNetworkOrder(littleEndianInt));
 
     public FourCC(byte[] @value)
-      : this(@value, 0)
+      : this((@value ?? throw new ArgumentNullException(nameof(@value))).AsSpan(0))
     {
     }
 
     public FourCC(byte[] @value, int startIndex)
+      : this((@value ?? throw new ArgumentNullException(nameof(@value))).AsSpan(startIndex))
     {
-      if (@value == null)
-        throw new ArgumentNullException(nameof(value));
-      if (startIndex < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
-      if (@value.Length - 4 < startIndex)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), @value, startIndex, 4);
+    }
 
-      this.fourcc = @value[startIndex + 0] << 24 |
-                    @value[startIndex + 1] << 16 |
-                    @value[startIndex + 2] << 8 |
-                    @value[startIndex + 3];
+    public FourCC(ReadOnlySpan<byte> span)
+    {
+      if (span.Length < 4)
+        throw new ArgumentException("length must be at least 4", nameof(span));
+
+      this.fourcc = 
+        span[0] << 24 |
+        span[1] << 16 |
+        span[2] << 8 |
+        span[3];
     }
 
     public FourCC(string value)
+      : this((value ?? throw new ArgumentNullException(nameof(value))).AsSpan())
     {
-      if (@value == null)
-        throw new ArgumentNullException(nameof(value));
-      if (@value.Length != 4)
-        throw new ArgumentException("length must be 4", nameof(value));
+    }
+
+    public FourCC(ReadOnlySpan<char> span)
+    {
+      if (span.Length < 4)
+        throw new ArgumentException("length must be at least 4", nameof(span));
 
       checked {
-        this.fourcc = (byte)@value[0] << 24 |
-                      (byte)@value[1] << 16 |
-                      (byte)@value[2] << 8 |
-                      (byte)@value[3];
+        this.fourcc =
+          (byte)span[0] << 24 |
+          (byte)span[1] << 16 |
+          (byte)span[2] << 8 |
+          (byte)span[3];
       }
     }
 
