@@ -39,6 +39,8 @@ namespace Smdn {
       Assert.AreEqual("RIFF", (new FourCC("RIFF")).ToString());
       Assert.AreEqual("isom", (new FourCC("isom")).ToString());
       Assert.AreEqual("isom", (new FourCC("isomx")).ToString());
+
+      Assert.Throws<OverflowException>(() => new FourCC("ああああ"));
     }
 
     [Test]
@@ -46,6 +48,8 @@ namespace Smdn {
     {
       Assert.AreEqual("RIFF", (new FourCC('R', 'I', 'F', 'F')).ToString());
       Assert.AreEqual("isom", (new FourCC('i', 's', 'o', 'm')).ToString());
+
+      Assert.Throws<OverflowException>(() => new FourCC('あ', 'あ', 'あ', 'あ'));
     }
 
     [Test]
