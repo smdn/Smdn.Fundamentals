@@ -220,26 +220,14 @@ namespace Smdn.IO.Streams {
             return ret;
 
           case Range.Prepended: {
-            if (prependLength <= position + count) {
-              var readCount = (int)(prependLength - position);
+            var readCount = (int)Math.Min(prependLength - position, count);
 
-              ReadPrependedData(buffer, offset, readCount);
+            ReadPrependedData(buffer, offset, readCount);
 
-              ret       += readCount;
-              count     -= readCount;
-              offset    += readCount;
-              position  += readCount;
-
-              stream.Position = 0L;
-            }
-            else {
-              ReadPrependedData(buffer, offset, count);
-
-              ret       += count;
-              offset    += count;
-              position  += count;
-              count      = 0;
-            }
+            ret       += readCount;
+            count     -= readCount;
+            offset    += readCount;
+            position  += readCount;
 
             break;
           }
@@ -247,16 +235,10 @@ namespace Smdn.IO.Streams {
           case Range.InnerStream: {
             var read = stream.Read(buffer, offset, count);
 
-            if (read <= 0)
-              return ret;
-
             ret       += read;
             count     -= read;
             offset    += read;
             position  += read;
-
-            if (offsetEndOfInnerStream < position)
-              position = offsetEndOfInnerStream;
 
             break;
           }
