@@ -136,25 +136,20 @@ namespace Smdn.IO.Streams {
       ThrowIfNotSeekable();
 
       // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
+      long newOffset;
+
       switch (origin) {
-        case SeekOrigin.Begin:
-          if (offset < 0L)
-            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          return SetPosition(offset);
-
-        case SeekOrigin.Current:
-          if (position + offset < 0L)
-            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          return SetPosition(position += offset);
-
-        case SeekOrigin.End:
-          if (Length + offset < 0L)
-            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          return SetPosition(Length + offset);
-
+        case SeekOrigin.Begin:    newOffset = offset; break;
+        case SeekOrigin.Current:  newOffset = offset + position; break;
+        case SeekOrigin.End:      newOffset = offset + Length; break;
         default:
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
+
+      if (newOffset < 0L)
+        throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
+
+      return SetPosition(newOffset);
     }
 
     protected abstract void SetPrependedDataPosition(long position);
