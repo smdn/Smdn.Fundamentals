@@ -149,12 +149,21 @@ namespace Smdn {
     public override string ToString()
     {
       unchecked {
+#if NETSTANDARD2_1
+        return String.Create(4, this.fourcc, (chars, val) => {
+          chars[0] = (char)((val >> 24) & 0xff);
+          chars[1] = (char)((val >> 16) & 0xff);
+          chars[2] = (char)((val >>  8) & 0xff);
+          chars[3] = (char)( val        & 0xff);
+        });
+#else
         return new string(new[] {
           (char)((fourcc >> 24) & 0xff),
           (char)((fourcc >> 16) & 0xff),
           (char)((fourcc >>  8) & 0xff),
           (char)( fourcc        & 0xff),
         });
+#endif
       }
     }
 
