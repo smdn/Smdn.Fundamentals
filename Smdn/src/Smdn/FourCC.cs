@@ -27,7 +27,7 @@ namespace Smdn {
    * RFC 2361 - WAVE and AVI Codec Registries [INFORMATIONAL]
    * http://tools.ietf.org/html/rfc2361
    */
-  public struct FourCC :
+  public readonly struct FourCC :
     IEquatable<FourCC>,
     IEquatable<string>,
     IEquatable<byte[]>
@@ -185,6 +185,6 @@ namespace Smdn {
     public override int GetHashCode()
       => fourcc;
 
-    private int fourcc; // big endian
+    private readonly int fourcc; // big endian
   }
 }
