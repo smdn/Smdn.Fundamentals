@@ -27,11 +27,25 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstructFromByteSequece()
+    {
+      Assert.AreEqual("RIFF", (new FourCC(0x52, 0x49, 0x46, 0x46)).ToString());
+      Assert.AreEqual("isom", (new FourCC(0x69, 0x73, 0x6f, 0x6d)).ToString());
+    }
+
+    [Test]
     public void TestConstructFromString()
     {
       Assert.AreEqual("RIFF", (new FourCC("RIFF")).ToString());
       Assert.AreEqual("isom", (new FourCC("isom")).ToString());
       Assert.AreEqual("isom", (new FourCC("isomx")).ToString());
+    }
+
+    [Test]
+    public void TestConstructFromCharSequence()
+    {
+      Assert.AreEqual("RIFF", (new FourCC('R', 'I', 'F', 'F')).ToString());
+      Assert.AreEqual("isom", (new FourCC('i', 's', 'o', 'm')).ToString());
     }
 
     [Test]

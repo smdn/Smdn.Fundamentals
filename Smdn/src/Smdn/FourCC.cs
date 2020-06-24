@@ -64,6 +64,15 @@ namespace Smdn {
         span[3];
     }
 
+    public FourCC(byte byte0, byte byte1, byte byte2, byte byte3)
+    {
+      this.fourcc =
+        byte0 << 24 |
+        byte1 << 16 |
+        byte2 << 8 |
+        byte3;
+    }
+
     public FourCC(string value)
       : this((value ?? throw new ArgumentNullException(nameof(value))).AsSpan())
     {
@@ -80,6 +89,17 @@ namespace Smdn {
           (byte)span[1] << 16 |
           (byte)span[2] << 8 |
           (byte)span[3];
+      }
+    }
+
+    public FourCC(char char0, char char1, char char2, char char3)
+    {
+      checked {
+        this.fourcc =
+          (byte)char0 << 24 |
+          (byte)char1 << 16 |
+          (byte)char2 << 8 |
+          (byte)char3;
       }
     }
 
