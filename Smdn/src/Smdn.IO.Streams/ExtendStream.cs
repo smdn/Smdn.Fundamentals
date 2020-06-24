@@ -28,40 +28,54 @@ using Smdn.IO;
 
 namespace Smdn.IO.Streams {
   public class ExtendStream : ExtendStreamBase {
-    protected override bool CanSeekPrependedData {
-      get { return (prependStream == null) ? true : prependStream.CanSeek; }
-    }
+    protected override bool CanSeekPrependedData => prependStream?.CanSeek ?? true;
+    protected override bool CanSeekAppendedData => appendStream?.CanSeek ?? true;
 
-    protected override bool CanSeekAppendedData {
-      get { return (appendStream == null) ? true : appendStream.CanSeek; }
-    }
-
-    public ExtendStream(Stream innerStream, byte[] prependData, byte[] appendData)
-      : this(innerStream, prependData, appendData, true)
+    public ExtendStream(
+      Stream innerStream,
+      byte[] prependData,
+      byte[] appendData,
+      bool leaveInnerStreamOpen = true
+    )
+      : this(
+        innerStream,
+        (prependData == null) ? null : new MemoryStream(prependData, false),
+        (appendData == null) ? null : new MemoryStream(appendData, false),
+        leaveInnerStreamOpen,
+        closeExtensionStream: true
+      )
     {
     }
 
-    public ExtendStream(Stream innerStream, byte[] prependData, byte[] appendData, bool leaveInnerStreamOpen)
-      : this(innerStream,
-             (prependData == null) ? null : new MemoryStream(prependData, false),
-             (appendData == null) ? null : new MemoryStream(appendData, false),
-             leaveInnerStreamOpen,
-             true)
+    public ExtendStream(
+      Stream innerStream,
+      Stream prependStream,
+      Stream appendStream,
+      bool leaveInnerStreamOpen = true
+    )
+      : this(
+        innerStream,
+        prependStream,
+        appendStream,
+        leaveInnerStreamOpen,
+        closeExtensionStream: false
+      )
     {
     }
 
-    public ExtendStream(Stream innerStream, Stream prependStream, Stream appendStream)
-      : this(innerStream, prependStream, appendStream, true, false)
-    {
-    }
-
-    public ExtendStream(Stream innerStream, Stream prependStream, Stream appendStream, bool leaveInnerStreamOpen)
-      : this(innerStream, prependStream, appendStream, leaveInnerStreamOpen, false)
-    {
-    }
-
-    private ExtendStream(Stream innerStream, Stream prependStream, Stream appendStream, bool leaveInnerStreamOpen, bool closeExtensionStream)
-      : base(innerStream, (prependStream == null) ? 0 : prependStream.Length, (appendStream == null) ? 0 : appendStream.Length, leaveInnerStreamOpen)
+    private ExtendStream(
+      Stream innerStream,
+      Stream prependStream,
+      Stream appendStream,
+      bool leaveInnerStreamOpen,
+      bool closeExtensionStream
+    )
+      : base(
+        innerStream,
+        (prependStream == null) ? 0L : prependStream.Length,
+        (appendStream == null) ? 0L : appendStream.Length,
+        leaveInnerStreamOpen
+      )
     {
       this.prependStream = prependStream;
       this.appendStream = appendStream;
