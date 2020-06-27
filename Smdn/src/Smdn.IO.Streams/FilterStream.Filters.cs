@@ -30,6 +30,14 @@ namespace Smdn.IO.Streams {
       void Apply(Span<byte> buffer, long offsetWithinFilter);
     }
 
+    private class _NullFilter : IFilter {
+      public long Offset => throw new NotSupportedException();
+      public long Length => throw new NotSupportedException();
+      public void Apply(Span<byte> buffer, long offsetWithinFilter) => throw new NotSupportedException();
+    }
+
+    public static readonly IFilter NullFilter = new _NullFilter();
+
     public abstract class Filter : IFilter {
       public long Offset { get; }
       public long Length { get; }

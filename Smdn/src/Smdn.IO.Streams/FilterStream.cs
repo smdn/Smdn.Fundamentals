@@ -81,7 +81,7 @@ namespace Smdn.IO.Streams {
     )
     {
       this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
-      this.filters = filters ?? throw new ArgumentNullException(nameof(filters));
+      this.filters = filters.Where(f => !(f is _NullFilter)).ToList() ?? throw new ArgumentNullException(nameof(filters));
       this.leaveStreamOpen = leaveStreamOpen;
       this.rawBuffer = new byte[
         MinimumBufferSize <= bufferSize
