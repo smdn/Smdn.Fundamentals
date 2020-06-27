@@ -130,6 +130,11 @@ namespace Smdn.IO.Streams {
       if (buffer.Length < count + offset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
+      return ReadUnchecked(buffer, offset, count);
+    }
+
+    protected virtual int ReadUnchecked(byte[] buffer, int offset, int count)
+    {
       var read = 0;
       var dest = buffer.AsMemory(offset, count);
 
@@ -166,6 +171,11 @@ namespace Smdn.IO.Streams {
       if (count == 0)
         return Task.FromResult(count);
 
+      return ReadAsyncUnchecked(buffer, offset, count, cancellationToken);
+    }
+
+    protected virtual Task<int> ReadAsyncUnchecked(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
       var dest = buffer.AsMemory(offset, count);
 
       if (dest.Length <= bufferReadCursor.Length)
