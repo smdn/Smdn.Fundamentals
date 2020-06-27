@@ -46,8 +46,8 @@ namespace Smdn.IO.Streams {
         throw new ObjectDisposedException(GetType().FullName);
     }
 
-    private IEnumerable<IFilter> filters;
-    public IEnumerable<IFilter> Filters {
+    private IReadOnlyList<IFilter> filters;
+    public IReadOnlyList<IFilter> Filters {
       get => filters;
       protected set => throw new NotImplementedException();
     }
