@@ -34,14 +34,14 @@ namespace Smdn.Formats {
     [Test]
     public void TestToSplitted()
     {
-      Assert.AreEqual(new[] {"a", "b", "c"}, CsvRecord.ToSplitted("a,b,c"));
-      Assert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,c,"));
-      Assert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,\"c\","));
-      Assert.AreEqual(new[] { "a", "b", string.Empty, "c", string.Empty }, CsvRecord.ToSplitted("a,b,,c,"));
-      Assert.AreEqual(new[] { "a", "b", string.Empty, "c" }, CsvRecord.ToSplitted("a,\"b\",,c"));
-      Assert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, CsvRecord.ToSplitted("abc,\"d\"\"e\"\"f\",g'h'i"));
+      CollectionAssert.AreEqual(new[] {"a", "b", "c"}, CsvRecord.ToSplitted("a,b,c"));
+      CollectionAssert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,c,"));
+      CollectionAssert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,\"c\","));
+      CollectionAssert.AreEqual(new[] { "a", "b", string.Empty, "c", string.Empty }, CsvRecord.ToSplitted("a,b,,c,"));
+      CollectionAssert.AreEqual(new[] { "a", "b", string.Empty, "c" }, CsvRecord.ToSplitted("a,\"b\",,c"));
+      CollectionAssert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, CsvRecord.ToSplitted("abc,\"d\"\"e\"\"f\",g'h'i"));
 
-      Assert.AreEqual(Enumerable.Empty<string>().ToArray(), CsvRecord.ToSplitted(string.Empty), "argument empty");
+      CollectionAssert.AreEqual(Enumerable.Empty<string>(), CsvRecord.ToSplitted(string.Empty), "argument empty");
 
       Assert.Throws<ArgumentNullException>(() => CsvRecord.ToSplitted(null), "argument null");
     }
@@ -49,7 +49,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestToSplittedNullable()
     {
-      Assert.AreEqual(new[] { "a", "b", "c" }, CsvRecord.ToSplittedNullable("a,b,c"));
+      CollectionAssert.AreEqual(new[] { "a", "b", "c" }, CsvRecord.ToSplittedNullable("a,b,c"));
 
       Assert.IsNull(CsvRecord.ToSplittedNullable(null), "argument null");
     }

@@ -29,56 +29,49 @@ namespace Smdn.Formats {
   public static class CsvRecord {
     // http://www.ietf.org/rfc/rfc4180.txt
     // Common Format and MIME Type for Comma-Separated Values (CSV) Files
-    public static string[] ToSplittedNullable(string csv)
-    {
-      if (csv == null)
-        return null;
-      else
-        return ToSplitted(csv);
-    }
+    public static IEnumerable<string> ToSplittedNullable(string csv)
+      => csv == null ? null : ToSplitted(csv);
 
-    public static string[] ToSplitted(string csv)
+    public static IEnumerable<string> ToSplitted(string csv)
     {
       if (csv == null)
         throw new ArgumentNullException(nameof(csv));
 
       if (csv.Length == 0)
-#if NET45 || NET452
-        return ArrayExtensions.Empty<string>();
-#else
-        return Array.Empty<string>();
-#endif
+        return Enumerable.Empty<string>();
 
-      // append dummy splitter
-      csv += ",";
+      return Split(csv);
 
-      var splitted = new List<string>();
-      var splitAt = 0;
-      var quoted = false;
-      var inQuote = false;
+      static IEnumerable<string> Split(string sequence)
+      {
+        // append dummy splitter
+        sequence += ",";
 
-      for (var index = 0; index < csv.Length; index++) {
-        if (csv[index] == Ascii.Chars.DQuote) {
-          inQuote = !inQuote;
-          quoted = true;
+        var splitAt = 0;
+        var quoted = false;
+        var inQuote = false;
+
+        for (var index = 0; index < sequence.Length; index++) {
+          if (sequence[index] == Ascii.Chars.DQuote) {
+            inQuote = !inQuote;
+            quoted = true;
+          }
+
+          if (inQuote)
+            continue;
+
+          if (sequence[index] != Ascii.Chars.Comma)
+            continue;
+
+          if (quoted)
+            yield return sequence.Substring(splitAt + 1, index - splitAt - 2).Replace("\"\"", "\"");
+          else
+            yield return sequence.Substring(splitAt, index - splitAt);
+
+          quoted = false;
+          splitAt = index + 1;
         }
-
-        if (inQuote)
-          continue;
-
-        if (csv[index] != Ascii.Chars.Comma)
-          continue;
-
-        if (quoted)
-          splitted.Add(csv.Substring(splitAt + 1, index - splitAt - 2).Replace("\"\"", "\""));
-        else
-          splitted.Add(csv.Substring(splitAt, index - splitAt));
-
-        quoted = false;
-        splitAt = index + 1;
       }
-
-      return splitted.ToArray();
     }
 
     public static string ToJoinedNullable(params string[] csv)
