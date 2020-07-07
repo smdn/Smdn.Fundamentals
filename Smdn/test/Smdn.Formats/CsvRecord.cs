@@ -35,6 +35,10 @@ namespace Smdn.Formats {
     public void TestToSplitted()
     {
       Assert.AreEqual(new[] {"a", "b", "c"}, CsvRecord.ToSplitted("a,b,c"));
+      Assert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,c,"));
+      Assert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,\"c\","));
+      Assert.AreEqual(new[] { "a", "b", string.Empty, "c", string.Empty }, CsvRecord.ToSplitted("a,b,,c,"));
+      Assert.AreEqual(new[] { "a", "b", string.Empty, "c" }, CsvRecord.ToSplitted("a,\"b\",,c"));
       Assert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, CsvRecord.ToSplitted("abc,\"d\"\"e\"\"f\",g'h'i"));
 
       Assert.AreEqual(Enumerable.Empty<string>().ToArray(), CsvRecord.ToSplitted(string.Empty), "argument empty");
