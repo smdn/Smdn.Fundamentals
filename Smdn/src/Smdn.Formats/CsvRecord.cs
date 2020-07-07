@@ -89,15 +89,24 @@ namespace Smdn.Formats {
         return ToJoined(csv);
     }
 
-    public static string ToJoined(params string[] csv)
+    public static string ToJoinedNullable(IEnumerable<string> csv)
     {
       if (csv == null)
-        throw new ArgumentNullException(nameof(csv));
-      
-      if (csv.Length == 0)
-        return string.Empty;
+        return null;
+      else
+        return ToJoined(csv);
+    }
 
-      return string.Join(",", csv.Select(s => s.Contains("\"") ? string.Concat("\"", s.Replace("\"", "\"\""), "\"") : s));
+    public static string ToJoined(params string[] csv)
+      => ToJoined((IEnumerable<string>)csv ?? throw new ArgumentNullException(nameof(csv)));
+
+    public static string ToJoined(IEnumerable<string> csv)
+    {
+      return string.Join(
+        ",",
+        (csv ?? throw new ArgumentNullException(nameof(csv)))
+          .Select(s => s.Contains("\"") ? string.Concat("\"", s.Replace("\"", "\"\""), "\"") : s)
+      );
     }
   }
 }
