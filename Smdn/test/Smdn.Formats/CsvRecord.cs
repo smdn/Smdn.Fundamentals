@@ -11,11 +11,13 @@ namespace Smdn.Formats {
     {
       Assert.AreEqual("a,b,c", CsvRecord.ToJoined("a", "b", "c"));
       Assert.AreEqual("a,b,c", CsvRecord.ToJoined((IEnumerable<string>)(new[] { "a", "b", "c" })));
+      Assert.AreEqual(",", CsvRecord.ToJoined(null, null), "element null");
       Assert.AreEqual("abc,\"d\"\"e\"\"f\",g'h'i", CsvRecord.ToJoined("abc", "d\"e\"f", "g'h'i"));
 
       Assert.AreEqual(string.Empty, CsvRecord.ToJoined(Enumerable.Empty<string>().ToArray()), "argument empty");
 
       Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((string[])null), "argument null");
+      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((IEnumerable<string>)null), "argument null");
     }
 
     [Test]
@@ -23,8 +25,10 @@ namespace Smdn.Formats {
     {
       Assert.AreEqual("a,b,c", CsvRecord.ToJoinedNullable("a", "b", "c"));
       Assert.AreEqual("a,b,c", CsvRecord.ToJoinedNullable((IEnumerable<string>)(new[] { "a", "b", "c" })));
+      Assert.AreEqual(",", CsvRecord.ToJoinedNullable(null, null), "element null");
 
       Assert.IsNull(CsvRecord.ToJoinedNullable((string[])null), "argument null");
+      Assert.IsNull(CsvRecord.ToJoinedNullable((IEnumerable<string>)null), "argument null");
     }
 
     [Test]

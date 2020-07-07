@@ -105,7 +105,7 @@ namespace Smdn.Formats {
       return string.Join(
         ",",
         (csv ?? throw new ArgumentNullException(nameof(csv)))
-          .Select(s => s.Contains("\"") ? string.Concat("\"", s.Replace("\"", "\"\""), "\"") : s)
+          .Select(s => s != null && s.Contains("\"") ? string.Concat("\"", s.Replace("\"", "\"\""), "\"") : s)
       );
     }
   }
