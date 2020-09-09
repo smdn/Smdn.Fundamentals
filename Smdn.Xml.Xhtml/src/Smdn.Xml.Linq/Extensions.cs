@@ -44,6 +44,20 @@ namespace Smdn.Xml.Linq {
       return element?.Attribute(name) != null;
     }
 
+    public static bool HasAttribute(this XElement element, XName name, out string value)
+    {
+      var attr = element?.Attribute(name);
+
+      if (attr == null) {
+        value = default;
+        return false;
+      }
+      else {
+        value = attr.Value;
+        return true;
+      }
+    }
+
     public static bool HasAttributeWithValue(this XElement element, XName attributeName, string @value)
     {
       var attr = element?.Attribute(attributeName);
