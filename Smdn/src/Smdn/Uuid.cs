@@ -62,13 +62,13 @@ namespace Smdn {
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    private struct _Node {
-      public byte N0;
-      public byte N1;
-      public byte N2;
-      public byte N3;
-      public byte N4;
-      public byte N5;
+    private readonly struct _Node {
+      public readonly byte N0;
+      public readonly byte N1;
+      public readonly byte N2;
+      public readonly byte N3;
+      public readonly byte N4;
+      public readonly byte N5;
 
       public _Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)
       {
@@ -673,12 +673,7 @@ namespace Smdn {
       this.time_hi_and_version        = BinaryConversion.ToUInt16(octets, index + 6, endian);
       this.clock_seq_hi_and_reserved  = octets[index +  8];
       this.clock_seq_low              = octets[index +  9];
-      this.node.N0                    = octets[index + 10];
-      this.node.N1                    = octets[index + 11];
-      this.node.N2                    = octets[index + 12];
-      this.node.N3                    = octets[index + 13];
-      this.node.N4                    = octets[index + 14];
-      this.node.N5                    = octets[index + 15];
+      this.node                       = new _Node(octets.AsSpan(10, 6));
     }
 
 #if NETSTANDARD2_1
@@ -748,7 +743,7 @@ namespace Smdn {
       try {
         var n = Ascii.Hexadecimals.ToByteArray(fields[4]);
 
-        this.node = new _Node(n[0], n[1], n[2], n[3], n[4], n[5]);
+        this.node = new _Node(n);
       }
       catch (FormatException) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
