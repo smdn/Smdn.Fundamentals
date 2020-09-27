@@ -30,6 +30,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.Formats.UniversallyUniqueIdentifiers;
 using Smdn.IO.Binary;
 using Smdn.Text;
 
@@ -59,37 +60,6 @@ namespace Smdn {
       RFC4122               = 0x80,
       MicrosoftReserved     = 0xc0,
       Reserved              = 0xe0,
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    private readonly struct _Node {
-      public readonly byte N0;
-      public readonly byte N1;
-      public readonly byte N2;
-      public readonly byte N3;
-      public readonly byte N4;
-      public readonly byte N5;
-
-      public _Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)
-      {
-        N0 = n0;
-        N1 = n1;
-        N2 = n2;
-        N3 = n3;
-        N4 = n4;
-        N5 = n5;
-      }
-
-      /// <param name="node"/>must be 6 bytes.</param>
-      public _Node(ReadOnlySpan<byte> node)
-      {
-        N0 = node[0];
-        N1 = node[1];
-        N2 = node[2];
-        N3 = node[3];
-        N4 = node[4];
-        N5 = node[5];
-      }
     }
 
     /*
@@ -211,7 +181,7 @@ namespace Smdn {
         version: UuidVersion.Version1,
         time: (ulong)timestamp.Subtract(timestampEpoch).Ticks,
         clock_seq: (ushort)clock,
-        node: new _Node(node)
+        node: new Node(node)
       );
     }
 
@@ -446,7 +416,7 @@ namespace Smdn {
     /*   6- 7 */ [FieldOffset( 6)] private ushort time_hi_and_version; // host order
     /*   8    */ [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
     /*   9    */ [FieldOffset( 9)] private byte clock_seq_low;
-    /*  10-15 */ [FieldOffset(10)] private _Node node;
+    /*  10-15 */ [FieldOffset(10)] private Node node;
 
     [FieldOffset( 0)] private ulong fields_high;
     [FieldOffset( 8)] private ulong fields_low;
@@ -512,9 +482,7 @@ namespace Smdn {
     }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
-    public PhysicalAddress PhysicalAddress {
-      get { return new PhysicalAddress(Node); }
-    }
+    public PhysicalAddress PhysicalAddress => node.ToPhysicalAddress();
 #endif
 
     public UuidVersion Version {
@@ -580,7 +548,7 @@ namespace Smdn {
       this.time_hi_and_version = time_hi_and_version;
       this.clock_seq_hi_and_reserved = clock_seq_hi_and_reserved;
       this.clock_seq_low = clock_seq_low;
-      this.node = new _Node(node0, node1, node2, node3, node4, node5);
+      this.node = new Node(node0, node1, node2, node3, node4, node5);
     }
 
     private static ushort RFC4122FieldsTimeHiAndVersion(ushort time_hi, UuidVersion version)
@@ -589,11 +557,11 @@ namespace Smdn {
     private static byte RFC4122FieldsClockSeqHiAndReserved(byte clock_seq_hi)
       => unchecked((byte)((clock_seq_hi & 0x3f) | 0x80));
 
-    private Uuid(
+    internal Uuid(
       UuidVersion version,
       ulong time,
       ushort clock_seq,
-      _Node node
+      Node node
     )
     {
       this.fields_low = 0;
@@ -673,7 +641,7 @@ namespace Smdn {
       this.time_hi_and_version        = BinaryConversion.ToUInt16(octets, index + 6, endian);
       this.clock_seq_hi_and_reserved  = octets[index +  8];
       this.clock_seq_low              = octets[index +  9];
-      this.node                       = new _Node(octets.AsSpan(10, 6));
+      this.node                       = new Node(octets.AsSpan(10, 6));
     }
 
 #if NETSTANDARD2_1
@@ -706,7 +674,7 @@ namespace Smdn {
 
       this.clock_seq_hi_and_reserved  = octets[ 8];
       this.clock_seq_low              = octets[ 9];
-      this.node                       = new _Node(octets.Slice(10));
+      this.node                       = new Node(octets.Slice(10));
 
       // overwrite RFC 4122 fields
       this.time_hi_and_version        = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
@@ -743,7 +711,7 @@ namespace Smdn {
       try {
         var n = Ascii.Hexadecimals.ToByteArray(fields[4]);
 
-        this.node = new _Node(n);
+        this.node = new Node(n);
       }
       catch (FormatException) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
