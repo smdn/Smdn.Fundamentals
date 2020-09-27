@@ -29,6 +29,28 @@ using System.Runtime.InteropServices;
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public readonly struct Node {
+    public static Node CreateRandom()
+    {
+#if NETSTANDARD2_1
+      var buffer = ArrayPool<byte>.Shared.Rent(6);
+#else
+      var buffer = new byte[6];
+#endif
+
+      try {
+        MathUtils.GetRandomBytes(buffer);
+
+        buffer[0] |= 0b00000001; // multicast bit
+
+        return new Node(buffer);
+      }
+      finally {
+#if NETSTANDARD2_1
+        ArrayPool<byte>.Shared.Return(buffer);
+#endif
+      }
+    }
+
     internal readonly byte N0;
     internal readonly byte N1;
     internal readonly byte N2;
