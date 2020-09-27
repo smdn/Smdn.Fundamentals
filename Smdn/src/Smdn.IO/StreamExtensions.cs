@@ -168,7 +168,9 @@ namespace Smdn.IO {
         return;
 
       var pos = sequence.Start;
+#if !NETSTANDARD2_1
       byte[] buffer = null;
+#endif
 
       while (sequence.TryGet(ref pos, out var memory, advance: true)) {
 #if NETSTANDARD2_1
@@ -206,11 +208,13 @@ namespace Smdn.IO {
     )
     {
       var pos = sequence.Start;
+#if !NETSTANDARD2_1
       byte[] buffer = null;
+#endif
 
       while (sequence.TryGet(ref pos, out var memory, advance: true)) {
 #if NETSTANDARD2_1
-        await stream.WriteAsync(memory.Span, cancellationToken).ConfigureAwait(false);
+        await stream.WriteAsync(memory, cancellationToken).ConfigureAwait(false);
 #else
         if (buffer == null || buffer.Length < memory.Length)
           buffer = new byte[memory.Length]; // TODO: ArrayPool.Shared.Rent()

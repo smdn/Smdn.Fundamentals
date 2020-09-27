@@ -2,7 +2,7 @@
   <Import Project="..\..\Common\src\Common.props" />
 
   <PropertyGroup>
-    <TargetFrameworks>net471;net472;net47;net462;net46;net452;net45;netstandard2.0;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net471;net472;net47;net462;net46;net452;net45;netstandard2.1;netstandard2.0;netstandard1.6</TargetFrameworks>
     <RootNamespace>Smdn</RootNamespace>
     <VersionPrefix>3.0</VersionPrefix>
     <VersionSuffix>beta4</VersionSuffix>
