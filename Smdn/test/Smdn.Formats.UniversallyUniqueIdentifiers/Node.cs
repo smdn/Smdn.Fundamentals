@@ -35,5 +35,15 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
         Assert.IsTrue(regexFormat_x.IsMatch(node.ToString("x")), node.ToString("x"));
       }
     }
+
+    [Test]
+    public void TestToString_InvalidFormat()
+    {
+      var node = Node.CreateRandom();
+
+      Assert.Throws<FormatException>(() => node.ToString("n"));
+      Assert.Throws<FormatException>(() => node.ToString("xx"));
+      Assert.Throws<FormatException>(() => node.ToString("XX"));
+    }
   }
 }
