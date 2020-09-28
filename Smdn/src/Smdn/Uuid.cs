@@ -477,9 +477,7 @@ namespace Smdn {
       get { return ((int)(clock_seq_hi_and_reserved & 0x3f) << 8) | (int)clock_seq_low; }
     }
 
-    public string IEEE802MacAddress {
-      get { return string.Format("{0:x2}:{1:x2}:{2:x2}:{3:x2}:{4:x2}:{5:x2}", node.N0, node.N1, node.N2, node.N3, node.N4, node.N5); }
-    }
+    public string IEEE802MacAddress => node.ToString("x");
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public PhysicalAddress PhysicalAddress => node.ToPhysicalAddress();
