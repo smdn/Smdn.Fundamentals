@@ -28,7 +28,7 @@ using System.Runtime.InteropServices;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
-  public readonly struct Node {
+  public readonly struct Node : IFormattable {
     public static Node CreateRandom()
     {
 #if NETSTANDARD2_1
@@ -112,6 +112,18 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     }
 #endif
 
-    public override string ToString() => $"{N0:X2}:{N1:X2}:{N2:X2}:{N3:X2}:{N4:X2}:{N5:X2}";
+    public override string ToString() => ToString(format: null, formatProvider: null);
+
+    public string ToString(string format, IFormatProvider formatProvider = null)
+    {
+      if (string.IsNullOrEmpty(format))
+        format = "X"; // as default
+
+      switch (format) {
+        case "X": return $"{N0:X2}:{N1:X2}:{N2:X2}:{N3:X2}:{N4:X2}:{N5:X2}";
+        case "x": return $"{N0:x2}:{N1:x2}:{N2:x2}:{N3:x2}:{N4:x2}:{N5:x2}";
+        default: throw new FormatException($"invalid format: {format}");
+      }
+    }
   }
 }
