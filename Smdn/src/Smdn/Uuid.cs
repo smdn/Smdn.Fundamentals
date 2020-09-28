@@ -462,6 +462,7 @@ namespace Smdn {
      *    Gregorian reform to the Christian calendar).
      */
     private static readonly DateTime timestampEpoch = new DateTime(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
+    internal static readonly DateTimeOffset TimeStampEpoch = new DateTimeOffset(1582, 10, 15, 0, 0, 0, TimeSpan.Zero);
 
     public DateTime Timestamp {
       get { return timestampEpoch.AddTicks((((long)(time_hi_and_version & 0x0fff) << 48) | ((long)time_mid << 32) | (long)time_low)); }
