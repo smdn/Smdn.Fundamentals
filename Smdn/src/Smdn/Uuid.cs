@@ -20,6 +20,9 @@
 // THE SOFTWARE.
 
 using System;
+#if NETSTANDARD2_1
+using System.Buffers.Binary;
+#endif
 using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -27,6 +30,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 
+using Smdn.Formats.UniversallyUniqueIdentifiers;
 using Smdn.IO.Binary;
 using Smdn.Text;
 
@@ -56,26 +60,6 @@ namespace Smdn {
       RFC4122               = 0x80,
       MicrosoftReserved     = 0xc0,
       Reserved              = 0xe0,
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    private struct _Node {
-      public byte N0;
-      public byte N1;
-      public byte N2;
-      public byte N3;
-      public byte N4;
-      public byte N5;
-
-      public _Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)
-      {
-        N0 = n0;
-        N1 = n1;
-        N2 = n2;
-        N3 = n3;
-        N4 = n4;
-        N5 = n5;
-      }
     }
 
     /*
@@ -193,61 +177,12 @@ namespace Smdn {
       if (node.Length != 6)
         throw new ArgumentException("must be 48-bit length", nameof(node));
 
-      var ts = timestamp.Subtract(timestampEpoch).Ticks;
-      var uuid = new Uuid();
-
-      /*
-       *    o  Set the time_low field equal to the least significant 32 bits
-       *       (bits zero through 31) of the timestamp in the same order of
-       *       significance.
-       * 
-       *    o  Set the time_mid field equal to bits 32 through 47 from the
-       *       timestamp in the same order of significance.
-       * 
-       *    o  Set the 12 least significant bits (bits zero through 11) of the
-       *       time_hi_and_version field equal to bits 48 through 59 from the
-       *       timestamp in the same order of significance.
-       */
-      unchecked {
-        uuid.time_low = (uint)ts; // (uint)(ts & 0xffffffff);
-        uuid.time_mid = (ushort)(ts >> 32); //(ushort)((ts >> 32) & 0xffff);
-        uuid.time_hi_and_version =(ushort)(ts >> 48); // (ushort)((ts >> 48) & 0x0fff);
-        // MSB will be replaced at SetRFC4122Fields()
-      }
-
-      /*
-       *    o  Set the four most significant bits (bits 12 through 15) of the
-       *       time_hi_and_version field to the 4-bit version number
-       *       corresponding to the UUID version being created, as shown in the
-       *       table above.
-       * 
-       *    o  Set the clock_seq_low field to the eight least significant bits
-       *       (bits zero through 7) of the clock sequence in the same order of
-       *       significance.
-       * 
-       *    o  Set the 6 least significant bits (bits zero through 5) of the
-       *       clock_seq_hi_and_reserved field to the 6 most significant bits
-       *       (bits 8 through 13) of the clock sequence in the same order of
-       *       significance.
-       */
-      unchecked {
-        uuid.clock_seq_low = (byte)clock; // (byte)(clock & 0xff);
-        uuid.clock_seq_hi_and_reserved = (byte)(clock >> 8); // (byte)((clock >> 8) & 0x3f);
-        // MSB will be replaced at SetRFC4122Fields()
-      }
-
-      /*
-       *    o  Set the two most significant bits (bits 6 and 7) of the
-       *       clock_seq_hi_and_reserved to zero and one, respectively.
-       * 
-       *    o  Set the node field to the 48-bit IEEE address in the same order of
-       *       significance as the address.
-       */
-      uuid.node = new _Node(node[0], node[1], node[2], node[3], node[4], node[5]);
-
-      SetRFC4122Fields(ref uuid, UuidVersion.Version1);
-
-      return uuid;
+      return new Uuid(
+        version: UuidVersion.Version1,
+        time: (ulong)timestamp.Subtract(timestampEpoch).Ticks,
+        clock_seq: (ushort)clock,
+        node: new Node(node)
+      );
     }
 
     public static Uuid CreateNameBasedMD5(Uri url)
@@ -365,7 +300,6 @@ namespace Smdn {
          *    o  Set octets zero and one of the time_hi_and_version field to octets
          *       6 and 7 of the hash.
          */
-        var uuid = new Uuid(hash, 0, Endianness.BigEndian);
 
         /*
          *    o  Set the four most significant bits (bits 12 through 15) of the
@@ -377,7 +311,6 @@ namespace Smdn {
          *    o  Set the two most significant bits (bits 6 and 7) of the
          *       clock_seq_hi_and_reserved to zero and one, respectively.
          */
-        SetRFC4122Fields(ref uuid, version);
 
         /*
          *    o  Set the clock_seq_low field to octet 9 of the hash.
@@ -387,7 +320,15 @@ namespace Smdn {
          * 
          *    o  Convert the resulting UUID to local byte order.
          */
+#if NETSTANDARD2_1
+        return new Uuid(hash.AsSpan(0, 16), Endianness.BigEndian, version);
+#else
+        var uuid = new Uuid(hash, 0, Endianness.BigEndian);
+
+        SetRFC4122Fields(ref uuid, version);
+
         return uuid;
+#endif
       }
       finally {
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -432,8 +373,6 @@ namespace Smdn {
       else if (randomNumber.Length != 16)
         throw new ArgumentException("length must be 16", nameof(randomNumber));
 
-      var uuid = new Uuid(randomNumber);
-
       /*
        *    o  Set the two most significant bits (bits 6 and 7) of the
        *       clock_seq_hi_and_reserved to zero and one, respectively.
@@ -442,11 +381,18 @@ namespace Smdn {
        *       time_hi_and_version field to the 4-bit version number from
        *       Section 4.1.3.
        */
+#if NETSTANDARD2_1
+      return new Uuid(randomNumber, UuidVersion.Version4);
+#else
+      var uuid = new Uuid(randomNumber);
+
       SetRFC4122Fields(ref uuid, UuidVersion.Version4);
 
       return uuid;
+#endif
     }
 
+#if !NETSTANDARD2_1
     private static void SetRFC4122Fields(ref Uuid uuid, UuidVersion version)
     {
       unchecked {
@@ -459,6 +405,7 @@ namespace Smdn {
         uuid.clock_seq_hi_and_reserved = (byte)((uuid.clock_seq_hi_and_reserved & 0x3f) | 0x80);
       }
     }
+#endif
 
     /*
      * 4.1.2. Layout and Byte Order
@@ -469,7 +416,7 @@ namespace Smdn {
     /*   6- 7 */ [FieldOffset( 6)] private ushort time_hi_and_version; // host order
     /*   8    */ [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
     /*   9    */ [FieldOffset( 9)] private byte clock_seq_low;
-    /*  10-15 */ [FieldOffset(10)] private _Node node;
+    /*  10-15 */ [FieldOffset(10)] private Node node;
 
     [FieldOffset( 0)] private ulong fields_high;
     [FieldOffset( 8)] private ulong fields_low;
@@ -515,6 +462,7 @@ namespace Smdn {
      *    Gregorian reform to the Christian calendar).
      */
     private static readonly DateTime timestampEpoch = new DateTime(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
+    internal static readonly DateTimeOffset TimeStampEpoch = new DateTimeOffset(1582, 10, 15, 0, 0, 0, TimeSpan.Zero);
 
     public DateTime Timestamp {
       get { return timestampEpoch.AddTicks((((long)(time_hi_and_version & 0x0fff) << 48) | ((long)time_mid << 32) | (long)time_low)); }
@@ -530,14 +478,10 @@ namespace Smdn {
       get { return ((int)(clock_seq_hi_and_reserved & 0x3f) << 8) | (int)clock_seq_low; }
     }
 
-    public string IEEE802MacAddress {
-      get { return string.Format("{0:x2}:{1:x2}:{2:x2}:{3:x2}:{4:x2}:{5:x2}", node.N0, node.N1, node.N2, node.N3, node.N4, node.N5); }
-    }
+    public string IEEE802MacAddress => node.ToString("x");
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
-    public PhysicalAddress PhysicalAddress {
-      get { return new PhysicalAddress(Node); }
-    }
+    public PhysicalAddress PhysicalAddress => node.ToPhysicalAddress();
 #endif
 
     public UuidVersion Version {
@@ -603,7 +547,67 @@ namespace Smdn {
       this.time_hi_and_version = time_hi_and_version;
       this.clock_seq_hi_and_reserved = clock_seq_hi_and_reserved;
       this.clock_seq_low = clock_seq_low;
-      this.node = new _Node(node0, node1, node2, node3, node4, node5);
+      this.node = new Node(node0, node1, node2, node3, node4, node5);
+    }
+
+    private static ushort RFC4122FieldsTimeHiAndVersion(ushort time_hi, UuidVersion version)
+      => unchecked((ushort)((time_hi & 0x0fff) | ((int)version << 12)));
+
+    private static byte RFC4122FieldsClockSeqHiAndReserved(byte clock_seq_hi)
+      => unchecked((byte)((clock_seq_hi & 0x3f) | 0x80));
+
+    internal Uuid(
+      UuidVersion version,
+      ulong time,
+      ushort clock_seq,
+      Node node
+    )
+    {
+      this.fields_low = 0;
+      this.fields_high = 0;
+
+      /*
+       *    o  Set the time_low field equal to the least significant 32 bits
+       *       (bits zero through 31) of the timestamp in the same order of
+       *       significance.
+       * 
+       *    o  Set the time_mid field equal to bits 32 through 47 from the
+       *       timestamp in the same order of significance.
+       * 
+       *    o  Set the 12 least significant bits (bits zero through 11) of the
+       *       time_hi_and_version field equal to bits 48 through 59 from the
+       *       timestamp in the same order of significance.
+       */
+
+      /*
+       *    o  Set the four most significant bits (bits 12 through 15) of the
+       *       time_hi_and_version field to the 4-bit version number
+       *       corresponding to the UUID version being created, as shown in the
+       *       table above.
+       * 
+       *    o  Set the clock_seq_low field to the eight least significant bits
+       *       (bits zero through 7) of the clock sequence in the same order of
+       *       significance.
+       * 
+       *    o  Set the 6 least significant bits (bits zero through 5) of the
+       *       clock_seq_hi_and_reserved field to the 6 most significant bits
+       *       (bits 8 through 13) of the clock sequence in the same order of
+       *       significance.
+       */
+
+      /*
+       *    o  Set the two most significant bits (bits 6 and 7) of the
+       *       clock_seq_hi_and_reserved to zero and one, respectively.
+       * 
+       *    o  Set the node field to the 48-bit IEEE address in the same order of
+       *       significance as the address.
+       */
+      this.time_low = unchecked((uint)time);
+      this.time_mid = unchecked((ushort)(time >> 32));
+      this.time_hi_and_version = RFC4122FieldsTimeHiAndVersion(unchecked((ushort)(time >> 48)), version);
+      this.clock_seq_hi_and_reserved = RFC4122FieldsClockSeqHiAndReserved(unchecked((byte)(clock_seq >> 8)));
+      this.clock_seq_low = unchecked((byte)clock_seq);
+      this.node = node;
     }
 
     public Uuid(Guid guid)
@@ -636,13 +640,46 @@ namespace Smdn {
       this.time_hi_and_version        = BinaryConversion.ToUInt16(octets, index + 6, endian);
       this.clock_seq_hi_and_reserved  = octets[index +  8];
       this.clock_seq_low              = octets[index +  9];
-      this.node.N0                    = octets[index + 10];
-      this.node.N1                    = octets[index + 11];
-      this.node.N2                    = octets[index + 12];
-      this.node.N3                    = octets[index + 13];
-      this.node.N4                    = octets[index + 14];
-      this.node.N5                    = octets[index + 15];
+      this.node                       = new Node(octets.AsSpan(10, 6));
     }
+
+#if NETSTANDARD2_1
+    internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version)
+      : this(octets, Platform.Endianness, version)
+    {
+    }
+
+    internal Uuid(ReadOnlySpan<byte> octets, Endianness endian, UuidVersion version)
+    {
+      if (octets.Length != 16)
+        throw new ArgumentException("length must be exact 16", nameof(octets));
+
+      this.fields_low = 0;
+      this.fields_high = 0;
+
+      if (endian == Endianness.LittleEndian) {
+        this.time_low            = BinaryPrimitives.ReadUInt32LittleEndian(octets);
+        this.time_mid            = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
+        this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6));
+      }
+      else if (endian == Endianness.BigEndian) {
+        this.time_low            = BinaryPrimitives.ReadUInt32BigEndian(octets);
+        this.time_mid            = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4));
+        this.time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6));
+      }
+      else {
+        throw new NotSupportedException($"unsupported endianness: {endian}");
+      }
+
+      this.clock_seq_hi_and_reserved  = octets[ 8];
+      this.clock_seq_low              = octets[ 9];
+      this.node                       = new Node(octets.Slice(10));
+
+      // overwrite RFC 4122 fields
+      this.time_hi_and_version        = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
+      this.clock_seq_hi_and_reserved  = RFC4122FieldsClockSeqHiAndReserved(clock_seq_hi_and_reserved);
+    }
+#endif
 
     public Uuid(string uuid)
       : this()
@@ -673,7 +710,7 @@ namespace Smdn {
       try {
         var n = Ascii.Hexadecimals.ToByteArray(fields[4]);
 
-        this.node = new _Node(n[0], n[1], n[2], n[3], n[4], n[5]);
+        this.node = new Node(n);
       }
       catch (FormatException) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));

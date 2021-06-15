@@ -40,29 +40,29 @@ namespace Smdn.Xml.Linq {
     }
 
     public static bool HasAttribute(this XElement element, XName name)
+      => element?.Attribute(name) != null;
+
+    public static bool HasAttribute(this XElement element, XName name, out string value)
     {
-      return element?.Attribute(name) != null;
+      var attr = element?.Attribute(name);
+
+      if (attr == null) {
+        value = default;
+        return false;
+      }
+      else {
+        value = attr.Value;
+        return true;
+      }
     }
 
     public static bool HasAttributeWithValue(this XElement element, XName attributeName, string @value)
-    {
-      var attr = element?.Attribute(attributeName);
-
-      if (attr == null)
-        return false;
-
-      return string.Equals(attr.Value, @value, StringComparison.Ordinal);
-    }
+      => HasAttribute(element, attributeName, out var attributeValue) &&
+         string.Equals(attributeValue, @value, StringComparison.Ordinal);
 
     public static bool HasAttributeWithValue(this XElement element, XName attributeName, Predicate<string> predicate)
-    {
-      var attr = element?.Attribute(attributeName);
-
-      if (attr == null)
-        return false;
-
-      return predicate?.Invoke(attr.Value) ?? false;
-    }
+      => HasAttribute(element, attributeName, out var attributeValue) &&
+         (predicate?.Invoke(attributeValue) ?? false);
 
     public static string TextContent(this XContainer container)
     {
