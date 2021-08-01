@@ -92,5 +92,38 @@ namespace Smdn.Collections {
 
       IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
+
+    public static int IndexOf<T>(this IReadOnlyList<T> list, T item, IEqualityComparer<T> equalityComparer = default)
+      => IndexOf(list ?? throw new ArgumentNullException(nameof(list)), item, 0, list.Count, equalityComparer);
+
+    public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, IEqualityComparer<T> equalityComparer = default)
+      => IndexOf(list ?? throw new ArgumentNullException(nameof(list)), item, index, list.Count - index, equalityComparer);
+
+    public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, int count, IEqualityComparer<T> equalityComparer = default)
+    {
+      if (list == null)
+        throw new ArgumentNullException(nameof(list));
+
+      if (equalityComparer == null && list is List<T> l)
+        return l.IndexOf(item, index, count);
+
+      if (index < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+      if (list.Count - count < index)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection(nameof(index), list, index, count);
+
+      equalityComparer ??= EqualityComparer<T>.Default;
+
+      var end = index + count;
+
+      for (var i = index; i < end; i++) {
+        if (equalityComparer.Equals(list[i], item))
+          return i;
+      }
+
+      return -1;
+    }
   }
 }

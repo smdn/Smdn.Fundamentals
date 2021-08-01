@@ -194,5 +194,30 @@ namespace Smdn {
         null) ?? new T[0];
     }
 #endif
+
+    public static T[] Repeat<T>(this T[] array, int count)
+    {
+      if (array == null)
+        throw new ArgumentNullException(nameof(array));
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+
+      if (count == 0 || array.Length == 0) {
+#if NET45 || NET452
+        return EmptyArray<T>.Instance;
+#else
+        return Array.Empty<T>();
+#endif
+      }
+
+      var newArray = new T[array.Length * count];
+      var offset = 0;
+
+      for (var n = 0; n < count; n++, offset += array.Length) {
+        Array.Copy(array, 0, newArray, offset, array.Length);
+      }
+
+      return newArray;
+    }
   }
 }

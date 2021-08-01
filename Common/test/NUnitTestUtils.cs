@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 #if SERIALIZATION
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
@@ -169,6 +170,20 @@ namespace Smdn {
         TryIO(deleteFile);
 
         action();
+      }
+      finally {
+        TryIO(deleteFile);
+      }
+    }
+
+    public static async Task UsingFileAsync(string path, Func<string, Task> action)
+    {
+      Action deleteFile = () => File.Delete(path);
+
+      try {
+        TryIO(deleteFile);
+
+        await action(path).ConfigureAwait(false);
       }
       finally {
         TryIO(deleteFile);

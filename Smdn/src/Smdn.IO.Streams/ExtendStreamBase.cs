@@ -21,79 +21,66 @@
 
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 using Smdn.IO;
 
 namespace Smdn.IO.Streams {
   public abstract class ExtendStreamBase : Stream {
-    protected enum Range {
-      Prepended,
-      InnerStream,
-      Appended,
-      EndOfStream,
-    }
+    private Stream stream = null;
+    private bool IsClosed => stream == null;
 
-    public Stream InnerStream {
-      get { CheckDisposed(); return stream; }
-    }
+    public Stream InnerStream { get { ThrowIfDisposed(); return stream; } }
 
-    public override bool CanSeek {
-      get { return !IsClosed && stream.CanSeek && CanSeekPrependedData && CanSeekAppendedData; }
-    }
+    private readonly bool leaveInnerStreamOpen;
+    public bool LeaveInnerStreamOpen { get { ThrowIfDisposed(); return leaveInnerStreamOpen; } }
 
-    public override bool CanRead {
-      get { return !IsClosed && stream.CanRead; }
-    }
+    public override bool CanSeek => !IsClosed && stream.CanSeek && CanSeekPrependedData && CanSeekPrependedData;
+    public override bool CanRead => !IsClosed && stream.CanRead;
+    public override bool CanWrite => /*!IsClosed &&*/ false;
+    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+    public override long Length { get { ThrowIfDisposed(); return prependLength + stream.Length + appendLength; } }
 
-    public override bool CanWrite {
-      get { return /*!IsClosed &&*/ false; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
-
+    private long position;
     public override long Position {
-      get { CheckDisposed(); return position; }
-      set
-      {
-        CheckDisposed();
-        CheckSeekable();
+      get { ThrowIfDisposed(); return position; }
+      set {
+        ThrowIfDisposed();
+        ThrowIfNotSeekable();
 
         if (value < 0)
           throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
-        position = value;
-        SetPosition();
+
+        SetPosition(value);
       }
     }
 
-    public override long Length {
-      get { CheckDisposed(); return prependLength + stream.Length + appendLength; }
-    }
-
-    public bool LeaveInnerStreamOpen {
-      get { CheckDisposed(); return leaveInnerStreamOpen; }
-    }
+    private readonly long prependLength;
+    private readonly long appendLength;
 
     protected abstract bool CanSeekPrependedData { get; }
     protected abstract bool CanSeekAppendedData { get; }
 
-    protected Range DataRange {
-      get
-      {
-        if (offsetEndOfStream <= position)
-          return Range.EndOfStream;
-        else if (offsetEndOfInnerStream <= position)
-          return Range.Appended;
-        else if (prependLength <= position)
-          return Range.InnerStream;
-        else
-          return Range.Prepended;
-      }
+    protected enum StreamSection {
+      Prepend,
+      Stream,
+      Append,
+      EndOfStream,
+    }
+
+    protected StreamSection Section { get; private set; }
+
+    protected void ThrowIfDisposed()
+    {
+      if (stream == null)
+        throw new ObjectDisposedException(GetType().FullName);
+    }
+
+    private void ThrowIfNotSeekable()
+    {
+      if (!CanSeek)
+        throw ExceptionUtils.CreateNotSupportedSeekingStream();
     }
 
     protected ExtendStreamBase(Stream innerStream, long prependLength, long appendLength, bool leaveInnerStreamOpen)
@@ -110,10 +97,9 @@ namespace Smdn.IO.Streams {
       this.stream = innerStream;
       this.prependLength = prependLength;
       this.appendLength = appendLength;
-      this.offsetEndOfInnerStream = prependLength + innerStream.Length;
-      this.offsetEndOfStream = offsetEndOfInnerStream + appendLength;
       this.position = 0L;
       this.leaveInnerStreamOpen = leaveInnerStreamOpen;
+      this.Section = prependLength == 0L ? StreamSection.Stream : StreamSection.Prepend;
     }
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -134,87 +120,70 @@ namespace Smdn.IO.Streams {
 #endif
     }
 
-    public override void SetLength(long @value)
-    {
-      CheckDisposed();
+    private Task ThrowNotSupportedWritingStream() { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedWritingStream(); }
 
-      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
-    }
+    public override void Flush() => ThrowNotSupportedWritingStream();
+    public override Task FlushAsync(CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
 
-    public override void Flush()
-    {
-      CheckDisposed();
+    public override void Write(byte[] buffer, int offset, int count) => ThrowNotSupportedWritingStream();
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
 
-      // do nothing
-    }
+    public override void SetLength(long value) { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedSettingStreamLength(); }
 
     public override long Seek(long offset, SeekOrigin origin)
     {
-      CheckDisposed();
-      CheckSeekable();
+      ThrowIfDisposed();
+      ThrowIfNotSeekable();
 
       // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
+      long newOffset;
+
       switch (origin) {
-        case SeekOrigin.Begin:
-          if (offset < 0L)
-            break;
-          position = offset;
-          SetPosition();
-          return position;
-
-        case SeekOrigin.Current:
-          if (position + offset < 0L)
-            break;
-          position += offset;
-          SetPosition();
-          return position;
-
-        case SeekOrigin.End:
-          if (Length + offset < 0L)
-            break;
-          position = Length + offset;
-          SetPosition();
-          return position;
-
+        case SeekOrigin.Begin:    newOffset = offset; break;
+        case SeekOrigin.Current:  newOffset = offset + position; break;
+        case SeekOrigin.End:      newOffset = offset + Length; break;
         default:
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }
 
-      throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
+      if (newOffset < 0L)
+        throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
+
+      return SetPosition(newOffset);
     }
 
     protected abstract void SetPrependedDataPosition(long position);
     protected abstract void SetAppendedDataPosition(long position);
 
-    private void SetPosition()
+    private long SetPosition(long newPosition)
     {
-      switch (DataRange) {
-        case Range.Prepended:
-          stream.Seek(0L, SeekOrigin.Begin);
-          SetPrependedDataPosition(position);
-          break;
-
-        case Range.InnerStream:
-          stream.Seek(position - prependLength, SeekOrigin.Begin);
-          break;
-
-        case Range.Appended:
-          stream.Seek(0L, SeekOrigin.End);
-          SetAppendedDataPosition(position - offsetEndOfInnerStream);
-          break;
-
-        default:
-          stream.Seek(0L, SeekOrigin.End);
-          break;
+      if (0L < prependLength && newPosition < prependLength) {
+        Section = StreamSection.Prepend;
+        stream.Seek(0L, SeekOrigin.Begin);
+        SetPrependedDataPosition(newPosition);
       }
+      else if (newPosition < prependLength + stream.Length) {
+        Section = StreamSection.Stream;
+        stream.Seek(newPosition - prependLength, SeekOrigin.Begin);
+      }
+      else if (0L < appendLength && newPosition < prependLength + stream.Length + appendLength) {
+        Section = StreamSection.Append;
+        stream.Seek(0L, SeekOrigin.End);
+        SetAppendedDataPosition(newPosition - (stream.Length + appendLength));
+      }
+      else {
+        Section = StreamSection.EndOfStream;
+      }
+
+      return position = newPosition;
     }
 
-    protected abstract void ReadPrependedData(byte[] buffer, int offset, int count);
-    protected abstract void ReadAppendedData(byte[] buffer, int offset, int count);
+    protected abstract int ReadPrependedData(byte[] buffer, int offset, int count);
+    protected abstract int ReadAppendedData(byte[] buffer, int offset, int count);
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-      CheckDisposed();
+      ThrowIfDisposed();
 
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
@@ -228,95 +197,104 @@ namespace Smdn.IO.Streams {
       var ret = 0;
 
       while (0 < count) {
-        switch (DataRange) {
-          case Range.EndOfStream:
+        int readCount;
+        StreamSection nextSection;
+
+        switch (Section) {
+          case StreamSection.Prepend:
+            readCount = ReadPrependedData(buffer, offset, count);
+            nextSection = StreamSection.Stream;
+            break;
+
+          case StreamSection.Stream:
+            readCount = stream.Read(buffer, offset, count);
+            nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
+            break;
+
+          case StreamSection.Append:
+            readCount = ReadAppendedData(buffer, offset, count);
+            nextSection = StreamSection.EndOfStream;
+            break;
+
+          default:
+          //case StreamSection.EndOfStream:
             return ret;
-
-          case Range.Prepended: {
-            if (prependLength <= position + count) {
-              var readCount = (int)(prependLength - position);
-
-              ReadPrependedData(buffer, offset, readCount);
-
-              ret       += readCount;
-              count     -= readCount;
-              offset    += readCount;
-              position  += readCount;
-
-              stream.Position = 0L;
-            }
-            else {
-              ReadPrependedData(buffer, offset, count);
-
-              ret       += count;
-              offset    += count;
-              position  += count;
-              count      = 0;
-            }
-
-            break;
-          }
-
-          case Range.InnerStream: {
-            var read = stream.Read(buffer, offset, count);
-
-            if (read <= 0)
-              return ret;
-
-            ret       += read;
-            count     -= read;
-            offset    += read;
-            position  += read;
-
-            if (offsetEndOfInnerStream < position)
-              position = offsetEndOfInnerStream;
-
-            break;
-          }
-
-          case Range.Appended: {
-            var readCount = (int)Math.Min(count, offsetEndOfStream - position);
-
-            ReadAppendedData(buffer, offset, readCount);
-
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
-
-            break;
-          }
         } // switch
+
+        if (readCount == 0) {
+          Section = nextSection;
+        }
+        else {
+          ret       += readCount;
+          count     -= readCount;
+          offset    += readCount;
+          position  += readCount;
+        }
       } // while
 
       return ret;
     }
 
-    public override void Write(byte[] buffer, int offset, int count)
+    protected abstract Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
+    protected abstract Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
+
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     {
-      CheckDisposed();
+      ThrowIfDisposed();
 
-      throw ExceptionUtils.CreateNotSupportedWritingStream();
+      if (buffer == null)
+        throw new ArgumentNullException(nameof(buffer));
+      if (offset < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+      if (buffer.Length - count < offset)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+
+      return ReadAsyncCore();
+
+      async Task<int> ReadAsyncCore()
+      {
+        var ret = 0;
+
+        while (0 < count) {
+          int readCount;
+          StreamSection nextSection;
+
+          switch (Section) {
+            case StreamSection.Prepend:
+              readCount = await ReadPrependedDataAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+              nextSection = StreamSection.Stream;
+              break;
+
+            case StreamSection.Stream:
+              readCount = await stream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+              nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
+              break;
+
+            case StreamSection.Append:
+              readCount = await ReadAppendedDataAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+              nextSection = StreamSection.EndOfStream;
+              break;
+
+            default:
+              //case StreamSection.EndOfStream:
+              return ret;
+          } // switch
+
+          if (readCount == 0) {
+            Section = nextSection;
+          }
+          else {
+            ret       += readCount;
+            count     -= readCount;
+            offset    += readCount;
+            position  += readCount;
+          }
+        } // while
+
+        return ret;
+      }
     }
-
-    private void CheckDisposed()
-    {
-      if (IsClosed)
-        throw new ObjectDisposedException(GetType().FullName);
-    }
-
-    private void CheckSeekable()
-    {
-      if (!CanSeek)
-        throw ExceptionUtils.CreateNotSupportedSeekingStream();
-    }
-
-    private Stream stream;
-    private long position;
-    private readonly long prependLength;
-    private readonly long appendLength;
-    private readonly long offsetEndOfInnerStream;
-    private readonly long offsetEndOfStream;
-    private readonly bool leaveInnerStreamOpen;
   }
 }

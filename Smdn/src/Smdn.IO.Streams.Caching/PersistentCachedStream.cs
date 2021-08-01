@@ -65,14 +65,10 @@ namespace Smdn.IO.Streams.Caching {
 
     protected override byte[] GetBlock(long blockIndex)
     {
-      if (cachedBlocks.ContainsKey(blockIndex))
-        return cachedBlocks[blockIndex];
+      if (cachedBlocks.TryGetValue(blockIndex, out var block))
+        return block;
 
-      var block = ReadBlock(blockIndex);
-
-      cachedBlocks.Add(blockIndex, block);
-
-      return block;
+      return cachedBlocks[blockIndex] = ReadBlock(blockIndex);
     }
 
     private Dictionary<long, byte[]> cachedBlocks = new Dictionary<long, byte[]>();

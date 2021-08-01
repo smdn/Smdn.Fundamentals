@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Smdn.IO.Streams {
@@ -148,13 +149,19 @@ namespace Smdn.IO.Streams {
       Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
       Assert.Throws<ObjectDisposedException>(() =>stream.ReadByte());
+      Assert.Throws<ObjectDisposedException>(() => stream.Read(Array.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Array.Empty<byte>(), 0, 0));
       Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
+      Assert.Throws<ObjectDisposedException>(() => stream.Write(Array.Empty<byte>(), 0, 0));
+      //Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(Array.Empty<byte>(), 0, 0));
 
       stream.Dispose();
     }
 
-    [Test]
-    public void TestReadLengthSpecified()
+    [Test] public Task TestRead_LengthSpecified() => TestRead_LengthSpecified(runAsync: false);
+    [Test] public Task TestReadAsync_LengthSpecified() => TestRead_LengthSpecified(runAsync: true);
+
+    private async Task TestRead_LengthSpecified(bool runAsync)
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
       var stream = new PartialStream(inner, 2, 4);
@@ -167,7 +174,12 @@ namespace Smdn.IO.Streams {
 
       var buffer = new byte[2];
 
-      Assert.AreEqual(2, stream.Read(buffer, 0, 2));
+      Assert.AreEqual(
+        2,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 2)
+          : stream.Read(buffer, 0, 2)
+      );
       Assert.AreEqual(new byte[] {0x02, 0x03}, buffer);
 
       Assert.AreEqual(4, stream.InnerStream.Position);
@@ -175,18 +187,30 @@ namespace Smdn.IO.Streams {
 
       Assert.AreEqual(0x04, stream.ReadByte());
 
-      Assert.AreEqual(1, stream.Read(buffer, 0, 2));
+      Assert.AreEqual(
+        1,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 2)
+          : stream.Read(buffer, 0, 2)
+      );
       Assert.AreEqual(new byte[] {0x05, 0x03}, buffer);
 
       Assert.AreEqual(6, stream.InnerStream.Position);
       Assert.AreEqual(4, stream.Position);
 
-      Assert.AreEqual(0, stream.Read(buffer, 0, 3));
+      Assert.AreEqual(
+        0,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 3)
+          : stream.Read(buffer, 0, 3)
+      );
       Assert.AreEqual(-1, stream.ReadByte());
     }
 
-    [Test]
-    public void TestReadAfterEndOfInnerStream()
+    [Test] public Task TestRead_AfterEndOfInnerStream() => TestRead_AfterEndOfInnerStream(runAsync: false);
+    [Test] public Task TestReadAsync_AfterEndOfInnerStream() => TestRead_AfterEndOfInnerStream(runAsync: true);
+
+    private async Task TestRead_AfterEndOfInnerStream(bool runAsync)
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
       var stream = new PartialStream(inner, inner.Length, 8);
@@ -196,12 +220,19 @@ namespace Smdn.IO.Streams {
 
       var buffer = new byte[2];
 
-      Assert.AreEqual(0, stream.Read(buffer, 0, 2));
+      Assert.AreEqual(
+        0,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 2)
+          : stream.Read(buffer, 0, 2)
+      );
       Assert.AreEqual(0, stream.Position);
     }
 
-    [Test]
-    public void TestReadLengthNotSpecified()
+    [Test] public Task TestRead_LengthNotSpecified() => TestRead_LengthNotSpecified(runAsync: false);
+    [Test] public Task TestReadAsync_LengthNotSpecified() => TestRead_LengthNotSpecified(runAsync: true);
+
+    private async Task TestRead_LengthNotSpecified(bool runAsync)
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
       var stream = new PartialStream(inner, 2);
@@ -214,7 +245,12 @@ namespace Smdn.IO.Streams {
 
       var buffer = new byte[3];
 
-      Assert.AreEqual(3, stream.Read(buffer, 0, 3));
+      Assert.AreEqual(
+        3,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 3)
+          : stream.Read(buffer, 0, 3)
+      );
       Assert.AreEqual(new byte[] {0x02, 0x03, 0x04}, buffer);
 
       Assert.AreEqual(5, stream.InnerStream.Position);
@@ -225,18 +261,28 @@ namespace Smdn.IO.Streams {
       Assert.AreEqual(6, stream.InnerStream.Position);
       Assert.AreEqual(4, stream.Position);
 
-      Assert.AreEqual(2, stream.Read(buffer, 0, 3));
+      Assert.AreEqual(
+        2,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 3)
+          : stream.Read(buffer, 0, 3)
+      );
       Assert.AreEqual(new byte[] {0x06, 0x07, 0x04}, buffer);
 
       Assert.AreEqual(8, stream.InnerStream.Position);
       Assert.AreEqual(6, stream.Position);
 
-      Assert.AreEqual(0, stream.Read(buffer, 0, 3));
+      Assert.AreEqual(
+        0,
+        runAsync
+          ? await stream.ReadAsync(buffer, 0, 3)
+          : stream.Read(buffer, 0, 3)
+      );
       Assert.AreEqual(-1, stream.ReadByte());
     }
 
     [Test]
-    public void TestReadByteLengthSpecified()
+    public void TestReadByte_LengthSpecified()
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
       var stream = new PartialStream(inner, 2, 4);
@@ -257,7 +303,7 @@ namespace Smdn.IO.Streams {
     }
 
     [Test]
-    public void TestReadByteLengthNotSpecified()
+    public void TestReadByte_LengthNotSpecified()
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07});
       var stream = new PartialStream(inner, 2);

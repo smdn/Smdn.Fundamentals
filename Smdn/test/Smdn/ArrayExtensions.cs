@@ -147,5 +147,57 @@ namespace Smdn {
 
       Assert.Throws<ArgumentNullException>(() => array.Convert(converter));
     }
+
+    [Test]
+    public void TestRepeat_ArgumentNull()
+    {
+      int[] array = null;
+
+      Assert.Throws<ArgumentNullException>(() => array.Repeat(0));
+    }
+
+    [TestCase(-1)]
+    [TestCase(-2)]
+    public void TestRepeat_CountOutOfRange(int count)
+    {
+      var array = new[] { 0 };
+
+      Assert.Throws<ArgumentOutOfRangeException>(() => array.Repeat(count));
+    }
+
+    [Test]
+    public void TestRepeat()
+    {
+      var array1 = new[] { 0 };
+
+      CollectionAssert.IsEmpty(array1.Repeat(0), "#1-0");
+      CollectionAssert.AreEqual(new[] { 0 }, array1.Repeat(1), "#1-1");
+      CollectionAssert.AreEqual(new[] { 0, 0 }, array1.Repeat(2), "#1-2");
+      CollectionAssert.AreEqual(new[] { 0, 0, 0 }, array1.Repeat(3), "#1-3");
+
+      var array2 = new[] { 0, 1 };
+
+      CollectionAssert.IsEmpty(array2.Repeat(0), "#2-0");
+      CollectionAssert.AreEqual(new[] { 0, 1 }, array2.Repeat(1), "#2-1");
+      CollectionAssert.AreEqual(new[] { 0, 1, 0, 1 }, array2.Repeat(2), "#2-2");
+      CollectionAssert.AreEqual(new[] { 0, 1, 0, 1, 0, 1 }, array2.Repeat(3), "#2-3");
+
+      var array3 = new[] { 0, 1, 2 };
+
+      CollectionAssert.IsEmpty(array3.Repeat(0), "#3-0");
+      CollectionAssert.AreEqual(new[] { 0, 1, 2 }, array3.Repeat(1), "#3-1");
+      CollectionAssert.AreEqual(new[] { 0, 1, 2, 0, 1, 2 }, array3.Repeat(2), "#3-2");
+      CollectionAssert.AreEqual(new[] { 0, 1, 2, 0, 1, 2, 0, 1, 2 }, array3.Repeat(3), "#3-3");
+    }
+
+    [Test]
+    public void TestRepeat_EmptyArray()
+    {
+      var array = new int[0];
+
+      CollectionAssert.IsEmpty(array.Repeat(0));
+      CollectionAssert.IsEmpty(array.Repeat(1));
+      CollectionAssert.IsEmpty(array.Repeat(2));
+    }
   }
 }

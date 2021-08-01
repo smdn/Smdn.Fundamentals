@@ -21,7 +21,8 @@
 
 using System;
 using System.IO;
-
+using System.Threading;
+using System.Threading.Tasks;
 using Smdn.IO;
 
 namespace Smdn.IO.Streams {
@@ -283,6 +284,21 @@ namespace Smdn.IO.Streams {
         return stream.Read(buffer, offset, (int)Math.Min(count, remainder)); // XXX: long -> int
       else
         return 0;
+    }
+
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+    {
+      CheckDisposed();
+
+      if (count < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+
+      var remainder = GetRemainderLength();
+
+      if (0L < remainder)
+        return stream.ReadAsync(buffer, offset, (int)Math.Min(count, remainder), cancellationToken); // XXX: long -> int
+      else
+        return Task.FromResult(0);
     }
 
     public override void Write(byte[] buffer, int offset, int count)

@@ -98,7 +98,7 @@ namespace Smdn.Text {
                              string.Join(", ", nameAndValuePairs.Select(((string n, object v) p) => string.Concat(p.n, "=", ValueToString(p.v)))),
                              "}");
 
-      string ValueToString(object val)
+      static string ValueToString(object val)
       {
         if (val is null)
           return "(null)";

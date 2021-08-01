@@ -24,76 +24,73 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn.IO {
-  public static class FileDialogFilter {
+  static partial class FileDialogFilter {
     public const string Delimiter = "|";
 
-    public struct Filter {
+    public readonly struct Filter {
       public const string PatternDelimiter = ";";
       public const string DescriptionPatternDelimiter = "|";
 
-      public string Description {
-        get; private set;
-      }
-
-      public string[] Patterns {
-        get; private set;
-      }
+      public string Description { get; }
+      public IReadOnlyList<string> Patterns { get; }
 
       public Filter(string description, params string[] patterns)
-        : this() // csc CS0843
       {
-        this.Description = description;
-        this.Patterns = patterns;
+        Description = description;
+        Patterns = patterns;
+      }
+
+      public Filter(string description, IReadOnlyList<string> patterns)
+      {
+        Description = description;
+        Patterns = patterns;
       }
 
       public override string ToString()
       {
-        return string.Format("{0} ({1}){2}{1}", Description, string.Join(PatternDelimiter, Patterns ?? Array.Empty<string>()), DescriptionPatternDelimiter);
+        return string.Format(
+          "{0} ({1}){2}{1}",
+          Description,
+          string.Join(PatternDelimiter, Patterns ?? Array.Empty<string>()),
+          DescriptionPatternDelimiter
+        );
       }
     }
 
     [CLSCompliant(false)]
     public static string CreateFilterString(params string[][] descriptionPatternPairs)
     {
-      return CreateFilterString(Array.ConvertAll(descriptionPatternPairs, delegate(string[] pair) {
-        if (pair.Length == 2)
-          return new Filter(pair[0], pair[1]);
-        else if (2 < pair.Length)
-          return new Filter(pair[0], ArrayExtensions.Slice(pair, 1));
-        else
-          throw new ArgumentException();
+      if (descriptionPatternPairs == null)
+        throw new ArgumentNullException(nameof(descriptionPatternPairs));
+
+      return CreateFilterString(Array.ConvertAll(descriptionPatternPairs, pair => {
+        if (pair == null)
+          throw new ArgumentNullException();
+        if (2 <= pair.Length)
+          return new Filter(pair[0], new ArraySegment<string>(pair, 1, pair.Length - 1));
+
+        throw new ArgumentException();
       }));
     }
 
-    public static string CreateFilterString(IDictionary<string, string> descriptionPatternPairs)
+    public static string CreateFilterString(IReadOnlyDictionary<string, string> descriptionPatternPairs)
     {
-      var filters = new Filter[descriptionPatternPairs.Count];
-      var index = 0;
+      if (descriptionPatternPairs == null)
+        throw new ArgumentNullException(nameof(descriptionPatternPairs));
 
-      foreach (var pair in descriptionPatternPairs) {
-        filters[index++] = new Filter(pair.Key, pair.Value);
-      }
-
-      return CreateFilterString(filters);
+      return CreateFilterString(descriptionPatternPairs.Select(pair => new Filter(pair.Key, pair.Value)));
     }
 
     public static string CreateFilterString(IEnumerable<Filter> filters)
     {
-      if (filters == null)
-        throw new ArgumentNullException(nameof(filters));
-
-      return CreateFilterString(filters.ToArray());
+      return string.Join(
+        Delimiter,
+        filters ?? throw new ArgumentNullException(nameof(filters))
+      );
     }
 
     [CLSCompliant(false)]
     public static string CreateFilterString(params Filter[] filters)
-    {
-      if (filters == null || filters.Length <= 0)
-        return string.Empty;
-
-      return string.Join(Delimiter, Array.ConvertAll(filters, delegate(Filter filter) {
-        return filter.ToString();
-      }));
-    }
+      => CreateFilterString((IEnumerable<Filter>)filters ?? throw new ArgumentNullException(nameof(filters)));
   }
 }
