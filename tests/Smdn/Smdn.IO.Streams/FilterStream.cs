@@ -5,6 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+#if NET45 || NET452
+using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
+#else
+using _Array = System.Array; // Array.Empty
+#endif
+
 namespace Smdn.IO.Streams {
   [TestFixture]
   public class FilterStreamTests {
@@ -48,11 +54,11 @@ namespace Smdn.IO.Streams {
       Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
 
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(Array.Empty<byte>(), 0, 0), nameof(stream.Read));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Read(_Array.Empty<byte>(), 0, 0), nameof(stream.Read));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(Array.Empty<byte>(), 0, 0), nameof(stream.Write));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Flush(), nameof(stream.Flush));
       Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Seek(0, SeekOrigin.Begin), nameof(stream.Seek));
@@ -60,7 +66,9 @@ namespace Smdn.IO.Streams {
       Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Length); }, nameof(stream.Length));
       Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Position); }, nameof(stream.Length));
 
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       Assert.DoesNotThrow(() => stream.Close(), nameof(stream.Close));
+#endif
     }
 
     [Test] public void TestConstruct_StreamNull() => Assert.Throws<ArgumentNullException>(() => new FilterStream(stream: null, EmptyFilters()));
@@ -72,8 +80,8 @@ namespace Smdn.IO.Streams {
     public void TestConstruct_BufferSizeOutOfRange(int bufferSize)
       => Assert.Throws<ArgumentOutOfRangeException>(() => new FilterStream(Stream.Null, EmptyFilters(), bufferSize));
 
-    [Test] public void TestWrite() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Write(Array.Empty<byte>(), 0, 0));
-    [Test] public void TestWriteAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(Array.Empty<byte>(), 0, 0));
+    [Test] public void TestWrite() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Write(_Array.Empty<byte>(), 0, 0));
+    [Test] public void TestWriteAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(_Array.Empty<byte>(), 0, 0));
     [Test] public void TestWriteByte() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).WriteByte(0x00));
     [Test] public void TestFlush() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Flush());
     [Test] public void TestFlushAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).FlushAsync());
@@ -212,7 +220,7 @@ namespace Smdn.IO.Streams {
           (2, 2, 3L, expected.Slice(1, 2)),
           (2, 2, 5L, expected.Slice(3, 2)),
           (4, 3, 8L, expected.Slice(5, 3)),
-          (8, 0, 8L, Array.Empty<byte>()),
+          (8, 0, 8L, _Array.Empty<byte>()),
         }) {
           var read = runAsync
             ? await stream.ReadAsync(buffer, 0, lengthToRead)

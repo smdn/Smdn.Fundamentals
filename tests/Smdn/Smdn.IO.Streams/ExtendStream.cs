@@ -3,6 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+#if NET45 || NET452
+using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
+#else
+using _Array = System.Array; // Array.Empty
+#endif
+
 namespace Smdn.IO.Streams {
   [TestFixture]
   public class ExtendStreamTests {
@@ -113,11 +119,11 @@ namespace Smdn.IO.Streams {
       Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream), nameof(stream.InnerStream));
       Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.LeaveInnerStreamOpen), nameof(stream.LeaveInnerStreamOpen));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(Array.Empty<byte>(), 0, 0), nameof(stream.Read));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Read(_Array.Empty<byte>(), 0, 0), nameof(stream.Read));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(Array.Empty<byte>(), 0, 0), nameof(stream.Write));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Flush(), nameof(stream.Flush));
       Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Seek(0, SeekOrigin.Begin), nameof(stream.Seek));
@@ -125,7 +131,9 @@ namespace Smdn.IO.Streams {
       Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Length); }, nameof(stream.Length));
       Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Position); }, nameof(stream.Length));
 
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       Assert.DoesNotThrow(() => stream.Close(), nameof(stream.Close));
+#endif
     }
 
     [Test]

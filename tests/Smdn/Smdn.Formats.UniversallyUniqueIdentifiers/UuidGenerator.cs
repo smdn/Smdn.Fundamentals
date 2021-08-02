@@ -24,7 +24,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
       PhysicalAddress nullNode = null;
 
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(ZeroTimeStampSource, ZeroClockSource, nullNode));
+      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(DateTimeOffset.Now, 0, nullNode));
 #endif
     }
 

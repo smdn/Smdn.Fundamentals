@@ -3,6 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
+#if NET45 || NET452
+using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
+#else
+using _Array = System.Array; // Array.Empty
+#endif
+
 namespace Smdn.IO.Streams {
   [TestFixture]
   public class PartialStreamTests {
@@ -149,11 +155,11 @@ namespace Smdn.IO.Streams {
       Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
       Assert.Throws<ObjectDisposedException>(() =>stream.ReadByte());
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(Array.Empty<byte>(), 0, 0));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Array.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.Read(_Array.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(_Array.Empty<byte>(), 0, 0));
       Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(Array.Empty<byte>(), 0, 0));
-      //Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(Array.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0));
+      //Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0));
 
       stream.Dispose();
     }
