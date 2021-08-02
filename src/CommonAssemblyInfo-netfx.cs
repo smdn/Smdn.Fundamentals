@@ -21,7 +21,7 @@
 
 using System.Reflection;
 
-[assembly: AssemblyCompany("smdn:総武ソフトウェア推進所")]
+[assembly: AssemblyCompany("smdn.jp (https://smdn.jp)")]
 [assembly: AssemblyCopyright(AssemblyInfo.Copyright)]
 [assembly: AssemblyTitle(AssemblyInfo.Name)]
 [assembly: AssemblyProduct(AssemblyInfo.Name + "-" + AssemblyInfo.Version + " (" + AssemblyInfo.TargetFramework + ")")]
