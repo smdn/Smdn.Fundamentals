@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Smdn.csproj" />
+    <ProjectReference Include="..\..\src\Smdn\Smdn.csproj" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
 </Project>

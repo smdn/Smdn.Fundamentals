@@ -13,7 +13,7 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj" />
-    <ProjectReference Include="..\src\Smdn.Xml.Xhtml.csproj" />
+    <ProjectReference Include="..\..\src\Smdn\Smdn.csproj" />
+    <ProjectReference Include="..\..\src\Smdn.Xml.Xhtml\Smdn.Xml.Xhtml.csproj" />
   </ItemGroup>
 </Project>
