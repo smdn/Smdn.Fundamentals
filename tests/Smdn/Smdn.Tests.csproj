@@ -1,5 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common\test\Common.Tests.props" />
+<!--
+SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="..\..\Common\test\Common.Tests.CodePages.props" />
 
   <PropertyGroup>
@@ -10,8 +13,5 @@
   <ItemGroup>
     <ProjectReference Include="..\src\Smdn.csproj" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-
-    <!-- XXX: required by MonoDevelop 7.8 unit test runner -->
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" Condition="'$(MSBuildRuntimeType)' == 'Mono'" />
   </ItemGroup>
 </Project>

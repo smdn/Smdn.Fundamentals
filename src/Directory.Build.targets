@@ -1,20 +1,21 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
 <Project>
   <PropertyGroup Label="metadata">
     <!-- NuGet -->
-    <Authors Condition=" '$(Authors)' == '' ">smdn</Authors>
-    <Owners Condition=" '$(Owners)' == '' ">$(Authors)</Owners>
-
     <PackageProjectUrl Condition=" '$(PackageProjectUrl)' == '' ">https://smdn.jp/</PackageProjectUrl>
-    <PackageIconUrl Condition=" '$(PackageIconUrl)' == '' ">https://smdn.jp/works/libs/Smdn.dll/Smdn-3.0_64x64.png</PackageIconUrl>
     <PackageTags Condition="!$(PackageTags.Contains('smdn.jp'))">smdn.jp;$(PackageTags)</PackageTags>
 
     <!-- AssemblyInfo -->
     <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(Title)</AssemblyTitle>
     <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(AssemblyName)</AssemblyTitle>
+    <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(VersionPrefix)</AssemblyVersion>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(Version)</AssemblyVersion>
     <InformationalVersion Condition=" '$(InformationalVersion)' == '' ">$(VersionPrefix)$(VersionSuffix) ($(TargetFramework))</InformationalVersion>
     <Product Condition=" '$(Product)' == '' ">$(AssemblyName)-$(InformationalVersion)</Product>
-    <Company>smdn:総武ソフトウェア推進所</Company>
+    <Company>smdn.jp (https://smdn.jp)</Company>
     <Copyright Condition=" '$(Copyright)' == '' ">Copyright © $(CopyrightYear) $(Authors)</Copyright>
   </PropertyGroup>
 </Project>

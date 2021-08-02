@@ -1,6 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common\test\Common.Tests.props" />
-
+<!--
+SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net471;netcoreapp2.1</TargetFrameworks>
     <RootNamespace>Smdn.Reflection</RootNamespace>
@@ -8,8 +10,5 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\Smdn.Reflection.csproj" />
-
-    <!-- XXX: required by MonoDevelop 7.8 unit test runner -->
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" Condition="'$(MSBuildRuntimeType)' == 'Mono'" />
   </ItemGroup>
 </Project>

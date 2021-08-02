@@ -1,6 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common\src\Common.props" />
-
+<!--
+SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net471;net461;net46;netstandard2.0;netstandard1.6</TargetFrameworks>
     <RootNamespace>Smdn.Xml.Xhtml</RootNamespace>
@@ -13,12 +15,10 @@
     <CopyrightYear>2009</CopyrightYear>
 
     <!-- NuGet -->
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <!-- <PackageTags></PackageTags> -->
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Smdn\src\Smdn.csproj" />
   </ItemGroup>
-
-  <Import Project="..\..\Common\src\Common.targets" />
 </Project>
