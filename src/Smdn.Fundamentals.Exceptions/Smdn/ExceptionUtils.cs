@@ -97,12 +97,20 @@ namespace Smdn {
                 var msgstr = line.Substring(7).Trim();
 
                 // dequote
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
                 if (msgid.StartsWith('"') && msgid.EndsWith('"'))
+#else
+                if (0 < msgid.Length && msgid[0] == '"' && msgid[msgid.Length - 1] == '"')
+#endif
                   msgid = msgid.Substring(1, msgid.Length - 2);
                 else
                   msgid = null; // invalid?
 
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
                 if (msgstr.StartsWith('"') && msgstr.EndsWith('"'))
+#else
+                if (0 < msgstr.Length && msgstr[0] == '"' && msgstr[msgstr.Length - 1] == '"')
+#endif
                   msgstr = msgstr.Substring(1, msgstr.Length - 2);
                 else
                   msgstr = null; // invalid?
