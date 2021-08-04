@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 using NUnit.Framework;
+using Smdn.Test.NUnit;
 
 namespace Smdn.Formats.Mime {
   [TestFixture]

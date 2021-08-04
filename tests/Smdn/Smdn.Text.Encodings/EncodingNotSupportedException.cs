@@ -1,5 +1,6 @@
 using System;
 using NUnit.Framework;
+using Smdn.Test.NUnit;
 
 namespace Smdn.Text.Encodings {
   [TestFixture]

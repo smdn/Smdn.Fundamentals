@@ -3,10 +3,19 @@ using System.Text;
 using NUnit.Framework;
 
 using Smdn.Text.Encodings;
+using Smdn.Test.NUnit;
 
 namespace Smdn.Formats.Mime {
   [TestFixture]
   public class MimeEncodingTests {
+    [SetUp]
+    public void SetUp()
+    {
+#if !NETFRAMEWORK
+      Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
+    }
+
     [Test]
     public void TestEncodeNoFolding()
     {

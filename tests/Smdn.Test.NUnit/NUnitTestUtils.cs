@@ -1,7 +1,3 @@
-#if !NETCOREAPP1_1
-#define SERIALIZATION
-#endif
-
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -11,8 +7,9 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using NUnit.Framework;
+using NUnitAssert = NUnit.Framework.Assert;
 
-namespace Smdn {
+namespace Smdn.Test.NUnit {
   public static partial class TestUtils {
     public static partial class Assert {
       public static void IsSerializableBinaryFormat<TSerializable>(TSerializable obj)
@@ -36,9 +33,9 @@ namespace Smdn {
         var deserializeFormatter = new BinaryFormatter();
         var deserialized = deserializeFormatter.Deserialize(stream);
 
-        NUnit.Framework.Assert.IsNotNull(deserialized);
-        NUnit.Framework.Assert.AreNotSame(obj, deserialized);
-        NUnit.Framework.Assert.IsInstanceOf<TSerializable>(deserialized);
+        NUnitAssert.IsNotNull(deserialized);
+        NUnitAssert.AreNotSame(obj, deserialized);
+        NUnitAssert.IsInstanceOf<TSerializable>(deserialized);
 
         if (testDeserializedObject != null)
           testDeserializedObject((TSerializable)deserialized);
@@ -59,7 +56,7 @@ namespace Smdn {
 
         sw.Stop();
 
-        NUnit.Framework.Assert.GreaterOrEqual(sw.Elapsed + mergin, expectedSpan);
+        NUnitAssert.GreaterOrEqual(sw.Elapsed + mergin, expectedSpan);
       }
 
       public static void Elapses(TimeSpan expectedSpanRangeMin, TimeSpan expectedSpanRangeMax, TestDelegate code)
@@ -70,8 +67,8 @@ namespace Smdn {
 
         sw.Stop();
 
-        NUnit.Framework.Assert.GreaterOrEqual(sw.Elapsed + mergin, expectedSpanRangeMin);
-        NUnit.Framework.Assert.LessOrEqual(sw.Elapsed - mergin, expectedSpanRangeMax);
+        NUnitAssert.GreaterOrEqual(sw.Elapsed + mergin, expectedSpanRangeMin);
+        NUnitAssert.LessOrEqual(sw.Elapsed - mergin, expectedSpanRangeMax);
       }
 
       public static void NotElapse(TimeSpan expectedSpan, TestDelegate code)
@@ -82,7 +79,7 @@ namespace Smdn {
 
         sw.Stop();
 
-        NUnit.Framework.Assert.LessOrEqual(sw.Elapsed - mergin, expectedSpan);
+        NUnitAssert.LessOrEqual(sw.Elapsed - mergin, expectedSpan);
       }
 
       public static TException ThrowsOrAggregates<TException>(TestDelegate code)
@@ -91,7 +88,7 @@ namespace Smdn {
         try {
           code();
 
-          NUnit.Framework.Assert.Fail("expected exception {0} not thrown", typeof(TException).FullName);
+          NUnitAssert.Fail("expected exception {0} not thrown", typeof(TException).FullName);
 
           return null;
         }
@@ -102,12 +99,12 @@ namespace Smdn {
           var aggregateException = ex as AggregateException;
 
           if (aggregateException == null) {
-            NUnit.Framework.Assert.IsInstanceOf<TException>(ex);
+            NUnitAssert.IsInstanceOf<TException>(ex);
 
             return ex as TException;
           }
           else {
-            NUnit.Framework.Assert.IsInstanceOf<TException>(aggregateException.Flatten().InnerException);
+            NUnitAssert.IsInstanceOf<TException>(aggregateException.Flatten().InnerException);
 
             return aggregateException.InnerException as TException;
           }

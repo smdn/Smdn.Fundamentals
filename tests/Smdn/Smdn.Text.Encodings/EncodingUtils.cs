@@ -1,10 +1,19 @@
 using System;
 using System.Text;
 using NUnit.Framework;
+using Smdn.Test.NUnit;
 
 namespace Smdn.Text.Encodings {
   [TestFixture]
   public class EncodingUtilsTests {
+    [SetUp]
+    public void SetUp()
+    {
+#if !NETFRAMEWORK
+      Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+#endif
+    }
+
     [Test]
     public void TestGetEncodingNameNull()
     {
