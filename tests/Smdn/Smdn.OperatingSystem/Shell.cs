@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2013 smdn <smdn@smdn.jp>
+// SPDX-License-Identifier: MIT
 using System;
 using NUnit.Framework;
 
