@@ -3,7 +3,7 @@ using System.Reflection;
 using NUnit.Framework;
 
 [TestFixture()]
-public class AssemblyInfoTests {
+public class AssemblyAttributesTests {
   [Test]
   public void Test()
   {
