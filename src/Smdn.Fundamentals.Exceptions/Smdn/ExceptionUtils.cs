@@ -62,7 +62,7 @@ namespace Smdn {
             return catalogues[languageName];
           }
           else {
-            var catalog = LoadCatalog(string.Concat("Smdn.resources.exceptions-", languageName, ".txt"));
+            var catalog = LoadCatalog(string.Concat("exceptions-", languageName, ".txt"));
 
             catalogues[languageName] = catalog;
 

@@ -20,6 +20,6 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <None Remove="resources\*" />
-    <EmbeddedResource Include="resources\exceptions-ja.txt" />
+    <EmbeddedResource Include="resources\exceptions-ja.txt" LogicalName="exceptions-ja.txt" />
   </ItemGroup>
 </Project>
