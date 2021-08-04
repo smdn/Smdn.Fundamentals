@@ -1,8 +1,8 @@
 using System.Text;
 
 namespace Smdn {
-  internal static partial class TestUtils {
-    internal static class Encodings {
+  public static partial class TestUtils {
+    public static class Encodings {
       static Encodings()
       {
         RegisterCodePagesEncodingProvider();

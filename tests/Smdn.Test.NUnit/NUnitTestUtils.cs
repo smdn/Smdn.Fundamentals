@@ -13,8 +13,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 
 namespace Smdn {
-  internal static partial class TestUtils {
-    internal static partial class Assert {
+  public static partial class TestUtils {
+    public static partial class Assert {
       public static void IsSerializableBinaryFormat<TSerializable>(TSerializable obj)
       /*where TSerializable : ISerializable*/
       {

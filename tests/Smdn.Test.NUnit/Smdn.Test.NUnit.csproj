@@ -1,0 +1,14 @@
+<!--
+SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net472;net45;netcoreapp3.1;netcoreapp2.1;netcoreapp1.1</TargetFrameworks>
+    <RootNamespace>Smdn.Test.NUnit</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" Condition="$(TargetFramework.StartsWith('netcoreapp'))" />
+  </ItemGroup>
+</Project>

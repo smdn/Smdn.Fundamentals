@@ -3,14 +3,13 @@ SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\Common\test\Common.Tests.CodePages.props" />
-
   <PropertyGroup>
     <TargetFrameworks>net471;net472;net47;net462;net46;net452;net45;netcoreapp3.1;netcoreapp2.1;netcoreapp1.1</TargetFrameworks>
     <RootNamespace>Smdn</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Smdn.Test.NUnit\Smdn.Test.NUnit.csproj" />
     <ProjectReference Include="..\..\src\Smdn\Smdn.csproj" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
   </ItemGroup>
