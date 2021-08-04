@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Smdn {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ExceptionUtils {
     // TODO: use gettext or .resx
     private static class Locale {
