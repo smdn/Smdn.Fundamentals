@@ -34,50 +34,55 @@ namespace Smdn {
       }
 
 #if LOCALIZE_MESSAGE
-      private static readonly Dictionary<string, Dictionary<string, string>> catalogues =
-        new Dictionary<string, Dictionary<string, string>>(StringComparer.Ordinal);
+      private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> catalogues =
+        new Dictionary<string, IReadOnlyDictionary<string, string>>(StringComparer.Ordinal);
 
       private static string InternalGetText(string msgid)
       {
         if (msgid == null)
           return null;
 
-        var table = GetCatalog(CultureInfo.CurrentUICulture);
-
-        if (table == null)
+        if (!TryGetCatalog(CultureInfo.CurrentUICulture, out var catalog))
           return msgid;
 
-        if (table.TryGetValue(msgid, out var msgstr))
+        if (catalog.TryGetValue(msgid, out var msgstr))
           return msgstr;
         else
           return msgid;
       }
 
-      private static Dictionary<string, string> GetCatalog(CultureInfo culture)
+      private static bool TryGetCatalog(CultureInfo culture, out IReadOnlyDictionary<string, string> catalog)
       {
+        catalog = default;
+
         var languageName = culture.TwoLetterISOLanguageName; // XXX: zh-CHT, etc.
 
         lock (catalogues) {
-          if (catalogues.ContainsKey(languageName)) {
-            return catalogues[languageName];
+          if (catalogues.TryGetValue(languageName, out catalog)) {
+            return true;
           }
-          else {
-            var catalog = LoadCatalog(string.Concat("exceptions-", languageName, ".txt"));
-
+          else if (TryLoadCatalog(string.Concat("exceptions-", languageName, ".txt"), out catalog)) {
             catalogues[languageName] = catalog;
-
-            return catalog;
+            return true;
           }
+
+          return false;
         }
       }
 
-      private static Dictionary<string, string> LoadCatalog(string resourceName)
+      private static bool TryLoadCatalog(string resourceName, out IReadOnlyDictionary<string, string> catalog)
       {
+        var catalogForLoad = new Dictionary<string, string>(StringComparer.Ordinal);
+
+        catalog = catalogForLoad; // empty catalog as default
+
         try {
           var executingAssembly = typeof(ExceptionUtils).GetTypeInfo().Assembly;
 
           using (var stream = executingAssembly.GetManifestResourceStream(resourceName)) {
-            var catalog = new Dictionary<string, string>(StringComparer.Ordinal);
+            if (stream is null)
+              return true; // resource stream not found, return empty catalog
+
             var reader = new StreamReader(stream, Encoding.UTF8);
 
             string msgid = null;
@@ -116,18 +121,18 @@ namespace Smdn {
                   msgstr = null; // invalid?
 
                 if (msgid != null && msgstr != null)
-                  catalog[msgid] = msgstr; // overwrite exist value
+                  catalogForLoad[msgid] = msgstr; // overwrite exist value
 
                 msgid = null;
               }
             } // for
 
-            return catalog;
+            return true;
           } // using stream
         }
         catch {
-          // ignore exceptions (file not found, parser error, etc.)
-          return null;
+          // ignore exceptions, return empty catalog (parser error, etc.)
+          return true;
         }
       }
 #endif
