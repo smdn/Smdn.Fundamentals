@@ -13,6 +13,24 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstruct()
+    {
+      Assert.AreEqual((UInt24)0xff0000,
+                      new UInt24(new byte[] { 0xff, 0x00, 0x00 }, 0, isBigEndian: true));
+      Assert.AreEqual((UInt24)0x0000cc,
+                      new UInt24(new byte[] { 0xff, 0x00, 0x00, 0xcc }, 1, isBigEndian: true));
+      Assert.AreEqual((UInt24)0x0000ff,
+                      new UInt24(new byte[] { 0xff, 0x00, 0x00 }, 0, isBigEndian: false));
+      Assert.AreEqual((UInt24)0xcc0000,
+                      new UInt24(new byte[] { 0xff, 0x00, 0x00, 0xcc }, 1, isBigEndian: false));
+
+      Assert.Throws<ArgumentNullException>(() => new UInt24(null, 0));
+      Assert.Throws<ArgumentOutOfRangeException>(() => new UInt24(new byte[] { 0x00, 0x00 }, -1));
+      Assert.Throws<ArgumentException>(() => new UInt24(new byte[] { 0x00, 0x00 }, 0));
+      Assert.Throws<ArgumentException>(() => new UInt24(new byte[] { 0x00, 0x00, 0x00 }, 1));
+    }
+
+    [Test]
     public void Test()
     {
       Assert.AreEqual((UInt24)(int)0xff00ff, (UInt24)0xff00ff);

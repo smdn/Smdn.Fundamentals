@@ -31,23 +31,32 @@ namespace Smdn {
     public static readonly UInt48 MinValue = (UInt48)minValue;
     public static readonly UInt48 Zero     = (UInt48)0;
 
-    internal UInt48(byte[] bytes, int startIndex, bool bigEndian)
+    public UInt48(byte[] value, int startIndex, bool isBigEndian = false)
     {
-      if (bigEndian) {
-        Byte0 = bytes[startIndex + 0];
-        Byte1 = bytes[startIndex + 1];
-        Byte2 = bytes[startIndex + 2];
-        Byte3 = bytes[startIndex + 3];
-        Byte4 = bytes[startIndex + 4];
-        Byte5 = bytes[startIndex + 5];
+      const int sizeOfUInt48 = 6;
+
+      if (value == null)
+        throw new ArgumentNullException(nameof(value));
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
+      if (value.Length - sizeOfUInt48 < startIndex)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), value, startIndex, sizeOfUInt48);
+
+      if (isBigEndian) {
+        Byte0 = value[startIndex + 0];
+        Byte1 = value[startIndex + 1];
+        Byte2 = value[startIndex + 2];
+        Byte3 = value[startIndex + 3];
+        Byte4 = value[startIndex + 4];
+        Byte5 = value[startIndex + 5];
       }
       else {
-        Byte0 = bytes[startIndex + 5];
-        Byte1 = bytes[startIndex + 4];
-        Byte2 = bytes[startIndex + 3];
-        Byte3 = bytes[startIndex + 2];
-        Byte4 = bytes[startIndex + 1];
-        Byte5 = bytes[startIndex + 0];
+        Byte0 = value[startIndex + 5];
+        Byte1 = value[startIndex + 4];
+        Byte2 = value[startIndex + 3];
+        Byte3 = value[startIndex + 2];
+        Byte4 = value[startIndex + 1];
+        Byte5 = value[startIndex + 0];
       }
     }
 

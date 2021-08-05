@@ -28,17 +28,26 @@ namespace Smdn {
     public static readonly UInt24 MinValue = (UInt24)minValue;
     public static readonly UInt24 Zero     = (UInt24)0;
 
-    internal UInt24(byte[] bytes, int startIndex, bool bigEndian)
+    public UInt24(byte[] value, int startIndex, bool isBigEndian = false)
     {
-      if (bigEndian) {
-        Byte0 = bytes[startIndex + 0];
-        Byte1 = bytes[startIndex + 1];
-        Byte2 = bytes[startIndex + 2];
+      const int sizeOfUInt24 = 3;
+
+      if (value == null)
+        throw new ArgumentNullException(nameof(value));
+      if (startIndex < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
+      if (value.Length - sizeOfUInt24 < startIndex)
+        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), value, startIndex, sizeOfUInt24);
+
+      if (isBigEndian) {
+        Byte0 = value[startIndex + 0];
+        Byte1 = value[startIndex + 1];
+        Byte2 = value[startIndex + 2];
       }
       else {
-        Byte0 = bytes[startIndex + 2];
-        Byte1 = bytes[startIndex + 1];
-        Byte2 = bytes[startIndex + 0];
+        Byte0 = value[startIndex + 2];
+        Byte1 = value[startIndex + 1];
+        Byte2 = value[startIndex + 0];
       }
     }
 
