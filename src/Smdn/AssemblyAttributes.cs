@@ -46,6 +46,12 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.PersistentCachedStream))]
 
 /*
+ * Smdn.Fundamentals.Streams.Extending
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ExtendStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ExtendStreamBase))]
+
+/*
  * Smdn.Fundamentals.Streams.Filtering
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Filtering.FilterStream))]
