@@ -6,6 +6,13 @@ using System.Runtime.CompilerServices;
 [assembly: System.CLSCompliant(true)]
 
 /*
+ * Smdn.Fundamentals.Encodings
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingNotSupportedException))]
+[assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingSelectionCallback))]
+[assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingUtils))]
+
+/*
  * Smdn.Fundamentals.Encodings.OctetEncoding
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.OctetEncoding))]
