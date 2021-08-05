@@ -36,9 +36,8 @@ namespace Smdn.Collections {
     public void TestConvertAll_ArgumentConverterNull()
     {
       IReadOnlyCollection<int> collection = new[] { 0, 1, 2, 3, 4 };
-      Converter<int, int> converter = null;
 
-      Assert.Throws<ArgumentNullException>(() => collection.ConvertAll(converter));
+      Assert.Throws<ArgumentNullException>(() => collection.ConvertAll<int, int>(converter: null));
     }
   }
 }

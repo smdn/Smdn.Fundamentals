@@ -28,7 +28,7 @@ namespace Smdn.Collections {
 
       if (count == 0)
 #if NET45 || NET452
-        return ArrayExtensions.Empty<T>();
+        return EmptyArray<T>.Instance;
 #else
         return Array.Empty<T>();
 #endif

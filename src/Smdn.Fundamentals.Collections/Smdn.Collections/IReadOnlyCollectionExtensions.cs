@@ -5,7 +5,14 @@ using System.Collections.Generic;
 
 namespace Smdn.Collections {
   public static class IReadOnlyCollectionExtensions {
-    public static List<TOutput> ConvertAll<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter)
+    public static List<TOutput> ConvertAll<TInput, TOutput>(
+      this IReadOnlyCollection<TInput> collection,
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+      Converter<TInput, TOutput> converter
+#else
+      Func<TInput, TOutput> converter
+#endif
+    )
     {
       if (collection == null)
         throw new ArgumentNullException(nameof(collection));
