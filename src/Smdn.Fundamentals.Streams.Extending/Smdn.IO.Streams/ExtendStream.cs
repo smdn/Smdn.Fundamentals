@@ -57,12 +57,20 @@ namespace Smdn.IO.Streams {
 #endif
     {
       if (!leavePrependStreamOpen)
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
         prependStream?.Close();
+#else
+        prependStream?.Dispose();
+#endif
 
       prependStream = null;
 
       if (!leaveAppendStreamOpen)
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
         appendStream?.Close();
+#else
+        appendStream?.Dispose();
+#endif
 
       appendStream = null;
 
