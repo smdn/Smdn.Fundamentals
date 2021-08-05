@@ -41,6 +41,14 @@ using System.Runtime.CompilerServices;
 /*
  * Smdn.Fundamentals.Streams.Caching
  */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ChunkedMemoryStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.NonClosingStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.PartialStream))]
+
+/*
+ * Smdn.Fundamentals.Streams.Caching
+ */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.CachedStreamBase))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.NonPersistentCachedStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.PersistentCachedStream))]
