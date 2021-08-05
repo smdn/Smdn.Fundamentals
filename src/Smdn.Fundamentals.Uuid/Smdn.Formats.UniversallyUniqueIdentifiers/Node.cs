@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Buffers;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
@@ -56,6 +55,17 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public PhysicalAddress ToPhysicalAddress()
     {
+      var buffer = new byte[6];
+
+      buffer[0] = N0;
+      buffer[1] = N1;
+      buffer[2] = N2;
+      buffer[3] = N3;
+      buffer[4] = N4;
+      buffer[5] = N5;
+
+      return new PhysicalAddress(buffer);
+#if false
       var buffer = ArrayPool<byte>.Shared.Rent(6);
 
       try {
@@ -66,11 +76,12 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
         buffer[4] = N4;
         buffer[5] = N5;
 
-        return new PhysicalAddress(buffer);
+        return new PhysicalAddress(buffer.AsSpan(0, 6)); // can not pass Span<byte>
       }
       finally {
         ArrayPool<byte>.Shared.Return(buffer);
       }
+#endif
     }
 #endif
 
