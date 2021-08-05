@@ -76,3 +76,11 @@ using System.Runtime.CompilerServices;
  */
 [assembly: TypeForwardedTo(typeof(Smdn.UInt24))]
 [assembly: TypeForwardedTo(typeof(Smdn.UInt48))]
+
+/*
+ * Smdn.Fundamentals.Uuid
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Uuid))]
+[assembly: TypeForwardedTo(typeof(Smdn.UuidVersion))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.UniversallyUniqueIdentifiers.Node))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.UniversallyUniqueIdentifiers.UuidGenerator))]
