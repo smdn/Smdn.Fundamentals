@@ -11,7 +11,7 @@ using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
 using _Array = System.Array; // Array.Empty
 #endif
 
-namespace Smdn.IO.Streams {
+namespace Smdn.IO.Streams.Extending {
   [TestFixture]
   public class ExtendStreamTests {
     [Test]

@@ -48,8 +48,8 @@ using System.Runtime.CompilerServices;
 /*
  * Smdn.Fundamentals.Streams.Extending
  */
-[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ExtendStream))]
-[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ExtendStreamBase))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Extending.ExtendStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Extending.ExtendStreamBase))]
 
 /*
  * Smdn.Fundamentals.Streams.Filtering

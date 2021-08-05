@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Smdn.IO;
 
-namespace Smdn.IO.Streams {
+namespace Smdn.IO.Streams.Extending {
   public class ExtendStream : ExtendStreamBase {
     protected override bool CanSeekPrependedData => prependStream?.CanSeek ?? true;
     protected override bool CanSeekAppendedData => appendStream?.CanSeek ?? true;
