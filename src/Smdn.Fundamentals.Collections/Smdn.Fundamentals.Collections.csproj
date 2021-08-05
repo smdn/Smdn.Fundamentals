@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard2.1;netstandard1.6</TargetFrameworks>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup Label="metadata">
+    <Title>Smdn.Fundamentals.Collections</Title>
+    <Description>Smdn.Fundamentals.Collections</Description>
+    <CopyrightYear>2021</CopyrightYear>
+
+    <!-- NuGet -->
+    <!--<PackageTags></PackageTags>-->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+  </ItemGroup>
+</Project>
