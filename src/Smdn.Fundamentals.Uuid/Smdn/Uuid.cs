@@ -299,15 +299,7 @@ namespace Smdn {
          * 
          *    o  Convert the resulting UUID to local byte order.
          */
-#if NETSTANDARD2_1
         return new Uuid(hash.AsSpan(0, 16), version, isBigEndian: true);
-#else
-        var uuid = new Uuid(hash, 0, isBigEndian: true);
-
-        SetRFC4122Fields(ref uuid, version);
-
-        return uuid;
-#endif
       }
       finally {
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -362,31 +354,8 @@ namespace Smdn {
        *       time_hi_and_version field to the 4-bit version number from
        *       Section 4.1.3.
        */
-#if NETSTANDARD2_1
       return new Uuid(randomNumber, UuidVersion.Version4);
-#else
-      var uuid = new Uuid(randomNumber);
-
-      SetRFC4122Fields(ref uuid, UuidVersion.Version4);
-
-      return uuid;
-#endif
     }
-
-#if !NETSTANDARD2_1
-    private static void SetRFC4122Fields(ref Uuid uuid, UuidVersion version)
-    {
-      unchecked {
-        //uuid.time_hi_and_version &= 0x0fff;
-        //uuid.time_hi_and_version |= (ushort)((int)version << 12);
-        uuid.time_hi_and_version = (ushort)((uuid.time_hi_and_version & 0x0fff) | ((int)version << 12));
-
-        //uuid.clock_seq_hi_and_reserved &= 0x3f;
-        //uuid.clock_seq_hi_and_reserved |= 0x80;
-        uuid.clock_seq_hi_and_reserved = (byte)((uuid.clock_seq_hi_and_reserved & 0x3f) | 0x80);
-      }
-    }
-#endif
 
     /*
      * 4.1.2. Layout and Byte Order
@@ -638,7 +607,6 @@ namespace Smdn {
       this.node                       = new Node(octets.Slice(10, 6));
     }
 
-#if NETSTANDARD2_1
     internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version, bool isBigEndian = true)
     {
       if (octets.Length != 16)
@@ -666,7 +634,6 @@ namespace Smdn {
       this.time_hi_and_version        = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
       this.clock_seq_hi_and_reserved  = RFC4122FieldsClockSeqHiAndReserved(clock_seq_hi_and_reserved);
     }
-#endif
 
     public Uuid(string uuid)
       : this()
