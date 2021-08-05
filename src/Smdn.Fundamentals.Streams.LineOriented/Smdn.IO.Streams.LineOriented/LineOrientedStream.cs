@@ -88,7 +88,11 @@ namespace Smdn.IO.Streams.LineOriented {
     {
       if (disposing) {
         if (!leaveStreamOpen)
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
           stream?.Close();
+#else
+          stream?.Dispose();
+#endif
       }
 
       stream = null;
