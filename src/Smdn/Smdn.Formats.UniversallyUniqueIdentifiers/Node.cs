@@ -19,7 +19,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #endif
 
       try {
-        MathUtils.GetRandomBytes(buffer);
+        Nonce.GetRandomBytes(buffer);
 
         buffer[0] |= 0b00000001; // multicast bit
 

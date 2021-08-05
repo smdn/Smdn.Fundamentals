@@ -155,24 +155,5 @@ namespace Smdn {
 
       Assert.AreEqual(1000000007L, MathUtils.NextPrimeNumber(1000000000L), "next of 1000000000");
     }
-
-    [Test]
-    public void TestGetRandomBytes1()
-    {
-      var bytes = MathUtils.GetRandomBytes(16);
-
-      Assert.AreEqual(16, bytes.Length);
-      Assert.AreNotEqual(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}, bytes);
-    }
-
-    [Test]
-    public void TestGetRandomBytes2()
-    {
-      var bytes = new byte[16];
-
-      MathUtils.GetRandomBytes(bytes);
-
-      Assert.AreNotEqual(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}, bytes);
-    }
   }
 }

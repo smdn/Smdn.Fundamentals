@@ -109,7 +109,7 @@ namespace Smdn.Security.Cryptography {
 
       foreach (var symmetricAlgorithm in symmetricAlgorithms) {
         symmetricAlgorithm.Padding = PaddingMode.Zeros;
-        symmetricAlgorithm.Key = MathUtils.GetRandomBytes(symmetricAlgorithm.KeySize / 8);
+        symmetricAlgorithm.Key = Nonce.GetRandomBytes(symmetricAlgorithm.KeySize / 8);
         symmetricAlgorithm.GenerateIV();
 
         symmetricAlgorithm.Clear();

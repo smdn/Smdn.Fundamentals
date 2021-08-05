@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Security.Cryptography;
-using System.Threading;
 
 namespace Smdn {
   public static class MathUtils {
@@ -153,27 +151,12 @@ namespace Smdn {
       }
     }
 
+    [Obsolete("use Smdn.Nonce.GetRandomBytes instead", error: true)]
     public static byte[] GetRandomBytes(int length)
-    {
-      var bytes = new byte[length];
+      => throw new NotImplementedException("use Smdn.Nonce.GetRandomBytes instead");
 
-      GetRandomBytes(bytes);
-
-      return bytes;
-    }
-
-    private static RandomNumberGenerator defaultRng = null;
-
+    [Obsolete("use Smdn.Nonce.GetRandomBytes instead", error: true)]
     public static void GetRandomBytes(byte[] bytes)
-    {
-      if (bytes == null)
-        throw new ArgumentNullException(nameof(bytes));
-
-      LazyInitializer.EnsureInitialized(ref defaultRng, () => RandomNumberGenerator.Create());
-
-      lock (defaultRng) {
-        defaultRng.GetBytes(bytes);
-      }
-    }
+      => throw new NotImplementedException("use Smdn.Nonce.GetRandomBytes instead");
   }
 }

@@ -67,7 +67,7 @@ namespace Smdn {
 
     private static int GetClock()
     {
-      var bytes = MathUtils.GetRandomBytes(2);
+      var bytes = Nonce.GetRandomBytes(2);
 
       return (bytes[0] << 8 | bytes[1]) & 0x3fff;
     }
@@ -323,7 +323,7 @@ namespace Smdn {
 
     public static Uuid CreateFromRandomNumber()
     {
-      return CreateFromRandomNumber(MathUtils.GetRandomBytes(16));
+      return CreateFromRandomNumber(Nonce.GetRandomBytes(16));
     }
 
     public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng)

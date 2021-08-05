@@ -77,7 +77,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #endif
 
         try {
-          MathUtils.GetRandomBytes(buffer);
+          Nonce.GetRandomBytes(buffer);
 
 #if NETSTANDARD2_1
           return BinaryPrimitives.ReadUInt16LittleEndian(buffer);
