@@ -46,6 +46,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.PersistentCachedStream))]
 
 /*
+ * Smdn.Fundamentals.Streams.Filtering
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.FilterStream))]
+
+/*
  * Smdn.Fundamentals.Streams.LineOriented
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.LineOrientedStream))]
