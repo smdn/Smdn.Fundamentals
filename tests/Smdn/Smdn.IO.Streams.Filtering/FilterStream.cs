@@ -13,7 +13,7 @@ using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
 using _Array = System.Array; // Array.Empty
 #endif
 
-namespace Smdn.IO.Streams {
+namespace Smdn.IO.Streams.Filtering {
   [TestFixture]
   public class FilterStreamTests {
     private static IEnumerable<FilterStream.Filter> EmptyFilters() => Enumerable.Empty<FilterStream.Filter>();

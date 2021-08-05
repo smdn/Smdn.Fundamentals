@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Smdn.IO.Streams {
+namespace Smdn.IO.Streams.Filtering {
   public partial class FilterStream : Stream {
     private Stream stream = null;
     private bool IsClosed => stream == null;

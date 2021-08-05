@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO.Streams {
+namespace Smdn.IO.Streams.Filtering {
   public partial class FilterStream : Stream {
     public interface IFilter {
       long Offset { get; }

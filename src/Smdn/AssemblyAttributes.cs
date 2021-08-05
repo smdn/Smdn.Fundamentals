@@ -48,7 +48,7 @@ using System.Runtime.CompilerServices;
 /*
  * Smdn.Fundamentals.Streams.Filtering
  */
-[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.FilterStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Filtering.FilterStream))]
 
 /*
  * Smdn.Fundamentals.Streams.LineOriented
