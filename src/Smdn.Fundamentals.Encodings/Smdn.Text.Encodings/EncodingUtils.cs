@@ -13,16 +13,38 @@ namespace Smdn.Text.Encodings {
 
     private static readonly char[] whiteSpaceChars = new[] {'-', '_', ' '};
 
+    private static string NormalizeEncodingName(string name)
+    {
+      var normalizedName = name.Trim(); // remove leading and trailing whitespaces (\x20, \n, \t, etc.)
+      var normalizedNameBuffer = new StringBuilder(normalizedName.Length);
+      var lastIndex = 0;
+
+      for (;;) {
+        var index = normalizedName.IndexOfAny(whiteSpaceChars, lastIndex);
+
+        if (index < 0) {
+          normalizedNameBuffer.Append(normalizedName.Substring(lastIndex));
+
+          if (normalizedName.Length == normalizedNameBuffer.Length)
+            return normalizedName;
+          else
+            return normalizedNameBuffer.ToString();
+        }
+        else {
+          normalizedNameBuffer.Append(normalizedName.Substring(lastIndex, index - lastIndex));
+
+          lastIndex = index + 1;
+        }
+      }
+    }
+
     public static Encoding GetEncoding(string name,
                                        EncodingSelectionCallback selectFallbackEncoding)
     {
       if (name == null)
         throw new ArgumentNullException(nameof(name));
 
-      // remove leading and trailing whitespaces (\x20, \n, \t, etc.)
-      name = name.Trim();
-
-      if (!encodingCollationTable.TryGetValue(name.RemoveChars(whiteSpaceChars), out var encodingName))
+      if (!encodingCollationTable.TryGetValue(NormalizeEncodingName(name), out var encodingName))
         encodingName = name;
 
       try {
