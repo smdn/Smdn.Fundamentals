@@ -6,8 +6,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Smdn.Text;
-
 namespace Smdn.IO.Streams.LineOriented {
   public class LineOrientedStream : Stream {
     protected const int DefaultBufferSize = 1024;
@@ -177,6 +175,8 @@ namespace Smdn.IO.Streams.LineOriented {
       if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
         return null;
 
+      const byte CR = 0x0d;
+      const byte LF = 0x0a;
       var newLineLength = 0;
       var bufCopyFrom = bufOffset;
       var eol = EolState.NotMatched;
@@ -188,11 +188,11 @@ namespace Smdn.IO.Streams.LineOriented {
       for (;;) {
         if (newLine == null) {
           // loose EOL (CR/LF/CRLF)
-          if (buffer[bufOffset] == Ascii.Octets.CR) {
+          if (buffer[bufOffset] == CR) {
             eol = EolState.CR;
             newLineLength = 1;
           }
-          else if (buffer[bufOffset] == Ascii.Octets.LF) {
+          else if (buffer[bufOffset] == LF) {
             eol = EolState.LF;
             newLineLength = 1;
           }
@@ -231,7 +231,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       var retLength = retCount + (bufOffset - bufCopyFrom);
 
-      if (eol == EolState.CR && buffer[bufOffset] == Ascii.Octets.LF) {
+      if (eol == EolState.CR && buffer[bufOffset] == LF) {
         // CRLF
         retLength++;
         newLineLength++;
