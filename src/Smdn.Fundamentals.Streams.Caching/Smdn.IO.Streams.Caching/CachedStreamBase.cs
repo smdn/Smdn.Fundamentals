@@ -81,7 +81,11 @@ namespace Smdn.IO.Streams.Caching {
 #endif
     {
       if (!leaveInnerStreamOpen)
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
         stream?.Close();
+#else
+        stream?.Dispose();
+#endif
 
       stream = null;
 
