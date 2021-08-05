@@ -80,7 +80,11 @@ namespace Smdn.IO.Streams {
 #endif
     {
       if (!leaveStreamOpen)
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
         stream?.Close();
+#else
+        stream?.Dispose();
+#endif
 
       stream = null;
     }
