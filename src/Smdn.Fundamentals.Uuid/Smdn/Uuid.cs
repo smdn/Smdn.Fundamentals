@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if NETSTANDARD2_1
 using System.Buffers.Binary;
-#endif
 using System.Globalization;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -12,8 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Smdn.Formats.UniversallyUniqueIdentifiers;
-using Smdn.IO.Binary;
-using Smdn.Text;
 
 namespace Smdn {
   /*
@@ -53,10 +49,10 @@ namespace Smdn {
     /*
      * Appendix C. Appendix C - Some Name Space IDs
      */
-    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
-    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
-    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
-    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, Endianness.BigEndian);
+    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
 
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public static Uuid NewUuid()
@@ -67,7 +63,9 @@ namespace Smdn {
 
     private static int GetClock()
     {
-      var bytes = Nonce.GetRandomBytes(2);
+      Span<byte> bytes = stackalloc byte[2];
+
+      Nonce.Fill(bytes);
 
       return (bytes[0] << 8 | bytes[1]) & 0x3fff;
     }
@@ -265,7 +263,7 @@ namespace Smdn {
          */
         var buffer = new byte[16 + name.Length];
 
-        namespaceId.GetBytes(buffer, 0, Endianness.BigEndian);
+        namespaceId.GetBytes(buffer, 0, asBigEndian: true);
 
         Buffer.BlockCopy(name, 0, buffer, 16, name.Length);
 
@@ -302,9 +300,9 @@ namespace Smdn {
          *    o  Convert the resulting UUID to local byte order.
          */
 #if NETSTANDARD2_1
-        return new Uuid(hash.AsSpan(0, 16), Endianness.BigEndian, version);
+        return new Uuid(hash.AsSpan(0, 16), version, isBigEndian: true);
 #else
-        var uuid = new Uuid(hash, 0, Endianness.BigEndian);
+        var uuid = new Uuid(hash, 0, isBigEndian: true);
 
         SetRFC4122Fields(ref uuid, version);
 
@@ -323,22 +321,26 @@ namespace Smdn {
 
     public static Uuid CreateFromRandomNumber()
     {
-      return CreateFromRandomNumber(Nonce.GetRandomBytes(16));
+      Span<byte> randomNumber = stackalloc byte[16];
+
+      Nonce.Fill(randomNumber);
+
+      return CreateFromRandomNumber(randomNumber);
     }
 
     public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng)
     {
-      if (rng == null)
-        throw new ArgumentNullException(nameof(rng));
+      Span<byte> randomNumber = stackalloc byte[16];
 
-      var randomNumber = new byte[16];
-
-      rng.GetBytes(randomNumber);
+      Nonce.Fill(randomNumber, rng ?? throw new ArgumentNullException(nameof(rng)));
 
       return CreateFromRandomNumber(randomNumber);
     }
 
     public static Uuid CreateFromRandomNumber(byte[] randomNumber)
+      => CreateFromRandomNumber((randomNumber ?? throw new ArgumentNullException(nameof(randomNumber))).AsSpan());
+
+    public static Uuid CreateFromRandomNumber(ReadOnlySpan<byte> randomNumber)
     {
       /*
        * 4.4. Algorithms for Creating a UUID from Truly Random or
@@ -349,9 +351,7 @@ namespace Smdn {
        *    o  Set all the other bits to randomly (or pseudo-randomly) chosen
        *       values.
        */
-      if (randomNumber == null)
-        throw new ArgumentNullException(nameof(randomNumber));
-      else if (randomNumber.Length != 16)
+      if (randomNumber.Length != 16)
         throw new ArgumentException("length must be 16", nameof(randomNumber));
 
       /*
@@ -597,40 +597,49 @@ namespace Smdn {
     }
 
     public Uuid(byte[] octets)
-      : this(octets, 0, Platform.Endianness)
+      : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(0, 16), isBigEndian: !BitConverter.IsLittleEndian)
     {
     }
 
-    public Uuid(byte[] octets, int index)
-      : this(octets, index, Platform.Endianness)
+    public Uuid(byte[] octets, bool isBigEndian)
+      : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(0, 16), isBigEndian)
     {
     }
 
-    public Uuid(byte[] octets, int index, Endianness endian)
+    public Uuid(byte[] octets, int index, bool isBigEndian = true)
+      : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(index, 16), isBigEndian)
+    {
+    }
+
+    public Uuid(ReadOnlySpan<byte> octets)
+      : this(octets, isBigEndian: !BitConverter.IsLittleEndian)
+    {
+    }
+
+    public Uuid(ReadOnlySpan<byte> octets, bool isBigEndian)
       : this()
     {
-      if (octets == null)
-        throw new ArgumentNullException(nameof(octets));
-      if (index < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
-      if (octets.Length - 16 < index)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(index), octets, index, 16);
+      if (octets.Length != 16)
+        throw new ArgumentException($"length must be 16", nameof(octets));
 
-      this.time_low                   = BinaryConversion.ToUInt32(octets, index + 0, endian);
-      this.time_mid                   = BinaryConversion.ToUInt16(octets, index + 4, endian);
-      this.time_hi_and_version        = BinaryConversion.ToUInt16(octets, index + 6, endian);
-      this.clock_seq_hi_and_reserved  = octets[index +  8];
-      this.clock_seq_low              = octets[index +  9];
-      this.node                       = new Node(octets.AsSpan(10, 6));
+      if (isBigEndian) {
+        this.time_low             = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
+        this.time_mid             = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4, 2));
+        this.time_hi_and_version  = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6, 2));
+      }
+      else {
+        this.time_low             = BinaryPrimitives.ReadUInt32LittleEndian(octets.Slice(0, 4));
+        this.time_mid             = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4, 2));
+        this.time_hi_and_version  = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6, 2));
+      }
+
+      this.clock_seq_hi_and_reserved  = octets[8];
+      this.clock_seq_low              = octets[9];
+      this.node                       = new Node(octets.Slice(10, 6));
     }
 
 #if NETSTANDARD2_1
-    internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version)
-      : this(octets, Platform.Endianness, version)
-    {
-    }
-
-    internal Uuid(ReadOnlySpan<byte> octets, Endianness endian, UuidVersion version)
+    internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version, bool isBigEndian = true)
     {
       if (octets.Length != 16)
         throw new ArgumentException("length must be exact 16", nameof(octets));
@@ -638,18 +647,15 @@ namespace Smdn {
       this.fields_low = 0;
       this.fields_high = 0;
 
-      if (endian == Endianness.LittleEndian) {
-        this.time_low            = BinaryPrimitives.ReadUInt32LittleEndian(octets);
-        this.time_mid            = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
-        this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6));
-      }
-      else if (endian == Endianness.BigEndian) {
+      if (isBigEndian) {
         this.time_low            = BinaryPrimitives.ReadUInt32BigEndian(octets);
         this.time_mid            = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4));
         this.time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6));
       }
       else {
-        throw new NotSupportedException($"unsupported endianness: {endian}");
+        this.time_low            = BinaryPrimitives.ReadUInt32LittleEndian(octets);
+        this.time_mid            = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
+        this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6));
       }
 
       this.clock_seq_hi_and_reserved  = octets[ 8];
@@ -688,14 +694,33 @@ namespace Smdn {
       if (fields[4].Length != 12)
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
 
-      try {
-        var n = Ascii.Hexadecimals.ToByteArray(fields[4]);
-
-        this.node = new Node(n);
-      }
-      catch (FormatException) {
+#if NETSTANDARD2_1_OR_GREATER
+      if (
+        !byte.TryParse(fields[4].AsSpan( 0, 2), NumberStyles.HexNumber, null, out var n0) ||
+        !byte.TryParse(fields[4].AsSpan( 2, 2), NumberStyles.HexNumber, null, out var n1) ||
+        !byte.TryParse(fields[4].AsSpan( 4, 2), NumberStyles.HexNumber, null, out var n2) ||
+        !byte.TryParse(fields[4].AsSpan( 6, 2), NumberStyles.HexNumber, null, out var n3) ||
+        !byte.TryParse(fields[4].AsSpan( 8, 2), NumberStyles.HexNumber, null, out var n4) ||
+        !byte.TryParse(fields[4].AsSpan(10, 2), NumberStyles.HexNumber, null, out var n5)
+      ) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
       }
+
+      this.node = new Node(n0, n1, n2, n3, n4, n5);
+#else
+      if (
+        !byte.TryParse(fields[4].Substring( 0, 2), NumberStyles.HexNumber, null, out var n0) ||
+        !byte.TryParse(fields[4].Substring( 2, 2), NumberStyles.HexNumber, null, out var n1) ||
+        !byte.TryParse(fields[4].Substring( 4, 2), NumberStyles.HexNumber, null, out var n2) ||
+        !byte.TryParse(fields[4].Substring( 6, 2), NumberStyles.HexNumber, null, out var n3) ||
+        !byte.TryParse(fields[4].Substring( 8, 2), NumberStyles.HexNumber, null, out var n4) ||
+        !byte.TryParse(fields[4].Substring(10, 2), NumberStyles.HexNumber, null, out var n5)
+      ) {
+        throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
+      }
+
+      this.node = new Node(n0, n1, n2, n3, n4, n5);
+#endif
     }
 
 #region "comparison"
@@ -821,11 +846,9 @@ namespace Smdn {
     }
 
     public void GetBytes(byte[] buffer, int startIndex)
-    {
-      GetBytes(buffer, startIndex, Platform.Endianness);
-    }
+      => GetBytes(buffer, startIndex, asBigEndian: !BitConverter.IsLittleEndian);
 
-    public void GetBytes(byte[] buffer, int startIndex, Endianness endian)
+    public void GetBytes(byte[] buffer, int startIndex, bool asBigEndian)
     {
       if (buffer == null)
         throw new ArgumentNullException(nameof(buffer));
@@ -834,9 +857,16 @@ namespace Smdn {
       if (buffer.Length - 16 < startIndex)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, 16);
 
-      BinaryConversion.GetBytes(time_low,            endian, buffer, startIndex + 0);
-      BinaryConversion.GetBytes(time_mid,            endian, buffer, startIndex + 4);
-      BinaryConversion.GetBytes(time_hi_and_version, endian, buffer, startIndex + 6);
+      if (asBigEndian) {
+        BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(startIndex + 0), time_low);
+        BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan(startIndex + 4), time_mid);
+        BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan(startIndex + 6), time_hi_and_version);
+      }
+      else {
+        BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(startIndex + 0), time_low);
+        BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(startIndex + 4), time_mid);
+        BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(startIndex + 6), time_hi_and_version);
+      }
 
       buffer[startIndex +  8] = clock_seq_hi_and_reserved;
       buffer[startIndex +  9] = clock_seq_low;
@@ -849,15 +879,13 @@ namespace Smdn {
     }
 
     public byte[] ToByteArray()
-    {
-      return ToByteArray(Platform.Endianness);
-    }
+      => ToByteArray(asBigEndian: !BitConverter.IsLittleEndian);
 
-    public byte[] ToByteArray(Endianness endian)
+    public byte[] ToByteArray(bool asBigEndian)
     {
       var bytes = new byte[16];
 
-      GetBytes(bytes, 0, endian);
+      GetBytes(bytes, 0, asBigEndian);
 
       return bytes;
     }

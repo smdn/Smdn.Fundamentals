@@ -1,9 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if NETSTANDARD2_1
 using System.Buffers;
-#endif
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
@@ -12,24 +10,13 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   public readonly struct Node : IFormattable {
     public static Node CreateRandom()
     {
-#if NETSTANDARD2_1
-      var buffer = ArrayPool<byte>.Shared.Rent(6);
-#else
-      var buffer = new byte[6];
-#endif
+      Span<byte> buffer = stackalloc byte[6];
 
-      try {
-        Nonce.GetRandomBytes(buffer);
+      Nonce.Fill(buffer);
 
-        buffer[0] |= 0b00000001; // multicast bit
+      buffer[0] |= 0b00000001; // multicast bit
 
-        return new Node(buffer);
-      }
-      finally {
-#if NETSTANDARD2_1
-        ArrayPool<byte>.Shared.Return(buffer);
-#endif
-      }
+      return new Node(buffer);
     }
 
     internal readonly byte N0;
@@ -69,11 +56,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
     public PhysicalAddress ToPhysicalAddress()
     {
-#if NETSTANDARD2_1
       var buffer = ArrayPool<byte>.Shared.Rent(6);
-#else
-      var buffer = new byte[6];
-#endif
 
       try {
         buffer[0] = N0;
@@ -86,9 +69,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
         return new PhysicalAddress(buffer);
       }
       finally {
-#if NETSTANDARD2_1
         ArrayPool<byte>.Shared.Return(buffer);
-#endif
       }
     }
 #endif

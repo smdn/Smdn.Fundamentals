@@ -216,9 +216,9 @@ namespace Smdn {
                       BitConverter.ToString(Uuid.RFC4122NamespaceDns.ToByteArray()));
 
       Assert.AreEqual(BitConverter.ToString(expectedBigEndian),
-                      BitConverter.ToString(Uuid.RFC4122NamespaceDns.ToByteArray(Endianness.BigEndian)));
+                      BitConverter.ToString(Uuid.RFC4122NamespaceDns.ToByteArray(asBigEndian: true)));
       Assert.AreEqual(BitConverter.ToString(expectedLittleEndian),
-                      BitConverter.ToString(Uuid.RFC4122NamespaceDns.ToByteArray(Endianness.LittleEndian)));
+                      BitConverter.ToString(Uuid.RFC4122NamespaceDns.ToByteArray(asBigEndian: false)));
     }
 
     [Test]
@@ -243,12 +243,12 @@ namespace Smdn {
         0xcc
       };
 
-      Uuid.RFC4122NamespaceDns.GetBytes(buffer, 1, Endianness.BigEndian);
+      Uuid.RFC4122NamespaceDns.GetBytes(buffer, 1, asBigEndian: true);
 
       CollectionAssert.AreEqual(new[] {0xcc, 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc},
                                 buffer);
 
-      Uuid.RFC4122NamespaceDns.GetBytes(buffer, 1, Endianness.LittleEndian);
+      Uuid.RFC4122NamespaceDns.GetBytes(buffer, 1, asBigEndian: false);
 
       CollectionAssert.AreEqual(new[] {0xcc, 0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc},
                                 buffer);

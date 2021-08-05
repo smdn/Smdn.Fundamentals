@@ -1,14 +1,7 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if NETSTANDARD2_1
-using System.Buffers;
 using System.Buffers.Binary;
-#else
-using Smdn.IO.Binary;
-#endif
-
-using Smdn;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   /*
@@ -70,26 +63,11 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     internal sealed class StaticValueClockSequenceSource : ClockSequenceSource {
       private static ushort GenerateRandomClock()
       {
-#if NETSTANDARD2_1
-        var buffer = ArrayPool<byte>.Shared.Rent(2);
-#else
-        var buffer = new byte[2];
-#endif
+        Span<byte> buffer = stackalloc byte[2];
 
-        try {
-          Nonce.GetRandomBytes(buffer);
+        Nonce.Fill(buffer);
 
-#if NETSTANDARD2_1
-          return BinaryPrimitives.ReadUInt16LittleEndian(buffer);
-#else
-          return BinaryConversion.ToUInt16(buffer, 0, Platform.Endianness);
-#endif
-        }
-        finally {
-#if NETSTANDARD2_1
-          ArrayPool<byte>.Shared.Return(buffer);
-#endif
-        }
+        return BinaryPrimitives.ReadUInt16LittleEndian(buffer);
       }
 
       private readonly ushort clockSequence;
