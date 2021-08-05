@@ -34,6 +34,13 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.ExceptionUtils))]
 
 /*
+ * Smdn.Fundamentals.Streams.LineOriented
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.LineOrientedStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.LooseLineOrientedStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.StrictLineOrientedStream))]
+
+/*
  * Smdn.Fundamentals.UInt24n
  */
 [assembly: TypeForwardedTo(typeof(Smdn.UInt24))]
