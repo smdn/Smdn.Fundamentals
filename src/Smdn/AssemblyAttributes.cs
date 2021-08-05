@@ -39,6 +39,13 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.MathUtils))]
 
 /*
+ * Smdn.Fundamentals.Streams.Caching
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.CachedStreamBase))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.NonPersistentCachedStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.PersistentCachedStream))]
+
+/*
  * Smdn.Fundamentals.Streams.LineOriented
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.LineOrientedStream))]
