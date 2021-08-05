@@ -3,16 +3,16 @@
 using System;
 using System.IO;
 
-using Smdn.Text;
-
 namespace Smdn.IO.Streams.LineOriented {
   public class StrictLineOrientedStream : LineOrientedStream {
+    private static readonly ReadOnlyMemory<byte> defaultNewLine = new[] { (byte)'\r', (byte)'\n' };
+
     public StrictLineOrientedStream(
       Stream stream,
       int bufferSize = DefaultBufferSize,
       bool leaveStreamOpen = DefaultLeaveStreamOpen
     )
-      : base(stream, Ascii.Octets.CRLFArray, bufferSize, leaveStreamOpen)
+      : base(stream, defaultNewLine.Span, bufferSize, leaveStreamOpen)
     {
     }
 
