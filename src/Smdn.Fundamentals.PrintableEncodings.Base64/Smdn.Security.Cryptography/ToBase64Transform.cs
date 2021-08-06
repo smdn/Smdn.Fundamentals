@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2017 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
+#if !(NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER)
 using System;
 using System.Security.Cryptography;
 

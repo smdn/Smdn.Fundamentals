@@ -27,7 +27,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes)
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes);
@@ -36,7 +36,7 @@ namespace Smdn.Formats {
 
     public static string GetEncodedString(byte[] bytes, int offset, int count)
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       return System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
 #else
       return System.Convert.ToBase64String(bytes, offset, count);
@@ -124,7 +124,7 @@ namespace Smdn.Formats {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-#if NET472
+#if NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       return new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write, leaveStreamOpen);
 #else
       var s = new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write);
@@ -141,7 +141,7 @@ namespace Smdn.Formats {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-#if NET472
+#if NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       return new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read, leaveStreamOpen);
 #else
       var s = new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read);
@@ -155,21 +155,10 @@ namespace Smdn.Formats {
 
     public static ICryptoTransform CreateFromBase64Transform(bool ignoreWhiteSpaces = true)
     {
-#if NETFRAMEWORK
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
 
       return new System.Security.Cryptography.FromBase64Transform(mode);
-#elif NETSTANDARD2_0 || NETSTANDARD2_1
-      if (Runtime.IsRunningOnNetCore/* && Runtime.Version < new Version(2, 2)*/) {
-        var mode = ignoreWhiteSpaces ? Smdn.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : Smdn.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
-
-        return new Smdn.Security.Cryptography.FromBase64Transform(mode);
-      }
-      else {
-        var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
-
-        return new System.Security.Cryptography.FromBase64Transform(mode);
-      }
 #else
       var mode = ignoreWhiteSpaces ? Smdn.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : Smdn.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
 
@@ -179,7 +168,7 @@ namespace Smdn.Formats {
 
     public static ICryptoTransform CreateToBase64Transform()
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       return new System.Security.Cryptography.ToBase64Transform();
 #else
       return new Smdn.Security.Cryptography.ToBase64Transform();
