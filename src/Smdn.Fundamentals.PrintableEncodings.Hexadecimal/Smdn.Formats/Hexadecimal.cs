@@ -22,21 +22,35 @@ namespace Smdn.Formats {
 
     public static ReadOnlySpan<byte> LowerCaseHexOctets => lowerCaseHexOctets.Span;
 
+    private const string upperCaseHexChars = "0123456789ABCDEF";
+
+    public static ReadOnlySpan<char> UpperCaseHexChars => upperCaseHexChars.AsSpan();
+
+    private const string lowerCaseHexChars = "0123456789abcdef";
+
+    public static ReadOnlySpan<char> LowerCaseHexChars => lowerCaseHexChars.AsSpan();
+
     public static bool TryEncodeUpperCase(byte data, Span<byte> destination, out int bytesEncoded)
       => TryEncode(data, destination, UpperCaseHexOctets, out bytesEncoded);
 
     public static bool TryEncodeLowerCase(byte data, Span<byte> destination, out int bytesEncoded)
       => TryEncode(data, destination, LowerCaseHexOctets, out bytesEncoded);
 
-    internal static bool TryEncode(byte data, Span<byte> destination, ReadOnlySpan<byte> octets, out int bytesEncoded)
+    public static bool TryEncodeUpperCase(byte data, Span<char> destination, out int charsEncoded)
+      => TryEncode(data, destination, UpperCaseHexChars, out charsEncoded);
+
+    public static bool TryEncodeLowerCase(byte data, Span<char> destination, out int charsEncoded)
+      => TryEncode(data, destination, LowerCaseHexChars, out charsEncoded);
+
+    internal static bool TryEncode<T>(byte data, Span<T> destination, ReadOnlySpan<T> hex, out int lengthEncoded)
     {
-      bytesEncoded = default;
+      lengthEncoded = default;
 
       if (destination.Length < 2)
         return false;
 
-      destination[bytesEncoded++] = octets[data >> 4];
-      destination[bytesEncoded++] = octets[data & 0xf];
+      destination[lengthEncoded++] = hex[data >> 4];
+      destination[lengthEncoded++] = hex[data & 0xf];
 
       return true;
     }

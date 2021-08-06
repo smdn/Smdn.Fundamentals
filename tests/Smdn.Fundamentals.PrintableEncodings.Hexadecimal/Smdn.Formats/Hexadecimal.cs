@@ -8,21 +8,35 @@ namespace Smdn.Formats {
   [TestFixture]
   public class HexadecimalTests {
     [Test]
-    public void TryEncodeUpperCase_DestinatioTooShort()
+    public void TryEncodeUpperCase_ToByteSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new byte[0], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new byte[1], out _));
     }
 
     [Test]
-    public void TryEncodeLowerCase_DestinatioTooShort()
+    public void TryEncodeLowerCase_ToByteSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new byte[0], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new byte[1], out _));
     }
 
     [Test]
-    public void TryEncodeUpperCase()
+    public void TryEncodeUpperCase_ToCharSpan_DestinatioTooShort()
+    {
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new char[0], out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new char[1], out _));
+    }
+
+    [Test]
+    public void TryEncodeLowerCase_ToCharSpan_DestinatioTooShort()
+    {
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new char[0], out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new char[1], out _));
+    }
+
+    [Test]
+    public void TryEncodeUpperCase_DestinationSpan()
     {
       var dest = new byte[4];
 
@@ -44,7 +58,7 @@ namespace Smdn.Formats {
     }
 
     [Test]
-    public void TryEncodeLowerCase()
+    public void TryEncodeLowerCase_DestinationSpan()
     {
       var dest = new byte[4];
 
@@ -63,6 +77,56 @@ namespace Smdn.Formats {
       Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0xAB, dest.AsSpan(2), out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeLowerCase)}");
       Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
       CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x61, 0x62}, $"#2 {dest}");
+    }
+
+    [TestCase(0x01, '0', '1')]
+    [TestCase(0x23, '2', '3')]
+    [TestCase(0x45, '4', '5')]
+    [TestCase(0x67, '6', '7')]
+    [TestCase(0x89, '8', '9')]
+    [TestCase(0xAB, 'A', 'B')]
+    [TestCase(0xCD, 'C', 'D')]
+    [TestCase(0xEF, 'E', 'F')]
+    public void TryEncodeUpperCase(byte data, char expectedHigh, char expectedLow)
+    {
+      var bytes = new byte[2];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(data, bytes, out var bytesEncoded), $"{nameof(Hexadecimal.TryEncodeUpperCase)} Span<byte>");
+      Assert.AreEqual(bytesEncoded, 2, $"{nameof(bytesEncoded)}");
+      Assert.AreEqual(bytes[0], (byte)expectedHigh, "bytes[0]");
+      Assert.AreEqual(bytes[1], (byte)expectedLow, "bytes[1]");
+
+      var chars = new char[2];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(data, chars, out var charsEncoded), $"{nameof(Hexadecimal.TryEncodeUpperCase)} Span<char>");
+      Assert.AreEqual(charsEncoded, 2, $"{nameof(bytesEncoded)}");
+      Assert.AreEqual(chars[0], expectedHigh, "chars[0]");
+      Assert.AreEqual(chars[1], expectedLow, "chars[1]");
+    }
+
+    [TestCase(0x01, '0', '1')]
+    [TestCase(0x23, '2', '3')]
+    [TestCase(0x45, '4', '5')]
+    [TestCase(0x67, '6', '7')]
+    [TestCase(0x89, '8', '9')]
+    [TestCase(0xAB, 'a', 'b')]
+    [TestCase(0xCD, 'c', 'd')]
+    [TestCase(0xEF, 'e', 'f')]
+    public void TryEncodeLowerCase(byte data, char expectedHigh, char expectedLow)
+    {
+      var bytes = new byte[2];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(data, bytes, out var bytesEncoded), $"{nameof(Hexadecimal.TryEncodeLowerCase)} Span<byte>");
+      Assert.AreEqual(bytesEncoded, 2, $"{nameof(bytesEncoded)}");
+      Assert.AreEqual(bytes[0], (byte)expectedHigh, "bytes[0]");
+      Assert.AreEqual(bytes[1], (byte)expectedLow, "bytes[1]");
+
+      var chars = new char[2];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(data, chars, out var charsEncoded), $"{nameof(Hexadecimal.TryEncodeLowerCase)} Span<char>");
+      Assert.AreEqual(charsEncoded, 2, $"{nameof(bytesEncoded)}");
+      Assert.AreEqual(chars[0], expectedHigh, "chars[0]");
+      Assert.AreEqual(chars[1], expectedLow, "chars[1]");
     }
 
     [Test]
