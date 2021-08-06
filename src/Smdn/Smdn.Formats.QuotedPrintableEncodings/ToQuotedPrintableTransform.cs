@@ -95,8 +95,10 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         if (quote) {
           // '=' 0x3d or non printable char
           outputBuffer[outputOffset++] = 0x3d; // '=' 0x3d
-          outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet >> 4];
-          outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet & 0xf];
+
+          Hexadecimal.TryEncodeUpperCase(octet, outputBuffer.AsSpan(outputOffset, 2), out var bytesEncoded);
+
+          outputOffset += bytesEncoded;
 
           ret += 3;
         }

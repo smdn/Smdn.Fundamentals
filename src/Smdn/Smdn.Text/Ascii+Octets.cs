@@ -22,34 +22,17 @@ namespace Smdn.Text {
         return (byte[])CRLFArray.Clone();
       }
 
-      internal static readonly byte[] LowerCaseHexOctetArray = new byte[] {
-        0x30, 0x31, 0x32, 0x33,
-        0x34, 0x35, 0x36, 0x37,
-        0x38, 0x39, 0x61, 0x62,
-        0x63, 0x64, 0x65, 0x66,
-      };
+      [Obsolete("use Smdn.Formats.Hexadecimal.LowerCaseHexOctets instead")]
+      public static IReadOnlyList<byte> LowerCaseHexOctets => Smdn.Formats.Hexadecimal.LowerCaseHexOctets.ToArray();
 
-      internal static readonly byte[] UpperCaseHexOctetArray = new byte[] {
-        0x30, 0x31, 0x32, 0x33,
-        0x34, 0x35, 0x36, 0x37,
-        0x38, 0x39, 0x41, 0x42,
-        0x43, 0x44, 0x45, 0x46,
-      };
+      [Obsolete("use Smdn.Formats.Hexadecimal.UpperCaseHexOctets instead")]
+      public static IReadOnlyList<byte> UpperCaseHexOctets => Smdn.Formats.Hexadecimal.UpperCaseHexOctets.ToArray();
 
-      public static IReadOnlyList<byte> LowerCaseHexOctets => LowerCaseHexOctetArray;
-      public static IReadOnlyList<byte> UpperCaseHexOctets => UpperCaseHexOctetArray;
+      [Obsolete("use Smdn.Formats.Hexadecimal.LowerCaseHexOctets instead")]
+      public static byte[] GetLowerCaseHexOctets() => Smdn.Formats.Hexadecimal.LowerCaseHexOctets.ToArray();
 
-      [Obsolete("use LowerCaseHexOctets instead")]
-      public static byte[] GetLowerCaseHexOctets()
-      {
-        return (byte[])LowerCaseHexOctetArray.Clone();
-      }
-
-      [Obsolete("use UpperCaseHexOctets instead")]
-      public static byte[] GetUpperCaseHexOctets()
-      {
-        return (byte[])UpperCaseHexOctetArray.Clone();
-      }
+      [Obsolete("use Smdn.Formats.Hexadecimal.UpperCaseHexOctets instead")]
+      public static byte[] GetUpperCaseHexOctets() => Smdn.Formats.Hexadecimal.UpperCaseHexOctets.ToArray();
 
       internal static readonly byte[] ToLowerCaseAsciiTableArray = new byte[] {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,

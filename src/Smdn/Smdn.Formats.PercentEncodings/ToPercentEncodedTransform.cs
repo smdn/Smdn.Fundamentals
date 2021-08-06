@@ -3,6 +3,7 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Formats;
 using Smdn.Text;
 
 namespace Smdn.Formats.PercentEncodings {
@@ -147,8 +148,10 @@ namespace Smdn.Formats.PercentEncodings {
           }
           else {
             outputBuffer[outputOffset++] = 0x25; // '%' 0x25
-            outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet >> 4];
-            outputBuffer[outputOffset++] = Ascii.Octets.UpperCaseHexOctetArray[octet & 0xf];
+
+            Hexadecimal.TryEncodeUpperCase(octet, outputBuffer.AsSpan(outputOffset, 2), out var bytesEncoded);
+
+            outputOffset += bytesEncoded;
 
             ret += 3;
           }

@@ -2,40 +2,45 @@
 // SPDX-License-Identifier: MIT
 using System;
 
+using Smdn.Formats;
+
 namespace Smdn.Text {
   public static partial class Ascii {
     public static class Hexadecimals {
       public static string ToLowerString(byte[] bytes)
       {
-        return new string(ConvertByteArrayToHex(bytes, Chars.LowerCaseHexCharArray));
+        return new string(ConvertByteArrayToHex<char>(bytes, Hexadecimal.TryEncodeLowerCase));
       }
 
       public static string ToUpperString(byte[] bytes)
       {
-        return new string(ConvertByteArrayToHex(bytes, Chars.UpperCaseHexCharArray));
+        return new string(ConvertByteArrayToHex<char>(bytes, Hexadecimal.TryEncodeUpperCase));
       }
 
       public static byte[] ToLowerByteArray(byte[] bytes)
       {
-        return ConvertByteArrayToHex(bytes, Ascii.Octets.LowerCaseHexOctetArray);
+        return ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeLowerCase);
       }
 
       public static byte[] ToUpperByteArray(byte[] bytes)
       {
-        return ConvertByteArrayToHex(bytes, Ascii.Octets.UpperCaseHexOctetArray);
+        return ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeUpperCase);
       }
 
-      private static T[] ConvertByteArrayToHex<T>(byte[] bytes, T[] table)
-      {
-        var hex = new T[bytes.Length * 2];
+      private delegate bool TryEncodeHex<T>(byte data, Span<T> destination, out int lengthEncoded);
 
-        for (int b = 0, c = 0; b < bytes.Length;) {
-          hex[c++] = table[bytes[b] >> 4];
-          hex[c++] = table[bytes[b] & 0xf];
-          b++;
+      private static T[] ConvertByteArrayToHex<T>(byte[] bytes, TryEncodeHex<T> tryEncode)
+      {
+        //if (bytes is null)
+        //  throw new ArgumentNullException(nameof(bytes));
+
+        var destination = new T[bytes.Length * 2];
+
+        for (var index = 0; index < bytes.Length; index++) {
+          tryEncode(bytes[index], destination.AsSpan(index * 2), out _);
         }
 
-        return hex;
+        return destination;
       }
 
       public static byte[] ToByteArray(string hexString)

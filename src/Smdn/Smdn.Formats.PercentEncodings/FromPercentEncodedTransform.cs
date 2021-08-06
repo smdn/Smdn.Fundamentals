@@ -3,6 +3,7 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Formats;
 using Smdn.Text;
 
 namespace Smdn.Formats.PercentEncodings {
@@ -89,23 +90,8 @@ namespace Smdn.Formats.PercentEncodings {
 
         if (bufferOffset == 3) {
           // decode
-          byte d = 0x00;
-
-          for (var i = 1; i < 3; i++) {
-            d <<= 4;
-
-            if (0x30 <= buffer[i] && buffer[i] <= 0x39)
-              // '0' 0x30 to '9' 0x39
-              d |= (byte)(buffer[i] - 0x30);
-            else if (0x41 <= buffer[i] && buffer[i] <= 0x46)
-              // 'A' 0x41 to 'F' 0x46
-              d |= (byte)(buffer[i] - 0x37);
-            else if (0x61 <= buffer[i] && buffer[i] <= 0x66)
-              // 'a' 0x61 to 'f' 0x66
-              d |= (byte)(buffer[i] - 0x57);
-            else
-              throw new FormatException("incorrect form");
-          }
+          if (!Hexadecimal.TryDecode(buffer.AsSpan(1, 2), out var d))
+            throw new FormatException("incorrect form");
 
           outputBuffer[outputOffset++] = d;
           ret++;
