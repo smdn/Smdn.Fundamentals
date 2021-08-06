@@ -49,6 +49,15 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Base64))]
 
 /*
+ * Smdn.Fundamentals.PrintableEncodings.ModifiedBase64
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.FromRFC2152ModifiedBase64Transform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.FromRFC3501ModifiedBase64Transform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.ModifiedUTF7))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.ToRFC2152ModifiedBase64Transform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.ToRFC3501ModifiedBase64Transform))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
