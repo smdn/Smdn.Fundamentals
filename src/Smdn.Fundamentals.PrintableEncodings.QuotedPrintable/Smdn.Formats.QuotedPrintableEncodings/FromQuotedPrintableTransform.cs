@@ -68,6 +68,8 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
+      const byte CR = 0x0d;
+      const byte LF = 0x0a;
       var ret = 0;
 
       while (0 < inputCount--) {
@@ -93,11 +95,11 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
         if (bufferOffset == 3) {
           // dequote
-          if (buffer[1] == Ascii.Octets.CR && buffer[2] == Ascii.Octets.LF) {
+          if (buffer[1] == CR && buffer[2] == LF) {
             // soft newline (CRLF)
             bufferOffset = 0;
           }
-          else if (buffer[1] == Ascii.Octets.CR || buffer[1] == Ascii.Octets.LF) {
+          else if (buffer[1] == CR || buffer[1] == LF) {
             // soft newline (CR, LF)
             if (buffer[2] == 0x3d) {
               bufferOffset = 1;

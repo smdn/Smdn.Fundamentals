@@ -75,8 +75,8 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         var quote = false;
 
         switch (octet) {
-          case Ascii.Octets.HT:
-          case Ascii.Octets.SP:
+          case 0x09: // HT
+          case 0x20: // SP
           case 0x3f: // '?'
           case 0x5f: // '_'
             quote = quoteWhitespaces;
