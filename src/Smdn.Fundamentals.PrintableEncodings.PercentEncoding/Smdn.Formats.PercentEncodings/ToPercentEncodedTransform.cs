@@ -36,13 +36,14 @@ namespace Smdn.Formats.PercentEncodings {
 
     private byte[] GetEscapeOctets(string str)
     {
+      const byte SP = (byte)' ';
       var octets = new byte[0x80 - 0x20];
       var count = 0;
 
-      octets[count++] = Ascii.Octets.SP;
+      octets[count++] = SP;
 
       foreach (var c in str) {
-        if (c != Ascii.Chars.SP)
+        if (c != SP)
           octets[count++] = (byte)c;
       }
 

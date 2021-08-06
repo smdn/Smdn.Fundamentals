@@ -65,6 +65,7 @@ namespace Smdn.Formats.PercentEncodings {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
+      const byte SP = (byte)' ';
       var ret = 0;
 
       while (0 < inputCount--) {
@@ -72,7 +73,7 @@ namespace Smdn.Formats.PercentEncodings {
 
         if (bufferOffset == 0) {
           if (decodePlusToSpace && octet == 0x2b) { // '+' 0x2b
-            outputBuffer[outputOffset++] = Ascii.Octets.SP;
+            outputBuffer[outputOffset++] = SP;
             ret++;
           }
           else if (octet == 0x25) { // '%' 0x25
