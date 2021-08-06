@@ -17,7 +17,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
     public FromRFC2152ModifiedBase64Transform(FromBase64TransformMode mode)
       : this(mode == FromBase64TransformMode.IgnoreWhiteSpaces)
     {
@@ -74,13 +74,17 @@ namespace Smdn.Formats.ModifiedBase64 {
           throw new FormatException("incorrect form");
 
         default: // case 4
-#if NET45 || NET452
-          return ArrayExtensions.Empty<byte>();
-#else
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
           return Array.Empty<byte>();
+#else
+          return emptyByteArray;
 #endif
       }
     }
+
+#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
+    private static readonly byte[] emptyByteArray = new byte[0];
+#endif
 
     private int count = 0;
     private ICryptoTransform fromBase64Transform;

@@ -13,7 +13,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
     public FromRFC3501ModifiedBase64Transform(FromBase64TransformMode mode)
       : base(mode)
     {

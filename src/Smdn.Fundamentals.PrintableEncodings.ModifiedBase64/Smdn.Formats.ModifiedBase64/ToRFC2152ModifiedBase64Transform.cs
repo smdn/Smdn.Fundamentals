@@ -3,12 +3,6 @@
 using System;
 using System.Security.Cryptography;
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
-using ToBase64Transform = System.Security.Cryptography.ToBase64Transform;
-#else
-using ToBase64Transform = Smdn.Security.Cryptography.ToBase64Transform;
-#endif
-
 namespace Smdn.Formats.ModifiedBase64 {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152

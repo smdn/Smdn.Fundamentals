@@ -3,10 +3,6 @@
 using System;
 using System.Security.Cryptography;
 
-#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
-using Smdn.Security.Cryptography;
-#endif
-
 namespace Smdn.Formats.ModifiedBase64 {
   // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
   // 5.1.3. Mailbox International Naming Convention
