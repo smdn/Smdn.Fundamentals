@@ -66,6 +66,15 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.ToPercentEncodedTransformMode))]
 
 /*
+ * Smdn.Fundamentals.PrintableEncodings.QuotedPrintable
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransformMode))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.QuotedPrintableEncoding))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransformMode))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
