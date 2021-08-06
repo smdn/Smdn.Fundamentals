@@ -17,6 +17,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.Singleton))]
 
 /*
+ * Smdn.Fundamentals.CryptoTransform
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Security.Cryptography.ICryptoTransformExtensions))]
+
+/*
  * Smdn.Fundamentals.Encodings
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingNotSupportedException))]
