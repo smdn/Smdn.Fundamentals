@@ -92,7 +92,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-#if NET472
+#if NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read, leaveStreamOpen);
 #else
       var s = new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
