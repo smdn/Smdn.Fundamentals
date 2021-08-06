@@ -58,6 +58,14 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.ToRFC3501ModifiedBase64Transform))]
 
 /*
+ * Smdn.Fundamentals.PrintableEncodings.PercentEncoding
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.FromPercentEncodedTransform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.PercentEncoding))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.ToPercentEncodedTransform))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.ToPercentEncodedTransformMode))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
