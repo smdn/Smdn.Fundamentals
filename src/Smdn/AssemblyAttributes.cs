@@ -44,6 +44,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.MathUtils))]
 
 /*
+ * Smdn.Fundamentals.PrintableEncodings.Base64
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Base64))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
