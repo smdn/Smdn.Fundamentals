@@ -132,11 +132,13 @@ namespace Smdn.Formats.Mime {
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "utf8");
       Assert.AreEqual(Encoding.UTF8, charset, "utf8");
 
+#if !NET5_0_OR_GREATER // SYSLIB0001
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?utf-7?Q?+byJbVw-abc+MEswag-123+MKswyg-?=", out encoding, out charset),
                       "utf7");
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "utf7");
       Assert.AreEqual(Encoding.UTF7, charset, "utf7");
+#endif
 
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?iso-2022-jp?q?=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B?=", out encoding, out charset),
@@ -186,11 +188,13 @@ namespace Smdn.Formats.Mime {
       Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "utf8");
       Assert.AreEqual(Encoding.UTF8, charset, "utf8");
 
+#if !NET5_0_OR_GREATER // SYSLIB0001
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?utf-7?b?K2J5SmJWdy1hYmMrTUVzd2FnLTEyMytNS3N3eWct?=", out encoding, out charset),
                       "utf7");
       Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "utf7");
       Assert.AreEqual(Encoding.UTF7, charset, "utf7");
+#endif
 
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?iso-2022-jp?B?GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC?=", out encoding, out charset),

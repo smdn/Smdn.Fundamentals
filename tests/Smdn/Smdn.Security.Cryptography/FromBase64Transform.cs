@@ -5,6 +5,14 @@ using System.Text;
 using NUnit.Framework;
 using Smdn.Formats;
 
+#if NET5_0_OR_GREATER
+using ExpectedInputBufferRangeException = System.ArgumentOutOfRangeException;
+using ExpectedOutputBufferRangeException = System.ArgumentOutOfRangeException;
+#else
+using ExpectedInputBufferRangeException = System.ArgumentException;
+using ExpectedOutputBufferRangeException = System.ArgumentException;
+#endif
+
 namespace Smdn.Security.Cryptography {
   [TestFixture]
   public class FromBase64TransformTests {
@@ -13,8 +21,13 @@ namespace Smdn.Security.Cryptography {
     {
       using (var t = Base64.CreateFromBase64Transform()) {
         Assert.IsTrue(t.CanReuseTransform);
+#if NET5_0_OR_GREATER
+        Assert.IsTrue(t.CanTransformMultipleBlocks);
+        Assert.AreEqual(4, t.InputBlockSize);
+#else
         Assert.IsFalse(t.CanTransformMultipleBlocks);
         Assert.AreEqual(1, t.InputBlockSize);
+#endif
         Assert.AreEqual(3, t.OutputBlockSize);
       }
     }
@@ -275,7 +288,7 @@ namespace Smdn.Security.Cryptography {
     public void TestTransformBlock_InputBufferInvalidLength()
     {
       using (var t = Base64.CreateFromBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[1], 0, 2, new byte[3], 0));
+        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformBlock(new byte[1], 0, 2, new byte[3], 0));
       }
     }
 
@@ -299,7 +312,7 @@ namespace Smdn.Security.Cryptography {
     public void TestTransformBlock_InputBufferRangeOverflow()
     {
       using (var t = Base64.CreateFromBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[1], 1, int.MaxValue, new byte[3], 0));
+        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformBlock(new byte[1], 1, int.MaxValue, new byte[3], 0));
       }
     }
 
@@ -315,7 +328,7 @@ namespace Smdn.Security.Cryptography {
     public void TestTransformBlock_OutputBufferInvalidOffset()
     {
       using (var t = Base64.CreateFromBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[4] { 0x41, 0x41, 0x41, 0x41 }, 0, 4, new byte[3], 4));
+        Assert.Throws<ExpectedOutputBufferRangeException>(() => t.TransformBlock(new byte[4] { 0x41, 0x41, 0x41, 0x41 }, 0, 4, new byte[3], 4));
       }
     }
 
@@ -385,7 +398,7 @@ namespace Smdn.Security.Cryptography {
     public void TestTransformFinalBlock_InputBufferInvalidLength()
     {
       using (var t = Base64.CreateFromBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformFinalBlock(new byte[1], 0, 2));
+        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformFinalBlock(new byte[1], 0, 2));
       }
     }
 
@@ -409,7 +422,7 @@ namespace Smdn.Security.Cryptography {
     public void TestTransformFinalBlock_InputBufferRangeOverflow()
     {
       using (var t = Base64.CreateFromBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformFinalBlock(new byte[1], 1, int.MaxValue));
+        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformFinalBlock(new byte[1], 1, int.MaxValue));
       }
     }
   }

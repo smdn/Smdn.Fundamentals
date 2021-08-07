@@ -43,7 +43,7 @@ namespace Smdn {
     [Test]
     public void TestStartsWith()
     {
-#if !(NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP3_1)
+#if !(NET5_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER)
       string nullString = null;
 
       Assert.Throws<ArgumentNullException>(() => nullString.StartsWith('a'));
@@ -74,7 +74,7 @@ namespace Smdn {
     [Test]
     public void TestEndsWith()
     {
-#if !(NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP3_1)
+#if !(NET5_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER)
       string nullString = null;
 
       Assert.Throws<ArgumentNullException>(() => nullString.EndsWith('a'));
