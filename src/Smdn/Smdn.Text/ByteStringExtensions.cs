@@ -16,36 +16,13 @@ namespace Smdn.Text {
       return ByteString.CreateImmutable(sequence.ToArray());
     }
 
+    [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual instead")]
     public static bool SequenceEqual(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
-    {
-      if (sequence.Length != value.Length)
-        return false;
+      => Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual(sequence, value);
 
-      var offset = 0;
-      var pos = sequence.Start;
-
-      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
-        if (memory.Length == 0)
-          continue; // XXX: never happen?
-
-        if (!value.Slice(offset, memory.Length).SequenceEqual(memory.Span))
-          return false;
-
-        offset += memory.Length;
-      }
-
-      return true;
-    }
-
+    [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith instead")]
     public static bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
-    {
-      if (value.Length == 0)
-        return true;
-      if (sequence.Length < value.Length)
-        return false;
-
-      return SequenceEqual(sequence.Slice(0, value.Length), value);
-    }
+      => Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith(sequence, value);
 
     public static unsafe byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
     {

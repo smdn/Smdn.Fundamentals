@@ -78,49 +78,5 @@ namespace Smdn.Text {
           prev.Next = this;
       }
     }
-
-    [TestCase(true)]
-    [TestCase(false)]
-    public void TestReadOnlySequence_SequenceEqual(bool singleSegment)
-    {
-      var str = CreateSequence("abcde", singleSegment);
-
-      Assert.IsTrue(str.SequenceEqual(CreateSpan("abcde")));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan("abcdef")));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan("abcd")));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan(string.Empty)));
-
-      Assert.AreEqual(str.IsSingleSegment, singleSegment);
-
-      str = CreateSequence(string.Empty, singleSegment);
-
-      Assert.IsTrue(str.SequenceEqual(CreateSpan(string.Empty)));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan("a")));
-    }
-
-    [TestCase(true)]
-    [TestCase(false)]
-    public void TestReadOnlySequence_StartsWith(bool singleSegment)
-    {
-      var str = CreateSequence("abcde", singleSegment);
-
-      Assert.IsTrue(str.StartsWith(CreateSpan("abc")));
-      Assert.IsTrue(str.StartsWith(CreateSpan("abcde")));
-      Assert.IsFalse(str.StartsWith(CreateSpan("abd")));
-      Assert.IsFalse(str.StartsWith(CreateSpan("xbc")));
-      Assert.IsFalse(str.StartsWith(CreateSpan("abcdef")));
-      Assert.IsTrue(str.StartsWith(CreateSpan(string.Empty)));
-
-      Assert.AreEqual(str.IsSingleSegment, singleSegment);
-    }
-
-    [Test]
-    public void TestReadOnlySequence_StartsWith_Empty()
-    {
-      var str = CreateSequence(string.Empty);
-
-      Assert.IsTrue(str.StartsWith(CreateSpan(string.Empty)));
-      Assert.IsFalse(str.StartsWith(CreateSpan("a")));
-    }
   }
 }
