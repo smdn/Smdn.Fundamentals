@@ -20,7 +20,6 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
-    <PackageReference Include="System.Buffers" Version="4.5.1" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1'))" />
     <PackageReference Include="System.Memory" Version="4.5.0" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1'))" />
   </ItemGroup>
 </Project>
