@@ -49,6 +49,15 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Base64))]
 
 /*
+ * Smdn.Fundamentals.PrintableEncodings.MimeEncoding
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.ContentTransferEncoding))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.ContentTransferEncodingMethod))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.MimeEncodedWordConverter))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.MimeEncoding))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.MimeEncodingMethod))]
+
+/*
  * Smdn.Fundamentals.PrintableEncodings.ModifiedBase64
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.FromRFC2152ModifiedBase64Transform))]
