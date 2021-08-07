@@ -213,5 +213,101 @@ namespace Smdn.Formats {
     {
       Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new byte[] {high, low}, out _), nameof(Hexadecimal.TryDecodeLowerCase));
     }
+
+    [TestCase((byte)'0', true, 0x0)]
+    [TestCase((byte)'1', true, 0x1)]
+    [TestCase((byte)'2', true, 0x2)]
+    [TestCase((byte)'3', true, 0x3)]
+    [TestCase((byte)'4', true, 0x4)]
+    [TestCase((byte)'5', true, 0x5)]
+    [TestCase((byte)'6', true, 0x6)]
+    [TestCase((byte)'7', true, 0x7)]
+    [TestCase((byte)'8', true, 0x8)]
+    [TestCase((byte)'9', true, 0x9)]
+    [TestCase((byte)'A', true, 0xA)]
+    [TestCase((byte)'B', true, 0xB)]
+    [TestCase((byte)'C', true, 0xC)]
+    [TestCase((byte)'D', true, 0xD)]
+    [TestCase((byte)'E', true, 0xE)]
+    [TestCase((byte)'F', true, 0xF)]
+    [TestCase((byte)('0' - 1), false, 0x0)]
+    [TestCase((byte)('9' + 1), false, 0x0)]
+    [TestCase((byte)('A' - 1), false, 0x0)]
+    [TestCase((byte)('F' + 1), false, 0x0)]
+    [TestCase((byte)'a', false, 0x0)]
+    [TestCase((byte)'f', false, 0x0)]
+    public void TryDecodeUpperCaseValue(byte data, bool canDecode, byte expectedDecodedValue)
+    {
+      Assert.AreEqual(canDecode, Hexadecimal.TryDecodeUpperCaseValue(data, out var decodedValue), nameof(canDecode));
+
+      if (canDecode)
+        Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+    }
+
+    [TestCase((byte)'0', true, 0x0)]
+    [TestCase((byte)'1', true, 0x1)]
+    [TestCase((byte)'2', true, 0x2)]
+    [TestCase((byte)'3', true, 0x3)]
+    [TestCase((byte)'4', true, 0x4)]
+    [TestCase((byte)'5', true, 0x5)]
+    [TestCase((byte)'6', true, 0x6)]
+    [TestCase((byte)'7', true, 0x7)]
+    [TestCase((byte)'8', true, 0x8)]
+    [TestCase((byte)'9', true, 0x9)]
+    [TestCase((byte)'a', true, 0xA)]
+    [TestCase((byte)'b', true, 0xB)]
+    [TestCase((byte)'c', true, 0xC)]
+    [TestCase((byte)'d', true, 0xD)]
+    [TestCase((byte)'e', true, 0xE)]
+    [TestCase((byte)'f', true, 0xF)]
+    [TestCase((byte)('0' - 1), false, 0x0)]
+    [TestCase((byte)('9' + 1), false, 0x0)]
+    [TestCase((byte)('a' - 1), false, 0x0)]
+    [TestCase((byte)('f' + 1), false, 0x0)]
+    [TestCase((byte)'A', false, 0x0)]
+    [TestCase((byte)'F', false, 0x0)]
+    public void TryDecodeLowerCaseValue(byte data, bool canDecode, byte expectedDecodedValue)
+    {
+      Assert.AreEqual(canDecode, Hexadecimal.TryDecodeLowerCaseValue(data, out var decodedValue), nameof(canDecode));
+
+      if (canDecode)
+        Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+    }
+
+    [TestCase((byte)'0', true, 0x0)]
+    [TestCase((byte)'1', true, 0x1)]
+    [TestCase((byte)'2', true, 0x2)]
+    [TestCase((byte)'3', true, 0x3)]
+    [TestCase((byte)'4', true, 0x4)]
+    [TestCase((byte)'5', true, 0x5)]
+    [TestCase((byte)'6', true, 0x6)]
+    [TestCase((byte)'7', true, 0x7)]
+    [TestCase((byte)'8', true, 0x8)]
+    [TestCase((byte)'9', true, 0x9)]
+    [TestCase((byte)'a', true, 0xA)]
+    [TestCase((byte)'b', true, 0xB)]
+    [TestCase((byte)'c', true, 0xC)]
+    [TestCase((byte)'d', true, 0xD)]
+    [TestCase((byte)'e', true, 0xE)]
+    [TestCase((byte)'f', true, 0xF)]
+    [TestCase((byte)'A', true, 0xA)]
+    [TestCase((byte)'B', true, 0xB)]
+    [TestCase((byte)'C', true, 0xC)]
+    [TestCase((byte)'D', true, 0xD)]
+    [TestCase((byte)'E', true, 0xE)]
+    [TestCase((byte)'F', true, 0xF)]
+    [TestCase((byte)('0' - 1), false, 0x0)]
+    [TestCase((byte)('9' + 1), false, 0x0)]
+    [TestCase((byte)('a' - 1), false, 0x0)]
+    [TestCase((byte)('f' + 1), false, 0x0)]
+    [TestCase((byte)('A' - 1), false, 0x0)]
+    [TestCase((byte)('F' + 1), false, 0x0)]
+    public void TryDecodeValue(byte data, bool canDecode, byte expectedDecodedValue)
+    {
+      Assert.AreEqual(canDecode, Hexadecimal.TryDecodeValue(data, out var decodedValue), nameof(canDecode));
+
+      if (canDecode)
+        Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+    }
   }
 }

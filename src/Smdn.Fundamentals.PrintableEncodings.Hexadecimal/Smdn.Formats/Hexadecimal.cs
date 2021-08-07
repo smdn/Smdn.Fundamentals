@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats {
   public static class Hexadecimal {
@@ -42,6 +43,7 @@ namespace Smdn.Formats {
     public static bool TryEncodeLowerCase(byte data, Span<char> destination, out int charsEncoded)
       => TryEncode(data, destination, LowerCaseHexChars, out charsEncoded);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool TryEncode<T>(byte data, Span<T> destination, ReadOnlySpan<T> hex, out int lengthEncoded)
     {
       lengthEncoded = default;
@@ -64,36 +66,51 @@ namespace Smdn.Formats {
     public static bool TryDecode(ReadOnlySpan<byte> data, out byte decodedData)
       => TryDecode(data, allowUpperCase: true, allowLowerCase: true, out decodedData);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool TryDecode(ReadOnlySpan<byte> data, bool allowUpperCase, bool allowLowerCase, out byte decodedData)
     {
       decodedData = 0;
 
       if (data.Length < 2)
         return false;
-
-      var high = data[0];
-
-      if (0x30 <= high && high <= 0x39) // '0' 0x30 to '9' 0x39
-        decodedData = (byte)((high - 0x30) << 4);
-      else if (allowUpperCase && 0x41 <= high && high <= 0x46) // 'A' 0x41 to 'F' 0x46
-        decodedData = (byte)((high - 0x37) << 4);
-      else if (allowLowerCase && 0x61 <= high && high <= 0x66) // 'a' 0x61 to 'f' 0x66
-        decodedData = (byte)((high - 0x57) << 4);
-      else
+      if (!TryDecodeValue(data[0], allowUpperCase, allowLowerCase, out var high))
+        return false;
+      if (!TryDecodeValue(data[1], allowUpperCase, allowLowerCase, out var low))
         return false;
 
-      var low = data[1];
-
-      if (0x30 <= low && low <= 0x39) // '0' 0x30 to '9' 0x39
-        decodedData |= (byte)(low - 0x30);
-      else if (allowUpperCase && 0x41 <= low && low <= 0x46) // 'A' 0x41 to 'F' 0x46
-        decodedData |= (byte)(low - 0x37);
-      else if (allowLowerCase && 0x61 <= low && low <= 0x66) // 'a' 0x61 to 'f' 0x66
-        decodedData |= (byte)(low - 0x57);
-      else
-        return false;
+      decodedData = (byte)((high << 4) | low);
 
       return true;
+    }
+
+    public static bool TryDecodeUpperCaseValue(byte upperCaseData, out byte decodedValue)
+      => TryDecodeValue(upperCaseData, allowUpperCase: true, allowLowerCase: false, out decodedValue);
+
+    public static bool TryDecodeLowerCaseValue(byte lowerCaseData, out byte decodedValue)
+      => TryDecodeValue(lowerCaseData, allowUpperCase: false, allowLowerCase: true, out decodedValue);
+
+    public static bool TryDecodeValue(byte data, out byte decodedValue)
+      => TryDecodeValue(data, allowUpperCase: true, allowLowerCase: true, out decodedValue);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    internal static bool TryDecodeValue(byte data, bool allowUpperCase, bool allowLowerCase, out byte decodedValue)
+    {
+      if (0x30 <= data && data <= 0x39) { // '0' 0x30 to '9' 0x39
+        decodedValue = (byte)(data - 0x30);
+        return true;
+      }
+      else if (allowUpperCase && 0x41 <= data && data <= 0x46) { // 'A' 0x41 to 'F' 0x46
+        decodedValue = (byte)(data - 0x37);
+        return true;
+      }
+      else if (allowLowerCase && 0x61 <= data && data <= 0x66) { // 'a' 0x61 to 'f' 0x66
+        decodedValue = (byte)(data - 0x57);
+        return true;
+      }
+      else {
+        decodedValue = default;
+        return false;
+      }
     }
   }
 }
