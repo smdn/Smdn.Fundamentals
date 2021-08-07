@@ -75,6 +75,13 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransformMode))]
 
 /*
+ * Smdn.Fundamentals.PrintableEncodings.UUEncoding
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecoder))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
