@@ -149,7 +149,7 @@ namespace Smdn.Formats.UUEncodings {
           var match = regexHeaderLine.Match(line.ToString().TrimEnd());
 
           if (match.Success) {
-            permissions = Convert.ToUInt32(match.Groups["perms"].Value, 16);
+            permissions = Convert.ToUInt32(match.Groups["perms"].Value, 8);
             fileName = match.Groups["filename"].Value;
           }
 

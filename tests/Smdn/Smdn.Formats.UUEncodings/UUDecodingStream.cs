@@ -22,7 +22,7 @@ namespace Smdn.Formats.UUEncodings {
 end";
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.AreEqual(0x0644, stream.Permissions, "Permissions");
+        Assert.AreEqual(Convert.ToUInt32("0644", 8), stream.Permissions, "Permissions");
         Assert.AreEqual("cat.txt", stream.FileName, "FileName");
         Assert.IsFalse(stream.EndOfFile, "EndOfFile");
 
@@ -104,7 +104,7 @@ end";
 
           Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 1), "Read");
           Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
-          Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(0x0644, stream.Permissions), "Permissions");
+          Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(Convert.ToUInt32("0644", 8), stream.Permissions), "Permissions");
           Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual("cat.txt", stream.FileName), "FileName");
           Assert.Throws<ObjectDisposedException>(() => Assert.IsTrue(stream.EndOfFile), "EndOfFile");
 
@@ -170,13 +170,13 @@ end
 
         Assert.IsTrue(stream.SeekToNextFile(), "SeekToNextFile cat1.txt");
         Assert.IsFalse(stream.EndOfFile, "EndOfFile cat1.txt");
-        Assert.AreEqual(0x001, stream.Permissions, "Permissions cat1.txt");
+        Assert.AreEqual(Convert.ToUInt32("0001", 8), stream.Permissions, "Permissions cat1.txt");
         Assert.AreEqual("cat1.txt", stream.FileName, "FileName cat1.txt");
         Assert.AreEqual((byte)'C', stream.ReadByte(), "ReadByte cat1.txt");
 
         Assert.IsTrue(stream.SeekToNextFile(), "SeekToNextFile cat2.txt");
         Assert.IsFalse(stream.EndOfFile, "EndOfFile cat2.txt");
-        Assert.AreEqual(0x002, stream.Permissions, "Permissions cat2.txt");
+        Assert.AreEqual(Convert.ToUInt32("0002", 8), stream.Permissions, "Permissions cat2.txt");
         Assert.AreEqual("cat2.txt", stream.FileName, "FileName cat2.txt");
         Assert.AreEqual((byte)'C', stream.ReadByte(), "ReadByte cat2.txt");
 
@@ -187,7 +187,7 @@ end
 
         Assert.IsTrue(stream.SeekToNextFile(), "SeekToNextFile cat3.txt");
         Assert.IsFalse(stream.EndOfFile, "EndOfFile cat3.txt");
-        Assert.AreEqual(0x003, stream.Permissions, "Permissions cat3.txt");
+        Assert.AreEqual(Convert.ToUInt32("0003", 8), stream.Permissions, "Permissions cat3.txt");
         Assert.AreEqual("cat3.txt", stream.FileName, "FileName cat3.txt");
         Assert.AreEqual((byte)'C', stream.ReadByte(), "ReadByte cat3.txt");
 
@@ -263,11 +263,11 @@ end
         var index = 0;
 
         foreach (var expected in new[] {
-          new {Permissions = 0u, FileName = (string)null},
-          new {Permissions = 0u, FileName = (string)null},
-          new {Permissions = 0u, FileName = (string)null},
-          new {Permissions = (uint)0x0777, FileName = "4.txt"},
-          new {Permissions = (uint)0x6745, FileName = "5.txt"},
+          new {Permissions = Convert.ToUInt32("0000", 8), FileName = (string)null},
+          new {Permissions = Convert.ToUInt32("0000", 8), FileName = (string)null},
+          new {Permissions = Convert.ToUInt32("0000", 8), FileName = (string)null},
+          new {Permissions = Convert.ToUInt32("0777", 8), FileName = "4.txt"},
+          new {Permissions = Convert.ToUInt32("6745", 8), FileName = "5.txt"},
         }) {
           Assert.AreEqual(expected.Permissions, stream.Permissions, "Permissions #{0}", index);
           Assert.AreEqual(expected.FileName, stream.FileName, "FileName #{0}", index);
@@ -290,7 +290,7 @@ end
 end".Replace("\r\n", "\n").Replace("\n", newline);
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.AreEqual(0x0644, stream.Permissions);
+        Assert.AreEqual(Convert.ToUInt32("0644", 8), stream.Permissions);
         Assert.AreEqual("cat.txt", stream.FileName);
 
         Assert.AreEqual((byte)'C', stream.ReadByte(), "C");

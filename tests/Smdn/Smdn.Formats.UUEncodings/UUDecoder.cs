@@ -72,7 +72,7 @@ extra text block
         var file = files[0];
 
         Assert.AreEqual("testimg.png", file.FileName, "extracted file name #1");
-        Assert.AreEqual(0x0644, file.Permissions, "extracted file permissions #1");
+        Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #1");
         Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #1");
 
         file.Dispose();
@@ -83,13 +83,13 @@ extra text block
         file = files[1];
 
         Assert.AreEqual("testimg2.png", file.FileName, "extracted file name #2");
-        Assert.AreEqual(0x0644, file.Permissions, "extracted file permissions #2");
+        Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #2");
         Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #2");
 
         file = files[2];
 
         Assert.AreEqual("cat.txt", file.FileName, "extracted file name #3");
-        Assert.AreEqual(0x0644, file.Permissions, "extracted file permissions #3");
+        Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #3");
         Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */,
                         file.Stream.ReadToEnd(), "extracted file content #3");
 
@@ -144,17 +144,17 @@ extra text block
         UUDecoder.ExtractFiles(stream, delegate(UUDecoder.FileEntry file) {
           if (fileCount == 0) {
             Assert.AreEqual("testimg.png", file.FileName, "extracted file name #1");
-            Assert.AreEqual(0x0644, file.Permissions, "extracted file permissions #1");
+            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #1");
             Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #1");
           }
           else if (fileCount == 1) {
             Assert.AreEqual("testimg2.png", file.FileName, "extracted file name #2");
-            Assert.AreEqual(0x0644, file.Permissions, "extracted file permissions #2");
+            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #2");
             Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #2");
           }
           else if (fileCount == 2) {
             Assert.AreEqual("cat.txt", file.FileName, "extracted file name #3");
-            Assert.AreEqual(0x0644, file.Permissions, "extracted file permissions #3");
+            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #3");
             Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */,
                             file.Stream.ReadToEnd(), "extracted file content #3");
           }
