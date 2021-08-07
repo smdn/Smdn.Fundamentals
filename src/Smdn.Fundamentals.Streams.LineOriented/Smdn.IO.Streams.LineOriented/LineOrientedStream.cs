@@ -143,8 +143,11 @@ namespace Smdn.IO.Streams.LineOriented {
       return buffer[bufOffset++];
     }
 
-    public byte[] ReadLine(bool keepEOL = true)
-      => ReadLineAsync().GetAwaiter().GetResult()?.GetLine(keepEOL)?.ToArray();
+    public Line? ReadLine()
+      => ReadLineAsync().GetAwaiter().GetResult();
+
+    public byte[] ReadLine(bool keepEOL)
+      => ReadLine()?.GetLine(keepEOL)?.ToArray();
 
     public readonly struct Line {
       public ReadOnlySequence<byte> SequenceWithNewLine { get; }

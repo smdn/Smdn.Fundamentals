@@ -115,13 +115,13 @@ namespace Smdn.IO.Streams.LineOriented {
       Assert.AreEqual(ArrayExtensions.Slice(data, 0, 5), ArrayExtensions.Slice(buffer, 0, 5));
       Assert.AreEqual(5L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 5, 1), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 5, 1), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(6L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 6, 2), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 6, 2), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(8L, stream.Position, "Position");
 
-      Assert.IsNull(stream.ReadLine());
+      Assert.IsNull(stream.ReadLine(keepEOL: true));
       Assert.AreEqual(8L, stream.Position, "Position");
     }
 
@@ -157,25 +157,25 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 2), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 2), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(2L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 2, 2), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 2, 2), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 4, 2), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 4, 2), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(6L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 6, 1), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 6, 1), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(7L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 7, 3), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 7, 3), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(10L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 10, 1), stream.ReadLine());
+      Assert.AreEqual(ArrayExtensions.Slice(data, 10, 1), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(11L, stream.Position, "Position");
 
-      Assert.IsNull(stream.ReadLine());
+      Assert.IsNull(stream.ReadLine(keepEOL: true));
       Assert.AreEqual(11L, stream.Position, "Position");
     }
 
