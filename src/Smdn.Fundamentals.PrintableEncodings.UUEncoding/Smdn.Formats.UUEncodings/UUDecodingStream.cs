@@ -1,13 +1,19 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Buffers;
 using System.IO;
+using System.Text; // [net5] EncodingExtensions.GetString(Encoding, ReadOnlySequence<Byte>)
 using System.Text.RegularExpressions;
 
-using Smdn.IO;
+#if !(NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER)
+using Smdn.Buffers;
+#endif
+using Smdn.Formats;
 using Smdn.IO.Streams.LineOriented;
 using Smdn.Security.Cryptography;
 using Smdn.Text;
+using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.UUEncodings {
   public class UUDecodingStream : Stream {
@@ -91,7 +97,7 @@ namespace Smdn.Formats.UUEncodings {
       this.transform = new UUDecodingTransform();
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -99,7 +105,11 @@ namespace Smdn.Formats.UUEncodings {
     {
       if (stream != null) {
         if (!leaveStreamOpen)
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
           stream.Close();
+#else
+          stream.Dispose();
+#endif
 
         stream = null;
       }
@@ -109,7 +119,7 @@ namespace Smdn.Formats.UUEncodings {
         transform = null;
       }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       base.Close();
 #else
       base.Dispose(disposing);
@@ -125,7 +135,7 @@ namespace Smdn.Formats.UUEncodings {
       return (state == State.DataLine);
     }
 
-    private static readonly Regex regexHeaderLine = new Regex(@"^begin\s+(?<perms>[0-7]{3,4})\s+(?<filename>.*)$", RegexOptions.Singleline);
+    private static readonly ReadOnlyMemory<byte> headerLinePrefix = new[] { (byte)'b', (byte)'e', (byte)'g', (byte)'i', (byte)'n', (byte)' ' };
 
     private void InternalSeekToNextFile()
     {
@@ -136,22 +146,80 @@ namespace Smdn.Formats.UUEncodings {
         return;
 
       for (;;) {
-        var l = stream.ReadLine(true);
+        var l = stream.ReadLine();
 
-        if (l == null) {
+        if (!l.HasValue) {
           state = State.EndOfStream;
           break;
         }
 
-        var line = ByteString.CreateImmutable(l);
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        var headerReader = new SequenceReader<byte>(l.Value.Sequence);
 
-        if (line.StartsWith("begin ")) {
-          var match = regexHeaderLine.Match(line.ToString().TrimEnd());
+        if (headerReader.IsNext(headerLinePrefix.Span, advancePast: true)) {
+          const byte SP = 0x20;
 
-          if (match.Success) {
-            permissions = Convert.ToUInt32(match.Groups["perms"].Value, 8);
-            fileName = match.Groups["filename"].Value;
+          if (!headerReader.TryReadTo(out ReadOnlySequence<byte> mode, SP, advancePastDelimiter: true))
+            throw new InvalidDataException("invalid header");
+
+          var modeReader = new SequenceReader<byte>(mode);
+
+          permissions = 0u;
+
+          for (var index = 0; index < mode.Length; index++) {
+            modeReader.TryRead(out var octal);
+
+            permissions <<= 3;
+
+            if (!Hexadecimal.TryDecodeValue(octal, out var p) || 0x8 <= p) {
+              permissions = 0u;
+              break;
+              //throw new InvalidDataException("invalid header");
+            }
+
+            permissions |= p;
           }
+
+          fileName = OctetEncoding.EightBits.GetString(
+#if NET5_0_OR_GREATER
+            headerReader.UnreadSequence
+#else
+            headerReader.Sequence.Slice(headerReader.Position)
+#endif
+          ).Trim();
+#else // #if !(NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER)
+        var line = l.Value.Sequence;
+
+        if (line.StartsWith(headerLinePrefix.Span)) {
+          const byte SP = 0x20;
+
+          var mode = line.Slice(headerLinePrefix.Span.Length);
+          var startOfFile = mode.PositionOf(SP);
+
+          if (!startOfFile.HasValue)
+            throw new InvalidDataException("invalid header");
+
+          var file = mode.Slice(startOfFile.Value).Slice(1/*SP*/);
+
+          mode = mode.Slice(0, startOfFile.Value);
+          permissions = 0u;
+
+          for (var index = 0; index < mode.Length; index++) {
+            permissions <<= 3;
+
+            var octal = mode.Slice(index).First.Span[0];
+
+            if (!Hexadecimal.TryDecodeValue(octal, out var p) || 0x8 <= p) {
+              permissions = 0u;
+              break;
+              //throw new InvalidDataException("invalid header");
+            }
+
+            permissions |= p;
+          }
+
+          fileName = OctetEncoding.EightBits.GetString(file).Trim();
+#endif
 
           state = State.DataLine;
           dataLineOffset = 0;

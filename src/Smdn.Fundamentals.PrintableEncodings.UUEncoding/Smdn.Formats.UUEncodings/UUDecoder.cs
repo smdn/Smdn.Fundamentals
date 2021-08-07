@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using Smdn.IO;
 using Smdn.IO.Streams;
 
 namespace Smdn.Formats.UUEncodings {
@@ -26,7 +25,11 @@ namespace Smdn.Formats.UUEncodings {
 
       public void Dispose()
       {
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
         stream?.Close();
+#else
+        stream?.Dispose();
+#endif
         stream = null;
       }
 

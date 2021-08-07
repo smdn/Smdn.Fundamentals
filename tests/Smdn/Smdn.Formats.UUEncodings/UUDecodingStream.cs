@@ -237,7 +237,7 @@ begin 1 1.txt
 `
 end
 
-begin 10000 2.txt                  
+begin 10000 2.txt   
 #0V%T
 `
 end
@@ -263,9 +263,9 @@ end
         var index = 0;
 
         foreach (var expected in new[] {
-          new {Permissions = Convert.ToUInt32("0000", 8), FileName = (string)null},
-          new {Permissions = Convert.ToUInt32("0000", 8), FileName = (string)null},
-          new {Permissions = Convert.ToUInt32("0000", 8), FileName = (string)null},
+          new {Permissions = Convert.ToUInt32("0001", 8), FileName = "1.txt"},
+          new {Permissions = Convert.ToUInt32("10000", 8), FileName = "2.txt"},
+          new {Permissions = Convert.ToUInt32("0000", 8), FileName = "3.txt"},
           new {Permissions = Convert.ToUInt32("0777", 8), FileName = "4.txt"},
           new {Permissions = Convert.ToUInt32("6745", 8), FileName = "5.txt"},
         }) {

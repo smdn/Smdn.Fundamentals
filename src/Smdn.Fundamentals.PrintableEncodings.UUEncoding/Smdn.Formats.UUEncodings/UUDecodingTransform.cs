@@ -58,6 +58,8 @@ namespace Smdn.Formats.UUEncodings {
       if (outputBuffer.Length - inputCount < outputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
+      const byte CR = 0x0d;
+      const byte LF = 0x0a;
       var ret = 0;
 
       for (;;) {
@@ -69,7 +71,7 @@ namespace Smdn.Formats.UUEncodings {
 
         var octet = inputBuffer[inputOffset++];
 
-        if (octet == Ascii.Octets.CR || octet == Ascii.Octets.LF) {
+        if (octet == CR || octet == LF) {
           /*
            * <newline>
            */
