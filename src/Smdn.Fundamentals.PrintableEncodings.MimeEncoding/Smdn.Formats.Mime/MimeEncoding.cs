@@ -61,7 +61,7 @@ namespace Smdn.Formats.Mime {
       return Encode(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
     }
 
-    private static readonly string mimeEncodingFoldingString = Ascii.Chars.CRLF + Ascii.Chars.HT;
+    private static readonly string mimeEncodingFoldingString = "\r\n\t";
     private static readonly byte[] mimeEncodingPostamble = new byte[] {0x3f, 0x3d}; // "?="
 
     private static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
