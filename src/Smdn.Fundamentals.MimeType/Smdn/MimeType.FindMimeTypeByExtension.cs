@@ -40,7 +40,11 @@ namespace Smdn {
       foreach (var line in File.ReadLines(mimeTypesFile)) {
         if (line.Length == 0)
           continue;
-        else if (line.StartsWith('#'))
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        if (line.StartsWith('#'))
+#else
+        if (0 < line.Length && line[0] == '#')
+#endif
           continue;
 
         var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
@@ -56,7 +60,11 @@ namespace Smdn {
     {
       var extension = Path.GetExtension(extensionOrPath);
 
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
       if (extension.StartsWith('.'))
+#else
+      if (0 < extension.Length && extension[0] == '.')
+#endif
         extension = extension.Substring(1);
 
       if (extension.Length == 0)
