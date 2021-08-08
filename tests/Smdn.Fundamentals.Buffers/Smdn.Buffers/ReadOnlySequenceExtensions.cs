@@ -13,7 +13,7 @@ namespace Smdn.Buffers {
     internal static ReadOnlySequence<byte> CreateSequence(string str, bool asSingleSegmentSequence = false)
     {
       if (asSingleSegmentSequence) {
-        return new ReadOnlySequence<byte>(Encoding.ASCII.GetBytes(str));
+        return new ReadOnlySequence<byte>(Smdn.Text.Encodings.OctetEncoding.EightBits.GetBytes(str));
       }
       else {
         StringSegment first = null;
@@ -42,7 +42,7 @@ namespace Smdn.Buffers {
     {
       public StringSegment(string substr, StringSegment prev)
       {
-        this.Memory = Encoding.ASCII.GetBytes(substr);
+        this.Memory = Smdn.Text.Encodings.OctetEncoding.EightBits.GetBytes(substr);
         this.RunningIndex = prev == null ? 0 : prev.RunningIndex + prev.Memory.Length;
 
         if (prev != null)
@@ -92,6 +92,24 @@ namespace Smdn.Buffers {
 
       Assert.IsTrue(str.StartsWith(CreateSpan(string.Empty)));
       Assert.IsFalse(str.StartsWith(CreateSpan("a")));
+    }
+
+    [TestCase("", true)]
+    [TestCase("", false)]
+    [TestCase("\0\r\n\t\x20\x80\xFF", true)]
+    [TestCase("\0\r\n\t\x20\x80\xFF", false)]
+    [TestCase("abcABC012", true)]
+    [TestCase("abcABC012", false)]
+    public void CreateString(string str, bool singleSegment)
+    {
+      Assert.AreEqual(str, CreateSequence(str, singleSegment).CreateString());
+    }
+
+    [Test]
+    public void CreateString_Empty()
+    {
+      Assert.IsEmpty(CreateSequence(string.Empty).CreateString());
+      Assert.IsEmpty(default(ReadOnlySequence<byte>).CreateString());
     }
   }
 }
