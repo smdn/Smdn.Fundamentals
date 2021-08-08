@@ -39,6 +39,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.ExceptionUtils))]
 
 /*
+ * Smdn.Fundamentals.FourCC
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.FourCC))]
+
+/*
  * Smdn.Fundamentals.Maths
  */
 [assembly: TypeForwardedTo(typeof(Smdn.MathUtils))]
