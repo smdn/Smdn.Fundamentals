@@ -24,36 +24,8 @@ namespace Smdn.Text {
     public static bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
       => Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith(sequence, value);
 
+    [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead", error: true)]
     public static unsafe byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
-    {
-      if (sequence.IsEmpty)
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
-        return Array.Empty<byte>();
-#else
-        return ArrayExtensions.Empty<byte>();
-#endif
-
-      var bytes = new byte[sequence.Length];
-
-      fixed (byte* b0 = bytes) {
-        byte* b = b0;
-
-        var position = sequence.Start;
-
-        while (sequence.TryGet(ref position, out var memory, advance: true)) {
-          var span = memory.Span;
-
-          fixed (byte* s0 = span) {
-            byte* s = s0;
-
-            for (var i = 0; i < span.Length; i++) {
-              *b++ = Ascii.Octets.ToUpperCaseAsciiTableArray[*s++];
-            }
-          }
-        }
-      }
-
-      return bytes;
-    }
+      => throw new NotSupportedException("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead");
   }
 }
