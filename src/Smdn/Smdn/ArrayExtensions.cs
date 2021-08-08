@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace Smdn {
   /// <summary>
   /// extension methods for System.Array
@@ -162,7 +161,7 @@ namespace Smdn {
 #endif
     }
 
-#if NET45 || NET452
+#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
     public static T[] Empty<T>()
     {
       return EmptyArray<T>.Instance;
@@ -184,10 +183,10 @@ namespace Smdn {
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
       if (count == 0 || array.Length == 0) {
-#if NET45 || NET452
-        return EmptyArray<T>.Instance;
-#else
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
         return Array.Empty<T>();
+#else
+        return EmptyArray<T>.Instance;
 #endif
       }
 

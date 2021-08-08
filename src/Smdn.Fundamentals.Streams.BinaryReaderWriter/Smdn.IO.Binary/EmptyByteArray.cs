@@ -3,7 +3,7 @@
 using System;
 
 namespace Smdn.IO.Binary {
-#if NET45 || NET452
+#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
   internal static class EmptyByteArray {
     public static readonly byte[] Instance = new byte[0];
   }

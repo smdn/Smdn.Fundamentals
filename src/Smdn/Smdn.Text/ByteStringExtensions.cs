@@ -27,10 +27,10 @@ namespace Smdn.Text {
     public static unsafe byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
     {
       if (sequence.IsEmpty)
-#if NET45 || NET452
-        return ArrayExtensions.Empty<byte>();
-#else
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
         return Array.Empty<byte>();
+#else
+        return ArrayExtensions.Empty<byte>();
 #endif
 
       var bytes = new byte[sequence.Length];

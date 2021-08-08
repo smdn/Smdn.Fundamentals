@@ -5,10 +5,10 @@ using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-#if NET45 || NET452
-using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
-#else
+#if NET46_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
 using _Array = System.Array; // Array.Empty
+#else
+using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
 #endif
 
 namespace Smdn.IO.Streams.Extending {

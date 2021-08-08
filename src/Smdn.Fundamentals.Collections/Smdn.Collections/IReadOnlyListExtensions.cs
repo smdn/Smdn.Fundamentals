@@ -27,10 +27,10 @@ namespace Smdn.Collections {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection(nameof(index), list, index, count);
 
       if (count == 0)
-#if NET45 || NET452
-        return EmptyArray<T>.Instance;
-#else
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
         return Array.Empty<T>();
+#else
+        return EmptyArray<T>.Instance;
 #endif
 
       if (list is T[] arr)

@@ -66,10 +66,10 @@ namespace Smdn.Text {
     {
 
       return new ByteString(
-#if NET45 || NET452
-                            new ArraySegment<byte>(ArrayExtensions.Empty<byte>()),
-#else
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
                             new ArraySegment<byte>(Array.Empty<byte>()),
+#else
+                            new ArraySegment<byte>(ArrayExtensions.Empty<byte>()),
 #endif
                             true
                            );
