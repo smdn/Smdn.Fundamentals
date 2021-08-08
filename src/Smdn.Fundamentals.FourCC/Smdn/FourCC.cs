@@ -150,7 +150,7 @@ namespace Smdn {
     public override string ToString()
     {
       unchecked {
-#if NETSTANDARD2_1
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         return String.Create(4, this.fourcc, (chars, val) => {
           chars[0] = (char)((val >> 24) & 0xff);
           chars[1] = (char)((val >> 16) & 0xff);
