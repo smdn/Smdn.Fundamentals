@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <ProjectReference Include="..\Smdn.Fundamentals.FourCC\Smdn.Fundamentals.FourCC.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamentals.Streams\Smdn.Fundamentals.Streams.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.UInt24n\Smdn.Fundamentals.UInt24n.csproj" />
   </ItemGroup>
 </Project>
