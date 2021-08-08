@@ -11,12 +11,12 @@ namespace Smdn.IO.Binary {
     }
 
     public BigEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen)
-      : base(stream, Endianness.BigEndian, leaveBaseStreamOpen)
+      : base(stream, asLittleEndian: false, leaveBaseStreamOpen)
     {
     }
 
     protected BigEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize)
-      : base(stream, Endianness.BigEndian, leaveBaseStreamOpen, storageSize)
+      : base(stream, asLittleEndian: false, leaveBaseStreamOpen, storageSize)
     {
     }
 

@@ -6,33 +6,32 @@ using System.IO;
 namespace Smdn.IO.Binary {
   public class BinaryReader : Smdn.IO.Binary.BinaryReaderBase {
     private const int defaultStorageSize = 8;
+    protected readonly byte[] Storage;
 
-    public Endianness Endianness {
-      get { return endianness; }
-    }
+    public bool IsLittleEndian { get; }
 
     public BinaryReader(Stream stream)
-      : this(stream, Platform.Endianness, false, defaultStorageSize)
+      : this(stream, BitConverter.IsLittleEndian, false, defaultStorageSize)
     {
     }
 
     public BinaryReader(Stream stream, bool leaveBaseStreamOpen)
-      : this(stream, Platform.Endianness, leaveBaseStreamOpen, defaultStorageSize)
+      : this(stream, BitConverter.IsLittleEndian, leaveBaseStreamOpen, defaultStorageSize)
     {
     }
 
-    protected BinaryReader(Stream baseStream, Endianness endianness, bool leaveBaseStreamOpen)
-      : this(baseStream, endianness, leaveBaseStreamOpen, defaultStorageSize)
+    protected BinaryReader(Stream baseStream, bool asLittleEndian, bool leaveBaseStreamOpen)
+      : this(baseStream, asLittleEndian, leaveBaseStreamOpen, defaultStorageSize)
     {
     }
 
-    protected BinaryReader(Stream baseStream, Endianness endianness, bool leaveBaseStreamOpen, int storageSize)
+    protected BinaryReader(Stream baseStream, bool asLittleEndian, bool leaveBaseStreamOpen, int storageSize)
       : base(baseStream, leaveBaseStreamOpen)
     {
       if (storageSize <= 0)
         throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(storageSize), storageSize);
 
-      this.endianness = endianness;
+      this.IsLittleEndian = asLittleEndian;
       this.Storage = new byte[storageSize];
     }
 
@@ -55,7 +54,7 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConversion.ToInt16(Storage, 0, endianness);
+      return BinaryConversion.ToInt16(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     [CLSCompliant(false)]
@@ -63,14 +62,14 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 2, true);
 
-      return BinaryConversion.ToUInt16(Storage, 0, endianness);
+      return BinaryConversion.ToUInt16(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     public override int ReadInt32()
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConversion.ToInt32(Storage, 0, endianness);
+      return BinaryConversion.ToInt32(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     [CLSCompliant(false)]
@@ -78,14 +77,14 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 4, true);
 
-      return BinaryConversion.ToUInt32(Storage, 0, endianness);
+      return BinaryConversion.ToUInt32(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     public override long ReadInt64()
     {
       ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConversion.ToInt64(Storage, 0, endianness);
+      return BinaryConversion.ToInt64(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     [CLSCompliant(false)]
@@ -93,21 +92,21 @@ namespace Smdn.IO.Binary {
     {
       ReadBytesUnchecked(Storage, 0, 8, true);
 
-      return BinaryConversion.ToUInt64(Storage, 0, endianness);
+      return BinaryConversion.ToUInt64(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     public virtual UInt24 ReadUInt24()
     {
       ReadBytesUnchecked(Storage, 0, 3, true);
 
-      return BinaryConversion.ToUInt24(Storage, 0, endianness);
+      return BinaryConversion.ToUInt24(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     public virtual UInt48 ReadUInt48()
     {
       ReadBytesUnchecked(Storage, 0, 6, true);
 
-      return BinaryConversion.ToUInt48(Storage, 0, endianness);
+      return BinaryConversion.ToUInt48(Storage, 0, asLittleEndian: IsLittleEndian);
     }
 
     public virtual FourCC ReadFourCC()
@@ -116,8 +115,5 @@ namespace Smdn.IO.Binary {
 
       return new FourCC(Storage, 0);
     }
-
-    private readonly Endianness endianness;
-    protected readonly byte[] Storage;
   }
 }

@@ -24,11 +24,6 @@ namespace Smdn.IO.Binary {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), @bytes, startIndex, count);
     }
 
-    private static Exception GetUnsupportedEndianException(Endianness endian)
-    {
-      return ExceptionUtils.CreateNotSupportedEnumValue(endian);
-    }
-
     public static Int16 ByteSwap(Int16 @value)
     {
       unchecked {
@@ -104,9 +99,9 @@ namespace Smdn.IO.Binary {
       return unchecked((Int16)ToUInt16BE(@value, startIndex));
     }
 
-    public static Int16 ToInt16(byte[] @value, int startIndex, Endianness endian)
+    public static Int16 ToInt16(byte[] @value, int startIndex, bool asLittleEndian)
     {
-      return unchecked((Int16)ToUInt16(@value, startIndex, endian));
+      return unchecked((Int16)ToUInt16(@value, startIndex, asLittleEndian));
     }
 
     [CLSCompliant(false)]
@@ -128,15 +123,10 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static UInt16 ToUInt16(byte[] @value, int startIndex, Endianness endian)
-    {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt16LE(@value, startIndex);
-        case Endianness.BigEndian:    return ToUInt16BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
+    public static UInt16 ToUInt16(byte[] @value, int startIndex, bool asLittleEndian)
+      => asLittleEndian
+        ? ToUInt16LE(@value, startIndex)
+        : ToUInt16BE(@value, startIndex);
 
     public static Int32 ToInt32LE(byte[] @value, int startIndex)
     {
@@ -148,9 +138,9 @@ namespace Smdn.IO.Binary {
       return unchecked((Int32)ToUInt32BE(@value, startIndex));
     }
 
-    public static Int32 ToInt32(byte[] @value, int startIndex, Endianness endian)
+    public static Int32 ToInt32(byte[] @value, int startIndex, bool asLittleEndian)
     {
-      return unchecked((Int32)ToUInt32(@value, startIndex, endian));
+      return unchecked((Int32)ToUInt32(@value, startIndex, asLittleEndian));
     }
 
     [CLSCompliant(false)]
@@ -176,15 +166,10 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static UInt32 ToUInt32(byte[] @value, int startIndex, Endianness endian)
-    {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt32LE(@value, startIndex);
-        case Endianness.BigEndian:    return ToUInt32BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
+    public static UInt32 ToUInt32(byte[] @value, int startIndex, bool asLittleEndian)
+      => asLittleEndian
+        ? ToUInt32LE(@value, startIndex)
+        : ToUInt32BE(@value, startIndex);
 
     public static Int64 ToInt64LE(byte[] @value, int startIndex)
     {
@@ -196,9 +181,9 @@ namespace Smdn.IO.Binary {
       return unchecked((Int64)ToUInt64BE(@value, startIndex));
     }
 
-    public static Int64 ToInt64(byte[] @value, int startIndex, Endianness endian)
+    public static Int64 ToInt64(byte[] @value, int startIndex, bool asLittleEndian)
     {
-      return unchecked((Int64)ToUInt64(@value, startIndex, endian));
+      return unchecked((Int64)ToUInt64(@value, startIndex, asLittleEndian));
     }
 
     [CLSCompliant(false)]
@@ -236,15 +221,10 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static UInt64 ToUInt64(byte[] @value, int startIndex, Endianness endian)
-    {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt64LE(@value, startIndex);
-        case Endianness.BigEndian:    return ToUInt64BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
+    public static UInt64 ToUInt64(byte[] @value, int startIndex, bool asLittleEndian)
+      => asLittleEndian
+        ? ToUInt64LE(@value, startIndex)
+        : ToUInt64BE(@value, startIndex);
 
     public static UInt24 ToUInt24LE(byte[] @value, int startIndex)
     {
@@ -260,15 +240,10 @@ namespace Smdn.IO.Binary {
       return new UInt24(@value, startIndex, true);
     }
 
-    public static UInt24 ToUInt24(byte[] @value, int startIndex, Endianness endian)
-    {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt24LE(@value, startIndex);
-        case Endianness.BigEndian: return ToUInt24BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
+    public static UInt24 ToUInt24(byte[] @value, int startIndex, bool asLittleEndian)
+      => asLittleEndian
+        ? ToUInt24LE(@value, startIndex)
+        : ToUInt24BE(@value, startIndex);
 
     public static UInt48 ToUInt48LE(byte[] @value, int startIndex)
     {
@@ -284,15 +259,10 @@ namespace Smdn.IO.Binary {
       return new UInt48(@value, startIndex, true);
     }
 
-    public static UInt48 ToUInt48(byte[] @value, int startIndex, Endianness endian)
-    {
-      switch (endian) {
-        case Endianness.LittleEndian: return ToUInt48LE(@value, startIndex);
-        case Endianness.BigEndian: return ToUInt48BE(@value, startIndex);
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
-    }
+    public static UInt48 ToUInt48(byte[] @value, int startIndex, bool asLittleEndian)
+      => asLittleEndian
+        ? ToUInt48LE(@value, startIndex)
+        : ToUInt48BE(@value, startIndex);
 
     public static void GetBytesLE(Int16 @value, byte[] bytes, int startIndex)
     {
@@ -304,9 +274,9 @@ namespace Smdn.IO.Binary {
       GetBytesBE(unchecked((UInt16)@value), bytes, startIndex);
     }
 
-    public static void GetBytes(Int16 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(Int16 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      GetBytes(unchecked((UInt16)@value), endian, bytes, startIndex);
+      GetBytes(unchecked((UInt16)@value), asLittleEndian, bytes, startIndex);
     }
 
     [CLSCompliant(false)]
@@ -332,14 +302,12 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static void GetBytes(UInt16 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(UInt16 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      if (asLittleEndian)
+        GetBytesLE(@value, bytes, startIndex);
+      else
+        GetBytesBE(@value, bytes, startIndex);
     }
 
     public static void GetBytesLE(Int32 @value, byte[] bytes, int startIndex)
@@ -352,9 +320,9 @@ namespace Smdn.IO.Binary {
       GetBytesBE(unchecked((UInt32)@value), bytes, startIndex);
     }
 
-    public static void GetBytes(Int32 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(Int32 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      GetBytes(unchecked((UInt32)@value), endian, bytes, startIndex);
+      GetBytes(unchecked((UInt32)@value), asLittleEndian, bytes, startIndex);
     }
 
     [CLSCompliant(false)]
@@ -384,14 +352,12 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static void GetBytes(UInt32 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(UInt32 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      if (asLittleEndian)
+        GetBytesLE(@value, bytes, startIndex);
+      else
+        GetBytesBE(@value, bytes, startIndex);
     }
 
     public static void GetBytesLE(Int64 @value, byte[] bytes, int startIndex)
@@ -404,9 +370,9 @@ namespace Smdn.IO.Binary {
       GetBytesBE(unchecked((UInt64)@value), bytes, startIndex);
     }
 
-    public static void GetBytes(Int64 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(Int64 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      GetBytes(unchecked((UInt64)@value), endian, bytes, startIndex);
+      GetBytes(unchecked((UInt64)@value), asLittleEndian, bytes, startIndex);
     }
 
     [CLSCompliant(false)]
@@ -444,14 +410,12 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static void GetBytes(UInt64 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(UInt64 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian:    GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      if (asLittleEndian)
+        GetBytesLE(@value, bytes, startIndex);
+      else
+        GetBytesBE(@value, bytes, startIndex);
     }
 
     public static byte[] GetBytesLE(Int16 @value)
@@ -472,11 +436,11 @@ namespace Smdn.IO.Binary {
       return bytes;
     }
 
-    public static byte[] GetBytes(Int16 @value, Endianness endian)
+    public static byte[] GetBytes(Int16 @value, bool asLittleEndian)
     {
       var bytes = new byte[2];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -502,11 +466,11 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static byte[] GetBytes(UInt16 @value, Endianness endian)
+    public static byte[] GetBytes(UInt16 @value, bool asLittleEndian)
     {
       var bytes = new byte[2];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -529,11 +493,11 @@ namespace Smdn.IO.Binary {
       return bytes;
     }
 
-    public static byte[] GetBytes(Int32 @value, Endianness endian)
+    public static byte[] GetBytes(Int32 @value, bool asLittleEndian)
     {
       var bytes = new byte[4];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -559,11 +523,11 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static byte[] GetBytes(UInt32 @value, Endianness endian)
+    public static byte[] GetBytes(UInt32 @value, bool asLittleEndian)
     {
       var bytes = new byte[4];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -586,11 +550,11 @@ namespace Smdn.IO.Binary {
       return bytes;
     }
 
-    public static byte[] GetBytes(Int64 @value, Endianness endian)
+    public static byte[] GetBytes(Int64 @value, bool asLittleEndian)
     {
       var bytes = new byte[8];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -616,11 +580,11 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public static byte[] GetBytes(UInt64 @value, Endianness endian)
+    public static byte[] GetBytes(UInt64 @value, bool asLittleEndian)
     {
       var bytes = new byte[8];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -651,14 +615,12 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    public static void GetBytes(UInt24 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(UInt24 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian: GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      if (asLittleEndian)
+        GetBytesLE(@value, bytes, startIndex);
+      else
+        GetBytesBE(@value, bytes, startIndex);
     }
 
     public static void GetBytesLE(UInt48 @value, byte[] bytes, int startIndex)
@@ -693,14 +655,12 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    public static void GetBytes(UInt48 @value, Endianness endian, byte[] bytes, int startIndex)
+    public static void GetBytes(UInt48 @value, bool asLittleEndian, byte[] bytes, int startIndex)
     {
-      switch (endian) {
-        case Endianness.LittleEndian: GetBytesLE(@value, bytes, startIndex); break;
-        case Endianness.BigEndian: GetBytesBE(@value, bytes, startIndex); break;
-        default:
-          throw GetUnsupportedEndianException(endian);
-      }
+      if (asLittleEndian)
+        GetBytesLE(@value, bytes, startIndex);
+      else
+        GetBytesBE(@value, bytes, startIndex);
     }
 
     public static byte[] GetBytesLE(UInt24 @value)
@@ -721,11 +681,11 @@ namespace Smdn.IO.Binary {
       return bytes;
     }
 
-    public static byte[] GetBytes(UInt24 @value, Endianness endian)
+    public static byte[] GetBytes(UInt24 @value, bool asLittleEndian)
     {
       var bytes = new byte[3];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
@@ -748,11 +708,11 @@ namespace Smdn.IO.Binary {
       return bytes;
     }
 
-    public static byte[] GetBytes(UInt48 @value, Endianness endian)
+    public static byte[] GetBytes(UInt48 @value, bool asLittleEndian)
     {
       var bytes = new byte[6];
 
-      GetBytes(@value, endian, bytes, 0);
+      GetBytes(@value, asLittleEndian, bytes, 0);
 
       return bytes;
     }
