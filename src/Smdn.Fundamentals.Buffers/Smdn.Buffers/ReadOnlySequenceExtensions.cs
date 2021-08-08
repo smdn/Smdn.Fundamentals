@@ -27,6 +27,36 @@ namespace Smdn.Buffers {
       return true;
     }
 
+    public static bool SequenceEqualIgnoreCase(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
+    {
+      if (sequence.Length != value.Length)
+        return false;
+
+      var pos = sequence.Start;
+
+      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
+        if (memory.Length == 0)
+          continue; // XXX: never happen?
+
+        for (var i = 0; i < memory.Length; i++) {
+          var comparand0 = memory.Span[i];
+          var comparand1 = value[i];
+
+          if ((byte)'A' <= comparand0 && comparand0 <= (byte)'Z')
+            comparand0 += 0x20;
+          if ((byte)'A' <= comparand1 && comparand1 <= (byte)'Z')
+            comparand1 += 0x20;
+
+          if (comparand0 != comparand1)
+            return false;
+        }
+
+        value = value.Slice(memory.Length);
+      }
+
+      return true;
+    }
+
     public static bool StartsWith<T>(this ReadOnlySequence<T> sequence, ReadOnlySpan<T> value)
       where T : IEquatable<T>
     {

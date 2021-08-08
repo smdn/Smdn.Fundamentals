@@ -69,6 +69,34 @@ namespace Smdn.Buffers {
       Assert.IsFalse(str.SequenceEqual(CreateSpan("a")));
     }
 
+    [TestCase(true,  "ABCXYZ", "ABCXYZ", true)]
+    [TestCase(false, "ABCXYZ", "ABCXYZ", true)]
+    [TestCase(true,  "abcxyz", "ABCXYZ", true)]
+    [TestCase(false, "abcxyz", "ABCXYZ", true)]
+    [TestCase(true,  "ABCXYZ", "abcxyz", true)]
+    [TestCase(false, "ABCXYZ", "abcxyz", true)]
+    [TestCase(true,  "abcxyz", "abcxyz", true)]
+    [TestCase(false, "abcxyz", "abcxyz", true)]
+    [TestCase(true,  "0123(){}", "0123(){}", true)]
+    [TestCase(false, "0123(){}", "0123(){}", true)]
+    [TestCase(true,  "\x00\x10\x20\x30\x40\x60", "\x00\x10\x20\x30\x40\x60", true)]
+    [TestCase(false, "\x00\x10\x20\x30\x40\x60", "\x00\x10\x20\x30\x40\x60", true)]
+    [TestCase(false, "", "", true)]
+    [TestCase(true,  "a", "", false)]
+    [TestCase(false, "a", "", false)]
+    [TestCase(true,  "", "a", false)]
+    [TestCase(false, "", "a", false)]
+    [TestCase(true,  "a", "ab", false)]
+    [TestCase(false, "a", "ab", false)]
+    [TestCase(true,  "ab", "a", false)]
+    [TestCase(false, "ab", "a", false)]
+    [TestCase(true,  "ab", "ac", false)]
+    [TestCase(false, "ac", "ab", false)]
+    public void SequenceEqualIgnoreCase(bool singleSegment, string strSequence, string strSpan, bool expected)
+    {
+      Assert.AreEqual(expected, CreateSequence(strSequence, singleSegment).SequenceEqualIgnoreCase(CreateSpan(strSpan)));
+    }
+
     [TestCase(true)]
     [TestCase(false)]
     public void StartsWith(bool singleSegment)
