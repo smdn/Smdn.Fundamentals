@@ -112,7 +112,7 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.DateTimeFormat))]
 
 /*
- * Smdn.Fundamentals.Streams.Caching
+ * Smdn.Fundamentals.Streams
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ChunkedMemoryStream))]
