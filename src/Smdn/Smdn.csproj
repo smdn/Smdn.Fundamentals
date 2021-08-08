@@ -45,6 +45,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference Include="..\Smdn.Fundamentals.Streams.Extending\Smdn.Fundamentals.Streams.Extending.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Streams.Filtering\Smdn.Fundamentals.Streams.Filtering.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Streams.LineOriented\Smdn.Fundamentals.Streams.LineOriented.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamentals.Stringification\Stringification.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.UInt24n\Smdn.Fundamentals.UInt24n.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Uuid\Smdn.Fundamentals.Uuid.csproj" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or $(TargetFramework.StartsWith('netstandard1'))" />

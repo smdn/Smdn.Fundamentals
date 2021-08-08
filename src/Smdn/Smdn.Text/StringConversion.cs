@@ -55,69 +55,13 @@ namespace Smdn.Text {
       return (val == null) ? null : val.Value.ToString().ToLowerInvariant();
     }
 
+    [Obsolete("use Smdn.Collections.StringificationExtensions.Stringify instead")]
     public static string ToJoinedString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
-    {
-      const string separator = ", ";
+      => Smdn.Collections.StringificationExtensions.Stringify(pairs);
 
-      if (pairs == null)
-        return null;
-
-      return string.Join(separator, pairs.Select(pair => string.Concat("{", pair.Key, " => ", pair.Value, "}")));
-    }
-
-    /*
-     * Object.ToString()
-     */
+    [Obsolete("use Smdn.Stringification.Stringify instead")]
     public static string ToString(Type type, IEnumerable<(string name, object value)> nameAndValuePairs)
-    {
-      if (nameAndValuePairs == null)
-        return string.Concat("{", type?.Name, "}");
-      else
-        return string.Concat("{",
-                             type?.Name,
-                             ": ",
-                             string.Join(", ", nameAndValuePairs.Select(((string n, object v) p) => string.Concat(p.n, "=", ValueToString(p.v)))),
-                             "}");
-
-      static string ValueToString(object val)
-      {
-        if (val is null)
-          return "(null)";
-
-        if (val is string s)
-          return string.Concat("'", s, "'");
-
-        var typeOfValue = val.GetType();
-
-        // KeyValuePair<TKey, TValue>
-        if (typeOfValue.IsConstructedGenericType && typeOfValue.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
-          return string.Concat("{",
-                               ValueToString(typeOfValue.GetTypeInfo().GetProperty("Key")?.GetValue(val)),
-                               " => ",
-                               ValueToString(typeOfValue.GetTypeInfo().GetProperty("Value")?.GetValue(val)),
-                               "}");
-
-        // IEnumerable, IEnumerable<T>
-        if (val is IEnumerable enumerable) {
-          var sb = new StringBuilder();
-
-          sb.Append("[");
-
-          foreach (object v in enumerable) {
-            if (1 < sb.Length)
-              sb.Append(", ");
-
-            sb.Append(ValueToString(v));
-          }
-
-          sb.Append("]");
-
-          return sb.ToString();
-        }
-
-        return string.Concat("'", val, "'");
-      }
-    }
+      => Smdn.Stringification.Stringify(type, nameAndValuePairs);
 
     /*
      * enum parsing
