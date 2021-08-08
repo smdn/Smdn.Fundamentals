@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Smdn.Buffers;
 using Smdn.Collections;
 using Smdn.IO.Streams.LineOriented;
 using Smdn.Text;
@@ -209,7 +210,7 @@ namespace Smdn.Formats.Mime {
           if (lineFirst == null) {
             if (ignoreMalformed)
               continue;
-            throw new InvalidDataException($"malformed header field: '{ByteString.ToString(ret.Value.Sequence)}'");
+            throw new InvalidDataException($"malformed header field: '{ret.Value.Sequence.CreateString()}'");
           }
 
           lineLast = HeaderFieldLineSegment.Append(lineLast, line, out _);
@@ -236,7 +237,7 @@ namespace Smdn.Formats.Mime {
         else if (ignoreMalformed)
           lineFirst = null;
         else
-          throw new InvalidDataException($"malformed header field: '{ByteString.ToString(ret.Value.Sequence)}'");
+          throw new InvalidDataException($"malformed header field: '{ret.Value.Sequence.CreateString()}'");
       }
 
       if (lineFirst != null)

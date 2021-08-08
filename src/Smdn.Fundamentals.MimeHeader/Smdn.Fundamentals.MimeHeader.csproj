@@ -19,6 +19,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Smdn.Fundamentals.Buffers\Smdn.Fundamentals.Buffers.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Collections\Smdn.Fundamentals.Collections.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Encodings.OctetEncoding\Smdn.Fundamentals.Encodings.OctetEncoding.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />

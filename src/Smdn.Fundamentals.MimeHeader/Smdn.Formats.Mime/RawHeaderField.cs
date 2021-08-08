@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Buffers;
-using Smdn.Text;
+using Smdn.Buffers;
 
 namespace Smdn.Formats.Mime {
   public readonly struct RawHeaderField {
@@ -11,8 +11,8 @@ namespace Smdn.Formats.Mime {
 
     public ReadOnlySequence<byte> Name => HeaderFieldSequence.Slice(0, OffsetOfDelimiter);
     public ReadOnlySequence<byte> Value => HeaderFieldSequence.Slice(OffsetOfDelimiter).Slice(1); // offset + 1
-    public string NameString => ByteString.ToString(Name);
-    public string ValueString => ByteString.ToString(Value);
+    public string NameString => Name.CreateString();
+    public string ValueString => Value.CreateString();
 
     internal RawHeaderField(ReadOnlySequence<byte> headerFieldSequence, int offsetOfDelimiter)
     {
