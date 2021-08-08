@@ -130,6 +130,19 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.PartialStream))]
 
 /*
+ * Smdn.Fundamentals.Streams.BinaryReaderWriter
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BigEndianBinaryReader))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BigEndianBinaryWriter))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BinaryConversion))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BinaryReader))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BinaryReaderBase))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BinaryWriter))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BinaryWriterBase))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.LittleEndianBinaryReader))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.LittleEndianBinaryWriter))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.CachedStreamBase))]
