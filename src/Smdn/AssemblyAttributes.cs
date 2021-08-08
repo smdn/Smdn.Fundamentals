@@ -107,6 +107,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
 
 /*
+ * Smdn.Fundamentals.StandardDateTimeFormat
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.DateTimeFormat))]
+
+/*
  * Smdn.Fundamentals.Streams.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
