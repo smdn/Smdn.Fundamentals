@@ -17,4 +17,8 @@ SPDX-License-Identifier: MIT
     <!-- NuGet -->
     <!--<PackageTags></PackageTags>-->
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+  </ItemGroup>
 </Project>
