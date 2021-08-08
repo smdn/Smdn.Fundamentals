@@ -12,17 +12,16 @@ namespace Smdn.Buffers {
       if (sequence.Length != value.Length)
         return false;
 
-      var offset = 0;
       var pos = sequence.Start;
 
       while (sequence.TryGet(ref pos, out var memory, advance: true)) {
         if (memory.Length == 0)
           continue; // XXX: never happen?
 
-        if (!value.Slice(offset, memory.Length).SequenceEqual<T>(memory.Span))
+        if (!value.Slice(0, memory.Length).SequenceEqual<T>(memory.Span))
           return false;
 
-        offset += memory.Length;
+        value = value.Slice(memory.Length);
       }
 
       return true;
