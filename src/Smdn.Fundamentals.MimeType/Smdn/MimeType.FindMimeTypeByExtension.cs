@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETCORE10
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
 using Microsoft.Win32;
 #endif
 
@@ -94,7 +94,7 @@ namespace Smdn {
       if (extension.Length <= 1)
         return null; // if "" or "."
 
-#if NETFRAMEWORK || NETCORE10
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       using (var key = Registry.ClassesRoot.OpenSubKey(extension)) {
         if (key == null)
           return null;
@@ -159,7 +159,7 @@ namespace Smdn {
 
     private static IEnumerable<string> FindExtensionsByMimeTypeWin(string mimeType)
     {
-#if NETFRAMEWORK || NETCORE10
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
         using (var key = Registry.ClassesRoot.OpenSubKey(name)) {
           if (key == null)
