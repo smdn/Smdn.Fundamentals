@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.IO;
 
 namespace Smdn.OperatingSystem {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
   public class PipeOutStream : Stream {
     public override bool CanSeek {
       get { return /*!disposed &&*/ false; }
