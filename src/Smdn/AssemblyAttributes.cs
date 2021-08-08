@@ -50,6 +50,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.RawHeaderField))]
 
 /*
+ * Smdn.Fundamentals.MimeType
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.MimeType))]
+
+/*
  * Smdn.Fundamentals.PrintableEncodings.Base64
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Base64))]
