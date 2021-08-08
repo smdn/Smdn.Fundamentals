@@ -189,6 +189,8 @@ namespace Smdn.Formats.Mime {
       CancellationToken cancellationToken = default
     )
     {
+      const byte HT = (byte)'\t';
+      const byte SP = (byte)' ';
       var headerFields = new List<THeaderField>();
       HeaderFieldLineSegment lineFirst = null;
       HeaderFieldLineSegment lineLast = null;
@@ -205,7 +207,7 @@ namespace Smdn.Formats.Mime {
         var line = ret.Value.SequenceWithNewLine;
         var firstByteOfLine = line.First.Span[0]; // XXX: use FirstSpan[0] (.NET Core 3.0)
 
-        if (firstByteOfLine == Ascii.Octets.HT || firstByteOfLine == Ascii.Octets.SP) { // LWSP-char
+        if (firstByteOfLine == HT || firstByteOfLine == SP) { // LWSP-char
           // folding
           if (lineFirst == null) {
             if (ignoreMalformed)
