@@ -38,6 +38,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.PercentEncoding\Smdn.Fundamentals.PrintableEncodings.PercentEncoding.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.QuotedPrintable\Smdn.Fundamentals.PrintableEncodings.QuotedPrintable.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.UUEncoding\Smdn.Fundamentals.PrintableEncodings.UUEncoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamentals.Shell\Smdn.Fundamentals.Shell.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.StandardDateTimeFormat\Smdn.Fundamentals.StandardDateTimeFormat.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Streams\Smdn.Fundamentals.Streams.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Streams.Caching\Smdn.Fundamentals.Streams.Caching.csproj" />

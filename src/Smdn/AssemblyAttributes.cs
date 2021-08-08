@@ -107,6 +107,16 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
 
 /*
+ * Smdn.Fundamentals.Shell
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+[assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.PipeOutStream))]
+[assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.Shell))]
+#endif
+[assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.ShellString))]
+
+/*
  * Smdn.Fundamentals.StandardDateTimeFormat
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.DateTimeFormat))]
