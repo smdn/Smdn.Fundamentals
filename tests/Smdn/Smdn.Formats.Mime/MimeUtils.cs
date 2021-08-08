@@ -65,7 +65,11 @@ namespace Smdn.Formats.Mime {
     public void TestParseHeaderAsync_ArgumentNull_Converter()
     {
       WithStream("MIME-Version: 1.0\r\n", stream => {
+#if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
         Converter<RawHeaderField, int> nullConverter = null;
+#else
+        Func<RawHeaderField, int> nullConverter = null;
+#endif
 
         Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream, converter: nullConverter));
       });
