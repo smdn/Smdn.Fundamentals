@@ -11,48 +11,26 @@ using System.Threading.Tasks;
 using Smdn.Buffers;
 using Smdn.Collections;
 using Smdn.IO.Streams.LineOriented;
-using Smdn.Text;
 
 namespace Smdn.Formats.Mime {
   public static class MimeUtils {
-    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream)
-    {
-      return ParseHeader(new LooseLineOrientedStream(stream), false);
-    }
+      => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
 
-    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream, bool keepWhitespaces)
-    {
-      return ParseHeader(new LooseLineOrientedStream(stream), keepWhitespaces);
-    }
+      => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
 
-    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream)
-    {
-      return ParseHeader(stream, false);
-    }
+      => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
 
     private static readonly char[] lineDelmiters = new char[] {'\r', '\n'};
 
-    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead")]
+    [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream, bool keepWhitespaces)
-    {
-      foreach (var header in ParseHeaderRaw(stream)) {
-        if (keepWhitespaces) {
-          yield return new KeyValuePair<string, string>(header.Name.ToString(), header.Value.ToString());
-        }
-        else {
-          var valueLines = header.Value.ToString().Split(lineDelmiters);
-
-          for (var i = 0; i < valueLines.Length; i++) {
-            valueLines[i] = valueLines[i].Trim();
-          }
-
-          yield return new KeyValuePair<string, string>(header.Name.Trim().ToString(), string.Concat(valueLines));
-        }
-      }
-    }
+      => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
 
     public static Task<IReadOnlyList<KeyValuePair<string, string>>> ParseHeaderAsNameValuePairsAsync(
       LineOrientedStream stream,
@@ -82,46 +60,12 @@ namespace Smdn.Formats.Mime {
       return new KeyValuePair<string, string>(header.NameString.Trim(), string.Concat(valueLines));
     }
 
-    [Obsolete("use ParseHeaderAsync() instead")]
-    public struct HeaderField
-    {
-      public ByteString RawData {
-        get { return rawData; }
-      }
+    [Obsolete("use ParseHeaderAsync() instead", error: true)]
+    public struct HeaderField {}
 
-      public ByteString Name {
-        get { return ByteString.CreateImmutable(rawData.Segment.Array, 0, indexOfDelmiter); }
-      }
-
-      public ByteString Value {
-        get { return ByteString.CreateImmutable(rawData.Segment.Array, indexOfDelmiter + 1); }
-      }
-
-      public int IndexOfDelimiter {
-        get { return indexOfDelmiter; }
-      }
-
-      internal HeaderField(Smdn.Text.ByteString rawData, int indexOfDelimiter)
-      {
-        this.rawData = rawData;
-        this.indexOfDelmiter = indexOfDelimiter;
-      }
-
-      internal static HeaderField FromRawHeaderField(RawHeaderField rawHeaderField)
-        => new HeaderField(ByteString.CreateImmutable(rawHeaderField.HeaderFieldSequence.ToArray()), rawHeaderField.OffsetOfDelimiter);
-
-      private readonly ByteString rawData;
-      private readonly int indexOfDelmiter;
-    }
-
-    [Obsolete("use ParseHeaderAsync() instead")]
+    [Obsolete("use ParseHeaderAsync() instead", error: true)]
     public static IEnumerable<HeaderField> ParseHeaderRaw(LineOrientedStream stream)
-    => ParseHeaderAsync(
-      stream: stream,
-      converter: HeaderField.FromRawHeaderField,
-      ignoreMalformed: true,
-      cancellationToken: default
-    ).GetAwaiter().GetResult();
+      => throw new NotSupportedException("use ParseHeaderAsync() instead");
 
     public static Task<IReadOnlyList<RawHeaderField>> ParseHeaderAsync(
       LineOrientedStream stream,
