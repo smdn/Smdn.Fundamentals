@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-#if NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP3_1
+#if NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
 using KeyValuePair = System.Collections.Generic.KeyValuePair;
 #else
 using KeyValuePair = Smdn.Collections.KeyValuePair;
