@@ -4,8 +4,19 @@ using System;
 using System.Diagnostics;
 
 namespace Smdn.OperatingSystem {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
   public static class Shell {
+    private static bool IsRunningOnUnix =>
+#if NET471_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NET5_0_OR_GREATER
+      System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux) ||
+      System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
+#else
+      ((int)System.Environment.OSVersion.Platform) switch {
+        4 or 6 or 128 => true,
+        _ => false,
+      };
+#endif
+
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
     {
       return CreateProcessStartInfo(command, arguments == null ? string.Empty : string.Join(" ", arguments));
@@ -18,7 +29,7 @@ namespace Smdn.OperatingSystem {
 
       ProcessStartInfo psi;
 
-      if (Platform.IsRunningOnUnix) {
+      if (IsRunningOnUnix) {
         if (arguments != null)
           arguments = arguments.Replace("\"", "\\\"");
 
