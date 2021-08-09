@@ -5,15 +5,9 @@
 #define SYSTEM_ENVIRONMENT_VERSION
 #endif
 
-#if NET471 || NETSTANDARD1_6_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_RUNTIME_INFORMATION
-#endif
-
 using System;
 using System.Reflection;
-#if SYSTEM_RUNTIME_INFORMATION
 using System.Runtime.InteropServices;
-#endif
 using System.Linq;
 
 namespace Smdn {
@@ -23,7 +17,6 @@ namespace Smdn {
 
     static Runtime()
     {
-#if SYSTEM_RUNTIME_INFORMATION
       if (RuntimeInformation.FrameworkDescription.Contains(".NET Framework")) {
         runtimeEnvironment = RuntimeEnvironment.NetFx;
         name = ".NET Framework";
@@ -39,7 +32,6 @@ namespace Smdn {
         name = "Mono";
         //return; // mono?
       }
-#endif
 
       if (Type.GetType("Mono.Runtime") != null) {
         /*
@@ -48,6 +40,7 @@ namespace Smdn {
         runtimeEnvironment = RuntimeEnvironment.Mono;
         name = "Mono";
       }
+#if false
       else if (Type.GetType("FXAssembly") != null) {
         runtimeEnvironment = RuntimeEnvironment.NetFx;
         name = ".NET Framework";
@@ -57,6 +50,7 @@ namespace Smdn {
         runtimeEnvironment = RuntimeEnvironment.NetCore;
         name = ".NET Core";
       }
+#endif
       else {
         runtimeEnvironment = RuntimeEnvironment.Unknown;
         name = ".NET Framework compatible";
@@ -89,27 +83,12 @@ namespace Smdn {
     [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
     public static bool IsRunningOnUnix => Platform.IsRunningOnUnix;
 
-    private static string versionString = null;
-
-    public static string VersionString {
-      get {
-        if (versionString == null) {
-#if SYSTEM_RUNTIME_INFORMATION
-          versionString = RuntimeInformation.FrameworkDescription;
-#else
-          versionString = string.Format("{0} {1}", name, Version);
-#endif
-        }
-
-        return versionString;
-      }
-    }
+    public static string VersionString => RuntimeInformation.FrameworkDescription;
 
     public static Version Version {
       get
       {
         switch (runtimeEnvironment) {
-#if SYSTEM_RUNTIME_INFORMATION
           case RuntimeEnvironment.NetFx:
           case RuntimeEnvironment.NetCore: {
             foreach (var s in RuntimeInformation.FrameworkDescription.Split(' ')) {
@@ -118,7 +97,6 @@ namespace Smdn {
             }
             break;
           }
-#endif
 
           case RuntimeEnvironment.Mono: {
             var displayName = (string)Type.GetType("Mono.Runtime").GetTypeInfo().GetDeclaredMethod("GetDisplayName").Invoke(null, null);

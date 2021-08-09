@@ -16,12 +16,7 @@ namespace Smdn {
  partial class MimeType {
     private const string defaultMimeTypesFile = "/etc/mime.types";
 
-    private static bool IsRunningOnWindows =>
-#if NET471_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NET5_0_OR_GREATER
-      System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
-#else
-      (int)System.Environment.OSVersion.Platform < 4;
-#endif
+    private static bool IsRunningOnWindows => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
 
     public static MimeType FindMimeTypeByExtension(string extensionOrPath)
     {
