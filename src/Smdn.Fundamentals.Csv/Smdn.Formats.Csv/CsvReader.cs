@@ -5,12 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using Smdn.Text;
-
 namespace Smdn.Formats.Csv {
   public class CsvReader : StreamReader {
-    public char Delimiter { get; set; } = Ascii.Chars.Comma;
-    public char Quotator { get; set; } = Ascii.Chars.DQuote;
+    public char Delimiter { get; set; } = ',';
+    public char Quotator { get; set; } = '"';
 
     public CsvReader(string path)
 #if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
@@ -56,6 +54,10 @@ namespace Smdn.Formats.Csv {
     {
     }
 
+    private const char CR = '\r';
+    private const char LF = '\n';
+    private const string CRLF = "\r\n";
+
     private string ReadField(out bool escaped)
     {
       escaped = false;
@@ -78,19 +80,19 @@ namespace Smdn.Formats.Csv {
         // empty column
         return string.Empty;
       }
-      else if (ch == Ascii.Chars.CR) {
+      else if (ch == CR) {
         // unescaped newline
-        if ((int)Ascii.Chars.LF == base.Peek()) {
+        if ((int)LF == base.Peek()) {
           base.Read(); // CRLF
-          return Ascii.Chars.CRLF;
+          return CRLF;
         }
         else {
-          return new string(Ascii.Chars.LF, 1);
+          return new string(LF, 1);
         }
       }
-      else if (ch == Ascii.Chars.LF) {
+      else if (ch == LF) {
         // unescaped newline
-        return new string(Ascii.Chars.CR, 1);
+        return new string(CR, 1);
       }
 
       if (escaped) {
@@ -124,7 +126,7 @@ namespace Smdn.Formats.Csv {
               base.Read();
               break;
             }
-            else if (quot == 0 && (ch == Ascii.Chars.CR || ch == Ascii.Chars.LF)) {
+            else if (quot == 0 && (ch == CR || ch == LF)) {
               break;
             }
             else {
@@ -151,7 +153,7 @@ namespace Smdn.Formats.Csv {
             base.Read();
             break;
           }
-          else if (ch == Ascii.Chars.CR || ch == Ascii.Chars.LF) {
+          else if (ch == CR || ch == LF) {
             break;
           }
           else {
@@ -174,7 +176,7 @@ namespace Smdn.Formats.Csv {
           if (field == null)
             return record; // end of stream
 
-          if (!escaped && 1 <= field.Length && (field[0] == Ascii.Chars.CR || field[0] == Ascii.Chars.LF))
+          if (!escaped && 1 <= field.Length && (field[0] == CR || field[0] == LF))
             break;
 
           if (record == null)

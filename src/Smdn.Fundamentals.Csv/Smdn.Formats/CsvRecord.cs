@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Smdn.Text;
-
 namespace Smdn.Formats {
   public static class CsvRecord {
     // http://www.ietf.org/rfc/rfc4180.txt
@@ -25,6 +23,9 @@ namespace Smdn.Formats {
 
       static IEnumerable<string> Split(string sequence)
       {
+        const char DQuote = '"';
+        const char Comma = ',';
+
         // append dummy splitter
         sequence += ",";
 
@@ -33,7 +34,7 @@ namespace Smdn.Formats {
         var inQuote = false;
 
         for (var index = 0; index < sequence.Length; index++) {
-          if (sequence[index] == Ascii.Chars.DQuote) {
+          if (sequence[index] == DQuote) {
             inQuote = !inQuote;
             quoted = true;
           }
@@ -41,7 +42,7 @@ namespace Smdn.Formats {
           if (inQuote)
             continue;
 
-          if (sequence[index] != Ascii.Chars.Comma)
+          if (sequence[index] != Comma)
             continue;
 
           if (quoted)

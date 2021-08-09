@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-using Smdn.Text;
-
 namespace Smdn.Formats.Csv {
   public class CsvWriter : StreamWriter {
     public char Delimiter {
@@ -44,7 +42,7 @@ namespace Smdn.Formats.Csv {
       : base(File.Open(path, FileMode.Create), encoding)
 #endif
     {
-      base.NewLine = Ascii.Chars.CRLF;
+      base.NewLine = CRLF;
     }
 
     public CsvWriter(Stream stream)
@@ -59,7 +57,7 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(Stream stream, Encoding encoding)
       : base(stream, encoding)
     {
-      base.NewLine = Ascii.Chars.CRLF;
+      base.NewLine = CRLF;
     }
 
     public CsvWriter(StreamWriter writer)
@@ -70,11 +68,14 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(StreamWriter writer, Encoding encoding)
       : base(writer.BaseStream, encoding)
     {
-      base.NewLine = Ascii.Chars.CRLF;
+      base.NewLine = CRLF;
     }
 
     public void WriteLine(params string[] columns)
     {
+      const char CR = '\r';
+      const char LF = '\n';
+
       for (var index = 0; index < columns.Length; index++) {
         if (index != 0)
           base.Write(delimiter);
@@ -89,8 +90,8 @@ namespace Smdn.Formats.Csv {
         var escape = escapeAlways ||
           (0 <= column.IndexOf(delimiter) ||
            0 <= column.IndexOf(quotator, StringComparison.Ordinal) ||
-           0 <= column.IndexOf(Ascii.Chars.CR) ||
-           0 <= column.IndexOf(Ascii.Chars.LF));
+           0 <= column.IndexOf(CR) ||
+           0 <= column.IndexOf(LF));
 
         if (escape) {
           base.Write(quotator);
@@ -119,9 +120,10 @@ namespace Smdn.Formats.Csv {
       WriteLine(c.ToArray());
     }
 
-    private char delimiter = Ascii.Chars.Comma;
-    private string quotator = new string(Ascii.Chars.DQuote, 1);
-    private string escapedQuotator = new string(Ascii.Chars.DQuote, 2);
+    private const string CRLF = "\r\n";
+    private char delimiter = ',';
+    private string quotator = new string('"', 1);
+    private string escapedQuotator = new string('"', 2);
     private bool escapeAlways = false;
   }
 }
