@@ -74,6 +74,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.MimeType))]
 
 /*
+ * Smdn.Fundamentals.ParamArray
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.ParamArrayUtils))]
+
+/*
  * Smdn.Fundamentals.PrintableEncodings.Base64
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Base64))]
