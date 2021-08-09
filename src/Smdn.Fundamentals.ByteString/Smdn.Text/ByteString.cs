@@ -69,12 +69,16 @@ namespace Smdn.Text {
 #if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
                             new ArraySegment<byte>(Array.Empty<byte>()),
 #else
-                            new ArraySegment<byte>(ArrayExtensions.Empty<byte>()),
+                            new ArraySegment<byte>(emptyByteArray),
 #endif
                             true
                            );
       //return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
     }
+
+#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
+    private static readonly byte[] emptyByteArray = new byte[0];
+#endif
 
     public static ByteString CreateMutable(params byte[] @value)
     {
