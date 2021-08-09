@@ -29,6 +29,13 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Security.Cryptography.ICryptoTransformExtensions))]
 
 /*
+ * Smdn.Fundamentals.Csv
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.CsvRecord))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Csv.CsvReader))]
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.Csv.CsvWriter))]
+
+/*
  * Smdn.Fundamentals.Encodings
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingNotSupportedException))]

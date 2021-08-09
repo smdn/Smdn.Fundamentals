@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference Include="..\Smdn.Fundamentals.Buffers\Smdn.Fundamentals.Buffers.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Collections\Smdn.Fundamentals.Collections.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.CryptoTransform\Smdn.Fundamentals.CryptoTransform.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamentals.Csv\Smdn.Fundamentals.Csv.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.FourCC\Smdn.Fundamentals.FourCC.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Encodings\Smdn.Fundamentals.Encodings.csproj" />
     <ProjectReference Include="..\Smdn.Fundamentals.Encodings.OctetEncoding\Smdn.Fundamentals.Encodings.OctetEncoding.csproj" />
