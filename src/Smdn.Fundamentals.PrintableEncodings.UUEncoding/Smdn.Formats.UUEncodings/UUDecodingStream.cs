@@ -6,9 +6,7 @@ using System.IO;
 using System.Text; // [net5] EncodingExtensions.GetString(Encoding, ReadOnlySequence<Byte>)
 using System.Text.RegularExpressions;
 
-#if !(NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER)
 using Smdn.Buffers;
-#endif
 using Smdn.Formats;
 using Smdn.IO.Streams.LineOriented;
 using Smdn.Security.Cryptography;
@@ -180,13 +178,14 @@ namespace Smdn.Formats.UUEncodings {
             permissions |= p;
           }
 
-          fileName = OctetEncoding.EightBits.GetString(
+          fileName =
 #if NET5_0_OR_GREATER
             headerReader.UnreadSequence
 #else
-            headerReader.Sequence.Slice(headerReader.Position)
+            headerReader.GetUnreadSequence()
 #endif
-          ).Trim();
+          .CreateString()
+          .Trim();
 #else // #if !(NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER)
         var line = l.Value.Sequence;
 
@@ -218,7 +217,7 @@ namespace Smdn.Formats.UUEncodings {
             permissions |= p;
           }
 
-          fileName = OctetEncoding.EightBits.GetString(file).Trim();
+          fileName = file.CreateString().Trim();
 #endif
 
           state = State.DataLine;
