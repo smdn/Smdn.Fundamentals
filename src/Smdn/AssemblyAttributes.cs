@@ -114,6 +114,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
 
 /*
+ * Smdn.Fundamentals.SIPrefix
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.SIPrefixNumberFormatter))]
+
+/*
  * Smdn.Fundamentals.Shell
  */
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]
