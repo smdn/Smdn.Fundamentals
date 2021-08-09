@@ -6,6 +6,13 @@ using System.Runtime.CompilerServices;
 [assembly: System.CLSCompliant(true)]
 
 /*
+ * Smdn.Fundamentals.ByteString
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Text.ByteString))]
+[assembly: TypeForwardedTo(typeof(Smdn.Text.ByteStringBuilder))]
+[assembly: TypeForwardedTo(typeof(Smdn.Text.ByteStringExtensions))]
+
+/*
  * Smdn.Fundamentals.Collections
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.IReadOnlyCollectionExtensions))]
