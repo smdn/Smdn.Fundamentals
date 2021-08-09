@@ -9,9 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Smdn.Buffers;
-#if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
-using Smdn.Collections;
-#endif
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime {
@@ -51,7 +48,11 @@ namespace Smdn.Formats.Mime {
     private static KeyValuePair<string, string> ParseHeaderAsNameValuePairsConverter(RawHeaderField header, bool keepWhitespaces)
     {
       if (keepWhitespaces)
+#if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
         return KeyValuePair.Create(header.NameString, header.ValueString);
+#else
+        return new KeyValuePair<string, string>(header.NameString, header.ValueString);
+#endif
 
       var valueLines = header.ValueString.Split(lineDelmiters);
 
@@ -59,7 +60,11 @@ namespace Smdn.Formats.Mime {
         valueLines[i] = valueLines[i].Trim();
       }
 
+#if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
+      return KeyValuePair.Create(header.NameString.Trim(), string.Concat(valueLines));
+#else
       return new KeyValuePair<string, string>(header.NameString.Trim(), string.Concat(valueLines));
+#endif
     }
 
     [Obsolete("use ParseHeaderAsync() instead", error: true)]
