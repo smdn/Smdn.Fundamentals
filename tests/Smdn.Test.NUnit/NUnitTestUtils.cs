@@ -5,7 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-#if SERIALIZATION
+using System.Runtime.Serialization;
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using NUnit.Framework;
@@ -24,7 +25,7 @@ namespace Smdn.Test.NUnit {
                                                                    Action<TSerializable> testDeserializedObject)
       /*where TSerializable : ISerializable*/
       {
-#if SERIALIZATION
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
       var serializeFormatter = new BinaryFormatter();
 
       using (var stream = new MemoryStream()) {

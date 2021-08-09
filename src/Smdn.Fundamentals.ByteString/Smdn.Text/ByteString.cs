@@ -5,23 +5,17 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-#if SERIALIZATION
 using System.Runtime.Serialization;
-#endif
 using System.Text;
 
 namespace Smdn.Text {
-#if SERIALIZATION
   [Serializable]
-#endif
   public class ByteString :
     IEquatable<ByteString>,
     IEquatable<byte[]>,
     IEquatable<ArraySegment<byte>>,
-    IEquatable<string>
-#if SERIALIZATION
-    , ISerializable
-#endif
+    IEquatable<string>,
+    ISerializable
   {
     [IndexerName("Bytes")]
     public byte this[int index] {
@@ -212,7 +206,6 @@ namespace Smdn.Text {
       this.isMutable = asMutable;
     }
 
-#if SERIALIZATION
     protected ByteString(SerializationInfo info, StreamingContext context)
     {
       this.segment = (ArraySegment<byte>)info.GetValue("segment", typeof(ArraySegment<byte>));
@@ -224,7 +217,6 @@ namespace Smdn.Text {
       info.AddValue("segment", segment);
       info.AddValue("isMutable", isMutable);
     }
-#endif
 
     public bool Contains(ByteString @value)
     {

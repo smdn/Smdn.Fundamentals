@@ -17,4 +17,8 @@ SPDX-License-Identifier: MIT
     <!-- NuGet -->
     <!--<PackageTags></PackageTags>-->
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" Condition="$(TargetFramework.StartsWith('netstandard1'))" />
+  </ItemGroup>
 </Project>

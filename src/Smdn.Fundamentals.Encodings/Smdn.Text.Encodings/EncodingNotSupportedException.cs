@@ -1,14 +1,10 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if SERIALIZATION
 using System.Runtime.Serialization;
-#endif
 
 namespace Smdn.Text.Encodings {
-#if SERIALIZATION
   [Serializable]
-#endif
   public class EncodingNotSupportedException : NotSupportedException {
     /*
      * XXX: code page not supported
@@ -53,7 +49,7 @@ namespace Smdn.Text.Encodings {
       EncodingName = encodingName;
     }
 
-#if SERIALIZATION
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
     protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {

@@ -3,22 +3,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if SERIALIZATION
 using System.Runtime.Serialization;
-#endif
 
 namespace Smdn.Collections {
   public static class Singleton {
     public static IReadOnlyList<T> CreateList<T>(T element) => new SingletonList<T>(element);
 
-#if SERIALIZATION
     [Serializable]
-#endif
     private class SingletonList<T> :
-      IReadOnlyList<T>
-#if SERIALIZATION
-      , ISerializable
-#endif
+      IReadOnlyList<T>,
+      ISerializable
     {
       public T this[int index] => index == 0 ? element : throw ExceptionUtils.CreateArgumentMustBeInRange(0, 0, nameof(index), index);
       public int Count => 1;
@@ -28,7 +22,6 @@ namespace Smdn.Collections {
         this.element = element;
       }
 
-#if SERIALIZATION
       protected SingletonList(SerializationInfo info, StreamingContext context)
       {
         this.element = (T)info.GetValue(nameof(element), typeof(T));
@@ -38,7 +31,6 @@ namespace Smdn.Collections {
       {
         info.AddValue(nameof(element), element);
       }
-#endif
 
       public IEnumerator<T> GetEnumerator()
       {
