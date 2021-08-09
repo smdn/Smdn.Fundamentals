@@ -17,7 +17,7 @@ using System.Runtime.CompilerServices;
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.IReadOnlyCollectionExtensions))]
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.IReadOnlyListExtensions))]
-#if !(NETSTANDARD2_1)
+#if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.KeyValuePair))]
 #endif
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.ReadOnlyDictionary<,>))]
@@ -134,7 +134,7 @@ using System.Runtime.CompilerServices;
  * Smdn.Fundamentals.Shell
  */
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_DIAGNOSTICS_PROCESS
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.PipeOutStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.Shell))]
 #endif

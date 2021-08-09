@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
 #endif
 
@@ -23,7 +23,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource, ZeroClockSource));
       Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(ZeroTimeStampSource, nullClockSource));
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
       PhysicalAddress nullNode = null;
 
       Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(DateTimeOffset.Now, 0, nullNode));

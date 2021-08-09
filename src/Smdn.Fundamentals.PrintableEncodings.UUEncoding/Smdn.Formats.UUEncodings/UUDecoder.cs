@@ -25,7 +25,7 @@ namespace Smdn.Formats.UUEncodings {
 
       public void Dispose()
       {
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_IO_STREAM_CLOSE
         stream?.Close();
 #else
         stream?.Dispose();

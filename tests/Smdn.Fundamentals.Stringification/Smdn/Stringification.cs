@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
-#if NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
 using _KeyValuePair = System.Collections.Generic.KeyValuePair;
 #else
 using Smdn.Collections;

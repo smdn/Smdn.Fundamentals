@@ -146,10 +146,10 @@ namespace Smdn.Xml.Xhtml {
     {
       try {
         if (disposing)
-#if !(NETFRAMEWORK || NETSTANDARD2_0)
-          baseWriter.Dispose();
-#else
+#if SYSTEM_IO_STREAM_CLOSE
           baseWriter.Close();
+#else
+          baseWriter.Dispose();
 #endif
       }
       finally {

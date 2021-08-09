@@ -97,7 +97,7 @@ namespace Smdn.Formats.UUEncodings {
       this.transform = new UUDecodingTransform();
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_IO_STREAM_CLOSE
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -105,7 +105,7 @@ namespace Smdn.Formats.UUEncodings {
     {
       if (stream != null) {
         if (!leaveStreamOpen)
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_IO_STREAM_CLOSE
           stream.Close();
 #else
           stream.Dispose();
@@ -119,7 +119,7 @@ namespace Smdn.Formats.UUEncodings {
         transform = null;
       }
 
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_IO_STREAM_CLOSE
       base.Close();
 #else
       base.Dispose(disposing);

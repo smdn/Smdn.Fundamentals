@@ -74,7 +74,7 @@ namespace Smdn.Formats.ModifiedBase64 {
           throw new FormatException("incorrect form");
 
         default: // case 4
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
           return Array.Empty<byte>();
 #else
           return emptyByteArray;
@@ -82,7 +82,7 @@ namespace Smdn.Formats.ModifiedBase64 {
       }
     }
 
-#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_ARRAY_EMPTY
     private static readonly byte[] emptyByteArray = new byte[0];
 #endif
 

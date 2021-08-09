@@ -74,14 +74,14 @@ namespace Smdn.IO.Streams.Caching {
       this.position = stream.Position;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
 #endif
     {
       if (!leaveInnerStreamOpen)
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
         stream?.Close();
 #else
         stream?.Dispose();
@@ -89,7 +89,7 @@ namespace Smdn.IO.Streams.Caching {
 
       stream = null;
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
       base.Close();
 #else
       base.Dispose(disposing);
@@ -176,7 +176,7 @@ namespace Smdn.IO.Streams.Caching {
 
     private bool TryGetBlock(long offset, out ReadOnlySpan<byte> block)
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_MATH_DIVREM
       var blockIndex = Math.DivRem(position, (long)blockSize, out var blockOffset);
 #else
       var blockIndex = MathUtils.DivRem(position, (long)blockSize, out var blockOffset);

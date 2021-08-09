@@ -387,19 +387,11 @@ namespace Smdn.IO.Binary {
           Assert.AreEqual(0L, writer.BaseStream.Position);
 
           try {
-#if NETFRAMEWORK
-            writer.GetType().InvokeMember("Write",
-                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                          null,
-                                          writer,
-                                          new[] {test.Item1});
-#else
             typeof(Smdn.IO.Binary.BinaryWriter).GetTypeInfo()
                                                .GetMethod("Write",
                                                           new[] {test.Item1.GetType()},
                                                           null)
                                                .Invoke(writer, new[] {test.Item1});
-#endif
           }
           catch (MissingMethodException) {
             Assert.Fail("invocation failed: type = {0}", test.Item1.GetType().FullName);
@@ -430,19 +422,11 @@ namespace Smdn.IO.Binary {
           writer.Close();
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
-#if NETFRAMEWORK
-            writer.GetType().InvokeMember("Write",
-                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                          null,
-                                          writer,
-                                          new[] { arg });
-#else
             typeof(Smdn.IO.Binary.BinaryWriter).GetTypeInfo()
                                                .GetMethod("Write",
                                                           new[] {arg.GetType()},
                                                           null)
                                                .Invoke(writer, new[] {arg});
-#endif
           });
 
           Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);

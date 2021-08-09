@@ -9,7 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Smdn.Buffers;
+#if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
 using Smdn.Collections;
+#endif
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime {
@@ -84,7 +86,7 @@ namespace Smdn.Formats.Mime {
 
     public static /*IAsyncEnumerable<T>*/ Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField>(
       LineOrientedStream stream,
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_CONVERTER
       Converter<RawHeaderField, THeaderField> converter,
 #else
       Func<RawHeaderField, THeaderField> converter,
@@ -102,7 +104,7 @@ namespace Smdn.Formats.Mime {
 
     private static THeaderField ParseHeaderConverter<THeaderField>(
       RawHeaderField header,
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_CONVERTER
       Converter<RawHeaderField, THeaderField> converter
 #else
       Func<RawHeaderField, THeaderField> converter

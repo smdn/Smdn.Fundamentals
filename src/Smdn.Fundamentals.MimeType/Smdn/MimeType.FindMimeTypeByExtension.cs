@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 #if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define MICROSOFT_WIN32_REGISTRY
+#endif
+
+#if MICROSOFT_WIN32_REGISTRY
 using Microsoft.Win32;
 #endif
 
@@ -47,7 +51,7 @@ namespace Smdn {
       foreach (var line in File.ReadLines(mimeTypesFile)) {
         if (line.Length == 0)
           continue;
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRING_STARTSWITH_CHAR
         if (line.StartsWith('#'))
 #else
         if (0 < line.Length && line[0] == '#')
@@ -67,7 +71,7 @@ namespace Smdn {
     {
       var extension = Path.GetExtension(extensionOrPath);
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRING_STARTSWITH_CHAR
       if (extension.StartsWith('.'))
 #else
       if (0 < extension.Length && extension[0] == '.')
@@ -94,7 +98,7 @@ namespace Smdn {
       if (extension.Length <= 1)
         return null; // if "" or "."
 
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if MICROSOFT_WIN32_REGISTRY
       using (var key = Registry.ClassesRoot.OpenSubKey(extension)) {
         if (key == null)
           return null;
@@ -159,7 +163,7 @@ namespace Smdn {
 
     private static IEnumerable<string> FindExtensionsByMimeTypeWin(string mimeType)
     {
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if MICROSOFT_WIN32_REGISTRY
       foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
         using (var key = Registry.ClassesRoot.OpenSubKey(name)) {
           if (key == null)

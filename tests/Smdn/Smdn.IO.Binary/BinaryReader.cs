@@ -348,17 +348,9 @@ namespace Smdn.IO.Binary {
           Assert.IsFalse(reader.EndOfStream);
           Assert.AreEqual(0L, reader.BaseStream.Position);
 
-#if NETFRAMEWORK
-          var ret = reader.GetType().InvokeMember(test.Method,
-                                                  BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                                  null,
-                                                  reader,
-                                                  null);
-#else
           var ret = typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
                                                        .GetDeclaredMethod(test.Method)
                                                        .Invoke(reader, null);
-#endif
 
           Assert.AreNotEqual(0, ret, "read value must be non-zero value");
           Assert.AreEqual((long)test.Count, reader.BaseStream.Position);
@@ -388,17 +380,9 @@ namespace Smdn.IO.Binary {
           reader.Close();
 
           var ex = Assert.Throws<TargetInvocationException>(() => {
-#if NETFRAMEWORK
-            reader.GetType().InvokeMember(test.Method,
-                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                          null,
-                                          reader,
-                                          null);
-#else
             typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
                                                .GetDeclaredMethod(test.Method)
                                                .Invoke(reader, null);
-#endif
           });
 
           Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
@@ -433,17 +417,9 @@ namespace Smdn.IO.Binary {
             Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", test.Method);
 
           Assert.Throws<TargetInvocationException>(() => {
-#if NETFRAMEWORK
-            reader.GetType().InvokeMember(test.Method,
-                                          BindingFlags.Public | BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.ExactBinding,
-                                          null,
-                                          reader,
-                                          null);
-#else
             typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
                                                .GetDeclaredMethod(test.Method)
                                                .Invoke(reader, null);
-#endif
           });
 
           Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", test.Method);

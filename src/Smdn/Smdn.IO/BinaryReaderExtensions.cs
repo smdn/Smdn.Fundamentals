@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 
 namespace Smdn.IO {
-#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
+#if !SYSTEM_IO_STREAM_CLOSE
   public static class BinaryReaderExtensions {
     public static void Close(this BinaryReader reader)
     {

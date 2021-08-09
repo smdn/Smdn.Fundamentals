@@ -1,12 +1,19 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET471 || NETSTANDARD1_6 || NETSTANDARD2_0 || NETSTANDARD2_1
-#define RUNTIME_INFORMATION
-using System.Runtime.InteropServices;
+
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_ENVIRONMENT_VERSION
+#endif
+
+#if NET471 || NETSTANDARD1_6_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_RUNTIME_INFORMATION
 #endif
 
 using System;
 using System.Reflection;
+#if SYSTEM_RUNTIME_INFORMATION
+using System.Runtime.InteropServices;
+#endif
 using System.Linq;
 
 namespace Smdn {
@@ -16,7 +23,7 @@ namespace Smdn {
 
     static Runtime()
     {
-#if RUNTIME_INFORMATION
+#if SYSTEM_RUNTIME_INFORMATION
       if (RuntimeInformation.FrameworkDescription.Contains(".NET Framework")) {
         runtimeEnvironment = RuntimeEnvironment.NetFx;
         name = ".NET Framework";
@@ -87,7 +94,7 @@ namespace Smdn {
     public static string VersionString {
       get {
         if (versionString == null) {
-#if RUNTIME_INFORMATION
+#if SYSTEM_RUNTIME_INFORMATION
           versionString = RuntimeInformation.FrameworkDescription;
 #else
           versionString = string.Format("{0} {1}", name, Version);
@@ -102,7 +109,7 @@ namespace Smdn {
       get
       {
         switch (runtimeEnvironment) {
-#if RUNTIME_INFORMATION
+#if SYSTEM_RUNTIME_INFORMATION
           case RuntimeEnvironment.NetFx:
           case RuntimeEnvironment.NetCore: {
             foreach (var s in RuntimeInformation.FrameworkDescription.Split(' ')) {
@@ -114,11 +121,7 @@ namespace Smdn {
 #endif
 
           case RuntimeEnvironment.Mono: {
-#if NETFRAMEWORK
-            var displayName = (string)Type.GetType("Mono.Runtime").InvokeMember("GetDisplayName", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.ExactBinding, null, null, Type.EmptyTypes);
-#else
             var displayName = (string)Type.GetType("Mono.Runtime").GetTypeInfo().GetDeclaredMethod("GetDisplayName").Invoke(null, null);
-#endif
 
             foreach (var s in displayName.Split(' ')) {
               if (Version.TryParse(s, out var v))
@@ -129,7 +132,7 @@ namespace Smdn {
           }
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_ENVIRONMENT_VERSION
         return Environment.Version;
 #else
         return null;

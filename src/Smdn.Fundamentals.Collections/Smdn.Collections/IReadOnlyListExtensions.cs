@@ -27,7 +27,7 @@ namespace Smdn.Collections {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection(nameof(index), list, index, count);
 
       if (count == 0)
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
         return Array.Empty<T>();
 #else
         return EmptyArray<T>.Instance;

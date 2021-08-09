@@ -3,7 +3,7 @@
 using System;
 
 namespace Smdn.Collections {
-#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_ARRAY_EMPTY
   internal static class EmptyArray<T> {
     public static readonly T[] Instance = (System.Linq.Enumerable.Empty<T>() as T[]) ?? new T[0];
   }

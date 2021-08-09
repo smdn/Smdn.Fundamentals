@@ -69,7 +69,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-#if NETFRAMEWORK || NETCOREAPP2_0
+#if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NET5_O_OR_GREATER
     [Test]
     public void TestTranformBytesWithHashAlgorithm()
     {

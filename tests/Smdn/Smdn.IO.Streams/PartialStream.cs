@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-#if NET46_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
 using _Array = System.Array; // Array.Empty
 #else
 using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty

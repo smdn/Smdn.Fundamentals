@@ -102,7 +102,7 @@ namespace Smdn {
                 var msgstr = line.Substring(7).Trim();
 
                 // dequote
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRING_STARTSWITH_CHAR
                 if (msgid.StartsWith('"') && msgid.EndsWith('"'))
 #else
                 if (0 < msgid.Length && msgid[0] == '"' && msgid[msgid.Length - 1] == '"')
@@ -111,7 +111,7 @@ namespace Smdn {
                 else
                   msgid = null; // invalid?
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRING_STARTSWITH_CHAR
                 if (msgstr.StartsWith('"') && msgstr.EndsWith('"'))
 #else
                 if (0 < msgstr.Length && msgstr[0] == '"' && msgstr[msgstr.Length - 1] == '"')

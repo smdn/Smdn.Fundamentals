@@ -49,7 +49,7 @@ namespace Smdn.IO.Streams {
       this.readOnly = !writable;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -60,7 +60,7 @@ namespace Smdn.IO.Streams {
 
       stream = null;
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
       base.Close();
 #else
       base.Dispose(disposing);

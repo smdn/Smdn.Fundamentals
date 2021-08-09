@@ -118,7 +118,7 @@ namespace Smdn.IO.Binary {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
         return Array.Empty<byte>();
 #else
         return EmptyByteArray.Instance;
@@ -146,7 +146,7 @@ namespace Smdn.IO.Binary {
       if (count < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
       if (count == 0)
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
         return Array.Empty<byte>();
 #else
         return EmptyByteArray.Instance;
@@ -224,7 +224,7 @@ namespace Smdn.IO.Binary {
         var remain = stream.Length - stream.Position;
 
         if (remain <= 0) {
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
           return Array.Empty<byte>();
 #else
           return EmptyByteArray.Instance;

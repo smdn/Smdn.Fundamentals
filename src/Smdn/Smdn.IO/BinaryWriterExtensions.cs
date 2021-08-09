@@ -4,7 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO {
-#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
+#if !SYSTEM_IO_STREAM_CLOSE
   public static class BinaryWriterExtensions {
     public static void Close(this BinaryWriter writer)
     {

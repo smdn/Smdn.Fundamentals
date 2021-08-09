@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
 #endif
 
@@ -69,7 +69,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
         node: Node.CreateRandom()
       );
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     public static UuidGenerator CreateTimeBased(DateTimeOffset timeStamp, int clockSequence, PhysicalAddress node)
       => new Version1UuidGenerator(
         timeStampSource: new Version1UuidGenerator.StaticValueTimeStampSource(timeStamp),

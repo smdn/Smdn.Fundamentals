@@ -60,7 +60,7 @@ namespace Smdn.Text {
     {
 
       return new ByteString(
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
                             new ArraySegment<byte>(Array.Empty<byte>()),
 #else
                             new ArraySegment<byte>(emptyByteArray),
@@ -70,7 +70,7 @@ namespace Smdn.Text {
       //return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
     }
 
-#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_ARRAY_EMPTY
     private static readonly byte[] emptyByteArray = new byte[0];
 #endif
 

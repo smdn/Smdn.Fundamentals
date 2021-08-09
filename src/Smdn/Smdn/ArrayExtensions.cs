@@ -140,7 +140,7 @@ namespace Smdn {
 
     public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter)
     {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_CONVERTER
       return Array.ConvertAll<TInput, TOutput>(array, converter);
 #else
       if (array == null)
@@ -149,7 +149,11 @@ namespace Smdn {
         throw new ArgumentNullException(nameof(converter));
 
       if (array.Length == 0)
+#if SYSTEM_ARRAY_EMPTY
         return Array.Empty<TOutput>();
+#else
+        return EmptyArray<TOutput>.Instance;
+#endif
 
       var ret = new TOutput[array.Length];
 
@@ -161,7 +165,7 @@ namespace Smdn {
 #endif
     }
 
-#if !(NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_ARRAY_EMPTY
     public static T[] Empty<T>()
     {
       return EmptyArray<T>.Instance;
@@ -183,7 +187,7 @@ namespace Smdn {
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
       if (count == 0 || array.Length == 0) {
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
         return Array.Empty<T>();
 #else
         return EmptyArray<T>.Instance;

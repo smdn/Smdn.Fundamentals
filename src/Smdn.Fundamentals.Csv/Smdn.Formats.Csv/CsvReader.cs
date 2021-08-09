@@ -11,7 +11,7 @@ namespace Smdn.Formats.Csv {
     public char Quotator { get; set; } = '"';
 
     public CsvReader(string path)
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
       : this(path, Encoding.Default)
 #else
       : this(path, Encoding.UTF8)
@@ -25,7 +25,7 @@ namespace Smdn.Formats.Csv {
     }
 
     public CsvReader(Stream stream)
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
       : this(stream, Encoding.Default)
 #else
       : this(stream, Encoding.UTF8)

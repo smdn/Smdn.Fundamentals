@@ -73,14 +73,14 @@ namespace Smdn.IO.Streams.Filtering {
       AdvanceBufferTo(stream.CanSeek ? stream.Position : 0L);
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
 #endif
     {
       if (!leaveStreamOpen)
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
         stream?.Close();
 #else
         stream?.Dispose();
@@ -156,10 +156,10 @@ namespace Smdn.IO.Streams.Filtering {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (cancellationToken.IsCancellationRequested)
-#if NET45 || NET452
-        return new Task<int>(() => default, cancellationToken);
-#else
+#if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
         return Task.FromCanceled<int>(cancellationToken);
+#else
+        return new Task<int>(() => default, cancellationToken);
 #endif
       if (count == 0)
         return Task.FromResult(count);

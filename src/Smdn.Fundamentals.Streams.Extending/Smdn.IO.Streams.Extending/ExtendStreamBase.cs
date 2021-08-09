@@ -83,14 +83,14 @@ namespace Smdn.IO.Streams.Extending {
       this.Section = prependLength == 0L ? StreamSection.Stream : StreamSection.Prepend;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
 #endif
     {
       if (!leaveInnerStreamOpen)
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
         stream?.Close();
 #else
         stream?.Dispose();
@@ -98,7 +98,7 @@ namespace Smdn.IO.Streams.Extending {
 
       stream = null;
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
       base.Close();
 #else
       base.Dispose(disposing);

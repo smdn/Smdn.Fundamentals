@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 
 namespace Smdn.OperatingSystem {
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_DIAGNOSTICS_PROCESS
   public static class Shell {
     private static bool IsRunningOnUnix =>
 #if NET471_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NET5_0_OR_GREATER

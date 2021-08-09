@@ -8,6 +8,8 @@ SPDX-License-Identifier: MIT
     <Deterministic>true</Deterministic>
   </PropertyGroup>
 
+  <Import Project="$(MSBuildThisFileDirectory)SupportedFrameworkSymbols.props" />
+
   <!--
   https://github.com/dotnet/msbuild/pull/6285
   <ItemGroup>

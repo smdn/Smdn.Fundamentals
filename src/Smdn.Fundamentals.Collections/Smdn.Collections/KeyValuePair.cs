@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
-#if !(NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
   public static class KeyValuePair {
     public static KeyValuePair<TKey, TValue> Create<TKey, TValue>(TKey key, TValue @value)
     {

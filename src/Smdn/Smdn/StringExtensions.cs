@@ -101,7 +101,7 @@ namespace Smdn {
       return str;
     }
 
-    // #if !(NETCOREAPP2_0 || NETCOREAPP2_1)
+#if !SYSTEM_STRING_STARTSWITH_CHAR
     public static bool StartsWith(this string str, char @value)
     {
       if (str == null)
@@ -113,7 +113,6 @@ namespace Smdn {
         return str[0] == @value;
     }
 
-    // #if !(NETCOREAPP2_0 || NETCOREAPP2_1)
     public static bool EndsWith(this string str, char @value)
     {
       if (str == null)
@@ -124,6 +123,7 @@ namespace Smdn {
       else
         return str[str.Length - 1] == @value;
     }
+#endif
 
     public static int Count(this string str, char c)
     {

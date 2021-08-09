@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
+#endif
 using System.Runtime.InteropServices;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
@@ -25,7 +27,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     internal readonly byte N4;
     internal readonly byte N5;
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     public Node(PhysicalAddress physicalAddress)
       : this((physicalAddress ?? throw new ArgumentNullException(nameof(physicalAddress))).GetAddressBytes())
     {}
@@ -52,7 +54,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       N5 = node[5];
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     public PhysicalAddress ToPhysicalAddress()
     {
       var buffer = new byte[6];

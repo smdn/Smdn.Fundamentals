@@ -1,12 +1,16 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
+#endif
+
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using NUnit.Framework;
@@ -25,7 +29,7 @@ namespace Smdn.Test.NUnit {
                                                                    Action<TSerializable> testDeserializedObject)
       /*where TSerializable : ISerializable*/
       {
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
       var serializeFormatter = new BinaryFormatter();
 
       using (var stream = new MemoryStream()) {

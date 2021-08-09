@@ -25,7 +25,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
 
     public static string ToControlCharsPicturizedString(this ReadOnlySequence<byte> sequence)
     {
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRING_CREATE
       return string.Create(
         (int)Math.Min(int.MaxValue, sequence.Length),
         sequence,

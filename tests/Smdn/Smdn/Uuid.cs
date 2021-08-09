@@ -52,7 +52,7 @@ namespace Smdn {
       Assert.AreEqual((new DateTime(2004, 1, 15, 16, 22, 26, 376, DateTimeKind.Utc)).AddTicks(3221), uuid.Timestamp);
       Assert.AreEqual(15472, uuid.Clock);
       Assert.AreEqual("00:90:27:2f:f7:25", uuid.IEEE802MacAddress);
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
       Assert.AreEqual(PhysicalAddress.Parse("00-90-27-2F-F7-25"), uuid.PhysicalAddress);
 #endif
     }
@@ -88,7 +88,7 @@ namespace Smdn {
       Assert.AreEqual(UuidVersion.Version1, uuid.Version);
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     [Test]
     public void TestCreateTimeBased2()
     {

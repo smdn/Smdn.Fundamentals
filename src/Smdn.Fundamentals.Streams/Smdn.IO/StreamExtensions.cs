@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Smdn.IO {
   public static class StreamExtensions {
-#if !(NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1)
+#if !SYSTEM_IO_STREAM_CLOSE
     public static void Close(this Stream stream)
     {
       if (stream == null)
@@ -177,10 +177,10 @@ namespace Smdn.IO {
         throw new ArgumentNullException(nameof(stream));
 
       if (sequence.IsEmpty)
-#if NET45 || NET452
-        return Task.FromResult(0);
-#else
+#if SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK
         return Task.CompletedTask;
+#else
+        return Task.FromResult(0);
 #endif
       else
         return WriteAsyncCore(stream, sequence, cancellationToken);

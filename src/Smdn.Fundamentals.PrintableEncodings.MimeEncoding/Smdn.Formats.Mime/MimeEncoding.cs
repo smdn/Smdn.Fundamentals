@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TEXT_ENCODING_BODYNAME
+#endif
+
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -97,7 +102,7 @@ namespace Smdn.Formats.Mime {
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding);
       }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_TEXT_ENCODING_BODYNAME
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
 #else
       var preambleText = string.Concat("=?", charset.WebName, "?", encodingChar, "?");

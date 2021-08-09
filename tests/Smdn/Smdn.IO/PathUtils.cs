@@ -145,6 +145,7 @@ namespace Smdn.IO {
       Assert.IsTrue(PathUtils.ContainsShellSpecialChars("ポケモン", shift_jis, ngchars));
     }
 
+#if !SYSTEM_IO_PATH_GETRELATIVEPATH
     [Test]
     public void TestGetRelativePath()
     {
@@ -324,5 +325,6 @@ namespace Smdn.IO {
                       PathUtils.GetRelativePath("/root/dir/", "/root/兄弟/"),
                       "contains non ascii #1");
     }
+#endif
   }
 }

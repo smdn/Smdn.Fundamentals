@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Smdn.OperatingSystem {
   [TestFixture()]
   public class ShellTests {
-#if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_DIAGNOSTICS_PROCESS
     [Test]
     public void TestCreateProcessStartInfo()
     {

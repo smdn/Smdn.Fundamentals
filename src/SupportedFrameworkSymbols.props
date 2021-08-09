@@ -1,0 +1,52 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup>
+    <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <DefineConstants Condition="
+      $(TargetFramework.StartsWith('net46')) Or
+      $(TargetFramework.StartsWith('net47')) Or
+      $(TargetFramework.StartsWith('net48')) Or
+      ($(TargetFramework.StartsWith('netstandard1.')) And '$(TargetFramework.TrimEnd(`012`))' != 'netstandard1.') Or
+      $(TargetFramework.StartsWith('netstandard2.')) Or
+      $(TargetFramework.StartsWith('netcoreapp')) Or
+      '$(TargetFramework)' == 'net5' Or
+      $(TargetFramework.StartsWith('net5.'))
+    ">$(DefineConstants);SYSTEM_ARRAY_EMPTY;SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK;SYSTEM_THREADING_TASKS_TASK_FROMCANCELED</DefineConstants>
+
+    <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <DefineConstants Condition="
+      $(TargetFramework.StartsWith('net4')) Or
+      $(TargetFramework.StartsWith('netstandard2.')) Or
+      $(TargetFramework.StartsWith('netcoreapp2.')) Or
+      $(TargetFramework.StartsWith('netcoreapp3.')) Or
+      '$(TargetFramework)' == 'net5' Or
+      $(TargetFramework.StartsWith('net5.'))
+    ">$(DefineConstants);SYSTEM_ICLONEABLE;SYSTEM_MATH_DIVREM;SYSTEM_DIAGNOSTICS_PROCESS;SYSTEM_IO_STREAM_CLOSE;SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS;SYSTEM_SECURITY_CRYPTOGRAPHY_HASHALGORITHM_CLEAR</DefineConstants>
+
+    <!-- NETFRAMEWORK -->
+    <DefineConstants Condition="
+      $(TargetFramework.StartsWith('net4'))
+    ">$(DefineConstants);SYSTEM_TEXT_ENCODING_DEFAULT_ANSI</DefineConstants>
+
+    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <DefineConstants Condition="
+      ($(TargetFramework.StartsWith('netstandard2.')) And '$(TargetFramework.TrimEnd(`0`))' != 'netstandard2.') Or
+      $(TargetFramework.StartsWith('netcoreapp2.')) Or
+      $(TargetFramework.StartsWith('netcoreapp3.')) Or
+      '$(TargetFramework)' == 'net5' Or
+      $(TargetFramework.StartsWith('net5.'))
+    ">$(DefineConstants);SYSTEM_STRING_STARTSWITH_CHAR;SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE;SYSTEM_IO_PATH_GETRELATIVEPATH</DefineConstants>
+
+    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER -->
+    <DefineConstants Condition="
+      ($(TargetFramework.StartsWith('netstandard2.')) And '$(TargetFramework.TrimEnd(`0`))' != 'netstandard2.' ) Or
+      ($(TargetFramework.StartsWith('netcoreapp2.')) And '$(TargetFramework.TrimEnd(`0`))' != 'netcoreapp2.' ) Or
+      $(TargetFramework.StartsWith('netcoreapp3.')) Or
+      '$(TargetFramework)' == 'net5' Or
+      $(TargetFramework.StartsWith('net5.'))
+    ">$(DefineConstants);SYSTEM_STRING_CREATE</DefineConstants>
+  </PropertyGroup>
+</Project>

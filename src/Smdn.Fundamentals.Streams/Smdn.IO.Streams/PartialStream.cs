@@ -9,7 +9,7 @@ using Smdn.IO;
 namespace Smdn.IO.Streams {
   public class PartialStream : 
     Stream
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_ICLONEABLE
     , ICloneable
 #endif
   {
@@ -161,7 +161,7 @@ namespace Smdn.IO.Streams {
         this.Position = 0;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
     public override void Close()
 #else
     protected override void Dispose(bool disposing)
@@ -172,14 +172,14 @@ namespace Smdn.IO.Streams {
 
       stream = null;
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
       base.Close();
 #else
       base.Dispose(disposing);
 #endif
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_ICLONEABLE
     object ICloneable.Clone()
     {
       return Clone();

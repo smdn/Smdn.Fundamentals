@@ -86,7 +86,7 @@ namespace Smdn.IO.Streams.LineOriented {
     {
       if (disposing) {
         if (!leaveStreamOpen)
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_IO_STREAM_CLOSE
           stream?.Close();
 #else
           stream?.Dispose();
@@ -288,10 +288,10 @@ namespace Smdn.IO.Streams.LineOriented {
       if (targetStream == null)
         throw new ArgumentNullException(nameof(targetStream));
       if (cancellationToken.IsCancellationRequested)
-#if NET45 || NET452
-        return new Task<long>(() => default, cancellationToken);
-#else
+#if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
         return Task.FromCanceled<long>(cancellationToken);
+#else
+        return new Task<long>(() => default, cancellationToken);
 #endif
       if (length == 0L)
         return Task.FromResult(0L); // do nothing
@@ -388,10 +388,10 @@ namespace Smdn.IO.Streams.LineOriented {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 
       if (cancellationToken.IsCancellationRequested)
-#if NET45 || NET452
-        return new Task<int>(() => default, cancellationToken);
-#else
+#if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
         return Task.FromCanceled<int>(cancellationToken);
+#else
+        return new Task<int>(() => default, cancellationToken);
 #endif
       if (count == 0L)
         return Task.FromResult(0); // do nothing

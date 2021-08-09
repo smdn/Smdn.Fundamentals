@@ -5,7 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-#if NET46_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_ARRAY_EMPTY
 using _Array = System.Array; // Array.Empty
 #else
 using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
@@ -133,7 +133,7 @@ namespace Smdn.IO.Streams.Extending {
       Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Length); }, nameof(stream.Length));
       Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Position); }, nameof(stream.Length));
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_CLOSE
       Assert.DoesNotThrow(() => stream.Close(), nameof(stream.Close));
 #endif
     }

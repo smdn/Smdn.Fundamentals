@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_URI_URISCHEME_FILE
+#endif
+
 using System;
 using System.IO;
 using System.Text;
@@ -101,7 +106,7 @@ namespace Smdn.IO {
       return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
     public static bool ContainsShellEscapeChar(string path)
     {
       return ContainsShellEscapeChar(path, Encoding.Default);
@@ -113,7 +118,7 @@ namespace Smdn.IO {
       return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
     public static bool ContainsShellPipeChar(string path)
     {
       return ContainsShellPipeChar(path, Encoding.Default);
@@ -170,7 +175,7 @@ namespace Smdn.IO {
       return false;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_DIAGNOSTICS_PROCESS
     public static string RenameUnique(string file)
     {
       if (file == null)
@@ -209,7 +214,7 @@ namespace Smdn.IO {
     }
 #endif
 
-    // #if !(NETCOREAPP2_0 || NETCOREAPP2_1)
+#if !SYSTEM_IO_PATH_GETRELATIVEPATH
     public static string GetRelativePath(string basePath, string path)
     {
       if (basePath == null)
@@ -224,7 +229,7 @@ namespace Smdn.IO {
       path = path.Replace("%", "%25" /*encode*/);
 
       if (!Platform.IsRunningOnWindows) {
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_URI_URISCHEME_FILE
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + path.Replace(":", "%3A");
 #else
@@ -243,5 +248,6 @@ namespace Smdn.IO {
 
       return relativePath.Replace("%25", "%" /*decode*/);
     }
+#endif
   }
 }
