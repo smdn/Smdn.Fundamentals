@@ -104,7 +104,7 @@ namespace Smdn.Xml.Xhtml {
       return s;
     }
 
-#if !(NETFRAMEWORK || NETSTANDARD2_0)
+#if !(NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER)
     private static XmlWriter Create(string outputFileName, XmlWriterSettings settings)
     {
       settings.CloseOutput = true;
