@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.ParamArray</Title>
-    <Description>Smdn.Fundamentals.ParamArray</Description>
+    <Title>Smdn.Fundamental.ParamArray</Title>
+    <Description>Smdn.Fundamental.ParamArray</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.Collections\Smdn.Fundamentals.Collections.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
   </ItemGroup>
 </Project>

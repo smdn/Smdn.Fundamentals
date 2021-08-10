@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Streams</Title>
-    <Description>Smdn.Fundamentals.Streams</Description>
+    <Title>Smdn.Fundamental.Stream</Title>
+    <Description>Smdn.Fundamental.Stream</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
   </ItemGroup>
 </Project>

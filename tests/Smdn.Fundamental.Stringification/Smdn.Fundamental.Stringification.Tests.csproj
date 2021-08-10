@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectReference Include="..\Smdn.Test.NUnit\Smdn.Test.NUnit.csproj" />
-    <ProjectReference Include="..\..\src\Smdn.Fundamentals.Collections\Smdn.Fundamentals.Collections.csproj" />
-    <ProjectReference Include="..\..\src\Smdn.Fundamentals.Stringification\Smdn.Fundamentals.Stringification.csproj" />
+    <ProjectReference Include="..\..\src\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
+    <ProjectReference Include="..\..\src\Smdn.Fundamental.Stringification\Smdn.Fundamental.Stringification.csproj" />
   </ItemGroup>
 </Project>

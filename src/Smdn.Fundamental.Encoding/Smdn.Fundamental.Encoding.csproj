@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Encodings</Title>
-    <Description>Smdn.Fundamentals.Encodings</Description>
+    <Title>Smdn.Fundamental.Encoding</Title>
+    <Description>Smdn.Fundamental.Encoding</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

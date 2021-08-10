@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Shell</Title>
-    <Description>Smdn.Fundamentals.Shell</Description>
+    <Title>Smdn.Fundamental.Shell</Title>
+    <Description>Smdn.Fundamental.Shell</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or '$(TargetFramework)' == 'net47'" />
   </ItemGroup>
 </Project>

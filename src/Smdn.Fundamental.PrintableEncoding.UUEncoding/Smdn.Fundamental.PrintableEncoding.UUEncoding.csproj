@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.PrintableEncodings.UUEncoding</Title>
-    <Description>Smdn.Fundamentals.PrintableEncodings.UUEncoding</Description>
+    <Title>Smdn.Fundamental.PrintableEncoding.UUEncoding</Title>
+    <Description>Smdn.Fundamental.PrintableEncoding.UUEncoding</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,12 +19,12 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.Buffers\Smdn.Fundamentals.Buffers.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.CryptoTransform\Smdn.Fundamentals.CryptoTransform.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.Hexadecimal\Smdn.Fundamentals.PrintableEncodings.Hexadecimal.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams\Smdn.Fundamentals.Streams.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams.LineOriented\Smdn.Fundamentals.Streams.LineOriented.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream.LineOriented\Smdn.Fundamental.Stream.LineOriented.csproj" />
     <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
   </ItemGroup>
 </Project>

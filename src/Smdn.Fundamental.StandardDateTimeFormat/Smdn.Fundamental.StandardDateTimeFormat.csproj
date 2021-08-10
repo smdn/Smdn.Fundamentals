@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.StandardDateTimeFormat</Title>
-    <Description>Smdn.Fundamentals.StandardDateTimeFormat</Description>
+    <Title>Smdn.Fundamental.StandardDateTimeFormat</Title>
+    <Description>Smdn.Fundamental.StandardDateTimeFormat</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

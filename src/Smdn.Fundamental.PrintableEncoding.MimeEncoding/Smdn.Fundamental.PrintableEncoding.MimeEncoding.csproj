@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.PrintableEncodings.MimeEncoding</Title>
-    <Description>Smdn.Fundamentals.PrintableEncodings.MimeEncoding</Description>
+    <Title>Smdn.Fundamental.PrintableEncoding.MimeEncoding</Title>
+    <Description>Smdn.Fundamental.PrintableEncoding.MimeEncoding</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,11 +19,11 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.CryptoTransform\Smdn.Fundamentals.CryptoTransform.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Encodings\Smdn.Fundamentals.Encodings.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.Base64\Smdn.Fundamentals.PrintableEncodings.Base64.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.QuotedPrintable\Smdn.Fundamentals.PrintableEncodings.QuotedPrintable.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.UUEncoding\Smdn.Fundamentals.PrintableEncodings.UUEncoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
   </ItemGroup>
 </Project>

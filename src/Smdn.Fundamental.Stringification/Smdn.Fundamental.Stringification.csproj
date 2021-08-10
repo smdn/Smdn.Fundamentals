@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Stringification</Title>
-    <Description>Smdn.Fundamentals.Stringification</Description>
+    <Title>Smdn.Fundamental.Stringification</Title>
+    <Description>Smdn.Fundamental.Stringification</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

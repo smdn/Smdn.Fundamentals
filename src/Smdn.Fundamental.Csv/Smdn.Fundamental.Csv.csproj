@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Csv</Title>
-    <Description>Smdn.Fundamentals.Csv</Description>
+    <Title>Smdn.Fundamental.Csv</Title>
+    <Description>Smdn.Fundamental.Csv</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

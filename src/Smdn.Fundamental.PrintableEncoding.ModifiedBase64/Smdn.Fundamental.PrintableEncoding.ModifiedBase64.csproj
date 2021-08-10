@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.PrintableEncodings.ModifiedBase64</Title>
-    <Description>Smdn.Fundamentals.PrintableEncodings.ModifiedBase64</Description>
+    <Title>Smdn.Fundamental.PrintableEncoding.ModifiedBase64</Title>
+    <Description>Smdn.Fundamental.PrintableEncoding.ModifiedBase64</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,8 +19,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.CryptoTransform\Smdn.Fundamentals.CryptoTransform.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.Base64\Smdn.Fundamentals.PrintableEncodings.Base64.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
   </ItemGroup>
 </Project>

@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Collections</Title>
-    <Description>Smdn.Fundamentals.Collections</Description>
+    <Title>Smdn.Fundamental.Collection</Title>
+    <Description>Smdn.Fundamental.Collection</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,7 +19,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" Condition="$(TargetFramework.StartsWith('netstandard1'))" />
   </ItemGroup>
 </Project>

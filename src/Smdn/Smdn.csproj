@@ -21,38 +21,38 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.ByteString\Smdn.Fundamentals.ByteString.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Buffers\Smdn.Fundamentals.Buffers.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Collections\Smdn.Fundamentals.Collections.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.CryptoTransform\Smdn.Fundamentals.CryptoTransform.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Csv\Smdn.Fundamentals.Csv.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.FourCC\Smdn.Fundamentals.FourCC.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Encodings\Smdn.Fundamentals.Encodings.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Encodings.OctetEncoding\Smdn.Fundamentals.Encodings.OctetEncoding.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Maths\Smdn.Fundamentals.Maths.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.MimeHeader\Smdn.Fundamentals.MimeHeader.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.MimeType\Smdn.Fundamentals.MimeType.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.ParamArray\Smdn.Fundamentals.ParamArray.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.Base64\Smdn.Fundamentals.PrintableEncodings.Base64.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.Hexadecimal\Smdn.Fundamentals.PrintableEncodings.Hexadecimal.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.MimeEncoding\Smdn.Fundamentals.PrintableEncodings.MimeEncoding.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.ModifiedBase64\Smdn.Fundamentals.PrintableEncodings.ModifiedBase64.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.PercentEncoding\Smdn.Fundamentals.PrintableEncodings.PercentEncoding.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.QuotedPrintable\Smdn.Fundamentals.PrintableEncodings.QuotedPrintable.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.UUEncoding\Smdn.Fundamentals.PrintableEncodings.UUEncoding.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.SIPrefix\Smdn.Fundamentals.SIPrefix.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Shell\Smdn.Fundamentals.Shell.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.StandardDateTimeFormat\Smdn.Fundamentals.StandardDateTimeFormat.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams\Smdn.Fundamentals.Streams.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams.BinaryReaderWriter\Smdn.Fundamentals.Streams.BinaryReaderWriter.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams.Caching\Smdn.Fundamentals.Streams.Caching.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams.Extending\Smdn.Fundamentals.Streams.Extending.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams.Filtering\Smdn.Fundamentals.Streams.Filtering.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Streams.LineOriented\Smdn.Fundamentals.Streams.LineOriented.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Stringification\Smdn.Fundamentals.Stringification.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.UInt24n\Smdn.Fundamentals.UInt24n.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Uuid\Smdn.Fundamentals.Uuid.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.ByteString\Smdn.Fundamental.ByteString.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Csv\Smdn.Fundamental.Csv.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.FourCC\Smdn.Fundamental.FourCC.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Encoding.OctetEncoding\Smdn.Fundamental.Encoding.OctetEncoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Math\Smdn.Fundamental.Math.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.MimeHeader\Smdn.Fundamental.MimeHeader.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.MimeType\Smdn.Fundamental.MimeType.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.ParamArray\Smdn.Fundamental.ParamArray.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.MimeEncoding\Smdn.Fundamental.PrintableEncoding.MimeEncoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.ModifiedBase64\Smdn.Fundamental.PrintableEncoding.ModifiedBase64.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.PercentEncoding\Smdn.Fundamental.PrintableEncoding.PercentEncoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.SIPrefix\Smdn.Fundamental.SIPrefix.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Shell\Smdn.Fundamental.Shell.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.StandardDateTimeFormat\Smdn.Fundamental.StandardDateTimeFormat.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream.BinaryReaderWriter\Smdn.Fundamental.Stream.BinaryReaderWriter.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream.Caching\Smdn.Fundamental.Stream.Caching.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream.Extending\Smdn.Fundamental.Stream.Extending.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream.Filtering\Smdn.Fundamental.Stream.Filtering.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stream.LineOriented\Smdn.Fundamental.Stream.LineOriented.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Stringification\Smdn.Fundamental.Stringification.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Uuid\Smdn.Fundamental.Uuid.csproj" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or $(TargetFramework.StartsWith('netstandard1'))" />
     <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or '$(TargetFramework)' == 'net47'" />

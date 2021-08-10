@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Exceptions</Title>
-    <Description>Smdn.Fundamentals.Exceptions</Description>
+    <Title>Smdn.Fundamental.Exception</Title>
+    <Description>Smdn.Fundamental.Exception</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

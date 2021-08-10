@@ -6,14 +6,14 @@ using System.Runtime.CompilerServices;
 [assembly: System.CLSCompliant(true)]
 
 /*
- * Smdn.Fundamentals.ByteString
+ * Smdn.Fundamental.ByteString
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Text.ByteString))]
 [assembly: TypeForwardedTo(typeof(Smdn.Text.ByteStringBuilder))]
 [assembly: TypeForwardedTo(typeof(Smdn.Text.ByteStringExtensions))]
 
 /*
- * Smdn.Fundamentals.Collections
+ * Smdn.Fundamental.Collection
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.IReadOnlyCollectionExtensions))]
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.IReadOnlyListExtensions))]
@@ -24,67 +24,67 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Collections.Singleton))]
 
 /*
- * Smdn.Fundamentals.CryptoTransform
+ * Smdn.Fundamental.CryptoTransform
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Security.Cryptography.ICryptoTransformExtensions))]
 
 /*
- * Smdn.Fundamentals.Csv
+ * Smdn.Fundamental.Csv
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.CsvRecord))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Csv.CsvReader))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Csv.CsvWriter))]
 
 /*
- * Smdn.Fundamentals.Encodings
+ * Smdn.Fundamental.Encoding
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingNotSupportedException))]
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingSelectionCallback))]
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.EncodingUtils))]
 
 /*
- * Smdn.Fundamentals.Encodings.OctetEncoding
+ * Smdn.Fundamental.Encoding.OctetEncoding
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Text.Encodings.OctetEncoding))]
 
 /*
- * Smdn.Fundamentals.Exceptions
+ * Smdn.Fundamental.Exception
  */
 [assembly: TypeForwardedTo(typeof(Smdn.ExceptionUtils))]
 
 /*
- * Smdn.Fundamentals.FourCC
+ * Smdn.Fundamental.FourCC
  */
 [assembly: TypeForwardedTo(typeof(Smdn.FourCC))]
 
 /*
- * Smdn.Fundamentals.Maths
+ * Smdn.Fundamental.Math
  */
 [assembly: TypeForwardedTo(typeof(Smdn.MathUtils))]
 
 /*
- * Smdn.Fundamentals.MimeHeader
+ * Smdn.Fundamental.MimeHeader
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.MimeUtils))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.RawHeaderField))]
 
 /*
- * Smdn.Fundamentals.MimeType
+ * Smdn.Fundamental.MimeType
  */
 [assembly: TypeForwardedTo(typeof(Smdn.MimeType))]
 
 /*
- * Smdn.Fundamentals.ParamArray
+ * Smdn.Fundamental.ParamArray
  */
 [assembly: TypeForwardedTo(typeof(Smdn.ParamArrayUtils))]
 
 /*
- * Smdn.Fundamentals.PrintableEncodings.Base64
+ * Smdn.Fundamental.PrintableEncoding.Base64
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Base64))]
 
 /*
- * Smdn.Fundamentals.PrintableEncodings.MimeEncoding
+ * Smdn.Fundamental.PrintableEncoding.MimeEncoding
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.ContentTransferEncoding))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.ContentTransferEncodingMethod))]
@@ -93,7 +93,7 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.Mime.MimeEncodingMethod))]
 
 /*
- * Smdn.Fundamentals.PrintableEncodings.ModifiedBase64
+ * Smdn.Fundamental.PrintableEncoding.ModifiedBase64
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.FromRFC2152ModifiedBase64Transform))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.FromRFC3501ModifiedBase64Transform))]
@@ -102,7 +102,7 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.ModifiedBase64.ToRFC3501ModifiedBase64Transform))]
 
 /*
- * Smdn.Fundamentals.PrintableEncodings.PercentEncoding
+ * Smdn.Fundamental.PrintableEncoding.PercentEncoding
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.FromPercentEncodedTransform))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.PercentEncoding))]
@@ -110,7 +110,7 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.PercentEncodings.ToPercentEncodedTransformMode))]
 
 /*
- * Smdn.Fundamentals.PrintableEncodings.QuotedPrintable
+ * Smdn.Fundamental.PrintableEncoding.QuotedPrintable
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransform))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.FromQuotedPrintableTransformMode))]
@@ -119,19 +119,19 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.QuotedPrintableEncodings.ToQuotedPrintableTransformMode))]
 
 /*
- * Smdn.Fundamentals.PrintableEncodings.UUEncoding
+ * Smdn.Fundamental.PrintableEncoding.UUEncoding
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecoder))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
 
 /*
- * Smdn.Fundamentals.SIPrefix
+ * Smdn.Fundamental.SIPrefix
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.SIPrefixNumberFormatter))]
 
 /*
- * Smdn.Fundamentals.Shell
+ * Smdn.Fundamental.Shell
  */
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]
 #if SYSTEM_DIAGNOSTICS_PROCESS
@@ -141,12 +141,12 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.ShellString))]
 
 /*
- * Smdn.Fundamentals.StandardDateTimeFormat
+ * Smdn.Fundamental.StandardDateTimeFormat
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.DateTimeFormat))]
 
 /*
- * Smdn.Fundamentals.Streams
+ * Smdn.Fundamental.Stream
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.StreamExtensions))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.ChunkedMemoryStream))]
@@ -154,7 +154,7 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.PartialStream))]
 
 /*
- * Smdn.Fundamentals.Streams.BinaryReaderWriter
+ * Smdn.Fundamental.Stream.BinaryReaderWriter
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BigEndianBinaryReader))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.BigEndianBinaryWriter))]
@@ -167,38 +167,38 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Binary.LittleEndianBinaryWriter))]
 
 /*
- * Smdn.Fundamentals.Streams.Caching
+ * Smdn.Fundamental.Stream.Caching
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.CachedStreamBase))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.NonPersistentCachedStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Caching.PersistentCachedStream))]
 
 /*
- * Smdn.Fundamentals.Streams.Extending
+ * Smdn.Fundamental.Stream.Extending
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Extending.ExtendStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Extending.ExtendStreamBase))]
 
 /*
- * Smdn.Fundamentals.Streams.Filtering
+ * Smdn.Fundamental.Stream.Filtering
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.Filtering.FilterStream))]
 
 /*
- * Smdn.Fundamentals.Streams.LineOriented
+ * Smdn.Fundamental.Stream.LineOriented
  */
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.LineOrientedStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.LooseLineOrientedStream))]
 [assembly: TypeForwardedTo(typeof(Smdn.IO.Streams.LineOriented.StrictLineOrientedStream))]
 
 /*
- * Smdn.Fundamentals.UInt24n
+ * Smdn.Fundamental.UInt24n
  */
 [assembly: TypeForwardedTo(typeof(Smdn.UInt24))]
 [assembly: TypeForwardedTo(typeof(Smdn.UInt48))]
 
 /*
- * Smdn.Fundamentals.Uuid
+ * Smdn.Fundamental.Uuid
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Uuid))]
 [assembly: TypeForwardedTo(typeof(Smdn.UuidVersion))]

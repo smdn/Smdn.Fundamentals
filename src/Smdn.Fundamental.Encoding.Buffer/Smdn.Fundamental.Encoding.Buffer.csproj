@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Encodings.Buffers</Title>
-    <Description>Smdn.Fundamentals.Encodings.Buffers</Description>
+    <Title>Smdn.Fundamental.Encoding.Buffers</Title>
+    <Description>Smdn.Fundamental.Encoding.Buffers</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

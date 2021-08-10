@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.PrintableEncodings.PercentEncoding</Title>
-    <Description>Smdn.Fundamentals.PrintableEncodings.PercentEncoding</Description>
+    <Title>Smdn.Fundamental.PrintableEncoding.PercentEncoding</Title>
+    <Description>Smdn.Fundamental.PrintableEncoding.PercentEncoding</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
@@ -19,8 +19,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamentals.CryptoTransform\Smdn.Fundamentals.CryptoTransform.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.Exceptions\Smdn.Fundamentals.Exceptions.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamentals.PrintableEncodings.Hexadecimal\Smdn.Fundamentals.PrintableEncodings.Hexadecimal.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
   </ItemGroup>
 </Project>

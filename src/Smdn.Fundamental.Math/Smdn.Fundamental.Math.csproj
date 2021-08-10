@@ -10,8 +10,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamentals.Maths</Title>
-    <Description>Smdn.Fundamentals.Maths</Description>
+    <Title>Smdn.Fundamental.Math</Title>
+    <Description>Smdn.Fundamental.Math</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
