@@ -10,8 +10,6 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
-    <Title>Smdn.Fundamental.UInt24n</Title>
-    <Description>Smdn.Fundamental.UInt24n</Description>
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->

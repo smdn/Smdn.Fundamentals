@@ -9,6 +9,8 @@ SPDX-License-Identifier: MIT
     <PackageTags Condition="!$(PackageTags.Contains('smdn.jp'))">smdn.jp;$(PackageTags)</PackageTags>
 
     <!-- AssemblyInfo -->
+    <Title Condition=" '$(Title)' == '' ">$(MSBuildProjectName)</Title>
+    <Description Condition=" '$(Description)' == '' ">$(Title).dll</Description>
     <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(Title)</AssemblyTitle>
     <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(AssemblyName)</AssemblyTitle>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(VersionPrefix)</AssemblyVersion>
