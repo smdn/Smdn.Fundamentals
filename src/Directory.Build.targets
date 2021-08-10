@@ -9,13 +9,13 @@ SPDX-License-Identifier: MIT
     <PackageTags Condition="!$(PackageTags.Contains('smdn.jp'))">smdn.jp;$(PackageTags)</PackageTags>
 
     <!-- AssemblyInfo -->
-    <Title Condition=" '$(Title)' == '' ">$(MSBuildProjectName)</Title>
-    <Description Condition=" '$(Description)' == '' ">$(Title).dll</Description>
     <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(Title)</AssemblyTitle>
     <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(AssemblyName)</AssemblyTitle>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(VersionPrefix)</AssemblyVersion>
     <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(Version)</AssemblyVersion>
     <InformationalVersion Condition=" '$(InformationalVersion)' == '' ">$(VersionPrefix)$(VersionSuffix) ($(TargetFramework))</InformationalVersion>
+    <Title Condition=" '$(Title)' == '' ">$(AssemblyName)</Title>
+    <Description Condition=" '$(Description)' == '' ">$(AssemblyName).dll</Description>
     <Product Condition=" '$(Product)' == '' ">$(AssemblyName)-$(InformationalVersion)</Product>
     <Company>smdn.jp (https://smdn.jp)</Company>
     <Copyright Condition=" '$(Copyright)' == '' ">Copyright © $(CopyrightYear) $(Authors)</Copyright>
