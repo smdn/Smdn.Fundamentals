@@ -17,9 +17,9 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamental.FourCC\Smdn.Fundamental.FourCC.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.FourCC\Smdn.Fundamental.FourCC.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
   </ItemGroup>
 </Project>

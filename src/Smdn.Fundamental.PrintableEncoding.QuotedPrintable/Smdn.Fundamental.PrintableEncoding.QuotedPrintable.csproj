@@ -17,9 +17,9 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectReference Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
     <!-- Smdn.IO.Streams.NonClosingStream NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER -->
     <ProjectReference
       Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj"
