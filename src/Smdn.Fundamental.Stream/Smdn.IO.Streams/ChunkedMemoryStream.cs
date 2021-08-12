@@ -4,7 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Streams {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ChunkedMemoryStream : Stream {
     public static readonly int DefaultChunkSize = 40960;
 

@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public readonly struct Node : IFormattable {
     public static Node CreateRandom()

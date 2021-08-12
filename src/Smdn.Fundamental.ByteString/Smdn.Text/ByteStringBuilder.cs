@@ -3,7 +3,7 @@
 using System;
 
 namespace Smdn.Text {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ByteStringBuilder {
     [System.Runtime.CompilerServices.IndexerName("Bytes")]
     public byte this[int index] {

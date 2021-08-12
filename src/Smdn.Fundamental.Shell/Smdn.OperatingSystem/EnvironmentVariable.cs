@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Smdn.OperatingSystem {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EnvironmentVariable {
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables)
     {

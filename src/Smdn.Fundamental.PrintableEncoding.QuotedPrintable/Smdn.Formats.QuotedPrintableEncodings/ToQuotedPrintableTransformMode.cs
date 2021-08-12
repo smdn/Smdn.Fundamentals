@@ -3,7 +3,7 @@
 using System;
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ToQuotedPrintableTransformMode {
     ContentTransferEncoding,
     MimeEncoding,

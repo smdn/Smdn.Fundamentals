@@ -4,7 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Smdn {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt48 :
     IEquatable<UInt48>,

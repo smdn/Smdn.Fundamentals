@@ -35,7 +35,7 @@ namespace Smdn.Formats.Mime {
    *               ; (but see "Use of encoded-words in message
    *               ; headers", section 5)
    */
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeEncoding {
     public static string Encode(string str, MimeEncodingMethod encoding)
     {

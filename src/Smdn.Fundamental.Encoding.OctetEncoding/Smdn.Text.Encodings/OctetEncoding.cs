@@ -4,7 +4,7 @@ using System;
 using System.Text;
 
 namespace Smdn.Text.Encodings {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class OctetEncoding : Encoding {
     // for string which contains 7-bit characters
     public static readonly Encoding SevenBits;

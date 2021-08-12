@@ -4,7 +4,7 @@ using System;
 using System.Buffers;
 
 namespace Smdn.Text {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ByteStringExtensions {
     public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str)
     {

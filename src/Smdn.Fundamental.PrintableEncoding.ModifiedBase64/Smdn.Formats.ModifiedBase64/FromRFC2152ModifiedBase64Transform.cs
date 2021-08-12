@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 namespace Smdn.Formats.ModifiedBase64 {
   // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
   // http://tools.ietf.org/html/rfc2152
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     public bool CanReuseTransform => true;
     public bool CanTransformMultipleBlocks => false;

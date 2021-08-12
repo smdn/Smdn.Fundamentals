@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Smdn {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ExceptionUtils {
     // TODO: use gettext or .resx
     private static class Locale {

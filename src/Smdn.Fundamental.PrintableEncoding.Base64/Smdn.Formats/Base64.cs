@@ -9,7 +9,7 @@ using Smdn.IO.Streams;
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Base64 {
     public static string GetEncodedString(string str)
     {

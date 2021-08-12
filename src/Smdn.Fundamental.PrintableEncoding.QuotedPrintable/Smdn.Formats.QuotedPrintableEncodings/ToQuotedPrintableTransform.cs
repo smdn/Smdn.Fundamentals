@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using Smdn.Text;
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToQuotedPrintableTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }

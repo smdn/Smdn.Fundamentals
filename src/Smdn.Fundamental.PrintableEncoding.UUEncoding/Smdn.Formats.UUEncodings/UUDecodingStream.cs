@@ -14,7 +14,7 @@ using Smdn.Text;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.UUEncodings {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class UUDecodingStream : Stream {
     private enum State {
       Initial,

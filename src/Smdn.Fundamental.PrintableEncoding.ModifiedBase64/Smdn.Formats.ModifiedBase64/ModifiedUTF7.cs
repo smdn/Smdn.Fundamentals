@@ -11,7 +11,7 @@ namespace Smdn.Formats.ModifiedBase64 {
    * 5.1.3. Mailbox International Naming Convention
    * http://tools.ietf.org/html/rfc3501#section-5.1.3
    */
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ModifiedUTF7 {
     public static string Encode(string str)
     {

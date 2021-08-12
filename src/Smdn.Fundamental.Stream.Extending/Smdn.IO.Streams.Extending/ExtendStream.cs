@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Smdn.IO;
 
 namespace Smdn.IO.Streams.Extending {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ExtendStream : ExtendStreamBase {
     protected override bool CanSeekPrependedData => prependStream?.CanSeek ?? true;
     protected override bool CanSeekAppendedData => appendStream?.CanSeek ?? true;

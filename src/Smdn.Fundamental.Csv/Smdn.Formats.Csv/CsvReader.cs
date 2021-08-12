@@ -6,7 +6,7 @@ using System.IO;
 using System.Text;
 
 namespace Smdn.Formats.Csv {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvReader : StreamReader {
     public char Delimiter { get; set; } = ',';
     public char Quotator { get; set; } = '"';

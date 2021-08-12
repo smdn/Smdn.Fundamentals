@@ -4,7 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Streams.LineOriented {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LooseLineOrientedStream : LineOrientedStream {
     public LooseLineOrientedStream(
       Stream stream,

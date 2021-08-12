@@ -4,7 +4,7 @@ using System;
 
 namespace Smdn.IO.Binary {
 #if !SYSTEM_ARRAY_EMPTY
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   internal static class EmptyByteArray {
     public static readonly byte[] Instance = new byte[0];
   }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn.Formats {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class CsvRecord {
     // http://www.ietf.org/rfc/rfc4180.txt
     // Common Format and MIME Type for Comma-Separated Values (CSV) Files

@@ -8,7 +8,7 @@ namespace Smdn.Collections {
   /*
    * System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue> is available from .NET Framework 4.5
    */
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ReadOnlyDictionary<TKey, TValue> {
     public static readonly IReadOnlyDictionary<TKey, TValue> Empty = new System.Collections.ObjectModel.ReadOnlyDictionary<TKey, TValue>(new Dictionary<TKey, TValue>(0));
   }

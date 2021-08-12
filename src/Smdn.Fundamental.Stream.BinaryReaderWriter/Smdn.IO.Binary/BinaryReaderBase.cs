@@ -6,7 +6,7 @@ using System.IO;
 using Smdn.IO;
 
 namespace Smdn.IO.Binary {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class BinaryReaderBase : IDisposable {
     public bool LeaveBaseStreamOpen {
       get { CheckDisposed(); return leaveBaseStreamOpen; }

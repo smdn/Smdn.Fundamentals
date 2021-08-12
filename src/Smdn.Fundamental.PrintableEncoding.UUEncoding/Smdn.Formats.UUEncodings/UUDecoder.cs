@@ -7,7 +7,7 @@ using System.IO;
 using Smdn.IO.Streams;
 
 namespace Smdn.Formats.UUEncodings {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class UUDecoder {
     public sealed class FileEntry : IDisposable {
       [CLSCompliant(false)]

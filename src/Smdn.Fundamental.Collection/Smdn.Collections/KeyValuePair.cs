@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Smdn.Collections {
 #if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class KeyValuePair {
     public static KeyValuePair<TKey, TValue> Create<TKey, TValue>(TKey key, TValue @value)
     {

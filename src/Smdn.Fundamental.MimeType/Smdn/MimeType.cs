@@ -3,7 +3,7 @@
 using System;
 
 namespace Smdn {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
     /*
      * class members

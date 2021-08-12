@@ -18,7 +18,7 @@ namespace Smdn {
    * RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace
    * http://tools.ietf.org/html/rfc4122
    */
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct Uuid :
     IEquatable<Uuid>,

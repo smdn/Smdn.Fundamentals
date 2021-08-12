@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Smdn.IO;
 
 namespace Smdn.IO.Streams.Extending {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class ExtendStreamBase : Stream {
     private Stream stream = null;
     private bool IsClosed => stream == null;

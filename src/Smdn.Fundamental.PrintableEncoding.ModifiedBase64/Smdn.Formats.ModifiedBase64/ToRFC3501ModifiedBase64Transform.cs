@@ -7,7 +7,7 @@ namespace Smdn.Formats.ModifiedBase64 {
   // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
   // 5.1.3. Mailbox International Naming Convention
   // http://tools.ietf.org/html/rfc3501#section-5.1.3
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform, ICryptoTransform {
     public ToRFC3501ModifiedBase64Transform()
       : base()

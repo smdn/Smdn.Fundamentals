@@ -7,7 +7,7 @@ using System.Text;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Security.Cryptography {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ICryptoTransformExtensions {
     public static string TransformStringTo(this ICryptoTransform transform, string str, Encoding encoding)
     {

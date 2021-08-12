@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Smdn.Collections;
 
 namespace Smdn {
-  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ParamArrayUtils {
     public static IEnumerable<TParam> ToEnumerable<TParam>(TParam first, params TParam[] subsequence)
     {
