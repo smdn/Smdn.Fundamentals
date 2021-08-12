@@ -59,8 +59,6 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       AssertUuidVersion1(uuid0);
       AssertUuidVersion1(uuid1);
 
-      Assert.AreNotEqual(uuid0, uuid1, "must generate different value");
-
       Assert.GreaterOrEqual(uuid0.Timestamp, dateTimeStart);
       Assert.GreaterOrEqual(uuid1.Timestamp, dateTimeStart);
 
@@ -69,6 +67,8 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 
       Assert.AreEqual(uuid0.Clock, uuid1.Clock, "same clock");
       CollectionAssert.AreEqual(uuid0.Node, uuid1.Node, "same node");
+
+      Warn.If(uuid0, Is.EqualTo(uuid1), "should generate different value");
     }
 
     [Test]
