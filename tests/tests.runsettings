@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration/>
+
+  <!-- ref: https://docs.nunit.org/articles/vs-test-adapter/Tips-And-Tricks.html -->
+  <NUnit>
+    <DisplayName>FullName</DisplayName>
+    <!-- <DisplayName>FullName</DisplayName> -->
+  </NUnit>
+</RunSettings>
