@@ -12,7 +12,15 @@ namespace Smdn.Xml.Linq {
       return element?.Attribute(attributeName)?.Value;
     }
 
-    public static TValue GetAttributeValue<TValue>(this XElement element, XName attributeName, Converter<string, TValue> converter)
+    public static TValue GetAttributeValue<TValue>(
+      this XElement element,
+      XName attributeName,
+#if SYSTEM_CONVERTER
+      Converter<string, TValue> converter
+#else
+      Func<string, TValue> converter
+#endif
+    )
     {
       if (converter == null)
         throw new ArgumentNullException(nameof(converter));
