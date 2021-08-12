@@ -3,6 +3,7 @@
 using System;
 
 namespace Smdn.Formats.Mime {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum MimeEncodingMethod {
     None,
 

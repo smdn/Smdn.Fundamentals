@@ -3,6 +3,7 @@
 using System;
 
 namespace Smdn.OperatingSystem {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ShellString :
 #if SYSTEM_ICLONEABLE
     ICloneable,

@@ -9,6 +9,7 @@ namespace Smdn {
    * RFC 2361 - WAVE and AVI Codec Registries [INFORMATIONAL]
    * http://tools.ietf.org/html/rfc2361
    */
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct FourCC :
     IEquatable<FourCC>,
     IEquatable<string>,

@@ -13,6 +13,7 @@ using Smdn.IO.Streams;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.Mime {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ContentTransferEncoding {
     public const string HeaderName = "Content-Transfer-Encoding";
 

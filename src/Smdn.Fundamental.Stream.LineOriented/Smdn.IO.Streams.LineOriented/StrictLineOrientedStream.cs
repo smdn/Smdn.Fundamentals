@@ -4,6 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Streams.LineOriented {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class StrictLineOrientedStream : LineOrientedStream {
     private static readonly ReadOnlyMemory<byte> defaultNewLine = new[] { (byte)'\r', (byte)'\n' };
 

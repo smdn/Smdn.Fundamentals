@@ -6,6 +6,7 @@ using System.Text;
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats.PercentEncodings {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class PercentEncoding {
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode)
     {

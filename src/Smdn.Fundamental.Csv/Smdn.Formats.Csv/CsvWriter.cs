@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 
 namespace Smdn.Formats.Csv {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvWriter : StreamWriter {
     public char Delimiter {
       get { return delimiter; }

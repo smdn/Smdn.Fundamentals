@@ -4,6 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Streams.Filtering {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public partial class FilterStream : Stream {
     public interface IFilter {
       long Offset { get; }

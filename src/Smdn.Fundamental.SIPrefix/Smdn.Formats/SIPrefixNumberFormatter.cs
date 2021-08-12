@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text;
 
 namespace Smdn.Formats {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
     /*
      * class members

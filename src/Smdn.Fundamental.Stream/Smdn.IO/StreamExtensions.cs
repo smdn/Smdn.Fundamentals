@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Smdn.IO {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class StreamExtensions {
 #if !SYSTEM_IO_STREAM_CLOSE
     public static void Close(this Stream stream)

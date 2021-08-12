@@ -4,6 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Binary {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BinaryWriter : Smdn.IO.Binary.BinaryWriterBase {
     private const int defaultStorageSize = 8;
     protected readonly byte[] Storage;

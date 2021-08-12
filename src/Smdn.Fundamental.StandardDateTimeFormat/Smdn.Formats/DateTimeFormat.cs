@@ -4,6 +4,7 @@ using System;
 using System.Globalization;
 
 namespace Smdn.Formats {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class DateTimeFormat {
     public static string GetCurrentTimeZoneOffsetString(bool delimiter)
     {

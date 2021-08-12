@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Smdn.IO.Streams.Filtering {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public partial class FilterStream : Stream {
     private Stream stream = null;
     private bool IsClosed => stream == null;

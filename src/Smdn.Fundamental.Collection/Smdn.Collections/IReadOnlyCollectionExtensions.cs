@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Smdn.Collections {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class IReadOnlyCollectionExtensions {
     public static List<TOutput> ConvertAll<TInput, TOutput>(
       this IReadOnlyCollection<TInput> collection,

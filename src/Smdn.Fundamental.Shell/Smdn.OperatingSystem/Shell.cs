@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace Smdn.OperatingSystem {
 #if SYSTEM_DIAGNOSTICS_PROCESS
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Shell {
     private static bool IsRunningOnUnix =>
       System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Linux) ||

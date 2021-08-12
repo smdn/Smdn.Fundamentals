@@ -3,6 +3,7 @@
 using System;
 
 namespace Smdn {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MathUtils {
     /// <summary>
     /// length of the hypotenuse of a triangle

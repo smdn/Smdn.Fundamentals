@@ -12,6 +12,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
    * RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace
    * http://tools.ietf.org/html/rfc4122
    */
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class UuidGenerator {
     /*
      * 4.2.  Algorithms for Creating a Time-Based UUID

@@ -12,6 +12,7 @@ using Smdn.Buffers;
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeUtils {
     [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream)

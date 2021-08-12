@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Smdn.IO;
 
 namespace Smdn.IO.Streams {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream : 
     Stream
 #if SYSTEM_ICLONEABLE

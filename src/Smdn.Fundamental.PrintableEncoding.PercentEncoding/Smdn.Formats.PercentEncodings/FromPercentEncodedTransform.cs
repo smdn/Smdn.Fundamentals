@@ -7,6 +7,7 @@ using Smdn.Formats;
 using Smdn.Text;
 
 namespace Smdn.Formats.PercentEncodings {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromPercentEncodedTransform : ICryptoTransform {
     public bool CanTransformMultipleBlocks {
       get { return true; }

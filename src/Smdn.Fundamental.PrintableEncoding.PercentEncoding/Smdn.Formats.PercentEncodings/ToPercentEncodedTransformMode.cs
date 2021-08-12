@@ -3,6 +3,7 @@
 using System;
 
 namespace Smdn.Formats.PercentEncodings {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Flags]
   public enum ToPercentEncodedTransformMode : int {
     ModeMask        = (1 << 16) - 1,

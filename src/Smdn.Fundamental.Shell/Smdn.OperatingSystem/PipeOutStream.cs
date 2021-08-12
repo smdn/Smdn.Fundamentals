@@ -6,6 +6,7 @@ using System.IO;
 
 namespace Smdn.OperatingSystem {
 #if SYSTEM_DIAGNOSTICS_PROCESS
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PipeOutStream : Stream {
     public override bool CanSeek {
       get { return /*!disposed &&*/ false; }

@@ -4,6 +4,7 @@ using System;
 using System.IO;
 
 namespace Smdn.IO.Binary {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LittleEndianBinaryReader : Smdn.IO.Binary.BinaryReader {
     public LittleEndianBinaryReader(Stream stream)
       : this(stream, false)

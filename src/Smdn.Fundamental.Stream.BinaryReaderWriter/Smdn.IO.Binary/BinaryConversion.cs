@@ -3,6 +3,7 @@
 using System;
 
 namespace Smdn.IO.Binary {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class BinaryConversion {
     private static void CheckSourceArray(byte[] @value, int startIndex, int count)
     {

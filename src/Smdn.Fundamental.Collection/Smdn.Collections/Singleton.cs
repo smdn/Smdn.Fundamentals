@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Smdn.Collections {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Singleton {
     public static IReadOnlyList<T> CreateList<T>(T element) => new SingletonList<T>(element);
 

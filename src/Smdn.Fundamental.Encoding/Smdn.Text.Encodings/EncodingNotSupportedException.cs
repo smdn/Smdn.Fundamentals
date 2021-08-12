@@ -4,6 +4,7 @@ using System;
 using System.Runtime.Serialization;
 
 namespace Smdn.Text.Encodings {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class EncodingNotSupportedException : NotSupportedException {
     /*

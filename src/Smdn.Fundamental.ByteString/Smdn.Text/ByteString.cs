@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.Text;
 
 namespace Smdn.Text {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class ByteString :
     IEquatable<ByteString>,

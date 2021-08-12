@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Smdn.IO.Streams.Caching {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class NonPersistentCachedStream : CachedStreamBase {
     public NonPersistentCachedStream(Stream innerStream)
       : this(innerStream, 40960, true)

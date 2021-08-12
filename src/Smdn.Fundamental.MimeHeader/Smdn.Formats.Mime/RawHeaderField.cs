@@ -5,6 +5,7 @@ using System.Buffers;
 using Smdn.Buffers;
 
 namespace Smdn.Formats.Mime {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct RawHeaderField {
     public ReadOnlySequence<byte> HeaderFieldSequence { get; }
     public int OffsetOfDelimiter { get; }

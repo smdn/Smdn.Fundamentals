@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Smdn.Collections {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class IReadOnlyListExtensions {
     public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> list, int index)
     {

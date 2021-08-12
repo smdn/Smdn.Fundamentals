@@ -5,6 +5,7 @@ using System.Buffers;
 using System.IO;
 
 namespace Smdn.IO.Streams.Caching {
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class CachedStreamBase : Stream {
     public Stream InnerStream {
       get { CheckDisposed(); return stream; }
