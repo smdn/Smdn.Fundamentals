@@ -126,11 +126,6 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
 
 /*
- * Smdn.Fundamental.SIPrefix
- */
-[assembly: TypeForwardedTo(typeof(Smdn.Formats.SIPrefixNumberFormatter))]
-
-/*
  * Smdn.Fundamental.Shell
  */
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]
@@ -139,6 +134,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.Shell))]
 #endif
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.ShellString))]
+
+/*
+ * Smdn.Fundamental.SIPrefix
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Formats.SIPrefixNumberFormatter))]
 
 /*
  * Smdn.Fundamental.StandardDateTimeFormat
