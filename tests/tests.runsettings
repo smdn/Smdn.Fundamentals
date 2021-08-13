@@ -6,5 +6,10 @@
   <NUnit>
     <DisplayName>FullName</DisplayName>
     <!-- <DisplayName>FullName</DisplayName> -->
+
+    <!-- workaround for VS2019 test case filter issue -->
+    <!-- ref: https://github.com/nunit/nunit3-vs-adapter/issues/782 -->
+    <UseParentFQNForParametrizedTests>true</UseParentFQNForParametrizedTests>
+    <UseNUnitIdforTestCaseId>true</UseNUnitIdforTestCaseId>
   </NUnit>
 </RunSettings>
