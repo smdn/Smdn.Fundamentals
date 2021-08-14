@@ -50,7 +50,7 @@ namespace Smdn.Text.Encodings {
       EncodingName = encodingName;
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_EXCEPTION_CTOR_SERIALIZATIONINFO
     protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
       : base(info, context)
     {
