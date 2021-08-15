@@ -101,30 +101,6 @@ namespace Smdn {
       return str;
     }
 
-#if !SYSTEM_STRING_STARTSWITH_CHAR
-    public static bool StartsWith(this string str, char @value)
-    {
-      if (str == null)
-        throw new ArgumentNullException(nameof(str));
-
-      if (str.Length == 0)
-        return false;
-      else
-        return str[0] == @value;
-    }
-
-    public static bool EndsWith(this string str, char @value)
-    {
-      if (str == null)
-        throw new ArgumentNullException(nameof(str));
-
-      if (str.Length == 0)
-        return false;
-      else
-        return str[str.Length - 1] == @value;
-    }
-#endif
-
     public static int Count(this string str, char c)
     {
       if (str == null)
