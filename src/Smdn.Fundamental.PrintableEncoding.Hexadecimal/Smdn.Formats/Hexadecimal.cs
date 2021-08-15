@@ -66,7 +66,6 @@ namespace Smdn.Formats {
     public static bool TryDecode(ReadOnlySpan<char> dataSequence, Span<byte> destination, out int decodedLength)
       => TryDecode(dataSequence, destination, allowUpperCase: true, allowLowerCase: true, out decodedLength);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool TryDecode(ReadOnlySpan<char> dataSequence, Span<byte> destination, bool allowUpperCase, bool allowLowerCase, out int decodedLength)
     {
       decodedLength = 0;
