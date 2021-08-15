@@ -53,6 +53,13 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.ExceptionUtils))]
 
 /*
+ * Smdn.Fundamental.FileSystem
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.IO.DirectoryInfoExtensions))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.DirectoryUtils))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.PathUtils))]
+
+/*
  * Smdn.Fundamental.FourCC
  */
 [assembly: TypeForwardedTo(typeof(Smdn.FourCC))]
