@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Buffers;
 using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats {
@@ -30,6 +31,104 @@ namespace Smdn.Formats {
     private const string lowerCaseHexChars = "0123456789abcdef";
 
     public static ReadOnlySpan<char> LowerCaseHexChars => lowerCaseHexChars.AsSpan();
+
+    public static string ToUpperCaseString(ReadOnlySpan<byte> dataSequence)
+    {
+#if false && SYSTEM_STRING_CREATE
+      // XXX: string.Create does not accept ReadOnlySpan<T>, dotnet/runtime#30175
+      return string.Create(
+        dataSequence.Length * 2,
+        dataSequence,
+        static (destination, sequence) => TryEncodeUpperCase(sequence, destination, out _)
+      );
+#else
+      char[] destination = null;
+
+      try {
+        var length = dataSequence.Length * 2;
+
+        destination = ArrayPool<char>.Shared.Rent(length);
+
+        TryEncodeUpperCase(dataSequence, destination.AsSpan(0, length), out _);
+
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        return new string(destination.AsSpan(0, length));
+#else
+        return new string(destination, 0, length);
+#endif
+      }
+      finally {
+        if (destination is not null)
+          ArrayPool<char>.Shared.Return(destination);
+      }
+#endif
+    }
+
+    public static string ToLowerCaseString(ReadOnlySpan<byte> dataSequence)
+    {
+#if false && SYSTEM_STRING_CREATE
+      // XXX: string.Create does not accept ReadOnlySpan<T>, dotnet/runtime#30175
+      return string.Create(
+        dataSequence.Length * 2,
+        dataSequence,
+        static (destination, sequence) => TryEncodeLowerCase(sequence, destination, out _)
+      );
+#else
+      char[] destination = null;
+
+      try {
+        var length = dataSequence.Length * 2;
+
+        destination = ArrayPool<char>.Shared.Rent(length);
+
+        TryEncodeLowerCase(dataSequence, destination.AsSpan(0, length), out _);
+
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        return new string(destination.AsSpan(0, length));
+#else
+        return new string(destination, 0, length);
+#endif
+      }
+      finally {
+        if (destination is not null)
+          ArrayPool<char>.Shared.Return(destination);
+      }
+#endif
+    }
+
+    public static bool TryEncodeUpperCase(ReadOnlySpan<byte> dataSequence, Span<byte> destination, out int bytesEncoded)
+      => TryEncode(dataSequence, destination, UpperCaseHexOctets, out bytesEncoded);
+
+    public static bool TryEncodeLowerCase(ReadOnlySpan<byte> dataSequence, Span<byte> destination, out int bytesEncoded)
+      => TryEncode(dataSequence, destination, LowerCaseHexOctets, out bytesEncoded);
+
+    public static bool TryEncodeUpperCase(ReadOnlySpan<byte> dataSequence, Span<char> destination, out int charsEncoded)
+      => TryEncode(dataSequence, destination, UpperCaseHexChars, out charsEncoded);
+
+    public static bool TryEncodeLowerCase(ReadOnlySpan<byte> dataSequence, Span<char> destination, out int charsEncoded)
+      => TryEncode(dataSequence, destination, LowerCaseHexChars, out charsEncoded);
+
+    internal static bool TryEncode<T>(ReadOnlySpan<byte> dataSequence, Span<T> destination, ReadOnlySpan<T> hex, out int lengthEncoded)
+    {
+      lengthEncoded = 0;
+
+      if (dataSequence.IsEmpty)
+        return true;
+
+      if (destination.Length < dataSequence.Length * 2)
+        return false; // destination to short
+
+      while (!dataSequence.IsEmpty) {
+        if (!TryEncode(dataSequence[0], destination, hex, out var len))
+          return false;
+
+        lengthEncoded += len;
+        dataSequence = dataSequence.Slice(1);
+        destination = destination.Slice(2);
+      }
+
+      return true;
+    }
 
     public static bool TryEncodeUpperCase(byte data, Span<byte> destination, out int bytesEncoded)
       => TryEncode(data, destination, UpperCaseHexOctets, out bytesEncoded);
