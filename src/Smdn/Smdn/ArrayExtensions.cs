@@ -140,28 +140,17 @@ namespace Smdn {
 
     public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter)
     {
-#if SYSTEM_CONVERTER
+#if SYSTEM_ARRAY_CONVERTALL
       return Array.ConvertAll<TInput, TOutput>(array, converter);
 #else
-      if (array == null)
-        throw new ArgumentNullException(nameof(array));
-      if (converter == null)
-        throw new ArgumentNullException(nameof(converter));
-
-      if (array.Length == 0)
-#if SYSTEM_ARRAY_EMPTY
-        return Array.Empty<TOutput>();
+      return ArrayShim.ConvertAll<TInput, TOutput>(
+        array,
+#if SYSTEM_CONVERTER
+        converter
 #else
-        return ArrayShim.Empty<TOutput>();
+        new Func<TInput, TOutput>(converter)
 #endif
-
-      var ret = new TOutput[array.Length];
-
-      for (var index = 0; index < array.Length; index++) {
-        ret[index] = converter(array[index]);
-      }
-
-      return ret;
+      );
 #endif
     }
 
