@@ -30,6 +30,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding.OctetEncoding\Smdn.Fundamental.Encoding.OctetEncoding.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.FileSystem\Smdn.Fundamental.FileSystem.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Math\Smdn.Fundamental.Math.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.MimeHeader\Smdn.Fundamental.MimeHeader.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.MimeType\Smdn.Fundamental.MimeType.csproj" />
