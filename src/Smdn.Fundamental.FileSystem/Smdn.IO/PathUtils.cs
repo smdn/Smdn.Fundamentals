@@ -8,9 +8,13 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Smdn.IO {
   public static class PathUtils {
+    public static StringComparison DefaultPathStringComparison => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+    public static StringComparer DefaultPathStringComparer => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+
     public static string ChangeFileName(string path, string newFileName)
     {
       if (newFileName == null)
@@ -42,7 +46,7 @@ namespace Smdn.IO {
       else if (pathY.EndsWith(Path.AltDirectorySeparatorChar))
         pathY = pathY.Substring(0, pathY.Length - 1);
 
-      return string.Equals(pathX, pathY, Platform.PathStringComparison);
+      return string.Equals(pathX, pathY, DefaultPathStringComparison);
     }
 
     public static bool AreSameFile(string pathX, string pathY)
@@ -59,7 +63,7 @@ namespace Smdn.IO {
     {
       return string.Equals(Path.GetExtension(path),
                            Path.GetExtension(pathOrExtension),
-                           Platform.PathStringComparison);
+                           DefaultPathStringComparison);
     }
 
     public static string RemoveInvalidPathChars(string path)
@@ -222,13 +226,13 @@ namespace Smdn.IO {
       if (path == null)
         throw new ArgumentNullException(nameof(path));
 
-      if (Platform.IsRunningOnWindows && !Path.IsPathRooted(basePath))
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && !Path.IsPathRooted(basePath))
         throw new ArgumentException("must be absolute path", nameof(basePath));
 
       basePath = basePath.Replace("%", "%25" /*encode*/);
       path = path.Replace("%", "%25" /*encode*/);
 
-      if (!Platform.IsRunningOnWindows) {
+      if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
 #if SYSTEM_URI_URISCHEME_FILE
         basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + basePath.Replace(":", "%3A");
         path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + path.Replace(":", "%3A");

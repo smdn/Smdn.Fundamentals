@@ -32,8 +32,10 @@ namespace Smdn {
     public static bool IsRunningOnUnix
       => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-    public static StringComparison PathStringComparison => IsRunningOnWindows ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-    public static StringComparer PathStringComparer => IsRunningOnWindows ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+    [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparison instead")]
+    public static StringComparison PathStringComparison => Smdn.IO.PathUtils.DefaultPathStringComparison;
+    [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparer instead")]
+    public static StringComparer PathStringComparer => Smdn.IO.PathUtils.DefaultPathStringComparer;
 
     private static string kernelName = null;
 
