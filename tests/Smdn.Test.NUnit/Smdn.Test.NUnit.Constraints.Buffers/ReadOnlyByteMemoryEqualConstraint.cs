@@ -44,6 +44,7 @@ namespace Smdn.Test.NUnit.Constraints.Buffers {
     {
       return actual switch {
         ReadOnlyMemory<byte> actualMemory => new ReadOnlyByteMemoryEqualConstraintResult(this, actualMemory, Expected.Span.SequenceEqual(actualMemory.Span)),
+        Memory<byte> actualMemory => new ReadOnlyByteMemoryEqualConstraintResult(this, actualMemory, Expected.Span.SequenceEqual(actualMemory.Span)),
         byte[] actualByteArray => new ReadOnlyByteMemoryEqualConstraintResult(this, actualByteArray, Expected.Span.SequenceEqual(actualByteArray.AsSpan())),
         _ => new EqualConstraintResult(this, actual, new NUnitEqualityComparer().AreEqual(Expected, actual, ref _tolerance))
       };
