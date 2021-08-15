@@ -9,13 +9,9 @@ using System.Threading.Tasks;
 namespace Smdn.IO {
   public static class TextReaderExtensions {
 #if !SYSTEM_IO_STREAM_CLOSE
+    [Obsolete("use Smdn.IO.TextReaderShim.Close instead", error: true)]
     public static void Close(this TextReader reader)
-    {
-      if (reader == null)
-        throw new ArgumentNullException(nameof(reader));
-
-      reader.Dispose();
-    }
+      => throw new NotImplementedException("use Smdn.IO.TextReaderShim.Close instead");
 #endif
 
     public static IEnumerable<string> ReadLines(this TextReader reader)

@@ -136,6 +136,15 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.ShellString))]
 
 /*
+ * Smdn.Fundamental.Shim
+ */
+#if !SYSTEM_IO_STREAM_CLOSE
+[assembly: TypeForwardedTo(typeof(Smdn.IO.BinaryReaderExtensions))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.BinaryWriterExtensions))]
+[assembly: TypeForwardedTo(typeof(Smdn.IO.TextWriterExtensions))]
+#endif
+
+/*
  * Smdn.Fundamental.SIPrefix
  */
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.SIPrefixNumberFormatter))]

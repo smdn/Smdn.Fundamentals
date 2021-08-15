@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 #if SYSTEM_ARRAY_EMPTY
-using _Array = System.Array; // Array.Empty
+using _Array = System.Array; // System.Array.Empty
 #else
-using _Array = Smdn.ArrayExtensions; // ArrayExtensions.Empty
+using _Array = Smdn.ArrayShim; // Smdn.ArrayShim.Empty
 #endif
 
 namespace Smdn.IO.Streams {

@@ -152,7 +152,7 @@ namespace Smdn {
 #if SYSTEM_ARRAY_EMPTY
         return Array.Empty<TOutput>();
 #else
-        return EmptyArray<TOutput>.Instance;
+        return ArrayShim.Empty<TOutput>();
 #endif
 
       var ret = new TOutput[array.Length];
@@ -166,17 +166,8 @@ namespace Smdn {
     }
 
 #if !SYSTEM_ARRAY_EMPTY
-    public static T[] Empty<T>()
-    {
-      return EmptyArray<T>.Instance;
-    }
-
-    internal static class EmptyArray<T> {
-      public static readonly T[] Instance = (
-        Runtime.RuntimeEnvironment == RuntimeEnvironment.NetFx ? System.Linq.Enumerable.Empty<T>() as T[] :
-        Runtime.RuntimeEnvironment == RuntimeEnvironment.Mono  ? System.Linq.Enumerable.Empty<T>() as T[] :
-        null) ?? new T[0];
-    }
+    [Obsolete("use Smdn.ArrayShim.Empty instead")]
+    public static T[] Empty<T>() => ArrayShim.Empty<T>();
 #endif
 
     public static T[] Repeat<T>(this T[] array, int count)
@@ -190,7 +181,7 @@ namespace Smdn {
 #if SYSTEM_ARRAY_EMPTY
         return Array.Empty<T>();
 #else
-        return EmptyArray<T>.Instance;
+        return ArrayShim.Empty<T>();
 #endif
       }
 
