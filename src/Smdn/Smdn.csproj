@@ -51,6 +51,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Extending\Smdn.Fundamental.Stream.Extending.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Filtering\Smdn.Fundamental.Stream.Filtering.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.LineOriented\Smdn.Fundamental.Stream.LineOriented.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.String.Replacement\Smdn.Fundamental.String.Replacement.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stringification\Smdn.Fundamental.Stringification.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uuid\Smdn.Fundamental.Uuid.csproj" />

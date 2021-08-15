@@ -64,12 +64,12 @@ namespace Smdn.IO {
 
     public static string RemoveInvalidPathChars(string path)
     {
-      return StringExtensions.RemoveChars(path, Path.GetInvalidPathChars());
+      return StringReplacementExtensions.RemoveChars(path, Path.GetInvalidPathChars());
     }
 
     public static string RemoveInvalidFileNameChars(string path)
     {
-      return StringExtensions.RemoveChars(path, Path.GetInvalidFileNameChars());
+      return StringReplacementExtensions.RemoveChars(path, Path.GetInvalidFileNameChars());
     }
 
     public static string ReplaceInvalidPathCharsWithBlanks(string path)
@@ -84,9 +84,9 @@ namespace Smdn.IO {
       });
     }
 
-    public static string ReplaceInvalidPathChars(string path, StringExtensions.ReplaceCharEvaluator evaluator)
+    public static string ReplaceInvalidPathChars(string path, ReplaceCharEvaluator evaluator)
     {
-      return StringExtensions.Replace(path, Path.GetInvalidPathChars(), evaluator);
+      return StringReplacementExtensions.Replace(path, Path.GetInvalidPathChars(), evaluator);
     }
 
     public static string ReplaceInvalidFileNameCharsWithBlanks(string path)
@@ -101,9 +101,9 @@ namespace Smdn.IO {
       });
     }
 
-    public static string ReplaceInvalidFileNameChars(string path, StringExtensions.ReplaceCharEvaluator evaluator)
+    public static string ReplaceInvalidFileNameChars(string path, ReplaceCharEvaluator evaluator)
     {
-      return StringExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
+      return StringReplacementExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
     }
 
 #if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
