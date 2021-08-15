@@ -7,15 +7,13 @@ using Smdn.Formats;
 namespace Smdn.Text {
   public static partial class Ascii {
     public static class Hexadecimals {
+      [Obsolete("use Smdn.Formats.Hexadecimal.ToLowerCaseString instead")]
       public static string ToLowerString(byte[] bytes)
-      {
-        return new string(ConvertByteArrayToHex<char>(bytes, Hexadecimal.TryEncodeLowerCase));
-      }
+        => Hexadecimal.ToLowerCaseString(bytes ?? throw new ArgumentNullException(nameof(bytes)));
 
+      [Obsolete("use Smdn.Formats.Hexadecimal.ToUpperCaseString instead")]
       public static string ToUpperString(byte[] bytes)
-      {
-        return new string(ConvertByteArrayToHex<char>(bytes, Hexadecimal.TryEncodeUpperCase));
-      }
+        => Hexadecimal.ToUpperCaseString(bytes ?? throw new ArgumentNullException(nameof(bytes)));
 
       public static byte[] ToLowerByteArray(byte[] bytes)
       {
