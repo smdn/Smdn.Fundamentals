@@ -29,30 +29,12 @@ namespace Smdn.IO {
       }
     }
 
+    [Obsolete("use Smdn.IO.TextReaderReadAllLinesExtensions.ReadAllLines instead")]
     public static string[] ReadAllLines(this TextReader reader)
-    {
-      return ReadLines(reader).ToArray();
-    }
+      => TextReaderReadAllLinesExtensions.ReadAllLines(reader).ToArray();
 
+    [Obsolete("use Smdn.IO.TextReaderReadAllLinesExtensions.ReadAllLinesAsync instead")]
     public static Task<IReadOnlyList<string>> ReadAllLinesAsync(this TextReader reader)
-    {
-      return _ReadAllLinesAsync(reader ?? throw new ArgumentNullException(nameof(reader)));
-
-      async Task<IReadOnlyList<string>> _ReadAllLinesAsync(TextReader r)
-      {
-        var ret = new List<string>();
-
-        for (; ; ) {
-          var line = await reader.ReadLineAsync().ConfigureAwait(false);
-
-          if (line == null)
-            break;
-
-          ret.Add(line);
-        }
-
-        return ret;
-      }
-    }
+      => TextReaderReadAllLinesExtensions.ReadAllLinesAsync(reader);
   }
 }

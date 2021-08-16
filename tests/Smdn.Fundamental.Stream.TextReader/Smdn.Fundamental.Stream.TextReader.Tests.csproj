@@ -1,0 +1,15 @@
+<!--
+SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net45;netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
+    <RootNamespace>Smdn</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smdn.Test.NUnit\Smdn.Test.NUnit.csproj" />
+    <ProjectReference Include="..\..\src\Smdn.Fundamental.Stream.TextReader\Smdn.Fundamental.Stream.TextReader.csproj" />
+  </ItemGroup>
+</Project>

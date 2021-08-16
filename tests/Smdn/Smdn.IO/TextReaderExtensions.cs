@@ -49,9 +49,9 @@ line3
       IReadOnlyList<string> actualLines = null;
 
       if (runAsync)
-        Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
+        Assert.DoesNotThrowAsync(async () => actualLines = await TextReaderExtensions.ReadAllLinesAsync(reader));
       else
-        Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
+        Assert.DoesNotThrow(() => actualLines = TextReaderExtensions.ReadAllLines(reader));
 
       CollectionAssert.AreEqual(expectedLines, actualLines);
     }
@@ -64,9 +64,9 @@ line3
       IReadOnlyList<string> actualLines = null;
 
       if (runAsync)
-        Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
+        Assert.DoesNotThrowAsync(async () => actualLines = await TextReaderExtensions.ReadAllLinesAsync(reader));
       else
-        Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
+        Assert.DoesNotThrow(() => actualLines = TextReaderExtensions.ReadAllLines(reader));
 
       CollectionAssert.IsEmpty(actualLines);
     }
