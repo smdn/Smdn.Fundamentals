@@ -31,7 +31,7 @@ namespace Smdn.Collections {
 #if SYSTEM_ARRAY_EMPTY
         return Array.Empty<T>();
 #else
-        return EmptyArray<T>.Instance;
+        return ArrayShim.Empty<T>();
 #endif
 
       if (list is T[] arr)
