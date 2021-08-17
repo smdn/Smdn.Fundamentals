@@ -133,6 +133,11 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Formats.UUEncodings.UUDecodingTransform))]
 
 /*
+ * Smdn.Fundamental.RegularExpression
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Text.RegularExpressions.RegexExtensions))]
+
+/*
  * Smdn.Fundamental.Shell
  */
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]
