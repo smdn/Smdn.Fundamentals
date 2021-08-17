@@ -49,14 +49,13 @@ namespace Smdn {
       if (comparer == null)
         throw new ArgumentNullException(nameof(comparer));
 
-      var ret = new Dictionary<string, string>(comparer);
-
       if (queryParameters.StartsWith('?'))
         queryParameters = queryParameters.Substring(1);
 
       if (queryParameters.Length == 0)
-        return ret;
+        return Smdn.Collections.ReadOnlyDictionary<string, string>.Empty;
 
+      var ret = new Dictionary<string, string>(comparer);
       var splitted = queryParameters.Split(
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
         parameterSplitterChar,
