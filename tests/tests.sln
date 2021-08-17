@@ -101,6 +101,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4507BFD2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Fundamental.Stream.TextReader.Tests", "Smdn.Fundamental.Stream.TextReader\Smdn.Fundamental.Stream.TextReader.Tests.csproj", "{F9EB7285-7CED-4986-816A-5166D2B560BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Fundamental.Uri.Tests", "Smdn.Fundamental.Uri\Smdn.Fundamental.Uri.Tests.csproj", "{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -675,6 +677,18 @@ Global
 		{F9EB7285-7CED-4986-816A-5166D2B560BA}.Release|x64.Build.0 = Release|Any CPU
 		{F9EB7285-7CED-4986-816A-5166D2B560BA}.Release|x86.ActiveCfg = Release|Any CPU
 		{F9EB7285-7CED-4986-816A-5166D2B560BA}.Release|x86.Build.0 = Release|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Debug|x64.Build.0 = Debug|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Debug|x86.Build.0 = Debug|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Release|x64.ActiveCfg = Release|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Release|x64.Build.0 = Release|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{8A48C3AA-EE98-4D18-9ED0-E0E37E8AF4B5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
