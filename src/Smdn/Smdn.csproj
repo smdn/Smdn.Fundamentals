@@ -56,6 +56,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.String.Replacement\Smdn.Fundamental.String.Replacement.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stringification\Smdn.Fundamental.Stringification.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uri\Smdn.Fundamental.Uri.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uuid\Smdn.Fundamental.Uuid.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Xml.Xhtml\Smdn.Fundamental.Xml.Xhtml.csproj" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or $(TargetFramework.StartsWith('netstandard1'))" />
