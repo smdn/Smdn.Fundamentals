@@ -31,12 +31,18 @@ namespace Smdn {
       return sb.ToString();
     }
 
-    public static IDictionary<string, string> SplitQueryParameters(string queryParameters)
-    {
-      return SplitQueryParameters(queryParameters, EqualityComparer<string>.Default);
-    }
+    public static IReadOnlyDictionary<string, string> SplitQueryParameters(
+      string queryParameters
+    )
+      => SplitQueryParameters(
+        queryParameters,
+        EqualityComparer<string>.Default
+      );
 
-    public static IDictionary<string, string> SplitQueryParameters(string queryParameters, IEqualityComparer<string> comparer)
+    public static IReadOnlyDictionary<string, string> SplitQueryParameters(
+      string queryParameters,
+      IEqualityComparer<string> comparer
+    )
     {
       if (queryParameters == null)
         throw new ArgumentNullException(nameof(queryParameters));
@@ -51,7 +57,14 @@ namespace Smdn {
       if (queryParameters.Length == 0)
         return ret;
 
-      var splitted = queryParameters.Split(new[] {parameterSplitterChar}, StringSplitOptions.RemoveEmptyEntries);
+      var splitted = queryParameters.Split(
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+        parameterSplitterChar,
+#else
+        new[] {parameterSplitterChar},
+#endif
+        StringSplitOptions.RemoveEmptyEntries
+      );
 
       foreach (var nameAndValue in splitted) {
         var pos = nameAndValue.IndexOf(nameValueSplitterChar);
