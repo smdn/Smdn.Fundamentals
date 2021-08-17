@@ -4,104 +4,69 @@ using System;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using Smdn.Text;
-
 namespace Smdn.Xml.Xhtml {
   public static class HtmlConvert {
-    public static string ToHtmlEscapedString(string str)
+    public static string EscapeHtml(ReadOnlySpan<char> s)
+      => EscapeXhtml(s, asXhtml: false);
+
+    public static string EscapeXhtml(ReadOnlySpan<char> s)
+      => EscapeXhtml(s, asXhtml: true);
+
+    private static string EscapeXhtml(ReadOnlySpan<char> s, bool asXhtml)
     {
-      if (str == null)
-        throw new ArgumentNullException(nameof(str));
+      if (s.IsEmpty)
+        return string.Empty;
 
-      return ToXhtmlEscapedString(str, false);
-    }
-
-    public static string ToXhtmlEscapedString(string str)
-    {
-      if (str == null)
-        throw new ArgumentNullException(nameof(str));
-
-      return ToXhtmlEscapedString(str, true);
-    }
-
-    public static string ToHtmlEscapedStringNullable(string str)
-    {
-      if (str == null)
-        return null;
-      else
-        return ToXhtmlEscapedString(str, false);
-    }
-
-    public static string ToXhtmlEscapedStringNullable(string str)
-    {
-      if (str == null)
-        return null;
-      else
-        return ToXhtmlEscapedString(str, true);
-    }
-
-    private static string ToXhtmlEscapedString(string str, bool xhtml)
-    {
-      var sb = new StringBuilder(str.Length);
-      var len = str.Length;
+      var sb = new StringBuilder(s.Length);
+      var len = s.Length;
 
       for (var i = 0; i < len; i++) {
-        var ch = str[i];
-
-        switch (ch) {
-          case Ascii.Chars.Ampersand:   sb.Append("&amp;"); break;
-          case Ascii.Chars.LessThan:    sb.Append("&lt;"); break;
-          case Ascii.Chars.GreaterThan: sb.Append("&gt;"); break;
-          case Ascii.Chars.DQuote:      sb.Append("&quot;"); break;
-          case Ascii.Chars.Quote:
-            if (xhtml) sb.Append("&apos;");
-            else sb.Append(Ascii.Chars.Quote);
+        switch (s[i]) {
+          case '&': sb.Append("&amp;"); break;
+          case '<': sb.Append("&lt;"); break;
+          case '>': sb.Append("&gt;"); break;
+          case '"': sb.Append("&quot;"); break;
+          case '\'':
+            if (asXhtml)
+              sb.Append("&apos;");
+            else
+              sb.Append('\'');
             break;
-          default: sb.Append(ch); break;
+          default: sb.Append(s[i]); break;
         }
       }
 
       return sb.ToString();
     }
 
-    public static string FromHtmlEscapedString(string str)
-    {
-      return FromXhtmlEscapedString(str, false);
-    }
+    public static string UnescapeHtml(ReadOnlySpan<char> s)
+      => UnescapeXhtml(s, asXhtml: false);
 
-    public static string FromHtmlEscapedStringNullable(string str)
-    {
-      if (str == null)
-        return null;
-      else
-        return FromXhtmlEscapedString(str, false);
-    }
+    public static string UnescapeXhtml(ReadOnlySpan<char> s)
+      => UnescapeXhtml(s, asXhtml: true);
 
-    public static string FromXhtmlEscapedString(string str)
+    private static string UnescapeXhtml(ReadOnlySpan<char> s, bool asXhtml)
     {
-      return FromXhtmlEscapedString(str, true);
-    }
+      if (s.IsEmpty)
+        return string.Empty;
 
-    public static string FromXhtmlEscapedStringNullable(string str)
-    {
-      if (str == null)
-        return null;
-      else
-        return FromXhtmlEscapedString(str, true);
-    }
+      var sb = new StringBuilder(s.Length);
 
-    private static string FromXhtmlEscapedString(string str, bool xhtml)
-    {
-      if (str == null)
-        throw new ArgumentNullException(nameof(str));
-
-      var sb = new StringBuilder(str);
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+      sb.Append(s);
+#else
+      unsafe {
+        fixed (char* _s = s) {
+          sb.Append(new string(_s));
+        }
+      }
+#endif
 
       sb.Replace("&lt;", "<");
       sb.Replace("&gt;", ">");
       sb.Replace("&quot;", "\"");
 
-      if (xhtml)
+      if (asXhtml)
         sb.Replace("&apos;", "'");
 
       sb.Replace("&amp;", "&");
@@ -109,25 +74,17 @@ namespace Smdn.Xml.Xhtml {
       return sb.ToString();
     }
 
-    public static string FromNumericCharacterReferenceNullable(string str)
-    {
-      if (str == null)
-        return null;
-      else
-        return FromNumericCharacterReference(str);
-    }
+    private static readonly Regex regexNumericReference = new(@"&#(?<hex>x?)(?<number>[0-9a-fA-F]{1,});", RegexOptions.Singleline |  RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
-    public static string FromNumericCharacterReference(string str)
+    public static string DecodeNumericCharacterReference(string s)
     {
-      if (str == null)
-        throw new ArgumentNullException(nameof(str));
+      if (s == null)
+        throw new ArgumentNullException(nameof(s));
 
-      return Regex.Replace(str, @"&#(?<hex>x?)(?<number>[0-9a-fA-F]+);", delegate(Match m) {
-        if (m.Groups["hex"].Length == 0)
-          return ((char)Convert.ToUInt16(m.Groups["number"].Value, 10)).ToString();
-        else
-          return ((char)Convert.ToUInt16(m.Groups["number"].Value, 16)).ToString();
-      });
+      return regexNumericReference.Replace(
+        s,
+        m => ((char)Convert.ToUInt16(m.Groups["number"].Value, m.Groups["hex"].Length == 0 ? 10 : 16)).ToString()
+      );
     }
   }
 }
