@@ -5,6 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace Smdn.Text.RegularExpressions {
   public static class RegexExtensions {
+    /*
+     * API Proposal: Regex.IsMatch with 'out Match' parameter #30308
+     * https://github.com/dotnet/runtime/issues/30308
+     */
     public static bool IsMatch(this Regex regex, string input, out Match match)
       => IsMatch(regex, input, startIndex: 0, out match);
 
