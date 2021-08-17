@@ -18,7 +18,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void GetSplittedQueries_Empty()
+    public void GetSplittedQueries_EmptyQuery()
     {
       var uri = new Uri("https://localhost/path/?");
       var queries = uri.GetSplittedQueries();
@@ -27,7 +27,16 @@ namespace Smdn {
     }
 
     [Test]
-    public void GetSplittedQueries_Null()
+    public void GetSplittedQueries_NoQuery()
+    {
+      var uri = new Uri("https://localhost/path/");
+      var queries = uri.GetSplittedQueries();
+
+      Assert.AreEqual(0, queries.Count);
+    }
+
+    [Test]
+    public void GetSplittedQueries_ArgumentNull()
     {
       Uri uri = null;
 
