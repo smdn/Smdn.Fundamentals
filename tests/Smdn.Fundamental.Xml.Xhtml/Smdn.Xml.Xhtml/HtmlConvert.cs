@@ -3,9 +3,9 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn.Formats {
+namespace Smdn.Xml.Xhtml {
   [TestFixture]
-  public class HtmlTests {
+  public class HtmlConvertTests {
     [Test]
     public void TestToXhtmlEscapedString()
     {

@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 
 using Smdn.Text;
 
-namespace Smdn.Formats {
-  public static class Html {
+namespace Smdn.Xml.Xhtml {
+  public static class HtmlConvert {
     public static string ToHtmlEscapedString(string str)
     {
       if (str == null)
