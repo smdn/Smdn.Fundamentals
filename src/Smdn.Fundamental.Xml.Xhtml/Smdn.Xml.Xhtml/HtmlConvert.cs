@@ -57,7 +57,7 @@ namespace Smdn.Xml.Xhtml {
 #else
       unsafe {
         fixed (char* _s = s) {
-          sb.Append(new string(_s));
+          sb.Append(new string(_s, 0, s.Length));
         }
       }
 #endif
