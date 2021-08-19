@@ -295,14 +295,14 @@ namespace Smdn {
         return false;
     }
 
-    public static bool operator == (UInt24 x, UInt24 y)
+    public static bool operator ==(UInt24 x, UInt24 y)
     {
       return (x.Byte0 == y.Byte0 &&
               x.Byte1 == y.Byte1 &&
               x.Byte2 == y.Byte2);
     }
 
-    public static bool operator != (UInt24 x, UInt24 y)
+    public static bool operator !=(UInt24 x, UInt24 y)
     {
       return (x.Byte0 != y.Byte0 ||
               x.Byte1 != y.Byte1 ||

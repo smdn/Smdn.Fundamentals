@@ -105,7 +105,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     /*
      * instance members
      */
-    protected UuidGenerator() {}
+    protected UuidGenerator() { }
 
     public abstract Uuid GenerateNext();
   }

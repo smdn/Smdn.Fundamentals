@@ -31,7 +31,7 @@ namespace Smdn.Text.Encodings {
              null)
     {
     }
-    
+
     public EncodingNotSupportedException(string encodingName, Exception innerException)
       : this(encodingName,
              string.Format("encoding '{0}' is not supported by runtime", encodingName),

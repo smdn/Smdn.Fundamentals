@@ -144,7 +144,7 @@ namespace Smdn.Formats.UUEncodings {
       if (state == State.EndOfStream)
         return;
 
-      for (;;) {
+      for (; ; ) {
         var l = stream.ReadLine();
 
         if (!l.HasValue) {
@@ -274,7 +274,7 @@ namespace Smdn.Formats.UUEncodings {
 
       var ret = 0;
 
-      for (;;) {
+      for (; ; ) {
         if (dataLineRemainder == 0) {
           var dataLine = stream.ReadLine(true);
 

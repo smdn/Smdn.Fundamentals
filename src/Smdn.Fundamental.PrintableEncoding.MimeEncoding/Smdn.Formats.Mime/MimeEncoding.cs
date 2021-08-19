@@ -6,9 +6,9 @@
 #endif
 
 using System;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Security.Cryptography;
 
 using Smdn.Formats;
 using Smdn.Formats.QuotedPrintableEncodings;
@@ -128,13 +128,13 @@ namespace Smdn.Formats.Mime {
       // copy preamble to buffer
       Buffer.BlockCopy(preamble, 0, outputBuffer, 0, preamble.Length);
 
-      for (;;) {
+      for (; ; ) {
         var inputBlockSizeLimit = (outputLimit * transform.InputBlockSize) / transform.OutputBlockSize - 1;
         var transformCharCount = 0;
         var outputCount = preamble.Length;
 
         // decide char count to transform
-        for (transformCharCount = inputBlockSizeLimit / charset.GetMaxByteCount(1);; transformCharCount++) {
+        for (transformCharCount = inputBlockSizeLimit / charset.GetMaxByteCount(1); ; transformCharCount++) {
           if (inputCharBuffer.Length <= inputCharOffset + transformCharCount) {
             transformCharCount = inputCharBuffer.Length - inputCharOffset;
             break;
@@ -147,7 +147,7 @@ namespace Smdn.Formats.Mime {
         // transform chars
         byte[] transformed = null;
 
-        for (;;) {
+        for (; ; ) {
           var bytes = charset.GetBytes(inputCharBuffer, inputCharOffset, transformCharCount);
           var t = transform.TransformBytes(bytes, 0, bytes.Length);
 

@@ -138,7 +138,7 @@ namespace Smdn {
           return p;
       }
 
-      for (;;) {
+      for (; ; ) {
         var i = 2L;
 
         n++;

@@ -20,15 +20,13 @@ namespace Smdn.Text {
   {
     [IndexerName("Bytes")]
     public byte this[int index] {
-      get
-      {
+      get {
         if (index < 0 || segment.Count <= index)
           throw new IndexOutOfRangeException();
 
         return segment.Array[segment.Offset + index];
       }
-      set
-      {
+      set {
         if (isMutable) {
           if (index < 0 || segment.Count <= index)
             throw new ArgumentOutOfRangeException(nameof(index), index, "index out of range");
@@ -969,7 +967,7 @@ namespace Smdn.Text {
       return true;
     }
 
-    public static bool operator == (ByteString x, ByteString y)
+    public static bool operator ==(ByteString x, ByteString y)
     {
       if (Object.ReferenceEquals(x, y))
         return true;
@@ -984,7 +982,7 @@ namespace Smdn.Text {
       return x.Equals(y.segment);
     }
 
-    public static bool operator != (ByteString x, ByteString y)
+    public static bool operator !=(ByteString x, ByteString y)
     {
       return !(x == y);
     }
@@ -1021,7 +1019,7 @@ namespace Smdn.Text {
       return this.ToLower().Equals(other.ToLower()); // XXX
     }
 
-    public static ByteString operator + (ByteString x, ByteString y)
+    public static ByteString operator +(ByteString x, ByteString y)
     {
       if (x == null)
         throw new ArgumentNullException(nameof(x));
@@ -1031,7 +1029,7 @@ namespace Smdn.Text {
       return Concat(x, y);
     }
 
-    public static ByteString operator * (ByteString x, int y)
+    public static ByteString operator *(ByteString x, int y)
     {
       if (x == null)
         throw new ArgumentNullException(nameof(x));

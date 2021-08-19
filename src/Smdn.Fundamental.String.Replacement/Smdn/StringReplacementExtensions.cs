@@ -33,7 +33,7 @@ namespace Smdn {
       var lastIndex = 0;
       var sb = new StringBuilder(str.Length);
 
-      for (;;) {
+      for (; ; ) {
         var index = str.IndexOfAny(oldChars, lastIndex);
 
         if (index < 0) {
@@ -75,7 +75,7 @@ namespace Smdn {
         if (oldValue.Length == 0)
           continue;
 
-        for (;;) {
+        for (; ; ) {
           var index = str.IndexOf(oldValue, lastIndex, StringComparison.Ordinal);
 
           if (index < 0) {

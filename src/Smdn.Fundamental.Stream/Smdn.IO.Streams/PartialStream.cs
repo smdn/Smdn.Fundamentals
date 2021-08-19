@@ -4,11 +4,12 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Smdn.IO;
 
 namespace Smdn.IO.Streams {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public class PartialStream : 
+  public class PartialStream :
     Stream
 #if SYSTEM_ICLONEABLE
     , ICloneable
@@ -76,8 +77,7 @@ namespace Smdn.IO.Streams {
 
     public override long Position {
       get { CheckDisposed(); return stream.Position - offset; }
-      set
-      {
+      set {
         CheckDisposed();
 
         if (value < 0)
@@ -87,8 +87,7 @@ namespace Smdn.IO.Streams {
     }
 
     public override long Length {
-      get
-      {
+      get {
         CheckDisposed();
         if (length == null)
           return stream.Length - offset;
@@ -234,7 +233,7 @@ namespace Smdn.IO.Streams {
 
       stream.Flush();
     }
-  
+
     protected long GetRemainderLength()
     {
       if (length.HasValue)

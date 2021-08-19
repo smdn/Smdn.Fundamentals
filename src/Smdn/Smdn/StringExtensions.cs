@@ -29,7 +29,7 @@ namespace Smdn {
       if (substr.Length == 0)
         throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(substr));
 
-      for (int count = 0, lastIndex = 0;; count++) {
+      for (int count = 0, lastIndex = 0; ; count++) {
         var index = str.IndexOf(substr, lastIndex, StringComparison.Ordinal);
 
         if (index < 0)

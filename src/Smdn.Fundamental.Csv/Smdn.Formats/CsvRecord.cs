@@ -35,7 +35,7 @@ namespace Smdn.Formats {
 
       var ret = new List<string>();
 
-      for (;;) {
+      for (; ; ) {
         var inQuote = false;
         var containsDQuote = false;
         var splitAt = csv.Length;

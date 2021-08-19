@@ -15,8 +15,7 @@ namespace Smdn.Formats.Csv {
 
     public char Quotator {
       get { return quotator[0]; }
-      set
-      {
+      set {
         quotator = new string(value, 1);
         escapedQuotator = new string(value, 2);
       }

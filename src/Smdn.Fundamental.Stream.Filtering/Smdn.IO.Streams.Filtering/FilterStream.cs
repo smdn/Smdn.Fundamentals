@@ -98,7 +98,7 @@ namespace Smdn.IO.Streams.Filtering {
     public override void Write(byte[] buffer, int offset, int count) => ThrowNotSupportedWritingStream();
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
 
-    public override void SetLength(long value){ ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedSettingStreamLength(); }
+    public override void SetLength(long value) { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedSettingStreamLength(); }
 
     public override long Seek(long offset, SeekOrigin origin)
     {

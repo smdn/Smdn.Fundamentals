@@ -84,8 +84,7 @@ namespace Smdn {
     private static string processorName = null;
 
     public static string ProcessorName {
-      get
-      {
+      get {
         if (processorName == null) {
           processorName = RuntimeInformation.OSArchitecture.ToString(); // default
 

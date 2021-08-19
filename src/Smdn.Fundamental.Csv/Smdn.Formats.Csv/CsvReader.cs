@@ -101,7 +101,7 @@ namespace Smdn.Formats.Csv {
         var quot = 1;
         var prev = ch;
 
-        for (;;) {
+        for (; ; ) {
           c = base.Peek();
 
           if (c == -1)
@@ -142,7 +142,7 @@ namespace Smdn.Formats.Csv {
         // unescaped field
         field.Append(ch);
 
-        for (;;) {
+        for (; ; ) {
           c = base.Peek();
 
           if (c == -1)
@@ -171,7 +171,7 @@ namespace Smdn.Formats.Csv {
       List<string> record = null;
 
       try {
-        for (;;) {
+        for (; ; ) {
           var field = ReadField(out var escaped);
 
           if (field == null)
@@ -195,7 +195,7 @@ namespace Smdn.Formats.Csv {
 
     public IEnumerable<IReadOnlyList<string>> ReadRecords()
     {
-      for (;;) {
+      for (; ; ) {
         var record = ReadRecord();
 
         if (record == null)

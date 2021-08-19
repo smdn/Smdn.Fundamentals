@@ -189,7 +189,7 @@ namespace Smdn.IO.Streams.LineOriented {
       LineSequenceSegment segmentHead = null;
       LineSequenceSegment segmentTail = null;
 
-      for (;;) {
+      for (; ; ) {
         if (newLine == null) {
           // loose EOL (CR/LF/CRLF)
           if (buffer[bufOffset] == CR) {
@@ -336,7 +336,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       // read from base stream
       if (bytesToRead.HasValue) {
-        for (;;) {
+        for (; ; ) {
           if (bytesToRead <= 0)
             break;
 
@@ -352,7 +352,7 @@ namespace Smdn.IO.Streams.LineOriented {
         }
       }
       else {
-        for (;;) {
+        for (; ; ) {
           var r = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
 
           await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
@@ -433,7 +433,7 @@ namespace Smdn.IO.Streams.LineOriented {
       }
 
       // read from base stream
-      for (;;) {
+      for (; ; ) {
         if (count <= 0)
           break;
 

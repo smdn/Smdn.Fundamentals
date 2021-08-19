@@ -20,7 +20,7 @@ namespace Smdn.Text.Encodings {
       var normalizedNameBuffer = new StringBuilder(normalizedName.Length);
       var lastIndex = 0;
 
-      for (;;) {
+      for (; ; ) {
         var index = normalizedName.IndexOfAny(whiteSpaceChars, lastIndex);
 
         if (index < 0) {

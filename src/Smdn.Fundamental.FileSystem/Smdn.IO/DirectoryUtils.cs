@@ -19,9 +19,9 @@ namespace Smdn.IO {
       if (searchPattern == null)
         throw new ArgumentNullException(nameof(searchPattern));
 
-      return (new DirectoryInfo(directory)).GetFiles(searchOption, delegate(FileInfo file) {
+      return (new DirectoryInfo(directory)).GetFiles(searchOption, delegate (FileInfo file) {
         return searchPattern(file.FullName);
-      }).Select(delegate(FileInfo file) {
+      }).Select(delegate (FileInfo file) {
         return file.FullName;
       });
     }
@@ -38,9 +38,9 @@ namespace Smdn.IO {
       if (searchPattern == null)
         throw new ArgumentNullException(nameof(searchPattern));
 
-      return (new DirectoryInfo(directory)).GetDirectories(searchOption, delegate(DirectoryInfo dir) {
+      return (new DirectoryInfo(directory)).GetDirectories(searchOption, delegate (DirectoryInfo dir) {
         return searchPattern(dir.FullName);
-      }).Select(delegate(DirectoryInfo dir) {
+      }).Select(delegate (DirectoryInfo dir) {
         return dir.FullName; // XXX: relative path
       });
     }

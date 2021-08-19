@@ -81,7 +81,7 @@ namespace Smdn.Text.Encodings {
       EncoderFallbackBuffer buffer = null;
       var byteCount = 0;
 
-      for (;index < count; index++) {
+      for (; index < count; index++) {
         if (chars[index] < maxValue) {
           byteCount++;
         }

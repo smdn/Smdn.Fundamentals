@@ -254,7 +254,7 @@ namespace Smdn {
         switch (version) {
           case UuidVersion.NameBasedMD5Hash: hashAlgorithm = MD5.Create(); break;
           case UuidVersion.NameBasedSHA1Hash: hashAlgorithm = SHA1.Create(); break;
-          default:  throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5");
+          default: throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5");
         }
 
         /* 
@@ -404,7 +404,7 @@ namespace Smdn {
 
     /// <value>node;The spatially unique node identifier</value>
     public byte[] Node {
-      get { return new[] {node.N0, node.N1, node.N2, node.N3, node.N4, node.N5}; }
+      get { return new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 }; }
     }
 
     /*
@@ -438,8 +438,7 @@ namespace Smdn {
 #endif
 
     public UuidVersion Version {
-      get
-      {
+      get {
         if (VariantField == Variant.RFC4122)
           return (UuidVersion)(time_hi_and_version >> 12);
         else
@@ -448,8 +447,7 @@ namespace Smdn {
     }
 
     public Variant VariantField {
-      get
-      {
+      get {
         switch (clock_seq_hi_and_reserved & 0xe0) {
           // 0b0xx00000
           case 0x00:
@@ -694,22 +692,22 @@ namespace Smdn {
     }
 
 #region "comparison"
-    public static bool operator < (Uuid x, Uuid y)
+    public static bool operator <(Uuid x, Uuid y)
     {
       return (x.CompareTo(y) < 0);
     }
 
-    public static bool operator <= (Uuid x, Uuid y)
+    public static bool operator <=(Uuid x, Uuid y)
     {
       return (x.CompareTo(y) <= 0);
     }
 
-    public static bool operator > (Uuid x, Uuid y)
+    public static bool operator >(Uuid x, Uuid y)
     {
       return y < x;
     }
 
-    public static bool operator >= (Uuid x, Uuid y)
+    public static bool operator >=(Uuid x, Uuid y)
     {
       return y <= x;
     }
@@ -768,12 +766,12 @@ namespace Smdn {
 #endregion
 
 #region "equality"
-    public static bool operator == (Uuid x, Uuid y)
+    public static bool operator ==(Uuid x, Uuid y)
     {
       return x.fields_high == y.fields_high && x.fields_low == y.fields_low;
     }
 
-    public static bool operator != (Uuid x, Uuid y)
+    public static bool operator !=(Uuid x, Uuid y)
     {
       return x.fields_high != y.fields_high || x.fields_low != y.fields_low;
     }

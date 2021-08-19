@@ -37,8 +37,7 @@ namespace Smdn.IO.Streams.Caching {
 
     public override long Position {
       get { CheckDisposed(); return position; }
-      set
-      {
+      set {
         CheckDisposed();
 
         if (value < 0)
@@ -157,7 +156,7 @@ namespace Smdn.IO.Streams.Caching {
 
       var ret = 0;
 
-      for (;;) {
+      for (; ; ) {
         if (count <= 0)
           return ret;
 

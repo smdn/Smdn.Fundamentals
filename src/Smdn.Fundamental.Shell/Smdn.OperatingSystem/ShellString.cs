@@ -16,8 +16,7 @@ namespace Smdn.OperatingSystem {
     }
 
     public string Expanded {
-      get
-      {
+      get {
         if (Raw == null)
           return null;
         else
@@ -89,7 +88,7 @@ namespace Smdn.OperatingSystem {
         return string.Equals(this.Raw, other) || string.Equals(this.Expanded, other);
     }
 
-    public static bool operator == (ShellString x, ShellString y)
+    public static bool operator ==(ShellString x, ShellString y)
     {
       if (null == (object)x || null == (object)y) {
         if (null == (object)x && null == (object)y)
@@ -101,7 +100,7 @@ namespace Smdn.OperatingSystem {
       return string.Equals(x.Expanded, y.Expanded);
     }
 
-    public static bool operator != (ShellString x, ShellString y)
+    public static bool operator !=(ShellString x, ShellString y)
     {
       return !(x == y);
     }
@@ -116,7 +115,7 @@ namespace Smdn.OperatingSystem {
 #endregion
 
 #region "conversion"
-    public static explicit operator string (ShellString str)
+    public static explicit operator string(ShellString str)
     {
       if (str == null)
         return null;
@@ -124,7 +123,7 @@ namespace Smdn.OperatingSystem {
         return str.Raw;
     }
 
-    public static implicit operator ShellString (string str)
+    public static implicit operator ShellString(string str)
     {
       if (str == null)
         return null;

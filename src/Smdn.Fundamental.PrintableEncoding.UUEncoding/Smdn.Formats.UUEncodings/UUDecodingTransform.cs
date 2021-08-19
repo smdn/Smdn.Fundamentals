@@ -63,7 +63,7 @@ namespace Smdn.Formats.UUEncodings {
       const byte LF = 0x0a;
       var ret = 0;
 
-      for (;;) {
+      for (; ; ) {
         if (bufferOffset == 4)
           ret += WriteBlock(outputBuffer, ref outputOffset);
 

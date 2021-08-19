@@ -39,7 +39,7 @@ namespace Smdn {
       if (span.Length < 4)
         throw new ArgumentException("length must be at least 4", nameof(span));
 
-      this.fourcc = 
+      this.fourcc =
         span[0] << 24 |
         span[1] << 16 |
         span[2] << 8 |
@@ -134,7 +134,7 @@ namespace Smdn {
       unchecked {
         buffer[startIndex++] = (byte)(fourcc >> 24);
         buffer[startIndex++] = (byte)(fourcc >> 16);
-        buffer[startIndex++] = (byte)(fourcc >>  8);
+        buffer[startIndex++] = (byte)(fourcc >> 8);
         buffer[startIndex++] = (byte)(fourcc);
       }
     }
@@ -172,10 +172,10 @@ namespace Smdn {
 #endregion
 
 #region "comparison"
-    public static bool operator == (FourCC x, FourCC y)
+    public static bool operator ==(FourCC x, FourCC y)
       => x.fourcc == y.fourcc;
 
-    public static bool operator != (FourCC x, FourCC y)
+    public static bool operator !=(FourCC x, FourCC y)
       => x.fourcc != y.fourcc;
 
     public override bool Equals(object obj)

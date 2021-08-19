@@ -319,7 +319,7 @@ namespace Smdn {
         return false;
     }
 
-    public static bool operator == (UInt48 x, UInt48 y)
+    public static bool operator ==(UInt48 x, UInt48 y)
     {
       return (x.Byte0 == y.Byte0 &&
               x.Byte1 == y.Byte1 &&
@@ -329,7 +329,7 @@ namespace Smdn {
               x.Byte5 == y.Byte5);
     }
 
-    public static bool operator != (UInt48 x, UInt48 y)
+    public static bool operator !=(UInt48 x, UInt48 y)
     {
       return (x.Byte0 != y.Byte0 ||
               x.Byte1 != y.Byte1 ||

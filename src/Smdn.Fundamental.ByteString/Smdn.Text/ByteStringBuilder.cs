@@ -7,14 +7,12 @@ namespace Smdn.Text {
   public class ByteStringBuilder {
     [System.Runtime.CompilerServices.IndexerName("Bytes")]
     public byte this[int index] {
-      get
-      {
+      get {
         if (index < 0 || length <= index)
           throw new IndexOutOfRangeException();
         return buffer[index];
       }
-      set
-      {
+      set {
         if (index < 0 || length <= index)
           throw new ArgumentOutOfRangeException(nameof(index), index, "index out of range");
         buffer[index] = value;
@@ -23,8 +21,7 @@ namespace Smdn.Text {
 
     public int Length {
       get { return length; }
-      set
-      {
+      set {
         if (value < 0)
           throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Length), value);
         length = value;

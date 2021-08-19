@@ -31,7 +31,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     public Node(PhysicalAddress physicalAddress)
       : this((physicalAddress ?? throw new ArgumentNullException(nameof(physicalAddress))).GetAddressBytes())
-    {}
+    { }
 #endif
 
     internal Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)

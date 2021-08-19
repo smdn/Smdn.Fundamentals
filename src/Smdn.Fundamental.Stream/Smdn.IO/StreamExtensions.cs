@@ -36,7 +36,7 @@ namespace Smdn.IO {
 
       var buffer = new byte[bufferSize]; // TODO: array pool
 
-      for (;;) {
+      for (; ; ) {
         var read = stream.Read(buffer, 0, bufferSize);
 
         if (read <= 0)

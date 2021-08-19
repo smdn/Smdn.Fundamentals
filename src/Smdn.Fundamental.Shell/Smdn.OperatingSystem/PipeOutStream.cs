@@ -44,8 +44,7 @@ namespace Smdn.OperatingSystem {
     /// <remarks>in milliseconds</remarks>
     public int WaitForExitTimeout {
       get { return waitForExitTimeout; }
-      private set
-      {
+      private set {
         if (value < -1)
           throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, nameof(WaitForExitTimeout), value);
         waitForExitTimeout = value;

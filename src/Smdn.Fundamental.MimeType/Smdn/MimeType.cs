@@ -247,7 +247,7 @@ namespace Smdn {
       return ToString().GetHashCode();
     }
 
-    public static explicit operator string (MimeType mimeType)
+    public static explicit operator string(MimeType mimeType)
     {
       if (mimeType == null)
         return null;

@@ -7,8 +7,8 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Smdn.Formats;
-using Smdn.Formats.UUEncodings;
 using Smdn.Formats.QuotedPrintableEncodings;
+using Smdn.Formats.UUEncodings;
 using Smdn.IO.Streams;
 using Smdn.Text.Encodings;
 

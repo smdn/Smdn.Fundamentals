@@ -13,8 +13,7 @@ namespace Smdn.IO.Binary {
     }
 
     public virtual bool EndOfStream {
-      get
-      {
+      get {
         CheckDisposed();
 
         if (stream.CanSeek) {
@@ -198,7 +197,7 @@ namespace Smdn.IO.Binary {
 
       int ret = 0;
 
-      for (;;) {
+      for (; ; ) {
         if (count == 0)
           return ret;
 

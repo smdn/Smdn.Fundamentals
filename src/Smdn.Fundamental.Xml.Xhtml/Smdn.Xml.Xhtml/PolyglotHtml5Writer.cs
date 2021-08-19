@@ -3,10 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
-
-using System.Linq;
 
 namespace Smdn.Xml.Xhtml {
   public class PolyglotHtml5Writer : XmlWriter {

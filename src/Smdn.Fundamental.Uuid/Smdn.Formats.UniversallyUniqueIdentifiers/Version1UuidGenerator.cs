@@ -21,7 +21,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     internal sealed class CurrentTimeStampSource : TimeStampSource {
       public static readonly CurrentTimeStampSource Instance = new CurrentTimeStampSource();
 
-      public CurrentTimeStampSource() {}
+      public CurrentTimeStampSource() { }
 
       public override ulong GetTimeStamp() => (ulong)(DateTimeOffset.UtcNow - Uuid.TimeStampEpoch).Ticks;
     }

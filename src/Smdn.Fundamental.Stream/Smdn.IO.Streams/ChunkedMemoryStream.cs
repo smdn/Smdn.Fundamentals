@@ -71,7 +71,7 @@ namespace Smdn.IO.Streams {
       {
         var chunk = TryGetFirstChunk(false);
 
-        for (;;) {
+        for (; ; ) {
           if (chunk == null)
             break;
 
@@ -169,7 +169,7 @@ namespace Smdn.IO.Streams {
 
         var read = 0;
 
-        for (;;) {
+        for (; ; ) {
           if (ReadableByteCount == 0) {
             if (!MoveToNextChunk(false))
               return read; // end of stream
@@ -207,7 +207,7 @@ namespace Smdn.IO.Streams {
       {
         TryGetFirstChunk(true);
 
-        for (;;) {
+        for (; ; ) {
           if (currentChunkOffset == chunkSize)
             MoveToNextChunk(true);
 
@@ -260,7 +260,7 @@ namespace Smdn.IO.Streams {
         if (chunk == null)
           return buffer; // stream is empty (length must be zero)
 
-        for (;;) {
+        for (; ; ) {
           if (chunk.Next == null) {
             Array.Copy(chunk.Data, 0, buffer, offset, lastChunkLength);
             //Buffer.BlockCopy(chunk.Data, 0, buffer, offset, lastChunkLength);
@@ -310,8 +310,7 @@ namespace Smdn.IO.Streams {
 
     public override long Position {
       get { CheckDisposed(); return chain.Position; }
-      set
-      {
+      set {
         CheckDisposed();
 
         if (value < 0)
@@ -398,7 +397,7 @@ namespace Smdn.IO.Streams {
 
         case SeekOrigin.Begin:
           if (offset < 0L)
-            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();;
+            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
           chain.SetPosition(offset);
           return chain.Position;
 

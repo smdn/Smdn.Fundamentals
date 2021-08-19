@@ -7,8 +7,8 @@
 
 using System;
 using System.IO;
-using System.Text;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Smdn.IO {
   public static class PathUtils {
@@ -83,7 +83,7 @@ namespace Smdn.IO {
 
     public static string ReplaceInvalidPathChars(string path, string newValue)
     {
-      return ReplaceInvalidPathChars(path, delegate(char ch, string str, int index) {
+      return ReplaceInvalidPathChars(path, delegate (char ch, string str, int index) {
         return newValue;
       });
     }
@@ -100,7 +100,7 @@ namespace Smdn.IO {
 
     public static string ReplaceInvalidFileNameChars(string path, string newValue)
     {
-      return ReplaceInvalidFileNameChars(path, delegate(char ch, string str, int index) {
+      return ReplaceInvalidFileNameChars(path, delegate (char ch, string str, int index) {
         return newValue;
       });
     }
@@ -190,7 +190,7 @@ namespace Smdn.IO {
       var directory = Path.GetDirectoryName(file);
       var extension = Path.GetExtension(file);
 
-      for (var index = 0;; index++) {
+      for (var index = 0; ; index++) {
         var now = DateTime.Now;
         var newpath = Path.Combine(directory, string.Format("{0}.{1}-p{2}t{3}-{4}{5}",
                                                             now.ToFileTime(),

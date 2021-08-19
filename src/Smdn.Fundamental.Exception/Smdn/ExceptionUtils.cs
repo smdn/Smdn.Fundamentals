@@ -87,7 +87,7 @@ namespace Smdn {
 
             string msgid = null;
 
-            for (;;) {
+            for (; ; ) {
               var line = reader.ReadLine();
 
               if (line == null)
@@ -136,7 +136,7 @@ namespace Smdn {
         }
       }
 #endif
-        }
+    }
 
     /*
      * scalar value

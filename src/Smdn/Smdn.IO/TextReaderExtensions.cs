@@ -19,7 +19,7 @@ namespace Smdn.IO {
       if (reader == null)
         throw new ArgumentNullException(nameof(reader));
 
-      for (;;) {
+      for (; ; ) {
         var line = reader.ReadLine();
 
         if (line == null)

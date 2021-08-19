@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Smdn.OperatingSystem {
@@ -20,7 +20,7 @@ namespace Smdn.OperatingSystem {
 
       var ret = new Dictionary<string, string>();
 
-      foreach (var pair in variables.Split(new[] {Path.PathSeparator}, StringSplitOptions.RemoveEmptyEntries)) {
+      foreach (var pair in variables.Split(new[] { Path.PathSeparator }, StringSplitOptions.RemoveEmptyEntries)) {
         var delim = pair.IndexOf('=');
 
         if (delim < 0) {

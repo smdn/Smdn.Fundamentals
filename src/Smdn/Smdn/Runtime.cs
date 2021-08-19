@@ -6,9 +6,9 @@
 #endif
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Linq;
 
 namespace Smdn {
   public static class Runtime {
@@ -86,8 +86,7 @@ namespace Smdn {
     public static string VersionString => RuntimeInformation.FrameworkDescription;
 
     public static Version Version {
-      get
-      {
+      get {
         switch (runtimeEnvironment) {
           case RuntimeEnvironment.NetFx:
           case RuntimeEnvironment.NetCore: {

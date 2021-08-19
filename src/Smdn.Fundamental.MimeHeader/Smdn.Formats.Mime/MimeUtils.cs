@@ -69,7 +69,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Obsolete("use ParseHeaderAsync() instead", error: true)]
-    public struct HeaderField {}
+    public struct HeaderField { }
 
     [Obsolete("use ParseHeaderAsync() instead", error: true)]
     public static IEnumerable<HeaderField> ParseHeaderRaw(LineOrientedStream stream)
@@ -148,7 +148,7 @@ namespace Smdn.Formats.Mime {
       HeaderFieldLineSegment lineLast = null;
       var offsetOfDelimiter = -1;
 
-      for (;;) {
+      for (; ; ) {
         var ret = await stream.ReadLineAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
         if (ret == null)
