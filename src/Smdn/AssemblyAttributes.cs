@@ -3,8 +3,6 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: System.CLSCompliant(true)]
-
 /*
  * Smdn.Fundamental.ByteString
  */
