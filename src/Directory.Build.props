@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
     <!-- NuGet -->
     <PackageIcon>$(MSBuildProjectName).png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.dll/</PackageProjectUrl>
+    <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.Fundamentals/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/smdn/Smdn.Fundamentals</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
