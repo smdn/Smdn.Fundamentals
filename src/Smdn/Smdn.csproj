@@ -17,6 +17,7 @@ SPDX-License-Identifier: MIT
     <CopyrightYear>2009</CopyrightYear>
 
     <!-- NuGet -->
+    <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.dll/</PackageProjectUrl>
     <PackageTags>utility;utils;extensions;mono;netframework;dotnet-core;dotnet-standard</PackageTags>
   </PropertyGroup>
 
