@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
 namespace Smdn.Buffers {
   [TestFixture]
   public class SequenceReaderExtensionsTests {
