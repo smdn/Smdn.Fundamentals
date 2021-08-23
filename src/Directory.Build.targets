@@ -35,4 +35,8 @@ SPDX-License-Identifier: MIT
     <Message Text="$([System.IO.Path]::GetFileName('%(_ProjectReferencesWithVersions.Identity)')): %(_ProjectReferencesWithVersions.ProjectVersion)" Importance="high" />
 -->
   </Target>
+
+  <Target Name="WarnNupkgConfiguration" AfterTargets="Pack" Condition=" '$(Configuration)' != 'Release' ">
+    <Warning Text="generated nupkg with configuration '$(Configuration)'" />
+  </Target>
 </Project>
