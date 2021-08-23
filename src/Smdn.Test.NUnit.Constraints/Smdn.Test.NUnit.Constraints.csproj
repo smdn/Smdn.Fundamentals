@@ -1,0 +1,25 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net5.0;net45;netstandard2.0</TargetFrameworks>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup Label="metadata">
+    <Description>NUnit constraints</Description>
+    <CopyrightYear>2021</CopyrightYear>
+
+    <!-- NuGet -->
+    <!-- <PackageTags></PackageTags> -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ControlPicture\Smdn.Fundamental.ControlPicture.csproj" />
+    <PackageReference Include="NUnit" Version="[3.13.0,4.0.0)" />
+    <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
+  </ItemGroup>
+</Project>
