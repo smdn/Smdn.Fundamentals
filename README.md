@@ -50,6 +50,7 @@ This repository contains a set of .NET libraries which provides fundamental func
 |[Smdn.Fundamental.Xml.Linq](src/Smdn.Fundamental.Xml.Linq/)|[![NuGet Smdn.Fundamental.Xml.Linq](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Linq.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Linq/)|
 |[Smdn.Fundamental.Xml.Xhtml](src/Smdn.Fundamental.Xml.Xhtml/)|[![NuGet Smdn.Fundamental.Xml.Xhtml](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Xhtml.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Xhtml/)|
 |[Smdn](src/Smdn/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.svg)](https://www.nuget.org/packages/Smdn/)|
+|[Smdn.Test.NUnit.Constraints](src/Smdn.Test.NUnit.Constraints/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Constraints.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Constraints/)|
 
 ## Smdn.dll
 Some of `Smdn.Fundamental.*` are based on former `Smdn.dll`.
