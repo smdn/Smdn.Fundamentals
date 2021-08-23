@@ -36,6 +36,25 @@ SPDX-License-Identifier: MIT
 -->
   </Target>
 
+  <Target Name="GetGitRepositoryProperties" Condition=" '$(RepositoryType)' == 'git' ">
+    <Exec Command="git branch --show-current" ConsoleToMSBuild="true" StandardOutputImportance="Low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="RepositoryBranch" />
+    </Exec>
+    <Exec Command="git rev-parse HEAD" ConsoleToMSBuild="true" StandardOutputImportance="Low">
+      <Output TaskParameter="ConsoleOutput" PropertyName="RepositoryCommit" />
+    </Exec>
+  </Target>
+
+  <!-- ref: NuGet.Build.Tasks.Pack.targets -->
+  <Target Name="GetNuspecRepositoryProperties" BeforeTargets="GenerateNuspec" DependsOnTargets="GetGitRepositoryProperties" />
+
+  <Target Name="GetAssemblyAttributesAboutRepository" BeforeTargets="GetAssemblyAttributes" DependsOnTargets="GetGitRepositoryProperties" Condition=" '$(Configuration)' == 'Release' ">
+    <ItemGroup Label="assembly attributes">
+      <AssemblyMetadata Include="RepositoryBranch" Value="$(RepositoryBranch)" Condition=" '$(RepositoryBranch)' != '' " />
+      <AssemblyMetadata Include="RepositoryCommit" Value="$(RepositoryCommit)" Condition=" '$(RepositoryCommit)' != '' " />
+    </ItemGroup>
+  </Target>
+
   <Target Name="WarnNupkgConfiguration" AfterTargets="Pack" Condition=" '$(Configuration)' != 'Release' ">
     <Warning Text="generated nupkg with configuration '$(Configuration)'" />
   </Target>
