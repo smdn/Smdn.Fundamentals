@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
     <CopyrightYear>2021</CopyrightYear>
 
     <!-- NuGet -->
-    <!-- <PackageTags></PackageTags> -->
+    <PackageTags>NUnit;constraints</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
