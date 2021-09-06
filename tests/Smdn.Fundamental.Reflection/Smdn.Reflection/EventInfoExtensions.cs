@@ -21,7 +21,26 @@ namespace Smdn.Reflection {
     }
 
     private event EventHandler E3;
+
+    class C {
+      public event EventHandler E0;
+      private event EventHandler E1;
+
+      public static event EventHandler SE0;
+      private static event EventHandler SE1;
+    }
 #pragma warning restore 0067
+
+    [TestCase(typeof(C), nameof(C.E0), false)]
+    [TestCase(typeof(C), "E1", false)]
+    [TestCase(typeof(C), nameof(C.SE0), true)]
+    [TestCase(typeof(C), "SE1", true)]
+    public void TestIsStatic(Type type, string eventName, bool expected)
+    {
+      var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+      Assert.AreEqual(expected, ev.IsStatic(), $"{type.Name}.{ev.Name}");
+    }
 
     [Test]
     public void TestGetMethods()

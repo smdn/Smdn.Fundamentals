@@ -2,10 +2,14 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Smdn.Reflection {
   public static class EventInfoExtensions {
+    public static bool IsStatic(this EventInfo ev)
+      => GetMethods(ev, nonPublic: true).Any(static m => m.IsStatic);
+
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev)
     {
       return GetMethods(ev, false);
