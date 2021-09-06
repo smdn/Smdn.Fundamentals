@@ -6,6 +6,16 @@ using System.Reflection;
 
 namespace Smdn.Reflection {
   public static class PropertyInfoExtensions {
+    public static bool IsStatic(this PropertyInfo property)
+    {
+      if (property.CanRead)
+        return property.GetMethod.IsStatic;
+      if (property.CanWrite)
+        return property.SetMethod.IsStatic;
+
+      return false;
+    }
+
     public static bool IsSetMethodInitOnly(this PropertyInfo property)
     {
       if (!property.CanWrite)

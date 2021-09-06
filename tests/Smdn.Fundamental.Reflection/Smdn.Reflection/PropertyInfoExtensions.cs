@@ -11,6 +11,14 @@ namespace Smdn.Reflection {
       public int P0 { get; init; }
       public int P1 { get; set; }
       public int P2 { get; } = 0;
+
+      public static int SP0 { get; } = 0;
+      public static int SP1 { set { } }
+      public static int SP2 { get; set; }
+    }
+
+    static class SC {
+      public static int SP0 { get; } = 0;
     }
 
     struct S {
@@ -24,6 +32,20 @@ namespace Smdn.Reflection {
       public int P0 { get; init; }
       //public int P1 { get; set; }
       public int P2 { get => 0; }
+    }
+
+    [TestCase(typeof(C), nameof(C.P0), false)]
+    [TestCase(typeof(C), nameof(C.P1), false)]
+    [TestCase(typeof(C), nameof(C.P2), false)]
+    [TestCase(typeof(C), nameof(C.SP0), true)]
+    [TestCase(typeof(C), nameof(C.SP1), true)]
+    [TestCase(typeof(C), nameof(C.SP2), true)]
+    [TestCase(typeof(SC), nameof(SC.SP0), true)]
+    public void TestIsStatic(Type type, string propertyName, bool expected)
+    {
+      var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+      Assert.AreEqual(expected, property.IsStatic(), $"{type.Name}.{property.Name}");
     }
 
     [TestCase(typeof(C), nameof(C.P0), true)]
