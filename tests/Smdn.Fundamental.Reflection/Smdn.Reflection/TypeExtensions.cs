@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Smdn.Reflection {
   [TestFixture()]
-  public class TypeExtensionsTests {
+  public partial class TypeExtensionsTests {
     private delegate void D();
 
     [TestCase(typeof(D), true)]

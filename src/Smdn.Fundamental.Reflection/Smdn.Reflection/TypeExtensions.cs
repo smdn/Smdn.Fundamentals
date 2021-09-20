@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Smdn.Reflection {
   public static class TypeExtensions {
@@ -95,6 +96,26 @@ namespace Smdn.Reflection {
         return name.Substring(0, name.LastIndexOf('`'));
       else
         return name;
+    }
+
+    private struct DefaultLayoutStruct { }
+    private static readonly StructLayoutAttribute DefaultStructLayoutAttribute = typeof(DefaultLayoutStruct).StructLayoutAttribute;
+
+    /// <remarks>The value of <see ref="StructLayoutAttribute">.<see ref="StructLayoutAttribute.Size"> is not considered.</remarks>
+    public static bool IsStructLayoutDefault(this Type t)
+    {
+      if (t is null)
+        throw new ArgumentNullException(nameof(t));
+      if (!t.IsValueType || t.IsEnum || t == typeof(ValueType))
+        throw new ArgumentException($"{t} is not a struct type", nameof(t));
+
+      return
+        t.StructLayoutAttribute.Value == DefaultStructLayoutAttribute.Value &&
+        t.StructLayoutAttribute.Pack == DefaultStructLayoutAttribute.Pack &&
+#if false
+        t.StructLayoutAttribute.Size == 0 &&
+#endif
+        t.StructLayoutAttribute.CharSet == DefaultStructLayoutAttribute.CharSet;
     }
   }
 }
