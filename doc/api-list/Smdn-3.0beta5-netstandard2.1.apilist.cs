@@ -1,8 +1,9 @@
-// Smdn-3.0.0beta5 (netstandard2.1)
+// Smdn.dll (Smdn-3.0.0beta5 (netstandard2.1))
 //   Name: Smdn
-//   TargetFramework: .NETStandard,Version=v2.1
 //   AssemblyVersion: 3.0.0.0
 //   InformationalVersion: 3.0.0beta5 (netstandard2.1)
+//   TargetFramework: .NETStandard,Version=v2.1
+//   Configuration: Release
 
 using System;
 using System.Buffers;
@@ -50,6 +51,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum UuidVersion : byte {
     NameBasedMD5Hash = 3,
     NameBasedSHA1Hash = 5,
@@ -76,6 +78,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ExceptionUtils {
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName) {}
     public static ArgumentException CreateArgumentAttemptToAccessBeyondEndOfArray(string paramName, Array array, long offsetValue, long countValue) {}
@@ -106,6 +109,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.Math, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MathUtils {
     public static int Gcd(int m, int n) {}
     public static long Gcd(long m, long n) {}
@@ -122,6 +126,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.MimeType, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class MimeType :
     IEquatable<MimeType>,
     IEquatable<string>
@@ -181,6 +186,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.ParamArray, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ParamArrayUtils {
     public static IEnumerable<TParam> ToEnumerable<TParam>(TParam first, params TParam[] subsequence) {}
     public static IEnumerable<TParam> ToEnumerableNonNullable<TParam>(string paramName, TParam first, params TParam[] subsequence) where TParam : class {}
@@ -225,6 +231,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.FourCC, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct FourCC :
     IEquatable<FourCC>,
     IEquatable<byte[]>,
@@ -262,6 +269,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.UInt24n, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt24 :
     IComparable,
@@ -331,6 +339,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.UInt24n, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt48 :
     IComparable,
@@ -406,6 +415,7 @@ namespace Smdn {
   }
 
   // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct Uuid :
     IComparable,
@@ -509,11 +519,13 @@ namespace Smdn {
 
 namespace Smdn.Collections {
   // Forwarded to "Smdn.Fundamental.Collection, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class IReadOnlyCollectionExtensions {
     public static List<TOutput> ConvertAll<TInput, TOutput>(this IReadOnlyCollection<TInput> collection, Converter<TInput, TOutput> converter) {}
   }
 
   // Forwarded to "Smdn.Fundamental.Collection, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class IReadOnlyListExtensions {
     public static int IndexOf<T>(this IReadOnlyList<T> list, T item, IEqualityComparer<T> equalityComparer = null) {}
     public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, IEqualityComparer<T> equalityComparer = null) {}
@@ -523,11 +535,13 @@ namespace Smdn.Collections {
   }
 
   // Forwarded to "Smdn.Fundamental.Collection, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ReadOnlyDictionary<TKey, TValue> {
     public static readonly IReadOnlyDictionary<TKey, TValue> Empty;
   }
 
   // Forwarded to "Smdn.Fundamental.Collection, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Singleton {
     public static IReadOnlyList<T> CreateList<T>(T element) {}
   }
@@ -535,6 +549,7 @@ namespace Smdn.Collections {
 
 namespace Smdn.Formats {
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Base64 {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
     public static Stream CreateEncodingStream(Stream stream, bool leaveStreamOpen = false) {}
@@ -558,6 +573,7 @@ namespace Smdn.Formats {
   }
 
   // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class CsvRecord {
     public static IReadOnlyList<string> Split(ReadOnlySpan<char> csv) {}
     public static IReadOnlyList<string> Split(string csv) {}
@@ -572,6 +588,7 @@ namespace Smdn.Formats {
   }
 
   // Forwarded to "Smdn.Fundamental.StandardDateTimeFormat, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class DateTimeFormat {
     public static DateTimeOffset FromISO8601DateTimeOffsetString(string s) {}
     public static DateTime FromISO8601DateTimeString(string s) {}
@@ -616,6 +633,7 @@ namespace Smdn.Formats {
   }
 
   // Forwarded to "Smdn.Fundamental.SIPrefix, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class SIPrefixNumberFormatter :
     ICustomFormatter,
     IFormatProvider
@@ -648,6 +666,7 @@ namespace Smdn.Formats {
 
 namespace Smdn.Formats.Csv {
   // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvReader : StreamReader {
     public CsvReader(Stream stream) {}
     public CsvReader(Stream stream, Encoding encoding) {}
@@ -664,6 +683,7 @@ namespace Smdn.Formats.Csv {
   }
 
   // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvWriter : StreamWriter {
     public CsvWriter(Stream stream) {}
     public CsvWriter(Stream stream, Encoding encoding) {}
@@ -683,9 +703,11 @@ namespace Smdn.Formats.Csv {
 
 namespace Smdn.Formats.Mime {
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public delegate string MimeEncodedWordConverter(Encoding charset, string encodingMethod, string encodedText);
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ContentTransferEncodingMethod : int {
     Base64 = 3,
     Binary = 2,
@@ -698,6 +720,7 @@ namespace Smdn.Formats.Mime {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum MimeEncodingMethod : int {
     BEncoding = 1,
     Base64 = 1,
@@ -707,6 +730,7 @@ namespace Smdn.Formats.Mime {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ContentTransferEncoding {
     public const string HeaderName = "Content-Transfer-Encoding";
 
@@ -730,6 +754,7 @@ namespace Smdn.Formats.Mime {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeEncoding {
     public static string Decode(string str) {}
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding) {}
@@ -752,6 +777,7 @@ namespace Smdn.Formats.Mime {
   }
 
   // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeUtils {
     [Obsolete("use ParseHeaderAsync() instead", true)]
     public struct HeaderField {
@@ -775,6 +801,7 @@ namespace Smdn.Formats.Mime {
   }
 
   // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct RawHeaderField {
     public ReadOnlySequence<byte> HeaderFieldSequence { get; }
     public ReadOnlySequence<byte> Name { get; }
@@ -787,6 +814,7 @@ namespace Smdn.Formats.Mime {
 
 namespace Smdn.Formats.ModifiedBase64 {
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     public FromRFC2152ModifiedBase64Transform() {}
     public FromRFC2152ModifiedBase64Transform(FromBase64TransformMode mode) {}
@@ -803,6 +831,7 @@ namespace Smdn.Formats.ModifiedBase64 {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
     public FromRFC3501ModifiedBase64Transform() {}
     public FromRFC3501ModifiedBase64Transform(FromBase64TransformMode mode) {}
@@ -813,12 +842,14 @@ namespace Smdn.Formats.ModifiedBase64 {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ModifiedUTF7 {
     public static string Decode(string str) {}
     public static string Encode(string str) {}
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ToRFC2152ModifiedBase64Transform : ICryptoTransform {
     public ToRFC2152ModifiedBase64Transform() {}
 
@@ -833,6 +864,7 @@ namespace Smdn.Formats.ModifiedBase64 {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform {
     public ToRFC3501ModifiedBase64Transform() {}
 
@@ -844,6 +876,7 @@ namespace Smdn.Formats.ModifiedBase64 {
 namespace Smdn.Formats.PercentEncodings {
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [Flags]
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ToPercentEncodedTransformMode : int {
     EscapeSpaceToPlus = 0x00010000,
     ModeMask = 0x0000ffff,
@@ -859,6 +892,7 @@ namespace Smdn.Formats.PercentEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromPercentEncodedTransform : ICryptoTransform {
     public FromPercentEncodedTransform() {}
     public FromPercentEncodedTransform(bool decodePlusToSpace) {}
@@ -875,6 +909,7 @@ namespace Smdn.Formats.PercentEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class PercentEncoding {
     public static byte[] Decode(string str) {}
     public static byte[] Decode(string str, bool decodePlusToSpace) {}
@@ -891,6 +926,7 @@ namespace Smdn.Formats.PercentEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToPercentEncodedTransform : ICryptoTransform {
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode) {}
 
@@ -908,18 +944,21 @@ namespace Smdn.Formats.PercentEncodings {
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum FromQuotedPrintableTransformMode : int {
     ContentTransferEncoding = 0,
     MimeEncoding = 1,
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ToQuotedPrintableTransformMode : int {
     ContentTransferEncoding = 0,
     MimeEncoding = 1,
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromQuotedPrintableTransform : ICryptoTransform {
     public FromQuotedPrintableTransform(FromQuotedPrintableTransformMode mode) {}
 
@@ -935,6 +974,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class QuotedPrintableEncoding {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
     public static Stream CreateEncodingStream(Stream stream, bool leaveStreamOpen = false) {}
@@ -950,6 +990,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToQuotedPrintableTransform : ICryptoTransform {
     public ToQuotedPrintableTransform(ToQuotedPrintableTransformMode mode) {}
 
@@ -967,6 +1008,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
 namespace Smdn.Formats.UUEncodings {
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class UUDecoder {
     public sealed class FileEntry : IDisposable {
       public FileEntry() {}
@@ -985,6 +1027,7 @@ namespace Smdn.Formats.UUEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class UUDecodingStream : Stream {
     public UUDecodingStream(Stream baseStream) {}
     public UUDecodingStream(Stream baseStream, bool leaveStreamOpen) {}
@@ -1010,6 +1053,7 @@ namespace Smdn.Formats.UUEncodings {
   }
 
   // Forwarded to "Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class UUDecodingTransform : ICryptoTransform {
     public UUDecodingTransform() {}
 
@@ -1027,6 +1071,7 @@ namespace Smdn.Formats.UUEncodings {
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class UuidGenerator {
     protected UuidGenerator() {}
 
@@ -1045,6 +1090,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   }
 
   // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public readonly struct Node : IFormattable {
     public Node(PhysicalAddress physicalAddress) {}
@@ -1098,6 +1144,7 @@ namespace Smdn.IO {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class StreamExtensions {
     public static void CopyTo(this Stream stream, BinaryWriter writer, int bufferSize = 10240) {}
     public static Task CopyToAsync(this Stream stream, BinaryWriter writer, int bufferSize = 10240, CancellationToken cancellationToken = default) {}
@@ -1119,6 +1166,7 @@ namespace Smdn.IO {
 
 namespace Smdn.IO.Binary {
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BigEndianBinaryReader : BinaryReader {
     protected BigEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
     public BigEndianBinaryReader(Stream stream) {}
@@ -1135,6 +1183,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BigEndianBinaryWriter : BinaryWriter {
     protected BigEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
     public BigEndianBinaryWriter(Stream stream) {}
@@ -1151,6 +1200,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class BinaryConversion {
     public static int ByteSwap(int @value) {}
     public static long ByteSwap(long @value) {}
@@ -1233,6 +1283,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BinaryReader : BinaryReaderBase {
     protected readonly byte[] Storage;
 
@@ -1257,6 +1308,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class BinaryReaderBase : IDisposable {
     protected BinaryReaderBase(Stream baseStream, bool leaveBaseStreamOpen) {}
 
@@ -1289,6 +1341,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BinaryWriter : BinaryWriterBase {
     protected readonly byte[] Storage;
 
@@ -1313,6 +1366,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class BinaryWriterBase : IDisposable {
     protected BinaryWriterBase(Stream baseStream, bool leaveBaseStreamOpen) {}
 
@@ -1342,6 +1396,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LittleEndianBinaryReader : BinaryReader {
     protected LittleEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
     public LittleEndianBinaryReader(Stream stream) {}
@@ -1358,6 +1413,7 @@ namespace Smdn.IO.Binary {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LittleEndianBinaryWriter : BinaryWriter {
     protected LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
     public LittleEndianBinaryWriter(Stream stream) {}
@@ -1376,6 +1432,7 @@ namespace Smdn.IO.Binary {
 
 namespace Smdn.IO.Streams {
   // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ChunkedMemoryStream : Stream {
     public delegate ChunkedMemoryStream.Chunk Allocator(int chunkSize);
 
@@ -1414,6 +1471,7 @@ namespace Smdn.IO.Streams {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class NonClosingStream : Stream {
     public NonClosingStream(Stream innerStream) {}
     public NonClosingStream(Stream innerStream, bool writable) {}
@@ -1435,6 +1493,7 @@ namespace Smdn.IO.Streams {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream :
     Stream,
     ICloneable
@@ -1477,6 +1536,7 @@ namespace Smdn.IO.Streams {
 
 namespace Smdn.IO.Streams.Caching {
   // Forwarded to "Smdn.Fundamental.Stream.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class CachedStreamBase : Stream {
     protected CachedStreamBase(Stream innerStream, int blockSize, bool leaveInnerStreamOpen) {}
 
@@ -1503,6 +1563,7 @@ namespace Smdn.IO.Streams.Caching {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class NonPersistentCachedStream : CachedStreamBase {
     public NonPersistentCachedStream(Stream innerStream) {}
     public NonPersistentCachedStream(Stream innerStream, bool leaveInnerStreamOpen) {}
@@ -1514,6 +1575,7 @@ namespace Smdn.IO.Streams.Caching {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class PersistentCachedStream : CachedStreamBase {
     public PersistentCachedStream(Stream innerStream) {}
     public PersistentCachedStream(Stream innerStream, bool leaveInnerStreamOpen) {}
@@ -1527,6 +1589,7 @@ namespace Smdn.IO.Streams.Caching {
 
 namespace Smdn.IO.Streams.Extending {
   // Forwarded to "Smdn.Fundamental.Stream.Extending, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ExtendStream : ExtendStreamBase {
     public ExtendStream(Stream innerStream, Stream prependStream, Stream appendStream, bool leaveInnerStreamOpen = true, bool leavePrependStreamOpen = true, bool leaveAppendStreamOpen = true) {}
     public ExtendStream(Stream innerStream, byte[] prependData, byte[] appendData, bool leaveInnerStreamOpen = true) {}
@@ -1544,6 +1607,7 @@ namespace Smdn.IO.Streams.Extending {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.Extending, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class ExtendStreamBase : Stream {
     protected enum StreamSection : int {
       Append = 2,
@@ -1587,6 +1651,7 @@ namespace Smdn.IO.Streams.Extending {
 
 namespace Smdn.IO.Streams.Filtering {
   // Forwarded to "Smdn.Fundamental.Stream.Filtering, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FilterStream : Stream {
     public delegate void FilterAction(Span<byte> buffer, long offsetWithinFilter);
 
@@ -1682,6 +1747,7 @@ namespace Smdn.IO.Streams.Filtering {
 
 namespace Smdn.IO.Streams.LineOriented {
   // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LineOrientedStream : Stream {
     public readonly struct Line {
       public Line(ReadOnlySequence<byte> sequenceWithNewLine, SequencePosition positionOfNewLine) {}
@@ -1729,11 +1795,13 @@ namespace Smdn.IO.Streams.LineOriented {
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LooseLineOrientedStream : LineOrientedStream {
     public LooseLineOrientedStream(Stream stream, int bufferSize = 1024, bool leaveStreamOpen = false) {}
   }
 
   // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class StrictLineOrientedStream : LineOrientedStream {
     public StrictLineOrientedStream(Stream stream, ReadOnlySpan<byte> newLine, int bufferSize = 1024, bool leaveStreamOpen = false) {}
     public StrictLineOrientedStream(Stream stream, int bufferSize = 1024, bool leaveStreamOpen = false) {}
@@ -1742,6 +1810,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
 namespace Smdn.OperatingSystem {
   // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EnvironmentVariable {
     public static string CombineEnvironmentVariables(IDictionary<string, string> variables) {}
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables) {}
@@ -1749,6 +1818,7 @@ namespace Smdn.OperatingSystem {
   }
 
   // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PipeOutStream : Stream {
     public PipeOutStream(ProcessStartInfo startInfo) {}
     public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onErrorDataReceived) {}
@@ -1774,6 +1844,7 @@ namespace Smdn.OperatingSystem {
   }
 
   // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Shell {
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments) {}
     public static ProcessStartInfo CreateProcessStartInfo(string command, string arguments) {}
@@ -1783,6 +1854,7 @@ namespace Smdn.OperatingSystem {
   }
 
   // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ShellString :
     ICloneable,
     IEquatable<ShellString>,
@@ -1812,6 +1884,7 @@ namespace Smdn.OperatingSystem {
 
 namespace Smdn.Security.Cryptography {
   // Forwarded to "Smdn.Fundamental.CryptoTransform, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ICryptoTransformExtensions {
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer) {}
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer, int inputOffset, int inputCount) {}
@@ -1889,6 +1962,7 @@ namespace Smdn.Text {
   }
 
   // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class ByteString :
     IEquatable<ArraySegment<byte>>,
@@ -2014,6 +2088,7 @@ namespace Smdn.Text {
   }
 
   // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ByteStringBuilder {
     public ByteStringBuilder() {}
     public ByteStringBuilder(int capacity) {}
@@ -2039,6 +2114,7 @@ namespace Smdn.Text {
   }
 
   // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ByteStringExtensions {
     public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) {}
     [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual instead")]
@@ -2073,9 +2149,11 @@ namespace Smdn.Text {
 
 namespace Smdn.Text.Encodings {
   // Forwarded to "Smdn.Fundamental.Encoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public delegate Encoding EncodingSelectionCallback(string name);
 
   // Forwarded to "Smdn.Fundamental.Encoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class EncodingNotSupportedException : NotSupportedException {
     protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context) {}
@@ -2091,6 +2169,7 @@ namespace Smdn.Text.Encodings {
   }
 
   // Forwarded to "Smdn.Fundamental.Encoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EncodingUtils {
     public static Encoding GetEncoding(string name) {}
     public static Encoding GetEncoding(string name, EncodingSelectionCallback selectFallbackEncoding) {}
@@ -2099,6 +2178,7 @@ namespace Smdn.Text.Encodings {
   }
 
   // Forwarded to "Smdn.Fundamental.Encoding.OctetEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class OctetEncoding : Encoding {
     public static readonly Encoding EightBits; // = "Smdn.Text.Encodings.OctetEncoding"
     public static readonly Encoding SevenBits; // = "Smdn.Text.Encodings.OctetEncoding"
