@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Buffer.dll (Smdn.Fundamental.Buffer-3.0.0 (net5.0))
+// Smdn.Fundamental.Buffer.dll (Smdn.Fundamental.Buffer-3.0.1 (net5.0))
 //   Name: Smdn.Fundamental.Buffer
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net5.0)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (net5.0)
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
 
