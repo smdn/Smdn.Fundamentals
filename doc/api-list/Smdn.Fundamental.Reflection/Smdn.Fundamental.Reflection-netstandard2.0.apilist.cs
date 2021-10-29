@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.1 (netstandard2.0))
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.2 (netstandard2.0))
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.0)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2 (netstandard2.0)
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
@@ -56,6 +56,7 @@ namespace Smdn.Reflection {
   public static class EventInfoExtensions {
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev) {}
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic) {}
+    public static bool IsStatic(this EventInfo ev) {}
   }
 
   public static class MemberInfoExtensions {
@@ -70,8 +71,13 @@ namespace Smdn.Reflection {
     public static bool IsExplicitlyImplemented(this MethodBase m) {}
   }
 
+  public static class ParameterInfoExtensions {
+    public static bool IsReturnParameter(this ParameterInfo param) {}
+  }
+
   public static class PropertyInfoExtensions {
     public static bool IsSetMethodInitOnly(this PropertyInfo property) {}
+    public static bool IsStatic(this PropertyInfo property) {}
   }
 
   public static class TypeExtensions {
@@ -85,6 +91,17 @@ namespace Smdn.Reflection {
     public static bool IsDelegate(this Type t) {}
     public static bool IsEnumFlags(this Type t) {}
     public static bool IsReadOnlyValueType(this Type t) {}
+    public static bool IsStructLayoutDefault(this Type t) {}
+  }
+}
+
+namespace Smdn.Reflection.Attributes {
+  public static class CustomAttributeTypedArgumentExtensions {
+    public static object GetTypedValue(this CustomAttributeTypedArgument typedArg) {}
+  }
+
+  public static class ICustomAttributeProviderExtensions {
+    public static IList<CustomAttributeData> GetCustomAttributeDataList(this ICustomAttributeProvider attributeProvider) {}
   }
 }
 
