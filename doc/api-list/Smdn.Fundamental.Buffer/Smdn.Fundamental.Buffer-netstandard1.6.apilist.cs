@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Buffer.dll (Smdn.Fundamental.Buffer-3.0.1 (netstandard1.6))
+// Smdn.Fundamental.Buffer.dll (Smdn.Fundamental.Buffer-3.0.2 (netstandard1.6))
 //   Name: Smdn.Fundamental.Buffer
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard1.6)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
