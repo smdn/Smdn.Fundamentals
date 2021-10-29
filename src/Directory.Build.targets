@@ -68,4 +68,13 @@ SPDX-License-Identifier: MIT
   <Target Name="WarnNupkgConfiguration" AfterTargets="Pack" Condition=" '$(Configuration)' != 'Release' ">
     <Warning Text="generated nupkg with configuration '$(Configuration)'" />
   </Target>
+
+  <Target Name="GenerateAPIList" AfterTargets="Pack" Condition=" '$(Configuration)' == 'Release' ">
+    <ItemGroup>
+      <BuildOutputAssembly Include="@(NuGetPackInput)" Condition="$([System.String]::new('%(NuGetPackInput.TargetPath)').EndsWith('.dll')) and '' != '%(NuGetPackInput.TargetFramework)' ">
+        <APIListOutputDirectory>$(APIListOutputBaseDirectory)\$(AssemblyName)</APIListOutputDirectory>
+      </BuildOutputAssembly>
+    </ItemGroup>
+    <Exec Command="list-api -o %(BuildOutputAssembly.APIListOutputDirectory) -v minimal %(BuildOutputAssembly.Identity)" />
+  </Target>
 </Project>
