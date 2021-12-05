@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Smdn {
   /// <summary>
-  /// extension methods for System.Array
+  /// extension methods for System.Array.
   /// </summary>
   public static class ArrayExtensions {
     public static T[] Append<T>(this T[] array, T element, params T[] elements)

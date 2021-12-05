@@ -7,16 +7,16 @@ namespace Smdn.Formats.Mime {
   public enum MimeEncodingMethod {
     None,
 
-    /// <summary>base64, B-Encoding</summary>
+    /// <summary>base64, B-Encoding.</summary>
     Base64,
 
-    /// <summary>base64, B-Encoding</summary>
+    /// <summary>base64, B-Encoding.</summary>
     BEncoding = Base64,
 
-    /// <summary>quoted-printable, Q-Encoding</summary>
+    /// <summary>quoted-printable, Q-Encoding.</summary>
     QuotedPrintable,
 
-    /// <summary>quoted-printable, Q-Encoding</summary>
+    /// <summary>quoted-printable, Q-Encoding.</summary>
     QEncoding = QuotedPrintable,
   }
 }

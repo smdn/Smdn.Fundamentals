@@ -6,11 +6,14 @@ namespace Smdn {
   public enum RuntimeEnvironment {
     /// <summary>DotGNU, etc.</summary>
     Unknown = 0,
-    /// <summary>.NET Framework</summary>
+
+    /// <summary>.NET Framework.</summary>
     NetFx,
-    /// <summary>Mono</summary>
+
+    /// <summary>Mono.</summary>
     Mono,
-    /// <summary>.NET Core</summary>
+
+    /// <summary>.NET Core.</summary>
     NetCore,
   }
 }

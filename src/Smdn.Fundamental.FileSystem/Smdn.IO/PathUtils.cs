@@ -58,7 +58,7 @@ namespace Smdn.IO {
         return false;
     }
 
-    /// <param name="pathOrExtension">extension must contain "."</param>
+    /// <param name="pathOrExtension">extension must contain ".".</param>
     public static bool AreExtensionEqual(string path, string pathOrExtension)
       => string.Equals(
         Path.GetExtension(path),

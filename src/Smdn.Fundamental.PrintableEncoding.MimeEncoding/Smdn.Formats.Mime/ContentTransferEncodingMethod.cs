@@ -5,20 +5,25 @@ using System;
 namespace Smdn.Formats.Mime {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ContentTransferEncodingMethod {
-    /// <summary>7bit</summary>
+    /// <summary>7bit.</summary>
     SevenBit,
-    /// <summary>8bit</summary>
+
+    /// <summary>8bit.</summary>
     EightBit,
-    /// <summary>binary</summary>
+
+    /// <summary>binary.</summary>
     Binary,
-    /// <summary>base64</summary>
+
+    /// <summary>base64.</summary>
     Base64,
-    /// <summary>quoted-printable</summary>
+
+    /// <summary>quoted-printable.</summary>
     QuotedPrintable,
 
-    /// <summary>x-uuencode, uuencode</summary>
+    /// <summary>x-uuencode, uuencode.</summary>
     UUEncode,
-    /// <summary>x-gzip64, gzip64</summary>
+
+    /// <summary>x-gzip64, gzip64.</summary>
     GZip64,
 
     Unknown,

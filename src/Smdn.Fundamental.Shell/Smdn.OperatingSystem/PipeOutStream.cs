@@ -41,7 +41,7 @@ namespace Smdn.OperatingSystem {
       get { CheckDisposed(); return process; }
     }
 
-    /// <remarks>in milliseconds</remarks>
+    /// <remarks>in milliseconds.</remarks>
     public int WaitForExitTimeout {
       get { return waitForExitTimeout; }
       private set {

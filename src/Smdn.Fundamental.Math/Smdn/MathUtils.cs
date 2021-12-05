@@ -6,7 +6,7 @@ namespace Smdn {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MathUtils {
     /// <summary>
-    /// length of the hypotenuse of a triangle
+    /// length of the hypotenuse of a triangle.
     /// </summary>
     public static float Hypot(float x, float y)
     {
@@ -14,7 +14,7 @@ namespace Smdn {
     }
 
     /// <summary>
-    /// length of the hypotenuse of a triangle
+    /// length of the hypotenuse of a triangle.
     /// </summary>
     public static double Hypot(double x, double y)
     {
@@ -22,7 +22,7 @@ namespace Smdn {
     }
 
     /// <summary>
-    /// greatest common divisor of m and n
+    /// greatest common divisor of m and n.
     /// </summary>
     public static int Gcd(int m, int n)
     {
@@ -30,7 +30,7 @@ namespace Smdn {
     }
 
     /// <summary>
-    /// greatest common divisor of m and n
+    /// greatest common divisor of m and n.
     /// </summary>
     public static long Gcd(long m, long n)
     {
@@ -55,7 +55,7 @@ namespace Smdn {
     }
 
     /// <summary>
-    /// least common multiple of m and n
+    /// least common multiple of m and n.
     /// </summary>
     public static int Lcm(int m, int n)
     {
@@ -63,7 +63,7 @@ namespace Smdn {
     }
 
     /// <summary>
-    /// least common multiple of m and n
+    /// least common multiple of m and n.
     /// </summary>
     public static long Lcm(long m, long n)
     {
