@@ -13,8 +13,10 @@ namespace Smdn.IO.Streams {
     public abstract class Chunk : IDisposable {
       public abstract void Dispose();
 
+#pragma warning disable SA1401
       public byte[] Data;
       internal Chunk Next = null;
+#pragma warning restore SA1401
     }
 
     private class DefaultChunk : Chunk {
@@ -25,12 +27,12 @@ namespace Smdn.IO.Streams {
 
       private DefaultChunk(int chunkSize)
       {
-        base.Data = new byte[chunkSize];
+        Data = new byte[chunkSize];
       }
 
       public override void Dispose()
       {
-        base.Data = null;
+        Data = null;
       }
     }
 
@@ -44,7 +46,7 @@ namespace Smdn.IO.Streams {
       }
 
       public long Position {
-        get { return currentChunkIndex * chunkSize + currentChunkOffset; }
+        get { return (currentChunkIndex * chunkSize) + currentChunkOffset; }
       }
 
       private int ReadableByteCount {
@@ -263,13 +265,13 @@ namespace Smdn.IO.Streams {
         for (; ; ) {
           if (chunk.Next == null) {
             Array.Copy(chunk.Data, 0, buffer, offset, lastChunkLength);
-            //Buffer.BlockCopy(chunk.Data, 0, buffer, offset, lastChunkLength);
+            // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, lastChunkLength);
 
             return buffer;
           }
           else {
             Array.Copy(chunk.Data, 0, buffer, offset, chunkSize);
-            //Buffer.BlockCopy(chunk.Data, 0, buffer, offset, chunkSize);
+            // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, chunkSize);
 
             chunk = chunk.Next;
             offset += chunkSize;

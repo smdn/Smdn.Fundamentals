@@ -11,7 +11,7 @@ namespace Smdn.Text {
       return new ReadOnlySequence<byte>(str.Segment.AsMemory());
     }
 
-    [Obsolete()]
+    [Obsolete]
     public static ByteString ToByteString(this ReadOnlySequence<byte> sequence)
     {
       return ByteString.CreateImmutable(sequence.ToArray());

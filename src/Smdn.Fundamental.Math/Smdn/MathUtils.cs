@@ -10,7 +10,7 @@ namespace Smdn {
     /// </summary>
     public static float Hypot(float x, float y)
     {
-      return (float)Math.Sqrt((double)(x * x + y * y));
+      return (float)Math.Sqrt((double)((x * x) + (y * y)));
     }
 
     /// <summary>
@@ -18,7 +18,7 @@ namespace Smdn {
     /// </summary>
     public static double Hypot(double x, double y)
     {
-      return Math.Sqrt(x * x + y * y);
+      return Math.Sqrt((x * x) + (y * y));
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ namespace Smdn {
     {
       int quotient = a / b;
 
-      result = a - b * quotient;
+      result = a - (b * quotient);
 
       return quotient;
     }
@@ -84,7 +84,7 @@ namespace Smdn {
     {
       long quotient = a / b;
 
-      result = a - b * quotient;
+      result = a - (b * quotient);
 
       return quotient;
     }

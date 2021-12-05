@@ -9,4 +9,3 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     MimeEncoding,
   }
 }
-

@@ -26,8 +26,7 @@ namespace Smdn {
     IComparable<Uuid>,
     IComparable<Guid>,
     IComparable,
-    IFormattable
-  {
+    IFormattable {
     public enum Namespace : int {
       RFC4122Dns      = 0x6ba7b810,
       RFC4122Url      = 0x6ba7b811,
@@ -47,21 +46,18 @@ namespace Smdn {
      *    The nil UUID is special form of UUID that is specified to have all
      *    128 bits set to zero.
      */
-    public static readonly Uuid Nil = new Uuid(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0});
+    public static readonly Uuid Nil = new Uuid(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0 });
 
     /*
      * Appendix C. Appendix C - Some Name Space IDs
      */
-    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
-    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
-    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
-    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8}, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
-    public static Uuid NewUuid()
-    {
-      return CreateTimeBased();
-    }
+    public static Uuid NewUuid() => CreateTimeBased();
 #endif
 
     private static int GetClock()
@@ -92,18 +88,18 @@ namespace Smdn {
     }
 
     public static Uuid CreateTimeBased()
-    {
-      return CreateTimeBased(GetTimestamp(),
-                             GetClock(),
-                             GetNode());
-    }
+      => CreateTimeBased(
+        GetTimestamp(),
+        GetClock(),
+        GetNode()
+      );
 
     public static Uuid CreateTimeBased(DateTime timestamp, int clock)
-    {
-      return CreateTimeBased(timestamp,
-                             clock,
-                             GetNode());
-    }
+      => CreateTimeBased(
+        timestamp,
+        clock,
+        GetNode()
+      );
 
     public static Uuid CreateTimeBased(PhysicalAddress node)
     {
@@ -124,9 +120,10 @@ namespace Smdn {
 
     public static Uuid CreateTimeBased(byte[] node)
     {
-      return CreateTimeBased(GetTimestamp(),
-                             GetClock(),
-                             node);
+      return CreateTimeBased(
+          GetTimestamp(),
+          GetClock(),
+          node);
     }
 
     public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node)
@@ -219,10 +216,10 @@ namespace Smdn {
     public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version)
     {
       switch (ns) {
-        case Namespace.RFC4122Dns:    return CreateNameBased(name, RFC4122NamespaceDns, version);
-        case Namespace.RFC4122Url:    return CreateNameBased(name, RFC4122NamespaceUrl, version);
+        case Namespace.RFC4122Dns: return CreateNameBased(name, RFC4122NamespaceDns, version);
+        case Namespace.RFC4122Url: return CreateNameBased(name, RFC4122NamespaceUrl, version);
         case Namespace.RFC4122IsoOid: return CreateNameBased(name, RFC4122NamespaceIsoOid, version);
-        case Namespace.RFC4122X500:   return CreateNameBased(name, RFC4122NamespaceX500, version);
+        case Namespace.RFC4122X500: return CreateNameBased(name, RFC4122NamespaceX500, version);
         default: throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(ns), ns);
       }
     }
@@ -364,45 +361,51 @@ namespace Smdn {
      * 4.1.2. Layout and Byte Order
      */
     /* Octet# */
-    /*   0- 3 */ [FieldOffset( 0)] private uint time_low; // host order
-    /*   4- 5 */ [FieldOffset( 4)] private ushort time_mid; // host order
-    /*   6- 7 */ [FieldOffset( 6)] private ushort time_hi_and_version; // host order
-    /*   8    */ [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
-    /*   9    */ [FieldOffset( 9)] private byte clock_seq_low;
-    /*  10-15 */ [FieldOffset(10)] private Node node;
+    /*   0- 3 */
+    [FieldOffset( 0)] private uint time_low; // host order
+    /*   4- 5 */
+    [FieldOffset( 4)] private ushort time_mid; // host order
+    /*   6- 7 */
+    [FieldOffset( 6)] private ushort time_hi_and_version; // host order
+    /*   8    */
+    [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
+    /*   9    */
+    [FieldOffset( 9)] private byte clock_seq_low;
+    /*  10-15 */
+    [FieldOffset(10)] private Node node;
 
     [FieldOffset( 0)] private ulong fields_high;
     [FieldOffset( 8)] private ulong fields_low;
 
-    /// <value>time_low; The low field of the timestamp</value>
+    /// <value>time_low; The low field of the timestamp.</value>
     [CLSCompliant(false)]
     public uint TimeLow {
       get { return time_low; }
     }
 
-    /// <value>time_mid; The middle field of the timestamp</value>
+    /// <value>time_mid; The middle field of the timestamp.</value>
     [CLSCompliant(false)]
     public ushort TimeMid {
       get { return time_mid; }
     }
 
-    /// <value>time_hi_and_version; The high field of the timestamp multiplexed with the version number</value>
+    /// <value>time_hi_and_version; The high field of the timestamp multiplexed with the version number.</value>
     [CLSCompliant(false)]
     public ushort TimeHighAndVersion {
       get { return time_hi_and_version; }
     }
 
-    /// <value>clock_seq_hi_and_reserved; The high field of the clock sequence multiplexed with the variant</value>
+    /// <value>clock_seq_hi_and_reserved; The high field of the clock sequence multiplexed with the variant.</value>
     public byte ClockSeqHighAndReserved {
       get { return clock_seq_hi_and_reserved; }
     }
 
-    /// <value>clock_seq_low; The low field of the clock sequence</value>
+    /// <value>clock_seq_low; The low field of the clock sequence.</value>
     public byte ClockSeqLow {
       get { return clock_seq_low; }
     }
 
-    /// <value>node;The spatially unique node identifier</value>
+    /// <value>node;The spatially unique node identifier.</value>
     public byte[] Node {
       get { return new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 }; }
     }
@@ -455,15 +458,18 @@ namespace Smdn {
           case 0x40:
           case 0x60:
             return Variant.NCSReserved;
+
           // 0b10x00000
           case 0x80:
           case 0xa0:
             return Variant.RFC4122;
+
           // 0b11000000
           case 0xc0:
             return Variant.MicrosoftReserved;
+
           // 0b11100000
-          //case 0xe0:
+          // case 0xe0:
           default:
             return Variant.Reserved;
         }
@@ -472,26 +478,65 @@ namespace Smdn {
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     [CLSCompliant(false)]
-    public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
-                PhysicalAddress node)
-    : this(time_low, time_mid, time_hi_and_version, clock_seq_hi_and_reserved, clock_seq_low,
-           node.GetAddressBytes())
+    public Uuid(
+      uint time_low,
+      ushort time_mid,
+      ushort time_hi_and_version,
+      byte clock_seq_hi_and_reserved,
+      byte clock_seq_low,
+      PhysicalAddress node
+    ) :
+      this(
+        time_low,
+        time_mid,
+        time_hi_and_version,
+        clock_seq_hi_and_reserved,
+        clock_seq_low,
+        node.GetAddressBytes()
+      )
     {
     }
 #endif
 
     [CLSCompliant(false)]
-    public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
-                byte[] node)
-      : this(time_low, time_mid, time_hi_and_version, clock_seq_hi_and_reserved, clock_seq_low,
-           node[0], node[1], node[2], node[3], node[4], node[5])
+    public Uuid(
+      uint time_low,
+      ushort time_mid,
+      ushort time_hi_and_version,
+      byte clock_seq_hi_and_reserved,
+      byte clock_seq_low,
+      byte[] node
+    ) :
+      this(
+        time_low,
+        time_mid,
+        time_hi_and_version,
+        clock_seq_hi_and_reserved,
+        clock_seq_low,
+        node[0],
+        node[1],
+        node[2],
+        node[3],
+        node[4],
+        node[5]
+      )
     {
     }
 
     [CLSCompliant(false)]
-    public Uuid(uint time_low, ushort time_mid, ushort time_hi_and_version, byte clock_seq_hi_and_reserved, byte clock_seq_low,
-                byte node0, byte node1, byte node2, byte node3, byte node4, byte node5)
-      : this()
+    public Uuid(
+      uint time_low,
+      ushort time_mid,
+      ushort time_hi_and_version,
+      byte clock_seq_hi_and_reserved,
+      byte clock_seq_low,
+      byte node0,
+      byte node1,
+      byte node2,
+      byte node3,
+      byte node4,
+      byte node5
+    ) : this()
     {
       this.time_low = time_low;
       this.time_mid = time_mid;
@@ -593,19 +638,19 @@ namespace Smdn {
         throw new ArgumentException($"length must be 16", nameof(octets));
 
       if (isBigEndian) {
-        this.time_low             = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
-        this.time_mid             = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4, 2));
-        this.time_hi_and_version  = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6, 2));
+        this.time_low = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
+        this.time_mid = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4, 2));
+        this.time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6, 2));
       }
       else {
-        this.time_low             = BinaryPrimitives.ReadUInt32LittleEndian(octets.Slice(0, 4));
-        this.time_mid             = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4, 2));
-        this.time_hi_and_version  = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6, 2));
+        this.time_low = BinaryPrimitives.ReadUInt32LittleEndian(octets.Slice(0, 4));
+        this.time_mid = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4, 2));
+        this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6, 2));
       }
 
-      this.clock_seq_hi_and_reserved  = octets[8];
-      this.clock_seq_low              = octets[9];
-      this.node                       = new Node(octets.Slice(10, 6));
+      this.clock_seq_hi_and_reserved = octets[8];
+      this.clock_seq_low = octets[9];
+      this.node = new Node(octets.Slice(10, 6));
     }
 
     internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version, bool isBigEndian = true)
@@ -617,23 +662,23 @@ namespace Smdn {
       this.fields_high = 0;
 
       if (isBigEndian) {
-        this.time_low            = BinaryPrimitives.ReadUInt32BigEndian(octets);
-        this.time_mid            = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4));
+        this.time_low = BinaryPrimitives.ReadUInt32BigEndian(octets);
+        this.time_mid = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4));
         this.time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6));
       }
       else {
-        this.time_low            = BinaryPrimitives.ReadUInt32LittleEndian(octets);
-        this.time_mid            = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
+        this.time_low = BinaryPrimitives.ReadUInt32LittleEndian(octets);
+        this.time_mid = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
         this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6));
       }
 
-      this.clock_seq_hi_and_reserved  = octets[ 8];
-      this.clock_seq_low              = octets[ 9];
-      this.node                       = new Node(octets.Slice(10));
+      this.clock_seq_hi_and_reserved = octets[8];
+      this.clock_seq_low = octets[9];
+      this.node = new Node(octets.Slice(10));
 
       // overwrite RFC 4122 fields
-      this.time_hi_and_version        = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
-      this.clock_seq_hi_and_reserved  = RFC4122FieldsClockSeqHiAndReserved(clock_seq_hi_and_reserved);
+      this.time_hi_and_version = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
+      this.clock_seq_hi_and_reserved = RFC4122FieldsClockSeqHiAndReserved(clock_seq_hi_and_reserved);
     }
 
     public Uuid(string uuid)
@@ -677,11 +722,11 @@ namespace Smdn {
       this.node = new Node(n0, n1, n2, n3, n4, n5);
 #else
       if (
-        !byte.TryParse(fields[4].Substring( 0, 2), NumberStyles.HexNumber, null, out var n0) ||
-        !byte.TryParse(fields[4].Substring( 2, 2), NumberStyles.HexNumber, null, out var n1) ||
-        !byte.TryParse(fields[4].Substring( 4, 2), NumberStyles.HexNumber, null, out var n2) ||
-        !byte.TryParse(fields[4].Substring( 6, 2), NumberStyles.HexNumber, null, out var n3) ||
-        !byte.TryParse(fields[4].Substring( 8, 2), NumberStyles.HexNumber, null, out var n4) ||
+        !byte.TryParse(fields[4].Substring(0, 2), NumberStyles.HexNumber, null, out var n0) ||
+        !byte.TryParse(fields[4].Substring(2, 2), NumberStyles.HexNumber, null, out var n1) ||
+        !byte.TryParse(fields[4].Substring(4, 2), NumberStyles.HexNumber, null, out var n2) ||
+        !byte.TryParse(fields[4].Substring(6, 2), NumberStyles.HexNumber, null, out var n3) ||
+        !byte.TryParse(fields[4].Substring(8, 2), NumberStyles.HexNumber, null, out var n4) ||
         !byte.TryParse(fields[4].Substring(10, 2), NumberStyles.HexNumber, null, out var n5)
       ) {
         throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
@@ -691,7 +736,7 @@ namespace Smdn {
 #endif
     }
 
-#region "comparison"
+    #region "comparison"
     public static bool operator <(Uuid x, Uuid y)
     {
       return (x.CompareTo(y) < 0);
@@ -763,9 +808,9 @@ namespace Smdn {
 
       return 0;
     }
-#endregion
+    #endregion
 
-#region "equality"
+    #region "equality"
     public static bool operator ==(Uuid x, Uuid y)
     {
       return x.fields_high == y.fields_high && x.fields_low == y.fields_low;
@@ -786,18 +831,11 @@ namespace Smdn {
         return false;
     }
 
-    public bool Equals(Guid other)
-    {
-      return this == (Uuid)other;
-    }
+    public bool Equals(Guid other) => this == (Uuid)other;
+    public bool Equals(Uuid other) => this == other;
+    #endregion
 
-    public bool Equals(Uuid other)
-    {
-      return this == other;
-    }
-#endregion
-
-#region "conversion"
+    #region "conversion"
     public static explicit operator Guid(Uuid @value)
     {
       return @value.ToGuid();
@@ -836,8 +874,8 @@ namespace Smdn {
         BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(startIndex + 6), time_hi_and_version);
       }
 
-      buffer[startIndex +  8] = clock_seq_hi_and_reserved;
-      buffer[startIndex +  9] = clock_seq_low;
+      buffer[startIndex + 8] = clock_seq_hi_and_reserved;
+      buffer[startIndex + 9] = clock_seq_low;
       buffer[startIndex + 10] = node.N0;
       buffer[startIndex + 11] = node.N1;
       buffer[startIndex + 12] = node.N2;
@@ -857,7 +895,7 @@ namespace Smdn {
 
       return bytes;
     }
-#endregion
+    #endregion
 
     public override int GetHashCode()
     {
@@ -881,34 +919,38 @@ namespace Smdn {
 
       switch (format) {
         case "N":
-          return string.Format("{0:x8}{1:x4}{2:x4}{3:x2}{4:x2}{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
-                               time_low,
-                               time_mid,
-                               time_hi_and_version,
-                               clock_seq_hi_and_reserved,
-                               clock_seq_low,
-                               node.N0,
-                               node.N1,
-                               node.N2,
-                               node.N3,
-                               node.N4,
-                               node.N5);
+          return string.Format(
+            "{0:x8}{1:x4}{2:x4}{3:x2}{4:x2}{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
+            time_low,
+            time_mid,
+            time_hi_and_version,
+            clock_seq_hi_and_reserved,
+            clock_seq_low,
+            node.N0,
+            node.N1,
+            node.N2,
+            node.N3,
+            node.N4,
+            node.N5
+          );
 
         case "D":
         case "B":
         case "P": {
-          var ret = string.Format("{0:x8}-{1:x4}-{2:x4}-{3:x2}{4:x2}-{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
-                                  time_low,
-                                  time_mid,
-                                  time_hi_and_version,
-                                  clock_seq_hi_and_reserved,
-                                  clock_seq_low,
-                                  node.N0,
-                                  node.N1,
-                                  node.N2,
-                                  node.N3,
-                                  node.N4,
-                                  node.N5);
+          var ret = string.Format(
+            "{0:x8}-{1:x4}-{2:x4}-{3:x2}{4:x2}-{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
+            time_low,
+            time_mid,
+            time_hi_and_version,
+            clock_seq_hi_and_reserved,
+            clock_seq_low,
+            node.N0,
+            node.N1,
+            node.N2,
+            node.N3,
+            node.N4,
+            node.N5
+          );
 
           if (format == "B")
             return "{" + ret + "}";
@@ -920,19 +962,21 @@ namespace Smdn {
 
         case "X": {
           // MS .NET bug
-          //var ret = string.Format("{{0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}}}}}",
-          var ret = string.Format("0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}",
-                                  time_low,
-                                  time_mid,
-                                  time_hi_and_version,
-                                  clock_seq_hi_and_reserved,
-                                  clock_seq_low,
-                                  node.N0,
-                                  node.N1,
-                                  node.N2,
-                                  node.N3,
-                                  node.N4,
-                                  node.N5);
+          // var ret = string.Format("{{0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}}}}}",
+          var ret = string.Format(
+            "0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}",
+            time_low,
+            time_mid,
+            time_hi_and_version,
+            clock_seq_hi_and_reserved,
+            clock_seq_low,
+            node.N0,
+            node.N1,
+            node.N2,
+            node.N3,
+            node.N4,
+            node.N5
+          );
 
           return "{" + ret + "}}";
         }

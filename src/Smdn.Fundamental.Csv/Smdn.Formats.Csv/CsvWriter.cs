@@ -42,7 +42,7 @@ namespace Smdn.Formats.Csv {
       : base(File.Open(path, FileMode.Create), encoding)
 #endif
     {
-      base.NewLine = CRLF;
+      NewLine = CRLF;
     }
 
     public CsvWriter(Stream stream)
@@ -57,7 +57,7 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(Stream stream, Encoding encoding)
       : base(stream, encoding)
     {
-      base.NewLine = CRLF;
+      NewLine = CRLF;
     }
 
     public CsvWriter(StreamWriter writer)
@@ -68,7 +68,7 @@ namespace Smdn.Formats.Csv {
     public CsvWriter(StreamWriter writer, Encoding encoding)
       : base(writer.BaseStream, encoding)
     {
-      base.NewLine = CRLF;
+      NewLine = CRLF;
     }
 
     public void WriteLine(params string[] columns)
@@ -78,12 +78,12 @@ namespace Smdn.Formats.Csv {
 
       for (var index = 0; index < columns.Length; index++) {
         if (index != 0)
-          base.Write(delimiter);
+          Write(delimiter);
 
         var column = columns[index];
 
         if (column == null) {
-          base.Write(string.Empty);
+          Write(string.Empty);
           continue;
         }
 
@@ -94,12 +94,12 @@ namespace Smdn.Formats.Csv {
            0 <= column.IndexOf(LF));
 
         if (escape) {
-          base.Write(quotator);
-          base.Write(column.Replace(quotator, escapedQuotator));
-          base.Write(quotator);
+          Write(quotator);
+          Write(column.Replace(quotator, escapedQuotator));
+          Write(quotator);
         }
         else {
-          base.Write(column);
+          Write(column);
         }
       }
 

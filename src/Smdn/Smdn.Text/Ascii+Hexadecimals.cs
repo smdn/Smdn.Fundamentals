@@ -29,8 +29,8 @@ namespace Smdn.Text {
 
       private static T[] ConvertByteArrayToHex<T>(byte[] bytes, TryEncodeHex<T> tryEncode)
       {
-        //if (bytes is null)
-        //  throw new ArgumentNullException(nameof(bytes));
+        // if (bytes is null)
+        //   throw new ArgumentNullException(nameof(bytes));
 
         var destination = new T[bytes.Length * 2];
 

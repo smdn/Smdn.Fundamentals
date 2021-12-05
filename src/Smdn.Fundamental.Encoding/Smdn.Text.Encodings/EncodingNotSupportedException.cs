@@ -19,23 +19,29 @@ namespace Smdn.Text.Encodings {
     }
 
     public EncodingNotSupportedException()
-      : this(null,
-             "encoding is not supported by runtime",
-             null)
+      : this(
+        null,
+        "encoding is not supported by runtime",
+        null
+      )
     {
     }
 
     public EncodingNotSupportedException(string encodingName)
-      : this(encodingName,
-             string.Format("encoding '{0}' is not supported by runtime", encodingName),
-             null)
+      : this(
+        encodingName,
+        string.Format("encoding '{0}' is not supported by runtime", encodingName),
+        null
+      )
     {
     }
 
     public EncodingNotSupportedException(string encodingName, Exception innerException)
-      : this(encodingName,
-             string.Format("encoding '{0}' is not supported by runtime", encodingName),
-             innerException)
+      : this(
+        encodingName,
+        string.Format("encoding '{0}' is not supported by runtime", encodingName),
+        innerException
+      )
     {
     }
 
@@ -66,4 +72,3 @@ namespace Smdn.Text.Encodings {
 #endif
   }
 }
-

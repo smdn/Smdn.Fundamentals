@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+
+#pragma warning disable SA1011 // Closing square brackets should be spaced correctly
+#pragma warning disable SA1121 // Use built-in type alias
+
 using System;
 
 namespace Smdn.IO.Binary {
@@ -719,4 +723,3 @@ namespace Smdn.IO.Binary {
     }
   }
 }
-

@@ -68,7 +68,7 @@ namespace Smdn.Formats.Mime {
     }
 
     private static readonly string mimeEncodingFoldingString = "\r\n\t";
-    private static readonly byte[] mimeEncodingPostamble = new byte[] {0x3f, 0x3d}; // "?="
+    private static readonly byte[] mimeEncodingPostamble = new byte[] { 0x3f, 0x3d }; // "?="
 
     private static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
     {
@@ -129,7 +129,7 @@ namespace Smdn.Formats.Mime {
       Buffer.BlockCopy(preamble, 0, outputBuffer, 0, preamble.Length);
 
       for (; ; ) {
-        var inputBlockSizeLimit = (outputLimit * transform.InputBlockSize) / transform.OutputBlockSize - 1;
+        var inputBlockSizeLimit = ((outputLimit * transform.InputBlockSize) / transform.OutputBlockSize) - 1;
         var transformCharCount = 0;
         var outputCount = preamble.Length;
 
@@ -167,9 +167,7 @@ namespace Smdn.Formats.Mime {
         }
 
         if (outputBuffer.Length < ambleLength + transformed.Length)
-          throw new ArgumentOutOfRangeException(nameof(foldingLimit),
-                                                foldingLimit,
-                                                string.Format("too short, at least {0} is required", ambleLength + transformed.Length));
+          throw new ArgumentOutOfRangeException(nameof(foldingLimit), foldingLimit, $"too short, at least {ambleLength + transformed.Length} is required");
 
         // copy transformed chars to buffer
         Buffer.BlockCopy(transformed, 0, outputBuffer, outputCount, transformed.Length);
@@ -240,14 +238,18 @@ namespace Smdn.Formats.Mime {
      *       encoded-word := "=?" charset ["*" language] "?" encoding "?"
      *                       encoded-text "?="
      */
-    private static readonly Regex mimeEncodedWordRegex = new Regex(@"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*",
-                                                                   RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex mimeEncodedWordRegex = new(
+      @"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*",
+      RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
+    );
 
-    public static string Decode(string str,
-                                EncodingSelectionCallback selectFallbackEncoding,
-                                MimeEncodedWordConverter decodeMalformedOrUnsupported,
-                                out MimeEncodingMethod encoding,
-                                out Encoding charset)
+    public static string Decode(
+      string str,
+      EncodingSelectionCallback selectFallbackEncoding,
+      MimeEncodedWordConverter decodeMalformedOrUnsupported,
+      out MimeEncodingMethod encoding,
+      out Encoding charset
+    )
     {
       if (str == null)
         throw new ArgumentNullException(nameof(str));
@@ -266,8 +268,7 @@ namespace Smdn.Formats.Mime {
           lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
 
           if (lastCharset == null)
-            throw new EncodingNotSupportedException(charsetString,
-                                                    string.Format("'{0}' is an unsupported or invalid charset", charsetString));
+            throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
 
           // encoding
           var encodingString = m.Groups["encoding"].Value;
@@ -347,10 +348,12 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    public static string DecodeNullable(string str,
-                                        EncodingSelectionCallback selectFallbackEncoding,
-                                        out MimeEncodingMethod encoding,
-                                        out Encoding charset)
+    public static string DecodeNullable(
+      string str,
+      EncodingSelectionCallback selectFallbackEncoding,
+      out MimeEncodingMethod encoding,
+      out Encoding charset
+    )
     {
       if (str == null) {
         encoding = MimeEncodingMethod.None;
@@ -363,11 +366,13 @@ namespace Smdn.Formats.Mime {
       }
     }
 
-    public static string DecodeNullable(string str,
-                                        EncodingSelectionCallback selectFallbackEncoding,
-                                        MimeEncodedWordConverter decodeMalformedOrUnsupported,
-                                        out MimeEncodingMethod encoding,
-                                        out Encoding charset)
+    public static string DecodeNullable(
+      string str,
+      EncodingSelectionCallback selectFallbackEncoding,
+      MimeEncodedWordConverter decodeMalformedOrUnsupported,
+      out MimeEncodingMethod encoding,
+      out Encoding charset
+    )
     {
       if (str == null) {
         encoding = MimeEncodingMethod.None;

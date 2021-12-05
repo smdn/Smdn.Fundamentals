@@ -11,13 +11,13 @@ namespace Smdn.IO.Streams.Filtering {
       void Apply(Span<byte> buffer, long offsetWithinFilter);
     }
 
-    private class _NullFilter : IFilter {
+    private class NullFilterImpl : IFilter {
       public long Offset => throw new NotSupportedException();
       public long Length => throw new NotSupportedException();
       public void Apply(Span<byte> buffer, long offsetWithinFilter) => throw new NotSupportedException();
     }
 
-    public static readonly IFilter NullFilter = new _NullFilter();
+    public static readonly IFilter NullFilter = new NullFilterImpl();
 
     public abstract class Filter : IFilter {
       public long Offset { get; }

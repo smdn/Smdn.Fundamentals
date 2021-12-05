@@ -60,11 +60,11 @@ namespace Smdn.IO {
 
     /// <param name="pathOrExtension">extension must contain "."</param>
     public static bool AreExtensionEqual(string path, string pathOrExtension)
-    {
-      return string.Equals(Path.GetExtension(path),
-                           Path.GetExtension(pathOrExtension),
-                           DefaultPathStringComparison);
-    }
+      => string.Equals(
+        Path.GetExtension(path),
+        Path.GetExtension(pathOrExtension),
+        DefaultPathStringComparison
+      );
 
     public static string RemoveInvalidPathChars(string path)
     {
@@ -83,9 +83,7 @@ namespace Smdn.IO {
 
     public static string ReplaceInvalidPathChars(string path, string newValue)
     {
-      return ReplaceInvalidPathChars(path, delegate (char ch, string str, int index) {
-        return newValue;
-      });
+      return ReplaceInvalidPathChars(path, (ch, str, index) => newValue);
     }
 
     public static string ReplaceInvalidPathChars(string path, ReplaceCharEvaluator evaluator)
@@ -100,9 +98,7 @@ namespace Smdn.IO {
 
     public static string ReplaceInvalidFileNameChars(string path, string newValue)
     {
-      return ReplaceInvalidFileNameChars(path, delegate (char ch, string str, int index) {
-        return newValue;
-      });
+      return ReplaceInvalidFileNameChars(path, (ch, str, index) => newValue);
     }
 
     public static string ReplaceInvalidFileNameChars(string path, ReplaceCharEvaluator evaluator)
@@ -192,13 +188,18 @@ namespace Smdn.IO {
 
       for (var index = 0; ; index++) {
         var now = DateTime.Now;
-        var newpath = Path.Combine(directory, string.Format("{0}.{1}-p{2}t{3}-{4}{5}",
-                                                            now.ToFileTime(),
-                                                            now.Millisecond,
-                                                            System.Diagnostics.Process.GetCurrentProcess().Id,
-                                                            System.Threading.Thread.CurrentThread.ManagedThreadId,
-                                                            index,
-                                                            extension));
+        var newpath = Path.Combine(
+          directory,
+          string.Format(
+            "{0}.{1}-p{2}t{3}-{4}{5}",
+            now.ToFileTime(),
+            now.Millisecond,
+            System.Diagnostics.Process.GetCurrentProcess().Id,
+            System.Threading.Thread.CurrentThread.ManagedThreadId,
+            index,
+            extension
+          )
+        );
 
         try {
           if (File.Exists(newpath))

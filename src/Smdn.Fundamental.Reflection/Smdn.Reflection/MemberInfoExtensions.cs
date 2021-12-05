@@ -12,30 +12,30 @@ namespace Smdn.Reflection {
           throw new ArgumentNullException(nameof(member));
 
         case Type t:
-          if (t.IsPublic || t.IsNestedPublic)       return Accessibility.Public;
-          if (t.IsNotPublic || t.IsNestedAssembly)  return Accessibility.Assembly;
-          if (t.IsNestedFamily)                     return Accessibility.Family;
-          if (t.IsNestedFamORAssem)                 return Accessibility.FamilyOrAssembly;
-          if (t.IsNestedFamANDAssem)                return Accessibility.FamilyAndAssembly;
-          if (t.IsNestedPrivate)                    return Accessibility.Private;
+          if (t.IsPublic || t.IsNestedPublic) return Accessibility.Public;
+          if (t.IsNotPublic || t.IsNestedAssembly) return Accessibility.Assembly;
+          if (t.IsNestedFamily) return Accessibility.Family;
+          if (t.IsNestedFamORAssem) return Accessibility.FamilyOrAssembly;
+          if (t.IsNestedFamANDAssem) return Accessibility.FamilyAndAssembly;
+          if (t.IsNestedPrivate) return Accessibility.Private;
           break;
 
         case FieldInfo f:
-          if (f.IsPublic)               return Accessibility.Public;
-          if (f.IsAssembly)             return Accessibility.Assembly;
-          if (f.IsFamily)               return Accessibility.Family;
-          if (f.IsFamilyOrAssembly)     return Accessibility.FamilyOrAssembly;
-          if (f.IsFamilyAndAssembly)    return Accessibility.FamilyAndAssembly;
-          if (f.IsPrivate)              return Accessibility.Private;
+          if (f.IsPublic) return Accessibility.Public;
+          if (f.IsAssembly) return Accessibility.Assembly;
+          if (f.IsFamily) return Accessibility.Family;
+          if (f.IsFamilyOrAssembly) return Accessibility.FamilyOrAssembly;
+          if (f.IsFamilyAndAssembly) return Accessibility.FamilyAndAssembly;
+          if (f.IsPrivate) return Accessibility.Private;
           break;
 
         case MethodBase m:
-          if (m.IsPublic)               return Accessibility.Public;
-          if (m.IsAssembly)             return Accessibility.Assembly;
-          if (m.IsFamily)               return Accessibility.Family;
-          if (m.IsFamilyOrAssembly)     return Accessibility.FamilyOrAssembly;
-          if (m.IsFamilyAndAssembly)    return Accessibility.FamilyAndAssembly;
-          if (m.IsPrivate)              return Accessibility.Private;
+          if (m.IsPublic) return Accessibility.Public;
+          if (m.IsAssembly) return Accessibility.Assembly;
+          if (m.IsFamily) return Accessibility.Family;
+          if (m.IsFamilyOrAssembly) return Accessibility.FamilyOrAssembly;
+          if (m.IsFamilyAndAssembly) return Accessibility.FamilyAndAssembly;
+          if (m.IsPrivate) return Accessibility.Private;
           break;
 
         case PropertyInfo p:

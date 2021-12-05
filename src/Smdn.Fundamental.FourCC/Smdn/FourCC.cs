@@ -151,8 +151,9 @@ namespace Smdn {
     public override string ToString()
     {
       unchecked {
+#pragma warning disable SA1008
 #if SYSTEM_STRING_CREATE
-        return String.Create(4, this.fourcc, (chars, val) => {
+        return string.Create(4, this.fourcc, (chars, val) => {
           chars[0] = (char)((val >> 24) & 0xff);
           chars[1] = (char)((val >> 16) & 0xff);
           chars[2] = (char)((val >>  8) & 0xff);
@@ -166,6 +167,7 @@ namespace Smdn {
           (char)( fourcc        & 0xff),
         });
 #endif
+#pragma warning restore SA1008
       }
     }
 

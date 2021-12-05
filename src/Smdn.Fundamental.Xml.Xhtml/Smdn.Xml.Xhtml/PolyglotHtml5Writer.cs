@@ -45,11 +45,11 @@ namespace Smdn.Xml.Xhtml {
       private static readonly HashSet<string> voidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
         "area", "base", "br", "col", "embed",
         "hr", "img", "input", "keygen", "link",
-        "meta", "param", "source", "track", "wbr"
+        "meta", "param", "source", "track", "wbr",
       };
 
-      public readonly string LocalName;
-      public readonly string Namespace;
+      public string LocalName { get; }
+      public string Namespace { get; }
       public bool IsMixedContent { get; private set; }
       public bool IsEmpty { get; private set; } = true;
       public bool IsClosed { get; private set; } = false;
@@ -311,7 +311,7 @@ namespace Smdn.Xml.Xhtml {
     {
       if (settings.Indent && settings.NewLineOnAttributes)
         throw new NotSupportedException("NewLineOnAttributes is not supported");
-        //WriteIndent(); // causes InvalidOperationException
+        // WriteIndent(); // causes InvalidOperationException
 
       baseWriter.WriteStartAttribute(prefix, localName, ns);
 

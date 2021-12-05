@@ -12,7 +12,7 @@ namespace Smdn.Text.Encodings {
       return GetEncoding(name, null);
     }
 
-    private static readonly char[] whiteSpaceChars = new[] {'-', '_', ' '};
+    private static readonly char[] whiteSpaceChars = new[] { '-', '_', ' ' };
 
     private static string NormalizeEncodingName(string name)
     {
@@ -39,8 +39,10 @@ namespace Smdn.Text.Encodings {
       }
     }
 
-    public static Encoding GetEncoding(string name,
-                                       EncodingSelectionCallback selectFallbackEncoding)
+    public static Encoding GetEncoding(
+      string name,
+      EncodingSelectionCallback selectFallbackEncoding
+    )
     {
       if (name == null)
         throw new ArgumentNullException(nameof(name));
@@ -65,8 +67,10 @@ namespace Smdn.Text.Encodings {
       return GetEncodingThrowException(name, null);
     }
 
-    public static Encoding GetEncodingThrowException(string name,
-                                                     EncodingSelectionCallback selectFallbackEncoding)
+    public static Encoding GetEncodingThrowException(
+      string name,
+      EncodingSelectionCallback selectFallbackEncoding
+    )
     {
       var encoding = GetEncoding(name, selectFallbackEncoding);
 
@@ -79,17 +83,17 @@ namespace Smdn.Text.Encodings {
     private static readonly Dictionary<string, string> encodingCollationTable
       = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
       /* UTF-16 */
-      {"utf16",       "utf-16"},
+      { "utf16",       "utf-16" },
       /* UTF-8 */
-      {"utf8",        "utf-8"},
+      { "utf8",        "utf-8" },
       /* Shift_JIS */
-      {"shiftjis",    "shift_jis"},     // shift_jis
-      {"xsjis",       "shift_jis"},     // x-sjis
+      { "shiftjis",    "shift_jis" },     // shift_jis
+      { "xsjis",       "shift_jis" },     // x-sjis
       /* EUC-JP */
-      {"eucjp",       "euc-jp"},        // euc-jp
-      {"xeucjp",      "euc-jp"},        // x-euc-jp
+      { "eucjp",       "euc-jp" },        // euc-jp
+      { "xeucjp",      "euc-jp" },        // x-euc-jp
       /* ISO-2022-JP */
-      {"iso2022jp",   "iso-2022-jp"},   // iso-2022-jp
+      { "iso2022jp",   "iso-2022-jp" },   // iso-2022-jp
 
       // TODO
       // {"utf16be",     "utf-16"},

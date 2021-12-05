@@ -6,23 +6,25 @@ using System.IO;
 namespace Smdn.IO.Binary {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BinaryReader : Smdn.IO.Binary.BinaryReaderBase {
-    private const int defaultStorageSize = 8;
+    private const int DefaultStorageSize = 8;
+#pragma warning disable SA1401 // Fields should be private
     protected readonly byte[] Storage;
+#pragma warning restore SA1401
 
     public bool IsLittleEndian { get; }
 
     public BinaryReader(Stream stream)
-      : this(stream, BitConverter.IsLittleEndian, false, defaultStorageSize)
+      : this(stream, BitConverter.IsLittleEndian, false, DefaultStorageSize)
     {
     }
 
     public BinaryReader(Stream stream, bool leaveBaseStreamOpen)
-      : this(stream, BitConverter.IsLittleEndian, leaveBaseStreamOpen, defaultStorageSize)
+      : this(stream, BitConverter.IsLittleEndian, leaveBaseStreamOpen, DefaultStorageSize)
     {
     }
 
     protected BinaryReader(Stream baseStream, bool asLittleEndian, bool leaveBaseStreamOpen)
-      : this(baseStream, asLittleEndian, leaveBaseStreamOpen, defaultStorageSize)
+      : this(baseStream, asLittleEndian, leaveBaseStreamOpen, DefaultStorageSize)
     {
     }
 

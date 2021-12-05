@@ -9,16 +9,21 @@ using System.Text;
 
 namespace Smdn {
   public static class Stringification {
+    // TODO: fix tuple element name casing
     public static string Stringify(Type type, IEnumerable<(string name, object value)> nameAndValuePairs)
     {
-      if (nameAndValuePairs == null)
+      if (nameAndValuePairs == null) {
         return string.Concat("{", type?.Name, "}");
-      else
-        return string.Concat("{",
-                             type?.Name,
-                             ": ",
-                             string.Join(", ", nameAndValuePairs.Select(((string n, object v) p) => string.Concat(p.n, "=", ValueToString(p.v)))),
-                             "}");
+      }
+      else {
+        return string.Concat(
+          "{",
+          type?.Name,
+          ": ",
+          string.Join(", ", nameAndValuePairs.Select(((string n, object v) p) => string.Concat(p.n, "=", ValueToString(p.v)))),
+          "}"
+        );
+      }
 
       static string ValueToString(object val)
       {
@@ -31,12 +36,15 @@ namespace Smdn {
         var typeOfValue = val.GetType();
 
         // KeyValuePair<TKey, TValue>
-        if (typeOfValue.IsConstructedGenericType && typeOfValue.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
-          return string.Concat("{",
-                               ValueToString(typeOfValue.GetTypeInfo().GetProperty("Key")?.GetValue(val)),
-                               " => ",
-                               ValueToString(typeOfValue.GetTypeInfo().GetProperty("Value")?.GetValue(val)),
-                               "}");
+        if (typeOfValue.IsConstructedGenericType && typeOfValue.GetGenericTypeDefinition() == typeof(KeyValuePair<,>)) {
+          return string.Concat(
+            "{",
+            ValueToString(typeOfValue.GetTypeInfo().GetProperty("Key")?.GetValue(val)),
+            " => ",
+            ValueToString(typeOfValue.GetTypeInfo().GetProperty("Value")?.GetValue(val)),
+            "}"
+          );
+        }
 
         // IEnumerable, IEnumerable<T>
         if (val is IEnumerable enumerable) {

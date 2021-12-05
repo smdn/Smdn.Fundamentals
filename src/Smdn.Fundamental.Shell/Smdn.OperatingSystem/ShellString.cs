@@ -64,7 +64,7 @@ namespace Smdn.OperatingSystem {
 #region "equality"
     public bool Equals(ShellString other)
     {
-      if (Object.ReferenceEquals(this, other))
+      if (object.ReferenceEquals(this, other))
         return true;
       else
         return this == other;

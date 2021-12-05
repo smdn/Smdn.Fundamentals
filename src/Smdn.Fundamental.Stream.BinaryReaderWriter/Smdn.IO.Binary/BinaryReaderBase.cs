@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 
-using Smdn.IO;
+#pragma warning disable SA1121 // Use built-in type alias
 
 namespace Smdn.IO.Binary {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -253,4 +253,3 @@ namespace Smdn.IO.Binary {
     private bool disposed = false;
   }
 }
-

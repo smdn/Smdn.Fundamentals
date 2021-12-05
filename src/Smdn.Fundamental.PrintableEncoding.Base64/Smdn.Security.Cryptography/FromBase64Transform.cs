@@ -55,7 +55,7 @@ namespace Smdn.Security.Cryptography {
       var ret = 0;
       var paddedBlockDecoded = false;
 
-      for (;;) {
+      for (; ;) {
         for (; bufferOffset < 4;) {
           if (inputCount <= 0)
             return ret;
@@ -67,7 +67,7 @@ namespace Smdn.Security.Cryptography {
 
           inputCount--;
 
-          if (ignoreWhiteSpaces && Char.IsWhiteSpace((char)octet))
+          if (ignoreWhiteSpaces && char.IsWhiteSpace((char)octet))
             continue;
 
           buffer[bufferOffset++] = octet;
@@ -134,7 +134,7 @@ namespace Smdn.Security.Cryptography {
       if (inputBuffer.Length - inputCount < inputOffset)
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
 
-      var ret = new byte[(inputCount / 4 + 1) * 3];
+      var ret = new byte[((inputCount / 4) + 1) * 3];
       var len = UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, ret, 0, true);
 
       Array.Resize(ref ret, len);
@@ -145,6 +145,7 @@ namespace Smdn.Security.Cryptography {
     private const byte NUL = 0xff;
     private const byte PAD = 0x40;
 
+#pragma warning disable SA1137
     private static readonly byte[] fromBase64Table = new byte[] {
     /*0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,*/
        NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x00
@@ -156,6 +157,7 @@ namespace Smdn.Security.Cryptography {
        NUL, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, // 0x60
       0x29, 0x2a, 0x2b, 0x2c, 0x2d, 0x2e, 0x2f, 0x30, 0x31, 0x32, 0x33,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x70
     };
+#pragma warning restore SA1137
 
     private bool disposed = false;
     private readonly bool ignoreWhiteSpaces;

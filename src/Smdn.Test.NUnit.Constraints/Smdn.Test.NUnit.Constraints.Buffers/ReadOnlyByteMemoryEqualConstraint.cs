@@ -32,7 +32,7 @@ namespace Smdn.Test.NUnit.Constraints.Buffers {
 
   public class ReadOnlyByteMemoryEqualConstraint : EqualConstraint {
     public ReadOnlyMemory<byte> Expected { get; }
-    private Tolerance _tolerance = Tolerance.Default;
+    private Tolerance tolerance = Tolerance.Default;
 
     public ReadOnlyByteMemoryEqualConstraint(ReadOnlyMemory<byte> expected)
       : base(expected)
@@ -46,7 +46,7 @@ namespace Smdn.Test.NUnit.Constraints.Buffers {
         ReadOnlyMemory<byte> actualMemory => new ReadOnlyByteMemoryEqualConstraintResult(this, actualMemory, Expected.Span.SequenceEqual(actualMemory.Span)),
         Memory<byte> actualMemory => new ReadOnlyByteMemoryEqualConstraintResult(this, actualMemory, Expected.Span.SequenceEqual(actualMemory.Span)),
         byte[] actualByteArray => new ReadOnlyByteMemoryEqualConstraintResult(this, actualByteArray, Expected.Span.SequenceEqual(actualByteArray.AsSpan())),
-        _ => new EqualConstraintResult(this, actual, new NUnitEqualityComparer().AreEqual(Expected, actual, ref _tolerance))
+        _ => new EqualConstraintResult(this, actual, new NUnitEqualityComparer().AreEqual(Expected, actual, ref tolerance)),
       };
     }
 

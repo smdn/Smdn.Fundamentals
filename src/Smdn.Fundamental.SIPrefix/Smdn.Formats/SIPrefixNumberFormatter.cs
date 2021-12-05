@@ -10,10 +10,10 @@ namespace Smdn.Formats {
     /*
      * class members
      */
-    private static readonly string[] InvaliantDecimalAbbreviations = new string[] {string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y"};
-    private static readonly string[] InvaliantBinaryAbbreviations = new string[] {string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi"};
-    private static readonly string[] InvaliantDecimalPrefixes = new string[] {string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta"};
-    private static readonly string[] InvaliantBinaryPrefixes = new string[] {string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi"};
+    private static readonly string[] InvaliantDecimalAbbreviations = new[] { string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y" };
+    private static readonly string[] InvaliantBinaryAbbreviations = new[] { string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi" };
+    private static readonly string[] InvaliantDecimalPrefixes = new[] { string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta" };
+    private static readonly string[] InvaliantBinaryPrefixes = new[] { string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi" };
 
     private static readonly SIPrefixNumberFormatter invaliantInfo = new SIPrefixNumberFormatter(CultureInfo.InvariantCulture, true);
 
@@ -86,8 +86,8 @@ namespace Smdn.Formats {
         throw new ArgumentNullException(nameof(cultureInfo));
 
       this.isReadOnly = isReadOnly;
+      // this.cultureInfo = cultureInfo;
 
-      //this.cultureInfo = cultureInfo;
       const string singleSpace = " ";
 
       switch (cultureInfo.TwoLetterISOLanguageName) {
@@ -95,8 +95,8 @@ namespace Smdn.Formats {
           byteUnit = "バイト";
           valuePrefixDelimiter = singleSpace;
           prefixUnitDelimiter = string.Empty;
-          DecimalPrefixes = new[] {string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ"};
-          BinaryPrefixes  = new[] {string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ"};
+          DecimalPrefixes = new[] { string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ" };
+          BinaryPrefixes  = new[] { string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ" };
           break;
 
         default:
@@ -237,6 +237,7 @@ namespace Smdn.Formats {
       if (isReadOnly)
         throw new InvalidOperationException("read-only");
     }
-    //private CultureInfo cultureInfo;
+
+    // private CultureInfo cultureInfo;
   }
 }

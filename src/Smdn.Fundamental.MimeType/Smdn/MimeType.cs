@@ -16,6 +16,7 @@ namespace Smdn {
     public static readonly MimeType MessageExternalBody         = new MimeType("message", "external-body");
     public static readonly MimeType MessageRfc822               = new MimeType("message", "rfc822");
 
+    // TODO: fix tuple element name casing
     public static bool TryParse(string s, out (string type, string subType) result)
     {
       return Parse(s, nameof(s), true, out result);
@@ -33,21 +34,22 @@ namespace Smdn {
       return false;
     }
 
+    // TODO: fix tuple element name casing
     public static (string type, string subType) Parse(string s)
     {
       return Parse(s, nameof(s));
     }
 
-    private static (string type, string subType) Parse(string s, string paramName)
+    private static (string Type, string SubType) Parse(string s, string paramName)
     {
       Parse(s, paramName, false, out var ret);
 
       return ret;
     }
 
-    private static readonly char[] typeSubtypeDelimiters = new char[] {'/'};
+    private static readonly char[] typeSubtypeDelimiters = new[] { '/' };
 
-    private static bool Parse(string s, string paramName, bool continueWhetherInvalid, out (string type, string subType) result)
+    private static bool Parse(string s, string paramName, bool continueWhetherInvalid, out (string Type, string SubType) result)
     {
       result = default;
 
@@ -63,9 +65,9 @@ namespace Smdn {
 
       result = (type[0], type[1]);
 
-      if (result.type.Length == 0)
+      if (result.Type.Length == 0)
         return continueWhetherInvalid ? false : throw new ArgumentException("type must be non-empty string", paramName);
-      if (result.subType.Length == 0)
+      if (result.SubType.Length == 0)
         return continueWhetherInvalid ? false : throw new ArgumentException("sub type must be non-empty string", paramName);
 
       return true;
@@ -117,6 +119,7 @@ namespace Smdn {
     {
     }
 
+    // TODO: fix tuple element name casing
     public MimeType((string type, string subType) mimeType)
       : this(mimeType.type, mimeType.subType)
     {

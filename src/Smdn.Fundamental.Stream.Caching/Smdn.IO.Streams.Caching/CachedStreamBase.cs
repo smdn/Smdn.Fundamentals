@@ -96,7 +96,6 @@ namespace Smdn.IO.Streams.Caching {
 #endif
     }
 
-
     public override void SetLength(long @value)
     {
       CheckDisposed();

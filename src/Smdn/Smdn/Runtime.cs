@@ -30,7 +30,7 @@ namespace Smdn {
       else if (RuntimeInformation.FrameworkDescription.Contains("Mono")) {
         runtimeEnvironment = RuntimeEnvironment.Mono;
         name = "Mono";
-        //return; // mono?
+        // return; // mono?
       }
 
       if (Type.GetType("Mono.Runtime") != null) {
@@ -94,6 +94,7 @@ namespace Smdn {
               if (Version.TryParse(s, out var v))
                 return v;
             }
+
             break;
           }
 

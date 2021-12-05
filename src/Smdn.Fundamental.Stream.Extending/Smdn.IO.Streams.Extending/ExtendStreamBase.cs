@@ -203,7 +203,7 @@ namespace Smdn.IO.Streams.Extending {
             break;
 
           default:
-          //case StreamSection.EndOfStream:
+          // case StreamSection.EndOfStream:
             return ret;
         } // switch
 
@@ -264,7 +264,7 @@ namespace Smdn.IO.Streams.Extending {
               break;
 
             default:
-              //case StreamSection.EndOfStream:
+              // case StreamSection.EndOfStream:
               return ret;
           } // switch
 

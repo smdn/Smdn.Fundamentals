@@ -22,18 +22,18 @@ namespace Smdn.Formats.PercentEncodings {
     // RFC 3986 unreserved characters:    "             -. 0123456789       ABCDEFGHIJKLMNOPQRSTUVWXYZ     _ abcdefghijklmnopqrstuvwxyz   ~";
     // RFC 3986   reserved characters:    "!  #$ &'()*+,  /          :; = ?@                          [  ]                                 ";
     private const string
-      rfc2396UriEscapeChars             = " \"  %                      < >                            [\\]^ `                          {|} ";
+      Rfc2396UriEscapeChars             = " \"  %                      < >                            [\\]^ `                          {|} ";
     private const string
-      rfc3986UriEscapeChars             = " \"  %                      < >                             \\ ^ `                          {|} ";
+      Rfc3986UriEscapeChars             = " \"  %                      < >                             \\ ^ `                          {|} ";
     private const string
-      rfc2396DataEscapeChars            = " \"#$%&    +,  /          :;<=>?@                          [\\]^ `                          {|} ";
+      Rfc2396DataEscapeChars            = " \"#$%&    +,  /          :;<=>?@                          [\\]^ `                          {|} ";
     private const string
-      rfc3986DataEscapeChars            = "!\"#$%&'()*+,  /          :;<=>?@                          [\\]^ `                          {|} ";
+      Rfc3986DataEscapeChars            = "!\"#$%&'()*+,  /          :;<=>?@                          [\\]^ `                          {|} ";
 
     private const string
-      rfc5092AChars                     = " \"# %         /          :;< >?@                          [\\]^ `                          {|} ";
+      Rfc5092AChars                     = " \"# %         /          :;< >?@                          [\\]^ `                          {|} ";
     private const string
-      rfc5092BChars                     = " \"# %                     ;< >?                           [\\]^ `                          {|} ";
+      Rfc5092BChars                     = " \"# %                     ;< >?                           [\\]^ `                          {|} ";
 
     private byte[] GetEscapeOctets(string str)
     {
@@ -73,22 +73,22 @@ namespace Smdn.Formats.PercentEncodings {
     {
       switch (mode & ToPercentEncodedTransformMode.ModeMask) {
         case ToPercentEncodedTransformMode.Rfc2396Uri:
-          escapeOctets = GetEscapeOctets(rfc2396UriEscapeChars);
+          escapeOctets = GetEscapeOctets(Rfc2396UriEscapeChars);
           break;
         case ToPercentEncodedTransformMode.Rfc2396Data:
-          escapeOctets = GetEscapeOctets(rfc2396DataEscapeChars);
+          escapeOctets = GetEscapeOctets(Rfc2396DataEscapeChars);
           break;
         case ToPercentEncodedTransformMode.Rfc3986Uri:
-          escapeOctets = GetEscapeOctets(rfc3986UriEscapeChars);
+          escapeOctets = GetEscapeOctets(Rfc3986UriEscapeChars);
           break;
         case ToPercentEncodedTransformMode.Rfc3986Data:
-          escapeOctets = GetEscapeOctets(rfc3986DataEscapeChars);
+          escapeOctets = GetEscapeOctets(Rfc3986DataEscapeChars);
           break;
         case ToPercentEncodedTransformMode.Rfc5092Uri:
-          escapeOctets = GetEscapeOctets(rfc5092AChars);
+          escapeOctets = GetEscapeOctets(Rfc5092AChars);
           break;
         case ToPercentEncodedTransformMode.Rfc5092Path:
-          escapeOctets = GetEscapeOctets(rfc5092BChars);
+          escapeOctets = GetEscapeOctets(Rfc5092BChars);
           break;
         default:
           throw ExceptionUtils.CreateNotSupportedEnumValue(mode);

@@ -6,6 +6,9 @@ using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats {
   public static class Hexadecimal {
+    private const string UpperCaseHexCharsInString = "0123456789ABCDEF";
+    private const string LowerCaseHexCharsInString = "0123456789abcdef";
+
     private static readonly ReadOnlyMemory<byte> upperCaseHexOctets = new byte[] {
       0x30, 0x31, 0x32, 0x33,
       0x34, 0x35, 0x36, 0x37,
@@ -23,14 +26,8 @@ namespace Smdn.Formats {
     };
 
     public static ReadOnlySpan<byte> LowerCaseHexOctets => lowerCaseHexOctets.Span;
-
-    private const string upperCaseHexChars = "0123456789ABCDEF";
-
-    public static ReadOnlySpan<char> UpperCaseHexChars => upperCaseHexChars.AsSpan();
-
-    private const string lowerCaseHexChars = "0123456789abcdef";
-
-    public static ReadOnlySpan<char> LowerCaseHexChars => lowerCaseHexChars.AsSpan();
+    public static ReadOnlySpan<char> UpperCaseHexChars => UpperCaseHexCharsInString.AsSpan();
+    public static ReadOnlySpan<char> LowerCaseHexChars => LowerCaseHexCharsInString.AsSpan();
 
     public static string ToUpperCaseString(ReadOnlySpan<byte> dataSequence)
     {

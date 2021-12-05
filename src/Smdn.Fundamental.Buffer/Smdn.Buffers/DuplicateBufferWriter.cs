@@ -12,7 +12,7 @@ namespace Smdn.Buffers {
         throw new ArgumentNullException(nameof(firstWriter));
       if (secondWriter is null)
         throw new ArgumentNullException(nameof(secondWriter));
-      if (Object.ReferenceEquals(firstWriter, secondWriter))
+      if (object.ReferenceEquals(firstWriter, secondWriter))
         throw new ArgumentException("cannot duplicate same IBufferWriter");
 
       return new Writer<T>(firstWriter, secondWriter);

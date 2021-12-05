@@ -19,11 +19,9 @@ namespace Smdn.IO {
       if (searchPattern == null)
         throw new ArgumentNullException(nameof(searchPattern));
 
-      return (new DirectoryInfo(directory)).GetFiles(searchOption, delegate (FileInfo file) {
-        return searchPattern(file.FullName);
-      }).Select(delegate (FileInfo file) {
-        return file.FullName;
-      });
+      return (new DirectoryInfo(directory))
+        .GetFiles(searchOption, file => searchPattern(file.FullName))
+        .Select(file => file.FullName);
     }
 
     public static IEnumerable<string> GetDirectories(string directory, Predicate<string> searchPattern)
@@ -38,11 +36,9 @@ namespace Smdn.IO {
       if (searchPattern == null)
         throw new ArgumentNullException(nameof(searchPattern));
 
-      return (new DirectoryInfo(directory)).GetDirectories(searchOption, delegate (DirectoryInfo dir) {
-        return searchPattern(dir.FullName);
-      }).Select(delegate (DirectoryInfo dir) {
-        return dir.FullName; // XXX: relative path
-      });
+      return (new DirectoryInfo(directory))
+        .GetDirectories(searchOption, dir => searchPattern(dir.FullName))
+        .Select(dir => dir.FullName); // XXX: relative path
     }
   }
 }

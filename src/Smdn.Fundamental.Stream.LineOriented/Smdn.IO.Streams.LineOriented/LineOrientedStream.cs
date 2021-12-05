@@ -17,7 +17,7 @@ namespace Smdn.IO.Streams.LineOriented {
       NotMatched = 0,
       NewLine,
       CR,
-      LF
+      LF,
     }
 
     public override bool CanSeek {

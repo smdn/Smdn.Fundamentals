@@ -64,7 +64,7 @@ namespace Smdn.Formats.Csv {
       escaped = false;
 
       var field = new StringBuilder();
-      var c = base.Read();
+      var c = Read();
 
       if (c == -1)
         // EOS
@@ -83,8 +83,8 @@ namespace Smdn.Formats.Csv {
       }
       else if (ch == CR) {
         // unescaped newline
-        if ((int)LF == base.Peek()) {
-          base.Read(); // CRLF
+        if ((int)LF == Peek()) {
+          Read(); // CRLF
           return CRLF;
         }
         else {
@@ -102,7 +102,7 @@ namespace Smdn.Formats.Csv {
         var prev = ch;
 
         for (; ; ) {
-          c = base.Peek();
+          c = Peek();
 
           if (c == -1)
             break;
@@ -113,25 +113,25 @@ namespace Smdn.Formats.Csv {
             if (quot == 0) {
               quot = 1;
               if (prev == Quotator)
-                field.Append((char)base.Read());
+                field.Append((char)Read());
               else
                 throw new InvalidDataException(string.Format("invalid quotation after '{0}'", field.ToString()));
             }
             else {
               quot = 0;
-              base.Read();
+              Read();
             }
           }
           else {
             if (quot == 0 && ch == Delimiter) {
-              base.Read();
+              Read();
               break;
             }
             else if (quot == 0 && (ch == CR || ch == LF)) {
               break;
             }
             else {
-              field.Append((char)base.Read());
+              field.Append((char)Read());
             }
           }
 
@@ -143,7 +143,7 @@ namespace Smdn.Formats.Csv {
         field.Append(ch);
 
         for (; ; ) {
-          c = base.Peek();
+          c = Peek();
 
           if (c == -1)
             break;
@@ -151,14 +151,14 @@ namespace Smdn.Formats.Csv {
           ch = (char)c;
 
           if (ch == Delimiter) {
-            base.Read();
+            Read();
             break;
           }
           else if (ch == CR || ch == LF) {
             break;
           }
           else {
-            field.Append((char)base.Read());
+            field.Append((char)Read());
           }
         }
       }

@@ -51,4 +51,3 @@ namespace Smdn.Collections {
 #endif
   }
 }
-

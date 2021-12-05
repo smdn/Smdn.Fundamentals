@@ -33,7 +33,7 @@ namespace Smdn.Formats {
         : ToDictionary(ret, comparer);
     }
 
-    private static IDictionary<string, String> ToDictionary(
+    private static IDictionary<string, string> ToDictionary(
       IReadOnlyDictionary<string, string> dic,
       IEqualityComparer<string> comparer
     )
@@ -52,4 +52,3 @@ namespace Smdn.Formats {
     }
   }
 }
-

@@ -14,13 +14,13 @@ using System.IO;
 
 namespace Smdn {
   partial class MimeType {
-    private const string defaultMimeTypesFile = "/etc/mime.types";
+    private const string DefaultMimeTypesFile = "/etc/mime.types";
 
     private static bool IsRunningOnWindows => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
 
     public static MimeType FindMimeTypeByExtension(string extensionOrPath)
     {
-      return FindMimeTypeByExtension(extensionOrPath, defaultMimeTypesFile);
+      return FindMimeTypeByExtension(extensionOrPath, DefaultMimeTypesFile);
     }
 
     public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
@@ -39,7 +39,7 @@ namespace Smdn {
       }
     }
 
-    private static readonly char[] mimeTypesFileDelimiters = new char[] {'\t', ' '};
+    private static readonly char[] mimeTypesFileDelimiters = new[] { '\t', ' ' };
 
     private static IEnumerable<KeyValuePair<string, string[]>> ReadMimeTypesFileLines(string mimeTypesFile)
     {
@@ -112,7 +112,7 @@ namespace Smdn {
 
     public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType)
     {
-      return FindExtensionsByMimeType(mimeType, defaultMimeTypesFile);
+      return FindExtensionsByMimeType(mimeType, DefaultMimeTypesFile);
     }
 
     public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile)
@@ -125,7 +125,7 @@ namespace Smdn {
 
     public static IEnumerable<string> FindExtensionsByMimeType(string mimeType)
     {
-      return FindExtensionsByMimeType(mimeType, defaultMimeTypesFile);
+      return FindExtensionsByMimeType(mimeType, DefaultMimeTypesFile);
     }
 
     public static IEnumerable<string> FindExtensionsByMimeType(string mimeType, string mimeTypesFile)

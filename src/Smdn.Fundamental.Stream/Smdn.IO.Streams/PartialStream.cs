@@ -11,9 +11,11 @@ namespace Smdn.IO.Streams {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream :
     Stream
+#pragma warning disable SA1001
 #if SYSTEM_ICLONEABLE
     , ICloneable
 #endif
+#pragma warning restore SA1001
   {
 #region "class members"
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
@@ -208,10 +210,12 @@ namespace Smdn.IO.Streams {
           if (offset < 0)
             break;
           return stream.Seek(this.offset + offset, SeekOrigin.Begin) - this.offset;
+
         case SeekOrigin.Current:
           if (Position + offset < 0)
             break;
           return stream.Seek(offset, SeekOrigin.Current) - this.offset;
+
         case SeekOrigin.End: {
           var position = Length + offset;
 
@@ -220,6 +224,7 @@ namespace Smdn.IO.Streams {
           else
             return stream.Seek(this.offset + position, SeekOrigin.Begin) - this.offset;
         }
+
         default:
           throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
       }

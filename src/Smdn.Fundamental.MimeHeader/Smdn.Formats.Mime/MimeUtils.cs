@@ -26,7 +26,7 @@ namespace Smdn.Formats.Mime {
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream)
       => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
 
-    private static readonly char[] lineDelmiters = new char[] {'\r', '\n'};
+    private static readonly char[] lineDelmiters = new char[] { '\r', '\n' };
 
     [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream, bool keepWhitespaces)
@@ -88,7 +88,7 @@ namespace Smdn.Formats.Mime {
       cancellationToken: cancellationToken
     );
 
-    private static RawHeaderField ParseHeaderNullConverter(RawHeaderField f, int _) => f;
+    private static RawHeaderField ParseHeaderNullConverter(RawHeaderField f, int discard) => f;
 
     public static /*IAsyncEnumerable<T>*/ Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField>(
       LineOrientedStream stream,

@@ -17,9 +17,18 @@ namespace Smdn.Reflection {
 
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic)
     {
-      var methodAdd = ev.GetAddMethod(nonPublic);       if (methodAdd != null) yield return methodAdd;
-      var methodRemove = ev.GetRemoveMethod(nonPublic); if (methodRemove != null) yield return methodRemove;
-      var methodRaise = ev.GetRaiseMethod(nonPublic);   if (methodRaise != null) yield return methodRaise;
+      var methodAdd = ev.GetAddMethod(nonPublic);
+      var methodRemove = ev.GetRemoveMethod(nonPublic);
+      var methodRaise = ev.GetRaiseMethod(nonPublic);
+
+      if (methodAdd != null)
+        yield return methodAdd;
+
+      if (methodRemove != null)
+        yield return methodRemove;
+
+      if (methodRaise != null)
+        yield return methodRaise;
 
       IEnumerable<MethodInfo> otherMethods = null;
 

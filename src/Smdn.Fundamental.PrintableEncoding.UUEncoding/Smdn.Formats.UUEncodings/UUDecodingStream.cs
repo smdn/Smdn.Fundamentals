@@ -173,7 +173,7 @@ namespace Smdn.Formats.UUEncodings {
             if (!Hexadecimal.TryDecodeValue(octal, out var p) || 0x8 <= p) {
               permissions = 0u;
               break;
-              //throw new InvalidDataException("invalid header");
+              // throw new InvalidDataException("invalid header");
             }
 
             permissions |= p;
@@ -212,7 +212,7 @@ namespace Smdn.Formats.UUEncodings {
             if (!Hexadecimal.TryDecodeValue(octal, out var p) || 0x8 <= p) {
               permissions = 0u;
               break;
-              //throw new InvalidDataException("invalid header");
+              // throw new InvalidDataException("invalid header");
             }
 
             permissions |= p;
@@ -365,4 +365,3 @@ namespace Smdn.Formats.UUEncodings {
     private int dataLineRemainder;
   }
 }
-

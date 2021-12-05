@@ -141,216 +141,226 @@ namespace Smdn {
     /*
      * scalar value
      */
-    public static ArgumentOutOfRangeException CreateArgumentMustBeNonZeroPositive(string paramName,
-                                                                                  object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be non-zero positive value"));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeNonZeroPositive(
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be non-zero positive value")
+      );
 
-    public static ArgumentOutOfRangeException CreateArgumentMustBeZeroOrPositive(string paramName,
-                                                                                 object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be zero or positive value"));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeZeroOrPositive(
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be zero or positive value")
+      );
 
-    public static ArgumentOutOfRangeException CreateArgumentMustBeLessThan(object maxValue,
-                                                                           string paramName,
-                                                                           object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be less than {0}", maxValue));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeLessThan(
+      object maxValue,
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be less than {0}", maxValue)
+      );
 
-    public static ArgumentOutOfRangeException CreateArgumentMustBeLessThanOrEqualTo(object maxValue,
-                                                                                    string paramName,
-                                                                                    object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be less than or equal to {0}", maxValue));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeLessThanOrEqualTo(
+      object maxValue,
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be less than or equal to {0}", maxValue)
+      );
 
-    public static ArgumentOutOfRangeException CreateArgumentMustBeGreaterThan(object minValue,
-                                                                              string paramName,
-                                                                              object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be greater than {0}", minValue));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeGreaterThan(
+      object minValue,
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be greater than {0}", minValue)
+      );
 
-    public static ArgumentOutOfRangeException CreateArgumentMustBeGreaterThanOrEqualTo(object minValue,
-                                                                                       string paramName,
-                                                                                       object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be greater than or equal to {0}", minValue));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeGreaterThanOrEqualTo(
+      object minValue,
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be greater than or equal to {0}", minValue)
+      );
 
-    public static ArgumentOutOfRangeException CreateArgumentMustBeInRange(object rangeFrom,
-                                                                          object rangeTo,
-                                                                          string paramName,
-                                                                          object actualValue)
-    {
-      return new ArgumentOutOfRangeException(paramName,
-                                             actualValue,
-                                             Locale.GetText("must be in range {0} to {1}", rangeFrom, rangeTo));
-    }
+    public static ArgumentOutOfRangeException CreateArgumentMustBeInRange(
+      object rangeFrom,
+      object rangeTo,
+      string paramName,
+      object actualValue
+    )
+      => new ArgumentOutOfRangeException(
+        paramName,
+        actualValue,
+        Locale.GetText("must be in range {0} to {1}", rangeFrom, rangeTo)
+      );
 
-    public static ArgumentException CreateArgumentMustBeMultipleOf(int n,
-                                                                   string paramName)
-    {
-      return new ArgumentException(Locale.GetText("must be multiple of {0}", n),
-                                   paramName);
-    }
+    public static ArgumentException CreateArgumentMustBeMultipleOf(
+      int n,
+      string paramName
+    )
+      => new ArgumentException(
+        Locale.GetText("must be multiple of {0}", n),
+        paramName
+      );
 
     /*
      * array
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyArray(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("must be a non-empty array"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("must be a non-empty array"),
+        paramName
+      );
 
-    public static ArgumentException CreateArgumentAttemptToAccessBeyondEndOfArray(string paramName,
-                                                                                  Array array,
-                                                                                  long offsetValue,
-                                                                                  long countValue)
-    {
-      return new ArgumentException(Locale.GetText("attempt to access beyond the end of an array (length={0}, offset={1}, count={2})",
-                                                  array == null ? (int?)null : (int?)array.Length,
-                                                  offsetValue,
-                                                  countValue),
-                                   paramName);
-    }
+    public static ArgumentException CreateArgumentAttemptToAccessBeyondEndOfArray(
+      string paramName,
+      Array array,
+      long offsetValue,
+      long countValue
+    )
+      => new ArgumentException(
+        Locale.GetText(
+        "attempt to access beyond the end of an array (length={0}, offset={1}, count={2})",
+        array == null ? (int?)null : (int?)array.Length,
+        offsetValue,
+        countValue),
+        paramName
+      );
 
     /*
      * collection
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyCollection(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("must be a non-empty collection"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("must be a non-empty collection"),
+        paramName
+      );
 
-    public static ArgumentException CreateArgumentAttemptToAccessBeyondEndOfCollection<T>(string paramName,
-                                                                                          IReadOnlyCollection<T> collection,
-                                                                                          long offsetValue,
-                                                                                          long countValue)
-    {
-      return new ArgumentException(Locale.GetText("attempt to access beyond the end of a collection (length={0}, offset={1}, count={2})",
-                                                  collection?.Count,
-                                                  offsetValue,
-                                                  countValue),
-                                   paramName);
-    }
+    public static ArgumentException CreateArgumentAttemptToAccessBeyondEndOfCollection<T>(
+      string paramName,
+      IReadOnlyCollection<T> collection,
+      long offsetValue,
+      long countValue
+    )
+      => new ArgumentException(
+        Locale.GetText(
+        "attempt to access beyond the end of a collection (length={0}, offset={1}, count={2})",
+        collection?.Count,
+        offsetValue,
+        countValue),
+        paramName
+      );
 
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("all items in the collection must be non-null"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("all items in the collection must be non-null"),
+        paramName
+      );
 
     /*
      * string
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyString(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("must be a non-empty string"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("must be a non-empty string"),
+        paramName
+      );
 
     /*
      * enum
      */
-    public static ArgumentException CreateArgumentMustBeValidEnumValue<TEnum>(string paramName,
-                                                                              TEnum invalidValue)
-      where TEnum : Enum
-    {
-      return CreateArgumentMustBeValidEnumValue(paramName, invalidValue, null);
-    }
+    public static ArgumentException CreateArgumentMustBeValidEnumValue<TEnum>(
+      string paramName,
+      TEnum invalidValue
+    ) where TEnum : Enum
+      => CreateArgumentMustBeValidEnumValue(paramName, invalidValue, null);
 
-    public static ArgumentException CreateArgumentMustBeValidEnumValue<TEnum>(string paramName,
-                                                                              TEnum invalidValue,
-                                                                              string additionalMessage)
-      where TEnum : Enum
-    {
-      return new ArgumentException(Locale.GetText("invalid enum value ({0} value={1}, type={2})",
-                                                  additionalMessage,
-                                                  invalidValue,
-                                                  typeof(TEnum)),
-                                   paramName);
-    }
+    public static ArgumentException CreateArgumentMustBeValidEnumValue<TEnum>(
+      string paramName,
+      TEnum invalidValue,
+      string additionalMessage
+    ) where TEnum : Enum
+      => new ArgumentException(
+        Locale.GetText(
+        "invalid enum value ({0} value={1}, type={2})",
+        additionalMessage,
+        invalidValue,
+        typeof(TEnum)),
+        paramName
+      );
 
     public static NotSupportedException CreateNotSupportedEnumValue<TEnum>(TEnum unsupportedValue)
       where TEnum : Enum
-    {
-      return new NotSupportedException(Locale.GetText("'{0}' ({1}) is not supported",
-                                                      unsupportedValue,
-                                                      typeof(TEnum)));
-    }
+      => new NotSupportedException(
+        Locale.GetText("'{0}' ({1}) is not supported", unsupportedValue, typeof(TEnum))
+      );
 
     /*
      * Stream
      */
     public static ArgumentException CreateArgumentMustBeReadableStream(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("stream does not support reading or already closed"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("stream does not support reading or already closed"),
+        paramName
+      );
 
     public static ArgumentException CreateArgumentMustBeWritableStream(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("stream does not support writing or already closed"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("stream does not support writing or already closed"),
+        paramName
+      );
 
     public static ArgumentException CreateArgumentMustBeSeekableStream(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("stream does not support seeking or already closed"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("stream does not support seeking or already closed"),
+        paramName
+      );
 
     public static NotSupportedException CreateNotSupportedReadingStream()
-    {
-      return new NotSupportedException(Locale.GetText("stream does not support reading"));
-    }
+      => new NotSupportedException(Locale.GetText("stream does not support reading"));
 
     public static NotSupportedException CreateNotSupportedWritingStream()
-    {
-      return new NotSupportedException(Locale.GetText("stream does not support writing"));
-    }
+      => new NotSupportedException(Locale.GetText("stream does not support writing"));
 
     public static NotSupportedException CreateNotSupportedSeekingStream()
-    {
-      return new NotSupportedException(Locale.GetText("stream does not support seeking"));
-    }
+      => new NotSupportedException(Locale.GetText("stream does not support seeking"));
 
     public static NotSupportedException CreateNotSupportedSettingStreamLength()
-    {
-      return new NotSupportedException(Locale.GetText("stream does not support setting length"));
-    }
+      => new NotSupportedException(Locale.GetText("stream does not support setting length"));
 
     public static IOException CreateIOAttemptToSeekBeforeStartOfStream()
-    {
-      return new IOException(Locale.GetText("attempted to seek before start of stream"));
-    }
+      => new IOException(Locale.GetText("attempted to seek before start of stream"));
 
     /*
      * IAsyncResult
      */
     public static ArgumentException CreateArgumentMustBeValidIAsyncResult(string paramName)
-    {
-      return new ArgumentException(Locale.GetText("invalid IAsyncResult"),
-                                   paramName);
-    }
+      => new ArgumentException(
+        Locale.GetText("invalid IAsyncResult"),
+        paramName
+      );
   }
 }
-

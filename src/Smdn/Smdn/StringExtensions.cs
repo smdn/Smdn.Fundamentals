@@ -67,7 +67,7 @@ namespace Smdn {
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
       if (str.Length < startIndex)
-        //throw new ArgumentException("startIndex + count is larger than length");
+        // throw new ArgumentException("startIndex + count is larger than length");
         throw new ArgumentException("startIndex is larger than length");
 
       for (var index = startIndex; index < str.Length; index++) {

@@ -1,9 +1,10 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+
+#pragma warning disable SA1121 // Use built-in type alias
+
 using System;
 using System.IO;
-
-using Smdn.IO;
 
 namespace Smdn.IO.Binary {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -173,4 +174,3 @@ namespace Smdn.IO.Binary {
     private bool disposed = false;
   }
 }
-

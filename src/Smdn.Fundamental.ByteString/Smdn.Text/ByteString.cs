@@ -57,16 +57,17 @@ namespace Smdn.Text {
 
     public static ByteString CreateEmpty()
     {
-
       return new ByteString(
+#pragma warning disable SA1114
 #if SYSTEM_ARRAY_EMPTY
-                            new ArraySegment<byte>(Array.Empty<byte>()),
+        new ArraySegment<byte>(Array.Empty<byte>()),
 #else
-                            new ArraySegment<byte>(emptyByteArray),
+        new ArraySegment<byte>(emptyByteArray),
 #endif
-                            true
-                           );
-      //return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
+#pragma warning restore SA1114
+        true
+      );
+      // return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode
     }
 
 #if !SYSTEM_ARRAY_EMPTY
@@ -663,39 +664,47 @@ namespace Smdn.Text {
     }
 
     public ByteString Substring(int startIndex)
-    {
-      return new ByteString(new ArraySegment<byte>(segment.Array,
-                                                   segment.Offset + startIndex,
-                                                   segment.Count - startIndex),
-                            isMutable);
-    }
+      => new ByteString(
+        new ArraySegment<byte>(
+          segment.Array,
+          segment.Offset + startIndex,
+          segment.Count - startIndex
+        ),
+        isMutable
+      );
 
     public ByteString Substring(int startIndex, int count)
     {
       if (segment.Count < count)
         throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(Length), nameof(count), count);
 
-      return new ByteString(new ArraySegment<byte>(segment.Array,
-                                                   segment.Offset + startIndex,
-                                                   count),
-                            isMutable);
+      return new ByteString(
+        new ArraySegment<byte>(
+          segment.Array,
+          segment.Offset + startIndex,
+          count
+        ),
+        isMutable
+      );
     }
 
     public ArraySegment<byte> GetSubSegment(int startIndex)
-    {
-      return new ArraySegment<byte>(segment.Array,
-                                    segment.Offset + startIndex,
-                                    segment.Count - startIndex);
-    }
+      => new ArraySegment<byte>(
+        segment.Array,
+        segment.Offset + startIndex,
+        segment.Count - startIndex
+      );
 
     public ArraySegment<byte> GetSubSegment(int startIndex, int count)
     {
       if (segment.Count < count)
         throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(Length), nameof(count), count);
 
-      return new ArraySegment<byte>(segment.Array,
-                                    segment.Offset + startIndex,
-                                    count);
+      return new ArraySegment<byte>(
+        segment.Array,
+        segment.Offset + startIndex,
+        count
+      );
     }
 
     public ByteString[] Split(byte delimiter)
@@ -891,7 +900,7 @@ namespace Smdn.Text {
     {
       if (other == null)
         return false;
-      else if (Object.ReferenceEquals(this, other))
+      else if (object.ReferenceEquals(this, other))
         return true;
       else
         return Equals(other.segment);
@@ -969,7 +978,7 @@ namespace Smdn.Text {
 
     public static bool operator ==(ByteString x, ByteString y)
     {
-      if (Object.ReferenceEquals(x, y))
+      if (object.ReferenceEquals(x, y))
         return true;
 
       if (null == (object)x || null == (object)y) {
@@ -1097,7 +1106,7 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          h = unchecked(h * 37 + str[index]);
+          h = unchecked((h * 37) + str[index]);
         }
       }
 
@@ -1213,7 +1222,7 @@ namespace Smdn.Text {
       return ToString(encoding, segment.AsSpan(startIndex, count));
     }
 
-    internal unsafe static string ToString(Encoding encoding, ReadOnlySpan<byte> sequence)
+    internal static unsafe string ToString(Encoding encoding, ReadOnlySpan<byte> sequence)
     {
       fixed (byte* str0 = sequence) {
         if (encoding != null)
@@ -1233,7 +1242,7 @@ namespace Smdn.Text {
       }
     }
 
-    public unsafe static string ToString(ReadOnlySequence<byte> sequence, Encoding encoding = null)
+    public static unsafe string ToString(ReadOnlySequence<byte> sequence, Encoding encoding = null)
     {
       if (sequence.IsEmpty)
         return string.Empty;
@@ -1266,6 +1275,7 @@ namespace Smdn.Text {
     private readonly ArraySegment<byte> segment;
     private readonly bool isMutable;
 
+#pragma warning disable SA1137
     private static readonly byte[] ToLowerCaseAsciiTableArray = new byte[] {
       0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
       0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f,
@@ -1307,5 +1317,6 @@ namespace Smdn.Text {
       0xe0, 0xe1, 0xe2, 0xe3, 0xe4, 0xe5, 0xe6, 0xe7, 0xe8, 0xe9, 0xea, 0xeb, 0xec, 0xed, 0xee, 0xef,
       0xf0, 0xf1, 0xf2, 0xf3, 0xf4, 0xf5, 0xf6, 0xf7, 0xf8, 0xf9, 0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff,
     };
+#pragma warning restore SA1137
   }
 }

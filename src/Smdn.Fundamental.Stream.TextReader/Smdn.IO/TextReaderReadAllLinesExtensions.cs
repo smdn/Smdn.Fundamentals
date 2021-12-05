@@ -28,9 +28,9 @@ namespace Smdn.IO {
 
     public static Task<IReadOnlyList<string>> ReadAllLinesAsync(this TextReader reader)
     {
-      return _ReadAllLinesAsync(reader ?? throw new ArgumentNullException(nameof(reader)));
+      return ReadAllLinesAsyncCore(reader ?? throw new ArgumentNullException(nameof(reader)));
 
-      static async Task<IReadOnlyList<string>> _ReadAllLinesAsync(TextReader r)
+      static async Task<IReadOnlyList<string>> ReadAllLinesAsyncCore(TextReader r)
       {
         var ret = new List<string>();
 

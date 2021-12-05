@@ -6,8 +6,8 @@ namespace Smdn {
   public enum Endianness {
     BigEndian,
     LittleEndian,
-    //MiddleEndian
-    //NetworkOrder = BigEndian,
+    // MiddleEndian
+    // NetworkOrder = BigEndian,
     Unknown,
   }
 }

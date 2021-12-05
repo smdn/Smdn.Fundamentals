@@ -60,8 +60,10 @@ namespace Smdn.Text {
       => Smdn.Collections.StringificationExtensions.Stringify(pairs);
 
     [Obsolete("use Smdn.Stringification.Stringify instead")]
+#pragma warning disable SA1316
     public static string ToString(Type type, IEnumerable<(string name, object value)> nameAndValuePairs)
       => Smdn.Stringification.Stringify(type, nameAndValuePairs);
+#pragma warning restore SA1316
 
     /*
      * enum parsing

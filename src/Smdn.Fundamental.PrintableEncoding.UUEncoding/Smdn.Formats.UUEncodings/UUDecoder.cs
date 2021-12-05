@@ -98,4 +98,3 @@ namespace Smdn.Formats.UUEncodings {
     }
   }
 }
-

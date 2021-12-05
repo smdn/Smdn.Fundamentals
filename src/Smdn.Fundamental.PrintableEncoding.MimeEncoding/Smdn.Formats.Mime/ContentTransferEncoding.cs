@@ -20,20 +20,20 @@ namespace Smdn.Formats.Mime {
     private static readonly Dictionary<string, ContentTransferEncodingMethod> contentTransferEncodingMethods =
       new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
         // standards
-        {"7bit",              ContentTransferEncodingMethod.SevenBit},
-        {"8bit",              ContentTransferEncodingMethod.EightBit},
-        {"binary",            ContentTransferEncodingMethod.Binary},
-        {"base64",            ContentTransferEncodingMethod.Base64},
-        {"quoted-printable",  ContentTransferEncodingMethod.QuotedPrintable},
+        { "7bit",              ContentTransferEncodingMethod.SevenBit },
+        { "8bit",              ContentTransferEncodingMethod.EightBit },
+        { "binary",            ContentTransferEncodingMethod.Binary },
+        { "base64",            ContentTransferEncodingMethod.Base64 },
+        { "quoted-printable",  ContentTransferEncodingMethod.QuotedPrintable },
 
         // non-standards
-        {"x-uuencode",    ContentTransferEncodingMethod.UUEncode},
-        {"x-uuencoded",   ContentTransferEncodingMethod.UUEncode},
-        {"x-uu",          ContentTransferEncodingMethod.UUEncode},
-        {"x-uue",         ContentTransferEncodingMethod.UUEncode},
-        {"uuencode",      ContentTransferEncodingMethod.UUEncode},
-        {"x-gzip64",      ContentTransferEncodingMethod.GZip64},
-        {"gzip64",        ContentTransferEncodingMethod.GZip64},
+        { "x-uuencode",    ContentTransferEncodingMethod.UUEncode },
+        { "x-uuencoded",   ContentTransferEncodingMethod.UUEncode },
+        { "x-uu",          ContentTransferEncodingMethod.UUEncode },
+        { "x-uue",         ContentTransferEncodingMethod.UUEncode },
+        { "uuencode",      ContentTransferEncodingMethod.UUEncode },
+        { "x-gzip64",      ContentTransferEncodingMethod.GZip64 },
+        { "gzip64",        ContentTransferEncodingMethod.GZip64 },
       };
 
     public static ContentTransferEncodingMethod GetEncodingMethod(string encoding)
@@ -52,8 +52,7 @@ namespace Smdn.Formats.Mime {
       var ret = GetEncodingMethod(encoding);
 
       if (ret == ContentTransferEncodingMethod.Unknown)
-        throw new NotSupportedException(string.Format("unsupported content transfer encoding: '{0}'",
-                                                      encoding));
+        throw new NotSupportedException($"unsupported content transfer encoding: '{encoding}'");
 
       return ret;
     }
@@ -122,24 +121,20 @@ namespace Smdn.Formats.Mime {
     }
 
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset)
-    {
-      return CreateTextReader(stream, encoding, charset, false);
-    }
+      => CreateTextReader(stream, encoding, charset, false);
 
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset, bool leaveStreamOpen)
-    {
-      return CreateTextReader(stream,
-                              GetEncodingMethodThrowException(encoding),
-                              charset == null
-                                ? Encoding.GetEncoding("ISO-8859-1")
-                                : EncodingUtils.GetEncodingThrowException(charset),
-                              leaveStreamOpen);
-    }
+      => CreateTextReader(
+        stream,
+        GetEncodingMethodThrowException(encoding),
+        charset is null
+          ? Encoding.GetEncoding("ISO-8859-1")
+          : EncodingUtils.GetEncodingThrowException(charset),
+        leaveStreamOpen
+      );
 
     public static StreamReader CreateTextReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset)
-    {
-      return CreateTextReader(stream, encoding, charset, false);
-    }
+      => CreateTextReader(stream, encoding, charset, false);
 
     public static StreamReader CreateTextReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
     {
@@ -152,41 +147,35 @@ namespace Smdn.Formats.Mime {
     }
 
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding)
-    {
-      return CreateBinaryReader(stream, encoding, false);
-    }
+      => CreateBinaryReader(stream, encoding, false);
 
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding, bool leaveStreamOpen)
-    {
-      return CreateBinaryReader(stream,
-                                GetEncodingMethodThrowException(encoding),
-                                null,
-                                leaveStreamOpen);
-    }
+      => CreateBinaryReader(
+        stream,
+        GetEncodingMethodThrowException(encoding),
+        null,
+        leaveStreamOpen
+      );
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding)
-    {
-      return CreateBinaryReader(stream, encoding, false);
-    }
+      => CreateBinaryReader(stream, encoding, false);
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, bool leaveStreamOpen)
-    {
-      return CreateBinaryReader(stream,
-                                encoding,
-                                null,
-                                leaveStreamOpen);
-    }
+      => CreateBinaryReader(
+        stream,
+        encoding,
+        null,
+        leaveStreamOpen
+      );
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset)
-    {
-      return CreateBinaryReader(stream, encoding, charset, false);
-    }
+      => CreateBinaryReader(stream, encoding, charset, false);
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
-    {
-      stream = CreateDecodingStream(stream, encoding, false);
-
-      return new BinaryReader(stream, charset ?? Encoding.UTF8, leaveStreamOpen);
-    }
+      => new BinaryReader(
+        CreateDecodingStream(stream, encoding, false),
+        charset ?? Encoding.UTF8,
+        leaveStreamOpen
+      );
   }
 }

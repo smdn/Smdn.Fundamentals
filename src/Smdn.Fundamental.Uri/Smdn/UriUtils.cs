@@ -6,8 +6,8 @@ using System.Text;
 
 namespace Smdn {
   public static class UriUtils {
-    private const char parameterSplitterChar = '&';
-    private const char nameValueSplitterChar = '=';
+    private const char ParameterSplitterChar = '&';
+    private const char NameValueSplitterChar = '=';
 
     public static string JoinQueryParameters(IEnumerable<KeyValuePair<string, string>> queryParameters)
     {
@@ -18,12 +18,12 @@ namespace Smdn {
 
       foreach (var pair in queryParameters) {
         if (0 < sb.Length) // one or more parameters
-          sb.Append(parameterSplitterChar);
+          sb.Append(ParameterSplitterChar);
 
         sb.Append(pair.Key);
 
         if (pair.Value != null) {
-          sb.Append(nameValueSplitterChar);
+          sb.Append(NameValueSplitterChar);
           sb.Append(pair.Value);
         }
       }
@@ -56,17 +56,19 @@ namespace Smdn {
         return Smdn.Collections.ReadOnlyDictionary<string, string>.Empty;
 
       var ret = new Dictionary<string, string>(comparer);
+#pragma warning disable SA1114
       var splitted = queryParameters.Split(
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
-        parameterSplitterChar,
+        ParameterSplitterChar,
 #else
-        new[] {parameterSplitterChar},
+        new[] { ParameterSplitterChar },
 #endif
         StringSplitOptions.RemoveEmptyEntries
       );
+#pragma warning restore SA1114
 
       foreach (var nameAndValue in splitted) {
-        var pos = nameAndValue.IndexOf(nameValueSplitterChar);
+        var pos = nameAndValue.IndexOf(NameValueSplitterChar);
 
         if (pos < 0)
           // name only
@@ -80,4 +82,3 @@ namespace Smdn {
     }
   }
 }
-
