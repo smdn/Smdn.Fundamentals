@@ -1,0 +1,8 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+[*.cs]
+dotnet_diagnostic.SA1003.severity = none # Symbols should be spaced correctly
+dotnet_diagnostic.SA1008.severity = none # Opening parenthesis should be spaced correctly
+dotnet_diagnostic.SA1010.severity = none # Opening square brackets should be spaced correctly
+dotnet_diagnostic.SA1011.severity = none # Closing square brackets should be spaced correctly
+dotnet_diagnostic.SA1028.severity = none # Code should not contain trailing whitespace

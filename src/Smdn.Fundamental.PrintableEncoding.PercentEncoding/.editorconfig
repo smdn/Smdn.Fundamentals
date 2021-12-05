@@ -1,0 +1,5 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+[*.cs]
+dotnet_diagnostic.SA1005.severity = none # Single line comments should begin with single space
+dotnet_diagnostic.SA1028.severity = none # Code should not contain trailing whitespace
