@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
 
   <Import Project="$(MSBuildThisFileDirectory)SupportedFrameworkSymbols.props" />
 
-  <ItemGroup>
+  <ItemGroup Label="common resources">
     <None Include="$(MSBuildThisFileDirectory)package-icon.png" Pack="true" Visible="false" PackagePath="\$(MSBuildProjectName).png"/>
   </ItemGroup>
 
