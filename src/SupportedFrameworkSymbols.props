@@ -48,5 +48,13 @@ SPDX-License-Identifier: MIT
       '$(TargetFramework)' == 'net5' Or
       $(TargetFramework.StartsWith('net5.'))
     ">$(DefineConstants);SYSTEM_STRING_CREATE;SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE;SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE</DefineConstants>
+
+    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <DefineConstants Condition="
+      ($(TargetFramework.StartsWith('netstandard2.')) And '$(TargetFramework.TrimEnd(`0`))' != 'netstandard2.' ) Or
+      $(TargetFramework.StartsWith('netcoreapp3.')) Or
+      '$(TargetFramework)' == 'net5' Or
+      $(TargetFramework.StartsWith('net5.'))
+    ">$(DefineConstants);SYSTEM_INDEX;SYSTEM_RANGE</DefineConstants>
   </PropertyGroup>
 </Project>
