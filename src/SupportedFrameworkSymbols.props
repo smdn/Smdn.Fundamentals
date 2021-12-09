@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
       $(TargetFramework.StartsWith('netcoreapp')) Or
       '$(TargetFramework)' == 'net5' Or
       $(TargetFramework.StartsWith('net5.'))
-    ">$(DefineConstants);SYSTEM_ARRAY_EMPTY;SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK;SYSTEM_THREADING_TASKS_TASK_FROMCANCELED</DefineConstants>
+    ">$(DefineConstants);SYSTEM_ARRAY_EMPTY;SYSTEM_FORMATTABLESTRING;SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK;SYSTEM_THREADING_TASKS_TASK_FROMCANCELED</DefineConstants>
 
     <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
     <DefineConstants Condition="
