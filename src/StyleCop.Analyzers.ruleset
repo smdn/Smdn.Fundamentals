@@ -66,11 +66,11 @@
     <Rule Id="SA1124"  Action="None" />             <!-- Do not use regions -->
     <Rule Id="SA1125"  Action="Warning" />          <!-- Use shorthand for nullable types -->
     <Rule Id="SA1126"  Action="None" />             <!-- Prefix calls correctly -->
-    <Rule Id="SA1127"  Action="Info" />             <!-- Generic type constraints should be on their own line -->
+    <Rule Id="SA1127"  Action="None" />             <!-- Generic type constraints should be on their own line -->
     <Rule Id="SA1128"  Action="Info" />             <!-- Put constructor initializers on their own line -->
     <Rule Id="SA1129"  Action="Warning" />          <!-- Do not use default value type constructor -->
     <Rule Id="SA1130"  Action="Warning" />          <!-- Use lambda syntax -->
-    <Rule Id="SA1131"  Action="Info" />             <!-- Use readable conditions -->
+    <Rule Id="SA1131"  Action="None" />             <!-- Use readable conditions -->
     <Rule Id="SA1132"  Action="Warning" />          <!-- Do not combine fields -->
     <Rule Id="SA1133"  Action="Info" />             <!-- Do not combine attributes -->
     <Rule Id="SA1134"  Action="Info" />             <!-- Attributes should not share line -->
@@ -83,8 +83,8 @@
 
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.OrderingRules">
     <Rule Id="SA1200"  Action="None" />             <!-- Using directives should be placed correctly -->
-    <Rule Id="SA1201"  Action="Info" />             <!-- Elements should appear in the correct order -->
-    <Rule Id="SA1202"  Action="Info" />             <!-- Elements should be ordered by access -->
+    <Rule Id="SA1201"  Action="None" />             <!-- Elements should appear in the correct order -->
+    <Rule Id="SA1202"  Action="None" />             <!-- Elements should be ordered by access -->
     <Rule Id="SA1203"  Action="Warning" />          <!-- Constants should appear before fields -->
     <Rule Id="SA1204"  Action="None" />             <!-- Static elements should appear before instance elements -->
     <Rule Id="SA1205"  Action="None" />             <!-- Partial elements should declare access -->
@@ -157,7 +157,7 @@
     <Rule Id="SA1513"  Action="Warning" />          <!-- Closing brace should be followed by blank line -->
     <Rule Id="SA1514"  Action="Warning" />          <!-- Element documentation header should be preceded by blank line -->
     <Rule Id="SA1515"  Action="None" />             <!-- Single-line comment should be preceded by blank line -->
-    <Rule Id="SA1516"  Action="Info" />             <!-- Elements should be separated by blank line -->
+    <Rule Id="SA1516"  Action="None" />             <!-- Elements should be separated by blank line -->
     <Rule Id="SA1517"  Action="Warning" />          <!-- Code should not contain blank lines at start of file -->
     <Rule Id="SA1518"  Action="Warning" />          <!-- Use line endings correctly at end of file -->
     <Rule Id="SA1519"  Action="Warning" />          <!-- Braces should not be omitted from multi-line child statement -->
@@ -165,9 +165,9 @@
   </Rules>
 
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers.DocumentationRules">
-    <Rule Id="SA1600"  Action="Info" />             <!-- Elements should be documented -->
+    <Rule Id="SA1600"  Action="None" />             <!-- Elements should be documented -->
     <Rule Id="SA1601"  Action="None" />             <!-- Partial elements should be documented -->
-    <Rule Id="SA1602"  Action="Info" />             <!-- Enumeration items should be documented -->
+    <Rule Id="SA1602"  Action="None" />             <!-- Enumeration items should be documented -->
     <Rule Id="SA1603"  Action="Error" />            <!-- Documentation should contain valid XML -->
     <Rule Id="SA1604"  Action="Info" />             <!-- Element documentation should have summary -->
     <Rule Id="SA1605"  Action="None" />             <!-- Partial element documentation should have summary -->
@@ -180,7 +180,7 @@
     <Rule Id="SA1612"  Action="Warning" />          <!-- Element parameter documentation should match element parameters -->
     <Rule Id="SA1613"  Action="Warning" />          <!-- Element parameter documentation should declare parameter name -->
     <Rule Id="SA1614"  Action="Warning" />          <!-- Element parameter documentation should have text -->
-    <Rule Id="SA1615"  Action="Info" />             <!-- Element return value should be documented -->
+    <Rule Id="SA1615"  Action="None" />             <!-- Element return value should be documented -->
     <Rule Id="SA1616"  Action="Warning" />          <!-- Element return value documentation should have text -->
     <Rule Id="SA1617"  Action="Warning" />          <!-- Void return value should not be documented -->
     <Rule Id="SA1618"  Action="Info" />             <!-- Generic type parameters should be documented -->

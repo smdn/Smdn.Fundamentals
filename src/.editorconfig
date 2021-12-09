@@ -1,0 +1,33 @@
+# EditorConfig is awesome: https://EditorConfig.org
+#
+# code-analysis
+#   https://docs.microsoft.com/ja-jp/dotnet/fundamentals/code-analysis/categories
+#
+[*.cs]
+dotnet_analyzer_diagnostic.category-Design.severity           = warning
+dotnet_analyzer_diagnostic.category-Globalization.severity    = warning
+dotnet_analyzer_diagnostic.category-Interoperability.severity = warning
+dotnet_analyzer_diagnostic.category-Maintainability.severity  = warning
+dotnet_analyzer_diagnostic.category-Naming.severity           = warning
+dotnet_analyzer_diagnostic.category-Performance.severity      = warning
+dotnet_analyzer_diagnostic.category-SingleFile.severity       = warning
+dotnet_analyzer_diagnostic.category-Reliability.severity      = warning
+dotnet_analyzer_diagnostic.category-Security.severity         = warning
+dotnet_analyzer_diagnostic.category-Style.severity            = warning
+dotnet_analyzer_diagnostic.category-Usage.severity            = warning
+
+dotnet_diagnostic.IDE0001.severity    = suggestion
+dotnet_diagnostic.IDE0002.severity    = suggestion
+dotnet_diagnostic.IDE0003.severity    = suggestion
+dotnet_diagnostic.IDE0007.severity    = suggestion
+dotnet_diagnostic.IDE0010.severity    = suggestion
+dotnet_diagnostic.IDE0022.severity    = suggestion
+dotnet_diagnostic.IDE0046.severity    = suggestion
+dotnet_diagnostic.IDE0055.severity    = silent
+dotnet_diagnostic.IDE0057.severity    = suggestion
+dotnet_diagnostic.IDE0058.severity    = none
+dotnet_diagnostic.IDE0072.severity    = suggestion
+dotnet_diagnostic.IDE0130.severity    = none
+
+dotnet_diagnostic.CA1707.severity     = none
+dotnet_diagnostic.CA1805.severity     = suggestion
