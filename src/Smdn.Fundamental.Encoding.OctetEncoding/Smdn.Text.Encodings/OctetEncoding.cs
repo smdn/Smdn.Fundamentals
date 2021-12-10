@@ -15,11 +15,11 @@ namespace Smdn.Text.Encodings {
     static OctetEncoding()
     {
 #if NET45 || NET452
-      SevenBits = (new OctetEncoding(7)).Clone() as Encoding;
+      SevenBits = new OctetEncoding(7).Clone() as Encoding;
       SevenBits.DecoderFallback = new DecoderExceptionFallback();
       SevenBits.EncoderFallback = new EncoderExceptionFallback();
 
-      EightBits = (new OctetEncoding(8)).Clone() as Encoding;
+      EightBits = new OctetEncoding(8).Clone() as Encoding;
       EightBits.DecoderFallback = new DecoderExceptionFallback();
       EightBits.EncoderFallback = new EncoderExceptionFallback();
 #else
@@ -31,7 +31,7 @@ namespace Smdn.Text.Encodings {
 #if NET45 || NET452
     public OctetEncoding(int bits)
     {
-      if (bits < 1 || 8 < bits)
+      if (bits is < 1 or > 8)
         throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
 
       maxValue = (char)(1 << bits);
@@ -45,7 +45,7 @@ namespace Smdn.Text.Encodings {
     public OctetEncoding(int bits, EncoderFallback encoderFallback, DecoderFallback decoderFallback)
       : base(0, encoderFallback, decoderFallback)
     {
-      if (bits < 1 || 8 < bits)
+      if (bits is < 1 or > 8)
         throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
 
       maxValue = (char)(1 << bits);
