@@ -19,7 +19,7 @@ namespace Smdn {
    */
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
-  public struct Uuid :
+  public readonly struct Uuid :
     IEquatable<Uuid>,
     IEquatable<Guid>,
     IComparable<Uuid>,
