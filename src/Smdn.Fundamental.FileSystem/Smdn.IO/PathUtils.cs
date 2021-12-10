@@ -235,13 +235,22 @@ namespace Smdn.IO {
       path = path.Replace("%", "%25" /*encode*/);
 
       if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+        basePath = ConstructFileSchemeUri(basePath);
+        path = ConstructFileSchemeUri(path);
+
+#pragma warning disable SA1114
+        static string ConstructFileSchemeUri(string path)
+          => path = string.Concat(
 #if SYSTEM_URI_URISCHEME_FILE
-        basePath = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + basePath.Replace(":", "%3A");
-        path     = Uri.UriSchemeFile + Uri.SchemeDelimiter + "localhost" + path.Replace(":", "%3A");
+            Uri.UriSchemeFile,
+            Uri.SchemeDelimiter,
+            "localhost",
 #else
-        basePath = "file://localhost" + basePath.Replace(":", "%3A");
-        path     = "file://localhost" + path.Replace(":", "%3A");
+            "file://localhost",
 #endif
+            path.Replace(":", "%3A")
+          );
+#pragma warning restore SA1114
       }
 
       var uriBase = new Uri(basePath);
