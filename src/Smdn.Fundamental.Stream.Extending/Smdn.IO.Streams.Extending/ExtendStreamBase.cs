@@ -197,8 +197,8 @@ namespace Smdn.IO.Streams.Extending {
             nextSection = StreamSection.EndOfStream;
             break;
 
-          default:
           // case StreamSection.EndOfStream:
+          default:
             return ret;
         } // switch
 
