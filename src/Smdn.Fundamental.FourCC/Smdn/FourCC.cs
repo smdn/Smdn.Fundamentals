@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Buffers;
 using System.Linq;
 
 namespace Smdn {
@@ -15,14 +14,14 @@ namespace Smdn {
     IEquatable<string>,
     IEquatable<byte[]>
   {
-    public static readonly FourCC Empty = new FourCC(0);
+    public static readonly FourCC Empty = new(0);
 
 #region "construction"
     public static FourCC CreateBigEndian(int bigEndianInt)
-      => new FourCC(bigEndianInt);
+      => new(bigEndianInt);
 
     public static FourCC CreateLittleEndian(int littleEndianInt)
-      => new FourCC(System.Net.IPAddress.HostToNetworkOrder(littleEndianInt));
+      => new(System.Net.IPAddress.HostToNetworkOrder(littleEndianInt));
 
     public FourCC(byte[] @value)
       : this((@value ?? throw new ArgumentNullException(nameof(@value))).AsSpan(0))
@@ -40,18 +39,18 @@ namespace Smdn {
         throw new ArgumentException("length must be at least 4", nameof(span));
 
       this.fourcc =
-        span[0] << 24 |
-        span[1] << 16 |
-        span[2] << 8 |
+        (span[0] << 24) |
+        (span[1] << 16) |
+        (span[2] << 8) |
         span[3];
     }
 
     public FourCC(byte byte0, byte byte1, byte byte2, byte byte3)
     {
       this.fourcc =
-        byte0 << 24 |
-        byte1 << 16 |
-        byte2 << 8 |
+        (byte0 << 24) |
+        (byte1 << 16) |
+        (byte2 << 8) |
         byte3;
     }
 
@@ -67,9 +66,9 @@ namespace Smdn {
 
       checked {
         this.fourcc =
-          (byte)span[0] << 24 |
-          (byte)span[1] << 16 |
-          (byte)span[2] << 8 |
+          ((byte)span[0] << 24) |
+          ((byte)span[1] << 16) |
+          ((byte)span[2] << 8) |
           (byte)span[3];
       }
     }
@@ -78,9 +77,9 @@ namespace Smdn {
     {
       checked {
         this.fourcc =
-          (byte)char0 << 24 |
-          (byte)char1 << 16 |
-          (byte)char2 << 8 |
+          ((byte)char0 << 24) |
+          ((byte)char1 << 16) |
+          ((byte)char2 << 8) |
           (byte)char3;
       }
     }
@@ -93,13 +92,13 @@ namespace Smdn {
 
 #region "conversion"
     public static implicit operator FourCC(string fourccString)
-      => new FourCC(fourccString);
+      => new(fourccString);
 
     public static explicit operator string(FourCC fourcc)
       => fourcc.ToString();
 
     public static explicit operator FourCC(byte[] fourccByteArray)
-      => new FourCC(fourccByteArray);
+      => new(fourccByteArray);
 
     public static explicit operator byte[](FourCC fourcc)
       => fourcc.ToByteArray();
@@ -120,7 +119,7 @@ namespace Smdn {
      *    00AA00389B71}.
      */
     public Guid ToCodecGuid()
-      => new Guid(ToInt32LittleEndian(), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+      => new(ToInt32LittleEndian(), 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 
     public void GetBytes(byte[] buffer, int startIndex)
     {
@@ -135,7 +134,7 @@ namespace Smdn {
         buffer[startIndex++] = (byte)(fourcc >> 24);
         buffer[startIndex++] = (byte)(fourcc >> 16);
         buffer[startIndex++] = (byte)(fourcc >> 8);
-        buffer[startIndex++] = (byte)(fourcc);
+        buffer[startIndex++] = (byte)fourcc;
       }
     }
 
@@ -182,14 +181,14 @@ namespace Smdn {
 
     public override bool Equals(object obj)
     {
-      if (obj is FourCC)
-        return Equals((FourCC)obj);
-      else if (obj is string)
-        return Equals(obj as string);
-      else if (obj is byte[])
-        return Equals(obj as byte[]);
-      else
-        return false;
+      if (obj is FourCC valFourCC)
+        return Equals(valFourCC);
+      if (obj is string valString)
+        return Equals(valString);
+      if (obj is byte[] valByteArray)
+        return Equals(valByteArray);
+
+      return false;
     }
 
     public bool Equals(FourCC other)
