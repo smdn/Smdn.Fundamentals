@@ -20,8 +20,16 @@ namespace Smdn.Formats.ModifiedBase64 {
 
     public void Dispose()
     {
-      toBase64Transform?.Dispose();
-      toBase64Transform = null;
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing) {
+        toBase64Transform?.Dispose();
+        toBase64Transform = null;
+      }
     }
 
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)

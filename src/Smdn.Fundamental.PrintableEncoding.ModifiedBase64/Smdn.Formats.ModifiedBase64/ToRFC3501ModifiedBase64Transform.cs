@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.ModifiedBase64 {
@@ -14,7 +13,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-    private void ReplaceOutput(byte[] buffer, int offset, int count)
+    private static void ReplaceOutput(byte[] buffer, int offset, int count)
     {
       // "," is used instead of "/"
       while (0 < count--) {

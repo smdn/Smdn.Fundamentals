@@ -26,7 +26,7 @@ namespace Smdn.Formats.ModifiedBase64 {
     {
     }
 
-    private byte[] ReplaceInput(byte[] inputBuffer, int inputOffset, int inputCount)
+    private static byte[] ReplaceInput(byte[] inputBuffer, int inputOffset, int inputCount)
     {
       var replaced = new byte[inputCount];
 

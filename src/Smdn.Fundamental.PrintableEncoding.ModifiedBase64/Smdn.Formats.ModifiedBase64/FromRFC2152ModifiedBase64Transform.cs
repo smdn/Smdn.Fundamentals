@@ -32,8 +32,16 @@ namespace Smdn.Formats.ModifiedBase64 {
 
     public void Dispose()
     {
-      fromBase64Transform?.Dispose();
-      fromBase64Transform = null;
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing) {
+        fromBase64Transform?.Dispose();
+        fromBase64Transform = null;
+      }
     }
 
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
@@ -57,7 +65,7 @@ namespace Smdn.Formats.ModifiedBase64 {
       // Modified Base64 because of the conflict with its use as an escape
       // character for the Q content transfer encoding in RFC 2047 header
       // fields, as mentioned above.
-      var paddingCount = 4 - (count + inputCount) & 3;
+      var paddingCount = 4 - ((count + inputCount) & 3);
 
       count = 0; // initialize
 
