@@ -1,8 +1,10 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_ARRAY_EMPTY
 using System;
-using System.Collections.Generic;
+#else
 using System.Linq;
+#endif
 
 namespace Smdn {
   public static class ArrayShim {

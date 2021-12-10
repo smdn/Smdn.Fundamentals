@@ -1,9 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !SYSTEM_IO_STREAM_CLOSE
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+#endif
 
 namespace Smdn.IO {
 #if !SYSTEM_IO_STREAM_CLOSE
