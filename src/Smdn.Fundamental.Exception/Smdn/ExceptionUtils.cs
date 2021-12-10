@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Smdn {
@@ -27,15 +26,14 @@ namespace Smdn {
       public static string GetText(string format, params object[] args)
       {
 #if LOCALIZE_MESSAGE
-        return string.Format(InternalGetText(format), args);
+        return string.Format(null, InternalGetText(format), args);
 #else
         return string.Format(format, args);
 #endif
       }
 
 #if LOCALIZE_MESSAGE
-      private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> catalogues =
-        new Dictionary<string, IReadOnlyDictionary<string, string>>(StringComparer.Ordinal);
+      private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> catalogues = new(StringComparer.Ordinal);
 
       private static string InternalGetText(string msgid)
       {
@@ -79,56 +77,87 @@ namespace Smdn {
         try {
           var executingAssembly = typeof(ExceptionUtils).GetTypeInfo().Assembly;
 
-          using (var stream = executingAssembly.GetManifestResourceStream(resourceName)) {
-            if (stream is null)
-              return true; // resource stream not found, return empty catalog
+          using var stream = executingAssembly.GetManifestResourceStream(resourceName);
 
-            var reader = new StreamReader(stream, Encoding.UTF8);
+          if (stream is null)
+            return true; // resource stream not found, return empty catalog
 
-            string msgid = null;
+          var reader = new StreamReader(stream, Encoding.UTF8);
 
-            for (; ; ) {
-              var line = reader.ReadLine();
+          string msgid = null;
 
-              if (line == null)
-                break;
+          for (; ; ) {
+            var line = reader.ReadLine();
 
-              // TODO: multiline
-              if (line.StartsWith("msgid ", StringComparison.Ordinal)) {
-                msgid = line.Substring(6).Trim();
-              }
-              else if (msgid != null &&
-                       line.StartsWith("msgstr ", StringComparison.Ordinal)) {
-                var msgstr = line.Substring(7).Trim();
+            if (line == null)
+              break;
 
-                // dequote
-#if SYSTEM_STRING_STARTSWITH_CHAR
-                if (msgid.StartsWith('"') && msgid.EndsWith('"'))
+            // TODO: multiline
+            if (line.StartsWith("msgid ", StringComparison.Ordinal)) {
+              msgid =
+#if SYSTEM_INDEX && SYSTEM_RANGE
+                line[6..].Trim();
 #else
-                if (0 < msgid.Length && msgid[0] == '"' && msgid[msgid.Length - 1] == '"')
+#pragma warning disable IDE0057
+                line.Substring(6).Trim();
+#pragma warning restore IDE0057
 #endif
-                  msgid = msgid.Substring(1, msgid.Length - 2);
-                else
-                  msgid = null; // invalid?
+            }
+            else if (msgid != null && line.StartsWith("msgstr ", StringComparison.Ordinal)) {
+              var msgstr =
+#if SYSTEM_INDEX && SYSTEM_RANGE
+                line[7..].Trim();
+#else
+#pragma warning disable IDE0057
+                line.Substring(7).Trim();
+#pragma warning restore IDE0057
+#endif
+
+              // dequote
+#if SYSTEM_STRING_STARTSWITH_CHAR
+              if (msgid.StartsWith('"') && msgid.EndsWith('"')) {
+#else
+              if (0 < msgid.Length && msgid[0] == '"' && msgid[msgid.Length - 1] == '"') {
+#endif
+                msgid =
+#if SYSTEM_INDEX && SYSTEM_RANGE
+                  msgid[1..^1];
+#else
+#pragma warning disable IDE0057
+                  msgid.Substring(1, msgid.Length - 2);
+#pragma warning restore IDE0057
+#endif
+              }
+              else {
+                msgid = null; // invalid?
+              }
 
 #if SYSTEM_STRING_STARTSWITH_CHAR
-                if (msgstr.StartsWith('"') && msgstr.EndsWith('"'))
+              if (msgstr.StartsWith('"') && msgstr.EndsWith('"')) {
 #else
-                if (0 < msgstr.Length && msgstr[0] == '"' && msgstr[msgstr.Length - 1] == '"')
+              if (0 < msgstr.Length && msgstr[0] == '"' && msgstr[msgstr.Length - 1] == '"') {
 #endif
-                  msgstr = msgstr.Substring(1, msgstr.Length - 2);
-                else
-                  msgstr = null; // invalid?
-
-                if (msgid != null && msgstr != null)
-                  catalogForLoad[msgid] = msgstr; // overwrite exist value
-
-                msgid = null;
+                msgstr =
+#if SYSTEM_INDEX && SYSTEM_RANGE
+                  msgstr[1..^1];
+#else
+#pragma warning disable IDE0057
+                  msgstr.Substring(1, msgstr.Length - 2);
+#pragma warning restore IDE0057
+#endif
               }
-            } // for
+              else {
+                msgstr = null; // invalid?
+              }
 
-            return true;
-          } // using stream
+              if (msgid != null && msgstr != null)
+                catalogForLoad[msgid] = msgstr; // overwrite exist value
+
+              msgid = null;
+            }
+          } // for
+
+          return true;
         }
         catch {
           // ignore exceptions, return empty catalog (parser error, etc.)
@@ -145,7 +174,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be non-zero positive value")
@@ -155,7 +184,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be zero or positive value")
@@ -166,7 +195,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be less than {0}", maxValue)
@@ -177,7 +206,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be less than or equal to {0}", maxValue)
@@ -188,7 +217,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be greater than {0}", minValue)
@@ -199,7 +228,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be greater than or equal to {0}", minValue)
@@ -211,7 +240,7 @@ namespace Smdn {
       string paramName,
       object actualValue
     )
-      => new ArgumentOutOfRangeException(
+      => new(
         paramName,
         actualValue,
         Locale.GetText("must be in range {0} to {1}", rangeFrom, rangeTo)
@@ -221,7 +250,7 @@ namespace Smdn {
       int n,
       string paramName
     )
-      => new ArgumentException(
+      => new(
         Locale.GetText("must be multiple of {0}", n),
         paramName
       );
@@ -230,7 +259,7 @@ namespace Smdn {
      * array
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyArray(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("must be a non-empty array"),
         paramName
       );
@@ -241,12 +270,13 @@ namespace Smdn {
       long offsetValue,
       long countValue
     )
-      => new ArgumentException(
+      => new(
         Locale.GetText(
-        "attempt to access beyond the end of an array (length={0}, offset={1}, count={2})",
-        array == null ? (int?)null : (int?)array.Length,
-        offsetValue,
-        countValue),
+          "attempt to access beyond the end of an array (length={0}, offset={1}, count={2})",
+          array?.Length,
+          offsetValue,
+          countValue
+        ),
         paramName
       );
 
@@ -254,7 +284,7 @@ namespace Smdn {
      * collection
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyCollection(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("must be a non-empty collection"),
         paramName
       );
@@ -265,17 +295,18 @@ namespace Smdn {
       long offsetValue,
       long countValue
     )
-      => new ArgumentException(
+      => new(
         Locale.GetText(
-        "attempt to access beyond the end of a collection (length={0}, offset={1}, count={2})",
-        collection?.Count,
-        offsetValue,
-        countValue),
+          "attempt to access beyond the end of a collection (length={0}, offset={1}, count={2})",
+          collection?.Count,
+          offsetValue,
+          countValue
+        ),
         paramName
       );
 
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("all items in the collection must be non-null"),
         paramName
       );
@@ -284,7 +315,7 @@ namespace Smdn {
      * string
      */
     public static ArgumentException CreateArgumentMustBeNonEmptyString(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("must be a non-empty string"),
         paramName
       );
@@ -303,62 +334,61 @@ namespace Smdn {
       TEnum invalidValue,
       string additionalMessage
     ) where TEnum : Enum
-      => new ArgumentException(
+      => new(
         Locale.GetText(
-        "invalid enum value ({0} value={1}, type={2})",
-        additionalMessage,
-        invalidValue,
-        typeof(TEnum)),
+          "invalid enum value ({0} value={1}, type={2})",
+          additionalMessage,
+          invalidValue,
+          typeof(TEnum)
+        ),
         paramName
       );
 
     public static NotSupportedException CreateNotSupportedEnumValue<TEnum>(TEnum unsupportedValue)
       where TEnum : Enum
-      => new NotSupportedException(
-        Locale.GetText("'{0}' ({1}) is not supported", unsupportedValue, typeof(TEnum))
-      );
+      => new(Locale.GetText("'{0}' ({1}) is not supported", unsupportedValue, typeof(TEnum)));
 
     /*
      * Stream
      */
     public static ArgumentException CreateArgumentMustBeReadableStream(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("stream does not support reading or already closed"),
         paramName
       );
 
     public static ArgumentException CreateArgumentMustBeWritableStream(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("stream does not support writing or already closed"),
         paramName
       );
 
     public static ArgumentException CreateArgumentMustBeSeekableStream(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("stream does not support seeking or already closed"),
         paramName
       );
 
     public static NotSupportedException CreateNotSupportedReadingStream()
-      => new NotSupportedException(Locale.GetText("stream does not support reading"));
+      => new(Locale.GetText("stream does not support reading"));
 
     public static NotSupportedException CreateNotSupportedWritingStream()
-      => new NotSupportedException(Locale.GetText("stream does not support writing"));
+      => new(Locale.GetText("stream does not support writing"));
 
     public static NotSupportedException CreateNotSupportedSeekingStream()
-      => new NotSupportedException(Locale.GetText("stream does not support seeking"));
+      => new(Locale.GetText("stream does not support seeking"));
 
     public static NotSupportedException CreateNotSupportedSettingStreamLength()
-      => new NotSupportedException(Locale.GetText("stream does not support setting length"));
+      => new(Locale.GetText("stream does not support setting length"));
 
     public static IOException CreateIOAttemptToSeekBeforeStartOfStream()
-      => new IOException(Locale.GetText("attempted to seek before start of stream"));
+      => new(Locale.GetText("attempted to seek before start of stream"));
 
     /*
      * IAsyncResult
      */
     public static ArgumentException CreateArgumentMustBeValidIAsyncResult(string paramName)
-      => new ArgumentException(
+      => new(
         Locale.GetText("invalid IAsyncResult"),
         paramName
       );
