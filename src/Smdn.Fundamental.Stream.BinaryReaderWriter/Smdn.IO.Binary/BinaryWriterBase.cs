@@ -151,7 +151,7 @@ namespace Smdn.IO.Binary {
 
       CheckDisposed();
 
-      var zeroes = new byte[Math.Min(count, 4096)];
+      var zeroes = new byte[Math.Min(count, 4096)]; // TODO: array pool
 
       for (; 0 < count; count -= zeroes.Length) {
         if (zeroes.Length < count)

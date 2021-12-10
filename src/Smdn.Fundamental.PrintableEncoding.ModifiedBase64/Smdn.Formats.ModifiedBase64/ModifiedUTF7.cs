@@ -97,7 +97,7 @@ namespace Smdn.Formats.ModifiedBase64 {
           continue;
         }
 
-        var nonPrintableChars = new byte[str.Length - index];
+        var nonPrintableChars = new byte[str.Length - index]; // TODO: array pool
         var len = 0;
 
         for (; index < str.Length; index++) {

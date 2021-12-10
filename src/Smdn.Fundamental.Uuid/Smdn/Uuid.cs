@@ -264,7 +264,7 @@ namespace Smdn {
          *
          *    o  Compute the hash of the name space ID concatenated with the name.
          */
-        var buffer = new byte[16 + name.Length];
+        var buffer = new byte[16 + name.Length]; // TODO: array pool
 
         namespaceId.GetBytes(buffer, 0, asBigEndian: true);
 
