@@ -28,7 +28,7 @@ namespace Smdn.IO.Streams.Filtering {
         throw new ObjectDisposedException(GetType().FullName);
     }
 
-    private IReadOnlyList<IFilter> filters;
+    private readonly IReadOnlyList<IFilter> filters;
     public IReadOnlyList<IFilter> Filters {
       get => filters;
       protected set => throw new NotImplementedException();
@@ -63,7 +63,7 @@ namespace Smdn.IO.Streams.Filtering {
     )
     {
       this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
-      this.filters = filters.Where(f => !(f is NullFilterImpl)).ToList() ?? throw new ArgumentNullException(nameof(filters));
+      this.filters = filters.Where(f => f is not NullFilterImpl).ToList() ?? throw new ArgumentNullException(nameof(filters));
       this.leaveStreamOpen = leaveStreamOpen;
       this.rawBuffer = new byte[
         MinimumBufferSize <= bufferSize
@@ -197,7 +197,7 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    private byte[] rawBuffer;
+    private readonly byte[] rawBuffer;
     private ReadOnlyMemory<byte> bufferReadCursor = ReadOnlyMemory<byte>.Empty;
     private long offset;
     private bool hasReachedEndOfStream;
