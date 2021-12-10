@@ -256,7 +256,7 @@ namespace Smdn.Formats {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool TryDecodeValue(byte data, bool allowUpperCase, bool allowLowerCase, out byte decodedValue)
     {
-      if (0x30 <= data && data <= 0x39) { // '0' 0x30 to '9' 0x39
+      if (data is >= 0x30 and <= 0x39) { // '0' 0x30 to '9' 0x39
         decodedValue = (byte)(data - 0x30);
         return true;
       }
@@ -286,7 +286,7 @@ namespace Smdn.Formats {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     internal static bool TryDecodeValue(char data, bool allowUpperCase, bool allowLowerCase, out byte decodedValue)
     {
-      if (0x30 <= data && data <= 0x39) { // '0' 0x30 to '9' 0x39
+      if (data is >= (char)0x30 and <= (char)0x39) { // '0' 0x30 to '9' 0x39
         decodedValue = (byte)(data - 0x30);
         return true;
       }
