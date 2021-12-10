@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
 using System.Collections.Generic;
+#endif
 
 namespace Smdn.Collections {
 #if !SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
