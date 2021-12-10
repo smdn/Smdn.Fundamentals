@@ -10,25 +10,11 @@ namespace Smdn.IO.Streams {
       get { CheckDisposed(); return stream; }
     }
 
-    public override bool CanSeek {
-      get { return !IsClosed && stream.CanSeek; }
-    }
-
-    public override bool CanRead {
-      get { return !IsClosed && stream.CanRead; }
-    }
-
-    public override bool CanWrite {
-      get { return !IsClosed && !readOnly && stream.CanWrite; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
+    public override bool CanSeek => !IsClosed && stream.CanSeek;
+    public override bool CanRead => !IsClosed && stream.CanRead;
+    public override bool CanWrite => !IsClosed && !readOnly && stream.CanWrite;
+    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+    private bool IsClosed => stream is null;
 
     public override long Position {
       get { CheckDisposed(); return stream.Position; }

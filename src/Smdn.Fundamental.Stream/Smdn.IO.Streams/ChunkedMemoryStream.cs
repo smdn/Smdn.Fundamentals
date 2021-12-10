@@ -37,25 +37,15 @@ namespace Smdn.IO.Streams {
     }
 
     private sealed class ChunkChain : IDisposable {
-      public int ChunkSize {
-        get { return chunkSize; }
-      }
+      public int ChunkSize { get; }
+      public long Length => ((chunkCount - 1) * ChunkSize) + lastChunkLength;
+      public long Position => (currentChunkIndex * ChunkSize) + currentChunkOffset;
 
-      public long Length {
-        get { return ((chunkCount - 1) * chunkSize) + lastChunkLength; }
-      }
-
-      public long Position {
-        get { return (currentChunkIndex * chunkSize) + currentChunkOffset; }
-      }
-
-      private int ReadableByteCount {
-        get { return ((currentChunk.Next == null) ? lastChunkLength : chunkSize) - currentChunkOffset; }
-      }
+      private int ReadableByteCount => ((currentChunk.Next is null) ? lastChunkLength : ChunkSize) - currentChunkOffset;
 
       public ChunkChain(int chunkSize, Allocator allocator)
       {
-        this.chunkSize = chunkSize;
+        this.ChunkSize = chunkSize;
         this.allocator = allocator;
 
         currentChunkOffset = 0;
@@ -64,7 +54,7 @@ namespace Smdn.IO.Streams {
       private Chunk TryGetFirstChunk(bool ensureCreated)
       {
         if (ensureCreated && firstChunk == null)
-          currentChunk = firstChunk = allocator(chunkSize);
+          currentChunk = firstChunk = allocator(ChunkSize);
 
         return firstChunk;
       }
@@ -98,14 +88,14 @@ namespace Smdn.IO.Streams {
         var chunk = TryGetFirstChunk(true);
 
         // allocate
-        while ((int)chunkSize <= length) {
+        while (ChunkSize <= length) {
           if (chunk.Next == null)
-            chunk.Next = allocator(chunkSize);
+            chunk.Next = allocator(ChunkSize);
 
           chunk = chunk.Next;
           chunkCount++;
 
-          length -= chunkSize;
+          length -= ChunkSize;
         }
 
         lastChunkLength = (int)length;
@@ -141,11 +131,11 @@ namespace Smdn.IO.Streams {
         currentChunk = TryGetFirstChunk(true);
         currentChunkIndex = 0;
 
-        while ((int)chunkSize <= offset) {
+        while (ChunkSize <= offset) {
           currentChunk = currentChunk.Next;
           currentChunkIndex++;
 
-          offset -= chunkSize;
+          offset -= ChunkSize;
         }
 
         currentChunkOffset = (int)offset;
@@ -196,7 +186,7 @@ namespace Smdn.IO.Streams {
       {
         TryGetFirstChunk(true);
 
-        if (chunkSize == currentChunkOffset)
+        if (ChunkSize == currentChunkOffset)
           MoveToNextChunk(true);
 
         currentChunk.Data[currentChunkOffset++] = @value;
@@ -210,10 +200,10 @@ namespace Smdn.IO.Streams {
         TryGetFirstChunk(true);
 
         for (; ; ) {
-          if (currentChunkOffset == chunkSize)
+          if (currentChunkOffset == ChunkSize)
             MoveToNextChunk(true);
 
-          var bytesToWrite = Math.Min(chunkSize - currentChunkOffset, count);
+          var bytesToWrite = Math.Min(ChunkSize - currentChunkOffset, count);
 
           Buffer.BlockCopy(buffer, offset, currentChunk.Data, currentChunkOffset, bytesToWrite);
 
@@ -236,7 +226,7 @@ namespace Smdn.IO.Streams {
           if (!write)
             return false;
 
-          currentChunk.Next = allocator(chunkSize);
+          currentChunk.Next = allocator(ChunkSize);
           chunkCount++;
           lastChunkLength = 0;
         }
@@ -270,17 +260,16 @@ namespace Smdn.IO.Streams {
             return buffer;
           }
           else {
-            Array.Copy(chunk.Data, 0, buffer, offset, chunkSize);
+            Array.Copy(chunk.Data, 0, buffer, offset, ChunkSize);
             // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, chunkSize);
 
             chunk = chunk.Next;
-            offset += chunkSize;
+            offset += ChunkSize;
           }
         }
       }
 
-      private readonly int chunkSize;
-      private Allocator allocator;
+      private readonly Allocator allocator;
       private Chunk firstChunk;
       private Chunk currentChunk;
 
@@ -290,25 +279,11 @@ namespace Smdn.IO.Streams {
       private int lastChunkLength = 0;
     }
 
-    public override bool CanSeek {
-      get { return !IsClosed /*&& true*/; }
-    }
-
-    public override bool CanRead {
-      get { return !IsClosed /*&& true*/; }
-    }
-
-    public override bool CanWrite {
-      get { return !IsClosed /*&& true*/; }
-    }
-
-    public override bool CanTimeout {
-      get { return false; }
-    }
-
-    private bool IsClosed {
-      get { return chain == null; }
-    }
+    public override bool CanSeek => !IsClosed /*&& true*/;
+    public override bool CanRead => !IsClosed /*&& true*/;
+    public override bool CanWrite => !IsClosed /*&& true*/;
+    public override bool CanTimeout => false;
+    private bool IsClosed => chain is null;
 
     public override long Position {
       get { CheckDisposed(); return chain.Position; }

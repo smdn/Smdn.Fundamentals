@@ -5,8 +5,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Smdn.IO;
-
 namespace Smdn.IO.Streams {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream :
@@ -35,21 +33,14 @@ namespace Smdn.IO.Streams {
 
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
     {
-      if (innerOrPartialStream == null)
+      if (innerOrPartialStream is null)
         throw new ArgumentNullException(nameof(innerOrPartialStream));
       if (offset < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
 
-      var partialStream = innerOrPartialStream as PartialStream;
-
-      if (partialStream == null) {
-        return new PartialStream(innerOrPartialStream, offset, length, true, true, seekToBegin);
-      }
-      else {
-        var innerStream = partialStream.InnerStream;
-
-        return new PartialStream(innerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin);
-      }
+      return innerOrPartialStream is PartialStream partialStream
+        ? new(partialStream.InnerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin)
+        : new(innerOrPartialStream, offset, length, true, true, seekToBegin);
     }
 #endregion
 
@@ -57,25 +48,12 @@ namespace Smdn.IO.Streams {
       get { CheckDisposed(); return stream; }
     }
 
-    public override bool CanSeek {
-      get { return !IsClosed && stream.CanSeek; }
-    }
+    public override bool CanSeek => !IsClosed && stream.CanSeek;
+    public override bool CanRead => !IsClosed && stream.CanRead;
+    public override bool CanWrite => !IsClosed && writable && stream.CanWrite;
+    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
 
-    public override bool CanRead {
-      get { return !IsClosed && stream.CanRead; }
-    }
-
-    public override bool CanWrite {
-      get { return !IsClosed && writable && stream.CanWrite; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
+    private bool IsClosed => stream is null;
 
     public override long Position {
       get { CheckDisposed(); return stream.Position - offset; }

@@ -23,7 +23,7 @@ namespace Smdn.IO {
 
     public static void CopyTo(
       this Stream stream,
-      System.IO.BinaryWriter writer,
+      BinaryWriter writer,
       int bufferSize = DefaultCopyBufferSize
     )
     {
@@ -48,7 +48,7 @@ namespace Smdn.IO {
 
     public static Task CopyToAsync(
       this Stream stream,
-      System.IO.BinaryWriter writer,
+      BinaryWriter writer,
       int bufferSize = DefaultCopyBufferSize,
       CancellationToken cancellationToken = default
     )
@@ -93,13 +93,13 @@ namespace Smdn.IO {
       if (initialCapacity < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(initialCapacity), initialCapacity);
 
-      using (var outStream = new MemoryStream(initialCapacity)) {
-        stream.CopyTo(outStream, readBufferSize);
+      using var outStream = new MemoryStream(initialCapacity);
 
-        outStream.Close();
+      stream.CopyTo(outStream, readBufferSize);
 
-        return outStream.ToArray();
-      }
+      outStream.Close();
+
+      return outStream.ToArray();
     }
 
     public static Task<byte[]> ReadToEndAsync(
@@ -120,13 +120,13 @@ namespace Smdn.IO {
 
       async Task<byte[]> ReadToEndAsyncCore()
       {
-        using (var outStream = new MemoryStream(initialCapacity)) {
-          await stream.CopyToAsync(outStream, readBufferSize, cancellationToken).ConfigureAwait(false);
+        using var outStream = new MemoryStream(initialCapacity);
 
-          outStream.Close();
+        await stream.CopyToAsync(outStream, readBufferSize, cancellationToken).ConfigureAwait(false);
 
-          return outStream.ToArray();
-        }
+        outStream.Close();
+
+        return outStream.ToArray();
       }
     }
 
