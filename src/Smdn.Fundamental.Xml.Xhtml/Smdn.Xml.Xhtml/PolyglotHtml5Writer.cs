@@ -8,11 +8,11 @@ using System.Xml;
 
 namespace Smdn.Xml.Xhtml {
   public class PolyglotHtml5Writer : XmlWriter {
-    public override XmlWriterSettings Settings  => settings;
-    public override WriteState WriteState       => baseWriter.WriteState;
-    public override string XmlLang              => baseWriter.XmlLang;
-    public override XmlSpace XmlSpace           => baseWriter.XmlSpace;
-    protected virtual XmlWriter BaseWriter      => baseWriter;
+    public override XmlWriterSettings Settings => settings;
+    public override WriteState WriteState => baseWriter.WriteState;
+    public override string XmlLang => baseWriter.XmlLang;
+    public override XmlSpace XmlSpace => baseWriter.XmlSpace;
+    protected virtual XmlWriter BaseWriter => baseWriter;
 
     private readonly XmlWriter baseWriter;
     private readonly XmlWriterSettings settings;
