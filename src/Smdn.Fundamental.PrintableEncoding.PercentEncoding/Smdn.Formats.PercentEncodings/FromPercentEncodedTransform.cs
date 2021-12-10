@@ -3,27 +3,13 @@
 using System;
 using System.Security.Cryptography;
 
-using Smdn.Formats;
-using Smdn.Text;
-
 namespace Smdn.Formats.PercentEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromPercentEncodedTransform : ICryptoTransform {
-    public bool CanTransformMultipleBlocks {
-      get { return true; }
-    }
-
-    public bool CanReuseTransform {
-      get { return true; }
-    }
-
-    public int InputBlockSize {
-      get { return 1; }
-    }
-
-    public int OutputBlockSize {
-      get { return 1; }
-    }
+    public bool CanTransformMultipleBlocks => true;
+    public bool CanReuseTransform => true;
+    public int InputBlockSize => 1;
+    public int OutputBlockSize => 1;
 
     public FromPercentEncodedTransform()
       : this(false)
@@ -40,10 +26,7 @@ namespace Smdn.Formats.PercentEncodings {
       disposed = true;
     }
 
-    void IDisposable.Dispose()
-    {
-      Clear();
-    }
+    void IDisposable.Dispose() => Clear();
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
@@ -128,7 +111,7 @@ namespace Smdn.Formats.PercentEncodings {
       return outputBuffer;
     }
 
-    private byte[] buffer = new byte[3];
+    private readonly byte[] buffer = new byte[3];
     private int bufferOffset = 0;
     private bool disposed = false;
     private readonly bool decodePlusToSpace;

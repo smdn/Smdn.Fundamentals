@@ -3,15 +3,12 @@
 using System;
 using System.Security.Cryptography;
 
-using Smdn.Formats;
-using Smdn.Text;
-
 namespace Smdn.Formats.PercentEncodings {
   /*
    * http://tools.ietf.org/html/rfc3986
    * RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax
    * 2.1. Percent-Encoding
-   * 
+   *
    * http://tools.ietf.org/html/rfc2396
    * RFC 2396 - Uniform Resource Identifiers (URI): Generic Syntax
    */
@@ -53,48 +50,24 @@ namespace Smdn.Formats.PercentEncodings {
       return octets;
     }
 
-    public bool CanTransformMultipleBlocks {
-      get { return true; }
-    }
-
-    public bool CanReuseTransform {
-      get { return true; }
-    }
-
-    public int InputBlockSize {
-      get { return 1; }
-    }
-
-    public int OutputBlockSize {
-      get { return 3; }
-    }
+    public bool CanTransformMultipleBlocks => true;
+    public bool CanReuseTransform => true;
+    public int InputBlockSize => 1;
+    public int OutputBlockSize => 3;
 
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode)
     {
-      switch (mode & ToPercentEncodedTransformMode.ModeMask) {
-        case ToPercentEncodedTransformMode.Rfc2396Uri:
-          escapeOctets = GetEscapeOctets(Rfc2396UriEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc2396Data:
-          escapeOctets = GetEscapeOctets(Rfc2396DataEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc3986Uri:
-          escapeOctets = GetEscapeOctets(Rfc3986UriEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc3986Data:
-          escapeOctets = GetEscapeOctets(Rfc3986DataEscapeChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc5092Uri:
-          escapeOctets = GetEscapeOctets(Rfc5092AChars);
-          break;
-        case ToPercentEncodedTransformMode.Rfc5092Path:
-          escapeOctets = GetEscapeOctets(Rfc5092BChars);
-          break;
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
-      }
+      escapeOctets = (mode & ToPercentEncodedTransformMode.ModeMask) switch {
+        ToPercentEncodedTransformMode.Rfc2396Uri  => GetEscapeOctets(Rfc2396UriEscapeChars),
+        ToPercentEncodedTransformMode.Rfc2396Data => GetEscapeOctets(Rfc2396DataEscapeChars),
+        ToPercentEncodedTransformMode.Rfc3986Uri  => GetEscapeOctets(Rfc3986UriEscapeChars),
+        ToPercentEncodedTransformMode.Rfc3986Data => GetEscapeOctets(Rfc3986DataEscapeChars),
+        ToPercentEncodedTransformMode.Rfc5092Uri  => GetEscapeOctets(Rfc5092AChars),
+        ToPercentEncodedTransformMode.Rfc5092Path => GetEscapeOctets(Rfc5092BChars),
+        _ => throw ExceptionUtils.CreateNotSupportedEnumValue(mode),
+      };
 
-      escapeSpaceToPlus = (int)(mode & ToPercentEncodedTransformMode.EscapeSpaceToPlus) != 0;
+      escapeSpaceToPlus = (mode & ToPercentEncodedTransformMode.EscapeSpaceToPlus) != 0;
     }
 
     public void Clear()
@@ -133,14 +106,13 @@ namespace Smdn.Formats.PercentEncodings {
       for (var i = 0; i < inputCount; i++) {
         var octet = inputBuffer[inputOffset++];
 
-        var escape =
-          !((0x30 <= octet && octet <= 0x39) || // DIGIT
-            (0x41 <= octet && octet <= 0x5a) || // UPALPHA
-            (0x61 <= octet && octet <= 0x7a) // LOWALPHA
-           ) &&
-          (octet < 0x20 || 0x80 <= octet);
+        var isPrintable = octet is >= 0x20 and < 0x80;
+        var isDigit = isPrintable && octet is >= 0x30 and <= 0x39; // DIGIT
+        var isUpAlpha = isPrintable && octet is >= 0x41 and <= 0x5a; // UPALPHA
+        var isLowAlpha = isPrintable && octet is >= 0x61 and <= 0x7a; // UPALPHA
+        var escape = !isPrintable && !(isDigit || isUpAlpha || isLowAlpha);
 
-        escape |= (0 <= Array.BinarySearch(escapeOctets, octet));
+        escape |= 0 <= Array.BinarySearch(escapeOctets, octet);
 
         if (escape) {
           if (octet == 0x20 && escapeSpaceToPlus) {
@@ -192,7 +164,7 @@ namespace Smdn.Formats.PercentEncodings {
     }
 
     private bool disposed = false;
-    private byte[] escapeOctets;
-    private bool escapeSpaceToPlus;
+    private readonly byte[] escapeOctets;
+    private readonly bool escapeSpaceToPlus;
   }
 }
