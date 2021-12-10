@@ -3,7 +3,6 @@
 using System;
 using System.Buffers.Binary;
 using System.Globalization;
-using System.Net;
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
 #endif
@@ -27,7 +26,9 @@ namespace Smdn {
     IComparable<Guid>,
     IComparable,
     IFormattable {
+#pragma warning disable CA1716
     public enum Namespace : int {
+#pragma warning restore CA1716
       RFC4122Dns      = 0x6ba7b810,
       RFC4122Url      = 0x6ba7b811,
       RFC4122IsoOid   = 0x6ba7b812,
@@ -46,15 +47,15 @@ namespace Smdn {
      *    The nil UUID is special form of UUID that is specified to have all
      *    128 bits set to zero.
      */
-    public static readonly Uuid Nil = new Uuid(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0 });
+    public static readonly Uuid Nil = new(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0 });
 
     /*
      * Appendix C. Appendix C - Some Name Space IDs
      */
-    public static readonly Uuid RFC4122NamespaceDns     = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
-    public static readonly Uuid RFC4122NamespaceUrl     = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
-    public static readonly Uuid RFC4122NamespaceIsoOid  = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
-    public static readonly Uuid RFC4122NamespaceX500    = new Uuid(new byte[] { 0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceDns     = new(new byte[] { 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceUrl     = new(new byte[] { 0x6b, 0xa7, 0xb8, 0x11, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceIsoOid  = new(new byte[] { 0x6b, 0xa7, 0xb8, 0x12, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
+    public static readonly Uuid RFC4122NamespaceX500    = new(new byte[] { 0x6b, 0xa7, 0xb8, 0x14, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8 }, 0, isBigEndian: true);
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     public static Uuid NewUuid() => CreateTimeBased();
@@ -66,7 +67,7 @@ namespace Smdn {
 
       Nonce.Fill(bytes);
 
-      return (bytes[0] << 8 | bytes[1]) & 0x3fff;
+      return ((bytes[0] << 8) | bytes[1]) & 0x3fff;
     }
 
     private static DateTime GetTimestamp()
@@ -135,12 +136,12 @@ namespace Smdn {
       /*
        *    o  Determine the values for the UTC-based timestamp and clock
        *       sequence to be used in the UUID, as described in Section 4.2.1.
-       * 
+       *
        *    o  For the purposes of this algorithm, consider the timestamp to be a
        *       60-bit unsigned integer and the clock sequence to be a 14-bit
        *       unsigned integer.  Sequentially number the bits in a field,
        *       starting with zero for the least significant bit.
-       * 
+       *
        */
       if (timestamp.Kind != DateTimeKind.Utc)
         timestamp = timestamp.ToUniversalTime();
@@ -148,7 +149,7 @@ namespace Smdn {
       if (timestamp < timestampEpoch)
         throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(timestampEpoch, nameof(timestamp), timestamp);
 
-      if (clock < 0 || 0x3fff <= clock)
+      if (clock is < 0 or >= 0x3fff)
         throw new ArgumentOutOfRangeException(nameof(clock), clock, "must be 14-bit unsigned integer");
 
       if (node == null)
@@ -215,13 +216,13 @@ namespace Smdn {
 
     public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version)
     {
-      switch (ns) {
-        case Namespace.RFC4122Dns: return CreateNameBased(name, RFC4122NamespaceDns, version);
-        case Namespace.RFC4122Url: return CreateNameBased(name, RFC4122NamespaceUrl, version);
-        case Namespace.RFC4122IsoOid: return CreateNameBased(name, RFC4122NamespaceIsoOid, version);
-        case Namespace.RFC4122X500: return CreateNameBased(name, RFC4122NamespaceX500, version);
-        default: throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(ns), ns);
-      }
+      return ns switch {
+        Namespace.RFC4122Dns => CreateNameBased(name, RFC4122NamespaceDns, version),
+        Namespace.RFC4122Url => CreateNameBased(name, RFC4122NamespaceUrl, version),
+        Namespace.RFC4122IsoOid => CreateNameBased(name, RFC4122NamespaceIsoOid, version),
+        Namespace.RFC4122X500 => CreateNameBased(name, RFC4122NamespaceX500, version),
+        _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(ns), ns),
+      };
     }
 
     public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version)
@@ -244,21 +245,23 @@ namespace Smdn {
          *   o  Allocate a UUID to use as a "name space ID" for all UUIDs
          *       generated from names in that name space; see Appendix C for some
          *       pre-defined values.
-         * 
+         *
          *    o  Choose either MD5 [4] or SHA-1 [8] as the hash algorithm; If
          *       backward compatibility is not an issue, SHA-1 is preferred.
          */
-        switch (version) {
-          case UuidVersion.NameBasedMD5Hash: hashAlgorithm = MD5.Create(); break;
-          case UuidVersion.NameBasedSHA1Hash: hashAlgorithm = SHA1.Create(); break;
-          default: throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5");
-        }
+        hashAlgorithm = version switch {
+#pragma warning disable CA5350, CA5351
+          UuidVersion.NameBasedMD5Hash => MD5.Create(),
+          UuidVersion.NameBasedSHA1Hash => SHA1.Create(),
+#pragma warning restore CA5350, CA5351
+          _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5"),
+        };
 
-        /* 
+        /*
          *    o  Convert the name to a canonical sequence of octets (as defined by
          *       the standards or conventions of its name space); put the name
          *       space ID in network byte order.
-         * 
+         *
          *    o  Compute the hash of the name space ID concatenated with the name.
          */
         var buffer = new byte[16 + name.Length];
@@ -272,10 +275,10 @@ namespace Smdn {
         /*
          *    o  Set octets zero through 3 of the time_low field to octets zero
          *       through 3 of the hash.
-         * 
+         *
          *    o  Set octets zero and one of the time_mid field to octets 4 and 5 of
          *       the hash.
-         * 
+         *
          *    o  Set octets zero and one of the time_hi_and_version field to octets
          *       6 and 7 of the hash.
          */
@@ -284,19 +287,19 @@ namespace Smdn {
          *    o  Set the four most significant bits (bits 12 through 15) of the
          *       time_hi_and_version field to the appropriate 4-bit version number
          *       from Section 4.1.3.
-         * 
+         *
          *    o  Set the clock_seq_hi_and_reserved field to octet 8 of the hash.
-         * 
+         *
          *    o  Set the two most significant bits (bits 6 and 7) of the
          *       clock_seq_hi_and_reserved to zero and one, respectively.
          */
 
         /*
          *    o  Set the clock_seq_low field to octet 9 of the hash.
-         * 
+         *
          *    o  Set octets zero through five of the node field to octets 10
          *       through 15 of the hash.
-         * 
+         *
          *    o  Convert the resulting UUID to local byte order.
          */
         return new Uuid(hash.AsSpan(0, 16), version, isBigEndian: true);
@@ -362,53 +365,41 @@ namespace Smdn {
      */
     /* Octet# */
     /*   0- 3 */
-    [FieldOffset( 0)] private uint time_low; // host order
+    [FieldOffset( 0)] private readonly uint time_low; // host order
     /*   4- 5 */
-    [FieldOffset( 4)] private ushort time_mid; // host order
+    [FieldOffset( 4)] private readonly ushort time_mid; // host order
     /*   6- 7 */
-    [FieldOffset( 6)] private ushort time_hi_and_version; // host order
+    [FieldOffset( 6)] private readonly ushort time_hi_and_version; // host order
     /*   8    */
-    [FieldOffset( 8)] private byte clock_seq_hi_and_reserved;
+    [FieldOffset( 8)] private readonly byte clock_seq_hi_and_reserved;
     /*   9    */
-    [FieldOffset( 9)] private byte clock_seq_low;
+    [FieldOffset( 9)] private readonly byte clock_seq_low;
     /*  10-15 */
-    [FieldOffset(10)] private Node node;
+    [FieldOffset(10)] private readonly Node node;
 
-    [FieldOffset( 0)] private ulong fields_high;
-    [FieldOffset( 8)] private ulong fields_low;
+    [FieldOffset( 0)] private readonly ulong fields_high;
+    [FieldOffset( 8)] private readonly ulong fields_low;
 
     /// <value>time_low; The low field of the timestamp.</value>
     [CLSCompliant(false)]
-    public uint TimeLow {
-      get { return time_low; }
-    }
+    public uint TimeLow => time_low;
 
     /// <value>time_mid; The middle field of the timestamp.</value>
     [CLSCompliant(false)]
-    public ushort TimeMid {
-      get { return time_mid; }
-    }
+    public ushort TimeMid => time_mid;
 
     /// <value>time_hi_and_version; The high field of the timestamp multiplexed with the version number.</value>
     [CLSCompliant(false)]
-    public ushort TimeHighAndVersion {
-      get { return time_hi_and_version; }
-    }
+    public ushort TimeHighAndVersion => time_hi_and_version;
 
     /// <value>clock_seq_hi_and_reserved; The high field of the clock sequence multiplexed with the variant.</value>
-    public byte ClockSeqHighAndReserved {
-      get { return clock_seq_hi_and_reserved; }
-    }
+    public byte ClockSeqHighAndReserved => clock_seq_hi_and_reserved;
 
     /// <value>clock_seq_low; The low field of the clock sequence.</value>
-    public byte ClockSeqLow {
-      get { return clock_seq_low; }
-    }
+    public byte ClockSeqLow => clock_seq_low;
 
     /// <value>node;The spatially unique node identifier.</value>
-    public byte[] Node {
-      get { return new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 }; }
-    }
+    public byte[] Node => new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 };
 
     /*
      * 4.1.4. Timestamp
@@ -417,12 +408,10 @@ namespace Smdn {
      *    nanosecond intervals since 00:00:00.00, 15 October 1582 (the date of
      *    Gregorian reform to the Christian calendar).
      */
-    private static readonly DateTime timestampEpoch = new DateTime(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
-    internal static readonly DateTimeOffset TimeStampEpoch = new DateTimeOffset(1582, 10, 15, 0, 0, 0, TimeSpan.Zero);
+    private static readonly DateTime timestampEpoch = new(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
+    internal static readonly DateTimeOffset TimeStampEpoch = new(1582, 10, 15, 0, 0, 0, TimeSpan.Zero);
 
-    public DateTime Timestamp {
-      get { return timestampEpoch.AddTicks((((long)(time_hi_and_version & 0x0fff) << 48) | ((long)time_mid << 32) | (long)time_low)); }
-    }
+    public DateTime Timestamp => timestampEpoch.AddTicks(((long)(time_hi_and_version & 0x0fff) << 48) | ((long)time_mid << 32) | time_low);
 
     /*
      * 4.1.5. Clock Sequence
@@ -430,9 +419,7 @@ namespace Smdn {
      *    duplicates that could arise when the clock is set backwards in time
      *    or if the node ID changes.
      */
-    public int Clock {
-      get { return ((int)(clock_seq_hi_and_reserved & 0x3f) << 8) | (int)clock_seq_low; }
-    }
+    public int Clock => ((clock_seq_hi_and_reserved & 0x3f) << 8) | clock_seq_low;
 
     public string IEEE802MacAddress => node.ToString("x");
 
@@ -451,28 +438,20 @@ namespace Smdn {
 
     public Variant VariantField {
       get {
-        switch (clock_seq_hi_and_reserved & 0xe0) {
-          // 0b0xx00000
-          case 0x00:
-          case 0x20:
-          case 0x40:
-          case 0x60:
-            return Variant.NCSReserved;
-
-          // 0b10x00000
-          case 0x80:
-          case 0xa0:
-            return Variant.RFC4122;
-
-          // 0b11000000
-          case 0xc0:
-            return Variant.MicrosoftReserved;
-
-          // 0b11100000
-          // case 0xe0:
-          default:
-            return Variant.Reserved;
-        }
+        return (clock_seq_hi_and_reserved & 0xe0) switch {
+          // 0b_0_xx_00000
+          0b_0_00_00000 or
+          0b_0_01_00000 or
+          0b_0_10_00000 or
+          0b_0_11_00000 => Variant.NCSReserved,
+          // 0b_10_x_00000
+          0b_10_0_00000 or
+          0b_10_1_00000 => Variant.RFC4122,
+          // 0b_1100_0000
+          0b_1100_0000 => Variant.MicrosoftReserved,
+          // 0b_11100000
+          _ => Variant.Reserved,
+        };
       }
     }
 
@@ -559,17 +538,17 @@ namespace Smdn {
       Node node
     )
     {
-      this.fields_low = 0;
-      this.fields_high = 0;
+      fields_low = 0;
+      fields_high = 0;
 
       /*
        *    o  Set the time_low field equal to the least significant 32 bits
        *       (bits zero through 31) of the timestamp in the same order of
        *       significance.
-       * 
+       *
        *    o  Set the time_mid field equal to bits 32 through 47 from the
        *       timestamp in the same order of significance.
-       * 
+       *
        *    o  Set the 12 least significant bits (bits zero through 11) of the
        *       time_hi_and_version field equal to bits 48 through 59 from the
        *       timestamp in the same order of significance.
@@ -580,11 +559,11 @@ namespace Smdn {
        *       time_hi_and_version field to the 4-bit version number
        *       corresponding to the UUID version being created, as shown in the
        *       table above.
-       * 
+       *
        *    o  Set the clock_seq_low field to the eight least significant bits
        *       (bits zero through 7) of the clock sequence in the same order of
        *       significance.
-       * 
+       *
        *    o  Set the 6 least significant bits (bits zero through 5) of the
        *       clock_seq_hi_and_reserved field to the 6 most significant bits
        *       (bits 8 through 13) of the clock sequence in the same order of
@@ -594,20 +573,21 @@ namespace Smdn {
       /*
        *    o  Set the two most significant bits (bits 6 and 7) of the
        *       clock_seq_hi_and_reserved to zero and one, respectively.
-       * 
+       *
        *    o  Set the node field to the 48-bit IEEE address in the same order of
        *       significance as the address.
        */
-      this.time_low = unchecked((uint)time);
-      this.time_mid = unchecked((ushort)(time >> 32));
-      this.time_hi_and_version = RFC4122FieldsTimeHiAndVersion(unchecked((ushort)(time >> 48)), version);
-      this.clock_seq_hi_and_reserved = RFC4122FieldsClockSeqHiAndReserved(unchecked((byte)(clock_seq >> 8)));
-      this.clock_seq_low = unchecked((byte)clock_seq);
+      time_low = unchecked((uint)time);
+      time_mid = unchecked((ushort)(time >> 32));
+      time_hi_and_version = RFC4122FieldsTimeHiAndVersion(unchecked((ushort)(time >> 48)), version);
+      clock_seq_hi_and_reserved = RFC4122FieldsClockSeqHiAndReserved(unchecked((byte)(clock_seq >> 8)));
+      clock_seq_low = unchecked((byte)clock_seq);
+
       this.node = node;
     }
 
-    public Uuid(Guid guid)
-      : this(guid.ToString())
+    public Uuid(Guid guidValue)
+      : this(guidValue.ToString())
     {
     }
 
@@ -638,19 +618,19 @@ namespace Smdn {
         throw new ArgumentException($"length must be 16", nameof(octets));
 
       if (isBigEndian) {
-        this.time_low = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
-        this.time_mid = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4, 2));
-        this.time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6, 2));
+        time_low = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
+        time_mid = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4, 2));
+        time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6, 2));
       }
       else {
-        this.time_low = BinaryPrimitives.ReadUInt32LittleEndian(octets.Slice(0, 4));
-        this.time_mid = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4, 2));
-        this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6, 2));
+        time_low = BinaryPrimitives.ReadUInt32LittleEndian(octets.Slice(0, 4));
+        time_mid = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4, 2));
+        time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6, 2));
       }
 
-      this.clock_seq_hi_and_reserved = octets[8];
-      this.clock_seq_low = octets[9];
-      this.node = new Node(octets.Slice(10, 6));
+      clock_seq_hi_and_reserved = octets[8];
+      clock_seq_low = octets[9];
+      node = new Node(octets.Slice(10, 6));
     }
 
     internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version, bool isBigEndian = true)
@@ -658,27 +638,34 @@ namespace Smdn {
       if (octets.Length != 16)
         throw new ArgumentException("length must be exact 16", nameof(octets));
 
-      this.fields_low = 0;
-      this.fields_high = 0;
+      fields_low = 0;
+      fields_high = 0;
 
       if (isBigEndian) {
-        this.time_low = BinaryPrimitives.ReadUInt32BigEndian(octets);
-        this.time_mid = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4));
-        this.time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6));
+        time_low = BinaryPrimitives.ReadUInt32BigEndian(octets);
+        time_mid = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(4));
+        time_hi_and_version = BinaryPrimitives.ReadUInt16BigEndian(octets.Slice(6));
       }
       else {
-        this.time_low = BinaryPrimitives.ReadUInt32LittleEndian(octets);
-        this.time_mid = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
-        this.time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6));
+        time_low = BinaryPrimitives.ReadUInt32LittleEndian(octets);
+        time_mid = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(4));
+        time_hi_and_version = BinaryPrimitives.ReadUInt16LittleEndian(octets.Slice(6));
       }
 
-      this.clock_seq_hi_and_reserved = octets[8];
-      this.clock_seq_low = octets[9];
-      this.node = new Node(octets.Slice(10));
+      clock_seq_hi_and_reserved = octets[8];
+      clock_seq_low = octets[9];
+      node =
+#if SYSTEM_INDEX && SYSTEM_RANGE
+        new(octets[10..]);
+#else
+#pragma warning disable IDE0057
+        new(octets.Slice(10));
+#pragma warning restore IDE0057
+#endif
 
       // overwrite RFC 4122 fields
-      this.time_hi_and_version = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
-      this.clock_seq_hi_and_reserved = RFC4122FieldsClockSeqHiAndReserved(clock_seq_hi_and_reserved);
+      time_hi_and_version = RFC4122FieldsTimeHiAndVersion(time_hi_and_version, version);
+      clock_seq_hi_and_reserved = RFC4122FieldsClockSeqHiAndReserved(clock_seq_hi_and_reserved);
     }
 
     public Uuid(string uuid)
@@ -691,21 +678,27 @@ namespace Smdn {
       var fields = uuid.Split('-');
 
       if (fields.Length < 5)
-        throw new FormatException(string.Format("invalid UUID: {0}", uuid));
+        throw new FormatException($"invalid UUID: {uuid}");
 
-      if (fields[0].Length != 8 || !uint.TryParse(fields[0], NumberStyles.HexNumber, null, out this.time_low))
-        throw new FormatException(string.Format("invalid UUID (time_low): {0}", uuid));
-      if (fields[1].Length != 4 || !ushort.TryParse(fields[1], NumberStyles.HexNumber, null, out this.time_mid))
-        throw new FormatException(string.Format("invalid UUID (time_mid): {0}", uuid));
-      if (fields[2].Length != 4 || !ushort.TryParse(fields[2], NumberStyles.HexNumber, null, out this.time_hi_and_version))
-        throw new FormatException(string.Format("invalid UUID (time_hi_and_version): {0}", uuid));
+      if (fields[0].Length != 8 || !uint.TryParse(fields[0], NumberStyles.HexNumber, null, out time_low))
+        throw new FormatException($"invalid UUID (time_low): {uuid}");
+      if (fields[1].Length != 4 || !ushort.TryParse(fields[1], NumberStyles.HexNumber, null, out time_mid))
+        throw new FormatException($"invalid UUID (time_mid): {uuid}");
+      if (fields[2].Length != 4 || !ushort.TryParse(fields[2], NumberStyles.HexNumber, null, out time_hi_and_version))
+        throw new FormatException($"invalid UUID (time_hi_and_version): {uuid}");
 
-      if (fields[3].Length != 4 ||
-          !byte.TryParse(fields[3].Substring(0, 2), NumberStyles.HexNumber, null, out this.clock_seq_hi_and_reserved) ||
-          !byte.TryParse(fields[3].Substring(2, 2), NumberStyles.HexNumber, null, out this.clock_seq_low))
-        throw new FormatException(string.Format("invalid UUID (clock_seq_hi_and_reserved or clock_seq_low): {0}", uuid));
+      if (
+        fields[3].Length != 4 ||
+#pragma warning disable IDE0057
+        !byte.TryParse(fields[3].Substring(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
+        !byte.TryParse(fields[3].Substring(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
+#pragma warning restore IDE0057
+      ) {
+        throw new FormatException($"invalid UUID (clock_seq_hi_and_reserved or clock_seq_low): {uuid}");
+      }
+
       if (fields[4].Length != 12)
-        throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
+        throw new FormatException($"invalid UUID (node): {uuid}");
 
 #if NETSTANDARD2_1_OR_GREATER
       if (
@@ -722,63 +715,48 @@ namespace Smdn {
       this.node = new Node(n0, n1, n2, n3, n4, n5);
 #else
       if (
+#pragma warning disable IDE0057
         !byte.TryParse(fields[4].Substring(0, 2), NumberStyles.HexNumber, null, out var n0) ||
         !byte.TryParse(fields[4].Substring(2, 2), NumberStyles.HexNumber, null, out var n1) ||
         !byte.TryParse(fields[4].Substring(4, 2), NumberStyles.HexNumber, null, out var n2) ||
         !byte.TryParse(fields[4].Substring(6, 2), NumberStyles.HexNumber, null, out var n3) ||
         !byte.TryParse(fields[4].Substring(8, 2), NumberStyles.HexNumber, null, out var n4) ||
         !byte.TryParse(fields[4].Substring(10, 2), NumberStyles.HexNumber, null, out var n5)
+#pragma warning restore IDE0057
       ) {
-        throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
+        throw new FormatException($"invalid UUID (node): {uuid}");
       }
 
-      this.node = new Node(n0, n1, n2, n3, n4, n5);
+      node = new Node(n0, n1, n2, n3, n4, n5);
 #endif
     }
 
     #region "comparison"
-    public static bool operator <(Uuid x, Uuid y)
-    {
-      return (x.CompareTo(y) < 0);
-    }
-
-    public static bool operator <=(Uuid x, Uuid y)
-    {
-      return (x.CompareTo(y) <= 0);
-    }
-
-    public static bool operator >(Uuid x, Uuid y)
-    {
-      return y < x;
-    }
-
-    public static bool operator >=(Uuid x, Uuid y)
-    {
-      return y <= x;
-    }
+    public static bool operator <(Uuid x, Uuid y) => x.CompareTo(y) < 0;
+    public static bool operator <=(Uuid x, Uuid y) => x.CompareTo(y) <= 0;
+    public static bool operator >(Uuid x, Uuid y) => y < x;
+    public static bool operator >=(Uuid x, Uuid y) => y <= x;
 
     public int CompareTo(object obj)
     {
       if (obj == null)
         return 1;
-      else if (obj is Uuid)
-        return CompareTo((Uuid)obj);
-      else if (obj is Guid)
-        return CompareTo((Guid)obj);
+      else if (obj is Uuid uuid)
+        return CompareTo(uuid);
+      else if (obj is Guid guid)
+        return CompareTo(guid);
       else
         throw new ArgumentException("obj is not Uuid", nameof(obj));
     }
 
     public int CompareTo(Guid other)
-    {
-      return CompareTo((Uuid)other);
-    }
+      => CompareTo((Uuid)other);
 
     public int CompareTo(Uuid other)
     {
       int ret;
 
-      if ((ret = (int)((long)this.time_low - (long)other.time_low)) != 0)
+      if ((ret = (int)(this.time_low - other.time_low)) != 0)
         return ret;
 
       if ((ret = this.time_mid - other.time_mid) != 0)
@@ -811,22 +789,15 @@ namespace Smdn {
     #endregion
 
     #region "equality"
-    public static bool operator ==(Uuid x, Uuid y)
-    {
-      return x.fields_high == y.fields_high && x.fields_low == y.fields_low;
-    }
-
-    public static bool operator !=(Uuid x, Uuid y)
-    {
-      return x.fields_high != y.fields_high || x.fields_low != y.fields_low;
-    }
+    public static bool operator ==(Uuid x, Uuid y) => x.fields_high == y.fields_high && x.fields_low == y.fields_low;
+    public static bool operator !=(Uuid x, Uuid y) => x.fields_high != y.fields_high || x.fields_low != y.fields_low;
 
     public override bool Equals(object obj)
     {
-      if (obj is Uuid)
-        return Equals((Uuid)obj);
-      else if (obj is Guid)
-        return Equals((Guid)obj);
+      if (obj is Uuid uuid)
+        return Equals(uuid);
+      else if (obj is Guid guid)
+        return Equals(guid);
       else
         return false;
     }
@@ -836,20 +807,12 @@ namespace Smdn {
     #endregion
 
     #region "conversion"
-    public static explicit operator Guid(Uuid @value)
-    {
-      return @value.ToGuid();
-    }
+    public static explicit operator Guid(Uuid @value) => @value.ToGuid();
 
-    public static explicit operator Uuid(Guid @value)
-    {
-      return new Uuid(@value);
-    }
+    public static explicit operator Uuid(Guid @value) => new(@value);
 
     public Guid ToGuid()
-    {
-      return new Guid(ToString(null, null));
-    }
+      => new(ToString(null, null));
 
     public void GetBytes(byte[] buffer, int startIndex)
       => GetBytes(buffer, startIndex, asBigEndian: !BitConverter.IsLittleEndian);
@@ -898,92 +861,77 @@ namespace Smdn {
     #endregion
 
     public override int GetHashCode()
-    {
-      return fields_high.GetHashCode() ^ fields_low.GetHashCode();
-    }
+      => fields_high.GetHashCode() ^ fields_low.GetHashCode();
 
     public override string ToString()
-    {
-      return ToString(null, null);
-    }
+      => ToString(null, null);
 
     public string ToString(string format)
-    {
-      return ToString(format, null);
-    }
+      => ToString(format, null);
 
     public string ToString(string format, IFormatProvider formatProvider)
     {
-      if (string.IsNullOrEmpty(format))
-        format = "D";
+      if (format == "X") {
+        const string xopen = "{";
+        const string xclose = "}";
 
-      switch (format) {
-        case "N":
-          return string.Format(
-            "{0:x8}{1:x4}{2:x4}{3:x2}{4:x2}{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
-            time_low,
-            time_mid,
-            time_hi_and_version,
-            clock_seq_hi_and_reserved,
-            clock_seq_low,
-            node.N0,
-            node.N1,
-            node.N2,
-            node.N3,
-            node.N4,
-            node.N5
-          );
-
-        case "D":
-        case "B":
-        case "P": {
-          var ret = string.Format(
-            "{0:x8}-{1:x4}-{2:x4}-{3:x2}{4:x2}-{5:x2}{6:x2}{7:x2}{8:x2}{9:x2}{10:x2}",
-            time_low,
-            time_mid,
-            time_hi_and_version,
-            clock_seq_hi_and_reserved,
-            clock_seq_low,
-            node.N0,
-            node.N1,
-            node.N2,
-            node.N3,
-            node.N4,
-            node.N5
-          );
-
-          if (format == "B")
-            return "{" + ret + "}";
-          else if (format == "P")
-            return "(" + ret + ")";
-          else
-            return ret;
-        }
-
-        case "X": {
-          // MS .NET bug
-          // var ret = string.Format("{{0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}}}}}",
-          var ret = string.Format(
-            "0x{0:x8},0x{1:x4},0x{2:x4},{{0x{3:x2},0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2}",
-            time_low,
-            time_mid,
-            time_hi_and_version,
-            clock_seq_hi_and_reserved,
-            clock_seq_low,
-            node.N0,
-            node.N1,
-            node.N2,
-            node.N3,
-            node.N4,
-            node.N5
-          );
-
-          return "{" + ret + "}}";
-        }
-
-        default:
-          throw new FormatException(string.Format("invalid format: {0}", format));
+#if SYSTEM_FORMATTABLESTRING
+        return FormattableString.Invariant(
+          $"{xopen}0x{time_low:x8},0x{time_mid:x4},0x{time_hi_and_version:x4},{xopen}0x{clock_seq_hi_and_reserved:x2},0x{clock_seq_low:x2},0x{node.N0:x2},0x{node.N1:x2},0x{node.N2:x2},0x{node.N3:x2},0x{node.N4:x2},0x{node.N5:x2}{xclose}{xclose}"
+        );
+#else
+        return string.Format(
+          CultureInfo.InvariantCulture,
+          "{0}0x{1:x8},0x{2:x4},0x{3:x4},{0}0x{4:x2},0x{5:x2},0x{6:x2},0x{7:x2},0x{8:x2},0x{9:x2},0x{10:x2},0x{11:x2}{12}{12}",
+          xopen,
+          time_low,
+          time_mid,
+          time_hi_and_version,
+          clock_seq_hi_and_reserved,
+          clock_seq_low,
+          node.N0,
+          node.N1,
+          node.N2,
+          node.N3,
+          node.N4,
+          node.N5,
+          xclose
+        );
+#endif
       }
+
+      var (open, close, separator) = format switch {
+        null or "" or "D" => (null, null, "-"),
+        "B" => ("{", "}", "-"),
+        "P" => ("(", ")", "-"),
+        "N" => (null, null, null),
+        _ => throw new FormatException($"invalid format: {format}"),
+      };
+
+#if SYSTEM_FORMATTABLESTRING
+      return FormattableString.Invariant(
+        $"{open}{time_low:x8}{separator}{time_mid:x4}{separator}{time_hi_and_version:x4}{separator}{clock_seq_hi_and_reserved:x2}{clock_seq_low:x2}{separator}{node.N0:x2}{node.N1:x2}{node.N2:x2}{node.N3:x2}{node.N4:x2}{node.N5:x2}{close}"
+      );
+#else
+      return string.Format(
+        CultureInfo.InvariantCulture,
+        "{0}{3:x8}{1}{4:x4}{1}{5:x4}{1}{6:x2}{7:x2}{1}{8:x2}{9:x2}{10:x2}{11:x2}{12:x2}{13:x2}{2}",
+        open,
+        separator,
+        close,
+        time_low,
+        time_mid,
+        time_hi_and_version,
+        clock_seq_hi_and_reserved,
+        clock_seq_low,
+        node.N0,
+        node.N1,
+        node.N2,
+        node.N3,
+        node.N4,
+        node.N5
+      );
+#endif
     }
   }
 }

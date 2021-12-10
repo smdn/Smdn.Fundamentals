@@ -5,8 +5,6 @@ using System;
 using System.Net.NetworkInformation;
 #endif
 
-using Smdn;
-
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   /*
    * RFC 4122 - A Universally Unique IDentifier (UUID) URN Namespace

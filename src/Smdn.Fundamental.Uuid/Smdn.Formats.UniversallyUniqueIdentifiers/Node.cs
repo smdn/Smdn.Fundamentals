@@ -44,7 +44,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       N5 = n5;
     }
 
-    /// <param name="node"/>must be 6 bytes.</param>
+    /// <param name="node"/>Length must be 6 bytes.</param>
     internal Node(ReadOnlySpan<byte> node)
     {
       N0 = node[0];
@@ -95,11 +95,11 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       if (string.IsNullOrEmpty(format))
         format = "X"; // as default
 
-      switch (format) {
-        case "X": return $"{N0:X2}:{N1:X2}:{N2:X2}:{N3:X2}:{N4:X2}:{N5:X2}";
-        case "x": return $"{N0:x2}:{N1:x2}:{N2:x2}:{N3:x2}:{N4:x2}:{N5:x2}";
-        default: throw new FormatException($"invalid format: {format}");
-      }
+      return format switch {
+        "X" => $"{N0:X2}:{N1:X2}:{N2:X2}:{N3:X2}:{N4:X2}:{N5:X2}",
+        "x" => $"{N0:x2}:{N1:x2}:{N2:x2}:{N3:x2}:{N4:x2}:{N5:x2}",
+        _ => throw new FormatException($"invalid format: {format}"),
+      };
     }
   }
 }

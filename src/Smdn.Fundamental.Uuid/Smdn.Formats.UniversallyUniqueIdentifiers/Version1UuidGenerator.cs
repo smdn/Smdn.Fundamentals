@@ -19,7 +19,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     }
 
     internal sealed class CurrentTimeStampSource : TimeStampSource {
-      public static readonly CurrentTimeStampSource Instance = new CurrentTimeStampSource();
+      public static readonly CurrentTimeStampSource Instance = new();
 
       public CurrentTimeStampSource() { }
 
@@ -112,7 +112,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     }
 
     public override Uuid GenerateNext()
-      => new Uuid(
+      => new(
         version: UuidVersion.Version1,
         time: timeStampSource.GetTimeStamp(),
         clock_seq: (ushort)(clockSequenceSource.GetClockSequence() & clockSequenceMask),

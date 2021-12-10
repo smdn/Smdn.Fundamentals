@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Security.Cryptography;
-using System.Threading;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   internal static class Nonce {
