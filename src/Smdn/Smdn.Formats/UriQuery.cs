@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Smdn.Formats {
   public static class UriQuery {

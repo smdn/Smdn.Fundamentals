@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Text;
-using System.Text.RegularExpressions;
 
 using Smdn.Xml.Xhtml;
 

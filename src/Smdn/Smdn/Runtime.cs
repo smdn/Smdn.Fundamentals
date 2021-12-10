@@ -6,30 +6,29 @@
 #endif
 
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
 namespace Smdn {
   public static class Runtime {
-    private static readonly RuntimeEnvironment runtimeEnvironment;
-    private static readonly string name;
+    public static RuntimeEnvironment RuntimeEnvironment { get; }
+    public static string Name { get; }
 
     static Runtime()
     {
       if (RuntimeInformation.FrameworkDescription.Contains(".NET Framework")) {
-        runtimeEnvironment = RuntimeEnvironment.NetFx;
-        name = ".NET Framework";
+        RuntimeEnvironment = RuntimeEnvironment.NetFx;
+        Name = ".NET Framework";
         return;
       }
       else if (RuntimeInformation.FrameworkDescription.Contains(".NET Core")) {
-        runtimeEnvironment = RuntimeEnvironment.NetCore;
-        name = ".NET Core";
+        RuntimeEnvironment = RuntimeEnvironment.NetCore;
+        Name = ".NET Core";
         return;
       }
       else if (RuntimeInformation.FrameworkDescription.Contains("Mono")) {
-        runtimeEnvironment = RuntimeEnvironment.Mono;
-        name = "Mono";
+        RuntimeEnvironment = RuntimeEnvironment.Mono;
+        Name = "Mono";
         // return; // mono?
       }
 
@@ -37,45 +36,29 @@ namespace Smdn {
         /*
          * http://mono-project.com/FAQ:_Technical
          */
-        runtimeEnvironment = RuntimeEnvironment.Mono;
-        name = "Mono";
+        RuntimeEnvironment = RuntimeEnvironment.Mono;
+        Name = "Mono";
       }
 #if false
       else if (Type.GetType("FXAssembly") != null) {
-        runtimeEnvironment = RuntimeEnvironment.NetFx;
-        name = ".NET Framework";
+        RuntimeEnvironment = RuntimeEnvironment.NetFx;
+        Name = ".NET Framework";
       }
       // XXX
       else if (typeof(Runtime).GetTypeInfo().Assembly.GetReferencedAssemblies().Any(n => n.Name.Equals("System.Runtime", StringComparison.Ordinal))) {
-        runtimeEnvironment = RuntimeEnvironment.NetCore;
-        name = ".NET Core";
+        RuntimeEnvironment = RuntimeEnvironment.NetCore;
+        Name = ".NET Core";
       }
 #endif
       else {
-        runtimeEnvironment = RuntimeEnvironment.Unknown;
-        name = ".NET Framework compatible";
+        RuntimeEnvironment = RuntimeEnvironment.Unknown;
+        Name = ".NET Framework compatible";
       }
     }
 
-    public static RuntimeEnvironment RuntimeEnvironment {
-      get { return runtimeEnvironment; }
-    }
-
-    public static string Name {
-      get { return name; }
-    }
-
-    public static bool IsRunningOnNetFx {
-      get { return runtimeEnvironment == RuntimeEnvironment.NetFx; }
-    }
-
-    public static bool IsRunningOnNetCore {
-      get { return runtimeEnvironment == RuntimeEnvironment.NetCore; }
-    }
-
-    public static bool IsRunningOnMono {
-      get { return runtimeEnvironment == RuntimeEnvironment.Mono; }
-    }
+    public static bool IsRunningOnNetFx => RuntimeEnvironment == RuntimeEnvironment.NetFx;
+    public static bool IsRunningOnNetCore => RuntimeEnvironment == RuntimeEnvironment.NetCore;
+    public static bool IsRunningOnMono => RuntimeEnvironment == RuntimeEnvironment.Mono;
 
     [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
     public static bool IsRunningOnWindows => Platform.IsRunningOnWindows;
@@ -87,7 +70,7 @@ namespace Smdn {
 
     public static Version Version {
       get {
-        switch (runtimeEnvironment) {
+        switch (RuntimeEnvironment) {
           case RuntimeEnvironment.NetFx:
           case RuntimeEnvironment.NetCore: {
             foreach (var s in RuntimeInformation.FrameworkDescription.Split(' ')) {

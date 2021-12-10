@@ -1,11 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 
 namespace Smdn.Text {
   public static class StringConversion {
@@ -32,27 +28,27 @@ namespace Smdn.Text {
 
     public static string ToStringNullable(Uri val)
     {
-      return (val == null) ? null : val.ToString();
+      return val?.ToString();
     }
 
     public static int? ToInt32Nullable(string val)
     {
-      return (val == null) ? (int?)null : int.Parse(val);
+      return (val == null) ? null : int.Parse(val);
     }
 
     public static string ToStringNullable(int? val)
     {
-      return (val == null) ? null : val.Value.ToString();
+      return val?.ToString();
     }
 
     public static bool? ToBooleanNullable(string val)
     {
-      return (val == null) ? (bool?)null : bool.Parse(val);
+      return (val == null) ? null : bool.Parse(val);
     }
 
     public static string ToStringNullable(bool? val)
     {
-      return (val == null) ? null : val.Value.ToString().ToLowerInvariant();
+      return val?.ToString()?.ToLowerInvariant();
     }
 
     [Obsolete("use Smdn.Collections.StringificationExtensions.Stringify instead")]
@@ -70,7 +66,7 @@ namespace Smdn.Text {
      */
     public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct, Enum
     {
-      return (val == null) ? null : (TEnum?)ToEnum<TEnum>(val, true);
+      return (val == null) ? null : ToEnum<TEnum>(val, true);
     }
 
     public static TEnum ToEnum<TEnum>(string value) where TEnum : Enum

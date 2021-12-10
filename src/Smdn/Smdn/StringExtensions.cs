@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Text;
 
 namespace Smdn {
   public static class StringExtensions {

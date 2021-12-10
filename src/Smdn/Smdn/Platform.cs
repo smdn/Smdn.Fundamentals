@@ -13,14 +13,13 @@ namespace Smdn {
       // System.BitConverter.IsLittleEndian
       unsafe {
         int i = 1;
-        byte* b = (byte*)&i;
+        var b = (byte*)&i;
 
-        if (b[0] == 1)
-          Endianness = Endianness.LittleEndian;
-        else if (b[3] == 1)
-          Endianness = Endianness.BigEndian;
-        else
-          Endianness = Endianness.Unknown;
+        Endianness = (b[0], b[3]) switch {
+          (1, 0) => Endianness.LittleEndian,
+          (0, 1) => Endianness.BigEndian,
+          _ => Endianness.Unknown,
+        };
       }
     }
 

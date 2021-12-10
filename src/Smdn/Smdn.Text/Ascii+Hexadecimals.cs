@@ -66,26 +66,12 @@ namespace Smdn.Text {
         var b = 0;
 
         foreach (var c in str) {
-          int val;
-
-          if ('0' <= c && c <= '9') {
-            val = (int)(c - '0');
-          }
-          else if ('a' <= c && c <= 'f') {
-            if (allowLowerCaseChar)
-              val = 0xa + (int)(c - 'a');
-            else
-              throw new FormatException("incorrect form");
-          }
-          else if ('A' <= c && c <= 'F') {
-            if (allowUpperCaseChar)
-              val = 0xa + (int)(c - 'A');
-            else
-              throw new FormatException("incorrect form");
-          }
-          else {
-            throw new FormatException("incorrect form");
-          }
+          var val = c switch {
+            >= '0' and <= '9' => c - '0',
+            >= 'a' and <= 'f' => allowLowerCaseChar ? 0xA + (c - 'a') : throw new FormatException("incorrect form"),
+            >= 'A' and <= 'F' => allowUpperCaseChar ? 0xA + (c - 'A') : throw new FormatException("incorrect form"),
+            _ => throw new FormatException("incorrect form"),
+          };
 
           if (high) {
             bytes[b] = (byte)(val << 4);

@@ -95,7 +95,7 @@ namespace Smdn.Text {
 
       public static bool IsDecimalNumber(byte b)
       {
-        return (0x30 <= b && b <= 0x39);
+        return b is >= 0x30 and <= 0x39;
       }
     }
   }
