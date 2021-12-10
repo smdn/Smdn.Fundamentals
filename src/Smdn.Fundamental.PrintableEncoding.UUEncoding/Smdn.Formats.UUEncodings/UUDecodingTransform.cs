@@ -3,26 +3,13 @@
 using System;
 using System.Security.Cryptography;
 
-using Smdn.Text;
-
 namespace Smdn.Formats.UUEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class UUDecodingTransform : ICryptoTransform {
-    public bool CanTransformMultipleBlocks {
-      get { return true; }
-    }
-
-    public bool CanReuseTransform {
-      get { return true; }
-    }
-
-    public int InputBlockSize {
-      get { return 1; }
-    }
-
-    public int OutputBlockSize {
-      get { return 3; }
-    }
+    public bool CanTransformMultipleBlocks => true;
+    public bool CanReuseTransform => true;
+    public int InputBlockSize => 1;
+    public int OutputBlockSize => 3;
 
     public UUDecodingTransform()
     {
@@ -72,7 +59,7 @@ namespace Smdn.Formats.UUEncodings {
 
         var octet = inputBuffer[inputOffset++];
 
-        if (octet == CR || octet == LF) {
+        if (octet is CR or LF) {
           /*
            * <newline>
            */
@@ -88,10 +75,10 @@ namespace Smdn.Formats.UUEncodings {
           /*
            * <length character>
            */
-          if (0x21 <= octet && octet <= 0x5f)
+          if (octet is >= 0x21 and <= 0x5f)
             // '!' 0x21 to '_' 0x5f
-            lineLength = (int)(octet - 0x20);
-          else if (octet == 0x20 || octet == 0x60)
+            lineLength = octet - 0x20;
+          else if (octet is 0x20 or 0x60)
             // SP 0x20 or '`' 0x60
             lineLength = 0;
           else
@@ -101,12 +88,12 @@ namespace Smdn.Formats.UUEncodings {
           /*
            * <formatted characters>
            */
-          if (0x21 <= octet && octet <= 0x5f) {
+          if (octet is >= 0x21 and <= 0x5f) {
             // '!' 0x21 to '_' 0x5f
-            buffer |= ((long)(octet - 0x20) << (6 * (3 - bufferOffset)));
+            buffer |= (long)(octet - 0x20) << (6 * (3 - bufferOffset));
             bufferOffset++;
           }
-          else if (octet == 0x20 || octet == 0x60) {
+          else if (octet is 0x20 or 0x60) {
             // SP 0x20 or '`' 0x60
             bufferOffset++;
             // buffer |= 0x00;

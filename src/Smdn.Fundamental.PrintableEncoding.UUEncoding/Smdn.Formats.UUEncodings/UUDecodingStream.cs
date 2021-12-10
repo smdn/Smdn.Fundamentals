@@ -3,15 +3,10 @@
 using System;
 using System.Buffers;
 using System.IO;
-using System.Text; // [net5] EncodingExtensions.GetString(Encoding, ReadOnlySequence<Byte>)
-using System.Text.RegularExpressions;
 
 using Smdn.Buffers;
-using Smdn.Formats;
 using Smdn.IO.Streams.LineOriented;
 using Smdn.Security.Cryptography;
-using Smdn.Text;
-using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.UUEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -23,34 +18,18 @@ namespace Smdn.Formats.UUEncodings {
       EndOfStream,
     }
 
-    public override bool CanSeek {
-      get { return false; }
-    }
-
-    public override bool CanRead {
-      get { return !IsClosed; }
-    }
-
-    public override bool CanWrite {
-      get { return false; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
+    public override bool CanSeek => false;
+    public override bool CanRead => !IsClosed;
+    public override bool CanWrite => false;
+    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+    private bool IsClosed => stream == null;
 
     public override long Position {
-      get { throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
-      set { throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
+      get => throw ExceptionUtils.CreateNotSupportedSeekingStream();
+      set => throw ExceptionUtils.CreateNotSupportedSeekingStream();
     }
 
-    public override long Length {
-      get { throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
-    }
+    public override long Length => throw ExceptionUtils.CreateNotSupportedSeekingStream();
 
     public string FileName {
       get {
@@ -76,7 +55,7 @@ namespace Smdn.Formats.UUEncodings {
     }
 
     public bool EndOfFile {
-      get { CheckDisposed(); return state == State.EndOfFile || state == State.EndOfStream; }
+      get { CheckDisposed(); return state is State.EndOfFile or State.EndOfStream; }
     }
 
     public UUDecodingStream(Stream baseStream)
@@ -131,7 +110,7 @@ namespace Smdn.Formats.UUEncodings {
 
       InternalSeekToNextFile();
 
-      return (state == State.DataLine);
+      return state == State.DataLine;
     }
 
     private static readonly ReadOnlyMemory<byte> headerLinePrefix = new[] { (byte)'b', (byte)'e', (byte)'g', (byte)'i', (byte)'n', (byte)' ' };
@@ -234,7 +213,7 @@ namespace Smdn.Formats.UUEncodings {
     {
       CheckDisposed();
 
-      if (state == State.EndOfFile || state == State.EndOfStream) {
+      if (state is State.EndOfFile or State.EndOfStream) {
         return -1;
       }
       else if (state == State.DataLine && 0 < dataLineRemainder) {
@@ -269,7 +248,7 @@ namespace Smdn.Formats.UUEncodings {
       if (state == State.Initial)
         InternalSeekToNextFile();
 
-      if (state == State.EndOfFile || state == State.EndOfStream)
+      if (state is State.EndOfFile or State.EndOfStream)
         return 0;
 
       var ret = 0;
@@ -290,7 +269,6 @@ namespace Smdn.Formats.UUEncodings {
             /*
              * footer line
              */
-            dataLine = null;
             dataLineRemainder = 0;
             state = State.EndOfFile;
             break;

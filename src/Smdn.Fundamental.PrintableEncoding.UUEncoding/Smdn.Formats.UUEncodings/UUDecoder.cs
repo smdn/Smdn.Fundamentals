@@ -21,7 +21,7 @@ namespace Smdn.Formats.UUEncodings {
 
       public Stream Stream {
         get { CheckDisposed(); return stream; }
-        internal set { stream = value; }
+        internal set => stream = value;
       }
 
       public void Dispose()
@@ -50,9 +50,9 @@ namespace Smdn.Formats.UUEncodings {
         if (path == null)
           throw new ArgumentNullException(nameof(path));
 
-        using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write)) {
-          stream.CopyTo(fileStream);
-        }
+        using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
+
+        stream.CopyTo(fileStream);
       }
 
       private Stream stream;
@@ -63,22 +63,20 @@ namespace Smdn.Formats.UUEncodings {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      using (var decodingStream = new UUDecodingStream(stream, true)) {
-        while (decodingStream.SeekToNextFile()) {
-          var s = new ChunkedMemoryStream();
+      using var decodingStream = new UUDecodingStream(stream, true);
 
-          decodingStream.CopyTo(s);
+      while (decodingStream.SeekToNextFile()) {
+        var s = new ChunkedMemoryStream();
 
-          s.Position = 0L;
+        decodingStream.CopyTo(s);
 
-          var entry = new FileEntry();
+        s.Position = 0L;
 
-          entry.FileName = decodingStream.FileName;
-          entry.Permissions = decodingStream.Permissions;
-          entry.Stream = s;
-
-          yield return entry;
-        }
+        yield return new FileEntry() {
+          FileName = decodingStream.FileName,
+          Permissions = decodingStream.Permissions,
+          Stream = s,
+        };
       }
     }
 
