@@ -14,14 +14,12 @@ namespace Smdn.Text.Unicode.ControlPictures {
 
       for (var i = 0; i < span.Length; i++) {
         // replace control characters to control pictures
-        if (0x00 <= span[i] && span[i] <= 0x20) // CO Control chars + SP
-          destination[i] = (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]); // U+2400-U+2420
-        else if (span[i] == 0x7F) // DEL
-          destination[i] = (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21); // U+2421 SYMBOL FOR DELETE
-        else if (span[i] == 0x85) // C1 NEL
-          destination[i] = (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24); // U+2424 SYMBOL FOR NEWLINE
-        else
-          destination[i] = (char)span[i];
+        destination[i] = span[i] switch {
+          >= 0x00 and <= 0x20 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]), // CO Control chars + SP -> U+2400-U+2420
+          0x7F => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21), // DEL -> U+2421 SYMBOL FOR DELETE
+          0x85 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24), // C1 NEL -> U+2424 SYMBOL FOR NEWLINE
+          _ => (char)span[i],
+        };
       }
 
       return true;
@@ -33,17 +31,18 @@ namespace Smdn.Text.Unicode.ControlPictures {
         return false;
 
       for (var i = 0; i < span.Length; i++) {
-        // replace control characters to control pictures
-        if (char.IsSurrogate(span[i]))
+        if (char.IsSurrogate(span[i])) {
           destination[i] = span[i];
-        else if (0x00 <= span[i] && span[i] <= 0x20) // CO Control chars + SP
-          destination[i] = (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]); // U+2400-U+2420
-        else if (span[i] == 0x7F) // DEL
-          destination[i] = (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21); // U+2421 SYMBOL FOR DELETE
-        else if (span[i] == 0x85) // C1 NEL
-          destination[i] = (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24); // U+2424 SYMBOL FOR NEWLINE
-        else
-          destination[i] = (char)span[i];
+          continue;
+        }
+
+        // replace control characters to control pictures
+        destination[i] = span[i] switch {
+          >= (char)0x00 and <= (char)0x20 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]), // CO Control chars + SP -> U+2400-U+2420
+          (char)0x7F => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21), // DEL -> U+2421 SYMBOL FOR DELETE
+          (char)0x85 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24), // C1 NEL -> U+2424 SYMBOL FOR NEWLINE
+          _ => span[i],
+        };
       }
 
       return true;
