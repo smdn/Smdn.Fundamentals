@@ -59,7 +59,8 @@ namespace Smdn.Security.Cryptography {
       var outputOffset = 0;
 
       if (transform.CanTransformMultipleBlocks) {
-        var bytesToTransform = (inputCount / transform.InputBlockSize) * transform.InputBlockSize;
+        var blocksToTransform = inputCount / transform.InputBlockSize;
+        var bytesToTransform = blocksToTransform * transform.InputBlockSize;
 
         outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
         inputOffset += bytesToTransform;
