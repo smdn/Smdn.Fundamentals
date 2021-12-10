@@ -20,29 +20,15 @@ namespace Smdn.IO.Streams.LineOriented {
       LF,
     }
 
-    public override bool CanSeek {
-      get { return !IsClosed && stream.CanSeek; }
-    }
-
-    public override bool CanRead {
-      get { return !IsClosed && stream.CanRead; }
-    }
-
-    public override bool CanWrite {
-      get { return !IsClosed && stream.CanWrite; }
-    }
-
-    public override bool CanTimeout {
-      get { return !IsClosed && stream.CanTimeout; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
+    public override bool CanSeek => !IsClosed && stream.CanSeek;
+    public override bool CanRead => !IsClosed && stream.CanRead;
+    public override bool CanWrite => !IsClosed && stream.CanWrite;
+    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+    private bool IsClosed => stream is null;
 
     public override long Position {
       get { CheckDisposed(); return stream.Position - bufRemain; }
-      set { Seek(value, SeekOrigin.Begin); }
+      set => Seek(value, SeekOrigin.Begin);
     }
 
     public override long Length {
@@ -72,12 +58,10 @@ namespace Smdn.IO.Streams.LineOriented {
       bool leaveStreamOpen = DefaultLeaveStreamOpen
     )
     {
-      if (stream == null)
-        throw new ArgumentNullException(nameof(stream));
       if (bufferSize < MinimumBufferSize)
         throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(MinimumBufferSize, nameof(bufferSize), bufferSize);
 
-      this.stream = stream;
+      this.stream = stream ?? throw new ArgumentNullException(nameof(stream));
       this.newLine = newLine.IsEmpty ? null : newLine.ToArray(); // XXX: allocation
       this.buffer = new byte[bufferSize];
       this.leaveStreamOpen = leaveStreamOpen;
@@ -220,11 +204,11 @@ namespace Smdn.IO.Streams.LineOriented {
           var count = bufOffset - bufCopyFrom;
 
           segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, count).ToArray()); // XXX
-          segmentHead = segmentHead ?? segmentTail;
+          segmentHead ??= segmentTail;
 
           retCount += count;
 
-          eos = (await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0);
+          eos = await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0;
 
           bufCopyFrom = bufOffset;
         }
@@ -249,7 +233,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       if (segmentHead == null || 0 < retLength - retCount) {
         segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray()); // XXX
-        segmentHead = segmentHead ?? segmentTail;
+        segmentHead ??= segmentTail;
       }
 
       var sequenceWithNewLine = new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength);
@@ -315,7 +299,19 @@ namespace Smdn.IO.Streams.LineOriented {
       if (bytesToRead.HasValue && bytesToRead <= bufRemain) {
         var count = (int)bytesToRead;
 
-        await targetStream.WriteAsync(buffer, bufOffset, count, cancellationToken).ConfigureAwait(false);
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+        await targetStream.WriteAsync(
+          buffer.AsMemory(bufOffset, count),
+#else
+#pragma warning disable CA1835
+        await targetStream.WriteAsync(
+          buffer,
+          bufOffset,
+          count,
+#pragma warning restore CA1835
+#endif
+          cancellationToken
+        ).ConfigureAwait(false);
 
         bufOffset += count;
         bufRemain -= count;
@@ -326,7 +322,19 @@ namespace Smdn.IO.Streams.LineOriented {
       var read = 0L;
 
       if (0 < bufRemain) {
-        await targetStream.WriteAsync(buffer, bufOffset, bufRemain, cancellationToken).ConfigureAwait(false);
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+        await targetStream.WriteAsync(
+          buffer.AsMemory(bufOffset, bufRemain),
+#else
+#pragma warning disable CA1835
+        await targetStream.WriteAsync(
+          buffer,
+          bufOffset,
+          bufRemain,
+#pragma warning restore CA1835
+#endif
+          cancellationToken
+        ).ConfigureAwait(false);
 
         read         = bufRemain;
         bytesToRead -= bufRemain;
@@ -340,12 +348,37 @@ namespace Smdn.IO.Streams.LineOriented {
           if (bytesToRead <= 0)
             break;
 
-          var r = await stream.ReadAsync(buffer, 0, (int)Math.Min(bytesToRead.Value, buffer.Length)).ConfigureAwait(false);
+          var r =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            await stream.ReadAsync(
+              buffer.AsMemory(0, (int)Math.Min(bytesToRead.Value, buffer.Length)),
+#else
+#pragma warning disable CA1835
+            await stream.ReadAsync(
+              buffer,
+              0,
+              (int)Math.Min(bytesToRead.Value, buffer.Length),
+#pragma warning restore CA1835
+#endif
+              cancellationToken
+            ).ConfigureAwait(false);
 
           if (r <= 0)
             break;
 
-          await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          await targetStream.WriteAsync(
+            buffer.AsMemory(0, r),
+#else
+#pragma warning disable CA1835
+          await targetStream.WriteAsync(
+            buffer,
+            0,
+            r,
+#pragma warning restore CA1835
+#endif
+            cancellationToken
+          ).ConfigureAwait(false);
 
           bytesToRead -= r;
           read        += r;
@@ -353,9 +386,34 @@ namespace Smdn.IO.Streams.LineOriented {
       }
       else {
         for (; ; ) {
-          var r = await stream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+          var r =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            await stream.ReadAsync(
+              buffer.AsMemory(),
+#else
+#pragma warning disable CA1835
+            await stream.ReadAsync(
+              buffer,
+              0,
+              buffer.Length,
+#pragma warning restore CA1835
+#endif
+              cancellationToken
+            ).ConfigureAwait(false);
 
-          await targetStream.WriteAsync(buffer, 0, r).ConfigureAwait(false);
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          await targetStream.WriteAsync(
+            buffer.AsMemory(0, r),
+#else
+#pragma warning disable CA1835
+          await targetStream.WriteAsync(
+            buffer,
+            0,
+            r,
+#pragma warning restore CA1835
+#endif
+            cancellationToken
+          ).ConfigureAwait(false);
 
           read += r;
 
@@ -437,7 +495,20 @@ namespace Smdn.IO.Streams.LineOriented {
         if (count <= 0)
           break;
 
-        var r = await stream.ReadAsync(destination, offset, count, cancellationToken).ConfigureAwait(false);
+        var r =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          await stream.ReadAsync(
+            destination.AsMemory(offset, count),
+#else
+#pragma warning disable CA1835
+          await stream.ReadAsync(
+            destination,
+            offset,
+            count,
+#pragma warning restore CA1835
+#endif
+            cancellationToken
+          ).ConfigureAwait(false);
 
         if (r <= 0)
           break;
@@ -453,7 +524,21 @@ namespace Smdn.IO.Streams.LineOriented {
     private async Task<int> FillBufferAsync(CancellationToken cancellationToken)
     {
       bufOffset = 0;
-      bufRemain = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken).ConfigureAwait(false);
+
+      bufRemain =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        await stream.ReadAsync(
+          buffer.AsMemory(),
+#else
+#pragma warning disable CA1835
+        await stream.ReadAsync(
+          buffer,
+          0,
+          buffer.Length,
+#pragma warning restore CA1835
+#endif
+          cancellationToken
+        ).ConfigureAwait(false);
 
       return bufRemain;
     }
