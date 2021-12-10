@@ -172,8 +172,8 @@ namespace Smdn.Formats.Mime {
           continue;
         }
 
-        if (lineFirst != null)
-          headerFields.Add(Result());
+        if (TryGetHeaderField(ref lineFirst, lineLast, offsetOfDelimiter, out var rawHeaderField))
+          headerFields.Add(converter(rawHeaderField, arg));
 
         // field       =  field-name ":" [ field-body ] CRLF
         // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
@@ -193,21 +193,31 @@ namespace Smdn.Formats.Mime {
         }
       }
 
-      if (lineFirst != null)
-        headerFields.Add(Result());
+      if (TryGetHeaderField(ref lineFirst, lineLast, offsetOfDelimiter, out var rawHeaderFieldFinal))
+        headerFields.Add(converter(rawHeaderFieldFinal, arg));
 
       return headerFields;
 
-      THeaderField Result()
+      static bool TryGetHeaderField(
+        ref HeaderFieldLineSegment first,
+        HeaderFieldLineSegment last,
+        int offsetOfDelimiter,
+        out RawHeaderField rawHeaderField
+      )
       {
-        var ret = new RawHeaderField(
-          new ReadOnlySequence<byte>(lineFirst, 0, lineLast, lineLast.Memory.Length),
+        rawHeaderField = default;
+
+        if (first is null)
+          return false;
+
+        rawHeaderField = new(
+          new ReadOnlySequence<byte>(first, 0, last, last.Memory.Length),
           offsetOfDelimiter
         );
 
-        lineFirst = null;
+        first = null;
 
-        return converter(ret, arg);
+        return true;
       }
     }
 
