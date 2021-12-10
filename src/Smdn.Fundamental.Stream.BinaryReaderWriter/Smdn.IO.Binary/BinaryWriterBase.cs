@@ -17,9 +17,7 @@ namespace Smdn.IO.Binary {
       get { CheckDisposed(); return stream; }
     }
 
-    protected bool Disposed {
-      get { return disposed; }
-    }
+    protected bool Disposed { get; private set; } = false;
 
     protected BinaryWriterBase(Stream baseStream, bool leaveBaseStreamOpen)
     {
@@ -51,7 +49,7 @@ namespace Smdn.IO.Binary {
         stream = null;
       }
 
-      disposed = true;
+      Disposed = true;
     }
 
     public void Flush()
@@ -165,12 +163,11 @@ namespace Smdn.IO.Binary {
 
     protected void CheckDisposed()
     {
-      if (disposed)
+      if (Disposed)
         throw new ObjectDisposedException(GetType().FullName);
     }
 
     private Stream stream;
     private readonly bool leaveBaseStreamOpen;
-    private bool disposed = false;
   }
 }

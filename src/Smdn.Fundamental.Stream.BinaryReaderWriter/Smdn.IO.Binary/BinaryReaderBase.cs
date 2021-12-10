@@ -17,7 +17,7 @@ namespace Smdn.IO.Binary {
         CheckDisposed();
 
         if (stream.CanSeek) {
-          var eos = (stream.ReadByte() < 0);
+          var eos = stream.ReadByte() < 0;
 
           if (!eos)
             stream.Seek(-1L, SeekOrigin.Current);
@@ -34,9 +34,7 @@ namespace Smdn.IO.Binary {
       get { CheckDisposed(); return stream; }
     }
 
-    protected bool Disposed {
-      get { return disposed; }
-    }
+    protected bool Disposed { get; private set; } = false;
 
     protected BinaryReaderBase(Stream baseStream, bool leaveBaseStreamOpen)
     {
@@ -68,10 +66,10 @@ namespace Smdn.IO.Binary {
         stream = null;
       }
 
-      disposed = true;
+      Disposed = true;
     }
 
-    public virtual Byte ReadByte()
+    public virtual byte ReadByte()
     {
       CheckDisposed();
 
@@ -232,7 +230,7 @@ namespace Smdn.IO.Binary {
         }
         else {
           var bufferSize = (int)Math.Min(4096L, remain);
-          var initialCapacity = (int)Math.Min((long)int.MaxValue, remain);
+          var initialCapacity = (int)Math.Min(int.MaxValue, remain);
 
           return stream.ReadToEnd(bufferSize, initialCapacity);
         }
@@ -244,12 +242,11 @@ namespace Smdn.IO.Binary {
 
     protected void CheckDisposed()
     {
-      if (disposed)
+      if (Disposed)
         throw new ObjectDisposedException(GetType().FullName);
     }
 
     private Stream stream;
     private readonly bool leaveBaseStreamOpen;
-    private bool disposed = false;
   }
 }

@@ -114,8 +114,10 @@ namespace Smdn.IO.Binary {
     {
       CheckSourceArray(@value, startIndex, 2);
 
-      return (UInt16)(@value[startIndex] |
-                      @value[startIndex + 1] << 8);
+      return (UInt16)(
+        @value[startIndex] |
+        (@value[startIndex + 1] << 8)
+      );
     }
 
     [CLSCompliant(false)]
@@ -123,8 +125,10 @@ namespace Smdn.IO.Binary {
     {
       CheckSourceArray(@value, startIndex, 2);
 
-      return (UInt16)(@value[startIndex] << 8 |
-                      @value[startIndex + 1]);
+      return (UInt16)(
+        (@value[startIndex] << 8) |
+        @value[startIndex + 1]
+      );
     }
 
     [CLSCompliant(false)]
@@ -153,10 +157,12 @@ namespace Smdn.IO.Binary {
     {
       CheckSourceArray(@value, startIndex, 4);
 
-      return (UInt32)(@value[startIndex] |
-                      @value[startIndex + 1] << 8 |
-                      @value[startIndex + 2] << 16 |
-                      @value[startIndex + 3] << 24);
+      return (UInt32)(
+        @value[startIndex] |
+        (@value[startIndex + 1] << 8) |
+        (@value[startIndex + 2] << 16) |
+        (@value[startIndex + 3] << 24)
+      );
     }
 
     [CLSCompliant(false)]
@@ -164,10 +170,12 @@ namespace Smdn.IO.Binary {
     {
       CheckSourceArray(@value, startIndex, 4);
 
-      return (UInt32)(@value[startIndex] << 24 |
-                      @value[startIndex + 1] << 16 |
-                      @value[startIndex + 2] << 8 |
-                      @value[startIndex + 3]);
+      return (UInt32)(
+        (@value[startIndex] << 24) |
+        (@value[startIndex + 1] << 16) |
+        (@value[startIndex + 2] << 8) |
+        @value[startIndex + 3]
+      );
     }
 
     [CLSCompliant(false)]
@@ -196,16 +204,20 @@ namespace Smdn.IO.Binary {
     {
       CheckSourceArray(@value, startIndex, 8);
 
-      UInt64 low  = (UInt32)(@value[startIndex] |
-                             @value[startIndex + 1] << 8 |
-                             @value[startIndex + 2] << 16 |
-                             @value[startIndex + 3] << 24);
-      UInt64 high = (UInt32)(@value[startIndex + 4 ] |
-                             @value[startIndex + 5] << 8 |
-                             @value[startIndex + 6] << 16 |
-                             @value[startIndex + 7] << 24);
+      UInt64 low  = (UInt32)(
+        @value[startIndex] |
+        (@value[startIndex + 1] << 8) |
+        (@value[startIndex + 2] << 16) |
+        (@value[startIndex + 3] << 24)
+      );
+      UInt64 high = (UInt32)(
+        @value[startIndex + 4 ] |
+        (@value[startIndex + 5] << 8) |
+        (@value[startIndex + 6] << 16) |
+        (@value[startIndex + 7] << 24)
+      );
 
-      return high << 32 | low;
+      return (high << 32) | low;
     }
 
     [CLSCompliant(false)]
@@ -213,16 +225,20 @@ namespace Smdn.IO.Binary {
     {
       CheckSourceArray(@value, startIndex, 8);
 
-      UInt64 high = (UInt32)(@value[startIndex] << 24 |
-                             @value[startIndex + 1] << 16 |
-                             @value[startIndex + 2] << 8 |
-                             @value[startIndex + 3]);
-      UInt64 low  = (UInt32)(@value[startIndex + 4] << 24 |
-                             @value[startIndex + 5] << 16 |
-                             @value[startIndex + 6] << 8 |
-                             @value[startIndex + 7]);
+      UInt64 high = (UInt32)(
+        (@value[startIndex] << 24) |
+        (@value[startIndex + 1] << 16) |
+        (@value[startIndex + 2] << 8) |
+        @value[startIndex + 3]
+      );
+      UInt64 low  = (UInt32)(
+        (@value[startIndex + 4] << 24) |
+        (@value[startIndex + 5] << 16) |
+        (@value[startIndex + 6] << 8) |
+        (@value[startIndex + 7])
+      );
 
-      return high << 32 | low;
+      return (high << 32) | low;
     }
 
     [CLSCompliant(false)]
