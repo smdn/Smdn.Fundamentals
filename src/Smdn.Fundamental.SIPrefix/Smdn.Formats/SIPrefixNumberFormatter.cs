@@ -15,58 +15,42 @@ namespace Smdn.Formats {
     private static readonly string[] InvaliantDecimalPrefixes = new[] { string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta" };
     private static readonly string[] InvaliantBinaryPrefixes = new[] { string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi" };
 
-    private static readonly SIPrefixNumberFormatter invaliantInfo = new SIPrefixNumberFormatter(CultureInfo.InvariantCulture, true);
-
-    public static SIPrefixNumberFormatter CurrentInfo {
-      get { return new SIPrefixNumberFormatter(CultureInfo.CurrentCulture, true); }
-    }
-
-    public static SIPrefixNumberFormatter InvaliantInfo {
-      get { return invaliantInfo; }
-    }
+    public static SIPrefixNumberFormatter CurrentInfo => new(CultureInfo.CurrentCulture, true);
+    public static SIPrefixNumberFormatter InvaliantInfo { get; } = new(CultureInfo.InvariantCulture, true);
 
     /*
      * instance members
      */
-    private readonly bool isReadOnly;
-
-    public bool IsReadOnly {
-      get { return isReadOnly; }
-    }
+    public bool IsReadOnly { get; }
 
     private string byteUnit;
 
     public string ByteUnit {
-      get { return byteUnit; }
+      get => byteUnit;
       set { ThrowIfReadOnly(); byteUnit = value; }
     }
 
     private string byteUnitAbbreviation = "B";
 
     public string ByteUnitAbbreviation {
-      get { return byteUnitAbbreviation; }
+      get => byteUnitAbbreviation;
       set { ThrowIfReadOnly(); byteUnitAbbreviation = value; }
     }
 
-    private string[] DecimalPrefixes {
-      get; /*private*/ set;
-    }
-
-    private string[] BinaryPrefixes {
-      get; /*private*/ set;
-    }
+    private string[] DecimalPrefixes { get; }
+    private string[] BinaryPrefixes { get; }
 
     private string valuePrefixDelimiter;
 
     public string ValuePrefixDelimiter {
-      get { return valuePrefixDelimiter; }
+      get => valuePrefixDelimiter;
       set { ThrowIfReadOnly(); valuePrefixDelimiter = value; }
     }
 
     private string prefixUnitDelimiter;
 
     public string PrefixUnitDelimiter {
-      get { return prefixUnitDelimiter; }
+      get => prefixUnitDelimiter;
       set { ThrowIfReadOnly(); prefixUnitDelimiter = value; }
     }
 
@@ -85,7 +69,7 @@ namespace Smdn.Formats {
       if (cultureInfo == null)
         throw new ArgumentNullException(nameof(cultureInfo));
 
-      this.isReadOnly = isReadOnly;
+      this.IsReadOnly = isReadOnly;
       // this.cultureInfo = cultureInfo;
 
       const string singleSpace = " ";
@@ -116,8 +100,8 @@ namespace Smdn.Formats {
 
       decimal val;
 
-      if (arg is decimal) {
-        val = (decimal)arg;
+      if (arg is decimal decimalValue) {
+        val = decimalValue;
       }
       else if (arg is IConvertible) {
         try {
@@ -185,10 +169,7 @@ namespace Smdn.Formats {
         else
           ret.Append(val.ToString("F1"));
 
-        if (abbreviate)
-          unitString = byteUnitAbbreviation;
-        else
-          unitString = byteUnit;
+        unitString = abbreviate ? byteUnitAbbreviation : byteUnit;
       }
       else {
         if (digits == 0)
@@ -234,10 +215,8 @@ namespace Smdn.Formats {
 
     private void ThrowIfReadOnly()
     {
-      if (isReadOnly)
+      if (IsReadOnly)
         throw new InvalidOperationException("read-only");
     }
-
-    // private CultureInfo cultureInfo;
   }
 }
