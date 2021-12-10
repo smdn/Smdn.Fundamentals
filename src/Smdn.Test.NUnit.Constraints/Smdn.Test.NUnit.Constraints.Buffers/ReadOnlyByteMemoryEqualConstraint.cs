@@ -4,8 +4,6 @@ using System;
 
 using NUnit.Framework.Constraints;
 
-using Smdn.Text.Unicode.ControlPictures;
-
 namespace Smdn.Test.NUnit.Constraints.Buffers {
   public class ReadOnlyByteMemoryEqualConstraint : EqualConstraint {
     public ReadOnlyMemory<byte> Expected { get; }

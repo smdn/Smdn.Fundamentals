@@ -3,23 +3,25 @@
 using System;
 
 namespace Smdn.Test.NUnit.Constraints.Buffers {
+#pragma warning disable CA1716
   public class Is : global::NUnit.Framework.Is {
+#pragma warning restore CA1716
     public static ReadOnlyByteMemoryEqualConstraint EqualTo(Memory<byte> expected)
-      => new ReadOnlyByteMemoryEqualConstraint(expected);
+      => new(expected);
 
     public static ReadOnlyByteMemoryEqualConstraint EqualTo(ReadOnlyMemory<byte> expected)
-      => new ReadOnlyByteMemoryEqualConstraint(expected);
+      => new(expected);
 
     public static ReadOnlyByteMemoryEqualConstraint EqualTo(byte[] expected)
-      => new ReadOnlyByteMemoryEqualConstraint(expected);
+      => new(expected);
 
     public static ReadOnlyMemoryEqualConstraint<T> EqualTo<T>(Memory<T> expected) where T : IEquatable<T>
-      => new ReadOnlyMemoryEqualConstraint<T>(expected);
+      => new(expected);
 
     public static ReadOnlyMemoryEqualConstraint<T> EqualTo<T>(ReadOnlyMemory<T> expected) where T : IEquatable<T>
-      => new ReadOnlyMemoryEqualConstraint<T>(expected);
+      => new(expected);
 
     public static ReadOnlyMemoryEqualConstraint<T> EqualTo<T>(T[] expected) where T : IEquatable<T>
-      => new ReadOnlyMemoryEqualConstraint<T>(expected);
+      => new(expected);
   }
 }

@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 using System;
-using System.Buffers;
 using System.Linq;
 
 using NUnit.Framework.Constraints;
