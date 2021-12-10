@@ -24,9 +24,7 @@ namespace Smdn.OperatingSystem {
       }
     }
 
-    public bool IsEmpty {
-      get { return Raw.Length == 0; }
-    }
+    public bool IsEmpty => Raw.Length == 0;
 
     public ShellString(string raw)
     {
@@ -90,8 +88,8 @@ namespace Smdn.OperatingSystem {
 
     public static bool operator ==(ShellString x, ShellString y)
     {
-      if (null == (object)x || null == (object)y) {
-        if (null == (object)x && null == (object)y)
+      if (x is null || y is null) {
+        if (x is null && y is null)
           return true;
         else
           return false;
@@ -100,10 +98,7 @@ namespace Smdn.OperatingSystem {
       return string.Equals(x.Expanded, y.Expanded);
     }
 
-    public static bool operator !=(ShellString x, ShellString y)
-    {
-      return !(x == y);
-    }
+    public static bool operator !=(ShellString x, ShellString y) => !(x == y);
 
     public override int GetHashCode()
     {

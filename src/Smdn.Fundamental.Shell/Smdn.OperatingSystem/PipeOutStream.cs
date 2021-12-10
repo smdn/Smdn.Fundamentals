@@ -8,21 +8,10 @@ namespace Smdn.OperatingSystem {
 #if SYSTEM_DIAGNOSTICS_PROCESS
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PipeOutStream : Stream {
-    public override bool CanSeek {
-      get { return /*!disposed &&*/ false; }
-    }
-
-    public override bool CanRead {
-      get { return /*!disposed &&*/ false; }
-    }
-
-    public override bool CanWrite {
-      get { return !disposed /*&& true*/; }
-    }
-
-    public override bool CanTimeout {
-      get { return false; }
-    }
+    public override bool CanSeek => /*!disposed &&*/ false;
+    public override bool CanRead => /*!disposed &&*/ false;
+    public override bool CanWrite => !disposed /*&& true*/;
+    public override bool CanTimeout => false;
 
     public override long Length {
       get { CheckDisposed(); throw ExceptionUtils.CreateNotSupportedSeekingStream(); }
@@ -43,7 +32,7 @@ namespace Smdn.OperatingSystem {
 
     /// <remarks>in milliseconds.</remarks>
     public int WaitForExitTimeout {
-      get { return waitForExitTimeout; }
+      get => waitForExitTimeout;
       private set {
         if (value < -1)
           throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, nameof(WaitForExitTimeout), value);
@@ -63,10 +52,7 @@ namespace Smdn.OperatingSystem {
 
     public PipeOutStream(ProcessStartInfo startInfo, DataReceivedEventHandler onOutputDataReceived, DataReceivedEventHandler onErrorDataReceived)
     {
-      if (startInfo == null)
-        throw new ArgumentNullException(nameof(startInfo));
-
-      this.startInfo = startInfo;
+      this.startInfo = startInfo ?? throw new ArgumentNullException(nameof(startInfo));
       this.onOutputDataReceived = onOutputDataReceived;
       this.onErrorDataReceived = onErrorDataReceived;
     }
@@ -140,7 +126,7 @@ namespace Smdn.OperatingSystem {
       startInfo.RedirectStandardInput = true;
       startInfo.UseShellExecute = false; // redirecting stdout
 
-      process = new Process();
+      process = new();
       process.StartInfo = startInfo;
 
       if (onOutputDataReceived != null) {
@@ -180,7 +166,7 @@ namespace Smdn.OperatingSystem {
     }
 
     private bool disposed = false;
-    private ProcessStartInfo startInfo;
+    private readonly ProcessStartInfo startInfo;
     private Process process = null;
     private DataReceivedEventHandler onOutputDataReceived;
     private DataReceivedEventHandler onErrorDataReceived;

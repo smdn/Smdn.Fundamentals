@@ -30,8 +30,9 @@ namespace Smdn.OperatingSystem {
         psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments));
       }
       else {
-        psi = new ProcessStartInfo("cmd", string.Format("/c {0} {1}", command, arguments));
-        psi.CreateNoWindow = true;
+        psi = new ProcessStartInfo("cmd", string.Format("/c {0} {1}", command, arguments)) {
+          CreateNoWindow = true,
+        };
       }
 
       psi.UseShellExecute = false;
@@ -58,14 +59,14 @@ namespace Smdn.OperatingSystem {
       psi.RedirectStandardOutput = true;
       psi.RedirectStandardError  = true;
 
-      using (var process = Process.Start(psi)) {
-        stdout = process.StandardOutput.ReadToEnd();
-        stderr = process.StandardError.ReadToEnd();
+      using var process = Process.Start(psi);
 
-        process.WaitForExit();
+      stdout = process.StandardOutput.ReadToEnd();
+      stderr = process.StandardError.ReadToEnd();
 
-        return process.ExitCode;
-      }
+      process.WaitForExit();
+
+      return process.ExitCode;
     }
   }
 #endif
