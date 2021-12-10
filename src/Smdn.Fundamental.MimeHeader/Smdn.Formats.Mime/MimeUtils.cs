@@ -159,7 +159,7 @@ namespace Smdn.Formats.Mime {
         var line = ret.Value.SequenceWithNewLine;
         var firstByteOfLine = line.First.Span[0]; // XXX: use FirstSpan[0] (.NET Core 3.0)
 
-        if (firstByteOfLine == HT || firstByteOfLine == SP) { // LWSP-char
+        if (firstByteOfLine is HT or SP) { // LWSP-char
           // folding
           if (lineFirst == null) {
             if (ignoreMalformed)
@@ -181,17 +181,16 @@ namespace Smdn.Formats.Mime {
 
         var posOfDelim = line.PositionOf(nameBodyDelimiter);
 
-        if (posOfDelim.HasValue)
-          offsetOfDelimiter = (int)line.Slice(0, posOfDelim.Value).Length;
-        else
-          offsetOfDelimiter = -1;
+        offsetOfDelimiter = posOfDelim.HasValue ? (int)line.Slice(0, posOfDelim.Value).Length : -1;
 
-        if (0 < offsetOfDelimiter)
+        if (0 < offsetOfDelimiter) {
           lineLast = HeaderFieldLineSegment.Append(null, line, out lineFirst);
-        else if (ignoreMalformed)
-          lineFirst = null;
-        else
-          throw new InvalidDataException($"malformed header field: '{ret.Value.Sequence.CreateString()}'");
+        }
+        else {
+          lineFirst = ignoreMalformed
+            ? null
+            : throw new InvalidDataException($"malformed header field: '{ret.Value.Sequence.CreateString()}'");
+        }
       }
 
       if (lineFirst != null)
@@ -250,7 +249,7 @@ namespace Smdn.Formats.Mime {
        * RFC 5322 - Internet Message Format
        * http://tools.ietf.org/html/rfc5322
        * 3.2.2. Folding White Space and Comments
-       * 
+       *
        *    FWS             =   ([*WSP CRLF] 1*WSP) /  obs-FWS
        *                                           ; Folding white space
        *    ctext           =   %d33-39 /          ; Printable US-ASCII
@@ -260,7 +259,7 @@ namespace Smdn.Formats.Mime {
        *    ccontent        =   ctext / quoted-pair / comment
        *    comment         =   "(" *([FWS] ccontent) [FWS] ")"
        *    CFWS            =   (1*([FWS] comment) [FWS]) / FWS
-       * 
+       *
        *    quoted-pair     =   ("\" (VCHAR / WSP)) / obs-qp
        */
       if (string.IsNullOrEmpty(val))
