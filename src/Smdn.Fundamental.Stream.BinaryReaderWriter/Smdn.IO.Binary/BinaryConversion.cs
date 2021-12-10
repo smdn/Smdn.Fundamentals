@@ -3,6 +3,7 @@
 
 #pragma warning disable SA1011 // Closing square brackets should be spaced correctly
 #pragma warning disable SA1121 // Use built-in type alias
+#pragma warning disable IDE0055 // Fix formatting
 
 using System;
 
