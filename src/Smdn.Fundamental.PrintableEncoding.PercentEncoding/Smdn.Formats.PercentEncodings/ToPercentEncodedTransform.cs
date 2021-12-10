@@ -57,6 +57,7 @@ namespace Smdn.Formats.PercentEncodings {
 
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode)
     {
+#pragma warning disable IDE0055
       escapeOctets = (mode & ToPercentEncodedTransformMode.ModeMask) switch {
         ToPercentEncodedTransformMode.Rfc2396Uri  => GetEscapeOctets(Rfc2396UriEscapeChars),
         ToPercentEncodedTransformMode.Rfc2396Data => GetEscapeOctets(Rfc2396DataEscapeChars),
@@ -66,6 +67,7 @@ namespace Smdn.Formats.PercentEncodings {
         ToPercentEncodedTransformMode.Rfc5092Path => GetEscapeOctets(Rfc5092BChars),
         _ => throw ExceptionUtils.CreateNotSupportedEnumValue(mode),
       };
+#pragma warning restore IDE0055
 
       escapeSpaceToPlus = (mode & ToPercentEncodedTransformMode.EscapeSpaceToPlus) != 0;
     }
