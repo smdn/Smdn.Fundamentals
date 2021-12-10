@@ -19,7 +19,7 @@ namespace Smdn.IO {
       if (searchPattern == null)
         throw new ArgumentNullException(nameof(searchPattern));
 
-      return (new DirectoryInfo(directory))
+      return new DirectoryInfo(directory)
         .GetFiles(searchOption, file => searchPattern(file.FullName))
         .Select(file => file.FullName);
     }
@@ -36,7 +36,7 @@ namespace Smdn.IO {
       if (searchPattern == null)
         throw new ArgumentNullException(nameof(searchPattern));
 
-      return (new DirectoryInfo(directory))
+      return new DirectoryInfo(directory)
         .GetDirectories(searchOption, dir => searchPattern(dir.FullName))
         .Select(dir => dir.FullName); // XXX: relative path
     }
