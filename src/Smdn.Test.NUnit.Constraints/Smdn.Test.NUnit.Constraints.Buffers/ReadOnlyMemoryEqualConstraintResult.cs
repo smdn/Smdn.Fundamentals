@@ -8,10 +8,12 @@ using System.Linq;
 using NUnit.Framework.Constraints;
 
 namespace Smdn.Test.NUnit.Constraints.Buffers {
+#pragma warning disable IDE0055
   public class ReadOnlyMemoryEqualConstraintResult<T> :
     EqualConstraintResult
     where T : IEquatable<T>
   {
+#pragma warning restore IDE0055
     private readonly ReadOnlyMemory<T> expectedValue;
 
     public ReadOnlyMemoryEqualConstraintResult(ReadOnlyMemoryEqualConstraint<T> constraint, object actual, bool hasSucceeded)

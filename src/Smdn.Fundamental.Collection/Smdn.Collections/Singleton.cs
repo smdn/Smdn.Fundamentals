@@ -11,10 +11,12 @@ namespace Smdn.Collections {
     public static IReadOnlyList<T> CreateList<T>(T element) => new SingletonList<T>(element);
 
     [Serializable]
+#pragma warning disable IDE0055
     private class SingletonList<T> :
       IReadOnlyList<T>,
       ISerializable
     {
+#pragma warning restore IDE0055
       public T this[int index] => index == 0 ? element : throw ExceptionUtils.CreateArgumentMustBeInRange(0, 0, nameof(index), index);
       public int Count => 1;
 

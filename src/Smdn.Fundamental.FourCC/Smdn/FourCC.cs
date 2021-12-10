@@ -9,11 +9,13 @@ namespace Smdn {
    * http://tools.ietf.org/html/rfc2361
    */
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+#pragma warning disable IDE0055
   public readonly struct FourCC :
     IEquatable<FourCC>,
     IEquatable<string>,
     IEquatable<byte[]>
   {
+#pragma warning restore IDE0055
     public static readonly FourCC Empty = new(0);
 
 #region "construction"

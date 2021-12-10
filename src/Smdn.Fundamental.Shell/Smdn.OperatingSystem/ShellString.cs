@@ -4,6 +4,7 @@ using System;
 
 namespace Smdn.OperatingSystem {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+#pragma warning disable IDE0055
   public class ShellString :
 #if SYSTEM_ICLONEABLE
     ICloneable,
@@ -11,6 +12,7 @@ namespace Smdn.OperatingSystem {
     IEquatable<string>,
     IEquatable<ShellString>
   {
+#pragma warning restore IDE0055
     public string Raw {
       get; set;
     }

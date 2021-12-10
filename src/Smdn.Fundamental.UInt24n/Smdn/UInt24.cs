@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 namespace Smdn {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
+#pragma warning disable IDE0055
   public struct UInt24 :
     IEquatable<UInt24>,
     IEquatable<uint>,
@@ -17,6 +18,8 @@ namespace Smdn {
     IConvertible,
     IFormattable
   {
+#pragma warning restore IDE0055
+
     // big endian
     [FieldOffset(0)] public byte Byte0; // 0x 00ff0000
     [FieldOffset(1)] public byte Byte1; // 0x 0000ff00

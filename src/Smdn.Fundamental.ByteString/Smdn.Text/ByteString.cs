@@ -11,6 +11,7 @@ using System.Text;
 namespace Smdn.Text {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
+#pragma warning disable IDE0055
   public class ByteString :
     IEquatable<ByteString>,
     IEquatable<byte[]>,
@@ -18,6 +19,7 @@ namespace Smdn.Text {
     IEquatable<string>,
     ISerializable
   {
+#pragma warning restore IDE0055
     [IndexerName("Bytes")]
     public byte this[int index] {
       get {

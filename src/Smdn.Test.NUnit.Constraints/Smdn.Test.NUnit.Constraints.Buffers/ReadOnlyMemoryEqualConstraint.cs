@@ -7,10 +7,12 @@ using System.Linq;
 using NUnit.Framework.Constraints;
 
 namespace Smdn.Test.NUnit.Constraints.Buffers {
+#pragma warning disable IDE0055
   public class ReadOnlyMemoryEqualConstraint<T> :
     EqualConstraint
     where T : IEquatable<T>
   {
+#pragma warning restore IDE0055
     public ReadOnlyMemory<T> Expected { get; }
     private Tolerance tolerance = Tolerance.Default;
 
