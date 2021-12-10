@@ -36,10 +36,14 @@ namespace Smdn.Collections {
 
       if (list is T[] arr)
         return new ArraySegment<T>(arr, index, count);
-      if (list is ArraySegment<T> seg)
+
+      if (list is ArraySegment<T> seg) {
+#if SYSTEM_ARRAYSEGMENT_SLICE
+        return seg.Slice(index, count);
+#else
         return new ArraySegment<T>(seg.Array, seg.Offset + index, count);
-        // #if .NET Standard 2.1, .NET Core 2.0
-        // return seg.Slice(start, count);
+#endif
+      }
 
       return new ReadOnlyListSegment<T>(list, index, count);
     }
