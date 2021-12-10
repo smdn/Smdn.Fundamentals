@@ -39,7 +39,7 @@ namespace Smdn.Reflection {
       return null;
     }
 
-    private static readonly Dictionary<string, MethodSpecialName> specialMethodNames = new Dictionary<string, MethodSpecialName>(StringComparer.Ordinal) {
+    private static readonly Dictionary<string, MethodSpecialName> specialMethodNames = new(StringComparer.Ordinal) {
       // comparison
       { "op_Equality", MethodSpecialName.Equality },
       { "op_Inequality", MethodSpecialName.Inequality },

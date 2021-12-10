@@ -17,12 +17,7 @@ namespace Smdn.Reflection {
     public static bool IsByRefLikeValueType(this Type t) => t.IsValueType && t.GetCustomAttributes(false).Any(a => string.Equals(a.GetType().FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal));
 
     public static MethodInfo GetDelegateSignatureMethod(this Type t)
-    {
-      if (IsDelegate(t))
-        return t.GetMethod("Invoke");
-      else
-        return null;
-    }
+      => IsDelegate(t) ? t.GetMethod("Invoke") : null;
 
     public static IEnumerable<Type> GetExplicitBaseTypeAndInterfaces(this Type t)
     {
@@ -43,25 +38,18 @@ namespace Smdn.Reflection {
     }
 
     public static IEnumerable<string> GetNamespaces(this Type t)
-    {
-      return GetAllNamespaces(t, type => false).Distinct();
-    }
+      => GetAllNamespaces(t, type => false).Distinct();
 
     public static IEnumerable<string> GetNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive)
-    {
-      return GetAllNamespaces(t, isLanguagePrimitive).Distinct();
-    }
+      => GetAllNamespaces(t, isLanguagePrimitive).Distinct();
 
     private static IEnumerable<string> GetAllNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive)
     {
-      Type elementType = null;
+      var elementType = t.IsArray || t.IsByRef || t.IsPointer
+        ? t.GetElementType()
+        : Nullable.GetUnderlyingType(t);
 
-      if (t.IsArray || t.IsByRef || t.IsPointer)
-        elementType = t.GetElementType();
-      else
-        elementType = Nullable.GetUnderlyingType(t);
-
-      if (elementType != null) {
+      if (elementType is not null) {
         foreach (var ns in GetNamespaces(elementType, isLanguagePrimitive))
           yield return ns;
 
@@ -92,16 +80,15 @@ namespace Smdn.Reflection {
       var name = t.GetGenericTypeDefinition().Name;
       var posTypeArgsDelimiter = name.LastIndexOf('`');
 
-      if (0 < posTypeArgsDelimiter)
-        return name.Substring(0, name.LastIndexOf('`'));
-      else
-        return name;
+      return 0 < posTypeArgsDelimiter
+        ? name.Substring(0, posTypeArgsDelimiter)
+        : name;
     }
 
     private struct DefaultLayoutStruct { }
     private static readonly StructLayoutAttribute DefaultStructLayoutAttribute = typeof(DefaultLayoutStruct).StructLayoutAttribute;
 
-    /// <remarks>The value of <see ref="StructLayoutAttribute">.<see ref="StructLayoutAttribute.Size"> is not considered.</remarks>
+    /// <remarks>The value of <see ref="StructLayoutAttribute.Size"> is not considered.</remarks>
     public static bool IsStructLayoutDefault(this Type t)
     {
       if (t is null)

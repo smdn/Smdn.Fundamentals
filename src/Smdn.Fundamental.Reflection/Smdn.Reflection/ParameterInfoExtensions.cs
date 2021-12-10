@@ -13,7 +13,7 @@ namespace Smdn.Reflection {
 #if NETFRAMEWORK
       return param.Position < 0 && param.ParameterType.Equals((param.Member as MethodInfo)?.ReturnType);
 #else
-      return (param == (param.Member as MethodInfo)?.ReturnParameter);
+      return param == (param.Member as MethodInfo)?.ReturnParameter;
 #endif
     }
   }
