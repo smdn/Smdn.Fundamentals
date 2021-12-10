@@ -83,7 +83,7 @@ namespace Smdn.Formats.Csv {
       }
       else if (ch == CR) {
         // unescaped newline
-        if ((int)LF == Peek()) {
+        if (LF == Peek()) {
           Read(); // CRLF
           return CRLF;
         }
@@ -154,7 +154,7 @@ namespace Smdn.Formats.Csv {
             Read();
             break;
           }
-          else if (ch == CR || ch == LF) {
+          else if (ch is CR or LF) {
             break;
           }
           else {
