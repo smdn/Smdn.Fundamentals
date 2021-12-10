@@ -3,39 +3,21 @@
 using System;
 using System.Security.Cryptography;
 
-using Smdn.Text;
-
 namespace Smdn.Formats.QuotedPrintableEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToQuotedPrintableTransform : ICryptoTransform {
-    public bool CanTransformMultipleBlocks {
-      get { return true; }
-    }
-
-    public bool CanReuseTransform {
-      get { return true; }
-    }
-
-    public int InputBlockSize {
-      get { return 1; }
-    }
-
-    public int OutputBlockSize {
-      get { return 3; }
-    }
+    public bool CanTransformMultipleBlocks => true;
+    public bool CanReuseTransform => true;
+    public int InputBlockSize => 1;
+    public int OutputBlockSize => 3;
 
     public ToQuotedPrintableTransform(ToQuotedPrintableTransformMode mode)
     {
-      switch (mode) {
-        case ToQuotedPrintableTransformMode.MimeEncoding:
-          quoteWhitespaces = true;
-          break;
-        case ToQuotedPrintableTransformMode.ContentTransferEncoding:
-          quoteWhitespaces = false;
-          break;
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
-      }
+      quoteWhitespaces = mode switch {
+        ToQuotedPrintableTransformMode.MimeEncoding => true,
+        ToQuotedPrintableTransformMode.ContentTransferEncoding => false,
+        _ => throw ExceptionUtils.CreateNotSupportedEnumValue(mode),
+      };
     }
 
     public void Clear()
@@ -43,10 +25,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       disposed = true;
     }
 
-    void IDisposable.Dispose()
-    {
-      Clear();
-    }
+    void IDisposable.Dispose() => Clear();
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
@@ -73,25 +52,16 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
       for (var i = 0; i < inputCount; i++) {
         var octet = inputBuffer[inputOffset++];
-        var quote = false;
-
-        switch (octet) {
-          case 0x09: // HT
-          case 0x20: // SP
-          case 0x3f: // '?'
-          case 0x5f: // '_'
-            quote = quoteWhitespaces;
-            break;
-
-          case 0x3d: // '='
-            quote = true;
-            break;
-
-          default:
-            // quote non-printable chars
-            quote = (octet < 0x21 || 0x7f < octet);
-            break;
-        }
+        var quote = octet switch {
+          0x09 /* HT */   => quoteWhitespaces,
+          0x20 /* SP */   => quoteWhitespaces,
+          0x3f /* '?' */  => quoteWhitespaces,
+          0x5f /* '_' */  => quoteWhitespaces,
+          0x3d /* '=' */  => true,
+          < 0x21 => true, // quote non-printable chars
+          > 0x7f => true, // quote non-printable chars
+          _ => false,
+        };
 
         if (quote) {
           // '=' 0x3d or non printable char

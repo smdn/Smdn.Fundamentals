@@ -3,39 +3,21 @@
 using System;
 using System.Security.Cryptography;
 
-using Smdn.Text;
-
 namespace Smdn.Formats.QuotedPrintableEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromQuotedPrintableTransform : ICryptoTransform {
-    public bool CanTransformMultipleBlocks {
-      get { return true; }
-    }
-
-    public bool CanReuseTransform {
-      get { return true; }
-    }
-
-    public int InputBlockSize {
-      get { return 1; }
-    }
-
-    public int OutputBlockSize {
-      get { return 1; }
-    }
+    public bool CanTransformMultipleBlocks => true;
+    public bool CanReuseTransform => true;
+    public int InputBlockSize => 1;
+    public int OutputBlockSize => 1;
 
     public FromQuotedPrintableTransform(FromQuotedPrintableTransformMode mode)
     {
-      switch (mode) {
-        case FromQuotedPrintableTransformMode.MimeEncoding:
-          dequoteUnderscore = true;
-          break;
-        case FromQuotedPrintableTransformMode.ContentTransferEncoding:
-          dequoteUnderscore = false;
-          break;
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(mode);
-      }
+      dequoteUnderscore = mode switch {
+        FromQuotedPrintableTransformMode.MimeEncoding => true,
+        FromQuotedPrintableTransformMode.ContentTransferEncoding => false,
+        _ => throw ExceptionUtils.CreateNotSupportedEnumValue(mode),
+      };
     }
 
     public void Clear()
@@ -43,10 +25,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       disposed = true;
     }
 
-    void IDisposable.Dispose()
-    {
-      Clear();
-    }
+    void IDisposable.Dispose() => Clear();
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {
@@ -100,7 +79,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
             // soft newline (CRLF)
             bufferOffset = 0;
           }
-          else if (buffer[1] == CR || buffer[1] == LF) {
+          else if (buffer[1] is CR or LF) {
             // soft newline (CR, LF)
             if (buffer[2] == 0x3d) {
               bufferOffset = 1;
@@ -150,7 +129,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       return outputBuffer;
     }
 
-    private byte[] buffer = new byte[3];
+    private readonly byte[] buffer = new byte[3];
     private int bufferOffset = 0;
     private readonly bool dequoteUnderscore;
     private bool disposed = false;

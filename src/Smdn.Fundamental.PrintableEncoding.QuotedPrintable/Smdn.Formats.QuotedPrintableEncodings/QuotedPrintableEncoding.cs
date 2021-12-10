@@ -5,7 +5,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-using Smdn.IO.Streams;
+#if !(NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER)
+using Smdn.IO.Streams; // NonClosingStream
+#endif
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
@@ -81,7 +83,12 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       );
     }
 
-    public static Stream CreateEncodingStream(Stream stream, bool leaveStreamOpen = false)
+    public static Stream CreateEncodingStream(
+      Stream stream,
+#pragma warning disable IDE0060
+      bool leaveStreamOpen = false
+#pragma warning restore D
+    )
     {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
