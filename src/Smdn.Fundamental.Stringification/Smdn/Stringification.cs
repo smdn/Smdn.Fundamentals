@@ -50,7 +50,7 @@ namespace Smdn {
         if (val is IEnumerable enumerable) {
           var sb = new StringBuilder();
 
-          sb.Append("[");
+          sb.Append('[');
 
           foreach (object v in enumerable) {
             if (1 < sb.Length)
@@ -59,7 +59,7 @@ namespace Smdn {
             sb.Append(ValueToString(v));
           }
 
-          sb.Append("]");
+          sb.Append(']');
 
           return sb.ToString();
         }
