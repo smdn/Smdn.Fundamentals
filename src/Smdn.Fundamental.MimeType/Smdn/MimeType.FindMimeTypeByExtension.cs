@@ -13,7 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 
 namespace Smdn {
+#pragma warning disable IDE0040
   partial class MimeType {
+#pragma warning restore IDE0040
     private const string DefaultMimeTypesFile = "/etc/mime.types";
 
     private static bool IsRunningOnWindows => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
@@ -94,17 +96,14 @@ namespace Smdn {
         return null; // if "" or "."
 
 #if MICROSOFT_WIN32_REGISTRY
-      using (var key = Registry.ClassesRoot.OpenSubKey(extension)) {
-        if (key == null)
-          return null;
+      using var key = Registry.ClassesRoot.OpenSubKey(extension);
 
-        var mimeType = key.GetValue("Content Type");
+      if (key == null)
+        return null;
 
-        if (mimeType == null)
-          return null;
-        else
-          return new MimeType((string)mimeType);
-      }
+      var mimeType = key.GetValue("Content Type");
+
+      return mimeType is null ? null : new MimeType((string)mimeType);
 #else
       throw new PlatformNotSupportedException();
 #endif
@@ -160,13 +159,13 @@ namespace Smdn {
     {
 #if MICROSOFT_WIN32_REGISTRY
       foreach (var name in Registry.ClassesRoot.GetSubKeyNames()) {
-        using (var key = Registry.ClassesRoot.OpenSubKey(name)) {
-          if (key == null)
-            continue;
+        using var key = Registry.ClassesRoot.OpenSubKey(name);
 
-          if (string.Equals((string)key.GetValue("Content Type"), mimeType, StringComparison.OrdinalIgnoreCase))
-            yield return name;
-        }
+        if (key == null)
+          continue;
+
+        if (string.Equals((string)key.GetValue("Content Type"), mimeType, StringComparison.OrdinalIgnoreCase))
+          yield return name;
       }
 #else
       throw new PlatformNotSupportedException();

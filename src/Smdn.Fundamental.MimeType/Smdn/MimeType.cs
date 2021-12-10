@@ -8,13 +8,13 @@ namespace Smdn {
     /*
      * class members
      */
-    public static readonly MimeType TextPlain                   = MimeType.CreateTextType("plain");
-    public static readonly MimeType MultipartAlternative        = MimeType.CreateMultipartType("alternative");
-    public static readonly MimeType MultipartMixed              = MimeType.CreateMultipartType("mixed");
-    public static readonly MimeType ApplicationOctetStream      = MimeType.CreateApplicationType("octet-stream");
-    public static readonly MimeType MessagePartial              = new MimeType("message", "partial");
-    public static readonly MimeType MessageExternalBody         = new MimeType("message", "external-body");
-    public static readonly MimeType MessageRfc822               = new MimeType("message", "rfc822");
+    public static readonly MimeType TextPlain                   = CreateTextType("plain");
+    public static readonly MimeType MultipartAlternative        = CreateMultipartType("alternative");
+    public static readonly MimeType MultipartMixed              = CreateMultipartType("mixed");
+    public static readonly MimeType ApplicationOctetStream      = CreateApplicationType("octet-stream");
+    public static readonly MimeType MessagePartial              = new("message", "partial");
+    public static readonly MimeType MessageExternalBody         = new("message", "external-body");
+    public static readonly MimeType MessageRfc822               = new("message", "rfc822");
 
     // TODO: fix tuple element name casing
     public static bool TryParse(string s, out (string type, string subType) result)
@@ -200,14 +200,9 @@ namespace Smdn {
 
     public override bool Equals(object obj)
     {
-      var mimeType = obj as MimeType;
-
-      if (mimeType != null)
+      if (obj is MimeType mimeType)
         return Equals(mimeType);
-
-      var str = obj as string;
-
-      if (str != null)
+      if (obj is string str)
         return Equals(str);
 
       return false;
