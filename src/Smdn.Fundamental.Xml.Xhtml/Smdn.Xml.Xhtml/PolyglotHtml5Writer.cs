@@ -40,9 +40,21 @@ namespace Smdn.Xml.Xhtml {
 
     private class ElementContext {
       private static readonly HashSet<string> voidElements = new(StringComparer.OrdinalIgnoreCase) {
-        "area", "base", "br", "col", "embed",
-        "hr", "img", "input", "keygen", "link",
-        "meta", "param", "source", "track", "wbr",
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "keygen",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr",
       };
 
       public string LocalName { get; }
