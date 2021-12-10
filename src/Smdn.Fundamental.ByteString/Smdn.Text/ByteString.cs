@@ -892,17 +892,11 @@ namespace Smdn.Text {
       if (byteString != null)
         return Equals(byteString.segment);
 
-      var byteArray = obj as byte[];
-
-      if (byteArray != null)
+      if (obj is byte[] byteArray)
         return Equals(byteArray);
-
-      if (obj is ArraySegment<byte>)
-        return Equals((ArraySegment<byte>)obj);
-
-      var str = obj as string;
-
-      if (str != null)
+      if (obj is ArraySegment<byte> arraySegment)
+        return Equals(arraySegment);
+      if (obj is string str)
         return Equals(str);
 
       return false;
