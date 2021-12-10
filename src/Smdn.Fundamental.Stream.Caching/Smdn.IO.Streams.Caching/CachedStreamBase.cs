@@ -152,10 +152,10 @@ namespace Smdn.IO.Streams.Caching {
 
         block.Slice(0, bytesToCopy).CopyTo(buffer.AsSpan(offset));
 
-        position  += bytesToCopy;
-        ret       += bytesToCopy;
-        offset    += bytesToCopy;
-        count     -= bytesToCopy;
+        position += bytesToCopy;
+        ret += bytesToCopy;
+        offset += bytesToCopy;
+        count -= bytesToCopy;
       }
     }
 

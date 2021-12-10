@@ -57,7 +57,7 @@ namespace Smdn.OperatingSystem {
       var psi = CreateProcessStartInfo(command, string.Empty);
 
       psi.RedirectStandardOutput = true;
-      psi.RedirectStandardError  = true;
+      psi.RedirectStandardError = true;
 
       using var process = Process.Start(psi);
 

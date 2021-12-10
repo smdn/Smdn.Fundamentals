@@ -206,10 +206,10 @@ namespace Smdn.IO.Streams.Extending {
           Section = nextSection;
         }
         else {
-          ret       += readCount;
-          count     -= readCount;
-          offset    += readCount;
-          position  += readCount;
+          ret += readCount;
+          count -= readCount;
+          offset += readCount;
+          position += readCount;
         }
       } // while
 
@@ -267,10 +267,10 @@ namespace Smdn.IO.Streams.Extending {
             Section = nextSection;
           }
           else {
-            ret       += readCount;
-            count     -= readCount;
-            offset    += readCount;
-            position  += readCount;
+            ret += readCount;
+            count -= readCount;
+            offset += readCount;
+            position += readCount;
           }
         } // while
 

@@ -336,7 +336,7 @@ namespace Smdn.IO.Streams.LineOriented {
           cancellationToken
         ).ConfigureAwait(false);
 
-        read         = bufRemain;
+        read = bufRemain;
         bytesToRead -= bufRemain;
 
         bufRemain = 0;
@@ -381,7 +381,7 @@ namespace Smdn.IO.Streams.LineOriented {
           ).ConfigureAwait(false);
 
           bytesToRead -= r;
-          read        += r;
+          read += r;
         }
       }
       else {
@@ -483,9 +483,9 @@ namespace Smdn.IO.Streams.LineOriented {
       if (bufRemain != 0) {
         Buffer.BlockCopy(buffer, bufOffset, destination, offset, bufRemain);
 
-        read    = bufRemain;
+        read = bufRemain;
         offset += bufRemain;
-        count  -= bufRemain;
+        count -= bufRemain;
 
         bufRemain = 0;
       }
@@ -514,8 +514,8 @@ namespace Smdn.IO.Streams.LineOriented {
           break;
 
         offset += r;
-        count  -= r;
-        read   += r;
+        count -= r;
+        read += r;
       }
 
       return read;

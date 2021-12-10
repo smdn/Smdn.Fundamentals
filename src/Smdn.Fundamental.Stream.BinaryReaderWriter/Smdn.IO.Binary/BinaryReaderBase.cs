@@ -210,7 +210,7 @@ namespace Smdn.IO.Binary {
 
         index += read;
         count -= read;
-        ret   += read;
+        ret += read;
       }
     }
 

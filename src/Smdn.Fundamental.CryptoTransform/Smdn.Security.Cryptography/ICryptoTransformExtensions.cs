@@ -62,8 +62,8 @@ namespace Smdn.Security.Cryptography {
         var bytesToTransform = (inputCount / transform.InputBlockSize) * transform.InputBlockSize;
 
         outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
-        inputOffset  += bytesToTransform;
-        inputCount   -= bytesToTransform;
+        inputOffset += bytesToTransform;
+        inputCount -= bytesToTransform;
       }
 
       var inputBlockSize = transform.InputBlockSize;
@@ -72,7 +72,7 @@ namespace Smdn.Security.Cryptography {
         outputOffset += transform.TransformBlock(inputBuffer, inputOffset, inputBlockSize, outputBuffer, outputOffset);
 
         inputOffset += inputBlockSize;
-        inputCount  -= inputBlockSize;
+        inputCount -= inputBlockSize;
       }
 
       var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputCount);

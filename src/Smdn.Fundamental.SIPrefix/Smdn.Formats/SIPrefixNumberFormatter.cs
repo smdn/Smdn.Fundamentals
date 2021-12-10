@@ -80,7 +80,7 @@ namespace Smdn.Formats {
           valuePrefixDelimiter = singleSpace;
           prefixUnitDelimiter = string.Empty;
           DecimalPrefixes = new[] { string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ" };
-          BinaryPrefixes  = new[] { string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ" };
+          BinaryPrefixes = new[] { string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ" };
           break;
 
         default:
