@@ -69,13 +69,11 @@ namespace Smdn {
 
       foreach (var nameAndValue in splitted) {
         var pos = nameAndValue.IndexOf(NameValueSplitterChar);
+        var (name, value) = pos < 0
+          ? (nameAndValue, string.Empty) // name only
+          : (nameAndValue.Substring(0, pos), nameAndValue.Substring(pos + 1)); // name = value
 
-        if (pos < 0)
-          // name only
-          ret[nameAndValue] = string.Empty;
-        else
-          // name = value
-          ret[nameAndValue.Substring(0, pos)] = nameAndValue.Substring(pos + 1);
+        ret[name] = value;
       }
 
       return ret;
