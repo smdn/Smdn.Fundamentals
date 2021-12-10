@@ -61,11 +61,7 @@ namespace Smdn.Buffers {
           throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(sizeHint), sizeHint);
 
         currentMemory = firstWriter.GetMemory(sizeHint);
-
-        if (sizeHint == 0)
-          currentMemorySize = null;
-        else
-          currentMemorySize = sizeHint;
+        currentMemorySize = sizeHint == 0 ? null : sizeHint;
 
         return currentMemory;
       }

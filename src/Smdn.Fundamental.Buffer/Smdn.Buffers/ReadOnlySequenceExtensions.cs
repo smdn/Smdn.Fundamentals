@@ -42,9 +42,9 @@ namespace Smdn.Buffers {
           var comparand0 = memory.Span[i];
           var comparand1 = value[i];
 
-          if ((byte)'A' <= comparand0 && comparand0 <= (byte)'Z')
+          if (comparand0 is >= ((byte)'A') and <= ((byte)'Z'))
             comparand0 += 0x20;
-          if ((byte)'A' <= comparand1 && comparand1 <= (byte)'Z')
+          if (comparand1 is >= ((byte)'A') and <= ((byte)'Z'))
             comparand1 += 0x20;
 
           if (comparand0 != comparand1)
