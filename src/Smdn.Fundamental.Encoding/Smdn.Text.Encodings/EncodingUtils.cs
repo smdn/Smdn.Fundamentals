@@ -82,22 +82,22 @@ namespace Smdn.Text.Encodings {
 
     private static readonly Dictionary<string, string> encodingCollationTable
       = new(StringComparer.OrdinalIgnoreCase) {
-      /* UTF-16 */
-      { "utf16",       "utf-16" },
-      /* UTF-8 */
-      { "utf8",        "utf-8" },
-      /* Shift_JIS */
-      { "shiftjis",    "shift_jis" },     // shift_jis
-      { "xsjis",       "shift_jis" },     // x-sjis
-      /* EUC-JP */
-      { "eucjp",       "euc-jp" },        // euc-jp
-      { "xeucjp",      "euc-jp" },        // x-euc-jp
-      /* ISO-2022-JP */
-      { "iso2022jp",   "iso-2022-jp" },   // iso-2022-jp
+        /* UTF-16 */
+        { "utf16",       "utf-16" },
+        /* UTF-8 */
+        { "utf8",        "utf-8" },
+        /* Shift_JIS */
+        { "shiftjis",    "shift_jis" },     // shift_jis
+        { "xsjis",       "shift_jis" },     // x-sjis
+        /* EUC-JP */
+        { "eucjp",       "euc-jp" },        // euc-jp
+        { "xeucjp",      "euc-jp" },        // x-euc-jp
+        /* ISO-2022-JP */
+        { "iso2022jp",   "iso-2022-jp" },   // iso-2022-jp
 
-      // TODO
-      // {"utf16be",     "utf-16"},
-      // {"utf16le",     "utf-16"},
-    };
+        // TODO
+        // {"utf16be",     "utf-16"},
+        // {"utf16le",     "utf-16"},
+      };
   }
 }
