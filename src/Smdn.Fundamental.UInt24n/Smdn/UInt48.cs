@@ -160,7 +160,6 @@ namespace Smdn {
          (UInt64)((UInt64)Byte4 <<  8) |
          (UInt64)Byte5;
 
-#region "IConvertible implementation"
     TypeCode IConvertible.GetTypeCode()
     {
       return TypeCode.Object;
@@ -245,7 +244,6 @@ namespace Smdn {
     {
       return Convert.ChangeType(ToUInt64(), conversionType, provider);
     }
-#endregion
 
     public int CompareTo(object obj)
     {

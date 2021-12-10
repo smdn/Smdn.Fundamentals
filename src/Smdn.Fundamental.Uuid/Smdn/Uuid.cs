@@ -731,7 +731,6 @@ namespace Smdn {
 #endif
     }
 
-    #region "comparison"
     public static bool operator <(Uuid x, Uuid y) => x.CompareTo(y) < 0;
     public static bool operator <=(Uuid x, Uuid y) => x.CompareTo(y) <= 0;
     public static bool operator >(Uuid x, Uuid y) => y < x;
@@ -786,9 +785,7 @@ namespace Smdn {
 
       return 0;
     }
-    #endregion
 
-    #region "equality"
     public static bool operator ==(Uuid x, Uuid y) => x.fields_high == y.fields_high && x.fields_low == y.fields_low;
     public static bool operator !=(Uuid x, Uuid y) => x.fields_high != y.fields_high || x.fields_low != y.fields_low;
 
@@ -804,9 +801,7 @@ namespace Smdn {
 
     public bool Equals(Guid other) => this == (Uuid)other;
     public bool Equals(Uuid other) => this == other;
-    #endregion
 
-    #region "conversion"
     public static explicit operator Guid(Uuid @value) => @value.ToGuid();
 
     public static explicit operator Uuid(Guid @value) => new(@value);
@@ -858,7 +853,6 @@ namespace Smdn {
 
       return bytes;
     }
-    #endregion
 
     public override int GetHashCode()
       => fields_high.GetHashCode() ^ fields_low.GetHashCode();

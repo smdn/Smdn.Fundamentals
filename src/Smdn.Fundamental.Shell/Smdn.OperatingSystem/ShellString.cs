@@ -61,7 +61,6 @@ namespace Smdn.OperatingSystem {
         return str.Expanded;
     }
 
-#region "equality"
     public bool Equals(ShellString other)
     {
       if (object.ReferenceEquals(this, other))
@@ -109,9 +108,7 @@ namespace Smdn.OperatingSystem {
       else
         return Raw.GetHashCode();
     }
-#endregion
 
-#region "conversion"
     public static explicit operator string(ShellString str)
     {
       if (str == null)
@@ -132,6 +129,5 @@ namespace Smdn.OperatingSystem {
     {
       return Raw;
     }
-#endregion
   }
 }

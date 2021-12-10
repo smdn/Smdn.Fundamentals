@@ -18,7 +18,6 @@ namespace Smdn {
 #pragma warning restore IDE0055
     public static readonly FourCC Empty = new(0);
 
-#region "construction"
     public static FourCC CreateBigEndian(int bigEndianInt)
       => new(bigEndianInt);
 
@@ -90,9 +89,7 @@ namespace Smdn {
     {
       this.fourcc = fourcc;
     }
-#endregion
 
-#region "conversion"
     public static implicit operator FourCC(string fourccString)
       => new(fourccString);
 
@@ -172,9 +169,6 @@ namespace Smdn {
       }
     }
 
-#endregion
-
-#region "comparison"
     public static bool operator ==(FourCC x, FourCC y)
       => x.fourcc == y.fourcc;
 
@@ -201,7 +195,6 @@ namespace Smdn {
 
     public bool Equals(byte[] other)
       => (other != null) && other.SequenceEqual(this.ToByteArray());
-#endregion
 
     public override int GetHashCode()
       => fourcc;

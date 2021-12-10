@@ -136,7 +136,6 @@ namespace Smdn {
          (UInt32)(Byte1 << 8) |
          (UInt32)Byte2;
 
-#region "IConvertible implementation"
     TypeCode IConvertible.GetTypeCode() => TypeCode.Object;
 
     string IConvertible.ToString(IFormatProvider provider) => ToString(null, provider);
@@ -161,7 +160,6 @@ namespace Smdn {
 
     object IConvertible.ToType(Type conversionType, IFormatProvider provider)
       => Convert.ChangeType(ToUInt32(), conversionType, provider);
-#endregion
 
     public int CompareTo(object obj)
     {

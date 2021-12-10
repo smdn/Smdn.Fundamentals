@@ -15,7 +15,6 @@ namespace Smdn.IO.Streams {
 #endif
 #pragma warning restore SA1001
   {
-#region "class members"
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
     {
       return CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
@@ -42,7 +41,6 @@ namespace Smdn.IO.Streams {
         ? new(partialStream.InnerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin)
         : new(innerOrPartialStream, offset, length, true, true, seekToBegin);
     }
-#endregion
 
     public Stream InnerStream {
       get { CheckDisposed(); return stream; }
