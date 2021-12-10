@@ -5,7 +5,9 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-using Smdn.IO.Streams;
+#if !(NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER)
+using Smdn.IO.Streams; // NonClosingStream
+#endif
 using Smdn.Security.Cryptography;
 
 namespace Smdn.Formats {
@@ -69,9 +71,9 @@ namespace Smdn.Formats {
 
     public static byte[] Encode(byte[] bytes, int offset, int count)
     {
-      using (var transform = CreateToBase64Transform()) {
-        return ICryptoTransformExtensions.TransformBytes(transform, bytes, offset, count);
-      }
+      using var transform = CreateToBase64Transform();
+
+      return ICryptoTransformExtensions.TransformBytes(transform, bytes, offset, count);
     }
 
     public static string GetDecodedString(string str)
@@ -115,9 +117,9 @@ namespace Smdn.Formats {
 
     public static byte[] Decode(byte[] bytes, int offset, int count)
     {
-      using (var transform = CreateFromBase64Transform(ignoreWhiteSpaces: true)) {
-        return ICryptoTransformExtensions.TransformBytes(transform, bytes, offset, count);
-      }
+      using var transform = CreateFromBase64Transform(ignoreWhiteSpaces: true);
+
+      return ICryptoTransformExtensions.TransformBytes(transform, bytes, offset, count);
     }
 
     public static Stream CreateEncodingStream(Stream stream, bool leaveStreamOpen = false)
