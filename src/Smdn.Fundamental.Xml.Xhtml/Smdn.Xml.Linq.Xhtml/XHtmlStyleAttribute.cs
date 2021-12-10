@@ -6,7 +6,9 @@ using System.Linq;
 using System.Xml.Linq;
 
 namespace Smdn.Xml.Linq.Xhtml {
+#pragma warning disable CA1711
   public class XHtmlStyleAttribute : XAttribute {
+#pragma warning restore CA1711
     protected static string ToJoined(KeyValuePair<string, string> style) => string.Concat(style.Key, ": ", style.Value, ";");
 
     protected static string ToJoined(IEnumerable<KeyValuePair<string, string>> styles)

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Xml;
 
@@ -34,15 +33,13 @@ namespace Smdn.Xml.Xhtml {
       Closed,
     }
 
-    protected ExtendedWriteState ExtendedState => state;
-
-    private ExtendedWriteState state = ExtendedWriteState.Start;
+    protected ExtendedWriteState ExtendedState { get; private set; } = ExtendedWriteState.Start;
 
     private ElementContext currentElementContext = null;
-    private readonly Stack<ElementContext> elementContextStack = new Stack<ElementContext>(4 /*nest level*/);
+    private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
 
     private class ElementContext {
-      private static readonly HashSet<string> voidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+      private static readonly HashSet<string> voidElements = new(StringComparer.OrdinalIgnoreCase) {
         "area", "base", "br", "col", "embed",
         "hr", "img", "input", "keygen", "link",
         "meta", "param", "source", "track", "wbr",
@@ -59,13 +56,10 @@ namespace Smdn.Xml.Xhtml {
 
       public ElementContext(string localName, string ns, ElementContext parentElementContext)
       {
-        this.LocalName = localName;
-        this.Namespace = ns;
+        LocalName = localName;
+        Namespace = ns;
 
-        if (parentElementContext == null)
-          IsMixedContent = false;
-        else
-          IsMixedContent = parentElementContext.IsMixedContent;
+        IsMixedContent = parentElementContext?.IsMixedContent ?? false;
 
         if (IsNamespaceXhtml && string.Equals(localName, "pre", StringComparison.OrdinalIgnoreCase))
           // <pre> is treated as mixed content always
@@ -88,7 +82,7 @@ namespace Smdn.Xml.Xhtml {
       }
     }
 
-    private static readonly XmlWriterSettings defaultSettings = new XmlWriterSettings();
+    private static readonly XmlWriterSettings defaultSettings = new();
 
     private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
     {
@@ -134,10 +128,7 @@ namespace Smdn.Xml.Xhtml {
 
     private PolyglotHtml5Writer(XmlWriter baseWriter, XmlWriterSettings settings)
     {
-      if (baseWriter == null)
-        throw new ArgumentNullException(nameof(baseWriter));
-
-      this.baseWriter = baseWriter;
+      this.baseWriter = baseWriter ?? throw new ArgumentNullException(nameof(baseWriter));
       this.settings = settings ?? defaultSettings.Clone();
     }
 
@@ -154,7 +145,7 @@ namespace Smdn.Xml.Xhtml {
       finally {
         base.Dispose(disposing);
 
-        state = ExtendedWriteState.Closed;
+        ExtendedState = ExtendedWriteState.Closed;
       }
     }
 
@@ -165,15 +156,15 @@ namespace Smdn.Xml.Xhtml {
       else
         baseWriter.WriteDocType(name, pubid, sysid, subset);
 
-      state = ExtendedWriteState.Prolog;
+      ExtendedState = ExtendedWriteState.Prolog;
     }
 
     public override void WriteStartElement(string prefix, string localName, string ns)
     {
-      switch (state) {
+      switch (ExtendedState) {
         case ExtendedWriteState.ElementOpening:
         case ExtendedWriteState.AttributeEnd:
-          state = ExtendedWriteState.ElementContent;
+          ExtendedState = ExtendedWriteState.ElementContent;
           break;
       }
 
@@ -190,7 +181,7 @@ namespace Smdn.Xml.Xhtml {
 
       currentElementContext = new ElementContext(localName, ns, currentElementContext);
 
-      state = ExtendedWriteState.ElementOpening;
+      ExtendedState = ExtendedWriteState.ElementOpening;
     }
 
     public override void WriteEndElement()
@@ -201,7 +192,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteEndElement();
 
-      state = ExtendedWriteState.ElementOpened;
+      ExtendedState = ExtendedWriteState.ElementOpened;
 
       if (currentElementContext.IsEmpty)
         CloseCurrentElement();
@@ -209,7 +200,7 @@ namespace Smdn.Xml.Xhtml {
 
     public override void WriteFullEndElement()
     {
-      state = ExtendedWriteState.ElementClosing;
+      ExtendedState = ExtendedWriteState.ElementClosing;
 
       WriteIndent();
 
@@ -222,40 +213,41 @@ namespace Smdn.Xml.Xhtml {
     {
       currentElementContext.MarkAsClosed();
 
-      state = ExtendedWriteState.ElementClosed;
+      ExtendedState = ExtendedWriteState.ElementClosed;
 
       if (0 < elementContextStack.Count) {
         currentElementContext = elementContextStack.Pop();
 
-        state = ExtendedWriteState.ElementContent;
+        ExtendedState = ExtendedWriteState.ElementContent;
       }
       else {
         currentElementContext = null;
       }
     }
 
-    private readonly List<string> indentStrings = new List<string>(4);
+    private readonly List<string> indentStrings = new(4);
 
     protected virtual void WriteIndent()
     {
       if (!settings.Indent)
         return;
-      if (state == ExtendedWriteState.Start || state == ExtendedWriteState.DocumentStart)
+      if (ExtendedState is ExtendedWriteState.Start or ExtendedWriteState.DocumentStart)
         return;
       if (XmlSpace == XmlSpace.Preserve)
         return;
       if (currentElementContext != null) {
         if (currentElementContext.IsMixedContent)
           return;
-        if (state == ExtendedWriteState.ElementClosing &&
+        if (ExtendedState == ExtendedWriteState.ElementClosing &&
             currentElementContext.IsEmpty &&
-            currentElementContext.IsNonVoidElement)
+            currentElementContext.IsNonVoidElement) {
           return;
+        }
       }
 
       var indentLevel = elementContextStack.Count;
 
-      if (state == ExtendedWriteState.ElementContent)
+      if (ExtendedState == ExtendedWriteState.ElementContent)
         indentLevel += 1;
 
       // create indent string (NewLineChars + IndentChars * IndentLevel)
@@ -290,56 +282,56 @@ namespace Smdn.Xml.Xhtml {
     {
       baseWriter.WriteStartDocument();
 
-      state = ExtendedWriteState.DocumentStart;
+      ExtendedState = ExtendedWriteState.DocumentStart;
     }
 
     public override void WriteStartDocument(bool standalone)
     {
       baseWriter.WriteStartDocument(standalone);
 
-      state = ExtendedWriteState.DocumentStart;
+      ExtendedState = ExtendedWriteState.DocumentStart;
     }
 
     public override void WriteEndDocument()
     {
       baseWriter.WriteEndDocument();
 
-      state = ExtendedWriteState.DocumentEnd;
+      ExtendedState = ExtendedWriteState.DocumentEnd;
     }
 
     public override void WriteStartAttribute(string prefix, string localName, string ns)
     {
       if (settings.Indent && settings.NewLineOnAttributes)
         throw new NotSupportedException("NewLineOnAttributes is not supported");
-        // WriteIndent(); // causes InvalidOperationException
+      // WriteIndent(); // causes InvalidOperationException
 
       baseWriter.WriteStartAttribute(prefix, localName, ns);
 
-      state = ExtendedWriteState.AttributeStart;
+      ExtendedState = ExtendedWriteState.AttributeStart;
     }
 
     public override void WriteEndAttribute()
     {
       baseWriter.WriteEndAttribute();
 
-      state = ExtendedWriteState.AttributeEnd;
+      ExtendedState = ExtendedWriteState.AttributeEnd;
     }
 
     public override void WriteProcessingInstruction(string name, string text)
     {
       baseWriter.WriteProcessingInstruction(name, text);
 
-      if (state == ExtendedWriteState.ElementContent)
+      if (ExtendedState == ExtendedWriteState.ElementContent)
         currentElementContext.MarkAsNonEmpty();
     }
 
     public override void WriteComment(string text)
     {
-      switch (state) {
+      switch (ExtendedState) {
         case ExtendedWriteState.ElementOpening:
         case ExtendedWriteState.ElementOpened:
         case ExtendedWriteState.AttributeEnd:
-          state = ExtendedWriteState.ElementContent;
+          ExtendedState = ExtendedWriteState.ElementContent;
           break;
       }
 
@@ -347,9 +339,9 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteComment(text);
 
-      if (state == ExtendedWriteState.DocumentStart)
-        state = ExtendedWriteState.Prolog;
-      else if (state == ExtendedWriteState.ElementContent)
+      if (ExtendedState == ExtendedWriteState.DocumentStart)
+        ExtendedState = ExtendedWriteState.Prolog;
+      else if (ExtendedState == ExtendedWriteState.ElementContent)
         currentElementContext.MarkAsNonEmpty();
     }
 
@@ -359,7 +351,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteBase64(buffer, index, count);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -371,7 +363,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteCData(text);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -383,7 +375,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteCharEntity(ch);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -395,7 +387,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteChars(buffer, index, count);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -407,7 +399,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteEntityRef(name);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -419,7 +411,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteRaw(buffer, index, count);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -431,7 +423,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteRaw(data);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -443,7 +435,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteString(text);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -455,7 +447,7 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
 
-      if (state == ExtendedWriteState.ElementContent) {
+      if (ExtendedState == ExtendedWriteState.ElementContent) {
         currentElementContext.MarkAsMixedContent();
         currentElementContext.MarkAsNonEmpty();
       }
@@ -467,21 +459,21 @@ namespace Smdn.Xml.Xhtml {
 
       baseWriter.WriteWhitespace(ws);
 
-      if (state == ExtendedWriteState.ElementContent)
+      if (ExtendedState == ExtendedWriteState.ElementContent)
         currentElementContext.MarkAsMixedContent();
     }
 
     private void SetWritingContentState()
     {
-      switch (state) {
+      switch (ExtendedState) {
         case ExtendedWriteState.ElementOpening:
         case ExtendedWriteState.ElementOpened:
         case ExtendedWriteState.AttributeEnd:
-          state = ExtendedWriteState.ElementContent;
+          ExtendedState = ExtendedWriteState.ElementContent;
           break;
 
         case ExtendedWriteState.AttributeStart:
-          state = ExtendedWriteState.AttributeValue;
+          ExtendedState = ExtendedWriteState.AttributeValue;
           break;
       }
     }

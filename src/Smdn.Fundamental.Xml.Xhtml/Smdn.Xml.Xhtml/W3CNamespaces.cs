@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 
 namespace Smdn.Xml.Xhtml {
   public static class W3CNamespaces {

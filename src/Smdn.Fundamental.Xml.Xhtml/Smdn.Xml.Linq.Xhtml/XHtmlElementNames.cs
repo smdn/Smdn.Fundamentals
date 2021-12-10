@@ -93,7 +93,9 @@ namespace Smdn.Xml.Linq.Xhtml {
     public static readonly XName Img = XHtmlNamespaces.Html.GetName("img");
     public static readonly XName IFrame = XHtmlNamespaces.Html.GetName("iframe");
     public static readonly XName Embed = XHtmlNamespaces.Html.GetName("embed");
+#pragma warning disable CA1720
     public static readonly XName Object = XHtmlNamespaces.Html.GetName("object");
+#pragma warning restore CA1720
     public static readonly XName Param = XHtmlNamespaces.Html.GetName("param");
     public static readonly XName Video = XHtmlNamespaces.Html.GetName("video");
     public static readonly XName Audio = XHtmlNamespaces.Html.GetName("audio");

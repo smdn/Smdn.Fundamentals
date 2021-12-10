@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Smdn.Xml.Linq.Xhtml {
+#pragma warning disable CA1711
   public class XHtmlClassAttribute : XAttribute {
+#pragma warning restore CA1711
     private static readonly char[] classListSeparator = { ' ' };
 
     internal static string[] SplitClassList(string classList)

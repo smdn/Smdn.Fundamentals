@@ -32,7 +32,7 @@ namespace Smdn.Xml.Linq.Xhtml {
       if (l == null)
         return false;
 
-      return (new HashSet<string>(l, StringComparer.Ordinal)).IsSupersetOf(classList);
+      return new HashSet<string>(l, StringComparer.Ordinal).IsSupersetOf(classList);
     }
   }
 }
