@@ -81,7 +81,7 @@ namespace Smdn.Text.Encodings {
     }
 
     private static readonly Dictionary<string, string> encodingCollationTable
-      = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+      = new(StringComparer.OrdinalIgnoreCase) {
       /* UTF-16 */
       { "utf16",       "utf-16" },
       /* UTF-8 */
