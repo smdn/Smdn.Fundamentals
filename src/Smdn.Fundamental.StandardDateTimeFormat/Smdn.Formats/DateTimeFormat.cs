@@ -9,19 +9,14 @@ namespace Smdn.Formats {
     public static string GetCurrentTimeZoneOffsetString(bool delimiter)
     {
       var offset = TimeZoneInfo.Local.BaseUtcOffset;
+      var sign = TimeSpan.Zero <= offset ? "+" : "-";
+      var delim = delimiter ? ":" : string.Empty;
 
-      if (delimiter) {
-        if (TimeSpan.Zero <= offset)
-          return string.Format(CultureInfo.InvariantCulture, "+{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
-        else
-          return string.Format(CultureInfo.InvariantCulture, "-{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
-      }
-      else {
-        if (TimeSpan.Zero <= offset)
-          return string.Format(CultureInfo.InvariantCulture, "+{0:d2}{1:d2}", offset.Hours, offset.Minutes);
-        else
-          return string.Format(CultureInfo.InvariantCulture, "-{0:d2}{1:d2}", offset.Hours, offset.Minutes);
-      }
+#if SYSTEM_FORMATTABLESTRING
+      return FormattableString.Invariant($"{sign}{offset.Hours:d2}{delim}{offset.Minutes:d2}");
+#else
+      return string.Concat(sign, offset.Hours.ToString("d2", CultureInfo.InvariantCulture), delim, offset.Minutes.ToString("d2", CultureInfo.InvariantCulture));
+#endif
     }
 
     public static string ToRFC822DateTimeString(DateTime dateTime)
@@ -41,78 +36,58 @@ namespace Smdn.Formats {
     }
 
     public static string ToRFC822DateTimeStringNullable(DateTimeOffset? dateTimeOffset)
-    {
-      return (dateTimeOffset == null) ? null : ToRFC822DateTimeString(dateTimeOffset.Value);
-    }
+      => dateTimeOffset.HasValue
+        ? ToRFC822DateTimeString(dateTimeOffset.Value)
+        : null;
 
     public static DateTime FromRFC822DateTimeString(string s)
-    {
-      return FromDateTimeString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
-    }
+      => FromDateTimeString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
 
     public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
-    {
-      return FromDateTimeOffsetString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
-    }
+      => FromDateTimeOffsetString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
 
     public static DateTimeOffset? FromRFC822DateTimeOffsetStringNullable(string s)
-    {
-      return (s == null) ? (DateTimeOffset?)null : (DateTimeOffset?)FromRFC822DateTimeOffsetString(s);
-    }
+      => s is null
+        ? null
+        : FromRFC822DateTimeOffsetString(s);
 
     public static string ToISO8601DateTimeString(DateTime dateTime)
-    {
-      return ToW3CDateTimeString(dateTime);
-    }
+      => ToW3CDateTimeString(dateTime);
 
     public static string ToISO8601DateTimeString(DateTimeOffset dateTimeOffset)
-    {
-      return ToW3CDateTimeString(dateTimeOffset);
-    }
+      => ToW3CDateTimeString(dateTimeOffset);
 
     public static string ToW3CDateTimeString(DateTime dateTime)
-    {
-      return dateTime.ToString("o");
-    }
+      => dateTime.ToString("o");
 
     public static string ToW3CDateTimeString(DateTimeOffset dateTimeOffset)
-    {
-      return dateTimeOffset.ToString("o");
-    }
+      => dateTimeOffset.ToString("o");
 
     public static string ToW3CDateTimeStringNullable(DateTimeOffset? dateTimeOffset)
-    {
-      return (dateTimeOffset == null) ? null : ToW3CDateTimeString(dateTimeOffset.Value);
-    }
+      => dateTimeOffset.HasValue
+        ? ToW3CDateTimeString(dateTimeOffset.Value)
+        : null;
 
     public static DateTime FromISO8601DateTimeString(string s)
-    {
-      return FromW3CDateTimeString(s);
-    }
+      => FromW3CDateTimeString(s);
 
     public static DateTime FromW3CDateTimeString(string s)
-    {
-      return FromDateTimeString(s, w3cDateTimeFormats, w3cUniversalTimeString);
-    }
+      => FromDateTimeString(s, w3cDateTimeFormats, w3cUniversalTimeString);
 
     public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
-    {
-      return FromW3CDateTimeOffsetString(s);
-    }
+      => FromW3CDateTimeOffsetString(s);
 
     public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
-    {
-      return FromDateTimeOffsetString(s, w3cDateTimeFormats, w3cUniversalTimeString);
-    }
+      => FromDateTimeOffsetString(s, w3cDateTimeFormats, w3cUniversalTimeString);
 
     public static DateTimeOffset? FromW3CDateTimeOffsetStringNullable(string s)
-    {
-      return (s == null) ? (DateTimeOffset?)null : (DateTimeOffset?)FromW3CDateTimeOffsetString(s);
-    }
+      => s is null
+        ? null
+        : FromW3CDateTimeOffsetString(s);
 
     private static DateTime FromDateTimeString(string s, string[] formats, string universalTimeString)
     {
-      if (s == null)
+      if (s is null)
         throw new ArgumentNullException(nameof(s));
 
       var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
@@ -129,7 +104,7 @@ namespace Smdn.Formats {
 
     private static DateTimeOffset FromDateTimeOffsetString(string s, string[] formats, string universalTimeString)
     {
-      if (s == null)
+      if (s is null)
         throw new ArgumentNullException(nameof(s));
 
       var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
