@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Buffers;
 using System.IO;
 
 namespace Smdn.IO.Streams.Caching {
@@ -11,25 +10,12 @@ namespace Smdn.IO.Streams.Caching {
       get { CheckDisposed(); return stream; }
     }
 
-    public override bool CanSeek {
-      get { return !IsClosed /*&& true*/; }
-    }
+    public override bool CanSeek => !IsClosed /*&& true*/;
+    public override bool CanRead => !IsClosed /*&& true*/;
+    public override bool CanWrite => /*!IsClosed &&*/ false;
+    public override bool CanTimeout => false;
 
-    public override bool CanRead {
-      get { return !IsClosed /*&& true*/; }
-    }
-
-    public override bool CanWrite {
-      get { return /*!IsClosed &&*/ false; }
-    }
-
-    public override bool CanTimeout {
-      get { return false; }
-    }
-
-    private bool IsClosed {
-      get { return stream == null; }
-    }
+    private bool IsClosed => stream is null;
 
     public override long Length {
       get { CheckDisposed(); return stream.Length; }
@@ -176,7 +162,7 @@ namespace Smdn.IO.Streams.Caching {
     private bool TryGetBlock(long offset, out ReadOnlySpan<byte> block)
     {
 #if SYSTEM_MATH_DIVREM
-      var blockIndex = Math.DivRem(position, (long)blockSize, out var blockOffset);
+      var blockIndex = Math.DivRem(position, blockSize, out var blockOffset);
 #else
       var blockIndex = MathUtils.DivRem(position, (long)blockSize, out var blockOffset);
 #endif

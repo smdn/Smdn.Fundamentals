@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -53,6 +52,6 @@ namespace Smdn.IO.Streams.Caching {
       return cachedBlocks[blockIndex] = ReadBlock(blockIndex);
     }
 
-    private Dictionary<long, byte[]> cachedBlocks = new Dictionary<long, byte[]>();
+    private Dictionary<long, byte[]> cachedBlocks = new();
   }
 }

@@ -61,6 +61,6 @@ namespace Smdn.IO.Streams.Caching {
       return block;
     }
 
-    private Dictionary<long, WeakReference<byte[]>> cachedBlocks = new Dictionary<long, WeakReference<byte[]>>();
+    private Dictionary<long, WeakReference<byte[]>> cachedBlocks = new();
   }
 }
