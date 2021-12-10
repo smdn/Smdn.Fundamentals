@@ -20,7 +20,7 @@ namespace Smdn.Text {
     }
 
     public int Length {
-      get { return length; }
+      get => length;
       set {
         if (value < 0)
           throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Length), value);
@@ -28,13 +28,8 @@ namespace Smdn.Text {
       }
     }
 
-    public int Capacity {
-      get { return buffer.Length; }
-    }
-
-    public int MaxCapacity {
-      get { return maxCapacity; }
-    }
+    public int Capacity => buffer.Length;
+    public int MaxCapacity { get; }
 
     public ByteStringBuilder()
       : this(16, int.MaxValue)
@@ -55,7 +50,7 @@ namespace Smdn.Text {
 
       this.buffer = new byte[capacity];
       this.length = 0;
-      this.maxCapacity = maxCapacity;
+      this.MaxCapacity = maxCapacity;
     }
 
     public ByteStringBuilder Append(byte b)
@@ -131,7 +126,7 @@ namespace Smdn.Text {
 
       capacity = Math.Max(capacity, buffer.Length * 2);
 
-      if (maxCapacity < capacity)
+      if (MaxCapacity < capacity)
         throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(MaxCapacity), nameof(capacity), capacity);
 
       var newBuffer = new byte[capacity];
@@ -141,10 +136,7 @@ namespace Smdn.Text {
       buffer = newBuffer;
     }
 
-    public ArraySegment<byte> GetSegment()
-    {
-      return new ArraySegment<byte>(buffer, 0, length);
-    }
+    public ArraySegment<byte> GetSegment() => new(buffer, 0, length);
 
     public ArraySegment<byte> GetSegment(int offset, int count)
     {
@@ -168,17 +160,12 @@ namespace Smdn.Text {
     }
 
     public ByteString ToByteString(bool asMutable)
-    {
-      return ByteString.Create(asMutable, buffer, 0, length);
-    }
+      => ByteString.Create(asMutable, buffer, 0, length);
 
     public override string ToString()
-    {
-      return ByteString.ToString(null, buffer.AsSpan(0, length));
-    }
+      => ByteString.ToString(null, buffer.AsSpan(0, length));
 
     private byte[] buffer;
     private int length;
-    private int maxCapacity;
   }
 }

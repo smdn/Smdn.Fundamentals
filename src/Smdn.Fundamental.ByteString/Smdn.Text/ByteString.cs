@@ -39,21 +39,11 @@ namespace Smdn.Text {
       }
     }
 
-    public bool IsMutable {
-      get { return isMutable; }
-    }
+    public bool IsMutable => isMutable;
+    public int Length => segment.Count;
+    public bool IsEmpty => segment.Count == 0;
 
-    public int Length {
-      get { return segment.Count; }
-    }
-
-    public bool IsEmpty {
-      get { return segment.Count == 0; }
-    }
-
-    public ArraySegment<byte> Segment {
-      get { return segment; }
-    }
+    public ArraySegment<byte> Segment => segment;
 
     public static ByteString CreateEmpty()
     {
@@ -81,7 +71,7 @@ namespace Smdn.Text {
 
     public static ByteString CreateMutable(byte[] @value, int offset)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), true);
@@ -113,7 +103,7 @@ namespace Smdn.Text {
 
     public static ByteString CreateImmutable(byte[] @value, int offset)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), false);
@@ -145,7 +135,7 @@ namespace Smdn.Text {
 
     public static ByteString Create(bool asMutable, byte[] @value, int offset)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), asMutable);
@@ -158,7 +148,7 @@ namespace Smdn.Text {
 
     public static byte[] ToByteArray(string @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return ToByteArray(@value, 0, @value.Length);
@@ -166,7 +156,7 @@ namespace Smdn.Text {
 
     public static byte[] ToByteArray(string @value, int startIndex, int count)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
@@ -220,7 +210,7 @@ namespace Smdn.Text {
 
     public bool Contains(ByteString @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return 0 <= IndexOf(@value.segment, 0);
@@ -233,7 +223,7 @@ namespace Smdn.Text {
 
     public bool StartsWith(ByteString @value)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return StartsWith(@value.segment);
@@ -241,7 +231,7 @@ namespace Smdn.Text {
 
     public bool StartsWith(byte[] @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return StartsWith(new ArraySegment<byte>(@value));
@@ -268,7 +258,7 @@ namespace Smdn.Text {
 
     public bool StartsWithIgnoreCase(ByteString @value)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return StartsWithIgnoreCase(@value.segment);
@@ -276,7 +266,7 @@ namespace Smdn.Text {
 
     public bool StartsWithIgnoreCase(byte[] @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return StartsWithIgnoreCase(new ArraySegment<byte>(@value));
@@ -293,9 +283,12 @@ namespace Smdn.Text {
         var len = @value.Count;
 
         for (var index = 0; index < len; index++) {
-          if (ToLowerCaseAsciiTableArray[str[index]] !=
-              ToLowerCaseAsciiTableArray[substr[index]])
+          if (
+            ToLowerCaseAsciiTableArray[str[index]] !=
+            ToLowerCaseAsciiTableArray[substr[index]]
+          ) {
             return false;
+          }
         }
       }
 
@@ -304,7 +297,7 @@ namespace Smdn.Text {
 
     public unsafe bool StartsWith(string @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       if (segment.Count < @value.Length)
@@ -324,7 +317,7 @@ namespace Smdn.Text {
 
     public bool EndsWith(ByteString @value)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return EndsWith(@value.segment);
@@ -332,7 +325,7 @@ namespace Smdn.Text {
 
     public bool EndsWith(byte[] @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return EndsWith(new ArraySegment<byte>(@value));
@@ -359,7 +352,7 @@ namespace Smdn.Text {
 
     public unsafe bool EndsWith(string @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       if (segment.Count < @value.Length)
@@ -379,7 +372,7 @@ namespace Smdn.Text {
 
     public bool IsPrefixOf(ByteString @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IsPrefixOf(@value.segment);
@@ -387,7 +380,7 @@ namespace Smdn.Text {
 
     public bool IsPrefixOf(byte[] @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IsPrefixOf(new ArraySegment<byte>(@value));
@@ -454,7 +447,7 @@ namespace Smdn.Text {
 
     public int IndexOf(byte[] @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOf(new ArraySegment<byte>(@value), 0);
@@ -462,7 +455,7 @@ namespace Smdn.Text {
 
     public int IndexOf(byte[] @value, int startIndex)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOf(new ArraySegment<byte>(@value), startIndex);
@@ -470,7 +463,7 @@ namespace Smdn.Text {
 
     public int IndexOfIgnoreCase(byte[] @value)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(new ArraySegment<byte>(@value), 0);
@@ -478,7 +471,7 @@ namespace Smdn.Text {
 
     public int IndexOfIgnoreCase(byte[] @value, int startIndex)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(new ArraySegment<byte>(@value), startIndex);
@@ -486,7 +479,7 @@ namespace Smdn.Text {
 
     public int IndexOf(ByteString @value)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOf(@value.segment, 0);
@@ -494,7 +487,7 @@ namespace Smdn.Text {
 
     public int IndexOf(ByteString @value, int startIndex)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOf(@value.segment, startIndex);
@@ -502,7 +495,7 @@ namespace Smdn.Text {
 
     public int IndexOfIgnoreCase(ByteString @value)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(@value.segment, 0);
@@ -510,7 +503,7 @@ namespace Smdn.Text {
 
     public int IndexOfIgnoreCase(ByteString @value, int startIndex)
     {
-      if ((object)@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
 
       return IndexOfIgnoreCase(@value.segment, startIndex);
@@ -594,7 +587,7 @@ namespace Smdn.Text {
 
     public unsafe int IndexOf(string @value, int startIndex)
     {
-      if (@value == null)
+      if (@value is null)
         throw new ArgumentNullException(nameof(value));
       if (startIndex < 0)
         throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
@@ -664,7 +657,7 @@ namespace Smdn.Text {
     }
 
     public ByteString Substring(int startIndex)
-      => new ByteString(
+      => new(
         new ArraySegment<byte>(
           segment.Array,
           segment.Offset + startIndex,
@@ -689,7 +682,7 @@ namespace Smdn.Text {
     }
 
     public ArraySegment<byte> GetSubSegment(int startIndex)
-      => new ArraySegment<byte>(
+      => new(
         segment.Array,
         segment.Offset + startIndex,
         segment.Count - startIndex
@@ -787,10 +780,9 @@ namespace Smdn.Text {
         for (var index = 0; index < len; index++) {
           var o = str[index];
 
-          if (0x30 <= o && o <= 0x39)
-            val = checked((val * 10) + (uint)(o - 0x30));
-          else
-            throw new FormatException("contains non-number character");
+          val = o is >= 0x30 and <= 0x39
+            ? checked((val * 10) + (uint)(o - 0x30))
+            : throw new FormatException("contains non-number character");
         }
       }
 
@@ -809,10 +801,9 @@ namespace Smdn.Text {
         for (var index = 0; index < len; index++) {
           var o = str[index];
 
-          if (0x30 <= o && o <= 0x39)
-            val = checked((val * 10) + (ulong)(o - 0x30));
-          else
-            throw new FormatException("contains non-number character");
+          val = o is >= 0x30 and <= 0x39
+            ? checked((val * 10) + (ulong)(o - 0x30))
+            : throw new FormatException("contains non-number character");
         }
       }
 
@@ -829,13 +820,7 @@ namespace Smdn.Text {
         for (var index = 0; index < len; index++) {
           var o = str[index];
 
-          if (!(o == 0x20 ||
-                o == 0xa0 ||
-                o == 0x09 ||
-                o == 0x0a ||
-                o == 0x0b ||
-                o == 0x0c ||
-                o == 0x0d))
+          if (o is not (0x20 or 0xa0 or 0x09 or 0x0a or 0x0b or 0x0c or 0x0d))
             return Substring(index, len - index);
         }
       }
@@ -852,13 +837,7 @@ namespace Smdn.Text {
         for (var index = segment.Count - 1; 0 <= index; index--) {
           var o = str[index];
 
-          if (!(o == 0x20 ||
-                o == 0xa0 ||
-                o == 0x09 ||
-                o == 0x0a ||
-                o == 0x0b ||
-                o == 0x0c ||
-                o == 0x0d))
+          if (o is not (0x20 or 0xa0 or 0x09 or 0x0a or 0x0b or 0x0c or 0x0d))
             return Substring(0, index + 1);
         }
       }
@@ -874,7 +853,7 @@ namespace Smdn.Text {
 
     public static bool IsNullOrEmpty(ByteString str)
     {
-      if ((object)str == null)
+      if (str is null)
         return true;
       else if (str.Length == 0)
         return true;
@@ -892,8 +871,8 @@ namespace Smdn.Text {
       const byte CR = (byte)'\r';
       const byte LF = (byte)'\n';
 
-      return (str.segment.Array[str.segment.Offset + str.segment.Count - 2] == CR &&
-              str.segment.Array[str.segment.Offset + str.segment.Count - 1] == LF);
+      return str.segment.Array[str.segment.Offset + str.segment.Count - 2] == CR &&
+             str.segment.Array[str.segment.Offset + str.segment.Count - 1] == LF;
     }
 
     public bool Equals(ByteString other)
@@ -978,11 +957,11 @@ namespace Smdn.Text {
 
     public static bool operator ==(ByteString x, ByteString y)
     {
-      if (object.ReferenceEquals(x, y))
+      if (ReferenceEquals(x, y))
         return true;
 
-      if (null == (object)x || null == (object)y) {
-        if (null == (object)x && null == (object)y)
+      if (x is null || y is null) {
+        if (x is null && y is null)
           return true;
         else
           return false;
@@ -991,16 +970,13 @@ namespace Smdn.Text {
       return x.Equals(y.segment);
     }
 
-    public static bool operator !=(ByteString x, ByteString y)
-    {
-      return !(x == y);
-    }
+    public static bool operator !=(ByteString x, ByteString y) => !(x == y);
 
     public unsafe bool EqualsIgnoreCase(ByteString other)
     {
-      if ((object)other == null)
+      if (other is null)
         return false;
-      else if (segment.Count != other.segment.Count)
+      if (segment.Count != other.segment.Count)
         return false;
 
       fixed (byte* strX0 = this.segment.Array, strY0 = other.segment.Array) {
@@ -1009,9 +985,12 @@ namespace Smdn.Text {
         var len = segment.Count;
 
         for (var index = 0; index < len; index++) {
-          if (ToLowerCaseAsciiTableArray[strX[index]] !=
-              ToLowerCaseAsciiTableArray[strY[index]])
+          if (
+            ToLowerCaseAsciiTableArray[strX[index]] !=
+            ToLowerCaseAsciiTableArray[strY[index]]
+          ) {
             return false;
+          }
         }
       }
 
@@ -1020,9 +999,9 @@ namespace Smdn.Text {
 
     public bool EqualsIgnoreCase(string other)
     {
-      if ((object)other == null)
+      if (other is null)
         return false;
-      else if (segment.Count != other.Length)
+      if (segment.Count != other.Length)
         return false;
 
       return this.ToLower().Equals(other.ToLower()); // XXX
