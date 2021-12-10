@@ -157,7 +157,7 @@ namespace Smdn {
          (UInt64)((UInt64)Byte1 << 32) |
          (UInt64)((UInt64)Byte2 << 24) |
          (UInt64)((UInt64)Byte3 << 16) |
-         (UInt64)((UInt64)Byte4 <<  8) |
+         (UInt64)((UInt64)Byte4 << 8) |
          (UInt64)Byte5;
 
     TypeCode IConvertible.GetTypeCode()
