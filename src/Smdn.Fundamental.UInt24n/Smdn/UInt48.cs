@@ -83,7 +83,7 @@ namespace Smdn {
 
     public static explicit operator UInt48(long val)
     {
-      if (val < minValue || maxValue < val)
+      if (val is < minValue or > maxValue)
         throw new OverflowException();
 
       var uint48 = new UInt48();
@@ -136,43 +136,26 @@ namespace Smdn {
       return uint48;
     }
 
-    public static explicit operator int(UInt48 val)
-    {
-      return checked((int)val.ToInt64());
-    }
+    public static explicit operator int(UInt48 val) => checked((int)val.ToInt64());
 
     [CLSCompliant(false)]
-    public static explicit operator uint(UInt48 val)
-    {
-      return checked((uint)val.ToUInt64());
-    }
+    public static explicit operator uint(UInt48 val) => checked((uint)val.ToUInt64());
 
-    public static explicit operator long(UInt48 val)
-    {
-      return val.ToInt64();
-    }
+    public static explicit operator long(UInt48 val) => val.ToInt64();
 
     [CLSCompliant(false)]
-    public static explicit operator ulong(UInt48 val)
-    {
-      return val.ToUInt64();
-    }
+    public static explicit operator ulong(UInt48 val) => val.ToUInt64();
 
-    public Int64 ToInt64()
-    {
-      return unchecked((Int64)ToUInt64());
-    }
+    public Int64 ToInt64() => unchecked((Int64)ToUInt64());
 
     [CLSCompliant(false)]
     public UInt64 ToUInt64()
-    {
-      return ((UInt64)Byte0 << 40 |
-              (UInt64)Byte1 << 32 |
-              (UInt64)Byte2 << 24 |
-              (UInt64)Byte3 << 16 |
-              (UInt64)Byte4 << 8 |
-              (UInt64)Byte5);
-    }
+      => (UInt64)((UInt64)Byte0 << 40) |
+         (UInt64)((UInt64)Byte1 << 32) |
+         (UInt64)((UInt64)Byte2 << 24) |
+         (UInt64)((UInt64)Byte3 << 16) |
+         (UInt64)((UInt64)Byte4 <<  8) |
+         (UInt64)Byte5;
 
 #region "IConvertible implementation"
     TypeCode IConvertible.GetTypeCode()
@@ -265,12 +248,12 @@ namespace Smdn {
     {
       if (obj == null)
         return 1;
-      else if (obj is UInt48)
-        return CompareTo((UInt48)obj);
-      else if (obj is ulong)
-        return CompareTo((ulong)obj);
-      else if (obj is long)
-        return CompareTo((long)obj);
+      else if (obj is UInt48 valUInt48)
+        return CompareTo(valUInt48);
+      else if (obj is ulong valULong)
+        return CompareTo(valULong);
+      else if (obj is long valLong)
+        return CompareTo(valLong);
       else
         throw new ArgumentException("ojb is not UInt48", nameof(obj));
     }
@@ -309,12 +292,12 @@ namespace Smdn {
 
     public override bool Equals(object obj)
     {
-      if (obj is UInt48)
-        return Equals((UInt48)obj);
-      else if (obj is ulong)
-        return Equals((ulong)obj);
-      else if (obj is long)
-        return Equals((long)obj);
+      if (obj is UInt48 valUInt48)
+        return Equals(valUInt48);
+      else if (obj is ulong valULong)
+        return Equals(valULong);
+      else if (obj is long valLong)
+        return Equals(valLong);
       else
         return false;
     }
@@ -340,28 +323,12 @@ namespace Smdn {
     }
 
     public override int GetHashCode()
-    {
-      return (Byte3 << 24 | Byte2 << 16 | Byte1 << 8 | Byte0) ^ (Byte5 << 8 | Byte4);
-    }
+      => ((Byte3 << 24) | (Byte2 << 16) | (Byte1 << 8) | Byte0) ^ ((Byte5 << 8) | Byte4);
 
-    public override string ToString()
-    {
-      return ToString(null, null);
-    }
-
-    public string ToString(string format)
-    {
-      return ToString(format, null);
-    }
-
-    public string ToString(IFormatProvider formatProvider)
-    {
-      return ToString(null, formatProvider);
-    }
-
+    public override string ToString() => ToString(null, null);
+    public string ToString(string format) => ToString(format, null);
+    public string ToString(IFormatProvider formatProvider) => ToString(null, formatProvider);
     public string ToString(string format, IFormatProvider formatProvider)
-    {
-      return ToUInt64().ToString(format, formatProvider);
-    }
+      => ToUInt64().ToString(format, formatProvider);
   }
 }

@@ -71,7 +71,7 @@ namespace Smdn {
 
     public static explicit operator UInt24(int val)
     {
-      if (val < minValue || maxValue < val)
+      if (val is < minValue or > maxValue)
         throw new OverflowException();
 
       var uint24 = new UInt24();
@@ -115,138 +115,61 @@ namespace Smdn {
       return uint24;
     }
 
-    public static explicit operator short(UInt24 val)
-    {
-      return checked((short)val.ToInt32());
-    }
+    public static explicit operator short(UInt24 val) => checked((short)val.ToInt32());
 
     [CLSCompliant(false)]
-    public static explicit operator ushort(UInt24 val)
-    {
-      return checked((ushort)val.ToUInt32());
-    }
+    public static explicit operator ushort(UInt24 val) => checked((ushort)val.ToUInt32());
 
-    public static explicit operator int(UInt24 val)
-    {
-      return val.ToInt32();
-    }
+    public static explicit operator int(UInt24 val) => val.ToInt32();
 
     [CLSCompliant(false)]
-    public static explicit operator uint(UInt24 val)
-    {
-      return val.ToUInt32();
-    }
+    public static explicit operator uint(UInt24 val) => val.ToUInt32();
 
-    public Int32 ToInt32()
-    {
-      return unchecked((Int32)ToUInt32());
-    }
+    public Int32 ToInt32() => unchecked((Int32)ToUInt32());
 
     [CLSCompliant(false)]
     public UInt32 ToUInt32()
-    {
-      return ((UInt32)Byte0 << 16 |
-              (UInt32)Byte1 << 8 |
-              (UInt32)Byte2);
-    }
+      => (UInt32)(Byte0 << 16) |
+         (UInt32)(Byte1 << 8) |
+         (UInt32)Byte2;
 
 #region "IConvertible implementation"
-    TypeCode IConvertible.GetTypeCode()
-    {
-      return TypeCode.Object;
-    }
+    TypeCode IConvertible.GetTypeCode() => TypeCode.Object;
 
-    string IConvertible.ToString(IFormatProvider provider)
-    {
-      return ToString(null, provider);
-    }
+    string IConvertible.ToString(IFormatProvider provider) => ToString(null, provider);
+    byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt32());
+    ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt32());
+    uint IConvertible.ToUInt32(IFormatProvider provider) => ToUInt32();
 
-    byte IConvertible.ToByte(IFormatProvider provider)
-    {
-      return checked((byte)ToUInt32());
-    }
+    ulong IConvertible.ToUInt64(IFormatProvider provider) => (ulong)ToUInt32();
+    sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt32());
+    short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt32());
+    int IConvertible.ToInt32(IFormatProvider provider) => ToInt32();
 
-    ushort IConvertible.ToUInt16(IFormatProvider provider)
-    {
-      return checked((ushort)ToUInt32());
-    }
+    long IConvertible.ToInt64(IFormatProvider provider) => (long)ToInt32();
+    bool IConvertible.ToBoolean(IFormatProvider provider) => Convert.ToBoolean(ToUInt32());
+    char IConvertible.ToChar(IFormatProvider provider) => Convert.ToChar(ToUInt32());
 
-    uint IConvertible.ToUInt32(IFormatProvider provider)
-    {
-      return ToUInt32();
-    }
+    DateTime IConvertible.ToDateTime(IFormatProvider provider) => Convert.ToDateTime(ToUInt32());
+    decimal IConvertible.ToDecimal(IFormatProvider provider) => Convert.ToDecimal(ToUInt32());
 
-    ulong IConvertible.ToUInt64(IFormatProvider provider)
-    {
-      return (ulong)ToUInt32();
-    }
-
-    sbyte IConvertible.ToSByte(IFormatProvider provider)
-    {
-      return checked((sbyte)ToInt32());
-    }
-
-    short IConvertible.ToInt16(IFormatProvider provider)
-    {
-      return checked((short)ToInt32());
-    }
-
-    int IConvertible.ToInt32(IFormatProvider provider)
-    {
-      return ToInt32();
-    }
-
-    long IConvertible.ToInt64(IFormatProvider provider)
-    {
-      return (long)ToInt32();
-    }
-
-    bool IConvertible.ToBoolean(IFormatProvider provider)
-    {
-      return Convert.ToBoolean(ToUInt32());
-    }
-
-    char IConvertible.ToChar(IFormatProvider provider)
-    {
-      return Convert.ToChar(ToUInt32());
-    }
-
-    DateTime IConvertible.ToDateTime(IFormatProvider provider)
-    {
-      return Convert.ToDateTime(ToUInt32());
-    }
-
-    decimal IConvertible.ToDecimal(IFormatProvider provider)
-    {
-      return Convert.ToDecimal(ToUInt32());
-    }
-
-    double IConvertible.ToDouble(IFormatProvider provider)
-    {
-      return Convert.ToDouble(ToUInt32());
-    }
-
-    float IConvertible.ToSingle(IFormatProvider provider)
-    {
-      return Convert.ToSingle(ToUInt32());
-    }
+    double IConvertible.ToDouble(IFormatProvider provider) => Convert.ToDouble(ToUInt32());
+    float IConvertible.ToSingle(IFormatProvider provider) => Convert.ToSingle(ToUInt32());
 
     object IConvertible.ToType(Type conversionType, IFormatProvider provider)
-    {
-      return Convert.ChangeType(ToUInt32(), conversionType, provider);
-    }
+      => Convert.ChangeType(ToUInt32(), conversionType, provider);
 #endregion
 
     public int CompareTo(object obj)
     {
       if (obj == null)
         return 1;
-      else if (obj is UInt24)
-        return CompareTo((UInt24)obj);
-      else if (obj is uint)
-        return CompareTo((uint)obj);
-      else if (obj is int)
-        return CompareTo((int)obj);
+      else if (obj is UInt24 valUInt24)
+        return CompareTo(valUInt24);
+      else if (obj is uint valUInt)
+        return CompareTo(valUInt);
+      else if (obj is int valInt)
+        return CompareTo(valInt);
       else
         throw new ArgumentException("ojb is not UInt24", nameof(obj));
     }
@@ -285,12 +208,12 @@ namespace Smdn {
 
     public override bool Equals(object obj)
     {
-      if (obj is UInt24)
-        return Equals((UInt24)obj);
-      else if (obj is uint)
-        return Equals((uint)obj);
-      else if (obj is int)
-        return Equals((int)obj);
+      if (obj is UInt24 valUInt24)
+        return Equals(valUInt24);
+      else if (obj is uint valUInt)
+        return Equals(valUInt);
+      else if (obj is int valInt)
+        return Equals(valInt);
       else
         return false;
     }
@@ -311,7 +234,7 @@ namespace Smdn {
 
     public override int GetHashCode()
     {
-      return (Byte2 << 16 | Byte1 << 8 | Byte0);
+      return (Byte2 << 16) | (Byte1 << 8) | Byte0;
     }
 
     public override string ToString()
