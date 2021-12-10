@@ -3,10 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using System.Text;
 
-using Smdn.Formats;
 using Smdn.Formats.QuotedPrintableEncodings;
 using Smdn.Formats.UUEncodings;
 using Smdn.IO.Streams;
@@ -18,7 +16,7 @@ namespace Smdn.Formats.Mime {
     public const string HeaderName = "Content-Transfer-Encoding";
 
     private static readonly Dictionary<string, ContentTransferEncodingMethod> contentTransferEncodingMethods =
-      new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
+      new(StringComparer.OrdinalIgnoreCase) {
         // standards
         { "7bit",              ContentTransferEncodingMethod.SevenBit },
         { "8bit",              ContentTransferEncodingMethod.EightBit },
@@ -58,19 +56,16 @@ namespace Smdn.Formats.Mime {
     }
 
     public static string GetEncodingName(ContentTransferEncodingMethod method)
-    {
-      switch (method) {
-        case ContentTransferEncodingMethod.SevenBit: return "7bit";
-        case ContentTransferEncodingMethod.EightBit: return "8bit";
-        case ContentTransferEncodingMethod.Binary: return "binary";
-        case ContentTransferEncodingMethod.Base64: return "base64";
-        case ContentTransferEncodingMethod.QuotedPrintable: return "quoted-printable";
-        case ContentTransferEncodingMethod.UUEncode: return "x-uuencode";
-        case ContentTransferEncodingMethod.GZip64: return "x-gzip64";
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(method);
-      }
-    }
+      => method switch {
+        ContentTransferEncodingMethod.SevenBit => "7bit",
+        ContentTransferEncodingMethod.EightBit => "8bit",
+        ContentTransferEncodingMethod.Binary => "binary",
+        ContentTransferEncodingMethod.Base64 => "base64",
+        ContentTransferEncodingMethod.QuotedPrintable => "quoted-printable",
+        ContentTransferEncodingMethod.UUEncode => "x-uuencode",
+        ContentTransferEncodingMethod.GZip64 => "x-gzip64",
+        _ => throw ExceptionUtils.CreateNotSupportedEnumValue(method),
+      };
 
     public static Stream CreateDecodingStream(Stream stream, string encoding)
     {
@@ -92,32 +87,17 @@ namespace Smdn.Formats.Mime {
       if (stream == null)
         throw new ArgumentNullException(nameof(stream));
 
-      Stream decodingStream = null;
+      return encoding switch {
+        ContentTransferEncodingMethod.SevenBit or
+        ContentTransferEncodingMethod.EightBit or
+        ContentTransferEncodingMethod.Binary => leaveStreamOpen ? new NonClosingStream(stream) : stream,
+        ContentTransferEncodingMethod.Base64 => Base64.CreateDecodingStream(stream, leaveStreamOpen),
+        ContentTransferEncodingMethod.QuotedPrintable => QuotedPrintableEncoding.CreateDecodingStream(stream, leaveStreamOpen),
+        ContentTransferEncodingMethod.UUEncode => new UUDecodingStream(stream, leaveStreamOpen),
 
-      switch (encoding) {
-        case ContentTransferEncodingMethod.SevenBit:
-        case ContentTransferEncodingMethod.EightBit:
-        case ContentTransferEncodingMethod.Binary:
-          if (leaveStreamOpen)
-            decodingStream = new NonClosingStream(stream);
-          else
-            decodingStream = stream;
-          break;
-        case ContentTransferEncodingMethod.Base64:
-          decodingStream = Base64.CreateDecodingStream(stream, leaveStreamOpen);
-          break;
-        case ContentTransferEncodingMethod.QuotedPrintable:
-          decodingStream = QuotedPrintableEncoding.CreateDecodingStream(stream, leaveStreamOpen);
-          break;
-        case ContentTransferEncodingMethod.UUEncode:
-          decodingStream = new UUDecodingStream(stream, leaveStreamOpen);
-          break;
-        case ContentTransferEncodingMethod.GZip64:
-        default:
-          throw ExceptionUtils.CreateNotSupportedEnumValue(encoding);
-      }
-
-      return decodingStream;
+        // ContentTransferEncodingMethod.GZip64
+        _ => throw ExceptionUtils.CreateNotSupportedEnumValue(encoding),
+      };
     }
 
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset)
@@ -172,7 +152,7 @@ namespace Smdn.Formats.Mime {
       => CreateBinaryReader(stream, encoding, charset, false);
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
-      => new BinaryReader(
+      => new(
         CreateDecodingStream(stream, encoding, false),
         charset ?? Encoding.UTF8,
         leaveStreamOpen

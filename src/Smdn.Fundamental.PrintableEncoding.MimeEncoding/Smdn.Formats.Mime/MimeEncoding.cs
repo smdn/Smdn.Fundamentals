@@ -10,10 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-using Smdn.Formats;
 using Smdn.Formats.QuotedPrintableEncodings;
 using Smdn.Security.Cryptography;
-using Smdn.Text;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.Mime {
@@ -87,21 +85,11 @@ namespace Smdn.Formats.Mime {
           throw new ArgumentNullException(nameof(foldingString));
       }
 
-      ICryptoTransform transform;
-      char encodingChar;
-
-      switch (encoding) {
-        case MimeEncodingMethod.Base64:
-          transform = Base64.CreateToBase64Transform();
-          encodingChar = 'b';
-          break;
-        case MimeEncodingMethod.QuotedPrintable:
-          transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding);
-          encodingChar = 'q';
-          break;
-        default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding);
-      }
+      (char encodingChar, ICryptoTransform transform) = encoding switch {
+        MimeEncodingMethod.Base64 => ('b', Base64.CreateToBase64Transform()),
+        MimeEncodingMethod.QuotedPrintable => ('q', new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding)),
+        _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding),
+      };
 
 #if SYSTEM_TEXT_ENCODING_BODYNAME
       var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
@@ -129,7 +117,7 @@ namespace Smdn.Formats.Mime {
       Buffer.BlockCopy(preamble, 0, outputBuffer, 0, preamble.Length);
 
       for (; ; ) {
-        var inputBlockSizeLimit = ((outputLimit * transform.InputBlockSize) / transform.OutputBlockSize) - 1;
+        var inputBlockSizeLimit = (outputLimit * transform.InputBlockSize / transform.OutputBlockSize) - 1;
         var transformCharCount = 0;
         var outputCount = preamble.Length;
 
@@ -230,11 +218,11 @@ namespace Smdn.Formats.Mime {
      * http://www.rfc-editor.org/errata_search.php?rfc=2231
      *
      * The ABNF given in RFC 2047 for encoded-words is:
-     * 
+     *
      *    encoded-word := "=?" charset "?" encoding "?" encoded-text "?="
-     * 
+     *
      * This specification changes this ABNF to:
-     * 
+     *
      *       encoded-word := "=?" charset ["*" language] "?" encoding "?"
      *                       encoded-text "?="
      */
