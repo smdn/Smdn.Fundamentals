@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable IDE0004
+
 using System;
 
 namespace Smdn {
@@ -9,25 +11,17 @@ namespace Smdn {
     /// length of the hypotenuse of a triangle.
     /// </summary>
     public static float Hypot(float x, float y)
-    {
-      return (float)Math.Sqrt((double)((x * x) + (y * y)));
-    }
+      => (float)Math.Sqrt((double)((x * x) + (y * y)));
 
     /// <summary>
     /// length of the hypotenuse of a triangle.
     /// </summary>
-    public static double Hypot(double x, double y)
-    {
-      return Math.Sqrt((x * x) + (y * y));
-    }
+    public static double Hypot(double x, double y) => Math.Sqrt((x * x) + (y * y));
 
     /// <summary>
     /// greatest common divisor of m and n.
     /// </summary>
-    public static int Gcd(int m, int n)
-    {
-      return (int)Gcd((long)m, (long)n);
-    }
+    public static int Gcd(int m, int n) => (int)Gcd((long)m, (long)n);
 
     /// <summary>
     /// greatest common divisor of m and n.
@@ -57,18 +51,12 @@ namespace Smdn {
     /// <summary>
     /// least common multiple of m and n.
     /// </summary>
-    public static int Lcm(int m, int n)
-    {
-      return (int)Lcm((long)m, (long)n);
-    }
+    public static int Lcm(int m, int n) => (int)Lcm((long)m, (long)n);
 
     /// <summary>
     /// least common multiple of m and n.
     /// </summary>
-    public static long Lcm(long m, long n)
-    {
-      return (m * n) / Gcd(m, n);
-    }
+    public static long Lcm(long m, long n) => m * n / Gcd(m, n);
 
 #if !SYSTEM_MATH_DIVREM
     public static int DivRem(int a, int b, out int result)
