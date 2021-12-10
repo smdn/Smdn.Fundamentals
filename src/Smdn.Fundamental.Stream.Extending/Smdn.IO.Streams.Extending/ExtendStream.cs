@@ -1,11 +1,8 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Smdn.IO;
 
 namespace Smdn.IO.Streams.Extending {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]

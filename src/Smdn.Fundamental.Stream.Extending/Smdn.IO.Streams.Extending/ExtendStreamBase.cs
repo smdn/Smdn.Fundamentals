@@ -5,8 +5,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Smdn.IO;
-
 namespace Smdn.IO.Streams.Extending {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class ExtendStreamBase : Stream {
@@ -122,15 +120,12 @@ namespace Smdn.IO.Streams.Extending {
       ThrowIfNotSeekable();
 
       // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
-      long newOffset;
-
-      switch (origin) {
-        case SeekOrigin.Begin:    newOffset = offset; break;
-        case SeekOrigin.Current:  newOffset = offset + position; break;
-        case SeekOrigin.End:      newOffset = offset + Length; break;
-        default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
-      }
+      var newOffset = origin switch {
+        SeekOrigin.Begin    => offset,
+        SeekOrigin.Current  => offset + position,
+        SeekOrigin.End      => offset + Length,
+        _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin),
+      };
 
       if (newOffset < 0L)
         throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
