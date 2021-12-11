@@ -25,7 +25,7 @@ namespace Smdn {
 #if LOCALIZE_MESSAGE
         string.Format(null, InternalGetText(format), args);
 #else
-        string.Format(format, args);
+        string.Format(null, format, args);
 #endif
 
 #if LOCALIZE_MESSAGE
