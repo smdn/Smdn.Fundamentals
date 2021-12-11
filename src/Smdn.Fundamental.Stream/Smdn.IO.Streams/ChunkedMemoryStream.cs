@@ -20,10 +20,7 @@ namespace Smdn.IO.Streams {
     }
 
     private class DefaultChunk : Chunk {
-      public static DefaultChunk Allocate(int chunkSize)
-      {
-        return new DefaultChunk(chunkSize);
-      }
+      public static DefaultChunk Allocate(int chunkSize) => new(chunkSize);
 
       private DefaultChunk(int chunkSize)
       {

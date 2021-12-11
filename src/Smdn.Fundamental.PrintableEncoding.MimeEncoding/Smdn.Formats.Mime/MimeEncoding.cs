@@ -36,34 +36,22 @@ namespace Smdn.Formats.Mime {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeEncoding {
     public static string Encode(string str, MimeEncodingMethod encoding)
-    {
-      return Encode(str, encoding, Encoding.ASCII, false, 0, 0, null);
-    }
+      => Encode(str, encoding, Encoding.ASCII, false, 0, 0, null);
 
     public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset)
-    {
-      return Encode(str, encoding, charset, false, 0, 0, null);
-    }
+      => Encode(str, encoding, charset, false, 0, 0, null);
 
     public static string Encode(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset)
-    {
-      return Encode(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
-    }
+      => Encode(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
 
     public static string Encode(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset, string foldingString)
-    {
-      return Encode(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, foldingString);
-    }
+      => Encode(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, foldingString);
 
     public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset)
-    {
-      return Encode(str, encoding, charset, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
-    }
+      => Encode(str, encoding, charset, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
 
     public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset, string foldingString)
-    {
-      return Encode(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
-    }
+      => Encode(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
 
     private static readonly string mimeEncodingFoldingString = "\r\n\t";
     private static readonly byte[] mimeEncodingPostamble = new byte[] { 0x3f, 0x3d }; // "?="
@@ -188,29 +176,19 @@ namespace Smdn.Formats.Mime {
     }
 
     public static string Decode(string str)
-    {
-      return Decode(str, null, null, out _, out _);
-    }
+      => Decode(str, null, null, out _, out _);
 
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding)
-    {
-      return Decode(str, selectFallbackEncoding, null, out _, out _);
-    }
+      => Decode(str, selectFallbackEncoding, null, out _, out _);
 
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
-    {
-      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out _, out _);
-    }
+      => Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out _, out _);
 
     public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
-    {
-      return Decode(str, null, null, out encoding, out charset);
-    }
+      => Decode(str, null, null, out encoding, out charset);
 
     public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding charset)
-    {
-      return Decode(str, selectFallbackEncoding, null, out encoding, out charset);
-    }
+      => Decode(str, selectFallbackEncoding, null, out encoding, out charset);
 
     /*
      * RFC 2231 - MIME Parameter Value and Encoded Word Extensions: Character Sets, Languages, and Continuations

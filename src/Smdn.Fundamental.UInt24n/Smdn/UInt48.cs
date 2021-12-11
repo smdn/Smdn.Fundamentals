@@ -160,90 +160,39 @@ namespace Smdn {
          (UInt64)((UInt64)Byte4 << 8) |
          (UInt64)Byte5;
 
-    TypeCode IConvertible.GetTypeCode()
-    {
-      return TypeCode.Object;
-    }
+    TypeCode IConvertible.GetTypeCode() => TypeCode.Object;
 
-    string IConvertible.ToString(IFormatProvider provider)
-    {
-      return ToString(null, provider);
-    }
+    string IConvertible.ToString(IFormatProvider provider) => ToString(null, provider);
 
-    byte IConvertible.ToByte(IFormatProvider provider)
-    {
-      return checked((byte)ToUInt64());
-    }
+    byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt64());
 
-    ushort IConvertible.ToUInt16(IFormatProvider provider)
-    {
-      return checked((ushort)ToUInt64());
-    }
+    ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt64());
 
-    uint IConvertible.ToUInt32(IFormatProvider provider)
-    {
-      return checked((uint)ToUInt64());
-    }
+    uint IConvertible.ToUInt32(IFormatProvider provider) => checked((uint)ToUInt64());
 
-    ulong IConvertible.ToUInt64(IFormatProvider provider)
-    {
-      return ToUInt64();
-    }
+    ulong IConvertible.ToUInt64(IFormatProvider provider) => ToUInt64();
 
-    sbyte IConvertible.ToSByte(IFormatProvider provider)
-    {
-      return checked((sbyte)ToInt64());
-    }
+    sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt64());
 
-    short IConvertible.ToInt16(IFormatProvider provider)
-    {
-      return checked((short)ToInt64());
-    }
+    short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
 
-    int IConvertible.ToInt32(IFormatProvider provider)
-    {
-      return checked((int)ToInt64());
-    }
+    int IConvertible.ToInt32(IFormatProvider provider) => checked((int)ToInt64());
 
-    long IConvertible.ToInt64(IFormatProvider provider)
-    {
-      return ToInt64();
-    }
+    long IConvertible.ToInt64(IFormatProvider provider) => ToInt64();
 
-    bool IConvertible.ToBoolean(IFormatProvider provider)
-    {
-      return Convert.ToBoolean(ToUInt64());
-    }
+    bool IConvertible.ToBoolean(IFormatProvider provider) => Convert.ToBoolean(ToUInt64());
 
-    char IConvertible.ToChar(IFormatProvider provider)
-    {
-      return Convert.ToChar(ToUInt64());
-    }
+    char IConvertible.ToChar(IFormatProvider provider) => Convert.ToChar(ToUInt64());
 
-    DateTime IConvertible.ToDateTime(IFormatProvider provider)
-    {
-      return Convert.ToDateTime(ToUInt64());
-    }
+    DateTime IConvertible.ToDateTime(IFormatProvider provider) => Convert.ToDateTime(ToUInt64());
 
-    decimal IConvertible.ToDecimal(IFormatProvider provider)
-    {
-      return Convert.ToDecimal(ToUInt64());
-    }
+    decimal IConvertible.ToDecimal(IFormatProvider provider) => Convert.ToDecimal(ToUInt64());
 
-    double IConvertible.ToDouble(IFormatProvider provider)
-    {
-      return Convert.ToDouble(ToUInt64());
-    }
+    double IConvertible.ToDouble(IFormatProvider provider) => Convert.ToDouble(ToUInt64());
 
-    float IConvertible.ToSingle(IFormatProvider provider)
-    {
-      return Convert.ToSingle(ToUInt64());
-    }
+    float IConvertible.ToSingle(IFormatProvider provider) => Convert.ToSingle(ToUInt64());
 
-    object IConvertible.ToType(Type conversionType, IFormatProvider provider)
-    {
-      return Convert.ChangeType(ToUInt64(), conversionType, provider);
-    }
+    object IConvertible.ToType(Type conversionType, IFormatProvider provider) => Convert.ChangeType(ToUInt64(), conversionType, provider);
 
     public int CompareTo(object obj)
     {
@@ -259,37 +208,19 @@ namespace Smdn {
         throw new ArgumentException("ojb is not UInt48", nameof(obj));
     }
 
-    public int CompareTo(UInt48 other)
-    {
-      return this.ToUInt64().CompareTo(other.ToUInt64());
-    }
+    public int CompareTo(UInt48 other) => this.ToUInt64().CompareTo(other.ToUInt64());
 
     [CLSCompliant(false)]
-    public int CompareTo(ulong other)
-    {
-      return this.ToUInt64().CompareTo(other);
-    }
+    public int CompareTo(ulong other) => this.ToUInt64().CompareTo(other);
 
-    public int CompareTo(long other)
-    {
-      return this.ToInt64().CompareTo(other);
-    }
+    public int CompareTo(long other) => this.ToInt64().CompareTo(other);
 
-    public bool Equals(UInt48 other)
-    {
-      return this == other;
-    }
+    public bool Equals(UInt48 other) => this == other;
 
     [CLSCompliant(false)]
-    public bool Equals(ulong other)
-    {
-      return this.ToUInt64() == other;
-    }
+    public bool Equals(ulong other) => this.ToUInt64() == other;
 
-    public bool Equals(long other)
-    {
-      return this.ToInt64() == other;
-    }
+    public bool Equals(long other) => this.ToInt64() == other;
 
     public override bool Equals(object obj)
     {

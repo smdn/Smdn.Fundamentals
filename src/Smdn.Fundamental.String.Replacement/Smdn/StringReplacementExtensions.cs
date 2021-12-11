@@ -5,15 +5,9 @@ using System.Text;
 
 namespace Smdn {
   public static class StringReplacementExtensions {
-    public static string RemoveChars(this string str, params char[] oldChars)
-    {
-      return ReplaceInternal(str, oldChars, null);
-    }
+    public static string RemoveChars(this string str, params char[] oldChars) => ReplaceInternal(str, oldChars, null);
 
-    public static string Remove(this string str, params string[] oldValues)
-    {
-      return ReplaceInternal(str, oldValues, null);
-    }
+    public static string Remove(this string str, params string[] oldValues) => ReplaceInternal(str, oldValues, null);
 
     public static string Replace(this string str, char[] oldChars, ReplaceCharEvaluator evaluator)
     {

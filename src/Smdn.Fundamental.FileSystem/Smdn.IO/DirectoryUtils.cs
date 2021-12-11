@@ -8,9 +8,7 @@ using System.Linq;
 namespace Smdn.IO {
   public static class DirectoryUtils {
     public static IEnumerable<string> GetFiles(string directory, Predicate<string> searchPattern)
-    {
-      return GetFiles(directory, SearchOption.TopDirectoryOnly, searchPattern);
-    }
+      => GetFiles(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
     public static IEnumerable<string> GetFiles(string directory, SearchOption searchOption, Predicate<string> searchPattern)
     {
@@ -25,9 +23,7 @@ namespace Smdn.IO {
     }
 
     public static IEnumerable<string> GetDirectories(string directory, Predicate<string> searchPattern)
-    {
-      return GetDirectories(directory, SearchOption.TopDirectoryOnly, searchPattern);
-    }
+      => GetDirectories(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
     public static IEnumerable<string> GetDirectories(string directory, SearchOption searchOption, Predicate<string> searchPattern)
     {

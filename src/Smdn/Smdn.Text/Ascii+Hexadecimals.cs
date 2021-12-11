@@ -15,15 +15,9 @@ namespace Smdn.Text {
       public static string ToUpperString(byte[] bytes)
         => Hexadecimal.ToUpperCaseString(bytes ?? throw new ArgumentNullException(nameof(bytes)));
 
-      public static byte[] ToLowerByteArray(byte[] bytes)
-      {
-        return ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeLowerCase);
-      }
+      public static byte[] ToLowerByteArray(byte[] bytes) => ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeLowerCase);
 
-      public static byte[] ToUpperByteArray(byte[] bytes)
-      {
-        return ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeUpperCase);
-      }
+      public static byte[] ToUpperByteArray(byte[] bytes) => ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeUpperCase);
 
       private delegate bool TryEncodeHex<T>(byte data, Span<T> destination, out int lengthEncoded);
 
@@ -41,20 +35,11 @@ namespace Smdn.Text {
         return destination;
       }
 
-      public static byte[] ToByteArray(string hexString)
-      {
-        return ConvertStringToByteArray(hexString, true, true);
-      }
+      public static byte[] ToByteArray(string hexString) => ConvertStringToByteArray(hexString, true, true);
 
-      public static byte[] ToByteArrayFromLowerString(string lowerCasedString)
-      {
-        return ConvertStringToByteArray(lowerCasedString, true, false);
-      }
+      public static byte[] ToByteArrayFromLowerString(string lowerCasedString) => ConvertStringToByteArray(lowerCasedString, true, false);
 
-      public static byte[] ToByteArrayFromUpperString(string upperCasedString)
-      {
-        return ConvertStringToByteArray(upperCasedString, false, true);
-      }
+      public static byte[] ToByteArrayFromUpperString(string upperCasedString) => ConvertStringToByteArray(upperCasedString, false, true);
 
       private static byte[] ConvertStringToByteArray(string str, bool allowLowerCaseChar, bool allowUpperCaseChar)
       {

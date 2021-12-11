@@ -11,9 +11,7 @@ namespace Smdn.Xml.Linq.Xhtml {
     private static readonly char[] classListSeparator = { ' ' };
 
     internal static string[] SplitClassList(string classList)
-    {
-      return classList?.Split(classListSeparator, StringSplitOptions.RemoveEmptyEntries);
-    }
+      => classList?.Split(classListSeparator, StringSplitOptions.RemoveEmptyEntries);
 
     public static string JoinClassList(IEnumerable<string> classList)
     {

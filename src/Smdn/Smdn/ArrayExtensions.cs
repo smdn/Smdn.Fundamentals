@@ -107,10 +107,7 @@ namespace Smdn {
       return cut;
     }
 
-    public static T[] Shuffle<T>(this T[] array)
-    {
-      return Shuffle(array, new Random());
-    }
+    public static T[] Shuffle<T>(this T[] array) => Shuffle(array, new Random());
 
     public static T[] Shuffle<T>(this T[] array, Random random)
     {
@@ -136,12 +133,11 @@ namespace Smdn {
       return shuffled;
     }
 
-    public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter)
-    {
+    public static TOutput[] Convert<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter) =>
 #if SYSTEM_ARRAY_CONVERTALL
-      return Array.ConvertAll<TInput, TOutput>(array, converter);
+      Array.ConvertAll<TInput, TOutput>(array, converter);
 #else
-      return ArrayShim.ConvertAll<TInput, TOutput>(
+      ArrayShim.ConvertAll<TInput, TOutput>(
         array,
 #if SYSTEM_CONVERTER
         converter
@@ -150,7 +146,6 @@ namespace Smdn {
 #endif
       );
 #endif
-    }
 
 #if !SYSTEM_ARRAY_EMPTY
     [Obsolete("use Smdn.ArrayShim.Empty instead")]

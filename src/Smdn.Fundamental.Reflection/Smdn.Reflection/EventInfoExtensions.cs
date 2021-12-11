@@ -11,9 +11,7 @@ namespace Smdn.Reflection {
       => GetMethods(ev, nonPublic: true).Any(static m => m.IsStatic);
 
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev)
-    {
-      return GetMethods(ev, false);
-    }
+      => GetMethods(ev, nonPublic: false);
 
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic)
     {

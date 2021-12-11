@@ -18,9 +18,7 @@ namespace Smdn {
 
     // TODO: fix tuple element name casing
     public static bool TryParse(string s, out (string type, string subType) result)
-    {
-      return Parse(s, nameof(s), true, out result);
-    }
+      => Parse(s, nameof(s), true, out result);
 
     public static bool TryParse(string s, out MimeType result)
     {
@@ -36,9 +34,7 @@ namespace Smdn {
 
     // TODO: fix tuple element name casing
     public static (string type, string subType) Parse(string s)
-    {
-      return Parse(s, nameof(s));
-    }
+      => Parse(s, nameof(s));
 
     private static (string Type, string SubType) Parse(string s, string paramName)
     {
@@ -73,35 +69,12 @@ namespace Smdn {
       return true;
     }
 
-    public static MimeType CreateTextType(string subtype)
-    {
-      return new MimeType("text", subtype);
-    }
-
-    public static MimeType CreateImageType(string subtype)
-    {
-      return new MimeType("image", subtype);
-    }
-
-    public static MimeType CreateAudioType(string subtype)
-    {
-      return new MimeType("audio", subtype);
-    }
-
-    public static MimeType CreateVideoType(string subtype)
-    {
-      return new MimeType("video", subtype);
-    }
-
-    public static MimeType CreateApplicationType(string subtype)
-    {
-      return new MimeType("application", subtype);
-    }
-
-    public static MimeType CreateMultipartType(string subtype)
-    {
-      return new MimeType("multipart", subtype);
-    }
+    public static MimeType CreateTextType(string subtype) => new("text", subtype);
+    public static MimeType CreateImageType(string subtype) => new("image", subtype);
+    public static MimeType CreateAudioType(string subtype) => new("audio", subtype);
+    public static MimeType CreateVideoType(string subtype) => new("video", subtype);
+    public static MimeType CreateApplicationType(string subtype) => new("application", subtype);
+    public static MimeType CreateMultipartType(string subtype) => new("multipart", subtype);
 
     /*
      * instance members
@@ -154,10 +127,7 @@ namespace Smdn {
       return TypeEquals(mimeType.Type);
     }
 
-    public bool TypeEquals(string type)
-    {
-      return string.Equals(Type, type, StringComparison.Ordinal);
-    }
+    public bool TypeEquals(string type) => string.Equals(Type, type, StringComparison.Ordinal);
 
     public bool TypeEqualsIgnoreCase(MimeType mimeType)
     {
@@ -167,10 +137,7 @@ namespace Smdn {
       return TypeEqualsIgnoreCase(mimeType.Type);
     }
 
-    public bool TypeEqualsIgnoreCase(string type)
-    {
-      return string.Equals(Type, type, StringComparison.OrdinalIgnoreCase);
-    }
+    public bool TypeEqualsIgnoreCase(string type) => string.Equals(Type, type, StringComparison.OrdinalIgnoreCase);
 
     public bool SubTypeEquals(MimeType mimeType)
     {
@@ -180,10 +147,7 @@ namespace Smdn {
       return SubTypeEquals(mimeType.SubType);
     }
 
-    public bool SubTypeEquals(string subType)
-    {
-      return string.Equals(SubType, subType, StringComparison.Ordinal);
-    }
+    public bool SubTypeEquals(string subType) => string.Equals(SubType, subType, StringComparison.Ordinal);
 
     public bool SubTypeEqualsIgnoreCase(MimeType mimeType)
     {
@@ -193,10 +157,7 @@ namespace Smdn {
       return SubTypeEqualsIgnoreCase(mimeType.SubType);
     }
 
-    public bool SubTypeEqualsIgnoreCase(string subType)
-    {
-      return string.Equals(SubType, subType, StringComparison.OrdinalIgnoreCase);
-    }
+    public bool SubTypeEqualsIgnoreCase(string subType) => string.Equals(SubType, subType, StringComparison.OrdinalIgnoreCase);
 
     public override bool Equals(object obj)
     {
@@ -240,10 +201,7 @@ namespace Smdn {
         return string.Equals(ToString(), other, StringComparison.OrdinalIgnoreCase);
     }
 
-    public override int GetHashCode()
-    {
-      return ToString().GetHashCode();
-    }
+    public override int GetHashCode() => ToString().GetHashCode();
 
     public static explicit operator string(MimeType mimeType)
     {
@@ -253,9 +211,6 @@ namespace Smdn {
         return mimeType.ToString();
     }
 
-    public override string ToString()
-    {
-      return string.Concat(Type, "/", SubType);
-    }
+    public override string ToString() => string.Concat(Type, "/", SubType);
   }
 }

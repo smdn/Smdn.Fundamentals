@@ -6,16 +6,10 @@ using System.Buffers;
 namespace Smdn.Text {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ByteStringExtensions {
-    public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str)
-    {
-      return new ReadOnlySequence<byte>(str.Segment.AsMemory());
-    }
+    public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) => new(str.Segment.AsMemory());
 
     [Obsolete]
-    public static ByteString ToByteString(this ReadOnlySequence<byte> sequence)
-    {
-      return ByteString.CreateImmutable(sequence.ToArray());
-    }
+    public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) => ByteString.CreateImmutable(sequence.ToArray());
 
     [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual instead")]
     public static bool SequenceEqual(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)

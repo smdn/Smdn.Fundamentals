@@ -78,15 +78,9 @@ namespace Smdn.Text {
       return Append(str.GetSubSegment(startIndex, count));
     }
 
-    public ByteStringBuilder Append(byte[] str)
-    {
-      return Append(new ArraySegment<byte>(str));
-    }
+    public ByteStringBuilder Append(byte[] str) => Append(new ArraySegment<byte>(str));
 
-    public ByteStringBuilder Append(byte[] str, int startIndex, int count)
-    {
-      return Append(new ArraySegment<byte>(str, startIndex, count));
-    }
+    public ByteStringBuilder Append(byte[] str, int startIndex, int count) => Append(new ArraySegment<byte>(str, startIndex, count));
 
     public ByteStringBuilder Append(ArraySegment<byte> segment)
     {

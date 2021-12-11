@@ -10,9 +10,6 @@ namespace Smdn.Xml.Linq {
     {
     }
 
-    public override void WriteTo(XmlWriter writer)
-    {
-      writer.WriteEntityRef(Value);
-    }
+    public override void WriteTo(XmlWriter writer) => writer.WriteEntityRef(Value);
   }
 }

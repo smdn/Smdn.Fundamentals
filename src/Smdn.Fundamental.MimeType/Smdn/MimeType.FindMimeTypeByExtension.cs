@@ -20,10 +20,7 @@ namespace Smdn {
 
     private static bool IsRunningOnWindows => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
 
-    public static MimeType FindMimeTypeByExtension(string extensionOrPath)
-    {
-      return FindMimeTypeByExtension(extensionOrPath, DefaultMimeTypesFile);
-    }
+    public static MimeType FindMimeTypeByExtension(string extensionOrPath) => FindMimeTypeByExtension(extensionOrPath, DefaultMimeTypesFile);
 
     public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
     {
@@ -109,10 +106,7 @@ namespace Smdn {
 #endif
     }
 
-    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType)
-    {
-      return FindExtensionsByMimeType(mimeType, DefaultMimeTypesFile);
-    }
+    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType) => FindExtensionsByMimeType(mimeType, DefaultMimeTypesFile);
 
     public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile)
     {
@@ -122,10 +116,7 @@ namespace Smdn {
       return FindExtensionsByMimeType(mimeType.ToString(), mimeTypesFile);
     }
 
-    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType)
-    {
-      return FindExtensionsByMimeType(mimeType, DefaultMimeTypesFile);
-    }
+    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType) => FindExtensionsByMimeType(mimeType, DefaultMimeTypesFile);
 
     public static IEnumerable<string> FindExtensionsByMimeType(string mimeType, string mimeTypesFile)
     {

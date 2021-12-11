@@ -40,10 +40,7 @@ namespace Smdn.Formats.UUEncodings {
           throw new ObjectDisposedException(GetType().FullName);
       }
 
-      public void Save()
-      {
-        Save(FileName);
-      }
+      public void Save() => Save(FileName);
 
       public void Save(string path)
       {

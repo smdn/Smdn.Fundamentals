@@ -66,10 +66,7 @@ namespace Smdn.Text {
     private static readonly byte[] emptyByteArray = new byte[0];
 #endif
 
-    public static ByteString CreateMutable(params byte[] @value)
-    {
-      return new ByteString(new ArraySegment<byte>(@value), true);
-    }
+    public static ByteString CreateMutable(params byte[] @value) => new(new ArraySegment<byte>(@value), true);
 
     public static ByteString CreateMutable(byte[] @value, int offset)
     {
@@ -79,10 +76,7 @@ namespace Smdn.Text {
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), true);
     }
 
-    public static ByteString CreateMutable(byte[] @value, int offset, int count)
-    {
-      return new ByteString(new ArraySegment<byte>(@value, offset, count), true);
-    }
+    public static ByteString CreateMutable(byte[] @value, int offset, int count) => new(new ArraySegment<byte>(@value, offset, count), true);
 
     public static ByteString CreateMutable(string str)
     {
@@ -98,10 +92,7 @@ namespace Smdn.Text {
       return new ByteString(new ArraySegment<byte>(bytes), true);
     }
 
-    public static ByteString CreateImmutable(params byte[] @value)
-    {
-      return new ByteString(new ArraySegment<byte>(@value), false);
-    }
+    public static ByteString CreateImmutable(params byte[] @value) => new(new ArraySegment<byte>(@value), false);
 
     public static ByteString CreateImmutable(byte[] @value, int offset)
     {
@@ -111,10 +102,7 @@ namespace Smdn.Text {
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), false);
     }
 
-    public static ByteString CreateImmutable(byte[] @value, int offset, int count)
-    {
-      return new ByteString(new ArraySegment<byte>(@value, offset, count), false);
-    }
+    public static ByteString CreateImmutable(byte[] @value, int offset, int count) => new(new ArraySegment<byte>(@value, offset, count), false);
 
     public static ByteString CreateImmutable(string str)
     {
@@ -130,10 +118,7 @@ namespace Smdn.Text {
       return new ByteString(new ArraySegment<byte>(bytes), false);
     }
 
-    public static ByteString Create(bool asMutable, params byte[] @value)
-    {
-      return new ByteString(new ArraySegment<byte>(@value), asMutable);
-    }
+    public static ByteString Create(bool asMutable, params byte[] @value) => new(new ArraySegment<byte>(@value), asMutable);
 
     public static ByteString Create(bool asMutable, byte[] @value, int offset)
     {
@@ -143,10 +128,7 @@ namespace Smdn.Text {
       return new ByteString(new ArraySegment<byte>(@value, offset, @value.Length - offset), asMutable);
     }
 
-    public static ByteString Create(bool asMutable, byte[] @value, int offset, int count)
-    {
-      return new ByteString(new ArraySegment<byte>(@value, offset, count), asMutable);
-    }
+    public static ByteString Create(bool asMutable, byte[] @value, int offset, int count) => new(new ArraySegment<byte>(@value, offset, count), asMutable);
 
     public static byte[] ToByteArray(string @value)
     {
@@ -218,10 +200,7 @@ namespace Smdn.Text {
       return 0 <= IndexOf(@value.segment, 0);
     }
 
-    public bool Contains(byte[] @value)
-    {
-      return 0 <= IndexOf(@value, 0);
-    }
+    public bool Contains(byte[] @value) => 0 <= IndexOf(@value, 0);
 
     public bool StartsWith(ByteString @value)
     {
@@ -407,10 +386,7 @@ namespace Smdn.Text {
       return true;
     }
 
-    public int IndexOf(char @value)
-    {
-      return IndexOf(@value, 0);
-    }
+    public int IndexOf(char @value) => IndexOf(@value, 0);
 
     public unsafe int IndexOf(char @value, int startIndex)
     {
@@ -427,10 +403,7 @@ namespace Smdn.Text {
       return -1;
     }
 
-    public int IndexOf(byte @value)
-    {
-      return IndexOf(@value, 0);
-    }
+    public int IndexOf(byte @value) => IndexOf(@value, 0);
 
     public unsafe int IndexOf(byte @value, int startIndex)
     {
@@ -511,10 +484,7 @@ namespace Smdn.Text {
       return IndexOfIgnoreCase(@value.segment, startIndex);
     }
 
-    public int IndexOf(ArraySegment<byte> @value)
-    {
-      return IndexOf(@value, 0);
-    }
+    public int IndexOf(ArraySegment<byte> @value) => IndexOf(@value, 0);
 
     public unsafe int IndexOf(ArraySegment<byte> @value, int startIndex)
     {
@@ -546,10 +516,7 @@ namespace Smdn.Text {
       return -1;
     }
 
-    public int IndexOfIgnoreCase(ArraySegment<byte> @value)
-    {
-      return IndexOfIgnoreCase(@value, 0);
-    }
+    public int IndexOfIgnoreCase(ArraySegment<byte> @value) => IndexOfIgnoreCase(@value, 0);
 
     public unsafe int IndexOfIgnoreCase(ArraySegment<byte> @value, int startIndex)
     {
@@ -582,10 +549,7 @@ namespace Smdn.Text {
       return -1;
     }
 
-    public int IndexOf(string @value)
-    {
-      return IndexOf(@value, 0);
-    }
+    public int IndexOf(string @value) => IndexOf(@value, 0);
 
     public unsafe int IndexOf(string @value, int startIndex)
     {
@@ -618,10 +582,7 @@ namespace Smdn.Text {
       return -1;
     }
 
-    public int IndexOfNot(char @value)
-    {
-      return IndexOfNot(@value, 0);
-    }
+    public int IndexOfNot(char @value) => IndexOfNot(@value, 0);
 
     public unsafe int IndexOfNot(char @value, int startIndex)
     {
@@ -638,10 +599,7 @@ namespace Smdn.Text {
       return -1;
     }
 
-    public int IndexOfNot(byte @value)
-    {
-      return IndexOfNot(@value, 0);
-    }
+    public int IndexOfNot(byte @value) => IndexOfNot(@value, 0);
 
     public unsafe int IndexOfNot(byte @value, int startIndex)
     {
@@ -702,20 +660,11 @@ namespace Smdn.Text {
       );
     }
 
-    public ByteString[] Split(byte delimiter)
-    {
-      return GetSplittedSubstrings(delimiter).ToArray();
-    }
+    public ByteString[] Split(byte delimiter) => GetSplittedSubstrings(delimiter).ToArray();
 
-    public unsafe ByteString[] Split(char delimiter)
-    {
-      return GetSplittedSubstrings(delimiter).ToArray();
-    }
+    public unsafe ByteString[] Split(char delimiter) => GetSplittedSubstrings(delimiter).ToArray();
 
-    public IEnumerable<ByteString> GetSplittedSubstrings(byte delimiter)
-    {
-      return GetSplittedSubstrings((char)delimiter);
-    }
+    public IEnumerable<ByteString> GetSplittedSubstrings(byte delimiter) => GetSplittedSubstrings((char)delimiter);
 
     public IEnumerable<ByteString> GetSplittedSubstrings(char delimiter)
     {
@@ -848,10 +797,7 @@ namespace Smdn.Text {
     }
 
     // TODO: mutable/immutable
-    public ByteString Trim()
-    {
-      return TrimStart().TrimEnd(); // XXX
-    }
+    public ByteString Trim() => TrimStart().TrimEnd(); // XXX
 
     public static bool IsNullOrEmpty(ByteString str)
     {
@@ -1032,20 +978,11 @@ namespace Smdn.Text {
       return new ByteString(new ArraySegment<byte>(bytes), x.isMutable);
     }
 
-    public static ByteString ConcatMutable(params ByteString[] values)
-    {
-      return Concat(true, values);
-    }
+    public static ByteString ConcatMutable(params ByteString[] values) => Concat(true, values);
 
-    public static ByteString ConcatImmutable(params ByteString[] values)
-    {
-      return Concat(false, values);
-    }
+    public static ByteString ConcatImmutable(params ByteString[] values) => Concat(false, values);
 
-    public static ByteString Concat(params ByteString[] values)
-    {
-      return Concat(true /*as default*/, values);
-    }
+    public static ByteString Concat(params ByteString[] values) => Concat(true /*as default*/, values);
 
     public static ByteString Concat(bool asMutable, params ByteString[] values)
     {
@@ -1088,15 +1025,9 @@ namespace Smdn.Text {
       return h;
     }
 
-    public byte[] ToArray()
-    {
-      return ToArray(0, segment.Count);
-    }
+    public byte[] ToArray() => ToArray(0, segment.Count);
 
-    public byte[] ToArray(int startIndex)
-    {
-      return ToArray(startIndex, segment.Count - startIndex);
-    }
+    public byte[] ToArray(int startIndex) => ToArray(startIndex, segment.Count - startIndex);
 
     public byte[] ToArray(int startIndex, int count)
     {
@@ -1114,30 +1045,15 @@ namespace Smdn.Text {
       return array;
     }
 
-    public void CopyTo(byte[] dest)
-    {
-      CopyTo(0, dest, 0, segment.Count);
-    }
+    public void CopyTo(byte[] dest) => CopyTo(0, dest, 0, segment.Count);
 
-    public void CopyTo(byte[] dest, int destOffset)
-    {
-      CopyTo(0, dest, destOffset, segment.Count);
-    }
+    public void CopyTo(byte[] dest, int destOffset) => CopyTo(0, dest, destOffset, segment.Count);
 
-    public void CopyTo(byte[] dest, int destOffset, int count)
-    {
-      CopyTo(0, dest, destOffset, count);
-    }
+    public void CopyTo(byte[] dest, int destOffset, int count) => CopyTo(0, dest, destOffset, count);
 
-    public void CopyTo(int startIndex, byte[] dest)
-    {
-      CopyTo(startIndex, dest, 0, segment.Count - startIndex);
-    }
+    public void CopyTo(int startIndex, byte[] dest) => CopyTo(startIndex, dest, 0, segment.Count - startIndex);
 
-    public void CopyTo(int startIndex, byte[] dest, int destOffset)
-    {
-      CopyTo(startIndex, dest, destOffset, segment.Count - startIndex);
-    }
+    public void CopyTo(int startIndex, byte[] dest, int destOffset) => CopyTo(startIndex, dest, destOffset, segment.Count - startIndex);
 
     public void CopyTo(int startIndex, byte[] dest, int destOffset, int count)
     {
@@ -1158,20 +1074,11 @@ namespace Smdn.Text {
       Buffer.BlockCopy(segment.Array, segment.Offset + startIndex, dest, destOffset, count);
     }
 
-    public override string ToString()
-    {
-      return ToString(null, segment.AsSpan(0, segment.Count));
-    }
+    public override string ToString() => ToString(null, segment.AsSpan(0, segment.Count));
 
-    public string ToString(int startIndex)
-    {
-      return ToString(null, segment.AsSpan(startIndex, segment.Count - startIndex));
-    }
+    public string ToString(int startIndex) => ToString(null, segment.AsSpan(startIndex, segment.Count - startIndex));
 
-    public string ToString(int startIndex, int count)
-    {
-      return ToString(null, segment.AsSpan(startIndex, count));
-    }
+    public string ToString(int startIndex, int count) => ToString(null, segment.AsSpan(startIndex, count));
 
     public string ToString(Encoding encoding)
     {

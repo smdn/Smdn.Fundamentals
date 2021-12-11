@@ -68,19 +68,13 @@ namespace Smdn.Formats.Mime {
       };
 
     public static Stream CreateDecodingStream(Stream stream, string encoding)
-    {
-      return CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), false);
-    }
+      => CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), false);
 
     public static Stream CreateDecodingStream(Stream stream, string encoding, bool leaveStreamOpen)
-    {
-      return CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), leaveStreamOpen);
-    }
+      => CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), leaveStreamOpen);
 
     public static Stream CreateDecodingStream(Stream stream, ContentTransferEncodingMethod encoding)
-    {
-      return CreateDecodingStream(stream, encoding, false);
-    }
+      => CreateDecodingStream(stream, encoding, false);
 
     public static Stream CreateDecodingStream(Stream stream, ContentTransferEncodingMethod encoding, bool leaveStreamOpen)
     {

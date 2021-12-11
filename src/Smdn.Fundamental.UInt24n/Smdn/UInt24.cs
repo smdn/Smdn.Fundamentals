@@ -175,37 +175,19 @@ namespace Smdn {
         throw new ArgumentException("ojb is not UInt24", nameof(obj));
     }
 
-    public int CompareTo(UInt24 other)
-    {
-      return this.ToUInt32().CompareTo(other.ToUInt32());
-    }
+    public int CompareTo(UInt24 other) => this.ToUInt32().CompareTo(other.ToUInt32());
 
     [CLSCompliant(false)]
-    public int CompareTo(uint other)
-    {
-      return this.ToUInt32().CompareTo(other);
-    }
+    public int CompareTo(uint other) => this.ToUInt32().CompareTo(other);
 
-    public int CompareTo(int other)
-    {
-      return this.ToInt32().CompareTo(other);
-    }
+    public int CompareTo(int other) => this.ToInt32().CompareTo(other);
 
-    public bool Equals(UInt24 other)
-    {
-      return this == other;
-    }
+    public bool Equals(UInt24 other) => this == other;
 
     [CLSCompliant(false)]
-    public bool Equals(uint other)
-    {
-      return this.ToUInt32() == other;
-    }
+    public bool Equals(uint other) => this.ToUInt32() == other;
 
-    public bool Equals(int other)
-    {
-      return this.ToInt32() == other;
-    }
+    public bool Equals(int other) => this.ToInt32() == other;
 
     public override bool Equals(object obj)
     {
@@ -233,29 +215,14 @@ namespace Smdn {
               x.Byte2 != y.Byte2);
     }
 
-    public override int GetHashCode()
-    {
-      return (Byte2 << 16) | (Byte1 << 8) | Byte0;
-    }
+    public override int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
 
-    public override string ToString()
-    {
-      return ToString(null, null);
-    }
+    public override string ToString() => ToString(null, null);
 
-    public string ToString(string format)
-    {
-      return ToString(format, null);
-    }
+    public string ToString(string format) => ToString(format, null);
 
-    public string ToString(IFormatProvider formatProvider)
-    {
-      return ToString(null, formatProvider);
-    }
+    public string ToString(IFormatProvider formatProvider) => ToString(null, formatProvider);
 
-    public string ToString(string format, IFormatProvider formatProvider)
-    {
-      return ToUInt32().ToString(format, formatProvider);
-    }
+    public string ToString(string format, IFormatProvider formatProvider) => ToUInt32().ToString(format, formatProvider);
   }
 }

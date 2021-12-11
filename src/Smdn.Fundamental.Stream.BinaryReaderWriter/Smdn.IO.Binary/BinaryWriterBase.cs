@@ -30,15 +30,9 @@ namespace Smdn.IO.Binary {
       this.leaveBaseStreamOpen = leaveBaseStreamOpen;
     }
 
-    public virtual void Close()
-    {
-      Dispose(true);
-    }
+    public virtual void Close() => Dispose(true);
 
-    void IDisposable.Dispose()
-    {
-      Dispose(true);
-    }
+    void IDisposable.Dispose() => Dispose(true);
 
     protected virtual void Dispose(bool disposing)
     {
@@ -59,40 +53,25 @@ namespace Smdn.IO.Binary {
       stream.Flush();
     }
 
-    public virtual void Write(Byte @value)
-    {
-      stream.WriteByte(@value);
-    }
+    public virtual void Write(Byte @value) => stream.WriteByte(@value);
 
     [CLSCompliant(false)]
-    public virtual void Write(SByte @value)
-    {
-      stream.WriteByte(unchecked((byte)@value));
-    }
+    public virtual void Write(SByte @value) => stream.WriteByte(unchecked((byte)@value));
 
     public abstract void Write(Int16 @value);
 
     [CLSCompliant(false)]
-    public virtual void Write(UInt16 @value)
-    {
-      Write(unchecked((Int16)@value));
-    }
+    public virtual void Write(UInt16 @value) => Write(unchecked((Int16)@value));
 
     public abstract void Write(Int32 @value);
 
     [CLSCompliant(false)]
-    public virtual void Write(UInt32 @value)
-    {
-      Write(unchecked((Int32)@value));
-    }
+    public virtual void Write(UInt32 @value) => Write(unchecked((Int32)@value));
 
     public abstract void Write(Int64 @value);
 
     [CLSCompliant(false)]
-    public virtual void Write(UInt64 @value)
-    {
-      Write(unchecked((Int64)@value));
-    }
+    public virtual void Write(UInt64 @value) => Write(unchecked((Int64)@value));
 
     public void Write(byte[] buffer)
     {
@@ -138,9 +117,7 @@ namespace Smdn.IO.Binary {
     }
 
     public void WriteZero(int count)
-    {
-      WriteZero((long)count);
-    }
+      => WriteZero((long)count);
 
     public void WriteZero(long count)
     {

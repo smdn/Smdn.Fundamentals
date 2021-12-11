@@ -17,10 +17,7 @@ namespace Smdn.Text {
       public static IReadOnlyList<byte> CRLF => CRLFArray;
 
       [Obsolete("use CRLF instead")]
-      public static byte[] GetCRLF()
-      {
-        return (byte[])CRLFArray.Clone();
-      }
+      public static byte[] GetCRLF() => (byte[])CRLFArray.Clone();
 
       [Obsolete("use Smdn.Formats.Hexadecimal.LowerCaseHexOctets instead")]
       public static IReadOnlyList<byte> LowerCaseHexOctets => Smdn.Formats.Hexadecimal.LowerCaseHexOctets.ToArray();
@@ -82,21 +79,12 @@ namespace Smdn.Text {
       public static IReadOnlyList<byte> ToUpperCaseAsciiTable => ToUpperCaseAsciiTableArray;
 
       [Obsolete("use ToLowerCaseAsciiTable instead")]
-      public static byte[] GetToLowerCaseAsciiTable()
-      {
-        return (byte[])ToLowerCaseAsciiTableArray.Clone();
-      }
+      public static byte[] GetToLowerCaseAsciiTable() => (byte[])ToLowerCaseAsciiTableArray.Clone();
 
       [Obsolete("use ToUpperCaseAsciiTable instead")]
-      public static byte[] GetToUpperCaseAsciiTable()
-      {
-        return (byte[])ToUpperCaseAsciiTableArray.Clone();
-      }
+      public static byte[] GetToUpperCaseAsciiTable() => (byte[])ToUpperCaseAsciiTableArray.Clone();
 
-      public static bool IsDecimalNumber(byte b)
-      {
-        return b is >= 0x30 and <= 0x39;
-      }
+      public static bool IsDecimalNumber(byte b) => b is >= 0x30 and <= 0x39;
     }
   }
 }

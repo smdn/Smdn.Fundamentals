@@ -33,16 +33,10 @@ namespace Smdn.OperatingSystem {
       this.Raw = raw;
     }
 
-    public ShellString Clone()
-    {
-      return new ShellString(this.Raw);
-    }
+    public ShellString Clone() => new(this.Raw);
 
 #if SYSTEM_ICLONEABLE
-    object ICloneable.Clone()
-    {
-      return Clone();
-    }
+    object ICloneable.Clone() => Clone();
 #endif
 
     public static bool IsNullOrEmpty(ShellString str)
@@ -125,9 +119,6 @@ namespace Smdn.OperatingSystem {
         return new ShellString(str);
     }
 
-    public override string ToString()
-    {
-      return Raw;
-    }
+    public override string ToString() => Raw;
   }
 }

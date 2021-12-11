@@ -16,9 +16,7 @@ namespace Smdn.Reflection {
     }
 
     public static bool IsExplicitlyImplemented(this MethodBase m)
-    {
-      return FindExplicitInterfaceMethod(m, findOnlyPublicInterfaces: false) != null;
-    }
+      => FindExplicitInterfaceMethod(m, findOnlyPublicInterfaces: false) != null;
 
     public static MethodInfo FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false)
     {

@@ -12,8 +12,10 @@ using System.Text;
 
 namespace Smdn.IO {
   public static class PathUtils {
-    public static StringComparison DefaultPathStringComparison => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-    public static StringComparer DefaultPathStringComparer => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
+    public static StringComparison DefaultPathStringComparison
+      => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+    public static StringComparer DefaultPathStringComparer
+      => RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal;
 
     public static string ChangeFileName(string path, string newFileName)
     {
@@ -27,9 +29,7 @@ namespace Smdn.IO {
     }
 
     public static string ChangeDirectoryName(string path, string newDirectoryName)
-    {
-      return Path.Combine(newDirectoryName, Path.GetFileName(path));
-    }
+      => Path.Combine(newDirectoryName, Path.GetFileName(path));
 
     public static bool ArePathEqual(string pathX, string pathY)
     {
@@ -68,68 +68,44 @@ namespace Smdn.IO {
       );
 
     public static string RemoveInvalidPathChars(string path)
-    {
-      return StringReplacementExtensions.RemoveChars(path, Path.GetInvalidPathChars());
-    }
+      => StringReplacementExtensions.RemoveChars(path, Path.GetInvalidPathChars());
 
     public static string RemoveInvalidFileNameChars(string path)
-    {
-      return StringReplacementExtensions.RemoveChars(path, Path.GetInvalidFileNameChars());
-    }
+      => StringReplacementExtensions.RemoveChars(path, Path.GetInvalidFileNameChars());
 
     public static string ReplaceInvalidPathCharsWithBlanks(string path)
-    {
-      return ReplaceInvalidPathChars(path, " ");
-    }
+      => ReplaceInvalidPathChars(path, " ");
 
     public static string ReplaceInvalidPathChars(string path, string newValue)
-    {
-      return ReplaceInvalidPathChars(path, (ch, str, index) => newValue);
-    }
+      => ReplaceInvalidPathChars(path, (ch, str, index) => newValue);
 
     public static string ReplaceInvalidPathChars(string path, ReplaceCharEvaluator evaluator)
-    {
-      return StringReplacementExtensions.Replace(path, Path.GetInvalidPathChars(), evaluator);
-    }
+      => StringReplacementExtensions.Replace(path, Path.GetInvalidPathChars(), evaluator);
 
     public static string ReplaceInvalidFileNameCharsWithBlanks(string path)
-    {
-      return ReplaceInvalidFileNameChars(path, " ");
-    }
+      => ReplaceInvalidFileNameChars(path, " ");
 
     public static string ReplaceInvalidFileNameChars(string path, string newValue)
-    {
-      return ReplaceInvalidFileNameChars(path, (ch, str, index) => newValue);
-    }
+      => ReplaceInvalidFileNameChars(path, (ch, str, index) => newValue);
 
     public static string ReplaceInvalidFileNameChars(string path, ReplaceCharEvaluator evaluator)
-    {
-      return StringReplacementExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
-    }
+      => StringReplacementExtensions.Replace(path, Path.GetInvalidFileNameChars(), evaluator);
 
 #if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
     public static bool ContainsShellEscapeChar(string path)
-    {
-      return ContainsShellEscapeChar(path, Encoding.Default);
-    }
+      => ContainsShellEscapeChar(path, Encoding.Default);
 #endif
 
     public static bool ContainsShellEscapeChar(string path, Encoding encoding)
-    {
-      return ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
-    }
+      => ContainsShellSpecialChars(path, encoding, 0x5c); // '\\'
 
 #if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
     public static bool ContainsShellPipeChar(string path)
-    {
-      return ContainsShellPipeChar(path, Encoding.Default);
-    }
+      => ContainsShellPipeChar(path, Encoding.Default);
 #endif
 
     public static bool ContainsShellPipeChar(string path, Encoding encoding)
-    {
-      return ContainsShellSpecialChars(path, encoding, 0x7c); // '|'
-    }
+      => ContainsShellSpecialChars(path, encoding, 0x7c); // '|'
 
     public static bool ContainsShellSpecialChars(string path, Encoding encoding, params byte[] specialChars)
     {

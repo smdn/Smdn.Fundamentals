@@ -70,10 +70,7 @@ namespace Smdn {
       return ((bytes[0] << 8) | bytes[1]) & 0x3fff;
     }
 
-    private static DateTime GetTimestamp()
-    {
-      throw new NotImplementedException();
-    }
+    private static DateTime GetTimestamp() => throw new NotImplementedException();
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     private static PhysicalAddress GetNode()
@@ -174,14 +171,10 @@ namespace Smdn {
     }
 
     public static Uuid CreateNameBasedMD5(string name, Namespace ns)
-    {
-      return CreateNameBasedMD5(Encoding.ASCII.GetBytes(name), ns);
-    }
+      => CreateNameBasedMD5(Encoding.ASCII.GetBytes(name), ns);
 
     public static Uuid CreateNameBasedMD5(byte[] name, Namespace ns)
-    {
-      return CreateNameBased(name, ns, UuidVersion.NameBasedMD5Hash);
-    }
+      => CreateNameBased(name, ns, UuidVersion.NameBasedMD5Hash);
 
     public static Uuid CreateNameBasedSHA1(Uri url)
     {
@@ -192,14 +185,10 @@ namespace Smdn {
     }
 
     public static Uuid CreateNameBasedSHA1(string name, Namespace ns)
-    {
-      return CreateNameBasedSHA1(Encoding.ASCII.GetBytes(name), ns);
-    }
+      => CreateNameBasedSHA1(Encoding.ASCII.GetBytes(name), ns);
 
     public static Uuid CreateNameBasedSHA1(byte[] name, Namespace ns)
-    {
-      return CreateNameBased(name, ns, UuidVersion.NameBasedSHA1Hash);
-    }
+      => CreateNameBased(name, ns, UuidVersion.NameBasedSHA1Hash);
 
     public static Uuid CreateNameBased(Uri url, UuidVersion version)
     {
@@ -210,9 +199,7 @@ namespace Smdn {
     }
 
     public static Uuid CreateNameBased(string name, Namespace ns, UuidVersion version)
-    {
-      return CreateNameBased(Encoding.ASCII.GetBytes(name), ns, version);
-    }
+      => CreateNameBased(Encoding.ASCII.GetBytes(name), ns, version);
 
     public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version)
     {
@@ -226,9 +213,7 @@ namespace Smdn {
     }
 
     public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version)
-    {
-      return CreateNameBased(Encoding.ASCII.GetBytes(name), namespaceId, version);
-    }
+      => CreateNameBased(Encoding.ASCII.GetBytes(name), namespaceId, version);
 
     public static Uuid CreateNameBased(byte[] name, Uuid namespaceId, UuidVersion version)
     {

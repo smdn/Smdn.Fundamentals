@@ -43,13 +43,19 @@ namespace Smdn.Formats.ModifiedBase64 {
     }
 
     public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
-    {
-      return base.TransformBlock(ReplaceInput(inputBuffer, inputOffset, inputCount), 0, inputCount, outputBuffer, outputOffset);
-    }
+      => base.TransformBlock(
+        ReplaceInput(inputBuffer, inputOffset, inputCount),
+        0,
+        inputCount,
+        outputBuffer,
+        outputOffset
+      );
 
     public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-    {
-      return base.TransformFinalBlock(ReplaceInput(inputBuffer, inputOffset, inputCount), 0, inputCount);
-    }
+      => base.TransformFinalBlock(
+        ReplaceInput(inputBuffer, inputOffset, inputCount),
+        0,
+        inputCount
+      );
   }
 }

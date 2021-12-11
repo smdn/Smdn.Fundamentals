@@ -14,9 +14,7 @@ namespace Smdn.Formats {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Base64 {
     public static string GetEncodedString(string str)
-    {
-      return GetEncodedString(str, Encoding.ASCII);
-    }
+      => GetEncodedString(str, Encoding.ASCII);
 
     public static string GetEncodedString(string str, Encoding encoding)
     {
@@ -28,28 +26,22 @@ namespace Smdn.Formats {
       return GetEncodedString(bytes, 0, bytes.Length);
     }
 
-    public static string GetEncodedString(byte[] bytes)
-    {
+    public static string GetEncodedString(byte[] bytes) =>
 #if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-      return System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
+      System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 #else
-      return System.Convert.ToBase64String(bytes);
+      System.Convert.ToBase64String(bytes);
 #endif
-    }
 
-    public static string GetEncodedString(byte[] bytes, int offset, int count)
-    {
+    public static string GetEncodedString(byte[] bytes, int offset, int count) =>
 #if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-      return System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
+      System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
 #else
-      return System.Convert.ToBase64String(bytes, offset, count);
+      System.Convert.ToBase64String(bytes, offset, count);
 #endif
-    }
 
     public static byte[] Encode(string str)
-    {
-      return Encode(str, Encoding.ASCII);
-    }
+      => Encode(str, Encoding.ASCII);
 
     public static byte[] Encode(string str, Encoding encoding)
     {
@@ -77,9 +69,7 @@ namespace Smdn.Formats {
     }
 
     public static string GetDecodedString(string str)
-    {
-      return GetDecodedString(str, Encoding.ASCII);
-    }
+      => GetDecodedString(str, Encoding.ASCII);
 
     public static string GetDecodedString(string str, Encoding encoding)
     {
@@ -97,15 +87,9 @@ namespace Smdn.Formats {
       return GetDecodedString(bytes, 0, bytes.Length);
     }
 
-    public static string GetDecodedString(byte[] bytes, int offset, int count)
-    {
-      return Encoding.ASCII.GetString(Decode(bytes, offset, count));
-    }
+    public static string GetDecodedString(byte[] bytes, int offset, int count) => Encoding.ASCII.GetString(Decode(bytes, offset, count));
 
-    public static byte[] Decode(string str)
-    {
-      return System.Convert.FromBase64String(str);
-    }
+    public static byte[] Decode(string str) => System.Convert.FromBase64String(str);
 
     public static byte[] Decode(byte[] bytes)
     {
@@ -169,13 +153,11 @@ namespace Smdn.Formats {
 #endif
     }
 
-    public static ICryptoTransform CreateToBase64Transform()
-    {
+    public static ICryptoTransform CreateToBase64Transform() =>
 #if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-      return new System.Security.Cryptography.ToBase64Transform();
+      new System.Security.Cryptography.ToBase64Transform();
 #else
-      return new Smdn.Security.Cryptography.ToBase64Transform();
+      new Smdn.Security.Cryptography.ToBase64Transform();
 #endif
-    }
   }
 }

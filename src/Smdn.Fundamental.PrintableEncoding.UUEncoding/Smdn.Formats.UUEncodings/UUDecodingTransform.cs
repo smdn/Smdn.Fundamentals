@@ -20,10 +20,7 @@ namespace Smdn.Formats.UUEncodings {
       disposed = true;
     }
 
-    void IDisposable.Dispose()
-    {
-      Clear();
-    }
+    void IDisposable.Dispose() => Clear();
 
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
     {

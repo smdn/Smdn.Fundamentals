@@ -16,19 +16,13 @@ namespace Smdn.IO.Streams {
 #pragma warning restore SA1001
   {
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
-    {
-      return CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
-    }
+      => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
 
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin)
-    {
-      return CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, seekToBegin);
-    }
+      => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, seekToBegin);
 
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length)
-    {
-      return CreateNonNested(innerOrPartialStream, offset, length, true);
-    }
+      => CreateNonNested(innerOrPartialStream, offset, length, true);
 
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
     {
@@ -158,16 +152,10 @@ namespace Smdn.IO.Streams {
     }
 
 #if SYSTEM_ICLONEABLE
-    object ICloneable.Clone()
-    {
-      return Clone();
-    }
+    object ICloneable.Clone() => Clone();
 #endif
 
-    public PartialStream Clone()
-    {
-      return (PartialStream)MemberwiseClone();
-    }
+    public PartialStream Clone() => (PartialStream)MemberwiseClone();
 
     public override void SetLength(long @value)
     {

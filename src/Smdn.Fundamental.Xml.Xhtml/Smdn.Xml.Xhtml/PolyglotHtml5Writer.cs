@@ -78,20 +78,9 @@ namespace Smdn.Xml.Xhtml {
           IsMixedContent = true;
       }
 
-      public void MarkAsMixedContent()
-      {
-        IsMixedContent = true;
-      }
-
-      public void MarkAsNonEmpty()
-      {
-        IsEmpty = false;
-      }
-
-      public void MarkAsClosed()
-      {
-        IsClosed = true;
-      }
+      public void MarkAsMixedContent() => IsMixedContent = true;
+      public void MarkAsNonEmpty() => IsEmpty = false;
+      public void MarkAsClosed() => IsClosed = true;
     }
 
     private static readonly XmlWriterSettings defaultSettings = new();
@@ -280,15 +269,9 @@ namespace Smdn.Xml.Xhtml {
     /*
      * call through to the base writer
      */
-    public override void Flush()
-    {
-      baseWriter.Flush();
-    }
+    public override void Flush() => baseWriter.Flush();
 
-    public override string LookupPrefix(string ns)
-    {
-      return baseWriter.LookupPrefix(ns);
-    }
+    public override string LookupPrefix(string ns) => baseWriter.LookupPrefix(ns);
 
     public override void WriteStartDocument()
     {

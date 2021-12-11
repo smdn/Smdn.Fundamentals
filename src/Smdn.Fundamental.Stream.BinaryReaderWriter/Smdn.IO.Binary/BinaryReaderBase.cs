@@ -47,15 +47,9 @@ namespace Smdn.IO.Binary {
       this.leaveBaseStreamOpen = leaveBaseStreamOpen;
     }
 
-    public virtual void Close()
-    {
-      Dispose(true);
-    }
+    public virtual void Close() => Dispose(true);
 
-    void IDisposable.Dispose()
-    {
-      Dispose(true);
-    }
+    void IDisposable.Dispose() => Dispose(true);
 
     protected virtual void Dispose(bool disposing)
     {
@@ -82,34 +76,22 @@ namespace Smdn.IO.Binary {
     }
 
     [CLSCompliant(false)]
-    public virtual SByte ReadSByte()
-    {
-      return unchecked((sbyte)ReadByte());
-    }
+    public virtual SByte ReadSByte() => unchecked((sbyte)ReadByte());
 
     public abstract Int16 ReadInt16();
 
     [CLSCompliant(false)]
-    public virtual UInt16 ReadUInt16()
-    {
-      return unchecked((UInt16)ReadInt16());
-    }
+    public virtual UInt16 ReadUInt16() => unchecked((UInt16)ReadInt16());
 
     public abstract Int32 ReadInt32();
 
     [CLSCompliant(false)]
-    public virtual UInt32 ReadUInt32()
-    {
-      return unchecked((UInt32)ReadInt32());
-    }
+    public virtual UInt32 ReadUInt32() => unchecked((UInt32)ReadInt32());
 
     public abstract Int64 ReadInt64();
 
     [CLSCompliant(false)]
-    public virtual UInt64 ReadUInt64()
-    {
-      return unchecked((UInt64)ReadInt64());
-    }
+    public virtual UInt64 ReadUInt64() => unchecked((UInt64)ReadInt64());
 
     public byte[] ReadBytes(int count)
     {
@@ -166,14 +148,10 @@ namespace Smdn.IO.Binary {
     }
 
     public int ReadBytes(byte[] buffer, int index, int count)
-    {
-      return ReadBytes(buffer, index, count, false);
-    }
+      => ReadBytes(buffer, index, count, false);
 
     public void ReadExactBytes(byte[] buffer, int index, int count)
-    {
-      ReadBytes(buffer, index, count, true);
-    }
+      => ReadBytes(buffer, index, count, true);
 
     protected int ReadBytes(byte[] buffer, int index, int count, bool readExactBytes)
     {

@@ -8,9 +8,7 @@ using System.Xml.Linq;
 namespace Smdn.Xml.Linq {
   public static class Extensions {
     public static string GetAttributeValue(this XElement element, XName attributeName)
-    {
-      return element?.Attribute(attributeName)?.Value;
-    }
+      => element?.Attribute(attributeName)?.Value;
 
     public static TValue GetAttributeValue<TValue>(
       this XElement element,

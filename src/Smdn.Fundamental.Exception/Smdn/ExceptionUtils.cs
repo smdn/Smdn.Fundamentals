@@ -14,23 +14,19 @@ namespace Smdn {
   public static class ExceptionUtils {
     // TODO: use gettext or .resx
     private static class Locale {
-      public static string GetText(string text)
-      {
+      public static string GetText(string text) =>
 #if LOCALIZE_MESSAGE
-        return InternalGetText(text);
+        InternalGetText(text);
 #else
-        return text;
+        text;
 #endif
-      }
 
-      public static string GetText(string format, params object[] args)
-      {
+      public static string GetText(string format, params object[] args) =>
 #if LOCALIZE_MESSAGE
-        return string.Format(null, InternalGetText(format), args);
+        string.Format(null, InternalGetText(format), args);
 #else
-        return string.Format(format, args);
+        string.Format(format, args);
 #endif
-      }
 
 #if LOCALIZE_MESSAGE
       private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> catalogues = new(StringComparer.Ordinal);

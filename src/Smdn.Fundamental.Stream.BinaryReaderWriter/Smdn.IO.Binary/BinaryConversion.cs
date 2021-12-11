@@ -30,20 +30,10 @@ namespace Smdn.IO.Binary {
         throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), @bytes, startIndex, count);
     }
 
-    public static Int16 ByteSwap(Int16 @value)
-    {
-      unchecked {
-        return (Int16)(((@value >> 8) & 0x00ff) | (@value << 8));
-      }
-    }
+    public static Int16 ByteSwap(Int16 @value) => unchecked((Int16)(((@value >> 8) & 0x00ff) | (@value << 8)));
 
     [CLSCompliant(false)]
-    public static UInt16 ByteSwap(UInt16 @value)
-    {
-      unchecked {
-        return (UInt16)(((@value >> 8) & 0x00ff) | (@value << 8));
-      }
-    }
+    public static UInt16 ByteSwap(UInt16 @value) => unchecked((UInt16)(((@value >> 8) & 0x00ff) | (@value << 8)));
 
     public static Int32 ByteSwap(Int32 @value)
     {
@@ -95,20 +85,9 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    public static Int16 ToInt16LE(byte[] @value, int startIndex)
-    {
-      return unchecked((Int16)ToUInt16LE(@value, startIndex));
-    }
-
-    public static Int16 ToInt16BE(byte[] @value, int startIndex)
-    {
-      return unchecked((Int16)ToUInt16BE(@value, startIndex));
-    }
-
-    public static Int16 ToInt16(byte[] @value, int startIndex, bool asLittleEndian)
-    {
-      return unchecked((Int16)ToUInt16(@value, startIndex, asLittleEndian));
-    }
+    public static Int16 ToInt16LE(byte[] @value, int startIndex) => unchecked((Int16)ToUInt16LE(@value, startIndex));
+    public static Int16 ToInt16BE(byte[] @value, int startIndex) => unchecked((Int16)ToUInt16BE(@value, startIndex));
+    public static Int16 ToInt16(byte[] @value, int startIndex, bool asLittleEndian) => unchecked((Int16)ToUInt16(@value, startIndex, asLittleEndian));
 
     [CLSCompliant(false)]
     public static UInt16 ToUInt16LE(byte[] @value, int startIndex)
@@ -138,20 +117,9 @@ namespace Smdn.IO.Binary {
         ? ToUInt16LE(@value, startIndex)
         : ToUInt16BE(@value, startIndex);
 
-    public static Int32 ToInt32LE(byte[] @value, int startIndex)
-    {
-      return unchecked((Int32)ToUInt32LE(@value, startIndex));
-    }
-
-    public static Int32 ToInt32BE(byte[] @value, int startIndex)
-    {
-      return unchecked((Int32)ToUInt32BE(@value, startIndex));
-    }
-
-    public static Int32 ToInt32(byte[] @value, int startIndex, bool asLittleEndian)
-    {
-      return unchecked((Int32)ToUInt32(@value, startIndex, asLittleEndian));
-    }
+    public static Int32 ToInt32LE(byte[] @value, int startIndex) => unchecked((Int32)ToUInt32LE(@value, startIndex));
+    public static Int32 ToInt32BE(byte[] @value, int startIndex) => unchecked((Int32)ToUInt32BE(@value, startIndex));
+    public static Int32 ToInt32(byte[] @value, int startIndex, bool asLittleEndian) => unchecked((Int32)ToUInt32(@value, startIndex, asLittleEndian));
 
     [CLSCompliant(false)]
     public static UInt32 ToUInt32LE(byte[] @value, int startIndex)
@@ -185,20 +153,9 @@ namespace Smdn.IO.Binary {
         ? ToUInt32LE(@value, startIndex)
         : ToUInt32BE(@value, startIndex);
 
-    public static Int64 ToInt64LE(byte[] @value, int startIndex)
-    {
-      return unchecked((Int64)ToUInt64LE(@value, startIndex));
-    }
-
-    public static Int64 ToInt64BE(byte[] @value, int startIndex)
-    {
-      return unchecked((Int64)ToUInt64BE(@value, startIndex));
-    }
-
-    public static Int64 ToInt64(byte[] @value, int startIndex, bool asLittleEndian)
-    {
-      return unchecked((Int64)ToUInt64(@value, startIndex, asLittleEndian));
-    }
+    public static Int64 ToInt64LE(byte[] @value, int startIndex) => unchecked((Int64)ToUInt64LE(@value, startIndex));
+    public static Int64 ToInt64BE(byte[] @value, int startIndex) => unchecked((Int64)ToUInt64BE(@value, startIndex));
+    public static Int64 ToInt64(byte[] @value, int startIndex, bool asLittleEndian) => unchecked((Int64)ToUInt64(@value, startIndex, asLittleEndian));
 
     [CLSCompliant(false)]
     public static UInt64 ToUInt64LE(byte[] @value, int startIndex)
@@ -286,20 +243,9 @@ namespace Smdn.IO.Binary {
         ? ToUInt48LE(@value, startIndex)
         : ToUInt48BE(@value, startIndex);
 
-    public static void GetBytesLE(Int16 @value, byte[] bytes, int startIndex)
-    {
-      GetBytesLE(unchecked((UInt16)@value), bytes, startIndex);
-    }
-
-    public static void GetBytesBE(Int16 @value, byte[] bytes, int startIndex)
-    {
-      GetBytesBE(unchecked((UInt16)@value), bytes, startIndex);
-    }
-
-    public static void GetBytes(Int16 @value, bool asLittleEndian, byte[] bytes, int startIndex)
-    {
-      GetBytes(unchecked((UInt16)@value), asLittleEndian, bytes, startIndex);
-    }
+    public static void GetBytesLE(Int16 @value, byte[] bytes, int startIndex) => GetBytesLE(unchecked((UInt16)@value), bytes, startIndex);
+    public static void GetBytesBE(Int16 @value, byte[] bytes, int startIndex) => GetBytesBE(unchecked((UInt16)@value), bytes, startIndex);
+    public static void GetBytes(Int16 @value, bool asLittleEndian, byte[] bytes, int startIndex) => GetBytes(unchecked((UInt16)@value), asLittleEndian, bytes, startIndex);
 
     [CLSCompliant(false)]
     public static void GetBytesLE(UInt16 @value, byte[] bytes, int startIndex)
@@ -332,20 +278,9 @@ namespace Smdn.IO.Binary {
         GetBytesBE(@value, bytes, startIndex);
     }
 
-    public static void GetBytesLE(Int32 @value, byte[] bytes, int startIndex)
-    {
-      GetBytesLE(unchecked((UInt32)@value), bytes, startIndex);
-    }
-
-    public static void GetBytesBE(Int32 @value, byte[] bytes, int startIndex)
-    {
-      GetBytesBE(unchecked((UInt32)@value), bytes, startIndex);
-    }
-
-    public static void GetBytes(Int32 @value, bool asLittleEndian, byte[] bytes, int startIndex)
-    {
-      GetBytes(unchecked((UInt32)@value), asLittleEndian, bytes, startIndex);
-    }
+    public static void GetBytesLE(Int32 @value, byte[] bytes, int startIndex) => GetBytesLE(unchecked((UInt32)@value), bytes, startIndex);
+    public static void GetBytesBE(Int32 @value, byte[] bytes, int startIndex) => GetBytesBE(unchecked((UInt32)@value), bytes, startIndex);
+    public static void GetBytes(Int32 @value, bool asLittleEndian, byte[] bytes, int startIndex) => GetBytes(unchecked((UInt32)@value), asLittleEndian, bytes, startIndex);
 
     [CLSCompliant(false)]
     public static void GetBytesLE(UInt32 @value, byte[] bytes, int startIndex)
@@ -382,20 +317,9 @@ namespace Smdn.IO.Binary {
         GetBytesBE(@value, bytes, startIndex);
     }
 
-    public static void GetBytesLE(Int64 @value, byte[] bytes, int startIndex)
-    {
-      GetBytesLE(unchecked((UInt64)@value), bytes, startIndex);
-    }
-
-    public static void GetBytesBE(Int64 @value, byte[] bytes, int startIndex)
-    {
-      GetBytesBE(unchecked((UInt64)@value), bytes, startIndex);
-    }
-
-    public static void GetBytes(Int64 @value, bool asLittleEndian, byte[] bytes, int startIndex)
-    {
-      GetBytes(unchecked((UInt64)@value), asLittleEndian, bytes, startIndex);
-    }
+    public static void GetBytesLE(Int64 @value, byte[] bytes, int startIndex) => GetBytesLE(unchecked((UInt64)@value), bytes, startIndex);
+    public static void GetBytesBE(Int64 @value, byte[] bytes, int startIndex) => GetBytesBE(unchecked((UInt64)@value), bytes, startIndex);
+    public static void GetBytes(Int64 @value, bool asLittleEndian, byte[] bytes, int startIndex) => GetBytes(unchecked((UInt64)@value), asLittleEndian, bytes, startIndex);
 
     [CLSCompliant(false)]
     public static void GetBytesLE(UInt64 @value, byte[] bytes, int startIndex)

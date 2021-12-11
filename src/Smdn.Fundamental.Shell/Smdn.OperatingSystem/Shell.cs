@@ -12,9 +12,7 @@ namespace Smdn.OperatingSystem {
       System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.OSX);
 
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments)
-    {
-      return CreateProcessStartInfo(command, arguments == null ? string.Empty : string.Join(" ", arguments));
-    }
+      => CreateProcessStartInfo(command, arguments == null ? string.Empty : string.Join(" ", arguments));
 
     public static ProcessStartInfo CreateProcessStartInfo(string command, string arguments)
     {
@@ -48,9 +46,7 @@ namespace Smdn.OperatingSystem {
     }
 
     public static int Execute(string command, out string stdout)
-    {
-      return Execute(command, out stdout, out _);
-    }
+      => Execute(command, out stdout, out _);
 
     public static int Execute(string command, out string stdout, out string stderr)
     {

@@ -54,10 +54,7 @@ namespace Smdn {
       return str.Substring(from, to - from);
     }
 
-    public static int IndexOfNot(this string str, char @value)
-    {
-      return IndexOfNot(str, @value, 0);
-    }
+    public static int IndexOfNot(this string str, char @value) => IndexOfNot(str, @value, 0);
 
     public static int IndexOfNot(this string str, char @value, int startIndex)
     {

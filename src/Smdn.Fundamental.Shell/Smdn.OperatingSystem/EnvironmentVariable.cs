@@ -9,9 +9,7 @@ namespace Smdn.OperatingSystem {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EnvironmentVariable {
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables)
-    {
-      return ParseEnvironmentVariables(variables, true);
-    }
+      => ParseEnvironmentVariables(variables, throwIfInvalid: true);
 
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables, bool throwIfInvalid)
     {

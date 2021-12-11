@@ -13,10 +13,7 @@ namespace Smdn.Text {
       return new Uri(val);
     }
 
-    public static Uri ToUriNullable(string val)
-    {
-      return (val == null) ? null : new Uri(val);
-    }
+    public static Uri ToUriNullable(string val) => (val == null) ? null : new Uri(val);
 
     public static string ToString(Uri val)
     {
@@ -26,30 +23,15 @@ namespace Smdn.Text {
       return val.ToString();
     }
 
-    public static string ToStringNullable(Uri val)
-    {
-      return val?.ToString();
-    }
+    public static string ToStringNullable(Uri val) => val?.ToString();
 
-    public static int? ToInt32Nullable(string val)
-    {
-      return (val == null) ? null : int.Parse(val);
-    }
+    public static int? ToInt32Nullable(string val) => (val == null) ? null : int.Parse(val);
 
-    public static string ToStringNullable(int? val)
-    {
-      return val?.ToString();
-    }
+    public static string ToStringNullable(int? val) => val?.ToString();
 
-    public static bool? ToBooleanNullable(string val)
-    {
-      return (val == null) ? null : bool.Parse(val);
-    }
+    public static bool? ToBooleanNullable(string val) => (val == null) ? null : bool.Parse(val);
 
-    public static string ToStringNullable(bool? val)
-    {
-      return val?.ToString()?.ToLowerInvariant();
-    }
+    public static string ToStringNullable(bool? val) => val?.ToString()?.ToLowerInvariant();
 
     [Obsolete("use Smdn.Collections.StringificationExtensions.Stringify instead")]
     public static string ToJoinedString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> pairs)
@@ -65,23 +47,15 @@ namespace Smdn.Text {
      * enum parsing
      */
     public static TEnum? ToEnumNullable<TEnum>(string val) where TEnum : struct, Enum
-    {
-      return (val == null) ? null : ToEnum<TEnum>(val, true);
-    }
+      => (val == null) ? null : ToEnum<TEnum>(val, true);
 
     public static TEnum ToEnum<TEnum>(string value) where TEnum : Enum
-    {
-      return ToEnum<TEnum>(value, false);
-    }
+      => ToEnum<TEnum>(value, false);
 
     public static TEnum ToEnumIgnoreCase<TEnum>(string value) where TEnum : Enum
-    {
-      return ToEnum<TEnum>(value, true);
-    }
+      => ToEnum<TEnum>(value, true);
 
     public static TEnum ToEnum<TEnum>(string value, bool ignoreCase) where TEnum : Enum
-    {
-      return (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
-    }
+      => (TEnum)Enum.Parse(typeof(TEnum), value, ignoreCase);
   }
 }

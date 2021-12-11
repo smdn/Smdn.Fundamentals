@@ -9,9 +9,7 @@ namespace Smdn.Formats.PercentEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class PercentEncoding {
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode)
-    {
-      return GetEncodedString(str, mode, Encoding.ASCII);
-    }
+      => GetEncodedString(str, mode, Encoding.ASCII);
 
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding)
       => ICryptoTransformExtensions.TransformStringTo(
@@ -57,19 +55,13 @@ namespace Smdn.Formats.PercentEncodings {
     }
 
     public static string GetDecodedString(string str)
-    {
-      return GetDecodedString(str, Encoding.ASCII, false);
-    }
+      => GetDecodedString(str, Encoding.ASCII, false);
 
     public static string GetDecodedString(string str, bool decodePlusToSpace)
-    {
-      return GetDecodedString(str, Encoding.ASCII, decodePlusToSpace);
-    }
+      => GetDecodedString(str, Encoding.ASCII, decodePlusToSpace);
 
     public static string GetDecodedString(string str, Encoding encoding)
-    {
-      return GetDecodedString(str, encoding, false);
-    }
+      => GetDecodedString(str, encoding, false);
 
     public static string GetDecodedString(string str, Encoding encoding, bool decodePlusToSpace)
       => ICryptoTransformExtensions.TransformStringFrom(
@@ -79,9 +71,7 @@ namespace Smdn.Formats.PercentEncodings {
       );
 
     public static byte[] Decode(string str)
-    {
-      return Decode(str, false);
-    }
+      => Decode(str, false);
 
     public static byte[] Decode(string str, bool decodePlusToSpace)
     {

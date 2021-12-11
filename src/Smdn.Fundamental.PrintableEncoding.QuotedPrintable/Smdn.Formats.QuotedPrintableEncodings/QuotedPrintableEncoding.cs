@@ -14,9 +14,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class QuotedPrintableEncoding {
     public static string GetEncodedString(string str)
-    {
-      return GetEncodedString(str, Encoding.ASCII);
-    }
+      => GetEncodedString(str, Encoding.ASCII);
 
     public static string GetEncodedString(string str, Encoding encoding)
       => ICryptoTransformExtensions.TransformStringTo(

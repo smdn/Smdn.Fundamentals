@@ -9,14 +9,12 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     private static readonly RandomNumberGenerator defaultRng = RandomNumberGenerator.Create();
 #endif
 
-    public static void Fill(Span<byte> span)
-    {
+    public static void Fill(Span<byte> span) =>
 #if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
       RandomNumberGenerator.Fill(span);
 #else
       Fill(span, defaultRng);
 #endif
-    }
 
     public static void Fill(Span<byte> span, RandomNumberGenerator rng)
     {

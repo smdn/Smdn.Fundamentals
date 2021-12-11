@@ -8,9 +8,7 @@ namespace Smdn.Text.Encodings {
   [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EncodingUtils {
     public static Encoding GetEncoding(string name)
-    {
-      return GetEncoding(name, null);
-    }
+      => GetEncoding(name, null);
 
     private static readonly char[] whiteSpaceChars = new[] { '-', '_', ' ' };
 
@@ -63,22 +61,13 @@ namespace Smdn.Text.Encodings {
     }
 
     public static Encoding GetEncodingThrowException(string name)
-    {
-      return GetEncodingThrowException(name, null);
-    }
+      => GetEncodingThrowException(name, null);
 
     public static Encoding GetEncodingThrowException(
       string name,
       EncodingSelectionCallback selectFallbackEncoding
     )
-    {
-      var encoding = GetEncoding(name, selectFallbackEncoding);
-
-      if (encoding == null)
-        throw new EncodingNotSupportedException(name);
-      else
-        return encoding;
-    }
+      => GetEncoding(name, selectFallbackEncoding) ?? throw new EncodingNotSupportedException(name);
 
     private static readonly Dictionary<string, string> encodingCollationTable
       = new(StringComparer.OrdinalIgnoreCase) {
