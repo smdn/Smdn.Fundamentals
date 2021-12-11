@@ -6,26 +6,26 @@ using NUnit.Framework.Constraints;
 
 using Smdn.Text.Unicode.ControlPictures;
 
-namespace Smdn.Test.NUnit.Constraints.Buffers {
-  public class ReadOnlyByteMemoryEqualConstraintResult : EqualConstraintResult {
-    private readonly ReadOnlyMemory<byte> expectedValue;
+namespace Smdn.Test.NUnit.Constraints.Buffers;
 
-    public ReadOnlyByteMemoryEqualConstraintResult(ReadOnlyByteMemoryEqualConstraint constraint, object actual, bool hasSucceeded)
-      : base(constraint, actual, hasSucceeded)
-    {
-      this.expectedValue = constraint.Expected;
-    }
+public class ReadOnlyByteMemoryEqualConstraintResult : EqualConstraintResult {
+  private readonly ReadOnlyMemory<byte> expectedValue;
 
-    public override void WriteMessageTo(MessageWriter writer)
-    {
-      writer.WriteMessageLine($"Expected: \"{expectedValue.Span.ToControlCharsPicturizedString()}\" ({BitConverter.ToString(expectedValue.ToArray())})");
+  public ReadOnlyByteMemoryEqualConstraintResult(ReadOnlyByteMemoryEqualConstraint constraint, object actual, bool hasSucceeded)
+    : base(constraint, actual, hasSucceeded)
+  {
+    this.expectedValue = constraint.Expected;
+  }
 
-      if (ActualValue is ReadOnlyMemory<byte> actualMemory)
-        writer.WriteMessageLine($"But was: \"{actualMemory.Span.ToControlCharsPicturizedString()}\" ({BitConverter.ToString(actualMemory.ToArray())})");
-      else if (ActualValue is byte[] actualByteArray)
-        writer.WriteMessageLine($"But was: \"{((ReadOnlySpan<byte>)actualByteArray).ToControlCharsPicturizedString()}\" ({BitConverter.ToString(actualByteArray)})");
-      else
-        writer.WriteActualValue(ActualValue);
-    }
+  public override void WriteMessageTo(MessageWriter writer)
+  {
+    writer.WriteMessageLine($"Expected: \"{expectedValue.Span.ToControlCharsPicturizedString()}\" ({BitConverter.ToString(expectedValue.ToArray())})");
+
+    if (ActualValue is ReadOnlyMemory<byte> actualMemory)
+      writer.WriteMessageLine($"But was: \"{actualMemory.Span.ToControlCharsPicturizedString()}\" ({BitConverter.ToString(actualMemory.ToArray())})");
+    else if (ActualValue is byte[] actualByteArray)
+      writer.WriteMessageLine($"But was: \"{((ReadOnlySpan<byte>)actualByteArray).ToControlCharsPicturizedString()}\" ({BitConverter.ToString(actualByteArray)})");
+    else
+      writer.WriteActualValue(ActualValue);
   }
 }

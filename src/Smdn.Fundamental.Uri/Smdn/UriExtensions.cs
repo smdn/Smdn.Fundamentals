@@ -3,11 +3,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace Smdn {
-  public static class UriExtensions {
-    public static IReadOnlyDictionary<string, string> GetSplittedQueries(this Uri uri)
-      => UriUtils.SplitQueryParameters(
-        (uri ?? throw new ArgumentNullException(nameof(uri))).Query ?? string.Empty
-      );
-  }
+namespace Smdn;
+
+public static class UriExtensions {
+  public static IReadOnlyDictionary<string, string> GetSplittedQueries(this Uri uri)
+    => UriUtils.SplitQueryParameters(
+      (uri ?? throw new ArgumentNullException(nameof(uri))).Query ?? string.Empty
+    );
 }

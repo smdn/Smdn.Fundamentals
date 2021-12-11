@@ -3,23 +3,23 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Smdn.Text.RegularExpressions {
-  public static class RegexExtensions {
-    /*
-     * API Proposal: Regex.IsMatch with 'out Match' parameter #30308
-     * https://github.com/dotnet/runtime/issues/30308
-     */
-    public static bool IsMatch(this Regex regex, string input, out Match match)
-      => IsMatch(regex, input, startIndex: 0, out match);
+namespace Smdn.Text.RegularExpressions;
 
-    public static bool IsMatch(this Regex regex, string input, int startIndex, out Match match)
-    {
-      if (regex == null)
-        throw new ArgumentNullException(nameof(regex));
+public static class RegexExtensions {
+  /*
+   * API Proposal: Regex.IsMatch with 'out Match' parameter #30308
+   * https://github.com/dotnet/runtime/issues/30308
+   */
+  public static bool IsMatch(this Regex regex, string input, out Match match)
+    => IsMatch(regex, input, startIndex: 0, out match);
 
-      match = regex.Match(input, startIndex);
+  public static bool IsMatch(this Regex regex, string input, int startIndex, out Match match)
+  {
+    if (regex == null)
+      throw new ArgumentNullException(nameof(regex));
 
-      return match.Success;
-    }
+    match = regex.Match(input, startIndex);
+
+    return match.Success;
   }
 }

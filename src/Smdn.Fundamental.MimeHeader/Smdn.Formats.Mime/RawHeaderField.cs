@@ -4,21 +4,21 @@ using System.Buffers;
 
 using Smdn.Buffers;
 
-namespace Smdn.Formats.Mime {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public readonly struct RawHeaderField {
-    public ReadOnlySequence<byte> HeaderFieldSequence { get; }
-    public int OffsetOfDelimiter { get; }
+namespace Smdn.Formats.Mime;
 
-    public ReadOnlySequence<byte> Name => HeaderFieldSequence.Slice(0, OffsetOfDelimiter);
-    public ReadOnlySequence<byte> Value => HeaderFieldSequence.Slice(OffsetOfDelimiter).Slice(1); // offset + 1
-    public string NameString => Name.CreateString();
-    public string ValueString => Value.CreateString();
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public readonly struct RawHeaderField {
+  public ReadOnlySequence<byte> HeaderFieldSequence { get; }
+  public int OffsetOfDelimiter { get; }
 
-    internal RawHeaderField(ReadOnlySequence<byte> headerFieldSequence, int offsetOfDelimiter)
-    {
-      this.HeaderFieldSequence = headerFieldSequence;
-      this.OffsetOfDelimiter = offsetOfDelimiter;
-    }
+  public ReadOnlySequence<byte> Name => HeaderFieldSequence.Slice(0, OffsetOfDelimiter);
+  public ReadOnlySequence<byte> Value => HeaderFieldSequence.Slice(OffsetOfDelimiter).Slice(1); // offset + 1
+  public string NameString => Name.CreateString();
+  public string ValueString => Value.CreateString();
+
+  internal RawHeaderField(ReadOnlySequence<byte> headerFieldSequence, int offsetOfDelimiter)
+  {
+    this.HeaderFieldSequence = headerFieldSequence;
+    this.OffsetOfDelimiter = offsetOfDelimiter;
   }
 }

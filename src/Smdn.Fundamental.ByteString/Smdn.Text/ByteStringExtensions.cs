@@ -3,24 +3,24 @@
 using System;
 using System.Buffers;
 
-namespace Smdn.Text {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public static class ByteStringExtensions {
-    public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) => new(str.Segment.AsMemory());
+namespace Smdn.Text;
 
-    [Obsolete]
-    public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) => ByteString.CreateImmutable(sequence.ToArray());
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public static class ByteStringExtensions {
+  public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) => new(str.Segment.AsMemory());
 
-    [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual instead")]
-    public static bool SequenceEqual(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
-      => Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual(sequence, value);
+  [Obsolete]
+  public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) => ByteString.CreateImmutable(sequence.ToArray());
 
-    [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith instead")]
-    public static bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
-      => Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith(sequence, value);
+  [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual instead")]
+  public static bool SequenceEqual(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
+    => Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual(sequence, value);
 
-    [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead", error: true)]
-    public static unsafe byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
-      => throw new NotSupportedException("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead");
-  }
+  [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith instead")]
+  public static bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> value)
+    => Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith(sequence, value);
+
+  [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead", error: true)]
+  public static unsafe byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
+    => throw new NotSupportedException("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead");
 }

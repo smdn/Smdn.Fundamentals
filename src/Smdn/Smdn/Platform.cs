@@ -6,107 +6,107 @@ using System.Runtime.InteropServices;
 
 using Smdn.OperatingSystem;
 
-namespace Smdn {
-  public static class Platform {
-    static Platform()
-    {
-      // System.BitConverter.IsLittleEndian
-      unsafe {
-        int i = 1;
-        var b = (byte*)&i;
+namespace Smdn;
 
-        Endianness = (b[0], b[3]) switch {
-          (1, 0) => Endianness.LittleEndian,
-          (0, 1) => Endianness.BigEndian,
-          _ => Endianness.Unknown,
-        };
-      }
+public static class Platform {
+  static Platform()
+  {
+    // System.BitConverter.IsLittleEndian
+    unsafe {
+      int i = 1;
+      var b = (byte*)&i;
+
+      Endianness = (b[0], b[3]) switch {
+        (1, 0) => Endianness.LittleEndian,
+        (0, 1) => Endianness.BigEndian,
+        _ => Endianness.Unknown,
+      };
     }
+  }
 
-    public static readonly Endianness Endianness;
+  public static readonly Endianness Endianness;
 
-    public static bool IsRunningOnWindows =>
-      RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+  public static bool IsRunningOnWindows =>
+    RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-    public static bool IsRunningOnUnix
-      => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+  public static bool IsRunningOnUnix
+    => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
-    [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparison instead")]
-    public static StringComparison PathStringComparison => Smdn.IO.PathUtils.DefaultPathStringComparison;
-    [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparer instead")]
-    public static StringComparer PathStringComparer => Smdn.IO.PathUtils.DefaultPathStringComparer;
+  [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparison instead")]
+  public static StringComparison PathStringComparison => Smdn.IO.PathUtils.DefaultPathStringComparison;
+  [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparer instead")]
+  public static StringComparer PathStringComparer => Smdn.IO.PathUtils.DefaultPathStringComparer;
 
-    private static string kernelName = null;
+  private static string kernelName = null;
 
-    public static string KernelName {
-      get {
-        if (kernelName == null) {
-          kernelName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture}"; // default
+  public static string KernelName {
+    get {
+      if (kernelName == null) {
+        kernelName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture}"; // default
 
 #if SYSTEM_DIAGNOSTICS_PROCESS
-          try {
-            if (IsRunningOnUnix)
-              kernelName = Shell.Execute("uname -srvom").Trim();
-          }
-          catch {
-            // ignore exceptions
-          }
-#endif
+        try {
+          if (IsRunningOnUnix)
+            kernelName = Shell.Execute("uname -srvom").Trim();
         }
-
-        return kernelName;
+        catch {
+          // ignore exceptions
+        }
+#endif
       }
+
+      return kernelName;
     }
+  }
 
-    private static string distributionName = null;
+  private static string distributionName = null;
 
-    public static string DistributionName {
-      get {
-        if (distributionName == null) {
-          distributionName = RuntimeInformation.OSDescription; // default
+  public static string DistributionName {
+    get {
+      if (distributionName == null) {
+        distributionName = RuntimeInformation.OSDescription; // default
 
 #if SYSTEM_DIAGNOSTICS_PROCESS
-          try {
-            if (IsRunningOnUnix)
-              distributionName = Shell.Execute("lsb_release -ds").Trim();
-          }
-          catch {
-            // ignore exceptions
-          }
-#endif
+        try {
+          if (IsRunningOnUnix)
+            distributionName = Shell.Execute("lsb_release -ds").Trim();
         }
-
-        return distributionName;
+        catch {
+          // ignore exceptions
+        }
+#endif
       }
+
+      return distributionName;
     }
+  }
 
-    private static string processorName = null;
+  private static string processorName = null;
 
-    public static string ProcessorName {
-      get {
-        if (processorName == null) {
-          processorName = RuntimeInformation.OSArchitecture.ToString(); // default
+  public static string ProcessorName {
+    get {
+      if (processorName == null) {
+        processorName = RuntimeInformation.OSArchitecture.ToString(); // default
 
-          try {
-            if (IsRunningOnUnix) {
-              foreach (var line in File.ReadAllLines("/proc/cpuinfo")) {
-                if (line.StartsWith("model name", StringComparison.Ordinal)) {
-                  processorName = line.Substring(line.IndexOf(':') + 1).Trim();
-                  break;
-                }
+        try {
+          if (IsRunningOnUnix) {
+            foreach (var line in File.ReadAllLines("/proc/cpuinfo")) {
+              if (line.StartsWith("model name", StringComparison.Ordinal)) {
+                processorName = line.Substring(line.IndexOf(':') + 1).Trim();
+                break;
               }
             }
-            else {
-              // TODO:
-            }
           }
-          catch {
-            // ignore exceptions
+          else {
+            // TODO:
           }
         }
-
-        return processorName;
+        catch {
+          // ignore exceptions
+        }
       }
+
+      return processorName;
     }
   }
 }

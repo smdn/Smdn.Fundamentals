@@ -32,3 +32,6 @@ dotnet_diagnostic.IDE0130.severity    = none
 
 dotnet_diagnostic.CA1707.severity     = none
 dotnet_diagnostic.CA1805.severity     = suggestion
+
+csharp_style_namespace_declarations   = file_scoped:warning
+dotnet_diagnostic.IDE0161.severity    = warning

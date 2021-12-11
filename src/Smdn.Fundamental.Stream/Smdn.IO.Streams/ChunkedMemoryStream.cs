@@ -3,455 +3,455 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO.Streams {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public sealed class ChunkedMemoryStream : Stream {
-    public static readonly int DefaultChunkSize = 40960;
+namespace Smdn.IO.Streams;
 
-    public delegate Chunk Allocator(int chunkSize);
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public sealed class ChunkedMemoryStream : Stream {
+  public static readonly int DefaultChunkSize = 40960;
 
-    public abstract class Chunk : IDisposable {
-      public abstract void Dispose();
+  public delegate Chunk Allocator(int chunkSize);
+
+  public abstract class Chunk : IDisposable {
+    public abstract void Dispose();
 
 #pragma warning disable SA1401
-      public byte[] Data;
-      internal Chunk Next = null;
+    public byte[] Data;
+    internal Chunk Next = null;
 #pragma warning restore SA1401
+  }
+
+  private class DefaultChunk : Chunk {
+    public static DefaultChunk Allocate(int chunkSize) => new(chunkSize);
+
+    private DefaultChunk(int chunkSize)
+    {
+      Data = new byte[chunkSize];
     }
 
-    private class DefaultChunk : Chunk {
-      public static DefaultChunk Allocate(int chunkSize) => new(chunkSize);
+    public override void Dispose()
+    {
+      Data = null;
+    }
+  }
 
-      private DefaultChunk(int chunkSize)
-      {
-        Data = new byte[chunkSize];
-      }
+  private sealed class ChunkChain : IDisposable {
+    public int ChunkSize { get; }
+    public long Length => ((chunkCount - 1) * ChunkSize) + lastChunkLength;
+    public long Position => (currentChunkIndex * ChunkSize) + currentChunkOffset;
 
-      public override void Dispose()
-      {
-        Data = null;
-      }
+    private int ReadableByteCount => ((currentChunk.Next is null) ? lastChunkLength : ChunkSize) - currentChunkOffset;
+
+    public ChunkChain(int chunkSize, Allocator allocator)
+    {
+      this.ChunkSize = chunkSize;
+      this.allocator = allocator;
+
+      currentChunkOffset = 0;
     }
 
-    private sealed class ChunkChain : IDisposable {
-      public int ChunkSize { get; }
-      public long Length => ((chunkCount - 1) * ChunkSize) + lastChunkLength;
-      public long Position => (currentChunkIndex * ChunkSize) + currentChunkOffset;
+    private Chunk TryGetFirstChunk(bool ensureCreated)
+    {
+      if (ensureCreated && firstChunk == null)
+        currentChunk = firstChunk = allocator(ChunkSize);
 
-      private int ReadableByteCount => ((currentChunk.Next is null) ? lastChunkLength : ChunkSize) - currentChunkOffset;
+      return firstChunk;
+    }
 
-      public ChunkChain(int chunkSize, Allocator allocator)
-      {
-        this.ChunkSize = chunkSize;
-        this.allocator = allocator;
+    public void Dispose()
+    {
+      var chunk = TryGetFirstChunk(false);
 
-        currentChunkOffset = 0;
-      }
+      for (; ; ) {
+        if (chunk == null)
+          break;
 
-      private Chunk TryGetFirstChunk(bool ensureCreated)
-      {
-        if (ensureCreated && firstChunk == null)
-          currentChunk = firstChunk = allocator(ChunkSize);
-
-        return firstChunk;
-      }
-
-      public void Dispose()
-      {
-        var chunk = TryGetFirstChunk(false);
-
-        for (; ; ) {
-          if (chunk == null)
-            break;
-
-          var next = chunk.Next;
-
-          chunk.Dispose();
-
-          chunk = next;
-        }
-
-        firstChunk = null;
-        currentChunk = null;
-      }
-
-      public void SetLength(long length)
-      {
-        if (length == Length)
-          return; // do nothing
-
-        chunkCount = 1;
-
-        var chunk = TryGetFirstChunk(true);
-
-        // allocate
-        while (ChunkSize <= length) {
-          if (chunk.Next == null)
-            chunk.Next = allocator(ChunkSize);
-
-          chunk = chunk.Next;
-          chunkCount++;
-
-          length -= ChunkSize;
-        }
-
-        lastChunkLength = (int)length;
-
-        // dispose and remove from chain
         var next = chunk.Next;
 
-        chunk.Next = null;
+        chunk.Dispose();
+
         chunk = next;
-
-        while (chunk != null) {
-          next = chunk.Next;
-
-          chunk.Next = null;
-          chunk.Dispose();
-
-          chunk = next;
-        }
-
-        // set new position
-        if (Length < Position)
-          SetPosition(Length);
       }
 
-      public void SetPosition(long offset)
-      {
-        if (Position == offset)
-          return;
+      firstChunk = null;
+      currentChunk = null;
+    }
 
-        if (Length < offset)
-          SetLength(offset);
+    public void SetLength(long length)
+    {
+      if (length == Length)
+        return; // do nothing
 
-        currentChunk = TryGetFirstChunk(true);
-        currentChunkIndex = 0;
+      chunkCount = 1;
 
-        while (ChunkSize <= offset) {
-          currentChunk = currentChunk.Next;
-          currentChunkIndex++;
+      var chunk = TryGetFirstChunk(true);
 
-          offset -= ChunkSize;
-        }
+      // allocate
+      while (ChunkSize <= length) {
+        if (chunk.Next == null)
+          chunk.Next = allocator(ChunkSize);
 
-        currentChunkOffset = (int)offset;
+        chunk = chunk.Next;
+        chunkCount++;
+
+        length -= ChunkSize;
       }
 
-      public int ReadByte()
-      {
-        if (TryGetFirstChunk(false) == null)
-          return -1; // stream is empty
+      lastChunkLength = (int)length;
 
-        if (ReadableByteCount == 0) {
-          if (!MoveToNextChunk(false))
-            return -1; // end of stream
-        }
+      // dispose and remove from chain
+      var next = chunk.Next;
 
-        return currentChunk.Data[currentChunkOffset++];
+      chunk.Next = null;
+      chunk = next;
+
+      while (chunk != null) {
+        next = chunk.Next;
+
+        chunk.Next = null;
+        chunk.Dispose();
+
+        chunk = next;
       }
 
-      public int Read(byte[] buffer, int offset, int count)
-      {
-        if (TryGetFirstChunk(false) == null)
-          return 0; // stream is empty
+      // set new position
+      if (Length < Position)
+        SetPosition(Length);
+    }
 
-        var read = 0;
+    public void SetPosition(long offset)
+    {
+      if (Position == offset)
+        return;
 
-        for (; ; ) {
-          if (ReadableByteCount == 0) {
-            if (!MoveToNextChunk(false))
-              return read; // end of stream
-          }
+      if (Length < offset)
+        SetLength(offset);
 
-          var bytesToRead = Math.Min(ReadableByteCount, count);
+      currentChunk = TryGetFirstChunk(true);
+      currentChunkIndex = 0;
 
-          Buffer.BlockCopy(currentChunk.Data, currentChunkOffset, buffer, offset, bytesToRead);
-
-          offset += bytesToRead;
-          count -= bytesToRead;
-          read += bytesToRead;
-
-          currentChunkOffset += bytesToRead;
-
-          if (count <= 0)
-            return read;
-        }
-      }
-
-      public void WriteByte(byte @value)
-      {
-        TryGetFirstChunk(true);
-
-        if (ChunkSize == currentChunkOffset)
-          MoveToNextChunk(true);
-
-        currentChunk.Data[currentChunkOffset++] = @value;
-
-        if (currentChunk.Next == null)
-          lastChunkLength = currentChunkOffset;
-      }
-
-      public void Write(byte[] buffer, int offset, int count)
-      {
-        TryGetFirstChunk(true);
-
-        for (; ; ) {
-          if (currentChunkOffset == ChunkSize)
-            MoveToNextChunk(true);
-
-          var bytesToWrite = Math.Min(ChunkSize - currentChunkOffset, count);
-
-          Buffer.BlockCopy(buffer, offset, currentChunk.Data, currentChunkOffset, bytesToWrite);
-
-          offset += bytesToWrite;
-          count -= bytesToWrite;
-
-          currentChunkOffset += bytesToWrite;
-
-          if (currentChunk.Next == null)
-            lastChunkLength = currentChunkOffset;
-
-          if (count <= 0)
-            return;
-        }
-      }
-
-      private bool MoveToNextChunk(bool write)
-      {
-        if (currentChunk.Next == null) {
-          if (!write)
-            return false;
-
-          currentChunk.Next = allocator(ChunkSize);
-          chunkCount++;
-          lastChunkLength = 0;
-        }
-
+      while (ChunkSize <= offset) {
         currentChunk = currentChunk.Next;
         currentChunkIndex++;
 
-        currentChunkOffset = 0;
-
-        return true;
+        offset -= ChunkSize;
       }
 
-      public byte[] ToArray()
-      {
-        var buffer = new byte[Length];
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
-        long offset = 0L;
-#else
-        int offset = 0;
-#endif
-        var chunk = TryGetFirstChunk(false);
+      currentChunkOffset = (int)offset;
+    }
 
-        if (chunk == null)
-          return buffer; // stream is empty (length must be zero)
+    public int ReadByte()
+    {
+      if (TryGetFirstChunk(false) == null)
+        return -1; // stream is empty
 
-        for (; ; ) {
-          if (chunk.Next == null) {
-            Array.Copy(chunk.Data, 0, buffer, offset, lastChunkLength);
-            // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, lastChunkLength);
+      if (ReadableByteCount == 0) {
+        if (!MoveToNextChunk(false))
+          return -1; // end of stream
+      }
 
-            return buffer;
-          }
-          else {
-            Array.Copy(chunk.Data, 0, buffer, offset, ChunkSize);
-            // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, chunkSize);
+      return currentChunk.Data[currentChunkOffset++];
+    }
 
-            chunk = chunk.Next;
-            offset += ChunkSize;
-          }
+    public int Read(byte[] buffer, int offset, int count)
+    {
+      if (TryGetFirstChunk(false) == null)
+        return 0; // stream is empty
+
+      var read = 0;
+
+      for (; ; ) {
+        if (ReadableByteCount == 0) {
+          if (!MoveToNextChunk(false))
+            return read; // end of stream
         }
-      }
 
-      private readonly Allocator allocator;
-      private Chunk firstChunk;
-      private Chunk currentChunk;
+        var bytesToRead = Math.Min(ReadableByteCount, count);
 
-      private int currentChunkOffset;
-      private long currentChunkIndex = 0;
-      private long chunkCount = 1;
-      private int lastChunkLength = 0;
-    }
+        Buffer.BlockCopy(currentChunk.Data, currentChunkOffset, buffer, offset, bytesToRead);
 
-    public override bool CanSeek => !IsClosed /*&& true*/;
-    public override bool CanRead => !IsClosed /*&& true*/;
-    public override bool CanWrite => !IsClosed /*&& true*/;
-    public override bool CanTimeout => false;
-    private bool IsClosed => chain is null;
+        offset += bytesToRead;
+        count -= bytesToRead;
+        read += bytesToRead;
 
-    public override long Position {
-      get { CheckDisposed(); return chain.Position; }
-      set {
-        CheckDisposed();
+        currentChunkOffset += bytesToRead;
 
-        if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
-
-        chain.SetPosition(value);
+        if (count <= 0)
+          return read;
       }
     }
 
-    public override long Length {
-      get { CheckDisposed(); return chain.Length; }
-    }
-
-    public int ChunkSize {
-      get { CheckDisposed(); return chain.ChunkSize; }
-    }
-
-    public ChunkedMemoryStream()
-      : this(DefaultChunkSize, DefaultChunk.Allocate)
+    public void WriteByte(byte @value)
     {
+      TryGetFirstChunk(true);
+
+      if (ChunkSize == currentChunkOffset)
+        MoveToNextChunk(true);
+
+      currentChunk.Data[currentChunkOffset++] = @value;
+
+      if (currentChunk.Next == null)
+        lastChunkLength = currentChunkOffset;
     }
 
-    public ChunkedMemoryStream(int chunkSize)
-      : this(chunkSize, DefaultChunk.Allocate)
+    public void Write(byte[] buffer, int offset, int count)
     {
-    }
+      TryGetFirstChunk(true);
 
-    public ChunkedMemoryStream(Allocator allocator)
-      : this(DefaultChunkSize, allocator)
-    {
-    }
+      for (; ; ) {
+        if (currentChunkOffset == ChunkSize)
+          MoveToNextChunk(true);
 
-    public ChunkedMemoryStream(int chunkSize, Allocator allocator)
-    {
-      if (chunkSize <= 0)
-        throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(chunkSize), chunkSize);
-      if (allocator == null)
-        throw new ArgumentNullException(nameof(allocator));
+        var bytesToWrite = Math.Min(ChunkSize - currentChunkOffset, count);
 
-      this.chain = new ChunkChain(chunkSize, allocator);
-    }
+        Buffer.BlockCopy(buffer, offset, currentChunk.Data, currentChunkOffset, bytesToWrite);
 
-#if SYSTEM_IO_STREAM_CLOSE
-    public override void Close()
-#else
-    protected override void Dispose(bool disposing)
-#endif
-    {
-      if (chain != null) {
-        chain.Dispose();
-        chain = null;
-      }
+        offset += bytesToWrite;
+        count -= bytesToWrite;
 
-#if SYSTEM_IO_STREAM_CLOSE
-      base.Close();
-#else
-      base.Dispose(disposing);
-#endif
-    }
+        currentChunkOffset += bytesToWrite;
 
-    public override void SetLength(long @value)
-    {
-      CheckDisposed();
+        if (currentChunk.Next == null)
+          lastChunkLength = currentChunkOffset;
 
-      if (@value < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(value), @value);
-
-      chain.SetLength(@value);
-    }
-
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-      CheckDisposed();
-
-      // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
-      switch (origin) {
-        case SeekOrigin.Current:
-          offset += chain.Position;
-          goto case SeekOrigin.Begin;
-
-        case SeekOrigin.End:
-          offset += chain.Length;
-          goto case SeekOrigin.Begin;
-
-        case SeekOrigin.Begin:
-          if (offset < 0L)
-            throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-          chain.SetPosition(offset);
-          return chain.Position;
-
-        default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
+        if (count <= 0)
+          return;
       }
     }
 
-    public override int ReadByte()
+    private bool MoveToNextChunk(bool write)
     {
-      CheckDisposed();
+      if (currentChunk.Next == null) {
+        if (!write)
+          return false;
 
-      return chain.ReadByte();
-    }
+        currentChunk.Next = allocator(ChunkSize);
+        chunkCount++;
+        lastChunkLength = 0;
+      }
 
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
+      currentChunk = currentChunk.Next;
+      currentChunkIndex++;
 
-      if (buffer == null)
-        throw new ArgumentNullException(nameof(buffer));
-      if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-      if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+      currentChunkOffset = 0;
 
-      if (count == 0)
-        return 0;
-      else
-        return chain.Read(buffer, offset, count);
-    }
-
-    public override void WriteByte(byte @value)
-    {
-      CheckDisposed();
-
-      chain.WriteByte(@value);
-    }
-
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-
-      if (buffer == null)
-        throw new ArgumentNullException(nameof(buffer));
-      if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-      if (buffer.Length - count < offset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
-
-      if (count == 0)
-        return;
-      else
-        chain.Write(buffer, offset, count);
-    }
-
-    public override void Flush()
-    {
-      CheckDisposed();
-
-      // do nothing
+      return true;
     }
 
     public byte[] ToArray()
     {
+      var buffer = new byte[Length];
+#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+      long offset = 0L;
+#else
+      int offset = 0;
+#endif
+      var chunk = TryGetFirstChunk(false);
+
+      if (chunk == null)
+        return buffer; // stream is empty (length must be zero)
+
+      for (; ; ) {
+        if (chunk.Next == null) {
+          Array.Copy(chunk.Data, 0, buffer, offset, lastChunkLength);
+          // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, lastChunkLength);
+
+          return buffer;
+        }
+        else {
+          Array.Copy(chunk.Data, 0, buffer, offset, ChunkSize);
+          // Buffer.BlockCopy(chunk.Data, 0, buffer, offset, chunkSize);
+
+          chunk = chunk.Next;
+          offset += ChunkSize;
+        }
+      }
+    }
+
+    private readonly Allocator allocator;
+    private Chunk firstChunk;
+    private Chunk currentChunk;
+
+    private int currentChunkOffset;
+    private long currentChunkIndex = 0;
+    private long chunkCount = 1;
+    private int lastChunkLength = 0;
+  }
+
+  public override bool CanSeek => !IsClosed /*&& true*/;
+  public override bool CanRead => !IsClosed /*&& true*/;
+  public override bool CanWrite => !IsClosed /*&& true*/;
+  public override bool CanTimeout => false;
+  private bool IsClosed => chain is null;
+
+  public override long Position {
+    get { CheckDisposed(); return chain.Position; }
+    set {
       CheckDisposed();
 
-      return chain.ToArray();
-    }
+      if (value < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
 
-    private void CheckDisposed()
-    {
-      if (IsClosed)
-        throw new ObjectDisposedException(GetType().FullName);
+      chain.SetPosition(value);
     }
-
-    private ChunkChain chain = null;
   }
+
+  public override long Length {
+    get { CheckDisposed(); return chain.Length; }
+  }
+
+  public int ChunkSize {
+    get { CheckDisposed(); return chain.ChunkSize; }
+  }
+
+  public ChunkedMemoryStream()
+    : this(DefaultChunkSize, DefaultChunk.Allocate)
+  {
+  }
+
+  public ChunkedMemoryStream(int chunkSize)
+    : this(chunkSize, DefaultChunk.Allocate)
+  {
+  }
+
+  public ChunkedMemoryStream(Allocator allocator)
+    : this(DefaultChunkSize, allocator)
+  {
+  }
+
+  public ChunkedMemoryStream(int chunkSize, Allocator allocator)
+  {
+    if (chunkSize <= 0)
+      throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(chunkSize), chunkSize);
+    if (allocator == null)
+      throw new ArgumentNullException(nameof(allocator));
+
+    this.chain = new ChunkChain(chunkSize, allocator);
+  }
+
+#if SYSTEM_IO_STREAM_CLOSE
+  public override void Close()
+#else
+  protected override void Dispose(bool disposing)
+#endif
+  {
+    if (chain != null) {
+      chain.Dispose();
+      chain = null;
+    }
+
+#if SYSTEM_IO_STREAM_CLOSE
+    base.Close();
+#else
+    base.Dispose(disposing);
+#endif
+  }
+
+  public override void SetLength(long @value)
+  {
+    CheckDisposed();
+
+    if (@value < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(value), @value);
+
+    chain.SetLength(@value);
+  }
+
+  public override long Seek(long offset, SeekOrigin origin)
+  {
+    CheckDisposed();
+
+    // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
+    switch (origin) {
+      case SeekOrigin.Current:
+        offset += chain.Position;
+        goto case SeekOrigin.Begin;
+
+      case SeekOrigin.End:
+        offset += chain.Length;
+        goto case SeekOrigin.Begin;
+
+      case SeekOrigin.Begin:
+        if (offset < 0L)
+          throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
+        chain.SetPosition(offset);
+        return chain.Position;
+
+      default:
+        throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
+    }
+  }
+
+  public override int ReadByte()
+  {
+    CheckDisposed();
+
+    return chain.ReadByte();
+  }
+
+  public override int Read(byte[] buffer, int offset, int count)
+  {
+    CheckDisposed();
+
+    if (buffer == null)
+      throw new ArgumentNullException(nameof(buffer));
+    if (offset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+    if (buffer.Length - count < offset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+
+    if (count == 0)
+      return 0;
+    else
+      return chain.Read(buffer, offset, count);
+  }
+
+  public override void WriteByte(byte @value)
+  {
+    CheckDisposed();
+
+    chain.WriteByte(@value);
+  }
+
+  public override void Write(byte[] buffer, int offset, int count)
+  {
+    CheckDisposed();
+
+    if (buffer == null)
+      throw new ArgumentNullException(nameof(buffer));
+    if (offset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+    if (buffer.Length - count < offset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+
+    if (count == 0)
+      return;
+    else
+      chain.Write(buffer, offset, count);
+  }
+
+  public override void Flush()
+  {
+    CheckDisposed();
+
+    // do nothing
+  }
+
+  public byte[] ToArray()
+  {
+    CheckDisposed();
+
+    return chain.ToArray();
+  }
+
+  private void CheckDisposed()
+  {
+    if (IsClosed)
+      throw new ObjectDisposedException(GetType().FullName);
+  }
+
+  private ChunkChain chain = null;
 }

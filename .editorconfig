@@ -62,6 +62,8 @@ dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggesti
 [*.cs]
 csharp_using_directive_placement = outside_namespace
 
+csharp_style_namespace_declarations = file_scoped:suggestion
+
 csharp_prefer_braces = when_multiline
 csharp_prefer_simple_default_expression = true:suggestion
 csharp_prefer_simple_using_statement = true:warning

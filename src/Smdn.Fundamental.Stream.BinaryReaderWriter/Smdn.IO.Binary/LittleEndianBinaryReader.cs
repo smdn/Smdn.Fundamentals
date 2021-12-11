@@ -3,81 +3,81 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO.Binary {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public class LittleEndianBinaryReader : Smdn.IO.Binary.BinaryReader {
-    public LittleEndianBinaryReader(Stream stream)
-      : this(stream, false)
-    {
-    }
+namespace Smdn.IO.Binary;
 
-    public LittleEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen)
-      : base(stream, asLittleEndian: true, leaveBaseStreamOpen)
-    {
-    }
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public class LittleEndianBinaryReader : Smdn.IO.Binary.BinaryReader {
+  public LittleEndianBinaryReader(Stream stream)
+    : this(stream, false)
+  {
+  }
 
-    protected LittleEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize)
-      : base(stream, asLittleEndian: true, leaveBaseStreamOpen, storageSize)
-    {
-    }
+  public LittleEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen)
+    : base(stream, asLittleEndian: true, leaveBaseStreamOpen)
+  {
+  }
 
-    public override short ReadInt16()
-    {
-      ReadBytesUnchecked(Storage, 0, 2, true);
+  protected LittleEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize)
+    : base(stream, asLittleEndian: true, leaveBaseStreamOpen, storageSize)
+  {
+  }
 
-      return BinaryConversion.ToInt16LE(Storage, 0);
-    }
+  public override short ReadInt16()
+  {
+    ReadBytesUnchecked(Storage, 0, 2, true);
 
-    [CLSCompliant(false)]
-    public override ushort ReadUInt16()
-    {
-      ReadBytesUnchecked(Storage, 0, 2, true);
+    return BinaryConversion.ToInt16LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToUInt16LE(Storage, 0);
-    }
+  [CLSCompliant(false)]
+  public override ushort ReadUInt16()
+  {
+    ReadBytesUnchecked(Storage, 0, 2, true);
 
-    public override int ReadInt32()
-    {
-      ReadBytesUnchecked(Storage, 0, 4, true);
+    return BinaryConversion.ToUInt16LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToInt32LE(Storage, 0);
-    }
+  public override int ReadInt32()
+  {
+    ReadBytesUnchecked(Storage, 0, 4, true);
 
-    [CLSCompliant(false)]
-    public override uint ReadUInt32()
-    {
-      ReadBytesUnchecked(Storage, 0, 4, true);
+    return BinaryConversion.ToInt32LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToUInt32LE(Storage, 0);
-    }
+  [CLSCompliant(false)]
+  public override uint ReadUInt32()
+  {
+    ReadBytesUnchecked(Storage, 0, 4, true);
 
-    public override long ReadInt64()
-    {
-      ReadBytesUnchecked(Storage, 0, 8, true);
+    return BinaryConversion.ToUInt32LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToInt64LE(Storage, 0);
-    }
+  public override long ReadInt64()
+  {
+    ReadBytesUnchecked(Storage, 0, 8, true);
 
-    [CLSCompliant(false)]
-    public override ulong ReadUInt64()
-    {
-      ReadBytesUnchecked(Storage, 0, 8, true);
+    return BinaryConversion.ToInt64LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToUInt64LE(Storage, 0);
-    }
+  [CLSCompliant(false)]
+  public override ulong ReadUInt64()
+  {
+    ReadBytesUnchecked(Storage, 0, 8, true);
 
-    public override UInt24 ReadUInt24()
-    {
-      ReadBytesUnchecked(Storage, 0, 3, true);
+    return BinaryConversion.ToUInt64LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToUInt24LE(Storage, 0);
-    }
+  public override UInt24 ReadUInt24()
+  {
+    ReadBytesUnchecked(Storage, 0, 3, true);
 
-    public override UInt48 ReadUInt48()
-    {
-      ReadBytesUnchecked(Storage, 0, 6, true);
+    return BinaryConversion.ToUInt24LE(Storage, 0);
+  }
 
-      return BinaryConversion.ToUInt48LE(Storage, 0);
-    }
+  public override UInt48 ReadUInt48()
+  {
+    ReadBytesUnchecked(Storage, 0, 6, true);
+
+    return BinaryConversion.ToUInt48LE(Storage, 0);
   }
 }

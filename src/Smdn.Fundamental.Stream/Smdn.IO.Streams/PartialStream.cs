@@ -5,284 +5,284 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Smdn.IO.Streams {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public class PartialStream :
-    Stream
+namespace Smdn.IO.Streams;
+
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public class PartialStream :
+  Stream
 #pragma warning disable SA1001
 #if SYSTEM_ICLONEABLE
-    , ICloneable
+  , ICloneable
 #endif
 #pragma warning restore SA1001
+{
+  public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
+    => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
+
+  public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin)
+    => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, seekToBegin);
+
+  public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length)
+    => CreateNonNested(innerOrPartialStream, offset, length, true);
+
+  public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
   {
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
-      => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
+    if (innerOrPartialStream is null)
+      throw new ArgumentNullException(nameof(innerOrPartialStream));
+    if (offset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
 
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin)
-      => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, seekToBegin);
+    return innerOrPartialStream is PartialStream partialStream
+      ? new(partialStream.InnerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin)
+      : new(innerOrPartialStream, offset, length, true, true, seekToBegin);
+  }
 
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length)
-      => CreateNonNested(innerOrPartialStream, offset, length, true);
+  public Stream InnerStream {
+    get { CheckDisposed(); return stream; }
+  }
 
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
-    {
-      if (innerOrPartialStream is null)
-        throw new ArgumentNullException(nameof(innerOrPartialStream));
-      if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+  public override bool CanSeek => !IsClosed && stream.CanSeek;
+  public override bool CanRead => !IsClosed && stream.CanRead;
+  public override bool CanWrite => !IsClosed && writable && stream.CanWrite;
+  public override bool CanTimeout => !IsClosed && stream.CanTimeout;
 
-      return innerOrPartialStream is PartialStream partialStream
-        ? new(partialStream.InnerStream, partialStream.offset + offset, length, !partialStream.writable, partialStream.LeaveInnerStreamOpen, seekToBegin)
-        : new(innerOrPartialStream, offset, length, true, true, seekToBegin);
+  private bool IsClosed => stream is null;
+
+  public override long Position {
+    get { CheckDisposed(); return stream.Position - offset; }
+    set {
+      CheckDisposed();
+
+      if (value < 0)
+        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
+      stream.Position = value + offset;
     }
+  }
 
-    public Stream InnerStream {
-      get { CheckDisposed(); return stream; }
+  public override long Length {
+    get {
+      CheckDisposed();
+      if (length == null)
+        return stream.Length - offset;
+      else
+        return length.Value;
     }
+  }
 
-    public override bool CanSeek => !IsClosed && stream.CanSeek;
-    public override bool CanRead => !IsClosed && stream.CanRead;
-    public override bool CanWrite => !IsClosed && writable && stream.CanWrite;
-    public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+  public bool LeaveInnerStreamOpen {
+    get { CheckDisposed(); return leaveInnerStreamOpen; }
+  }
 
-    private bool IsClosed => stream is null;
+  public PartialStream(Stream innerStream, long offset)
+    : this(innerStream, offset, null, false, true, true)
+  {
+  }
 
-    public override long Position {
-      get { CheckDisposed(); return stream.Position - offset; }
-      set {
-        CheckDisposed();
+  public PartialStream(Stream innerStream, long offset, bool leaveInnerStreamOpen)
+    : this(innerStream, offset, null, false, leaveInnerStreamOpen, true)
+  {
+  }
 
-        if (value < 0)
-          throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(Position), value);
-        stream.Position = value + offset;
-      }
-    }
+  public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen)
+    : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen, true)
+  {
+  }
 
-    public override long Length {
-      get {
-        CheckDisposed();
-        if (length == null)
-          return stream.Length - offset;
-        else
-          return length.Value;
-      }
-    }
+  public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
+    : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen, seekToBegin)
+  {
+  }
 
-    public bool LeaveInnerStreamOpen {
-      get { CheckDisposed(); return leaveInnerStreamOpen; }
-    }
+  public PartialStream(Stream innerStream, long offset, long length)
+    : this(innerStream, offset, length, false, true, true)
+  {
+  }
 
-    public PartialStream(Stream innerStream, long offset)
-      : this(innerStream, offset, null, false, true, true)
-    {
-    }
+  public PartialStream(Stream innerStream, long offset, long length, bool leaveInnerStreamOpen)
+    : this(innerStream, offset, (long?)length, false, leaveInnerStreamOpen, true)
+  {
+  }
 
-    public PartialStream(Stream innerStream, long offset, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, null, false, leaveInnerStreamOpen, true)
-    {
-    }
+  public PartialStream(Stream innerStream, long offset, long length, bool @readonly, bool leaveInnerStreamOpen)
+    : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen, true)
+  {
+  }
 
-    public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen, true)
-    {
-    }
+  public PartialStream(Stream innerStream, long offset, long length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
+    : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen, seekToBegin)
+  {
+  }
 
-    public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
-      : this(innerStream, offset, null, @readonly, leaveInnerStreamOpen, seekToBegin)
-    {
-    }
+  private PartialStream(Stream innerStream, long offset, long? length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
+  {
+    if (innerStream == null)
+      throw new ArgumentNullException(nameof(innerStream));
+    if (!innerStream.CanSeek)
+      throw ExceptionUtils.CreateArgumentMustBeSeekableStream(nameof(innerStream));
+    if (offset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+    if (length.HasValue && length.Value < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length.Value);
 
-    public PartialStream(Stream innerStream, long offset, long length)
-      : this(innerStream, offset, length, false, true, true)
-    {
-    }
+    this.stream = innerStream;
+    this.offset = offset;
+    this.length = length;
+    this.writable = !@readonly;
+    this.leaveInnerStreamOpen = leaveInnerStreamOpen;
 
-    public PartialStream(Stream innerStream, long offset, long length, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, (long?)length, false, leaveInnerStreamOpen, true)
-    {
-    }
-
-    public PartialStream(Stream innerStream, long offset, long length, bool @readonly, bool leaveInnerStreamOpen)
-      : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen, true)
-    {
-    }
-
-    public PartialStream(Stream innerStream, long offset, long length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
-      : this(innerStream, offset, (long?)length, @readonly, leaveInnerStreamOpen, seekToBegin)
-    {
-    }
-
-    private PartialStream(Stream innerStream, long offset, long? length, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin)
-    {
-      if (innerStream == null)
-        throw new ArgumentNullException(nameof(innerStream));
-      if (!innerStream.CanSeek)
-        throw ExceptionUtils.CreateArgumentMustBeSeekableStream(nameof(innerStream));
-      if (offset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
-      if (length.HasValue && length.Value < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(length), length.Value);
-
-      this.stream = innerStream;
-      this.offset = offset;
-      this.length = length;
-      this.writable = !@readonly;
-      this.leaveInnerStreamOpen = leaveInnerStreamOpen;
-
-      if (seekToBegin)
-        this.Position = 0;
-    }
+    if (seekToBegin)
+      this.Position = 0;
+  }
 
 #if SYSTEM_IO_STREAM_CLOSE
-    public override void Close()
+  public override void Close()
 #else
-    protected override void Dispose(bool disposing)
+  protected override void Dispose(bool disposing)
 #endif
-    {
-      if (!leaveInnerStreamOpen)
-        stream?.Close();
+  {
+    if (!leaveInnerStreamOpen)
+      stream?.Close();
 
-      stream = null;
+    stream = null;
 
 #if SYSTEM_IO_STREAM_CLOSE
-      base.Close();
+    base.Close();
 #else
-      base.Dispose(disposing);
+    base.Dispose(disposing);
 #endif
-    }
+  }
 
 #if SYSTEM_ICLONEABLE
-    object ICloneable.Clone() => Clone();
+  object ICloneable.Clone() => Clone();
 #endif
 
-    public PartialStream Clone() => (PartialStream)MemberwiseClone();
+  public PartialStream Clone() => (PartialStream)MemberwiseClone();
 
-    public override void SetLength(long @value)
-    {
-      CheckDisposed();
+  public override void SetLength(long @value)
+  {
+    CheckDisposed();
 
-      throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
-    }
+    throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
+  }
 
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-      CheckDisposed();
+  public override long Seek(long offset, SeekOrigin origin)
+  {
+    CheckDisposed();
 
-      // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
-      switch (origin) {
-        case SeekOrigin.Begin:
-          if (offset < 0)
-            break;
-          return stream.Seek(this.offset + offset, SeekOrigin.Begin) - this.offset;
+    // Stream.Seek spec: Seeking to any location beyond the length of the stream is supported.
+    switch (origin) {
+      case SeekOrigin.Begin:
+        if (offset < 0)
+          break;
+        return stream.Seek(this.offset + offset, SeekOrigin.Begin) - this.offset;
 
-        case SeekOrigin.Current:
-          if (Position + offset < 0)
-            break;
-          return stream.Seek(offset, SeekOrigin.Current) - this.offset;
+      case SeekOrigin.Current:
+        if (Position + offset < 0)
+          break;
+        return stream.Seek(offset, SeekOrigin.Current) - this.offset;
 
-        case SeekOrigin.End: {
-          var position = Length + offset;
+      case SeekOrigin.End: {
+        var position = Length + offset;
 
-          if (position < 0)
-            break;
-          else
-            return stream.Seek(this.offset + position, SeekOrigin.Begin) - this.offset;
-        }
-
-        default:
-          throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
+        if (position < 0)
+          break;
+        else
+          return stream.Seek(this.offset + position, SeekOrigin.Begin) - this.offset;
       }
 
-      throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
+      default:
+        throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(origin), origin);
     }
 
-    public override void Flush()
-    {
-      CheckDisposed();
-
-      stream.Flush();
-    }
-
-    protected long GetRemainderLength()
-    {
-      if (length.HasValue)
-        return length.Value - (stream.Position - offset);
-      else
-        return long.MaxValue;
-    }
-
-    public override int ReadByte()
-    {
-      CheckDisposed();
-
-      if (0L < GetRemainderLength())
-        return stream.ReadByte();
-      else
-        return -1;
-    }
-
-    public override int Read(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-
-      var remainder = GetRemainderLength();
-
-      if (0L < remainder)
-        return stream.Read(buffer, offset, (int)Math.Min(count, remainder)); // XXX: long -> int
-      else
-        return 0;
-    }
-
-    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-    {
-      CheckDisposed();
-
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-
-      var remainder = GetRemainderLength();
-
-      if (0L < remainder)
-        return stream.ReadAsync(buffer, offset, (int)Math.Min(count, remainder), cancellationToken); // XXX: long -> int
-      else
-        return Task.FromResult(0);
-    }
-
-    public override void Write(byte[] buffer, int offset, int count)
-    {
-      CheckDisposed();
-      CheckWritable();
-
-      if (count < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-
-      var remainder = GetRemainderLength() - count;
-
-      if (remainder < 0L)
-        throw new IOException("attempted to write after end of stream");
-      else
-        stream.Write(buffer, offset, count);
-    }
-
-    private void CheckDisposed()
-    {
-      if (IsClosed)
-        throw new ObjectDisposedException(GetType().FullName);
-    }
-
-    private void CheckWritable()
-    {
-      if (!writable)
-        throw ExceptionUtils.CreateNotSupportedWritingStream();
-    }
-
-    private Stream stream;
-    private readonly long offset;
-    private readonly long? length;
-    private readonly bool writable;
-    private readonly bool leaveInnerStreamOpen;
+    throw ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
   }
+
+  public override void Flush()
+  {
+    CheckDisposed();
+
+    stream.Flush();
+  }
+
+  protected long GetRemainderLength()
+  {
+    if (length.HasValue)
+      return length.Value - (stream.Position - offset);
+    else
+      return long.MaxValue;
+  }
+
+  public override int ReadByte()
+  {
+    CheckDisposed();
+
+    if (0L < GetRemainderLength())
+      return stream.ReadByte();
+    else
+      return -1;
+  }
+
+  public override int Read(byte[] buffer, int offset, int count)
+  {
+    CheckDisposed();
+
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+
+    var remainder = GetRemainderLength();
+
+    if (0L < remainder)
+      return stream.Read(buffer, offset, (int)Math.Min(count, remainder)); // XXX: long -> int
+    else
+      return 0;
+  }
+
+  public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+  {
+    CheckDisposed();
+
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+
+    var remainder = GetRemainderLength();
+
+    if (0L < remainder)
+      return stream.ReadAsync(buffer, offset, (int)Math.Min(count, remainder), cancellationToken); // XXX: long -> int
+    else
+      return Task.FromResult(0);
+  }
+
+  public override void Write(byte[] buffer, int offset, int count)
+  {
+    CheckDisposed();
+    CheckWritable();
+
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+
+    var remainder = GetRemainderLength() - count;
+
+    if (remainder < 0L)
+      throw new IOException("attempted to write after end of stream");
+    else
+      stream.Write(buffer, offset, count);
+  }
+
+  private void CheckDisposed()
+  {
+    if (IsClosed)
+      throw new ObjectDisposedException(GetType().FullName);
+  }
+
+  private void CheckWritable()
+  {
+    if (!writable)
+      throw ExceptionUtils.CreateNotSupportedWritingStream();
+  }
+
+  private Stream stream;
+  private readonly long offset;
+  private readonly long? length;
+  private readonly bool writable;
+  private readonly bool leaveInnerStreamOpen;
 }

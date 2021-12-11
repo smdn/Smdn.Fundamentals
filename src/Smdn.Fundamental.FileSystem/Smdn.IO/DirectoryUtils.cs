@@ -5,36 +5,36 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace Smdn.IO {
-  public static class DirectoryUtils {
-    public static IEnumerable<string> GetFiles(string directory, Predicate<string> searchPattern)
-      => GetFiles(directory, SearchOption.TopDirectoryOnly, searchPattern);
+namespace Smdn.IO;
 
-    public static IEnumerable<string> GetFiles(string directory, SearchOption searchOption, Predicate<string> searchPattern)
-    {
-      if (!Directory.Exists(directory))
-        throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
-      if (searchPattern == null)
-        throw new ArgumentNullException(nameof(searchPattern));
+public static class DirectoryUtils {
+  public static IEnumerable<string> GetFiles(string directory, Predicate<string> searchPattern)
+    => GetFiles(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
-      return new DirectoryInfo(directory)
-        .GetFiles(searchOption, file => searchPattern(file.FullName))
-        .Select(file => file.FullName);
-    }
+  public static IEnumerable<string> GetFiles(string directory, SearchOption searchOption, Predicate<string> searchPattern)
+  {
+    if (!Directory.Exists(directory))
+      throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
+    if (searchPattern == null)
+      throw new ArgumentNullException(nameof(searchPattern));
 
-    public static IEnumerable<string> GetDirectories(string directory, Predicate<string> searchPattern)
-      => GetDirectories(directory, SearchOption.TopDirectoryOnly, searchPattern);
+    return new DirectoryInfo(directory)
+      .GetFiles(searchOption, file => searchPattern(file.FullName))
+      .Select(file => file.FullName);
+  }
 
-    public static IEnumerable<string> GetDirectories(string directory, SearchOption searchOption, Predicate<string> searchPattern)
-    {
-      if (!Directory.Exists(directory))
-        throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
-      if (searchPattern == null)
-        throw new ArgumentNullException(nameof(searchPattern));
+  public static IEnumerable<string> GetDirectories(string directory, Predicate<string> searchPattern)
+    => GetDirectories(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
-      return new DirectoryInfo(directory)
-        .GetDirectories(searchOption, dir => searchPattern(dir.FullName))
-        .Select(dir => dir.FullName); // XXX: relative path
-    }
+  public static IEnumerable<string> GetDirectories(string directory, SearchOption searchOption, Predicate<string> searchPattern)
+  {
+    if (!Directory.Exists(directory))
+      throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
+    if (searchPattern == null)
+      throw new ArgumentNullException(nameof(searchPattern));
+
+    return new DirectoryInfo(directory)
+      .GetDirectories(searchOption, dir => searchPattern(dir.FullName))
+      .Select(dir => dir.FullName); // XXX: relative path
   }
 }

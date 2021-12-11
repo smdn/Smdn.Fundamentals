@@ -5,51 +5,51 @@ using System;
 using System.Buffers;
 using System.Text;
 
-namespace Smdn.Text.Encodings {
-  public static class EncodingReadOnlySequenceExtensions {
+namespace Smdn.Text.Encodings;
+
+public static class EncodingReadOnlySequenceExtensions {
 #if !NET5_0_OR_GREATER
-    public static string GetString(this Encoding encoding, ReadOnlySequence<byte> sequence)
-    {
-      var sb = new StringBuilder((int)Math.Min(int.MaxValue, sequence.Length));
-      var decoder = encoding.GetDecoder();
-      var pos = sequence.Start;
-      char[] buffer = null;
+  public static string GetString(this Encoding encoding, ReadOnlySequence<byte> sequence)
+  {
+    var sb = new StringBuilder((int)Math.Min(int.MaxValue, sequence.Length));
+    var decoder = encoding.GetDecoder();
+    var pos = sequence.Start;
+    char[] buffer = null;
 
-      try {
-        while (sequence.TryGet(ref pos, out var memory, advance: true)) {
-          var doFlush = sequence.End.Equals(pos);
-
-#if NETSTANDARD2_1_OR_GREATER
-          var count = decoder.GetCharCount(memory.Span, doFlush);
-#else
-          var chars = memory.ToArray();
-          var count = decoder.GetCharCount(chars, 0, chars.Length, doFlush);
-#endif
-
-          if (buffer is null) {
-            buffer = ArrayPool<char>.Shared.Rent(count);
-          }
-          else if (buffer.Length < count) {
-            ArrayPool<char>.Shared.Return(buffer);
-            buffer = ArrayPool<char>.Shared.Rent(count);
-          }
+    try {
+      while (sequence.TryGet(ref pos, out var memory, advance: true)) {
+        var doFlush = sequence.End.Equals(pos);
 
 #if NETSTANDARD2_1_OR_GREATER
-          var len = decoder.GetChars(memory.Span, buffer, doFlush);
+        var count = decoder.GetCharCount(memory.Span, doFlush);
 #else
-          var len = decoder.GetChars(chars, 0, chars.Length, buffer, 0, doFlush);
+        var chars = memory.ToArray();
+        var count = decoder.GetCharCount(chars, 0, chars.Length, doFlush);
 #endif
 
-          sb.Append(buffer, 0, len);
+        if (buffer is null) {
+          buffer = ArrayPool<char>.Shared.Rent(count);
         }
-      }
-      finally {
-        if (buffer is not null)
+        else if (buffer.Length < count) {
           ArrayPool<char>.Shared.Return(buffer);
-      }
+          buffer = ArrayPool<char>.Shared.Rent(count);
+        }
 
-      return sb.ToString();
-    }
+#if NETSTANDARD2_1_OR_GREATER
+        var len = decoder.GetChars(memory.Span, buffer, doFlush);
+#else
+        var len = decoder.GetChars(chars, 0, chars.Length, buffer, 0, doFlush);
 #endif
+
+        sb.Append(buffer, 0, len);
+      }
+    }
+    finally {
+      if (buffer is not null)
+        ArrayPool<char>.Shared.Return(buffer);
+    }
+
+    return sb.ToString();
   }
+#endif
 }

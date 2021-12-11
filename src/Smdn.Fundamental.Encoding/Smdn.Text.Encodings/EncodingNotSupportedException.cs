@@ -3,72 +3,72 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Smdn.Text.Encodings {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  [Serializable]
-  public class EncodingNotSupportedException : NotSupportedException {
-    /*
-     * XXX: code page not supported
-    public int CodePage {
-      get; private set;
-    }
-    */
+namespace Smdn.Text.Encodings;
 
-    public string EncodingName {
-      get; private set;
-    }
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+[Serializable]
+public class EncodingNotSupportedException : NotSupportedException {
+  /*
+   * XXX: code page not supported
+  public int CodePage {
+    get; private set;
+  }
+  */
 
-    public EncodingNotSupportedException()
-      : this(
-        null,
-        "encoding is not supported by runtime",
-        null
-      )
-    {
-    }
+  public string EncodingName {
+    get; private set;
+  }
 
-    public EncodingNotSupportedException(string encodingName)
-      : this(
-        encodingName,
-        string.Format("encoding '{0}' is not supported by runtime", encodingName),
-        null
-      )
-    {
-    }
+  public EncodingNotSupportedException()
+    : this(
+      null,
+      "encoding is not supported by runtime",
+      null
+    )
+  {
+  }
 
-    public EncodingNotSupportedException(string encodingName, Exception innerException)
-      : this(
-        encodingName,
-        string.Format("encoding '{0}' is not supported by runtime", encodingName),
-        innerException
-      )
-    {
-    }
+  public EncodingNotSupportedException(string encodingName)
+    : this(
+      encodingName,
+      string.Format("encoding '{0}' is not supported by runtime", encodingName),
+      null
+    )
+  {
+  }
 
-    public EncodingNotSupportedException(string encodingName, string message)
-      : this(encodingName, message, null)
-    {
-    }
+  public EncodingNotSupportedException(string encodingName, Exception innerException)
+    : this(
+      encodingName,
+      string.Format("encoding '{0}' is not supported by runtime", encodingName),
+      innerException
+    )
+  {
+  }
 
-    public EncodingNotSupportedException(string encodingName, string message, Exception innerException)
-      : base(message, innerException)
-    {
-      EncodingName = encodingName;
-    }
+  public EncodingNotSupportedException(string encodingName, string message)
+    : this(encodingName, message, null)
+  {
+  }
+
+  public EncodingNotSupportedException(string encodingName, string message, Exception innerException)
+    : base(message, innerException)
+  {
+    EncodingName = encodingName;
+  }
 
 #if SYSTEM_EXCEPTION_CTOR_SERIALIZATIONINFO
-    protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
-      : base(info, context)
-    {
-      EncodingName = info.GetString("EncodingName");
-    }
-
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-      base.GetObjectData(info, context);
-
-      info.AddValue("EncodingName", EncodingName);
-    }
-#endif
+  protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
+    : base(info, context)
+  {
+    EncodingName = info.GetString("EncodingName");
   }
+
+  public override void GetObjectData(SerializationInfo info, StreamingContext context)
+  {
+    base.GetObjectData(info, context);
+
+    info.AddValue("EncodingName", EncodingName);
+  }
+#endif
 }

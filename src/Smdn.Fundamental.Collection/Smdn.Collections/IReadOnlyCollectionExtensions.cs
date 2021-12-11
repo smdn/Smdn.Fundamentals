@@ -3,30 +3,30 @@
 using System;
 using System.Collections.Generic;
 
-namespace Smdn.Collections {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public static class IReadOnlyCollectionExtensions {
-    public static List<TOutput> ConvertAll<TInput, TOutput>(
-      this IReadOnlyCollection<TInput> collection,
+namespace Smdn.Collections;
+
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public static class IReadOnlyCollectionExtensions {
+  public static List<TOutput> ConvertAll<TInput, TOutput>(
+    this IReadOnlyCollection<TInput> collection,
 #if SYSTEM_CONVERTER
-      Converter<TInput, TOutput> converter
+    Converter<TInput, TOutput> converter
 #else
-      Func<TInput, TOutput> converter
+    Func<TInput, TOutput> converter
 #endif
-    )
-    {
-      if (collection == null)
-        throw new ArgumentNullException(nameof(collection));
-      if (converter == null)
-        throw new ArgumentNullException(nameof(converter));
+  )
+  {
+    if (collection == null)
+      throw new ArgumentNullException(nameof(collection));
+    if (converter == null)
+      throw new ArgumentNullException(nameof(converter));
 
-      var ret = new List<TOutput>(collection.Count);
+    var ret = new List<TOutput>(collection.Count);
 
-      foreach (var e in collection) {
-        ret.Add(converter(e));
-      }
-
-      return ret;
+    foreach (var e in collection) {
+      ret.Add(converter(e));
     }
+
+    return ret;
   }
 }

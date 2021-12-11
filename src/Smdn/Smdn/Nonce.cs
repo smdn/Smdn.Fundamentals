@@ -4,29 +4,29 @@ using System;
 using System.Security.Cryptography;
 using System.Threading;
 
-namespace Smdn {
-  public static class Nonce {
-    public static byte[] GetRandomBytes(int length)
-    {
-      var bytes = new byte[length];
+namespace Smdn;
 
-      GetRandomBytes(bytes);
+public static class Nonce {
+  public static byte[] GetRandomBytes(int length)
+  {
+    var bytes = new byte[length];
 
-      return bytes;
-    }
+    GetRandomBytes(bytes);
 
-    private static RandomNumberGenerator defaultRng = null;
+    return bytes;
+  }
 
-    public static void GetRandomBytes(byte[] bytes)
-    {
-      if (bytes == null)
-        throw new ArgumentNullException(nameof(bytes));
+  private static RandomNumberGenerator defaultRng = null;
 
-      LazyInitializer.EnsureInitialized(ref defaultRng, () => RandomNumberGenerator.Create());
+  public static void GetRandomBytes(byte[] bytes)
+  {
+    if (bytes == null)
+      throw new ArgumentNullException(nameof(bytes));
 
-      lock (defaultRng) {
-        defaultRng.GetBytes(bytes);
-      }
+    LazyInitializer.EnsureInitialized(ref defaultRng, () => RandomNumberGenerator.Create());
+
+    lock (defaultRng) {
+      defaultRng.GetBytes(bytes);
     }
   }
 }

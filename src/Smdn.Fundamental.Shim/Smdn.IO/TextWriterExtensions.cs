@@ -5,16 +5,16 @@ using System;
 using System.IO;
 #endif
 
-namespace Smdn.IO {
-#if !SYSTEM_IO_STREAM_CLOSE
-  public static class TextWriterExtensions {
-    public static void Close(this TextWriter writer)
-    {
-      if (writer == null)
-        throw new ArgumentNullException(nameof(writer));
+namespace Smdn.IO;
 
-      writer.Dispose();
-    }
+#if !SYSTEM_IO_STREAM_CLOSE
+public static class TextWriterExtensions {
+  public static void Close(this TextWriter writer)
+  {
+    if (writer == null)
+      throw new ArgumentNullException(nameof(writer));
+
+    writer.Dispose();
   }
-#endif
 }
+#endif

@@ -5,16 +5,16 @@ using System;
 using System.IO;
 #endif
 
-namespace Smdn.IO {
-#if !SYSTEM_IO_STREAM_CLOSE
-  public static class TextReaderShim {
-    public static void Close(this TextReader reader)
-    {
-      if (reader == null)
-        throw new ArgumentNullException(nameof(reader));
+namespace Smdn.IO;
 
-      reader.Dispose();
-    }
+#if !SYSTEM_IO_STREAM_CLOSE
+public static class TextReaderShim {
+  public static void Close(this TextReader reader)
+  {
+    if (reader == null)
+      throw new ArgumentNullException(nameof(reader));
+
+    reader.Dispose();
   }
-#endif
 }
+#endif

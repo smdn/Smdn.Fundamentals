@@ -5,45 +5,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Smdn.Reflection {
-  public static class EventInfoExtensions {
-    public static bool IsStatic(this EventInfo ev)
-      => GetMethods(ev, nonPublic: true).Any(static m => m.IsStatic);
+namespace Smdn.Reflection;
 
-    public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev)
-      => GetMethods(ev, nonPublic: false);
+public static class EventInfoExtensions {
+  public static bool IsStatic(this EventInfo ev)
+    => GetMethods(ev, nonPublic: true).Any(static m => m.IsStatic);
 
-    public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic)
-    {
-      var methodAdd = ev.GetAddMethod(nonPublic);
-      var methodRemove = ev.GetRemoveMethod(nonPublic);
-      var methodRaise = ev.GetRaiseMethod(nonPublic);
+  public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev)
+    => GetMethods(ev, nonPublic: false);
 
-      if (methodAdd != null)
-        yield return methodAdd;
+  public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic)
+  {
+    var methodAdd = ev.GetAddMethod(nonPublic);
+    var methodRemove = ev.GetRemoveMethod(nonPublic);
+    var methodRaise = ev.GetRaiseMethod(nonPublic);
 
-      if (methodRemove != null)
-        yield return methodRemove;
+    if (methodAdd != null)
+      yield return methodAdd;
 
-      if (methodRaise != null)
-        yield return methodRaise;
+    if (methodRemove != null)
+      yield return methodRemove;
 
-      IEnumerable<MethodInfo> otherMethods = null;
+    if (methodRaise != null)
+      yield return methodRaise;
 
-      try {
-        otherMethods = ev.GetOtherMethods(nonPublic);
-      }
-      catch (NullReferenceException) { // MonoEvent.GetOtherMethods throws NullReferenceException
-        // ignore exceptions
-      }
+    IEnumerable<MethodInfo> otherMethods = null;
 
-      if (otherMethods == null)
-        yield break;
+    try {
+      otherMethods = ev.GetOtherMethods(nonPublic);
+    }
+    catch (NullReferenceException) { // MonoEvent.GetOtherMethods throws NullReferenceException
+      // ignore exceptions
+    }
 
-      foreach (var m in otherMethods) {
-        if (m != null)
-          yield return m;
-      }
+    if (otherMethods == null)
+      yield break;
+
+    foreach (var m in otherMethods) {
+      if (m != null)
+        yield return m;
     }
   }
 }

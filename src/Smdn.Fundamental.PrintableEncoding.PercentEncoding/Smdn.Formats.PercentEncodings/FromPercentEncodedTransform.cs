@@ -3,117 +3,117 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Smdn.Formats.PercentEncodings {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public sealed class FromPercentEncodedTransform : ICryptoTransform {
-    public bool CanTransformMultipleBlocks => true;
-    public bool CanReuseTransform => true;
-    public int InputBlockSize => 1;
-    public int OutputBlockSize => 1;
+namespace Smdn.Formats.PercentEncodings;
 
-    public FromPercentEncodedTransform()
-      : this(false)
-    {
-    }
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public sealed class FromPercentEncodedTransform : ICryptoTransform {
+  public bool CanTransformMultipleBlocks => true;
+  public bool CanReuseTransform => true;
+  public int InputBlockSize => 1;
+  public int OutputBlockSize => 1;
 
-    public FromPercentEncodedTransform(bool decodePlusToSpace)
-    {
-      this.decodePlusToSpace = decodePlusToSpace;
-    }
+  public FromPercentEncodedTransform()
+    : this(false)
+  {
+  }
 
-    public void Clear()
-    {
-      disposed = true;
-    }
+  public FromPercentEncodedTransform(bool decodePlusToSpace)
+  {
+    this.decodePlusToSpace = decodePlusToSpace;
+  }
 
-    void IDisposable.Dispose() => Clear();
+  public void Clear()
+  {
+    disposed = true;
+  }
 
-    public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
-    {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
+  void IDisposable.Dispose() => Clear();
 
-      if (inputBuffer == null)
-        throw new ArgumentNullException(nameof(inputBuffer));
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
+  public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
+  {
+    if (disposed)
+      throw new ObjectDisposedException(GetType().FullName);
 
-      if (outputBuffer == null)
-        throw new ArgumentNullException(nameof(outputBuffer));
-      if (outputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
-      if (outputBuffer.Length - inputCount < outputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
+    if (inputBuffer == null)
+      throw new ArgumentNullException(nameof(inputBuffer));
+    if (inputOffset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
+    if (inputCount < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
+    if (inputBuffer.Length - inputCount < inputOffset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
 
-      const byte SP = (byte)' ';
-      var ret = 0;
+    if (outputBuffer == null)
+      throw new ArgumentNullException(nameof(outputBuffer));
+    if (outputOffset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
+    if (outputBuffer.Length - inputCount < outputOffset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
 
-      while (0 < inputCount--) {
-        var octet = inputBuffer[inputOffset++];
+    const byte SP = (byte)' ';
+    var ret = 0;
 
-        if (bufferOffset == 0) {
-          if (decodePlusToSpace && octet == 0x2b) { // '+' 0x2b
-            outputBuffer[outputOffset++] = SP;
-            ret++;
-          }
-          else if (octet == 0x25) { // '%' 0x25
-            buffer[bufferOffset++] = octet;
-          }
-          else {
-            outputBuffer[outputOffset++] = octet;
-            ret++;
-          }
+    while (0 < inputCount--) {
+      var octet = inputBuffer[inputOffset++];
+
+      if (bufferOffset == 0) {
+        if (decodePlusToSpace && octet == 0x2b) { // '+' 0x2b
+          outputBuffer[outputOffset++] = SP;
+          ret++;
         }
-        else {
-          // encoded char
+        else if (octet == 0x25) { // '%' 0x25
           buffer[bufferOffset++] = octet;
         }
-
-        if (bufferOffset == 3) {
-          // decode
-          if (!Hexadecimal.TryDecode(buffer.AsSpan(1, 2), out var d))
-            throw new FormatException("incorrect form");
-
-          outputBuffer[outputOffset++] = d;
+        else {
+          outputBuffer[outputOffset++] = octet;
           ret++;
-
-          bufferOffset = 0;
         }
       }
+      else {
+        // encoded char
+        buffer[bufferOffset++] = octet;
+      }
 
-      return ret;
+      if (bufferOffset == 3) {
+        // decode
+        if (!Hexadecimal.TryDecode(buffer.AsSpan(1, 2), out var d))
+          throw new FormatException("incorrect form");
+
+        outputBuffer[outputOffset++] = d;
+        ret++;
+
+        bufferOffset = 0;
+      }
     }
 
-    public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-    {
-      if (disposed)
-        throw new ObjectDisposedException(GetType().FullName);
-      if (inputBuffer == null)
-        throw new ArgumentNullException(nameof(inputBuffer));
-      if (inputOffset < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-      if (inputCount < 0)
-        throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-      if (inputBuffer.Length - inputCount < inputOffset)
-        throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-      if (InputBlockSize < inputCount)
-        throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(InputBlockSize), nameof(inputCount), inputCount);
-
-      var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
-      var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
-
-      Array.Resize(ref outputBuffer, len);
-
-      return outputBuffer;
-    }
-
-    private readonly byte[] buffer = new byte[3];
-    private int bufferOffset = 0;
-    private bool disposed = false;
-    private readonly bool decodePlusToSpace;
+    return ret;
   }
+
+  public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
+  {
+    if (disposed)
+      throw new ObjectDisposedException(GetType().FullName);
+    if (inputBuffer == null)
+      throw new ArgumentNullException(nameof(inputBuffer));
+    if (inputOffset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
+    if (inputCount < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
+    if (inputBuffer.Length - inputCount < inputOffset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
+    if (InputBlockSize < inputCount)
+      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(InputBlockSize), nameof(inputCount), inputCount);
+
+    var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
+    var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
+
+    Array.Resize(ref outputBuffer, len);
+
+    return outputBuffer;
+  }
+
+  private readonly byte[] buffer = new byte[3];
+  private int bufferOffset = 0;
+  private bool disposed = false;
+  private readonly bool decodePlusToSpace;
 }

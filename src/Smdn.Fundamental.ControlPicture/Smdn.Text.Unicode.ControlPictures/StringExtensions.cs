@@ -3,9 +3,9 @@
 
 using System;
 
-namespace Smdn.Text.Unicode.ControlPictures {
-  public static class StringExtensions {
-    public static string ToControlCharsPicturized(this string str)
-      => ReadOnlySpanExtensions.ToControlCharsPicturizedString((str ?? throw new ArgumentNullException(nameof(str))).AsSpan());
-  }
+namespace Smdn.Text.Unicode.ControlPictures;
+
+public static class StringExtensions {
+  public static string ToControlCharsPicturized(this string str)
+    => ReadOnlySpanExtensions.ToControlCharsPicturizedString((str ?? throw new ArgumentNullException(nameof(str))).AsSpan());
 }

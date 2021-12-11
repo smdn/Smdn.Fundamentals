@@ -4,219 +4,219 @@ using System;
 using System.Globalization;
 using System.Text;
 
-namespace Smdn.Formats {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
-    /*
-     * class members
-     */
-    private static readonly string[] InvaliantDecimalAbbreviations = new[] { string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y" };
-    private static readonly string[] InvaliantBinaryAbbreviations = new[] { string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi" };
-    private static readonly string[] InvaliantDecimalPrefixes = new[] { string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta" };
-    private static readonly string[] InvaliantBinaryPrefixes = new[] { string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi" };
+namespace Smdn.Formats;
 
-    public static SIPrefixNumberFormatter CurrentInfo => new(CultureInfo.CurrentCulture, true);
-    public static SIPrefixNumberFormatter InvaliantInfo { get; } = new(CultureInfo.InvariantCulture, true);
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
+  /*
+   * class members
+   */
+  private static readonly string[] InvaliantDecimalAbbreviations = new[] { string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y" };
+  private static readonly string[] InvaliantBinaryAbbreviations = new[] { string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi" };
+  private static readonly string[] InvaliantDecimalPrefixes = new[] { string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta" };
+  private static readonly string[] InvaliantBinaryPrefixes = new[] { string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi" };
 
-    /*
-     * instance members
-     */
-    public bool IsReadOnly { get; }
+  public static SIPrefixNumberFormatter CurrentInfo => new(CultureInfo.CurrentCulture, true);
+  public static SIPrefixNumberFormatter InvaliantInfo { get; } = new(CultureInfo.InvariantCulture, true);
 
-    private string byteUnit;
+  /*
+   * instance members
+   */
+  public bool IsReadOnly { get; }
 
-    public string ByteUnit {
-      get => byteUnit;
-      set { ThrowIfReadOnly(); byteUnit = value; }
+  private string byteUnit;
+
+  public string ByteUnit {
+    get => byteUnit;
+    set { ThrowIfReadOnly(); byteUnit = value; }
+  }
+
+  private string byteUnitAbbreviation = "B";
+
+  public string ByteUnitAbbreviation {
+    get => byteUnitAbbreviation;
+    set { ThrowIfReadOnly(); byteUnitAbbreviation = value; }
+  }
+
+  private string[] DecimalPrefixes { get; }
+  private string[] BinaryPrefixes { get; }
+
+  private string valuePrefixDelimiter;
+
+  public string ValuePrefixDelimiter {
+    get => valuePrefixDelimiter;
+    set { ThrowIfReadOnly(); valuePrefixDelimiter = value; }
+  }
+
+  private string prefixUnitDelimiter;
+
+  public string PrefixUnitDelimiter {
+    get => prefixUnitDelimiter;
+    set { ThrowIfReadOnly(); prefixUnitDelimiter = value; }
+  }
+
+  public SIPrefixNumberFormatter()
+    : this(CultureInfo.InvariantCulture, false)
+  {
+  }
+
+  public SIPrefixNumberFormatter(CultureInfo cultureInfo)
+    : this(cultureInfo, false)
+  {
+  }
+
+  protected SIPrefixNumberFormatter(CultureInfo cultureInfo, bool isReadOnly)
+  {
+    if (cultureInfo == null)
+      throw new ArgumentNullException(nameof(cultureInfo));
+
+    this.IsReadOnly = isReadOnly;
+    // this.cultureInfo = cultureInfo;
+
+    const string singleSpace = " ";
+
+    switch (cultureInfo.TwoLetterISOLanguageName) {
+      case "ja":
+        byteUnit = "バイト";
+        valuePrefixDelimiter = singleSpace;
+        prefixUnitDelimiter = string.Empty;
+        DecimalPrefixes = new[] { string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ" };
+        BinaryPrefixes = new[] { string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ" };
+        break;
+
+      default:
+        byteUnit = "Bytes";
+        valuePrefixDelimiter = singleSpace;
+        prefixUnitDelimiter = singleSpace;
+        DecimalPrefixes = InvaliantDecimalPrefixes;
+        BinaryPrefixes = InvaliantBinaryPrefixes;
+        break;
     }
+  }
 
-    private string byteUnitAbbreviation = "B";
+  public string Format(string format, object arg, IFormatProvider formatProvider)
+  {
+    if (string.IsNullOrEmpty(format))
+      return FormatDefault(format, arg, formatProvider);
 
-    public string ByteUnitAbbreviation {
-      get => byteUnitAbbreviation;
-      set { ThrowIfReadOnly(); byteUnitAbbreviation = value; }
+    decimal val;
+
+    if (arg is decimal decimalValue) {
+      val = decimalValue;
     }
-
-    private string[] DecimalPrefixes { get; }
-    private string[] BinaryPrefixes { get; }
-
-    private string valuePrefixDelimiter;
-
-    public string ValuePrefixDelimiter {
-      get => valuePrefixDelimiter;
-      set { ThrowIfReadOnly(); valuePrefixDelimiter = value; }
-    }
-
-    private string prefixUnitDelimiter;
-
-    public string PrefixUnitDelimiter {
-      get => prefixUnitDelimiter;
-      set { ThrowIfReadOnly(); prefixUnitDelimiter = value; }
-    }
-
-    public SIPrefixNumberFormatter()
-      : this(CultureInfo.InvariantCulture, false)
-    {
-    }
-
-    public SIPrefixNumberFormatter(CultureInfo cultureInfo)
-      : this(cultureInfo, false)
-    {
-    }
-
-    protected SIPrefixNumberFormatter(CultureInfo cultureInfo, bool isReadOnly)
-    {
-      if (cultureInfo == null)
-        throw new ArgumentNullException(nameof(cultureInfo));
-
-      this.IsReadOnly = isReadOnly;
-      // this.cultureInfo = cultureInfo;
-
-      const string singleSpace = " ";
-
-      switch (cultureInfo.TwoLetterISOLanguageName) {
-        case "ja":
-          byteUnit = "バイト";
-          valuePrefixDelimiter = singleSpace;
-          prefixUnitDelimiter = string.Empty;
-          DecimalPrefixes = new[] { string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ" };
-          BinaryPrefixes = new[] { string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ" };
-          break;
-
-        default:
-          byteUnit = "Bytes";
-          valuePrefixDelimiter = singleSpace;
-          prefixUnitDelimiter = singleSpace;
-          DecimalPrefixes = InvaliantDecimalPrefixes;
-          BinaryPrefixes = InvaliantBinaryPrefixes;
-          break;
+    else if (arg is IConvertible) {
+      try {
+        val = (arg as IConvertible).ToDecimal(formatProvider);
       }
-    }
-
-    public string Format(string format, object arg, IFormatProvider formatProvider)
-    {
-      if (string.IsNullOrEmpty(format))
-        return FormatDefault(format, arg, formatProvider);
-
-      decimal val;
-
-      if (arg is decimal decimalValue) {
-        val = decimalValue;
-      }
-      else if (arg is IConvertible) {
-        try {
-          val = (arg as IConvertible).ToDecimal(formatProvider);
-        }
-        catch (FormatException) {
-          return FormatDefault(format, arg, formatProvider);
-        }
-      }
-      else {
+      catch (FormatException) {
         return FormatDefault(format, arg, formatProvider);
       }
-
-      bool fileSizeFormat = false;
-      string[] prefixes;
-      decimal unit;
-      bool abbreviate = false;
-
-      switch (format[0]) {
-        /* binary format */
-        case 'b': unit = 1024.0m; prefixes = InvaliantBinaryAbbreviations; abbreviate = true; break;
-        case 'B': unit = 1024.0m; prefixes = BinaryPrefixes; break;
-        /* decimal format */
-        case 'd': unit = 1000.0m; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
-        case 'D': unit = 1000.0m; prefixes = DecimalPrefixes; break;
-        /* file size format */
-        case 'f': unit = 1024.0m; fileSizeFormat = true; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
-        case 'F': unit = 1024.0m; fileSizeFormat = true; prefixes = DecimalPrefixes; break;
-
-        default:
-          return FormatDefault(format, arg, formatProvider);
-      }
-
-      int digits;
-
-      if (format.Length == 1)
-        digits = 0;
-      else if (!int.TryParse(format.Substring(1), out digits) || digits < 0)
-        throw new FormatException(string.Format("The specified format '{0}' is invalid", format));
-
-      decimal sign;
-
-      if (decimal.Zero <= val) {
-        sign = decimal.One;
-      }
-      else {
-        sign = decimal.MinusOne;
-        val = -val;
-      }
-
-      var aux = 0;
-
-      for (; unit <= val; val /= unit) {
-        aux++;
-      }
-
-      val = sign * val;
-
-      var ret = new StringBuilder();
-      string unitString = null;
-
-      if (fileSizeFormat) {
-        if (aux == 0)
-          ret.Append(val.ToString("F0"));
-        else
-          ret.Append(val.ToString("F1"));
-
-        unitString = abbreviate ? byteUnitAbbreviation : byteUnit;
-      }
-      else {
-        if (digits == 0)
-          ret.Append(((long)val).ToString("D"));
-        else
-          ret.Append(val.ToString("F" + digits.ToString()));
-      }
-
-      if (!abbreviate && 0 < prefixes[aux].Length)
-        ret.Append(valuePrefixDelimiter);
-
-      ret.Append(prefixes[aux]);
-
-      if (unitString != null) {
-        if (!abbreviate && 0 < unitString.Length)
-          ret.Append(prefixUnitDelimiter);
-
-        ret.Append(unitString);
-      }
-
-      return ret.ToString();
+    }
+    else {
+      return FormatDefault(format, arg, formatProvider);
     }
 
-    private static string FormatDefault(string format, object arg, IFormatProvider formatProvider)
-    {
-      if (arg is IFormattable)
-        return (arg as IFormattable).ToString(format, formatProvider);
-      else if (arg != null)
-        return arg.ToString();
+    bool fileSizeFormat = false;
+    string[] prefixes;
+    decimal unit;
+    bool abbreviate = false;
+
+    switch (format[0]) {
+      /* binary format */
+      case 'b': unit = 1024.0m; prefixes = InvaliantBinaryAbbreviations; abbreviate = true; break;
+      case 'B': unit = 1024.0m; prefixes = BinaryPrefixes; break;
+      /* decimal format */
+      case 'd': unit = 1000.0m; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
+      case 'D': unit = 1000.0m; prefixes = DecimalPrefixes; break;
+      /* file size format */
+      case 'f': unit = 1024.0m; fileSizeFormat = true; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
+      case 'F': unit = 1024.0m; fileSizeFormat = true; prefixes = DecimalPrefixes; break;
+
+      default:
+        return FormatDefault(format, arg, formatProvider);
+    }
+
+    int digits;
+
+    if (format.Length == 1)
+      digits = 0;
+    else if (!int.TryParse(format.Substring(1), out digits) || digits < 0)
+      throw new FormatException(string.Format("The specified format '{0}' is invalid", format));
+
+    decimal sign;
+
+    if (decimal.Zero <= val) {
+      sign = decimal.One;
+    }
+    else {
+      sign = decimal.MinusOne;
+      val = -val;
+    }
+
+    var aux = 0;
+
+    for (; unit <= val; val /= unit) {
+      aux++;
+    }
+
+    val = sign * val;
+
+    var ret = new StringBuilder();
+    string unitString = null;
+
+    if (fileSizeFormat) {
+      if (aux == 0)
+        ret.Append(val.ToString("F0"));
       else
-        return null;
-    }
+        ret.Append(val.ToString("F1"));
 
-    public object GetFormat(Type formatType)
-    {
-      if (formatType == typeof(ICustomFormatter))
-        return this;
-      else if (formatType == GetType()) // XXX: improbable?
-        return this;
+      unitString = abbreviate ? byteUnitAbbreviation : byteUnit;
+    }
+    else {
+      if (digits == 0)
+        ret.Append(((long)val).ToString("D"));
       else
-        return null;
+        ret.Append(val.ToString("F" + digits.ToString()));
     }
 
-    private void ThrowIfReadOnly()
-    {
-      if (IsReadOnly)
-        throw new InvalidOperationException("read-only");
+    if (!abbreviate && 0 < prefixes[aux].Length)
+      ret.Append(valuePrefixDelimiter);
+
+    ret.Append(prefixes[aux]);
+
+    if (unitString != null) {
+      if (!abbreviate && 0 < unitString.Length)
+        ret.Append(prefixUnitDelimiter);
+
+      ret.Append(unitString);
     }
+
+    return ret.ToString();
+  }
+
+  private static string FormatDefault(string format, object arg, IFormatProvider formatProvider)
+  {
+    if (arg is IFormattable)
+      return (arg as IFormattable).ToString(format, formatProvider);
+    else if (arg != null)
+      return arg.ToString();
+    else
+      return null;
+  }
+
+  public object GetFormat(Type formatType)
+  {
+    if (formatType == typeof(ICustomFormatter))
+      return this;
+    else if (formatType == GetType()) // XXX: improbable?
+      return this;
+    else
+      return null;
+  }
+
+  private void ThrowIfReadOnly()
+  {
+    if (IsReadOnly)
+      throw new InvalidOperationException("read-only");
   }
 }

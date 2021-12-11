@@ -1,46 +1,46 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 
-namespace Smdn.Reflection {
-  public enum MethodSpecialName {
-    Unknown = -1,
-    None = 0,
+namespace Smdn.Reflection;
 
-    // constructor
-    Constructor,
+public enum MethodSpecialName {
+  Unknown = -1,
+  None = 0,
 
-    // comparison
-    Equality,
-    Inequality,
-    LessThan,
-    GreaterThan,
-    LessThanOrEqual,
-    GreaterThanOrEqual,
+  // constructor
+  Constructor,
 
-    // unary
-    UnaryPlus,
-    UnaryNegation,
-    LogicalNot,
-    OnesComplement,
-    True,
-    False,
-    Increment,
-    Decrement,
+  // comparison
+  Equality,
+  Inequality,
+  LessThan,
+  GreaterThan,
+  LessThanOrEqual,
+  GreaterThanOrEqual,
 
-    // binary
-    Addition,
-    Subtraction,
-    Multiply,
-    Division,
-    Modulus,
-    BitwiseAnd,
-    BitwiseOr,
-    ExclusiveOr,
-    RightShift,
-    LeftShift,
+  // unary
+  UnaryPlus,
+  UnaryNegation,
+  LogicalNot,
+  OnesComplement,
+  True,
+  False,
+  Increment,
+  Decrement,
 
-    // type cast
-    Explicit,
-    Implicit,
-  }
+  // binary
+  Addition,
+  Subtraction,
+  Multiply,
+  Division,
+  Modulus,
+  BitwiseAnd,
+  BitwiseOr,
+  ExclusiveOr,
+  RightShift,
+  LeftShift,
+
+  // type cast
+  Explicit,
+  Implicit,
 }

@@ -5,105 +5,105 @@ using System;
 using System.Buffers;
 using System.Text.Unicode;
 
-namespace Smdn.Text.Unicode.ControlPictures {
-  public static class ReadOnlySpanExtensions {
-    public static bool TryPicturizeControlChars(this ReadOnlySpan<byte> span, Span<char> destination)
-    {
-      if (destination.Length < span.Length)
-        return false;
+namespace Smdn.Text.Unicode.ControlPictures;
 
-      for (var i = 0; i < span.Length; i++) {
-        // replace control characters to control pictures
-        destination[i] = span[i] switch {
-          >= 0x00 and <= 0x20 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]), // CO Control chars + SP -> U+2400-U+2420
-          0x7F => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21), // DEL -> U+2421 SYMBOL FOR DELETE
-          0x85 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24), // C1 NEL -> U+2424 SYMBOL FOR NEWLINE
-          _ => (char)span[i],
-        };
-      }
+public static class ReadOnlySpanExtensions {
+  public static bool TryPicturizeControlChars(this ReadOnlySpan<byte> span, Span<char> destination)
+  {
+    if (destination.Length < span.Length)
+      return false;
 
-      return true;
+    for (var i = 0; i < span.Length; i++) {
+      // replace control characters to control pictures
+      destination[i] = span[i] switch {
+        >= 0x00 and <= 0x20 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]), // CO Control chars + SP -> U+2400-U+2420
+        0x7F => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21), // DEL -> U+2421 SYMBOL FOR DELETE
+        0x85 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24), // C1 NEL -> U+2424 SYMBOL FOR NEWLINE
+        _ => (char)span[i],
+      };
     }
 
-    public static bool TryPicturizeControlChars(this ReadOnlySpan<char> span, Span<char> destination)
-    {
-      if (destination.Length < span.Length)
-        return false;
+    return true;
+  }
 
-      for (var i = 0; i < span.Length; i++) {
-        if (char.IsSurrogate(span[i])) {
-          destination[i] = span[i];
-          continue;
-        }
+  public static bool TryPicturizeControlChars(this ReadOnlySpan<char> span, Span<char> destination)
+  {
+    if (destination.Length < span.Length)
+      return false;
 
-        // replace control characters to control pictures
-        destination[i] = span[i] switch {
-          >= (char)0x00 and <= (char)0x20 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]), // CO Control chars + SP -> U+2400-U+2420
-          (char)0x7F => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21), // DEL -> U+2421 SYMBOL FOR DELETE
-          (char)0x85 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24), // C1 NEL -> U+2424 SYMBOL FOR NEWLINE
-          _ => span[i],
-        };
+    for (var i = 0; i < span.Length; i++) {
+      if (char.IsSurrogate(span[i])) {
+        destination[i] = span[i];
+        continue;
       }
 
-      return true;
+      // replace control characters to control pictures
+      destination[i] = span[i] switch {
+        >= (char)0x00 and <= (char)0x20 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + span[i]), // CO Control chars + SP -> U+2400-U+2420
+        (char)0x7F => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x21), // DEL -> U+2421 SYMBOL FOR DELETE
+        (char)0x85 => (char)(UnicodeRanges.ControlPictures.FirstCodePoint + 0x24), // C1 NEL -> U+2424 SYMBOL FOR NEWLINE
+        _ => span[i],
+      };
     }
 
-    public static string ToControlCharsPicturizedString(this ReadOnlySpan<byte> span)
-    {
-      if (span.IsEmpty)
-        return string.Empty;
+    return true;
+  }
 
-      char[] buffer = null;
+  public static string ToControlCharsPicturizedString(this ReadOnlySpan<byte> span)
+  {
+    if (span.IsEmpty)
+      return string.Empty;
 
-      try {
-        buffer = ArrayPool<char>.Shared.Rent(span.Length);
+    char[] buffer = null;
+
+    try {
+      buffer = ArrayPool<char>.Shared.Rent(span.Length);
 
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
-        var buf = buffer.AsSpan(0, span.Length);
+      var buf = buffer.AsSpan(0, span.Length);
 
-        TryPicturizeControlChars(span, buf);
+      TryPicturizeControlChars(span, buf);
 
-        // string.Create(ReadOnlySpan) https://github.com/dotnet/runtime/issues/30175
-        return new string(buf);
+      // string.Create(ReadOnlySpan) https://github.com/dotnet/runtime/issues/30175
+      return new string(buf);
 #else
-        TryPicturizeControlChars(span, buffer.AsSpan(0, span.Length));
+      TryPicturizeControlChars(span, buffer.AsSpan(0, span.Length));
 
-        return new string(buffer, 0, span.Length);
+      return new string(buffer, 0, span.Length);
 #endif
-      }
-      finally {
-        if (buffer is not null)
-          ArrayPool<char>.Shared.Return(buffer);
-      }
     }
+    finally {
+      if (buffer is not null)
+        ArrayPool<char>.Shared.Return(buffer);
+    }
+  }
 
-    public static string ToControlCharsPicturizedString(this ReadOnlySpan<char> span)
-    {
-      if (span.IsEmpty)
-        return string.Empty;
+  public static string ToControlCharsPicturizedString(this ReadOnlySpan<char> span)
+  {
+    if (span.IsEmpty)
+      return string.Empty;
 
-      char[] buffer = null;
+    char[] buffer = null;
 
-      try {
-        buffer = ArrayPool<char>.Shared.Rent(span.Length);
+    try {
+      buffer = ArrayPool<char>.Shared.Rent(span.Length);
 
 #if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
-        var buf = buffer.AsSpan(0, span.Length);
+      var buf = buffer.AsSpan(0, span.Length);
 
-        TryPicturizeControlChars(span, buf);
+      TryPicturizeControlChars(span, buf);
 
-        // string.Create(ReadOnlySpan) https://github.com/dotnet/runtime/issues/30175
-        return new string(buf);
+      // string.Create(ReadOnlySpan) https://github.com/dotnet/runtime/issues/30175
+      return new string(buf);
 #else
-        TryPicturizeControlChars(span, buffer.AsSpan(0, span.Length));
+      TryPicturizeControlChars(span, buffer.AsSpan(0, span.Length));
 
-        return new string(buffer, 0, span.Length);
+      return new string(buffer, 0, span.Length);
 #endif
-      }
-      finally {
-        if (buffer is not null)
-          ArrayPool<char>.Shared.Return(buffer);
-      }
+    }
+    finally {
+      if (buffer is not null)
+        ArrayPool<char>.Shared.Return(buffer);
     }
   }
 }

@@ -3,81 +3,81 @@
 using System;
 using System.IO;
 
-namespace Smdn.IO.Binary {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public class LittleEndianBinaryWriter : Smdn.IO.Binary.BinaryWriter {
-    public LittleEndianBinaryWriter(Stream stream)
-      : this(stream, false)
-    {
-    }
+namespace Smdn.IO.Binary;
 
-    public LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen)
-      : base(stream, asLittleEndian: true, leaveBaseStreamOpen)
-    {
-    }
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public class LittleEndianBinaryWriter : Smdn.IO.Binary.BinaryWriter {
+  public LittleEndianBinaryWriter(Stream stream)
+    : this(stream, false)
+  {
+  }
 
-    protected LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize)
-      : base(stream, asLittleEndian: true, leaveBaseStreamOpen, storageSize)
-    {
-    }
+  public LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen)
+    : base(stream, asLittleEndian: true, leaveBaseStreamOpen)
+  {
+  }
 
-    public override void Write(short @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+  protected LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize)
+    : base(stream, asLittleEndian: true, leaveBaseStreamOpen, storageSize)
+  {
+  }
 
-      WriteUnchecked(Storage, 0, 2);
-    }
+  public override void Write(short @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    [CLSCompliant(false)]
-    public override void Write(ushort @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    WriteUnchecked(Storage, 0, 2);
+  }
 
-      WriteUnchecked(Storage, 0, 2);
-    }
+  [CLSCompliant(false)]
+  public override void Write(ushort @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    public override void Write(int @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    WriteUnchecked(Storage, 0, 2);
+  }
 
-      WriteUnchecked(Storage, 0, 4);
-    }
+  public override void Write(int @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    [CLSCompliant(false)]
-    public override void Write(uint @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    WriteUnchecked(Storage, 0, 4);
+  }
 
-      WriteUnchecked(Storage, 0, 4);
-    }
+  [CLSCompliant(false)]
+  public override void Write(uint @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    public override void Write(long @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    WriteUnchecked(Storage, 0, 4);
+  }
 
-      Write(Storage, 0, 8);
-    }
+  public override void Write(long @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    [CLSCompliant(false)]
-    public override void Write(ulong @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    Write(Storage, 0, 8);
+  }
 
-      WriteUnchecked(Storage, 0, 8);
-    }
+  [CLSCompliant(false)]
+  public override void Write(ulong @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    public override void Write(UInt24 @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    WriteUnchecked(Storage, 0, 8);
+  }
 
-      WriteUnchecked(Storage, 0, 3);
-    }
+  public override void Write(UInt24 @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
 
-    public override void Write(UInt48 @value)
-    {
-      BinaryConversion.GetBytesLE(@value, Storage, 0);
+    WriteUnchecked(Storage, 0, 3);
+  }
 
-      WriteUnchecked(Storage, 0, 6);
-    }
+  public override void Write(UInt48 @value)
+  {
+    BinaryConversion.GetBytesLE(@value, Storage, 0);
+
+    WriteUnchecked(Storage, 0, 6);
   }
 }

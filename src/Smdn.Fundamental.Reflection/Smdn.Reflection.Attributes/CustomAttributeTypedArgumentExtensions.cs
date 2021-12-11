@@ -3,12 +3,12 @@
 using System;
 using System.Reflection;
 
-namespace Smdn.Reflection.Attributes {
-  public static class CustomAttributeTypedArgumentExtensions {
-    // CustomAttributeTypedArgument.Value holds an underlying typed value if the ArgumentType is enum
-    public static object GetTypedValue(this CustomAttributeTypedArgument typedArg)
-      => typedArg.ArgumentType.IsEnum
-        ? Enum.ToObject(typedArg.ArgumentType, typedArg.Value)
-        : typedArg.Value;
-  }
+namespace Smdn.Reflection.Attributes;
+
+public static class CustomAttributeTypedArgumentExtensions {
+  // CustomAttributeTypedArgument.Value holds an underlying typed value if the ArgumentType is enum
+  public static object GetTypedValue(this CustomAttributeTypedArgument typedArg)
+    => typedArg.ArgumentType.IsEnum
+      ? Enum.ToObject(typedArg.ArgumentType, typedArg.Value)
+      : typedArg.Value;
 }

@@ -5,52 +5,52 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Smdn.OperatingSystem {
-  [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public static class EnvironmentVariable {
-    public static Dictionary<string, string> ParseEnvironmentVariables(string variables)
-      => ParseEnvironmentVariables(variables, throwIfInvalid: true);
+namespace Smdn.OperatingSystem;
 
-    public static Dictionary<string, string> ParseEnvironmentVariables(string variables, bool throwIfInvalid)
-    {
-      if (variables == null)
-        return null;
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+public static class EnvironmentVariable {
+  public static Dictionary<string, string> ParseEnvironmentVariables(string variables)
+    => ParseEnvironmentVariables(variables, throwIfInvalid: true);
 
-      var ret = new Dictionary<string, string>();
+  public static Dictionary<string, string> ParseEnvironmentVariables(string variables, bool throwIfInvalid)
+  {
+    if (variables == null)
+      return null;
 
-      foreach (var pair in variables.Split(new[] { Path.PathSeparator }, StringSplitOptions.RemoveEmptyEntries)) {
-        var delim = pair.IndexOf('=');
+    var ret = new Dictionary<string, string>();
 
-        if (delim < 0) {
-          if (throwIfInvalid)
-            throw new FormatException("invalid format");
-          else
-            continue;
-        }
+    foreach (var pair in variables.Split(new[] { Path.PathSeparator }, StringSplitOptions.RemoveEmptyEntries)) {
+      var delim = pair.IndexOf('=');
 
-        ret.Add(pair.Substring(0, delim).Trim(), pair.Substring(delim + 1));
+      if (delim < 0) {
+        if (throwIfInvalid)
+          throw new FormatException("invalid format");
+        else
+          continue;
       }
 
-      return ret;
+      ret.Add(pair.Substring(0, delim).Trim(), pair.Substring(delim + 1));
     }
 
-    public static string CombineEnvironmentVariables(IDictionary<string, string> variables)
-    {
-      if (variables == null)
-        return null;
+    return ret;
+  }
 
-      var ret = new StringBuilder();
+  public static string CombineEnvironmentVariables(IDictionary<string, string> variables)
+  {
+    if (variables == null)
+      return null;
 
-      foreach (var pair in variables) {
-        if (0 < ret.Length)
-          ret.Append(Path.PathSeparator);
+    var ret = new StringBuilder();
 
-        ret.Append(pair.Key);
-        ret.Append('=');
-        ret.Append(pair.Value);
-      }
+    foreach (var pair in variables) {
+      if (0 < ret.Length)
+        ret.Append(Path.PathSeparator);
 
-      return ret.ToString();
+      ret.Append(pair.Key);
+      ret.Append('=');
+      ret.Append(pair.Value);
     }
+
+    return ret.ToString();
   }
 }

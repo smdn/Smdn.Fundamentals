@@ -3,19 +3,19 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Smdn.Collections {
-  public static class StringificationExtensions {
-    public static string Stringify<TKey, TValue>(this KeyValuePair<TKey, TValue> pair)
-      => string.Concat("{", pair.Key, " => ", pair.Value, "}");
+namespace Smdn.Collections;
 
-    public static string Stringify<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> pairs)
-    {
-      const string separator = ", ";
+public static class StringificationExtensions {
+  public static string Stringify<TKey, TValue>(this KeyValuePair<TKey, TValue> pair)
+    => string.Concat("{", pair.Key, " => ", pair.Value, "}");
 
-      if (pairs == null)
-        return null;
+  public static string Stringify<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> pairs)
+  {
+    const string separator = ", ";
 
-      return string.Join(separator, pairs.Select(Stringify));
-    }
+    if (pairs == null)
+      return null;
+
+    return string.Join(separator, pairs.Select(Stringify));
   }
 }

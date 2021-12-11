@@ -6,31 +6,31 @@ using System.Linq;
 
 using NUnit.Framework.Constraints;
 
-namespace Smdn.Test.NUnit.Constraints.Buffers {
+namespace Smdn.Test.NUnit.Constraints.Buffers;
+
 #pragma warning disable IDE0055
-  public class ReadOnlyMemoryEqualConstraint<T> :
-    EqualConstraint
-    where T : IEquatable<T>
-  {
+public class ReadOnlyMemoryEqualConstraint<T> :
+  EqualConstraint
+  where T : IEquatable<T>
+{
 #pragma warning restore IDE0055
-    public ReadOnlyMemory<T> Expected { get; }
-    private Tolerance tolerance = Tolerance.Default;
+  public ReadOnlyMemory<T> Expected { get; }
+  private Tolerance tolerance = Tolerance.Default;
 
-    public ReadOnlyMemoryEqualConstraint(ReadOnlyMemory<T> expected)
-      : base(expected)
-    {
-      this.Expected = expected;
-    }
-
-    public override ConstraintResult ApplyTo<TActual>(TActual actual)
-    {
-      return actual switch {
-        ReadOnlyMemory<T> actualMemory => new ReadOnlyMemoryEqualConstraintResult<T>(this, actualMemory, Expected.Span.SequenceEqual(actualMemory.Span)),
-        T[] actualArray => new ReadOnlyMemoryEqualConstraintResult<T>(this, actualArray, Expected.Span.SequenceEqual(actualArray.AsSpan())),
-        _ => new EqualConstraintResult(this, actual, new NUnitEqualityComparer().AreEqual(Expected, actual, ref tolerance)),
-      };
-    }
-
-    public override string Description => "ReadOnlyMemory<T>.SequenceEquals";
+  public ReadOnlyMemoryEqualConstraint(ReadOnlyMemory<T> expected)
+    : base(expected)
+  {
+    this.Expected = expected;
   }
+
+  public override ConstraintResult ApplyTo<TActual>(TActual actual)
+  {
+    return actual switch {
+      ReadOnlyMemory<T> actualMemory => new ReadOnlyMemoryEqualConstraintResult<T>(this, actualMemory, Expected.Span.SequenceEqual(actualMemory.Span)),
+      T[] actualArray => new ReadOnlyMemoryEqualConstraintResult<T>(this, actualArray, Expected.Span.SequenceEqual(actualArray.AsSpan())),
+      _ => new EqualConstraintResult(this, actual, new NUnitEqualityComparer().AreEqual(Expected, actual, ref tolerance)),
+    };
+  }
+
+  public override string Description => "ReadOnlyMemory<T>.SequenceEquals";
 }

@@ -5,34 +5,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Smdn.Xml.Linq.Xhtml {
-  public static class Extensions {
-    public static XElement GetElementById(this XContainer container, string id)
-    {
-      return container.Descendants()
-                      .Attributes(XHtmlAttributeNames.Id)
-                      .FirstOrDefault(a => string.Equals(a.Value, id, StringComparison.Ordinal))
-                      ?.Parent;
-    }
+namespace Smdn.Xml.Linq.Xhtml;
 
-    public static bool HasHtmlClass(this XElement element, string @class)
-    {
-      var attr = element.Attribute(XHtmlAttributeNames.Class);
+public static class Extensions {
+  public static XElement GetElementById(this XContainer container, string id)
+  {
+    return container.Descendants()
+                    .Attributes(XHtmlAttributeNames.Id)
+                    .FirstOrDefault(a => string.Equals(a.Value, id, StringComparison.Ordinal))
+                    ?.Parent;
+  }
 
-      if (attr == null)
-        return false;
+  public static bool HasHtmlClass(this XElement element, string @class)
+  {
+    var attr = element.Attribute(XHtmlAttributeNames.Class);
 
-      return string.Concat(" ", attr.Value, " ").Contains(string.Concat(" ", @class, " "));
-    }
+    if (attr == null)
+      return false;
 
-    public static bool HasHtmlClass(this XElement element, IEnumerable<string> classList)
-    {
-      var l = element.GetAttributeValue(XHtmlAttributeNames.Class, XHtmlClassAttribute.SplitClassList);
+    return string.Concat(" ", attr.Value, " ").Contains(string.Concat(" ", @class, " "));
+  }
 
-      if (l == null)
-        return false;
+  public static bool HasHtmlClass(this XElement element, IEnumerable<string> classList)
+  {
+    var l = element.GetAttributeValue(XHtmlAttributeNames.Class, XHtmlClassAttribute.SplitClassList);
 
-      return new HashSet<string>(l, StringComparer.Ordinal).IsSupersetOf(classList);
-    }
+    if (l == null)
+      return false;
+
+    return new HashSet<string>(l, StringComparer.Ordinal).IsSupersetOf(classList);
   }
 }

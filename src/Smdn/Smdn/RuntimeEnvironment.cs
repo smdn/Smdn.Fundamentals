@@ -1,18 +1,18 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 
-namespace Smdn {
-  public enum RuntimeEnvironment {
-    /// <summary>DotGNU, etc.</summary>
-    Unknown = 0,
+namespace Smdn;
 
-    /// <summary>.NET Framework.</summary>
-    NetFx,
+public enum RuntimeEnvironment {
+  /// <summary>DotGNU, etc.</summary>
+  Unknown = 0,
 
-    /// <summary>Mono.</summary>
-    Mono,
+  /// <summary>.NET Framework.</summary>
+  NetFx,
 
-    /// <summary>.NET Core.</summary>
-    NetCore,
-  }
+  /// <summary>Mono.</summary>
+  Mono,
+
+  /// <summary>.NET Core.</summary>
+  NetCore,
 }
