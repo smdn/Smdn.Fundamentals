@@ -1,7 +1,7 @@
-// Smdn.Fundamental.MimeHeader.dll (Smdn.Fundamental.MimeHeader-3.0.0 (netstandard2.0))
+// Smdn.Fundamental.MimeHeader.dll (Smdn.Fundamental.MimeHeader-3.0.1 (netstandard2.0))
 //   Name: Smdn.Fundamental.MimeHeader
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.0)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard2.0)
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
@@ -14,7 +14,7 @@ using Smdn.Formats.Mime;
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime {
-  // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeUtils {
     [Obsolete("use ParseHeaderAsync() instead", true)]
@@ -38,7 +38,7 @@ namespace Smdn.Formats.Mime {
     public static string RemoveHeaderWhiteSpaceAndComment(string val) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct RawHeaderField {
     public ReadOnlySequence<byte> HeaderFieldSequence { get; }
