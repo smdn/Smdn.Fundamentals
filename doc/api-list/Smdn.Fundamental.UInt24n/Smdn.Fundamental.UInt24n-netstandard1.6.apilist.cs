@@ -1,7 +1,7 @@
-// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.0.1 (netstandard1.6))
 //   Name: Smdn.Fundamental.UInt24n
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -9,7 +9,7 @@ using System;
 using Smdn;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.UInt24n, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.UInt24n, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt24 :
@@ -79,7 +79,7 @@ namespace Smdn {
     public static bool operator != (UInt24 x, UInt24 y) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.UInt24n, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.UInt24n, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public struct UInt48 :
