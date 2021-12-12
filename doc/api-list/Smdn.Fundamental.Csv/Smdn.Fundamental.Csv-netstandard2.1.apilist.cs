@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Csv.dll (Smdn.Fundamental.Csv-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.Csv.dll (Smdn.Fundamental.Csv-3.0.1 (netstandard2.1))
 //   Name: Smdn.Fundamental.Csv
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -11,7 +11,7 @@ using System.IO;
 using System.Text;
 
 namespace Smdn.Formats {
-  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class CsvRecord {
     public static IReadOnlyList<string> Split(ReadOnlySpan<char> csv) {}
@@ -28,7 +28,7 @@ namespace Smdn.Formats {
 }
 
 namespace Smdn.Formats.Csv {
-  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvReader : StreamReader {
     public CsvReader(Stream stream) {}
@@ -45,7 +45,7 @@ namespace Smdn.Formats.Csv {
     public IEnumerable<IReadOnlyList<string>> ReadRecords() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvWriter : StreamWriter {
     public CsvWriter(Stream stream) {}
