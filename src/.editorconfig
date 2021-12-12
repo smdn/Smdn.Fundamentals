@@ -2,6 +2,8 @@
 #
 # code-analysis
 #   https://docs.microsoft.com/ja-jp/dotnet/fundamentals/code-analysis/categories
+#   https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+#   https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/
 #
 [*.cs]
 dotnet_analyzer_diagnostic.category-Design.severity           = warning
