@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.LineOriented.dll (Smdn.Fundamental.Stream.LineOriented-3.0.0 (net45))
+// Smdn.Fundamental.Stream.LineOriented.dll (Smdn.Fundamental.Stream.LineOriented-3.0.1 (net45))
 //   Name: Smdn.Fundamental.Stream.LineOriented
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net45)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (net45)
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.IO.Streams.LineOriented {
-  // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LineOrientedStream : Stream {
     public readonly struct Line {
@@ -61,13 +61,13 @@ namespace Smdn.IO.Streams.LineOriented {
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LooseLineOrientedStream : LineOrientedStream {
     public LooseLineOrientedStream(Stream stream, int bufferSize = 1024, bool leaveStreamOpen = false) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream.LineOriented, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class StrictLineOrientedStream : LineOrientedStream {
     public StrictLineOrientedStream(Stream stream, ReadOnlySpan<byte> newLine, int bufferSize = 1024, bool leaveStreamOpen = false) {}
