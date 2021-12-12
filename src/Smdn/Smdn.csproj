@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
     <VersionPrefix>3.0.0</VersionPrefix>
     <VersionSuffix>beta5</VersionSuffix>
     <!-- <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion> -->
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Label="metadata">
