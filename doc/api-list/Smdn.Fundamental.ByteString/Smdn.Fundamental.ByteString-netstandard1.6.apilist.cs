@@ -1,7 +1,7 @@
-// Smdn.Fundamental.ByteString.dll (Smdn.Fundamental.ByteString-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.ByteString.dll (Smdn.Fundamental.ByteString-3.0.1 (netstandard1.6))
 //   Name: Smdn.Fundamental.ByteString
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -13,7 +13,7 @@ using System.Text;
 using Smdn.Text;
 
 namespace Smdn.Text {
-  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class ByteString :
@@ -139,7 +139,7 @@ namespace Smdn.Text {
     public static ByteString operator * (ByteString x, int y) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ByteStringBuilder {
     public ByteStringBuilder() {}
@@ -165,7 +165,7 @@ namespace Smdn.Text {
     public override string ToString() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ByteStringExtensions {
     public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) {}
