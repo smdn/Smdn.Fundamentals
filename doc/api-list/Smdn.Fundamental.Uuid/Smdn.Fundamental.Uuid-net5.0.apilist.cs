@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.0.0 (net5.0))
+// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.0.1 (net5.0))
 //   Name: Smdn.Fundamental.Uuid
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net5.0)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (net5.0)
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
 
@@ -12,7 +12,7 @@ using Smdn;
 using Smdn.Formats.UniversallyUniqueIdentifiers;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum UuidVersion : byte {
     NameBasedMD5Hash = 3,
@@ -27,10 +27,10 @@ namespace Smdn {
     Version5 = 5,
   }
 
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
-  public struct Uuid :
+  public readonly struct Uuid :
     IComparable,
     IComparable<Guid>,
     IComparable<Uuid>,
@@ -58,7 +58,7 @@ namespace Smdn {
     public static readonly Uuid RFC4122NamespaceUrl; // = "6ba7b811-9dad-11d1-80b4-00c04fd430c8"
     public static readonly Uuid RFC4122NamespaceX500; // = "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
 
-    public Uuid(Guid guid) {}
+    public Uuid(Guid guidValue) {}
     public Uuid(ReadOnlySpan<byte> octets) {}
     public Uuid(ReadOnlySpan<byte> octets, bool isBigEndian) {}
     public Uuid(byte[] octets) {}
@@ -131,7 +131,7 @@ namespace Smdn {
 }
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class UuidGenerator {
     protected UuidGenerator() {}
@@ -150,7 +150,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public abstract Uuid GenerateNext();
   }
 
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public readonly struct Node : IFormattable {
