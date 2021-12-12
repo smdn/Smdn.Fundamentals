@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stringification.dll (Smdn.Fundamental.Stringification-3.0.0 (netstandard2.0))
+// Smdn.Fundamental.Stringification.dll (Smdn.Fundamental.Stringification-3.0.1 (netstandard2.0))
 //   Name: Smdn.Fundamental.Stringification
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.0)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard2.0)
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
