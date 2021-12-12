@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.1 (netstandard1.6))
 //   Name: Smdn.Fundamental.Stream
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using Smdn.IO.Streams;
 
 namespace Smdn.IO {
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class StreamExtensions {
     public static void Close(this Stream stream) {}
@@ -28,7 +28,7 @@ namespace Smdn.IO {
 }
 
 namespace Smdn.IO.Streams {
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ChunkedMemoryStream : Stream {
     public delegate ChunkedMemoryStream.Chunk Allocator(int chunkSize);
@@ -67,7 +67,7 @@ namespace Smdn.IO.Streams {
     public override void WriteByte(byte @value) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class NonClosingStream : Stream {
     public NonClosingStream(Stream innerStream) {}
@@ -89,7 +89,7 @@ namespace Smdn.IO.Streams {
     public override void Write(byte[] buffer, int offset, int count) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream : Stream {
     public PartialStream(Stream innerStream, long offset) {}
