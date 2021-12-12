@@ -1,7 +1,7 @@
-// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-3.0.0 (net471))
+// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-3.0.1 (net471))
 //   Name: Smdn.Fundamental.MimeType
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net471)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (net471)
 //   TargetFramework: .NETFramework,Version=v4.7.1
 //   Configuration: Release
 
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using Smdn;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.MimeType, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.MimeType, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class MimeType :
     IEquatable<MimeType>,
