@@ -1,7 +1,7 @@
-// Smdn.Fundamental.SIPrefix.dll (Smdn.Fundamental.SIPrefix-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.SIPrefix.dll (Smdn.Fundamental.SIPrefix-3.0.1 (netstandard2.1))
 //   Name: Smdn.Fundamental.SIPrefix
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -10,7 +10,7 @@ using System.Globalization;
 using Smdn.Formats;
 
 namespace Smdn.Formats {
-  // Forwarded to "Smdn.Fundamental.SIPrefix, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.SIPrefix, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class SIPrefixNumberFormatter :
     ICustomFormatter,
