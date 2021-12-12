@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.1 (netstandard1.6))
 //   Name: Smdn.Fundamental.Exception
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -9,7 +9,7 @@ using System;
 using System.IO;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.Exception, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ExceptionUtils {
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName) {}
