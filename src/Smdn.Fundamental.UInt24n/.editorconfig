@@ -5,6 +5,6 @@ dotnet_diagnostic.SA1121.severity = none # Use built-in type alias
 dotnet_diagnostic.SA1129.severity = none # Do not use default value type constructor
 dotnet_diagnostic.SA1303.severity = none # Const field names should begin with upper-case letter
 
-dotnet_diagnostic.IDE0004.severity = none
-dotnet_diagnostic.IDE0047.severity = none
-dotnet_diagnostic.IDE0049.severity = none
+dotnet_diagnostic.IDE0004.severity = none # Remove unnecessary cast
+dotnet_diagnostic.IDE0047.severity = none # Remove unnecessary parentheses
+dotnet_diagnostic.IDE0049.severity = none # Use language keywords instead of framework type names for type references

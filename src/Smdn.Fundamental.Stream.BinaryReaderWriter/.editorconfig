@@ -1,6 +1,6 @@
 # EditorConfig is awesome: https://EditorConfig.org
 
 [*.cs]
-dotnet_diagnostic.IDE0004.severity = none
-dotnet_diagnostic.IDE0047.severity = none
-dotnet_diagnostic.IDE0049.severity = none
+dotnet_diagnostic.IDE0004.severity = none # Remove unnecessary cast
+dotnet_diagnostic.IDE0047.severity = none # Remove unnecessary parentheses
+dotnet_diagnostic.IDE0049.severity = none # Use language keywords instead of framework type names for type references
