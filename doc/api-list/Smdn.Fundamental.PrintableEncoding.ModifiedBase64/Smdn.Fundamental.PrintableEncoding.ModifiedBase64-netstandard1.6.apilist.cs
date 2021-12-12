@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.ModifiedBase64.dll (Smdn.Fundamental.PrintableEncoding.ModifiedBase64-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.PrintableEncoding.ModifiedBase64.dll (Smdn.Fundamental.PrintableEncoding.ModifiedBase64-3.0.1 (netstandard1.6))
 //   Name: Smdn.Fundamental.PrintableEncoding.ModifiedBase64
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using Smdn.Formats.ModifiedBase64;
 
 namespace Smdn.Formats.ModifiedBase64 {
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     public FromRFC2152ModifiedBase64Transform() {}
@@ -20,12 +20,13 @@ namespace Smdn.Formats.ModifiedBase64 {
     public int InputBlockSize { get; }
     public int OutputBlockSize { get; }
 
+    protected virtual void Dispose(bool disposing) {}
     public void Dispose() {}
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
     public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
     public FromRFC3501ModifiedBase64Transform() {}
@@ -35,14 +36,14 @@ namespace Smdn.Formats.ModifiedBase64 {
     public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ModifiedUTF7 {
     public static string Decode(string str) {}
     public static string Encode(string str) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ToRFC2152ModifiedBase64Transform : ICryptoTransform {
     public ToRFC2152ModifiedBase64Transform() {}
@@ -52,12 +53,13 @@ namespace Smdn.Formats.ModifiedBase64 {
     public int InputBlockSize { get; }
     public int OutputBlockSize { get; }
 
+    protected virtual void Dispose(bool disposing) {}
     public void Dispose() {}
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
     public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.PrintableEncoding.ModifiedBase64, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform {
     public ToRFC3501ModifiedBase64Transform() {}
