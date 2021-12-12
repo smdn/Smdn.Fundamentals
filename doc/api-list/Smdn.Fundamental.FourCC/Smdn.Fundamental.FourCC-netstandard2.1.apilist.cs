@@ -1,7 +1,7 @@
-// Smdn.Fundamental.FourCC.dll (Smdn.Fundamental.FourCC-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.FourCC.dll (Smdn.Fundamental.FourCC-3.0.1 (netstandard2.1))
 //   Name: Smdn.Fundamental.FourCC
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -9,7 +9,7 @@ using System;
 using Smdn;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.FourCC, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.FourCC, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct FourCC :
     IEquatable<FourCC>,
