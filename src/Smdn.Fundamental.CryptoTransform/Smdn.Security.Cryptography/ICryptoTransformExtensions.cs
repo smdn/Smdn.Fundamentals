@@ -86,9 +86,10 @@ public static class ICryptoTransformExtensions {
     }
 
     var finalBlock = transform.TransformFinalBlock(inputBuffer, inputOffset, inputCount);
+    var outputBufferTransformedLength = outputOffset + finalBlock.Length;
 
-    if (outputBuffer.Length != outputOffset + finalBlock.Length)
-      Array.Resize(ref outputBuffer, outputOffset + finalBlock.Length);
+    if (outputBuffer.Length != outputBufferTransformedLength)
+      Array.Resize(ref outputBuffer, outputBufferTransformedLength);
 
     Buffer.BlockCopy(finalBlock, 0, outputBuffer, outputOffset, finalBlock.Length);
 
