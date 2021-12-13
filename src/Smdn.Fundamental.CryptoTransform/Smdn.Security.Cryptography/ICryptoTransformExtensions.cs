@@ -56,19 +56,24 @@ public static class ICryptoTransformExtensions {
     if (inputBuffer.Length - inputCount < inputOffset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
 
-    var outputBuffer = new byte[inputCount * transform.OutputBlockSize];
+
+    var blockCountWithoutRemainder =
+#if SYSTEM_MATH_DIVREM
+      Math.DivRem(inputCount, transform.InputBlockSize, out var inputBlockRemainder);
+#else
+      MathUtils.DivRem(inputCount, transform.InputBlockSize, out var inputBlockRemainder);
+#endif
+    var outputBuffer = new byte[
+      (blockCountWithoutRemainder + (inputBlockRemainder == 0 ? 0 : 1)) * transform.OutputBlockSize
+    ];
     var outputOffset = 0;
 
-    if (transform.CanTransformMultipleBlocks) {
-      var blocksToTransform = inputCount / transform.InputBlockSize;
+    if (transform.CanTransformMultipleBlocks && 0 < blockCountWithoutRemainder) {
+      var bytesToTransform = blockCountWithoutRemainder * transform.InputBlockSize;
 
-      if (0 < blocksToTransform) {
-        var bytesToTransform = blocksToTransform * transform.InputBlockSize;
-
-        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
-        inputOffset += bytesToTransform;
-        inputCount -= bytesToTransform;
-      }
+      outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
+      inputOffset += bytesToTransform;
+      inputCount -= bytesToTransform;
     }
 
     var inputBlockSize = transform.InputBlockSize;
