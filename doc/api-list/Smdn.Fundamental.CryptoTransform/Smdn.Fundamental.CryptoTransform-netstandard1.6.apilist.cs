@@ -1,7 +1,7 @@
-// Smdn.Fundamental.CryptoTransform.dll (Smdn.Fundamental.CryptoTransform-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.CryptoTransform.dll (Smdn.Fundamental.CryptoTransform-3.0.1 (netstandard1.6))
 //   Name: Smdn.Fundamental.CryptoTransform
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace Smdn.Security.Cryptography {
-  // Forwarded to "Smdn.Fundamental.CryptoTransform, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
+  // Forwarded to "Smdn.Fundamental.CryptoTransform, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ICryptoTransformExtensions {
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer) {}
