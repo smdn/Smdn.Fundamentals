@@ -15,12 +15,28 @@ namespace Smdn.Security.Cryptography {
       var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
       var expected = new byte[] {0x59, 0x57, 0x4a, 0x6a, 0x5a, 0x47, 0x55, 0x3d};
 
-      using (var transform = Smdn.Formats.Base64.CreateToBase64Transform()) {
-        Assert.AreEqual(expected,
-                        ICryptoTransformExtensions.TransformBytes(transform, buffer.Slice(2, 5)));
-        Assert.AreEqual(expected,
-                        ICryptoTransformExtensions.TransformBytes(transform, buffer, 2, 5));
-      }
+      using var transform = Smdn.Formats.Base64.CreateToBase64Transform();
+
+      Assert.AreEqual(expected,
+                      ICryptoTransformExtensions.TransformBytes(transform, buffer.Slice(2, 5)));
+      Assert.AreEqual(expected,
+                      ICryptoTransformExtensions.TransformBytes(transform, buffer, 2, 5));
+    }
+
+    [TestCase("A",   "QQ==")]
+    [TestCase("AA",  "QUE=")]
+    [TestCase("AAA", "QUFB")]
+    public void TestTransformBytes_InputShorterThanInputBlockSize(string input, string output)
+    {
+      using var transform = Smdn.Formats.Base64.CreateToBase64Transform();
+
+      Assert.AreEqual(
+        output,
+        Encoding.ASCII.GetString(
+          ICryptoTransformExtensions.TransformBytes(transform, Encoding.ASCII.GetBytes(input))
+        ),
+        $"input = {input}"
+      );
     }
 
     [Test]

@@ -61,11 +61,14 @@ public static class ICryptoTransformExtensions {
 
     if (transform.CanTransformMultipleBlocks) {
       var blocksToTransform = inputCount / transform.InputBlockSize;
-      var bytesToTransform = blocksToTransform * transform.InputBlockSize;
 
-      outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
-      inputOffset += bytesToTransform;
-      inputCount -= bytesToTransform;
+      if (0 < blocksToTransform) {
+        var bytesToTransform = blocksToTransform * transform.InputBlockSize;
+
+        outputOffset += transform.TransformBlock(inputBuffer, inputOffset, bytesToTransform, outputBuffer, outputOffset);
+        inputOffset += bytesToTransform;
+        inputCount -= bytesToTransform;
+      }
     }
 
     var inputBlockSize = transform.InputBlockSize;
