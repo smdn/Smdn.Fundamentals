@@ -56,7 +56,6 @@ public static class ICryptoTransformExtensions {
     if (inputBuffer.Length - inputCount < inputOffset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
 
-
     var blockCountWithoutRemainder =
 #if SYSTEM_MATH_DIVREM
       Math.DivRem(inputCount, transform.InputBlockSize, out var inputBlockRemainder);
