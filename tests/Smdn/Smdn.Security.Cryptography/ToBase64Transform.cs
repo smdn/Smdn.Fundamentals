@@ -19,12 +19,16 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestProperties()
     {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.IsTrue(t.CanReuseTransform);
-        Assert.IsFalse(t.CanTransformMultipleBlocks);
-        Assert.AreEqual(3, t.InputBlockSize);
-        Assert.AreEqual(4, t.OutputBlockSize);
-      }
+      using var t = Base64.CreateToBase64Transform();
+
+      Assert.IsTrue(t.CanReuseTransform, nameof(t.CanReuseTransform));
+#if NET6_0_OR_GREATER
+      Assert.IsTrue(t.CanTransformMultipleBlocks, nameof(t.CanTransformMultipleBlocks));
+#else
+      Assert.IsFalse(t.CanTransformMultipleBlocks, nameof(t.CanTransformMultipleBlocks));
+#endif
+      Assert.AreEqual(3, t.InputBlockSize, nameof(t.InputBlockSize));
+      Assert.AreEqual(4, t.OutputBlockSize, nameof(t.OutputBlockSize));
     }
 
     [Test]
@@ -56,52 +60,58 @@ namespace Smdn.Security.Cryptography {
     }
 #endif
 
-#if false
-      foreach (var pattern in new[] {
-        new {Input = "A",     Output = "QQ=="},
-        new {Input = "AS",    Output = "QVM="},
-        new {Input = "ASC",   Output = "QVND"},
-        new {Input = "ASCI",  Output = "QVNDSQ=="},
-        new {Input = "ASCII", Output = "QVNDSUk="},
-      }) {
-      }
+#if NET6_0_OR_GREATER
+    [TestCase("A",      null)]
+    [TestCase("AS",     null)]
+    [TestCase("ASC",    "QVND")]
+    [TestCase("ASCI",   null)]
+    [TestCase("ASCII",  null)]
+    [TestCase("ASCII_", "QVNDSUlf")]
+#else
+    [TestCase("A",      null)]
+    [TestCase("AS",     null)]
+    [TestCase("ASC",    "QVND")]
+    [TestCase("ASCI",   "QVND")]
+    [TestCase("ASCII",  "QVND")]
+    [TestCase("ASCII_", "QVND")]
 #endif
-
-    [Test]
-    public void TestTransformBlock()
+    public void TestTransformBlock(string input, string output)
     {
-      foreach (var pattern in new[] {
-        new {Input = "ASC",    Output = "QVND"},
-        new {Input = "ASCI",   Output = "QVND"},
-        new {Input = "ASCII",  Output = "QVND"},
-        new {Input = "ASCII_", Output = "QVND"},
-      }) {
-        using (var t = Base64.CreateToBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[4];
+      using var t = Base64.CreateToBase64Transform();
 
-          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+      var inputBuffer = Encoding.ASCII.GetBytes(input);
+#if NET6_0_OR_GREATER
+      var inputBlocks = 1 + (input.Length - 1) / t.InputBlockSize;
+#endif
+      var outputBlocks =
+#if NET6_0_OR_GREATER
+        inputBlocks;
+#else
+        1;
+#endif
+      var outputBuffer = new byte[outputBlocks * t.OutputBlockSize];
 
-          Assert.AreEqual(4, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
-        }
+      if (output is null) {
+        Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0));
+      }
+      else {
+        var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+
+        Assert.AreEqual(outputBlocks * t.OutputBlockSize, transformedLength, $"input: {input}");
+        Assert.AreEqual(output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {input}");
       }
     }
 
-    [Test]
-    public void TestTransformBlock_InputBufferTooShort()
+    [TestCase("A",  "QQ==")]
+    [TestCase("AS", "QVM=")]
+    public void TestTransformBlock_InputBufferTooShort(string input, string output)
     {
-      foreach (var pattern in new[] {
-        new {Input = "A",     Output = "QQ=="},
-        new {Input = "AS",    Output = "QVM="},
-      }) {
-        using (var t = Base64.CreateToBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[4];
+      using var t = Base64.CreateToBase64Transform();
 
-          Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
-        }
-      }
+      var inputBuffer = Encoding.ASCII.GetBytes(input);
+      var outputBuffer = new byte[4];
+
+      Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
     }
 
     [Test]
@@ -176,23 +186,19 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [Test]
-    public void TestTransformFinalBlock()
+    [TestCase("A",   "QQ==")]
+    [TestCase("AS",  "QVM=")]
+    [TestCase("ASC", "QVND")]
+    public void TestTransformFinalBlock(string input, string output)
     {
-      foreach (var pattern in new[] {
-        new {Input = "A",     Output = "QQ=="},
-        new {Input = "AS",    Output = "QVM="},
-        new {Input = "ASC",   Output = "QVND"},
-      }) {
-        using (var t = Base64.CreateToBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+      using var t = Base64.CreateToBase64Transform();
 
-          var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+      var inputBuffer = Encoding.ASCII.GetBytes(input);
 
-          Assert.AreEqual(pattern.Output.Length, ret.Length, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(ret), $"input: {pattern.Input}");
-        }
-      }
+      var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+
+      Assert.AreEqual(output.Length, ret.Length, $"input: {input}");
+      Assert.AreEqual(output, Encoding.ASCII.GetString(ret), $"input: {input}");
     }
 
     [Test]
@@ -203,19 +209,25 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [Test]
-    public void TestTransformFinalBlock_InputBufferTooLong()
+    [TestCase("ASCI",  "QVNDSQ==")]
+    [TestCase("ASCII", "QVNDSUk=")]
+    public void TestTransformFinalBlock_InputBufferTooLong(string input, string output)
     {
-      foreach (var pattern in new[] {
-        new {Input = "ASCI",  Output = "QVNDSQ=="},
-        new {Input = "ASCII", Output = "QVNDSUk="},
-      }) {
-        using (var t = Base64.CreateToBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
+      using var t = Base64.CreateToBase64Transform();
 
-          Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), $"input: {pattern.Input}");
-        }
-      }
+      var inputBuffer = Encoding.ASCII.GetBytes(input);
+
+#if NET6_0_OR_GREATER
+      var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+
+      Assert.AreEqual(output.Length, ret.Length, $"input: {input}");
+      Assert.AreEqual(output, Encoding.ASCII.GetString(ret), $"input: {input}");
+#else
+      Assert.Throws<ArgumentOutOfRangeException>(
+        () => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length),
+        $"input: {input}"
+      );
+#endif
     }
 
     [Test]
