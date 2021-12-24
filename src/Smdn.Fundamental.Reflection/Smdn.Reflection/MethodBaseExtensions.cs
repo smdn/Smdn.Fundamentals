@@ -17,25 +17,51 @@ public static class MethodBaseExtensions {
   }
 
   public static bool IsExplicitlyImplemented(this MethodBase m)
-    => FindExplicitInterfaceMethod(m, findOnlyPublicInterfaces: false) != null;
+    => TryFindExplicitInterfaceMethod(m, out var im, findOnlyPublicInterfaces: false, throwException: false) && im is not null;
+
+  public static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces = false)
+    => TryFindExplicitInterfaceMethod(m, out explicitInterfaceMethod, findOnlyPublicInterfaces, throwException: false);
 
   public static MethodInfo FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false)
   {
+    TryFindExplicitInterfaceMethod(m, out var im, findOnlyPublicInterfaces, throwException: true);
+
+    return im;
+  }
+
+  private static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces, bool throwException)
+  {
+    explicitInterfaceMethod = default;
+
     if (m is MethodInfo im && im.IsFinal && im.IsPrivate) {
       foreach (var iface in im.DeclaringType.GetInterfaces()) {
         if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
           continue;
 
-        var interfaceMap = im.DeclaringType.GetInterfaceMap(iface);
+        InterfaceMapping interfaceMap = default;
+
+        try {
+          interfaceMap = im.DeclaringType.GetInterfaceMap(iface);
+        }
+        catch (NotSupportedException ex) {
+          return throwException
+            ? throw new NotSupportedException("cannot get interface map on assemblies loaded in reflection-only context", ex)
+            : false;
+        }
 
         for (var index = 0; index < interfaceMap.TargetMethods.Length; index++) {
-          if (interfaceMap.TargetMethods[index] == im)
-            return interfaceMap.InterfaceMethods[index];
+          if (interfaceMap.TargetMethods[index] == im) {
+            explicitInterfaceMethod = interfaceMap.InterfaceMethods[index];
+
+            return true;
+          }
         }
       }
     }
 
-    return null;
+    explicitInterfaceMethod = null;
+
+    return true;
   }
 
   private static readonly Dictionary<string, MethodSpecialName> specialMethodNames = new(StringComparer.Ordinal) {

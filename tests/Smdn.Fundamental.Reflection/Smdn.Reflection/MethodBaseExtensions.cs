@@ -43,6 +43,18 @@ namespace Smdn.Reflection {
       Assert.AreEqual(expectedMethod, method.FindExplicitInterfaceMethod());
     }
 
+    [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
+    [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
+    [TestCase(typeof(C2), "System.IDisposable.Dispose", true, typeof(IDisposable), nameof(IDisposable.Dispose))]
+    public void TestTryFindExplicitInterfaceMethod(Type type, string methodName, bool expectedResult, Type expectedInterface, string expectedMethodName)
+    {
+      var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+      var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
+
+      Assert.AreEqual(expectedResult, method.TryFindExplicitInterfaceMethod(out var actualMethod), "result");
+      Assert.AreEqual(expectedMethod, actualMethod, "actual method");
+    }
+
     [TestCase(typeof(C2), nameof(C2.M), false)]
     [TestCase(typeof(C2), nameof(C2.Clone), false)]
     [TestCase(typeof(C2), "System.IDisposable.Dispose", true)]
