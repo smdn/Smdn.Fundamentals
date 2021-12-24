@@ -86,7 +86,7 @@ public static class QuotedPrintableEncoding {
     Stream stream,
 #pragma warning disable IDE0060
     bool leaveStreamOpen = false
-#pragma warning restore D
+#pragma warning restore IDE0060
   )
   {
     if (stream == null)
