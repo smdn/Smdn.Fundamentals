@@ -47,7 +47,7 @@ public static class TypeExtensions {
   }
 
   public static IEnumerable<string> GetNamespaces(this Type t)
-    => GetAllNamespaces(t, type => false).Distinct();
+    => GetAllNamespaces(t, static type => false).Distinct();
 
   public static IEnumerable<string> GetNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive)
     => GetAllNamespaces(t, isLanguagePrimitive).Distinct();
