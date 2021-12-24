@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.2 (netstandard2.1))
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.3 (netstandard2.1))
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2 (netstandard2.1)
+//   AssemblyVersion: 3.0.3.0
+//   InformationalVersion: 3.0.3 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -69,6 +69,10 @@ namespace Smdn.Reflection {
     public static MethodSpecialName GetNameType(this MethodBase m) {}
     public static IEnumerable<Type> GetSignatureTypes(this MethodBase m) {}
     public static bool IsExplicitlyImplemented(this MethodBase m) {}
+  }
+
+  public static class MethodInfoExtensions {
+    public static bool IsOverridden(this MethodInfo m) {}
   }
 
   public static class ParameterInfoExtensions {
