@@ -7,6 +7,7 @@ using System.Reflection;
 namespace Smdn.Reflection.Attributes;
 
 public static class ICustomAttributeProviderExtensions {
+  // TODO: return IReadOnlyList
   public static IList<CustomAttributeData> GetCustomAttributeDataList(this ICustomAttributeProvider attributeProvider)
     => attributeProvider switch {
       Assembly assm => CustomAttributeData.GetCustomAttributes(assm),
