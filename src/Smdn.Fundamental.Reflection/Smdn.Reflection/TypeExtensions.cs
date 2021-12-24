@@ -31,8 +31,11 @@ public static class TypeExtensions {
 
     // interfaces
     var allInterfaces = t.GetInterfaces();
-    var interfaces = allInterfaces.Except(allInterfaces.SelectMany(i => i.GetInterfaces())) // flatten
-                                  .Except(t.BaseType?.GetInterfaces() ?? Type.EmptyTypes);
+    var interfaces = allInterfaces
+      .Except(
+        allInterfaces.SelectMany(static i => i.GetInterfaces()) // flatten
+      )
+      .Except(t.BaseType?.GetInterfaces() ?? Type.EmptyTypes);
 
     foreach (var iface in interfaces)
       yield return iface;
