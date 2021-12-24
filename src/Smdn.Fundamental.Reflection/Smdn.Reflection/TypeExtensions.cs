@@ -12,10 +12,10 @@ public static class TypeExtensions {
   public static bool IsDelegate(this Type t) => t.IsSubclassOf(typeof(System.Delegate)) || t == typeof(System.Delegate);
   public static bool IsConcreteDelegate(this Type t) => t != typeof(System.Delegate) && t != typeof(System.MulticastDelegate) && t.IsSubclassOf(typeof(System.Delegate));
 
-  public static bool IsEnumFlags(this Type t) => t.IsEnum && t.GetCustomAttribute<FlagsAttribute>() != null;
+  public static bool IsEnumFlags(this Type t) => t.IsEnum && t.GetCustomAttributesData().Any(static d => string.Equals(d.AttributeType.FullName, typeof(FlagsAttribute).FullName, StringComparison.Ordinal));
 
-  public static bool IsReadOnlyValueType(this Type t) => t.IsValueType && t.GetCustomAttributes(false).Any(a => string.Equals(a.GetType().FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal));
-  public static bool IsByRefLikeValueType(this Type t) => t.IsValueType && t.GetCustomAttributes(false).Any(a => string.Equals(a.GetType().FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal));
+  public static bool IsReadOnlyValueType(this Type t) => t.IsValueType && t.GetCustomAttributesData().Any(static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal));
+  public static bool IsByRefLikeValueType(this Type t) => t.IsValueType && t.GetCustomAttributesData().Any(static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal));
 
   public static MethodInfo GetDelegateSignatureMethod(this Type t)
     => IsDelegate(t) ? t.GetMethod("Invoke") : null;
@@ -26,8 +26,13 @@ public static class TypeExtensions {
       yield break;
 
     // explicit base type
-    if (t.BaseType != null && t.BaseType != typeof(object) && t.BaseType != typeof(ValueType))
+    if (
+      t.BaseType is not null &&
+      !string.Equals(t.BaseType.FullName, typeof(object).FullName, StringComparison.Ordinal) &&
+      !string.Equals(t.BaseType.FullName, typeof(ValueType).FullName, StringComparison.Ordinal)
+    ) {
       yield return t.BaseType;
+    }
 
     // interfaces
     var allInterfaces = t.GetInterfaces();
