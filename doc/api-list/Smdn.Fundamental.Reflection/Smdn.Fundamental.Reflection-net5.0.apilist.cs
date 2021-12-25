@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.3 (net5.0))
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.4 (net5.0))
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.0.3.0
-//   InformationalVersion: 3.0.3 (net5.0)
+//   AssemblyVersion: 3.0.4.0
+//   InformationalVersion: 3.0.4 (net5.0)
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
 
@@ -69,6 +69,7 @@ namespace Smdn.Reflection {
     public static MethodSpecialName GetNameType(this MethodBase m) {}
     public static IEnumerable<Type> GetSignatureTypes(this MethodBase m) {}
     public static bool IsExplicitlyImplemented(this MethodBase m) {}
+    public static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces = false) {}
   }
 
   public static class MethodInfoExtensions {
