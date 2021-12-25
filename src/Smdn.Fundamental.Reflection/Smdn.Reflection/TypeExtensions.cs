@@ -9,34 +9,78 @@ using System.Runtime.InteropServices;
 namespace Smdn.Reflection;
 
 public static class TypeExtensions {
+  /// <summary>The utility functions which supports types from reflection-only context.</summary>
+  private static class ROCType {
+    public static bool Equals(Type type, Type t)
+      =>
+        string.Equals(type.FullName, t.FullName, StringComparison.Ordinal) &&
+        string.Equals(type.Assembly.GetName().Name, t.Assembly.GetName().Name, StringComparison.Ordinal);
+
+    public static bool IsSubclassOf(Type type, Type t)
+    {
+      if (Equals(type, t))
+        return false;
+
+      for (; ; ) {
+        type = type.BaseType;
+
+        if (type is null)
+          return false;
+
+        if (Equals(type, t))
+          return true;
+      }
+    }
+
+    public static bool IsValueType(Type type)
+      => IsSubclassOf(type, typeof(ValueType));
+
+    public static bool IsEnum(Type type)
+      => IsSubclassOf(type, typeof(Enum));
+
+    public static Type GetUnderlyingTypeOfNullable(Type nullableType)
+    {
+      if (!nullableType.IsGenericType) // is not Nullable<T>
+        return null;
+
+      if (nullableType.IsGenericTypeDefinition) // is not concrete type
+        return null;
+
+      if (Equals(nullableType.GetGenericTypeDefinition(), typeof(Nullable<>)))
+        return nullableType.GetGenericArguments()[0];
+
+      return null; // is not Nullable<T>
+    }
+  }
+
   public static bool IsDelegate(this Type t)
     =>
-      t.IsSubclassOf(typeof(Delegate)) ||
-      t == typeof(Delegate);
+      ROCType.IsSubclassOf(t, typeof(Delegate)) ||
+      ROCType.Equals(t, typeof(Delegate));
 
   public static bool IsConcreteDelegate(this Type t)
     =>
-      t != typeof(Delegate) &&
-      t != typeof(MulticastDelegate) &&
-      t.IsSubclassOf(typeof(Delegate));
+      !ROCType.Equals(t, typeof(Delegate)) &&
+      !ROCType.Equals(t, typeof(MulticastDelegate)) &&
+      ROCType.IsSubclassOf(t, typeof(Delegate));
 
   public static bool IsEnumFlags(this Type t)
     =>
-      t.IsEnum &&
+      ROCType.IsEnum(t) &&
       t.GetCustomAttributesData().Any(
         static d => string.Equals(d.AttributeType.FullName, typeof(FlagsAttribute).FullName, StringComparison.Ordinal)
       );
 
   public static bool IsReadOnlyValueType(this Type t)
     =>
-      t.IsValueType &&
+      ROCType.IsValueType(t) &&
       t.GetCustomAttributesData().Any(
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal)
       );
 
   public static bool IsByRefLikeValueType(this Type t)
     =>
-      t.IsValueType &&
+      ROCType.IsValueType(t) &&
       t.GetCustomAttributesData().Any(
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal)
       );
@@ -46,14 +90,14 @@ public static class TypeExtensions {
 
   public static IEnumerable<Type> GetExplicitBaseTypeAndInterfaces(this Type t)
   {
-    if (t.IsEnum || t.IsDelegate())
+    if (ROCType.IsEnum(t) || t.IsDelegate())
       yield break;
 
     // explicit base type
     if (
       t.BaseType is not null &&
-      !string.Equals(t.BaseType.FullName, typeof(object).FullName, StringComparison.Ordinal) &&
-      !string.Equals(t.BaseType.FullName, typeof(ValueType).FullName, StringComparison.Ordinal)
+      !ROCType.Equals(t.BaseType, typeof(object)) &&
+      !ROCType.Equals(t.BaseType, typeof(ValueType))
     ) {
       yield return t.BaseType;
     }
@@ -80,7 +124,7 @@ public static class TypeExtensions {
   {
     var elementType = t.IsArray || t.IsByRef || t.IsPointer
       ? t.GetElementType()
-      : Nullable.GetUnderlyingType(t);
+      : ROCType.GetUnderlyingTypeOfNullable(t);
 
     if (elementType is not null) {
       foreach (var ns in GetNamespaces(elementType, isLanguagePrimitive))
