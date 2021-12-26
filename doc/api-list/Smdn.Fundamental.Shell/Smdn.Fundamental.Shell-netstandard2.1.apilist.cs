@@ -12,7 +12,6 @@ using System.IO;
 using Smdn.OperatingSystem;
 
 namespace Smdn.OperatingSystem {
-  // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EnvironmentVariable {
     public static string CombineEnvironmentVariables(IDictionary<string, string> variables) {}
@@ -20,7 +19,6 @@ namespace Smdn.OperatingSystem {
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables, bool throwIfInvalid) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PipeOutStream : Stream {
     public PipeOutStream(ProcessStartInfo startInfo) {}
@@ -46,7 +44,6 @@ namespace Smdn.OperatingSystem {
     public override void WriteByte(byte @value) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Shell {
     public static ProcessStartInfo CreateProcessStartInfo(string command, params string[] arguments) {}
@@ -56,7 +53,6 @@ namespace Smdn.OperatingSystem {
     public static string Execute(string command) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ShellString :
     ICloneable,

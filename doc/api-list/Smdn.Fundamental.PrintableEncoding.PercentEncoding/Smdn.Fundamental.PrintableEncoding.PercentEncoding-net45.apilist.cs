@@ -10,7 +10,6 @@ using System.Text;
 using Smdn.Formats.PercentEncodings;
 
 namespace Smdn.Formats.PercentEncodings {
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [Flags]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ToPercentEncodedTransformMode : int {
@@ -27,7 +26,6 @@ namespace Smdn.Formats.PercentEncodings {
     UriEscapeUriString = 0x00000004,
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromPercentEncodedTransform : ICryptoTransform {
     public FromPercentEncodedTransform() {}
@@ -44,7 +42,6 @@ namespace Smdn.Formats.PercentEncodings {
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class PercentEncoding {
     public static byte[] Decode(string str) {}
@@ -61,7 +58,6 @@ namespace Smdn.Formats.PercentEncodings {
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.PercentEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToPercentEncodedTransform : ICryptoTransform {
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode) {}

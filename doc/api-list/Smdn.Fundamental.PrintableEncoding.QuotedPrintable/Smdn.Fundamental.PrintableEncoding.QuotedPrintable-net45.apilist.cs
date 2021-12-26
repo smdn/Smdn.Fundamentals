@@ -11,21 +11,18 @@ using System.Text;
 using Smdn.Formats.QuotedPrintableEncodings;
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum FromQuotedPrintableTransformMode : int {
     ContentTransferEncoding = 0,
     MimeEncoding = 1,
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ToQuotedPrintableTransformMode : int {
     ContentTransferEncoding = 0,
     MimeEncoding = 1,
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromQuotedPrintableTransform : ICryptoTransform {
     public FromQuotedPrintableTransform(FromQuotedPrintableTransformMode mode) {}
@@ -41,7 +38,6 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class QuotedPrintableEncoding {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
@@ -57,7 +53,6 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public static string GetEncodedString(string str, Encoding encoding) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToQuotedPrintableTransform : ICryptoTransform {
     public ToQuotedPrintableTransform(ToQuotedPrintableTransformMode mode) {}

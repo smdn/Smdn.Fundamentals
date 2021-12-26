@@ -8,7 +8,6 @@
 using System.Text;
 
 namespace Smdn.Text.Encodings {
-  // Forwarded to "Smdn.Fundamental.Encoding.OctetEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class OctetEncoding : Encoding {
     public static readonly Encoding EightBits; // = "Smdn.Text.Encodings.OctetEncoding"

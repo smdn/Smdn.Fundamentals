@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using Smdn.OperatingSystem;
 
 namespace Smdn.OperatingSystem {
-  // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EnvironmentVariable {
     public static string CombineEnvironmentVariables(IDictionary<string, string> variables) {}
@@ -18,7 +17,6 @@ namespace Smdn.OperatingSystem {
     public static Dictionary<string, string> ParseEnvironmentVariables(string variables, bool throwIfInvalid) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Shell, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ShellString :
     IEquatable<ShellString>,

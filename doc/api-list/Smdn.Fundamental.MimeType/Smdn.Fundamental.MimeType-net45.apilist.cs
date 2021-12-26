@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using Smdn;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.MimeType, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class MimeType :
     IEquatable<MimeType>,
@@ -24,7 +23,7 @@ namespace Smdn {
     public static readonly MimeType MultipartMixed; // = "multipart/mixed"
     public static readonly MimeType TextPlain; // = "text/plain"
 
-    public MimeType((string, string) mimeType) {}
+    public MimeType((string type, string subType) mimeType) {}
     public MimeType(string mimeType) {}
     public MimeType(string type, string subType) {}
 
@@ -50,13 +49,13 @@ namespace Smdn {
     public static MimeType FindMimeTypeByExtension(string extensionOrPath) {}
     public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile) {}
     public override int GetHashCode() {}
-    public static (string, string) Parse(string s) {}
+    public static (string type, string subType) Parse(string s) {}
     public bool SubTypeEquals(MimeType mimeType) {}
     public bool SubTypeEquals(string subType) {}
     public bool SubTypeEqualsIgnoreCase(MimeType mimeType) {}
     public bool SubTypeEqualsIgnoreCase(string subType) {}
     public override string ToString() {}
-    public static bool TryParse(string s, out (string, string) result) {}
+    public static bool TryParse(string s, out (string type, string subType) result) {}
     public static bool TryParse(string s, out MimeType result) {}
     public bool TypeEquals(MimeType mimeType) {}
     public bool TypeEquals(string type) {}

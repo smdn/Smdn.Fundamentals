@@ -13,7 +13,6 @@ using System.Text;
 using Smdn.Text;
 
 namespace Smdn.Text {
-  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class ByteString :
@@ -139,7 +138,6 @@ namespace Smdn.Text {
     public static ByteString operator * (ByteString x, int y) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ByteStringBuilder {
     public ByteStringBuilder() {}
@@ -165,7 +163,6 @@ namespace Smdn.Text {
     public override string ToString() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.ByteString, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ByteStringExtensions {
     public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) {}

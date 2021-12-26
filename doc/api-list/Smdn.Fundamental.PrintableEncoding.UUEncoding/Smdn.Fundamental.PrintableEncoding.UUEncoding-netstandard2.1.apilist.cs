@@ -12,7 +12,6 @@ using System.Security.Cryptography;
 using Smdn.Formats.UUEncodings;
 
 namespace Smdn.Formats.UUEncodings {
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class UUDecoder {
     public sealed class FileEntry : IDisposable {
@@ -31,7 +30,6 @@ namespace Smdn.Formats.UUEncodings {
     public static void ExtractFiles(Stream stream, Action<UUDecoder.FileEntry> extractAction) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class UUDecodingStream : Stream {
     public UUDecodingStream(Stream baseStream) {}
@@ -57,7 +55,6 @@ namespace Smdn.Formats.UUEncodings {
     public override void Write(byte[] buffer, int offset, int count) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class UUDecodingTransform : ICryptoTransform {
     public UUDecodingTransform() {}

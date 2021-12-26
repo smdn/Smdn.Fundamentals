@@ -11,7 +11,6 @@ using Smdn;
 using Smdn.IO.Binary;
 
 namespace Smdn.IO.Binary {
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BigEndianBinaryReader : BinaryReader {
     protected BigEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
@@ -28,7 +27,6 @@ namespace Smdn.IO.Binary {
     public override ulong ReadUInt64() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BigEndianBinaryWriter : BinaryWriter {
     protected BigEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
@@ -45,7 +43,6 @@ namespace Smdn.IO.Binary {
     public override void Write(ushort @value) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class BinaryConversion {
     public static int ByteSwap(int @value) {}
@@ -128,7 +125,6 @@ namespace Smdn.IO.Binary {
     public static ulong ToUInt64LE(byte[] @value, int startIndex) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BinaryReader : BinaryReaderBase {
     protected readonly byte[] Storage;
@@ -153,7 +149,6 @@ namespace Smdn.IO.Binary {
     public override ulong ReadUInt64() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class BinaryReaderBase : IDisposable {
     protected BinaryReaderBase(Stream baseStream, bool leaveBaseStreamOpen) {}
@@ -186,7 +181,6 @@ namespace Smdn.IO.Binary {
     void IDisposable.Dispose() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class BinaryWriter : BinaryWriterBase {
     protected readonly byte[] Storage;
@@ -211,7 +205,6 @@ namespace Smdn.IO.Binary {
     public virtual void Write(UInt48 @value) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class BinaryWriterBase : IDisposable {
     protected BinaryWriterBase(Stream baseStream, bool leaveBaseStreamOpen) {}
@@ -241,7 +234,6 @@ namespace Smdn.IO.Binary {
     public void WriteZero(long count) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LittleEndianBinaryReader : BinaryReader {
     protected LittleEndianBinaryReader(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}
@@ -258,7 +250,6 @@ namespace Smdn.IO.Binary {
     public override ulong ReadUInt64() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.BinaryReaderWriter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LittleEndianBinaryWriter : BinaryWriter {
     protected LittleEndianBinaryWriter(Stream stream, bool leaveBaseStreamOpen, int storageSize) {}

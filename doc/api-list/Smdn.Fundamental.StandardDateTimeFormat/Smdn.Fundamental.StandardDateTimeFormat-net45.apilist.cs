@@ -8,7 +8,6 @@
 using System;
 
 namespace Smdn.Formats {
-  // Forwarded to "Smdn.Fundamental.StandardDateTimeFormat, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class DateTimeFormat {
     public static DateTimeOffset FromISO8601DateTimeOffsetString(string s) {}

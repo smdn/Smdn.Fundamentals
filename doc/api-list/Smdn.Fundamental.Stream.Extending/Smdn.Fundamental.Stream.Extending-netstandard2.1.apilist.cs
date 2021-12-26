@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Smdn.IO.Streams.Extending;
 
 namespace Smdn.IO.Streams.Extending {
-  // Forwarded to "Smdn.Fundamental.Stream.Extending, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ExtendStream : ExtendStreamBase {
     public ExtendStream(Stream innerStream, Stream prependStream, Stream appendStream, bool leaveInnerStreamOpen = true, bool leavePrependStreamOpen = true, bool leaveAppendStreamOpen = true) {}
@@ -29,7 +28,6 @@ namespace Smdn.IO.Streams.Extending {
     protected override void SetPrependedDataPosition(long position) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.Extending, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class ExtendStreamBase : Stream {
     protected enum StreamSection : int {

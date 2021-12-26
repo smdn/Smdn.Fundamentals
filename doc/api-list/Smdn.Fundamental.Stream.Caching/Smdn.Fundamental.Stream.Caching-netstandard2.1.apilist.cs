@@ -9,7 +9,6 @@ using System.IO;
 using Smdn.IO.Streams.Caching;
 
 namespace Smdn.IO.Streams.Caching {
-  // Forwarded to "Smdn.Fundamental.Stream.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class CachedStreamBase : Stream {
     protected CachedStreamBase(Stream innerStream, int blockSize, bool leaveInnerStreamOpen) {}
@@ -36,7 +35,6 @@ namespace Smdn.IO.Streams.Caching {
     public override void WriteByte(byte @value) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class NonPersistentCachedStream : CachedStreamBase {
     public NonPersistentCachedStream(Stream innerStream) {}
@@ -48,7 +46,6 @@ namespace Smdn.IO.Streams.Caching {
     protected override byte[] GetBlock(long blockIndex) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class PersistentCachedStream : CachedStreamBase {
     public PersistentCachedStream(Stream innerStream) {}

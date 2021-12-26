@@ -9,7 +9,6 @@ using System;
 using System.IO;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.Exception, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ExceptionUtils {
     public static ArgumentException CreateAllItemsOfArgumentMustBeNonNull(string paramName) {}

@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Smdn.IO.Streams.Filtering;
 
 namespace Smdn.IO.Streams.Filtering {
-  // Forwarded to "Smdn.Fundamental.Stream.Filtering, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FilterStream : Stream {
     public delegate void FilterAction(Span<byte> buffer, long offsetWithinFilter);

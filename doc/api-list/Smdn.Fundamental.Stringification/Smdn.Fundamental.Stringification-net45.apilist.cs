@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace Smdn {
   public static class Stringification {
-    public static string Stringify(Type type, IEnumerable<(string, object)> nameAndValuePairs) {}
+    public static string Stringify(Type type, IEnumerable<(string name, object value)> nameAndValuePairs) {}
   }
 }
 

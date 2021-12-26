@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace Smdn.Formats {
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Base64 {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}

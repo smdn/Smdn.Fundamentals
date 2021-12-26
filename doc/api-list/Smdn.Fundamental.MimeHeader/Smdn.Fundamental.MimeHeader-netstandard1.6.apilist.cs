@@ -14,7 +14,6 @@ using Smdn.Formats.Mime;
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime {
-  // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeUtils {
     [Obsolete("use ParseHeaderAsync() instead", true)]
@@ -38,7 +37,6 @@ namespace Smdn.Formats.Mime {
     public static string RemoveHeaderWhiteSpaceAndComment(string val) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.MimeHeader, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public readonly struct RawHeaderField {
     public ReadOnlySequence<byte> HeaderFieldSequence { get; }

@@ -11,11 +11,9 @@ using Smdn.Formats.Mime;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.Mime {
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public delegate string MimeEncodedWordConverter(Encoding charset, string encodingMethod, string encodedText);
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum ContentTransferEncodingMethod : int {
     Base64 = 3,
@@ -28,7 +26,6 @@ namespace Smdn.Formats.Mime {
     Unknown = 7,
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum MimeEncodingMethod : int {
     BEncoding = 1,
@@ -38,7 +35,6 @@ namespace Smdn.Formats.Mime {
     QuotedPrintable = 2,
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ContentTransferEncoding {
     public const string HeaderName = "Content-Transfer-Encoding";
@@ -62,7 +58,6 @@ namespace Smdn.Formats.Mime {
     public static string GetEncodingName(ContentTransferEncodingMethod method) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.PrintableEncoding.MimeEncoding, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeEncoding {
     public static string Decode(string str) {}

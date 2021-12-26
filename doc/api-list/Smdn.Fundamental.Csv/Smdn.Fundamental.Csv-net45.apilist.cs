@@ -11,7 +11,6 @@ using System.IO;
 using System.Text;
 
 namespace Smdn.Formats {
-  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class CsvRecord {
     public static IReadOnlyList<string> Split(ReadOnlySpan<char> csv) {}
@@ -28,7 +27,6 @@ namespace Smdn.Formats {
 }
 
 namespace Smdn.Formats.Csv {
-  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvReader : StreamReader {
     public CsvReader(Stream stream) {}
@@ -45,7 +43,6 @@ namespace Smdn.Formats.Csv {
     public IEnumerable<IReadOnlyList<string>> ReadRecords() {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Csv, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class CsvWriter : StreamWriter {
     public CsvWriter(Stream stream) {}

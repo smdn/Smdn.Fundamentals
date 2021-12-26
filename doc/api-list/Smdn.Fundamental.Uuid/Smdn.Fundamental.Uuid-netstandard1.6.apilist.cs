@@ -11,7 +11,6 @@ using Smdn;
 using Smdn.Formats.UniversallyUniqueIdentifiers;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public enum UuidVersion : byte {
     NameBasedMD5Hash = 3,
@@ -26,7 +25,6 @@ namespace Smdn {
     Version5 = 5,
   }
 
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
   public readonly struct Uuid :
@@ -123,7 +121,6 @@ namespace Smdn {
 }
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class UuidGenerator {
     protected UuidGenerator() {}
@@ -141,7 +138,6 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public abstract Uuid GenerateNext();
   }
 
-  // Forwarded to "Smdn.Fundamental.Uuid, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Sequential, Pack = 1)]
   public readonly struct Node : IFormattable {

@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Smdn.IO.Streams;
 
 namespace Smdn.IO {
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class StreamExtensions {
     public static void Close(this Stream stream) {}
@@ -28,7 +27,6 @@ namespace Smdn.IO {
 }
 
 namespace Smdn.IO.Streams {
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ChunkedMemoryStream : Stream {
     public delegate ChunkedMemoryStream.Chunk Allocator(int chunkSize);
@@ -67,7 +65,6 @@ namespace Smdn.IO.Streams {
     public override void WriteByte(byte @value) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class NonClosingStream : Stream {
     public NonClosingStream(Stream innerStream) {}
@@ -89,7 +86,6 @@ namespace Smdn.IO.Streams {
     public override void Write(byte[] buffer, int offset, int count) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Stream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream : Stream {
     public PartialStream(Stream innerStream, long offset) {}

@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using Smdn;
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.MimeType, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class MimeType :
     IEquatable<MimeType>,

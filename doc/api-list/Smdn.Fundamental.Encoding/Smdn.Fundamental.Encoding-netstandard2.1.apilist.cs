@@ -11,11 +11,9 @@ using System.Text;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Text.Encodings {
-  // Forwarded to "Smdn.Fundamental.Encoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public delegate Encoding EncodingSelectionCallback(string name);
 
-  // Forwarded to "Smdn.Fundamental.Encoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class EncodingNotSupportedException : NotSupportedException {
@@ -31,7 +29,6 @@ namespace Smdn.Text.Encodings {
     public override void GetObjectData(SerializationInfo info, StreamingContext context) {}
   }
 
-  // Forwarded to "Smdn.Fundamental.Encoding, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EncodingUtils {
     public static Encoding GetEncoding(string name) {}

@@ -7,7 +7,6 @@
 
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.Math, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MathUtils {
     public static int Gcd(int m, int n) {}

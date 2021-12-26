@@ -9,7 +9,6 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace Smdn.Security.Cryptography {
-  // Forwarded to "Smdn.Fundamental.CryptoTransform, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ICryptoTransformExtensions {
     public static byte[] TransformBytes(this ICryptoTransform transform, byte[] inputBuffer) {}

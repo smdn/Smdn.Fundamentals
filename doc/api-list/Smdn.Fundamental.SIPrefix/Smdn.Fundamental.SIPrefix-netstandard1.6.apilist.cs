@@ -10,7 +10,6 @@ using System.Globalization;
 using Smdn.Formats;
 
 namespace Smdn.Formats {
-  // Forwarded to "Smdn.Fundamental.SIPrefix, Version=3.0.1.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class SIPrefixNumberFormatter :
     ICustomFormatter,

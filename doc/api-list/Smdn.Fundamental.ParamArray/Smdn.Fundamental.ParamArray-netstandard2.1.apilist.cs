@@ -7,7 +7,6 @@
 
 
 namespace Smdn {
-  // Forwarded to "Smdn.Fundamental.ParamArray, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null"
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ParamArrayUtils {
     public static IEnumerable<TParam> ToEnumerable<TParam>(TParam first, params TParam[] subsequence) {}
