@@ -69,12 +69,20 @@ SPDX-License-Identifier: MIT
     <Warning Text="generated nupkg with configuration '$(Configuration)'" />
   </Target>
 
-  <Target Name="GenerateAPIList" AfterTargets="Pack" Condition=" '$(Configuration)' == 'Release' ">
+  <Import Project="$(NuGetPackageRoot)\smdn.reflection.reversegenerating.listapi.msbuild.tasks\1.0.2\tasks\net6.0\GenerateApiList.task" Condition=" '$(Configuration)' == 'Release' " />
+
+  <Target Name="GenerateAPIListOfPackage" AfterTargets="Pack" Condition=" '$(Configuration)' == 'Release' " Label="API list generator">
     <ItemGroup>
-      <BuildOutputAssembly Include="@(NuGetPackInput)" Condition="$([System.String]::new('%(NuGetPackInput.TargetPath)').EndsWith('.dll')) and '' != '%(NuGetPackInput.TargetFramework)' ">
-        <APIListOutputDirectory>$(APIListOutputBaseDirectory)\$(AssemblyName)</APIListOutputDirectory>
-      </BuildOutputAssembly>
+      <GenerateApiListTargets Include="%(NuGetPackInput.Identity)" Condition="
+        '%(NuGetPackInput.MSBuildSourceProjectFile)' == '$(MSBuildProjectFullPath)' and
+        '' != '%(NuGetPackInput.TargetFramework)' and
+        $([System.String]::new('%(NuGetPackInput.TargetPath)').EndsWith('.dll'))
+      ">
+        <OutputFilePath>$(APIListOutputBaseDirectory)\$(AssemblyName)\$(AssemblyName)-%(NuGetPackInput.TargetFramework).apilist.cs</OutputFilePath>
+        <LoadIntoReflectionOnlyContext>false</LoadIntoReflectionOnlyContext>
+      </GenerateApiListTargets>
     </ItemGroup>
-    <Exec Command="list-api -o %(BuildOutputAssembly.APIListOutputDirectory) -v minimal %(BuildOutputAssembly.Identity)" />
+
+    <GenerateApiList Assemblies="@(GenerateApiListTargets)" />
   </Target>
 </Project>
