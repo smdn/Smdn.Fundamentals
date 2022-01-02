@@ -12,12 +12,13 @@ SPDX-License-Identifier: MIT
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Label="metadata">
+  <PropertyGroup Label="assembly attributes">
     <Title>Smdn.dll</Title>
     <Description>Smdn.dll, fundamental utility and extension library</Description>
     <CopyrightYear>2009</CopyrightYear>
+  </PropertyGroup>
 
-    <!-- NuGet -->
+  <PropertyGroup Label="package properties">
     <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.dll/</PackageProjectUrl>
     <PackageTags>utility;utils;extensions;mono;netframework;dotnet-core;dotnet-standard</PackageTags>
   </PropertyGroup>

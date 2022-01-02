@@ -10,11 +10,11 @@ SPDX-License-Identifier: MIT
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
-  <PropertyGroup Label="metadata">
+  <PropertyGroup Label="assembly attributes">
     <CopyrightYear>2021</CopyrightYear>
+  </PropertyGroup>
 
-    <!-- NuGet -->
-    <!--<PackageTags></PackageTags>-->
+  <PropertyGroup Label="package properties">
   </PropertyGroup>
 
   <ItemGroup>

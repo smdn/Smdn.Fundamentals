@@ -12,11 +12,11 @@ SPDX-License-Identifier: MIT
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Label="metadata">
+  <PropertyGroup Label="assembly attributes">
     <Description>Reflection utility and extension library</Description>
     <CopyrightYear>2018</CopyrightYear>
+  </PropertyGroup>
 
-    <!-- NuGet -->
-    <!-- <PackageTags></PackageTags> -->
+  <PropertyGroup Label="package properties">
   </PropertyGroup>
 </Project>

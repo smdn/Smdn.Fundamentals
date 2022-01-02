@@ -11,11 +11,11 @@ SPDX-License-Identifier: MIT
     <AllowUnsafeBlocks Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))">true</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Label="metadata">
+  <PropertyGroup Label="assembly attributes">
     <CopyrightYear>2021</CopyrightYear>
+  </PropertyGroup>
 
-    <!-- NuGet -->
-    <!--<PackageTags></PackageTags>-->
+  <PropertyGroup Label="package properties">
   </PropertyGroup>
 
   <ItemGroup>
