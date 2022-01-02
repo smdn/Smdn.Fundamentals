@@ -1,0 +1,50 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ImportGroup>
+    <Import Project="$(MSBuildThisFileDirectory)AssemblyAttributes.GenerateCLSCompliant.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)AssemblyAttributes.GenerateMetadata.Repository.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)AssemblyAttributes.SetDefaults.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)Nupkg.SetProjectReferenceVersionRange.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)Nupkg.WarnPackConfiguration.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)Nupkg.GenerateRepositoryProperties.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)Nupkg.SetDefaults.targets" />
+  </ImportGroup>
+
+  <!--
+    API list
+  -->
+  <ItemGroup Label="API list generator">
+    <PackageReference Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks" Version="$(APIListPackageVersion)" Condition="'$(APIListEnableGenerating)' == 'true'">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <Import
+    Project="$(NuGetPackageRoot)smdn.reflection.reversegenerating.listapi.msbuild.tasks\$(APIListPackageVersion)\tasks\net6.0\GenerateApiList.task"
+    Condition="'$(APIListEnableGenerating)' == 'true'"
+  />
+
+  <Target
+    Name="GenerateAPIListOfPackage"
+    AfterTargets="Pack"
+    Condition="'$(APIListEnableGenerating)' == 'true'"
+    Label="API list generator"
+  >
+    <ItemGroup>
+      <GenerateApiListTargets Include="%(NuGetPackInput.Identity)" Condition="
+        '%(NuGetPackInput.MSBuildSourceProjectFile)' == '$(MSBuildProjectFullPath)' and
+        '' != '%(NuGetPackInput.TargetFramework)' and
+        $([System.String]::new('%(NuGetPackInput.TargetPath)').EndsWith('.dll'))
+      ">
+        <OutputFilePath>$(APIListOutputBaseDirectory)\$(AssemblyName)\$(AssemblyName)-%(NuGetPackInput.TargetFramework).apilist.cs</OutputFilePath>
+        <LoadIntoReflectionOnlyContext>$(APIListLoadIntoReflectionOnlyContext)</LoadIntoReflectionOnlyContext>
+      </GenerateApiListTargets>
+    </ItemGroup>
+
+    <GenerateApiList Assemblies="@(GenerateApiListTargets)" />
+  </Target>
+</Project>

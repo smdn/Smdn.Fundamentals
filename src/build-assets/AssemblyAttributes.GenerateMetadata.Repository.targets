@@ -1,0 +1,17 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="AssemblyAttributes_GenerateMetadata_Repository"
+    BeforeTargets="GetAssemblyAttributes"
+    DependsOnTargets="GetRepositoryProperties"
+    Condition="'$(Configuration)' == 'Release'"
+  >
+    <ItemGroup Label="assembly attributes">
+      <AssemblyMetadata Include="RepositoryBranch" Value="$(RepositoryBranch)" Condition=" '$(RepositoryBranch)' != '' " />
+      <AssemblyMetadata Include="RepositoryCommit" Value="$(RepositoryCommit)" Condition=" '$(RepositoryCommit)' != '' " />
+    </ItemGroup>
+  </Target>
+</Project>

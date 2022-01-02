@@ -1,0 +1,11 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="Nupkg_GenerateRepositoryProperties"
+    BeforeTargets="GenerateNuspec"
+    DependsOnTargets="GetRepositoryProperties"
+  />
+</Project>

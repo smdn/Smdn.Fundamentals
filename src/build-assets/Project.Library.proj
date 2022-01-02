@@ -1,0 +1,56 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ImportGroup>
+    <Import Project="$(MSBuildThisFileDirectory)GetRepositoryProperties.targets" />
+  </ImportGroup>
+
+  <PropertyGroup>
+    <!-- project defaults -->
+    <LangVersion>latest</LangVersion>
+    <Deterministic>true</Deterministic>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
+    <Authors>smdn</Authors>
+    <CopyrightHolders>smdn</CopyrightHolders>
+
+    <!-- API list configurations -->
+    <APIListEnableGenerating Condition="'$(Configuration)' == 'Release'">true</APIListEnableGenerating>
+    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\..\doc\api-list\</APIListOutputBaseDirectory>
+    <APIListPackageVersion>1.0.2</APIListPackageVersion>
+    <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
+  </PropertyGroup>
+
+  <!--
+    symbols
+  -->
+  <Import Project="$(MSBuildThisFileDirectory)Symbols.FrameworkAPI.props" />
+
+  <!--
+    package icon
+  -->
+  <ItemGroup Label="package icon">
+    <None Include="$(MSBuildThisFileDirectory)package-icon.png" Pack="true" Visible="false" PackagePath="$(MSBuildProjectName).png"/>
+  </ItemGroup>
+
+  <PropertyGroup Label="package icon">
+    <PackageIcon>$(MSBuildProjectName).png</PackageIcon>
+  </PropertyGroup>
+
+  <!--
+    code analysis
+  -->
+  <ItemGroup Label="code analysis">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Link="stylecop.json" />
+  </ItemGroup>
+
+  <PropertyGroup Label="code analysis">
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+</Project>

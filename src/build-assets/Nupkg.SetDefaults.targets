@@ -1,0 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!-- ref: https://docs.microsoft.com/ja-jp/nuget/reference/msbuild-targets -->
+  <PropertyGroup Label="package properties">
+    <Title Condition=" '$(Title)' == '' ">$(AssemblyTitle)</Title>
+    <PackageProjectUrl Condition=" '$(PackageProjectUrl)' == '' ">https://smdn.jp/</PackageProjectUrl>
+    <PackageTags Condition="!$(PackageTags.Contains('smdn.jp'))">smdn.jp;$(PackageTags)</PackageTags>
+  </PropertyGroup>
+</Project>

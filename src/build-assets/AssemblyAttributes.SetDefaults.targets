@@ -1,0 +1,31 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!-- ref: https://docs.microsoft.com/ja-jp/dotnet/core/project-sdk/msbuild-props#assembly-attribute-properties -->
+  <PropertyGroup Label="assembly attributes">
+    <!-- AssemblyTitleAttribute -->
+    <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(Title)</AssemblyTitle>
+    <AssemblyTitle Condition=" '$(AssemblyTitle)' == '' ">$(AssemblyName)</AssemblyTitle>
+
+    <!-- AssemblyVersionAttribute -->
+    <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(VersionPrefix)</AssemblyVersion>
+    <AssemblyVersion Condition=" '$(AssemblyVersion)' == '' ">$(Version)</AssemblyVersion>
+
+    <!-- AssemblyInformationalVersionAttribute -->
+    <InformationalVersion Condition=" '$(InformationalVersion)' == '' ">$(VersionPrefix)$(VersionSuffix) ($(TargetFramework))</InformationalVersion>
+
+    <!-- AssemblyDescriptionAttribute -->
+    <Description Condition=" '$(Description)' == '' ">$(AssemblyName).dll</Description>
+
+    <!-- AssemblyProductAttribute -->
+    <Product>$(AssemblyName)-$(InformationalVersion)</Product>
+
+    <!-- AssemblyCompanyAttribute -->
+    <Company>smdn.jp (https://smdn.jp)</Company>
+
+    <!-- AssemblyCopyrightAttribute -->
+    <Copyright Condition=" '$(Copyright)' == '' ">Copyright © $(CopyrightYear) $(CopyrightHolders)</Copyright>
+  </PropertyGroup>
+</Project>

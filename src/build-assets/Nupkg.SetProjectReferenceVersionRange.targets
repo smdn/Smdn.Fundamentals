@@ -1,0 +1,16 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!-- Replaces %(ProjectReferencesWithVersions.ProjectVersion) with custom defined metadata %(ProjectReference.VersionRange) -->
+  <!-- ref: https://github.com/NuGet/Home/issues/5556 -->
+  <Target Name="Nupkg_SetProjectReferenceVersionRange" AfterTargets="_GetProjectReferenceVersions">
+    <ItemGroup>
+      <ProjectReferencesWithVersionsToUpdate Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\%(ProjectReference.Identity)'))" ProjectVersion="%(ProjectReference.VersionRange)" Condition=" '%(ProjectReference.VersionRange)' != '' " />
+
+      <_ProjectReferencesWithVersions Remove="%(ProjectReferencesWithVersionsToUpdate.Identity)" />
+      <_ProjectReferencesWithVersions Include="%(ProjectReferencesWithVersionsToUpdate.Identity)" ProjectVersion="%(ProjectReferencesWithVersionsToUpdate.ProjectVersion)" />
+    </ItemGroup>
+  </Target>
+</Project>

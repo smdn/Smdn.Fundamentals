@@ -1,0 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="AssemblyAttributes_GenerateCLSCompliant"
+    BeforeTargets="GetAssemblyAttributes"
+  >
+    <ItemGroup Label="assembly attributes">
+      <!-- https://github.com/dotnet/msbuild/pull/6285 -->
+      <AssemblyAttribute Include="System.CLSCompliantAttribute" Condition=" '$(AssemblyCLSCompliant)' != '' ">
+        <_Parameter1>$(AssemblyCLSCompliant)</_Parameter1>
+        <_Parameter1_TypeName>System.Boolean</_Parameter1_TypeName>
+      </AssemblyAttribute>
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target Name="Nupkg_WarnPackConfiguration" AfterTargets="Pack" Condition=" '$(Configuration)' != 'Release' ">
+    <Warning Text="generated nupkg with configuration '$(Configuration)'" />
+  </Target>
+</Project>
