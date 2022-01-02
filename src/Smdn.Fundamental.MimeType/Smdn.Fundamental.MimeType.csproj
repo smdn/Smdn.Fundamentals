@@ -15,6 +15,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
+    <PackageTags>MIME;MIME-type</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

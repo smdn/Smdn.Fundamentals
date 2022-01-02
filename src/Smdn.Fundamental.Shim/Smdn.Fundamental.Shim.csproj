@@ -15,5 +15,6 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
+    <PackageTags>shim;extensions</PackageTags>
   </PropertyGroup>
 </Project>

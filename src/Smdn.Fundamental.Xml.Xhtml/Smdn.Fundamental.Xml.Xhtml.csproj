@@ -18,6 +18,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
+    <PackageTags>XHTML;HTML;XLinq;polyglot-markup;extensions</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
