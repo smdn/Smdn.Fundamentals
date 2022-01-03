@@ -8,13 +8,17 @@ SPDX-License-Identifier: MIT
   </ImportGroup>
 
   <PropertyGroup>
-    <!-- project defaults -->
+    <!-- build defaults -->
     <LangVersion>latest</LangVersion>
     <Deterministic>true</Deterministic>
-    <EnablePackageValidation>true</EnablePackageValidation>
+
+    <!-- assembly defaults -->
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
-    <Authors>smdn</Authors>
     <CopyrightHolders>smdn</CopyrightHolders>
+
+    <!-- package defaults -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <Authors>smdn</Authors>
 
     <!-- API list configurations -->
     <APIListEnableGenerating Condition="'$(Configuration)' == 'Release'">true</APIListEnableGenerating>
