@@ -40,7 +40,7 @@ SPDX-License-Identifier: MIT
         '' != '%(NuGetPackInput.TargetFramework)' and
         $([System.String]::new('%(NuGetPackInput.TargetPath)').EndsWith('.dll'))
       ">
-        <OutputFilePath>$(APIListOutputBaseDirectory)\$(AssemblyName)\$(AssemblyName)-%(NuGetPackInput.TargetFramework).apilist.cs</OutputFilePath>
+        <OutputFilePath>$(APIListOutputBaseDirectory)$(AssemblyName)\$(AssemblyName)-%(NuGetPackInput.TargetFramework).apilist.cs</OutputFilePath>
         <LoadIntoReflectionOnlyContext>$(APIListLoadIntoReflectionOnlyContext)</LoadIntoReflectionOnlyContext>
       </GenerateApiListTargets>
     </ItemGroup>
