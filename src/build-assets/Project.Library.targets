@@ -13,6 +13,24 @@ SPDX-License-Identifier: MIT
     <Import Project="$(MSBuildThisFileDirectory)Nupkg.SetDefaults.targets" />
   </ImportGroup>
 
+  <!-- NuGetPackageRoot is not set until `pack` or `restore` is executed, so set an alternative default path -->
+  <!-- ref: https://github.com/NuGet/Home/issues/9150 -->
+  <PropertyGroup>
+    <NuGetPackageAltRoot>$(NuGetPackageRoot)</NuGetPackageAltRoot>
+    <NuGetPackageAltRoot Condition="('$(NuGetPackageAltRoot)' == '') and $([MSBuild]::IsOSUnixLike())">$(HOME)\.nuget\packages\</NuGetPackageAltRoot>
+    <NuGetPackageAltRoot Condition="('$(NuGetPackageAltRoot)' == '')">$(USERPROFILE)\.nuget\packages\</NuGetPackageAltRoot>
+  </PropertyGroup>
+
+  <!-- PackageReadmeFile auto-generating -->
+  <PropertyGroup Condition="'$(GeneratePackageReadmeFile)' == 'true'">
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</PackageReadmeFileOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(GeneratePackageReadmeFile)' == 'true'">
+    <None Include="$(PackageReadmeFileOutputPath)" Pack="true" PackagePath="$(PackageReadmeFile)" />
+  </ItemGroup>
+
   <!--
     API list
   -->
@@ -24,13 +42,13 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <Import
-    Project="$(NuGetPackageRoot)smdn.reflection.reversegenerating.listapi.msbuild.tasks\$(APIListPackageVersion)\tasks\net6.0\GenerateApiList.task"
+    Project="$(NuGetPackageAltRoot)smdn.reflection.reversegenerating.listapi.msbuild.tasks\$(APIListPackageVersion)\tasks\net6.0\GenerateApiList.task"
     Condition="'$(APIListEnableGenerating)' == 'true'"
   />
 
   <Target
     Name="GenerateAPIListOfPackage"
-    AfterTargets="Pack"
+    BeforeTargets="GenerateNuspec"
     Condition="'$(APIListEnableGenerating)' == 'true'"
     Label="API list generator"
   >
@@ -45,6 +63,105 @@ SPDX-License-Identifier: MIT
       </GenerateApiListTargets>
     </ItemGroup>
 
-    <GenerateApiList Assemblies="@(GenerateApiListTargets)" />
+    <GenerateApiList Assemblies="@(GenerateApiListTargets)">
+      <Output TaskParameter="GeneratedFiles" ItemName="_GeneratedApiListFiles" />
+    </GenerateApiList>
+
+    <ItemGroup>
+      <ApiListFiles Include="%(_GeneratedApiListFiles.Identity)">
+        <SourceAssembly>%(_GeneratedApiListFiles.SourceAssembly)</SourceAssembly>
+        <TargetFramework>$([System.IO.Path]::GetDirectoryName(
+          $([System.IO.Path]::GetRelativePath(
+            $([System.IO.Path]::GetFullPath('$(OutputPath)', '$(MSBuildProjectDirectory)')),
+            '%(_GeneratedApiListFiles.SourceAssembly)'
+          ))
+        ))</TargetFramework>
+      </ApiListFiles>
+    </ItemGroup>
   </Target>
+
+  <Target
+    Name="GenerateNupkgReadmeFile"
+    BeforeTargets="GenerateNuspec"
+    DependsOnTargets="GenerateAPIListOfPackage"
+    Condition="'$(GeneratePackageReadmeFile)' == 'true'"
+  >
+    <GetLatestFramework Frameworks="$(TargetFrameworks)">
+      <Output TaskParameter="LatestFramework" PropertyName="LatestTargetFramework" />
+    </GetLatestFramework>
+
+    <ItemGroup>
+      <ApiListFileOfLatestFramework Include="%(ApiListFiles.Identity)" Condition="'%(ApiListFiles.TargetFramework)' == '$(LatestTargetFramework)'" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <NupkgReadmeLines Include="# $(AssemblyName)" />
+      <NupkgReadmeLines Include="$(Description)" />
+      <NupkgReadmeLines Include="# API List" />
+      <NupkgReadmeLines Include="```cs" />
+      <NupkgReadmeLines Include="$([System.IO.File]::ReadAllText('%(ApiListFileOfLatestFramework.Identity)'))" />
+      <NupkgReadmeLines Include="```" />
+    </ItemGroup>
+
+    <WriteLinesToFile
+      File="$(PackageReadmeFileOutputPath)"
+      Lines="@(NupkgReadmeLines)"
+      Overwrite="true"
+    />
+  </Target>
+
+  <UsingTask
+    TaskName="GetLatestFramework"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+  >
+    <ParameterGroup>
+      <Frameworks ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <LatestFramework ParameterType="System.String" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        LatestFramework = Frameworks
+          ?.Select(static item => item.ItemSpec)
+          ?.Select(static moniker => {
+            if (moniker.StartsWith("netcoreapp", StringComparison.OrdinalIgnoreCase))
+              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = moniker.Substring("netcoreapp".Length) };
+
+            if (moniker.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
+              return new { Moniker = moniker, Identifier = ".NETStandard", Version = moniker.Substring("netstandard".Length) };
+
+            if (
+              moniker.StartsWith("net4", StringComparison.OrdinalIgnoreCase) ||
+              moniker.StartsWith("net3", StringComparison.OrdinalIgnoreCase) ||
+              moniker.StartsWith("net2", StringComparison.OrdinalIgnoreCase) ||
+              moniker.StartsWith("net1", StringComparison.OrdinalIgnoreCase)
+            )
+              return new { Moniker = moniker, Identifier = ".NETFramework", Version = moniker.Substring("net".Length).PadRight(3, '0') };
+
+            if (moniker.StartsWith("net", StringComparison.OrdinalIgnoreCase))
+              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = moniker.Substring("net".Length) };
+
+            return new { Moniker = moniker, Identifier = "unknown", Version = moniker };
+          })
+          ?.OrderBy(static f => f.Identifier switch {
+            ".NETCoreApp" => 0,
+            ".NETStandard" => 1,
+            ".NETFramework" => 2,
+            _ => int.MaxValue,
+          })
+          ?.ThenByDescending(static f => f.Version)
+#if false
+          ?.Select(/*static*/ (f, index) => {
+            Log.LogMessage(MessageImportance.High, $"#{index}: Moniker={f.Moniker}, Identifier={f.Identifier}, Version={f.Version}");
+            return f;
+          })
+          ?.ToList()
+#endif
+          ?.Select(static f => f.Moniker)
+          ?.First();
+      ]]></Code>
+    </Task>
+  </UsingTask>
 </Project>
