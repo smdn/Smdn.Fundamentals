@@ -51,7 +51,7 @@ This repository contains a set of .NET libraries which provides fundamental func
 |[Smdn.Fundamental.Xml.Xhtml](src/Smdn.Fundamental.Xml.Xhtml/)|[![NuGet Smdn.Fundamental.Xml.Xhtml](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Xhtml.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Xhtml/)|
 |[Smdn](src/Smdn/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.svg)](https://www.nuget.org/packages/Smdn/)|
 |[Smdn.MSBuild.ProjectAssets.Common](src/Smdn.MSBuild.ProjectAssets.Common/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Common.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common/)|
-|[Smdn.MSBuild.ProjectAssets.Common](src/Smdn.MSBuild.ProjectAssets.Library/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/)|
+|[Smdn.MSBuild.ProjectAssets.Library](src/Smdn.MSBuild.ProjectAssets.Library/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/)|
 |[Smdn.Test.NUnit.Constraints](src/Smdn.Test.NUnit.Constraints/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Constraints.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Constraints/)|
 
 ## Smdn.dll
