@@ -1,0 +1,17 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ImportGroup>
+    <Import Project="$(MSBuildThisFileDirectory)targets\GetRepositoryProperties.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.GenerateCLSCompliant.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.GenerateMetadata.Repository.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.SetDefaults.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\Assets.Deploy.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.SetProjectReferenceVersionRange.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.WarnPackConfiguration.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.GenerateRepositoryProperties.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.SetDefaults.targets" />
+  </ImportGroup>
+</Project>

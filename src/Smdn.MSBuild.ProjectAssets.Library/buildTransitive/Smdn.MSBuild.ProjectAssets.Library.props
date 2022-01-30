@@ -1,0 +1,21 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup>
+    <!-- This is required to import .props and .targets from Smdn.MSBuild.ProjectAssets.Common -->
+    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
+    <PackageReference
+      Include="Smdn.MSBuild.ProjectAssets.Common"
+      Version="[1.0.0-rc10]"
+      PrivateAssets="all"
+      IncludeAssets="buildTransitive"
+    />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\project\Project.props" />
+</Project>

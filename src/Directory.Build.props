@@ -3,7 +3,16 @@ SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <Import Project="$(MSBuildThisFileDirectory)build-assets\Project.Library.proj" />
+  <PropertyGroup>
+    <SmdnBuildAssetRootDirectory>$(MSBuildThisFileDirectory)..\</SmdnBuildAssetRootDirectory>
+    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\doc\api-list\</APIListOutputBaseDirectory>
+    <!-- <_SmdnProjectAssets_ImportFromLocal>true</_SmdnProjectAssets_ImportFromLocal> -->
+  </PropertyGroup>
+
+  <ImportGroup Label="project assets">
+    <Import Project="$(MSBuildThisFileDirectory)ProjectAssets.props" />
+    <Import Project="$(SmdnProjectAssets_PropsImports)" />
+  </ImportGroup>
 
   <PropertyGroup Label="package properties">
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

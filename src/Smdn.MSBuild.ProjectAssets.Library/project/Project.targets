@@ -3,26 +3,8 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <ImportGroup>
-    <Import Project="$(MSBuildThisFileDirectory)AssemblyAttributes.GenerateCLSCompliant.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)AssemblyAttributes.GenerateMetadata.Repository.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)AssemblyAttributes.SetDefaults.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)Nupkg.SetProjectReferenceVersionRange.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)Nupkg.WarnPackConfiguration.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)Nupkg.GenerateRepositoryProperties.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)Nupkg.SetDefaults.targets" />
-  </ImportGroup>
-
-  <!-- NuGetPackageRoot is not set until `pack` or `restore` is executed, so set an alternative default path -->
-  <!-- ref: https://github.com/NuGet/Home/issues/9150 -->
-  <PropertyGroup>
-    <NuGetPackageAltRoot>$(NuGetPackageRoot)</NuGetPackageAltRoot>
-    <NuGetPackageAltRoot Condition="('$(NuGetPackageAltRoot)' == '') and $([MSBuild]::IsOSUnixLike())">$(HOME)\.nuget\packages\</NuGetPackageAltRoot>
-    <NuGetPackageAltRoot Condition="('$(NuGetPackageAltRoot)' == '')">$(USERPROFILE)\.nuget\packages\</NuGetPackageAltRoot>
-  </PropertyGroup>
-
   <!-- PackageReadmeFile auto-generating -->
-  <PropertyGroup Condition="'$(GeneratePackageReadmeFile)' == 'true'">
+  <PropertyGroup Condition="'$(APIListEnableGenerating)' == 'true' and '$(GeneratePackageReadmeFile)' == 'true'">
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</PackageReadmeFileOutputPath>
   </PropertyGroup>
@@ -30,21 +12,6 @@ SPDX-License-Identifier: MIT
   <ItemGroup Condition="'$(GeneratePackageReadmeFile)' == 'true'">
     <None Include="$(PackageReadmeFileOutputPath)" Pack="true" PackagePath="$(PackageReadmeFile)" />
   </ItemGroup>
-
-  <!--
-    API list
-  -->
-  <ItemGroup Label="API list generator">
-    <PackageReference Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks" Version="$(APIListPackageVersion)" Condition="'$(APIListEnableGenerating)' == 'true'">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
-  <Import
-    Project="$(NuGetPackageAltRoot)smdn.reflection.reversegenerating.listapi.msbuild.tasks\$(APIListPackageVersion)\tasks\net6.0\GenerateApiList.task"
-    Condition="'$(APIListEnableGenerating)' == 'true'"
-  />
 
   <Target
     Name="GenerateAPIListOfPackage"
@@ -84,7 +51,7 @@ SPDX-License-Identifier: MIT
     Name="GenerateNupkgReadmeFile"
     BeforeTargets="GenerateNuspec"
     DependsOnTargets="GenerateAPIListOfPackage"
-    Condition="'$(GeneratePackageReadmeFile)' == 'true'"
+    Condition="'$(APIListEnableGenerating)' == 'true' and '$(GeneratePackageReadmeFile)' == 'true'"
   >
     <GetLatestFramework Frameworks="$(TargetFrameworks)">
       <Output TaskParameter="LatestFramework" PropertyName="LatestTargetFramework" />

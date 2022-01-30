@@ -6,6 +6,7 @@ SPDX-License-Identifier: MIT
   <!-- ref: https://docs.microsoft.com/ja-jp/nuget/reference/msbuild-targets -->
   <PropertyGroup Label="package properties">
     <Title Condition=" '$(Title)' == '' ">$(AssemblyTitle)</Title>
+    <PackageDescription Condition=" '$(PackageDescription)' == '' ">$(Description)</PackageDescription>
     <PackageProjectUrl Condition=" '$(PackageProjectUrl)' == '' ">https://smdn.jp/</PackageProjectUrl>
     <PackageTags Condition="!$(PackageTags.Contains('smdn.jp'))">smdn.jp;$(PackageTags)</PackageTags>
   </PropertyGroup>

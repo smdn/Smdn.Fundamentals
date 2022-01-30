@@ -1,0 +1,37 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup>
+    <!-- assembly defaults -->
+    <CopyrightHolders>smdn</CopyrightHolders>
+
+    <!-- package defaults -->
+    <Authors>smdn</Authors>
+  </PropertyGroup>
+
+  <ItemGroup Label="build assets">
+    <SmdnBuildAssetFiles Include="$(MSBuildThisFileDirectory)..\assets\**"/>
+    <SmdnBuildAssetFiles  Update="$(MSBuildThisFileDirectory)..\assets\**">
+      <Destination>%(RecursiveDir)%(Filename)%(Extension)</Destination>
+    </SmdnBuildAssetFiles>
+
+    <SmdnBuildAssetFiles Update="$(MSBuildThisFileDirectory)..\assets\include.editorconfig" Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == 'true'">
+      <Destination>.editorconfig</Destination>
+    </SmdnBuildAssetFiles>
+  </ItemGroup>
+
+  <!--
+    package icon
+  -->
+  <ItemGroup Label="package icon">
+    <None Include="$(MSBuildThisFileDirectory)images\package-icon.png" Pack="true" Visible="false" PackagePath="$(MSBuildProjectName).png"/>
+  </ItemGroup>
+
+  <PropertyGroup Label="package icon">
+    <PackageIcon>$(MSBuildProjectName).png</PackageIcon>
+  </PropertyGroup>
+
+  <!-- deploy assets -->
+</Project>

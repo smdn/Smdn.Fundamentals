@@ -1,0 +1,17 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="Assets_Deploy"
+    BeforeTargets="BeforeBuild"
+  >
+    <Copy
+      SourceFiles="%(SmdnBuildAssetFiles.Identity)"
+      DestinationFiles="$(SmdnBuildAssetRootDirectory)%(SmdnBuildAssetFiles.Destination)"
+      SkipUnchangedFiles="true"
+      UseHardlinksIfPossible="false"
+    />
+  </Target>
+</Project>

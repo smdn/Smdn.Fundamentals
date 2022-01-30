@@ -1,0 +1,44 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.6</TargetFrameworks>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <NoBuild>true</NoBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+
+    <EnablePackageValidation>false</EnablePackageValidation>
+    <APIListEnableGenerating>false</APIListEnableGenerating>
+    <GeneratePackageReadmeFile>false</GeneratePackageReadmeFile>
+
+    <_SmdnProjectAssets_ImportFromLocal>true</_SmdnProjectAssets_ImportFromLocal>
+  </PropertyGroup>
+
+  <PropertyGroup Label="assembly attributes">
+    <Description>A package of MSBuild asset files common to the various projects.</Description>
+    <CopyrightYear>2022</CopyrightYear>
+  </PropertyGroup>
+
+  <PropertyGroup Label="package properties">
+    <PackageTags>MSBuild;build-assets</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Pack="false" Include="assets\**" Visible="true" />
+    <None Pack="false" Include="buildTransitive\**" Visible="true" />
+    <None Pack="false" Include="project\**" Visible="true" />
+
+    <None Pack="true"  Include="assets\include.editorconfig"                  PackagePath="assets\.editorconfig" />
+
+    <None Pack="true"  Include="buildTransitive\$(AssemblyName).props"        PackagePath="buildTransitive\" />
+    <None Pack="true"  Include="buildTransitive\$(AssemblyName).targets"      PackagePath="buildTransitive\" />
+
+    <None Pack="true"  Include="project\Project.props"                        PackagePath="project\" />
+    <None Pack="true"  Include="project\Project.targets"                      PackagePath="project\" />
+    <None Pack="true"  Include="project\targets\*.targets"                    PackagePath="project\targets\" />
+    <None Pack="true"  Include="project\images\package-icon.png"              PackagePath="project\images\" />
+  </ItemGroup>
+</Project>

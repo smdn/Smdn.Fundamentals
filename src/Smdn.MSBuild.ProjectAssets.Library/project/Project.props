@@ -3,10 +3,6 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <ImportGroup>
-    <Import Project="$(MSBuildThisFileDirectory)GetRepositoryProperties.targets" />
-  </ImportGroup>
-
   <PropertyGroup>
     <!-- build defaults -->
     <LangVersion>latest</LangVersion>
@@ -14,7 +10,6 @@ SPDX-License-Identifier: MIT
 
     <!-- assembly defaults -->
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
-    <CopyrightHolders>smdn</CopyrightHolders>
 
     <!-- package defaults -->
     <EnablePackageValidation>true</EnablePackageValidation>
@@ -23,26 +18,29 @@ SPDX-License-Identifier: MIT
 
     <!-- API list configurations -->
     <APIListEnableGenerating Condition="'$(Configuration)' == 'Release'">true</APIListEnableGenerating>
-    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\..\doc\api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion>1.0.2</APIListPackageVersion>
+    <APIListOutputBaseDirectory Condition="'$(APIListOutputBaseDirectory)' == ''">api-list\</APIListOutputBaseDirectory>
+    <APIListPackageVersion Condition="$(APIListPackageVersion) == ''">1.0.3</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
+
+    <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
+    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
   </PropertyGroup>
+
+  <ItemGroup Label="build assets">
+    <SmdnBuildAssetFiles Include="$(MSBuildThisFileDirectory)..\assets\**"/>
+    <SmdnBuildAssetFiles  Update="$(MSBuildThisFileDirectory)..\assets\**">
+      <Destination>%(RecursiveDir)%(Filename)%(Extension)</Destination>
+    </SmdnBuildAssetFiles>
+
+    <SmdnBuildAssetFiles Update="$(MSBuildThisFileDirectory)..\assets\src\include.editorconfig" Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == 'true'">
+      <Destination>src\.editorconfig</Destination>
+    </SmdnBuildAssetFiles>
+  </ItemGroup>
 
   <!--
     symbols
   -->
   <Import Project="$(MSBuildThisFileDirectory)Symbols.FrameworkAPI.props" />
-
-  <!--
-    package icon
-  -->
-  <ItemGroup Label="package icon">
-    <None Include="$(MSBuildThisFileDirectory)package-icon.png" Pack="true" Visible="false" PackagePath="$(MSBuildProjectName).png"/>
-  </ItemGroup>
-
-  <PropertyGroup Label="package icon">
-    <PackageIcon>$(MSBuildProjectName).png</PackageIcon>
-  </PropertyGroup>
 
   <!--
     code analysis
@@ -58,4 +56,17 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Label="code analysis">
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
+  <!--
+    API list generator
+  -->
+  <ItemGroup Label="API list generator">
+    <PackageReference
+      Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
+      Version="$(APIListPackageVersion)"
+      Condition="'$(APIListEnableGenerating)' == 'true'"
+      PrivateAssets="all"
+      IncludeAssets="build"
+    />
+  </ItemGroup>
 </Project>
