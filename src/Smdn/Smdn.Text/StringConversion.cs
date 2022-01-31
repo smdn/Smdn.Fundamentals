@@ -26,9 +26,13 @@ public static class StringConversion {
 
   public static string ToStringNullable(Uri val) => val?.ToString();
 
+#pragma warning disable CA1305
   public static int? ToInt32Nullable(string val) => (val == null) ? null : int.Parse(val);
+#pragma warning restore CA1305
 
+#pragma warning disable CA1305
   public static string ToStringNullable(int? val) => val?.ToString();
+#pragma warning restore CA1305
 
   public static bool? ToBooleanNullable(string val) => (val == null) ? null : bool.Parse(val);
 
