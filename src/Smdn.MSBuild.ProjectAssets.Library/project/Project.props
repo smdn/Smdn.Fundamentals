@@ -11,6 +11,12 @@ SPDX-License-Identifier: MIT
     <!-- assembly defaults -->
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
 
+    <!-- code analysis defaults -->
+    <!-- ref: https://docs.microsoft.com/ja-jp/dotnet/core/project-sdk/msbuild-props#code-analysis-properties -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
     <!-- package defaults -->
     <EnablePackageValidation>true</EnablePackageValidation>
     <GeneratePackageReadmeFile>true</GeneratePackageReadmeFile>
