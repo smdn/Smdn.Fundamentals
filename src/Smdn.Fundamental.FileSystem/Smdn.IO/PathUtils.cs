@@ -159,7 +159,7 @@ public static class PathUtils {
     if (file == null)
       throw new ArgumentNullException(nameof(file));
     if (!File.Exists(file))
-      throw new DirectoryNotFoundException(string.Format("file '{0}' not found", file));
+      throw new DirectoryNotFoundException($"file '{file}' not found");
 
     var directory = Path.GetDirectoryName(file);
     var extension = Path.GetExtension(file);

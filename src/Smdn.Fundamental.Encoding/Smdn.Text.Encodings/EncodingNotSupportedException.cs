@@ -31,7 +31,7 @@ public class EncodingNotSupportedException : NotSupportedException {
   public EncodingNotSupportedException(string encodingName)
     : this(
       encodingName,
-      string.Format("encoding '{0}' is not supported by runtime", encodingName),
+      $"encoding '{encodingName}' is not supported by runtime",
       null
     )
   {
@@ -40,7 +40,7 @@ public class EncodingNotSupportedException : NotSupportedException {
   public EncodingNotSupportedException(string encodingName, Exception innerException)
     : this(
       encodingName,
-      string.Format("encoding '{0}' is not supported by runtime", encodingName),
+      $"encoding '{encodingName}' is not supported by runtime",
       innerException
     )
   {

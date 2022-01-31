@@ -14,7 +14,7 @@ public static class DirectoryUtils {
   public static IEnumerable<string> GetFiles(string directory, SearchOption searchOption, Predicate<string> searchPattern)
   {
     if (!Directory.Exists(directory))
-      throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
+      throw new DirectoryNotFoundException($"directory '{directory}' not found");
     if (searchPattern == null)
       throw new ArgumentNullException(nameof(searchPattern));
 
@@ -29,7 +29,7 @@ public static class DirectoryUtils {
   public static IEnumerable<string> GetDirectories(string directory, SearchOption searchOption, Predicate<string> searchPattern)
   {
     if (!Directory.Exists(directory))
-      throw new DirectoryNotFoundException(string.Format("directory '{0}' not found", directory));
+      throw new DirectoryNotFoundException($"directory '{directory}' not found");
     if (searchPattern == null)
       throw new ArgumentNullException(nameof(searchPattern));
 

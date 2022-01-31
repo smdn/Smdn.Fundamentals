@@ -255,7 +255,7 @@ public static class MimeEncoding {
             break;
           default:
             if (decodeMalformedOrUnsupported == null)
-              throw new FormatException(string.Format("{0} is an invalid encoding", encodingString));
+              throw new FormatException($"{encodingString} is an invalid encoding");
             else
               return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
         }

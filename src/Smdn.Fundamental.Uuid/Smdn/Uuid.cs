@@ -695,7 +695,7 @@ public readonly struct Uuid :
       !byte.TryParse(fields[4].AsSpan( 8, 2), NumberStyles.HexNumber, null, out var n4) ||
       !byte.TryParse(fields[4].AsSpan(10, 2), NumberStyles.HexNumber, null, out var n5)
     ) {
-      throw new FormatException(string.Format("invalid UUID (node): {0}", uuid));
+      throw new FormatException($"invalid UUID (node): {uuid}");
     }
 
     this.node = new Node(n0, n1, n2, n3, n4, n5);

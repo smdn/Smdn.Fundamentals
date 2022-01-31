@@ -141,7 +141,7 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
     if (format.Length == 1)
       digits = 0;
     else if (!int.TryParse(format.Substring(1), out digits) || digits < 0)
-      throw new FormatException(string.Format("The specified format '{0}' is invalid", format));
+      throw new FormatException($"The specified format '{format}' is invalid");
 
     decimal sign;
 

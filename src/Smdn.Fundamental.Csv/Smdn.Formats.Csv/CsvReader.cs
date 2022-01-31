@@ -116,7 +116,7 @@ public class CsvReader : StreamReader {
             if (prev == Quotator)
               field.Append((char)Read());
             else
-              throw new InvalidDataException(string.Format("invalid quotation after '{0}'", field.ToString()));
+              throw new InvalidDataException($"invalid quotation after '{field}'");
           }
           else {
             quot = 0;
@@ -190,7 +190,7 @@ public class CsvReader : StreamReader {
       return record;
     }
     catch (InvalidDataException ex) {
-      throw new InvalidDataException(string.Format("format exception after '{0}'", string.Join(", ", record.ToArray())), ex);
+      throw new InvalidDataException($"format exception after '{string.Join(", ", record)}'", ex);
     }
   }
 

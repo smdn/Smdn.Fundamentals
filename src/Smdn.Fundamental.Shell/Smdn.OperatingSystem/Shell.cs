@@ -26,10 +26,10 @@ public static class Shell {
       if (arguments != null)
         arguments = arguments.Replace("\"", "\\\"");
 
-      psi = new ProcessStartInfo("/bin/sh", string.Format("-c \"{0} {1}\"", command, arguments));
+      psi = new ProcessStartInfo("/bin/sh", $"-c \"{command} {arguments}\"");
     }
     else {
-      psi = new ProcessStartInfo("cmd", string.Format("/c {0} {1}", command, arguments)) {
+      psi = new ProcessStartInfo("cmd", $"/c {command} {arguments}") {
         CreateNoWindow = true,
       };
     }
