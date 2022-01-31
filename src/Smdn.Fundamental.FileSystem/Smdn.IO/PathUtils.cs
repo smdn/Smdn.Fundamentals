@@ -169,6 +169,7 @@ public static class PathUtils {
       var newpath = Path.Combine(
         directory,
         string.Format(
+          System.Globalization.CultureInfo.InvariantCulture,
           "{0}.{1}-p{2}t{3}-{4}{5}",
           now.ToFileTime(),
           now.Millisecond,
