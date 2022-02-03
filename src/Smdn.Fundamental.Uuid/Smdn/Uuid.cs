@@ -679,10 +679,10 @@ public readonly struct Uuid :
       !byte.TryParse(fields[3].AsSpan(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
       !byte.TryParse(fields[3].AsSpan(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
 #else
-#pragma warning disable IDE0057
+#pragma warning disable IDE0057, CA1846
       !byte.TryParse(fields[3].Substring(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
       !byte.TryParse(fields[3].Substring(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
-#pragma warning restore IDE0057
+#pragma warning restore IDE0057, CA1846
 #endif
     ) {
       throw new FormatException($"invalid UUID (clock_seq_hi_and_reserved or clock_seq_low): {uuid}");
@@ -706,14 +706,14 @@ public readonly struct Uuid :
     this.node = new Node(n0, n1, n2, n3, n4, n5);
 #else
     if (
-#pragma warning disable IDE0057
+#pragma warning disable IDE0057, CA1846
       !byte.TryParse(fields[4].Substring(0, 2), NumberStyles.HexNumber, null, out var n0) ||
       !byte.TryParse(fields[4].Substring(2, 2), NumberStyles.HexNumber, null, out var n1) ||
       !byte.TryParse(fields[4].Substring(4, 2), NumberStyles.HexNumber, null, out var n2) ||
       !byte.TryParse(fields[4].Substring(6, 2), NumberStyles.HexNumber, null, out var n3) ||
       !byte.TryParse(fields[4].Substring(8, 2), NumberStyles.HexNumber, null, out var n4) ||
       !byte.TryParse(fields[4].Substring(10, 2), NumberStyles.HexNumber, null, out var n5)
-#pragma warning restore IDE0057
+#pragma warning restore IDE0057, CA1846
     ) {
       throw new FormatException($"invalid UUID (node): {uuid}");
     }
