@@ -168,25 +168,25 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
     string unitString = null;
 
     if (fileSizeFormat) {
-      if (aux == 0)
-        ret.Append(val.ToString("F0", numberFormatInfo));
-      else
-        ret.Append(val.ToString("F1", numberFormatInfo));
+      ret.Append(
+        val.ToString(
+          aux == 0 ? "F0" : "F1",
+          numberFormatInfo
+        )
+      );
 
       unitString = abbreviate ? byteUnitAbbreviation : byteUnit;
     }
     else {
-      if (digits == 0) {
-        ret.Append(((long)val).ToString("D", numberFormatInfo));
-      }
-      else {
-        ret.Append(
-          val.ToString(
+      ret.Append(
+        digits switch {
+          0 => ((long)val).ToString("D", numberFormatInfo),
+          _ => val.ToString(
             "F" + digits.ToString("D", provider: NumberFormatInfo.InvariantInfo),
             numberFormatInfo
-          )
-        );
-      }
+          ),
+        }
+      );
     }
 
     if (!abbreviate && 0 < prefixes[aux].Length)
