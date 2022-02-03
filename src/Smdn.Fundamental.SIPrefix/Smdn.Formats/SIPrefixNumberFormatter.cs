@@ -176,7 +176,7 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
       if (digits == 0)
         ret.Append(((long)val).ToString("D"));
       else
-        ret.Append(val.ToString("F" + digits.ToString("D", provider: null)));
+        ret.Append(val.ToString("F" + digits.ToString("D", provider: NumberFormatInfo.InvariantInfo)));
     }
 
     if (!abbreviate && 0 < prefixes[aux].Length)
