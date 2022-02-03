@@ -9,6 +9,11 @@ SPDX-License-Identifier: MIT
     <VersionSuffix></VersionSuffix>
     <NoBuild>true</NoBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!--
+      supress warning NU5128
+      https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu5128#scenario-2
+    -->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
 
     <EnablePackageValidation>false</EnablePackageValidation>
     <APIListEnableGenerating>false</APIListEnableGenerating>
