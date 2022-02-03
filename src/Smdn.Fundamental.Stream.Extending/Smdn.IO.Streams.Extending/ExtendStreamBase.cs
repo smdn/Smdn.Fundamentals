@@ -8,7 +8,9 @@ using System.Threading.Tasks;
 namespace Smdn.IO.Streams.Extending;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+#pragma warning disable CA1710 // Identifiers should have correct suffix
 public abstract class ExtendStreamBase : Stream {
+#pragma warning restore CA1710
   private Stream stream = null;
   private bool IsClosed => stream == null;
 

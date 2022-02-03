@@ -6,7 +6,9 @@ using System.IO;
 namespace Smdn.IO.Streams.Caching;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+#pragma warning disable CA1710 // Identifiers should have correct suffix
 public abstract class CachedStreamBase : Stream {
+#pragma warning restore CA1710
   public Stream InnerStream {
     get { CheckDisposed(); return stream; }
   }
