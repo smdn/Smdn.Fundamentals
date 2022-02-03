@@ -48,9 +48,13 @@ public abstract class BinaryReaderBase : IDisposable {
     this.leaveBaseStreamOpen = leaveBaseStreamOpen;
   }
 
-  public virtual void Close() => Dispose(true);
+  public virtual void Close() => (this as IDisposable).Dispose();
 
-  void IDisposable.Dispose() => Dispose(true);
+  void IDisposable.Dispose()
+  {
+    Dispose(true);
+    GC.SuppressFinalize(this);
+  }
 
   protected virtual void Dispose(bool disposing)
   {
