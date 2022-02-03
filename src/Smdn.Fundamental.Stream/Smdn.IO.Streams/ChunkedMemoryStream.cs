@@ -14,10 +14,10 @@ public sealed class ChunkedMemoryStream : Stream {
   public abstract class Chunk : IDisposable {
     public abstract void Dispose();
 
-#pragma warning disable SA1401
+#pragma warning disable SA1401, CA1051
     public byte[] Data;
     internal Chunk Next = null;
-#pragma warning restore SA1401
+#pragma warning restore SA1401, CA1051
   }
 
   private class DefaultChunk : Chunk {
