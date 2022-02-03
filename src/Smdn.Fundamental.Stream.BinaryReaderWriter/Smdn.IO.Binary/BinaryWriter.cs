@@ -8,9 +8,12 @@ namespace Smdn.IO.Binary;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public class BinaryWriter : Smdn.IO.Binary.BinaryWriterBase {
   private const int DefaultStorageSize = 8;
+  // TODO use Memory<byte>
 #pragma warning disable SA1401 // Fields should be private
+#pragma warning disable CA1051 // Do not declare visible instance fields
   protected readonly byte[] Storage;
 #pragma warning restore SA1401
+#pragma warning restore CA1051
 
   public bool IsLittleEndian { get; }
 
