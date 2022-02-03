@@ -24,6 +24,8 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
    */
   public bool IsReadOnly { get; }
 
+  private readonly NumberFormatInfo numberFormatInfo;
+
   private string byteUnit;
 
   public string ByteUnit {
@@ -71,12 +73,12 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
       throw new ArgumentNullException(nameof(cultureInfo));
 
     this.IsReadOnly = isReadOnly;
-    // this.cultureInfo = cultureInfo;
 
     const string singleSpace = " ";
 
     switch (cultureInfo.TwoLetterISOLanguageName) {
       case "ja":
+        numberFormatInfo = cultureInfo.NumberFormat;
         byteUnit = "バイト";
         valuePrefixDelimiter = singleSpace;
         prefixUnitDelimiter = string.Empty;
@@ -85,6 +87,7 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
         break;
 
       default:
+        numberFormatInfo = NumberFormatInfo.InvariantInfo;
         byteUnit = "Bytes";
         valuePrefixDelimiter = singleSpace;
         prefixUnitDelimiter = singleSpace;
@@ -166,17 +169,24 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
 
     if (fileSizeFormat) {
       if (aux == 0)
-        ret.Append(val.ToString("F0"));
+        ret.Append(val.ToString("F0", numberFormatInfo));
       else
-        ret.Append(val.ToString("F1"));
+        ret.Append(val.ToString("F1", numberFormatInfo));
 
       unitString = abbreviate ? byteUnitAbbreviation : byteUnit;
     }
     else {
-      if (digits == 0)
-        ret.Append(((long)val).ToString("D"));
-      else
-        ret.Append(val.ToString("F" + digits.ToString("D", provider: NumberFormatInfo.InvariantInfo)));
+      if (digits == 0) {
+        ret.Append(((long)val).ToString("D", numberFormatInfo));
+      }
+      else {
+        ret.Append(
+          val.ToString(
+            "F" + digits.ToString("D", provider: NumberFormatInfo.InvariantInfo),
+            numberFormatInfo
+          )
+        );
+      }
     }
 
     if (!abbreviate && 0 < prefixes[aux].Length)
