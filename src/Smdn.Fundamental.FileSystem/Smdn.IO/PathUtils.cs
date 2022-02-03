@@ -174,7 +174,7 @@ public static class PathUtils {
           now.ToFileTime(),
           now.Millisecond,
           System.Diagnostics.Process.GetCurrentProcess().Id,
-          System.Threading.Thread.CurrentThread.ManagedThreadId,
+          Environment.CurrentManagedThreadId,
           index,
           extension
         )
