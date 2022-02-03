@@ -79,7 +79,7 @@ public class ShellString :
     if (other == null)
       return false;
     else
-      return string.Equals(this.Raw, other) || string.Equals(this.Expanded, other);
+      return string.Equals(this.Raw, other, StringComparison.Ordinal) || string.Equals(this.Expanded, other, StringComparison.Ordinal);
   }
 
   public static bool operator ==(ShellString x, ShellString y)
@@ -91,7 +91,7 @@ public class ShellString :
         return false;
     }
 
-    return string.Equals(x.Expanded, y.Expanded);
+    return string.Equals(x.Expanded, y.Expanded, StringComparison.Ordinal);
   }
 
   public static bool operator !=(ShellString x, ShellString y) => !(x == y);

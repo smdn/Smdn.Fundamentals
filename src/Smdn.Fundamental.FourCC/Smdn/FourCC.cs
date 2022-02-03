@@ -192,7 +192,7 @@ public readonly struct FourCC :
     => other.fourcc == this.fourcc;
 
   public bool Equals(string other)
-    => string.Equals(this.ToString(), other);
+    => string.Equals(this.ToString(), other, StringComparison.Ordinal);
 
   public bool Equals(byte[] other)
     => (other != null) && other.SequenceEqual(this.ToByteArray());
