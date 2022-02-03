@@ -947,7 +947,7 @@ public class ByteString :
     if (segment.Count != other.Length)
       return false;
 
-    return this.ToLower().Equals(other.ToLower()); // XXX
+    return this.ToLower().Equals(other.ToLowerInvariant()); // XXX
   }
 
   public static ByteString operator +(ByteString x, ByteString y)
