@@ -33,7 +33,7 @@ public sealed class ToPercentEncodedTransform : ICryptoTransform {
   private const string
     Rfc5092BChars                     = " \"# %                     ;< >?                           [\\]^ `                          {|} ";
 
-  private byte[] GetEscapeOctets(string str)
+  private static byte[] GetEscapeOctets(string str)
   {
     const byte SP = (byte)' ';
     var octets = new byte[0x80 - 0x20];
