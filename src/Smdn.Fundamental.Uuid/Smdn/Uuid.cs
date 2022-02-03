@@ -675,10 +675,15 @@ public readonly struct Uuid :
 
     if (
       fields[3].Length != 4 ||
+#if NETSTANDARD2_1_OR_GREATER
+      !byte.TryParse(fields[3].AsSpan(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
+      !byte.TryParse(fields[3].AsSpan(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
+#else
 #pragma warning disable IDE0057
       !byte.TryParse(fields[3].Substring(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
       !byte.TryParse(fields[3].Substring(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
 #pragma warning restore IDE0057
+#endif
     ) {
       throw new FormatException($"invalid UUID (clock_seq_hi_and_reserved or clock_seq_low): {uuid}");
     }
