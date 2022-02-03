@@ -9,11 +9,26 @@ SPDX-License-Identifier: MIT
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)..\src\build-assets\Symbols.FrameworkAPI.props" />
-
   <ItemGroup>
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0"/>
+  </ItemGroup>
+
+  <!-- Import assets from Smdn.MSBuild.ProjectAssets.Library -->
+  <PropertyGroup>
+    <!-- This is required to refer the property value of NuGetPackageRoot -->
+    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
+
+    <_SmdnProjectAssets_Library_PackageVersion>1.0.2</_SmdnProjectAssets_Library_PackageVersion>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
+    <PackageReference
+      Include="Smdn.MSBuild.ProjectAssets.Library"
+      Version="[$(_SmdnProjectAssets_Library_PackageVersion)]"
+      PrivateAssets="all"
+      IncludeAssets="none"
+    />
   </ItemGroup>
 </Project>
