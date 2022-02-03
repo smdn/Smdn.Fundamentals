@@ -183,6 +183,11 @@ public struct UInt24 :
 
   public int CompareTo(int other) => this.ToInt32().CompareTo(other);
 
+  public static bool operator <(UInt24 x, UInt24 y) => x.ToUInt32() < y.ToUInt32();
+  public static bool operator <=(UInt24 x, UInt24 y) => x.ToUInt32() <= y.ToUInt32();
+  public static bool operator >(UInt24 x, UInt24 y) => x.ToUInt32() > y.ToUInt32();
+  public static bool operator >=(UInt24 x, UInt24 y) => x.ToUInt32() >= y.ToUInt32();
+
   public bool Equals(UInt24 other) => this == other;
 
   [CLSCompliant(false)]

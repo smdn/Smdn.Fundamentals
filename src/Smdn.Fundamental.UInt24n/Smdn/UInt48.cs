@@ -216,6 +216,11 @@ public struct UInt48 :
 
   public int CompareTo(long other) => this.ToInt64().CompareTo(other);
 
+  public static bool operator <(UInt48 x, UInt48 y) => x.ToUInt64() < y.ToUInt64();
+  public static bool operator <=(UInt48 x, UInt48 y) => x.ToUInt64() <= y.ToUInt64();
+  public static bool operator >(UInt48 x, UInt48 y) => x.ToUInt64() > y.ToUInt64();
+  public static bool operator >=(UInt48 x, UInt48 y) => x.ToUInt64() >= y.ToUInt64();
+
   public bool Equals(UInt48 other) => this == other;
 
   [CLSCompliant(false)]

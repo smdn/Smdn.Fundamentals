@@ -54,6 +54,54 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestOpLessThan()
+    {
+      Assert.IsFalse(UInt24.Zero < (UInt24)0, "#1");
+      Assert.IsTrue(UInt24.Zero < (UInt24)1, "#2");
+      Assert.IsFalse((UInt24)1 < UInt24.Zero, "#3");
+
+      Assert.IsFalse((UInt24)0xffffff < UInt24.MaxValue, "#4");
+      Assert.IsFalse(UInt24.MaxValue < (UInt24)0xfffffe, "#5");
+      Assert.IsTrue((UInt24)0xfffffe < UInt24.MaxValue, "#6");
+    }
+
+    [Test]
+    public void TestOpLessThanOrEqual()
+    {
+      Assert.IsTrue(UInt24.Zero <= (UInt24)0, "#1");
+      Assert.IsTrue(UInt24.Zero <= (UInt24)1, "#2");
+      Assert.IsFalse((UInt24)1 <= UInt24.Zero, "#3");
+
+      Assert.IsTrue((UInt24)0xffffff <= UInt24.MaxValue, "#4");
+      Assert.IsFalse(UInt24.MaxValue <= (UInt24)0xfffffe, "#5");
+      Assert.IsTrue((UInt24)0xfffffe <= UInt24.MaxValue, "#6");
+    }
+
+    [Test]
+    public void TestOpGreaterThan()
+    {
+      Assert.IsFalse(UInt24.Zero > (UInt24)0, "#1");
+      Assert.IsFalse(UInt24.Zero > (UInt24)1, "#2");
+      Assert.IsTrue((UInt24)1 > UInt24.Zero, "#3");
+
+      Assert.IsFalse((UInt24)0xffffff > UInt24.MaxValue, "#4");
+      Assert.IsTrue(UInt24.MaxValue > (UInt24)0xfffffe, "#5");
+      Assert.IsFalse((UInt24)0xfffffe > UInt24.MaxValue, "#6");
+    }
+
+    [Test]
+    public void TestOpGreaterThanOrEqual()
+    {
+      Assert.IsTrue(UInt24.Zero >= (UInt24)0, "#1");
+      Assert.IsFalse(UInt24.Zero >= (UInt24)1, "#2");
+      Assert.IsTrue((UInt24)1 >= UInt24.Zero, "#3");
+
+      Assert.IsTrue((UInt24)0xffffff >= UInt24.MaxValue, "#4");
+      Assert.IsTrue(UInt24.MaxValue >= (UInt24)0xfffffe, "#5");
+      Assert.IsFalse((UInt24)0xfffffe >= UInt24.MaxValue, "#6");
+    }
+
+    [Test]
     public void TestEquals()
     {
       Assert.IsTrue(UInt24.Zero.Equals(UInt24.Zero));
