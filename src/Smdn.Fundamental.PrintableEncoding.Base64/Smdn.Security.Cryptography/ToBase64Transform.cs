@@ -52,30 +52,30 @@ internal class ToBase64Transform : ICryptoTransform {
     var ret = 0;
     int b = 0;
 
-    b = ((int)inputBuffer[inputOffset] & 0xfc) >> 2;
+    b = (inputBuffer[inputOffset] & 0xfc) >> 2;
 
     outputBuffer[outputOffset++] = toBase64Table[b];
     ret++;
 
-    b = ((int)inputBuffer[inputOffset++] & 0x03 ) << 4;
+    b = (inputBuffer[inputOffset++] & 0x03 ) << 4;
     inputCount--;
 
     if (0 < inputCount) {
-      b |= ((int)inputBuffer[inputOffset] & 0xf0) >> 4;
+      b |= (inputBuffer[inputOffset] & 0xf0) >> 4;
 
       outputBuffer[outputOffset++] = toBase64Table[b];
       ret++;
 
-      b = ((int)inputBuffer[inputOffset++] & 0x0f) << 2;
+      b = (inputBuffer[inputOffset++] & 0x0f) << 2;
       inputCount--;
 
       if (0 < inputCount) {
-        b |= ((int)inputBuffer[inputOffset] & 0xc0) >> 6;
+        b |= (inputBuffer[inputOffset] & 0xc0) >> 6;
 
         outputBuffer[outputOffset++] = toBase64Table[b];
         ret++;
 
-        b = ((int)inputBuffer[inputOffset++] & 0x3f);
+        b = inputBuffer[inputOffset++] & 0x3f;
         inputCount--;
 
         outputBuffer[outputOffset++] = toBase64Table[b];
