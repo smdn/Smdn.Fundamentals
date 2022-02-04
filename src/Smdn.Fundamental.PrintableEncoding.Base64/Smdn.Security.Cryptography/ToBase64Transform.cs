@@ -50,9 +50,8 @@ internal class ToBase64Transform : ICryptoTransform {
     const byte padding = 0x3d; // '='
 
     var ret = 0;
-    int b = 0;
 
-    b = (inputBuffer[inputOffset] & 0xfc) >> 2;
+    var b = (inputBuffer[inputOffset] & 0xfc) >> 2;
 
     outputBuffer[outputOffset++] = toBase64Table[b];
     ret++;
