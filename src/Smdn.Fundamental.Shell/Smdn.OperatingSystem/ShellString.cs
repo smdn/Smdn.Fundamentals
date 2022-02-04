@@ -100,7 +100,7 @@ public class ShellString :
   {
     if (Raw == null)
 #pragma warning disable CA2201
-        // TODO: throw InvalidOperationException or etc instead
+      // TODO: throw InvalidOperationException or etc instead
       throw new NullReferenceException();
 #pragma warning restore CA2201
     else
