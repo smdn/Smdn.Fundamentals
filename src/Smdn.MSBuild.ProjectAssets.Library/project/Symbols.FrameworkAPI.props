@@ -61,5 +61,12 @@ SPDX-License-Identifier: MIT
       $(TargetFramework.StartsWith('net5.')) Or
       $(TargetFramework.StartsWith('net6.'))
     ">$(DefineConstants);SYSTEM_INDEX;SYSTEM_RANGE</DefineConstants>
+
+    <!-- NET5_0_OR_GREATER -->
+    <DefineConstants Condition="
+      '$(TargetFramework)' == 'net5' Or
+      $(TargetFramework.StartsWith('net5.')) Or
+      $(TargetFramework.StartsWith('net6.'))
+    ">$(DefineConstants);SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED</DefineConstants>
   </PropertyGroup>
 </Project>
