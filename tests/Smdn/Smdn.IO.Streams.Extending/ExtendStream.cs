@@ -126,6 +126,9 @@ namespace Smdn.IO.Streams.Extending {
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ReadOnlyMemory<byte>.Empty), nameof(stream.WriteAsync));
+#endif
       Assert.Throws<ObjectDisposedException>(() => stream.Flush(), nameof(stream.Flush));
       Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Seek(0, SeekOrigin.Begin), nameof(stream.Seek));
@@ -163,6 +166,9 @@ namespace Smdn.IO.Streams.Extending {
           Assert.Throws<NotSupportedException>(() => extended.WriteByte(0xff));
           Assert.Throws<NotSupportedException>(() => extended.Write(new byte[] { 0xff, 0xff }, 0, 2));
           Assert.Throws<NotSupportedException>(() => extended.WriteAsync(new byte[] { 0xff, 0xff }, 0, 2));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          Assert.Throws<NotSupportedException>(() => extended.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0xff, 0xff }, 0, 2)));
+#endif
 
           Assert.AreEqual(len, extended.Length);
           Assert.AreEqual(pos, extended.Position);
