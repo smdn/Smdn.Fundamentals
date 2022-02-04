@@ -185,7 +185,7 @@ public struct UInt48 :
 
   char IConvertible.ToChar(IFormatProvider provider) => Convert.ToChar(ToUInt64());
 
-  DateTime IConvertible.ToDateTime(IFormatProvider provider) => Convert.ToDateTime(ToUInt64());
+  DateTime IConvertible.ToDateTime(IFormatProvider provider) => ((IConvertible)ToUInt64()).ToDateTime(provider);
 
   decimal IConvertible.ToDecimal(IFormatProvider provider) => Convert.ToDecimal(ToUInt64());
 

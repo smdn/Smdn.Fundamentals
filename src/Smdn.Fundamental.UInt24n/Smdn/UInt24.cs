@@ -153,7 +153,8 @@ public struct UInt24 :
   bool IConvertible.ToBoolean(IFormatProvider provider) => Convert.ToBoolean(ToUInt32());
   char IConvertible.ToChar(IFormatProvider provider) => Convert.ToChar(ToUInt32());
 
-  DateTime IConvertible.ToDateTime(IFormatProvider provider) => Convert.ToDateTime(ToUInt32());
+  DateTime IConvertible.ToDateTime(IFormatProvider provider) => ((IConvertible)ToUInt32()).ToDateTime(provider);
+
   decimal IConvertible.ToDecimal(IFormatProvider provider) => Convert.ToDecimal(ToUInt32());
 
   double IConvertible.ToDouble(IFormatProvider provider) => Convert.ToDouble(ToUInt32());

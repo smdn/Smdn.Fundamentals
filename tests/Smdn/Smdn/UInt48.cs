@@ -388,6 +388,13 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestIConvertible_ToDateTime()
+    {
+      Assert.Throws<InvalidCastException>(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)));
+      Assert.Throws<InvalidCastException>(() => ((IConvertible)UInt24.Zero).ToDateTime(provider: null));
+    }
+
+    [Test]
     public void TestToString()
     {
       Assert.AreEqual("0", UInt48.Zero.ToString());
