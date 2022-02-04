@@ -459,7 +459,7 @@ public class LineOrientedStream : Stream {
     return ReadAsyncCore(
       destination: buffer.AsMemory(offset, count),
       cancellationToken: cancellationToken
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK
     ).AsTask();
 #else
     );
@@ -496,7 +496,7 @@ public class LineOrientedStream : Stream {
 #endif
 
   private async
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK
   ValueTask<int>
 #else
   Task<int>

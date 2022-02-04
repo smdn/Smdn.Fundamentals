@@ -100,7 +100,7 @@ public static class CsvRecord {
           sequence = buffer.AsSpan(0, dequotedLength);
         }
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
         return new string(sequence);
 #else
         unsafe {

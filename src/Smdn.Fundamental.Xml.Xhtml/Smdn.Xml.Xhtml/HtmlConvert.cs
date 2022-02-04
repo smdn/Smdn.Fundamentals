@@ -53,7 +53,7 @@ public static class HtmlConvert {
 
     var sb = new StringBuilder(s.Length);
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
     sb.Append(s);
 #else
     unsafe {

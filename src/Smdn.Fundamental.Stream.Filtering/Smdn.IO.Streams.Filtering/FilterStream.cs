@@ -180,7 +180,7 @@ public partial class FilterStream : Stream {
     return ReadAsyncUnchecked(
       buffer.AsMemory(offset, count),
       cancellationToken
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK
     ).AsTask();
 #else
     );
@@ -211,7 +211,7 @@ public partial class FilterStream : Stream {
 #endif
 
   protected virtual
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK
   ValueTask<int>
 #else
   Task<int>
@@ -222,7 +222,7 @@ public partial class FilterStream : Stream {
   )
   {
     if (destination.Length <= bufferReadCursor.Length)
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK
       return new(ReadBuffer(ref destination));
 #else
       return Task.FromResult(ReadBuffer(ref destination));
@@ -231,7 +231,7 @@ public partial class FilterStream : Stream {
     return ReadAsyncCore();
 
     async
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK
     ValueTask<int>
 #else
     Task<int>

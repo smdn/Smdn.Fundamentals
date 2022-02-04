@@ -59,7 +59,7 @@ public static class ReadOnlySpanExtensions {
     try {
       buffer = ArrayPool<char>.Shared.Rent(span.Length);
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
       var buf = buffer.AsSpan(0, span.Length);
 
       TryPicturizeControlChars(span, buf);
@@ -88,7 +88,7 @@ public static class ReadOnlySpanExtensions {
     try {
       buffer = ArrayPool<char>.Shared.Rent(span.Length);
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
       var buf = buffer.AsSpan(0, span.Length);
 
       TryPicturizeControlChars(span, buf);

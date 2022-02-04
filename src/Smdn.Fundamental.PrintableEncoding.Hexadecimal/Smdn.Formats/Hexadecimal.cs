@@ -81,7 +81,7 @@ public static class Hexadecimal {
 
       TryEncodeLowerCase(dataSequence, destination.AsSpan(0, length), out _);
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
       return new string(destination.AsSpan(0, length));
 #else
       return new string(destination, 0, length);
