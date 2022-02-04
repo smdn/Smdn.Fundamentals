@@ -68,7 +68,13 @@ public static class StreamExtensions {
       var buffer = new byte[bufferSize]; // TODO: array pool
 
       for (; ; ) {
-        var read = await stream.ReadAsync(buffer, 0, bufferSize, cancellationToken).ConfigureAwait(false);
+        var read =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          await stream.ReadAsync(buffer.AsMemory(0, bufferSize), cancellationToken)
+#else
+          await stream.ReadAsync(buffer, 0, bufferSize, cancellationToken)
+#endif
+          .ConfigureAwait(false);
 
         if (read <= 0)
           break;
