@@ -25,7 +25,10 @@ public class ByteString :
   public byte this[int index] {
     get {
       if (index < 0 || segment.Count <= index)
+#pragma warning disable CA2201
+        // TODO: throw ArgumentOutOfRangeException instead
         throw new IndexOutOfRangeException();
+#pragma warning restore CA2201
 
       return segment.Array[segment.Offset + index];
     }
