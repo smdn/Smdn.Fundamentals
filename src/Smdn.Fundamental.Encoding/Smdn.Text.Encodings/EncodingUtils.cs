@@ -23,7 +23,11 @@ public static class EncodingUtils {
       var index = normalizedName.IndexOfAny(whiteSpaceChars, lastIndex);
 
       if (index < 0) {
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
+        normalizedNameBuffer.Append(normalizedName.AsSpan(lastIndex));
+#else
         normalizedNameBuffer.Append(normalizedName.Substring(lastIndex));
+#endif
 
         if (normalizedName.Length == normalizedNameBuffer.Length)
           return normalizedName;
@@ -31,7 +35,11 @@ public static class EncodingUtils {
           return normalizedNameBuffer.ToString();
       }
       else {
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
+        normalizedNameBuffer.Append(normalizedName.AsSpan(lastIndex, index - lastIndex));
+#else
         normalizedNameBuffer.Append(normalizedName.Substring(lastIndex, index - lastIndex));
+#endif
 
         lastIndex = index + 1;
       }
