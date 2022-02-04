@@ -246,7 +246,18 @@ public partial class FilterStream : Stream {
 
   private async Task FillBufferAsync(CancellationToken cancellationToken)
   {
-    var read = await stream.ReadAsync(rawBuffer, 0, rawBuffer.Length, cancellationToken).ConfigureAwait(false);
+    var read =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+      await stream.ReadAsync(
+        rawBuffer.AsMemory(),
+#else
+      await stream.ReadAsync(
+        rawBuffer,
+        0,
+        rawBuffer.Length,
+#endif
+        cancellationToken
+      ).ConfigureAwait(false);
 
     hasReachedEndOfStream |= read < rawBuffer.Length;
 
