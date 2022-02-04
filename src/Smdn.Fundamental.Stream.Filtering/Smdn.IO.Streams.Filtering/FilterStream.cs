@@ -170,19 +170,66 @@ public partial class FilterStream : Stream {
     if (count == 0)
       return Task.FromResult(count);
 
-    return ReadAsyncUnchecked(buffer, offset, count, cancellationToken);
+    return ReadAsyncUnchecked(
+      buffer.AsMemory(offset, count),
+      cancellationToken
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+    ).AsTask();
+#else
+    );
+#endif
   }
 
-  protected virtual Task<int> ReadAsyncUnchecked(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
   {
-    var dest = buffer.AsMemory(offset, count);
+    ThrowIfDisposed();
 
-    if (dest.Length <= bufferReadCursor.Length)
-      return Task.FromResult(ReadBuffer(ref dest));
+    if (cancellationToken.IsCancellationRequested)
+#if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
+      return ValueTask.FromCanceled<int>(cancellationToken);
+#else
+#if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
+      return new(Task.FromCanceled<int>(cancellationToken));
+#else
+      return new(new Task<int>(() => default, cancellationToken));
+#endif
+#endif
+
+    if (buffer.IsEmpty)
+      return new(0); // do nothing
+
+    return ReadAsyncUnchecked(buffer, cancellationToken);
+  }
+#endif
+
+  protected virtual
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+  ValueTask<int>
+#else
+  Task<int>
+#endif
+  ReadAsyncUnchecked(
+    Memory<byte> destination,
+    CancellationToken cancellationToken
+  )
+  {
+    if (destination.Length <= bufferReadCursor.Length)
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+      return new(ReadBuffer(ref destination));
+#else
+      return Task.FromResult(ReadBuffer(ref destination));
+#endif
 
     return ReadAsyncCore();
 
-    async Task<int> ReadAsyncCore()
+    async
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+    ValueTask<int>
+#else
+    Task<int>
+#endif
+    ReadAsyncCore()
     {
       var read = 0;
 
@@ -194,9 +241,9 @@ public partial class FilterStream : Stream {
           await FillBufferAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        read += ReadBuffer(ref dest);
+        read += ReadBuffer(ref destination);
 
-        if (dest.Length == 0)
+        if (destination.IsEmpty)
           return read;
       }
     }

@@ -58,6 +58,9 @@ namespace Smdn.IO.Streams.Filtering {
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Read(_Array.Empty<byte>(), 0, 0), nameof(stream.Read));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Memory<byte>.Empty), nameof(stream.ReadAsync));
+#endif
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
@@ -124,10 +127,21 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    [Test] public Task TestRead() => TestRead(runAsync: false);
-    [Test] public Task TestReadAsync() => TestRead(runAsync: true);
+    enum ReadMethod {
+      Read,
+      ReadAsync,
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+      ReadAsyncToMemory
+#endif
+    }
 
-    private async Task TestRead(bool runAsync)
+    [Test] public Task TestRead() => TestRead(ReadMethod.Read);
+    [Test] public Task TestReadAsync() => TestRead(ReadMethod.ReadAsync);
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [Test] public Task TestReadAsync_ToMemory() => TestRead(ReadMethod.ReadAsyncToMemory);
+#endif
+
+    private async Task TestRead(ReadMethod readMethod)
     {
       //                  | internal buffer 0   | internal buffer 1   |
       // offset      -1   | 0    1    2    3    | 4    5    6    7    |
@@ -153,18 +167,26 @@ namespace Smdn.IO.Streams.Filtering {
         Assert.AreEqual(8L, stream.Length, nameof(stream.Length));
 
         var buffer = new byte[8];
-        var read = runAsync
-          ? await stream.ReadAsync(buffer, 0, buffer.Length)
-          : stream.Read(buffer, 0, buffer.Length);
+        var read = readMethod switch {
+          ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory()),
+#endif
+          _ => stream.Read(buffer, 0, buffer.Length),
+        };
 
         Assert.AreEqual(buffer.Length, read);
         Assert.AreEqual(8L, stream.Position, nameof(stream.Position));
 
         CollectionAssert.AreEqual(expected, buffer);
 
-        read = runAsync
-          ? await stream.ReadAsync(buffer, 0, buffer.Length)
-          : stream.Read(buffer, 0, buffer.Length);
+        read = readMethod switch {
+          ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory()),
+#endif
+          _ => stream.Read(buffer, 0, buffer.Length),
+        };
 
         Assert.AreEqual(0, read);
         Assert.AreEqual(8L, stream.Position, nameof(stream.Position));
@@ -199,10 +221,13 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    [Test] public Task TestRead_ReadToPartialBuffer() => TestRead_ReadToPartialBuffer(runAsync: false);
-    [Test] public Task TestReadAsync_ReadToPartialBuffer() => TestRead_ReadToPartialBuffer(runAsync: true);
+    [Test] public Task TestRead_ReadToPartialBuffer() => TestRead_ReadToPartialBuffer(ReadMethod.Read);
+    [Test] public Task TestReadAsync_ReadToPartialBuffer() => TestRead_ReadToPartialBuffer(ReadMethod.ReadAsync);
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [Test] public Task TestReadAsync_ToMemory_ReadToPartialBuffer() => TestRead_ReadToPartialBuffer(ReadMethod.ReadAsyncToMemory);
+#endif
 
-    private async Task TestRead_ReadToPartialBuffer(bool runAsync)
+    private async Task TestRead_ReadToPartialBuffer(ReadMethod readMethod)
     {
       //             | internal buffer 0   | internal buffer 1   |
       // offset      | 0    1    2    3    | 4    5    6    7    |
@@ -224,9 +249,13 @@ namespace Smdn.IO.Streams.Filtering {
           (4, 3, 8L, expected.Slice(5, 3)),
           (8, 0, 8L, _Array.Empty<byte>()),
         }) {
-          var read = runAsync
-            ? await stream.ReadAsync(buffer, 0, lengthToRead)
-            : stream.Read(buffer, 0, lengthToRead);
+          var read = readMethod switch {
+            ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, lengthToRead),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory(0, lengthToRead)),
+#endif
+            _ => stream.Read(buffer, 0, lengthToRead),
+          };
 
           Assert.AreEqual(expectedLength, read);
           Assert.AreEqual(expectedPosition, stream.Position, nameof(stream.Position));
@@ -238,10 +267,13 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    [Test] public Task TestRead_SeekAndRead() => TestRead_SeekAndRead(runAsync: false);
-    [Test] public Task TestReadAsync_SeekAndRead() => TestRead_SeekAndRead(runAsync: true);
+    [Test] public Task TestRead_SeekAndRead() => TestRead_SeekAndRead(ReadMethod.Read);
+    [Test] public Task TestReadAsync_SeekAndRead() => TestRead_SeekAndRead(ReadMethod.ReadAsync);
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [Test] public Task TestReadAsync_ToMemory_SeekAndRead() => TestRead_SeekAndRead(ReadMethod.ReadAsyncToMemory);
+#endif
 
-    private async Task TestRead_SeekAndRead(bool runAsync)
+    private async Task TestRead_SeekAndRead(ReadMethod readMethod)
     {
       //             | internal buffer 0   | internal buffer 1   |
       // offset      | 0    1    2    3    | 4    5    6    7    |
@@ -273,9 +305,13 @@ namespace Smdn.IO.Streams.Filtering {
         }) {
           stream.Position = offset;
 
-          var read = runAsync
-          ? await stream.ReadAsync(buffer, offset, length)
-          : stream.Read(buffer, offset, length);
+          var read = readMethod switch {
+            ReadMethod.ReadAsync => await stream.ReadAsync(buffer, offset, length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory(offset, length)),
+#endif
+            _ => stream.Read(buffer, offset, length),
+          };
 
           Assert.AreEqual(length, read, test + " read count");
           CollectionAssert.AreEqual(
@@ -287,10 +323,13 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    [Test] public Task TestRead_ZeroLengthFilter() => TestRead_ZeroLengthFilter(runAsync: false);
-    [Test] public Task TestReadAsync_ZeroLengthFilter() => TestRead_ZeroLengthFilter(runAsync: true);
+    [Test] public Task TestRead_ZeroLengthFilter() => TestRead_ZeroLengthFilter(ReadMethod.Read);
+    [Test] public Task TestReadAsync_ZeroLengthFilter() => TestRead_ZeroLengthFilter(ReadMethod.ReadAsync);
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [Test] public Task TestReadAsync_ToMemory_ZeroLengthFilter() => TestRead_ZeroLengthFilter(ReadMethod.ReadAsyncToMemory);
+#endif
 
-    private async Task TestRead_ZeroLengthFilter(bool runAsync)
+    private async Task TestRead_ZeroLengthFilter(ReadMethod readMethod)
     {
       //                  | internal buffer 0   | internal buffer 1   |
       // offset           | 0    1    2    3    | 4    5    6    7    |
@@ -302,9 +341,13 @@ namespace Smdn.IO.Streams.Filtering {
 
       using (var stream = new FilterStream(baseStream, filter, leaveStreamOpen: true, bufferSize: 4)) {
         var buffer = new byte[8];
-        var read = runAsync
-          ? await stream.ReadAsync(buffer, 0, buffer.Length)
-          : stream.Read(buffer, 0, buffer.Length);
+        var read = readMethod switch {
+          ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory()),
+#endif
+          _ => stream.Read(buffer, 0, buffer.Length),
+        };
 
         Assert.AreEqual(buffer.Length, read);
         CollectionAssert.AreEqual(
@@ -314,10 +357,13 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    [Test] public Task TestRead_OffsetWithinFilter_OffsetNegative() => TestRead_OffsetWithinFilter_OffsetNegative(runAsync: false);
-    [Test] public Task TestReadAsync_OffsetWithinFilter_OffsetNegative() => TestRead_OffsetWithinFilter_OffsetNegative(runAsync: true);
+    [Test] public Task TestRead_OffsetWithinFilter_OffsetNegative() => TestRead_OffsetWithinFilter_OffsetNegative(ReadMethod.Read);
+    [Test] public Task TestReadAsync_OffsetWithinFilter_OffsetNegative() => TestRead_OffsetWithinFilter_OffsetNegative(ReadMethod.ReadAsync);
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [Test] public Task TestReadAsync_ToMemory_OffsetWithinFilter_OffsetNegative() => TestRead_OffsetWithinFilter_OffsetNegative(ReadMethod.ReadAsyncToMemory);
+#endif
 
-    private async Task TestRead_OffsetWithinFilter_OffsetNegative(bool runAsync)
+    private async Task TestRead_OffsetWithinFilter_OffsetNegative(ReadMethod readMethod)
     {
       //                  | internal buffer 0   | internal buffer 1   |
       // offset           | 0    1    2    3    | 4    5    6    7    |
@@ -334,9 +380,13 @@ namespace Smdn.IO.Streams.Filtering {
 
       using (var stream = new FilterStream(baseStream, filter, leaveStreamOpen: true, bufferSize: 4)) {
         var buffer = new byte[8];
-        var read = runAsync
-          ? await stream.ReadAsync(buffer, 0, buffer.Length)
-          : stream.Read(buffer, 0, buffer.Length);
+        var read = readMethod switch {
+          ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory()),
+#endif
+          _ => stream.Read(buffer, 0, buffer.Length),
+        };
 
         Assert.AreEqual(buffer.Length, read);
         CollectionAssert.AreEqual(
@@ -346,10 +396,13 @@ namespace Smdn.IO.Streams.Filtering {
       }
     }
 
-    [Test] public Task TestRead_OffsetWithinFilter_OffsetPositive() => TestRead_OffsetWithinFilter_OffsetPositive(runAsync: false);
-    [Test] public Task TestReadAsync_OffsetWithinFilter_OffsetPositive() => TestRead_OffsetWithinFilter_OffsetPositive(runAsync: true);
+    [Test] public Task TestRead_OffsetWithinFilter_OffsetPositive() => TestRead_OffsetWithinFilter_OffsetPositive(ReadMethod.Read);
+    [Test] public Task TestReadAsync_OffsetWithinFilter_OffsetPositive() => TestRead_OffsetWithinFilter_OffsetPositive(ReadMethod.ReadAsync);
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [Test] public Task TestReadAsync_ToMemory_OffsetWithinFilter_OffsetPositive() => TestRead_OffsetWithinFilter_OffsetPositive(ReadMethod.ReadAsyncToMemory);
+#endif
 
-    private async Task TestRead_OffsetWithinFilter_OffsetPositive(bool runAsync)
+    private async Task TestRead_OffsetWithinFilter_OffsetPositive(ReadMethod readMethod)
     {
       //                  | internal buffer 0   | internal buffer 1   |
       // offset           | 0    1    2    3    | 4    5    6    7    |
@@ -366,9 +419,13 @@ namespace Smdn.IO.Streams.Filtering {
 
       using (var stream = new FilterStream(baseStream, filter, leaveStreamOpen: true, bufferSize: 4)) {
         var buffer = new byte[8];
-        var read = runAsync
-          ? await stream.ReadAsync(buffer, 0, buffer.Length)
-          : stream.Read(buffer, 0, buffer.Length);
+        var read = readMethod switch {
+          ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncToMemory => await stream.ReadAsync(buffer.AsMemory()),
+#endif
+          _ => stream.Read(buffer, 0, buffer.Length),
+        };
 
         Assert.AreEqual(buffer.Length, read);
         CollectionAssert.AreEqual(
