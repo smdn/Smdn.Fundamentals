@@ -558,6 +558,15 @@ public class LineOrientedStream : Stream {
     return stream.WriteAsync(buffer, offset, count, cancellationToken);
   }
 
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+  public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+  {
+    CheckDisposed();
+
+    return stream.WriteAsync(buffer, cancellationToken);
+  }
+#endif
+
   public override Task CopyToAsync(
     Stream destination,
     int bufferSize = 0, // don't care

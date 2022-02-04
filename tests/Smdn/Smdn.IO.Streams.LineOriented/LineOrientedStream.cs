@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using Smdn.Text;
+using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
 namespace Smdn.IO.Streams.LineOriented {
   [TestFixture]
@@ -464,6 +465,65 @@ namespace Smdn.IO.Streams.LineOriented {
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
+    public void TestWrite(StreamType type)
+    {
+      using var baseStream = new MemoryStream(capacity: 8);
+      using var stream = CreateStream(type, baseStream, 8);
+
+      Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
+
+      var data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
+
+      stream.Write(data, 0, data.Length);
+
+      Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
+      Assert.AreEqual(4L, stream.Position, nameof(stream.Position));
+
+      Assert.That(baseStream.ToArray().AsMemory(), Is.EqualTo(data.AsMemory()));
+    }
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestWriteAsync(StreamType type)
+    {
+      using var baseStream = new MemoryStream(capacity: 8);
+      using var stream = CreateStream(type, baseStream, 8);
+
+      Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
+
+      var data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
+
+      await stream.WriteAsync(data, 0, data.Length);
+
+      Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
+      Assert.AreEqual(4L, stream.Position, nameof(stream.Position));
+
+      Assert.That(baseStream.ToArray().AsMemory(), Is.EqualTo(data.AsMemory()));
+    }
+
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestWriteAsync_ToReadOnlyMemory(StreamType type)
+    {
+      using var baseStream = new MemoryStream(capacity: 8);
+      using var stream = CreateStream(type, baseStream, 8);
+
+      Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
+
+      ReadOnlyMemory<byte> data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
+
+      await stream.WriteAsync(data);
+
+      Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
+      Assert.AreEqual(4L, stream.Position, nameof(stream.Position));
+
+      Assert.That(baseStream.ToArray().AsMemory(), Is.EqualTo(data));
+    }
+#endif
+
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
     public void TestClose(StreamType type)
     {
       var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
@@ -495,6 +555,9 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
         Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
         Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(buffer, 0, 8));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+        Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(Memory<byte>.Empty));
+#endif
         Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
 
         stream.Dispose();
