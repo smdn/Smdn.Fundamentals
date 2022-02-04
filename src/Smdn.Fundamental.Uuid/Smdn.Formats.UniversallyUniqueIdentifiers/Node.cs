@@ -45,7 +45,7 @@ public readonly struct Node : IFormattable {
     N5 = n5;
   }
 
-  /// <param name="node"/>Length must be 6 bytes.</param>
+  /// <param name="node">Length must be 6 bytes.</param>
   internal Node(ReadOnlySpan<byte> node)
   {
     N0 = node[0];
