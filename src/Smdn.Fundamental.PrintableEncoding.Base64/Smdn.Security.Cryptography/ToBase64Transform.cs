@@ -23,24 +23,24 @@ internal class ToBase64Transform : ICryptoTransform {
   public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
     if (inputBuffer == null)
-      throw new ArgumentNullException("inputBuffer");
+      throw new ArgumentNullException(nameof(inputBuffer));
     if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
     if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
     if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
     if (inputCount < InputBlockSize)
-      throw ExceptionUtils.CreateArgumentMustBeGreaterThan(InputBlockSize, "inputCount", inputCount);
+      throw ExceptionUtils.CreateArgumentMustBeGreaterThan(InputBlockSize, nameof(inputCount), inputCount);
 
     if (outputBuffer == null)
-      throw new ArgumentNullException("outputBuffer");
+      throw new ArgumentNullException(nameof(outputBuffer));
     if (outputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("outputOffset", outputOffset);
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
     if (outputBuffer.Length <= outputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset", outputBuffer, outputOffset, outputBuffer.Length);
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, outputBuffer.Length);
     if (outputBuffer.Length < outputOffset + OutputBlockSize)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("outputOffset + OutputBlockSize", outputBuffer, outputOffset, outputBuffer.Length);
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputBuffer), outputBuffer, outputOffset, outputBuffer.Length);
 
     return UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
   }
@@ -100,15 +100,15 @@ internal class ToBase64Transform : ICryptoTransform {
   public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
   {
     if (inputBuffer == null)
-      throw new ArgumentNullException("inputBuffer");
+      throw new ArgumentNullException(nameof(inputBuffer));
     if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputOffset", inputOffset);
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
     if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive("inputCount", inputCount);
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
     if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("inputOffset", inputBuffer, inputOffset, inputCount);
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
     if (InputBlockSize < inputCount)
-      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(InputBlockSize, "inputCount", inputCount);
+      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(InputBlockSize, nameof(inputCount), inputCount);
 
     if (inputCount == 0)
       return Array.Empty<byte>();
