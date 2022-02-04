@@ -9,7 +9,7 @@ namespace Smdn.Text;
 public static class ByteStringExtensions {
   public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) => new(str.Segment.AsMemory());
 
-  [Obsolete]
+  [Obsolete("ByteString will be deprecated in future.")]
   public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) => ByteString.CreateImmutable(sequence.ToArray());
 
   [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqual instead")]
