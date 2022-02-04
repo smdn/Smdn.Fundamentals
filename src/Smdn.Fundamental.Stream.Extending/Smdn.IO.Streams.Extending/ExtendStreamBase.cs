@@ -258,7 +258,13 @@ public abstract class ExtendStreamBase : Stream {
             break;
 
           case StreamSection.Stream:
-            readCount = await stream.ReadAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
+            readCount =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+              await stream.ReadAsync(buffer.AsMemory(offset, count), cancellationToken)
+#else
+              await stream.ReadAsync(buffer, offset, count, cancellationToken)
+#endif
+              .ConfigureAwait(false);
             nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
             break;
 
