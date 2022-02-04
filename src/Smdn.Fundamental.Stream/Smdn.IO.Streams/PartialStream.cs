@@ -252,6 +252,20 @@ public class PartialStream :
       return Task.FromResult(0);
   }
 
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+  {
+    CheckDisposed();
+
+    var remainder = GetRemainderLength();
+
+    if (0L < remainder)
+      return stream.ReadAsync(buffer.Slice(0, (int)Math.Min(buffer.Length, remainder)), cancellationToken); // XXX: long -> int
+
+    return new(0);
+  }
+#endif
+
   public override void Write(byte[] buffer, int offset, int count)
   {
     CheckDisposed();
