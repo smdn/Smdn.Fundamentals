@@ -141,7 +141,15 @@ public static class CsvRecord {
     return string.Join(
       ",",
       (csv ?? throw new ArgumentNullException(nameof(csv)))
-        .Select(s => s != null && s.Contains("\"") ? string.Concat("\"", s.Replace("\"", "\"\""), "\"") : s)
+        .Select(s =>
+#if SYSTEM_STRING_CONTAINS_CHAR
+          s != null && s.Contains('"')
+#else
+          s != null && s.Contains("\"")
+#endif
+            ? string.Concat("\"", s.Replace("\"", "\"\""), "\"")
+            : s
+        )
     );
   }
 }
