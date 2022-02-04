@@ -96,13 +96,18 @@ public partial class FilterStream : Stream {
   }
 
   private Task ThrowNotSupportedWritingStream() { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedWritingStream(); }
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+  private ValueTask ThrowNotSupportedWritingStreamValueTask() { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedWritingStream(); }
+#endif
 
   public override void Flush() => ThrowNotSupportedWritingStream();
   public override Task FlushAsync(CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
 
   public override void Write(byte[] buffer, int offset, int count) => ThrowNotSupportedWritingStream();
   public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) => ThrowNotSupportedWritingStream();
-
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+  public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) => ThrowNotSupportedWritingStreamValueTask();
+#endif
   public override void SetLength(long value) { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedSettingStreamLength(); }
 
   public override long Seek(long offset, SeekOrigin origin)

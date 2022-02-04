@@ -64,6 +64,9 @@ namespace Smdn.IO.Streams.Filtering {
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ReadOnlyMemory<byte>.Empty), nameof(stream.WriteAsync));
+#endif
       Assert.Throws<ObjectDisposedException>(() => stream.Flush(), nameof(stream.Flush));
       Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Seek(0, SeekOrigin.Begin), nameof(stream.Seek));
@@ -87,6 +90,9 @@ namespace Smdn.IO.Streams.Filtering {
 
     [Test] public void TestWrite() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Write(_Array.Empty<byte>(), 0, 0));
     [Test] public void TestWriteAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(_Array.Empty<byte>(), 0, 0));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+    [Test] public void TestWriteAsync_FromReadOnlyMemory() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(ReadOnlyMemory<byte>.Empty));
+#endif
     [Test] public void TestWriteByte() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).WriteByte(0x00));
     [Test] public void TestFlush() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Flush());
     [Test] public void TestFlushAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).FlushAsync());
