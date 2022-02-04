@@ -165,7 +165,7 @@ public static class TypeExtensions {
   private struct DefaultLayoutStruct { }
   private static readonly StructLayoutAttribute DefaultStructLayoutAttribute = typeof(DefaultLayoutStruct).StructLayoutAttribute;
 
-  /// <remarks>The value of <see ref="StructLayoutAttribute.Size"> is not considered.</remarks>
+  /// <remarks>The value of <see ref="StructLayoutAttribute.Size"/> is not considered.</remarks>
   public static bool IsStructLayoutDefault(this Type t)
   {
     if (t is null)
