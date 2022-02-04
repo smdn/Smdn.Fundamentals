@@ -19,7 +19,8 @@ internal class FromBase64Transform : ICryptoTransform {
 
   public FromBase64Transform(FromBase64TransformMode mode)
   {
-    ignoreWhiteSpaces = (mode == FromBase64TransformMode.IgnoreWhiteSpaces);
+    ignoreWhiteSpaces =
+      mode == FromBase64TransformMode.IgnoreWhiteSpaces;
   }
 
   public void Dispose()

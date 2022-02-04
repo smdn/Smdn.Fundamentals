@@ -75,7 +75,7 @@ internal class ToBase64Transform : ICryptoTransform {
         ret++;
 
         b = inputBuffer[inputOffset++] & 0x3f;
-        inputCount--;
+        // inputCount--;
 
         outputBuffer[outputOffset++] = toBase64Table[b];
         ret++;
