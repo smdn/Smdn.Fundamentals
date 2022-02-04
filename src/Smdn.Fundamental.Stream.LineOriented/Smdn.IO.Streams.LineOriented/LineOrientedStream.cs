@@ -457,65 +457,115 @@ public class LineOrientedStream : Stream {
       return Task.FromResult(0); // do nothing
 
     return ReadAsyncCore(
+      destination: buffer.AsMemory(offset, count),
+      cancellationToken: cancellationToken
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+    ).AsTask();
+#else
+    );
+#endif
+  }
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  public override ValueTask<int> ReadAsync(
+    Memory<byte> buffer,
+    CancellationToken cancellationToken = default
+  )
+  {
+    CheckDisposed();
+
+    if (cancellationToken.IsCancellationRequested)
+#if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
+      return ValueTask.FromCanceled<int>(cancellationToken);
+#else
+#if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
+      return new(Task.FromCanceled<int>(cancellationToken));
+#else
+      return new(new Task<int>(() => default, cancellationToken));
+#endif
+#endif
+
+    if (buffer.IsEmpty)
+      return new(0); // do nothing
+
+    return ReadAsyncCore(
       destination: buffer,
-      offset: offset,
-      count: count,
       cancellationToken: cancellationToken
     );
   }
+#endif
 
-  private async Task<int> ReadAsyncCore(
-    byte[] destination,
-    int offset,
-    int count,
+  private async
+#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+  ValueTask<int>
+#else
+  Task<int>
+#endif
+  ReadAsyncCore(
+    Memory<byte> destination,
     CancellationToken cancellationToken
   )
   {
-    if (count <= bufRemain) {
-      Buffer.BlockCopy(buffer, bufOffset, destination, offset, count);
-      bufOffset += count;
-      bufRemain -= count;
+    if (destination.Length <= bufRemain) {
+      buffer.AsSpan(bufOffset, destination.Length).CopyTo(destination.Span);
+      bufOffset += destination.Length;
+      bufRemain -= destination.Length;
 
-      return count;
+      return destination.Length;
     }
 
     var read = 0;
 
     if (bufRemain != 0) {
-      Buffer.BlockCopy(buffer, bufOffset, destination, offset, bufRemain);
+      buffer.AsSpan(bufOffset, bufRemain).CopyTo(destination.Span);
 
       read = bufRemain;
-      offset += bufRemain;
-      count -= bufRemain;
+
+      destination = destination.Slice(bufRemain);
 
       bufRemain = 0;
     }
 
     // read from base stream
     for (; ; ) {
-      if (count <= 0)
+      if (destination.IsEmpty)
         break;
 
-      var r =
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-        await stream.ReadAsync(
-          destination.AsMemory(offset, count),
+      var r = await stream.ReadAsync(
+        destination,
+        cancellationToken
+      ).ConfigureAwait(false);
 #else
 #pragma warning disable CA1835
-        await stream.ReadAsync(
-          destination,
-          offset,
-          count,
-#pragma warning restore CA1835
-#endif
+      byte[] readBuffer = null;
+      int r = 0;
+
+      try {
+        readBuffer = ArrayPool<byte>.Shared.Rent(destination.Length);
+
+        r = await stream.ReadAsync(
+          readBuffer,
+          0,
+          destination.Length,
           cancellationToken
         ).ConfigureAwait(false);
+      }
+      finally {
+        if (readBuffer is not null) {
+          if (0 < r)
+            readBuffer.AsMemory(0, r).CopyTo(destination);
+
+          ArrayPool<byte>.Shared.Return(readBuffer);
+        }
+      }
+#pragma warning restore CA1835
+#endif
 
       if (r <= 0)
         break;
 
-      offset += r;
-      count -= r;
+      destination = destination.Slice(r);
       read += r;
     }
 

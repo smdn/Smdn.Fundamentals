@@ -250,6 +250,24 @@ namespace Smdn.IO.Streams.LineOriented {
       Assert.AreEqual(data, buffer);
     }
 
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestReadAsync_ToMemory_BufferEmpty(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var stream = CreateStream(type, new MemoryStream(data), 8);
+
+      Memory<byte> buffer = new byte[12];
+
+      Assert.AreEqual(12L, await stream.ReadAsync(buffer));
+
+      Assert.AreEqual(12L, stream.Position, "Position");
+
+      Assert.That(buffer, Is.EqualTo(data.AsMemory()), nameof(buffer));
+    }
+#endif
+
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
     public void TestRead_LessThanBuffered(StreamType type)
@@ -272,6 +290,30 @@ namespace Smdn.IO.Streams.LineOriented {
       Assert.AreEqual(data.Slice(4, 4), buffer);
     }
 
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestReadAsync_ToMemory_LessThanBuffered(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var stream = CreateStream(type, new MemoryStream(data), 16);
+
+      var line = stream.ReadLine(true);
+
+      Assert.AreEqual(4L, stream.Position, "Position");
+
+      Assert.AreEqual(data.Slice(0, 4), line);
+
+      Memory<byte> buffer = new byte[4];
+
+      Assert.AreEqual(4, await stream.ReadAsync(buffer));
+
+      Assert.AreEqual(8L, stream.Position, "Position");
+
+      Assert.That(buffer, Is.EqualTo(data.AsMemory(4, 4)), nameof(buffer));
+    }
+#endif
+
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
     public void TestRead_LongerThanBuffered(StreamType type)
@@ -293,6 +335,30 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(data.Slice(4, 8), buffer.Slice(0, 8));
     }
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestReadAsync_ToMemory_LongerThanBuffered(StreamType type)
+    {
+      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var stream = CreateStream(type, new MemoryStream(data), 8);
+
+      var line = stream.ReadLine(true);
+
+      Assert.AreEqual(4L, stream.Position, "Position");
+
+      Assert.AreEqual(data.Slice(0, 4), line);
+
+      Memory<byte> buffer = new byte[10];
+
+      Assert.AreEqual(8, await stream.ReadAsync(buffer));
+
+      Assert.AreEqual(12L, stream.Position, "Position");
+
+      Assert.That(buffer.Slice(0, 8), Is.EqualTo(data.AsMemory(4, 8)), nameof(buffer));
+    }
+#endif
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
@@ -367,6 +433,18 @@ namespace Smdn.IO.Streams.LineOriented {
       Assert.AreEqual(0L, t.GetAwaiter().GetResult());
       Assert.AreEqual(0L, stream.Position, "Position");
     }
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    [TestCase(StreamType.Strict)]
+    [TestCase(StreamType.Loose)]
+    public async Task TestReadAsync_ToMemory_LengthZero(StreamType type)
+    {
+      var stream = CreateStream(type, new MemoryStream(), 8);
+
+      Assert.AreEqual(0L, await stream.ReadAsync(Memory<byte>.Empty));
+      Assert.AreEqual(0L, stream.Position, "Position");
+    }
+#endif
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
@@ -548,6 +626,9 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
         Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
         Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty));
+#endif
         Assert.Throws<ObjectDisposedException>(() => stream.Read(Stream.Null, 8));
         Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Stream.Null, 8));
         Assert.Throws<ObjectDisposedException>(() => stream.Flush());
