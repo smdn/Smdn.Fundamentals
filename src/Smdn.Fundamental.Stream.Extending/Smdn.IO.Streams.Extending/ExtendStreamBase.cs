@@ -228,6 +228,15 @@ public abstract class ExtendStreamBase : Stream {
   protected abstract Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
   protected abstract Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
 
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE && false
+  // TODO: override ReadAsync(Memory<byte>, CancellationToken)
+  public override ValueTask<int> ReadAsync(
+    Memory<byte> buffer,
+    CancellationToken cancellationToken = default
+  )
+    => throw new NotImplementedException();
+#endif
+
   public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
   {
     ThrowIfDisposed();
