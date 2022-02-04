@@ -55,7 +55,11 @@ namespace Smdn.IO.Streams {
       Assert.IsFalse(stream.CanWrite);
 
       Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
+      Assert.Throws<NotSupportedException>(() => stream.WriteAsync(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
       Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x00));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+      Assert.Throws<NotSupportedException>(() => stream.WriteAsync(ReadOnlyMemory<byte>.Empty));
+#endif
 
       var len = stream.Length;
       var pos = stream.Position;
@@ -164,7 +168,10 @@ namespace Smdn.IO.Streams {
 #endif
       Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0));
-      //Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0));
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ReadOnlyMemory<byte>.Empty));
+#endif
 
       stream.Dispose();
     }
@@ -379,8 +386,21 @@ namespace Smdn.IO.Streams {
       Assert.AreEqual(8, stream.InnerStream.Position);
     }
 
-    [Test]
-    public void TestWriteLengthSpecified()
+    enum WriteMethod {
+      Write,
+      WriteAsync,
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+      WriteAsyncFromReadOnlyMemory,
+#endif
+    }
+
+    [Test] public Task TestWrite_LengthSpecified() => TestWrite_LengthSpecified(WriteMethod.Write);
+    [Test] public Task TestWriteAsync_LengthSpecified() => TestWrite_LengthSpecified(WriteMethod.WriteAsync);
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+    [Test] public Task TestWriteAsync_FromReadOnlyMemory_LengthSpecified() => TestWrite_LengthSpecified(WriteMethod.WriteAsyncFromReadOnlyMemory);
+#endif
+
+    private async Task TestWrite_LengthSpecified(WriteMethod writeMethod)
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
 
@@ -391,16 +411,39 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(4, stream.Length);
         Assert.AreEqual(0, stream.Position);
 
-        stream.Write(new byte[] {0x02, 0x03}, 0, 2);
+        switch (writeMethod) {
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x02, 0x03}, 0, 2); break;
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x02, 0x03})); break;
+#endif
+          default: stream.Write(new byte[] {0x02, 0x03}, 0, 2); break;
+        };
+
+        Assert.AreEqual(2, stream.Position);
+
         stream.WriteByte(0x04);
 
         Assert.AreEqual(3, stream.Position);
 
-        Assert.Throws<IOException>(() => stream.Write(new byte[] {0x05, 0x06}, 0, 2));
+        Assert.ThrowsAsync<IOException>(async () => {
+          switch (writeMethod) {
+            case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x05, 0x06}, 0, 2); break;
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+            case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x05, 0x06})); break;
+#endif
+            default: stream.Write(new byte[] {0x05, 0x06}, 0, 2); break;
+          }
+        });
 
         Assert.AreEqual(3, stream.Position);
 
-        stream.Write(new byte[] {0x05}, 0, 1);
+        switch (writeMethod) {
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x05}, 0, 1); break;
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x05})); break;
+#endif
+          default: stream.Write(new byte[] {0x05}, 0, 1); break;
+        };
 
         Assert.AreEqual(4, stream.Position);
 
@@ -412,8 +455,13 @@ namespace Smdn.IO.Streams {
       Assert.AreEqual(new byte[] {0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x00, 0x00}, inner.ToArray());
     }
 
-    [Test]
-    public void TestWriteLengthNotSpecified()
+    [Test] public Task TestWrite_LengthNotSpecified() => TestWrite_LengthNotSpecified(WriteMethod.Write);
+    [Test] public Task TestWriteAsync_LengthNotSpecified() => TestWrite_LengthNotSpecified(WriteMethod.WriteAsync);
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+    [Test] public Task TestWriteAsync_FromReadOnlyMemory_LengthNotSpecified() => TestWrite_LengthNotSpecified(WriteMethod.WriteAsyncFromReadOnlyMemory);
+#endif
+
+    private async Task TestWrite_LengthNotSpecified(WriteMethod writeMethod)
     {
       var inner = new MemoryStream(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00});
 
@@ -424,17 +472,40 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(6, stream.Length);
         Assert.AreEqual(0, stream.Position);
 
-        stream.Write(new byte[] {0x02, 0x03, 0x04}, 0, 3);
+        switch (writeMethod) {
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x02, 0x03, 0x04}, 0, 3); break;
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x02, 0x03, 0x04})); break;
+#endif
+          default: stream.Write(new byte[] {0x02, 0x03, 0x04}, 0, 3); break;
+        };
+
+        Assert.AreEqual(3, stream.Position);
+
         stream.WriteByte(0x05);
 
         Assert.AreEqual(4, stream.Position);
 
         // cannot expand MemoryStream
-        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3));
+        Assert.ThrowsAsync<NotSupportedException>(async () => {
+          switch (writeMethod) {
+            case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+            case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x06, 0x07, 0x08})); break;
+#endif
+            default: stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
+          }
+        });
 
         Assert.AreEqual(4, stream.Position);
 
-        stream.Write(new byte[] {0x06, 0x07}, 0, 2);
+        switch (writeMethod) {
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x06, 0x07}, 0, 2); break;
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x06, 0x07})); break;
+#endif
+          default: stream.Write(new byte[] {0x06, 0x07}, 0, 2); break;
+        };
 
         Assert.AreEqual(6, stream.Position);
 

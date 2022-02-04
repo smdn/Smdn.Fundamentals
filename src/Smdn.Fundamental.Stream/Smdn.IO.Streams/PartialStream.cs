@@ -266,21 +266,46 @@ public class PartialStream :
   }
 #endif
 
+  private void CheckWriteRemainder(int count, string nameOfCountParameter)
+  {
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameOfCountParameter, count);
+
+    if (GetRemainderLength() - count < 0L)
+      throw new IOException("attempted to write after end of stream");
+  }
+
   public override void Write(byte[] buffer, int offset, int count)
   {
     CheckDisposed();
     CheckWritable();
+    CheckWriteRemainder(count, nameof(count));
 
-    if (count < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
-
-    var remainder = GetRemainderLength() - count;
-
-    if (remainder < 0L)
-      throw new IOException("attempted to write after end of stream");
-    else
-      stream.Write(buffer, offset, count);
+    stream.Write(buffer, offset, count);
   }
+
+  public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default)
+  {
+    CheckDisposed();
+    CheckWritable();
+    CheckWriteRemainder(count, nameof(count));
+
+    return stream.WriteAsync(buffer, offset, count, cancellationToken);
+  }
+
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+  public override ValueTask WriteAsync(
+    ReadOnlyMemory<byte> buffer,
+    CancellationToken cancellationToken = default
+  )
+  {
+    CheckDisposed();
+    CheckWritable();
+    CheckWriteRemainder(buffer.Length, nameof(buffer));
+
+    return stream.WriteAsync(buffer, cancellationToken);
+  }
+#endif
 
   private void CheckDisposed()
   {
