@@ -89,6 +89,10 @@ public partial class FilterStream : Stream {
 #endif
 
     stream = null;
+
+#if !SYSTEM_IO_STREAM_CLOSE
+    base.Dispose(disposing);
+#endif
   }
 
   private Task ThrowNotSupportedWritingStream() { ThrowIfDisposed(); throw ExceptionUtils.CreateNotSupportedWritingStream(); }
