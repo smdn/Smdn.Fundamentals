@@ -90,7 +90,9 @@ public partial class FilterStream : Stream {
 
     stream = null;
 
-#if !SYSTEM_IO_STREAM_CLOSE
+#if SYSTEM_IO_STREAM_CLOSE
+    base.Close();
+#else
     base.Dispose(disposing);
 #endif
   }
