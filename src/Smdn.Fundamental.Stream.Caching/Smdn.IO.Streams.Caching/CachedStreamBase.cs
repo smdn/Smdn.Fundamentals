@@ -164,10 +164,11 @@ public abstract class CachedStreamBase : Stream {
 
   private bool TryGetBlock(long offset, out ReadOnlySpan<byte> block)
   {
+    var blockIndex =
 #if SYSTEM_MATH_DIVREM
-    var blockIndex = Math.DivRem(position, blockSize, out var blockOffset);
+      Math.DivRem(position, blockSize, out var blockOffset);
 #else
-    var blockIndex = MathUtils.DivRem(position, (long)blockSize, out var blockOffset);
+      MathUtils.DivRem(position, blockSize, out var blockOffset);
 #endif
 
     block = default;
