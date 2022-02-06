@@ -5,7 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-#if !(NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
 using Smdn.IO.Streams; // NonClosingStream
 #endif
 using Smdn.Security.Cryptography;
@@ -112,7 +112,7 @@ public static class Base64 {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
-#if NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
     return new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write, leaveStreamOpen);
 #else
     var s = new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write);
@@ -129,7 +129,7 @@ public static class Base64 {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
-#if NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
     return new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read, leaveStreamOpen);
 #else
     var s = new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read);

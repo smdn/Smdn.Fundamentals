@@ -675,7 +675,7 @@ public readonly struct Uuid :
 
     if (
       fields[3].Length != 4 ||
-#if NETSTANDARD2_1_OR_GREATER
+#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
       !byte.TryParse(fields[3].AsSpan(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
       !byte.TryParse(fields[3].AsSpan(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
 #else
@@ -691,7 +691,7 @@ public readonly struct Uuid :
     if (fields[4].Length != 12)
       throw new FormatException($"invalid UUID (node): {uuid}");
 
-#if NETSTANDARD2_1_OR_GREATER
+#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
     if (
       !byte.TryParse(fields[4].AsSpan( 0, 2), NumberStyles.HexNumber, null, out var n0) ||
       !byte.TryParse(fields[4].AsSpan( 2, 2), NumberStyles.HexNumber, null, out var n1) ||

@@ -5,7 +5,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-#if !(NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER)
+#if !SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
 using Smdn.IO.Streams; // NonClosingStream
 #endif
 using Smdn.Security.Cryptography;
@@ -101,7 +101,7 @@ public static class QuotedPrintableEncoding {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
-#if NET472_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
     return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read, leaveStreamOpen);
 #else
     var s = new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);

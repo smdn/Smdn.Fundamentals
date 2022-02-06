@@ -59,7 +59,7 @@ public static class UriUtils {
     var ret = new Dictionary<string, string>(comparer);
 #pragma warning disable SA1114
     var splitted = queryParameters.Split(
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRING_SPLIT_CHAR
       ParameterSplitterChar,
 #else
       new[] { ParameterSplitterChar },

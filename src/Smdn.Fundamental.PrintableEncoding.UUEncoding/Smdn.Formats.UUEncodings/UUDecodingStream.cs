@@ -132,7 +132,7 @@ public class UUDecodingStream : Stream {
         break;
       }
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_BUFFERS_SEQUENCEREADER
       var headerReader = new SequenceReader<byte>(l.Value.Sequence);
 
       if (headerReader.IsNext(headerLinePrefix.Span, advancePast: true)) {
@@ -160,14 +160,14 @@ public class UUDecodingStream : Stream {
         }
 
         fileName =
-#if NET5_0_OR_GREATER
+#if SYSTEM_BUFFERS_SEQUENCEREADER_UNREADSEQUENCE
           headerReader.UnreadSequence
 #else
           headerReader.GetUnreadSequence()
 #endif
         .CreateString()
         .Trim();
-#else // #if !(NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER)
+#else // #if !SYSTEM_BUFFERS_SEQUENCEREADER
       var line = l.Value.Sequence;
 
       if (line.StartsWith(headerLinePrefix.Span)) {
