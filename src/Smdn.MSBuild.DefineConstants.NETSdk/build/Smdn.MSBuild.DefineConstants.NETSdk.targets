@@ -16,10 +16,10 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP1_0_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.Array.Empty"/>
-      <_NETSdkApiDefineConstant Include="System.FormattableString"/>
-      <_NETSdkApiDefineConstant Include="System.Threading.Tasks.Task.CompletedTask"/>
-      <_NETSdkApiDefineConstant Include="System.Threading.Tasks.Task.FromCanceled"/>
+      <_NETSdkAvailableApiName Include="System.Array.Empty"/>
+      <_NETSdkAvailableApiName Include="System.FormattableString"/>
+      <_NETSdkAvailableApiName Include="System.Threading.Tasks.Task.CompletedTask"/>
+      <_NETSdkAvailableApiName Include="System.Threading.Tasks.Task.FromCanceled"/>
     </ItemGroup>
 
     <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -29,22 +29,22 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.Array.ConvertAll"/>
-      <_NETSdkApiDefineConstant Include="System.Converter"/>
-      <_NETSdkApiDefineConstant Include="System.Exception.ctor(SerializationInfo)"/>
-      <_NETSdkApiDefineConstant Include="System.ICloneable"/>
-      <_NETSdkApiDefineConstant Include="System.Math.DivRem"/>
-      <_NETSdkApiDefineConstant Include="System.Diagnostics.Process"/>
-      <_NETSdkApiDefineConstant Include="System.IO.Stream.Close"/>
-      <_NETSdkApiDefineConstant Include="System.Net.NetworkInformation.PhysicalAddress"/>
-      <_NETSdkApiDefineConstant Include="System.Security.Cryptography.HashAlgorithm.Clear"/>
+      <_NETSdkAvailableApiName Include="System.Array.ConvertAll"/>
+      <_NETSdkAvailableApiName Include="System.Converter"/>
+      <_NETSdkAvailableApiName Include="System.Exception.ctor(SerializationInfo)"/>
+      <_NETSdkAvailableApiName Include="System.ICloneable"/>
+      <_NETSdkAvailableApiName Include="System.Math.DivRem"/>
+      <_NETSdkAvailableApiName Include="System.Diagnostics.Process"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.Close"/>
+      <_NETSdkAvailableApiName Include="System.Net.NetworkInformation.PhysicalAddress"/>
+      <_NETSdkAvailableApiName Include="System.Security.Cryptography.HashAlgorithm.Clear"/>
     </ItemGroup>
 
     <!-- NETFRAMEWORK -->
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.Text.Encoding.Default_ANSI"/>
+      <_NETSdkAvailableApiName Include="System.Text.Encoding.Default_ANSI"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -53,10 +53,10 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.ArraySegment.Slice"/>
-      <_NETSdkApiDefineConstant Include="System.String.StartsWith(char)"/>
-      <_NETSdkApiDefineConstant Include="System.Collections.Generic.KeyValuePair.Create"/>
-      <_NETSdkApiDefineConstant Include="System.IO.Path.GetRelativePath"/>
+      <_NETSdkAvailableApiName Include="System.ArraySegment.Slice"/>
+      <_NETSdkAvailableApiName Include="System.String.StartsWith(char)"/>
+      <_NETSdkAvailableApiName Include="System.Collections.Generic.KeyValuePair.Create"/>
+      <_NETSdkAvailableApiName Include="System.IO.Path.GetRelativePath"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER -->
@@ -65,10 +65,10 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.String.Create"/>
-      <_NETSdkApiDefineConstant Include="System.String.Contains(char)"/>
-      <_NETSdkApiDefineConstant Include="System.IO.Stream.ReadAsync(Memory_Of_Byte)"/>
-      <_NETSdkApiDefineConstant Include="System.IO.Stream.WriteAsync(ReadOnlyMemory_Of_Byte)"/>
+      <_NETSdkAvailableApiName Include="System.String.Create"/>
+      <_NETSdkAvailableApiName Include="System.String.Contains(char)"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.ReadAsync(Memory_Of_Byte)"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.WriteAsync(ReadOnlyMemory_Of_Byte)"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -77,19 +77,19 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.Index"/>
-      <_NETSdkApiDefineConstant Include="System.Range"/>
+      <_NETSdkAvailableApiName Include="System.Index"/>
+      <_NETSdkAvailableApiName Include="System.Range"/>
     </ItemGroup>
 
     <!-- NET5_0_OR_GREATER -->
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkApiDefineConstant Include="System.Threading.Tasks.ValueTask.FromCanceled"/>
+      <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask.FromCanceled"/>
     </ItemGroup>
 
-    <PropertyGroup Condition="0 &lt; @(_NETSdkApiDefineConstant->Count())">
-      <DefineConstants>$(DefineConstants);@(_NETSdkApiDefineConstant->ToUpperInvariant()->Replace('.', '_')->Replace('(', '_')->Replace(')', ''), ';')</DefineConstants>
+    <PropertyGroup Condition="0 &lt; @(_NETSdkAvailableApiName->Count())">
+      <DefineConstants>$(DefineConstants);@(_NETSdkAvailableApiName->ToUpperInvariant()->Replace('.', '_')->Replace('(', '_')->Replace(')', ''), ';')</DefineConstants>
     </PropertyGroup>
   </Target>
 </Project>
