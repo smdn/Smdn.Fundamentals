@@ -55,6 +55,7 @@ SPDX-License-Identifier: MIT
     ">
       <_NETSdkAvailableApiName Include="System.ArraySegment.Slice"/>
       <_NETSdkAvailableApiName Include="System.String.StartsWith(char)"/>
+      <_NETSdkAvailableApiName Include="System.String.EndsWith(char)"/>
       <_NETSdkAvailableApiName Include="System.Collections.Generic.KeyValuePair.Create"/>
       <_NETSdkAvailableApiName Include="System.IO.Path.GetRelativePath"/>
     </ItemGroup>
@@ -65,10 +66,15 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
+      <_NETSdkAvailableApiName Include="System.INumber.Parse(ReadOnlySpan_Of_Char)"/>
+      <_NETSdkAvailableApiName Include="System.INumber.TryParse(ReadOnlySpan_Of_Char)"/>
+      <_NETSdkAvailableApiName Include="System.String.ctor(ReadOnlySpan_Of_Char)"/>
       <_NETSdkAvailableApiName Include="System.String.Create"/>
       <_NETSdkAvailableApiName Include="System.String.Contains(char)"/>
       <_NETSdkAvailableApiName Include="System.IO.Stream.ReadAsync(Memory_Of_Byte)"/>
       <_NETSdkAvailableApiName Include="System.IO.Stream.WriteAsync(ReadOnlyMemory_Of_Byte)"/>
+      <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlySpan_Of_Char)"/>
+      <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -79,6 +85,14 @@ SPDX-License-Identifier: MIT
     ">
       <_NETSdkAvailableApiName Include="System.Index"/>
       <_NETSdkAvailableApiName Include="System.Range"/>
+    </ItemGroup>
+
+    <!-- NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlyMemory_Of_Char)"/>
     </ItemGroup>
 
     <!-- NET5_0_OR_GREATER -->
