@@ -40,6 +40,16 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiName Include="System.Security.Cryptography.HashAlgorithm.Clear"/>
     </ItemGroup>
 
+    <!-- NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET472_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkAvailableApiName Include="System.Security.Cryptography.CryptoStream.ctor(leaveOpen)"/>
+    </ItemGroup>
+
     <!-- NETFRAMEWORK -->
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b'))
@@ -54,8 +64,9 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
       <_NETSdkAvailableApiName Include="System.ArraySegment.Slice"/>
-      <_NETSdkAvailableApiName Include="System.String.StartsWith(char)"/>
       <_NETSdkAvailableApiName Include="System.String.EndsWith(char)"/>
+      <_NETSdkAvailableApiName Include="System.String.Split(char)"/>
+      <_NETSdkAvailableApiName Include="System.String.StartsWith(char)"/>
       <_NETSdkAvailableApiName Include="System.Collections.Generic.KeyValuePair.Create"/>
       <_NETSdkAvailableApiName Include="System.IO.Path.GetRelativePath"/>
     </ItemGroup>
@@ -85,6 +96,7 @@ SPDX-License-Identifier: MIT
     ">
       <_NETSdkAvailableApiName Include="System.Index"/>
       <_NETSdkAvailableApiName Include="System.Range"/>
+      <_NETSdkAvailableApiName Include="System.Buffers.SequenceReader"/>
     </ItemGroup>
 
     <!-- NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -99,6 +111,7 @@ SPDX-License-Identifier: MIT
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
+      <_NETSdkAvailableApiName Include="System.Buffers.SequenceReader.UnreadSequence"/>
       <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask.FromCanceled"/>
     </ItemGroup>
 
