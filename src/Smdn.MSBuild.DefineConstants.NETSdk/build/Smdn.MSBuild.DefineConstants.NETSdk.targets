@@ -115,8 +115,14 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask.FromCanceled"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <_NETSdkAvailableApiName Update="@(_NETSdkAvailableApiName)">
+        <Constant>$([System.String]::new('%(Identity)').ToUpperInvariant().Replace('.', '_').Replace('(', '_').Replace(')', ''))</Constant>
+      </_NETSdkAvailableApiName>
+    </ItemGroup>
+
     <PropertyGroup Condition="0 &lt; @(_NETSdkAvailableApiName->Count())">
-      <DefineConstants>$(DefineConstants);@(_NETSdkAvailableApiName->ToUpperInvariant()->Replace('.', '_')->Replace('(', '_')->Replace(')', ''), ';')</DefineConstants>
+      <DefineConstants>$(DefineConstants);@(_NETSdkAvailableApiName->Metadata('Constant'), ';')</DefineConstants>
     </PropertyGroup>
   </Target>
 </Project>
