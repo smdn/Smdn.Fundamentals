@@ -30,15 +30,21 @@ namespace Smdn.Test.NUnit {
       /*where TSerializable : ISerializable*/
       {
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
+      // TODO: use JsonSerializer instead
+      // https://docs.microsoft.com/ja-jp/dotnet/fundamentals/syslib-diagnostics/syslib0011
       var serializeFormatter = new BinaryFormatter();
 
       using (var stream = new MemoryStream()) {
+#pragma warning disable SYSLIB0011
         serializeFormatter.Serialize(stream, obj);
+#pragma warning restore SYSLIB0011
 
         stream.Position = 0L;
 
         var deserializeFormatter = new BinaryFormatter();
+#pragma warning disable SYSLIB0011
         var deserialized = deserializeFormatter.Deserialize(stream);
+#pragma warning restore SYSLIB0011
 
         NUnitAssert.IsNotNull(deserialized);
         NUnitAssert.AreNotSame(obj, deserialized);
