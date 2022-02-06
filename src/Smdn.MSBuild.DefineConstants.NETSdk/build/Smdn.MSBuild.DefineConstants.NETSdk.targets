@@ -9,53 +9,87 @@ SPDX-License-Identifier: MIT
     DependsOnTargets="AddImplicitDefineConstants"
     BeforeTargets="CoreCompile"
   >
-    <PropertyGroup>
-      <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET46_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD1_3_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP1_0_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_ARRAY_EMPTY;SYSTEM_FORMATTABLESTRING;SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK;SYSTEM_THREADING_TASKS_TASK_FROMCANCELED</DefineConstants>
+    <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET46_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD1_3_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP1_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_ARRAY_EMPTY"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_FORMATTABLESTRING"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_THREADING_TASKS_TASK_FROMCANCELED"/>
+    </ItemGroup>
 
-      <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_0_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_ARRAY_CONVERTALL;SYSTEM_CONVERTER;SYSTEM_EXCEPTION_CTOR_SERIALIZATIONINFO;SYSTEM_ICLONEABLE;SYSTEM_MATH_DIVREM;SYSTEM_DIAGNOSTICS_PROCESS;SYSTEM_IO_STREAM_CLOSE;SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS;SYSTEM_SECURITY_CRYPTOGRAPHY_HASHALGORITHM_CLEAR</DefineConstants>
+    <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_ARRAY_CONVERTALL"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_CONVERTER"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_EXCEPTION_CTOR_SERIALIZATIONINFO"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_ICLONEABLE"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_MATH_DIVREM"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_DIAGNOSTICS_PROCESS"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_IO_STREAM_CLOSE"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_SECURITY_CRYPTOGRAPHY_HASHALGORITHM_CLEAR"/>
+    </ItemGroup>
 
-      <!-- NETFRAMEWORK -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b'))
-      ">$(DefineConstants);SYSTEM_TEXT_ENCODING_DEFAULT_ANSI</DefineConstants>
+    <!-- NETFRAMEWORK -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_TEXT_ENCODING_DEFAULT_ANSI"/>
+    </ItemGroup>
 
-      <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_ARRAYSEGMENT_SLICE;SYSTEM_STRING_STARTSWITH_CHAR;SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE;SYSTEM_IO_PATH_GETRELATIVEPATH</DefineConstants>
+    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_ARRAYSEGMENT_SLICE"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_STRING_STARTSWITH_CHAR"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_IO_PATH_GETRELATIVEPATH"/>
+    </ItemGroup>
 
-      <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_STRING_CREATE;SYSTEM_STRING_CONTAINS_CHAR;SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE;SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE</DefineConstants>
+    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_STRING_CREATE"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_STRING_CONTAINS_CHAR"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE"/>
+    </ItemGroup>
 
-      <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_INDEX;SYSTEM_RANGE</DefineConstants>
+    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_INDEX"/>
+      <_NETSdkApiDefineConstant Include="SYSTEM_RANGE"/>
+    </ItemGroup>
 
-      <!-- NET5_0_OR_GREATER -->
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED</DefineConstants>
+    <!-- NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkApiDefineConstant Include="SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED"/>
+    </ItemGroup>
+
+    <PropertyGroup Condition="0 &lt; @(_NETSdkApiDefineConstant->Count())">
+      <DefineConstants>$(DefineConstants);@(_NETSdkApiDefineConstant, ';')</DefineConstants>
     </PropertyGroup>
   </Target>
 </Project>
