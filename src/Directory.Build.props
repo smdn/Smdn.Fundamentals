@@ -26,6 +26,9 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Label="package properties">
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://smdn.jp/works/libs/Smdn.Fundamentals/</PackageProjectUrl>
+  </PropertyGroup>
+
+  <PropertyGroup Label="repository properties" Condition="'$(GITHUB_ACTIONS)' != 'true'">
     <RepositoryUrl>https://github.com/smdn/Smdn.Fundamentals</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
