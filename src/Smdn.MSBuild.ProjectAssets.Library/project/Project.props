@@ -17,6 +17,12 @@ SPDX-License-Identifier: MIT
     <AnalysisMode>Recommended</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
 
+    <!-- source link defaults -->
+    <!-- ref: https://github.com/dotnet/sourcelink -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+
     <!-- package defaults -->
     <EnablePackageValidation>true</EnablePackageValidation>
     <GeneratePackageReadmeFile>true</GeneratePackageReadmeFile>
@@ -56,6 +62,17 @@ SPDX-License-Identifier: MIT
 
   <PropertyGroup Label="code analysis">
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <!--
+    source link
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <!--
