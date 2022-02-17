@@ -1,0 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup>
+    <!-- preset a property value to force importing assets from local -->
+    <_SmdnProjectAssets_ImportFromLocal>true</_SmdnProjectAssets_ImportFromLocal>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.props" />
+</Project>
