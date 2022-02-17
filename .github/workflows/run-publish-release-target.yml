@@ -1,0 +1,16 @@
+name: Publish release target
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  run-publish-release-target:
+    uses: ./.github/workflows/publish-release-target.yml
+    if: (github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/'))
+    with:
+      pr_number_request_for_release: ${{ github.event.pull_request.number }}
+    secrets:
+      token_github: ${{ secrets.PUBLISH_NEW_RELEASE }}
+      token_nuget_org: ${{ secrets.PUBLISH_PACKAGE_NUGETORG }}
+      token_github_packages: ${{ secrets.PUBLISH_NEW_RELEASE }}

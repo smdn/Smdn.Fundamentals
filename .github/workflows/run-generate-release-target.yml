@@ -1,0 +1,15 @@
+name: Generate release target
+
+on:
+  push:
+    tags: new-release/*
+
+jobs:
+  run-generate-release-target:
+    uses: ./.github/workflows/generate-release-target.yml
+    with:
+      release_target_tag_name: ${{ github.ref_name }}
+      release_target_tag_prefix: 'new-release/'
+      release_tag_prefix: 'releases/'
+    secrets:
+      token: ${{ secrets.PUBLISH_NEW_RELEASE }}
