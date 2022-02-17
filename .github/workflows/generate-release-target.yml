@@ -1,0 +1,386 @@
+name: Generate release target
+
+on:
+  workflow_call:
+    inputs:
+      release_target_tag_name:
+        description: "The tag name of the release target."
+        required: true
+        type: string
+
+      release_target_tag_prefix:
+        description: "The common prefix of the release target tag name."
+        required: false
+        type: string
+        default: "new-release/"
+
+      release_tag_prefix:
+        description: "The common prefix of the release tag name."
+        required: false
+        type: string
+        default: "releases/"
+
+      path_prefix_source:
+        description: "The common prefix of the path to source directory of the release target based on the repository root."
+        required: false
+        type: string
+        default: "src/"
+
+      path_prefix_apilist:
+        description: "The common prefix of the path to API list directory of the release target based on the repository root."
+        required: false
+        type: string
+        default: "doc/api-list/"
+
+      dry_run:
+        description: "If true, performs a trial run."
+        required: false
+        type: boolean
+        default: false
+
+    secrets:
+      token:
+        description: 'The token which is used to checkout code and open a pull request for the new release.'
+        required: true
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+
+jobs:
+  generate-release-target:
+    runs-on: ubuntu-latest
+    if: startsWith(inputs.release_target_tag_name, inputs.release_target_tag_prefix)
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2.4.0
+      with:
+        # TODO: attempt treeless clone '--filter=tree:0'
+        # ref: https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
+        fetch-depth: 0
+        ref: ${{ inputs.release_target_tag_name }}
+        token: ${{ secrets.token }}
+        persist-credentials: true
+
+    - name: Configure git identity
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+
+        # TODO
+        # git config user.name '${{ github.repository_owner }}'
+        # git config user.email '<>'
+
+    - name: Determine release target package information
+      id: package-info
+      # note: Parse and determines parse package info from the triggered tag name.
+      # note: The tag name must be in format of '<prefix>Package.ID-1.2.3-prerelease'.
+      # note: The tag that ends with '-unreleased' will be treated as an unreleasable target where nupkg will not be uploaded.
+      shell: pwsh
+      run: |
+        $pattern_target_tag = '^{0}{1}\-{2}(\-{3})?$' -f
+          '${{ inputs.release_target_tag_prefix }}',
+          '(?<id>[A-Za-z0-9\.]+)',
+          '(?<version>[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?([\-\+][0-9a-zA-Z\.]+)?)',
+          '(?<suffix>[A-Za-z0-9]+)'
+
+        $package_target_tag = '${{ inputs.release_target_tag_name }}'
+
+        if ("$package_target_tag" -match "$pattern_target_tag") {
+          # split package ID and version from tag name
+          $package_id = $Matches['id']
+          $package_version = $Matches['version']
+          $package_id_with_version = '{0}-{1}' -f $package_id, $package_version
+          $package_source_dir = '${{ inputs.path_prefix_source }}{0}/' -f $package_id
+
+          # treat the version ends with '-unreleased' as an unreleasable package
+          $package_can_release = $Matches['suffix'] -ne "-unreleased"
+
+          # notice determined info
+          '::notice::package_target_tag={0}' -f $package_target_tag
+          '::notice::package_can_release={0}' -f $package_can_release
+          '::notice::package_id={0}' -f $package_id
+          '::notice::package_id_with_version={0}' -f $package_id_with_version
+          '::notice::package_version={0}' -f $package_version
+          '::notice::package_source_dir={0}' -f $package_source_dir
+
+          # set outputs
+          '::set-output name=package_target_tag::{0}' -f $package_target_tag
+          '::set-output name=package_can_release::{0}' -f $package_can_release
+          '::set-output name=package_id::{0}' -f $package_id
+          '::set-output name=package_id_with_version::{0}' -f $package_id_with_version
+          '::set-output name=package_version::{0}' -f $package_version
+          '::set-output name=package_source_dir::{0}' -f $package_source_dir
+        }
+        else {
+          Write-Error -Message "tag name format mismatch: $package_target_tag" -ErrorAction Stop
+        }
+
+        # find the branch which the triggered tag belongs to
+        $log_branches_tag_belongs = git log --oneline --first-parent --decorate-refs-exclude='refs/tags/*' --pretty='%D'
+
+        if ("$log_branches_tag_belongs" -match '\w?origin/(?<name>[A-Za-z0-9\-\._\/]+)') {
+          $package_branch = $Matches['name']
+        }
+        else {
+          Write-Error -Message "could not find the branch which the triggered tag '$package_target_tag' belongs to" -ErrorAction Stop
+        }
+
+        '::notice::package_branch={0}' -f $package_branch
+        '::set-output name=package_branch::{0}' -f $package_branch
+
+        # find the tag of the previous version
+        $package_prevver_ref = git describe --tags --abbrev=0 --match "${{ inputs.release_tag_prefix }}${package_id}-*"
+
+        if ( -not $package_prevver_ref ) {
+          "::warning::could not find a tag of the previous version"
+
+          # refer initial commit as previous version instead
+          $package_prevver_ref = git rev-list HEAD | tail -1
+        }
+
+        '::notice::package_prevver_ref={0}' -f $package_prevver_ref
+        '::set-output name=package_prevver_ref::{0}' -f $package_prevver_ref
+
+    - name: Set NUGET_PACKAGES
+      run: |
+        echo "NUGET_PACKAGES=$HOME/.nuget/packages" >> $GITHUB_ENV
+
+    - name: Setup NuGet cache
+      # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
+      uses: actions/cache@v2
+      with:
+        path: ${{ env.NUGET_PACKAGES }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    #- name: Setup .NET 6.0
+    #  uses: actions/setup-dotnet@v1
+    #  with:
+    #    dotnet-version: '6.0.x'
+    #    # include-prerelease: true
+    - name: .NET info
+      run: dotnet --info
+
+    - name: Restore dependencies of ${{ steps.package-info.outputs.package_id }}
+      # restores project dependencies first
+      run: dotnet restore ${{ steps.package-info.outputs.package_source_dir }}
+
+    - name: Build ${{ steps.package-info.outputs.package_id }}
+      # note: do not specify --no-restore option here since dependencies in build assets have to be restored
+      run: |
+        PROPS_BUILD="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
+
+        dotnet build --configuration Release ${PROPS_BUILD} ${{ steps.package-info.outputs.package_source_dir }}
+
+    - name: Pack ${{ steps.package-info.outputs.package_id }}
+      id: pack
+      run: |
+        PROPS_PACK="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
+
+        dotnet pack --configuration Release --no-build ${PROPS_PACK} ${{ steps.package-info.outputs.package_source_dir }}
+
+        FILE_NUPKG=${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nupkg
+        FILE_NUSPEC=${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nuspec
+
+        EXPECTED_NUPKG=${{ steps.package-info.outputs.package_source_dir }}bin/Release/$FILE_NUPKG
+        EXPECTED_NUSPEC=${{ steps.package-info.outputs.package_source_dir }}obj/Release/$FILE_NUSPEC
+
+        # test generated file
+        if [ -f $EXPECTED_NUSPEC ] && [ -f $EXPECTED_NUPKG ]; then
+          echo "::notice::package '$EXPECTED_NUPKG' was generated successfully"
+
+          # set outputs
+          echo "::set-output name=artifact_name_nupkg::$FILE_NUPKG"
+          echo "::set-output name=path_nupkg::$EXPECTED_NUPKG"
+          echo "::set-output name=path_nuspec::$EXPECTED_NUSPEC"
+        else
+          echo "::error::'$EXPECTED_NUPKG' was not generated. Make sure that the Version/VersionPrefix/VersionSuffix in '${{ steps.package-info.outputs.package_id }}.csproj' are defined correctly."
+          false
+        fi
+
+    - name: Upload ${{ steps.pack.outputs.artifact_name_nupkg }}
+      if: ${{ steps.package-info.outputs.package_can_release == 'True' }}
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ steps.pack.outputs.artifact_name_nupkg }}
+        path: ${{ steps.pack.outputs.path_nupkg }}
+        retention-days: 1
+
+    - name: Determine the release info of ${{ steps.package-info.outputs.package_id_with_version }}
+      id: release-info
+      run: |
+        RELEASE_TAG=${{ inputs.release_tag_prefix }}${{ steps.package-info.outputs.package_id_with_version }}
+        RELEASE_WORKING_BRANCH=${RELEASE_TAG}-`date +%s`
+
+        # set outputs
+        echo "::set-output name=tag::$RELEASE_TAG"
+        echo "::set-output name=working_branch::$RELEASE_WORKING_BRANCH"
+
+    - name: Create release working branch for ${{ steps.package-info.outputs.package_id_with_version }}
+      run: |
+        # create release working branch from detached HEAD
+        git checkout -b '${{ steps.release-info.outputs.working_branch }}'
+
+        # attempt to add changes of API list
+        if git add '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/*.apilist.cs'; then
+          # commit API list changes to release working branch
+          if git commit -m "update API list ${{ steps.package-info.outputs.package_id_with_version }}"; then
+            HAS_COMMIT=true
+          fi
+        fi
+
+        if [ -z "$HAS_COMMIT" ]; then
+          echo "::notice::API list not generated or changed"
+
+          # commit an empty commit instead. it is required to create pull request.
+          git commit --allow-empty "create release branch for ${{ steps.package-info.outputs.package_id_with_version }}"
+        fi
+
+        # push release working branch to create pull request
+        if [[ '${{ inputs.dry_run }}' != 'true' ]]; then
+          git push origin ${{ steps.release-info.outputs.working_branch }}
+        fi
+
+    - name: Create pull request from branch ${{ steps.release-info.outputs.working_branch }}
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ secrets.token }}
+      run: |
+        $pr_body_range_from_prev_version="${{ steps.package-info.outputs.package_prevver_ref }}..HEAD"
+
+        #
+        # create pull request
+        #
+        $pr_title = 'Release ${{ steps.package-info.outputs.package_branch }}/${{ steps.package-info.outputs.package_id_with_version }}'
+
+        $pr_body = New-Object System.Text.StringBuilder
+
+        #
+        # body of pull request / release target
+        # note: beware of changing output format on this section; these information will be parsed and referenced by subsequent workflows
+        #
+        [void]$pr_body.AppendFormat(
+          'Automatically generated by workflow [{0} #{1}]({2}).',
+          '${{ github.workflow }}',
+          '${{ github.run_number }}',
+          '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+        ).AppendLine()
+        [void]$pr_body.AppendLine()
+
+        [void]$pr_body.AppendLine('# Release target')
+        [void]$pr_body.AppendLine('## Release target info')
+        [void]$pr_body.AppendLine('- package_target_tag: `${{ steps.package-info.outputs.package_target_tag }}`')
+        [void]$pr_body.AppendLine('- package_id: `${{ steps.package-info.outputs.package_id }}`')
+        [void]$pr_body.AppendLine('- package_id_with_version: `${{ steps.package-info.outputs.package_id_with_version }}`')
+        [void]$pr_body.AppendLine('- package_version: `${{ steps.package-info.outputs.package_version }}`')
+        [void]$pr_body.AppendLine('- package_branch: `${{ steps.package-info.outputs.package_branch }}`')
+        [void]$pr_body.AppendLine('- release_working_branch: `${{ steps.release-info.outputs.working_branch }}`')
+        [void]$pr_body.AppendLine('- release_tag: `${{ steps.release-info.outputs.tag }}`')
+        [void]$pr_body.AppendLine('- release_draft: `false` ❗Change this value to `true` to create release note as draft.')
+
+        if ( '${{ steps.package-info.outputs.package_can_release }}' -ieq 'True' ) {
+          [void]$pr_body.AppendLine('- artifact_name_nupkg: `${{ steps.pack.outputs.artifact_name_nupkg }}` ❗Remove this line or change this value to empty to prevent publishing packages.')
+        }
+
+        [void]$pr_body.AppendLine()
+
+        $pr_body_nuspec = Get-Content -Path ${{ steps.pack.outputs.path_nuspec }}
+
+        [void]$pr_body.AppendLine('## .nuspec')
+        [void]$pr_body.AppendLine('```xml')
+        [void]$pr_body.AppendLine($pr_body_nuspec -join "`n")
+        [void]$pr_body.AppendLine('```')
+        [void]$pr_body.AppendLine()
+
+        #
+        # body of pull request / release note draft
+        #
+        [void]$pr_body.AppendLine('<!-- RELEASE NOTE -->')
+
+        if ( '${{ steps.package-info.outputs.package_can_release }}' -ieq 'True' ) {
+          [void]$pr_body.AppendLine('# Packages')
+          [void]$pr_body.AppendFormat(
+            '- NuGet [{0} version {1}](https://www.nuget.org/packages/{0}/{1})',
+            '${{ steps.package-info.outputs.package_id }}',
+            '${{ steps.package-info.outputs.package_version }}'
+          ).AppendLine()
+          [void]$pr_body.AppendLine()
+        }
+
+        [void]$pr_body.AppendLine('# Changes in this release')
+
+        $pr_body_changelog = git log ${pr_body_range_from_prev_version} --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' -- ${{ steps.package-info.outputs.package_source_dir }}
+
+        [void]$pr_body.AppendLine('## Change log')
+        [void]$pr_body.AppendLine($pr_body_changelog -join "`n")
+        [void]$pr_body.AppendLine()
+
+        $pr_body_apidiff = git diff --unified=10000 ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} -- '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
+
+        [void]$pr_body.AppendLine('## API diff')
+        [void]$pr_body.AppendLine('<details>')
+        [void]$pr_body.AppendLine('<summary>API diff in this release</summary>')
+        [void]$pr_body.AppendLine('<div>')
+        [void]$pr_body.AppendLine()
+        [void]$pr_body.AppendLine('```diff')
+        [void]$pr_body.AppendLine($pr_body_apidiff -join "`n")
+        [void]$pr_body.AppendLine('```')
+        [void]$pr_body.AppendLine()
+        [void]$pr_body.AppendLine('</div>')
+        [void]$pr_body.AppendLine('</details>')
+        [void]$pr_body.AppendLine()
+
+        [void]$pr_body.AppendLine('## Changes')
+        [void]$pr_body.AppendFormat(
+          '[Compare changes]({0}..{1})',
+          "${{ github.server_url }}/${{ github.repository }}/compare/${pr_body_range_from_prev_version}",
+          '${{ github.ref_name }}'
+        ).AppendLine()
+        [void]$pr_body.AppendLine()
+
+        $pr_body_changes = git diff ${pr_body_range_from_prev_version} -- ${{ steps.package-info.outputs.package_source_dir }}
+
+        [void]$pr_body.AppendLine('<details>')
+        [void]$pr_body.AppendLine('<summary>Changes in this release</summary>')
+        [void]$pr_body.AppendLine('<div>')
+        [void]$pr_body.AppendLine()
+        [void]$pr_body.AppendLine('```diff')
+        [void]$pr_body.AppendLine($pr_body_changes -join "`n")
+        [void]$pr_body.AppendLine('```')
+        [void]$pr_body.AppendLine()
+        [void]$pr_body.AppendLine('</div>')
+        [void]$pr_body.AppendLine('</details>')
+        [void]$pr_body.AppendLine()
+
+        #"[Pull Request body]==========================="
+        #$pr_body.ToString()
+        #"=============================================="
+
+        $pr_body_file = [System.IO.Path]::GetFullPath('pr-body.md')
+
+        $pr_body.ToString() | Out-File -FilePath $pr_body_file -Encoding utf8
+
+        # ref: https://cli.github.com/manual/gh_pr_create
+        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+          "base: ${{ steps.package-info.outputs.package_branch }}"
+          "head: ${{ steps.release-info.outputs.working_branch }}"
+          "assignee: ${{ github.repository_owner }}"
+          "title: ${pr_title}"
+          "body-file: $pr_body_file"
+
+          "[content of body file]--------------------------"
+          cat $pr_body_file
+
+          $pr_url = "(dry-run)"
+        }
+        else {
+          $pr_url = gh pr create --base ${{ steps.package-info.outputs.package_branch }} --head ${{ steps.release-info.outputs.working_branch }} --assignee ${{ github.repository_owner }} --no-maintainer-edit --title "${pr_title}" --body-file "${pr_body_file}"
+        }
+
+        "::notice::Created pull request for ${pr_title}: ${pr_url}"
+
+        rm -f $pr_body_file
