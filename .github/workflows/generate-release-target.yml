@@ -203,9 +203,9 @@ jobs:
     - name: Pack ${{ steps.package-info.outputs.package_id }}
       id: pack
       run: |
-        PROPS_PACK="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
+        PACK_EXTRA_PROPS="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
 
-        dotnet pack --configuration Release --no-build ${PROPS_PACK} ${{ steps.package-info.outputs.package_source_dir }}
+        dotnet pack --configuration Release --no-build ${PACK_EXTRA_PROPS} ${{ steps.package-info.outputs.package_source_dir }}
 
         FILE_NUPKG=${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nupkg
         FILE_NUSPEC=${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nuspec
