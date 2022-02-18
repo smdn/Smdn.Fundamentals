@@ -261,7 +261,7 @@ jobs:
           echo "::notice::API list not generated or changed"
 
           # commit an empty commit instead. it is required to create pull request.
-          git commit --allow-empty "create release branch for ${{ steps.package-info.outputs.package_id_with_version }}"
+          git commit --allow-empty -m "create release branch for ${{ steps.package-info.outputs.package_id_with_version }}"
         fi
 
         # push release working branch to create pull request
