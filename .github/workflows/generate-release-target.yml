@@ -339,24 +339,28 @@ jobs:
 
         $pr_body_changelog = git log ${pr_body_range_from_prev_version} --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' -- ${{ steps.package-info.outputs.package_source_dir }}
 
-        [void]$pr_body.AppendLine('## Change log')
-        [void]$pr_body.AppendLine($pr_body_changelog -join "`n")
-        [void]$pr_body.AppendLine()
+        if ( ! [string]::IsNullOrEmpty($pr_body_changelog) ) {
+          [void]$pr_body.AppendLine('## Change log')
+          [void]$pr_body.AppendLine($pr_body_changelog -join "`n")
+          [void]$pr_body.AppendLine()
+        }
 
         $pr_body_apidiff = git diff --unified=10000 ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} -- '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
 
-        [void]$pr_body.AppendLine('## API diff')
-        [void]$pr_body.AppendLine('<details>')
-        [void]$pr_body.AppendLine('<summary>API diff in this release</summary>')
-        [void]$pr_body.AppendLine('<div>')
-        [void]$pr_body.AppendLine()
-        [void]$pr_body.AppendLine('```diff')
-        [void]$pr_body.AppendLine($pr_body_apidiff -join "`n")
-        [void]$pr_body.AppendLine('```')
-        [void]$pr_body.AppendLine()
-        [void]$pr_body.AppendLine('</div>')
-        [void]$pr_body.AppendLine('</details>')
-        [void]$pr_body.AppendLine()
+        if ( ! [string]::IsNullOrEmpty($pr_body_apidiff) ) {
+          [void]$pr_body.AppendLine('## API diff')
+          [void]$pr_body.AppendLine('<details>')
+          [void]$pr_body.AppendLine('<summary>API diff in this release</summary>')
+          [void]$pr_body.AppendLine('<div>')
+          [void]$pr_body.AppendLine()
+          [void]$pr_body.AppendLine('```diff')
+          [void]$pr_body.AppendLine($pr_body_apidiff -join "`n")
+          [void]$pr_body.AppendLine('```')
+          [void]$pr_body.AppendLine()
+          [void]$pr_body.AppendLine('</div>')
+          [void]$pr_body.AppendLine('</details>')
+          [void]$pr_body.AppendLine()
+        }
 
         [void]$pr_body.AppendLine('## Changes')
         [void]$pr_body.AppendFormat(
