@@ -6,7 +6,7 @@ on:
 
 jobs:
   run-publish-release-target:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release-target.yml
+    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release-target.yml@workflows/release-target-v1.1.0
     if: (github.event.pull_request.merged == true && startsWith(github.head_ref, 'releases/'))
     with:
       pr_number_request_for_release: ${{ github.event.pull_request.number }}
