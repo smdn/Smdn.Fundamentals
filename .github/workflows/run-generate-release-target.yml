@@ -6,7 +6,7 @@ on:
 
 jobs:
   run-generate-release-target:
-    uses: ./.github/workflows/generate-release-target.yml
+    uses: smdn/Smdn.Fundamentals/.github/workflows/generate-release-target.yml
     with:
       release_target_tag_name: ${{ github.ref_name }}
       release_target_tag_prefix: 'new-release/'
