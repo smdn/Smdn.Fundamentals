@@ -170,11 +170,35 @@ jobs:
       run: dotnet restore ${{ steps.package-info.outputs.package_source_dir }}
 
     - name: Build ${{ steps.package-info.outputs.package_id }}
-      # note: do not specify --no-restore option here since dependencies in build assets have to be restored
+      shell: pwsh
       run: |
-        PROPS_BUILD="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
+        $build_extra_props="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
 
-        dotnet build --configuration Release ${PROPS_BUILD} ${{ steps.package-info.outputs.package_source_dir }}
+        # note: do not specify --no-restore option here since dependencies in build assets have to be restored
+        dotnet build --configuration Release -consoleLoggerParameters:NoSummary ${build_extra_props} ${{ steps.package-info.outputs.package_source_dir }} |
+          Tee-Object -Variable build_log
+
+        # select errors: 'path/to/file(line,col): error XX9999:'
+        $build_errors = $build_log | Select-String -Pattern '\: error (?<error>[a-zA-Z0-9]+)\:' -AllMatches
+
+        # select error codes: 'XX9999'
+        $build_error_codes = $build_errors.Matches |
+          Select-Object -Unique @{
+            label='ErrorCode'
+            expression={$_.Groups['error'].Value}
+          }
+
+        if ( 0 -lt ($build_error_codes).Count){
+          "::error::build errors: $(($build_error_codes | Select-Object -ExpandProperty ErrorCode) -join ', ')"
+        }
+
+        # ignore the build error NETSDK1085; occurs if <NoBuild> is specified in project file.
+        if ( 0 -lt ($build_error_codes | Where-Object -Property ErrorCode -NE 'NETSDK1085').Count ) {
+          # build error occurred other than NETSDK1085
+          exit 1
+        }
+
+        exit 0
 
     - name: Pack ${{ steps.package-info.outputs.package_id }}
       id: pack
