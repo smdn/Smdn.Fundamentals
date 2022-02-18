@@ -365,8 +365,8 @@ jobs:
         [void]$pr_body.AppendLine('## Changes')
         [void]$pr_body.AppendFormat(
           '[Compare changes]({0}..{1})',
-          "${{ github.server_url }}/${{ github.repository }}/compare/${pr_body_range_from_prev_version}",
-          '${{ github.ref_name }}'
+          '${{ github.server_url }}/${{ github.repository }}/compare/${{ steps.package-info.outputs.package_prevver_ref }}',
+          '${{ steps.release-info.outputs.tag }}'
         ).AppendLine()
         [void]$pr_body.AppendLine()
 
