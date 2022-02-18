@@ -76,12 +76,13 @@ jobs:
     - name: Determine release target package information
       id: package-info
       # note: Parse and determines parse package info from the triggered tag name.
-      # note: The tag name must be in format of '<prefix>Package.ID-1.2.3-prerelease'.
+      # note: The tag name must be in format of '<prefix>/<branch>/Package.ID-1.2.3-prerelease'.
       # note: The tag that ends with '-unreleased' will be treated as an unreleasable target where nupkg will not be uploaded.
       shell: pwsh
       run: |
-        $pattern_target_tag = '^{0}{1}\-{2}(\-{3})?$' -f
+        $pattern_target_tag = '^{0}{1}{2}\-{3}(\-{4})?$' -f
           '${{ inputs.release_target_tag_prefix }}',
+          '(?<branch>[A-Za-z0-9\.\-]+)/',
           '(?<id>[A-Za-z0-9\.]+)',
           '(?<version>[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?([\-\+][0-9a-zA-Z\.]+)?)',
           '(?<suffix>[A-Za-z0-9]+)'
@@ -89,7 +90,8 @@ jobs:
         $package_target_tag = '${{ inputs.release_target_tag_name }}'
 
         if ("$package_target_tag" -match "$pattern_target_tag") {
-          # split package ID and version from tag name
+          # split package info and version from tag name
+          $package_branch = $Matches['branch']
           $package_id = $Matches['id']
           $package_version = $Matches['version']
           $package_id_with_version = '{0}-{1}' -f $package_id, $package_version
@@ -100,6 +102,7 @@ jobs:
 
           # notice determined info
           '::notice::package_target_tag={0}' -f $package_target_tag
+          '::notice::package_branch={0}' -f $package_branch
           '::notice::package_can_release={0}' -f $package_can_release
           '::notice::package_id={0}' -f $package_id
           '::notice::package_id_with_version={0}' -f $package_id_with_version
@@ -108,6 +111,7 @@ jobs:
 
           # set outputs
           '::set-output name=package_target_tag::{0}' -f $package_target_tag
+          '::set-output name=package_branch::{0}' -f $package_branch
           '::set-output name=package_can_release::{0}' -f $package_can_release
           '::set-output name=package_id::{0}' -f $package_id
           '::set-output name=package_id_with_version::{0}' -f $package_id_with_version
@@ -117,19 +121,6 @@ jobs:
         else {
           Write-Error -Message "tag name format mismatch: $package_target_tag" -ErrorAction Stop
         }
-
-        # find the branch which the triggered tag belongs to
-        $log_branches_tag_belongs = git log --oneline --first-parent --decorate-refs-exclude='refs/tags/*' --pretty='%D'
-
-        if ("$log_branches_tag_belongs" -match '\w?origin/(?<name>[A-Za-z0-9\-\._\/]+)') {
-          $package_branch = $Matches['name']
-        }
-        else {
-          Write-Error -Message "could not find the branch which the triggered tag '$package_target_tag' belongs to" -ErrorAction Stop
-        }
-
-        '::notice::package_branch={0}' -f $package_branch
-        '::set-output name=package_branch::{0}' -f $package_branch
 
         # find the tag of the previous version
         $package_prevver_ref = git describe --tags --abbrev=0 --match "${{ inputs.release_tag_prefix }}${package_id}-*"

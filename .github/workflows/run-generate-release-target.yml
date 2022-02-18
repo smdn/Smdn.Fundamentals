@@ -2,7 +2,7 @@ name: Generate release target
 
 on:
   push:
-    tags: new-release/*
+    tags: new-release/*/*
 
 jobs:
   run-generate-release-target:
