@@ -1,7 +1,7 @@
-// Smdn.Fundamental.FileSystem.dll (Smdn.Fundamental.FileSystem-3.0.0 (net45))
+// Smdn.Fundamental.FileSystem.dll (Smdn.Fundamental.FileSystem-3.0.1)
 //   Name: Smdn.Fundamental.FileSystem
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net45)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+ee33dd31cbfad4b6662792a2357fd3c536359f38
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
