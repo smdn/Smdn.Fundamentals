@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Csv.dll (Smdn.Fundamental.Csv-3.0.1 (netstandard1.6))
+// Smdn.Fundamental.Csv.dll (Smdn.Fundamental.Csv-3.0.2)
 //   Name: Smdn.Fundamental.Csv
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard1.6)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+a456410c941c5943b157d2f12a5f8ebe6b40b5e2
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
