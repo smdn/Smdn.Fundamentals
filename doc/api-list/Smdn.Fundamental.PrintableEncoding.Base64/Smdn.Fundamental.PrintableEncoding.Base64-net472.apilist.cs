@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.Base64.dll (Smdn.Fundamental.PrintableEncoding.Base64-3.0.0 (net472))
+// Smdn.Fundamental.PrintableEncoding.Base64.dll (Smdn.Fundamental.PrintableEncoding.Base64-3.0.1)
 //   Name: Smdn.Fundamental.PrintableEncoding.Base64
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net472)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+c9ae68d71ad7d729c814c50b0ec0464d38c45c66
 //   TargetFramework: .NETFramework,Version=v4.7.2
 //   Configuration: Release
 
