@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.LineOriented.dll (Smdn.Fundamental.Stream.LineOriented-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.Stream.LineOriented.dll (Smdn.Fundamental.Stream.LineOriented-3.0.2)
 //   Name: Smdn.Fundamental.Stream.LineOriented
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.1)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+f6313286e6c89f255a4e55ad199841306da18ec2
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -50,6 +50,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public override int Read(byte[] buffer, int offset, int count) {}
     public Task<long> ReadAsync(Stream targetStream, long length, CancellationToken cancellationToken = default) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
     public override int ReadByte() {}
     public LineOrientedStream.Line? ReadLine() {}
     public byte[] ReadLine(bool keepEOL) {}
@@ -58,6 +59,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public override void SetLength(long @value) {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
