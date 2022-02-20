@@ -1,7 +1,7 @@
-// Smdn.Fundamental.SIPrefix.dll (Smdn.Fundamental.SIPrefix-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.SIPrefix.dll (Smdn.Fundamental.SIPrefix-3.0.2)
 //   Name: Smdn.Fundamental.SIPrefix
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.1)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+cad54ee930add3f092e48bc1f76c04e0d3e20f1b
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
