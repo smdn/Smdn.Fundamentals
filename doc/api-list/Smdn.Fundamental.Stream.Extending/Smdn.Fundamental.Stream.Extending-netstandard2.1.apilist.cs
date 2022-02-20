@@ -1,10 +1,11 @@
-// Smdn.Fundamental.Stream.Extending.dll (Smdn.Fundamental.Stream.Extending-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.Stream.Extending.dll (Smdn.Fundamental.Stream.Extending-3.0.1)
 //   Name: Smdn.Fundamental.Stream.Extending
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+966b4cce6833230789d049601bb35734f3d9103c
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,6 +68,7 @@ namespace Smdn.IO.Streams.Extending {
     protected void ThrowIfDisposed() {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 }
 
