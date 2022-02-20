@@ -1,7 +1,7 @@
-// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.0.1 (net45))
+// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.0.2)
 //   Name: Smdn.Fundamental.UInt24n
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net45)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+ba1968924b0078e56f5205dd0ae2468ee96e6071
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
@@ -75,7 +75,11 @@ namespace Smdn {
     public static explicit operator short(UInt24 val) {}
     public static explicit operator uint(UInt24 val) {}
     public static explicit operator ushort(UInt24 val) {}
+    public static bool operator > (UInt24 x, UInt24 y) {}
+    public static bool operator >= (UInt24 x, UInt24 y) {}
     public static bool operator != (UInt24 x, UInt24 y) {}
+    public static bool operator < (UInt24 x, UInt24 y) {}
+    public static bool operator <= (UInt24 x, UInt24 y) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -150,7 +154,11 @@ namespace Smdn {
     public static explicit operator long(UInt48 val) {}
     public static explicit operator uint(UInt48 val) {}
     public static explicit operator ulong(UInt48 val) {}
+    public static bool operator > (UInt48 x, UInt48 y) {}
+    public static bool operator >= (UInt48 x, UInt48 y) {}
     public static bool operator != (UInt48 x, UInt48 y) {}
+    public static bool operator < (UInt48 x, UInt48 y) {}
+    public static bool operator <= (UInt48 x, UInt48 y) {}
   }
 }
 
