@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.2)
 //   Name: Smdn.Fundamental.Stream
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.1)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+d1a21184e7ae3f93d7ec2857d6ec2ae152e5f517
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -118,11 +118,14 @@ namespace Smdn.IO.Streams {
     protected long GetRemainderLength() {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
     public override int ReadByte() {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     object ICloneable.Clone() {}
     public override void Write(byte[] buffer, int offset, int count) {}
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 }
 
