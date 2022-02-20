@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Shell.dll (Smdn.Fundamental.Shell-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.Shell.dll (Smdn.Fundamental.Shell-3.0.1)
 //   Name: Smdn.Fundamental.Shell
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+9d1fd8df380c745be94459a5479a55ac12ab3ada
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
