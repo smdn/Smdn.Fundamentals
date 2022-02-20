@@ -246,8 +246,8 @@ jobs:
 
     - name: Delete release target tag ${{ steps.release-info.outputs.package_target_tag }}
       if: ${{ !inputs.dry_run }}
-      run: git push origin --delete '${{ steps.release-info.outputs.package_target_tag }}'
+      run: git push origin --delete '${{ steps.release-info.outputs.package_target_tag }}' || true
 
     - name: Close release working branch ${{ steps.release-info.outputs.release_working_branch }}
       if: ${{ !inputs.dry_run }}
-      run: git push origin --delete '${{ steps.release-info.outputs.release_working_branch }}'
+      run: git push origin --delete '${{ steps.release-info.outputs.release_working_branch }}' || true
