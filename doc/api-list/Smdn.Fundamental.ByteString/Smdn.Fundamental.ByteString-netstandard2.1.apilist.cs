@@ -1,7 +1,7 @@
-// Smdn.Fundamental.ByteString.dll (Smdn.Fundamental.ByteString-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.ByteString.dll (Smdn.Fundamental.ByteString-3.0.2)
 //   Name: Smdn.Fundamental.ByteString
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.1)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+e1cdf5b57693d8430e0ef803045395521eb5d6f5
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -172,7 +172,7 @@ namespace Smdn.Text {
     public static bool StartsWith(this ReadOnlySequence<byte> sequence, ReadOnlySpan<byte> @value) {}
     [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead", true)]
     public static byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence) {}
-    [Obsolete]
+    [Obsolete("ByteString will be deprecated in future.")]
     public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) {}
   }
 }
