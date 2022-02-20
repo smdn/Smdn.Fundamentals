@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.PercentEncoding.dll (Smdn.Fundamental.PrintableEncoding.PercentEncoding-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.PrintableEncoding.PercentEncoding.dll (Smdn.Fundamental.PrintableEncoding.PercentEncoding-3.0.1)
 //   Name: Smdn.Fundamental.PrintableEncoding.PercentEncoding
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+3f981874cd944302006694008d41e4c519abc647
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
