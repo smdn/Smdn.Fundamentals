@@ -50,10 +50,10 @@ This repository contains a set of .NET libraries which provides fundamental func
 |[Smdn.Fundamental.Xml.Linq](src/Smdn.Fundamental.Xml.Linq/)|[![NuGet Smdn.Fundamental.Xml.Linq](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Linq.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Linq/)|
 |[Smdn.Fundamental.Xml.Xhtml](src/Smdn.Fundamental.Xml.Xhtml/)|[![NuGet Smdn.Fundamental.Xml.Xhtml](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Xhtml.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Xhtml/)|
 |[Smdn](src/Smdn/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.svg)](https://www.nuget.org/packages/Smdn/)|
-|[Smdn.MSBuild.ProjectAssets.Common](src/Smdn.MSBuild.ProjectAssets.Common/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Common.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common/)|
-|[Smdn.MSBuild.ProjectAssets.Library](src/Smdn.MSBuild.ProjectAssets.Library/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/)|
+|[Smdn.MSBuild.ProjectAssets.Common](src/Smdn.MSBuild.ProjectAssets.Common/)|[![NuGet Smdn.MSBuild.ProjectAssets.Common](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Common.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common/)|
+|[Smdn.MSBuild.ProjectAssets.Library](src/Smdn.MSBuild.ProjectAssets.Library/)|[![NuGet Smdn.MSBuild.ProjectAssets.Library](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/)|
 |[Smdn.MSBuild.DefineConstants.NETSdkApi](src/Smdn.MSBuild.DefineConstants.NETSdkApi/)|[![NuGet Smdn.MSBuild.DefineConstants.NETSdkApi](https://img.shields.io/nuget/v/Smdn.MSBuild.DefineConstants.NETSdkApi.svg)](https://www.nuget.org/packages/Smdn.MSBuild.DefineConstants.NETSdkApi/)|
-|[Smdn.Test.NUnit.Constraints](src/Smdn.Test.NUnit.Constraints/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Constraints.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Constraints/)|
+|[Smdn.Test.NUnit.Constraints](src/Smdn.Test.NUnit.Constraints/)|[![NuGet Smdn.Test.NUnit.Constraints](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Constraints.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Constraints/)|
 
 ## Smdn.dll
 Some of `Smdn.Fundamental.*` are based on former `Smdn.dll`.
