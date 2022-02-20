@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.Extending.dll (Smdn.Fundamental.Stream.Extending-3.0.0 (net45))
+// Smdn.Fundamental.Stream.Extending.dll (Smdn.Fundamental.Stream.Extending-3.0.1)
 //   Name: Smdn.Fundamental.Stream.Extending
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net45)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+966b4cce6833230789d049601bb35734f3d9103c
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
