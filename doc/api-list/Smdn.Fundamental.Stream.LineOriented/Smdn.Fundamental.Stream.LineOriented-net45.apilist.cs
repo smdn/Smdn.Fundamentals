@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.LineOriented.dll (Smdn.Fundamental.Stream.LineOriented-3.0.1 (net45))
+// Smdn.Fundamental.Stream.LineOriented.dll (Smdn.Fundamental.Stream.LineOriented-3.0.2)
 //   Name: Smdn.Fundamental.Stream.LineOriented
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net45)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+f6313286e6c89f255a4e55ad199841306da18ec2
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
