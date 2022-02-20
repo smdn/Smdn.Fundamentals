@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <PropertyGroup>
     <!-- netstandard2.0 is required to resolve version mismatch which occurs in the reference of ValueTuple in Smdn.dll -->
     <TargetFrameworks>net45;netstandard2.1;netstandard2.0;netstandard1.6</TargetFrameworks>
-    <VersionPrefix>3.0.1</VersionPrefix>
+    <VersionPrefix>3.0.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
