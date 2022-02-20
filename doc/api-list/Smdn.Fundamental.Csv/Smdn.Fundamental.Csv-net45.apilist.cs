@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Csv.dll (Smdn.Fundamental.Csv-3.0.1 (net45))
+// Smdn.Fundamental.Csv.dll (Smdn.Fundamental.Csv-3.0.2)
 //   Name: Smdn.Fundamental.Csv
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net45)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+a456410c941c5943b157d2f12a5f8ebe6b40b5e2
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
