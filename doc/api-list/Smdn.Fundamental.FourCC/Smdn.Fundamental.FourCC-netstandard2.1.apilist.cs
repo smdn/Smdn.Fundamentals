@@ -1,7 +1,7 @@
-// Smdn.Fundamental.FourCC.dll (Smdn.Fundamental.FourCC-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.FourCC.dll (Smdn.Fundamental.FourCC-3.0.2)
 //   Name: Smdn.Fundamental.FourCC
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.1)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+ef8468f4e05e903d9dbf13b3b9739faf9a06f1e6
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 

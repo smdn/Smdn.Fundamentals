@@ -1,7 +1,7 @@
-// Smdn.Fundamental.FourCC.dll (Smdn.Fundamental.FourCC-3.0.1 (net45))
+// Smdn.Fundamental.FourCC.dll (Smdn.Fundamental.FourCC-3.0.2)
 //   Name: Smdn.Fundamental.FourCC
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net45)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+ef8468f4e05e903d9dbf13b3b9739faf9a06f1e6
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
