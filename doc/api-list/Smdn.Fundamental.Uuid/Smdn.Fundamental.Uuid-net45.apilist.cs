@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.0.1 (net45))
+// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.0.2)
 //   Name: Smdn.Fundamental.Uuid
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net45)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+3b6d4bbdb8e89104beed8bc83b9b240f09d0749d
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
