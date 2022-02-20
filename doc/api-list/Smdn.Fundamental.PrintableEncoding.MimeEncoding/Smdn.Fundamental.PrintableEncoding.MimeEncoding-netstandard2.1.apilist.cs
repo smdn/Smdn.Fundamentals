@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.MimeEncoding.dll (Smdn.Fundamental.PrintableEncoding.MimeEncoding-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.PrintableEncoding.MimeEncoding.dll (Smdn.Fundamental.PrintableEncoding.MimeEncoding-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.MimeEncoding
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard2.1)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+1e8bd98413dde3a6f4250a3c8eaff318c493b38d
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
