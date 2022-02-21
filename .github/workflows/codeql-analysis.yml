@@ -11,6 +11,7 @@
 #
 name: "CodeQL"
 
+# ref: https://docs.microsoft.com/en-us/dotnet/devops/dotnet-secure-github-action
 on:
   # push:
   #   branches: [ main ]
