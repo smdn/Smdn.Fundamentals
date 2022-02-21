@@ -421,6 +421,10 @@ jobs:
           $pr_url = gh pr create --base ${{ steps.package-info.outputs.package_branch }} --head ${{ steps.release-info.outputs.working_branch }} --assignee ${{ github.repository_owner }} --no-maintainer-edit --title "${pr_title}" --body-file "${pr_body_file}"
         }
 
+        if ( [string]::IsNullOrEmpty($pr_url) ) {
+          Write-Error -Message "could not create pull request for ${pr_title}" -ErrorAction Stop
+        }
+
         "::notice::Created pull request for ${pr_title}: ${pr_url}"
 
         rm -f $pr_body_file
