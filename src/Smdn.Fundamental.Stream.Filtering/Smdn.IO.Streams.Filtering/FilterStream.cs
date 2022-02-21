@@ -210,6 +210,22 @@ public partial class FilterStream : Stream {
   }
 #endif
 
+  [Obsolete("use Memory<byte> version instead")]
+  protected virtual Task<int> ReadAsyncUnchecked(
+    byte[] buffer,
+    int offset,
+    int count,
+    CancellationToken cancellationToken
+  )
+    => ReadAsyncUnchecked(
+      (buffer ?? throw new ArgumentNullException(nameof(buffer))).AsMemory(offset, count),
+      cancellationToken
+#if SYSTEM_THREADING_TASKS_VALUETASK
+    ).AsTask();
+#else
+    );
+#endif
+
   protected virtual
 #if SYSTEM_THREADING_TASKS_VALUETASK
   ValueTask<int>
