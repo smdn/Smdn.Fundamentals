@@ -1,5 +1,5 @@
 # Workflows
-## workflows/release-target-v1.1.0
+## workflows/release-target-v1.1.2
 **release target**の作成と公開を行うworkflow
 
 ### 概略
@@ -88,3 +88,7 @@
 5. 後処理を行う
    1. release target tagを削除する
    2. release working branchを削除する
+
+### TODO
+- API diffがバージョンのみとなる場合は省略する
+- pull requestのbodyが65536 characters以上となる場合、作成に失敗する: `pull request create failed: GraphQL: Body is too long (maximum is 65536 characters) (createPullRequest)`
