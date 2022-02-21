@@ -269,6 +269,7 @@ jobs:
         GH_TOKEN: ${{ secrets.token }}
       run: |
         $pr_body_range_from_prev_version="${{ steps.package-info.outputs.package_prevver_ref }}..HEAD"
+        $diff_options = "--no-color"
 
         #
         # create pull request
@@ -339,7 +340,7 @@ jobs:
           [void]$pr_body.AppendLine()
         }
 
-        $pr_body_apidiff = git diff --unified=10000 ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} -- '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
+        $pr_body_apidiff = git diff $diff_options --unified=10000 ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} -- '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
 
         if ( ! [string]::IsNullOrEmpty($pr_body_apidiff) ) {
           [void]$pr_body.AppendLine('## API diff')
@@ -364,7 +365,7 @@ jobs:
         ).AppendLine()
         [void]$pr_body.AppendLine()
 
-        $pr_body_changes = git diff ${pr_body_range_from_prev_version} -- ${{ steps.package-info.outputs.package_source_dir }}
+        $pr_body_changes = git diff $diff_options ${pr_body_range_from_prev_version} -- ${{ steps.package-info.outputs.package_source_dir }}
 
         [void]$pr_body.AppendLine('<details>')
         [void]$pr_body.AppendLine('<summary>Changes in this release</summary>')
