@@ -1,4 +1,5 @@
 [![GitHub license](https://img.shields.io/github/license/smdn/Smdn.Fundamentals)](https://github.com/smdn/Smdn.Fundamentals/blob/main/LICENSE.txt)
+[![CodeQL](https://github.com/smdn/Smdn.Fundamentals/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/smdn/Smdn.Fundamentals/actions/workflows/codeql-analysis.yml)
 
 # Smdn.Fundamentals
 This repository contains a set of .NET libraries which provides fundamental functionalities.
