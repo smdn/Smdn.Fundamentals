@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.Filtering.dll (Smdn.Fundamental.Stream.Filtering-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.Stream.Filtering.dll (Smdn.Fundamental.Stream.Filtering-3.0.1)
 //   Name: Smdn.Fundamental.Stream.Filtering
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+6c46ed4e09b48a74bff0ead44a7ab8664fcf0ef8
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -78,7 +78,7 @@ namespace Smdn.IO.Streams.Filtering {
     protected const int DefaultBufferSize = 1024;
     protected const bool DefaultLeaveStreamOpen = false;
     protected const int MinimumBufferSize = 2;
-    public static readonly FilterStream.IFilter NullFilter; // = "Smdn.IO.Streams.Filtering.FilterStream+_NullFilter"
+    public static readonly FilterStream.IFilter NullFilter; // = "Smdn.IO.Streams.Filtering.FilterStream+NullFilterImpl"
 
     public FilterStream(Stream stream, FilterStream.IFilter filter, int bufferSize = 1024, bool leaveStreamOpen = false) {}
     public FilterStream(Stream stream, IEnumerable<FilterStream.IFilter> filters, int bufferSize = 1024, bool leaveStreamOpen = false) {}
@@ -97,13 +97,17 @@ namespace Smdn.IO.Streams.Filtering {
     public override Task FlushAsync(CancellationToken cancellationToken) {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default) {}
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
+    [Obsolete("use Memory<byte> version instead")]
     protected virtual Task<int> ReadAsyncUnchecked(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    protected virtual ValueTask<int> ReadAsyncUnchecked(Memory<byte> destination, CancellationToken cancellationToken) {}
     protected virtual int ReadUnchecked(byte[] buffer, int offset, int count) {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     protected void ThrowIfDisposed() {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 }
 
