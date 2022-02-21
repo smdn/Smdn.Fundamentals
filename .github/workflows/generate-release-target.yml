@@ -268,7 +268,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.token }}
       run: |
-        $pr_body_range_from_prev_version="${{ steps.package-info.outputs.package_prevver_ref }}..HEAD"
+        $range_from_prev_version="${{ steps.package-info.outputs.package_prevver_ref }}..HEAD"
         $diff_options = "--no-color"
 
         #
@@ -332,7 +332,7 @@ jobs:
 
         [void]$pr_body.AppendLine('# Changes in this release')
 
-        $pr_body_changelog = git log ${pr_body_range_from_prev_version} --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' -- ${{ steps.package-info.outputs.package_source_dir }}
+        $pr_body_changelog = git log ${range_from_prev_version} --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' -- ${{ steps.package-info.outputs.package_source_dir }}
 
         if ( ! [string]::IsNullOrEmpty($pr_body_changelog) ) {
           [void]$pr_body.AppendLine('## Change log')
@@ -369,7 +369,7 @@ jobs:
 
         $diff_options_src = "${diff_options} --ignore-cr-at-eol --ignore-space-at-eol --ignore-all-space --ignore-blank-lines"
 
-        $pr_body_changes = git diff ${diff_options_src} ${pr_body_range_from_prev_version} -- ${{ steps.package-info.outputs.package_source_dir }}
+        $pr_body_changes = git diff ${diff_options_src} ${range_from_prev_version} -- ${{ steps.package-info.outputs.package_source_dir }}
 
         [void]$pr_body.AppendLine('<details>')
         [void]$pr_body.AppendLine('<summary>Changes in this release</summary>')
