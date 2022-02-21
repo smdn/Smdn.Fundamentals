@@ -383,10 +383,6 @@ jobs:
         [void]$pr_body.AppendLine('</details>')
         [void]$pr_body.AppendLine()
 
-        #"[Pull Request body]==========================="
-        #$pr_body.ToString()
-        #"=============================================="
-
         $pr_body_file = [System.IO.Path]::GetFullPath('pr-body.md')
 
         $pr_body.ToString() | Out-File -FilePath $pr_body_file -Encoding utf8
