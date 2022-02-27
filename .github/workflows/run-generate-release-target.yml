@@ -55,13 +55,16 @@ jobs:
         exit 1
 
   run-generate-release-target:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/generate-release-target.yml@workflows/release-target-v1.1.2
+    uses: smdn/Smdn.Fundamentals/.github/workflows/generate-release-target.yml@workflows/release-target-v1.2.0
     needs: determine-release-target
     if: startsWith(needs.determine-release-target.outputs.tag_name, 'new-release/')
     with:
       release_target_tag_name: ${{ needs.determine-release-target.outputs.tag_name }}
       release_target_tag_prefix: 'new-release/'
+      release_target_pr_label: 'release-target'
       release_tag_prefix: 'releases/'
       dry_run: ${{ fromJSON(needs.determine-release-target.outputs.dry_run) }}
     secrets:
-      token: ${{ secrets.PUBLISH_NEW_RELEASE }}
+      token_repo:         ${{ secrets.PUBLISH_NEW_RELEASE }}
+      token_pullrequest:  ${{ secrets.PUBLISH_NEW_RELEASE }}
+      token_gist:         ${{ secrets.PUBLISH_NEW_RELEASE }}

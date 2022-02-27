@@ -17,6 +17,12 @@ on:
         type: string
         default: "new-release/"
 
+      release_target_pr_label:
+        description: "The label to set for the pull request of the release target"
+        required: false
+        type: string
+        default: "release-target"
+
       release_tag_prefix:
         description: "The common prefix of the release tag name."
         required: false
@@ -42,8 +48,16 @@ on:
         default: false
 
     secrets:
-      token:
-        description: 'The token which is used to checkout code and open a pull request for the new release.'
+      token_repo:
+        description: 'The token which is used to checkout code.'
+        required: true
+
+      token_pullrequest:
+        description: 'The token which is used to open a pull request for the new release.'
+        required: true
+
+      token_gist:
+        description: 'The token which is used to create release notes onto gist.'
         required: true
 
 env:
@@ -64,7 +78,7 @@ jobs:
         # ref: https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
         fetch-depth: 0
         ref: ${{ inputs.release_target_tag_name }}
-        token: ${{ secrets.token }}
+        token: ${{ secrets.token_repo }}
         persist-credentials: true
 
     - name: Configure git identity
@@ -76,7 +90,7 @@ jobs:
         # git config user.name '${{ github.repository_owner }}'
         # git config user.email '<>'
 
-    - name: Determine release target package information
+    - name: Determine the release target package information
       id: package-info
       # note: Parse and determines parse package info from the triggered tag name.
       # note: The tag name must be in format of '<prefix>/<branch>/Package.ID-1.2.3-prerelease'.
@@ -100,29 +114,35 @@ jobs:
           $package_id_with_version = '{0}-{1}' -f $package_id, $package_version
           $package_source_dir = '${{ inputs.path_prefix_source }}{0}/' -f $package_id
 
+          if ( -not ( Test-Path -Path $package_source_dir -PathType Container ) ) {
+            "::error::The source directory '${package_source_dir}' was not found.  Make sure that the tag name '${package_target_tag}' indicates a package which is present."
+            exit 1
+          }
+
           # treat the version ends with '-unreleased' as an unreleasable package
           $package_can_release = $Matches['suffix'] -ne "-unreleased"
 
           # notice determined info
-          '::notice::package_target_tag={0}' -f $package_target_tag
-          '::notice::package_branch={0}' -f $package_branch
-          '::notice::package_can_release={0}' -f $package_can_release
-          '::notice::package_id={0}' -f $package_id
-          '::notice::package_id_with_version={0}' -f $package_id_with_version
-          '::notice::package_version={0}' -f $package_version
-          '::notice::package_source_dir={0}' -f $package_source_dir
+          "::notice::package_target_tag=${package_target_tag}"
+          "::notice::package_branch=${package_branch}"
+          "::notice::package_can_release=${package_can_release}"
+          "::notice::package_id=${package_id}"
+          "::notice::package_id_with_version=${package_id_with_version}"
+          "::notice::package_version=${package_version}"
+          "::notice::package_source_dir=${package_source_dir}"
 
           # set outputs
-          '::set-output name=package_target_tag::{0}' -f $package_target_tag
-          '::set-output name=package_branch::{0}' -f $package_branch
-          '::set-output name=package_can_release::{0}' -f $package_can_release
-          '::set-output name=package_id::{0}' -f $package_id
-          '::set-output name=package_id_with_version::{0}' -f $package_id_with_version
-          '::set-output name=package_version::{0}' -f $package_version
-          '::set-output name=package_source_dir::{0}' -f $package_source_dir
+          "::set-output name=package_target_tag::${package_target_tag}"
+          "::set-output name=package_branch::${package_branch}"
+          "::set-output name=package_can_release::${package_can_release}"
+          "::set-output name=package_id::${package_id}"
+          "::set-output name=package_id_with_version::${package_id_with_version}"
+          "::set-output name=package_version::${package_version}"
+          "::set-output name=package_source_dir::${package_source_dir}"
         }
         else {
-          Write-Error -Message "tag name format mismatch: $package_target_tag" -ErrorAction Stop
+          "::error::tag name format mismatch: $package_target_tag"
+          exit 1
         }
 
         # find the tag of the previous version
@@ -135,8 +155,23 @@ jobs:
           $package_prevver_ref = git rev-list HEAD | tail -1
         }
 
-        '::notice::package_prevver_ref={0}' -f $package_prevver_ref
-        '::set-output name=package_prevver_ref::{0}' -f $package_prevver_ref
+        "::notice::package_prevver_ref=${package_prevver_ref}"
+        "::set-output name=package_prevver_ref::${package_prevver_ref}"
+
+    - name: Determine the release info of ${{ steps.package-info.outputs.package_id_with_version }}
+      id: release-info
+      shell: pwsh
+      run: |
+        $release_tag = '${{ inputs.release_tag_prefix }}${{ steps.package-info.outputs.package_id_with_version }}'
+        $release_working_branch = "${release_tag}-$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds().ToString("D"))"
+
+        # notice determined info
+        '::notice::tag=${release_tag}'
+        '::notice::working_branch=${release_working_branch}'
+
+        # set outputs
+        "::set-output name=tag::${release_tag}"
+        "::set-output name=working_branch::${release_working_branch}"
 
     - name: Set NUGET_PACKAGES
       run: |
@@ -161,16 +196,19 @@ jobs:
 
     - name: Restore dependencies of ${{ steps.package-info.outputs.package_id }}
       # restores project dependencies first
-      run: dotnet restore ${{ steps.package-info.outputs.package_source_dir }}
+      run: dotnet restore --nologo ${{ steps.package-info.outputs.package_source_dir }}
 
     - name: Build ${{ steps.package-info.outputs.package_id }}
       shell: pwsh
       run: |
-        $build_extra_props="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
-
         # note: do not specify --no-restore option here since dependencies in build assets have to be restored
-        dotnet build --configuration Release -consoleLoggerParameters:NoSummary ${build_extra_props} ${{ steps.package-info.outputs.package_source_dir }} |
-          Tee-Object -Variable build_log
+        dotnet build `
+          --nologo `
+          --configuration Release `
+          -consoleLoggerParameters:NoSummary `
+          /p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }} `
+          ${{ steps.package-info.outputs.package_source_dir }} `
+        | Tee-Object -Variable build_log
 
         # select errors: 'path/to/file(line,col): error XX9999:'
         $build_errors = $build_log | Select-String -Pattern '\: error (?<error>[a-zA-Z0-9]+)\:' -AllMatches
@@ -196,29 +234,37 @@ jobs:
 
     - name: Pack ${{ steps.package-info.outputs.package_id }}
       id: pack
+      shell: pwsh
       run: |
-        PACK_EXTRA_PROPS="/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}"
+        dotnet pack `
+          --nologo `
+          --configuration Release `
+          --no-build `
+          /p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }} `
+          ${{ steps.package-info.outputs.package_source_dir }}
 
-        dotnet pack --configuration Release --no-build ${PACK_EXTRA_PROPS} ${{ steps.package-info.outputs.package_source_dir }}
+        $file_nupkg  = '${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nupkg'
+        $file_nuspec = '${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nuspec'
 
-        FILE_NUPKG=${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nupkg
-        FILE_NUSPEC=${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nuspec
-
-        EXPECTED_NUPKG=${{ steps.package-info.outputs.package_source_dir }}bin/Release/$FILE_NUPKG
-        EXPECTED_NUSPEC=${{ steps.package-info.outputs.package_source_dir }}obj/Release/$FILE_NUSPEC
+        $expected_nupkg  = "${{ steps.package-info.outputs.package_source_dir }}bin/Release/${file_nupkg}"
+        $expected_nuspec = "${{ steps.package-info.outputs.package_source_dir }}obj/Release/${file_nuspec}"
 
         # test generated file
-        if [ -f $EXPECTED_NUSPEC ] && [ -f $EXPECTED_NUPKG ]; then
-          echo "::notice::package '$EXPECTED_NUPKG' was generated successfully"
+        if (
+          ( Test-Path -Path $expected_nupkg  -PathType Leaf ) -and
+          ( Test-Path -Path $expected_nuspec -PathType Leaf )
+        ) {
+          "::notice::package '${expected_nupkg}' was generated successfully"
 
           # set outputs
-          echo "::set-output name=artifact_name_nupkg::$FILE_NUPKG"
-          echo "::set-output name=path_nupkg::$EXPECTED_NUPKG"
-          echo "::set-output name=path_nuspec::$EXPECTED_NUSPEC"
-        else
-          echo "::error::'$EXPECTED_NUPKG' was not generated. Make sure that the Version/VersionPrefix/VersionSuffix in '${{ steps.package-info.outputs.package_id }}.csproj' are defined correctly."
-          false
-        fi
+          "::set-output name=artifact_name_nupkg::${file_nupkg}"
+          "::set-output name=path_nupkg::${expected_nupkg}"
+          "::set-output name=path_nuspec::${expected_nuspec}"
+        }
+        else {
+          "::error::'${expected_nupkg}' was not generated. Make sure that the Version/VersionPrefix/VersionSuffix in '${{ steps.package-info.outputs.package_id }}.csproj' are defined correctly."
+          exit 1
+        }
 
     - name: Upload ${{ steps.pack.outputs.artifact_name_nupkg }}
       if: ${{ steps.package-info.outputs.package_can_release == 'True' }}
@@ -227,16 +273,6 @@ jobs:
         name: ${{ steps.pack.outputs.artifact_name_nupkg }}
         path: ${{ steps.pack.outputs.path_nupkg }}
         retention-days: 1
-
-    - name: Determine the release info of ${{ steps.package-info.outputs.package_id_with_version }}
-      id: release-info
-      run: |
-        RELEASE_TAG=${{ inputs.release_tag_prefix }}${{ steps.package-info.outputs.package_id_with_version }}
-        RELEASE_WORKING_BRANCH=${RELEASE_TAG}-`date +%s`
-
-        # set outputs
-        echo "::set-output name=tag::$RELEASE_TAG"
-        echo "::set-output name=working_branch::$RELEASE_WORKING_BRANCH"
 
     - name: Create release working branch for ${{ steps.package-info.outputs.package_id_with_version }}
       run: |
@@ -263,168 +299,210 @@ jobs:
           git push origin ${{ steps.release-info.outputs.working_branch }}
         fi
 
-    - name: Create pull request from branch ${{ steps.release-info.outputs.working_branch }}
+    - name: Create extra release contents
+      id: extra-release-contents
+      shell: pwsh
+      run: |
+        # Target:
+        #   "pullrequest": Is an extra content for the pull request. Will be added to pull request body.
+        #   "releasenote": Is an extra content for the release note. Will be uploaded to gist for this release.
+        $contents = @(
+          [PSCustomObject]@{
+            Title = ".nuspec"
+            Target = "pullrequest"
+            FileName = 'release-target.nuspec'
+            Content = Get-Content -Path ${{ steps.pack.outputs.path_nuspec }}
+          },
+          [PSCustomObject]@{
+            # this entry is expected to be shown as a gist's summary
+            Title = '${{ steps.package-info.outputs.package_id_with_version }} Release Notes'
+            Target = "releasenote"
+            FileName = 'releasenote-${{ steps.package-info.outputs.package_id_with_version }}.md'
+            Content = '${{ steps.package-info.outputs.package_branch }}/${{ steps.package-info.outputs.package_id_with_version }}'
+          },
+          [PSCustomObject]@{
+            Title = "Change log"
+            Target = "releasenote"
+            FileName = 'releasenote.section1.changelog.md'
+            Content = git log `
+              ${{ steps.package-info.outputs.package_prevver_ref }}..HEAD `
+              --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' `
+              -- `
+              ${{ steps.package-info.outputs.package_source_dir }}
+          },
+          [PSCustomObject]@{
+            Title = "API changes"
+            Target = "releasenote"
+            FileName = 'releasenote.section2.api-changes.diff'
+            Content = git diff `
+              --unified=10000 `
+              ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} `
+              -- `
+              '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
+          },
+          [PSCustomObject]@{
+            Title = "Full changes"
+            Target = "releasenote"
+            FileName = 'releasenote.section3.full-changes.diff'
+            Content = git diff `
+              --ignore-cr-at-eol `
+              --ignore-space-at-eol `
+              --ignore-all-space `
+              --ignore-blank-lines `
+              ${{ steps.package-info.outputs.package_prevver_ref }}..HEAD `
+              -- `
+              ${{ steps.package-info.outputs.package_source_dir }}
+          }
+        )
+
+        foreach ($content in $contents) {
+          if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+            "########## $($content.Title) ###########"
+            $content.Content
+          }
+          else {
+            Out-File -FilePath $content.FileName -Encoding utf8 -InputObject $($content.Content -join "`n")
+
+            $content | Add-Member -MemberType NoteProperty -Name 'IsWritten' -Value $true
+          }
+        }
+
+        $contents_json = $contents | where IsWritten | select Title,FileName,Target | ConvertTo-Json -Compress
+
+        "::notice::output: '${contents_json}'"
+
+        # set outputs
+        "::set-output name=contents::${contents_json}"
+
+    - name: Create release note for ${{ steps.package-info.outputs.package_id_with_version }}
+      id: releasenote
       shell: pwsh
       env:
-        GH_TOKEN: ${{ secrets.token }}
+        GH_TOKEN: ${{ secrets.token_gist }}
       run: |
-        $range_from_prev_version="${{ steps.package-info.outputs.package_prevver_ref }}..HEAD"
+        $description = '${{ steps.package-info.outputs.package_id }} ${{ steps.package-info.outputs.package_version }} Release Notes'
+        $files = '${{ steps.extra-release-contents.outputs.contents }}' |
+          ConvertFrom-Json |
+          where Target -eq 'releasenote' |
+          select -ExpandProperty FileName
 
-        #
-        # create pull request
-        #
+        if ( $files.Count -le 0 ) {
+          "::warning::could not create gist with empty files"
+          exit 0
+        }
+
+        $url = gh gist create `
+          --public `
+          --desc "${description}" `
+          @files
+
+        if ( [string]::IsNullOrEmpty($url) ) {
+          "::error::could not create gist '${description}'"
+          exit 1
+        }
+
+        "::notice::Created gist '${description}': ${url}"
+
+        # set outputs
+        "::set-output name=url::${url}"
+
+    - name: Create pull request from branch ${{ steps.release-info.outputs.working_branch }}
+      id: pullrequest
+      shell: pwsh
+      env:
+        GH_TOKEN: ${{ secrets.token_pullrequest }}
+      run: |
         $pr_title = 'Release ${{ steps.package-info.outputs.package_branch }}/${{ steps.package-info.outputs.package_id_with_version }}'
 
         #
-        # body of pull request / release target
+        # construct pull request body
         # note: beware of changing output format on this section; these information will be parsed and referenced by subsequent workflows
         #
-        $pr_body_release_target = New-Object System.Text.StringBuilder -ArgumentList 4096
+        $pr_body = New-Object System.Text.StringBuilder -ArgumentList 2048
 
-        [void]$pr_body_release_target.AppendFormat(
+        [void]$pr_body.AppendFormat(
           'Automatically generated by workflow [{0} #{1}]({2}).',
           '${{ github.workflow }}',
           '${{ github.run_number }}',
           '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
         ).AppendLine()
-        [void]$pr_body_release_target.AppendLine()
+        [void]$pr_body.AppendLine()
 
-        [void]$pr_body_release_target.AppendLine('# Release target')
-        [void]$pr_body_release_target.AppendLine('## Release target info')
-        [void]$pr_body_release_target.AppendLine('- package_target_tag: `${{ steps.package-info.outputs.package_target_tag }}`')
-        [void]$pr_body_release_target.AppendLine('- package_id: `${{ steps.package-info.outputs.package_id }}`')
-        [void]$pr_body_release_target.AppendLine('- package_id_with_version: `${{ steps.package-info.outputs.package_id_with_version }}`')
-        [void]$pr_body_release_target.AppendLine('- package_version: `${{ steps.package-info.outputs.package_version }}`')
-        [void]$pr_body_release_target.AppendLine('- package_branch: `${{ steps.package-info.outputs.package_branch }}`')
-        [void]$pr_body_release_target.AppendLine('- release_working_branch: `${{ steps.release-info.outputs.working_branch }}`')
-        [void]$pr_body_release_target.AppendLine('- release_tag: `${{ steps.release-info.outputs.tag }}`')
-        [void]$pr_body_release_target.AppendLine('- release_draft: `false` ❗Change this value to `true` to create release note as draft.')
-
-        if ( '${{ steps.package-info.outputs.package_can_release }}' -ieq 'True' ) {
-          [void]$pr_body_release_target.AppendLine('- artifact_name_nupkg: `${{ steps.pack.outputs.artifact_name_nupkg }}` ❗Remove this line or change this value to empty to prevent publishing packages.')
-        }
-
-        [void]$pr_body_release_target.AppendLine()
-
-        $release_target_nuspec = Get-Content -Path ${{ steps.pack.outputs.path_nuspec }}
-
-        [void]$pr_body_release_target.AppendLine('## .nuspec')
-        [void]$pr_body_release_target.AppendLine('```xml')
-        [void]$pr_body_release_target.AppendLine($release_target_nuspec -join "`n")
-        [void]$pr_body_release_target.AppendLine('```')
-        [void]$pr_body_release_target.AppendLine()
-
-        #
-        # body of pull request / release note draft
-        #
-        $pr_body_release_note = New-Object System.Text.StringBuilder -ArgumentList 4096
-
-        [void]$pr_body_release_note.AppendLine('<!-- RELEASE NOTE -->')
+        [void]$pr_body.AppendLine('# Release target')
+        [void]$pr_body.AppendLine('- package_target_tag: `${{ steps.package-info.outputs.package_target_tag }}`')
+        [void]$pr_body.AppendLine('- package_id: `${{ steps.package-info.outputs.package_id }}`')
+        [void]$pr_body.AppendLine('- package_id_with_version: `${{ steps.package-info.outputs.package_id_with_version }}`')
+        [void]$pr_body.AppendLine('- package_version: `${{ steps.package-info.outputs.package_version }}`')
+        [void]$pr_body.AppendLine('- package_branch: `${{ steps.package-info.outputs.package_branch }}`')
+        [void]$pr_body.AppendLine('- release_working_branch: `${{ steps.release-info.outputs.working_branch }}`')
+        [void]$pr_body.AppendLine('- release_tag: `${{ steps.release-info.outputs.tag }}`')
+        [void]$pr_body.AppendLine('- release_draft: `false` ❗Change this value to `true` to create release note as draft.')
+        [void]$pr_body.AppendLine('- release_note_url: [`${{ steps.releasenote.outputs.url }}`](${{ steps.releasenote.outputs.url }})')
 
         if ( '${{ steps.package-info.outputs.package_can_release }}' -ieq 'True' ) {
-          [void]$pr_body_release_note.AppendLine('# Packages')
-          [void]$pr_body_release_note.AppendFormat(
-            '- NuGet [{0} version {1}](https://www.nuget.org/packages/{0}/{1})',
-            '${{ steps.package-info.outputs.package_id }}',
-            '${{ steps.package-info.outputs.package_version }}'
-          ).AppendLine()
-          [void]$pr_body_release_note.AppendLine()
+          [void]$pr_body.AppendLine('- artifact_name_nupkg: `${{ steps.pack.outputs.artifact_name_nupkg }}` ❗Remove this line or change this value to empty to prevent publishing packages.')
         }
 
-        [void]$pr_body_release_note.AppendLine('# Changes in this release')
+        [void]$pr_body.AppendLine()
 
-        $release_note_changelog = git log ${range_from_prev_version} --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' -- ${{ steps.package-info.outputs.package_source_dir }}
+        # append extra contents
+        $pr_body_contents = '${{ steps.extra-release-contents.outputs.contents }}' |
+          ConvertFrom-Json |
+          where Target -eq 'pullrequest'
 
-        if ( ! [string]::IsNullOrEmpty($release_note_changelog) ) {
-          [void]$pr_body_release_note.AppendLine('## Change log')
-          [void]$pr_body_release_note.AppendLine($release_note_changelog -join "`n")
-          [void]$pr_body_release_note.AppendLine()
-        }
+        foreach ($content in $pr_body_contents) {
+          $ext = [System.IO.Path]::GetExtension($($content.FileName)).TrimStart('.')
 
-        #
-        # body of pull request / release note draft / API diff
-        #
-        $pr_body_release_note_apidiff = New-Object System.Text.StringBuilder -ArgumentList 20480
-        $diff_options_apidiff = @('--unified=10000')
+          [void]$pr_body.AppendLine("# $($content.Title)")
 
-        $release_note_apidiff = git diff @diff_options_apidiff ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} -- '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
-
-        if ( ! [string]::IsNullOrEmpty($release_note_apidiff) ) {
-          [void]$pr_body_release_note_apidiff.AppendLine('## API diff')
-          [void]$pr_body_release_note_apidiff.AppendLine('<details>')
-          [void]$pr_body_release_note_apidiff.AppendLine('<summary>API diff in this release</summary>')
-          [void]$pr_body_release_note_apidiff.AppendLine('<div>')
-          [void]$pr_body_release_note_apidiff.AppendLine()
-          [void]$pr_body_release_note_apidiff.AppendLine('```diff')
-          [void]$pr_body_release_note_apidiff.AppendLine($release_note_apidiff -join "`n")
-          [void]$pr_body_release_note_apidiff.AppendLine('```')
-          [void]$pr_body_release_note_apidiff.AppendLine()
-          [void]$pr_body_release_note_apidiff.AppendLine('</div>')
-          [void]$pr_body_release_note_apidiff.AppendLine('</details>')
-          [void]$pr_body_release_note_apidiff.AppendLine()
+          [void]$pr_body.AppendLine('```' + $ext)
+          [void]$pr_body.AppendLine($(Get-Content -Path $content.FileName) -join "`n")
+          [void]$pr_body.AppendLine('```')
         }
 
         #
-        # body of pull request / release note draft / changes
-        #
-        $pr_body_release_note_changes = New-Object System.Text.StringBuilder -ArgumentList 20480
-
-        [void]$pr_body_release_note_changes.AppendLine('## Changes')
-        [void]$pr_body_release_note_changes.AppendFormat(
-          '[Compare changes]({0}..{1})',
-          '${{ github.server_url }}/${{ github.repository }}/compare/${{ steps.package-info.outputs.package_prevver_ref }}',
-          '${{ steps.release-info.outputs.tag }}'
-        ).AppendLine()
-        [void]$pr_body_release_note_changes.AppendLine()
-
-        $diff_options_src = @('--ignore-cr-at-eol', '--ignore-space-at-eol', '--ignore-all-space', '--ignore-blank-lines')
-
-        $release_note_changes = git diff @diff_options_src ${range_from_prev_version} -- ${{ steps.package-info.outputs.package_source_dir }}
-
-        [void]$pr_body_release_note_changes.AppendLine('<details>')
-        [void]$pr_body_release_note_changes.AppendLine('<summary>Changes in this release</summary>')
-        [void]$pr_body_release_note_changes.AppendLine('<div>')
-        [void]$pr_body_release_note_changes.AppendLine()
-        [void]$pr_body_release_note_changes.AppendLine('```diff')
-        [void]$pr_body_release_note_changes.AppendLine($release_note_changes -join "`n")
-        [void]$pr_body_release_note_changes.AppendLine('```')
-        [void]$pr_body_release_note_changes.AppendLine()
-        [void]$pr_body_release_note_changes.AppendLine('</div>')
-        [void]$pr_body_release_note_changes.AppendLine('</details>')
-        [void]$pr_body_release_note_changes.AppendLine()
-
-        #
-        # construct and create pull request
+        # create pull request
         #
         $pr_body_file = [System.IO.Path]::GetFullPath('pr-body.md')
 
-        Out-File -FilePath $pr_body_file -Encoding utf8 -InputObject $pr_body_release_target.ToString()
-        Out-File -FilePath $pr_body_file -Encoding utf8 -InputObject $pr_body_release_note.ToString()         -Append
-        Out-File -FilePath $pr_body_file -Encoding utf8 -InputObject $pr_body_release_note_apidiff.ToString() -Append
-        Out-File -FilePath $pr_body_file -Encoding utf8 -InputObject $pr_body_release_note_changes.ToString() -Append
+        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+          "================================================"
+          $pr_body.ToString()
+          "================================================"
+        }
+        else {
+          Out-File -FilePath $pr_body_file -Encoding utf8 -InputObject $pr_body.ToString()
+        }
 
         # ref: https://cli.github.com/manual/gh_pr_create
+        $pr_create_options = @(
+          '--base', '${{ steps.package-info.outputs.package_branch }}',
+          '--head', '${{ steps.release-info.outputs.working_branch }}',
+          '--assignee', '${{ github.repository_owner }}',
+          '--no-maintainer-edit',
+          '--title', $pr_title,
+          '--body-file', $pr_body_file
+        )
+
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.release_target_pr_label }}' ) ) {
+          $pr_create_options += @('--label', '${{ inputs.release_target_pr_label }}')
+        }
+
+        "gh pr create ${pr_create_options}"
+
         if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
-          "[pull request creation parameters]"
-          "base: ${{ steps.package-info.outputs.package_branch }}"
-          "head: ${{ steps.release-info.outputs.working_branch }}"
-          "assignee: ${{ github.repository_owner }}"
-          "title: ${pr_title}"
-          "body-file: $pr_body_file"
-
-          "[content of body file]--------------------------"
-          cat $pr_body_file
-
           $pr_url = "(dry-run)"
         }
         else {
-          $pr_url = gh pr create --base ${{ steps.package-info.outputs.package_branch }} --head ${{ steps.release-info.outputs.working_branch }} --assignee ${{ github.repository_owner }} --no-maintainer-edit --title "${pr_title}" --body-file "${pr_body_file}"
+          $pr_url = gh pr create $pr_create_options
         }
 
         if ( [string]::IsNullOrEmpty($pr_url) ) {
-          Write-Error -Message "could not create pull request for ${pr_title}" -ErrorAction Stop
+          "::error::could not create pull request for ${pr_title}"
+          exit 1
         }
 
         "::notice::Created pull request for ${pr_title}: ${pr_url}"
 
-        rm -f $pr_body_file
+        # set outputs
+        "::set-output name=url::${pr_url}"

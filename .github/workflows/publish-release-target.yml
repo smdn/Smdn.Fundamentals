@@ -18,16 +18,16 @@ on:
         default: false
 
     secrets:
-      token_github:
-        description: 'The token which is used to checkout code and open a pull request for the new release.'
+      token_repo:
+        description: 'The token which is used to checkout code, view pull request of release target, download artifact from the precedent workflow, and create a new release.'
         required: true
 
-      token_nuget_org:
-        description: 'The token which is used to push packages to nuget.org.'
+      token_push_nuget_org:
+        description: 'The token which is used to push a package to nuget.org.'
         required: false
 
-      token_github_packages:
-        description: 'The token which is used to push packages to GitHub Packages.'
+      token_push_github_packages:
+        description: 'The token which is used to push a package to GitHub Packages.'
         required: false
 
 env:
@@ -44,7 +44,7 @@ jobs:
       # note: checkout repository firstly due to working directory will be cleaned up on checkout
       uses: actions/checkout@v2.4.0
       with:
-        token: ${{ secrets.token_github }}
+        token: ${{ secrets.token_repo }}
         persist-credentials: true
 
     - name: Configure git identity
@@ -59,22 +59,32 @@ jobs:
     - name: Determine release target information
       id: release-info
       env:
-        GH_TOKEN: ${{ secrets.token_github }}
+        GH_TOKEN: ${{ secrets.token_repo }}
       shell: pwsh
       run: |
-        $release_pr_body = gh pr view ${{ inputs.pr_number_request_for_release }} --repo ${{ github.repository }} --json body --template '{{.body}}'
+        $release_pr_body = gh pr view `
+          ${{ inputs.pr_number_request_for_release }} `
+          --repo ${{ github.repository }} `
+          --json body `
+          --template '{{.body}}'
 
         if ("$release_pr_body" -match ([regex]::escape('/${{ github.repository }}/actions/runs/') + '(?<run_id>[0-9]+)')) {
           $precedent_workflow_run_id = $Matches['run_id']
         }
         else {
-          Write-Error -Message "precedent workflow run id could not be determined." -ErrorAction Stop
+          "::error::precedent workflow run id could not be determined."
+          exit 1
         }
 
+        $release_target_infoes = (
+          $release_pr_body |
+          Select-String -Pattern '(?m)^\- (?<key>[a-z_]+)\: \[?`(?<value>[^`]+)`\]?.*$' -AllMatches
+        ).Matches
         $release_info_dict = [System.Collections.Generic.Dictionary[String, String]]::new()
 
-        foreach ($pair in ($release_pr_body | Select-String -Pattern '(?m)^\- (?<key>[a-z_]+)\: `(?<value>[^`]+)`.*$' -AllMatches).Matches) {
+        foreach ($pair in $release_target_infoes) {
           if ( ! $release_info_dict.ContainsKey($pair.Groups['key'].Value) ) {
+            # stores the first value found
             $release_info_dict[$pair.Groups['key'].Value] = $pair.Groups['value'].Value
           }
         }
@@ -87,117 +97,143 @@ jobs:
         [string]$release_working_branch = $null
         [string]$release_tag = $null
         [string]$release_draft = $null
+        [string]$release_note_url = $null
 
         if ( ! $release_info_dict.TryGetValue( "package_target_tag", [ref]$package_target_tag ) ) {
-          Write-Error -Message "package_target_tag could not be determined." -ErrorAction Stop
+          "::error::package_target_tag could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "package_id", [ref]$package_id ) ) {
-          Write-Error -Message "package_id could not be determined." -ErrorAction Stop
+          "::error::package_id could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "package_id_with_version", [ref]$package_id_with_version ) ) {
-          Write-Error -Message "package_id_with_version could not be determined." -ErrorAction Stop
+          "::error::package_id_with_version could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "package_version", [ref]$package_version ) ) {
-          Write-Error -Message "package_version could not be determined." -ErrorAction Stop
+          "::error::package_version could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "package_branch", [ref]$package_branch ) ) {
-          Write-Error -Message "package_branch could not be determined." -ErrorAction Stop
+          "::error::package_branch could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "release_working_branch", [ref]$release_working_branch ) ) {
-          Write-Error -Message "release_working_branch could not be determined." -ErrorAction Stop
+          "::error::release_working_branch could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "release_tag", [ref]$release_tag ) ) {
-          Write-Error -Message "release_tag could not be determined." -ErrorAction Stop
+          "::error::release_tag could not be determined."
+          exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "release_draft", [ref]$release_draft ) ) {
           # if value is not explicitly specified, create release as a draft
           $release_draft = "true"
         }
-
-        $release_notes_path = [System.IO.Path]::GetFullPath('release-notes.md')
-        (($release_pr_body -join "`n") -split '<!-- RELEASE NOTE -->')[1] | Out-File -FilePath $release_notes_path -Encoding utf8
+        if ( ! $release_info_dict.TryGetValue( "release_note_url", [ref]$release_note_url ) ) {
+          "::error::release_note_url could not be determined."
+          exit 1
+        }
 
         # notice determined info
-        '::notice::package_target_tag={0}' -f $package_target_tag
-        '::notice::package_id={0}' -f $package_id
-        '::notice::package_id_with_version={0}' -f $package_id_with_version
-        '::notice::package_version={0}' -f $package_version
-        '::notice::package_branch={0}' -f $package_branch
-        '::notice::release_working_branch={0}' -f $release_working_branch
-        '::notice::release_tag={0}' -f $release_tag
-        '::notice::release_draft={0}' -f $release_draft
-        '::notice::release_notes_path={0}' -f $release_notes_path
-        '::notice::precedent_workflow_run_id={0}' -f $precedent_workflow_run_id
+        "::notice::package_target_tag=${package_target_tag}"
+        "::notice::package_id=${package_id}"
+        "::notice::package_id_with_version=${package_id_with_version}"
+        "::notice::package_version=${package_version}"
+        "::notice::package_branch=${package_branch}"
+        "::notice::release_working_branch=${release_working_branch}"
+        "::notice::release_tag=${release_tag}"
+        "::notice::release_draft=${release_draft}"
+        "::notice::release_note_url=${release_note_url}"
+        "::notice::precedent_workflow_run_id=${precedent_workflow_run_id}"
 
         # set outputs
-        '::set-output name=package_target_tag::{0}' -f $package_target_tag
-        '::set-output name=package_id::{0}' -f $package_id
-        '::set-output name=package_id_with_version::{0}' -f $package_id_with_version
-        '::set-output name=package_version::{0}' -f $package_version
-        '::set-output name=package_branch::{0}' -f $package_branch
-        '::set-output name=release_working_branch::{0}' -f $release_working_branch
-        '::set-output name=release_tag::{0}' -f $release_tag
-        '::set-output name=release_draft::{0}' -f $release_draft
-        '::set-output name=release_notes_path::{0}' -f $release_notes_path
-        '::set-output name=precedent_workflow_run_id::{0}' -f $precedent_workflow_run_id
+        "::set-output name=package_target_tag::${package_target_tag}"
+        "::set-output name=package_id::${package_id}"
+        "::set-output name=package_id_with_version::${package_id_with_version}"
+        "::set-output name=package_version::${package_version}"
+        "::set-output name=package_branch::${package_branch}"
+        "::set-output name=release_working_branch::${release_working_branch}"
+        "::set-output name=release_tag::${release_tag}"
+        "::set-output name=release_draft::${release_draft}"
+        "::set-output name=release_note_url::${release_note_url}"
+        "::set-output name=precedent_workflow_run_id::${precedent_workflow_run_id}"
 
         [string]$artifact_name_nupkg = $null
 
         if ( $release_info_dict.TryGetValue( "artifact_name_nupkg", [ref] $artifact_name_nupkg ) ) {
-          '::notice::artifact_name_nupkg={0}' -f $artifact_name_nupkg
+          "::notice::artifact_name_nupkg=${artifact_name_nupkg}"
 
-          '::set-output name=artifact_name_nupkg::{0}' -f $artifact_name_nupkg
+          "::set-output name=artifact_name_nupkg::${artifact_name_nupkg}"
         }
         else {
           '::notice::No packages will be published.'
         }
 
         # check working and package branch
-        $ref_names = gh pr view ${{ inputs.pr_number_request_for_release }} --repo ${{ github.repository }} --json baseRefName,headRefName --template '{{.baseRefName}} {{.headRefName}}'
+        $ref_names = gh pr view `
+          ${{ inputs.pr_number_request_for_release }} `
+          --repo ${{ github.repository }} `
+          --json baseRefName,headRefName `
+          --template '{{.baseRefName}} {{.headRefName}}'
+
         $ref_name_base = ($ref_names -split ' ')[0]
         $ref_name_head = ($ref_names -split ' ')[1]
 
         if ( $release_working_branch -ne $ref_name_head ) {
-          Write-Error -Message "expected working branch is '${release_working_branch}' but was '${ref_name_head}'." -ErrorAction Stop
+          "::error::expected working branch is '${release_working_branch}' but was '${ref_name_head}'."
+          exit 1
         }
         if ( $package_branch -ne $ref_name_base ) {
-          Write-Error -Message "expected package branch is '${package_branch}' but was '${ref_name_base}'." -ErrorAction Stop
+          "::error::expected package branch is '${package_branch}' but was '${ref_name_base}'."
+          exit 1
         }
 
     - name: Download package ${{ steps.release-info.outputs.artifact_name_nupkg }}
       if: ${{ steps.release-info.outputs.artifact_name_nupkg != '' }}
       uses: dawidd6/action-download-artifact@v2.17.0
       with:
-        github_token: ${{ secrets.token_github }}
+        github_token: ${{ secrets.token_repo }}
         workflow: generate-release-target.yml
         run_id:  ${{ steps.release-info.outputs.precedent_workflow_run_id }}
         name: ${{ steps.release-info.outputs.artifact_name_nupkg }}
 
     - name: Publish package ${{ steps.release-info.outputs.artifact_name_nupkg }} to nuget.org
+      id: push-nuget-org
       if: ${{ !inputs.dry_run && env.NUGET_APIKEY != null }}
       env:
-        NUGET_APIKEY: ${{ secrets.token_nuget_org }}
+        NUGET_APIKEY: ${{ secrets.token_push_nuget_org }}
         NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
       run: |
         if [[ -z '${{ steps.release-info.outputs.artifact_name_nupkg }}' ]]; then
           echo "::notice::No packages was pushed to '$NUGET_SOURCE'."
         else
-          dotnet nuget push --api-key $NUGET_APIKEY --source $NUGET_SOURCE '${{ steps.release-info.outputs.artifact_name_nupkg }}'
+          dotnet nuget push \
+            --api-key $NUGET_APIKEY \
+            --source $NUGET_SOURCE \
+            '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
+          echo "::set-output name=pushed::true"
           echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
         fi
 
     - name: Publish package ${{ steps.release-info.outputs.artifact_name_nupkg }} to GitHub packages
+      id: push-github-packages
       if: ${{ !inputs.dry_run && env.NUGET_APIKEY != null }}
       env:
-        NUGET_APIKEY: ${{ secrets.token_github_packages }}
+        NUGET_APIKEY: ${{ secrets.token_push_github_packages }}
         NUGET_SOURCE: 'https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json'
       run: |
         if [[ -z '${{ steps.release-info.outputs.artifact_name_nupkg }}' ]]; then
           echo "::notice::No packages was pushed to '$NUGET_SOURCE'."
         else
-          dotnet nuget push --api-key $NUGET_APIKEY --source $NUGET_SOURCE '${{ steps.release-info.outputs.artifact_name_nupkg }}'
+          dotnet nuget push \
+            --api-key $NUGET_APIKEY \
+            --source $NUGET_SOURCE \
+            '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
+          echo "::set-output name=pushed::true"
           echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
         fi
 
@@ -208,41 +244,204 @@ jobs:
 
     - name: Create release tag ${{ steps.release-info.outputs.release_tag }}
       run: |
-        git tag --annotate '${{ steps.release-info.outputs.release_tag }}' -m '${{ steps.release-info.outputs.package_branch }}/${{ steps.release-info.outputs.package_id_with_version }}'
+        git tag \
+          --annotate \
+          '${{ steps.release-info.outputs.release_tag }}' \
+          -m '${{ steps.release-info.outputs.package_branch }}/${{ steps.release-info.outputs.package_id_with_version }}'
 
         if [[ '${{ inputs.dry_run }}' != 'true' ]]; then
           git push origin '${{ steps.release-info.outputs.release_tag }}'
         fi
 
-    - name: Create release note for ${{ steps.release-info.outputs.release_tag }}
+    - name: Create release notes file for ${{ steps.release-info.outputs.release_tag }}
+      id: release-notes-file
       env:
-        GH_TOKEN: ${{ secrets.token_github }}
+        GH_TOKEN: ${{ secrets.token_repo }}
+      shell: pwsh
       run: |
-        RELEASE_TITLE='${{ steps.release-info.outputs.package_id }} version ${{ steps.release-info.outputs.package_version }}'
-        RELEASE_TAG='${{ steps.release-info.outputs.release_tag }}'
-        RELEASE_TARGET_BRANCH='${{ steps.release-info.outputs.package_branch }}'
-        RELEASE_NOTES_PATH='${{ steps.release-info.outputs.release_notes_path }}'
+        # note: the maximum size of the release body seems to be 125,000 characters (textarea#release_body@data-input-max-length="125000")
+        $release_notes_body_max_length = 125000
+        $release_notes_body = New-Object System.Text.StringBuilder -ArgumentList 10240
+        $release_notes_output_path = [System.IO.Path]::GetFullPath('releasenotes.md')
 
-        if [[ '${{ steps.release-info.outputs.release_draft }}' == 'true' ]]; then
-          RELEASE_OPTION_DRAFT='--draft'
-        else
-          RELEASE_OPTION_DRAFT=''
-        fi
+        if ( '${{ steps.push-nuget-org.outputs.pushed }}' -ieq 'true' -Or '${{ inputs.dry_run }}' -ieq 'true' ) {
+          [void]$release_notes_body.AppendLine('# Released package')
+          [void]$release_notes_body.AppendFormat(
+            '- NuGet [{0} version {1}](https://www.nuget.org/packages/{0}/{1})',
+            '${{ steps.release-info.outputs.package_id }}',
+            '${{ steps.release-info.outputs.package_version }}'
+          ).AppendLine()
+          [void]$release_notes_body.AppendLine()
+        }
 
-        if [[ '${{ inputs.dry_run }}' == 'true' ]]; then
-          echo "RELEASE_TITLE: '${RELEASE_TITLE}'"
-          echo "RELEASE_TAG: '${RELEASE_TAG}'"
-          echo "RELEASE_TARGET_BRANCH: '${RELEASE_TARGET_BRANCH}'"
-          echo "RELEASE_OPTION_DRAFT: '${RELEASE_OPTION_DRAFT}'"
-          echo "RELEASE_NOTES_PATH: '${RELEASE_NOTES_PATH}'"
-          echo "[content of release notes file]--------------------------"
-          cat ${RELEASE_NOTES_PATH}
-          RELEASE_URL='(dry-run)'
-        else
-          RELEASE_URL=`gh release create --repo '${{ github.repository }}' --title "${RELEASE_TITLE}" --target "${RELEASE_TARGET_BRANCH}" --generate-notes --notes-file "${RELEASE_NOTES_PATH}" ${RELEASE_OPTION_DRAFT} ${RELEASE_TAG}`
-        fi
+        #
+        # Downloads release note files from gist and attempts to append them to release notes.
+        # If the body exceeds the maximum length when appended, will cancel appending.
+        #
+        [void]$release_notes_body.AppendLine('# Release notes')
+        [void]$release_notes_body.AppendLine('The [full release notes](${{ steps.release-info.outputs.release_note_url }}) are available at gist.')
+        [void]$release_notes_body.AppendLine()
 
-        echo "::notice::Created release '${RELEASE_TITLE}': ${RELEASE_URL}"
+        $release_note_sections = @(
+          [PSCustomObject]@{
+            FileNameSuffix = '.changelog.md'
+            Title = 'Change log'
+            Header = $([String]::Join(
+              "`n",
+              @(
+                '<details>'
+                '<summary>Change log in this release:</summary>'
+                '<div>'
+                ''
+              )
+            ))
+            Footer = $([String]::Join(
+              "`n",
+              @(
+                ''
+                '</div>'
+                '</details>'
+              )
+            ))
+          }
+          [PSCustomObject]@{
+            FileNameSuffix = '.api-changes.diff'
+            Title = 'API changes'
+            Header = $([String]::Join(
+              "`n",
+              @(
+                '<details>'
+                '<summary>API changes in this release:</summary>'
+                '<div>'
+                ''
+                '```diff'
+              )
+            ))
+            Footer = $([String]::Join(
+              "`n",
+              @(
+                '```'
+                ''
+                '</div>'
+                '</details>'
+              )
+            ))
+          }
+          [PSCustomObject]@{
+            FileNameSuffix = '.full-changes.diff'
+            Title = 'Full changes'
+            Header = $([String]::Join(
+              "`n",
+              @(
+                '<details>'
+                '<summary>Full changes in this release:</summary>'
+                '<div>'
+                ''
+                '```diff'
+              )
+            ))
+            Footer = $([String]::Join(
+              "`n",
+              @(
+                '```'
+                ''
+                '</div>'
+                '</details>'
+              )
+            ))
+          }
+        )
+
+        # list release note files from gist
+        $release_note_files = gh gist view `
+          '${{ steps.release-info.outputs.release_note_url }}' `
+          --files
+
+        # download release note files
+        foreach ( $section in $release_note_sections ) {
+          $release_note_file = $release_note_files |
+            where { $_.StartsWith('releasenote.') -And $_.EndsWith($section.FileNameSuffix) } |
+            select -First 1
+
+          if ( ! $release_note_file ) {
+            continue
+          }
+
+          $release_note_content = gh gist view `
+            '${{ steps.release-info.outputs.release_note_url }}' `
+            --raw `
+            --filename $release_note_file
+
+          $section
+            | Add-Member `
+            -MemberType NoteProperty `
+            -Name 'Content' `
+            -Value $release_note_content
+        }
+
+        # construct release note section
+        foreach ( $section in $release_note_sections ) {
+          if ( [string]::IsNullOrEmpty( $section.Content ) ) {
+            continue
+          }
+
+          $section_body = New-Object System.Text.StringBuilder -ArgumentList 10240
+
+          [void]$section_body.AppendLine("## $($section.Title)")
+          [void]$section_body.AppendLine($section.Header)
+          [void]$section_body.AppendLine($section.Content -join "`n")
+          [void]$section_body.AppendLine($section.Footer)
+          [void]$section_body.AppendLine()
+
+          # attempt to append constructed section
+          if ( $release_notes_body_max_length -lt $release_notes_body.Length + $section_body.Length ) {
+            break;
+          }
+
+          [void]$release_notes_body.Append($section_body.ToString())
+        }
+
+        # write release notes file
+        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+          $release_notes_body.ToString()
+        }
+        else {
+          Out-File -FilePath $release_notes_output_path -Encoding utf8 -InputObject $release_notes_body.ToString()
+
+          "::notice::Create release notes file: '${release_notes_output_path}' ($($release_notes_body.Length) characters)"
+        }
+
+        # set outputs
+        "::set-output name=path::${release_notes_output_path}"
+
+    - name: Create release notes for ${{ steps.release-info.outputs.release_tag }}
+      env:
+        GH_TOKEN: ${{ secrets.token_repo }}
+      shell: pwsh
+      run: |
+        $release_notes_file = '${{ steps.release-notes-file.outputs.path }}'
+        $release_title = '${{ steps.release-info.outputs.package_id }} version ${{ steps.release-info.outputs.package_version }}'
+
+        $release_create_options = @(
+          '--repo', '${{ github.repository }}',
+          '--title', $release_title,
+          '--target', '${{ steps.release-info.outputs.package_branch }}',
+          '--generate-notes',
+          '--notes-file', $release_notes_file,
+          ('${{ steps.release-info.outputs.release_draft }}' -ieq 'True' ? '--draft' : ''),
+          '${{ steps.release-info.outputs.release_tag }}'
+        )
+
+        "gh release create ${release_create_options}"
+
+        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+          $release_url = '(dry-run)'
+        }
+        else {
+          $release_url = gh release create $release_create_options
+        }
+
+        "::notice::Created release '${release_title}': ${release_url}"
 
     - name: Delete release target tag ${{ steps.release-info.outputs.package_target_tag }}
       if: ${{ !inputs.dry_run }}
