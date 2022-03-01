@@ -1,0 +1,14 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net5.0;net48;net45;netcoreapp3.1;netcoreapp2.1</TargetFrameworks>
+    <RootNamespace>Smdn</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Smdn.Test.NUnit\Smdn.Test.NUnit.csproj" />
+  </ItemGroup>
+</Project>
