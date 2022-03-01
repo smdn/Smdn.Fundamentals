@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace Smdn.Reflection {
+#pragma warning disable IDE0044 // Make field readonly
   namespace TestCases {
     namespace StructLayouts {
 #pragma warning disable 0169
@@ -99,6 +100,7 @@ namespace Smdn.Reflection {
     }
 #pragma warning restore 0169
   }
+#pragma warning restore IDE0044
 
   partial class TypeExtensionsTests {
     [TestCase(typeof(TestCases.StructLayouts.S0), true)]

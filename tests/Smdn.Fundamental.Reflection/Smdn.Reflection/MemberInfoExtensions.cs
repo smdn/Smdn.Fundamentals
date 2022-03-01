@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
+#pragma warning disable IDE0044 // Make field readonly
 namespace TestTypesForMemberInfoExtensionsTests {
   public class C1 { }
   internal class C2 { }
@@ -40,6 +41,7 @@ namespace TestTypesForMemberInfoExtensionsTests {
 #pragma warning restore 0067
   }
 }
+#pragma warning restore IDE0044
 
 namespace Smdn.Reflection {
   [TestFixture()]
