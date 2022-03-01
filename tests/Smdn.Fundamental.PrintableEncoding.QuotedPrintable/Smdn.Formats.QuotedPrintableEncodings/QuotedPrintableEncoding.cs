@@ -17,7 +17,9 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         TestUtils.Encodings.ShiftJis,
         TestUtils.Encodings.EucJP,
         Encoding.BigEndianUnicode,
+#pragma warning disable SYSLIB0001
         Encoding.UTF7,
+#pragma warning restore SYSLIB0001
         Encoding.UTF8}) {
 
         AssertUnquotable(encoding, "ascii-text");
