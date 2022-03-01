@@ -22,6 +22,7 @@ namespace Smdn.Formats {
       Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((IEnumerable<string>)null), "argument null");
     }
 
+#pragma warning disable CS0618 // [Obsolete]
     [Test]
     public void TestToJoinedNullable()
     {
@@ -32,43 +33,44 @@ namespace Smdn.Formats {
       Assert.IsNull(CsvRecord.ToJoinedNullable((string[])null), "argument null");
       Assert.IsNull(CsvRecord.ToJoinedNullable((IEnumerable<string>)null), "argument null");
     }
+#pragma warning restore CS0618
 
     [Test]
-    public void TestToSplitted()
+    public void TestSplit()
     {
-      CollectionAssert.AreEqual(new[] {"a", "b", "c"}, CsvRecord.ToSplitted("a,b,c"));
-      CollectionAssert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,c,"));
-      CollectionAssert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.ToSplitted("a,b,\"c\","));
-      CollectionAssert.AreEqual(new[] { "a", "b", string.Empty, "c", string.Empty }, CsvRecord.ToSplitted("a,b,,c,"));
-      CollectionAssert.AreEqual(new[] { "a", "b", string.Empty, "c" }, CsvRecord.ToSplitted("a,\"b\",,c"));
-      CollectionAssert.AreEqual(new[] { "a", string.Empty, "c" }, CsvRecord.ToSplitted("a,\"\",c"));
-      CollectionAssert.AreEqual(new[] { "a,b", "c" }, CsvRecord.ToSplitted("\"a,b\",c"));
-      CollectionAssert.AreEqual(new[] { "a", "b,c" }, CsvRecord.ToSplitted("a,\"b,c\""));
-      CollectionAssert.AreEqual(new[] { "\"a", "b\"", "c" }, CsvRecord.ToSplitted("\"\"a,b\"\",c"));
-      CollectionAssert.AreEqual(new[] { "a", "\"b", "c\"" }, CsvRecord.ToSplitted("a,\"\"b,c\"\""));
-      CollectionAssert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, CsvRecord.ToSplitted("abc,\"d\"\"e\"\"f\",g'h'i"));
+      CollectionAssert.AreEqual(new[] {"a", "b", "c"}, CsvRecord.Split("a,b,c"));
+      CollectionAssert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.Split("a,b,c,"));
+      CollectionAssert.AreEqual(new[] { "a", "b", "c", string.Empty }, CsvRecord.Split("a,b,\"c\","));
+      CollectionAssert.AreEqual(new[] { "a", "b", string.Empty, "c", string.Empty }, CsvRecord.Split("a,b,,c,"));
+      CollectionAssert.AreEqual(new[] { "a", "b", string.Empty, "c" }, CsvRecord.Split("a,\"b\",,c"));
+      CollectionAssert.AreEqual(new[] { "a", string.Empty, "c" }, CsvRecord.Split("a,\"\",c"));
+      CollectionAssert.AreEqual(new[] { "a,b", "c" }, CsvRecord.Split("\"a,b\",c"));
+      CollectionAssert.AreEqual(new[] { "a", "b,c" }, CsvRecord.Split("a,\"b,c\""));
+      CollectionAssert.AreEqual(new[] { "\"a", "b\"", "c" }, CsvRecord.Split("\"\"a,b\"\",c"));
+      CollectionAssert.AreEqual(new[] { "a", "\"b", "c\"" }, CsvRecord.Split("a,\"\"b,c\"\""));
+      CollectionAssert.AreEqual(new[] {"abc", "d\"e\"f", "g'h'i"}, CsvRecord.Split("abc,\"d\"\"e\"\"f\",g'h'i"));
 
-      CollectionAssert.AreEqual(Enumerable.Empty<string>(), CsvRecord.ToSplitted(string.Empty), "argument empty");
+      CollectionAssert.AreEqual(Enumerable.Empty<string>(), CsvRecord.Split(string.Empty), "argument empty");
 
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToSplitted(null), "argument null");
+      Assert.Throws<ArgumentNullException>(() => CsvRecord.Split((string)null), "argument null");
     }
 
     [Test]
-    public void TestToSplitted_Dequote()
+    public void TestSplit_Dequote()
     {
-      CollectionAssert.AreEqual(new[] {"\"a\"", "b", "c"}, CsvRecord.ToSplitted("\"\"a\"\",b,c"));
-      CollectionAssert.AreEqual(new[] {"a", "\"b\"", "c"}, CsvRecord.ToSplitted("a,\"\"b\"\",c"));
-      CollectionAssert.AreEqual(new[] {"a", "b", "\"c\""}, CsvRecord.ToSplitted("a,b,\"\"c\"\""));
-      CollectionAssert.AreEqual(new[] {"\"\"a\"\"", "b"}, CsvRecord.ToSplitted("\"\"\"\"a\"\"\"\",b"));
-      CollectionAssert.AreEqual(new[] {"a", "\"\"b\"\""}, CsvRecord.ToSplitted("a,\"\"\"\"b\"\"\"\""));
+      CollectionAssert.AreEqual(new[] {"\"a\"", "b", "c"}, CsvRecord.Split("\"\"a\"\",b,c"));
+      CollectionAssert.AreEqual(new[] {"a", "\"b\"", "c"}, CsvRecord.Split("a,\"\"b\"\",c"));
+      CollectionAssert.AreEqual(new[] {"a", "b", "\"c\""}, CsvRecord.Split("a,b,\"\"c\"\""));
+      CollectionAssert.AreEqual(new[] {"\"\"a\"\"", "b"}, CsvRecord.Split("\"\"\"\"a\"\"\"\",b"));
+      CollectionAssert.AreEqual(new[] {"a", "\"\"b\"\""}, CsvRecord.Split("a,\"\"\"\"b\"\"\"\""));
     }
 
+#pragma warning disable CS0618 // [Obsolete]
     [Test]
     public void TestToSplittedNullable()
     {
-      CollectionAssert.AreEqual(new[] { "a", "b", "c" }, CsvRecord.ToSplittedNullable("a,b,c"));
-
       Assert.IsNull(CsvRecord.ToSplittedNullable(null), "argument null");
     }
+#pragma warning restore CS0618 // [Obsolete]
   }
 }
