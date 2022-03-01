@@ -11,6 +11,5 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <ProjectReference Include="..\Smdn.Test.NUnit\Smdn.Test.NUnit.csproj" />
     <ProjectReference Include="..\..\src\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
-    <ProjectReference Include="..\..\src\Smdn.Fundamental.Uri\Smdn.Fundamental.Uri.csproj" />
   </ItemGroup>
 </Project>

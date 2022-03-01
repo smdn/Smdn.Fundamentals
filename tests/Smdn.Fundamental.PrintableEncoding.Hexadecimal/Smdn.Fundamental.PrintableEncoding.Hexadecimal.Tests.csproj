@@ -10,7 +10,6 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectReference Include="..\Smdn.Test.NUnit\Smdn.Test.NUnit.csproj" />
-    <ProjectReference Include="..\..\src\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
     <ProjectReference Include="..\..\src\Smdn.Test.NUnit.Constraints\Smdn.Test.NUnit.Constraints.csproj" />
   </ItemGroup>
 </Project>
