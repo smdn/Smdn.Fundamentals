@@ -96,7 +96,9 @@ namespace Smdn.Security.Cryptography {
         new HMACMD5(),
         new HMACSHA512(),
         MD5.Create(),
+#pragma warning disable SYSLIB0021
         new SHA512Managed(),
+#pragma warning restore SYSLIB0021
 #if NETFRAMEWORK
         new RIPEMD160Managed(),
 #endif
@@ -118,7 +120,9 @@ namespace Smdn.Security.Cryptography {
       var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
       var symmetricAlgorithms = new SymmetricAlgorithm[] {
+#pragma warning disable SYSLIB0022
         Rijndael.Create(),
+#pragma warning restore SYSLIB0022
         DES.Create(),
         TripleDES.Create(),
         RC2.Create(),
