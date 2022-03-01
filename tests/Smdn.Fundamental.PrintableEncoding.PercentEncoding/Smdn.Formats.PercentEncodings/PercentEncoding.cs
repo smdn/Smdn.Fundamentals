@@ -68,9 +68,13 @@ namespace Smdn.Formats.PercentEncodings {
       Assert.AreEqual(ToPercentEncodedTransformMode.Rfc3986Uri,
                       ToPercentEncodedTransformMode.UriEscapeUriString);
 
-      Assert.AreEqual(Uri.EscapeUriString(text),
-                      actual,
-                      "same as Uri.EscapeDataString");
+      Assert.AreEqual(
+#pragma warning disable SYSLIB0013
+        Uri.EscapeUriString(text),
+#pragma warning restore SYSLIB0013
+        actual,
+        "same as Uri.EscapeDataString"
+      );
     }
 
     [Test]
