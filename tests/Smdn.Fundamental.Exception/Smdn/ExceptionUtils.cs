@@ -48,7 +48,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeZeroOrPositive()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be zero or positive value", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -60,7 +60,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeLessThan()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThan(2, "arg", 2);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be less than 2", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -72,7 +72,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeLessThanNullMaxValue()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThan(null, "arg", 2);
-  
+
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
       Assert.AreEqual(2, ex.ActualValue);
@@ -83,7 +83,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeLessThanOrEqualTo()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(2, "arg", 3);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be less than or equal to 2", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -95,7 +95,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeLessThanOrEqualToNullMaxValue()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(null, "arg", 2);
-  
+
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
       Assert.AreEqual(2, ex.ActualValue);
@@ -106,7 +106,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeGreaterThan()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThan(2, "arg", 2);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be greater than 2", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -118,7 +118,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeGreaterThanNullMaxValue()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThan(null, "arg", 2);
-  
+
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
       Assert.AreEqual(2, ex.ActualValue);
@@ -129,7 +129,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeGreaterThanOrEqualTo()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(2, "arg", 1);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be greater than or equal to 2", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -141,7 +141,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeGreaterThanOrEqualToNullMaxValue()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(null, "arg", 2);
-  
+
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
       Assert.AreEqual(2, ex.ActualValue);
@@ -152,7 +152,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeInRange()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeInRange(0, 3, "arg", -1);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be in range 0 to 3", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -164,7 +164,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeInRangeNullFromValue()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeInRange(null, 3, "arg", 2);
-  
+
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
       Assert.AreEqual(2, ex.ActualValue);
@@ -175,7 +175,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeInRangeNullToValue()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeInRange(0, null, "arg", 2);
-  
+
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
       Assert.AreEqual(2, ex.ActualValue);
@@ -186,7 +186,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeMultipleOf()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeMultipleOf(2, "arg");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be multiple of 2", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -197,7 +197,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeNonEmptyArray()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyArray("arg");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be a non-empty array", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -209,7 +209,7 @@ namespace Smdn {
     {
       var array = new[] {0, 1, 2, 3};
       var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", array, 2, 4);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("attempt to access beyond the end of an array (length=4, offset=2, count=4)", ex.Message);
       Assert.AreEqual("index", ex.ParamName);
@@ -220,7 +220,7 @@ namespace Smdn {
     public void TestCreateArgumentAttemptToAccessBeyondEndOfArrayNullArray()
     {
       var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", null, 2, 4);
-  
+
       Assert.IsNull(ex.InnerException);
       Assert.IsNotEmpty(ex.Message);
       Assert.AreEqual("index", ex.ParamName);
@@ -276,7 +276,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeNonEmptyString()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyString("arg");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("must be a non-empty string", ex.Message);
       Assert.AreEqual("arg", ex.ParamName);
@@ -288,7 +288,7 @@ namespace Smdn {
     {
       var origin = (SeekOrigin)(-1);
       var ex = ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("invalid enum value ( value=-1, type=System.IO.SeekOrigin)", ex.Message);
       Assert.AreEqual("origin", ex.ParamName);
@@ -300,7 +300,7 @@ namespace Smdn {
     {
       var origin = (SeekOrigin)(-1);
       var ex = ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin, "invalid seek origin");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("invalid enum value (invalid seek origin value=-1, type=System.IO.SeekOrigin)", ex.Message);
       Assert.AreEqual("origin", ex.ParamName);
@@ -317,12 +317,12 @@ namespace Smdn {
       StringAssert.StartsWith("'Unknown' (Smdn.Endianness) is not supported", ex.Message);
       Assert.IsInstanceOf<NotSupportedException>(ex);
     }
-    
+
     [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeReadableStream()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support reading", ex.Message);
       Assert.AreEqual("baseStream", ex.ParamName);
@@ -333,7 +333,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeWritableStream()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeWritableStream("baseStream");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support writing", ex.Message);
       Assert.AreEqual("baseStream", ex.ParamName);
@@ -344,7 +344,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeSeekableStream()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeSeekableStream("baseStream");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support seeking", ex.Message);
       Assert.AreEqual("baseStream", ex.ParamName);
@@ -355,7 +355,7 @@ namespace Smdn {
     public void TestCreateNotSupportedReadingStream()
     {
       var ex = ExceptionUtils.CreateNotSupportedReadingStream();
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support reading", ex.Message);
       Assert.IsInstanceOf<NotSupportedException>(ex);
@@ -365,7 +365,7 @@ namespace Smdn {
     public void TestCreateNotSupportedWritingStream()
     {
       var ex = ExceptionUtils.CreateNotSupportedWritingStream();
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support writing", ex.Message);
       Assert.IsInstanceOf<NotSupportedException>(ex);
@@ -375,7 +375,7 @@ namespace Smdn {
     public void TestCreateNotSupportedSeekingStream()
     {
       var ex = ExceptionUtils.CreateNotSupportedSeekingStream();
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support seeking", ex.Message);
       Assert.IsInstanceOf<NotSupportedException>(ex);
@@ -385,7 +385,7 @@ namespace Smdn {
     public void TestCreateNotSupportedSettingStreamLength()
     {
       var ex = ExceptionUtils.CreateNotSupportedSettingStreamLength();
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("stream does not support setting length", ex.Message);
       Assert.IsInstanceOf<NotSupportedException>(ex);
@@ -395,7 +395,7 @@ namespace Smdn {
     public void TestCreateIOAttemptToSeekBeforeStartOfStream()
     {
       var ex = ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("attempted to seek before start of stream", ex.Message);
       Assert.IsInstanceOf<IOException>(ex);
@@ -405,7 +405,7 @@ namespace Smdn {
     public void TestCreateArgumentMustBeValidIAsyncResult()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeValidIAsyncResult("asyncResult");
-  
+
       Assert.IsNull(ex.InnerException);
       StringAssert.StartsWith("invalid IAsyncResult", ex.Message);
       Assert.AreEqual("asyncResult", ex.ParamName);
