@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2012 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable CS0618 // [Obsolete]
+
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
