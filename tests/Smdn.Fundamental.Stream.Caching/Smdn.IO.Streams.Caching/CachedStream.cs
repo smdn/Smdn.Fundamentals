@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 
 using Smdn;
@@ -149,25 +150,25 @@ namespace Smdn.IO.Streams.Caching {
 
           Assert.AreEqual(6, stream.Read(buffer, 0, 6));
           Assert.AreEqual(6L, stream.Position);
-          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}, buffer.Slice(0, 6));
+          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}, buffer.Skip(0).Take(6).ToArray());
 
           GC.Collect();
 
           Assert.AreEqual(6, stream.Read(buffer, 0, 6));
           Assert.AreEqual(12L, stream.Position);
-          Assert.AreEqual(new byte[] {0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}, buffer.Slice(0, 6));
+          Assert.AreEqual(new byte[] {0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}, buffer.Skip(0).Take(6).ToArray());
 
           stream.Position = 0L;
 
           Assert.AreEqual(6, stream.Read(buffer, 0, 6));
           Assert.AreEqual(6L, stream.Position);
-          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}, buffer.Slice(0, 6));
+          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}, buffer.Skip(0).Take(6).ToArray());
 
           stream.Position = 12L;
 
           Assert.AreEqual(5, stream.Read(buffer, 0, 6));
           Assert.AreEqual(17L, stream.Position);
-          Assert.AreEqual(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}, buffer.Slice(0, 5));
+          Assert.AreEqual(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}, buffer.Skip(0).Take(5).ToArray());
 
           Assert.AreEqual(0, stream.Read(buffer, 0, 6));
           Assert.AreEqual(17L, stream.Position);

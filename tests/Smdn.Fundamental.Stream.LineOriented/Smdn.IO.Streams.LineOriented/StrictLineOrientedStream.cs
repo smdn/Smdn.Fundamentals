@@ -3,14 +3,16 @@
 using System;
 using System.Buffers;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-
-using Smdn.Text;
 
 namespace Smdn.IO.Streams.LineOriented {
   [TestFixture]
   public class StrictLineOrientedStreamTests {
+    private const byte CR = (byte)'\r';
+    private const byte LF = (byte)'\n';
+
     [Test]
     public void TestNewLine()
     {
@@ -32,9 +34,9 @@ namespace Smdn.IO.Streams.LineOriented {
     public async Task TestReadLineAsync()
     {
       var data = new byte[] {
-        0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF,
-        Ascii.Octets.CR, Ascii.Octets.LF,
-        0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF,
+        0x40, 0x41, CR, LF,
+        CR, LF,
+        0x42, CR, 0x43, LF,
       };
 
       using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
@@ -43,11 +45,11 @@ namespace Smdn.IO.Streams.LineOriented {
 
         Assert.IsNotNull(ret);
         Assert.IsFalse(ret.Value.IsEmpty);
-        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF },
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, CR, LF },
                                   ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
                                   ret.Value.Sequence.ToArray());
-        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+        CollectionAssert.AreEqual(new byte[] { CR, LF },
                                   ret.Value.NewLine.ToArray());
 
         // CRLF (empty line)
@@ -55,11 +57,11 @@ namespace Smdn.IO.Streams.LineOriented {
 
         Assert.IsNotNull(ret);
         Assert.IsTrue(ret.Value.IsEmpty);
-        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+        CollectionAssert.AreEqual(new byte[] { CR, LF },
                                   ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[0],
                                   ret.Value.Sequence.ToArray());
-        CollectionAssert.AreEqual(new byte[] { Ascii.Octets.CR, Ascii.Octets.LF },
+        CollectionAssert.AreEqual(new byte[] { CR, LF },
                                   ret.Value.NewLine.ToArray());
 
         // <EOS>
@@ -67,9 +69,9 @@ namespace Smdn.IO.Streams.LineOriented {
 
         Assert.IsNotNull(ret);
         Assert.IsFalse(ret.Value.IsEmpty);
-        CollectionAssert.AreEqual(new byte[] { 0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF, },
+        CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
                                   ret.Value.SequenceWithNewLine.ToArray());
-        CollectionAssert.AreEqual(new byte[] { 0x42, Ascii.Octets.CR, 0x43, Ascii.Octets.LF, },
+        CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
                                   ret.Value.Sequence.ToArray());
         CollectionAssert.AreEqual(new byte[0],
                                   ret.Value.NewLine.ToArray());
@@ -79,7 +81,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadAndReadLine()
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
       var buffer = new byte[8];
 
@@ -87,10 +89,10 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(5, stream.Read(buffer, 0, 5));
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 5), ArrayExtensions.Slice(buffer, 0, 5));
+      Assert.AreEqual(data.Skip(0).Take(5).ToArray(), buffer.Skip(0).Take(5).ToArray());
       Assert.AreEqual(5L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 5, 3), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
+      Assert.AreEqual(data.Skip(5).Take(3).ToArray(), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
       Assert.AreEqual(8L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine());
@@ -100,15 +102,15 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadLineCRLF()
     {
-      var data = new byte[] {0x40, Ascii.Octets.CR, 0x42, Ascii.Octets.LF, 0x44, Ascii.Octets.LF, Ascii.Octets.CR, 0x47, Ascii.Octets.CR, Ascii.Octets.LF, 0x50};
+      var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
-      
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 10), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
+
+      Assert.AreEqual(data.Skip(0).Take(10).ToArray(), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
       Assert.AreEqual(10L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 10, 1), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
+      Assert.AreEqual(data.Skip(10).Take(1).ToArray(), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
       Assert.AreEqual(11L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine());
@@ -118,15 +120,15 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadLineDiscardEOL()
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 4), stream.ReadLine(keepEOL: false));
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), stream.ReadLine(keepEOL: false));
       Assert.AreEqual(6L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 6, 2), stream.ReadLine(keepEOL: false));
+      Assert.AreEqual(data.Skip(6).Take(2).ToArray(), stream.ReadLine(keepEOL: false));
       Assert.AreEqual(8L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine());
@@ -136,15 +138,15 @@ namespace Smdn.IO.Streams.LineOriented {
     [Test]
     public void TestReadLineKeepEOL()
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 6), stream.ReadLine(keepEOL: true));
+      Assert.AreEqual(data.Skip(0).Take(6).ToArray(), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(6L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 6, 2), stream.ReadLine(keepEOL: true));
+      Assert.AreEqual(data.Skip(6).Take(2).ToArray(), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(8L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine());
@@ -154,17 +156,17 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineLongerThanBufferDiscardEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, Ascii.Octets.CR, Ascii.Octets.LF,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, CR, LF,
         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 10), stream.ReadLine(keepEOL: false));
+      Assert.AreEqual(data.Skip(0).Take(10).ToArray(), stream.ReadLine(keepEOL: false));
       Assert.AreEqual(12L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 12), stream.ReadLine(keepEOL: false));
+      Assert.AreEqual(data.Skip(12).ToArray(), stream.ReadLine(keepEOL: false));
       Assert.AreEqual(22L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine());
@@ -175,17 +177,17 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineLongerThanBufferKeepEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, Ascii.Octets.CR, Ascii.Octets.LF,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, CR, LF,
         0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0, 12), stream.ReadLine(keepEOL: true));
+      Assert.AreEqual(data.Skip(0).Take(12).ToArray(), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(12L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 12), stream.ReadLine(keepEOL: true));
+      Assert.AreEqual(data.Skip(12).ToArray(), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(22L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine());
@@ -196,19 +198,19 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineEOLSplittedBetweenBufferDiscardEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Ascii.Octets.CR,
-        Ascii.Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Ascii.Octets.CR,
-        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Ascii.Octets.LF,
-        Ascii.Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR,
+        LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, CR,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, LF,
+        CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0,  7), stream.ReadLine(keepEOL: false)); // CRLF
+      Assert.AreEqual(data.Skip(0).Take(7).ToArray(), stream.ReadLine(keepEOL: false)); // CRLF
       Assert.AreEqual(9L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 9, 23), stream.ReadLine(keepEOL: false));
+      Assert.AreEqual(data.Skip(9).Take(23).ToArray(), stream.ReadLine(keepEOL: false));
       Assert.AreEqual(32L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine(false)); // EOS
@@ -219,19 +221,19 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineEOLSplittedBetweenBufferKeepEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, Ascii.Octets.CR,
-        Ascii.Octets.LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, Ascii.Octets.CR,
-        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, Ascii.Octets.LF,
-        Ascii.Octets.CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
+        0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR,
+        LF, 0x60, 0x61, 0x62, 0x63, 0x64, 0x65, CR,
+        0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, LF,
+        CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 0,  9), stream.ReadLine(keepEOL: true)); // CRLF
+      Assert.AreEqual(data.Skip(0).Take(9).ToArray(), stream.ReadLine(keepEOL: true)); // CRLF
       Assert.AreEqual(9L, stream.Position, "Position");
 
-      Assert.AreEqual(ArrayExtensions.Slice(data, 9, 23), stream.ReadLine(keepEOL: true));
+      Assert.AreEqual(data.Skip(9).Take(23).ToArray(), stream.ReadLine(keepEOL: true));
       Assert.AreEqual(32L, stream.Position, "Position");
 
       Assert.IsNull(stream.ReadLine(true)); // EOS
@@ -242,13 +244,13 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineIncompleteEOLDiscardEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, Ascii.Octets.CR,
+        0x40, 0x41, 0x42, CR,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, Ascii.Octets.CR}, stream.ReadLine(keepEOL: false));
+      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, CR}, stream.ReadLine(keepEOL: false));
       Assert.AreEqual(4L, stream.Position, "Position");
     }
 
@@ -256,13 +258,13 @@ namespace Smdn.IO.Streams.LineOriented {
     public void TestReadLineIncompleteEOLKeepEOL()
     {
       var data = new byte[] {
-        0x40, 0x41, 0x42, Ascii.Octets.CR,
+        0x40, 0x41, 0x42, CR,
       };
       var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
       Assert.AreEqual(0L, stream.Position, "Position");
 
-      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, Ascii.Octets.CR}, stream.ReadLine(keepEOL: true));
+      Assert.AreEqual(new byte[] {0x40, 0x41, 0x42, CR}, stream.ReadLine(keepEOL: true));
 
       Assert.AreEqual(4L, stream.Position, "Position");
     }

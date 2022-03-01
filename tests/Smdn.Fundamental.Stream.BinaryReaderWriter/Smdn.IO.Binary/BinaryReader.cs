@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -149,7 +150,7 @@ namespace Smdn.IO.Binary {
         reader.ReadInt16();
 
         Assert.IsFalse(reader.EndOfStream);
-        Assert.AreEqual(actual.Slice(2), reader.ReadToEnd());
+        Assert.AreEqual(actual.Skip(2).ToArray(), reader.ReadToEnd());
         Assert.IsTrue(reader.EndOfStream);
       }
 
@@ -204,9 +205,9 @@ namespace Smdn.IO.Binary {
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual.Slice(0, 3), reader.ReadBytes(3L));
-        Assert.AreEqual(actual.Slice(3, 3), reader.ReadBytes(3L));
-        Assert.AreEqual(actual.Slice(6, 2), reader.ReadBytes(3L));
+        Assert.AreEqual(actual.Skip(0).Take(3).ToArray(), reader.ReadBytes(3L));
+        Assert.AreEqual(actual.Skip(3).Take(3).ToArray(), reader.ReadBytes(3L));
+        Assert.AreEqual(actual.Skip(6).Take(2).ToArray(), reader.ReadBytes(3L));
         Assert.AreEqual(new byte[] {}, reader.ReadBytes(3L));
       }
     }
@@ -229,8 +230,8 @@ namespace Smdn.IO.Binary {
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual.Slice(0, 3), reader.ReadExactBytes(3L));
-        Assert.AreEqual(actual.Slice(3, 3), reader.ReadExactBytes(3L));
+        Assert.AreEqual(actual.Skip(0).Take(3).ToArray(), reader.ReadExactBytes(3L));
+        Assert.AreEqual(actual.Skip(3).Take(3).ToArray(), reader.ReadExactBytes(3L));
 
         Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(3L));
       }
@@ -308,19 +309,12 @@ namespace Smdn.IO.Binary {
     public void TestReadInt32()
     {
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0x11, 0x22, 0x33, 0x44}))) {
-        switch (Platform.Endianness) {
-          case Endianness.BigEndian:
-            Assert.AreEqual(0x11223344, reader.ReadInt32());
-            break;
-
-          case Endianness.LittleEndian:
-            Assert.AreEqual(0x44332211, reader.ReadInt32());
-            break;
-
-          default:
-            Assert.Ignore("unsupported endian: {0}", Platform.Endianness);
-            break;
-        }
+        Assert.AreEqual(
+          BitConverter.IsLittleEndian
+            ? 0x44332211
+            : 0x11223344,
+          reader.ReadInt32()
+        );
       }
     }
 

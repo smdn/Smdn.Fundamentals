@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -184,7 +185,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
+        CollectionAssert.AreEqual(data.Skip(1).Take(2).ToArray(), stream.ToArray());
 
         Assert.Throws<ObjectDisposedException>(() => writer.Write(data, 1, 2));
       }
@@ -224,7 +225,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        CollectionAssert.AreEqual(data.Slice(1, 2), stream.ToArray());
+        CollectionAssert.AreEqual(data.Skip(1).Take(2).ToArray(), stream.ToArray());
 
         Assert.Throws<ObjectDisposedException>(() => writer.Write(new ArraySegment<byte>(data, 1, 2)));
       }
@@ -347,21 +348,12 @@ namespace Smdn.IO.Binary {
           writer.Close();
         }
 
-        switch (Platform.Endianness) {
-          case Endianness.BigEndian:
-            CollectionAssert.AreEqual(new byte[] {0x11, 0x22, 0x33, 0x44},
-                                      stream.ToArray());
-            break;
-
-          case Endianness.LittleEndian:
-            CollectionAssert.AreEqual(new byte[] {0x44, 0x33, 0x22, 0x11},
-                                      stream.ToArray());
-            break;
-
-          default:
-            Assert.Ignore("unsupported endian: {0}", Platform.Endianness);
-            break;
-        }
+        CollectionAssert.AreEqual(
+          BitConverter.IsLittleEndian
+            ? new byte[] {0x44, 0x33, 0x22, 0x11}
+            : new byte[] {0x11, 0x22, 0x33, 0x44},
+          stream.ToArray()
+        );
       }
     }
 

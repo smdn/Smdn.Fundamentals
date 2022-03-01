@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 using NUnit.Framework;
@@ -18,7 +19,7 @@ namespace Smdn.Security.Cryptography {
       using var transform = Smdn.Formats.Base64.CreateToBase64Transform();
 
       Assert.AreEqual(expected,
-                      ICryptoTransformExtensions.TransformBytes(transform, buffer.Slice(2, 5)));
+                      ICryptoTransformExtensions.TransformBytes(transform, buffer.Skip(2).Take(5).ToArray()));
       Assert.AreEqual(expected,
                       ICryptoTransformExtensions.TransformBytes(transform, buffer, 2, 5));
     }
@@ -124,8 +125,13 @@ namespace Smdn.Security.Cryptography {
       };
 
       foreach (var symmetricAlgorithm in symmetricAlgorithms) {
+        var rng = RandomNumberGenerator.Create();
+        var nonce = new byte[symmetricAlgorithm.KeySize / 8];
+
+        rng.GetBytes(nonce);
+
         symmetricAlgorithm.Padding = PaddingMode.Zeros;
-        symmetricAlgorithm.Key = Nonce.GetRandomBytes(symmetricAlgorithm.KeySize / 8);
+        symmetricAlgorithm.Key = nonce;
         symmetricAlgorithm.GenerateIV();
 
         symmetricAlgorithm.Clear();

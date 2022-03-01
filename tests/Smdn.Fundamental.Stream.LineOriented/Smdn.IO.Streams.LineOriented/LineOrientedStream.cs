@@ -3,16 +3,19 @@
 using System;
 using System.Buffers;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-using Smdn.Text;
 using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
 namespace Smdn.IO.Streams.LineOriented {
   [TestFixture]
   public class LineOrientedStreamTests {
+    private const byte CR = (byte)'\r';
+    private const byte LF = (byte)'\n';
+
     public enum StreamType {
       Strict,
       Loose,
@@ -39,7 +42,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestConstructFromMemoryStream(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
         Assert.IsTrue(stream.CanRead, "can read");
@@ -58,7 +61,7 @@ namespace Smdn.IO.Streams.LineOriented {
       var data = new byte[] {0x40, 0x41, 0x42, 0x43};
 
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-        stream.ReadToEnd();
+        stream.CopyTo(Stream.Null);
 
         var ret = await stream.ReadLineAsync();
 
@@ -83,7 +86,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public async Task TestReadLineAsync_SingleSegment(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF};
 
       using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
         var ret = await stream.ReadLineAsync();
@@ -92,7 +95,7 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.IsFalse(ret.Value.IsEmpty);
         Assert.IsTrue(ret.Value.SequenceWithNewLine.IsSingleSegment);
         Assert.IsTrue(ret.Value.Sequence.IsSingleSegment);
-        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF },
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, CR, LF },
                                   ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43 },
                                   ret.Value.Sequence.ToArray());
@@ -105,7 +108,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose, true)]
     public async Task TestReadLineAsync_MultipleSegment(StreamType type, bool keepEOL)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, Ascii.Octets.CR, Ascii.Octets.LF};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF};
 
       using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
         var ret = await stream.ReadLineAsync();
@@ -114,7 +117,7 @@ namespace Smdn.IO.Streams.LineOriented {
         Assert.IsFalse(ret.Value.IsEmpty);
         Assert.IsFalse(ret.Value.SequenceWithNewLine.IsSingleSegment);
         Assert.IsFalse(ret.Value.Sequence.IsSingleSegment);
-        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, Ascii.Octets.CR, Ascii.Octets.LF },
+        CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF },
                                   ret.Value.SequenceWithNewLine.ToArray());
         CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f },
                                   ret.Value.Sequence.ToArray());
@@ -125,7 +128,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadByte(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
       var stream = CreateStream(type, new MemoryStream(data), 8);
       var index = 0;
 
@@ -220,7 +223,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadToStream_BufferEmpty(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var copyStream = new MemoryStream();
@@ -238,7 +241,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestRead_BufferEmpty(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var buffer = new byte[12];
@@ -255,7 +258,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public async Task TestReadAsync_ToMemory_BufferEmpty(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       Memory<byte> buffer = new byte[12];
@@ -272,14 +275,14 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestRead_LessThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
 
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(0, 4), line);
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
 
       var buffer = new byte[4];
 
@@ -287,7 +290,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(8L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(4, 4), buffer);
+      Assert.AreEqual(data.Skip(4).Take(4).ToArray(), buffer);
     }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -295,14 +298,14 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public async Task TestReadAsync_ToMemory_LessThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
 
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(0, 4), line);
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
 
       Memory<byte> buffer = new byte[4];
 
@@ -318,14 +321,14 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestRead_LongerThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(0, 4), line);
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
 
       var buffer = new byte[10];
 
@@ -333,7 +336,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       Assert.AreEqual(12L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(4, 8), buffer.Slice(0, 8));
+      Assert.AreEqual(data.Skip(4).Take(8).ToArray(), buffer.Skip(0).Take(8).ToArray());
     }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -341,14 +344,14 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public async Task TestReadAsync_ToMemory_LongerThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(0, 4), line);
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
 
       Memory<byte> buffer = new byte[10];
 
@@ -364,14 +367,14 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestReadToStream_LessThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 16);
 
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(0, 4), line);
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
 
       var copyStream = new MemoryStream();
 
@@ -381,21 +384,21 @@ namespace Smdn.IO.Streams.LineOriented {
 
       copyStream.Dispose();
 
-      Assert.AreEqual(data.Slice(4, 4), copyStream.ToArray());
+      Assert.AreEqual(data.Skip(4).Take(4).ToArray(), copyStream.ToArray());
     }
 
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
     public void TestReadToStream_LongerThanBuffered(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, Ascii.Octets.CR, Ascii.Octets.LF, 0x42, 0x43, 0x44, Ascii.Octets.CR, Ascii.Octets.LF, 0x45, 0x46, 0x47};
+      var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
       var stream = CreateStream(type, new MemoryStream(data), 8);
 
       var line = stream.ReadLine(true);
 
       Assert.AreEqual(4L, stream.Position, "Position");
 
-      Assert.AreEqual(data.Slice(0, 4), line);
+      Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
 
       var copyStream = new MemoryStream();
 
@@ -405,7 +408,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
       copyStream.Dispose();
 
-      Assert.AreEqual(data.Slice(4, 8), copyStream.ToArray());
+      Assert.AreEqual(data.Skip(4).Take(8).ToArray(), copyStream.ToArray());
     }
 
     [TestCase(StreamType.Strict)]
@@ -480,7 +483,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
         await stream.CopyToAsync(targetStream, 0, cancellationToken: default);
 
-        CollectionAssert.AreEqual(data.Slice(1), targetStream.ToArray());
+        CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
 
         Assert.AreEqual(-1, stream.ReadByte());
       }
@@ -604,7 +607,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestClose(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
         stream.Dispose();
@@ -649,7 +652,7 @@ namespace Smdn.IO.Streams.LineOriented {
     [TestCase(StreamType.Loose)]
     public void TestCloseLeaveStreamOpen(StreamType type)
     {
-      var data = new byte[] {0x40, 0x41, 0x42, 0x43, Ascii.Octets.CR, Ascii.Octets.LF, 0x44, 0x45};
+      var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
       using (var baseStream = new MemoryStream(data)) {
         var stream = CreateStream(type, baseStream, 8, true);

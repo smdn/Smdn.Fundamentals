@@ -248,11 +248,11 @@ namespace Smdn.IO.Streams.Filtering {
         var buffer = new byte[8];
 
         foreach (var (lengthToRead, expectedLength, expectedPosition, expectedSequence) in new[] {
-          (0, 0, 0L, expected.Slice(0, 0)),
-          (1, 1, 1L, expected.Slice(0, 1)),
-          (2, 2, 3L, expected.Slice(1, 2)),
-          (2, 2, 5L, expected.Slice(3, 2)),
-          (4, 3, 8L, expected.Slice(5, 3)),
+          (0, 0, 0L, expected.Skip(0).Take(0).ToArray()),
+          (1, 1, 1L, expected.Skip(0).Take(1).ToArray()),
+          (2, 2, 3L, expected.Skip(1).Take(2).ToArray()),
+          (2, 2, 5L, expected.Skip(3).Take(2).ToArray()),
+          (4, 3, 8L, expected.Skip(5).Take(3).ToArray()),
           (8, 0, 8L, _Array.Empty<byte>()),
         }) {
           var read = readMethod switch {
@@ -267,7 +267,7 @@ namespace Smdn.IO.Streams.Filtering {
           Assert.AreEqual(expectedPosition, stream.Position, nameof(stream.Position));
           CollectionAssert.AreEqual(
             expectedSequence,
-            buffer.Slice(0, expectedLength)
+            buffer.Skip(0).Take(expectedLength).ToArray()
           );
         }
       }
@@ -321,8 +321,8 @@ namespace Smdn.IO.Streams.Filtering {
 
           Assert.AreEqual(length, read, test + " read count");
           CollectionAssert.AreEqual(
-            expected.Slice(offset, length),
-            buffer.Slice(offset, length),
+            expected.Skip(offset).Take(length).ToArray(),
+            buffer.Skip(offset).Take(length).ToArray(),
             test
           );
         }

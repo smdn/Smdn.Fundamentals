@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
@@ -262,8 +263,8 @@ namespace Smdn.IO.Streams.Extending {
 
               Assert.AreEqual(expectedReadLength, ret, "read length {0}+{1}", offset, len);
               Assert.AreEqual(
-                ArrayExtensions.Slice(expected, (int)offset, (int)expectedReadLength),
-                ArrayExtensions.Slice(buffer, 0, ret),
+                expected.Skip((int)offset).Take((int)expectedReadLength).ToArray(),
+                buffer.Skip(0).Take(ret).ToArray(),
                 "read content {0}+{1}", offset, len
               );
               Assert.AreEqual(
@@ -310,8 +311,8 @@ namespace Smdn.IO.Streams.Extending {
 
               Assert.AreEqual(expectedReadLength, ret, "read length {0}+{1}", offset, len);
               Assert.AreEqual(
-                ArrayExtensions.Slice(expected, (int)offset, (int)expectedReadLength),
-                ArrayExtensions.Slice(buffer, 0, ret),
+                expected.Skip((int)offset).Take((int)expectedReadLength).ToArray(),
+                buffer.Skip(0).Take(ret).ToArray(),
                 "read content {0}+{1}", offset, len
               );
               Assert.AreEqual(
@@ -346,13 +347,13 @@ namespace Smdn.IO.Streams.Extending {
 
             if (extended.Length < len) {
               Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, (int)extended.Length), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
               Assert.AreEqual(-1, extended.ReadByte());
             }
             else {
               Assert.AreEqual(len, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, len), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(len, extended.Position, "position {0}", len);
             }
           }
@@ -378,13 +379,13 @@ namespace Smdn.IO.Streams.Extending {
 
             if (extended.Length < len) {
               Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, (int)extended.Length), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
               Assert.AreEqual(-1, extended.ReadByte());
             }
             else {
               Assert.AreEqual(len, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, len), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(len, extended.Position, "position {0}", len);
             }
           }
@@ -410,13 +411,13 @@ namespace Smdn.IO.Streams.Extending {
 
             if (extended.Length < len) {
               Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, (int)extended.Length), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
               Assert.AreEqual(-1, extended.ReadByte());
             }
             else {
               Assert.AreEqual(len, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, len), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(len, extended.Position, "position {0}", len);
             }
           }
@@ -442,13 +443,13 @@ namespace Smdn.IO.Streams.Extending {
 
             if (extended.Length < len) {
               Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, (int)extended.Length), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
               Assert.AreEqual(-1, extended.ReadByte());
             }
             else {
               Assert.AreEqual(len, ret, "read length {0}", len);
-              Assert.AreEqual(ArrayExtensions.Slice(expected, 0, len), buffer, "read content {0}", len);
+              Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
               Assert.AreEqual(len, extended.Position, "position {0}", len);
             }
           }

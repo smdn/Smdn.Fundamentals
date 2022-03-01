@@ -1,11 +1,16 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture()]
   public class MimeTypeTests {
+    public static bool IsRunningOnUnix =>
+      RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
+      RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
     [Test]
     public void TestConstructor()
     {
@@ -127,7 +132,7 @@ namespace Smdn {
 
       Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension(null));
 
-      if (Platform.IsRunningOnUnix)
+      if (IsRunningOnUnix)
         Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", null));
     }
 
@@ -152,7 +157,7 @@ namespace Smdn {
       Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((string)null));
       Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null));
 
-      if (Platform.IsRunningOnUnix)
+      if (IsRunningOnUnix)
         Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", null));
     }
 

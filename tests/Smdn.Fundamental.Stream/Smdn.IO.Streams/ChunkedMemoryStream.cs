@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 
 using Smdn;
@@ -461,27 +462,27 @@ namespace Smdn.IO.Streams {
         var buffer = new byte[16];
 
         Assert.AreEqual(1, stream.Read(buffer, 0, 1));
-        Assert.AreEqual(new byte[] {0x00}, buffer.Slice(0, 1));
+        Assert.AreEqual(new byte[] {0x00}, buffer.Skip(0).Take(1).ToArray());
         Assert.AreEqual(1L, stream.Position);
 
         Assert.AreEqual(3, stream.Read(buffer, 0, 3));
-        Assert.AreEqual(new byte[] {0x01, 0x02, 0x03}, buffer.Slice(0, 3));
+        Assert.AreEqual(new byte[] {0x01, 0x02, 0x03}, buffer.Skip(0).Take(3).ToArray());
         Assert.AreEqual(4L, stream.Position);
 
         Assert.AreEqual(4, stream.Read(buffer, 0, 4));
-        Assert.AreEqual(new byte[] {0x04, 0x05, 0x06, 0x07}, buffer.Slice(0, 4));
+        Assert.AreEqual(new byte[] {0x04, 0x05, 0x06, 0x07}, buffer.Skip(0).Take(4).ToArray());
         Assert.AreEqual(8L, stream.Position);
 
         Assert.AreEqual(7, stream.Read(buffer, 0, 7));
-        Assert.AreEqual(new byte[] {0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e}, buffer.Slice(0, 7));
+        Assert.AreEqual(new byte[] {0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e}, buffer.Skip(0).Take(7).ToArray());
         Assert.AreEqual(15L, stream.Position);
 
         Assert.AreEqual(2, stream.Read(buffer, 0, 2));
-        Assert.AreEqual(new byte[] {0x0f, 0x10}, buffer.Slice(0, 2));
+        Assert.AreEqual(new byte[] {0x0f, 0x10}, buffer.Skip(0).Take(2).ToArray());
         Assert.AreEqual(17L, stream.Position);
 
         Assert.AreEqual(15, stream.Read(buffer, 0, 16));
-        Assert.AreEqual(new byte[] {0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}, buffer.Slice(0, 15));
+        Assert.AreEqual(new byte[] {0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f}, buffer.Skip(0).Take(15).ToArray());
         Assert.AreEqual(32L, stream.Position);
       }
     }

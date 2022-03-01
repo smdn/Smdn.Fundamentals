@@ -310,11 +310,11 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateNotSupportedEnumValue()
     {
-      var endian = Endianness.Unknown;
-      var ex = ExceptionUtils.CreateNotSupportedEnumValue(endian);
-  
+      var comparison = StringComparison.CurrentCulture;
+      var ex = ExceptionUtils.CreateNotSupportedEnumValue(comparison);
+
       Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("'Unknown' (Smdn.Endianness) is not supported", ex.Message);
+      StringAssert.StartsWith("'CurrentCulture' (System.StringComparison) is not supported", ex.Message);
       Assert.IsInstanceOf<NotSupportedException>(ex);
     }
 
