@@ -8,6 +8,68 @@ using Smdn.Test.NUnit;
 namespace Smdn.IO {
   [TestFixture]
   public class PathUtilsTests {
+    public static bool IsRunningOnWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+    [Test]
+    public void TestDefaultPathStringComparison()
+    {
+      if (IsRunningOnWindows)
+        Assert.IsTrue(string.Equals("C:\\path", "C:\\Path", PathUtils.DefaultPathStringComparison));
+      else
+        Assert.IsFalse(string.Equals("/path", "/Path", PathUtils.DefaultPathStringComparison));
+
+#if NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+      StringComparer comparer = null;
+
+      Assert.DoesNotThrow(() => {
+        comparer = StringComparer.FromComparison(
+          PathUtils.DefaultPathStringComparison
+        );
+      });
+
+#if NET6_0_OR_GREATER
+      Assert.IsTrue(
+        StringComparer.IsWellKnownOrdinalComparer(
+          PathUtils.DefaultPathStringComparer
+          out var isIgnoreCase
+        ),
+        "IsWellKnownOrdinalComparer"
+      );
+
+      if (IsRunningOnWindows)
+        Assert.IsTrue(isIgnoreCase, nameof(isIgnoreCase));
+      else
+        Assert.IsFalse(isIgnoreCase, nameof(isIgnoreCase));
+#endif
+#endif
+    }
+
+    [Test]
+    public void TestDefaultPathStringComparer()
+    {
+      Assert.IsNotNull(PathUtils.DefaultPathStringComparer);
+
+      if (IsRunningOnWindows)
+        Assert.IsTrue(PathUtils.DefaultPathStringComparer.Equals("C:\\path", "C:\\Path"));
+      else
+        Assert.IsFalse(PathUtils.DefaultPathStringComparer.Equals("/path", "/Path"));
+
+#if NET6_0_OR_GREATER
+      Assert.IsTrue(
+        StringComparer.IsWellKnownOrdinalComparer(
+          PathUtils.DefaultPathStringComparer
+          out var isIgnoreCase
+        ),
+        "IsWellKnownOrdinalComparer"
+      );
+
+      if (IsRunningOnWindows)
+        Assert.IsTrue(isIgnoreCase, nameof(isIgnoreCase));
+      else
+        Assert.IsFalse(isIgnoreCase, nameof(isIgnoreCase));
+#endif
+    }
+
     [Test]
     public void TestChangeFileName()
     {
