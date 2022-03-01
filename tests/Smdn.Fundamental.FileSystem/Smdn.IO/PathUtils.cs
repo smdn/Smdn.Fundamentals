@@ -57,7 +57,7 @@ namespace Smdn.IO {
 #if NET6_0_OR_GREATER
       Assert.IsTrue(
         StringComparer.IsWellKnownOrdinalComparer(
-          PathUtils.DefaultPathStringComparer
+          PathUtils.DefaultPathStringComparer,
           out var isIgnoreCase
         ),
         "IsWellKnownOrdinalComparer"
