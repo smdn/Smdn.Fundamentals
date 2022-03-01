@@ -8,7 +8,8 @@ SPDX-License-Identifier: MIT
     <Deterministic>true</Deterministic>
     <IsPackable>false</IsPackable>
 
-    <NoWarn>$(NoWarn);NETSDK1138</NoWarn> <!-- suppress warning for EOL target framework -->
+    <!-- suppress warning for EOL target framework -->
+    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
 
     <!-- determines the test target project name from the test project name (Smdn.Fundamentals.*.Tests -> Smdn.Fundamentals.*) -->
     <TestTargetProjectName
