@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Encoding.dll (Smdn.Fundamental.Encoding-3.0.1)
+// Smdn.Fundamental.Encoding.dll (Smdn.Fundamental.Encoding-3.0.1.1)
 //   Name: Smdn.Fundamental.Encoding
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+403df09df7ef4576307947fac83e89eb7693a163
+//   AssemblyVersion: 3.0.1.1
+//   InformationalVersion: 3.0.1.1+a0f6e52cd3b31755404137f392bf6c953a4d28db
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
