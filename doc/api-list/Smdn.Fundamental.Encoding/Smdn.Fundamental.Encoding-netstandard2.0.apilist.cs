@@ -2,10 +2,11 @@
 //   Name: Smdn.Fundamental.Encoding
 //   AssemblyVersion: 3.0.1.1
 //   InformationalVersion: 3.0.1.1+a0f6e52cd3b31755404137f392bf6c953a4d28db
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
 using System;
+using System.Runtime.Serialization;
 using System.Text;
 using Smdn.Text.Encodings;
 
@@ -16,6 +17,7 @@ namespace Smdn.Text.Encodings {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class EncodingNotSupportedException : NotSupportedException {
+    protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context) {}
     public EncodingNotSupportedException() {}
     public EncodingNotSupportedException(string encodingName) {}
     public EncodingNotSupportedException(string encodingName, Exception innerException) {}
@@ -23,6 +25,8 @@ namespace Smdn.Text.Encodings {
     public EncodingNotSupportedException(string encodingName, string message, Exception innerException) {}
 
     public string EncodingName { get; }
+
+    public override void GetObjectData(SerializationInfo info, StreamingContext context) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
