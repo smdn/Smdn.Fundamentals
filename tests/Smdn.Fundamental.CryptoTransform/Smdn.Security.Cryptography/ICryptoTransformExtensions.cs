@@ -93,6 +93,7 @@ namespace Smdn.Security.Cryptography {
       var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
       var hashAlgorithms = new HashAlgorithm[] {
+#pragma warning disable CA5350, CA5351 // uses a weak/broken cryptographic algorithm
         new HMACMD5(),
         new HMACSHA512(),
         MD5.Create(),
@@ -102,6 +103,7 @@ namespace Smdn.Security.Cryptography {
 #if NETFRAMEWORK
         new RIPEMD160Managed(),
 #endif
+#pragma warning restore CA5350, CA5351
       };
 
       foreach (var hashAlgorithm in hashAlgorithms) {
@@ -120,12 +122,14 @@ namespace Smdn.Security.Cryptography {
       var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
       var symmetricAlgorithms = new SymmetricAlgorithm[] {
+#pragma warning disable CA5350, CA5351 // uses a weak/broken cryptographic algorithm
 #pragma warning disable SYSLIB0022
         Rijndael.Create(),
 #pragma warning restore SYSLIB0022
         DES.Create(),
         TripleDES.Create(),
         RC2.Create(),
+#pragma warning restore CA5350, CA5351
       };
 
       foreach (var symmetricAlgorithm in symmetricAlgorithms) {
