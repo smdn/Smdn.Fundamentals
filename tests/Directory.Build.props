@@ -14,13 +14,10 @@ SPDX-License-Identifier: MIT
     <!-- configure code analysis mode -->
     <!-- ref: https://docs.microsoft.com/ja-jp/dotnet/core/project-sdk/msbuild-props#code-analysis-properties -->
     <AnalysisMode>None</AnalysisMode>
-    <!--
     <AnalysisModeInteroperability>Recommended</AnalysisModeInteroperability>
     <AnalysisModeReliability>Recommended</AnalysisModeReliability>
     <AnalysisModeSecurity>Recommended</AnalysisModeSecurity>
-    <AnalysisModeStyle>None</AnalysisModeStyle>
-    <AnalysisModeUsage>Minimum</AnalysisModeUsage>
-    -->
+    <AnalysisModeUsage>Recommended</AnalysisModeUsage>
 
     <!-- determines the test target project name from the test project name (Smdn.Fundamentals.*.Tests -> Smdn.Fundamentals.*) -->
     <TestTargetProjectName
