@@ -1,63 +1,16 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-#endif
-
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.Serialization;
-#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-using System.Runtime.Serialization.Formatters.Binary;
-#endif
 using NUnit.Framework;
 using NUnitAssert = NUnit.Framework.Assert;
 
 namespace Smdn.Test.NUnit {
   public static partial class TestUtils {
     public static partial class Assert {
-      public static void IsSerializableBinaryFormat<TSerializable>(TSerializable obj)
-      /*where TSerializable : ISerializable*/
-      {
-        IsSerializableBinaryFormat(obj, null);
-      }
-
-      public static void IsSerializableBinaryFormat<TSerializable>(TSerializable obj,
-                                                                   Action<TSerializable> testDeserializedObject)
-      /*where TSerializable : ISerializable*/
-      {
-#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-      // TODO: use JsonSerializer instead
-      // https://docs.microsoft.com/ja-jp/dotnet/fundamentals/syslib-diagnostics/syslib0011
-      var serializeFormatter = new BinaryFormatter();
-
-      using (var stream = new MemoryStream()) {
-#pragma warning disable SYSLIB0011
-        serializeFormatter.Serialize(stream, obj);
-#pragma warning restore SYSLIB0011
-
-        stream.Position = 0L;
-
-        var deserializeFormatter = new BinaryFormatter();
-#pragma warning disable SYSLIB0011
-        var deserialized = deserializeFormatter.Deserialize(stream);
-#pragma warning restore SYSLIB0011
-
-        NUnitAssert.IsNotNull(deserialized);
-        NUnitAssert.AreNotSame(obj, deserialized);
-        NUnitAssert.IsInstanceOf<TSerializable>(deserialized);
-
-        if (testDeserializedObject != null)
-          testDeserializedObject((TSerializable)deserialized);
-      }
-#else
-        // do nothing
-#endif
-      }
-
       //private static readonly TimeSpan mergin = TimeSpan.FromTicks(Stopwatch.Frequency);
       private static readonly TimeSpan mergin = TimeSpan.FromMilliseconds(20);
 
