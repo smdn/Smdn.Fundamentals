@@ -272,7 +272,9 @@ namespace Smdn.Xml.Xhtml {
     [Test]
     public void TestWriteDocType_XmlDocument()
     {
-      var doc = new XmlDocument();
+      var doc = new XmlDocument() {
+        XmlResolver = null
+      };
 
       doc.AppendChild(doc.CreateDocumentType("html", null, null, null));
       doc.AppendChild(doc.CreateElement("html"));
@@ -506,9 +508,15 @@ namespace Smdn.Xml.Xhtml {
     public void TestWriteIndent_AvoidIndentingEmptyElement_XmlDocument()
     {
       var content = "<body><p></p></body>";
-      var doc = new XmlDocument();
+      var doc = new XmlDocument() {
+        XmlResolver = null
+      };
+      var settings = new XmlReaderSettings() {
+        DtdProcessing = DtdProcessing.Ignore,
+        XmlResolver = null,
+      };
 
-      doc.Load(new StringReader(content));
+      doc.Load(XmlReader.Create(new StringReader(content), settings));
 
       Assert.AreEqual("<body>\n <p></p>\n</body>",
                       ToString(doc));
