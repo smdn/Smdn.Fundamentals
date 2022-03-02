@@ -126,9 +126,7 @@ public static class ArrayExtensions {
     for (var i = 1; i < shuffled.Length; i++) {
       var j = random.Next(0, i + 1);
 
-      var temp = shuffled[i];
-      shuffled[i] = shuffled[j];
-      shuffled[j] = temp;
+      (shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
     }
 
     return shuffled;
