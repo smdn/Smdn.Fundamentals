@@ -102,7 +102,9 @@ namespace Smdn.Reflection {
         [ExpectedMethodSpecialName(MethodSpecialName.None)] public void Deconstruct(out int x, out int y, out int z) => throw new NotImplementedException();
 
         [ExpectedMethodSpecialName(MethodSpecialName.None)] void M() => throw new NotImplementedException();
+#pragma warning disable CA1816 // Change to call GC.SuppressFinalize(object)
         [ExpectedMethodSpecialName(MethodSpecialName.None)] void IDisposable.Dispose() => throw new NotImplementedException();
+#pragma warning restore CA1816
 
         // unary operators
         [ExpectedMethodSpecialName(MethodSpecialName.UnaryPlus)] public static C operator +(C c) => throw new NotImplementedException();
