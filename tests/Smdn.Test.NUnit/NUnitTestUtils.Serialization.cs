@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
 #define SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
+#define SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
 #endif
 
 using System;
@@ -25,7 +26,7 @@ public static partial class TestUtils {
     )
     /*where TSerializable : ISerializable*/
     {
-#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
+#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY && SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
       // TODO: use JsonSerializer instead
       // https://docs.microsoft.com/ja-jp/dotnet/fundamentals/syslib-diagnostics/syslib0011
       var serializeFormatter = new BinaryFormatter();
@@ -38,7 +39,10 @@ public static partial class TestUtils {
 
       stream.Position = 0L;
 
-      var deserializeFormatter = new BinaryFormatter();
+      var deserializeFormatter = new BinaryFormatter() {
+        Binder = new DeserializationBinder()
+      };
+
 #pragma warning disable SYSLIB0011
       var deserialized = deserializeFormatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
