@@ -1,0 +1,106 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
+
+name: Run tests
+
+# ref: https://docs.microsoft.com/en-us/dotnet/devops/dotnet-test-github-action
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - 'src/**/*.cs'
+    - 'src/**/*.csproj'
+    - 'tests/**/*.cs'
+    - 'tests/**/*.csproj'
+  pull_request:
+    branches: [ main ]
+    paths:
+    - 'src/**/*.cs'
+    - 'src/**/*.csproj'
+    - 'tests/**/*.cs'
+    - 'tests/**/*.csproj'
+  workflow_dispatch:
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+
+jobs:
+  setup:
+    name: Set up
+    runs-on: ubuntu-latest
+    outputs:
+      test-projects: ${{ steps.test-projects.outputs.projects }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2.4.0
+
+    - name: Determine test projects
+      id: test-projects
+      shell: pwsh
+      run: |
+        # list all directories which contains the file named '*.Tests.csproj'
+        $projects = Get-ChildItem -Path tests/*/*.Tests.csproj -File | select -ExpandProperty FullName
+
+        foreach ($proj in $projects) {
+          "::notice::test project: ${proj}"
+        }
+
+        "::set-output name=projects::$($projects | ConvertTo-Json -Compress)"
+
+  run-tests:
+    name: Run tests ${{ matrix.project }} on ${{ matrix.os }}
+    needs: [setup]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        project: ${{ fromJson(needs.setup.outputs.test-projects) }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2.4.0
+
+    - name: Set NUGET_PACKAGES
+      run: |
+        echo "NUGET_PACKAGES=$HOME/.nuget/packages" >> $GITHUB_ENV
+
+    - name: Setup NuGet cache
+      # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
+      uses: actions/cache@v2
+      with:
+        path: ${{ env.NUGET_PACKAGES }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: .NET info
+      run: dotnet --info
+
+    - name: Restore dependencies of ${{ matrix.project }}
+      shell: pwsh
+      run: |
+        dotnet restore `
+          --nologo `
+          ${{ matrix.project }}
+
+    - name: Build ${{ matrix.project }}
+      shell: pwsh
+      run: |
+        dotnet build `
+          --nologo `
+          --no-restore `
+          -consoleLoggerParameters:NoSummary `
+          ${{ matrix.project }}
+
+    - name: Run ${{ matrix.project }}
+      shell: pwsh
+      run: |
+        dotnet test `
+          --nologo `
+          --no-restore `
+          --no-build `
+          --verbosity quiet `
+          --blame-hang-timeout 5minutes
