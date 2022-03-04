@@ -33,6 +33,7 @@ on:
       token_repo:
         description: 'The token which is used to checkout code.'
         required: false
+        default: ${{ secrets.GITHUB_TOKEN }}
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
