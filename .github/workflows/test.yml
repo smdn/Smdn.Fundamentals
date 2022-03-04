@@ -62,8 +62,8 @@ jobs:
       run: |
         $os_list = $Env:RUNS_ON_OS_LIST_DEFAULT | ConvertFrom-Json
 
-        if ( ! [string]::IsNullOrEmpty( '${{ github.event.inputs.os }}' ) ) {
-          $os_list = @('${{ github.event.inputs.os }}')
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.os }}' ) ) {
+          $os_list = @('${{ inputs.os }}')
         }
 
         foreach ($os in $os_list) {
@@ -76,8 +76,8 @@ jobs:
       id: test-projects
       shell: pwsh
       run: |
-        $directory_tests = [System.IO.Path]::Join('${{ github.workspace }}', '${{ github.event.inputs.path_prefix_tests}}')
-        $directory_src   = [System.IO.Path]::Join('${{ github.workspace }}', '${{ github.event.inputs.path_prefix_source}}')
+        $directory_tests = [System.IO.Path]::Join('${{ github.workspace }}', '${{ inputs.path_prefix_tests }}')
+        $directory_src   = [System.IO.Path]::Join('${{ github.workspace }}', '${{ inputs.path_prefix_source }}')
 
         # find all project from directories which contains the file named '*.Tests.csproj'
         $projects = Get-ChildItem -Path "${directory_tests}/*/*.Tests.csproj" -File | `
@@ -91,8 +91,8 @@ jobs:
               Expression = {[System.IO.Path]::GetRelativePath('${{ github.workspace }}', $_.FullName)}
             }
 
-        if ( ! [string]::IsNullOrEmpty( '${{ github.event.inputs.project }}' ) ) {
-          $projects = $projects | where Name -eq '${{ github.event.inputs.project }}'
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.project }}' ) ) {
+          $projects = $projects | where Name -eq '${{ inputs.project }}'
         }
 
         foreach ($proj in $projects) {
