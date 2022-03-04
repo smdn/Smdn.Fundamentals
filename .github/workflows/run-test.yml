@@ -37,4 +37,5 @@ jobs:
     with:
       project:  ${{ github.event.inputs.project }}
       os:       ${{ github.event.inputs.os }}
-
+    secrets:
+      token_repo: ${{ secrets.GITHUB_TOKEN }}
