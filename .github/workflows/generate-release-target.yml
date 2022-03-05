@@ -429,6 +429,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.token_pullrequest }}
       run: |
+        $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
         $pr_title = 'Release ${{ steps.package-info.outputs.package_branch }}/${{ steps.package-info.outputs.package_id_with_version }}'
 
         #
@@ -482,7 +483,7 @@ jobs:
         #
         $pr_body_file = [System.IO.Path]::GetFullPath('pr-body.md')
 
-        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+        if ( $dry_run ) {
           "================================================"
           $pr_body.ToString()
           "================================================"
@@ -507,7 +508,7 @@ jobs:
 
         "gh pr create ${pr_create_options}"
 
-        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+        if ( $dry_run ) {
           $pr_url = "(dry-run)"
         }
         else {

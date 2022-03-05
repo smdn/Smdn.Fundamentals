@@ -259,12 +259,14 @@ jobs:
         GH_TOKEN: ${{ secrets.token_repo }}
       shell: pwsh
       run: |
+        $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
+
         # note: the maximum size of the release body seems to be 125,000 characters (textarea#release_body@data-input-max-length="125000")
         $release_notes_body_max_length = 125000
         $release_notes_body = New-Object System.Text.StringBuilder -ArgumentList 10240
         $release_notes_output_path = [System.IO.Path]::GetFullPath('releasenotes.md')
 
-        if ( '${{ steps.push-nuget-org.outputs.pushed }}' -ieq 'true' -Or '${{ inputs.dry_run }}' -ieq 'true' ) {
+        if ( '${{ steps.push-nuget-org.outputs.pushed }}' -ieq 'true' -Or $dry_run ) {
           [void]$release_notes_body.AppendLine('# Released package')
           [void]$release_notes_body.AppendFormat(
             '- NuGet [{0} version {1}](https://www.nuget.org/packages/{0}/{1})',
@@ -402,7 +404,7 @@ jobs:
         }
 
         # write release notes file
-        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+        if ( $dry_run ) {
           $release_notes_body.ToString()
         }
         else {
@@ -419,6 +421,8 @@ jobs:
         GH_TOKEN: ${{ secrets.token_repo }}
       shell: pwsh
       run: |
+        $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
+
         $release_notes_file = '${{ steps.release-notes-file.outputs.path }}'
         $release_title = '${{ steps.release-info.outputs.package_id }} version ${{ steps.release-info.outputs.package_version }}'
 
@@ -434,7 +438,7 @@ jobs:
 
         "gh release create ${release_create_options}"
 
-        if ( '${{ inputs.dry_run }}' -ieq 'true' ) {
+        if ( $dry_run ) {
           $release_url = '(dry-run)'
         }
         else {
