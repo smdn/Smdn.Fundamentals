@@ -204,15 +204,23 @@ jobs:
       run: dotnet --info
 
     - name: Restore dependencies of ${{ steps.package-info.outputs.package_id }}
-      # restores project dependencies first
-      run: dotnet restore --nologo ${{ steps.package-info.outputs.package_source_dir }}
+      shell: pwsh
+      run: |
+        # workaround for error on `dotnet restore`; The process cannot access the file '/home/runner/.nuget/NuGet/nugetorgadd.trk'
+        # remove when https://github.com/NuGet/Home/issues/11607 is fixed
+        # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
+        dotnet nuget list source
+
+        dotnet restore `
+          --nologo `
+          ${{ steps.package-info.outputs.package_source_dir }}
 
     - name: Build ${{ steps.package-info.outputs.package_id }}
       shell: pwsh
       run: |
-        # note: do not specify --no-restore option here since dependencies in build assets have to be restored
         dotnet build `
           --nologo `
+          --no-restore `
           --configuration Release `
           -consoleLoggerParameters:NoSummary `
           /p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }} `
