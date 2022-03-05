@@ -11,6 +11,12 @@ on:
         required: true
         type: number
 
+      pr_label_request_for_release:
+        description: "The label which indicating that the PR requests to merge the release working branch."
+        required: false
+        type: string
+        default: ''
+
       dry_run:
         description: "If true, performs a trial run."
         required: false
@@ -55,6 +61,30 @@ jobs:
         # TODO
         # git config user.name '${{ github.repository_owner }}'
         # git config user.email '<>'
+
+    - name: Check pull request labels
+      if: ${{ inputs.pr_label_request_for_release != '' }}
+      env:
+        GH_TOKEN: ${{ secrets.token_repo }}
+      shell: pwsh
+      run: |
+        $labels = gh pr view `
+          ${{ inputs.pr_number_request_for_release }} `
+          --repo ${{ github.repository }} `
+          --json labels `
+          --template '[ {{ range $i, $l := .labels }} {{if $i}},{{end}} ''{{$l.name}}'' {{ end }} ]'
+
+        "${labels}"
+
+        $release_pr_label = $labels | `
+          ConvertFrom-Json | `
+          where { $_ -eq '${{ inputs.pr_label_request_for_release }}' } | `
+          select -First 1
+
+        if ( [string]::IsNullOrEmpty( $release_pr_label ) ) {
+          "::error::The required label '${{ inputs.pr_label_request_for_release }}' is not set to the pull request."
+          exit 1
+        }
 
     - name: Determine release target information
       id: release-info
