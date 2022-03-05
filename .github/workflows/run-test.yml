@@ -33,7 +33,7 @@ on:
 
 jobs:
   run-test:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.0
+    uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.1
     with:
       project:  ${{ github.event.inputs.project }}
       os:       ${{ github.event.inputs.os }}
