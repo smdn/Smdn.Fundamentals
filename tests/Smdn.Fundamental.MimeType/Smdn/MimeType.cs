@@ -7,6 +7,9 @@ using NUnit.Framework;
 namespace Smdn {
   [TestFixture()]
   public class MimeTypeTests {
+    public static bool IsRunningOnWindows =>
+      RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
     public static bool IsRunningOnUnix =>
       RuntimeInformation.IsOSPlatform(OSPlatform.Linux) ||
       RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
@@ -133,7 +136,10 @@ namespace Smdn {
       Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension(null));
 
       if (IsRunningOnUnix)
-        Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", null));
+        Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null));
+
+      if (IsRunningOnWindows)
+        Assert.DoesNotThrow(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null));
     }
 
     [Test]
@@ -158,7 +164,10 @@ namespace Smdn {
       Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null));
 
       if (IsRunningOnUnix)
-        Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", null));
+        Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null));
+
+      if (IsRunningOnWindows)
+        Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null));
     }
 
     [Test]
