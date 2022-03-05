@@ -83,7 +83,16 @@ public readonly struct Uuid :
     if (nic == null)
       throw new NotSupportedException("network interface not found");
 
-    return new Node(nic.GetPhysicalAddress());
+    var physicalAddress = nic.GetPhysicalAddress().GetAddressBytes().AsSpan();
+
+    if (6 < physicalAddress.Length)
+      physicalAddress = physicalAddress.Slice(0, 6);
+
+    Span<byte> node = stackalloc byte[6];
+
+    physicalAddress.CopyTo(node);
+
+    return new Node(physicalAddress);
   }
 
   public static Uuid CreateTimeBased()
