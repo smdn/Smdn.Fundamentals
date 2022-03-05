@@ -74,7 +74,7 @@ public readonly struct Uuid :
   private static DateTime GetTimestamp() => throw new NotImplementedException();
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
-  private static PhysicalAddress GetNode()
+  private static Node GetNode()
   {
     var nic = Array.Find(NetworkInterface.GetAllNetworkInterfaces(), delegate(NetworkInterface networkInterface) {
       return networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback;
@@ -83,44 +83,69 @@ public readonly struct Uuid :
     if (nic == null)
       throw new NotSupportedException("network interface not found");
 
-    return nic.GetPhysicalAddress();
+    return new Node(nic.GetPhysicalAddress());
   }
 
   public static Uuid CreateTimeBased()
-    => CreateTimeBased(
+    => CreateTimeBasedCore(
       GetTimestamp(),
       GetClock(),
       GetNode()
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock)
-    => CreateTimeBased(
+    => CreateTimeBasedCore(
       timestamp,
       clock,
       GetNode()
     );
 
+  private static Node ToNode(PhysicalAddress node, string paramName)
+    => ToNode(
+      (node ?? throw new ArgumentNullException(paramName)).GetAddressBytes(),
+      paramName
+    );
+
   public static Uuid CreateTimeBased(PhysicalAddress node)
-    => CreateTimeBased(
-      (node ?? throw new ArgumentNullException(nameof(node))).GetAddressBytes()
+    => CreateTimeBasedCore(
+      GetTimestamp(),
+      GetClock(),
+      ToNode(node, nameof(node))
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node)
-    => CreateTimeBased(
+    => CreateTimeBasedCore(
       timestamp,
       clock,
-      (node ?? throw new ArgumentNullException(nameof(node))).GetAddressBytes()
+      ToNode(node, nameof(node))
     );
 #endif
 
+  private static Node ToNode(byte[] node, string paramName)
+  {
+    if (node is null)
+      throw new ArgumentNullException(paramName);
+    if (node.Length != 6)
+      throw new ArgumentException("must be 48-bit length", paramName);
+
+    return new Node(node);
+  }
+
   public static Uuid CreateTimeBased(byte[] node)
-    => CreateTimeBased(
+    => CreateTimeBasedCore(
       GetTimestamp(),
       GetClock(),
-      node
+      ToNode(node, nameof(node))
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node)
+    => CreateTimeBasedCore(
+      timestamp,
+      clock,
+      ToNode(node, nameof(node))
+    );
+
+  private static Uuid CreateTimeBasedCore(DateTime timestamp, int clock, Node node)
   {
     /*
      * 4.2. Algorithms for Creating a Time-Based UUID
@@ -145,16 +170,11 @@ public readonly struct Uuid :
     if (clock is < 0 or >= 0x3fff)
       throw new ArgumentOutOfRangeException(nameof(clock), clock, "must be 14-bit unsigned integer");
 
-    if (node == null)
-      throw new ArgumentNullException(nameof(node));
-    if (node.Length != 6)
-      throw new ArgumentException("must be 48-bit length", nameof(node));
-
     return new Uuid(
       version: UuidVersion.Version1,
       time: (ulong)timestamp.Subtract(timestampEpoch).Ticks,
       clock_seq: (ushort)clock,
-      node: new Node(node)
+      node: node
     );
   }
 
