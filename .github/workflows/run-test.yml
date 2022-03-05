@@ -35,7 +35,8 @@ jobs:
   run-test:
     uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.1
     with:
-      project:  ${{ github.event.inputs.project }}
-      os:       ${{ github.event.inputs.os }}
+      project:            ${{ github.event.inputs.project }}
+      os:                 ${{ github.event.inputs.os }}
+      dotnet_sdk_version: '6.0.200'
     secrets:
       token_repo: ${{ secrets.GITHUB_TOKEN }}
