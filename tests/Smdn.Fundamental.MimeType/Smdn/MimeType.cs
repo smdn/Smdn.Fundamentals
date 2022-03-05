@@ -190,6 +190,11 @@ namespace Smdn {
     [Test]
     public void TestFindExtensionsByMimeType()
     {
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && !File.Exists("/etc/mime.types")) {
+        Assert.Ignore("/etc/mime.types not found");
+        return;
+      }
+
       CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("text/plain"),
                                 ".txt");
       CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("TEXT/PLAIN"),
