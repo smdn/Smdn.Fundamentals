@@ -502,10 +502,6 @@ jobs:
           '--body-file', $pr_body_file
         )
 
-        if ( ! [string]::IsNullOrEmpty( '${{ inputs.release_target_pr_label }}' ) ) {
-          $pr_create_options += @('--label', '${{ inputs.release_target_pr_label }}')
-        }
-
         "gh pr create ${pr_create_options}"
 
         if ( $dry_run ) {
@@ -524,3 +520,18 @@ jobs:
 
         # set outputs
         "::set-output name=url::${pr_url}"
+
+        #
+        # set label to created pull request
+        #
+        if ( ! $dry_run ) {
+          if ( ! [string]::IsNullOrEmpty( '${{ inputs.release_target_pr_label }}' ) ) {
+            $pr_url_editted = gh pr edit $pr_url --add-label '${{ inputs.release_target_pr_label }}'
+
+            if ( [string]::IsNullOrEmpty($pr_url_editted) ) {
+              "::error::Could not set label to pull request. Ensure that the label '${{ inputs.release_target_pr_label }}' is created and set the label to PR manually."
+            }
+          }
+        }
+
+        exit 0
