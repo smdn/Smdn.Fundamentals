@@ -502,13 +502,36 @@ jobs:
           '--body-file', $pr_body_file
         )
 
-        "gh pr create ${pr_create_options}"
+        $pr_create_with_label_options = $null
 
-        if ( $dry_run ) {
-          $pr_url = "(dry-run)"
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.release_target_pr_label }}' ) ) {
+          $pr_create_with_label_options = $pr_create_options + @(
+            '--label', '${{ inputs.release_target_pr_label }}'
+          )
         }
-        else {
-          $pr_url = gh pr create $pr_create_options
+
+        # first, attempt to create pull request with label (if label is specified)
+        $pr_url = $null
+
+        if ( $pr_create_with_label_options ) {
+          "gh pr create ${pr_create_with_label_options}"
+
+          $pr_url = $dry_run `
+            ? '(dry-run)' `
+            : $(gh pr create $pr_create_with_label_options)
+
+          if ( [string]::IsNullOrEmpty($pr_url) ) {
+            "::error::Could not create a new pull request or could not set label to the created pull request. Ensure that the label '${{ inputs.release_target_pr_label }}' is created and set the label to PR manually."
+          }
+        }
+
+        # next, create pull request without label (if failed or label is not specified)
+        if ( [string]::IsNullOrEmpty($pr_url) ) {
+          "gh pr create ${pr_create_options}"
+
+          $pr_url = $dry_run `
+            ? '(dry-run)' `
+            : $(gh pr create $pr_create_options)
         }
 
         if ( [string]::IsNullOrEmpty($pr_url) ) {
@@ -520,18 +543,5 @@ jobs:
 
         # set outputs
         "::set-output name=url::${pr_url}"
-
-        #
-        # set label to created pull request
-        #
-        if ( ! $dry_run ) {
-          if ( ! [string]::IsNullOrEmpty( '${{ inputs.release_target_pr_label }}' ) ) {
-            $pr_url_editted = gh pr edit $pr_url --add-label '${{ inputs.release_target_pr_label }}'
-
-            if ( [string]::IsNullOrEmpty($pr_url_editted) ) {
-              "::error::Could not set label to pull request. Ensure that the label '${{ inputs.release_target_pr_label }}' is created and set the label to PR manually."
-            }
-          }
-        }
 
         exit 0
