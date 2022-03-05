@@ -130,6 +130,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromRFC822DateTimeStringLocal()
     {
+      var localTimeZone = TimeZoneInfo.Local;
       var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
       var c = "case1";
 
@@ -137,8 +138,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(10, dtm.Day, c);
       Assert.AreEqual(6, dtm.Month, c);
       Assert.AreEqual(2003, dtm.Year, c);
-      Assert.AreEqual(9, dtm.Hour, c);
-      Assert.AreEqual(41, dtm.Minute, c);
+      Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(1, dtm.Second, c);
       Assert.AreEqual(123, dtm.Millisecond, c);
       Assert.AreEqual(4567, dtm.Ticks % 10000, c);
@@ -151,8 +152,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(10, dtm.Day, c);
       Assert.AreEqual(6, dtm.Month, c);
       Assert.AreEqual(2003, dtm.Year, c);
-      Assert.AreEqual(9, dtm.Hour, c);
-      Assert.AreEqual(41, dtm.Minute, c);
+      Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(1, dtm.Second, c);
       Assert.AreEqual(123, dtm.Millisecond, c);
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
@@ -165,8 +166,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(10, dtm.Day, c);
       Assert.AreEqual(6, dtm.Month, c);
       Assert.AreEqual(2003, dtm.Year, c);
-      Assert.AreEqual(9, dtm.Hour, c);
-      Assert.AreEqual(41, dtm.Minute, c);
+      Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(1, dtm.Second, c);
       Assert.AreEqual(0, dtm.Millisecond, c);
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
@@ -179,8 +180,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(10, dtm.Day, c);
       Assert.AreEqual(6, dtm.Month, c);
       Assert.AreEqual(2003, dtm.Year, c);
-      Assert.AreEqual(9, dtm.Hour, c);
-      Assert.AreEqual(41, dtm.Minute, c);
+      Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(0, dtm.Second, c);
       Assert.AreEqual(0, dtm.Millisecond, c);
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
@@ -444,14 +445,15 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromW3CDateTimeStringLocal()
     {
+      var localTimeZone = TimeZoneInfo.Local;
       var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333 +09:00");
       var c = "case1";
 
       Assert.AreEqual(2008, dtm.Year, c);
       Assert.AreEqual(04, dtm.Month, c);
       Assert.AreEqual(11, dtm.Day, c);
-      Assert.AreEqual(12, dtm.Hour, c);
-      Assert.AreEqual(34, dtm.Minute, c);
+      Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(56, dtm.Second, c);
       Assert.AreEqual(789, dtm.Millisecond, c);
       Assert.AreEqual(3333, dtm.Ticks % 10000, c);
@@ -463,8 +465,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(2008, dtm.Year, c);
       Assert.AreEqual(04, dtm.Month, c);
       Assert.AreEqual(11, dtm.Day, c);
-      Assert.AreEqual(12, dtm.Hour, c);
-      Assert.AreEqual(34, dtm.Minute, c);
+      Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(56, dtm.Second, c);
       Assert.AreEqual(789, dtm.Millisecond, c);
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
@@ -476,8 +478,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(2008, dtm.Year, c);
       Assert.AreEqual(04, dtm.Month, c);
       Assert.AreEqual(11, dtm.Day, c);
-      Assert.AreEqual(12, dtm.Hour, c);
-      Assert.AreEqual(34, dtm.Minute, c);
+      Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(56, dtm.Second, c);
       Assert.AreEqual(0, dtm.Millisecond, c);
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
@@ -489,8 +491,8 @@ namespace Smdn.Formats {
       Assert.AreEqual(2008, dtm.Year, c);
       Assert.AreEqual(04, dtm.Month, c);
       Assert.AreEqual(11, dtm.Day, c);
-      Assert.AreEqual(12, dtm.Hour, c);
-      Assert.AreEqual(34, dtm.Minute, c);
+      Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
+      Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
       Assert.AreEqual(0, dtm.Second, c);
       Assert.AreEqual(0, dtm.Millisecond, c);
       Assert.AreEqual(0, dtm.Ticks % 10000, c);
