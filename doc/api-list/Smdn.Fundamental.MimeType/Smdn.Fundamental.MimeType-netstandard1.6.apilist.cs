@@ -1,7 +1,7 @@
-// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-3.0.1 (netstandard1.6))
+// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-3.0.2)
 //   Name: Smdn.Fundamental.MimeType
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (netstandard1.6)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+53f78e8e599784381721a51f463d3202aeade3d8
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
