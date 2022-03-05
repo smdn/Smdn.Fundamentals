@@ -14,7 +14,7 @@ SPDX-License-Identifier: MIT
   -->
   <PropertyGroup>
     <_NuGetPackageAltRoot>$(NuGetPackageRoot)</_NuGetPackageAltRoot>
-    <_NuGetPackageAltRoot Condition="('$(_NuGetPackageAltRoot)' == '')">$(NUGET_PACKAGES)\</_NuGetPackageAltRoot>
+    <_NuGetPackageAltRoot Condition="('$(_NuGetPackageAltRoot)' == '') and ('$(NUGET_PACKAGES)' != '')">$(NUGET_PACKAGES)\</_NuGetPackageAltRoot>
     <_NuGetPackageAltRoot Condition="('$(_NuGetPackageAltRoot)' == '') and $([MSBuild]::IsOSUnixLike())">$(HOME)\.nuget\packages\</_NuGetPackageAltRoot>
     <_NuGetPackageAltRoot Condition="('$(_NuGetPackageAltRoot)' == '')">$(USERPROFILE)\.nuget\packages\</_NuGetPackageAltRoot>
   </PropertyGroup>
