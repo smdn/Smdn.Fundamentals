@@ -109,7 +109,52 @@ namespace Smdn {
       Assert.AreEqual(UuidVersion.Version1, uuid.Version);
       Assert.AreNotEqual(PhysicalAddress.None, uuid.PhysicalAddress);
     }
+
+    [Test]
+    public void TestCreateTimeBased3_NodeNull_PhysicalAddress()
+    {
+      PhysicalAddress node = null;
+
+      Assert.Throws<ArgumentNullException>(() => {
+        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
+      });
+    }
+
+    [TestCaseSource(nameof(YieldInvalidLengthOfPhysicalAddressBytes))]
+    public void TestCreateTimeBased3_NodeInvalidLength_PhysicalAddress(byte[] address)
+    {
+      var node = new PhysicalAddress(address);
+
+      Assert.Throws<ArgumentException>(() => {
+        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
+      });
+    }
 #endif
+
+    private static System.Collections.IEnumerable YieldInvalidLengthOfPhysicalAddressBytes()
+    {
+      yield return new object[] { new byte[] { 0 } };
+      yield return new object[] { new byte[] { 0, 1, 2, 3, 4 } };
+      yield return new object[] { new byte[] { 0, 1, 2, 3, 4, 5, 6 } };
+    }
+
+    [Test]
+    public void TestCreateTimeBased3_NodeNull_Bytes()
+    {
+      byte[] node = null;
+
+      Assert.Throws<ArgumentNullException>(() => {
+        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
+      });
+    }
+
+    [TestCaseSource(nameof(YieldInvalidLengthOfPhysicalAddressBytes))]
+    public void TestCreateTimeBased3_NodeInvalidLength_Bytes(byte[] node)
+    {
+      Assert.Throws<ArgumentException>(() => {
+        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
+      });
+    }
 
     [Test]
     public void TestCreateNameBasedMD5()
