@@ -1,8 +1,10 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
+using Smdn.Test.NUnit;
 
 namespace Smdn {
   [TestFixture()]
@@ -143,6 +145,44 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestFindMimeTypeByExtension_WithMimeTypesFile()
+    {
+      if (!IsRunningOnUnix)
+        return;
+
+      var pseudoMimeTypesFile = Path.Combine(TestContext.CurrentContext.WorkDirectory, ".mime.types");
+
+      TestUtils.UsingFile(pseudoMimeTypesFile, () => {
+        File.WriteAllText(pseudoMimeTypesFile, "application/x-foo-bar\tfoo-bar");
+
+        Assert.AreEqual(
+          new MimeType("application/x-foo-bar"),
+          MimeType.FindMimeTypeByExtension(".foo-bar", mimeTypesFile: pseudoMimeTypesFile)
+        );
+
+        Assert.IsNull(
+          MimeType.FindMimeTypeByExtension(".hoge", mimeTypesFile: pseudoMimeTypesFile)
+        );
+      });
+    }
+
+    [Test]
+    public void TestFindMimeTypeByExtension_WithMimeTypesFile_FileNotFound()
+    {
+      const string nonExistentFile = ".nonexistent.mime.types";
+
+      Assert.DoesNotThrow(() => {
+        Assert.AreEqual(null, MimeType.FindMimeTypeByExtension(string.Empty, mimeTypesFile: nonExistentFile));
+      });
+
+      if (IsRunningOnUnix)
+        Assert.Throws<FileNotFoundException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: nonExistentFile));
+
+      if (IsRunningOnWindows)
+        Assert.DoesNotThrow(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: nonExistentFile));
+    }
+
+    [Test]
     public void TestFindExtensionsByMimeType()
     {
       CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("text/plain"),
@@ -168,6 +208,37 @@ namespace Smdn {
 
       if (IsRunningOnWindows)
         Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null));
+    }
+
+    [Test]
+    public void TestFindExtensionsByMimeType_WithMimeTypesFile()
+    {
+      if (!IsRunningOnUnix)
+        return;
+
+      var pseudoMimeTypesFile = Path.Combine(TestContext.CurrentContext.WorkDirectory, ".mime.types");
+
+      TestUtils.UsingFile(pseudoMimeTypesFile, () => {
+        File.WriteAllText(pseudoMimeTypesFile, "application/x-foo-bar\tfoo-bar");
+
+        CollectionAssert.Contains(
+          MimeType.FindExtensionsByMimeType("application/x-foo-bar", mimeTypesFile: pseudoMimeTypesFile),
+          ".foo-bar"
+        );
+        Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge", mimeTypesFile: pseudoMimeTypesFile));
+      });
+    }
+
+    [Test]
+    public void TestFindExtensionsByMimeType_WithMimeTypesFile_FileNotFound()
+    {
+      const string nonExistentFile = ".nonexistent.mime.types";
+
+      if (IsRunningOnUnix)
+        Assert.Throws<FileNotFoundException>(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: nonExistentFile));
+
+      if (IsRunningOnWindows)
+        Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: nonExistentFile));
     }
 
     [Test]

@@ -76,6 +76,9 @@ partial class MimeType {
     if (extension.Length == 0)
       return null;
 
+    if (!File.Exists(mimeTypesFile))
+      throw new FileNotFoundException("Unable to read the mime.types file.", fileName: mimeTypesFile);
+
     foreach (var entry in ReadMimeTypesFileLines(mimeTypesFile)) {
       for (var index = 1; index < entry.Value.Length; index++) {
         if (string.Equals(entry.Value[index], extension, StringComparison.OrdinalIgnoreCase))
@@ -132,6 +135,8 @@ partial class MimeType {
     else {
       if (mimeTypesFile == null)
         throw new ArgumentNullException(nameof(mimeTypesFile));
+      if (!File.Exists(mimeTypesFile))
+        throw new FileNotFoundException("Unable to read the mime.types file.", fileName: mimeTypesFile);
 
       return FindExtensionsByMimeTypeUnix(mimeType, mimeTypesFile);
     }
