@@ -126,6 +126,11 @@ namespace Smdn {
     [Test]
     public void TestFindMimeTypeByExtension()
     {
+      if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && !File.Exists("/etc/mime.types")) {
+        Assert.Ignore("/etc/mime.types not found");
+        return;
+      }
+
       Assert.AreEqual(MimeType.TextPlain, MimeType.FindMimeTypeByExtension("hoge.txt"));
       Assert.AreEqual(MimeType.TextPlain, MimeType.FindMimeTypeByExtension("hoge.TXT"));
       Assert.AreEqual(MimeType.CreateTextType("html"), MimeType.FindMimeTypeByExtension("index.html"));
