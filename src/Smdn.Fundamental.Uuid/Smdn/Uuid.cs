@@ -92,7 +92,7 @@ public readonly struct Uuid :
 
     physicalAddress.CopyTo(node);
 
-    return new Node(physicalAddress);
+    return new Node(node);
   }
 
   public static Uuid CreateTimeBased()
