@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.0.2)
+// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.0.3)
 //   Name: Smdn.Fundamental.Uuid
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+3b6d4bbdb8e89104beed8bc83b9b240f09d0749d
+//   AssemblyVersion: 3.0.3.0
+//   InformationalVersion: 3.0.3+f2674783671f52cc107bf9220db31542d68751ae
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
