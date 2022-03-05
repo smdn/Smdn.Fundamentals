@@ -101,29 +101,24 @@ public readonly struct Uuid :
     );
 
   public static Uuid CreateTimeBased(PhysicalAddress node)
-  {
-    if (node == null)
-      throw new ArgumentNullException(nameof(node));
-
-    return CreateTimeBased(node.GetAddressBytes());
-  }
+    => CreateTimeBased(
+      (node ?? throw new ArgumentNullException(nameof(node))).GetAddressBytes()
+    );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node)
-  {
-    if (node == null)
-      throw new ArgumentNullException(nameof(node));
-
-    return CreateTimeBased(timestamp, clock, node.GetAddressBytes());
-  }
+    => CreateTimeBased(
+      timestamp,
+      clock,
+      (node ?? throw new ArgumentNullException(nameof(node))).GetAddressBytes()
+    );
 #endif
 
   public static Uuid CreateTimeBased(byte[] node)
-  {
-    return CreateTimeBased(
-        GetTimestamp(),
-        GetClock(),
-        node);
-  }
+    => CreateTimeBased(
+      GetTimestamp(),
+      GetClock(),
+      node
+    );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node)
   {
