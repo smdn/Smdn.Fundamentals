@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
 
-name: Run tests
+name: Run tests (reusable workflow)
 
 # ref: https://docs.microsoft.com/en-us/dotnet/devops/dotnet-test-github-action
 on:

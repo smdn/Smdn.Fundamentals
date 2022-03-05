@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
 
-name: Publish release target
+name: Publish release target (reusable workflow)
 
 on:
   workflow_call:
