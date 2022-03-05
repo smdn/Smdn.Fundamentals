@@ -174,8 +174,17 @@ jobs:
         "::set-output name=working_branch::${release_working_branch}"
 
     - name: Set NUGET_PACKAGES
+      shell: pwsh
       run: |
-        echo "NUGET_PACKAGES=$HOME/.nuget/packages" >> $GITHUB_ENV
+        $dir_nuget_packages =[System.IO.Path]::Combine(
+          '${{ github.workspace }}',
+          '.nuget',
+          'packages'
+        )
+
+        "::notice::NUGET_PACKAGES=${dir_nuget_packages}"
+
+        "NUGET_PACKAGES=${dir_nuget_packages}" >> $Env:GITHUB_ENV
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
