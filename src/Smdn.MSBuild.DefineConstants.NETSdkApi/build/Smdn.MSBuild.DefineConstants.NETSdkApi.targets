@@ -9,6 +9,21 @@ SPDX-License-Identifier: MIT
     DependsOnTargets="AddImplicitDefineConstants"
     BeforeTargets="CoreCompile"
   >
+    <CallTarget Targets="ListNETSdkAvailableApiName">
+      <Output TaskParameter="TargetOutputs" ItemName="_NETSdkAvailableApiSymbol" />
+    </CallTarget>
+
+    <!-- <Message Text="@(_NETSdkAvailableApiSymbol, ', ')" Importance="high" /> -->
+
+    <PropertyGroup>
+      <DefineConstants>$(DefineConstants);@(_NETSdkAvailableApiSymbol, ';')</DefineConstants>
+    </PropertyGroup>
+  </Target>
+
+  <Target
+    Name="ListNETSdkAvailableApiName"
+    Returns="@(NETSdkAvailableApiSymbol)"
+  >
     <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET46_OR_GREATER\b')) Or
@@ -121,8 +136,11 @@ SPDX-License-Identifier: MIT
       </_NETSdkAvailableApiName>
     </ItemGroup>
 
-    <PropertyGroup Condition="0 &lt; @(_NETSdkAvailableApiName->Count())">
-      <DefineConstants>$(DefineConstants);@(_NETSdkAvailableApiName->Metadata('Constant'), ';')</DefineConstants>
-    </PropertyGroup>
+    <ItemGroup>
+      <NETSdkAvailableApiSymbol
+        Condition="0 &lt; @(_NETSdkAvailableApiName->Count())"
+        Include="@(_NETSdkAvailableApiName->Metadata('Constant'))"
+      />
+    </ItemGroup>
   </Target>
 </Project>
