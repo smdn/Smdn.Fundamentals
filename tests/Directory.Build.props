@@ -22,10 +22,13 @@ SPDX-License-Identifier: MIT
     >$(MSBuildProjectFile.Replace('.Tests.csproj', ''))</TestTargetProjectName>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TestTargetProjectName)' != '' ">
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Smdn.MSBuild.DefineConstants.NETSdkApi" Version="[1.0.0]" PrivateAssets="all" IncludeAssets="build"/>
   </ItemGroup>
 
