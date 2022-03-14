@@ -24,6 +24,11 @@ SPDX-License-Identifier: MIT
     <_SmdnProjectAssets_ImportFromLocal>true</_SmdnProjectAssets_ImportFromLocal>
   </PropertyGroup>
 
+  <!-- supress recursive package reference -->
+  <ItemGroup>
+    <PackageReference Remove="$(AssemblyName)" />
+  </ItemGroup>
+
   <PropertyGroup Label="assembly attributes">
     <Description>A package to add DefineConstants corresponding to .NET SDK's API catalog.</Description>
     <CopyrightYear>2022</CopyrightYear>
