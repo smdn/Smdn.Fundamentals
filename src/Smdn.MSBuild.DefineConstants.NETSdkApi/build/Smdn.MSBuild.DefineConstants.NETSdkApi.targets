@@ -20,6 +20,7 @@ SPDX-License-Identifier: MIT
     </PropertyGroup>
   </Target>
 
+  <!-- ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks -->
   <Target
     Name="ListNETSdkAvailableApiName"
     Returns="@(NETSdkAvailableApiSymbol)"
