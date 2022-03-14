@@ -17,6 +17,8 @@ SPDX-License-Identifier: MIT
 
     <EnablePackageValidation>false</EnablePackageValidation>
     <APIListEnableGenerating>false</APIListEnableGenerating>
+
+    <!-- suppress generating README.md by Smdn.MSBuild.ProjectAssets.Library -->
     <GeneratePackageReadmeFile>false</GeneratePackageReadmeFile>
 
     <_SmdnProjectAssets_ImportFromLocal>true</_SmdnProjectAssets_ImportFromLocal>
