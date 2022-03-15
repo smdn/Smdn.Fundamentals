@@ -162,7 +162,7 @@ public static class StreamExtensions {
 #endif
 
     while (sequence.TryGet(ref pos, out var memory, advance: true)) {
-#if NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_WRITE_READONLYSPAN_OF_BYTE
       stream.Write(memory.Span);
 #else
       if (buffer == null || buffer.Length < memory.Length)
@@ -206,7 +206,7 @@ public static class StreamExtensions {
 #endif
 
     while (sequence.TryGet(ref pos, out var memory, advance: true)) {
-#if NETSTANDARD2_1
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       await stream.WriteAsync(memory, cancellationToken).ConfigureAwait(false);
 #else
       if (buffer == null || buffer.Length < memory.Length)
