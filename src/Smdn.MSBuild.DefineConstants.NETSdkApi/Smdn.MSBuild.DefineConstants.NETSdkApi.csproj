@@ -30,12 +30,12 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <PropertyGroup Label="assembly attributes">
-    <Description>A package to add DefineConstants corresponding to .NET SDK's API catalog.</Description>
+    <Description>A package of .targets files to add DefineConstants corresponding to .NET SDK's API catalog.</Description>
     <CopyrightYear>2022</CopyrightYear>
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
-    <PackageTags>MSBuild;DefineConstants;build-assets</PackageTags>
+    <PackageTags>MSBuild;DefineConstants;targets;build-assets</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
