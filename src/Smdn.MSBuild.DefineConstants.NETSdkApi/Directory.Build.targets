@@ -7,12 +7,12 @@ SPDX-License-Identifier: MIT
   <Import Project="build\$(AssemblyName).targets" />
 
   <PropertyGroup>
-    <NupkgReadmeFileName>README.md</NupkgReadmeFileName>
-    <NupkgReadmeFileOutputPath>$(OutputPath)$(NupkgReadmeFileName)</NupkgReadmeFileOutputPath>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NupkgReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</NupkgReadmeFileOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(NupkgReadmeFileOutputPath)" Pack="true" PackagePath="$(NupkgReadmeFileName)" />
+    <None Include="$(NupkgReadmeFileOutputPath)" Pack="true" PackagePath="$(PackageReadmeFile)" />
   </ItemGroup>
 
   <!-- overrides the target GenerateNupkgReadmeFile from Smdn.MSBuild.ProjectAssets.Library -->
