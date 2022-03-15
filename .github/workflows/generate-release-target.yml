@@ -166,8 +166,8 @@ jobs:
         $release_working_branch = "${release_tag}-$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds().ToString("D"))"
 
         # notice determined info
-        '::notice::tag=${release_tag}'
-        '::notice::working_branch=${release_working_branch}'
+        "::notice::tag=${release_tag}"
+        "::notice::working_branch=${release_working_branch}"
 
         # set outputs
         "::set-output name=tag::${release_tag}"
