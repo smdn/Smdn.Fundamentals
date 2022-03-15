@@ -377,7 +377,7 @@ jobs:
             "########## $($content.Title) ###########"
             $content.Content
           }
-          else {
+          elseif ( 0 -lt $content.Content.Length ) {
             Out-File -FilePath $content.FileName -Encoding utf8 -InputObject $($content.Content -join "`n")
 
             $content | Add-Member -MemberType NoteProperty -Name 'IsWritten' -Value $true
