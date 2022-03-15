@@ -93,14 +93,14 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkAvailableApiName Include="System.INumber.Parse(ReadOnlySpan_Of_Char)"/>
-      <_NETSdkAvailableApiName Include="System.INumber.TryParse(ReadOnlySpan_Of_Char)"/>
-      <_NETSdkAvailableApiName Include="System.String.ctor(ReadOnlySpan_Of_Char)"/>
+      <_NETSdkAvailableApiName Include="System.INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApiName Include="System.INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApiName Include="System.String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApiName Include="System.String.Create"/>
       <_NETSdkAvailableApiName Include="System.String.Contains(char)"/>
-      <_NETSdkAvailableApiName Include="System.IO.Stream.ReadAsync(Memory_Of_Byte)"/>
-      <_NETSdkAvailableApiName Include="System.IO.Stream.WriteAsync(ReadOnlyMemory_Of_Byte)"/>
-      <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlySpan_Of_Char)"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.ReadAsync(Memory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.WriteAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask"/>
     </ItemGroup>
 
@@ -120,7 +120,7 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
-      <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlyMemory_Of_Char)"/>
+      <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlyMemory&lt;Char&gt;)"/>
     </ItemGroup>
 
     <!-- NET5_0_OR_GREATER -->
@@ -133,7 +133,15 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup>
       <_NETSdkAvailableApiName Update="@(_NETSdkAvailableApiName)">
-        <Constant>$([System.String]::new('%(Identity)').ToUpperInvariant().Replace('.', '_').Replace('(', '_').Replace(')', ''))</Constant>
+        <Constant>$(
+          [System.String]::new('%(Identity)')
+          .Replace('.', '_')
+          .Replace('(', '_')
+          .Replace(')', '')
+          .Replace('&lt;', '_OF_')
+          .Replace('&gt;', '')
+          .ToUpperInvariant()
+        )</Constant>
       </_NETSdkAvailableApiName>
     </ItemGroup>
 
