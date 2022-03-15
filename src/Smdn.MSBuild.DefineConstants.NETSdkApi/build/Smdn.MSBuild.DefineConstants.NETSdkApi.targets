@@ -38,6 +38,16 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiName Include="System.Threading.Tasks.Task.FromCanceled"/>
     </ItemGroup>
 
+    <!-- NET461_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET461_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+    ">
+      <_NETSdkAvailableApiName Include="System.IAsyncDisposable"/>
+    </ItemGroup>
+
     <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b')) Or
@@ -53,6 +63,8 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiName Include="System.Diagnostics.Process"/>
       <_NETSdkAvailableApiName Include="System.IO.Stream.Close"/>
       <_NETSdkAvailableApiName Include="System.Net.NetworkInformation.PhysicalAddress"/>
+      <_NETSdkAvailableApiName Include="System.Runtime.Serialization.Formatter.Binary"/>
+      <_NETSdkAvailableApiName Include="System.Runtime.Serialization.SerializationBinder"/>
       <_NETSdkAvailableApiName Include="System.Security.Cryptography.HashAlgorithm.Clear"/>
     </ItemGroup>
 
@@ -82,6 +94,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiName Include="System.ArraySegment.Slice"/>
       <_NETSdkAvailableApiName Include="System.String.EndsWith(char)"/>
       <_NETSdkAvailableApiName Include="System.String.Split(char)"/>
+      <_NETSdkAvailableApiName Include="System.String.Split(string)"/>
       <_NETSdkAvailableApiName Include="System.String.StartsWith(char)"/>
       <_NETSdkAvailableApiName Include="System.Collections.Generic.KeyValuePair.Create"/>
       <_NETSdkAvailableApiName Include="System.IO.Path.GetRelativePath"/>
@@ -98,7 +111,11 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiName Include="System.String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApiName Include="System.String.Create"/>
       <_NETSdkAvailableApiName Include="System.String.Contains(char)"/>
+      <_NETSdkAvailableApiName Include="System.IO.Path.Join"/>
+      <_NETSdkAvailableApiName Include="System.IO.Path.TryJoin"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.Read(Span&lt;Byte&gt;)"/>
       <_NETSdkAvailableApiName Include="System.IO.Stream.ReadAsync(Memory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApiName Include="System.IO.Stream.Write(ReadOnlySpan&lt;Byte&gt;)"/>
       <_NETSdkAvailableApiName Include="System.IO.Stream.WriteAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
       <_NETSdkAvailableApiName Include="System.Text.StringBuilder.Append(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask"/>
@@ -127,8 +144,21 @@ SPDX-License-Identifier: MIT
     <ItemGroup Condition="
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
+      <_NETSdkAvailableApiName Include="System.Enum.IsDefined&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApiName Include="System.StringSplitOptions.TrimEntries"/>
       <_NETSdkAvailableApiName Include="System.Buffers.SequenceReader.UnreadSequence"/>
+      <_NETSdkAvailableApiName Include="System.Collections.Generic.IReadOnlySet"/>
+      <_NETSdkAvailableApiName Include="System.Runtime.CompilerServices.IsExternalInit"/>
+      <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask.CompletedTask"/>
       <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask.FromCanceled"/>
+      <_NETSdkAvailableApiName Include="System.Threading.Tasks.ValueTask.FromResult"/>
+    </ItemGroup>
+
+    <!-- NET6_0_OR_GREATER -->
+    <ItemGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET6_0_OR_GREATER\b'))
+    ">
+      <_NETSdkAvailableApiName Include="System.String.Create(IFormatProvider)"/>
     </ItemGroup>
 
     <ItemGroup>
