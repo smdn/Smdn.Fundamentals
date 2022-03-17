@@ -35,6 +35,18 @@ on:
         type: string
         default: "src/"
 
+      timeout_hang:
+        description: "The value to be set to option `--blame-hang-timeout`. (ex: `[{'OS':'Windows','Timeout':'5min'},{'OS':'','Timeout':'3min'}]`)"
+        required: false
+        type: string
+        default: ''
+
+      timeout_vstest_connection:
+        description: "The value to be set to VSTEST_CONNECTION_TIMEOUT. (ex: `[{'OS':'Windows','Timeout':180},{'OS':'','Timeout':60}]`)"
+        required: false
+        type: string
+        default: ''
+
     secrets:
       token_repo:
         description: 'The token which is used to checkout code.'
@@ -214,13 +226,40 @@ jobs:
           -consoleLoggerParameters:NoSummary `
           ${{ matrix.project.PathToTestProject }}
 
+    - name: Determine test timeout values
+      id: test-timeouts
+      shell: pwsh
+      env:
+        TIMEOUT_HANG:               ${{ inputs.timeout_hang }}
+        TIMEOUT_VSTEST_CONNECTION:  ${{ inputs.timeout_vstest_connection }}
+      run: |
+        $timeout_hang = $Env:TIMEOUT_HANG | `
+          ConvertFrom-Json | `
+          where { ($_.OS -ieq '${{ runner.os }}') -or [string]::IsNullOrEmpty($_.OS) } | `
+          select -ExpandProperty Timeout -First 1
+
+        $timeout_vstest_connection = $Env:TIMEOUT_VSTEST_CONNECTION | `
+          ConvertFrom-Json | `
+          where { ($_.OS -ieq '${{ runner.os }}') -or [string]::IsNullOrEmpty($_.OS) } | `
+          select -ExpandProperty Timeout -First 1
+
+        # set fallback value
+        $timeout_hang ??= '3minutes'
+        $timeout_vstest_connection ??= 90
+
+        # set output
+        "::set-output name=timeout_hang::${timeout_hang}"
+        "::set-output name=timeout_vstest_connection::${timeout_vstest_connection}"
+
     - name: Test ${{ matrix.project.Name }}
       shell: pwsh
+      env:
+        VSTEST_CONNECTION_TIMEOUT: ${{ steps.test-timeouts.outputs.timeout_vstest_connection }}
       run: |
         dotnet test `
           --nologo `
           --no-restore `
           --no-build `
           --verbosity quiet `
-          --blame-hang-timeout 5minutes `
+          --blame-hang-timeout '${{ steps.test-timeouts.outputs.timeout_hang }}' `
           ${{ matrix.project.PathToTestProject }}

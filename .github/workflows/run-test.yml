@@ -33,10 +33,12 @@ on:
 
 jobs:
   run-test:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.2
+    uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.3
     with:
       project:            ${{ github.event.inputs.project }}
       os:                 ${{ github.event.inputs.os }}
       dotnet_sdk_version: '6.0.200'
+      timeout_hang:               "[ {'OS':'windows','Timeout':'6min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
+      timeout_vstest_connection:  "[ {'OS':'windows','Timeout':360}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"
     secrets:
       token_repo: ${{ secrets.GITHUB_TOKEN }}
