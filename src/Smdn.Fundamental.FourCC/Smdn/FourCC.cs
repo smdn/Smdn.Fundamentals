@@ -17,7 +17,7 @@ public readonly struct FourCC :
   IEquatable<byte[]>
 {
 #pragma warning restore IDE0055
-  private const int sizeOfSelf = 4;
+  private const int SizeOfSelf = 4;
 
   public static readonly FourCC Empty = new(0);
 
@@ -39,7 +39,7 @@ public readonly struct FourCC :
 
   public FourCC(ReadOnlySpan<byte> span)
   {
-    if (span.Length < sizeOfSelf)
+    if (span.Length < SizeOfSelf)
       throw new ArgumentException("length must be at least 4", nameof(span));
 
     this.fourcc =
@@ -65,7 +65,7 @@ public readonly struct FourCC :
 
   public FourCC(ReadOnlySpan<char> span)
   {
-    if (span.Length < sizeOfSelf)
+    if (span.Length < SizeOfSelf)
       throw new ArgumentException("length must be at least 4", nameof(span));
 
     checked {
@@ -129,8 +129,8 @@ public readonly struct FourCC :
       throw new ArgumentNullException(nameof(buffer));
     if (startIndex < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
-    if (buffer.Length - sizeOfSelf < startIndex)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, sizeOfSelf);
+    if (buffer.Length - SizeOfSelf < startIndex)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, SizeOfSelf);
 
     unchecked {
       buffer[startIndex++] = (byte)(fourcc >> 24);
@@ -142,7 +142,7 @@ public readonly struct FourCC :
 
   public byte[] ToByteArray()
   {
-    var bytes = new byte[sizeOfSelf];
+    var bytes = new byte[SizeOfSelf];
 
     GetBytes(bytes, 0);
 
@@ -154,7 +154,7 @@ public readonly struct FourCC :
     unchecked {
 #pragma warning disable SA1008
 #if SYSTEM_STRING_CREATE
-      return string.Create(sizeOfSelf, this.fourcc, (chars, val) => {
+      return string.Create(SizeOfSelf, this.fourcc, (chars, val) => {
         chars[0] = (char)((val >> 24) & 0xff);
         chars[1] = (char)((val >> 16) & 0xff);
         chars[2] = (char)((val >>  8) & 0xff);
