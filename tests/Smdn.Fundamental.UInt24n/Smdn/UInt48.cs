@@ -21,10 +21,14 @@ namespace Smdn {
     {
       Assert.AreEqual((UInt48)0xff0000000000,
                       new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: true));
+      Assert.AreEqual((UInt48)0xff0000000000,
+                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true));
       Assert.AreEqual((UInt48)0x0000000000cc,
                       new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: true));
       Assert.AreEqual((UInt48)0x0000000000ff,
                       new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: false));
+      Assert.AreEqual((UInt48)0x0000000000ff,
+                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: false));
       Assert.AreEqual((UInt48)0xcc0000000000,
                       new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: false));
 

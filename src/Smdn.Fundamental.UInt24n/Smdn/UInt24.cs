@@ -56,6 +56,11 @@ public struct UInt24 :
     return value.AsSpan(startIndex, SizeOfSelf);
   }
 
+  public UInt24(byte[] value, bool isBigEndian = false)
+    : this(ValidateAndGetSpan(value, 0, nameof(value)), isBigEndian)
+  {
+  }
+
   public UInt24(byte[] value, int startIndex, bool isBigEndian = false)
     : this(ValidateAndGetSpan(value, startIndex, nameof(value)), isBigEndian)
   {
