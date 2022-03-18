@@ -30,6 +30,7 @@ public struct UInt24 :
 #endif
 {
 #pragma warning restore IDE0055
+  private const int SizeOfSelf = 3;
 
   // big endian
   [FieldOffset(0)] public byte Byte0; // 0x 00ff0000
@@ -43,26 +44,37 @@ public struct UInt24 :
   public static readonly UInt24 MinValue = (UInt24)minValue;
   public static readonly UInt24 Zero     = (UInt24)0;
 
-  public UInt24(byte[] value, int startIndex, bool isBigEndian = false)
+  private static ReadOnlySpan<byte> ValidateAndGetSpan(byte[] value, int startIndex, string paramName)
   {
-    const int sizeOfUInt24 = 3;
-
     if (value == null)
-      throw new ArgumentNullException(nameof(value));
+      throw new ArgumentNullException(paramName);
     if (startIndex < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
-    if (value.Length - sizeOfUInt24 < startIndex)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), value, startIndex, sizeOfUInt24);
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(paramName, startIndex);
+    if (value.Length - SizeOfSelf < startIndex)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(paramName, value, startIndex, SizeOfSelf);
+
+    return value.AsSpan(startIndex, SizeOfSelf);
+  }
+
+  public UInt24(byte[] value, int startIndex, bool isBigEndian = false)
+    : this(ValidateAndGetSpan(value, startIndex, nameof(value)), isBigEndian)
+  {
+  }
+
+  public UInt24(ReadOnlySpan<byte> value, bool isBigEndian = false)
+  {
+    if (value.Length < SizeOfSelf)
+      throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(value), SizeOfSelf);
 
     if (isBigEndian) {
-      Byte0 = value[startIndex + 0];
-      Byte1 = value[startIndex + 1];
-      Byte2 = value[startIndex + 2];
+      Byte0 = value[0];
+      Byte1 = value[1];
+      Byte2 = value[2];
     }
     else {
-      Byte0 = value[startIndex + 2];
-      Byte1 = value[startIndex + 1];
-      Byte2 = value[startIndex + 0];
+      Byte0 = value[2];
+      Byte1 = value[1];
+      Byte2 = value[0];
     }
   }
 

@@ -35,6 +35,23 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstruct_ReadOnlySpan()
+    {
+      Assert.AreEqual(
+        (UInt24)0x012345,
+        new UInt24(stackalloc byte[] { 0x01, 0x23, 0x45 }, isBigEndian: true)
+      );
+      Assert.AreEqual(
+        (UInt24)0x452301,
+        new UInt24(stackalloc byte[] { 0x01, 0x23, 0x45 }, isBigEndian: false)
+      );
+
+      Assert.Throws<ArgumentException>(() => new UInt24(ReadOnlySpan<byte>.Empty));
+      Assert.Throws<ArgumentException>(() => new UInt24(stackalloc byte[] { 0x00 }));
+      Assert.Throws<ArgumentException>(() => new UInt24(stackalloc byte[] { 0x00, 0x00 }));
+    }
+
+    [Test]
     public void Test()
     {
       Assert.AreEqual((UInt24)(int)0xff00ff, (UInt24)0xff00ff);

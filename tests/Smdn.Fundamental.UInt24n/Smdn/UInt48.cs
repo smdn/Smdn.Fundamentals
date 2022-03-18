@@ -35,6 +35,26 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestConstruct_ReadOnlySpan()
+    {
+      Assert.AreEqual(
+        (UInt48)0x0123456789AB,
+        new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: true)
+      );
+      Assert.AreEqual(
+        (UInt48)0xAB8967452301,
+        new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: false)
+      );
+
+      Assert.Throws<ArgumentException>(() => new UInt48(ReadOnlySpan<byte>.Empty));
+      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00 }));
+      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00 }));
+      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00 }));
+      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00 }));
+      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }));
+    }
+
+    [Test]
     public void Test()
     {
       Assert.AreEqual((UInt48)(int)0x00ff00ff, (UInt48)(long)0x00ff00ff);
