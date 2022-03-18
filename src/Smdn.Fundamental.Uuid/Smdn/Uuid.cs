@@ -357,7 +357,7 @@ public readonly struct Uuid :
      *       values.
      */
     if (randomNumber.Length != 16)
-      throw new ArgumentException("length must be 16", nameof(randomNumber));
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(randomNumber), 16);
 
     /*
      *    o  Set the two most significant bits (bits 6 and 7) of the
@@ -625,7 +625,7 @@ public readonly struct Uuid :
     : this()
   {
     if (octets.Length != 16)
-      throw new ArgumentException($"length must be 16", nameof(octets));
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(octets), 16);
 
     if (isBigEndian) {
       time_low = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
@@ -646,7 +646,7 @@ public readonly struct Uuid :
   internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version, bool isBigEndian = true)
   {
     if (octets.Length != 16)
-      throw new ArgumentException("length must be exact 16", nameof(octets));
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(octets), 16);
 
     fields_low = 0;
     fields_high = 0;
