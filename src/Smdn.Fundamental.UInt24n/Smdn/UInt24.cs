@@ -225,10 +225,8 @@ public struct UInt24 :
   public override int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
 
   public override string ToString() => ToString(null, null);
-
   public string ToString(string format) => ToString(format, null);
-
   public string ToString(IFormatProvider formatProvider) => ToString(null, formatProvider);
-
-  public string ToString(string format, IFormatProvider formatProvider) => ToUInt32().ToString(format, formatProvider);
+  public string ToString(string format, IFormatProvider formatProvider)
+    => ToUInt32().ToString(format, formatProvider);
 }
