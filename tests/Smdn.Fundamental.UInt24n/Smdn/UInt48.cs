@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET6_0_OR_GREATER
+#define SYSTEM_ISPANFORMATTABLE
+#endif
+
 using System;
 using NUnit.Framework;
 
@@ -402,5 +406,33 @@ namespace Smdn {
       Assert.AreEqual("281474976710655", UInt48.MaxValue.ToString());
       Assert.AreEqual("FFFFFFFFFFFF", UInt48.MaxValue.ToString("X"));
     }
+
+#if SYSTEM_ISPANFORMATTABLE
+    [Test]
+    public void TestTryFormat()
+    {
+      Span<char> destination = stackalloc char[12];
+      int charsWritten = default;
+
+      Assert.IsTrue(UInt48.Zero.TryFormat(destination, out charsWritten, ReadOnlySpan<char>.Empty, provider: null), "#1");
+      Assert.AreEqual(1, charsWritten, $"#1 {nameof(charsWritten)}");
+      Assert.AreEqual("0", new string(destination.Slice(0, charsWritten)), $"#1 formatted string");
+
+      Assert.IsTrue(UInt48.Zero.TryFormat(destination, out charsWritten, "D4", provider: null), "#2");
+      Assert.AreEqual(4, charsWritten, $"#2 {nameof(charsWritten)}");
+      Assert.AreEqual("0000", new string(destination.Slice(0, charsWritten)), $"#2 formatted string");
+
+      Assert.IsTrue(UInt48.MaxValue.TryFormat(destination, out charsWritten, "X", provider: null), "#3");
+      Assert.AreEqual(12, charsWritten, $"#3 {nameof(charsWritten)}");
+      Assert.AreEqual("FFFFFFFFFFFF", new string(destination.Slice(0, charsWritten)), $"#3 formatted string");
+    }
+
+    [Test]
+    public void TestTryFormat_DestinationTooShort()
+    {
+      Assert.IsFalse(UInt48.Zero.TryFormat(Array.Empty<char>(), out var charsWritten, string.Empty, provider: null), "#1");
+      Assert.IsFalse(UInt48.MaxValue.TryFormat(stackalloc char[UInt48.MaxValue.ToString().Length - 1], out charsWritten, string.Empty, provider: null), "#2");
+    }
+#endif
   }
 }

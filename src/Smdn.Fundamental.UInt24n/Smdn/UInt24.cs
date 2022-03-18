@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET6_0_OR_GREATER
+#define SYSTEM_ISPANFORMATTABLE
+#endif
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -18,6 +22,12 @@ public struct UInt24 :
   IComparable<int>,
   IConvertible,
   IFormattable
+#if SYSTEM_ISPANFORMATTABLE
+#pragma warning disable SA1001
+  ,
+  ISpanFormattable
+#pragma warning restore SA1001
+#endif
 {
 #pragma warning restore IDE0055
 
@@ -229,4 +239,11 @@ public struct UInt24 :
   public string ToString(IFormatProvider formatProvider) => ToString(null, formatProvider);
   public string ToString(string format, IFormatProvider formatProvider)
     => ToUInt32().ToString(format, formatProvider);
+
+#if SYSTEM_ISPANFORMATTABLE
+#nullable enable
+  public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
+    => ToUInt32().TryFormat(destination, out charsWritten, format, provider);
+#nullable restore
+#endif
 }
