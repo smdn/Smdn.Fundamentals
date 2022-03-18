@@ -309,6 +309,27 @@ public static class ExceptionUtils {
     );
 
   /*
+   * array/collection/string/Span<T>/Memory<T>
+   */
+  public static ArgumentException CreateArgumentMustHaveLengthExact(
+    string paramName,
+    int length
+  )
+    => new(
+      Locale.GetText("must have length exact {0}", length),
+      paramName
+    );
+
+  public static ArgumentException CreateArgumentMustHaveLengthAtLeast(
+    string paramName,
+    int length
+  )
+    => new(
+      Locale.GetText("must have length at least {0}", length),
+      paramName
+    );
+
+  /*
    * string
    */
   public static ArgumentException CreateArgumentMustBeNonEmptyString(string paramName)

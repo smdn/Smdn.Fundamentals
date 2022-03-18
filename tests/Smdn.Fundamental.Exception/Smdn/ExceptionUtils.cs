@@ -273,6 +273,28 @@ namespace Smdn {
     }
 
     [Test, SetUICulture("")]
+    public void TestCreateArgumentMustHaveLengthExact()
+    {
+      var ex = ExceptionUtils.CreateArgumentMustHaveLengthExact("arg", 4);
+
+      Assert.IsNull(ex.InnerException);
+      StringAssert.StartsWith("must have length exact 4", ex.Message);
+      Assert.AreEqual("arg", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
+    public void TestCreateArgumentMustHaveLengthAtLeast()
+    {
+      var ex = ExceptionUtils.CreateArgumentMustHaveLengthAtLeast("arg", 4);
+
+      Assert.IsNull(ex.InnerException);
+      StringAssert.StartsWith("must have length at least 4", ex.Message);
+      Assert.AreEqual("arg", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyString()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyString("arg");

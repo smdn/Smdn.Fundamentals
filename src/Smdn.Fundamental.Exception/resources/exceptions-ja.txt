@@ -38,6 +38,12 @@ msgstr "コレクションの末尾を越えてアクセスしようとしてい
 msgid "all items in the collection must be non-null"
 msgstr "コレクション内のすべての項目は非nullでなければなりません"
 
+msgid "must have length exact {0}"
+msgstr "長さは正確に{0}でなければなりません。"
+
+msgid "must have length at least {0}"
+msgstr "長さは少なくとも{0}でなければなりません。"
+
 msgid "must be a non-empty string"
 msgstr "空ではない文字列を指定してください"
 
