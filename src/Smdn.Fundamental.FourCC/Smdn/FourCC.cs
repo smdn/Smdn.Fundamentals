@@ -40,7 +40,7 @@ public readonly struct FourCC :
   public FourCC(ReadOnlySpan<byte> span)
   {
     if (span.Length < SizeOfSelf)
-      throw new ArgumentException("length must be at least 4", nameof(span));
+      throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(span), SizeOfSelf);
 
     this.fourcc =
       (span[0] << 24) |
@@ -66,7 +66,7 @@ public readonly struct FourCC :
   public FourCC(ReadOnlySpan<char> span)
   {
     if (span.Length < SizeOfSelf)
-      throw new ArgumentException("length must be at least 4", nameof(span));
+      throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(span), SizeOfSelf);
 
     checked {
       this.fourcc =
