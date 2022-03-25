@@ -1,11 +1,35 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 #if NET6_0_OR_GREATER
-#define SYSTEM_ISPANFORMATTABLE
+#define SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+#define SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+#endif
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+#define SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+#define SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+#define SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+#endif
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_MATH_CLAMP
 #endif
 
 using System;
+using System.Globalization;
+#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2 || SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+using System.Numerics;
+#endif
 using System.Runtime.InteropServices;
+#if SYSTEM_MATH_CLAMP
+using MathClampShim = System.Math;
+#else
+using MathClampShim = Smdn.UInt24n;
+#endif
+#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+using MathDivRemShim = System.Math;
+#else
+using MathDivRemShim = Smdn.UInt24n;
+#endif
 
 namespace Smdn;
 
@@ -13,24 +37,37 @@ namespace Smdn;
 [StructLayout(LayoutKind.Explicit, Pack = 1)]
 #pragma warning disable IDE0055
 public struct UInt24 :
-  IEquatable<UInt24>,
-  IEquatable<uint>,
-  IEquatable<int>,
-  IComparable,
-  IComparable<UInt24>,
-  IComparable<uint>,
-  IComparable<int>,
-  IConvertible,
-  IFormattable
-#if SYSTEM_ISPANFORMATTABLE
-#pragma warning disable SA1001
-  ,
-  ISpanFormattable
-#pragma warning restore SA1001
+#if FEATURE_GENERIC_MATH
+#if false
+  IAdditiveIdentity<UInt24, int>,
+  IAdditiveIdentity<UInt24, uint>,
 #endif
+#if false
+  IMultiplicativeIdentity<UInt24, int>,
+  IMultiplicativeIdentity<UInt24, uint>,
+#endif
+  IBinaryInteger<UInt24>,
+  IBinaryNumber<UInt24>,
+  IMinMaxValue<UInt24>,
+  IUnsignedNumber<UInt24>,
+#else // FEATURE_GENERIC_MATH
+  IComparable<UInt24>,
+  IComparable,
+  IEquatable<UInt24>,
+  IFormattable,
+#if SYSTEM_ISPANFORMATTABLE
+  ISpanFormattable,
+#endif
+#endif // FEATURE_GENERIC_MATH
+  IConvertible,
+  IComparable<int>,
+  IComparable<uint>,
+  IEquatable<int>,
+  IEquatable<uint>
 {
 #pragma warning restore IDE0055
   private const int SizeOfSelf = 3;
+  private const int BitsOfSelf = 8 * SizeOfSelf;
 
   // big endian
   [FieldOffset(0)] public byte Byte0; // 0x 00ff0000
@@ -39,30 +76,44 @@ public struct UInt24 :
 
   private const int maxValue = 0xffffff;
   private const int minValue = 0x000000;
+  private const uint UnusedBitMask = 0xFF000000;
 
-  public static readonly UInt24 MaxValue = (UInt24)maxValue;
-  public static readonly UInt24 MinValue = (UInt24)minValue;
-  public static readonly UInt24 Zero     = (UInt24)0;
+  public static readonly UInt24 MaxValue = new(maxValue);
+  public static readonly UInt24 MinValue = new(minValue);
+  public static readonly UInt24 Zero     = new(0);
+  public static readonly UInt24 One      = new(1);
 
-  private static ReadOnlySpan<byte> ValidateAndGetSpan(byte[] value, int startIndex, string paramName)
-  {
-    if (value == null)
-      throw new ArgumentNullException(paramName);
-    if (startIndex < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(paramName, startIndex);
-    if (value.Length - SizeOfSelf < startIndex)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(paramName, value, startIndex, SizeOfSelf);
+#if FEATURE_GENERIC_MATH
+  // INumber
+  static UInt24 INumber<UInt24>.Zero => Zero;
+  static UInt24 INumber<UInt24>.One => One;
 
-    return value.AsSpan(startIndex, SizeOfSelf);
-  }
+  // IMinMaxValue
+  static UInt24 IMinMaxValue<UInt24>.MinValue => MinValue;
+  static UInt24 IMinMaxValue<UInt24>.MaxValue => MaxValue;
+
+  // IAdditiveIdentity
+  static UInt24 IAdditiveIdentity<UInt24, UInt24>.AdditiveIdentity => Zero;
+#if false
+  static int IAdditiveIdentity<UInt24, int>.AdditiveIdentity => 0;
+  static uint IAdditiveIdentity<UInt24, uint>.AdditiveIdentity => 0u;
+#endif
+
+  // IMultiplicativeIdentity
+  static UInt24 IMultiplicativeIdentity<UInt24, UInt24>.MultiplicativeIdentity => One;
+#if false
+  static int IMultiplicativeIdentity<UInt24, int>.MultiplicativeIdentity => 1;
+  static uint IMultiplicativeIdentity<UInt24, uint>.MultiplicativeIdentity => 1u;
+#endif
+#endif
 
   public UInt24(byte[] value, bool isBigEndian = false)
-    : this(ValidateAndGetSpan(value, 0, nameof(value)), isBigEndian)
+    : this(UInt24n.ValidateAndGetSpan(value, 0, nameof(value), SizeOfSelf), isBigEndian)
   {
   }
 
   public UInt24(byte[] value, int startIndex, bool isBigEndian = false)
-    : this(ValidateAndGetSpan(value, startIndex, nameof(value)), isBigEndian)
+    : this(UInt24n.ValidateAndGetSpan(value, startIndex, nameof(value), SizeOfSelf), isBigEndian)
   {
   }
 
@@ -83,68 +134,28 @@ public struct UInt24 :
     }
   }
 
+  private UInt24(uint value)
+  {
+    unchecked {
+      Byte0 = (byte)(value >> 16);
+      Byte1 = (byte)(value >> 8);
+      Byte2 = (byte)value;
+    }
+  }
+
   [CLSCompliant(false)]
   public static explicit operator UInt24(uint val)
-  {
-    if (maxValue < val)
-      throw new OverflowException();
-
-    var uint24 = new UInt24();
-
-    unchecked {
-      uint24.Byte0 = (byte)(val >> 16);
-      uint24.Byte1 = (byte)(val >> 8);
-      uint24.Byte2 = (byte)(val);
-    }
-
-    return uint24;
-  }
+    => maxValue < val ? throw UInt24n.CreateOverflowException<UInt24>(val) : new(val);
 
   public static explicit operator UInt24(int val)
-  {
-    if (val is < minValue or > maxValue)
-      throw new OverflowException();
-
-    var uint24 = new UInt24();
-
-    unchecked {
-      uint24.Byte0 = (byte)(val >> 16);
-      uint24.Byte1 = (byte)(val >> 8);
-      uint24.Byte2 = (byte)(val);
-    }
-
-    return uint24;
-  }
+    => val is < minValue or > maxValue ? throw UInt24n.CreateOverflowException<UInt24>(val) : new(unchecked((uint)val));
 
   [CLSCompliant(false)]
   public static explicit operator UInt24(ushort val)
-  {
-    var uint24 = new UInt24();
-
-    unchecked {
-      uint24.Byte0 = 0;
-      uint24.Byte1 = (byte)(val >> 8);
-      uint24.Byte2 = (byte)(val);
-    }
-
-    return uint24;
-  }
+    => new((uint)val);
 
   public static explicit operator UInt24(short val)
-  {
-    if (val < minValue)
-      throw new OverflowException();
-
-    var uint24 = new UInt24();
-
-    unchecked {
-      uint24.Byte0 = 0;
-      uint24.Byte1 = (byte)(val >> 8);
-      uint24.Byte2 = (byte)(val);
-    }
-
-    return uint24;
-  }
+    => val < minValue ? throw UInt24n.CreateOverflowException<UInt24>(val) : new((uint)val);
 
   public static explicit operator short(UInt24 val) => checked((short)val.ToInt32());
 
@@ -201,16 +212,19 @@ public struct UInt24 :
     else if (obj is int valInt)
       return CompareTo(valInt);
     else
-      throw new ArgumentException("ojb is not UInt24", nameof(obj));
+      throw UInt24n.CreateArgumentIsNotComparableException<UInt24>(obj, nameof(obj));
   }
 
-  public int CompareTo(UInt24 other) => this.ToUInt32().CompareTo(other.ToUInt32());
+  public int CompareTo(UInt24 other) => ToUInt32().CompareTo(other.ToUInt32());
 
   [CLSCompliant(false)]
-  public int CompareTo(uint other) => this.ToUInt32().CompareTo(other);
+  public int CompareTo(uint other) => ToUInt32().CompareTo(other);
 
-  public int CompareTo(int other) => this.ToInt32().CompareTo(other);
+  public int CompareTo(int other) => ToInt32().CompareTo(other);
 
+  /*
+   * IComparisonOperators
+   */
   public static bool operator <(UInt24 x, UInt24 y) => x.ToUInt32() < y.ToUInt32();
   public static bool operator <=(UInt24 x, UInt24 y) => x.ToUInt32() <= y.ToUInt32();
   public static bool operator >(UInt24 x, UInt24 y) => x.ToUInt32() > y.ToUInt32();
@@ -219,9 +233,9 @@ public struct UInt24 :
   public bool Equals(UInt24 other) => this == other;
 
   [CLSCompliant(false)]
-  public bool Equals(uint other) => this.ToUInt32() == other;
+  public bool Equals(uint other) => ToUInt32() == other;
 
-  public bool Equals(int other) => this.ToInt32() == other;
+  public bool Equals(int other) => ToInt32() == other;
 
   public override bool Equals(object obj)
   {
@@ -235,19 +249,20 @@ public struct UInt24 :
       return false;
   }
 
+  /*
+   * IEqualityOperators
+   */
   public static bool operator ==(UInt24 x, UInt24 y)
-  {
-    return (x.Byte0 == y.Byte0 &&
-            x.Byte1 == y.Byte1 &&
-            x.Byte2 == y.Byte2);
-  }
+    =>
+      x.Byte0 == y.Byte0 &&
+      x.Byte1 == y.Byte1 &&
+      x.Byte2 == y.Byte2;
 
   public static bool operator !=(UInt24 x, UInt24 y)
-  {
-    return (x.Byte0 != y.Byte0 ||
-            x.Byte1 != y.Byte1 ||
-            x.Byte2 != y.Byte2);
-  }
+    =>
+      x.Byte0 != y.Byte0 ||
+      x.Byte1 != y.Byte1 ||
+      x.Byte2 != y.Byte2;
 
   public override int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
 
@@ -262,5 +277,380 @@ public struct UInt24 :
   public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider)
     => ToUInt32().TryFormat(destination, out charsWritten, format, provider);
 #nullable restore
+#endif
+
+#nullable enable
+  // IParseable<TSelf>.Parse(String, IFormatProvider)
+  public static UInt24 Parse(string s, IFormatProvider? provider = null)
+    => Parse(s, NumberStyles.Integer, provider);
+
+  // INumber<TSelf>.Parse(String, NumberStyles, IFormatProvider)
+  public static UInt24 Parse(string s, NumberStyles style, IFormatProvider? provider = null)
+    => (UInt24)UInt32.Parse(s, style, provider);
+
+#if SYSTEM_INUMBER_PARSE_READONLYSPAN_OF_CHAR
+#if FEATURE_GENERIC_MATH
+  static UInt24 ISpanParseable<UInt24>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+    => Parse(s, NumberStyles.Integer, provider);
+#endif
+
+  // INumber<TSelf>.Parse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider)
+  public static UInt24 Parse(ReadOnlySpan<char> s, NumberStyles style = NumberStyles.Integer, IFormatProvider? provider = null)
+    => (UInt24)UInt32.Parse(s, style, provider);
+#endif
+
+  public static bool TryParse(string? s, out UInt24 result)
+    => TryParse(s, NumberStyles.Integer, provider: null, out result);
+
+  // IParseable<TSelf>.TryParse(String, IFormatProvider, TSelf)
+  public static bool TryParse(string? s, IFormatProvider? provider, out UInt24 result)
+    => TryParse(s, NumberStyles.Integer, provider, out result);
+
+  // INumber<TSelf>.TryParse(ReadOnlySpan<char>, NumberStyles, IFormatProvider?, out TSelf)
+  public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out UInt24 result)
+  {
+    result = default;
+
+    if (!UInt32.TryParse(s, style, provider, out var result32))
+      return false;
+
+    if (maxValue < result32)
+      return false; // overflow
+
+    result = new(result32);
+
+    return true;
+  }
+
+#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
+  public static bool TryParse(ReadOnlySpan<char> s, out UInt24 result)
+    => TryParse(s, NumberStyles.Integer, provider: null, out result);
+
+  // ISpanParseable<TSelf>.TryParse(ReadOnlySpan<Char>, IFormatProvider, TSelf)
+  public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out UInt24 result)
+    => TryParse(s, NumberStyles.Integer, provider, out result);
+
+  // INumber<TSelf>.TryParse(ReadOnlySpan<char>, NumberStyles, IFormatProvider?, out TSelf)
+  public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, IFormatProvider? provider, out UInt24 result)
+  {
+    result = default;
+
+    if (!UInt32.TryParse(s, style, provider, out var result32))
+      return false;
+
+    if (maxValue < result32)
+      return false; // overflow
+
+    result = new(result32);
+
+    return true;
+  }
+#endif
+#nullable restore
+
+  // IAdditionOperators
+  public static UInt24 operator +(UInt24 left, UInt24 right) => new(unchecked(left.ToUInt32() + right.ToUInt32())); // TODO: checked
+
+  // ISubtractionOperators
+  public static UInt24 operator -(UInt24 left, UInt24 right) => new(unchecked(left.ToUInt32() - right.ToUInt32())); // TODO: checked
+
+  // IMultiplyOperators
+  public static UInt24 operator *(UInt24 left, UInt24 right) => new(unchecked(left.ToUInt32() * right.ToUInt32())); // TODO: checked
+
+  // IDivisionOperators
+  public static UInt24 operator /(UInt24 left, UInt24 right) => new(left.ToUInt32() / right.ToUInt32()); // TODO: checked
+
+  // IModulusOperators
+  public static UInt24 operator %(UInt24 left, UInt24 right) => new(left.ToUInt32() % right.ToUInt32()); // TODO: checked
+
+  // IUnaryPlusOperators
+  public static UInt24 operator +(UInt24 value) => new(+value.ToUInt32()); // TODO: checked
+
+  // IUnaryNegationOperators
+  public static UInt24 operator -(UInt24 value) => new(unchecked(0 - value.ToUInt32())); // TODO: checked
+
+  // IIncrementOperators
+  public static UInt24 operator ++(UInt24 value) => new(unchecked(value.ToUInt32() + 1)); // TODO: checked
+
+  // IDecrementOperators
+  public static UInt24 operator --(UInt24 value) => new(unchecked(value.ToUInt32() - 1)); // TODO: checked
+
+  /*
+   * INumber<TOther>.Abs/Sign
+   */
+  public static UInt24 Abs(UInt24 value) => value;
+  public static UInt24 Sign(UInt24 value) => value == Zero ? Zero : One;
+
+  /*
+   * INumber<TOther>.Min/Max/Clamp
+   */
+  public static UInt24 Min(UInt24 x, UInt24 y) => x < y ? x : y;
+  public static UInt24 Max(UInt24 x, UInt24 y) => x > y ? x : y;
+  public static UInt24 Clamp(UInt24 value, UInt24 min, UInt24 max)
+    => max < min
+      ? throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max))
+      : new(MathClampShim.Clamp(value.ToUInt32(), min.ToUInt32(), max.ToUInt32()));
+
+  /*
+   * INumber<TOther>.DivRem
+   */
+  public static (UInt24 Quotient, UInt24 Remainder) DivRem(UInt24 left, UInt24 right)
+  {
+    var (quot, rem) = MathDivRemShim.DivRem(left.ToUInt32(), right.ToUInt32());
+
+    return (new(quot), new(rem));
+  }
+
+#if FEATURE_GENERIC_MATH
+  /*
+   * INumber<TOther>.Create/TryCreate
+   */
+  public static UInt24 Create<TOther>(TOther value) where TOther : INumber<TOther>
+  {
+    if (TryCreateCore(value, out var result))
+      return result;
+
+    throw UInt24n.CreateOverflowException<UInt24>(value);
+  }
+
+  public static UInt24 CreateTruncating<TOther>(TOther value) where TOther : INumber<TOther>
+  {
+    if (TryCreateCore(value, out var result))
+      return result;
+
+    throw UInt24n.CreateOverflowException<UInt24>(value);
+  }
+
+  public static bool TryCreate<TOther>(TOther value, out UInt24 result) where TOther : INumber<TOther>
+    => TryCreateCore(value, out result);
+
+  private static bool TryCreateCore<TOther>(
+    TOther value,
+    out UInt24 result
+  ) where TOther : INumber<TOther>
+  {
+    result = default;
+
+    int val;
+
+    if (typeof(TOther) == typeof(byte))
+      val = (int)((byte)(object)value);
+    else if (typeof(TOther) == typeof(sbyte))
+      val = (int)((sbyte)(object)value);
+    else if (typeof(TOther) == typeof(char))
+      val = (int)((char)(object)value);
+    else if (typeof(TOther) == typeof(ushort))
+      val = (int)((ushort)(object)value);
+    else if (typeof(TOther) == typeof(short))
+      val = (int)((short)(object)value);
+    else if (typeof(TOther) == typeof(uint))
+      val = unchecked((int)((uint)(object)value));
+    else if (typeof(TOther) == typeof(int))
+      val = (int)(object)value;
+    else if (typeof(TOther) == typeof(ulong))
+      val = unchecked((int)((ulong)(object)value));
+    else if (typeof(TOther) == typeof(long))
+      val = unchecked((int)((long)(object)value));
+    else if (typeof(TOther) == typeof(nuint))
+      val = unchecked((int)((nuint)(object)value));
+    else if (typeof(TOther) == typeof(nint))
+      val = unchecked((int)((nint)(object)value));
+    else if (typeof(TOther) == typeof(Half))
+      val = (int)((Half)(object)value);
+    else if (typeof(TOther) == typeof(float))
+      val = unchecked((int)((float)(object)value));
+    else if (typeof(TOther) == typeof(double))
+      val = unchecked((int)((double)(object)value));
+#pragma warning disable IDE0045
+    else if (typeof(TOther) == typeof(decimal))
+      val = unchecked((int)((decimal)(object)value));
+#pragma warning restore IDE0045
+    else
+      throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();
+
+    if (val is < minValue or > maxValue)
+      return false; // overflow
+
+    result = new(unchecked((uint)val));
+
+    return true;
+  }
+
+  public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumber<TOther>
+  {
+    if (typeof(TOther) == typeof(byte)) {
+      return new((uint)((byte)(object)value));
+    }
+    else if (typeof(TOther) == typeof(sbyte)) {
+      var val = (sbyte)(object)value;
+
+      return val < minValue ? MinValue : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(char)) {
+      return new((uint)((char)(object)value));
+    }
+    else if (typeof(TOther) == typeof(ushort)) {
+      return new((uint)((ushort)(object)value));
+    }
+    else if (typeof(TOther) == typeof(short)) {
+      var val = (short)(object)value;
+
+      return val < 0 ? Zero : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(uint)) {
+      var val = (uint)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new(val);
+    }
+    else if (typeof(TOther) == typeof(int)) {
+      var val = (int)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(ulong)) {
+      var val = (ulong)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(long)) {
+      var val = (long)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(nuint)) {
+      var val = (nuint)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(nint)) {
+      var val = (nint)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(Half)) {
+      var val = (float)((Half)(object)value);
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(float)) {
+      var val = (float)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(double)) {
+      var val = (double)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+    else if (typeof(TOther) == typeof(decimal)) {
+      var val = (decimal)(object)value;
+
+      return val < minValue ? MinValue
+        : val > maxValue ? MaxValue
+        : new((uint)val);
+    }
+
+    throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();
+  }
+#endif
+
+  /*
+   * IBitwiseOperators
+   */
+  public static UInt24 operator &(UInt24 left, UInt24 right) => new(left.ToUInt32() & right.ToUInt32());
+  public static UInt24 operator |(UInt24 left, UInt24 right) => new(left.ToUInt32() | right.ToUInt32());
+  public static UInt24 operator ^(UInt24 left, UInt24 right) => new(left.ToUInt32() ^ right.ToUInt32());
+  public static UInt24 operator ~(UInt24 value) => new(~value.ToUInt32());
+
+  /*
+   * IBinaryNumber
+   */
+#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+  public static bool IsPow2(UInt24 value) => BitOperations.IsPow2(value.ToUInt32());
+#endif
+#if SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+  public static int Log2(UInt24 value) => BitOperations.Log2(value.ToUInt32());
+#if FEATURE_GENERIC_MATH
+  static UInt24 IBinaryNumber<UInt24>.Log2(UInt24 value) => new((uint)Log2(value));
+#endif
+#endif
+
+  /*
+   * IShiftOperators
+   */
+  public static UInt24 operator <<(UInt24 value, int shiftAmount) => new(value.ToUInt32() << UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf));
+  public static UInt24 operator >>(UInt24 value, int shiftAmount) => new(value.ToUInt32() >> UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf));
+
+  /*
+   * IBinaryInteger
+   */
+  public static UInt24 RotateLeft(UInt24 value, int rotateAmount)
+  {
+    if (rotateAmount == 0)
+      return value;
+    if (rotateAmount < 0)
+      return RotateRight(value, -rotateAmount);
+
+    rotateAmount = UInt24n.RegularizeRotateAmount(rotateAmount, BitsOfSelf);
+
+    var val = value.ToUInt32();
+
+    return new((val << rotateAmount) | (val >> (BitsOfSelf - rotateAmount)));
+  }
+
+  public static UInt24 RotateRight(UInt24 value, int rotateAmount)
+  {
+    if (rotateAmount == 0)
+      return value;
+    if (rotateAmount < 0)
+      return RotateLeft(value, -rotateAmount);
+
+    rotateAmount = UInt24n.RegularizeRotateAmount(rotateAmount, BitsOfSelf);
+
+    var val = value.ToUInt32();
+
+    return new((val >> rotateAmount) | (val << (BitsOfSelf - rotateAmount)));
+  }
+
+#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+#if FEATURE_GENERIC_MATH
+  static UInt24 IBinaryInteger<UInt24>.LeadingZeroCount(UInt24 value) => new((uint)LeadingZeroCount(value));
+#endif
+  public static int LeadingZeroCount(UInt24 value)
+    => BitOperations.LeadingZeroCount(value.ToUInt32()) - (32 - BitsOfSelf);
+#endif
+
+#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+#if FEATURE_GENERIC_MATH
+  static UInt24 IBinaryInteger<UInt24>.PopCount(UInt24 value) => new((uint)PopCount(value));
+#endif
+  public static int PopCount(UInt24 value)
+    => BitOperations.PopCount(value.ToUInt32());
+#endif
+
+#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+#if FEATURE_GENERIC_MATH
+  static UInt24 IBinaryInteger<UInt24>.TrailingZeroCount(UInt24 value) => new((uint)TrailingZeroCount(value));
+#endif
+  public static int TrailingZeroCount(UInt24 value)
+    => BitOperations.TrailingZeroCount(value.ToUInt32() | UnusedBitMask);
 #endif
 }
