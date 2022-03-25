@@ -194,6 +194,28 @@ namespace Smdn {
     }
 
     [Test, SetUICulture("")]
+    public void TestCreateArgumentXMustBeLessThanY()
+    {
+      var ex = ExceptionUtils.CreateArgumentXMustBeLessThanY(0, "min", 3, "max");
+
+      Assert.IsNull(ex.InnerException);
+      StringAssert.StartsWith("`min` must be less than `max` (min=0, max=3)", ex.Message);
+      Assert.AreEqual("min", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
+    public void TestCreateArgumentXMustBeLessThanOrEqualToY()
+    {
+      var ex = ExceptionUtils.CreateArgumentXMustBeLessThanOrEqualToY(0, "min", 3, "max");
+
+      Assert.IsNull(ex.InnerException);
+      StringAssert.StartsWith("`min` must be less than or equal to `max` (min=0, max=3)", ex.Message);
+      Assert.AreEqual("min", ex.ParamName);
+      Assert.IsInstanceOf<ArgumentException>(ex);
+    }
+
+    [Test, SetUICulture("")]
     public void TestCreateArgumentMustBeNonEmptyArray()
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyArray("arg");

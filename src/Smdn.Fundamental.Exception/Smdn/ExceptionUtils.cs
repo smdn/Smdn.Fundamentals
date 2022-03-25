@@ -252,6 +252,28 @@ public static class ExceptionUtils {
       paramName
     );
 
+  public static ArgumentException CreateArgumentXMustBeLessThanY(
+    object actualValueX,
+    string paramNameX,
+    object actualValueY,
+    string paramNameY
+  )
+    => new(
+      Locale.GetText("`{0}` must be less than `{1}` ({0}={2}, {1}={3})", paramNameX, paramNameY, actualValueX, actualValueY),
+      paramNameX
+    );
+
+  public static ArgumentException CreateArgumentXMustBeLessThanOrEqualToY(
+    object actualValueX,
+    string paramNameX,
+    object actualValueY,
+    string paramNameY
+  )
+    => new(
+      Locale.GetText("`{0}` must be less than or equal to `{1}` ({0}={2}, {1}={3})", paramNameX, paramNameY, actualValueX, actualValueY),
+      paramNameX
+    );
+
   /*
    * array
    */
