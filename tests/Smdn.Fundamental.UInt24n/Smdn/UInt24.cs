@@ -67,12 +67,6 @@ namespace Smdn {
       Assert.IsTrue(zero.Equals(zero));
       Assert.IsFalse(zero.Equals(one));
       Assert.IsFalse(zero.Equals(null));
-
-      Assert.AreEqual(1, zero.CompareTo(null));
-
-      Assert.That(0 < one.CompareTo(zero));
-      Assert.That(0 < one.CompareTo(0));
-      Assert.That(0 < one.CompareTo(0u));
     }
 
     [Test]
@@ -90,21 +84,50 @@ namespace Smdn {
       Assert.IsTrue(UInt24.Zero.Equals(UInt24.Zero));
       Assert.IsTrue(UInt24.Zero.Equals(0));
       Assert.IsTrue(UInt24.Zero.Equals(0u));
+      Assert.IsFalse(UInt24.One.Equals(UInt24.Zero));
+      Assert.IsFalse(UInt24.One.Equals(0));
+      Assert.IsFalse(UInt24.One.Equals(0u));
       Assert.IsFalse(UInt24.Zero.Equals(UInt24.MaxValue));
       Assert.IsFalse(UInt24.Zero.Equals(int.MaxValue));
       Assert.IsFalse(UInt24.Zero.Equals(uint.MaxValue));
 
       object val;
 
-      val = UInt24.Zero;
-      Assert.IsTrue(UInt24.Zero.Equals(val));
-
-      val = 0;
-      Assert.IsTrue(UInt24.Zero.Equals(val));
-
-      val = 0u;
-      Assert.IsTrue(UInt24.Zero.Equals(val));
+      val = UInt24.Zero; Assert.IsTrue(UInt24.Zero.Equals(val));
+      val = null; Assert.IsFalse(UInt24.Zero.Equals(val));
     }
+
+    [TestCase(0, true)]
+    [TestCase(0u, true)]
+    [TestCase((object)null, false)]
+    [TestCase(true, false)]
+    public void TestEquals_Object(object value, bool expected)
+      => Assert.AreEqual(expected, UInt24.Zero.Equals(value));
+
+
+    [Test]
+    public void TestCompareTo()
+    {
+      var zero = (UInt24)0x000000;
+      var one  = (UInt24)0x000001;
+
+      Assert.AreEqual(1, zero.CompareTo(null), "CompareTo(null)");
+
+      Assert.That(0 == zero.CompareTo(zero), "Zero.CompareTo(Zero)");
+      Assert.That(0 > zero.CompareTo(one), "Zero.CompareTo(Zero)");
+      Assert.That(0 < one.CompareTo(zero), "One.CompareTo(Zero)");
+      Assert.That(0 == one.CompareTo(one), "One.CompareTo(One)");
+
+      Assert.That(0 < one.CompareTo(0), "One.CompareTo(0)");
+      Assert.That(0 < one.CompareTo(0u), "One.CompareTo(0u)");
+    }
+
+    [TestCase(false)]
+    [TestCase(0.0)]
+    [TestCase((byte)0)]
+    [TestCase("0")]
+    public void TestCompareTo_NotComparable(object value)
+      => Assert.Throws<ArgumentException>(() => UInt24.Zero.CompareTo(value));
 
     [Test]
     public void TestOpExplicitFromInt16()

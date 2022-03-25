@@ -1,0 +1,128 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ItemGroup>
+    <!-- exclude templates from the compile targets -->
+    <Compile Remove="@(UInt24nTemplateFile)" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <UInt24nIsBeforeInnerBuilds Condition="'$(TargetFramework)' == ''">true</UInt24nIsBeforeInnerBuilds>
+  </PropertyGroup>
+
+  <Target
+    Name="UInt24nInitializeTemplates"
+    Outputs="UInt24nTemplate"
+  >
+    <ItemGroup>
+      <UInt24Template Include="@(UInt24nTemplateFile)">
+        <OutputFilePath>$(UInt24nTemplateExpandingDirectory)$([System.String]::new(%(Filename)).Replace('TUInt24n', 'UInt24')).g%(Extension)</OutputFilePath>
+      </UInt24Template>
+      <UInt48Template Include="@(UInt24nTemplateFile)">
+        <OutputFilePath>$(UInt24nTemplateExpandingDirectory)$([System.String]::new(%(Filename)).Replace('TUInt24n', 'UInt48')).g%(Extension)</OutputFilePath>
+      </UInt48Template>
+    </ItemGroup>
+  </Target>
+
+  <Target
+    Name="UInt24nIncludeCompileTarget"
+    BeforeTargets="BeforeBuild"
+    DependsOnTargets="UInt24nInitializeTemplates"
+    Condition="'$(UInt24nIsBeforeInnerBuilds)' != 'true'"
+  >
+    <!-- include generated files into the compile target -->
+    <ItemGroup>
+      <Compile Include="%(UInt24Template.OutputFilePath)" Visible="false" AutoGen="true" />
+      <Compile Include="%(UInt48Template.OutputFilePath)" Visible="false" AutoGen="true" />
+    </ItemGroup>
+  </Target>
+
+  <Target
+    Name="UInt24nCleanExpandedFiles"
+    AfterTargets="Clean"
+    DependsOnTargets="UInt24nInitializeTemplates"
+    Condition="'$(UInt24nIsBeforeInnerBuilds)' == 'true'"
+  >
+    <Delete Files="%(UInt24Template.OutputFilePath)" />
+    <Delete Files="%(UInt48Template.OutputFilePath)" />
+  </Target>
+
+  <Target
+    Name="UInt24nExpandTemplates"
+    BeforeTargets="DispatchToInnerBuilds"
+    DependsOnTargets="UInt24nInitializeTemplates"
+    Condition="'$(UInt24nIsBeforeInnerBuilds)' == 'true'"
+  >
+    <PropertyGroup>
+      <UInt24nMessageImportance Condition="false">high</UInt24nMessageImportance>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <!-- get file timestamps -->
+      <!-- note: GetLastWriteTime() returns '1601-01-01' if the file does not exist -->
+      <UInt24Template Update="@(UInt24Template)">
+        <TemplateFileModifiedTime>$([System.IO.File]::GetLastWriteTime('%(Identity)').ToString('s'))</TemplateFileModifiedTime>
+        <OutputFileModifiedTime>$([System.IO.File]::GetLastWriteTime('%(OutputFilePath)').ToString('s'))</OutputFileModifiedTime>
+      </UInt24Template>
+      <UInt48Template Update="@(UInt48Template)">
+        <TemplateFileModifiedTime>$([System.IO.File]::GetLastWriteTime('%(Identity)').ToString('s'))</TemplateFileModifiedTime>
+        <OutputFileModifiedTime>$([System.IO.File]::GetLastWriteTime('%(OutputFilePath)').ToString('s'))</OutputFileModifiedTime>
+      </UInt48Template>
+
+      <!-- exclude non-modified files -->
+      <UInt24Template
+        Remove="@(UInt24Template)"
+        Condition="0 &gt; $([System.String]::CompareOrdinal('%(TemplateFileModifiedTime)', '%(OutputFileModifiedTime)'))"
+      />
+      <UInt48Template
+        Remove="@(UInt48Template)"
+        Condition="0 &gt; $([System.String]::CompareOrdinal('%(TemplateFileModifiedTime)', '%(OutputFileModifiedTime)'))"
+      />
+    </ItemGroup>
+
+    <Message Text="expanding UInt24n template: %(UInt24Template.Identity)" Condition="'@(UInt24Template)' != ''" Importance="$(UInt24nMessageImportance)" />
+    <Message Text="expanding UInt24n template: %(UInt48Template.Identity)" Condition="'@(UInt48Template)' != ''" Importance="$(UInt24nMessageImportance)" />
+
+    <ItemGroup>
+      <!-- read template contents and expand them -->
+      <UInt24Template Update="@(UInt24Template)">
+        <ExpandedContent>$(
+          [System.IO.File]::ReadAllText('%(Identity)')
+          .Replace('TUInt24n', 'UInt24')
+          .Replace('TIntWide', 'Int32')
+          .Replace('TUIntWide', 'UInt32')
+          .Replace('TIntNarrow', 'Int16')
+          .Replace('TUIntNarrow', 'UInt16')
+        )</ExpandedContent>
+      </UInt24Template>
+      <UInt48Template Update="@(UInt48Template)">
+        <ExpandedContent>$(
+          [System.IO.File]::ReadAllText('%(Identity)')
+          .Replace('TUInt24n', 'UInt48')
+          .Replace('TIntWide', 'Int64')
+          .Replace('TUIntWide', 'UInt64')
+          .Replace('TIntNarrow', 'Int32')
+          .Replace('TUIntNarrow', 'UInt32')
+        )</ExpandedContent>
+      </UInt48Template>
+    </ItemGroup>
+
+    <WriteLinesToFile
+      File="%(UInt24Template.OutputFilePath)"
+      Lines="%(UInt24Template.ExpandedContent)"
+      Overwrite="true"
+      Condition="'@(UInt24Template)' != ''"
+    />
+    <WriteLinesToFile
+      File="%(UInt48Template.OutputFilePath)"
+      Lines="%(UInt48Template.ExpandedContent)"
+      Overwrite="true"
+      Condition="'@(UInt48Template)' != ''"
+    />
+
+    <Message Text="generated UInt24n source: %(UInt24Template.OutputFilePath)" Condition="'@(UInt24Template)' != ''" Importance="$(UInt24nMessageImportance)" />
+    <Message Text="generated UInt24n source: %(UInt48Template.OutputFilePath)" Condition="'@(UInt48Template)' != ''" Importance="$(UInt24nMessageImportance)" />
+  </Target>
+</Project>

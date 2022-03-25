@@ -70,12 +70,6 @@ namespace Smdn {
       Assert.IsTrue(zero.Equals(zero));
       Assert.IsFalse(zero.Equals(one));
       Assert.IsFalse(zero.Equals(null));
-
-      Assert.AreEqual(1, zero.CompareTo(null));
-
-      Assert.That(0 < one.CompareTo(zero));
-      Assert.That(0 < one.CompareTo(0L));
-      Assert.That(0 < one.CompareTo(0UL));
     }
 
     [Test]
@@ -93,21 +87,49 @@ namespace Smdn {
       Assert.IsTrue(UInt48.Zero.Equals(UInt48.Zero));
       Assert.IsTrue(UInt48.Zero.Equals(0L));
       Assert.IsTrue(UInt48.Zero.Equals(0UL));
+      Assert.IsFalse(UInt48.One.Equals(UInt48.Zero));
+      Assert.IsFalse(UInt48.One.Equals(0L));
+      Assert.IsFalse(UInt48.One.Equals(0UL));
       Assert.IsFalse(UInt48.Zero.Equals(UInt48.MaxValue));
       Assert.IsFalse(UInt48.Zero.Equals(long.MaxValue));
       Assert.IsFalse(UInt48.Zero.Equals(ulong.MaxValue));
 
       object val;
 
-      val = UInt48.Zero;
-      Assert.IsTrue(UInt48.Zero.Equals(val));
-
-      val = 0L;
-      Assert.IsTrue(UInt48.Zero.Equals(val));
-
-      val = 0UL;
-      Assert.IsTrue(UInt48.Zero.Equals(val));
+      val = UInt48.Zero; Assert.IsTrue(UInt48.Zero.Equals(val));
+      val = null; Assert.IsFalse(UInt48.Zero.Equals(val));
     }
+
+    [TestCase(0L, true)]
+    [TestCase(0uL, true)]
+    [TestCase((object)null, false)]
+    [TestCase(true, false)]
+    public void TestEquals_Object(object value, bool expected)
+      => Assert.AreEqual(expected, UInt48.Zero.Equals(value));
+
+    [Test]
+    public void TestCompareTo()
+    {
+      var zero = (UInt48)0x000000000000;
+      var one  = (UInt48)0x000000000001;
+
+      Assert.AreEqual(1, zero.CompareTo(null), "CompareTo(null)");
+
+      Assert.That(0 == zero.CompareTo(zero), "Zero.CompareTo(Zero)");
+      Assert.That(0 > zero.CompareTo(one), "Zero.CompareTo(Zero)");
+      Assert.That(0 < one.CompareTo(zero), "One.CompareTo(Zero)");
+      Assert.That(0 == one.CompareTo(one), "One.CompareTo(One)");
+
+      Assert.That(0 < one.CompareTo(0L), "One.CompareTo(0)");
+      Assert.That(0 < one.CompareTo(0uL), "One.CompareTo(0u)");
+    }
+
+    [TestCase(false)]
+    [TestCase(0.0)]
+    [TestCase((byte)0)]
+    [TestCase("0")]
+    public void TestCompareTo_NotComparable(object value)
+      => Assert.Throws<ArgumentException>(() => UInt48.Zero.CompareTo(value));
 
     [Test]
     public void TestOpExplicitFromInt32()

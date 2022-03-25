@@ -35,4 +35,16 @@ SPDX-License-Identifier: MIT
   <ItemGroup Condition=" '$(_NET7SdkAvailable)' == 'true' ">
     <PackageReference Include="System.Runtime.Experimental" Version="7.0.0-preview.2.22152.2" Condition="$(TargetFramework.StartsWith('net7'))" />
   </ItemGroup>
+
+  <!-- UInt24n templates -->
+  <ItemGroup>
+    <UInt24nTemplateFile Include="UInt24nTemplates/TUInt24n*.cs" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <UInt24nTemplateExpandingDirectory>$(BaseIntermediateOutputPath)</UInt24nTemplateExpandingDirectory>
+  </PropertyGroup>
+
+  <!-- TODO: use source generators -->
+  <Import Project="UInt24nTemplates.targets" />
 </Project>
