@@ -1,12 +1,5 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET6_0_OR_GREATER
-#define SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
-#endif
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_MATH_CLAMP
-#endif
-
 using System;
 
 #if SYSTEM_MATH_CLAMP
