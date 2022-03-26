@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
       <_NupkgReadmeLines Include="# $(AssemblyName)" />
       <_NupkgReadmeLines Include="$(Description)" />
       <_NupkgReadmeLines Include="## List of symbols to be defined by this package" />
-      <_NupkgReadmeLines Include="- `%(_SortedNETSdkAvailableApiSymbol.Identity)`" />
+      <_NupkgReadmeLines Include="- `%(_SortedNETSdkAvailableApiSymbol.Identity)` (`%(_SortedNETSdkAvailableApiSymbol.TargetApiFullName)`)" />
     </ItemGroup>
 
     <WriteLinesToFile
@@ -53,7 +53,7 @@ SPDX-License-Identifier: MIT
       <Using Namespace="System" />
       <Using Namespace="System.Linq" />
       <Code Type="Fragment" Language="cs"><![CDATA[
-        SortedSymbols = Symbols.OrderBy(static item => item.ItemSpec).ToArray();
+        SortedSymbols = Symbols.OrderBy(static item => item.GetMetadata("Namespace")).ThenBy(static item => item.ItemSpec).ToArray();
       ]]></Code>
     </Task>
   </UsingTask>
