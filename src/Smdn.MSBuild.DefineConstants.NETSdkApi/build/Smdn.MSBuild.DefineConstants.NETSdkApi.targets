@@ -108,6 +108,7 @@ SPDX-License-Identifier: MIT
     ">
       <_NETSdkAvailableApi Namespace="System" Include="INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.Parse(ROS<char>), Double.Parse(ROS<char>), etc. -->
       <_NETSdkAvailableApi Namespace="System" Include="INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.TryParse(ROS<char>), Double.TryParse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi Namespace="System" Include="Math.Clamp"/>
       <_NETSdkAvailableApi Namespace="System" Include="String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApi Namespace="System" Include="String.Create"/>
       <_NETSdkAvailableApi Namespace="System" Include="String.Contains(char)"/>
@@ -137,6 +138,10 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
     ">
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.LeadingZeroCount"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.Log2"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.PopCount"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.TrailingZeroCount"/>
       <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.Append(ReadOnlyMemory&lt;Char&gt;)"/>
     </ItemGroup>
 
@@ -159,7 +164,9 @@ SPDX-License-Identifier: MIT
       $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET6_0_OR_GREATER\b'))
     ">
       <_NETSdkAvailableApi Namespace="System" Include="ISpanFormattable"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Math.DivRem_return:ValueTuple`2"/>
       <_NETSdkAvailableApi Namespace="System" Include="String.Create(IFormatProvider)"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.IsPow2"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -173,6 +180,8 @@ SPDX-License-Identifier: MIT
           .Replace(')', '')
           .Replace('&lt;', '_OF_')
           .Replace('&gt;', '')
+          .Replace(':', '_')
+          .Replace('`', '_')
           .ToUpperInvariant()
         )</Constant>
       </_NETSdkAvailableApiSymbol>
