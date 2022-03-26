@@ -61,7 +61,7 @@ SPDX-License-Identifier: MIT
 
     <WriteLinesToFile
       File="$(APIListOutputFilePath)"
-      Lines="$(_APIListOutputContent)"
+      Lines="$(_APIListOutputContent.Replace('%0D%0A', '%0A'))"
       Overwrite="true"
     />
   </Target>
