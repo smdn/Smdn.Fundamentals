@@ -5,6 +5,32 @@ using System;
 namespace Smdn;
 
 public static class MathShim {
+#if !SYSTEM_MATH_CLAMP
+  [CLSCompliant(false)]
+  public static sbyte Clamp(sbyte value, sbyte min, sbyte max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  public static short Clamp(short value, short min, short max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  public static int Clamp(int value, int min, int max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  public static long Clamp(long value, long min, long max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  public static byte Clamp(byte value, byte min, byte max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  [CLSCompliant(false)]
+  public static ushort Clamp(ushort value, ushort min, ushort max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  [CLSCompliant(false)]
+  public static uint Clamp(uint value, uint min, uint max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  [CLSCompliant(false)]
+  public static ulong Clamp(ulong value, ulong min, ulong max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+
+  public static float Clamp(float value, float min, float max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+  public static double Clamp(double value, double min, double max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+  public static decimal Clamp(decimal value, decimal min, decimal max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
+#endif
+
 #if !SYSTEM_MATH_DIVREM
   public static int DivRem(int a, int b, out int result)
   {
