@@ -1,0 +1,108 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Import Project="build\$(AssemblyName).targets" />
+
+  <PropertyGroup>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <NupkgReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</NupkgReadmeFileOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(NupkgReadmeFileOutputPath)" Pack="true" PackagePath="$(PackageReadmeFile)" />
+  </ItemGroup>
+
+  <!-- overrides the target GenerateNupkgReadmeFile from Smdn.MSBuild.ProjectAssets.Library -->
+  <Target
+    Name="GenerateNupkgReadmeFile"
+    BeforeTargets="GenerateNuspec"
+    DependsOnTargets="AddAllCompatibleFrameworkVersionConstants"
+  >
+    <CallTarget Targets="ListNETSdkAvailableApiName">
+      <Output TaskParameter="TargetOutputs" ItemName="_NETSdkAvailableApiSymbol" />
+    </CallTarget>
+
+    <SortNETSdkAvailableApiSymbol Symbols="@(_NETSdkAvailableApiSymbol)">
+      <Output TaskParameter="SortedSymbols" ItemName="_SortedNETSdkAvailableApiSymbol" />
+    </SortNETSdkAvailableApiSymbol>
+
+    <ItemGroup>
+      <_NupkgReadmeLines Include="# $(AssemblyName)" />
+      <_NupkgReadmeLines Include="$(Description)" />
+      <_NupkgReadmeLines Include="## List of symbols to be defined by this package" />
+      <_NupkgReadmeLines Include="- `%(_SortedNETSdkAvailableApiSymbol.Identity)`" />
+    </ItemGroup>
+
+    <WriteLinesToFile
+      File="$(NupkgReadmeFileOutputPath)"
+      Lines="@(_NupkgReadmeLines)"
+      Overwrite="true"
+    />
+  </Target>
+
+  <UsingTask
+    TaskName="SortNETSdkAvailableApiSymbol"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+  >
+    <ParameterGroup>
+      <Symbols ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <SortedSymbols ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        SortedSymbols = Symbols.OrderBy(static item => item.ItemSpec).ToArray();
+      ]]></Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="AddAllCompatibleFrameworkVersionConstants">
+    <!-- ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks -->
+    <ItemGroup>
+      <_CompatibleFrameworkVersionConstant Include="NET" />
+      <_CompatibleFrameworkVersionConstant Include="NET6_0_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET5_0_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP3_1_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP3_0_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP2_2_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP2_1_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP2_0_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP1_1_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETCOREAPP1_0_OR_GREATER" />
+
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD2_1_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD2_0_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_6_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_5_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_4_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_3_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_2_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_1_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NETSTANDARD1_0_OR_GREATER" />
+
+      <_CompatibleFrameworkVersionConstant Include="NETFRAMEWORK" />
+      <_CompatibleFrameworkVersionConstant Include="NET48_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET472_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET471_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET47_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET462_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET461_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET46_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET452_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET451_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET45_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET40_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET35_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET20_OR_GREATER" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <DefineConstants>$(DefineConstants);@(_CompatibleFrameworkVersionConstant, ';')</DefineConstants>
+    </PropertyGroup>
+  </Target>
+</Project>
