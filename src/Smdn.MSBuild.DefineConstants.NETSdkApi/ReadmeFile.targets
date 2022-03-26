@@ -3,8 +3,6 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <Import Project="build\$(AssemblyName).targets" />
-
   <PropertyGroup>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NupkgReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</NupkgReadmeFileOutputPath>

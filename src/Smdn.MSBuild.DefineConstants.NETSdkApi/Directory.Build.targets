@@ -4,5 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Build.targets" />
+  <Import Project="build\$(AssemblyName).targets" />
   <Import Project="ReadmeFile.targets" />
+  <Import Project="APIList.targets" />
 </Project>

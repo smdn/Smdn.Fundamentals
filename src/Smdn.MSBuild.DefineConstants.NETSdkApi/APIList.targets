@@ -1,0 +1,68 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target Name="GenerateAPIList" AfterTargets="Compile">
+    <ItemGroup>
+      <!-- .NET -->
+      <_APIListTargetFramework Include="net7.0;net6.0;net5.0" />
+      <!-- .NET Core -->
+      <_APIListTargetFramework Include="netcoreapp3.1;netcoreapp3.0;netcoreapp2.1;netcoreapp2.0;netcoreapp1.1;netcoreapp1.0" />
+      <!-- .NET Standard -->
+      <_APIListTargetFramework Include="netstandard2.1;netstandard2.0;netstandard1.6;netstandard1.5;netstandard1.4;netstandard1.3;netstandard1.2;netstandard1.1;netstandard1.0" />
+      <!-- .NET Framework -->
+      <_APIListTargetFramework Include="net48;net472;net471;net47;net462;net461;net46;net452;net451;net45" />
+
+      <_APIListTarget Include="@(_APIListTargetFramework)">
+        <OutputFilePath>$(APIListOutputBaseDirectory)$(AssemblyName)\%(_APIListTargetFramework.Identity).symbols.apilist.cs</OutputFilePath>
+      </_APIListTarget>
+    </ItemGroup>
+
+    <MSBuild
+      Projects="$(MSBuildProjectFile)"
+      Targets="GenerateAPIListPerTargetFramework"
+      Properties="
+        TargetFramework=%(_APIListTarget.Identity);
+        APIListOutputFilePath=%(_APIListTarget.OutputFilePath);
+      "
+    />
+  </Target>
+
+  <Target
+    Name="GenerateAPIListPerTargetFramework"
+    DependsOnTargets="AddImplicitDefineConstants"
+  >
+    <CallTarget Targets="ListNETSdkAvailableApiName">
+      <Output TaskParameter="TargetOutputs" ItemName="_NETSdkAvailableApiSymbol" />
+    </CallTarget>
+
+    <SortNETSdkAvailableApiSymbol Symbols="@(_NETSdkAvailableApiSymbol)">
+      <Output TaskParameter="SortedSymbols" ItemName="_SortedNETSdkAvailableApiSymbol" />
+    </SortNETSdkAvailableApiSymbol>
+
+    <ItemGroup>
+      <_APIListSymbolDefinitionLine Include="#define %(_SortedNETSdkAvailableApiSymbol.Identity)" Condition="'@(_SortedNETSdkAvailableApiSymbol)' != ''" />
+      <_APIListSymbolDefinitionLine Include="// (no symbols defined)" Condition="'@(_SortedNETSdkAvailableApiSymbol)' == ''" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_APIListOutputContent><![CDATA[
+// $(AssemblyName)-$(AssemblyVersion)
+//   Name: $(AssemblyName)
+//   InformationalVersion: $(InformationalVersion)
+
+// List of symbols defined on target framework '$(TargetFramework)'
+@(_APIListSymbolDefinitionLine, '%0A')
+      ]]></_APIListOutputContent>
+    </PropertyGroup>
+
+    <Message Text="$(TargetFramework) -> $(APIListOutputFilePath)" Importance="high" />
+
+    <WriteLinesToFile
+      File="$(APIListOutputFilePath)"
+      Lines="$(_APIListOutputContent)"
+      Overwrite="true"
+    />
+  </Target>
+</Project>
