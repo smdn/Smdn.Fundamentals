@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.1.1
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.2.0
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.1.1
+//   InformationalVersion: 1.2.0
 
 // List of symbols defined on target framework 'netcoreapp2.1'
 #define SYSTEM_ARRAY_CONVERTALL // System.Array.ConvertAll
@@ -13,6 +13,7 @@
 #define SYSTEM_ICLONEABLE // System.ICloneable
 #define SYSTEM_INUMBER_PARSE_READONLYSPAN_OF_CHAR // System.INumber.Parse(ReadOnlySpan<Char>)
 #define SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR // System.INumber.TryParse(ReadOnlySpan<Char>)
+#define SYSTEM_MATH_CLAMP // System.Math.Clamp
 #define SYSTEM_MATH_DIVREM // System.Math.DivRem
 #define SYSTEM_STRING_CONTAINS_CHAR // System.String.Contains(char)
 #define SYSTEM_STRING_CREATE // System.String.Create
