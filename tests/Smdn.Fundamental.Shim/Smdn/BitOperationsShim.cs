@@ -458,6 +458,6 @@ public class BitOperationsShimTests {
     => Assert.AreEqual(
       expectedValue,
       ShimSystemNumericsBitOperationsPopCount.PopCount(value),
-      $"PopCount<ulong>({value:X8})"
+      $"PopCount<ulong>({value:X16})"
     );
 }
