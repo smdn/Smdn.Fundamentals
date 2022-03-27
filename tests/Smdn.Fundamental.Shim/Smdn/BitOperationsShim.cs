@@ -3,6 +3,12 @@
 using System;
 using NUnit.Framework;
 
+#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+using ShimSystemNumericsBitOperationsIsPow2 = System.Numerics.BitOperations;
+#else
+using ShimSystemNumericsBitOperationsIsPow2 = Smdn.BitOperationsShim;
+#endif
+
 #if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
 using ShimSystemNumericsBitOperationsPopCount = System.Numerics.BitOperations;
 #else
@@ -13,6 +19,55 @@ namespace Smdn;
 
 [TestFixture()]
 public class BitOperationsShimTests {
+  [TestCase(0b_00000000, false)]
+  [TestCase(0b_00000001, true)]
+  [TestCase(0b_00000010, true)]
+  [TestCase(0b_00000100, true)]
+  [TestCase(0b_00001000, true)]
+  [TestCase(0b_00010000, true)]
+  [TestCase(0b_00100000, true)]
+  [TestCase(0b_01000000, true)]
+  [TestCase(0b_10000000, true)]
+  [TestCase(0b_00000011, false)]
+  [TestCase(0b_00000110, false)]
+  [TestCase(0b_11000000, false)]
+  [TestCase(0b_10000001, false)]
+  public void IsPow2_32(int value, bool expected)
+  {
+    Assert.AreEqual(expected, ShimSystemNumericsBitOperationsIsPow2.IsPow2(value), $"IsPow2<int>({0:X4})");
+    Assert.AreEqual(expected, ShimSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((uint)value)), $"IsPow2<uint>({0:X4})");
+  }
+
+  [TestCase(0b_00000000_00000000, false)]
+  [TestCase(0b_00000000_00000001, true)]
+  [TestCase(0b_00000000_00000010, true)]
+  [TestCase(0b_00000000_00000100, true)]
+  [TestCase(0b_00000000_00001000, true)]
+  [TestCase(0b_00000000_00010000, true)]
+  [TestCase(0b_00000000_00100000, true)]
+  [TestCase(0b_00000000_01000000, true)]
+  [TestCase(0b_00000000_10000000, true)]
+  [TestCase(0b_00000001_00000000, true)]
+  [TestCase(0b_00000010_00000000, true)]
+  [TestCase(0b_00000100_00000000, true)]
+  [TestCase(0b_00001000_00000000, true)]
+  [TestCase(0b_00010000_00000000, true)]
+  [TestCase(0b_00100000_00000000, true)]
+  [TestCase(0b_01000000_00000000, true)]
+  [TestCase(0b_10000000_00000000, true)]
+  [TestCase(0b_00000000_00000011, false)]
+  [TestCase(0b_00000000_00000110, false)]
+  [TestCase(0b_00000000_11000000, false)]
+  [TestCase(0b_00000001_10000000, false)]
+  [TestCase(0b_00000011_00000000, false)]
+  [TestCase(0b_11000000_00000000, false)]
+  [TestCase(0b_10000000_00000001, false)]
+  public void IsPow2_64(long value, bool expected)
+  {
+    Assert.AreEqual(expected, ShimSystemNumericsBitOperationsIsPow2.IsPow2(value), $"IsPow2<long>({0:X8})");
+    Assert.AreEqual(expected, ShimSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((ulong)value)), $"IsPow2<ulong>({0:X8})");
+  }
+
   [TestCase(0b_00000000u, 0)]
   [TestCase(0b_00000001u, 1)]
   [TestCase(0b_00000010u, 1)]
