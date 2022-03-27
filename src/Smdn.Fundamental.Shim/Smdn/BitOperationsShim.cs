@@ -24,7 +24,7 @@ public static class BitOperationsShim {
   {
     var count = 0;
 
-    for (uint mask = 1; mask != 0; mask <<= 1) {
+    for (uint mask = 1u; mask != 0u; mask <<= 1) {
       if ((value & mask) != 0u)
         count++;
     }
@@ -37,7 +37,7 @@ public static class BitOperationsShim {
   {
     var count = 0;
 
-    for (ulong mask = 1; mask != 0; mask <<= 1) {
+    for (ulong mask = 1uL; mask != 0uL; mask <<= 1) {
       if ((value & mask) != 0uL)
         count++;
     }
