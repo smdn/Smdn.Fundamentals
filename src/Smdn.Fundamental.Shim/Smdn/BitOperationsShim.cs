@@ -12,8 +12,8 @@ namespace Smdn;
 
 public static class BitOperationsShim {
 #if !SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
-  public static bool IsPow2(int value) => ShimBitOperationsPopCount.PopCount(unchecked((uint)value)) == 1;
-  public static bool IsPow2(long value) => ShimBitOperationsPopCount.PopCount(unchecked((ulong)value)) == 1;
+  public static bool IsPow2(int value) => 0 <= value && ShimBitOperationsPopCount.PopCount(unchecked((uint)value)) == 1;
+  public static bool IsPow2(long value) => 0L <= value && ShimBitOperationsPopCount.PopCount(unchecked((ulong)value)) == 1;
   [CLSCompliant(false)] public static bool IsPow2(uint value) => ShimBitOperationsPopCount.PopCount(value) == 1;
   [CLSCompliant(false)] public static bool IsPow2(ulong value) => ShimBitOperationsPopCount.PopCount(value) == 1;
 #endif
