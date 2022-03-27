@@ -28,26 +28,6 @@ internal class UInt24n {
     return value.AsSpan(startIndex, expectedSize);
   }
 
-#if !SYSTEM_MATH_CLAMP
-  public static uint Clamp(uint value, uint min, uint max)
-    => value < min ? min
-      : value > max ? max
-      : value;
-
-  public static ulong Clamp(ulong value, ulong min, ulong max)
-    => value < min ? min
-      : value > max ? max
-      : value;
-#endif
-
-#if !SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
-  public static (uint Quotient, uint Remainder) DivRem(uint left, uint right)
-    => (left / right, left % right); // TODO: optimize
-
-  public static (ulong Quotient, ulong Remainder) DivRem(ulong left, ulong right)
-    => (left / right, left % right); // TODO: optimize
-#endif
-
   public static int RegularizeShiftAmount(int shiftAmount, int maxShiftAmount)
   {
     if (shiftAmount == 0)

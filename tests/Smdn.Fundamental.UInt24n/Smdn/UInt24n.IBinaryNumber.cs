@@ -1,12 +1,5 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET6_0_OR_GREATER
-#define SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
-#endif
-#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_NUMERICS_BITOPERATIONS_LOG2
-#endif
-
 using System;
 using NUnit.Framework;
 
@@ -216,7 +209,6 @@ partial class UInt24nTests {
 }
 #endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
 partial class UInt24Tests {
   [Test]
   public void TestIsPow2()
@@ -259,9 +251,7 @@ partial class UInt24nTests {
   }
 }
 #endif
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_LOG2
 partial class UInt24Tests {
   [Test]
   public void TestLog2()
@@ -303,5 +293,4 @@ partial class UInt24nTests {
       => TUInt24n.Log2(value);
   }
 }
-#endif
 #endif

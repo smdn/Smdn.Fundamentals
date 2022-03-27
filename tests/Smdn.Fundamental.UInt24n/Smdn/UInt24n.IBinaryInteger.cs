@@ -1,11 +1,5 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
-#define SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
-#define SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
-#endif
-
 using System;
 using NUnit.Framework;
 
@@ -202,7 +196,6 @@ partial class UInt24nTests {
 #endif
 
 partial class UInt24Tests {
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
   [TestCase(0b_0000_0000_0000__0000_0000_0000u,  24)]
   [TestCase(0b_0000_0000_0000__0000_0000_0001u,  23)]
   [TestCase(0b_0000_0000_0000__0000_0000_0010u,  22)]
@@ -215,9 +208,7 @@ partial class UInt24Tests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,   0)]
   public void TestLeadingZeroCount(uint value, int expected)
     => Assert.AreEqual(expected, UInt24.LeadingZeroCount((UInt24)value), $"LeadingZeroCount({((UInt24)value).ToBinaryString()})");
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
   [TestCase(0b_0000_0000_0000__0000_0000_0000u,  24)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000u,  23)]
   [TestCase(0b_0100_0000_0000__0000_0000_0000u,  22)]
@@ -230,9 +221,7 @@ partial class UInt24Tests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,   0)]
   public void TestTrailingZeroCount(uint value, int expected)
     => Assert.AreEqual(expected, UInt24.TrailingZeroCount((UInt24)value), $"TrailingZeroCount({((UInt24)value).ToBinaryString()})");
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
   [TestCase(0b_0000_0000_0000__0000_0000_0000u,   0)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000u,   1)]
   [TestCase(0b_0000_0001_0000__0000_0000_0000u,   1)]
@@ -246,11 +235,9 @@ partial class UInt24Tests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,  24)]
   public void TestPopCount(uint value, int expected)
     => Assert.AreEqual(expected, UInt24.PopCount((UInt24)value), $"PopCount({((UInt24)value).ToBinaryString()})");
-#endif
 }
 
 partial class UInt48Tests {
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  48)]
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,  47)]
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0010uL,  46)]
@@ -269,9 +256,7 @@ partial class UInt48Tests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   0)]
   public void TestLeadingZeroCount(ulong value, int expected)
     => Assert.AreEqual(expected, UInt48.LeadingZeroCount((UInt48)value), $"LeadingZeroCount({((UInt48)value).ToBinaryString()})");
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  48)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  47)]
   [TestCase(0b_0100_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  46)]
@@ -290,9 +275,7 @@ partial class UInt48Tests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   0)]
   public void TestTrailingZeroCount(ulong value, int expected)
     => Assert.AreEqual(expected, UInt48.TrailingZeroCount((UInt48)value), $"TrailingZeroCount({((UInt48)value).ToBinaryString()})");
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000u,    0)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,   1)]
   [TestCase(0b_0000_0001_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,   1)]
@@ -315,12 +298,10 @@ partial class UInt48Tests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,  48)]
   public void TestPopCount(ulong value, int expected)
     => Assert.AreEqual(expected, UInt48.PopCount((UInt48)value), $"PopCount({((UInt48)value).ToBinaryString()})");
-#endif
 }
 
 #if FEATURE_GENERIC_MATH
 partial class UInt24nTests {
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
   static TUInt24n IBinaryInteger_LeadingZeroCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.LeadingZeroCount(value);
 
@@ -355,9 +336,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   0)]
   public void IBinaryInteger_LeadingZeroCount_OfUInt48(ulong value, int expected)
     => Assert.AreEqual((UInt48)expected, IBinaryInteger_LeadingZeroCount((UInt48)value), $"LeadingZeroCount({((UInt48)value).ToBinaryString()})");
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
   static TUInt24n IBinaryInteger_TrailingZeroCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.TrailingZeroCount(value);
 
@@ -392,9 +371,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   0)]
   public void IBinaryInteger_TrailingZeroCount_OfUInt48(ulong value, int expected)
     => Assert.AreEqual((UInt48)expected, IBinaryInteger_TrailingZeroCount((UInt48)value), $"TrailingZeroCount({((UInt48)value).ToBinaryString()})");
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
   static TUInt24n IBinaryInteger_PopCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.PopCount(value);
 
@@ -434,6 +411,5 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,  48)]
   public void IBinaryInteger_PopCount_OfUInt48(ulong value, int expected)
     => Assert.AreEqual((UInt48)expected, IBinaryInteger_PopCount((UInt48)value), $"PopCount({((UInt48)value).ToBinaryString()})");
-#endif
 }
 #endif

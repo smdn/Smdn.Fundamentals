@@ -3,14 +3,15 @@
 using System;
 
 #if SYSTEM_MATH_CLAMP
-using MathClampShim = System.Math;
+using ShimSystemMathClamp = System.Math;
 #else
-using MathClampShim = Smdn.UInt24n;
+using ShimSystemMathClamp = Smdn.MathShim;
 #endif
+
 #if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
-using MathDivRemShim = System.Math;
+using ShimSystemMathDivRemReturnValueTuple2 = System.Math;
 #else
-using MathDivRemShim = Smdn.UInt24n;
+using ShimSystemMathDivRemReturnValueTuple2 = Smdn.MathShim;
 #endif
 
 namespace Smdn;
@@ -40,14 +41,14 @@ partial struct TUInt24n {
   public static TUInt24n Clamp(TUInt24n value, TUInt24n min, TUInt24n max)
     => max < min
       ? throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max))
-      : new(MathClampShim.Clamp(value.Widen(), min.Widen(), max.Widen()));
+      : new(ShimSystemMathClamp.Clamp(value.Widen(), min.Widen(), max.Widen()));
 
   /*
    * INumber<TOther>.DivRem
    */
   public static (TUInt24n Quotient, TUInt24n Remainder) DivRem(TUInt24n left, TUInt24n right)
   {
-    var (quot, rem) = MathDivRemShim.DivRem(left.Widen(), right.Widen());
+    var (quot, rem) = ShimSystemMathDivRemReturnValueTuple2.DivRem(left.Widen(), right.Widen());
 
     return (new(quot), new(rem));
   }

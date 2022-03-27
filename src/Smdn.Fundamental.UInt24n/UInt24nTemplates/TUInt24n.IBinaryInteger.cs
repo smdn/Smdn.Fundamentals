@@ -1,10 +1,24 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT || SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT || SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
-using System.Numerics;
+
+#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+using ShimSystemNumericsBitOperationsPopCount = System.Numerics.BitOperations;
+#else
+using ShimSystemNumericsBitOperationsPopCount = Smdn.BitOperationsShim;
 #endif
 
+#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+using ShimSystemNumericsBitOperationsLeadingZeroCount = System.Numerics.BitOperations;
+#else
+using ShimSystemNumericsBitOperationsLeadingZeroCount = Smdn.BitOperationsShim;
+#endif
+
+#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+using ShimSystemNumericsBitOperationsTrailingZeroCount = System.Numerics.BitOperations;
+#else
+using ShimSystemNumericsBitOperationsTrailingZeroCount = Smdn.BitOperationsShim;
+#endif
 namespace Smdn;
 
 #pragma warning disable IDE0040
@@ -45,29 +59,23 @@ partial struct TUInt24n
     return new((val >> rotateAmount) | (val << (BitsOfSelf - rotateAmount)));
   }
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
 #if FEATURE_GENERIC_MATH
   static TUInt24n IBinaryInteger<TUInt24n>.LeadingZeroCount(TUInt24n value) => new((TUIntWide)LeadingZeroCount(value));
 #endif
   public static int LeadingZeroCount(TUInt24n value)
-    => BitOperations.LeadingZeroCount(value.Widen()) - (bitCountOfTUIntWide - BitsOfSelf);
+    => ShimSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value.Widen()) - (bitCountOfTUIntWide - BitsOfSelf);
 
   private const int bitCountOfTUIntWide = sizeof(TUIntWide) * 8;
-#endif
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
 #if FEATURE_GENERIC_MATH
   static TUInt24n IBinaryInteger<TUInt24n>.PopCount(TUInt24n value) => new((TUIntWide)PopCount(value));
 #endif
   public static int PopCount(TUInt24n value)
-    => BitOperations.PopCount(value.Widen());
-#endif
+    => ShimSystemNumericsBitOperationsPopCount.PopCount(value.Widen());
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
 #if FEATURE_GENERIC_MATH
   static TUInt24n IBinaryInteger<TUInt24n>.TrailingZeroCount(TUInt24n value) => new((TUIntWide)TrailingZeroCount(value));
 #endif
   public static int TrailingZeroCount(TUInt24n value)
-    => BitOperations.TrailingZeroCount(value.Widen() | UnusedBitMask);
-#endif
+    => ShimSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value.Widen() | UnusedBitMask);
 }
