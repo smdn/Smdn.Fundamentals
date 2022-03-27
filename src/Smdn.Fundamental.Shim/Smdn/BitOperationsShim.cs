@@ -45,4 +45,66 @@ public static class BitOperationsShim {
     return count;
   }
 #endif
+
+#if !SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+  [CLSCompliant(false)]
+  public static int LeadingZeroCount(uint value)
+  {
+    var count = 0;
+
+    for (uint mask = 0x8000_0000u; mask != 0u; mask >>= 1, count++) {
+      if ((value & mask) != 0u)
+        break;
+    }
+
+    return count;
+  }
+
+  [CLSCompliant(false)]
+  public static int LeadingZeroCount(ulong value)
+  {
+    var count = 0;
+
+    for (ulong mask = 0x8000_0000_0000_0000uL; mask != 0uL; mask >>= 1, count++) {
+      if ((value & mask) != 0uL)
+        break;
+    }
+
+    return count;
+  }
+#endif
+
+#if !SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+  [CLSCompliant(false)]
+  public static int TrailingZeroCount(uint value)
+  {
+    if (value == 0u)
+      return 32;
+
+    var count = 0;
+
+    for (uint mask = 0x0000_0001u; mask != 0u; mask <<= 1, count++) {
+      if ((value & mask) != 0u)
+        break;
+    }
+
+    return count;
+  }
+
+  [CLSCompliant(false)]
+  public static int TrailingZeroCount(ulong value)
+  {
+    if (value == 0uL)
+      return 64;
+
+    var count = 0;
+
+    for (ulong mask = 0x0000_0000_0000_0001uL; mask != 0uL; mask <<= 1, count++) {
+      if ((value & mask) != 0uL)
+        break;
+    }
+
+    return count;
+  }
+#endif
 }
