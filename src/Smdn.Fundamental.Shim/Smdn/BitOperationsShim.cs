@@ -8,6 +8,12 @@ using ShimBitOperationsPopCount = System.Numerics.BitOperations;
 using ShimBitOperationsPopCount = Smdn.BitOperationsShim;
 #endif
 
+#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+using ShimBitOperationsLeadingZeroCount = System.Numerics.BitOperations;
+#else
+using ShimBitOperationsLeadingZeroCount = Smdn.BitOperationsShim;
+#endif
+
 namespace Smdn;
 
 public static class BitOperationsShim {
@@ -16,6 +22,11 @@ public static class BitOperationsShim {
   public static bool IsPow2(long value) => 0L <= value && ShimBitOperationsPopCount.PopCount(unchecked((ulong)value)) == 1;
   [CLSCompliant(false)] public static bool IsPow2(uint value) => ShimBitOperationsPopCount.PopCount(value) == 1;
   [CLSCompliant(false)] public static bool IsPow2(ulong value) => ShimBitOperationsPopCount.PopCount(value) == 1;
+#endif
+
+#if !SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+  [CLSCompliant(false)] public static int Log2(uint value) => value == 0u ? 0 : 31 - ShimBitOperationsLeadingZeroCount.LeadingZeroCount(value);
+  [CLSCompliant(false)] public static int Log2(ulong value) => value == 0uL ? 0 : 63 - ShimBitOperationsLeadingZeroCount.LeadingZeroCount(value);
 #endif
 
 #if !SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
