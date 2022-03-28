@@ -4,8 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <ItemGroup>
+    <!-- set `false` to SmdnFundamentalShim_EnableShimAliasGlobalUsings to disable importing shim alias global usings -->
     <Compile
-      Condition="'$(SmdnFundamentalShim_EnableShimAliasGlobalUsings)' == 'true'"
+      Condition="'$(SmdnFundamentalShim_EnableShimAliasGlobalUsings)' != 'false'"
       Include="$(MSBuildThisFileDirectory)ShimAlias.GlobalUsings.cs"
     />
   </ItemGroup>

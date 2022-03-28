@@ -34,9 +34,5 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <!-- import shim alias global usings -->
-  <PropertyGroup>
-    <SmdnFundamentalShim_EnableShimAliasGlobalUsings>true</SmdnFundamentalShim_EnableShimAliasGlobalUsings>
-  </PropertyGroup>
-
   <Import Project="$(MSBuildThisFileDirectory)*ShimAliasGlobalUsings.targets" />
 </Project>
