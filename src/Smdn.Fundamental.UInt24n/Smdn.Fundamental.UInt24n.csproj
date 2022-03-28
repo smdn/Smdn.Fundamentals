@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
   <PropertyGroup>
     <TargetFrameworks>net6.0;netcoreapp3.1;net45;netstandard2.1;netstandard1.6</TargetFrameworks>
-    <VersionPrefix>3.0.2</VersionPrefix>
+    <VersionPrefix>3.0.3</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
