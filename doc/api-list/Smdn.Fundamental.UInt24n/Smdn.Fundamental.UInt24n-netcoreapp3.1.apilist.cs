@@ -2,10 +2,11 @@
 //   Name: Smdn.Fundamental.UInt24n
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+3cc21c9df12bb8a9f9a2b7a75b11b1d667300a8d
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETCoreApp,Version=v3.1
 //   Configuration: Release
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using Smdn;
@@ -56,6 +57,7 @@ namespace Smdn {
     public static int Log2(UInt24 @value) {}
     public static UInt24 Max(UInt24 x, UInt24 y) {}
     public static UInt24 Min(UInt24 x, UInt24 y) {}
+    public static UInt24 Parse(ReadOnlySpan<char> s, NumberStyles style = NumberStyles.Integer, [Nullable(2)] IFormatProvider provider = null) {}
     [NullableContext(1)]
     public static UInt24 Parse(string s, NumberStyles style, [Nullable(2)] IFormatProvider provider = null) {}
     [NullableContext(1)]
@@ -92,12 +94,15 @@ namespace Smdn {
     public string ToString([Nullable(2)] string format) {}
     public uint ToUInt32() {}
     public static int TrailingZeroCount(UInt24 @value) {}
+    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, [Nullable(2)] IFormatProvider provider, out UInt24 result) {}
+    public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, out UInt24 result) {}
+    public static bool TryParse(ReadOnlySpan<char> s, out UInt24 result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, IFormatProvider provider, out UInt24 result) {}
+    public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, out UInt24 result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out UInt24 result) {}
+    public static bool TryParse([NotNullWhen(true)] string s, NumberStyles style, IFormatProvider provider, out UInt24 result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, out UInt24 result) {}
+    public static bool TryParse([NotNullWhen(true)] string s, out UInt24 result) {}
     public static UInt24 operator + (UInt24 left, UInt24 right) {}
     public static UInt24 operator & (UInt24 left, UInt24 right) {}
     public static UInt24 operator | (UInt24 left, UInt24 right) {}
@@ -180,6 +185,7 @@ namespace Smdn {
     public static int Log2(UInt48 @value) {}
     public static UInt48 Max(UInt48 x, UInt48 y) {}
     public static UInt48 Min(UInt48 x, UInt48 y) {}
+    public static UInt48 Parse(ReadOnlySpan<char> s, NumberStyles style = NumberStyles.Integer, [Nullable(2)] IFormatProvider provider = null) {}
     [NullableContext(1)]
     public static UInt48 Parse(string s, NumberStyles style, [Nullable(2)] IFormatProvider provider = null) {}
     [NullableContext(1)]
@@ -216,12 +222,15 @@ namespace Smdn {
     public string ToString([Nullable(2)] string format) {}
     public ulong ToUInt64() {}
     public static int TrailingZeroCount(UInt48 @value) {}
+    public static bool TryParse(ReadOnlySpan<char> s, NumberStyles style, [Nullable(2)] IFormatProvider provider, out UInt48 result) {}
+    public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, out UInt48 result) {}
+    public static bool TryParse(ReadOnlySpan<char> s, out UInt48 result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, IFormatProvider provider, out UInt48 result) {}
+    public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, out UInt48 result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out UInt48 result) {}
+    public static bool TryParse([NotNullWhen(true)] string s, NumberStyles style, IFormatProvider provider, out UInt48 result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, out UInt48 result) {}
+    public static bool TryParse([NotNullWhen(true)] string s, out UInt48 result) {}
     public static UInt48 operator + (UInt48 left, UInt48 right) {}
     public static UInt48 operator & (UInt48 left, UInt48 right) {}
     public static UInt48 operator | (UInt48 left, UInt48 right) {}
