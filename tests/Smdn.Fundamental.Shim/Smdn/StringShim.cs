@@ -8,6 +8,17 @@ namespace Smdn;
 [TestFixture()]
 public class StringShimTests {
   [Test]
+  public void ShimType_StartsWith_Char()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemStringStartsWithChar),
+#if SYSTEM_STRING_STARTSWITH_CHAR
+      typeof(System.String)
+#else
+      typeof(Smdn.StringShim)
+#endif
+    );
+
+  [Test]
   public void TestStartsWith()
   {
 #if !SYSTEM_STRING_STARTSWITH_CHAR
@@ -37,6 +48,17 @@ public class StringShimTests {
                     "abc".StartsWith('c'),
                     "same as StartsWith(string) #4");
   }
+
+  [Test]
+  public void ShimType_EndsWith_Char()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemStringEndsWithChar),
+#if SYSTEM_STRING_ENDSWITH_CHAR
+      typeof(System.String)
+#else
+      typeof(Smdn.StringShim)
+#endif
+    );
 
   [Test]
   public void TestEndsWith()

@@ -7,6 +7,17 @@ namespace Smdn;
 
 [TestFixture()]
 public class MathShimTests {
+  [Test]
+  public void ShimType_Clamp()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemMathClamp),
+#if SYSTEM_MATH_CLAMP
+      typeof(System.Math)
+#else
+      typeof(Smdn.MathShim)
+#endif
+    );
+
   [TestCase(0, 0, 0, 0)]
   [TestCase(0, 0, 1, 0)]
   [TestCase(1, 0, 1, 1)]
@@ -65,6 +76,17 @@ public class MathShimTests {
     Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((decimal)value, (decimal)min, (decimal)max), $"Clamp<decimal>(value: {value}, min: {min}, max: {max})");
   }
 
+  [Test]
+  public void ShimType_DivRem()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemMathDivRem),
+#if SYSTEM_MATH_DIVREM
+      typeof(System.Math)
+#else
+      typeof(Smdn.MathShim)
+#endif
+    );
+
   [TestCase(0, 1, 0, 0)]
   [TestCase(1, 1, 1, 0)]
   [TestCase(1, 2, 0, 1)]
@@ -86,6 +108,17 @@ public class MathShimTests {
     Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRem.DivRem(left, right, out _), $"DivRem<int>({left}, {right})");
     Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRem.DivRem((long)left, (long)right, out _), $"DivRem<long>({left}, {right})");
   }
+
+  [Test]
+  public void ShimType_ReturnValueTuple2()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemMathDivRemReturnValueTuple2),
+#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+      typeof(System.Math)
+#else
+      typeof(Smdn.MathShim)
+#endif
+    );
 
   [TestCase(0, 1, 0, 0)]
   [TestCase(1, 1, 1, 0)]

@@ -11,6 +11,17 @@ namespace Smdn.Threading;
 [TestFixture()]
 public class ValueTaskShimTests {
   [Test]
+  public void ShimType_CompletedTask()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemThreadingTasksValueTaskCompletedTask),
+#if SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
+      typeof(System.Threading.Tasks.ValueTask)
+#else
+      typeof(Smdn.Threading.ValueTaskShim)
+#endif
+    );
+
+  [Test]
   public void CompletedTask()
   {
     var t = ShimTypeSystemThreadingTasksValueTaskCompletedTask.CompletedTask;
@@ -22,6 +33,17 @@ public class ValueTaskShimTests {
 
     Assert.DoesNotThrowAsync(async () => await t);
   }
+
+  [Test]
+  public void ShimType_FromCanceled()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemThreadingTasksValueTaskFromCanceled),
+#if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
+      typeof(System.Threading.Tasks.ValueTask)
+#else
+      typeof(Smdn.Threading.ValueTaskShim)
+#endif
+    );
 
   [Test]
   public void FromCanceled()
@@ -58,6 +80,17 @@ public class ValueTaskShimTests {
 
     Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
   }
+
+  [Test]
+  public void ShimType_FromResult()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemThreadingTasksValueTaskFromResult),
+#if SYSTEM_THREADING_TASKS_VALUETASK_FROMRESULT
+      typeof(System.Threading.Tasks.ValueTask)
+#else
+      typeof(Smdn.Threading.ValueTaskShim)
+#endif
+    );
 
   [Test]
   public void FromResult()

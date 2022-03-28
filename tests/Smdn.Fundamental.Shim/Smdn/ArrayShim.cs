@@ -9,6 +9,17 @@ namespace Smdn;
 [TestFixture()]
 public class ArrayShimTests {
   [Test]
+  public void TestShimType_Empty()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemArrayEmpty),
+#if SYSTEM_ARRAY_EMPTY
+      typeof(System.Array)
+#else
+      typeof(Smdn.ArrayShim)
+#endif
+    );
+
+  [Test]
   public void TestEmpty()
   {
     var empty = ShimTypeSystemArrayEmpty.Empty<int>();
@@ -17,6 +28,17 @@ public class ArrayShimTests {
     Assert.AreEqual(typeof(int[]), empty.GetType());
     CollectionAssert.IsEmpty(empty);
   }
+
+  [Test]
+  public void TestShimType_ConvertAll()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemArrayConvertAll),
+#if SYSTEM_ARRAY_CONVERTALL
+      typeof(System.Array)
+#else
+      typeof(Smdn.ArrayShim)
+#endif
+    );
 
   [Test]
   public void TestConvertAll()

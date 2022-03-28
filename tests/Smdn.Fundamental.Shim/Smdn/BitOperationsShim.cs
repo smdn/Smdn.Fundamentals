@@ -7,6 +7,17 @@ namespace Smdn;
 
 [TestFixture()]
 public class BitOperationsShimTests {
+  [Test]
+  public void ShimType_IsPow2()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemNumericsBitOperationsIsPow2),
+#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+      typeof(System.Numerics.BitOperations)
+#else
+      typeof(Smdn.BitOperationsShim)
+#endif
+    );
+
   [TestCase(0b_00000000_00000000_00000000_00000000u, false)]
   [TestCase(0b_00000000_00000000_00000000_00000001u,  true)]
   [TestCase(0b_00000000_00000000_00000000_00000010u,  true)]
@@ -151,6 +162,17 @@ public class BitOperationsShimTests {
   public void IsPow2_Int64(ulong value, bool expected)
     => Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((long)value)), $"IsPow2<long>({value:X16})");
 
+  [Test]
+  public void ShimType_Log2()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemNumericsBitOperationsLog2),
+#if SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+      typeof(System.Numerics.BitOperations)
+#else
+      typeof(Smdn.BitOperationsShim)
+#endif
+    );
+
   [TestCase(0b_00000000_00000000_00000000_00000000u,  0)]
   [TestCase(0b_00000000_00000000_00000000_00000001u,  0)]
   [TestCase(0b_00000000_00000000_00000000_00000010u,  1)]
@@ -263,6 +285,17 @@ public class BitOperationsShimTests {
     => Assert.AreEqual(
       expected, ShimTypeSystemNumericsBitOperationsLog2.Log2(value),
       $"Log2<UInt64>({value:X16})"
+    );
+
+  [Test]
+  public void ShimType_PopCount()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemNumericsBitOperationsPopCount),
+#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+      typeof(System.Numerics.BitOperations)
+#else
+      typeof(Smdn.BitOperationsShim)
+#endif
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u,  0)]
@@ -563,6 +596,17 @@ public class BitOperationsShimTests {
       $"PopCount<ulong>({value:X16})"
     );
 
+  [Test]
+  public void ShimType_LeadingZeroCount()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemNumericsBitOperationsLeadingZeroCount),
+#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+      typeof(System.Numerics.BitOperations)
+#else
+      typeof(Smdn.BitOperationsShim)
+#endif
+    );
+
   [TestCase(0b_00000000_00000000_00000000_00000000u, 32)]
   [TestCase(0b_00000000_00000000_00000000_00000001u, 31)]
   [TestCase(0b_00000000_00000000_00000000_00000010u, 30)]
@@ -675,6 +719,17 @@ public class BitOperationsShimTests {
     => Assert.AreEqual(
       expected, ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value),
       $"LeadingZeroCount<UInt64>({value:X16})"
+    );
+
+  [Test]
+  public void ShimType_TrailingZeroCount()
+    => Assert.AreEqual(
+      typeof(ShimTypeSystemNumericsBitOperationsTrailingZeroCount),
+#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+      typeof(System.Numerics.BitOperations)
+#else
+      typeof(Smdn.BitOperationsShim)
+#endif
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, 32)]
