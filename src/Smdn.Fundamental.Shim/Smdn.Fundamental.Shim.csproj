@@ -24,8 +24,19 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="build\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Pack="false" Include="build\**" Visible="true" />
     <None Pack="true"  Include="build\$(AssemblyName).targets" PackagePath="build\" />
     <None Pack="true"  Include="build\*.cs" PackagePath="build\" />
   </ItemGroup>
+
+  <!-- import shim alias global usings -->
+  <PropertyGroup>
+    <SmdnFundamentalShim_EnableShimAliasGlobalUsings>true</SmdnFundamentalShim_EnableShimAliasGlobalUsings>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)*ShimAliasGlobalUsings.targets" />
 </Project>

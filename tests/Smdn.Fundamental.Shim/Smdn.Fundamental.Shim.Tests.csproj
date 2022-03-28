@@ -9,5 +9,5 @@ SPDX-License-Identifier: MIT
     <SmdnFundamentalShim_EnableShimAliasGlobalUsings>true</SmdnFundamentalShim_EnableShimAliasGlobalUsings>
   </PropertyGroup>
 
-  <Import Project="$(TestTargetProjectDirectory)build\$(TestTargetProjectName).targets" />
+  <Import Project="$(TestTargetProjectDirectory)\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets" />
 </Project>
