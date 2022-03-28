@@ -19,7 +19,7 @@ public static class ValueTaskShim {
 #if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
     => new(Task.FromCanceled(cancellationToken));
 #else
-    => new(new Task(static () => {}, cancellationToken));
+    => new(new Task(static () => { }, cancellationToken));
 #endif
 
   public static ValueTask<TResult> FromCanceled<TResult>(CancellationToken cancellationToken)
