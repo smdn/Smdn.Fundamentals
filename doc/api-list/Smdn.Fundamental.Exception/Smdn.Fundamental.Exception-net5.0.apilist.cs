@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.1 (net5.0))
+// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.2)
 //   Name: Smdn.Fundamental.Exception
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net5.0)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+ca9595af421c26474f7e6fe593fc9def4ab21784
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
 
@@ -31,6 +31,10 @@ namespace Smdn {
     public static ArgumentException CreateArgumentMustBeValidIAsyncResult(string paramName) {}
     public static ArgumentException CreateArgumentMustBeWritableStream(string paramName) {}
     public static ArgumentOutOfRangeException CreateArgumentMustBeZeroOrPositive(string paramName, object actualValue) {}
+    public static ArgumentException CreateArgumentMustHaveLengthAtLeast(string paramName, int length) {}
+    public static ArgumentException CreateArgumentMustHaveLengthExact(string paramName, int length) {}
+    public static ArgumentException CreateArgumentXMustBeLessThanOrEqualToY(object actualValueX, string paramNameX, object actualValueY, string paramNameY) {}
+    public static ArgumentException CreateArgumentXMustBeLessThanY(object actualValueX, string paramNameX, object actualValueY, string paramNameY) {}
     public static IOException CreateIOAttemptToSeekBeforeStartOfStream() {}
     public static NotSupportedException CreateNotSupportedEnumValue<TEnum>(TEnum unsupportedValue) where TEnum : Enum {}
     public static NotSupportedException CreateNotSupportedReadingStream() {}
