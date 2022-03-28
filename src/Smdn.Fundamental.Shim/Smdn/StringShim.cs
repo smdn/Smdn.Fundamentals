@@ -4,8 +4,8 @@ using System;
 
 namespace Smdn;
 
-#if !SYSTEM_STRING_STARTSWITH_CHAR
 public static class StringShim {
+#if !SYSTEM_STRING_STARTSWITH_CHAR
   public static bool StartsWith(this string str, char @value)
   {
     if (str == null)
@@ -16,7 +16,9 @@ public static class StringShim {
     else
       return str[0] == @value;
   }
+#endif
 
+#if !SYSTEM_STRING_ENDSWITH_CHAR
   public static bool EndsWith(this string str, char @value)
   {
     if (str == null)
@@ -27,5 +29,5 @@ public static class StringShim {
     else
       return str[str.Length - 1] == @value;
   }
-}
 #endif
+}

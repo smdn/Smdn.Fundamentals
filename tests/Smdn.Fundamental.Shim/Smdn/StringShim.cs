@@ -41,7 +41,7 @@ public class StringShimTests {
   [Test]
   public void TestEndsWith()
   {
-#if !SYSTEM_STRING_STARTSWITH_CHAR
+#if !SYSTEM_STRING_ENDSWITH_CHAR
     string nullString = null;
 
     Assert.Throws<ArgumentNullException>(() => nullString.EndsWith('a'));
