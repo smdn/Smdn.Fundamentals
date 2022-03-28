@@ -2,23 +2,6 @@
 // SPDX-License-Identifier: MIT
 using System;
 
-#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
-using ShimSystemNumericsBitOperationsPopCount = System.Numerics.BitOperations;
-#else
-using ShimSystemNumericsBitOperationsPopCount = Smdn.BitOperationsShim;
-#endif
-
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
-using ShimSystemNumericsBitOperationsLeadingZeroCount = System.Numerics.BitOperations;
-#else
-using ShimSystemNumericsBitOperationsLeadingZeroCount = Smdn.BitOperationsShim;
-#endif
-
-#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
-using ShimSystemNumericsBitOperationsTrailingZeroCount = System.Numerics.BitOperations;
-#else
-using ShimSystemNumericsBitOperationsTrailingZeroCount = Smdn.BitOperationsShim;
-#endif
 namespace Smdn;
 
 #pragma warning disable IDE0040
@@ -63,7 +46,7 @@ partial struct TUInt24n
   static TUInt24n IBinaryInteger<TUInt24n>.LeadingZeroCount(TUInt24n value) => new((TUIntWide)LeadingZeroCount(value));
 #endif
   public static int LeadingZeroCount(TUInt24n value)
-    => ShimSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value.Widen()) - (bitCountOfTUIntWide - BitsOfSelf);
+    => ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value.Widen()) - (bitCountOfTUIntWide - BitsOfSelf);
 
   private const int bitCountOfTUIntWide = sizeof(TUIntWide) * 8;
 
@@ -71,11 +54,11 @@ partial struct TUInt24n
   static TUInt24n IBinaryInteger<TUInt24n>.PopCount(TUInt24n value) => new((TUIntWide)PopCount(value));
 #endif
   public static int PopCount(TUInt24n value)
-    => ShimSystemNumericsBitOperationsPopCount.PopCount(value.Widen());
+    => ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value.Widen());
 
 #if FEATURE_GENERIC_MATH
   static TUInt24n IBinaryInteger<TUInt24n>.TrailingZeroCount(TUInt24n value) => new((TUIntWide)TrailingZeroCount(value));
 #endif
   public static int TrailingZeroCount(TUInt24n value)
-    => ShimSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value.Widen() | UnusedBitMask);
+    => ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value.Widen() | UnusedBitMask);
 }

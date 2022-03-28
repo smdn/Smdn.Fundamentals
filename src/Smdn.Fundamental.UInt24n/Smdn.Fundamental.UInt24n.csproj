@@ -37,6 +37,9 @@ SPDX-License-Identifier: MIT
     <PackageReference Include="System.Runtime.Experimental" Version="7.0.0-preview.2.22152.2" Condition="$(TargetFramework.StartsWith('net7'))" />
   </ItemGroup>
 
+  <!-- import shim alias global usings -->
+  <Import Project="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets" />
+
   <!-- UInt24n templates -->
   <ItemGroup>
     <UInt24nTemplateFile Include="UInt24nTemplates/TUInt24n*.cs" />
