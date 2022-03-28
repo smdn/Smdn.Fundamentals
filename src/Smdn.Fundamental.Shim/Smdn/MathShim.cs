@@ -5,7 +5,9 @@ using System;
 namespace Smdn;
 
 public static class MathShim {
-#if !SYSTEM_MATH_CLAMP
+  /*
+   * SYSTEM_MATH_CLAMP
+   */
   [CLSCompliant(false)]
   public static sbyte Clamp(sbyte value, sbyte min, sbyte max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
 
@@ -29,9 +31,10 @@ public static class MathShim {
   public static float Clamp(float value, float min, float max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
   public static double Clamp(double value, double min, double max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
   public static decimal Clamp(decimal value, decimal min, decimal max) => min <= max ? (value < min ? min : (value > max ? max : value)) : throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max));
-#endif
 
-#if !SYSTEM_MATH_DIVREM
+  /*
+   * SYSTEM_MATH_DIVREM
+   */
   public static int DivRem(int a, int b, out int result)
   {
     var quotient = a / b;
@@ -49,9 +52,10 @@ public static class MathShim {
 
     return quotient;
   }
-#endif
 
-#if !SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+  /*
+   * SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+   */
   [CLSCompliant(false)]
   public static (sbyte Quotient, sbyte Remainder) DivRem(sbyte left, sbyte right)
   {
@@ -111,5 +115,4 @@ public static class MathShim {
 
     return (quotient, checked(left - (right * quotient)));
   }
-#endif
 }

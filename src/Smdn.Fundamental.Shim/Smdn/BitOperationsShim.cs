@@ -5,19 +5,23 @@ using System;
 namespace Smdn;
 
 public static class BitOperationsShim {
-#if !SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+  /*
+   * SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+   */
   public static bool IsPow2(int value) => 0 <= value && ShimTypeSystemNumericsBitOperationsPopCount.PopCount(unchecked((uint)value)) == 1;
   public static bool IsPow2(long value) => 0L <= value && ShimTypeSystemNumericsBitOperationsPopCount.PopCount(unchecked((ulong)value)) == 1;
   [CLSCompliant(false)] public static bool IsPow2(uint value) => ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value) == 1;
   [CLSCompliant(false)] public static bool IsPow2(ulong value) => ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value) == 1;
-#endif
 
-#if !SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+  /*
+   * SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+   */
   [CLSCompliant(false)] public static int Log2(uint value) => value == 0u ? 0 : 31 - ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value);
   [CLSCompliant(false)] public static int Log2(ulong value) => value == 0uL ? 0 : 63 - ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value);
-#endif
 
-#if !SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+  /*
+   * SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+   */
   [CLSCompliant(false)]
   public static int PopCount(uint value)
   {
@@ -43,9 +47,10 @@ public static class BitOperationsShim {
 
     return count;
   }
-#endif
 
-#if !SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+  /*
+   * SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+   */
   [CLSCompliant(false)]
   public static int LeadingZeroCount(uint value)
   {
@@ -71,9 +76,10 @@ public static class BitOperationsShim {
 
     return count;
   }
-#endif
 
-#if !SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+  /*
+   * SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+   */
   [CLSCompliant(false)]
   public static int TrailingZeroCount(uint value)
   {
@@ -105,5 +111,4 @@ public static class BitOperationsShim {
 
     return count;
   }
-#endif
 }

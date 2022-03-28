@@ -1,30 +1,36 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if SYSTEM_ARRAY_EMPTY
 using System;
-#else
 using System.Linq;
-#endif
 
 namespace Smdn;
 
 public static class ArrayShim {
-#if !SYSTEM_ARRAY_EMPTY
+  /*
+   * SYSTEM_ARRAY_EMPTY
+   */
   public static T[] Empty<T>() => EmptyArray<T>.Instance;
 
   internal static class EmptyArray<T> {
+#pragma warning disable CA1825
     public static readonly T[] Instance = Enumerable.Empty<T>() as T[] ?? new T[0];
+#pragma warning restore CA1825
   }
-#endif
 
-#if !SYSTEM_ARRAY_CONVERTALL
+  /*
+   * SYSTEM_ARRAY_CONVERTALL
+   */
+#if SYSTEM_CONVERTER
   public static TOutput[] ConvertAll<TInput, TOutput>(
     this TInput[] array,
-#if SYSTEM_CONVERTER
     Converter<TInput, TOutput> converter
-#else
-    Func<TInput, TOutput> converter
+  )
+    => ConvertAll(array, new Func<TInput, TOutput>(converter));
 #endif
+
+  public static TOutput[] ConvertAll<TInput, TOutput>(
+    this TInput[] array,
+    Func<TInput, TOutput> converter
   )
   {
     if (array == null)
@@ -43,5 +49,4 @@ public static class ArrayShim {
 
     return ret;
   }
-#endif
 }
