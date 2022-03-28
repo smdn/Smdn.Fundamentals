@@ -16,6 +16,16 @@ namespace Smdn;
 [TestFixture()]
 public class ArrayShimTests {
   [Test]
+  public void TestEmpty()
+  {
+    var empty = _Array.Empty<int>();
+
+    Assert.IsNotNull(empty);
+    Assert.AreEqual(typeof(int[]), empty.GetType());
+    CollectionAssert.IsEmpty(empty);
+  }
+
+  [Test]
   public void TestConvertAll()
   {
     var array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
