@@ -6,27 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-using ShimSystemThreadingTasksValueTaskCompletedTask =
-#if SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
-  System.Threading.Tasks.ValueTask;
-#else
-  Smdn.Threading.ValueTaskShim;
-#endif
-
-using ShimSystemThreadingTasksValueTaskFromCanceled =
-#if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
-  System.Threading.Tasks.ValueTask;
-#else
-  Smdn.Threading.ValueTaskShim;
-#endif
-
-using ShimSystemThreadingTasksValueTaskFromResult =
-#if SYSTEM_THREADING_TASKS_VALUETASK_FROMRESULT
-  System.Threading.Tasks.ValueTask;
-#else
-  Smdn.Threading.ValueTaskShim;
-#endif
-
 namespace Smdn.Threading;
 
 [TestFixture()]
@@ -34,7 +13,7 @@ public class ValueTaskShimTests {
   [Test]
   public void CompletedTask()
   {
-    var t = ShimSystemThreadingTasksValueTaskCompletedTask.CompletedTask;
+    var t = ShimTypeSystemThreadingTasksValueTaskCompletedTask.CompletedTask;
 
     Assert.IsTrue(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
     Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
@@ -52,7 +31,7 @@ public class ValueTaskShimTests {
 
     cts.Cancel();
 
-    var t = ShimSystemThreadingTasksValueTaskFromCanceled.FromCanceled(token);
+    var t = ShimTypeSystemThreadingTasksValueTaskFromCanceled.FromCanceled(token);
 
     Assert.IsFalse(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
     Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
@@ -70,7 +49,7 @@ public class ValueTaskShimTests {
 
     cts.Cancel();
 
-    var t = ShimSystemThreadingTasksValueTaskFromCanceled.FromCanceled<int>(token);
+    var t = ShimTypeSystemThreadingTasksValueTaskFromCanceled.FromCanceled<int>(token);
 
     Assert.IsFalse(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
     Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
@@ -84,7 +63,7 @@ public class ValueTaskShimTests {
   public void FromResult()
   {
     var expectedResult = 1;
-    var t = ShimSystemThreadingTasksValueTaskFromResult.FromResult(expectedResult);
+    var t = ShimTypeSystemThreadingTasksValueTaskFromResult.FromResult(expectedResult);
 
     Assert.IsTrue(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
     Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));

@@ -5,12 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
-#if SYSTEM_ARRAY_CONVERTALL
-using _Array = System.Array; // System.Array.ConvertAll
-#else
-using _Array = Smdn.ArrayShim; // Smdn.ArrayShim.ConvertAll
-#endif
-
 namespace Smdn;
 
 [TestFixture()]
@@ -18,7 +12,7 @@ public class ArrayShimTests {
   [Test]
   public void TestEmpty()
   {
-    var empty = _Array.Empty<int>();
+    var empty = ShimTypeSystemArrayEmpty.Empty<int>();
 
     Assert.IsNotNull(empty);
     Assert.AreEqual(typeof(int[]), empty.GetType());
@@ -33,7 +27,7 @@ public class ArrayShimTests {
 
     CollectionAssert.AreEqual(
       expected,
-      _Array.ConvertAll(array, i => i.ToString("D"))
+      ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i.ToString("D"))
     );
   }
 
@@ -41,7 +35,7 @@ public class ArrayShimTests {
   public void TestConvertAll_ArgumentArrayEmpty()
   {
     Assert.IsEmpty(
-      _Array.ConvertAll(Enumerable.Empty<int>().ToArray(), i => i)
+      ShimTypeSystemArrayConvertAll.ConvertAll(Enumerable.Empty<int>().ToArray(), i => i)
     );
   }
 
@@ -50,7 +44,7 @@ public class ArrayShimTests {
   {
     int[] array = null;
 
-    Assert.Throws<ArgumentNullException>(() => _Array.ConvertAll(array, i => i));
+    Assert.Throws<ArgumentNullException>(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i));
   }
 
   [Test]
@@ -63,6 +57,6 @@ public class ArrayShimTests {
     Func<int, long> converter = null;
 #endif
 
-    Assert.Throws<ArgumentNullException>(() => _Array.ConvertAll(array, converter));
+    Assert.Throws<ArgumentNullException>(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, converter));
   }
 }
