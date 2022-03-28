@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Smdn.Threading;
 
-#if SYSTEM_THREADING_TASKS_VALUETASK
 public static class ValueTaskShim {
+#if SYSTEM_THREADING_TASKS_VALUETASK
+
 #if !SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
   public static ValueTask CompletedTask => default;
 #endif
@@ -33,5 +34,6 @@ public static class ValueTaskShim {
 #if !SYSTEM_THREADING_TASKS_VALUETASK_FROMRESULT
   public static ValueTask<TResult> FromResult<TResult>(TResult result) => new(result);
 #endif
-}
+
 #endif
+}
