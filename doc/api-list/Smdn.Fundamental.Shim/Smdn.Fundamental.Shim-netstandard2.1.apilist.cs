@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Shim
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+d65be3b1affef69b9d770246516c5b5de945b36d
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
 using System;
