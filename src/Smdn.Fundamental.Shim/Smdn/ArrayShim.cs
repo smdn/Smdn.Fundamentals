@@ -33,11 +33,7 @@ public static class ArrayShim {
       throw new ArgumentNullException(nameof(converter));
 
     if (array.Length == 0)
-#if SYSTEM_ARRAY_EMPTY
-      return Array.Empty<TOutput>();
-#else
-      return Empty<TOutput>();
-#endif
+      return ShimTypeSystemArrayEmpty.Empty<TOutput>();
 
     var ret = new TOutput[array.Length];
 
