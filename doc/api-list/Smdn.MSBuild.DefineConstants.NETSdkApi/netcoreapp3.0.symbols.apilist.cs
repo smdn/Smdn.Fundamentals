@@ -46,6 +46,6 @@
 #define SYSTEM_SECURITY_CRYPTOGRAPHY_HASHALGORITHM_CLEAR // System.Security.Cryptography.HashAlgorithm.Clear
 #define SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYMEMORY_OF_CHAR // System.Text.StringBuilder.Append(ReadOnlyMemory<Char>)
 #define SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR // System.Text.StringBuilder.Append(ReadOnlySpan<Char>)
-#define SYSTEM_THREADING_TASKS_VALUETASK // System.Threading.Tasks.ValueTask
 #define SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK // System.Threading.Tasks.Task.CompletedTask
 #define SYSTEM_THREADING_TASKS_TASK_FROMCANCELED // System.Threading.Tasks.Task.FromCanceled
+#define SYSTEM_THREADING_TASKS_VALUETASK // System.Threading.Tasks.ValueTask
