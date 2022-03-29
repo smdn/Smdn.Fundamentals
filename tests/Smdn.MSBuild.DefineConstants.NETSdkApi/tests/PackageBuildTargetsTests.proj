@@ -1,0 +1,53 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target Name="RunTests">
+    <CallTarget Targets="RunTestCases_TestSetOverlapsWith" />
+    <Message Text="$(MSBuildThisFile): all tests passed" Importance="high" />
+  </Target>
+
+  <Target Name="RunTestCases_TestSetOverlapsWith">
+    <PropertyGroup><Set>A;B;C</Set><OtherSet></OtherSet><ExpectedResult>false</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>A</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>B</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>X</OtherSet><ExpectedResult>false</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>A;B;C</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>B;C;A</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>A;B;X</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>A;X;Y</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>A;B;C;D</OtherSet><ExpectedResult>true</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+
+    <PropertyGroup><Set>A;B;C</Set><OtherSet>X;Y;Z</OtherSet><ExpectedResult>false</ExpectedResult></PropertyGroup>
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet);ExpectedResult=$(ExpectedResult)" Projects="$(MSBuildThisFileFullPath)" Targets="RunTestCase_TestSetOverlapsWith" />
+  </Target>
+
+  <Target Name="RunTestCase_TestSetOverlapsWith">
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet)" Projects="$(PackageBuildTargetsFile)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="ResultTestSetOverlapsWith" />
+    </MSBuild>
+    <Error
+      Text="test failed: Set='$(Set)', OtherSet='$(OtherSet)', Result='$(ResultTestSetOverlapsWith)', Expected='$(ExpectedResult)'"
+      Condition="'$(ResultTestSetOverlapsWith)' != '$(ExpectedResult)'"
+    />
+  </Target>
+</Project>
+
