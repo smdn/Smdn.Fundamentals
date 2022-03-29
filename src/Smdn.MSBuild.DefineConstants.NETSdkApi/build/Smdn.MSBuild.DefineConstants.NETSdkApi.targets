@@ -195,4 +195,26 @@ SPDX-License-Identifier: MIT
       />
     </ItemGroup>
   </Target>
+
+  <!-- returns value that represents whether the $(Set) overlaps with $(OtherSet) or not -->
+  <Target Name="TestSetOverlapsWith" Returns="$(OtherSetHasElementWhichIncludedInSet)">
+    <ItemGroup>
+      <OtherSetElement Remove="@(OtherSetElement)" />
+      <OtherSetElement Include="$(OtherSet)" />
+      <OtherSetElement Update="@(OtherSetElement)">
+        <IsIncludedInSet>$([System.Text.RegularExpressions.Regex]::IsMatch('$(Set)', '\b%(Identity)\b'))</IsIncludedInSet>
+      </OtherSetElement>
+    </ItemGroup>
+
+    <Message Text="'$(Set)' contains element '%(OtherSetElement.Identity)' = %(OtherSetElement.IsIncludedInSet)" Importance="low" />
+
+    <PropertyGroup>
+      <OtherSetElementsInclusivities>@(OtherSetElement->Metadata('IsIncludedInSet'), ';')</OtherSetElementsInclusivities>
+      <OtherSetHasElementWhichIncludedInSet>false</OtherSetHasElementWhichIncludedInSet>
+      <OtherSetHasElementWhichIncludedInSet Condition="$([System.String]::new('$(OtherSetElementsInclusivities)').Contains('True'))">true</OtherSetHasElementWhichIncludedInSet>
+    </PropertyGroup>
+
+    <Message Text="inclusivities of other set elements: $(OtherSetElementsInclusivities)" Importance="low" />
+    <Message Text="'$(Set)' overlaps with '$(OtherSet)' = $(OtherSetHasElementWhichIncludedInSet)" Importance="normal" />
+  </Target>
 </Project>
