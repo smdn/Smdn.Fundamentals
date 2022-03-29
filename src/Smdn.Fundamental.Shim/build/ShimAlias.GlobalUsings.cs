@@ -100,8 +100,6 @@ global using ShimTypeSystemStringEndsWithChar =
 /*
  * Smdn.Threading.ValueTaskShim / System.Threading.Tasks.ValueTask
  */
-#if SYSTEM_THREADING_TASKS_VALUETASK
-
 global using ShimTypeSystemThreadingTasksValueTaskCompletedTask =
 #if SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
   System.Threading.Tasks.ValueTask;
@@ -122,5 +120,3 @@ global using ShimTypeSystemThreadingTasksValueTaskFromResult =
 #else
   Smdn.Threading.ValueTaskShim;
 #endif
-
-#endif // SYSTEM_THREADING_TASKS_VALUETASK
