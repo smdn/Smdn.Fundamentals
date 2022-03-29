@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
     </SortNETSdkAvailableApiSymbol>
 
     <ItemGroup>
-      <_APIListSymbolDefinitionLine Include="#define %(_SortedNETSdkAvailableApiSymbol.Identity) // %(_SortedNETSdkAvailableApiSymbol.TargetApiFullName)" Condition="'@(_SortedNETSdkAvailableApiSymbol)' != ''" />
+      <_APIListSymbolDefinitionLine Include="#define %(_SortedNETSdkAvailableApiSymbol.Identity) // %(_SortedNETSdkAvailableApiSymbol.TargetApiFullName) ($([System.String]::new('%(_SortedNETSdkAvailableApiSymbol.TargetFrameworkCondition)').Replace(';', ' || ')))" Condition="'@(_SortedNETSdkAvailableApiSymbol)' != ''" />
       <_APIListSymbolDefinitionLine Include="// (no symbols defined)" Condition="'@(_SortedNETSdkAvailableApiSymbol)' == ''" />
     </ItemGroup>
 
