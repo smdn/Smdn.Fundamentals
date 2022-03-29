@@ -25,148 +25,195 @@ SPDX-License-Identifier: MIT
     Name="ListNETSdkAvailableApiName"
     Returns="@(NETSdkAvailableApiSymbol)"
   >
+    <!-- NETFRAMEWORK -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default_ANSI"/>
+    </ItemGroup>
+
     <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET46_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD1_3_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP1_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="Array.Empty"/>
-      <_NETSdkAvailableApi Namespace="System" Include="FormattableString"/>
-      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.CompletedTask"/>
-      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.FromCanceled"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET46_OR_GREATER;NETSTANDARD1_3_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="FormattableString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.CompletedTask"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.FromCanceled"/>
     </ItemGroup>
 
     <!-- NET461_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET461_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="IAsyncDisposable"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET461_OR_GREATER;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IAsyncDisposable"/>
     </ItemGroup>
 
     <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="Array.ConvertAll"/>
-      <_NETSdkAvailableApi Namespace="System" Include="Converter"/>
-      <_NETSdkAvailableApi Namespace="System" Include="Exception.ctor(SerializationInfo)"/>
-      <_NETSdkAvailableApi Namespace="System" Include="ICloneable"/>
-      <_NETSdkAvailableApi Namespace="System" Include="Math.DivRem"/>
-      <_NETSdkAvailableApi Namespace="System.Diagnostics" Include="Process"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.Close"/>
-      <_NETSdkAvailableApi Namespace="System.Net.NetworkInformation" Include="PhysicalAddress"/>
-      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization.Formatter.Binary" Include="%2A"/> <!-- '*' -->
-      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization" Include="SerializationBinder"/>
-      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="HashAlgorithm.Clear"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.ConvertAll"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Converter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Exception.ctor(SerializationInfo)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ICloneable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.DivRem"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics" Include="Process"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Close"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.NetworkInformation" Include="PhysicalAddress"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization.Formatter.Binary" Include="%2A"/> <!-- '*' -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization" Include="SerializationBinder"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="HashAlgorithm.Clear"/>
     </ItemGroup>
 
     <!-- NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET472_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET472_OR_GREATER;NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="CryptoStream.ctor(leaveOpen)"/>
     </ItemGroup>
 
-    <!-- NETFRAMEWORK -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETFRAMEWORK\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.Default_ANSI"/>
-    </ItemGroup>
-
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="ArraySegment.Slice"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.EndsWith(char)"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.Split(char)"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.Split(string)"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.StartsWith(char)"/>
-      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="KeyValuePair.Create"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Path.GetRelativePath"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArraySegment.Slice"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.EndsWith(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Split(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Split(string)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.StartsWith(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="KeyValuePair.Create"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.GetRelativePath"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.Parse(ROS<char>), Double.Parse(ROS<char>), etc. -->
-      <_NETSdkAvailableApi Namespace="System" Include="INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.TryParse(ROS<char>), Double.TryParse(ROS<char>), etc. -->
-      <_NETSdkAvailableApi Namespace="System" Include="Math.Clamp"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.Create"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.Contains(char)"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Path.Join"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Path.TryJoin"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.Read(Span&lt;Byte&gt;)"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ReadAsync(Memory&lt;Byte&gt;)"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.Write(ReadOnlySpan&lt;Byte&gt;)"/>
-      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.WriteAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
-      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.Append(ReadOnlySpan&lt;Char&gt;)"/>
-      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="ValueTask"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.Parse(ROS<char>), Double.Parse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.TryParse(ROS<char>), Double.TryParse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.Clamp"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.Join"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.TryJoin"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Read(Span&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ReadAsync(Memory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Write(ReadOnlySpan&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.WriteAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="Index"/>
-      <_NETSdkAvailableApi Namespace="System" Include="Range"/>
-      <_NETSdkAvailableApi Namespace="System.Buffers" Include="SequenceReader"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Index"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Range"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader"/>
     </ItemGroup>
 
     <!-- NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP3_0_OR_GREATER\b')) Or
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.LeadingZeroCount"/>
-      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.Log2"/>
-      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.PopCount"/>
-      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.TrailingZeroCount"/>
-      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.Append(ReadOnlyMemory&lt;Char&gt;)"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.LeadingZeroCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.Log2"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.PopCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.TrailingZeroCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(ReadOnlyMemory&lt;Char&gt;)"/>
     </ItemGroup>
 
     <!-- NET5_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="Enum.IsDefined&lt;TEnum&gt;"/>
-      <_NETSdkAvailableApi Namespace="System" Include="StringSplitOptions.TrimEntries"/>
-      <_NETSdkAvailableApi Namespace="System.Buffers" Include="SequenceReader.UnreadSequence"/>
-      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="IReadOnlySet"/>
-      <_NETSdkAvailableApi Namespace="System.Runtime.CompilerServices" Include="IsExternalInit"/>
-      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="ValueTask.CompletedTask"/>
-      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="ValueTask.FromCanceled"/>
-      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="ValueTask.FromResult"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.IsDefined&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringSplitOptions.TrimEntries"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.UnreadSequence"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="IReadOnlySet"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="IsExternalInit"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.CompletedTask"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromCanceled"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromResult"/>
     </ItemGroup>
 
     <!-- NET6_0_OR_GREATER -->
-    <ItemGroup Condition="
-      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET6_0_OR_GREATER\b'))
-    ">
-      <_NETSdkAvailableApi Namespace="System" Include="ISpanFormattable"/>
-      <_NETSdkAvailableApi Namespace="System" Include="Math.DivRem_return:ValueTuple`2"/>
-      <_NETSdkAvailableApi Namespace="System" Include="String.Create(IFormatProvider)"/>
-      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.IsPow2"/>
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET6_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanFormattable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.DivRem_return:ValueTuple`2"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create(IFormatProvider)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.IsPow2"/>
     </ItemGroup>
 
     <ItemGroup>
