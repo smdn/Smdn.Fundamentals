@@ -100,7 +100,7 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
-      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="CryptoStream.ctor(leaveOpen)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="CryptoStream.ctor(leaveOpen)"/>
     </ItemGroup>
 
     <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
