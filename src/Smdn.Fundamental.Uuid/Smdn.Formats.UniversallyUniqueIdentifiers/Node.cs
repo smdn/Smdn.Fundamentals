@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-[StructLayout(LayoutKind.Sequential, Pack = 1)]
+[StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
 public readonly struct Node : IFormattable {
   private const int SizeOfSelf = 6;
 
