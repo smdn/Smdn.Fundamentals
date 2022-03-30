@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Shim.dll (Smdn.Fundamental.Shim-3.1.0)
+// Smdn.Fundamental.Shim.dll (Smdn.Fundamental.Shim-3.1.1)
 //   Name: Smdn.Fundamental.Shim
-//   AssemblyVersion: 3.1.0.0
-//   InformationalVersion: 3.1.0+d65be3b1affef69b9d770246516c5b5de945b36d
+//   AssemblyVersion: 3.1.1.0
+//   InformationalVersion: 3.1.1+caac211f82afbf4aac89e52e03cfdf58bbfe90a0
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
 
