@@ -157,29 +157,54 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestCreateNameBasedMD5()
+    public void TestCreateNameBased_ArgumentNull()
     {
-      var uuid = Uuid.CreateNameBasedMD5("www.widgets.com", Uuid.Namespace.RFC4122Dns);
-
-      Assert.AreEqual(new Uuid("3d813cbb-47fb-32ba-91df-831e1593ac29"), uuid);
-      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
-      Assert.AreEqual(UuidVersion.Version3, uuid.Version);
-
-      uuid = Uuid.CreateNameBasedMD5("python.org", Uuid.Namespace.RFC4122Dns);
-
-      Assert.AreEqual(new Uuid("6fa459ea-ee8a-3ca4-894e-db77e160355e"), uuid, "Python uuid; http://pythonjp.sourceforge.jp/dev/library/uuid.html");
-      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
-      Assert.AreEqual(UuidVersion.Version3, uuid.Version);
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null, UuidVersion.NameBasedMD5Hash), "#1");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null, UuidVersion.NameBasedSHA1Hash), "#2");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#3");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#4");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#5");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#6");
     }
 
     [Test]
-    public void TestCreateNameBasedSHA1()
+    public void TestCreateNameBasedMD5_ArgumentNull()
     {
-      var uuid = Uuid.CreateNameBasedSHA1("python.org", Uuid.Namespace.RFC4122Dns);
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null), "#1");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null, Uuid.Namespace.RFC4122Url), "#2");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null, Uuid.Namespace.RFC4122Url), "#3");
+    }
 
-      Assert.AreEqual(new Uuid("886313e1-3b8a-5372-9b90-0c9aee199e5d"), uuid, "Python uuid; http://pythonjp.sourceforge.jp/dev/library/uuid.html");
-      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField);
-      Assert.AreEqual(UuidVersion.Version5, uuid.Version);
+    [Test]
+    public void TestCreateNameBasedSHA1_ArgumentNull()
+    {
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null), "#1");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null, Uuid.Namespace.RFC4122Url), "#2");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null, Uuid.Namespace.RFC4122Url), "#3");
+    }
+
+    [TestCase("www.widgets.com", Uuid.Namespace.RFC4122Dns, "3d813cbb-47fb-32ba-91df-831e1593ac29")]
+    [TestCase("python.org", Uuid.Namespace.RFC4122Dns, "6fa459ea-ee8a-3ca4-894e-db77e160355e")] // Python uuid; http://pythonjp.sourceforge.jp/dev/library/uuid.html
+    [TestCase("https://example.com/", Uuid.Namespace.RFC4122Url, "b9dcdff8-af4a-365d-8043-0f8361942709")]
+    public void TestCreateNameBasedMD5(string name, Uuid.Namespace ns, string expected)
+    {
+      var uuid = Uuid.CreateNameBasedMD5(name, ns);
+
+      Assert.AreEqual(new Uuid(expected), uuid);
+      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField, nameof(Uuid.VariantField));
+      Assert.AreEqual(UuidVersion.Version3, uuid.Version, nameof(Uuid.Version));
+    }
+
+    [TestCase("www.widgets.com", Uuid.Namespace.RFC4122Dns, "21f7f8de-8051-5b89-8680-0195ef798b6a")]
+    [TestCase("python.org", Uuid.Namespace.RFC4122Dns, "886313e1-3b8a-5372-9b90-0c9aee199e5d")] // Python uuid; http://pythonjp.sourceforge.jp/dev/library/uuid.html
+    [TestCase("https://example.com/", Uuid.Namespace.RFC4122Url, "dd2c1780-811a-5296-81c5-178a0ef488bc")]
+    public void TestCreateNameBasedSHA1(string name, Uuid.Namespace ns, string expected)
+    {
+      var uuid = Uuid.CreateNameBasedSHA1(name, ns);
+
+      Assert.AreEqual(new Uuid(expected), uuid);
+      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField, nameof(Uuid.VariantField));
+      Assert.AreEqual(UuidVersion.Version5, uuid.Version, nameof(Uuid.Version));
     }
 
     [Test]
