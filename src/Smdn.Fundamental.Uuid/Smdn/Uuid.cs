@@ -188,12 +188,7 @@ public readonly struct Uuid :
   }
 
   public static Uuid CreateNameBasedMD5(Uri url)
-  {
-    if (url == null)
-      throw new ArgumentNullException(nameof(url));
-
-    return CreateNameBasedMD5(url.ToString(), Namespace.RFC4122Url);
-  }
+    => CreateNameBasedMD5((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url);
 
   public static Uuid CreateNameBasedMD5(string name, Namespace ns)
     => CreateNameBasedMD5(Encoding.ASCII.GetBytes(name), ns);
@@ -202,12 +197,7 @@ public readonly struct Uuid :
     => CreateNameBased(name, ns, UuidVersion.NameBasedMD5Hash);
 
   public static Uuid CreateNameBasedSHA1(Uri url)
-  {
-    if (url == null)
-      throw new ArgumentNullException(nameof(url));
-
-    return CreateNameBasedSHA1(url.ToString(), Namespace.RFC4122Url);
-  }
+    => CreateNameBasedSHA1((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url);
 
   public static Uuid CreateNameBasedSHA1(string name, Namespace ns)
     => CreateNameBasedSHA1(Encoding.ASCII.GetBytes(name), ns);
@@ -216,26 +206,19 @@ public readonly struct Uuid :
     => CreateNameBased(name, ns, UuidVersion.NameBasedSHA1Hash);
 
   public static Uuid CreateNameBased(Uri url, UuidVersion version)
-  {
-    if (url == null)
-      throw new ArgumentNullException(nameof(url));
-
-    return CreateNameBased(url.ToString(), Namespace.RFC4122Url, version);
-  }
+    => CreateNameBased((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url, version);
 
   public static Uuid CreateNameBased(string name, Namespace ns, UuidVersion version)
     => CreateNameBased(Encoding.ASCII.GetBytes(name), ns, version);
 
   public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version)
-  {
-    return ns switch {
+    => ns switch {
       Namespace.RFC4122Dns => CreateNameBased(name, RFC4122NamespaceDns, version),
       Namespace.RFC4122Url => CreateNameBased(name, RFC4122NamespaceUrl, version),
       Namespace.RFC4122IsoOid => CreateNameBased(name, RFC4122NamespaceIsoOid, version),
       Namespace.RFC4122X500 => CreateNameBased(name, RFC4122NamespaceX500, version),
       _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(ns), ns),
     };
-  }
 
   public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version)
     => CreateNameBased(Encoding.ASCII.GetBytes(name), namespaceId, version);
