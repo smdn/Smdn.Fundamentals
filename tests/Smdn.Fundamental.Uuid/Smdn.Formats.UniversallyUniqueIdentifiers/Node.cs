@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
+using System.Net.NetworkInformation;
+#endif
 using System.Text.RegularExpressions;
 using NUnit.Framework;
 
@@ -18,6 +21,21 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
         Assert.IsTrue(regexRandomNode.IsMatch(node.ToString()), node.ToString());
       }
     }
+
+#if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
+    [Test]
+    public void TestConstruct_Default()
+      => Assert.AreEqual(PhysicalAddress.Parse("00-00-00-00-00-00"), new Node().ToPhysicalAddress());
+
+    [Test]
+    public void TestConstruct_FromPhysicalAddress()
+    {
+      var addr = PhysicalAddress.Parse("01-23-45-67-89-AB");
+      var node = new Node(addr);
+
+      Assert.AreEqual(addr, node.ToPhysicalAddress());
+    }
+#endif
 
     [Test]
     public void TestToString()
