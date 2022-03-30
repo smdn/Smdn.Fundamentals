@@ -11,6 +11,8 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public readonly struct Node : IFormattable {
+  private const int SizeOfSelf = 6;
+
   public static Node CreateRandom()
   {
     Span<byte> buffer = stackalloc byte[6];
@@ -59,7 +61,7 @@ public readonly struct Node : IFormattable {
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
   public PhysicalAddress ToPhysicalAddress()
   {
-    var buffer = new byte[6];
+    var buffer = new byte[SizeOfSelf];
 
     buffer[0] = N0;
     buffer[1] = N1;
@@ -70,7 +72,7 @@ public readonly struct Node : IFormattable {
 
     return new PhysicalAddress(buffer);
 #if false
-    var buffer = ArrayPool<byte>.Shared.Rent(6);
+    var buffer = ArrayPool<byte>.Shared.Rent(SizeOfSelf);
 
     try {
       buffer[0] = N0;
@@ -80,7 +82,7 @@ public readonly struct Node : IFormattable {
       buffer[4] = N4;
       buffer[5] = N5;
 
-      return new PhysicalAddress(buffer.AsSpan(0, 6)); // can not pass Span<byte>
+      return new PhysicalAddress(buffer.AsSpan(0, SizeOfSelf)); // can not pass Span<byte>
     }
     finally {
       ArrayPool<byte>.Shared.Return(buffer);
