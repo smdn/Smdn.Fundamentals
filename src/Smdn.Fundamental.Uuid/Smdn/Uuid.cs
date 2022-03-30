@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Buffers;
 using System.Buffers.Binary;
 using System.Globalization;
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
@@ -266,13 +267,24 @@ public readonly struct Uuid :
        *
        *    o  Compute the hash of the name space ID concatenated with the name.
        */
-      var buffer = new byte[16 + name.Length]; // TODO: array pool
+      byte[] buffer = null;
+      byte[] hash;
 
-      namespaceId.GetBytes(buffer, 0, asBigEndian: true);
+      try {
+        var len = 16 + name.Length;
 
-      name.CopyTo(buffer.AsSpan(16));
+        buffer = ArrayPool<byte>.Shared.Rent(len);
 
-      var hash = hashAlgorithm.ComputeHash(buffer);
+        namespaceId.GetBytes(buffer, 0, asBigEndian: true);
+
+        name.CopyTo(buffer.AsSpan(16));
+
+        hash = hashAlgorithm.ComputeHash(buffer, 0, len);
+      }
+      finally {
+        if (buffer is not null)
+          ArrayPool<byte>.Shared.Return(buffer);
+      }
 
       /*
        *    o  Set octets zero through 3 of the time_low field to octets zero
