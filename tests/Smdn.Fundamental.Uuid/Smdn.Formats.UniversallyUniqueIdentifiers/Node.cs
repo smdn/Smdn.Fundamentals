@@ -38,6 +38,52 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
 #endif
 
     [Test]
+    public void WriteBytes()
+    {
+      var node = Node.CreateRandom();
+      var dest = new byte[7] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+      Assert.DoesNotThrow(() => node.WriteBytes((Span<byte>)dest), "length 7");
+      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+
+      Assert.DoesNotThrow(() => node.WriteBytes(((Span<byte>)dest).Slice(0, 6)), "length 6");
+      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+    }
+
+    [Test]
+    public void TryWriteBytes()
+    {
+      var node = Node.CreateRandom();
+      var dest = new byte[7] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+
+      Assert.IsTrue(node.TryWriteBytes((Span<byte>)dest), "length 7");
+      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+
+      Assert.IsTrue(node.TryWriteBytes(((Span<byte>)dest).Slice(0, 6)), "length 6");
+      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+    }
+
+    [Test]
+    public void WriteBytes_DestinationLengthTooShort()
+    {
+      var node = Node.CreateRandom();
+
+      Assert.Throws<ArgumentException>(() => node.WriteBytes(stackalloc byte[5]), "length 5");
+      Assert.Throws<ArgumentException>(() => node.WriteBytes(stackalloc byte[1]), "length 1");
+      Assert.Throws<ArgumentException>(() => node.WriteBytes(stackalloc byte[0]), "length 0");
+    }
+
+    [Test]
+    public void TryWriteBytes_DestinationLengthTooShort()
+    {
+      var node = Node.CreateRandom();
+
+      Assert.IsFalse(node.TryWriteBytes(stackalloc byte[5]), "length 5");
+      Assert.IsFalse(node.TryWriteBytes(stackalloc byte[1]), "length 1");
+      Assert.IsFalse(node.TryWriteBytes(stackalloc byte[0]), "length 0");
+    }
+
+    [Test]
     public void TestToString()
     {
       var regexFormat_X = new Regex("^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$");

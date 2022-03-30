@@ -855,12 +855,8 @@ public readonly struct Uuid :
 
     buffer[startIndex + 8] = clock_seq_hi_and_reserved;
     buffer[startIndex + 9] = clock_seq_low;
-    buffer[startIndex + 10] = node.N0;
-    buffer[startIndex + 11] = node.N1;
-    buffer[startIndex + 12] = node.N2;
-    buffer[startIndex + 13] = node.N3;
-    buffer[startIndex + 14] = node.N4;
-    buffer[startIndex + 15] = node.N5;
+
+    node.WriteBytes(buffer.AsSpan(startIndex + 10));
   }
 
   public byte[] ToByteArray()

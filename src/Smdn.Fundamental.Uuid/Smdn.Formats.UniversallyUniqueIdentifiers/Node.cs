@@ -91,6 +91,27 @@ public readonly struct Node : IFormattable {
   }
 #endif
 
+  public void WriteBytes(Span<byte> destination)
+  {
+    if (!TryWriteBytes(destination))
+      throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(destination), SizeOfSelf);
+  }
+
+  public bool TryWriteBytes(Span<byte> destination)
+  {
+    if (destination.Length < SizeOfSelf)
+      return false;
+
+    destination[0] = N0;
+    destination[1] = N1;
+    destination[2] = N2;
+    destination[3] = N3;
+    destination[4] = N4;
+    destination[5] = N5;
+
+    return true;
+  }
+
   public override string ToString() => ToString(format: null, formatProvider: null);
 
   public string ToString(string format, IFormatProvider formatProvider = null)
