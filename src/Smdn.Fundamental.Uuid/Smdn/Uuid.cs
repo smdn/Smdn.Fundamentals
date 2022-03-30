@@ -191,27 +191,36 @@ public readonly struct Uuid :
     => CreateNameBasedMD5((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url);
 
   public static Uuid CreateNameBasedMD5(string name, Namespace ns)
-    => CreateNameBasedMD5(Encoding.ASCII.GetBytes(name), ns);
+    => CreateNameBasedMD5(Encoding.ASCII.GetBytes(name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), ns);
 
   public static Uuid CreateNameBasedMD5(byte[] name, Namespace ns)
+    => CreateNameBasedMD5((name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), ns);
+
+  public static Uuid CreateNameBasedMD5(ReadOnlySpan<byte> name, Namespace ns)
     => CreateNameBased(name, ns, UuidVersion.NameBasedMD5Hash);
 
   public static Uuid CreateNameBasedSHA1(Uri url)
     => CreateNameBasedSHA1((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url);
 
   public static Uuid CreateNameBasedSHA1(string name, Namespace ns)
-    => CreateNameBasedSHA1(Encoding.ASCII.GetBytes(name), ns);
+    => CreateNameBasedSHA1(Encoding.ASCII.GetBytes(name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), ns);
 
   public static Uuid CreateNameBasedSHA1(byte[] name, Namespace ns)
+    => CreateNameBasedSHA1((name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), ns);
+
+  public static Uuid CreateNameBasedSHA1(ReadOnlySpan<byte> name, Namespace ns)
     => CreateNameBased(name, ns, UuidVersion.NameBasedSHA1Hash);
 
   public static Uuid CreateNameBased(Uri url, UuidVersion version)
     => CreateNameBased((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url, version);
 
   public static Uuid CreateNameBased(string name, Namespace ns, UuidVersion version)
-    => CreateNameBased(Encoding.ASCII.GetBytes(name), ns, version);
+    => CreateNameBased(Encoding.ASCII.GetBytes(name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), ns, version);
 
   public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version)
+    => CreateNameBased((name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), ns, version);
+
+  public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Namespace ns, UuidVersion version)
     => ns switch {
       Namespace.RFC4122Dns => CreateNameBased(name, RFC4122NamespaceDns, version),
       Namespace.RFC4122Url => CreateNameBased(name, RFC4122NamespaceUrl, version),
@@ -221,13 +230,13 @@ public readonly struct Uuid :
     };
 
   public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version)
-    => CreateNameBased(Encoding.ASCII.GetBytes(name), namespaceId, version);
+    => CreateNameBased(Encoding.ASCII.GetBytes(name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), namespaceId, version);
 
   public static Uuid CreateNameBased(byte[] name, Uuid namespaceId, UuidVersion version)
-  {
-    if (name == null)
-      throw new ArgumentNullException(nameof(name));
+    => CreateNameBased((name ?? throw new ArgumentNullException(nameof(name))).AsSpan(), namespaceId, version);
 
+  public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Uuid namespaceId, UuidVersion version)
+  {
     /*
      * 4.3. Algorithm for Creating a Name-Based UUID
      */
@@ -261,7 +270,7 @@ public readonly struct Uuid :
 
       namespaceId.GetBytes(buffer, 0, asBigEndian: true);
 
-      Buffer.BlockCopy(name, 0, buffer, 16, name.Length);
+      name.CopyTo(buffer.AsSpan(16));
 
       var hash = hashAlgorithm.ComputeHash(buffer);
 
