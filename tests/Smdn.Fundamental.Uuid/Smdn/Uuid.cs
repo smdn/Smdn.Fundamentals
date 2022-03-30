@@ -185,6 +185,7 @@ namespace Smdn {
 
     [TestCase("www.widgets.com", Uuid.Namespace.RFC4122Dns, "3d813cbb-47fb-32ba-91df-831e1593ac29")]
     [TestCase("python.org", Uuid.Namespace.RFC4122Dns, "6fa459ea-ee8a-3ca4-894e-db77e160355e")] // Python uuid; http://pythonjp.sourceforge.jp/dev/library/uuid.html
+    [TestCase("example.com", Uuid.Namespace.RFC4122Dns, "9073926b-929f-31c2-abc9-fad77ae3e8eb")]
     [TestCase("https://example.com/", Uuid.Namespace.RFC4122Url, "b9dcdff8-af4a-365d-8043-0f8361942709")]
     public void TestCreateNameBasedMD5(string name, Uuid.Namespace ns, string expected)
     {
@@ -197,6 +198,7 @@ namespace Smdn {
 
     [TestCase("www.widgets.com", Uuid.Namespace.RFC4122Dns, "21f7f8de-8051-5b89-8680-0195ef798b6a")]
     [TestCase("python.org", Uuid.Namespace.RFC4122Dns, "886313e1-3b8a-5372-9b90-0c9aee199e5d")] // Python uuid; http://pythonjp.sourceforge.jp/dev/library/uuid.html
+    [TestCase("example.com", Uuid.Namespace.RFC4122Dns, "cfbff0d1-9375-5685-968c-48ce8b15ae17")]
     [TestCase("https://example.com/", Uuid.Namespace.RFC4122Url, "dd2c1780-811a-5296-81c5-178a0ef488bc")]
     public void TestCreateNameBasedSHA1(string name, Uuid.Namespace ns, string expected)
     {
@@ -205,6 +207,19 @@ namespace Smdn {
       Assert.AreEqual(new Uuid(expected), uuid);
       Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField, nameof(Uuid.VariantField));
       Assert.AreEqual(UuidVersion.Version5, uuid.Version, nameof(Uuid.Version));
+    }
+
+    [TestCase("example", "9073926b-929f-31c2-abc9-fad77ae3e8eb", UuidVersion.Version3, "a542de01-bff3-3fe2-b0a1-1adc92c500ee")]
+    [TestCase("example", "9073926b-929f-31c2-abc9-fad77ae3e8eb", UuidVersion.Version5, "851de751-8481-5e26-82b9-251f7b6b90ee")]
+    [TestCase("", "9073926b-929f-31c2-abc9-fad77ae3e8eb", UuidVersion.Version3, "00d104c4-99c9-3b9d-be62-3db5a4a311ac")]
+    [TestCase("", "9073926b-929f-31c2-abc9-fad77ae3e8eb", UuidVersion.Version5, "7091bc9e-8eea-565d-9142-101b307a2d52")]
+    public void TestCreateNameBased_NamespaceId(string name, string namespaceId, UuidVersion version, string expected)
+    {
+      var uuid = Uuid.CreateNameBased(name, new Uuid(namespaceId), version);
+
+      Assert.AreEqual(new Uuid(expected), uuid);
+      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField, nameof(Uuid.VariantField));
+      Assert.AreEqual(version, uuid.Version, nameof(Uuid.Version));
     }
 
     [Test]
