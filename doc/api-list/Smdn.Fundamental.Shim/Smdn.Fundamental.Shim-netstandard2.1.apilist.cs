@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Shim.dll (Smdn.Fundamental.Shim-3.1.0)
+// Smdn.Fundamental.Shim.dll (Smdn.Fundamental.Shim-3.1.1)
 //   Name: Smdn.Fundamental.Shim
-//   AssemblyVersion: 3.1.0.0
-//   InformationalVersion: 3.1.0+d65be3b1affef69b9d770246516c5b5de945b36d
+//   AssemblyVersion: 3.1.1.0
+//   InformationalVersion: 3.1.1+fa4d907b50f26bcb536c88ac5286aebd1c2a9de4
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
