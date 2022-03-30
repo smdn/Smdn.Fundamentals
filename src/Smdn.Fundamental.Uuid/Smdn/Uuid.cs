@@ -63,6 +63,8 @@ public readonly struct Uuid :
   public static Uuid NewUuid() => CreateTimeBased();
 #endif
 
+  private const int SizeOfSelf = 16;
+
   private static int GetClock()
   {
     Span<byte> bytes = stackalloc byte[2];
@@ -271,13 +273,13 @@ public readonly struct Uuid :
       byte[] hash;
 
       try {
-        var len = 16 + name.Length;
+        var len = SizeOfSelf + name.Length;
 
         buffer = ArrayPool<byte>.Shared.Rent(len);
 
         namespaceId.GetBytes(buffer, 0, asBigEndian: true);
 
-        name.CopyTo(buffer.AsSpan(16));
+        name.CopyTo(buffer.AsSpan(SizeOfSelf));
 
         hash = hashAlgorithm.ComputeHash(buffer, 0, len);
       }
@@ -316,7 +318,7 @@ public readonly struct Uuid :
        *
        *    o  Convert the resulting UUID to local byte order.
        */
-      return new Uuid(hash.AsSpan(0, 16), version, isBigEndian: true);
+      return new Uuid(hash.AsSpan(0, SizeOfSelf), version, isBigEndian: true);
     }
     finally {
 #if SYSTEM_SECURITY_CRYPTOGRAPHY_HASHALGORITHM_CLEAR
@@ -330,7 +332,7 @@ public readonly struct Uuid :
 
   public static Uuid CreateFromRandomNumber()
   {
-    Span<byte> randomNumber = stackalloc byte[16];
+    Span<byte> randomNumber = stackalloc byte[SizeOfSelf];
 
     Nonce.Fill(randomNumber);
 
@@ -339,7 +341,7 @@ public readonly struct Uuid :
 
   public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng)
   {
-    Span<byte> randomNumber = stackalloc byte[16];
+    Span<byte> randomNumber = stackalloc byte[SizeOfSelf];
 
     Nonce.Fill(randomNumber, rng ?? throw new ArgumentNullException(nameof(rng)));
 
@@ -360,8 +362,8 @@ public readonly struct Uuid :
      *    o  Set all the other bits to randomly (or pseudo-randomly) chosen
      *       values.
      */
-    if (randomNumber.Length != 16)
-      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(randomNumber), 16);
+    if (randomNumber.Length != SizeOfSelf)
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(randomNumber), SizeOfSelf);
 
     /*
      *    o  Set the two most significant bits (bits 6 and 7) of the
@@ -606,17 +608,17 @@ public readonly struct Uuid :
   }
 
   public Uuid(byte[] octets)
-    : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(0, 16), isBigEndian: !BitConverter.IsLittleEndian)
+    : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(0, SizeOfSelf), isBigEndian: !BitConverter.IsLittleEndian)
   {
   }
 
   public Uuid(byte[] octets, bool isBigEndian)
-    : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(0, 16), isBigEndian)
+    : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(0, SizeOfSelf), isBigEndian)
   {
   }
 
   public Uuid(byte[] octets, int index, bool isBigEndian = true)
-    : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(index, 16), isBigEndian)
+    : this((octets ?? throw new ArgumentNullException(nameof(octets))).AsSpan(index, SizeOfSelf), isBigEndian)
   {
   }
 
@@ -628,8 +630,8 @@ public readonly struct Uuid :
   public Uuid(ReadOnlySpan<byte> octets, bool isBigEndian)
     : this()
   {
-    if (octets.Length != 16)
-      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(octets), 16);
+    if (octets.Length != SizeOfSelf)
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(octets), SizeOfSelf);
 
     if (isBigEndian) {
       time_low = BinaryPrimitives.ReadUInt32BigEndian(octets.Slice(0, 4));
@@ -649,8 +651,8 @@ public readonly struct Uuid :
 
   internal Uuid(ReadOnlySpan<byte> octets, UuidVersion version, bool isBigEndian = true)
   {
-    if (octets.Length != 16)
-      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(octets), 16);
+    if (octets.Length != SizeOfSelf)
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(octets), SizeOfSelf);
 
     fields_low = 0;
     fields_high = 0;
@@ -837,8 +839,8 @@ public readonly struct Uuid :
       throw new ArgumentNullException(nameof(buffer));
     if (startIndex < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
-    if (buffer.Length - 16 < startIndex)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, 16);
+    if (buffer.Length - SizeOfSelf < startIndex)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, SizeOfSelf);
 
     if (asBigEndian) {
       BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(startIndex + 0), time_low);
@@ -866,7 +868,7 @@ public readonly struct Uuid :
 
   public byte[] ToByteArray(bool asBigEndian)
   {
-    var bytes = new byte[16];
+    var bytes = new byte[SizeOfSelf];
 
     GetBytes(bytes, 0, asBigEndian);
 
