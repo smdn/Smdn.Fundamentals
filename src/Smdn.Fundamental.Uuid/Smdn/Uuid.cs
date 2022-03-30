@@ -839,24 +839,38 @@ public readonly struct Uuid :
       throw new ArgumentNullException(nameof(buffer));
     if (startIndex < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(startIndex), startIndex);
-    if (buffer.Length - SizeOfSelf < startIndex)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(startIndex), buffer, startIndex, SizeOfSelf);
+
+    WriteBytes(buffer.AsSpan(startIndex), asBigEndian);
+  }
+
+  public void WriteBytes(Span<byte> destination, bool asBigEndian)
+  {
+    if (!TryWriteBytes(destination, asBigEndian))
+      throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(destination), SizeOfSelf);
+  }
+
+  public bool TryWriteBytes(Span<byte> destination, bool asBigEndian)
+  {
+    if (destination.Length < SizeOfSelf)
+      return false;
 
     if (asBigEndian) {
-      BinaryPrimitives.WriteUInt32BigEndian(buffer.AsSpan(startIndex + 0), time_low);
-      BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan(startIndex + 4), time_mid);
-      BinaryPrimitives.WriteUInt16BigEndian(buffer.AsSpan(startIndex + 6), time_hi_and_version);
+      BinaryPrimitives.WriteUInt32BigEndian(destination.Slice(0), time_low);
+      BinaryPrimitives.WriteUInt16BigEndian(destination.Slice(4), time_mid);
+      BinaryPrimitives.WriteUInt16BigEndian(destination.Slice(6), time_hi_and_version);
     }
     else {
-      BinaryPrimitives.WriteUInt32LittleEndian(buffer.AsSpan(startIndex + 0), time_low);
-      BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(startIndex + 4), time_mid);
-      BinaryPrimitives.WriteUInt16LittleEndian(buffer.AsSpan(startIndex + 6), time_hi_and_version);
+      BinaryPrimitives.WriteUInt32LittleEndian(destination.Slice(0), time_low);
+      BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(4), time_mid);
+      BinaryPrimitives.WriteUInt16LittleEndian(destination.Slice(6), time_hi_and_version);
     }
 
-    buffer[startIndex + 8] = clock_seq_hi_and_reserved;
-    buffer[startIndex + 9] = clock_seq_low;
+    destination[8] = clock_seq_hi_and_reserved;
+    destination[9] = clock_seq_low;
 
-    node.WriteBytes(buffer.AsSpan(startIndex + 10));
+    node.WriteBytes(destination.Slice(10));
+
+    return true;
   }
 
   public byte[] ToByteArray()
@@ -866,7 +880,7 @@ public readonly struct Uuid :
   {
     var bytes = new byte[SizeOfSelf];
 
-    GetBytes(bytes, 0, asBigEndian);
+    WriteBytes(bytes.AsSpan(), asBigEndian);
 
     return bytes;
   }

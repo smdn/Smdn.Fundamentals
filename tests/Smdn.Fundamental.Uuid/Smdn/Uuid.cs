@@ -345,6 +345,90 @@ namespace Smdn {
     }
 
     [Test]
+    public void TestWriteBytes()
+    {
+      var buffer = new byte[18] {
+        0xcc,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0xcc
+      };
+
+      Assert.DoesNotThrow(() => Uuid.RFC4122NamespaceDns.WriteBytes(buffer.AsSpan(1), asBigEndian: true));
+      CollectionAssert.AreEqual(
+        new byte[] {0xcc, 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc},
+        buffer,
+        "#1"
+      );
+
+      Assert.DoesNotThrow(() => Uuid.RFC4122NamespaceDns.WriteBytes(buffer, asBigEndian: true));
+      CollectionAssert.AreEqual(
+        new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xc8, 0xcc},
+        buffer,
+        "#2"
+      );
+
+      Assert.DoesNotThrow(() => Uuid.RFC4122NamespaceDns.WriteBytes(buffer, asBigEndian: false));
+      CollectionAssert.AreEqual(
+        new byte[] {0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xc8, 0xcc},
+        buffer,
+        "#3"
+      );
+    }
+
+    [Test]
+    public void TestTryWriteBytes()
+    {
+      var buffer = new byte[18] {
+        0xcc,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
+        0xcc
+      };
+
+      Assert.IsTrue(Uuid.RFC4122NamespaceDns.TryWriteBytes(buffer.AsSpan(1), asBigEndian: true), "#1");
+      CollectionAssert.AreEqual(
+        new byte[] {0xcc, 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc},
+        buffer,
+        "#1"
+      );
+
+      Assert.IsTrue(Uuid.RFC4122NamespaceDns.TryWriteBytes(buffer, asBigEndian: true), "#2");
+      CollectionAssert.AreEqual(
+        new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xc8, 0xcc},
+        buffer,
+        "#2"
+      );
+
+      Assert.IsTrue(Uuid.RFC4122NamespaceDns.TryWriteBytes(buffer, asBigEndian: false), "#3");
+      CollectionAssert.AreEqual(
+        new byte[] {0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xc8, 0xcc},
+        buffer,
+        "#3"
+      );
+    }
+
+    [Test]
+    public void TestWriteBytes_DestinationTooShort()
+    {
+      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[15], asBigEndian: true), "#1");
+      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[15], asBigEndian: false), "#2");
+      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[0], asBigEndian: false), "#3");
+    }
+
+    [Test]
+    public void TestTryWriteBytes_DestinationTooShort()
+    {
+      Assert.IsFalse(Uuid.RFC4122NamespaceDns.TryWriteBytes(new byte[15], asBigEndian: true), "#1");
+      Assert.IsFalse(Uuid.RFC4122NamespaceDns.TryWriteBytes(new byte[15], asBigEndian: false), "#2");
+      Assert.IsFalse(Uuid.RFC4122NamespaceDns.TryWriteBytes(new byte[0], asBigEndian: false), "#3");
+    }
+
+    [Test]
     public void TestToGuid()
     {
       Assert.AreEqual(Guid.Empty, Uuid.Nil.ToGuid());
