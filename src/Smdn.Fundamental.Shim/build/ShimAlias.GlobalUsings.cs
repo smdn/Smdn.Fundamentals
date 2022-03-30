@@ -5,14 +5,14 @@
  * Smdn.ArrayShim / System.Array
  */
 global using ShimTypeSystemArrayEmpty =
-#if SYSTEM_ARRAY_EMPTY
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_ARRAY_EMPTY
   System.Array;
 #else
   Smdn.ArrayShim;
 #endif
 
 global using ShimTypeSystemArrayConvertAll =
-#if SYSTEM_ARRAY_CONVERTALL
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_ARRAY_CONVERTALL
   System.Array;
 #else
   Smdn.ArrayShim;
@@ -22,35 +22,35 @@ global using ShimTypeSystemArrayConvertAll =
  * Smdn.BitOperationsShim / System.Numerics.BitOperations
  */
 global using ShimTypeSystemNumericsBitOperationsIsPow2 =
-#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+#if NET6_0_OR_GREATER // SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
   System.Numerics.BitOperations;
 #else
   Smdn.BitOperationsShim;
 #endif
 
 global using ShimTypeSystemNumericsBitOperationsLog2 =
-#if SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_NUMERICS_BITOPERATIONS_LOG2
   System.Numerics.BitOperations;
 #else
   Smdn.BitOperationsShim;
 #endif
 
 global using ShimTypeSystemNumericsBitOperationsPopCount =
-#if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
   System.Numerics.BitOperations;
 #else
   Smdn.BitOperationsShim;
 #endif
 
 global using ShimTypeSystemNumericsBitOperationsLeadingZeroCount =
-#if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
   System.Numerics.BitOperations;
 #else
   Smdn.BitOperationsShim;
 #endif
 
 global using ShimTypeSystemNumericsBitOperationsTrailingZeroCount =
-#if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
   System.Numerics.BitOperations;
 #else
   Smdn.BitOperationsShim;
@@ -60,21 +60,21 @@ global using ShimTypeSystemNumericsBitOperationsTrailingZeroCount =
  * Smdn.MathShim / System.Math
  */
 global using ShimTypeSystemMathClamp =
-#if SYSTEM_MATH_CLAMP
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_MATH_CLAMP
   System.Math;
 #else
   Smdn.MathShim;
 #endif
 
 global using ShimTypeSystemMathDivRem =
-#if SYSTEM_MATH_DIVREM
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_MATH_DIVREM
   System.Math;
 #else
   Smdn.MathShim;
 #endif
 
 global using ShimTypeSystemMathDivRemReturnValueTuple2 =
-#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+#if NET6_0_OR_GREATER // SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
   System.Math;
 #else
   Smdn.MathShim;
@@ -84,14 +84,14 @@ global using ShimTypeSystemMathDivRemReturnValueTuple2 =
  * Smdn.StringShim / System.String
  */
 global using ShimTypeSystemStringStartsWithChar =
-#if SYSTEM_STRING_STARTSWITH_CHAR
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_STRING_STARTSWITH_CHAR
   System.String;
 #else
   Smdn.StringShim;
 #endif
 
 global using ShimTypeSystemStringEndsWithChar =
-#if SYSTEM_STRING_ENDSWITH_CHAR
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER // SYSTEM_STRING_ENDSWITH_CHAR
   System.String;
 #else
   Smdn.StringShim;
@@ -101,21 +101,21 @@ global using ShimTypeSystemStringEndsWithChar =
  * Smdn.Threading.ValueTaskShim / System.Threading.Tasks.ValueTask
  */
 global using ShimTypeSystemThreadingTasksValueTaskCompletedTask =
-#if SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
+#if NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
   System.Threading.Tasks.ValueTask;
 #else
   Smdn.Threading.ValueTaskShim;
 #endif
 
 global using ShimTypeSystemThreadingTasksValueTaskFromCanceled =
-#if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
+#if NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
   System.Threading.Tasks.ValueTask;
 #else
   Smdn.Threading.ValueTaskShim;
 #endif
 
 global using ShimTypeSystemThreadingTasksValueTaskFromResult =
-#if SYSTEM_THREADING_TASKS_VALUETASK_FROMRESULT
+#if NET5_0_OR_GREATER // SYSTEM_THREADING_TASKS_VALUETASK_FROMRESULT
   System.Threading.Tasks.ValueTask;
 #else
   Smdn.Threading.ValueTaskShim;
