@@ -5,11 +5,12 @@ using System.Globalization;
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
 #endif
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
-[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+[TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
 public readonly partial struct Node : IFormattable {
   private const int SizeOfSelf = 6;
@@ -31,6 +32,10 @@ public readonly partial struct Node : IFormattable {
   internal readonly byte N3;
   internal readonly byte N4;
   internal readonly byte N5;
+
+#if NODE_READONLYSPAN
+  internal ReadOnlySpan<byte> NodeSpan => MemoryMarshal.CreateReadOnlySpan(ref Unsafe.AsRef(in N0), SizeOfSelf);
+#endif
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
   public Node(PhysicalAddress physicalAddress)
@@ -99,6 +104,9 @@ public readonly partial struct Node : IFormattable {
   }
 
   public bool TryWriteBytes(Span<byte> destination)
+#if NODE_READONLYSPAN
+    => NodeSpan.TryCopyTo(destination);
+#else
   {
     if (destination.Length < SizeOfSelf)
       return false;
@@ -112,6 +120,7 @@ public readonly partial struct Node : IFormattable {
 
     return true;
   }
+#endif
 
   public static Node Parse(string s)
     => TryParse(s ?? throw new ArgumentNullException(nameof(s)), out var result)

@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" Condition="($(TargetFramework.StartsWith('net46')) and '$(TargetFramework)' != 'net46') or $(TargetFramework.StartsWith('netstandard2'))" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or $(TargetFramework.StartsWith('netstandard1'))" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" Condition="($(TargetFramework.StartsWith('net46')) and '$(TargetFramework)' != 'net46') or $(TargetFramework.StartsWith('netstandard2.0'))" />
   </ItemGroup>
@@ -33,6 +34,21 @@ SPDX-License-Identifier: MIT
         $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
         $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
       ">$(DefineConstants);SYSTEM_HASHCODE</DefineConstants>
+      <DefineConstants Condition="
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+      ">$(DefineConstants);SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL_CREATEREADONLYSPAN</DefineConstants>
+      <DefineConstants Condition="
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET461_OR_GREATER\b')) Or
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
+      ">$(DefineConstants);SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE_ASREF</DefineConstants>
+      <DefineConstants Condition="
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bSYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL_CREATEREADONLYSPAN\b')) And
+        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bSYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE_ASREF\b'))
+      ">$(DefineConstants);NODE_READONLYSPAN</DefineConstants>
     </PropertyGroup>
   </Target>
 </Project>

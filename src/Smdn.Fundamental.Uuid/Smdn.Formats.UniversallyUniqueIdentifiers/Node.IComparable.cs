@@ -23,6 +23,9 @@ partial struct Node :
     };
 
   public int CompareTo(Node other)
+#if NODE_READONLYSPAN
+    => NodeSpan.SequenceCompareTo(other.NodeSpan);
+#else
   {
     int ret;
 
@@ -41,4 +44,5 @@ partial struct Node :
 
     return 0;
   }
+#endif
 }
