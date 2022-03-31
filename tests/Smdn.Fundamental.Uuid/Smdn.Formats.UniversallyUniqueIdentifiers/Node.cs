@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   [TestFixture]
-  public class NodeTests {
+  public partial class NodeTests {
     [Test]
     public void TestCreateRandom()
     {

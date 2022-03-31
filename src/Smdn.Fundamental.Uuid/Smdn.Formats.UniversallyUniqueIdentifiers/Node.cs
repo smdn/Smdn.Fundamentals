@@ -11,7 +11,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
-public readonly struct Node : IFormattable {
+public readonly partial struct Node : IFormattable {
   private const int SizeOfSelf = 6;
 
   public static Node CreateRandom()
@@ -165,4 +165,17 @@ public readonly struct Node : IFormattable {
       _ => throw new FormatException($"invalid format: {format}"),
     };
   }
+
+  public override int GetHashCode()
+    =>
+#if NET461_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+      HashCode.Combine(N0, N1, N2, N3, N4, N5);
+#else
+      N0.GetHashCode() ^
+      N1.GetHashCode() ^
+      N2.GetHashCode() ^
+      N3.GetHashCode() ^
+      N4.GetHashCode() ^
+      N5.GetHashCode();
+#endif
 }

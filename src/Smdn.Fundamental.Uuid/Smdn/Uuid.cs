@@ -791,20 +791,7 @@ public readonly struct Uuid :
     if ((ret = this.clock_seq_low - other.clock_seq_low) != 0)
       return ret;
 
-    if ((ret = this.node.N0 - other.node.N0) != 0)
-      return ret;
-    if ((ret = this.node.N1 - other.node.N1) != 0)
-      return ret;
-    if ((ret = this.node.N2 - other.node.N2) != 0)
-      return ret;
-    if ((ret = this.node.N3 - other.node.N3) != 0)
-      return ret;
-    if ((ret = this.node.N4 - other.node.N4) != 0)
-      return ret;
-    if ((ret = this.node.N5 - other.node.N5) != 0)
-      return ret;
-
-    return 0;
+    return node.CompareTo(other.node);
   }
 
   public static bool operator ==(Uuid x, Uuid y) => x.fields_high == y.fields_high && x.fields_low == y.fields_low;
