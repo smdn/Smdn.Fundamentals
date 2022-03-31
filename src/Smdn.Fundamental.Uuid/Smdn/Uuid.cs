@@ -414,6 +414,13 @@ public readonly struct Uuid :
   /// <value>clock_seq_low; The low field of the clock sequence.</value>
   public byte ClockSeqLow => clock_seq_low;
 
+#if false // TODO
+#if NODE_READONLYSPAN
+  public ReadOnlySpan<byte> NodeSpan => node.NodeSpan;
+#endif
+  public Node Node => node;
+  [Obsolete("breaking changes")]
+#endif
   /// <value>node;The spatially unique node identifier.</value>
   public byte[] Node => new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 };
 
