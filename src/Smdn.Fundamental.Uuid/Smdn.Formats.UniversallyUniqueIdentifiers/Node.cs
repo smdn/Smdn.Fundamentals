@@ -168,7 +168,7 @@ public readonly partial struct Node : IFormattable {
 
   public override int GetHashCode()
     =>
-#if NET461_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_HASHCODE
       HashCode.Combine(N0, N1, N2, N3, N4, N5);
 #else
       N0.GetHashCode() ^
