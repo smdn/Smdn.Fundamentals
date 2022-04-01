@@ -35,4 +35,44 @@ partial class NodeTests {
     Assert.Throws<FormatException>(() => node.ToString("xx"));
     Assert.Throws<FormatException>(() => node.ToString("XX"));
   }
+
+#if SYSTEM_ISPANFORMATTABLE
+  [TestCase("X", "^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$")]
+  [TestCase("x", "^[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}$")]
+  public void TestTryFormat(string format, string expectedPattern)
+  {
+    var expected = new Regex(expectedPattern);
+
+    for (var n = 0; n < 10; n++) {
+      var node = Node.CreateRandom();
+      var destination = new char[20];
+
+      Assert.IsTrue(node.TryFormat(destination, out var charsWritten, format, provider: null), $"TryFormat {node}");
+      Assert.AreEqual(17, charsWritten, $"{nameof(charsWritten)} {node}");
+      Assert.IsTrue(expected.IsMatch(new string(destination, 0, charsWritten)), $"destination {node}");
+    }
+  }
+
+  [Test]
+  public void TestTryFormat_DestinationTooShort([Values(0, 1, 16)] int length)
+  {
+    Assert.IsFalse(Node.CreateRandom().TryFormat(new char[length], out var charsWritten1, "X", provider: null), "format X");
+    Assert.AreEqual(0, charsWritten1, "format X");
+
+    Assert.IsFalse(Node.CreateRandom().TryFormat(new char[length], out var charsWritten2, "x", provider: null), "format x");
+    Assert.AreEqual(0, charsWritten2, "format x");
+  }
+
+  [TestCase("n")]
+  [TestCase("xx")]
+  [TestCase("XX")]
+  public void TestTryFormat_InvalidFormat(string format)
+  {
+    var node = Node.CreateRandom();
+    var destination = new char[17];
+
+    Assert.IsTrue(node.TryFormat(destination, out _, format, provider: null));
+    Assert.AreEqual(new string(destination), node.ToString("X"));
+  }
+#endif
 }
