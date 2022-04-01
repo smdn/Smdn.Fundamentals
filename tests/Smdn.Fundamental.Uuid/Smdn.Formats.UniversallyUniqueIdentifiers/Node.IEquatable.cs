@@ -24,6 +24,14 @@ partial class NodeTests {
   {
     Assert.AreEqual(isEqual, Node.Parse(x) == Node.Parse(y), "op ==");
     Assert.AreEqual(!isEqual, Node.Parse(x) != Node.Parse(y), "op !=");
+
+#if FEATURE_GENERIC_MATH
+    Assert.AreEqual(isEqual, OpEquality(Node.Parse(x), Node.Parse(y)), "IEqualityOperators ==");
+    Assert.AreEqual(!isEqual, OpInequality(Node.Parse(x), Node.Parse(y)), "IEqualityOperators !=");
+
+    static bool OpEquality<T>(T x, T y) where T : IEqualityOperators<T, T> => x == y;
+    static bool OpInequality<T>(T x, T y) where T : IEqualityOperators<T, T> => x != y;
+#endif
   }
 
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00",  true)]

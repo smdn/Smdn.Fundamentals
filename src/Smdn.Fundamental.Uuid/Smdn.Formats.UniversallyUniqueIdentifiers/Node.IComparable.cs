@@ -7,8 +7,12 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 #pragma warning disable IDE0040
 partial struct Node :
 #pragma warning restore IDE0040
+#if FEATURE_GENERIC_MATH
+  IComparisonOperators<Node, Node>
+#else
   IComparable<Node>,
   IComparable
+#endif
 {
   public static bool operator <(Node x, Node y) => x.CompareTo(y) < 0;
   public static bool operator <=(Node x, Node y) => x.CompareTo(y) <= 0;

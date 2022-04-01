@@ -7,7 +7,11 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 #pragma warning disable IDE0040
 partial struct Node :
 #pragma warning restore IDE0040
+#if FEATURE_GENERIC_MATH
+  IEqualityOperators<Node, Node>
+#else
   IEquatable<Node>
+#endif
 {
   public static bool operator ==(Node x, Node y) => x.Equals(y);
   public static bool operator !=(Node x, Node y) => !x.Equals(y);

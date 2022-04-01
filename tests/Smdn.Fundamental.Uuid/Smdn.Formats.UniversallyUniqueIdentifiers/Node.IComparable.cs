@@ -24,6 +24,14 @@ partial class NodeTests {
   {
     Assert.AreEqual(lessThan, Node.Parse(x) < Node.Parse(y), "op <");
     Assert.AreEqual(lessThanOrEqual, Node.Parse(x) <= Node.Parse(y), "op <=");
+
+#if FEATURE_GENERIC_MATH
+    Assert.AreEqual(lessThan, OpLessThan(Node.Parse(x), Node.Parse(y)), "IComparisonOperators <");
+    Assert.AreEqual(lessThanOrEqual, OpLessThanOrEqual(Node.Parse(x), Node.Parse(y)), "IComparisonOperators <=");
+
+    static bool OpLessThan<T>(T x, T y) where T : IComparisonOperators<T, T> => x < y;
+    static bool OpLessThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T> => x <= y;
+#endif
   }
 
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", false,  true)]
@@ -44,6 +52,14 @@ partial class NodeTests {
   {
     Assert.AreEqual(greaterThan, Node.Parse(x) > Node.Parse(y), "op >");
     Assert.AreEqual(greaterThanOrEqual, Node.Parse(x) >= Node.Parse(y), "op >=");
+
+#if FEATURE_GENERIC_MATH
+    Assert.AreEqual(greaterThan, OpGreaterThan(Node.Parse(x), Node.Parse(y)), "IComparisonOperators >");
+    Assert.AreEqual(greaterThanOrEqual, OpGreaterThanOrEqual(Node.Parse(x), Node.Parse(y)), "IComparisonOperators >=");
+
+    static bool OpGreaterThan<T>(T x, T y) where T : IComparisonOperators<T, T> => x > y;
+    static bool OpGreaterThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T> => x >= y;
+#endif
   }
 
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00",  0)]
