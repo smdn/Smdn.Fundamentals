@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 using Smdn.Formats.UniversallyUniqueIdentifiers;
+using TypeOfNode = Smdn.Formats.UniversallyUniqueIdentifiers.Node;
 
 namespace Smdn;
 
@@ -82,10 +83,10 @@ public readonly partial struct Uuid {
 
     var physicalAddress = nic.GetPhysicalAddress().GetAddressBytes().AsSpan();
 
-    if (Node.SizeOfSelf < physicalAddress.Length)
-      physicalAddress = physicalAddress.Slice(0, Node.SizeOfSelf);
+    if (TypeOfNode.SizeOfSelf < physicalAddress.Length)
+      physicalAddress = physicalAddress.Slice(0, TypeOfNode.SizeOfSelf);
 
-    Span<byte> node = stackalloc byte[Node.SizeOfSelf];
+    Span<byte> node = stackalloc byte[TypeOfNode.SizeOfSelf];
 
     physicalAddress.CopyTo(node);
 
@@ -131,7 +132,7 @@ public readonly partial struct Uuid {
   {
     if (node is null)
       throw new ArgumentNullException(paramName);
-    if (node.Length != Node.SizeOfSelf)
+    if (node.Length != TypeOfNode.SizeOfSelf)
       throw new ArgumentException("must be 48-bit length", paramName);
 
     return new Node(node);
