@@ -167,14 +167,14 @@ public readonly partial struct Uuid {
     byte clock_seq_hi_and_reserved,
     byte clock_seq_low,
     PhysicalAddress node
-  ) :
-    this(
+  )
+    : this(
       time_low,
       time_mid,
       time_hi_and_version,
       clock_seq_hi_and_reserved,
       clock_seq_low,
-      node.GetAddressBytes()
+      new Node(node ?? throw new ArgumentNullException(nameof(node)))
     )
   {
   }
@@ -188,19 +188,14 @@ public readonly partial struct Uuid {
     byte clock_seq_hi_and_reserved,
     byte clock_seq_low,
     byte[] node
-  ) :
-    this(
+  )
+    : this(
       time_low,
       time_mid,
       time_hi_and_version,
       clock_seq_hi_and_reserved,
       clock_seq_low,
-      node[0],
-      node[1],
-      node[2],
-      node[3],
-      node[4],
-      node[5]
+      new Node(node ?? throw new ArgumentNullException(nameof(node)))
     )
   {
   }
@@ -218,14 +213,36 @@ public readonly partial struct Uuid {
     byte node3,
     byte node4,
     byte node5
-  ) : this()
+  )
+    : this(
+      time_low,
+      time_mid,
+      time_hi_and_version,
+      clock_seq_hi_and_reserved,
+      clock_seq_low,
+      new Node(node0, node1, node2, node3, node4, node5)
+    )
   {
+  }
+
+  private Uuid(
+    uint time_low,
+    ushort time_mid,
+    ushort time_hi_and_version,
+    byte clock_seq_hi_and_reserved,
+    byte clock_seq_low,
+    Node node
+  )
+  {
+    fields_high = default;
+    fields_low = default;
+
     this.time_low = time_low;
     this.time_mid = time_mid;
     this.time_hi_and_version = time_hi_and_version;
     this.clock_seq_hi_and_reserved = clock_seq_hi_and_reserved;
     this.clock_seq_low = clock_seq_low;
-    this.node = new Node(node0, node1, node2, node3, node4, node5);
+    this.node = node;
   }
 
   private static ushort RFC4122FieldsTimeHiAndVersion(ushort time_hi, UuidVersion version)

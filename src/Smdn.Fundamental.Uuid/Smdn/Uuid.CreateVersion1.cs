@@ -60,49 +60,33 @@ partial struct Uuid {
       GetNode()
     );
 
-  private static Node ToNode(PhysicalAddress node, string paramName)
-    => ToNode(
-      (node ?? throw new ArgumentNullException(paramName)).GetAddressBytes(),
-      paramName
-    );
-
   public static Uuid CreateTimeBased(PhysicalAddress node)
     => CreateTimeBasedCore(
       GetTimestamp(),
       GetClock(),
-      ToNode(node, nameof(node))
+      new TypeOfNode(node)
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node)
     => CreateTimeBasedCore(
       timestamp,
       clock,
-      ToNode(node, nameof(node))
+      new TypeOfNode(node)
     );
 #endif
-
-  private static Node ToNode(byte[] node, string paramName)
-  {
-    if (node is null)
-      throw new ArgumentNullException(paramName);
-    if (node.Length != TypeOfNode.SizeOfSelf)
-      throw new ArgumentException("must be 48-bit length", paramName);
-
-    return new Node(node);
-  }
 
   public static Uuid CreateTimeBased(byte[] node)
     => CreateTimeBasedCore(
       GetTimestamp(),
       GetClock(),
-      ToNode(node, nameof(node))
+      new TypeOfNode(node)
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node)
     => CreateTimeBasedCore(
       timestamp,
       clock,
-      ToNode(node, nameof(node))
+      new TypeOfNode(node)
     );
 
   private static Uuid CreateTimeBasedCore(DateTime timestamp, int clock, Node node)

@@ -42,19 +42,22 @@ public readonly partial struct Node {
   { }
 #endif
 
-  internal Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)
+  internal Node(byte[] node)
+    : this((node ?? throw new ArgumentNullException(nameof(node))).AsSpan())
   {
-    N0 = n0;
-    N1 = n1;
-    N2 = n2;
-    N3 = n3;
-    N4 = n4;
-    N5 = n5;
+  }
+
+  internal Node(byte n0, byte n1, byte n2, byte n3, byte n4, byte n5)
+    : this(stackalloc byte[SizeOfSelf] { n0, n1, n2, n3, n4, n5 })
+  {
   }
 
   /// <param name="node">Length must be 6 bytes.</param>
   internal Node(ReadOnlySpan<byte> node)
   {
+    if (node.Length != SizeOfSelf)
+      throw ExceptionUtils.CreateArgumentMustHaveLengthExact(nameof(node), SizeOfSelf);
+
     N0 = node[0];
     N1 = node[1];
     N2 = node[2];
