@@ -411,69 +411,7 @@ public readonly partial struct Uuid {
   public Uuid(string uuid)
     : this()
   {
-    if (uuid == null)
-      throw new ArgumentNullException(nameof(uuid));
-
-    // xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-    var fields = uuid.Split('-');
-
-    if (fields.Length < 5)
-      throw new FormatException($"invalid UUID: {uuid}");
-
-    if (fields[0].Length != 8 || !uint.TryParse(fields[0], NumberStyles.HexNumber, null, out time_low))
-      throw new FormatException($"invalid UUID (time_low): {uuid}");
-    if (fields[1].Length != 4 || !ushort.TryParse(fields[1], NumberStyles.HexNumber, null, out time_mid))
-      throw new FormatException($"invalid UUID (time_mid): {uuid}");
-    if (fields[2].Length != 4 || !ushort.TryParse(fields[2], NumberStyles.HexNumber, null, out time_hi_and_version))
-      throw new FormatException($"invalid UUID (time_hi_and_version): {uuid}");
-
-    if (
-      fields[3].Length != 4 ||
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
-      !byte.TryParse(fields[3].AsSpan(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
-      !byte.TryParse(fields[3].AsSpan(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
-#else
-#pragma warning disable IDE0057, CA1846
-      !byte.TryParse(fields[3].Substring(0, 2), NumberStyles.HexNumber, null, out clock_seq_hi_and_reserved) ||
-      !byte.TryParse(fields[3].Substring(2, 2), NumberStyles.HexNumber, null, out clock_seq_low)
-#pragma warning restore IDE0057, CA1846
-#endif
-    ) {
-      throw new FormatException($"invalid UUID (clock_seq_hi_and_reserved or clock_seq_low): {uuid}");
-    }
-
-    if (fields[4].Length != 12)
-      throw new FormatException($"invalid UUID (node): {uuid}");
-
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
-    if (
-      !byte.TryParse(fields[4].AsSpan( 0, 2), NumberStyles.HexNumber, null, out var n0) ||
-      !byte.TryParse(fields[4].AsSpan( 2, 2), NumberStyles.HexNumber, null, out var n1) ||
-      !byte.TryParse(fields[4].AsSpan( 4, 2), NumberStyles.HexNumber, null, out var n2) ||
-      !byte.TryParse(fields[4].AsSpan( 6, 2), NumberStyles.HexNumber, null, out var n3) ||
-      !byte.TryParse(fields[4].AsSpan( 8, 2), NumberStyles.HexNumber, null, out var n4) ||
-      !byte.TryParse(fields[4].AsSpan(10, 2), NumberStyles.HexNumber, null, out var n5)
-    ) {
-      throw new FormatException($"invalid UUID (node): {uuid}");
-    }
-
-    this.node = new Node(n0, n1, n2, n3, n4, n5);
-#else
-    if (
-#pragma warning disable IDE0057, CA1846
-      !byte.TryParse(fields[4].Substring(0, 2), NumberStyles.HexNumber, null, out var n0) ||
-      !byte.TryParse(fields[4].Substring(2, 2), NumberStyles.HexNumber, null, out var n1) ||
-      !byte.TryParse(fields[4].Substring(4, 2), NumberStyles.HexNumber, null, out var n2) ||
-      !byte.TryParse(fields[4].Substring(6, 2), NumberStyles.HexNumber, null, out var n3) ||
-      !byte.TryParse(fields[4].Substring(8, 2), NumberStyles.HexNumber, null, out var n4) ||
-      !byte.TryParse(fields[4].Substring(10, 2), NumberStyles.HexNumber, null, out var n5)
-#pragma warning restore IDE0057, CA1846
-    ) {
-      throw new FormatException($"invalid UUID (node): {uuid}");
-    }
-
-    node = new Node(n0, n1, n2, n3, n4, n5);
-#endif
+    this = Parse(uuid ?? throw new ArgumentNullException(nameof(uuid)));
   }
 
   public static explicit operator Guid(Uuid @value) => @value.ToGuid();

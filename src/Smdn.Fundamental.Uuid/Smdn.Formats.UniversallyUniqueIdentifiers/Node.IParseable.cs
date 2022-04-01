@@ -64,15 +64,7 @@ partial struct Node
 
       if (
         !byte.TryParse(
-#pragma warning disable SA1114
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
-          span,
-#elif SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
-          new string(span),
-#else
-          new string(span.ToArray()),
-#endif
-#pragma warning restore SA1114
+          span.ToParseableType(),
           NumberStyles.HexNumber,
           provider: null,
           out var parsed
