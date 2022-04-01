@@ -7,7 +7,11 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial struct Uuid :
 #pragma warning restore IDE0040
+#if FEATURE_GENERIC_MATH
+  IEqualityOperators<Uuid, Uuid>,
+#else
   IEquatable<Uuid>,
+#endif
   IEquatable<Guid>
 {
   public static bool operator ==(Uuid x, Uuid y) => x.fields_high == y.fields_high && x.fields_low == y.fields_low;

@@ -78,6 +78,13 @@ partial class UuidTests {
     Assert.AreEqual(lessThan, new Uuid(x) < new Uuid(y), "op <");
     Assert.AreEqual(lessThanOrEqual, new Uuid(x) <= new Uuid(y), "op <=");
 
+#if FEATURE_GENERIC_MATH
+    Assert.AreEqual(lessThan, OpLessThan(new Uuid(x), new Uuid(y)), "IComparisonOperators <");
+    Assert.AreEqual(lessThanOrEqual, OpLessThanOrEqual(new Uuid(x), new Uuid(y)), "IComparisonOperators <=");
+
+    static bool OpLessThan<T>(T x, T y) where T : IComparisonOperators<T, T> => x < y;
+    static bool OpLessThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T> => x <= y;
+#endif
   }
 
   [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", false,  true)]
@@ -109,6 +116,12 @@ partial class UuidTests {
     Assert.AreEqual(greaterThan, new Uuid(x) > new Uuid(y), "op >");
     Assert.AreEqual(greaterThanOrEqual, new Uuid(x) >= new Uuid(y), "op >=");
 
+#if FEATURE_GENERIC_MATH
+    Assert.AreEqual(greaterThan, OpGreaterThan(new Uuid(x), new Uuid(y)), "IComparisonOperators >");
+    Assert.AreEqual(greaterThanOrEqual, OpGreaterThanOrEqual(new Uuid(x), new Uuid(y)), "IComparisonOperators >=");
 
+    static bool OpGreaterThan<T>(T x, T y) where T : IComparisonOperators<T, T> => x > y;
+    static bool OpGreaterThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T> => x >= y;
+#endif
   }
 }

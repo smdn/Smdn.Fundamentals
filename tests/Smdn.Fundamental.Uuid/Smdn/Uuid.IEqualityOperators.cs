@@ -55,5 +55,13 @@ partial class UuidTests {
   {
     Assert.AreEqual(isEqual, new Uuid(x) == new Uuid(y), "op ==");
     Assert.AreEqual(!isEqual, new Uuid(x) != new Uuid(y), "op !=");
+
+#if FEATURE_GENERIC_MATH
+    Assert.AreEqual(isEqual, OpEquality(new Uuid(x), new Uuid(y)), "IEqualityOperators ==");
+    Assert.AreEqual(!isEqual, OpInequality(new Uuid(x), new Uuid(y)), "IEqualityOperators !=");
+
+    static bool OpEquality<T>(T x, T y) where T : IEqualityOperators<T, T> => x == y;
+    static bool OpInequality<T>(T x, T y) where T : IEqualityOperators<T, T> => x != y;
+#endif
   }
 }
