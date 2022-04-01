@@ -207,6 +207,26 @@ public readonly partial struct Uuid {
     ushort time_hi_and_version,
     byte clock_seq_hi_and_reserved,
     byte clock_seq_low,
+    ReadOnlySpan<byte> node
+  )
+    : this(
+      time_low,
+      time_mid,
+      time_hi_and_version,
+      clock_seq_hi_and_reserved,
+      clock_seq_low,
+      new Node(node)
+    )
+  {
+  }
+
+  [CLSCompliant(false)]
+  public Uuid(
+    uint time_low,
+    ushort time_mid,
+    ushort time_hi_and_version,
+    byte clock_seq_hi_and_reserved,
+    byte clock_seq_low,
     byte node0,
     byte node1,
     byte node2,
