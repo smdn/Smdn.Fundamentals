@@ -12,11 +12,17 @@ partial struct Node
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
   :
-  IParseable<Node>
+  IParseable<Node>,
+  ISpanParseable<Node>
 #endif
 {
   public static Node Parse(string s, IFormatProvider? provider = null)
-    => TryParse(s ?? throw new ArgumentNullException(nameof(s)), provider, out var result)
+    => TryParse((s ?? throw new ArgumentNullException(nameof(s))).AsSpan(), provider, out var result)
+      ? result
+      : throw new FormatException("invalid format");
+
+  public static Node Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+    => TryParse(s, provider, out var result)
       ? result
       : throw new FormatException("invalid format");
 
@@ -27,32 +33,58 @@ partial struct Node
   {
     result = default;
 
-    if (s is null)
-      return false;
+    return s is not null && TryParse(s.AsSpan(), provider, out result);
+  }
 
-    var p =
-#if SYSTEM_STRING_SPLIT_CHAR
-      s.Split(':', StringSplitOptions.None);
+  public static bool TryParse(ReadOnlySpan<char> s, out Node result)
+    => TryParse(s, provider: null, out result);
+
+  public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Node result)
+  {
+    result = default;
+
+    const char delimiter = ':';
+    Span<byte> node = stackalloc byte[SizeOfSelf];
+
+    for (var n = 0; n < SizeOfSelf; n++) {
+      ReadOnlySpan<char> span;
+
+      if (n < SizeOfSelf - 1) {
+        var indexOfDelimiter = s.IndexOf(delimiter);
+
+        if (indexOfDelimiter < 0)
+          return false;
+
+        span = s.Slice(0, indexOfDelimiter);
+        s = s.Slice(indexOfDelimiter + 1);
+      }
+      else {
+        span = s;
+      }
+
+      if (
+        !byte.TryParse(
+#pragma warning disable SA1114
+#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
+          span,
+#elif SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
+          new string(span),
 #else
-      s.Split(new[] { ':' }, StringSplitOptions.None);
+          new string(span.ToArray()),
 #endif
+#pragma warning restore SA1114
+          NumberStyles.HexNumber,
+          provider: null,
+          out var parsed
+        )
+      ) {
+        return false;
+      }
 
-    if (p.Length != SizeOfSelf)
-      return false;
-    if (!byte.TryParse(p[0], NumberStyles.HexNumber, provider: null, out var n0))
-      return false;
-    if (!byte.TryParse(p[1], NumberStyles.HexNumber, provider: null, out var n1))
-      return false;
-    if (!byte.TryParse(p[2], NumberStyles.HexNumber, provider: null, out var n2))
-      return false;
-    if (!byte.TryParse(p[3], NumberStyles.HexNumber, provider: null, out var n3))
-      return false;
-    if (!byte.TryParse(p[4], NumberStyles.HexNumber, provider: null, out var n4))
-      return false;
-    if (!byte.TryParse(p[5], NumberStyles.HexNumber, provider: null, out var n5))
-      return false;
+      node[n] = parsed;
+    }
 
-    result = new(n0, n1, n2, n3, n4, n5);
+    result = new(node);
 
     return true;
   }
