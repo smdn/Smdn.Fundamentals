@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#nullable enable
+
 using System;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
@@ -9,7 +11,7 @@ partial struct Node :
 #pragma warning restore IDE0040
   IFormattable
 {
-  public string ToString(string format, IFormatProvider formatProvider = null)
+  public string ToString(string? format, IFormatProvider? formatProvider = null)
   {
     if (string.IsNullOrEmpty(format))
       format = "X"; // as default
