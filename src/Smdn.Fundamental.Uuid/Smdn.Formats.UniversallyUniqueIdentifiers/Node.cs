@@ -16,7 +16,7 @@ public readonly partial struct Node {
 
   public static Node CreateRandom()
   {
-    Span<byte> buffer = stackalloc byte[6];
+    Span<byte> buffer = stackalloc byte[SizeOfSelf];
 
     Nonce.Fill(buffer);
 
