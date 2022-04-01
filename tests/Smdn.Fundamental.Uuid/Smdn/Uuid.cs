@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture()]
-  public class UuidTests {
+  public partial class UuidTests {
     [Test]
     public void TestSizeOfUuid()
     {
@@ -244,54 +244,6 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestToString1()
-    {
-      Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString());
-      Assert.AreEqual("6ba7b810-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceDns.ToString());
-      Assert.AreEqual("6ba7b811-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceUrl.ToString());
-      Assert.AreEqual("6ba7b812-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceIsoOid.ToString());
-      Assert.AreEqual("6ba7b814-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceX500.ToString());
-
-      Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString(null, null));
-      Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString(string.Empty, null));
-      Assert.AreEqual("00000000000000000000000000000000", Uuid.Nil.ToString("N", null));
-      Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString("D", null));
-      Assert.AreEqual("{00000000-0000-0000-0000-000000000000}", Uuid.Nil.ToString("B", null));
-      Assert.AreEqual("(00000000-0000-0000-0000-000000000000)", Uuid.Nil.ToString("P", null));
-      Assert.AreEqual("{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}", Uuid.Nil.ToString("X", null));
-
-      Assert.Throws<FormatException>(() => Uuid.Nil.ToString("Z", null));
-    }
-
-    [Test]
-    public void TestToString2()
-    {
-      var guid = new Guid("6ba7b810-9dad-11d1-80b4-00c04fd430c8");
-      var uuid = new Uuid("6ba7b810-9dad-11d1-80b4-00c04fd430c8");
-
-      Assert.AreEqual(guid.ToString(), uuid.ToString());
-      Assert.AreEqual(guid.ToString("N"), uuid.ToString("N"), "format = N");
-      Assert.AreEqual(guid.ToString("D"), uuid.ToString("D"), "format = D");
-      Assert.AreEqual(guid.ToString("B"), uuid.ToString("B"), "format = B");
-      Assert.AreEqual(guid.ToString("P"), uuid.ToString("P"), "format = P");
-      Assert.AreEqual(guid.ToString("X"), uuid.ToString("X"), "format = X");
-    }
-
-    [Test]
-    public void TestToString3()
-    {
-      var guid = new Guid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
-      var uuid = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
-
-      Assert.AreEqual(guid.ToString(), uuid.ToString());
-      Assert.AreEqual(guid.ToString("N"), uuid.ToString("N"), "format = N");
-      Assert.AreEqual(guid.ToString("D"), uuid.ToString("D"), "format = D");
-      Assert.AreEqual(guid.ToString("B"), uuid.ToString("B"), "format = B");
-      Assert.AreEqual(guid.ToString("P"), uuid.ToString("P"), "format = P");
-      Assert.AreEqual(guid.ToString("X"), uuid.ToString("X"), "format = X");
-    }
-
-    [Test]
     public void TestToByteArray1()
     {
       var expectedBigEndian     = new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8};
@@ -445,97 +397,6 @@ namespace Smdn {
       Uuid uuid = (Uuid)Guid.Empty;
 
       Assert.AreEqual(uuid, Uuid.Nil);
-    }
-
-    [Test]
-    public void TestEqualityOperator()
-    {
-#pragma warning disable 1718
-      Assert.IsTrue(Uuid.Nil == Uuid.Nil);
-      Assert.IsFalse(Uuid.Nil != Uuid.Nil);
-#pragma warning restore 1718
-      Assert.IsFalse(Uuid.Nil == Uuid.RFC4122NamespaceDns);
-      Assert.IsTrue(Uuid.Nil != Uuid.RFC4122NamespaceDns);
-    }
-
-    [Test]
-    public void TestEquals()
-    {
-      Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals(Uuid.RFC4122NamespaceDns));
-      Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(null));
-      Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(1));
-
-      var u0 = new Uuid("00000000-0000-0000-0000-000000000000");
-      var g0 = new Guid("00000000-0000-0000-0000-000000000000");
-      var u1 = new Uuid("00000001-0000-0000-0000-000000000000");
-      var g1 = new Guid("00000001-0000-0000-0000-000000000000");
-      var u2 = new Uuid("00000000-0000-0000-0000-000000000001");
-      var g2 = new Guid("00000000-0000-0000-0000-000000000001");
-      object o;
-
-      Assert.IsTrue(u0.Equals(u0));
-      Assert.IsTrue(u0.Equals(g0));
-
-      o = u0; Assert.IsTrue(u0.Equals(o));
-      o = g0; Assert.IsTrue(u0.Equals(o));
-
-      Assert.IsFalse(u0.Equals(u1));
-      Assert.IsFalse(u0.Equals(g1));
-
-      o = u1; Assert.IsFalse(u0.Equals(o));
-      o = g1; Assert.IsFalse(u0.Equals(o));
-
-      Assert.IsFalse(u0.Equals(u2));
-      Assert.IsFalse(u0.Equals(g2));
-
-      o = u2; Assert.IsFalse(u0.Equals(o));
-      o = g2; Assert.IsFalse(u0.Equals(o));
-    }
-
-    [Test]
-    public void TestCompareTo()
-    {
-      Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns));
-      Assert.AreEqual(1, Uuid.RFC4122NamespaceDns.CompareTo(null));
-      Assert.AreNotEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty));
-
-      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.CompareTo(1));
-
-      var ux = new Uuid("00000000-0000-0000-0000-000000000000");
-      var uy = new Uuid("00000001-0000-0000-0000-000000000000");
-      var gx = new Guid("00000000-0000-0000-0000-000000000000");
-      var gy = new Guid("00000001-0000-0000-0000-000000000000");
-
-      Assert.That(ux.CompareTo(uy) < 0);
-      Assert.That(ux.CompareTo(gy) < 0);
-      Assert.That(0 < uy.CompareTo(ux));
-      Assert.That(0 < uy.CompareTo(gx));
-
-      ux = new Uuid("00000000-0000-0000-0000-000000000000");
-      uy = new Uuid("00000000-0000-0000-0000-000000000001");
-      gx = new Guid("00000000-0000-0000-0000-000000000000");
-      gy = new Guid("00000000-0000-0000-0000-000000000001");
-
-      Assert.That(ux.CompareTo(uy) < 0);
-      Assert.That(ux.CompareTo(gy) < 0);
-      Assert.That(0 < uy.CompareTo(ux));
-      Assert.That(0 < uy.CompareTo(gx));
-    }
-
-    [Test]
-    public void TestGreaterThanLessThanOperator()
-    {
-      var x = new Uuid("00000000-0000-0000-0000-000000000000");
-      var y = new Uuid("00000001-0000-0000-0000-000000000000");
-
-      Assert.IsTrue(x < y, "x < y");
-      Assert.IsFalse(x > y, "x > y");
-
-      x = new Uuid("00000000-0000-0000-0000-000000000000");
-      y = new Uuid("00000000-0000-0000-0000-000000000001");
-
-      Assert.IsTrue(x < y, "x < y");
-      Assert.IsFalse(x > y, "x > y");
     }
   }
 }
