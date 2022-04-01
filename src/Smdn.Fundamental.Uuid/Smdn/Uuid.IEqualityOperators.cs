@@ -14,14 +14,11 @@ partial struct Uuid :
   public static bool operator !=(Uuid x, Uuid y) => x.fields_high != y.fields_high || x.fields_low != y.fields_low;
 
   public override bool Equals(object obj)
-  {
-    if (obj is Uuid uuid)
-      return Equals(uuid);
-    else if (obj is Guid guid)
-      return Equals(guid);
-    else
-      return false;
-  }
+    => obj switch {
+      Uuid uuid => Equals(uuid),
+      Guid guid => Equals(guid),
+      _ => false,
+    };
 
   public bool Equals(Guid other) => this == (Uuid)other;
   public bool Equals(Uuid other) => this == other;
