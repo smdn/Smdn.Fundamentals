@@ -7,18 +7,6 @@ using NUnit.Framework;
 namespace Smdn;
 
 partial class UuidTests {
-
-  [Test]
-  public void TestEqualityOperator()
-  {
-#pragma warning disable 1718
-    Assert.IsTrue(Uuid.Nil == Uuid.Nil);
-    Assert.IsFalse(Uuid.Nil != Uuid.Nil);
-#pragma warning restore 1718
-    Assert.IsFalse(Uuid.Nil == Uuid.RFC4122NamespaceDns);
-    Assert.IsTrue(Uuid.Nil != Uuid.RFC4122NamespaceDns);
-  }
-
   [Test]
   public void TestEquals()
   {
@@ -53,5 +41,19 @@ partial class UuidTests {
 
     o = u2; Assert.IsFalse(u0.Equals(o));
     o = g2; Assert.IsFalse(u0.Equals(o));
+  }
+
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",  true)]
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000001", false)]
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0001-000000000000", false)]
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0100-000000000000", false)]
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0001-0000-000000000000", false)]
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0001-0000-0000-000000000000", false)]
+  [TestCase("00000000-0000-0000-0000-000000000000", "00000001-0000-0000-0000-000000000000", false)]
+  [TestCase("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF",  true)]
+  public void TestOpEquality_OpInequality(string x, string y, bool isEqual)
+  {
+    Assert.AreEqual(isEqual, new Uuid(x) == new Uuid(y), "op ==");
+    Assert.AreEqual(!isEqual, new Uuid(x) != new Uuid(y), "op !=");
   }
 }
