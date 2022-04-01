@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Globalization;
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
 #endif
@@ -12,7 +11,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
-public readonly partial struct Node : IFormattable {
+public readonly partial struct Node {
   private const int SizeOfSelf = 6;
 
   public static Node CreateRandom()
@@ -122,58 +121,7 @@ public readonly partial struct Node : IFormattable {
   }
 #endif
 
-  public static Node Parse(string s)
-    => TryParse(s ?? throw new ArgumentNullException(nameof(s)), out var result)
-      ? result
-      : throw new FormatException("invalid format");
-
-  public static bool TryParse(string s, out Node result)
-  {
-    result = default;
-
-    if (s is null)
-      return false;
-
-    var p =
-#if SYSTEM_STRING_SPLIT_CHAR
-      s.Split(':', StringSplitOptions.None);
-#else
-      s.Split(new[] { ':' }, StringSplitOptions.None);
-#endif
-
-    if (p.Length != SizeOfSelf)
-      return false;
-    if (!byte.TryParse(p[0], NumberStyles.HexNumber, provider: null, out var n0))
-      return false;
-    if (!byte.TryParse(p[1], NumberStyles.HexNumber, provider: null, out var n1))
-      return false;
-    if (!byte.TryParse(p[2], NumberStyles.HexNumber, provider: null, out var n2))
-      return false;
-    if (!byte.TryParse(p[3], NumberStyles.HexNumber, provider: null, out var n3))
-      return false;
-    if (!byte.TryParse(p[4], NumberStyles.HexNumber, provider: null, out var n4))
-      return false;
-    if (!byte.TryParse(p[5], NumberStyles.HexNumber, provider: null, out var n5))
-      return false;
-
-    result = new(n0, n1, n2, n3, n4, n5);
-
-    return true;
-  }
-
   public override string ToString() => ToString(format: null, formatProvider: null);
-
-  public string ToString(string format, IFormatProvider formatProvider = null)
-  {
-    if (string.IsNullOrEmpty(format))
-      format = "X"; // as default
-
-    return format switch {
-      "X" => $"{N0:X2}:{N1:X2}:{N2:X2}:{N3:X2}:{N4:X2}:{N5:X2}",
-      "x" => $"{N0:x2}:{N1:x2}:{N2:x2}:{N3:x2}:{N4:x2}:{N5:x2}",
-      _ => throw new FormatException($"invalid format: {format}"),
-    };
-  }
 
   public override int GetHashCode()
     =>
