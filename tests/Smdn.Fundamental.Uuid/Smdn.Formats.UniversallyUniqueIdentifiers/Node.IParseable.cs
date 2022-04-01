@@ -31,6 +31,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00:100", false, null)]
   [TestCase("00:00:00:00:00:0X", false, null)]
   [TestCase("00-00-00-00-00-00", false, null)]
+  [TestCase("00:00:00:00:00-00", false, null)]
   public void TestParse(string s, bool expectValid, string expectedString)
   {
     Node n = default;
@@ -74,6 +75,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00:100", false, null)]
   [TestCase("00:00:00:00:00:0X", false, null)]
   [TestCase("00-00-00-00-00-00", false, null)]
+  [TestCase("00:00:00:00:00-00", false, null)]
   public void TestTryParse(string s, bool expectValid, string expectedString)
   {
     Assert.AreEqual(expectValid, Node.TryParse(s, out var node));
