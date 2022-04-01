@@ -12,7 +12,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 6)]
 public readonly partial struct Node {
-  private const int SizeOfSelf = 6;
+  internal const int SizeOfSelf = 6;
 
   public static Node CreateRandom()
   {

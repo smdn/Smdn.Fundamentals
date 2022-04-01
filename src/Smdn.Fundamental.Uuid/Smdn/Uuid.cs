@@ -82,10 +82,10 @@ public readonly partial struct Uuid {
 
     var physicalAddress = nic.GetPhysicalAddress().GetAddressBytes().AsSpan();
 
-    if (6 < physicalAddress.Length)
-      physicalAddress = physicalAddress.Slice(0, 6);
+    if (Node.SizeOfSelf < physicalAddress.Length)
+      physicalAddress = physicalAddress.Slice(0, Node.SizeOfSelf);
 
-    Span<byte> node = stackalloc byte[6];
+    Span<byte> node = stackalloc byte[Node.SizeOfSelf];
 
     physicalAddress.CopyTo(node);
 
@@ -131,7 +131,7 @@ public readonly partial struct Uuid {
   {
     if (node is null)
       throw new ArgumentNullException(paramName);
-    if (node.Length != 6)
+    if (node.Length != Node.SizeOfSelf)
       throw new ArgumentException("must be 48-bit length", paramName);
 
     return new Node(node);
