@@ -11,6 +11,8 @@ partial class UuidTests {
   public void TestCompareTo()
   {
     Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns));
+    Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo((Guid)Uuid.RFC4122NamespaceDns));
+    Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo((object)Uuid.RFC4122NamespaceDns));
     Assert.AreEqual(1, Uuid.RFC4122NamespaceDns.CompareTo(null));
     Assert.AreNotEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty));
 
@@ -21,6 +23,11 @@ partial class UuidTests {
     var gx = new Guid("00000000-0000-0000-0000-000000000000");
     var gy = new Guid("00000001-0000-0000-0000-000000000000");
 
+    Assert.That(ux.CompareTo(ux) == 0);
+    Assert.That(ux.CompareTo(gx) == 0);
+    Assert.That(uy.CompareTo(uy) == 0);
+    Assert.That(gy.CompareTo(gy) == 0);
+
     Assert.That(ux.CompareTo(uy) < 0);
     Assert.That(ux.CompareTo(gy) < 0);
     Assert.That(0 < uy.CompareTo(ux));
@@ -30,6 +37,11 @@ partial class UuidTests {
     uy = new Uuid("00000000-0000-0000-0000-000000000001");
     gx = new Guid("00000000-0000-0000-0000-000000000000");
     gy = new Guid("00000000-0000-0000-0000-000000000001");
+
+    Assert.That(ux.CompareTo(ux) == 0);
+    Assert.That(ux.CompareTo(gx) == 0);
+    Assert.That(uy.CompareTo(uy) == 0);
+    Assert.That(gy.CompareTo(gy) == 0);
 
     Assert.That(ux.CompareTo(uy) < 0);
     Assert.That(ux.CompareTo(gy) < 0);

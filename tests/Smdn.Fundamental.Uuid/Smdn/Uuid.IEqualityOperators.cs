@@ -23,6 +23,8 @@ partial class UuidTests {
   public void TestEquals()
   {
     Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals(Uuid.RFC4122NamespaceDns));
+    Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals((Guid)Uuid.RFC4122NamespaceDns));
+    Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals((object)Uuid.RFC4122NamespaceDns));
     Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(null));
     Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(1));
 
