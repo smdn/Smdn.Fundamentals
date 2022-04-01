@@ -1,19 +1,29 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#nullable enable
+
 using System;
 using System.Globalization;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 #pragma warning disable IDE0040
-partial struct Node {
+partial struct Node
 #pragma warning restore IDE0040
-  public static Node Parse(string s)
-    => TryParse(s ?? throw new ArgumentNullException(nameof(s)), out var result)
+#if FEATURE_GENERIC_MATH
+  :
+  IParseable<Node>
+#endif
+{
+  public static Node Parse(string s, IFormatProvider? provider = null)
+    => TryParse(s ?? throw new ArgumentNullException(nameof(s)), provider, out var result)
       ? result
       : throw new FormatException("invalid format");
 
-  public static bool TryParse(string s, out Node result)
+  public static bool TryParse(string? s, out Node result)
+    => TryParse(s, provider: null, out result);
+
+  public static bool TryParse(string? s, IFormatProvider? provider, out Node result)
   {
     result = default;
 

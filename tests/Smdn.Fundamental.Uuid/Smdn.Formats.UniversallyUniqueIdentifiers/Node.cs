@@ -84,61 +84,6 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     }
 
     [Test]
-    public void TestParse_ArgumentNull() => Assert.Throws<ArgumentNullException>(() => Node.Parse(null));
-
-    [TestCase("00:00:00:00:00:00", true, "00:00:00:00:00:00")]
-    [TestCase("01:23:45:67:89:AB", true, "01:23:45:67:89:AB")]
-    [TestCase("FF:FF:FF:FF:FF:FF", true, "FF:FF:FF:FF:FF:FF")]
-    [TestCase("ab:cd:ef:AB:CD:EF", true, "ab:cd:ef:AB:CD:EF")]
-    [TestCase("0:1:2:3:4:F", true, "00:01:02:03:04:0F")]
-    [TestCase("000:001:002:003:004:00F", true, "00:01:02:03:04:0F")]
-    [TestCase("00:00:00:00:00", false, null)]
-    [TestCase("00", false, null)]
-    [TestCase("", false, null)]
-    [TestCase("100:00:00:00:00:00", false, null)]
-    [TestCase("00:00:00:00:00:100", false, null)]
-    [TestCase("00:00:00:00:00:0X", false, null)]
-    [TestCase("00-00-00-00-00-00", false, null)]
-    public void TestParse(string s, bool expectValid, string expectedString)
-    {
-      Node n = default;
-
-      if (expectValid)
-        Assert.DoesNotThrow(() => n = Node.Parse(s));
-      else
-        Assert.Throws<FormatException>(() => n = Node.Parse(s));
-
-      if (expectValid) {
-        Assert.AreEqual(expectedString.ToUpperInvariant(), n.ToString("X"));
-        Assert.AreEqual(expectedString.ToLowerInvariant(), n.ToString("x"));
-      }
-    }
-
-    [TestCase("00:00:00:00:00:00", true, "00:00:00:00:00:00")]
-    [TestCase("01:23:45:67:89:AB", true, "01:23:45:67:89:AB")]
-    [TestCase("FF:FF:FF:FF:FF:FF", true, "FF:FF:FF:FF:FF:FF")]
-    [TestCase("ab:cd:ef:AB:CD:EF", true, "ab:cd:ef:AB:CD:EF")]
-    [TestCase("0:1:2:3:4:F", true, "00:01:02:03:04:0F")]
-    [TestCase("000:001:002:003:004:00F", true, "00:01:02:03:04:0F")]
-    [TestCase("00:00:00:00:00", false, null)]
-    [TestCase("00", false, null)]
-    [TestCase("", false, null)]
-    [TestCase(null, false, null)]
-    [TestCase("100:00:00:00:00:00", false, null)]
-    [TestCase("00:00:00:00:00:100", false, null)]
-    [TestCase("00:00:00:00:00:0X", false, null)]
-    [TestCase("00-00-00-00-00-00", false, null)]
-    public void TestTryParse(string s, bool expectValid, string expectedString)
-    {
-      Assert.AreEqual(expectValid, Node.TryParse(s, out var node));
-
-      if (expectValid) {
-        Assert.AreEqual(expectedString.ToUpperInvariant(), node.ToString("X"));
-        Assert.AreEqual(expectedString.ToLowerInvariant(), node.ToString("x"));
-      }
-    }
-
-    [Test]
     public void TestToString()
     {
       var regexFormat_X = new Regex("^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$");
