@@ -53,15 +53,15 @@ public static class HtmlConvert {
 
     var sb = new StringBuilder(s.Length);
 
+#pragma warning disable SA1114
+    sb.Append(
 #if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
-    sb.Append(s);
+      s
 #else
-    unsafe {
-      fixed (char* _s = s) {
-        sb.Append(new string(_s, 0, s.Length));
-      }
-    }
+      StringShim.Construct(s)
 #endif
+    );
+#pragma warning restore SA1114
 
     sb.Replace("&lt;", "<");
     sb.Replace("&gt;", ">");
