@@ -129,33 +129,26 @@ public readonly partial struct Uuid {
   public PhysicalAddress PhysicalAddress => node.ToPhysicalAddress();
 #endif
 
-  public UuidVersion Version {
-    get {
-      if (VariantField == Variant.RFC4122)
-        return (UuidVersion)(time_hi_and_version >> 12);
-      else
-        return UuidVersion.None;
-    }
-  }
+  public UuidVersion Version
+    => VariantField == Variant.RFC4122
+      ? (UuidVersion)(time_hi_and_version >> 12)
+      : UuidVersion.None;
 
-  public Variant VariantField {
-    get {
-      return (clock_seq_hi_and_reserved & 0xe0) switch {
-        // 0b_0_xx_00000
-        0b_0_00_00000 or
-        0b_0_01_00000 or
-        0b_0_10_00000 or
-        0b_0_11_00000 => Variant.NCSReserved,
-        // 0b_10_x_00000
-        0b_10_0_00000 or
-        0b_10_1_00000 => Variant.RFC4122,
-        // 0b_1100_0000
-        0b_1100_0000 => Variant.MicrosoftReserved,
-        // 0b_11100000
-        _ => Variant.Reserved,
-      };
-    }
-  }
+  public Variant VariantField
+    => (clock_seq_hi_and_reserved & 0xe0) switch {
+      // 0b_0_xx_00000
+      0b_0_00_00000 or
+      0b_0_01_00000 or
+      0b_0_10_00000 or
+      0b_0_11_00000 => Variant.NCSReserved,
+      // 0b_10_x_00000
+      0b_10_0_00000 or
+      0b_10_1_00000 => Variant.RFC4122,
+      // 0b_1100_0000
+      0b_1100_0000 => Variant.MicrosoftReserved,
+      // 0b_11100000
+      _ => Variant.Reserved,
+    };
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
   [CLSCompliant(false)]
