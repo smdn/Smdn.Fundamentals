@@ -103,11 +103,7 @@ public static class CsvRecord {
 #if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
         return new string(sequence);
 #else
-        unsafe {
-          fixed (char* seq = sequence) {
-            return new string(seq, 0, sequence.Length);
-          }
-        }
+        return StringShim.Construct(sequence);
 #endif
       }
       finally {
