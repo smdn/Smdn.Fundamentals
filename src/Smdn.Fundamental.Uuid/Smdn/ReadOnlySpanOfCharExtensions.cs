@@ -16,9 +16,7 @@ internal static class ReadOnlySpanOfCharExtensions {
   ToParseableType(this ReadOnlySpan<char> s)
 #if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
     => s;
-#elif SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
-    => new(s);
 #else
-    => new(s.ToArray());
+    => StringShim.Construct(s);
 #endif
 }
