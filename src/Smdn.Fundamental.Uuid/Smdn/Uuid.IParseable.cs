@@ -51,7 +51,7 @@ partial struct Uuid
   public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Uuid result)
     => TryParseCore(s, provider, out result) == TryParseResult.Success;
 
-  /// <summary>parse UUID string that must to be in format of "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"</summary>
+  /// <summary>Attempts to parse UUID string that must to be in format of "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx".</summary>
 #pragma warning disable IDE0060
   private static TryParseResult TryParseCore(ReadOnlySpan<char> s, IFormatProvider? provider, out Uuid result)
 #pragma warning restore IDE0060
