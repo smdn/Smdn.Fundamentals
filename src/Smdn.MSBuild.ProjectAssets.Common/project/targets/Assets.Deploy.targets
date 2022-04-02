@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <Project>
   <Target
     Name="Assets_Deploy"
-    BeforeTargets="BeforeBuild"
+    BeforeTargets="DispatchToInnerBuilds;BeforeBuild"
   >
     <Copy
       SourceFiles="%(SmdnBuildAssetFiles.Identity)"
