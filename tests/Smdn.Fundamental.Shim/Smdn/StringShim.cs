@@ -90,4 +90,14 @@ public class StringShimTests {
                     "abc".EndsWith('a'),
                     "same as EndsWith(string) #4");
   }
+
+  [Test]
+  public void TestConstruct()
+  {
+    Assert.AreEqual(string.Empty, StringShim.Construct(default), "#1");
+    Assert.AreEqual("A", StringShim.Construct(stackalloc char[] { 'A' } ), "#2");
+    Assert.AreEqual("ABC", StringShim.Construct(stackalloc char[] { 'A', 'B', 'C' } ), "#3");
+    Assert.AreEqual("A\u0000C", StringShim.Construct(stackalloc char[] { 'A', '\u0000', 'C' } ), "#4");
+    Assert.AreEqual("🌟", StringShim.Construct(stackalloc char[] { '\uD83C', '\uDF1F' } ), "#5");
+  }
 }

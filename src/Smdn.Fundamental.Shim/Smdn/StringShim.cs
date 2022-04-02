@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Buffers;
+using System.Runtime.CompilerServices;
 
 namespace Smdn;
 
@@ -31,5 +33,35 @@ public static class StringShim {
       return false;
     else
       return str[str.Length - 1] == @value;
+  }
+
+  /*
+   * SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
+   */
+#if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+#endif
+  public static string Construct(ReadOnlySpan<char> s)
+  {
+    if (s.IsEmpty)
+      return string.Empty;
+
+#if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
+    return new(s);
+#else
+    char[] buffer = null;
+
+    try {
+      buffer = ArrayPool<char>.Shared.Rent(s.Length);
+
+      s.CopyTo(buffer.AsSpan(0, s.Length));
+
+      return new(buffer, 0, s.Length);
+    }
+    finally {
+      if (buffer is not null)
+        ArrayPool<char>.Shared.Return(buffer);
+    }
+#endif
   }
 }
