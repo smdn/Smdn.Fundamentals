@@ -152,23 +152,21 @@ public readonly struct FourCC :
   public override string ToString()
   {
     unchecked {
-#pragma warning disable SA1008
-#if SYSTEM_STRING_CREATE
-      return string.Create(SizeOfSelf, this.fourcc, (chars, val) => {
-        chars[0] = (char)((val >> 24) & 0xff);
-        chars[1] = (char)((val >> 16) & 0xff);
-        chars[2] = (char)((val >>  8) & 0xff);
-        chars[3] = (char)( val        & 0xff);
-      });
+      return
+#if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
+      new(
 #else
-      return new string(new[] {
-        (char)((fourcc >> 24) & 0xff),
-        (char)((fourcc >> 16) & 0xff),
-        (char)((fourcc >>  8) & 0xff),
-        (char)( fourcc        & 0xff),
-      });
+      StringShim.Construct(
 #endif
+#pragma warning disable SA1008
+        stackalloc char[SizeOfSelf] {
+          (char)((fourcc >> 24) & 0xff),
+          (char)((fourcc >> 16) & 0xff),
+          (char)((fourcc >>  8) & 0xff),
+          (char)( fourcc        & 0xff),
+        }
 #pragma warning restore SA1008
+      );
     }
   }
 
