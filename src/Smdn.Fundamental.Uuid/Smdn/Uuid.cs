@@ -18,22 +18,6 @@ namespace Smdn;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Explicit, Pack = 1)]
 public readonly partial struct Uuid {
-#pragma warning disable CA1716
-  public enum Namespace : int {
-#pragma warning restore CA1716
-    RFC4122Dns      = 0x6ba7b810,
-    RFC4122Url      = 0x6ba7b811,
-    RFC4122IsoOid   = 0x6ba7b812,
-    RFC4122X500     = 0x6ba7b814,
-  }
-
-  public enum Variant : byte {
-    NCSReserved           = 0x00,
-    RFC4122               = 0x80,
-    MicrosoftReserved     = 0xc0,
-    Reserved              = 0xe0,
-  }
-
   /*
    * 4.1.7. Nil UUID
    *    The nil UUID is special form of UUID that is specified to have all
