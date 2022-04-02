@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
     <VersionPrefix>3.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">

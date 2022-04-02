@@ -49,18 +49,10 @@ public static class StringShim {
 #if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
     return new(s);
 #else
-    char[] buffer = null;
-
-    try {
-      buffer = ArrayPool<char>.Shared.Rent(s.Length);
-
-      s.CopyTo(buffer.AsSpan(0, s.Length));
-
-      return new(buffer, 0, s.Length);
-    }
-    finally {
-      if (buffer is not null)
-        ArrayPool<char>.Shared.Return(buffer);
+    unsafe {
+      fixed (char* sequence = s) {
+        return new(sequence, 0, s.Length);
+      }
     }
 #endif
   }
