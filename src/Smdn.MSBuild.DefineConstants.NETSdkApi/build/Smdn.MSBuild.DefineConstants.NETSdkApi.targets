@@ -38,6 +38,33 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default_ANSI"/>
     </ItemGroup>
 
+    <!-- NET40_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET40_OR_GREATER;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.Is64BitProcess"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.Is64BitOperatingSystem"/>
+    </ItemGroup>
+
+    <!-- NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET45_OR_GREATER;NETSTANDARD1_1_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="MemoryMarshal"/>
+    </ItemGroup>
+
     <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET46_OR_GREATER;NETSTANDARD1_3_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
@@ -64,7 +91,9 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="HashCode"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IAsyncDisposable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="Unsafe"/>
     </ItemGroup>
 
     <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -79,15 +108,21 @@ SPDX-License-Identifier: MIT
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.ConvertAll"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Converter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.Version"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Exception.ctor(SerializationInfo)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ICloneable"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.DivRem"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeFile"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeHttp"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeHttps"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeMailto"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics" Include="Process"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Close"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.NetworkInformation" Include="PhysicalAddress"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization.Formatter.Binary" Include="%2A"/> <!-- '*' -->
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization" Include="SerializationBinder"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="HashAlgorithm.Clear"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.BodyName"/>
     </ItemGroup>
 
     <!-- NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
@@ -144,6 +179,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ReadAsync(Memory&lt;Byte&gt;)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Write(ReadOnlySpan&lt;Byte&gt;)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.WriteAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="MemoryMarshal.CreateReadOnlySpan"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask"/>
     </ItemGroup>
@@ -191,6 +227,8 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.IsDefined&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.ProcessId"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.ProcessPath"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringSplitOptions.TrimEntries"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.UnreadSequence"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="IReadOnlySet"/>
@@ -211,8 +249,11 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanFormattable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="HashCode.AddBytes"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.DivRem_return:ValueTuple`2"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create(IFormatProvider)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeSsh"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeTelnet"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.IsPow2"/>
     </ItemGroup>
 
