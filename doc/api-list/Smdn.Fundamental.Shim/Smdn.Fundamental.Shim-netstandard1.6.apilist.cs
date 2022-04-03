@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Shim.dll (Smdn.Fundamental.Shim-3.1.1)
+// Smdn.Fundamental.Shim.dll (Smdn.Fundamental.Shim-3.1.2)
 //   Name: Smdn.Fundamental.Shim
-//   AssemblyVersion: 3.1.1.0
-//   InformationalVersion: 3.1.1+fa4d907b50f26bcb536c88ac5286aebd1c2a9de4
+//   AssemblyVersion: 3.1.2.0
+//   InformationalVersion: 3.1.2+583e46c2622be1c7334f84e2c1d79c58b2d5a596
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -56,6 +56,7 @@ namespace Smdn {
   }
 
   public static class StringShim {
+    public static string Construct(ReadOnlySpan<char> s) {}
     public static bool EndsWith(this string str, char @value) {}
     public static bool StartsWith(this string str, char @value) {}
   }
