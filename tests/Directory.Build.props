@@ -2,7 +2,7 @@
 SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
-<Project InitialTargets="DeployProjectAssets">
+<Project>
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <Deterministic>true</Deterministic>
@@ -48,7 +48,7 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <!-- deploy project assets before building test projects and its referencing projects -->
-  <Target Name="DeployProjectAssets">
+  <Target Name="DeployProjectAssets" BeforeTargets="BeforeBuild">
     <MSBuild Projects="$(MSBuildThisFileDirectory)..\src\DeployProjectAssets.proj" />
   </Target>
 </Project>
