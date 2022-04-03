@@ -63,8 +63,8 @@ SPDX-License-Identifier: MIT
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uri\Smdn.Fundamental.Uri.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uuid\Smdn.Fundamental.Uuid.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Xml.Xhtml\Smdn.Fundamental.Xml.Xhtml.csproj" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or $(TargetFramework.StartsWith('netstandard1'))" />
-    <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
-    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" Condition="$(TargetFramework.StartsWith('net45')) or $(TargetFramework.StartsWith('net46')) or '$(TargetFramework)' == 'net47'" />
+    <PackageReference Include="System.ValueTuple" />
+    <PackageReference Include="System.Memory" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
   </ItemGroup>
 </Project>

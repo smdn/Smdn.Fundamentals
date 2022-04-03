@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <PackageReference Include="System.Memory" Version="4.5.4" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
-    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" Condition="$(TargetFramework.StartsWith('netstandard1'))" />
+    <PackageReference Include="System.Memory" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" />
   </ItemGroup>
 </Project>
