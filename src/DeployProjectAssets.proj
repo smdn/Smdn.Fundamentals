@@ -9,4 +9,7 @@ SPDX-License-Identifier: MIT
 <Project InitialTargets="Assets_Deploy">
   <Import Project="$(MSBuildThisFileDirectory)Directory.Build.props" />
   <Import Project="$(MSBuildThisFileDirectory)Directory.Build.targets" />
+
+  <!-- override target GetRepositoryProperties to disable retrieving repository properties -->
+  <Target Name="GetRepositoryProperties" />
 </Project>
