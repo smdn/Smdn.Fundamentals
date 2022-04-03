@@ -88,7 +88,7 @@ SPDX-License-Identifier: MIT
       $(TargetFramework.StartsWith('netstandard2')) or
       $(TargetFramework.StartsWith('netcoreapp'))
     ">
-      <ItemGroup><PackageReference Update="System.Text.Encoding.CodePages" Version="5.0.0" /></ItemGroup>
+      <ItemGroup><PackageReference Update="System.Text.Encoding.CodePages" Version="6.0.0" /></ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup><PackageReference Remove="System.Text.Encoding.CodePages" /></ItemGroup>
