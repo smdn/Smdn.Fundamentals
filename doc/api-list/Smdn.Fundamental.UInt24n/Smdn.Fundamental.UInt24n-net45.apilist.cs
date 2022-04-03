@@ -1,7 +1,7 @@
-// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.0.3)
+// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.0.3.1)
 //   Name: Smdn.Fundamental.UInt24n
-//   AssemblyVersion: 3.0.3.0
-//   InformationalVersion: 3.0.3+607d530a187c447f59c0aa1b4f8195086e600e14
+//   AssemblyVersion: 3.0.3.1
+//   InformationalVersion: 3.0.3.1+0f838f8a06f48ffc1ddbe92fcdcbcfa93a9cdbdc
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
