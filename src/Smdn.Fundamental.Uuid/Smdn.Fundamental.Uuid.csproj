@@ -30,29 +30,16 @@ SPDX-License-Identifier: MIT
     <PackageReference Include="Microsoft.Bcl.HashCode" />
   </ItemGroup>
 
-  <Target Name="AddExtraDefineConstants" AfterTargets="AddNETSdkApiDefineConstants">
-    <PropertyGroup>
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET461_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_HASHCODE</DefineConstants>
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL_CREATEREADONLYSPAN</DefineConstants>
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET461_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETSTANDARD2_1_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNETCOREAPP2_0_OR_GREATER\b')) Or
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bNET5_0_OR_GREATER\b'))
-      ">$(DefineConstants);SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE_ASREF</DefineConstants>
-      <DefineConstants Condition="
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bSYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL_CREATEREADONLYSPAN\b')) And
-        $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bSYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE_ASREF\b'))
-      ">$(DefineConstants);NODE_READONLYSPAN</DefineConstants>
+  <PropertyGroup>
+    <AddNETSdkApiDefineConstantsAfterTargets>AddExtraDefineConstants</AddNETSdkApiDefineConstantsAfterTargets>
+  </PropertyGroup>
+
+  <Target Name="AddExtraDefineConstants">
+    <PropertyGroup Condition="
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bSYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL_CREATEREADONLYSPAN\b')) And
+      $([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bSYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE\b'))
+    ">
+      <DefineConstants>$(DefineConstants);NODE_READONLYSPAN</DefineConstants>
     </PropertyGroup>
   </Target>
 </Project>
