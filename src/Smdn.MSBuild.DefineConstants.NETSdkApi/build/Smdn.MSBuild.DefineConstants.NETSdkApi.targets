@@ -20,6 +20,22 @@ SPDX-License-Identifier: MIT
     </PropertyGroup>
   </Target>
 
+  <!-- call targets defined by $(AddNETSdkApiDefineConstantsBeforeTargets) which are needed to run before AddNETSdkApiDefineConstants -->
+  <Target
+    Name="_BeforeAddNETSdkApiDefineConstants"
+    DependsOnTargets="$(AddNETSdkApiDefineConstantsBeforeTargets)"
+    BeforeTargets="AddNETSdkApiDefineConstants"
+    Condition="'$(AddNETSdkApiDefineConstantsBeforeTargets)' != ''"
+  />
+
+  <!-- call targets defined by $(AddNETSdkApiDefineConstantsAfterTargets) which are needed to run after AddNETSdkApiDefineConstants -->
+  <Target
+    Name="_AfterAddNETSdkApiDefineConstants"
+    DependsOnTargets="$(AddNETSdkApiDefineConstantsAfterTargets)"
+    AfterTargets="AddNETSdkApiDefineConstants"
+    Condition="'$(AddNETSdkApiDefineConstantsAfterTargets)' != ''"
+  />
+
   <!-- ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks -->
   <Target
     Name="ListNETSdkAvailableApiName"
