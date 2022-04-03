@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
+
+name: Manage NuGet package caches
+
+on:
+  workflow_dispatch:
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+
+jobs:
+  generate-release-target:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set NUGET_PACKAGES
+      shell: pwsh
+      run: |
+        $dir_nuget_packages =[System.IO.Path]::Combine(
+          '${{ github.workspace }}',
+          '.nuget',
+          'packages'
+        )
+
+        "::notice::NUGET_PACKAGES=${dir_nuget_packages}"
+
+        "NUGET_PACKAGES=${dir_nuget_packages}" >> $Env:GITHUB_ENV
+
+    - name: Setup NuGet cache
+      # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
+      uses: actions/cache@v2
+      with:
+        path: ${{ env.NUGET_PACKAGES }}
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: List NuGet packages
+      run: |
+        ls -1 ${NUGET_PACKAGES}/*
