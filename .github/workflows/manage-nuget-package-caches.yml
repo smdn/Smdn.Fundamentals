@@ -12,7 +12,7 @@ env:
   DOTNET_NOLOGO: true
 
 jobs:
-  generate-release-target:
+  manage-nuget-package-caches:
     runs-on: ubuntu-latest
 
     steps:
