@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Uuid
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+ae4a97a93ac395fe5044a3c8ed3ba4411533bc12
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
@@ -35,7 +35,7 @@ namespace Smdn {
     IComparable<Uuid>,
     IEquatable<Guid>,
     IEquatable<Uuid>,
-    IFormattable
+    ISpanFormattable
   {
     public enum Namespace : int {
       RFC4122Dns = 1806153744,
@@ -171,7 +171,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     IComparable,
     IComparable<Node>,
     IEquatable<Node>,
-    IFormattable
+    ISpanFormattable
   {
     public Node(PhysicalAddress physicalAddress) {}
 
@@ -188,6 +188,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     [NullableContext(2)]
     [return: Nullable(1)] public string ToString(string format, IFormatProvider formatProvider = null) {}
     public override string ToString() {}
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, [Nullable(2)] IFormatProvider provider) {}
     public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, out Node result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Node result) {}
     [NullableContext(2)]

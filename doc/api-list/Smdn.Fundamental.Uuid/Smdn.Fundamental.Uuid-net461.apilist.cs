@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Uuid
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+ae4a97a93ac395fe5044a3c8ed3ba4411533bc12
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETFramework,Version=v4.6.1
 //   Configuration: Release
 
 using System;
