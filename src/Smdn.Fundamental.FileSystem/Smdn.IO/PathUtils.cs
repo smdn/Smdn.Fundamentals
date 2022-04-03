@@ -153,7 +153,7 @@ public static class PathUtils {
     return false;
   }
 
-#if SYSTEM_DIAGNOSTICS_PROCESS
+#if SYSTEM_ENVIRONMENT_PROCESSID || SYSTEM_DIAGNOSTICS_PROCESS
   public static string RenameUnique(string file)
   {
     if (file == null)
@@ -173,7 +173,11 @@ public static class PathUtils {
           "{0}.{1}-p{2}t{3}-{4}{5}",
           now.ToFileTime(),
           now.Millisecond,
+#if SYSTEM_ENVIRONMENT_PROCESSID
+          Environment.ProcessId,
+#else
           System.Diagnostics.Process.GetCurrentProcess().Id,
+#endif
           Environment.CurrentManagedThreadId,
           index,
           extension
