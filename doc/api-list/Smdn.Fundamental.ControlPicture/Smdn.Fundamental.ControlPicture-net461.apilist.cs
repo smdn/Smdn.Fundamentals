@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.ControlPicture
 //   AssemblyVersion: 3.0.0.1
 //   InformationalVersion: 3.0.0.1+dc20ebef71437f6ae0e2cacb43e17d83d13c8ef0
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETFramework,Version=v4.6.1
 //   Configuration: Release
 
 using System;

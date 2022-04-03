@@ -1,7 +1,7 @@
-// Smdn.Fundamental.ControlPicture.dll (Smdn.Fundamental.ControlPicture-3.0.0 (netstandard2.1))
+// Smdn.Fundamental.ControlPicture.dll (Smdn.Fundamental.ControlPicture-3.0.0.1)
 //   Name: Smdn.Fundamental.ControlPicture
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.1)
+//   AssemblyVersion: 3.0.0.1
+//   InformationalVersion: 3.0.0.1+dc20ebef71437f6ae0e2cacb43e17d83d13c8ef0
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
