@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.BinaryReaderWriter.dll (Smdn.Fundamental.Stream.BinaryReaderWriter-3.0.1)
+// Smdn.Fundamental.Stream.BinaryReaderWriter.dll (Smdn.Fundamental.Stream.BinaryReaderWriter-3.0.1.1)
 //   Name: Smdn.Fundamental.Stream.BinaryReaderWriter
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+56b07c7e2fda55d1e07a1fd4d2c6ac5210e8132f
+//   AssemblyVersion: 3.0.1.1
+//   InformationalVersion: 3.0.1.1+3286420ed0a2903dd6ebc753d030d262e9a72deb
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
