@@ -42,7 +42,7 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup Label="add test target project reference">
     <ProjectReference
-      Condition="'$(TestTargetProjectName)' != ''"
+      Condition="'$(TestTargetProjectName)' != '' and Exists('$(TestTargetProjectDirectory)')"
       Include="$(TestTargetProjectDirectory)$(TestTargetProjectName).csproj"
     />
   </ItemGroup>
