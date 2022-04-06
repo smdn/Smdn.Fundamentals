@@ -1,0 +1,15 @@
+// SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+// SPDX-License-Identifier: MIT
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+  #if !SYSTEM_STRING_CONTAINS_CHAR
+    #error "SYSTEM_STRING_CONTAINS_CHAR is not defined"
+  #endif
+
+  #if !SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    #error "SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE is not defined"
+  #endif
+
+  #if !SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    #error "SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE is not defined"
+  #endif
+#endif

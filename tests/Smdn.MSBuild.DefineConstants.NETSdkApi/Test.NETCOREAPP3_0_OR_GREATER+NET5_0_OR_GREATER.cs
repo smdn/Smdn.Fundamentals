@@ -1,0 +1,7 @@
+// SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+// SPDX-License-Identifier: MIT
+#if NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+  #if !SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYMEMORY_OF_CHAR
+    #error "SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYMEMORY_OF_CHAR is not defined"
+  #endif
+#endif
