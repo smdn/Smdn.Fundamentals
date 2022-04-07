@@ -440,7 +440,7 @@ namespace Smdn {
       Assert.AreEqual((UInt48)0x456789ABCDEF, UInt48.Parse("456789ABCDEF", style: NumberStyles.AllowHexSpecifier), "#1");
     }
 
-#if SYSTEM_INUMBER_PARSE_READONLYSPAN_OF_CHAR
+#if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
     [Test]
     public void TestParse_ReadOnlySpanOfChar()
     {
