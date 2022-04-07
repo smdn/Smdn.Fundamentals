@@ -584,6 +584,7 @@ SPDX-License-Identifier: MIT
           .Replace('+', '_')
           .Replace(':', '_')
           .Replace('`', '_')
+          .Replace(' ', '_')
           .ToUpperInvariant()
         )</Constant>
       </_NETSdkAvailableApiSymbol>
