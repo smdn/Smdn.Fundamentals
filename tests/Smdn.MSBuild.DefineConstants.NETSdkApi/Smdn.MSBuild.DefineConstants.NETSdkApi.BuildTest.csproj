@@ -9,8 +9,17 @@ SPDX-License-Identifier: MIT
 
   <Import Project="$(PackageBuildTargetsFile)" />
 
-  <PropertyGroup>
-    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.1;netstandard2.0;netstandard1.6;net48;net472;net461;net46;net45</TargetFrameworks>
+  <PropertyGroup Label="TargetFrameworks">
+    <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0.0'))">$(TargetFrameworks);net7.0</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);net6.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);netstandard2.1;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);netstandard1.6;netstandard1.5;netstandard1.4;netstandard1.3;netstandard1.2;netstandard1.1;netstandard1.0</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);net48;net472;net471;net47;net462;net461;net46;net452;net451;net45</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Label="extra DefineConstants">
+    <DefineConstants Condition="$([MSBuild]::IsOsPlatform('windows'))">$(DefineConstants);IS_BUILDING_ON_WINDOWS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
