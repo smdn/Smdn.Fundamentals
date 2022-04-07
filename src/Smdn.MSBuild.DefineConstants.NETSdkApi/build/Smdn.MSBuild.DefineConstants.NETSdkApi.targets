@@ -379,8 +379,12 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetForwardedTypes"/>
-      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.Parse(ROS<char>), Double.Parse(ROS<char>), etc. -->
-      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Int32.TryParse(ROS<char>), Double.TryParse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Double.Parse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Double.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int32.Parse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int32.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Obsolete: Int32.Parse(ROS<char>), Double.Parse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Obsolete: Int32.TryParse(ROS<char>), Double.TryParse(ROS<char>), etc. -->
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.Clamp"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.NextBytes(Span&lt;byte&gt;)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
