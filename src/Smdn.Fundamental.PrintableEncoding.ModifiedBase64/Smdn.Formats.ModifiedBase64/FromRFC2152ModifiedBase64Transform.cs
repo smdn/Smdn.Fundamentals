@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
+#endif
+
 using System;
 using System.Security.Cryptography;
 
@@ -19,7 +23,7 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
   {
   }
 
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
   public FromRFC2152ModifiedBase64Transform(FromBase64TransformMode mode)
     : this(mode == FromBase64TransformMode.IgnoreWhiteSpaces)
   {

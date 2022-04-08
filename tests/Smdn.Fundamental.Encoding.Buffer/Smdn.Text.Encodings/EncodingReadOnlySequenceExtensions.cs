@@ -1,5 +1,8 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET5_0_OR_GREATER
+#define SYSTEM_TEXT_ENCODINGEXTENSIONS
+#endif
 
 using System;
 using System.Buffers;
@@ -37,7 +40,7 @@ namespace Smdn.Text.Encodings {
       for (var offset = 0; offset < expected.Length; offset++) {
         Assert.AreEqual(
           expected.Substring(offset),
-#if NET5_0_OR_GREATER
+#if SYSTEM_TEXT_ENCODINGEXTENSIONS
           Encoding.ASCII.GetString(sequence.Slice(offset)),
 #else
           EncodingReadOnlySequenceExtensions.GetString(Encoding.ASCII, sequence.Slice(offset)),
@@ -59,7 +62,7 @@ namespace Smdn.Text.Encodings {
 
       Assert.AreEqual(
         expected,
-#if NET5_0_OR_GREATER
+#if SYSTEM_TEXT_ENCODINGEXTENSIONS
         Encoding.UTF8.GetString(sequence)
 #else
         EncodingReadOnlySequenceExtensions.GetString(Encoding.UTF8, sequence)

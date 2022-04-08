@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
+#define SYSTEM_SECURITY_CRYPTOGRAPHY_TOBASE64TRANSFORM
+#endif
+
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -143,7 +148,7 @@ public static class Base64 {
 
   public static ICryptoTransform CreateFromBase64Transform(bool ignoreWhiteSpaces = true)
   {
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
     var mode = ignoreWhiteSpaces ? System.Security.Cryptography.FromBase64TransformMode.IgnoreWhiteSpaces : System.Security.Cryptography.FromBase64TransformMode.DoNotIgnoreWhiteSpaces;
 
     return new System.Security.Cryptography.FromBase64Transform(mode);
@@ -155,7 +160,7 @@ public static class Base64 {
   }
 
   public static ICryptoTransform CreateToBase64Transform() =>
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_TOBASE64TRANSFORM
     new System.Security.Cryptography.ToBase64Transform();
 #else
     new Smdn.Security.Cryptography.ToBase64Transform();
