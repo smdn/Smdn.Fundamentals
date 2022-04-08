@@ -31,7 +31,7 @@ public class CsvWriter : StreamWriter {
   }
 
   public CsvWriter(string path, Encoding encoding)
-#if NETFRAMEWORK || NETSTANDARD2_0 || NETSTANDARD2_1
+#if SYSTEM_IO_STREAMWRITER_CTOR_PATH_APPEND
     : base(path, false, encoding)
 #else
     : base(File.Open(path, FileMode.Create), encoding)

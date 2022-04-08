@@ -38,7 +38,7 @@ public static class UriQuery {
     IEqualityComparer<string> comparer
   )
   {
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_COLLECTIONS_GENERIC_DICTIONARY_CTOR_IENUMERABLE_OF_KEYVALUEPAIR_OF_TKEY_TVALUE
     return new Dictionary<string, string>(dic, comparer);
 #else
     var ret = new Dictionary<string, string>(dic.Count, comparer);

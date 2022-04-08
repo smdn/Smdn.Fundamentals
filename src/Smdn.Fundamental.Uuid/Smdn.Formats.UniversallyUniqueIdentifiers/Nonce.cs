@@ -6,12 +6,12 @@ using System.Security.Cryptography;
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 internal static class Nonce {
-#if !(NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER)
+#if !SYSTEM_SECURITY_CRYPTOGRAPHY_RANDOMNUMBERGENERATOR_FILL
   private static readonly RandomNumberGenerator defaultRng = RandomNumberGenerator.Create();
 #endif
 
   public static void Fill(Span<byte> span) =>
-#if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_RANDOMNUMBERGENERATOR_FILL
     RandomNumberGenerator.Fill(span);
 #else
     Fill(span, defaultRng);
@@ -19,7 +19,7 @@ internal static class Nonce {
 
   public static void Fill(Span<byte> span, RandomNumberGenerator rng)
   {
-#if NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_RANDOMNUMBERGENERATOR_GETBYTES_SPAN_OF_BYTE
     rng.GetBytes(span);
 #else
     var buffer = new byte[span.Length];

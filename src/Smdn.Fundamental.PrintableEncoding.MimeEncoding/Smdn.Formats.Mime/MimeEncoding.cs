@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_TEXT_ENCODING_BODYNAME
-#endif
-
 using System;
 using System.Security.Cryptography;
 using System.Text;

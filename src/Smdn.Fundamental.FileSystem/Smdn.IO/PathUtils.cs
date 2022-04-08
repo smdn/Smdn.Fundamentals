@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_URI_URISCHEME_FILE
-#endif
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -223,7 +218,7 @@ public static class PathUtils {
 #pragma warning disable SA1114
       static string ConstructFileSchemeUri(string path)
         => path = string.Concat(
-#if SYSTEM_URI_URISCHEME_FILE
+#if SYSTEM_URI_URISCHEMEFILE
           Uri.UriSchemeFile,
           Uri.SchemeDelimiter,
           "localhost",

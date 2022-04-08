@@ -20,7 +20,7 @@ public static class EncodingReadOnlySequenceExtensions {
       while (sequence.TryGet(ref pos, out var memory, advance: true)) {
         var doFlush = sequence.End.Equals(pos);
 
-#if NETSTANDARD2_1_OR_GREATER
+#if SYSTEM_TEXT_ENCODING_GETCHARS_READONLYSPAN_OF_BYTE
         var count = decoder.GetCharCount(memory.Span, doFlush);
 #else
         var chars = memory.ToArray();
@@ -35,7 +35,7 @@ public static class EncodingReadOnlySequenceExtensions {
           buffer = ArrayPool<char>.Shared.Rent(count);
         }
 
-#if NETSTANDARD2_1_OR_GREATER
+#if SYSTEM_TEXT_ENCODING_GETCHARS_READONLYSPAN_OF_BYTE
         var len = decoder.GetChars(memory.Span, buffer, doFlush);
 #else
         var len = decoder.GetChars(chars, 0, chars.Length, buffer, 0, doFlush);

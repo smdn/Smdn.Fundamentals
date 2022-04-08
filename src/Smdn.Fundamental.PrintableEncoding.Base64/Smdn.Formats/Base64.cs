@@ -28,14 +28,14 @@ public static class Base64 {
   }
 
   public static string GetEncodedString(byte[] bytes) =>
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_BASE64FORMATTINGOPTIONS
     System.Convert.ToBase64String(bytes, Base64FormattingOptions.None);
 #else
     System.Convert.ToBase64String(bytes);
 #endif
 
   public static string GetEncodedString(byte[] bytes, int offset, int count) =>
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_BASE64FORMATTINGOPTIONS
     System.Convert.ToBase64String(bytes, offset, count, Base64FormattingOptions.None);
 #else
     System.Convert.ToBase64String(bytes, offset, count);

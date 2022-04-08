@@ -219,7 +219,7 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(0L, baseStream.Length);
         Assert.AreEqual(0L, baseStream.Position);
 
-#if NETCOREAPP2_0 || NETCOREAPP2_1
+#if SYSTEM_IO_STREAM_BEGINWRITE
         Assert.Throws<NotSupportedException>(() => stream.BeginWrite(new byte[] { 1 }, 0, 1, null, null));
 #endif
         Assert.Throws<NotSupportedException>(() => stream.WriteAsync(new byte[] { 1 }, 0, 1).Wait());

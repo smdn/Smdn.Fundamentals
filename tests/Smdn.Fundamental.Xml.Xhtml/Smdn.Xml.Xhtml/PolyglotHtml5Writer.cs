@@ -268,12 +268,13 @@ namespace Smdn.Xml.Xhtml {
                       ToString(doc));
     }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
     [Test]
     public void TestWriteDocType_XmlDocument()
     {
       var doc = new XmlDocument() {
+#if SYSTEM_XML_XMLDOCUMENT_XMLRESOLVER
         XmlResolver = null
+#endif
       };
 
       doc.AppendChild(doc.CreateDocumentType("html", null, null, null));
@@ -282,7 +283,6 @@ namespace Smdn.Xml.Xhtml {
       Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
                       ToString(doc));
     }
-#endif
 
     [TestCase(NewLineHandling.None)]
     [TestCase(NewLineHandling.Entitize)]

@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_ENVIRONMENT_VERSION
-#endif
-
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
