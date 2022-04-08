@@ -22,7 +22,7 @@ public class CsvWriter : StreamWriter {
   public bool EscapeAlways { get; set; } = false;
 
   public CsvWriter(string path)
-#if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
+#if SYSTEM_TEXT_ENCODING_DEFAULT
     : this(path, Encoding.Default)
 #else
     : this(path, Encoding.UTF8)
@@ -41,7 +41,7 @@ public class CsvWriter : StreamWriter {
   }
 
   public CsvWriter(Stream stream)
-#if SYSTEM_TEXT_ENCODING_DEFAULT_ANSI
+#if SYSTEM_TEXT_ENCODING_DEFAULT
     : this(stream, Encoding.Default)
 #else
     : this(stream, Encoding.UTF8)
