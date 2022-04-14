@@ -154,19 +154,20 @@ public readonly struct FourCC :
     unchecked {
       return
 #if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
-      new(
+        new
 #else
-      StringShim.Construct(
+        StringShim.Construct
 #endif
-#pragma warning disable SA1008
-        stackalloc char[SizeOfSelf] {
-          (char)((fourcc >> 24) & 0xff),
-          (char)((fourcc >> 16) & 0xff),
-          (char)((fourcc >>  8) & 0xff),
-          (char)( fourcc        & 0xff),
-        }
-#pragma warning restore SA1008
-      );
+#pragma warning disable SA1110, SA1008, format
+        (
+          stackalloc char[SizeOfSelf] {
+            (char)((fourcc >> 24) & 0xff),
+            (char)((fourcc >> 16) & 0xff),
+            (char)((fourcc >> 8)  & 0xff),
+            (char)( fourcc        & 0xff),
+          }
+        );
+#pragma warning restore SA1110, SA1008, format
     }
   }
 
