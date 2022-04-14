@@ -7,6 +7,7 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial struct Uuid :
 #pragma warning restore IDE0040
+#pragma warning disable format
 #if FEATURE_GENERIC_MATH
   IComparisonOperators<Uuid, Uuid>,
 #else
@@ -15,6 +16,7 @@ partial struct Uuid :
 #endif
   IComparable<Guid>
 {
+#pragma warning restore format
   public static bool operator <(Uuid x, Uuid y) => x.CompareTo(y) < 0;
   public static bool operator <=(Uuid x, Uuid y) => x.CompareTo(y) <= 0;
   public static bool operator >(Uuid x, Uuid y) => x.CompareTo(y) > 0;
