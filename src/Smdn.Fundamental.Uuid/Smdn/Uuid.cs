@@ -84,6 +84,7 @@ public readonly partial struct Uuid {
   public Node Node => node;
   [Obsolete("breaking changes")]
 #endif
+
   /// <value>node;The spatially unique node identifier.</value>
   public byte[] Node => new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 };
 

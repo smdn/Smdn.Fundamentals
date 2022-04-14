@@ -42,7 +42,7 @@ partial struct Uuid
       TryParseResult.FormatErrorOnClockSeqHiAndReserved => throw new FormatException($"invalid clock_seq_hi_and_reserved value: {s.ToString()}"),
       TryParseResult.FormatErrorOnClockSeqLow => throw new FormatException($"invalid clock_seq_low value: {s.ToString()}"),
       TryParseResult.FormatErrorOnNode => throw new FormatException($"invalid node value: {s.ToString()}"),
-      /* TryParseResult.FormatError */ _ => throw new FormatException($"invalid UUID: {s.ToString()}"),
+      _ /* TryParseResult.FormatError */ => throw new FormatException($"invalid UUID: {s.ToString()}"),
     };
 
   public static bool TryParse(ReadOnlySpan<char> s, out Uuid result)
@@ -104,11 +104,11 @@ partial struct Uuid
 
     if (
       !(
-        byte.TryParse(s.Slice( 0, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n0) &&
-        byte.TryParse(s.Slice( 2, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n1) &&
-        byte.TryParse(s.Slice( 4, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n2) &&
-        byte.TryParse(s.Slice( 6, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n3) &&
-        byte.TryParse(s.Slice( 8, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n4) &&
+        byte.TryParse(s.Slice(0, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n0) &&
+        byte.TryParse(s.Slice(2, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n1) &&
+        byte.TryParse(s.Slice(4, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n2) &&
+        byte.TryParse(s.Slice(6, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n3) &&
+        byte.TryParse(s.Slice(8, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n4) &&
         byte.TryParse(s.Slice(10, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n5)
       )
     ) {

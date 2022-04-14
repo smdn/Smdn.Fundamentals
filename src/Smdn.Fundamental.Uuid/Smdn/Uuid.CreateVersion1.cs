@@ -6,6 +6,7 @@ using System.Net.NetworkInformation;
 #endif
 
 using Smdn.Formats.UniversallyUniqueIdentifiers;
+
 using TypeOfNode = Smdn.Formats.UniversallyUniqueIdentifiers.Node;
 
 namespace Smdn;
