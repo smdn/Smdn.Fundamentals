@@ -54,6 +54,7 @@ public class IOUtilsTests {
     Assert.AreNotEqual(path, Environment.CurrentDirectory, "post");
   }
 
+  [Repeat(10)]
   [TestCase(true)]
   [TestCase(false)]
   public void UsingDirectory(bool ensureDirectoryCreated)
@@ -79,6 +80,7 @@ public class IOUtilsTests {
     DirectoryAssert.DoesNotExist(path, "post");
   }
 
+  [Repeat(10)]
   [TestCase(true)]
   [TestCase(false)]
   public async Task UsingDirectoryAsync(bool ensureDirectoryCreated)
