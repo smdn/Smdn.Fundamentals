@@ -5,10 +5,10 @@ using System.Text;
 namespace Smdn.Test.NUnit;
 
 public static class Encodings {
-  public static readonly Encoding Latin1    = Encoding.GetEncoding("latin1");
-  public static readonly Encoding Jis       = GetEncoding("iso-2022-jp");
-  public static readonly Encoding ShiftJis  = GetEncoding("shift_jis");
-  public static readonly Encoding EucJP     = GetEncoding("euc-jp");
+  public static Encoding Latin1 => Encoding.GetEncoding("latin1");
+  public static Encoding Jis => GetEncoding("iso-2022-jp");
+  public static Encoding ShiftJis => GetEncoding("shift_jis");
+  public static Encoding EucJP => GetEncoding("euc-jp");
 
   private static Encoding GetEncoding(string name)
 #if NETFRAMEWORK
