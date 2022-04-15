@@ -99,7 +99,7 @@ public static class IOUtils {
     void DeleteFile() => File.Delete(path);
   }
 
-  private static void TryIO(Action ioAction)
+  private static void TryIO(Action action)
   {
     const int maxRetry = 10;
     const int interval = 100;
@@ -108,7 +108,7 @@ public static class IOUtils {
 
     for (var retry = maxRetry; retry != 0; retry--) {
       try {
-        ioAction();
+        action();
         return;
       }
       catch (IOException ex) {
