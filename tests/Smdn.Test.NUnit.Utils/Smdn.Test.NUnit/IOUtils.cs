@@ -107,4 +107,48 @@ public class IOUtilsTests {
 
     DirectoryAssert.DoesNotExist(path, "post");
   }
+
+  [Repeat(10)]
+  public void UsingFile()
+  {
+    var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "test.txt");
+
+    FileAssert.DoesNotExist(path, "pre");
+
+    File.WriteAllText(path, "test");
+
+    IOUtils.UsingFile(
+      path: path,
+      () => {
+        FileAssert.DoesNotExist(path, "action");
+
+        File.WriteAllText(path, "test");
+      }
+    );
+
+    FileAssert.DoesNotExist(path, "post");
+  }
+
+  [Repeat(10)]
+  public async Task UsingFileAsync()
+  {
+    var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "test.txt");
+
+    FileAssert.DoesNotExist(path, "pre");
+
+    File.WriteAllText(path, "test");
+
+    await IOUtils.UsingFileAsync(
+      path: path,
+      async (string f) => {
+        FileAssert.DoesNotExist(f, "action");
+
+        File.WriteAllText(f, "test");
+
+        await Task.Delay(0);
+      }
+    );
+
+    FileAssert.DoesNotExist(path, "post");
+  }
 }
