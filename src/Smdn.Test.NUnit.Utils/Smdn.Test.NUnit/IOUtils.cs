@@ -24,6 +24,20 @@ public static class IOUtils {
     }
   }
 
+  public static async Task UsingCurrentDirectoryAsync(string path, Func<Task> action)
+  {
+    var initialDirectory = Directory.GetCurrentDirectory();
+
+    try {
+      Directory.SetCurrentDirectory(path);
+
+      await action().ConfigureAwait(false);
+    }
+    finally {
+      Directory.SetCurrentDirectory(initialDirectory);
+    }
+  }
+
   public static void UsingDirectory(string path, Action action)
     => UsingDirectory(path, ensureDirectoryCreated: false, action);
 

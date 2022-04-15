@@ -30,6 +30,30 @@ public class IOUtilsTests {
     Assert.AreNotEqual(path, Environment.CurrentDirectory, "post");
   }
 
+  [Test]
+  public void UsingCurrentDirectoryAsync()
+  {
+    var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "test");
+
+    Assert.AreNotEqual(path, Environment.CurrentDirectory, "pre");
+
+    IOUtils.UsingDirectory(
+      path: path,
+      ensureDirectoryCreated: true,
+      action: () => {
+        IOUtils.UsingCurrentDirectoryAsync(
+          path: path,
+          async () => {
+            Assert.AreEqual(path, Environment.CurrentDirectory, "action");
+            await Task.Delay(0);
+          }
+        );
+      }
+    );
+
+    Assert.AreNotEqual(path, Environment.CurrentDirectory, "post");
+  }
+
   [TestCase(true)]
   [TestCase(false)]
   public void UsingDirectory(bool ensureDirectoryCreated)
