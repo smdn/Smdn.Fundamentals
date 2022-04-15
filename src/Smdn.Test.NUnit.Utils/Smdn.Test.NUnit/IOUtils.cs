@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Smdn.Test.NUnit;
 
 public static class IOUtils {
-  public static void ChangeDirectory(string path, Action action)
+  public static void UsingCurrentDirectory(string path, Action action)
   {
     var initialDirectory = Directory.GetCurrentDirectory();
 
