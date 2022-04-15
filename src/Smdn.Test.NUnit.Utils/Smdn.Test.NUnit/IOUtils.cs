@@ -24,9 +24,7 @@ public static class IOUtils {
   }
 
   public static void UsingDirectory(string path, Action action)
-  {
-    UsingDirectory(path, false, action);
-  }
+    => UsingDirectory(path, ensureDirectoryCreated: false, action);
 
   public static void UsingDirectory(string path, bool ensureDirectoryCreated, Action action)
   {
