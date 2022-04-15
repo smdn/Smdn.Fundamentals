@@ -51,30 +51,30 @@ public static class IOUtils {
 
   public static void UsingFile(string path, Action action)
   {
-    Action deleteFile = () => File.Delete(path);
-
     try {
-      TryIO(deleteFile);
+      TryIO(DeleteFile);
 
       action();
     }
     finally {
-      TryIO(deleteFile);
+      TryIO(DeleteFile);
     }
+
+    void DeleteFile() => File.Delete(path);
   }
 
   public static async Task UsingFileAsync(string path, Func<string, Task> action)
   {
-    Action deleteFile = () => File.Delete(path);
-
     try {
-      TryIO(deleteFile);
+      TryIO(DeleteFile);
 
       await action(path).ConfigureAwait(false);
     }
     finally {
-      TryIO(deleteFile);
+      TryIO(DeleteFile);
     }
+
+    void DeleteFile() => File.Delete(path);
   }
 
   private static void TryIO(Action ioAction)
