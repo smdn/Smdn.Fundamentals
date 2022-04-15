@@ -47,6 +47,30 @@ public static class IOUtils {
     }
   }
 
+  public static Task UsingDirectoryAsync(string path, Func<string, Task> action)
+    => UsingDirectoryAsync(path, ensureDirectoryCreated: false, action);
+
+  public static async Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<string, Task> action)
+  {
+    try {
+      TryIO(DeleteDirectory);
+
+      if (ensureDirectoryCreated)
+        TryIO(() => Directory.CreateDirectory(path));
+
+      await action(path).ConfigureAwait(false);
+    }
+    finally {
+      TryIO(DeleteDirectory);
+    }
+
+    void DeleteDirectory()
+    {
+      if (Directory.Exists(path))
+        Directory.Delete(path, true);
+    }
+  }
+
   public static void UsingFile(string path, Action action)
   {
     try {
