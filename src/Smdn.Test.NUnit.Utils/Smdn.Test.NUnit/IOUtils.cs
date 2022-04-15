@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -121,7 +122,7 @@ public static class IOUtils {
       Thread.Sleep(interval);
     }
 
-    if (caughtException != null)
-      throw caughtException;
+    if (caughtException is not null)
+      ExceptionDispatchInfo.Capture(caughtException).Throw();
   }
 }
