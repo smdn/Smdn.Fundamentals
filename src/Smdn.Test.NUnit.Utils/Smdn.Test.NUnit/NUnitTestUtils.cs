@@ -77,12 +77,5 @@ namespace Smdn.Test.NUnit {
         }
       }
     } // Assert
-
-    public static void Repeat(int count, Action action)
-    {
-      for (var i = 0; i < count; i++) {
-        action();
-      }
-    }
   }
 }
