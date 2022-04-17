@@ -2,46 +2,52 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace Smdn.Test.NUnit;
 
 public partial class Assert : global::NUnit.Framework.Assert {
-  private static readonly TimeSpan mergin = TimeSpan.FromMilliseconds(20);
-
-  public static void Elapses(TimeSpan expectedSpan, TestDelegate code)
+  private static TimeSpan MeasureExecutionTime(TestDelegate code)
   {
     var sw = Stopwatch.StartNew();
 
     code();
 
-    sw.Stop();
-
-    GreaterOrEqual(sw.Elapsed + mergin, expectedSpan);
+    return sw.Elapsed;
   }
 
-  public static void Elapses(TimeSpan expectedSpanRangeMin, TimeSpan expectedSpanRangeMax, TestDelegate code)
+  private static TimeSpan MeasureExecutionTime(AsyncTestDelegate code)
   {
-    var sw = Stopwatch.StartNew();
+    static async Task<TimeSpan> MeasureCore(AsyncTestDelegate c)
+    {
+      var sw = Stopwatch.StartNew();
 
-    code();
+      await c().ConfigureAwait(false);
 
-    sw.Stop();
+      return sw.Elapsed;
+    }
 
-    GreaterOrEqual(sw.Elapsed + mergin, expectedSpanRangeMin);
-    LessOrEqual(sw.Elapsed - mergin, expectedSpanRangeMax);
+    return MeasureCore(code).GetAwaiter().GetResult(); // XXX
   }
 
-  public static void NotElapse(TimeSpan expectedSpan, TestDelegate code)
-  {
-    var sw = Stopwatch.StartNew();
+  public static void Elapses(TimeSpan expected, TestDelegate code, string message = null)
+    => That(MeasureExecutionTime(code), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
 
-    code();
+  public static void ElapsesAsync(TimeSpan expected, AsyncTestDelegate code, string message = null)
+    => That(MeasureExecutionTime(code), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
 
-    sw.Stop();
+  public static void NotElapse(TimeSpan expected, TestDelegate code, string message = null)
+    => That(MeasureExecutionTime(code), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
 
-    LessOrEqual(sw.Elapsed - mergin, expectedSpan);
-  }
+  public static void NotElapseAsync(TimeSpan expected, AsyncTestDelegate code, string message = null)
+    => That(MeasureExecutionTime(code), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
+
+  public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, TestDelegate code, string message = null)
+    => That(MeasureExecutionTime(code), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
+
+  public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, AsyncTestDelegate code, string message = null)
+    => That(MeasureExecutionTime(code), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
 
   public static TException ThrowsOrAggregates<TException>(TestDelegate code)
     where TException : Exception
