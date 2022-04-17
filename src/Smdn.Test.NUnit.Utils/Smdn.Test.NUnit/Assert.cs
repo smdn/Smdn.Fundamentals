@@ -3,11 +3,10 @@
 using System;
 using System.Diagnostics;
 using NUnit.Framework;
-using NUnitAssert = NUnit.Framework.Assert;
 
 namespace Smdn.Test.NUnit;
 
-public static partial class Assert {
+public partial class Assert : global::NUnit.Framework.Assert {
   private static readonly TimeSpan mergin = TimeSpan.FromMilliseconds(20);
 
   public static void Elapses(TimeSpan expectedSpan, TestDelegate code)
@@ -18,7 +17,7 @@ public static partial class Assert {
 
     sw.Stop();
 
-    NUnitAssert.GreaterOrEqual(sw.Elapsed + mergin, expectedSpan);
+    GreaterOrEqual(sw.Elapsed + mergin, expectedSpan);
   }
 
   public static void Elapses(TimeSpan expectedSpanRangeMin, TimeSpan expectedSpanRangeMax, TestDelegate code)
@@ -29,8 +28,8 @@ public static partial class Assert {
 
     sw.Stop();
 
-    NUnitAssert.GreaterOrEqual(sw.Elapsed + mergin, expectedSpanRangeMin);
-    NUnitAssert.LessOrEqual(sw.Elapsed - mergin, expectedSpanRangeMax);
+    GreaterOrEqual(sw.Elapsed + mergin, expectedSpanRangeMin);
+    LessOrEqual(sw.Elapsed - mergin, expectedSpanRangeMax);
   }
 
   public static void NotElapse(TimeSpan expectedSpan, TestDelegate code)
@@ -41,7 +40,7 @@ public static partial class Assert {
 
     sw.Stop();
 
-    NUnitAssert.LessOrEqual(sw.Elapsed - mergin, expectedSpan);
+    LessOrEqual(sw.Elapsed - mergin, expectedSpan);
   }
 
   public static TException ThrowsOrAggregates<TException>(TestDelegate code)
@@ -50,7 +49,7 @@ public static partial class Assert {
     try {
       code();
 
-      NUnitAssert.Fail("expected exception {0} not thrown", typeof(TException).FullName);
+      Fail("expected exception {0} not thrown", typeof(TException).FullName);
 
       return null;
     }
@@ -61,12 +60,12 @@ public static partial class Assert {
       var aggregateException = ex as AggregateException;
 
       if (aggregateException == null) {
-        NUnitAssert.IsInstanceOf<TException>(ex);
+        IsInstanceOf<TException>(ex);
 
         return ex as TException;
       }
       else {
-        NUnitAssert.IsInstanceOf<TException>(aggregateException.Flatten().InnerException);
+        IsInstanceOf<TException>(aggregateException.Flatten().InnerException);
 
         return aggregateException.InnerException as TException;
       }

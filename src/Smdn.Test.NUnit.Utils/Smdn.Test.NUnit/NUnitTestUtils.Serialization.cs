@@ -5,11 +5,10 @@ using System.IO;
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
-using NUnitAssert = NUnit.Framework.Assert;
 
 namespace Smdn.Test.NUnit;
 
-public static partial class Assert {
+public partial class Assert {
   public static void IsSerializableBinaryFormat<TSerializable>(TSerializable obj)
   /*where TSerializable : ISerializable*/
     => IsSerializableBinaryFormat(obj, null);
@@ -41,9 +40,9 @@ public static partial class Assert {
     var deserialized = deserializeFormatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
 
-    NUnitAssert.IsNotNull(deserialized);
-    NUnitAssert.AreNotSame(obj, deserialized);
-    NUnitAssert.IsInstanceOf<TSerializable>(deserialized);
+    IsNotNull(deserialized);
+    AreNotSame(obj, deserialized);
+    IsInstanceOf<TSerializable>(deserialized);
 
     if (testDeserializedObject != null)
       testDeserializedObject((TSerializable)deserialized);
