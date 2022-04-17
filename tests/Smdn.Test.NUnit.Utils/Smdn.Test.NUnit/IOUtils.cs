@@ -19,7 +19,7 @@ public class IOUtilsTests {
     IOUtils.UsingDirectory(
       path: path,
       ensureDirectoryCreated: true,
-      action: () => {
+      action: _ => {
         IOUtils.UsingCurrentDirectory(
           path: path,
           () => Assert.AreEqual(path, Environment.CurrentDirectory, "action")
@@ -40,7 +40,7 @@ public class IOUtilsTests {
     IOUtils.UsingDirectory(
       path: path,
       ensureDirectoryCreated: true,
-      action: () => {
+      action: _ => {
         IOUtils.UsingCurrentDirectoryAsync(
           path: path,
           async () => {
@@ -66,13 +66,15 @@ public class IOUtilsTests {
     IOUtils.UsingDirectory(
       path: path,
       ensureDirectoryCreated: ensureDirectoryCreated,
-      () => {
+      dir => {
+        Assert.AreEqual(Path.GetFullPath(path), dir.FullName, "path");
+
         if (ensureDirectoryCreated) {
-          DirectoryAssert.Exists(path, "action");
+          DirectoryAssert.Exists(dir.FullName, "action");
         }
         else {
-          DirectoryAssert.DoesNotExist(path, "action");
-          Directory.CreateDirectory(path);
+          DirectoryAssert.DoesNotExist(dir.FullName, "action");
+          dir.Create();
         }
       }
     );
@@ -92,13 +94,15 @@ public class IOUtilsTests {
     await IOUtils.UsingDirectoryAsync(
       path: path,
       ensureDirectoryCreated: ensureDirectoryCreated,
-      async (string p) => {
+      async dir => {
+        Assert.AreEqual(Path.GetFullPath(path), dir.FullName, "path");
+
         if (ensureDirectoryCreated) {
-          DirectoryAssert.Exists(p, "action");
+          DirectoryAssert.Exists(dir.FullName, "action");
         }
         else {
-          DirectoryAssert.DoesNotExist(p, "action");
-          Directory.CreateDirectory(p);
+          DirectoryAssert.DoesNotExist(dir.FullName, "action");
+          dir.Create();
         }
 
         await Task.Delay(0);
@@ -119,10 +123,12 @@ public class IOUtilsTests {
 
     IOUtils.UsingFile(
       path: path,
-      () => {
-        FileAssert.DoesNotExist(path, "action");
+      file => {
+        Assert.AreEqual(Path.GetFullPath(path), file.FullName, "path");
 
-        File.WriteAllText(path, "test");
+        FileAssert.DoesNotExist(file.FullName, "action");
+
+        File.WriteAllText(file.FullName, "test");
       }
     );
 
@@ -140,10 +146,12 @@ public class IOUtilsTests {
 
     await IOUtils.UsingFileAsync(
       path: path,
-      async (string f) => {
-        FileAssert.DoesNotExist(f, "action");
+      async file => {
+        Assert.AreEqual(Path.GetFullPath(path), file.FullName, "path");
 
-        File.WriteAllText(f, "test");
+        FileAssert.DoesNotExist(file.FullName, "action");
+
+        File.WriteAllText(file.FullName, "test");
 
         await Task.Delay(0);
       }

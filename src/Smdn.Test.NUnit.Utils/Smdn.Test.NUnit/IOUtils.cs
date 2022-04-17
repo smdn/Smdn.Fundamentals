@@ -38,80 +38,78 @@ public static class IOUtils {
     }
   }
 
-  public static void UsingDirectory(string path, Action action)
+  public static void UsingDirectory(string path, Action<DirectoryInfo> action)
     => UsingDirectory(path, ensureDirectoryCreated: false, action);
 
-  public static void UsingDirectory(string path, bool ensureDirectoryCreated, Action action)
+  public static void UsingDirectory(string path, bool ensureDirectoryCreated, Action<DirectoryInfo> action)
   {
     try {
-      TryIO(DeleteDirectory);
+      TryDeleteDirectory(path);
+
+      var directory = new DirectoryInfo(path);
 
       if (ensureDirectoryCreated)
-        TryIO(() => Directory.CreateDirectory(path));
+        TryIO(() => directory.Create());
 
-      action();
+      action(directory);
     }
     finally {
-      TryIO(DeleteDirectory);
-    }
-
-    void DeleteDirectory()
-    {
-      if (Directory.Exists(path))
-        Directory.Delete(path, true);
+      TryDeleteDirectory(path);
     }
   }
 
-  public static Task UsingDirectoryAsync(string path, Func<string, Task> action)
+  public static Task UsingDirectoryAsync(string path, Func<DirectoryInfo, Task> action)
     => UsingDirectoryAsync(path, ensureDirectoryCreated: false, action);
 
-  public static async Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<string, Task> action)
+  public static async Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<DirectoryInfo, Task> action)
   {
     try {
-      TryIO(DeleteDirectory);
+      TryDeleteDirectory(path);
+
+      var directory = new DirectoryInfo(path);
 
       if (ensureDirectoryCreated)
-        TryIO(() => Directory.CreateDirectory(path));
+        TryIO(() => directory.Create());
 
-      await action(path).ConfigureAwait(false);
+      await action(directory).ConfigureAwait(false);
     }
     finally {
-      TryIO(DeleteDirectory);
+      TryDeleteDirectory(path);
     }
+  }
 
-    void DeleteDirectory()
-    {
+  private static void TryDeleteDirectory(string path)
+    => TryIO(() => {
       if (Directory.Exists(path))
-        Directory.Delete(path, true);
+        Directory.Delete(path, recursive: true);
+    });
+
+  public static void UsingFile(string path, Action<FileInfo> action)
+  {
+    var file = new FileInfo(path);
+
+    try {
+      TryIO(() => file.Delete());
+
+      action(file);
+    }
+    finally {
+      TryIO(() => file.Delete());
     }
   }
 
-  public static void UsingFile(string path, Action action)
+  public static async Task UsingFileAsync(string path, Func<FileInfo, Task> action)
   {
-    try {
-      TryIO(DeleteFile);
+    var file = new FileInfo(path);
 
-      action();
+    try {
+      TryIO(() => file.Delete());
+
+      await action(file).ConfigureAwait(false);
     }
     finally {
-      TryIO(DeleteFile);
+      TryIO(() => file.Delete());
     }
-
-    void DeleteFile() => File.Delete(path);
-  }
-
-  public static async Task UsingFileAsync(string path, Func<string, Task> action)
-  {
-    try {
-      TryIO(DeleteFile);
-
-      await action(path).ConfigureAwait(false);
-    }
-    finally {
-      TryIO(DeleteFile);
-    }
-
-    void DeleteFile() => File.Delete(path);
   }
 
   private static void TryIO(Action action)
