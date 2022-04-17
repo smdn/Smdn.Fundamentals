@@ -62,19 +62,15 @@ public partial class Assert : global::NUnit.Framework.Assert {
     catch (AssertionException) {
       throw;
     }
+    catch (AggregateException ex) {
+      IsInstanceOf<TException>(ex.Flatten().InnerException);
+
+      return ex.InnerException as TException;
+    }
     catch (Exception ex) {
-      var aggregateException = ex as AggregateException;
+      IsInstanceOf<TException>(ex);
 
-      if (aggregateException == null) {
-        IsInstanceOf<TException>(ex);
-
-        return ex as TException;
-      }
-      else {
-        IsInstanceOf<TException>(aggregateException.Flatten().InnerException);
-
-        return aggregateException.InnerException as TException;
-      }
+      return ex as TException;
     }
   }
 }
