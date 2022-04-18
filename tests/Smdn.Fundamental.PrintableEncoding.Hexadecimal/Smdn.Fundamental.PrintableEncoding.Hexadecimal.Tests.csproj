@@ -9,7 +9,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Smdn.Test.NUnit.Utils\Smdn.Test.NUnit.Utils.csproj" />
-    <ProjectReference Include="..\..\src\Smdn.Test.NUnit.Constraints\Smdn.Test.NUnit.Constraints.csproj" />
+    <PackageReference Include="Smdn.Test.NUnit.Utils" />
+    <PackageReference Include="Smdn.Test.NUnit.Constraints" />
   </ItemGroup>
 </Project>
