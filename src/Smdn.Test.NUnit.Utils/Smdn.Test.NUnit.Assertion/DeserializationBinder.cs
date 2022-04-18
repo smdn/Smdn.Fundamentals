@@ -7,7 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 
-namespace Smdn.Test.NUnit;
+namespace Smdn.Test.NUnit.Assertion;
 
 internal sealed class DeserializationBinder : SerializationBinder {
   private static Type GetTypeFromLoadedAssemblies(string typeName)
