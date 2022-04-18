@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
-#if NETSTANDARD2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_BUFFERS_ARRAYBUFFERWRITER
 using ByteArrayBufferWriter = System.Buffers.ArrayBufferWriter<byte>;
 using IntArrayBufferWriter = System.Buffers.ArrayBufferWriter<int>;
 #else

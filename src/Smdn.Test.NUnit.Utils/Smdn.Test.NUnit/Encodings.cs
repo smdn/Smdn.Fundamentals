@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET5_0_OR_GREATER
-#define SYSTEM_TEXT_ENCODING_LATIN1
-#endif
-
 using System.Text;
 
 namespace Smdn.Test.NUnit;

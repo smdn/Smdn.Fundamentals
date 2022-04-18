@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
-#define SYSTEM_SECURITY_CRYPTOGRAPHY_TOBASE64TRANSFORM
-#endif
-
 using System;
 using System.IO;
 using System.Security.Cryptography;

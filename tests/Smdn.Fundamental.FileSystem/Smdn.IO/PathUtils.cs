@@ -19,7 +19,7 @@ namespace Smdn.IO {
       else
         Assert.IsFalse(string.Equals("/path", "/Path", PathUtils.DefaultPathStringComparison));
 
-#if NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+#if SYSTEM_STRINGCOMPARER_FROMCOMPARISON
       StringComparer comparer = null;
 
       Assert.DoesNotThrow(() => {
@@ -28,7 +28,7 @@ namespace Smdn.IO {
         );
       });
 
-#if NET6_0_OR_GREATER
+#if SYSTEM_STRINGCOMPARER_ISWELLKNOWNORDINALCOMPARER
       Assert.IsTrue(
         StringComparer.IsWellKnownOrdinalComparer(
           PathUtils.DefaultPathStringComparer,
@@ -55,7 +55,7 @@ namespace Smdn.IO {
       else
         Assert.IsFalse(PathUtils.DefaultPathStringComparer.Equals("/path", "/Path"));
 
-#if NET6_0_OR_GREATER
+#if SYSTEM_STRINGCOMPARER_ISWELLKNOWNORDINALCOMPARER
       Assert.IsTrue(
         StringComparer.IsWellKnownOrdinalComparer(
           PathUtils.DefaultPathStringComparer,

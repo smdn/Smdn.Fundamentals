@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET5_0_OR_GREATER
-#define SYSTEM_TEXT_ENCODINGEXTENSIONS
-#endif
-
 using System;
 using System.Buffers;
 using System.Text;
