@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace Smdn.Test.NUnit;
+namespace Smdn.Test.NUnit.Assertion;
 
 public partial class Assert : global::NUnit.Framework.Assert {
   private static TimeSpan MeasureExecutionTime(TestDelegate code)

@@ -14,7 +14,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
 
-namespace Smdn.Test.NUnit;
+namespace Smdn.Test.NUnit.Assertion;
 
 public partial class Assert {
 #if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER

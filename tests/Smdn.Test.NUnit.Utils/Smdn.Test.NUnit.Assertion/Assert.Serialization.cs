@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 #endif
 using NUnit.Framework;
 
-namespace Smdn.Test.NUnit;
+namespace Smdn.Test.NUnit.Assertion;
 
 [TestFixture]
 public class AssertSerializationTests {

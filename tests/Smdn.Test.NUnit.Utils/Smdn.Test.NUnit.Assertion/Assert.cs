@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace Smdn.Test.NUnit;
+namespace Smdn.Test.NUnit.Assertion;
 
 [TestFixture]
 public class AssertTests {
