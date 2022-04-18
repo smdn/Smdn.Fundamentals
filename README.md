@@ -56,6 +56,7 @@ This repository contains a set of .NET libraries which provides fundamental func
 |[Smdn.MSBuild.ProjectAssets.Library](src/Smdn.MSBuild.ProjectAssets.Library/)|[![NuGet Smdn.MSBuild.ProjectAssets.Library](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/)|
 |[Smdn.MSBuild.DefineConstants.NETSdkApi](src/Smdn.MSBuild.DefineConstants.NETSdkApi/)|[![NuGet Smdn.MSBuild.DefineConstants.NETSdkApi](https://img.shields.io/nuget/v/Smdn.MSBuild.DefineConstants.NETSdkApi.svg)](https://www.nuget.org/packages/Smdn.MSBuild.DefineConstants.NETSdkApi/)|
 |[Smdn.Test.NUnit.Constraints](src/Smdn.Test.NUnit.Constraints/)|[![NuGet Smdn.Test.NUnit.Constraints](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Constraints.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Constraints/)|
+|[Smdn.Test.NUnit.Utils](src/Smdn.Test.NUnit.Utils/)|[![NuGet Smdn.Test.NUnit.Utils](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Utils.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Utils/)|
 
 ## Smdn.dll
 Some of `Smdn.Fundamental.*` are based on former `Smdn.dll`.
