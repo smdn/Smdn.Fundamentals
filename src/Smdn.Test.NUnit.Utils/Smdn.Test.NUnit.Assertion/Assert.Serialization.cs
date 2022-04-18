@@ -41,7 +41,7 @@ public partial class Assert {
     TSerializable obj,
     Action<TSerializable> testDeserializedObject = null
   )
-#if SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
+#if false && SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
     where TSerializable : ISerializable
 #endif
     => IsSerializableCore(
@@ -60,7 +60,7 @@ public partial class Assert {
     IFormatter deserializationFormatter,
     Action<TSerializable> testDeserializedObject = null
   )
-#if SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
+#if false && SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
     where TSerializable : ISerializable
 #endif
     => IsSerializableCore(
@@ -79,7 +79,7 @@ public partial class Assert {
 #endif
     Action<TSerializable> testDeserializedObject
   )
-#if SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
+#if false && SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
     where TSerializable : ISerializable
 #endif
   {

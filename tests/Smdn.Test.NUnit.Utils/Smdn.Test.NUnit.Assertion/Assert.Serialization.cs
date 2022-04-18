@@ -10,10 +10,32 @@ namespace Smdn.Test.NUnit.Assertion;
 
 [TestFixture]
 public class AssertSerializationTests {
+  [Test] public void IsSerializable_ArrayOfInt32() => Assert.IsSerializable(new int[] { 0, 1, 2 });
   [Test] public void IsSerializable_Uri() => Assert.IsSerializable(new Uri("http://example.com/example/"));
   [Test] public void IsSerializable_IntPtr() => Assert.IsSerializable(IntPtr.Zero);
   [Test] public void IsSerializable_DateTime() => Assert.IsSerializable(DateTime.MinValue);
   [Test] public void IsSerializable_Exception() => Assert.IsSerializable(new InvalidOperationException());
+
+  [Test]
+  public void IsSerializable_WithTestAction_ArrayOfInt32()
+  {
+    var testActionCalled = false;
+    var arr = new int[] { 0, 1, 2 };
+
+    Assert.IsSerializable(arr, obj => {
+      Assert.IsNotNull(obj);
+      Assert.IsInstanceOf<int[]>(obj);
+      CollectionAssert.AreEqual(arr, obj as int[]);
+
+      testActionCalled = true;
+    });
+
+#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
+    Assert.IsTrue(testActionCalled, "test action called");
+#else
+    Assert.IsFalse(testActionCalled, "test action called");
+#endif
+  }
 
   [Test]
   public void IsSerializable_WithTestAction_Uri()
