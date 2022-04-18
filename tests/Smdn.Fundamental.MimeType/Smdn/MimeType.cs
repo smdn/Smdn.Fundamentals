@@ -157,16 +157,16 @@ namespace Smdn {
 
       var pseudoMimeTypesFile = Path.Combine(TestContext.CurrentContext.WorkDirectory, ".mime.types");
 
-      TestUtils.UsingFile(pseudoMimeTypesFile, () => {
-        File.WriteAllText(pseudoMimeTypesFile, "application/x-foo-bar\tfoo-bar");
+      IOUtils.UsingFile(pseudoMimeTypesFile, f => {
+        File.WriteAllText(f.FullName, "application/x-foo-bar\tfoo-bar");
 
         Assert.AreEqual(
           new MimeType("application/x-foo-bar"),
-          MimeType.FindMimeTypeByExtension(".foo-bar", mimeTypesFile: pseudoMimeTypesFile)
+          MimeType.FindMimeTypeByExtension(".foo-bar", mimeTypesFile: f.FullName)
         );
 
         Assert.IsNull(
-          MimeType.FindMimeTypeByExtension(".hoge", mimeTypesFile: pseudoMimeTypesFile)
+          MimeType.FindMimeTypeByExtension(".hoge", mimeTypesFile: f.FullName)
         );
       });
     }
@@ -228,14 +228,14 @@ namespace Smdn {
 
       var pseudoMimeTypesFile = Path.Combine(TestContext.CurrentContext.WorkDirectory, ".mime.types");
 
-      TestUtils.UsingFile(pseudoMimeTypesFile, () => {
-        File.WriteAllText(pseudoMimeTypesFile, "application/x-foo-bar\tfoo-bar");
+      IOUtils.UsingFile(pseudoMimeTypesFile, f => {
+        File.WriteAllText(f.FullName, "application/x-foo-bar\tfoo-bar");
 
         CollectionAssert.Contains(
-          MimeType.FindExtensionsByMimeType("application/x-foo-bar", mimeTypesFile: pseudoMimeTypesFile),
+          MimeType.FindExtensionsByMimeType("application/x-foo-bar", mimeTypesFile: f.FullName),
           ".foo-bar"
         );
-        Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge", mimeTypesFile: pseudoMimeTypesFile));
+        Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge", mimeTypesFile: f.FullName));
       });
     }
 

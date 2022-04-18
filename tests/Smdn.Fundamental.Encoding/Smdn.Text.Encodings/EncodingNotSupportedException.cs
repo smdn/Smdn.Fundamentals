@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using NUnit.Framework;
-using Smdn.Test.NUnit;
+using Assert = Smdn.Test.NUnit.Assertion.Assert;
 
 namespace Smdn.Text.Encodings {
   [TestFixture]
@@ -49,7 +49,7 @@ namespace Smdn.Text.Encodings {
 
       Assert.IsNull(ex1.EncodingName);
 
-      TestUtils.Assert.IsSerializableBinaryFormat(ex1, delegate(EncodingNotSupportedException deserialized) {
+      Assert.IsSerializable(ex1, deserialized => {
         Assert.IsNull(deserialized.EncodingName);
       });
 
@@ -57,7 +57,7 @@ namespace Smdn.Text.Encodings {
 
       Assert.AreEqual("x-unsupported-encoding", ex2.EncodingName);
 
-      TestUtils.Assert.IsSerializableBinaryFormat(ex2, delegate(EncodingNotSupportedException deserialized) {
+      Assert.IsSerializable(ex2, deserialized => {
         Assert.AreEqual("x-unsupported-encoding", deserialized.EncodingName);
       });
     }

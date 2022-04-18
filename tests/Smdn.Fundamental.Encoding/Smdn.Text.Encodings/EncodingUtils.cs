@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 using NUnit.Framework;
-using Smdn.Test.NUnit;
+using EncodingProvider = Smdn.Test.NUnit.Encodings;
 
 namespace Smdn.Text.Encodings {
   [TestFixture]
@@ -69,7 +69,7 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingShiftJIS()
     {
-      var expected = TestUtils.Encodings.ShiftJis;
+      var expected = EncodingProvider.ShiftJis;
 
       foreach (var name in new[] {
         "shiftjis",
@@ -92,7 +92,7 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingISO2022JP()
     {
-      var expected = TestUtils.Encodings.Jis;
+      var expected = EncodingProvider.Jis;
 
       foreach (var name in new[] {
         "iso-2022-jp",
@@ -109,7 +109,7 @@ namespace Smdn.Text.Encodings {
     [Test]
     public void TestGetEncodingEUCJP()
     {
-      var expected = TestUtils.Encodings.EucJP;
+      var expected = EncodingProvider.EucJP;
 
       foreach (var name in new[] {
         "euc-jp",

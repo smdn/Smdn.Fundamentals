@@ -144,19 +144,19 @@ namespace Smdn.Formats.Mime {
                       MimeEncoding.Decode("=?iso-2022-jp?q?=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B?=", out encoding, out charset),
                       "iso-2022-jp");
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "iso-2022-jp");
-      Assert.AreEqual(TestUtils.Encodings.Jis, charset, "iso-2022-jp");
+      Assert.AreEqual(Encodings.Jis, charset, "iso-2022-jp");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?shift_jis?Q?=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i?=", out encoding, out charset),
                       "shift_jis");
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "shift_jis");
-      Assert.AreEqual(TestUtils.Encodings.ShiftJis, charset, "shift_jis");
+      Assert.AreEqual(Encodings.ShiftJis, charset, "shift_jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?euc-jp?q?=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA?=", out encoding, out charset),
                       "euc-jp");
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "euc-jp");
-      Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
+      Assert.AreEqual(Encodings.EucJP, charset, "euc-jp");
     }
 
     [Test]
@@ -168,7 +168,7 @@ namespace Smdn.Formats.Mime {
       Assert.AreEqual("Amazon.co.jp ご注文の発送 (XXX-YYYYYYY-ZZZZZZZ)",
                       MimeEncoding.Decode("=?ISO-2022-JP?Q?Amazon.co.jp_=1B$B$4CmJ8$NH/Aw=1B(B_(XXX-YYYYYYY-ZZZZZZZ)?=", out encoding, out charset), "case1");
       Assert.AreEqual(MimeEncodingMethod.QuotedPrintable, encoding, "case1");
-      Assert.AreEqual(TestUtils.Encodings.Jis, charset, "case1");
+      Assert.AreEqual(Encodings.Jis, charset, "case1");
 
       Assert.AreEqual("Amazon.co.jp ご注文の確認",
                       MimeEncoding.Decode("=?UTF-8?Q?Amazon.co?= =?UTF-8?Q?.jp_=E3=81=94=E6=B3=A8=E6=96=87=E3=81=AE=E7=A2=BA=E8=AA=8D?=", out encoding, out charset), "case2");
@@ -200,28 +200,28 @@ namespace Smdn.Formats.Mime {
                       MimeEncoding.Decode("=?iso-2022-jp?B?GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC?=", out encoding, out charset),
                       "iso-2022-jp");
       Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "iso-2022-jp");
-      Assert.AreEqual(TestUtils.Encodings.Jis, charset, "iso-2022-jp");
+      Assert.AreEqual(Encodings.Jis, charset, "iso-2022-jp");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?shift_jis?b?ir+OmmFiY4KpgsgxMjODSoNp?=", out encoding, out charset),
                       "shift_jis");
       Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "shift_jis");
-      Assert.AreEqual(TestUtils.Encodings.ShiftJis, charset, "shift_jis");
+      Assert.AreEqual(Encodings.ShiftJis, charset, "shift_jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
                       MimeEncoding.Decode("=?euc-jp?B?tMG7+mFiY6SrpMoxMjOlq6XK?=", out encoding, out charset),
                       "euc-jp");
       Assert.AreEqual(MimeEncodingMethod.Base64, encoding, "euc-jp");
-      Assert.AreEqual(TestUtils.Encodings.EucJP, charset, "euc-jp");
+      Assert.AreEqual(Encodings.EucJP, charset, "euc-jp");
     }
 
     [Test]
     public void TestDecodeBEncodingBug()
     {
       Assert.AreEqual("【Microsoft】欽ちゃん球団の片岡安祐美さんが Office にチャレンジ! ワクワクの春 開幕!",
-                      MimeEncoding.Decode("=?iso-2022-jp?B?GyRCIVobKEJNaWNyb3NvZnQbJEIhWzZWJEEkYyRzNWVDRBsoQg==?=" + 
-                                          " =?iso-2022-jp?B?GyRCJE5KUjIsMEJNNEh+JDUkcyQsGyhCIE9mZmljZSAbJEIkSyVBGyhC?=" + 
-                                          " =?iso-2022-jp?B?GyRCJWMlbCVzJTgbKEIhIBskQiVvJS8lbyUvJE49VRsoQiA=?=" + 
+                      MimeEncoding.Decode("=?iso-2022-jp?B?GyRCIVobKEJNaWNyb3NvZnQbJEIhWzZWJEEkYyRzNWVDRBsoQg==?=" +
+                                          " =?iso-2022-jp?B?GyRCJE5KUjIsMEJNNEh+JDUkcyQsGyhCIE9mZmljZSAbJEIkSyVBGyhC?=" +
+                                          " =?iso-2022-jp?B?GyRCJWMlbCVzJTgbKEIhIBskQiVvJS8lbyUvJE49VRsoQiA=?=" +
                                           " =?iso-2022-jp?B?GyRCMytLaxsoQiE=?="));
 
       Assert.AreEqual("santamartaさんの日記にコメントが登録されました",

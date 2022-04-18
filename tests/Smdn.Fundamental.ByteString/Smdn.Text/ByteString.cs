@@ -3,7 +3,7 @@
 using System;
 using System.Text;
 using NUnit.Framework;
-using Smdn.Test.NUnit;
+using Assert = Smdn.Test.NUnit.Assertion.Assert;
 
 namespace Smdn.Text {
   [TestFixture]
@@ -1110,7 +1110,7 @@ namespace Smdn.Text {
         new {String = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), true), Test = "ArraySegment mutable"},
         new {String = new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), false), Test = "ArraySegment immutable"},
       }) {
-        TestUtils.Assert.IsSerializableBinaryFormat(test.String, deserialized => {
+        Assert.IsSerializable(test.String, deserialized => {
           Assert.AreNotSame(test.String, deserialized, test.Test);
           Assert.AreEqual(test.String, deserialized, test.Test);
           Assert.IsTrue(test.String.Equals(deserialized), test.Test);

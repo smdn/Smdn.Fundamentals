@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using NUnit.Framework;
-using Smdn.Test.NUnit;
+using Assert = Smdn.Test.NUnit.Assertion.Assert;
 
 namespace Smdn.Collections {
   [TestFixture]
@@ -81,7 +81,7 @@ namespace Smdn.Collections {
         new {List = Singleton.CreateList(42), Test = "Singleton"},
         new {List = (IReadOnlyList<int>)new List<int> { 42 }, Test = "List<T>"},
       }) {
-        TestUtils.Assert.IsSerializableBinaryFormat(test.List, deserialized => {
+        Assert.IsSerializable(test.List, deserialized => {
           Assert.AreNotSame(test.List, deserialized, test.Test);
           CollectionAssert.AreEqual(test.List, deserialized, test.Test);
         });

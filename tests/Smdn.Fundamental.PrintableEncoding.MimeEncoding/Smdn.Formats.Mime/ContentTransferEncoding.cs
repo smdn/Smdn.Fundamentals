@@ -98,9 +98,9 @@ namespace Smdn.Formats.Mime {
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader = ContentTransferEncoding.CreateTextReader(stream,
                                                               cte,
-                                                              TestUtils.Encodings.Jis);
+                                                              Encodings.Jis);
 
-        Assert.AreEqual(TestUtils.Encodings.Jis, reader.CurrentEncoding);
+        Assert.AreEqual(Encodings.Jis, reader.CurrentEncoding);
         Assert.AreEqual("漢字abcかな123カナ", reader.ReadToEnd());
 
         stream.Position = 0L;
@@ -121,7 +121,7 @@ namespace Smdn.Formats.Mime {
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader1 = ContentTransferEncoding.CreateTextReader(stream,
                                                                cte,
-                                                               TestUtils.Encodings.Jis,
+                                                               Encodings.Jis,
                                                                true);
 
         Assert.AreEqual("漢字abcかな123カナ", reader1.ReadToEnd());
@@ -132,7 +132,7 @@ namespace Smdn.Formats.Mime {
 
         var reader2 = ContentTransferEncoding.CreateTextReader(stream,
                                                                cte,
-                                                               TestUtils.Encodings.Jis);
+                                                               Encodings.Jis);
 
         Assert.AreEqual("漢字abcかな123カナ", reader2.ReadToEnd(), "read again");
       }
@@ -148,7 +148,7 @@ namespace Smdn.Formats.Mime {
         Assert.Throws<InvalidOperationException>(delegate {
           ContentTransferEncoding.CreateTextReader(stream,
                                                    ContentTransferEncodingMethod.Binary,
-                                                   TestUtils.Encodings.Jis,
+                                                   Encodings.Jis,
                                                    leaveStreamOpen);
         });
       }
@@ -165,9 +165,9 @@ namespace Smdn.Formats.Mime {
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader = ContentTransferEncoding.CreateBinaryReader(stream,
                                                                 cte,
-                                                                TestUtils.Encodings.Jis);
+                                                                Encodings.Jis);
 
-        Assert.AreEqual(TestUtils.Encodings.Jis.GetBytes("漢字abcかな123カナ"),
+        Assert.AreEqual(Encodings.Jis.GetBytes("漢字abcかな123カナ"),
                         reader.ReadBytes((int)stream.Length));
 
         stream.Position = 0L;
@@ -189,10 +189,10 @@ namespace Smdn.Formats.Mime {
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
         var reader1 = ContentTransferEncoding.CreateBinaryReader(stream,
                                                                  cte,
-                                                                 TestUtils.Encodings.Jis,
+                                                                 Encodings.Jis,
                                                                  true);
 
-        Assert.AreEqual(TestUtils.Encodings.Jis.GetBytes("漢字abcかな123カナ"),
+        Assert.AreEqual(Encodings.Jis.GetBytes("漢字abcかな123カナ"),
                         reader1.ReadBytes((int)stream.Length));
 
         stream.Position = 0L;
@@ -201,9 +201,9 @@ namespace Smdn.Formats.Mime {
 
         var reader2 = ContentTransferEncoding.CreateBinaryReader(stream,
                                                                  cte,
-                                                                 TestUtils.Encodings.Jis);
+                                                                 Encodings.Jis);
 
-        Assert.AreEqual(TestUtils.Encodings.Jis.GetBytes("漢字abcかな123カナ"),
+        Assert.AreEqual(Encodings.Jis.GetBytes("漢字abcかな123カナ"),
                         reader2.ReadBytes((int)stream.Length),
                         "read again");
       }

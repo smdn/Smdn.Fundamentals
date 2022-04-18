@@ -13,9 +13,9 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public void TestConvertQuotedPrintableDecodableJapanese()
     {
       foreach (var encoding in new[] {
-        TestUtils.Encodings.Jis,
-        TestUtils.Encodings.ShiftJis,
-        TestUtils.Encodings.EucJP,
+        Encodings.Jis,
+        Encodings.ShiftJis,
+        Encodings.EucJP,
         Encoding.BigEndianUnicode,
 #pragma warning disable SYSLIB0001
         Encoding.UTF7,
@@ -63,15 +63,15 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
                       "utf8");
 
       Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", TestUtils.Encodings.EucJP),
+                      QuotedPrintableEncoding.GetDecodedString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", Encodings.EucJP),
                       "eucjp");
 
       Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", TestUtils.Encodings.Jis),
+                      QuotedPrintableEncoding.GetDecodedString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", Encodings.Jis),
                       "jis");
 
       Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", TestUtils.Encodings.ShiftJis),
+                      QuotedPrintableEncoding.GetDecodedString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", Encodings.ShiftJis),
                       "shift-jis");
     }
 

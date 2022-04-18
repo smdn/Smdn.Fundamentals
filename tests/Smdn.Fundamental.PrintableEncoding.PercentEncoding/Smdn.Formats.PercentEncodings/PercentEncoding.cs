@@ -128,8 +128,8 @@ namespace Smdn.Formats.PercentEncodings {
         ToPercentEncodedTransformMode.Rfc5092Uri,
         ToPercentEncodedTransformMode.Rfc5092Path,
       }) {
-        Assert.AreEqual("%93%FA%96%7B%8C%EA", PercentEncoding.GetEncodedString("日本語", mode, TestUtils.Encodings.ShiftJis), "mode: {0}", mode);
-        Assert.AreEqual("%C6%FC%CB%DC%B8%EC", PercentEncoding.GetEncodedString("日本語", mode, TestUtils.Encodings.EucJP), "mode: {0}", mode);
+        Assert.AreEqual("%93%FA%96%7B%8C%EA", PercentEncoding.GetEncodedString("日本語", mode, Encodings.ShiftJis), "mode: {0}", mode);
+        Assert.AreEqual("%C6%FC%CB%DC%B8%EC", PercentEncoding.GetEncodedString("日本語", mode, Encodings.EucJP), "mode: {0}", mode);
       }
     }
 
@@ -155,8 +155,8 @@ namespace Smdn.Formats.PercentEncodings {
     {
       Assert.AreEqual("012abcABC-._~!\"#$日本語",
                       PercentEncoding.GetDecodedString("012abcABC-._~%21%22%23%24%e6%97%a5%e6%9c%ac%e8%aa%9e", Encoding.UTF8));
-      Assert.AreEqual("日本語", PercentEncoding.GetDecodedString("%93%fa%96%7B%8C%EA", TestUtils.Encodings.ShiftJis));
-      Assert.AreEqual("日本語", PercentEncoding.GetDecodedString("%c6%Fc%cb%Dc%b8%eC", TestUtils.Encodings.EucJP));
+      Assert.AreEqual("日本語", PercentEncoding.GetDecodedString("%93%fa%96%7B%8C%EA", Encodings.ShiftJis));
+      Assert.AreEqual("日本語", PercentEncoding.GetDecodedString("%c6%Fc%cb%Dc%b8%eC", Encodings.EucJP));
     }
 
     [Test]
