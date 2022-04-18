@@ -1,0 +1,53 @@
+// Smdn.Test.NUnit.Utils.dll (Smdn.Test.NUnit.Utils-1.0.0)
+//   Name: Smdn.Test.NUnit.Utils
+//   AssemblyVersion: 1.0.0.0
+//   InformationalVersion: 1.0.0+7598ad3f6134b7fcb21ff256682be15e2cd04b61
+//   TargetFramework: .NETFramework,Version=v4.7.2
+//   Configuration: Release
+
+using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+
+namespace Smdn.Test.NUnit {
+  public static class Encodings {
+    public static Encoding EucJP { get; }
+    public static Encoding Jis { get; }
+    public static Encoding Latin1 { get; }
+    public static Encoding ShiftJis { get; }
+  }
+
+  public static class IOUtils {
+    public static void UsingCurrentDirectory(string path, Action action) {}
+    [AsyncStateMachine]
+    public static Task UsingCurrentDirectoryAsync(string path, Func<Task> action) {}
+    public static void UsingDirectory(string path, Action<DirectoryInfo> action) {}
+    public static void UsingDirectory(string path, bool ensureDirectoryCreated, Action<DirectoryInfo> action) {}
+    public static Task UsingDirectoryAsync(string path, Func<DirectoryInfo, Task> action) {}
+    [AsyncStateMachine]
+    public static Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<DirectoryInfo, Task> action) {}
+    public static void UsingFile(string path, Action<FileInfo> action) {}
+    [AsyncStateMachine]
+    public static Task UsingFileAsync(string path, Func<FileInfo, Task> action) {}
+  }
+}
+
+namespace Smdn.Test.NUnit.Assertion {
+  public class Assert : Assert {
+    public Assert() {}
+
+    public static void Elapses(TimeSpan expected, TestDelegate code, string message = null) {}
+    public static void ElapsesAsync(TimeSpan expected, AsyncTestDelegate code, string message = null) {}
+    public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, TestDelegate code, string message = null) {}
+    public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, AsyncTestDelegate code, string message = null) {}
+    public static void IsSerializable<TSerializable>(TSerializable obj, Action<TSerializable> testDeserializedObject = null) {}
+    public static void IsSerializable<TSerializable>(TSerializable obj, IFormatter serializationFormatter, IFormatter deserializationFormatter, Action<TSerializable> testDeserializedObject = null) {}
+    public static void NotElapse(TimeSpan expected, TestDelegate code, string message = null) {}
+    public static void NotElapseAsync(TimeSpan expected, AsyncTestDelegate code, string message = null) {}
+    public static TException ThrowsOrAggregates<TException>(TestDelegate code) where TException : Exception {}
+  }
+}
+
