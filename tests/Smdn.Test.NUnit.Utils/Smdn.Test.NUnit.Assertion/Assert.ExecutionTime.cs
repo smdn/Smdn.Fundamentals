@@ -26,6 +26,7 @@ public class AssertExecutionTimeTests {
   }
 
   [Test]
+  [Retry(2)]
   public void Elapses(
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
@@ -35,6 +36,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void Elapses_Fail(
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
@@ -46,6 +48,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesAsync(
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
@@ -55,6 +58,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesAsync_Fail(
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
@@ -66,6 +70,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void NotElapse(
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
@@ -75,6 +80,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void NotElapse_Fail(
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
@@ -86,6 +92,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void NotElapseAsync(
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
@@ -95,6 +102,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void NotElapseAsync_Fail(
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
@@ -106,6 +114,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesInRange(
     [Random(min: 20, max: 30, count: 10)] int milliseconds
   )
@@ -116,6 +125,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesInRange_Fail_LessThanMin(
     [Random(min: 0, max: 10, count: 10)] int milliseconds
   )
@@ -128,6 +138,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesInRange_Fail_GreaterThanMax(
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
@@ -140,6 +151,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesInRangeAsync(
     [Random(min: 20, max: 30, count: 10)] int milliseconds
   )
@@ -150,6 +162,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesInRangeAsync_Fail_LessThanMin(
     [Random(min: 0, max: 10, count: 10)] int milliseconds
   )
@@ -162,6 +175,7 @@ public class AssertExecutionTimeTests {
     );
 
   [Test]
+  [Retry(2)]
   public void ElapsesInRangeAsync_Fail_GreaterThanMax(
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
