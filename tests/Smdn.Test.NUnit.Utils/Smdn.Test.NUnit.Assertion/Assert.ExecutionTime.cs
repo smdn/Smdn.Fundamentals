@@ -4,6 +4,9 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+#if RUNNING_ON_GITHUB_ACTIONS
+using System.Runtime.InteropServices;
+#endif
 using NUnit.Framework;
 
 namespace Smdn.Test.NUnit.Assertion;
@@ -26,8 +29,18 @@ public class AssertExecutionTimeTests {
     Assert.ElapsesInRangeAsync(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(100), static () => Task.Delay(10));
   }
 
+  private static void CheckRunningEnvironment()
+  {
+#if RUNNING_ON_GITHUB_ACTIONS
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+      Assert.Ignore("ignore unstable test case due to running environment (macos)");
+#endif
+  }
+
   private static void CheckPrerequisites()
   {
+    CheckRunningEnvironment();
+
     if (!Stopwatch.IsHighResolution)
       Assert.Ignore("ignore unstable test case due to lack of the time resolution");
   }
