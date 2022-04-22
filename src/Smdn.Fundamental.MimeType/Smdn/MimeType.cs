@@ -238,12 +238,7 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   public override int GetHashCode() => ToString().GetHashCode();
 
   public static explicit operator string?(MimeType? mimeType)
-  {
-    if (mimeType == null)
-      return null;
-    else
-      return mimeType.ToString();
-  }
+    => mimeType?.ToString();
 
   public override string ToString() => string.Concat(Type, "/", SubType);
 }
