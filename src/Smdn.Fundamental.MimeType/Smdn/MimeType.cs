@@ -1,6 +1,15 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#nullable enable
+
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+#define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+#endif
+
 using System;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 namespace Smdn;
 
@@ -18,10 +27,21 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   public static readonly MimeType MessageRfc822               = new("message", "rfc822");
 
   // TODO: fix tuple element name casing
-  public static bool TryParse(string s, out (string type, string subType) result)
-    => Parse(s, nameof(s), true, out result);
+  public static bool TryParse(string? s, out (string type, string subType) result)
+    => Parse(
+      s ?? throw new ArgumentNullException(nameof(s)),
+      nameof(s),
+      true,
+      out result
+    );
 
-  public static bool TryParse(string s, out MimeType result)
+  public static bool TryParse(
+    string? s,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out MimeType? result
+  )
   {
     result = null;
 
@@ -46,7 +66,7 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
 
   private static readonly char[] typeSubtypeDelimiters = new[] { '/' };
 
-  private static bool Parse(string s, string paramName, bool continueWhetherInvalid, out (string Type, string SubType) result)
+  private static bool Parse(string? s, string paramName, bool continueWhetherInvalid, out (string Type, string SubType) result)
   {
     result = default;
 
@@ -118,25 +138,25 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   /*
    * TypeEquals(MimeType)
    */
-  public bool TypeEquals(MimeType mimeType)
+  public bool TypeEquals(MimeType? mimeType)
     => TypeEquals(mimeType, StringComparison.Ordinal);
 
-  public bool TypeEqualsIgnoreCase(MimeType mimeType)
+  public bool TypeEqualsIgnoreCase(MimeType? mimeType)
     => TypeEquals(mimeType, StringComparison.OrdinalIgnoreCase);
 
-  public bool TypeEquals(MimeType mimeType, StringComparison comparisonType)
+  public bool TypeEquals(MimeType? mimeType, StringComparison comparisonType)
     => mimeType is not null && TypeEquals(mimeType.Type.AsSpan(), comparisonType);
 
   /*
    * TypeEquals(string)
    */
-  public bool TypeEquals(string type)
+  public bool TypeEquals(string? type)
     => TypeEquals(type, StringComparison.Ordinal);
 
-  public bool TypeEqualsIgnoreCase(string type)
+  public bool TypeEqualsIgnoreCase(string? type)
     => TypeEquals(type, StringComparison.OrdinalIgnoreCase);
 
-  public bool TypeEquals(string type, StringComparison comparisonType)
+  public bool TypeEquals(string? type, StringComparison comparisonType)
     => type is not null && TypeEquals(type.AsSpan(), comparisonType);
 
   /*
@@ -148,25 +168,25 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   /*
    * SubTypeEquals(MimeType)
    */
-  public bool SubTypeEquals(MimeType mimeType)
+  public bool SubTypeEquals(MimeType? mimeType)
     => SubTypeEquals(mimeType, StringComparison.Ordinal);
 
-  public bool SubTypeEqualsIgnoreCase(MimeType mimeType)
+  public bool SubTypeEqualsIgnoreCase(MimeType? mimeType)
     => SubTypeEquals(mimeType, StringComparison.OrdinalIgnoreCase);
 
-  public bool SubTypeEquals(MimeType mimeType, StringComparison comparisonType)
+  public bool SubTypeEquals(MimeType? mimeType, StringComparison comparisonType)
     => mimeType is not null && SubTypeEquals(mimeType.SubType.AsSpan(), comparisonType);
 
   /*
    * SubTypeEquals(string)
    */
-  public bool SubTypeEquals(string subType)
+  public bool SubTypeEquals(string? subType)
     => SubTypeEquals(subType, StringComparison.Ordinal);
 
-  public bool SubTypeEqualsIgnoreCase(string subType)
+  public bool SubTypeEqualsIgnoreCase(string? subType)
     => SubTypeEquals(subType, StringComparison.OrdinalIgnoreCase);
 
-  public bool SubTypeEquals(string subType, StringComparison comparisonType)
+  public bool SubTypeEquals(string? subType, StringComparison comparisonType)
     => subType is not null && SubTypeEquals(subType.AsSpan(), comparisonType);
 
   /*
@@ -178,7 +198,7 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   /*
    * Equals(object)
    */
-  public override bool Equals(object obj)
+  public override bool Equals(object? obj)
     => obj switch {
       MimeType mimeType => Equals(mimeType),
       string str => Equals(str),
@@ -188,25 +208,25 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   /*
    * Equals(MimeType)
    */
-  public bool Equals(MimeType other)
+  public bool Equals(MimeType? other)
     => Equals(other, StringComparison.Ordinal);
 
-  public bool EqualsIgnoreCase(MimeType other)
+  public bool EqualsIgnoreCase(MimeType? other)
     => Equals(other, StringComparison.OrdinalIgnoreCase);
 
-  public bool Equals(MimeType other, StringComparison comparisonType)
+  public bool Equals(MimeType? other, StringComparison comparisonType)
     => other is not null && TypeEquals(other, comparisonType) && SubTypeEquals(other, comparisonType);
 
   /*
    * Equals(string)
    */
-  public bool Equals(string other)
+  public bool Equals(string? other)
     => Equals(other, StringComparison.Ordinal);
 
-  public bool EqualsIgnoreCase(string other)
+  public bool EqualsIgnoreCase(string? other)
     => Equals(other, StringComparison.OrdinalIgnoreCase);
 
-  public bool Equals(string other, StringComparison comparisonType)
+  public bool Equals(string? other, StringComparison comparisonType)
     => other is not null && Equals(other.AsSpan(), comparisonType);
 
   /*
@@ -217,7 +237,7 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
 
   public override int GetHashCode() => ToString().GetHashCode();
 
-  public static explicit operator string(MimeType mimeType)
+  public static explicit operator string?(MimeType? mimeType)
   {
     if (mimeType == null)
       return null;
