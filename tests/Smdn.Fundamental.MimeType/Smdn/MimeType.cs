@@ -70,6 +70,16 @@ namespace Smdn {
     public void TestEquals(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
       => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).Equals(new MimeType(typeY, subtypeY)));
 
+    [TestCase("text", "plain", "text/plain", true)]
+    [TestCase("text", "plain", "text/PLAIN", false)]
+    [TestCase("text", "plain", "TEXT/plain", false)]
+    [TestCase("text", "plain", "TEXT/PLAIN", false)]
+    [TestCase("text", "html", "text/plain", false)]
+    [TestCase("image", "plain", "text/plain", false)]
+    [TestCase("application", "octet-stream", "text/plain", false)]
+    public void TestEquals_String(string typeX, string subtypeX, string other, bool expected)
+      => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).Equals(other));
+
     [TestCase("text", "plain", "text", "plain", true)]
     [TestCase("text", "plain", "text", "PLAIN", true)]
     [TestCase("text", "plain", "TEXT", "plain", true)]
@@ -79,6 +89,16 @@ namespace Smdn {
     [TestCase("application", "octet-stream", "text", "plain", false)]
     public void TestEqualsIgnoreCase(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
       => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).EqualsIgnoreCase(new MimeType(typeY, subtypeY)));
+
+    [TestCase("text", "plain", "text/plain", true)]
+    [TestCase("text", "plain", "text/PLAIN", true)]
+    [TestCase("text", "plain", "TEXT/plain", true)]
+    [TestCase("text", "plain", "TEXT/PLAIN", true)]
+    [TestCase("text", "html", "text/plain", false)]
+    [TestCase("image", "plain", "text/plain", false)]
+    [TestCase("application", "octet-stream", "text/plain", false)]
+    public void TestEqualsIgnoreCase_String(string typeX, string subtypeX, string other, bool expected)
+      => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).EqualsIgnoreCase(other));
 
     [TestCase("text", "plain", "text", "plain", true)]
     [TestCase("text", "plain", "text", "PLAIN", true)]
