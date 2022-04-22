@@ -80,13 +80,8 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
   /*
    * instance members
    */
-  public string Type {
-    get; private set;
-  }
-
-  public string SubType {
-    get; private set;
-  }
+  public string Type { get; }
+  public string SubType { get; }
 
   public MimeType(string mimeType)
     : this(Parse(mimeType, nameof(mimeType)))
