@@ -220,32 +220,42 @@ public partial class MimeTypeTests {
     Assert.IsNull((string)((MimeType)null));
   }
 
-  [Test]
-  public void TestTryParse()
+  private static System.Collections.IEnumerable YieldParseValidTestCases()
   {
-    MimeType result;
-
-    Assert.IsFalse(MimeType.TryParse(null, out result), "#1");
-    Assert.IsNull(result, "#1");
-
-    Assert.IsFalse(MimeType.TryParse(string.Empty, out result), "#2");
-    Assert.IsNull(result, "#2");
-
-    Assert.IsFalse(MimeType.TryParse("text", out result), "#3");
-    Assert.IsNull(result, "#3");
-
-    Assert.IsFalse(MimeType.TryParse("text/", out result), "#4");
-    Assert.IsNull(result, "#4");
-
-    Assert.IsFalse(MimeType.TryParse("/plain", out result), "#5");
-    Assert.IsNull(result, "#5");
-
-    Assert.IsFalse(MimeType.TryParse("text/plain/hoge", out result), "#6");
-    Assert.IsNull(result, "#6");
-
-    Assert.IsTrue(MimeType.TryParse("text/plain", out result), "#7");
-    Assert.AreEqual(MimeType.TextPlain, result, "#7");
+    yield return new object[] { "text/plain", MimeType.TextPlain };
+    yield return new object[] { "message/rfc822", MimeType.MessageRfc822 };
+    yield return new object[] { "application/rdf+xml", MimeType.CreateApplicationType("rdf+xml") };
   }
+
+  private static System.Collections.IEnumerable YieldParseInvalidFormatTestCases()
+  {
+    yield return new object[] { null, typeof(ArgumentNullException) };
+    yield return new object[] { string.Empty, typeof(ArgumentException) };
+    yield return new object[] { "text", typeof(FormatException) };
+    yield return new object[] { "text/", typeof(FormatException) };
+    yield return new object[] { "/plain", typeof(FormatException) };
+    yield return new object[] { "text/plain/", typeof(FormatException) };
+    yield return new object[] { "text/plain/foo", typeof(FormatException) };
+  }
+
+  [TestCaseSource(nameof(YieldParseValidTestCases))]
+  public void TestParse(string s, MimeType expected)
+    => Assert.AreEqual((expected.Type, expected.SubType), MimeType.Parse(s));
+
+  [TestCaseSource(nameof(YieldParseValidTestCases))]
+  public void TestTryParse(string s, MimeType expected)
+  {
+    Assert.IsTrue(MimeType.TryParse(s, out MimeType result));
+    Assert.AreEqual(expected, result);
+  }
+
+  [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
+  public void TestParse_InvalidFormat(string s, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => MimeType.Parse(s));
+
+  [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
+  public void TestTryParse_InvalidFormat(string s, Type _)
+    => Assert.IsFalse(MimeType.TryParse(s, out MimeType _));
 
   [Test]
   public void TestTryParse_Tuple()
