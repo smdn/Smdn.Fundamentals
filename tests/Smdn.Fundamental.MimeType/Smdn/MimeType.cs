@@ -100,6 +100,23 @@ namespace Smdn {
     public void TestEqualsIgnoreCase_String(string typeX, string subtypeX, string other, bool expected)
       => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).EqualsIgnoreCase(other));
 
+    [TestCase("text", "plain", "text/plain", StringComparison.Ordinal, true)]
+    [TestCase("text", "plain", "text/plain", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "text/PLAIN", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "text/PLAIN", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "TEXT/plain", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "TEXT/plain", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "TEXT/PLAIN", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "TEXT/PLAIN", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "html", "text/plain", StringComparison.Ordinal, false)]
+    [TestCase("text", "html", "text/plain", StringComparison.OrdinalIgnoreCase, false)]
+    [TestCase("image", "plain", "text/plain", StringComparison.Ordinal, false)]
+    [TestCase("image", "plain", "text/plain", StringComparison.OrdinalIgnoreCase, false)]
+    [TestCase("application", "octet-stream", "text/plain", StringComparison.Ordinal, false)]
+    [TestCase("application", "octet-stream", "text/plain", StringComparison.OrdinalIgnoreCase, false)]
+    public void TestEquals_ReadOnlySpanOfChar(string typeX, string subtypeX, string other, StringComparison comparison, bool expected)
+      => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).Equals(other.AsSpan(), comparison));
+
     [TestCase("text", "plain", "text", "plain", true)]
     [TestCase("text", "plain", "text", "PLAIN", true)]
     [TestCase("text", "plain", "TEXT", "plain", false)]
@@ -130,6 +147,15 @@ namespace Smdn {
     public void TestTypeEqualsIgnoreCase_String(string typeX, string subtypeX, string typeY, bool expected)
       => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).TypeEqualsIgnoreCase(typeY));
 
+    [TestCase("text", "plain", "text", StringComparison.Ordinal, true)]
+    [TestCase("text", "plain", "text", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "TEXT", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "TEXT", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "", StringComparison.OrdinalIgnoreCase, false)]
+    public void TestTypeEquals_ReadOnlySpanOfChar(string typeX, string subtypeX, string typeY, StringComparison comparison, bool expected)
+      => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).TypeEquals(typeY.AsSpan(), comparison));
+
     [TestCase("text", "plain", "text", "plain", true)]
     [TestCase("text", "plain", "text", "PLAIN", false)]
     [TestCase("text", "plain", "TEXT", "plain", true)]
@@ -159,6 +185,15 @@ namespace Smdn {
     [TestCase("text", "plain", null, false)]
     public void TestSubTypeEqualsIgnoreCase_String(string typeX, string subtypeX, string subtypeY, bool expected)
       => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).SubTypeEqualsIgnoreCase(subtypeY));
+
+    [TestCase("text", "plain", "plain", StringComparison.Ordinal, true)]
+    [TestCase("text", "plain", "plain", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "PLAIN", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "PLAIN", StringComparison.OrdinalIgnoreCase, true)]
+    [TestCase("text", "plain", "", StringComparison.Ordinal, false)]
+    [TestCase("text", "plain", "", StringComparison.OrdinalIgnoreCase, false)]
+    public void TestSubTypeEquals_ReadOnlySpanOfChar(string typeX, string subtypeX, string subtypeY, StringComparison comparison, bool expected)
+      => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).SubTypeEquals(subtypeY.AsSpan(), comparison));
 
     [Test]
     public void TestToString()
