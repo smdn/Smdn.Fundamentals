@@ -60,6 +60,15 @@ namespace Smdn {
       Assert.AreEqual("plain", subType);
     }
 
+    [Test]
+    public void TestEquals_Object()
+    {
+      Assert.IsTrue(MimeType.TextPlain.Equals((object)new MimeType("text/plain")), "MimeType");
+      Assert.IsTrue(MimeType.TextPlain.Equals((object)"text/plain"), "string");
+      Assert.IsFalse(MimeType.TextPlain.Equals((object)0), "int");
+      Assert.IsFalse(MimeType.TextPlain.Equals((object)false), "bool");
+    }
+
     [TestCase("text", "plain", "text", "plain", true)]
     [TestCase("text", "plain", "text", "PLAIN", false)]
     [TestCase("text", "plain", "TEXT", "plain", false)]
