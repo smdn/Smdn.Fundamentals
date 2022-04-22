@@ -179,14 +179,11 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
    * Equals(object)
    */
   public override bool Equals(object obj)
-  {
-    if (obj is MimeType mimeType)
-      return Equals(mimeType);
-    if (obj is string str)
-      return Equals(str);
-
-    return false;
-  }
+    => obj switch {
+      MimeType mimeType => Equals(mimeType),
+      string str => Equals(str),
+      _ => false,
+    };
 
   /*
    * Equals(MimeType)
