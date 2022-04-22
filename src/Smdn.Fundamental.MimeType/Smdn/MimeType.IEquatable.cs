@@ -13,6 +13,12 @@ partial class MimeType :
   IEquatable<string>
 {
   /*
+   * [RFC6838] Media Type Specifications and Registration Procedures 4.2.  Naming Requirements
+   * 'Both top-level type and subtype names are case-insensitive.'
+   */
+  private const StringComparison DefaultComparisonType = StringComparison.OrdinalIgnoreCase;
+
+  /*
    * TypeEquals(MimeType)
    */
   public bool TypeEquals(MimeType? mimeType)
@@ -39,7 +45,7 @@ partial class MimeType :
   /*
    * TypeEquals(ReadOnlySpan<char>)
    */
-  public bool TypeEquals(ReadOnlySpan<char> type, StringComparison comparisonType = StringComparison.Ordinal)
+  public bool TypeEquals(ReadOnlySpan<char> type, StringComparison comparisonType = DefaultComparisonType)
     => Type.AsSpan().Equals(type, comparisonType);
 
   /*
@@ -69,7 +75,7 @@ partial class MimeType :
   /*
    * SubTypeEquals(ReadOnlySpan<char>)
    */
-  public bool SubTypeEquals(ReadOnlySpan<char> subType, StringComparison comparisonType = StringComparison.Ordinal)
+  public bool SubTypeEquals(ReadOnlySpan<char> subType, StringComparison comparisonType = DefaultComparisonType)
     => SubType.AsSpan().Equals(subType, comparisonType);
 
   /*
@@ -109,6 +115,6 @@ partial class MimeType :
   /*
    * Equals(ReadOnlySpan<char>)
    */
-  public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType = StringComparison.Ordinal)
+  public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType = DefaultComparisonType)
     => ToString().AsSpan().Equals(other, comparisonType); // TODO: reduce allocation (ToString)
 }
