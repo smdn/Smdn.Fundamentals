@@ -115,36 +115,69 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
     subType = this.SubType;
   }
 
+  /*
+   * TypeEquals(MimeType)
+   */
   public bool TypeEquals(MimeType mimeType)
-    => mimeType is not null && TypeEquals(mimeType.Type.AsSpan(), StringComparison.Ordinal);
-
-  public bool TypeEquals(string type)
-    => type is not null && TypeEquals(type.AsSpan(), StringComparison.Ordinal);
+    => TypeEquals(mimeType, StringComparison.Ordinal);
 
   public bool TypeEqualsIgnoreCase(MimeType mimeType)
-    => mimeType is not null && TypeEquals(mimeType.Type.AsSpan(), StringComparison.OrdinalIgnoreCase);
+    => TypeEquals(mimeType, StringComparison.OrdinalIgnoreCase);
+
+  public bool TypeEquals(MimeType mimeType, StringComparison comparisonType)
+    => mimeType is not null && TypeEquals(mimeType.Type.AsSpan(), comparisonType);
+
+  /*
+   * TypeEquals(string)
+   */
+  public bool TypeEquals(string type)
+    => TypeEquals(type, StringComparison.Ordinal);
 
   public bool TypeEqualsIgnoreCase(string type)
-    => type is not null && TypeEquals(type.AsSpan(), StringComparison.OrdinalIgnoreCase);
+    => TypeEquals(type, StringComparison.OrdinalIgnoreCase);
 
+  public bool TypeEquals(string type, StringComparison comparisonType)
+    => type is not null && TypeEquals(type.AsSpan(), comparisonType);
+
+  /*
+   * TypeEquals(ReadOnlySpan<char>)
+   */
   public bool TypeEquals(ReadOnlySpan<char> type, StringComparison comparisonType = StringComparison.Ordinal)
     => Type.AsSpan().Equals(type, comparisonType);
 
+  /*
+   * SubTypeEquals(MimeType)
+   */
   public bool SubTypeEquals(MimeType mimeType)
-    => mimeType is not null && SubTypeEquals(mimeType.SubType.AsSpan(), StringComparison.Ordinal);
-
-  public bool SubTypeEquals(string subType)
-    => subType is not null && SubTypeEquals(subType.AsSpan(), StringComparison.Ordinal);
+    => SubTypeEquals(mimeType, StringComparison.Ordinal);
 
   public bool SubTypeEqualsIgnoreCase(MimeType mimeType)
-    => mimeType is not null && SubTypeEquals(mimeType.SubType.AsSpan(), StringComparison.OrdinalIgnoreCase);
+    => SubTypeEquals(mimeType, StringComparison.OrdinalIgnoreCase);
+
+  public bool SubTypeEquals(MimeType mimeType, StringComparison comparisonType)
+    => mimeType is not null && SubTypeEquals(mimeType.SubType.AsSpan(), comparisonType);
+
+  /*
+   * SubTypeEquals(string)
+   */
+  public bool SubTypeEquals(string subType)
+    => SubTypeEquals(subType, StringComparison.Ordinal);
 
   public bool SubTypeEqualsIgnoreCase(string subType)
-    => subType is not null && SubTypeEquals(subType.AsSpan(), StringComparison.OrdinalIgnoreCase);
+    => SubTypeEquals(subType, StringComparison.OrdinalIgnoreCase);
 
+  public bool SubTypeEquals(string subType, StringComparison comparisonType)
+    => subType is not null && SubTypeEquals(subType.AsSpan(), comparisonType);
+
+  /*
+   * SubTypeEquals(ReadOnlySpan<char>)
+   */
   public bool SubTypeEquals(ReadOnlySpan<char> subType, StringComparison comparisonType = StringComparison.Ordinal)
     => SubType.AsSpan().Equals(subType, comparisonType);
 
+  /*
+   * Equals(object)
+   */
   public override bool Equals(object obj)
   {
     if (obj is MimeType mimeType)
@@ -155,28 +188,33 @@ public partial class MimeType : IEquatable<MimeType>, IEquatable<string> {
     return false;
   }
 
+  /*
+   * Equals(MimeType)
+   */
   public bool Equals(MimeType other)
-  {
-    if (other == null)
-      return false;
-    else
-      return TypeEquals(other) && SubTypeEquals(other);
-  }
+    => Equals(other, StringComparison.Ordinal);
 
   public bool EqualsIgnoreCase(MimeType other)
-  {
-    if (other == null)
-      return false;
-    else
-      return TypeEqualsIgnoreCase(other) && SubTypeEqualsIgnoreCase(other);
-  }
+    => Equals(other, StringComparison.OrdinalIgnoreCase);
 
+  public bool Equals(MimeType other, StringComparison comparisonType)
+    => other is not null && TypeEquals(other, comparisonType) && SubTypeEquals(other, comparisonType);
+
+  /*
+   * Equals(string)
+   */
   public bool Equals(string other)
-    => other is not null && Equals(other.AsSpan(), StringComparison.Ordinal);
+    => Equals(other, StringComparison.Ordinal);
 
   public bool EqualsIgnoreCase(string other)
-    => other is not null && Equals(other.AsSpan(), StringComparison.OrdinalIgnoreCase);
+    => Equals(other, StringComparison.OrdinalIgnoreCase);
 
+  public bool Equals(string other, StringComparison comparisonType)
+    => other is not null && Equals(other.AsSpan(), comparisonType);
+
+  /*
+   * Equals(ReadOnlySpan<char>)
+   */
   public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType = StringComparison.Ordinal)
     => ToString().AsSpan().Equals(other, comparisonType); // TODO: reduce allocation (ToString)
 
