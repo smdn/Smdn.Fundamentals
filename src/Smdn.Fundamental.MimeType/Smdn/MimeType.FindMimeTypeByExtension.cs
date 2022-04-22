@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#nullable enable
+
 #if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
 #define MICROSOFT_WIN32_REGISTRY
 #endif
@@ -21,9 +23,9 @@ partial class MimeType {
 
   private static bool IsRunningOnWindows => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
 
-  public static MimeType FindMimeTypeByExtension(string extensionOrPath) => FindMimeTypeByExtension(extensionOrPath, DefaultMimeTypesFile);
+  public static MimeType? FindMimeTypeByExtension(string extensionOrPath) => FindMimeTypeByExtension(extensionOrPath, DefaultMimeTypesFile);
 
-  public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
+  public static MimeType? FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile)
   {
     if (extensionOrPath == null)
       throw new ArgumentNullException(nameof(extensionOrPath));
@@ -62,7 +64,7 @@ partial class MimeType {
     }
   }
 
-  private static MimeType FindMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
+  private static MimeType? FindMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
   {
     var extension = Path.GetExtension(extensionOrPath);
 
@@ -89,7 +91,7 @@ partial class MimeType {
     return null;
   }
 
-  private static MimeType FindMimeTypeByExtensionWin(string extensionOrPath)
+  private static MimeType? FindMimeTypeByExtensionWin(string extensionOrPath)
   {
     var extension = Path.GetExtension(extensionOrPath);
 
@@ -161,7 +163,7 @@ partial class MimeType {
       if (key == null)
         continue;
 
-      if (string.Equals((string)key.GetValue("Content Type"), mimeType, StringComparison.OrdinalIgnoreCase))
+      if (string.Equals((string?)key.GetValue("Content Type"), mimeType, StringComparison.OrdinalIgnoreCase))
         yield return name;
     }
 #else
