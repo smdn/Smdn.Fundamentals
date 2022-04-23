@@ -69,7 +69,7 @@ public partial class MimeType {
     subType = SubType;
   }
 
-  public override int GetHashCode() => ToString().GetHashCode();
+  public override int GetHashCode() => ToString().GetHashCode(); // TODO: use System.HashCode
 
   public static explicit operator string?(MimeType? mimeType)
     => mimeType?.ToString();
