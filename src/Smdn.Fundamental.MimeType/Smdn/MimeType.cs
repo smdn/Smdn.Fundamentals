@@ -74,5 +74,5 @@ public partial class MimeType {
   public static explicit operator string?(MimeType? mimeType)
     => mimeType?.ToString();
 
-  public override string ToString() => string.Concat(Type, "/", SubType);
+  public override string ToString() => ToString(format: null, formatProvider: null);
 }
