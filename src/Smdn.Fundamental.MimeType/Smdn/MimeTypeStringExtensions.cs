@@ -21,6 +21,7 @@ public static class MimeTypeStringExtensions {
       s: mimeType.AsSpan(),
       paramName: nameof(mimeType),
       onParseError: MimeType.OnParseError.ReturnFalse,
+      provider: null,
       out result
     );
   }
@@ -40,6 +41,7 @@ public static class MimeTypeStringExtensions {
       s: mimeType.AsSpan(),
       paramName: paramName,
       onParseError: MimeType.OnParseError.ThrowArgumentException,
+      provider: null,
       out var result
     );
 

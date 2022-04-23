@@ -20,9 +20,6 @@ partial class MimeType
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
   :
-#if !OBSOLETE_MEMBER
-  IParseable<MimeType>,
-#endif
   ISpanParseable<MimeType>
 #endif
 {
@@ -44,13 +41,56 @@ partial class MimeType
 #endif
     out MimeType? result
   )
+    => TryParse(s, provider: null, out result);
+
+  // IParseable<TSelf>.TryParse
+  public static bool TryParse(
+    string? s,
+    IFormatProvider? provider,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out MimeType result
+  )
   {
-    result = null;
+    result = null!;
 
     if (s is null)
       return false;
-    if (!TryParse(s.AsSpan(), nameof(s), onParseError: OnParseError.ReturnFalse, out var ret))
+
+    if (
+      !TryParse(
+        s.AsSpan(),
+        nameof(s),
+        onParseError: OnParseError.ReturnFalse,
+        provider: provider,
+        out var ret
+      )
+    ) {
       return false;
+    }
+
+    result = new(ret);
+
+    return true;
+  }
+
+  // ISpanParseable<TSelf>.TryParse
+  public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out MimeType result)
+  {
+    result = null!;
+
+    if (
+      !TryParse(
+        s,
+        nameof(s),
+        onParseError: OnParseError.ReturnFalse,
+        provider: provider,
+        out var ret
+      )
+    ) {
+      return false;
+    }
 
     result = new(ret);
 
@@ -63,19 +103,35 @@ partial class MimeType
   public static (string type, string subType) Parse(string s)
     => MimeTypeStringExtensions.Split(s);
 #pragma warning restore SA1316
-#else
-  public static MimeType Parse(string s)
+#endif
+
+  // IParseable<TSelf>.Parse
+  public static MimeType Parse(string s, IFormatProvider? provider = null)
   {
     TryParse(
       s: (s ?? throw new ArgumentNullException(nameof(s))).AsSpan(),
       paramName: nameof(s),
-      throwIfInvalid: OnParseError.ThrowFormatException,
+      onParseError: OnParseError.ThrowFormatException,
+      provider: provider,
       out var result
     );
 
     return new(result.Type, result.SubType);
   }
-#endif
+
+  // ISpanParseable<TSelf>.Parse
+  public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
+  {
+    TryParse(
+      s: s,
+      paramName: nameof(s),
+      onParseError: OnParseError.ThrowFormatException,
+      provider: provider,
+      out var result
+    );
+
+    return new(result.Type, result.SubType);
+  }
 
   internal enum OnParseError {
     ThrowFormatException,
@@ -87,6 +143,9 @@ partial class MimeType
     ReadOnlySpan<char> s,
     string paramName,
     OnParseError onParseError,
+#pragma warning disable IDE0060
+    IFormatProvider? provider,
+#pragma warning restore IDE0060
     out (string Type, string SubType) result
   )
   {
