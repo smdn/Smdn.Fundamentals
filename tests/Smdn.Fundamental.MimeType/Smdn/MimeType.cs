@@ -233,14 +233,17 @@ public partial class MimeTypeTests {
     yield return new object[] { string.Empty, typeof(ArgumentException) };
     yield return new object[] { "text", typeof(FormatException) };
     yield return new object[] { "text/", typeof(FormatException) };
+    yield return new object[] { "/", typeof(FormatException) };
     yield return new object[] { "/plain", typeof(FormatException) };
     yield return new object[] { "text/plain/", typeof(FormatException) };
     yield return new object[] { "text/plain/foo", typeof(FormatException) };
   }
 
+#if false
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void TestParse(string s, MimeType expected)
     => Assert.AreEqual((expected.Type, expected.SubType), MimeType.Parse(s));
+#endif
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void TestTryParse(string s, MimeType expected)
@@ -249,33 +252,13 @@ public partial class MimeTypeTests {
     Assert.AreEqual(expected, result);
   }
 
+#if false
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void TestParse_InvalidFormat(string s, Type expectedExceptionType)
     => Assert.Throws(expectedExceptionType, () => MimeType.Parse(s));
+#endif
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void TestTryParse_InvalidFormat(string s, Type _)
     => Assert.IsFalse(MimeType.TryParse(s, out MimeType _));
-
-  [Test]
-  public void TestTryParse_Tuple()
-  {
-    Assert.IsTrue(MimeType.TryParse("text/plain", out (string type, string subType) result));
-    Assert.AreEqual("text", result.type);
-    Assert.AreEqual("plain", result.subType);
-  }
-
-  [Test]
-  public void TestParse_Tuple()
-  {
-    (var type, var subType) = MimeType.Parse("text/plain");
-
-    Assert.AreEqual("text", type);
-    Assert.AreEqual("plain", subType);
-
-    Assert.Throws<ArgumentNullException>(() => MimeType.Parse(null));
-    Assert.Throws<ArgumentException>(() => MimeType.Parse(string.Empty));
-    Assert.Throws<ArgumentException>(() => MimeType.Parse("text/"));
-    Assert.Throws<ArgumentException>(() => MimeType.Parse("/plain"));
-  }
 }

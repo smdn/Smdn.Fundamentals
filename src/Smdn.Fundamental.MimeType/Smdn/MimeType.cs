@@ -33,7 +33,12 @@ public partial class MimeType {
   public string SubType { get; }
 
   public MimeType(string mimeType)
-    : this(Parse(mimeType, nameof(mimeType)))
+    : this(
+      MimeTypeStringExtensions.Split(
+        mimeType ?? throw new ArgumentNullException(nameof(mimeType)),
+        nameof(mimeType)
+      )
+    )
   {
   }
 

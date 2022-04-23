@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #nullable enable
 
+#define OBSOLETE_MEMBER
+
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 #endif
@@ -18,18 +20,22 @@ partial class MimeType
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
   :
+#if !OBSOLETE_MEMBER
   IParseable<MimeType>,
+#endif
   ISpanParseable<MimeType>
 #endif
 {
-  // TODO: fix tuple element name casing
-  public static bool TryParse(string? s, out (string type, string subType) result)
-    => Parse(
-      s ?? throw new ArgumentNullException(nameof(s)),
-      nameof(s),
-      true,
-      out result
-    );
+#if OBSOLETE_MEMBER
+  [Obsolete($"The method will be deprecated in the future release. Use {nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.TrySplit)}() instead.")]
+  public static bool TryParse(
+    string? s,
+#pragma warning disable SA1316
+    out (string type, string subType) result
+#pragma warning restore SA1316
+  )
+    => MimeTypeStringExtensions.TrySplit(s, out result);
+#endif
 
   public static bool TryParse(
     string? s,
@@ -41,47 +47,96 @@ partial class MimeType
   {
     result = null;
 
-    if (Parse(s, nameof(s), true, out var ret)) {
-      result = new MimeType(ret);
-      return true;
-    }
+    if (s is null)
+      return false;
+    if (!TryParse(s.AsSpan(), nameof(s), onParseError: OnParseError.ReturnFalse, out var ret))
+      return false;
 
-    return false;
+    result = new(ret);
+
+    return true;
   }
 
-  // TODO: fix tuple element name casing
+#if OBSOLETE_MEMBER
+  [Obsolete($"The return type of this method will be changed to MimeType in the future release. Use Use {nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.Split)}() instead.")]
+#pragma warning disable SA1316
   public static (string type, string subType) Parse(string s)
-    => Parse(s, nameof(s));
-
-  private static (string Type, string SubType) Parse(string s, string paramName)
+    => MimeTypeStringExtensions.Split(s);
+#pragma warning restore SA1316
+#else
+  public static MimeType Parse(string s)
   {
-    Parse(s, paramName, false, out var ret);
+    TryParse(
+      s: (s ?? throw new ArgumentNullException(nameof(s))).AsSpan(),
+      paramName: nameof(s),
+      throwIfInvalid: OnParseError.ThrowFormatException,
+      out var result
+    );
 
-    return ret;
+    return new(result.Type, result.SubType);
+  }
+#endif
+
+  internal enum OnParseError {
+    ThrowFormatException,
+    ThrowArgumentException,
+    ReturnFalse,
   }
 
-  private static readonly char[] typeSubtypeDelimiters = new[] { '/' };
-
-  private static bool Parse(string? s, string paramName, bool continueWhetherInvalid, out (string Type, string SubType) result)
+  internal static bool TryParse(
+    ReadOnlySpan<char> s,
+    string paramName,
+    OnParseError onParseError,
+    out (string Type, string SubType) result
+  )
   {
     result = default;
 
-    if (s == null)
-      return continueWhetherInvalid ? false : throw new ArgumentNullException(paramName);
-    if (s.Length == 0)
-      return continueWhetherInvalid ? false : throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(paramName);
+    if (s.IsEmpty) {
+      return onParseError switch {
+        OnParseError.ReturnFalse => false,
+        _ => throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(paramName),
+      };
+    }
 
-    var type = s.Split(typeSubtypeDelimiters);
+    var indexOfDelimiter = s.IndexOf('/');
 
-    if (type.Length != 2)
-      return continueWhetherInvalid ? false : throw new ArgumentException("invalid type: " + s, paramName);
+    if (indexOfDelimiter < 0) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException("invalid type: " + s.ToString(), paramName),
+        OnParseError.ThrowFormatException => throw new FormatException("invalid format (delimiter not found)"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
 
-    result = (type[0], type[1]);
+    var type = s.Slice(0, indexOfDelimiter);
+    var subtype = s.Slice(indexOfDelimiter + 1);
 
-    if (result.Type.Length == 0)
-      return continueWhetherInvalid ? false : throw new ArgumentException("type must be non-empty string", paramName);
-    if (result.SubType.Length == 0)
-      return continueWhetherInvalid ? false : throw new ArgumentException("sub type must be non-empty string", paramName);
+    if (0 <= subtype.IndexOf('/')) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException("invalid format (extra delimiter)", paramName),
+        OnParseError.ThrowFormatException => throw new FormatException("invalid format (extra delimiter)"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
+
+    if (type.IsEmpty) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException("type must be non-empty string", paramName),
+        OnParseError.ThrowFormatException => throw new FormatException("type is empty"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
+
+    if (subtype.IsEmpty) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException("sub type must be non-empty string", paramName),
+        OnParseError.ThrowFormatException => throw new FormatException("sub type is empty"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
+
+    result = (type.ToString(), subtype.ToString());
 
     return true;
   }
