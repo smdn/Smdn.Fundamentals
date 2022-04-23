@@ -26,22 +26,22 @@ partial class MimeTypeTests {
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void TestParse(string s, MimeType expected)
+  public void Parse(string s, MimeType expected)
     => Assert.AreEqual(expected, MimeType.Parse(s, provider: null));
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void TestParse_ReadOnlySpanOfChar(string s, MimeType expected)
+  public void Parse_ReadOnlySpanOfChar(string s, MimeType expected)
     => Assert.AreEqual(expected, MimeType.Parse(s.AsSpan(), provider: null));
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void TestTryParse(string s, MimeType expected)
+  public void TryParse(string s, MimeType expected)
   {
     Assert.IsTrue(MimeType.TryParse(s, provider: null, out var result));
     Assert.AreEqual(expected, result);
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void TestTryParse_ReadOnlySpanOfChar(string s, MimeType expected)
+  public void TryParse_ReadOnlySpanOfChar(string s, MimeType expected)
   {
     Assert.IsTrue(MimeType.TryParse(s.AsSpan(), provider: null, out var result));
     Assert.AreEqual(expected, result);
@@ -88,11 +88,11 @@ partial class MimeTypeTests {
 #endif
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void TestParse_InvalidFormat(string s, Type expectedExceptionType)
+  public void Parse_InvalidFormat(string s, Type expectedExceptionType)
     => Assert.Throws(expectedExceptionType, () => MimeType.Parse(s, provider: null));
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void TestParse_ReadOnlySpanOfChar_InvalidFormat(string s, Type expectedExceptionType)
+  public void Parse_ReadOnlySpanOfChar_InvalidFormat(string s, Type expectedExceptionType)
   {
     if (s is null)
       Assert.Pass();
@@ -101,11 +101,11 @@ partial class MimeTypeTests {
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void TestTryParse_InvalidFormat(string s, Type discard)
+  public void TryParse_InvalidFormat(string s, Type discard)
     => Assert.IsFalse(MimeType.TryParse(s, provider: null, out _));
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void TestTryParse_ReadOnlySpanOfChar_InvalidFormat(string s, Type discard)
+  public void TryParse_ReadOnlySpanOfChar_InvalidFormat(string s, Type discard)
   {
     if (s is null)
       Assert.Pass();

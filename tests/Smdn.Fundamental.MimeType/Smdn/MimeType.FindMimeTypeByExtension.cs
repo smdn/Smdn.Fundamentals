@@ -17,7 +17,7 @@ partial class MimeTypeTests {
     RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
   [Test]
-  public void TestFindMimeTypeByExtension()
+  public void FindMimeTypeByExtension()
   {
     if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && !File.Exists("/etc/mime.types")) {
       Assert.Ignore("/etc/mime.types not found");
@@ -43,7 +43,7 @@ partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestFindMimeTypeByExtension_WithMimeTypesFile()
+  public void FindMimeTypeByExtension_WithMimeTypesFile()
   {
     if (!IsRunningOnUnix)
       return;
@@ -65,7 +65,7 @@ partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestFindMimeTypeByExtension_WithMimeTypesFile_FileNotFound()
+  public void FindMimeTypeByExtension_WithMimeTypesFile_FileNotFound()
   {
     const string nonExistentFile = ".nonexistent.mime.types";
 
@@ -81,7 +81,7 @@ partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestFindExtensionsByMimeType()
+  public void FindExtensionsByMimeType()
   {
     if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && !File.Exists("/etc/mime.types")) {
       Assert.Ignore("/etc/mime.types not found");
@@ -114,7 +114,7 @@ partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestFindExtensionsByMimeType_WithMimeTypesFile()
+  public void FindExtensionsByMimeType_WithMimeTypesFile()
   {
     if (!IsRunningOnUnix)
       return;
@@ -133,7 +133,7 @@ partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestFindExtensionsByMimeType_WithMimeTypesFile_FileNotFound()
+  public void FindExtensionsByMimeType_WithMimeTypesFile_FileNotFound()
   {
     const string nonExistentFile = ".nonexistent.mime.types";
 

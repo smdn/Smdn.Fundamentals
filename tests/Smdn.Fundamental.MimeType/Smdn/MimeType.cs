@@ -8,7 +8,7 @@ namespace Smdn;
 [TestFixture()]
 public partial class MimeTypeTests {
   [Test]
-  public void TestConstructor()
+  public void Constructor()
   {
     var mime = new MimeType("text", "plain");
 
@@ -17,7 +17,7 @@ public partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestConstructor_Tuple()
+  public void Constructor_FromTuple()
   {
     var m = ("text", "plain");
     var mime = new MimeType(m);
@@ -27,7 +27,7 @@ public partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestConstructorInvalidArgument()
+  public void Constructor_InvalidArgument()
   {
     Assert.Throws<ArgumentNullException>(() => new MimeType((string)null), "#1");
     Assert.Throws<ArgumentException>(() => new MimeType(string.Empty), "#2");
@@ -50,7 +50,7 @@ public partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestDeconstruct()
+  public void Deconstruct()
   {
     var (type, subType) = MimeType.TextPlain;
 
@@ -59,7 +59,7 @@ public partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestToString()
+  public void Test_ToString()
   {
     Assert.AreEqual("text/plain", MimeType.TextPlain.ToString());
     Assert.AreEqual("application/octet-stream", MimeType.ApplicationOctetStream.ToString());
@@ -67,7 +67,7 @@ public partial class MimeTypeTests {
   }
 
   [Test]
-  public void TestExplicitToStringCoversion()
+  public void ExplicitToStringCoversion()
   {
     Assert.AreEqual("text/plain", (string)MimeType.TextPlain);
     Assert.AreEqual("application/octet-stream", (string)MimeType.ApplicationOctetStream);
