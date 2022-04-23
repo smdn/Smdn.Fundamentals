@@ -7,46 +7,74 @@ namespace Smdn;
 
 [TestFixture()]
 public partial class MimeTypeTests {
-  [Test]
-  public void Constructor()
+  [TestCase("text/plain", "text", "plain")]
+  [TestCase("message/rfc822", "message", "rfc822")]
+  [TestCase("application/rdf+xml", "application", "rdf+xml")]
+  public void Constructor_String(string mimeType, string expectedType, string expectedSubType)
   {
-    var mime = new MimeType("text", "plain");
+    var mime = new MimeType(mimeType);
 
-    Assert.AreEqual("text", mime.Type);
-    Assert.AreEqual("plain", mime.SubType);
+    Assert.AreEqual(expectedType, mime.Type);
+    Assert.AreEqual(expectedSubType, mime.SubType);
+    Assert.AreEqual(mimeType, mime.ToString());
   }
 
-  [Test]
-  public void Constructor_FromTuple()
+  [TestCase("text", "plain")]
+  [TestCase("message", "rfc822")]
+  [TestCase("application", "rdf+xml")]
+  public void Constructor_String_String(string type, string subtype)
   {
-    var m = ("text", "plain");
+    var mime = new MimeType(type, subtype);
+
+    Assert.AreEqual(type, mime.Type);
+    Assert.AreEqual(subtype, mime.SubType);
+    Assert.AreEqual($"{type}/{subtype}", mime.ToString());
+  }
+
+  [TestCase("text", "plain")]
+  [TestCase("message", "rfc822")]
+  [TestCase("application", "rdf+xml")]
+  public void Constructor_ValueTuple2(string type, string subtype)
+  {
+    var m = (type, subtype);
     var mime = new MimeType(m);
 
-    Assert.AreEqual("text", mime.Type);
-    Assert.AreEqual("plain", mime.SubType);
+    Assert.AreEqual(type, mime.Type);
+    Assert.AreEqual(subtype, mime.SubType);
+    Assert.AreEqual($"{type}/{subtype}", mime.ToString());
   }
 
-  [Test]
-  public void Constructor_InvalidArgument()
+  [TestCase(null, typeof(ArgumentNullException))]
+  [TestCase("", typeof(ArgumentException))]
+  [TestCase("text", typeof(ArgumentException))]
+  [TestCase("text/", typeof(ArgumentException))]
+  [TestCase("/", typeof(ArgumentException))]
+  [TestCase("/plain", typeof(ArgumentException))]
+  [TestCase("text/plain/", typeof(ArgumentException))]
+  [TestCase("text/plain/foo", typeof(ArgumentException))]
+  public void Constructor_String_ArgumentException(string mimeType, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
+
+  [TestCase(null, null, typeof(ArgumentNullException))]
+  [TestCase("text", null, typeof(ArgumentNullException))]
+  [TestCase(null, "plain", typeof(ArgumentNullException))]
+  [TestCase("", "", typeof(ArgumentException))]
+  [TestCase("text", "", typeof(ArgumentException))]
+  [TestCase("", "plain", typeof(ArgumentException))]
+  public void Constructor_String_String_ArgumentException(string type, string subtype, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => new MimeType(type, subtype));
+
+  [TestCase(null, null, typeof(ArgumentNullException))]
+  [TestCase("text", null, typeof(ArgumentNullException))]
+  [TestCase(null, "plain", typeof(ArgumentNullException))]
+  [TestCase("", "", typeof(ArgumentException))]
+  [TestCase("text", "", typeof(ArgumentException))]
+  [TestCase("", "plain", typeof(ArgumentException))]
+  public void Constructor_ValueTuple2_ArgumentException(string type, string subtype, Type expectedExceptionType)
   {
-    Assert.Throws<ArgumentNullException>(() => new MimeType((string)null), "#1");
-    Assert.Throws<ArgumentException>(() => new MimeType(string.Empty), "#2");
-    Assert.Throws<ArgumentException>(() => new MimeType("text"), "#3");
-    Assert.Throws<ArgumentException>(() => new MimeType("text/"), "#4");
-    Assert.Throws<ArgumentException>(() => new MimeType("/plain"), "#5");
-    Assert.Throws<ArgumentException>(() => new MimeType("text/plain/hoge"), "#6");
+    var mimeType = (type, subtype);
 
-    Assert.Throws<ArgumentNullException>(() => new MimeType(null, "foo"), "#7");
-    Assert.Throws<ArgumentException>(() => new MimeType(string.Empty, "foo"), "#8");
-
-    Assert.Throws<ArgumentNullException>(() => new MimeType("foo", null), "#9");
-    Assert.Throws<ArgumentException>(() => new MimeType("foo", string.Empty), "#10");
-
-    Assert.Throws<ArgumentNullException>(() => new MimeType((null, "foo")), "#11");
-    Assert.Throws<ArgumentException>(() => new MimeType((string.Empty, "foo")), "#12");
-
-    Assert.Throws<ArgumentNullException>(() => new MimeType(("foo", null)), "#13");
-    Assert.Throws<ArgumentException>(() => new MimeType(("foo", string.Empty)), "#14");
+    Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
   }
 
   [Test]
