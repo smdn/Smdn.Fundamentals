@@ -59,14 +59,14 @@ public partial class MimeType {
     if (subType.Length == 0)
       throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(subType));
 
-    this.Type = type;
-    this.SubType = subType;
+    Type = type;
+    SubType = subType;
   }
 
   public void Deconstruct(out string type, out string subType)
   {
-    type = this.Type;
-    subType = this.SubType;
+    type = Type;
+    subType = SubType;
   }
 
   public override int GetHashCode() => ToString().GetHashCode();
