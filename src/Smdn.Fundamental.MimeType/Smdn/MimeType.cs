@@ -14,13 +14,13 @@ public partial class MimeType {
   /*
    * class members
    */
-  public static readonly MimeType TextPlain                   = CreateTextType("plain");
-  public static readonly MimeType MultipartAlternative        = CreateMultipartType("alternative");
-  public static readonly MimeType MultipartMixed              = CreateMultipartType("mixed");
-  public static readonly MimeType ApplicationOctetStream      = CreateApplicationType("octet-stream");
-  public static readonly MimeType MessagePartial              = new("message", "partial");
-  public static readonly MimeType MessageExternalBody         = new("message", "external-body");
-  public static readonly MimeType MessageRfc822               = new("message", "rfc822");
+  public static readonly MimeType TextPlain                   = CreateTextType("plain"); // [RFC2046]
+  public static readonly MimeType MultipartAlternative        = CreateMultipartType("alternative"); // [RFC2046]
+  public static readonly MimeType MultipartMixed              = CreateMultipartType("mixed"); // [RFC2046]
+  public static readonly MimeType ApplicationOctetStream        = CreateApplicationType("octet-stream"); // [RFC2046]
+  public static readonly MimeType MessagePartial              = new("message", "partial"); // [RFC2046]
+  public static readonly MimeType MessageExternalBody         = new("message", "external-body"); // [RFC2046]
+  public static readonly MimeType MessageRfc822               = new("message", "rfc822"); // [RFC2046]
 
   // TODO: rename param `subtype` to `subType`
   public static MimeType CreateTextType(string subtype) => new("text", subtype);
