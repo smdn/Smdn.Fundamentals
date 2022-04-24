@@ -9,6 +9,16 @@ namespace Smdn;
  */
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public partial class MimeType {
+  private const string TopLevelTypeApplication = "application";
+  private const string TopLevelTypeAudio = "audio";
+  private const string TopLevelTypeImage = "image";
+  private const string TopLevelTypeMessage = "message";
+  private const string TopLevelTypeMultipart = "multipart";
+  private const string TopLevelTypeText = "text";
+  private const string TopLevelTypeVideo = "video";
+  private const string TopLevelTypeModel = "model"; // [RFC2077] The Model Primary Content Type for Multipurpose Internet Mail Extensions
+  private const string TopLevelTypeFont = "font"; // [RFC8081] The "font" Top-Level Media Type
+
   /*
    * class members
    */
@@ -22,21 +32,21 @@ public partial class MimeType {
   public static readonly MimeType MultipartFormData           = CreateMultipartType("form-data"); // [RFC7578]
   public static readonly MimeType ApplicationOctetStream        = CreateApplicationType("octet-stream"); // [RFC2046]
   public static readonly MimeType ApplicationXWwwFormUrlEncoded = CreateApplicationType("x-www-form-urlencoded"); // WHATWG
-  public static readonly MimeType MessagePartial              = new("message", "partial"); // [RFC2046]
-  public static readonly MimeType MessageExternalBody         = new("message", "external-body"); // [RFC2046]
-  public static readonly MimeType MessageRfc822               = new("message", "rfc822"); // [RFC2046]
+  public static readonly MimeType MessagePartial              = new(TopLevelTypeMessage, "partial"); // [RFC2046]
+  public static readonly MimeType MessageExternalBody         = new(TopLevelTypeMessage, "external-body"); // [RFC2046]
+  public static readonly MimeType MessageRfc822               = new(TopLevelTypeMessage, "rfc822"); // [RFC2046]
 
   // TODO: rename param `subtype` to `subType`
-  public static MimeType CreateTextType(string subtype) => new("text", subtype);
-  public static MimeType CreateImageType(string subtype) => new("image", subtype);
-  public static MimeType CreateAudioType(string subtype) => new("audio", subtype);
-  public static MimeType CreateVideoType(string subtype) => new("video", subtype);
-  public static MimeType CreateApplicationType(string subtype) => new("application", subtype);
-  public static MimeType CreateMultipartType(string subtype) => new("multipart", subtype);
+  public static MimeType CreateTextType(string subtype) => new(TopLevelTypeText, subtype);
+  public static MimeType CreateImageType(string subtype) => new(TopLevelTypeImage, subtype);
+  public static MimeType CreateAudioType(string subtype) => new(TopLevelTypeAudio, subtype);
+  public static MimeType CreateVideoType(string subtype) => new(TopLevelTypeVideo, subtype);
+  public static MimeType CreateApplicationType(string subtype) => new(TopLevelTypeApplication, subtype);
+  public static MimeType CreateMultipartType(string subtype) => new(TopLevelTypeMultipart, subtype);
   // [RFC2077] The Model Primary Content Type for Multipurpose Internet Mail Extensions
-  public static MimeType CreateModelType(string subtype) => new("model", subtype);
+  public static MimeType CreateModelType(string subtype) => new(TopLevelTypeModel, subtype);
   // [RFC8081] The "font" Top-Level Media Type
-  public static MimeType CreateFontType(string subtype) => new("font", subtype);
+  public static MimeType CreateFontType(string subtype) => new(TopLevelTypeFont, subtype);
 
   /*
    * instance members
