@@ -16,11 +16,14 @@ public partial class MimeType {
    */
   public static readonly MimeType TextPlain                   = CreateTextType("plain"); // [RFC2046]
   public static readonly MimeType TextRtf                     = CreateTextType("rtf"); // [RFC2046]
+  public static readonly MimeType TextHtml                    = CreateTextType("html"); // W3C
   public static readonly MimeType MultipartAlternative        = CreateMultipartType("alternative"); // [RFC2046]
   public static readonly MimeType MultipartDigest             = CreateMultipartType("digest"); // [RFC2046]
   public static readonly MimeType MultipartMixed              = CreateMultipartType("mixed"); // [RFC2046]
   public static readonly MimeType MultipartParallel           = CreateMultipartType("parallel"); // [RFC2046]
+  public static readonly MimeType MultipartFormData           = CreateMultipartType("form-data"); // [RFC7578]
   public static readonly MimeType ApplicationOctetStream        = CreateApplicationType("octet-stream"); // [RFC2046]
+  public static readonly MimeType ApplicationXWwwFormUrlEncoded = CreateApplicationType("x-www-form-urlencoded"); // WHATWG
   public static readonly MimeType MessagePartial              = new("message", "partial"); // [RFC2046]
   public static readonly MimeType MessageExternalBody         = new("message", "external-body"); // [RFC2046]
   public static readonly MimeType MessageRfc822               = new("message", "rfc822"); // [RFC2046]
