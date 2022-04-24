@@ -6,6 +6,9 @@ using System;
 
 namespace Smdn;
 
+/*
+ * [RFC2046] Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types
+ */
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public partial class MimeType {
   /*
@@ -19,6 +22,7 @@ public partial class MimeType {
   public static readonly MimeType MessageExternalBody         = new("message", "external-body");
   public static readonly MimeType MessageRfc822               = new("message", "rfc822");
 
+  // TODO: rename param `subtype` to `subType`
   public static MimeType CreateTextType(string subtype) => new("text", subtype);
   public static MimeType CreateImageType(string subtype) => new("image", subtype);
   public static MimeType CreateAudioType(string subtype) => new("audio", subtype);
