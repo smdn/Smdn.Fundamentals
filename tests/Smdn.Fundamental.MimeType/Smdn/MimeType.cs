@@ -8,8 +8,11 @@ namespace Smdn;
 [TestFixture()]
 public partial class MimeTypeTests {
   [TestCase(nameof(MimeType.TextPlain), "text", "plain")]
+  [TestCase(nameof(MimeType.TextRtf), "text", "rtf")]
   [TestCase(nameof(MimeType.MultipartAlternative), "multipart", "alternative")]
+  [TestCase(nameof(MimeType.MultipartDigest), "multipart", "digest")]
   [TestCase(nameof(MimeType.MultipartMixed), "multipart", "mixed")]
+  [TestCase(nameof(MimeType.MultipartParallel), "multipart", "parallel")]
   [TestCase(nameof(MimeType.ApplicationOctetStream), "application", "octet-stream")]
   [TestCase(nameof(MimeType.MessagePartial), "message", "partial")]
   [TestCase(nameof(MimeType.MessageExternalBody), "message", "external-body")]
