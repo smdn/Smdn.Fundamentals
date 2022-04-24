@@ -1,7 +1,5 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#nullable enable
-
 #if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
 #define MICROSOFT_WIN32_REGISTRY
 #endif
