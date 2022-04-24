@@ -15,7 +15,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
-    <PackageTags>MIME;MIME-type</PackageTags>
+    <PackageTags>MIME;MIME-type;media-type;content-type;RFC2046;RFC2077;RFC6838;RFC8081</PackageTags>
   </PropertyGroup>
 
   <!-- enable feature 'generic math' -->
