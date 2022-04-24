@@ -7,6 +7,19 @@ namespace Smdn;
 
 [TestFixture()]
 public partial class MimeTypeTests {
+  [TestCase(nameof(MimeType.TextPlain), "text", "plain")]
+  [TestCase(nameof(MimeType.MultipartAlternative), "multipart", "alternative")]
+  [TestCase(nameof(MimeType.MultipartMixed), "multipart", "mixed")]
+  [TestCase(nameof(MimeType.ApplicationOctetStream), "application", "octet-stream")]
+  [TestCase(nameof(MimeType.MessagePartial), "message", "partial")]
+  [TestCase(nameof(MimeType.MessageExternalBody), "message", "external-body")]
+  [TestCase(nameof(MimeType.MessageRfc822), "message", "rfc822")]
+  public void MimeTypeFields(string fieldName, string expectedMimeType, string expectedMimeSubType)
+    => Assert.AreEqual(
+      new MimeType(expectedMimeType, expectedMimeSubType),
+      typeof(MimeType).GetField(fieldName)?.GetValue(null) as MimeType
+    );
+
   [TestCase("text/plain", "text", "plain")]
   [TestCase("message/rfc822", "message", "rfc822")]
   [TestCase("application/rdf+xml", "application", "rdf+xml")]
