@@ -10,7 +10,9 @@ partial class MimeTypeTests {
   public void Equals_Object()
   {
     Assert.IsTrue(MimeType.TextPlain.Equals((object)new MimeType("text/plain")), "MimeType");
+    Assert.IsFalse(MimeType.TextPlain.Equals((object)new MimeType("TEXT/PLAIN")), "MimeType");
     Assert.IsTrue(MimeType.TextPlain.Equals((object)"text/plain"), "string");
+    Assert.IsFalse(MimeType.TextPlain.Equals((object)"TEXT/PLAIN"), "string");
     Assert.IsFalse(MimeType.TextPlain.Equals((object)0), "int");
     Assert.IsFalse(MimeType.TextPlain.Equals((object)false), "bool");
   }
@@ -23,7 +25,9 @@ partial class MimeTypeTests {
   [TestCase("image", "plain", "text", "plain", false)]
   [TestCase("application", "octet-stream", "text", "plain", false)]
   public void Equals(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).Equals(new MimeType(typeY, subtypeY)));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text/plain", true)]
   [TestCase("text", "plain", "text/PLAIN", false)]
@@ -33,7 +37,9 @@ partial class MimeTypeTests {
   [TestCase("image", "plain", "text/plain", false)]
   [TestCase("application", "octet-stream", "text/plain", false)]
   public void Equals_String(string typeX, string subtypeX, string other, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).Equals(other));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text", "plain", true)]
   [TestCase("text", "plain", "text", "PLAIN", true)]
@@ -43,7 +49,9 @@ partial class MimeTypeTests {
   [TestCase("image", "plain", "text", "plain", false)]
   [TestCase("application", "octet-stream", "text", "plain", false)]
   public void EqualsIgnoreCase(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).EqualsIgnoreCase(new MimeType(typeY, subtypeY)));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text/plain", true)]
   [TestCase("text", "plain", "text/PLAIN", true)]
@@ -53,7 +61,9 @@ partial class MimeTypeTests {
   [TestCase("image", "plain", "text/plain", false)]
   [TestCase("application", "octet-stream", "text/plain", false)]
   public void EqualsIgnoreCase_String(string typeX, string subtypeX, string other, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).EqualsIgnoreCase(other));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text/plain", StringComparison.Ordinal, true)]
   [TestCase("text", "plain", "text/plain", StringComparison.OrdinalIgnoreCase, true)]
@@ -78,7 +88,9 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "text", "html", true)]
   [TestCase("text", "plain", "image", "x-icon", false)]
   public void TypeEquals(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).TypeEquals(new MimeType(typeY, subtypeY)));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text", "plain", true)]
   [TestCase("text", "plain", "text", "PLAIN", true)]
@@ -86,21 +98,27 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "text", "html", true)]
   [TestCase("text", "plain", "image", "x-icon", false)]
   public void TypeEqualsIgnoreCase(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).TypeEqualsIgnoreCase(new MimeType(typeY, subtypeY)));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text", true)]
   [TestCase("text", "plain", "TEXT", false)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
   public void TypeEquals_String(string typeX, string subtypeX, string typeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).TypeEquals(typeY));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text", true)]
   [TestCase("text", "plain", "TEXT", true)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
   public void TypeEqualsIgnoreCase_String(string typeX, string subtypeX, string typeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).TypeEqualsIgnoreCase(typeY));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text", StringComparison.Ordinal, true)]
   [TestCase("text", "plain", "text", StringComparison.OrdinalIgnoreCase, true)]
@@ -117,7 +135,9 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "text", "html", false)]
   [TestCase("text", "plain", "image", "plain", true)]
   public void SubTypeEquals(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).SubTypeEquals(new MimeType(typeY, subtypeY)));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "text", "plain", true)]
   [TestCase("text", "plain", "text", "PLAIN", true)]
@@ -125,21 +145,27 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "text", "html", false)]
   [TestCase("text", "plain", "image", "plain", true)]
   public void SubTypeEqualsIgnoreCase(string typeX, string subtypeX, string typeY, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).SubTypeEqualsIgnoreCase(new MimeType(typeY, subtypeY)));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "plain", true)]
   [TestCase("text", "plain", "PLAIN", false)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
   public void SubTypeEquals_String(string typeX, string subtypeX, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).SubTypeEquals(subtypeY));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "plain", true)]
   [TestCase("text", "plain", "PLAIN", true)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
   public void SubTypeEqualsIgnoreCase_String(string typeX, string subtypeX, string subtypeY, bool expected)
+#pragma warning disable CS0618
     => Assert.AreEqual(expected, new MimeType(typeX, subtypeX).SubTypeEqualsIgnoreCase(subtypeY));
+#pragma warning restore CS0618
 
   [TestCase("text", "plain", "plain", StringComparison.Ordinal, true)]
   [TestCase("text", "plain", "plain", StringComparison.OrdinalIgnoreCase, true)]
