@@ -29,6 +29,10 @@ public partial class MimeType {
   public static MimeType CreateVideoType(string subtype) => new("video", subtype);
   public static MimeType CreateApplicationType(string subtype) => new("application", subtype);
   public static MimeType CreateMultipartType(string subtype) => new("multipart", subtype);
+  // [RFC2077] The Model Primary Content Type for Multipurpose Internet Mail Extensions
+  public static MimeType CreateModelType(string subtype) => new("model", subtype);
+  // [RFC8081] The "font" Top-Level Media Type
+  public static MimeType CreateFontType(string subtype) => new("font", subtype);
 
   /*
    * instance members

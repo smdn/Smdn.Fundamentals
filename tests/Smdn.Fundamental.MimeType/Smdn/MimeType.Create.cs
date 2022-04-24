@@ -55,4 +55,16 @@ public partial class MimeTypeTests {
   [TestCase("", null, typeof(ArgumentException))]
   public void CreateMultipartType(string subType, string expectedMimeType, Type expectedExceptionType)
     => TestCreate(() => MimeType.CreateMultipartType(subType), expectedMimeType, expectedExceptionType);
+
+  [TestCase("mesh", "model/mesh", null)]
+  [TestCase(null, null, typeof(ArgumentNullException))]
+  [TestCase("", null, typeof(ArgumentException))]
+  public void CreateModelType(string subType, string expectedMimeType, Type expectedExceptionType)
+    => TestCreate(() => MimeType.CreateModelType(subType), expectedMimeType, expectedExceptionType);
+
+  [TestCase("ttf", "font/ttf", null)]
+  [TestCase(null, null, typeof(ArgumentNullException))]
+  [TestCase("", null, typeof(ArgumentException))]
+  public void CreateFontType(string subType, string expectedMimeType, Type expectedExceptionType)
+    => TestCreate(() => MimeType.CreateFontType(subType), expectedMimeType, expectedExceptionType);
 }
