@@ -6,6 +6,8 @@ namespace Smdn;
 
 /*
  * [RFC2046] Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types
+ *
+ * ref: https://www.iana.org/assignments/media-types/media-types.xhtml
  */
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public partial class MimeType {
