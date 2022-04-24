@@ -158,6 +158,23 @@ partial class MimeType
       };
     }
 
+    /*
+     * [RFC6838] Media Type Specifications and Registration Procedures 4.2.  Naming Requirements
+     * 'Also note that while this syntax allows names of up to
+     * 127 characters, implementation limits may make such long names
+     * problematic.  For this reason, <type-name> and <subtype-name> SHOULD
+     * be limited to 64 characters.'
+     */
+    const int maxCharcters = 127;
+
+    if (maxCharcters < s.Length) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException($"input too long (must be up to {maxCharcters} characters)", paramName),
+        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {maxCharcters} characters)"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
+
     var indexOfDelimiter = s.IndexOf('/');
 
     if (indexOfDelimiter < 0) {

@@ -11,6 +11,7 @@ partial class MimeTypeTests {
     yield return new object[] { "text/plain", MimeType.TextPlain };
     yield return new object[] { "message/rfc822", MimeType.MessageRfc822 };
     yield return new object[] { "application/rdf+xml", MimeType.CreateApplicationType("rdf+xml") };
+    yield return new object[] { new string('x', 63) + "/" + new string('x', 63), new MimeType(new string('x', 63), new string('x', 63)) };
   }
 
   private static System.Collections.IEnumerable YieldParseInvalidFormatTestCases()
@@ -23,6 +24,9 @@ partial class MimeTypeTests {
     yield return new object[] { "/plain", typeof(FormatException) };
     yield return new object[] { "text/plain/", typeof(FormatException) };
     yield return new object[] { "text/plain/foo", typeof(FormatException) };
+    yield return new object[] { new string('x', 63) + "/" + new string('x', 64), typeof(FormatException) };
+    yield return new object[] { new string('x', 64) + "/" + new string('x', 63), typeof(FormatException) };
+    yield return new object[] { new string('x', 64) + "/" + new string('x', 64), typeof(FormatException) };
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
