@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.MimeType
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+73609d14a9c7ae47c72f6d32f87ad6ebc0a2d166
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System;
