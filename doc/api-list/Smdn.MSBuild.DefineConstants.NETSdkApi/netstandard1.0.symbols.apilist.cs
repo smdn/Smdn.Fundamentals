@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.2.3
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.2.4
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.2.3
+//   InformationalVersion: 1.2.4
 
 // List of symbols defined on target framework 'netstandard1.0'
 #define SYSTEM_ENUM_TRYPARSE_OF_TENUM // System.Enum.TryParse<TEnum> (NETFRAMEWORK || NETSTANDARD1_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
