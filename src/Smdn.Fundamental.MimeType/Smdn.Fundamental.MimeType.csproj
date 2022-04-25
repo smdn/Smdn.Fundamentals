@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <TargetFrameworks>net471;net45;netstandard2.1;netstandard2.0;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net6.0;net471;net45;netstandard2.1;netstandard2.0;netstandard1.6;netstandard1.3</TargetFrameworks>
     <VersionPrefix>3.0.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
@@ -23,7 +23,7 @@ SPDX-License-Identifier: MIT
   <Import Project="..\FeatureGenericMath.props" />
 
   <ItemGroup>
-    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference VersionRange="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.ValueTuple" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
