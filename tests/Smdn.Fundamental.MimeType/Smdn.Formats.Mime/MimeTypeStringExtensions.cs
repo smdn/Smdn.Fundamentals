@@ -3,7 +3,7 @@
 using System;
 using NUnit.Framework;
 
-namespace Smdn;
+namespace Smdn.Formats.Mime;
 
 [TestFixture()]
 public class MimeTypeStringExtensionsTests {

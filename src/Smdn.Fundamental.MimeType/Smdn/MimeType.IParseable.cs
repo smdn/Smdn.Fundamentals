@@ -11,6 +11,8 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 #endif
 
+using Smdn.Formats.Mime;
+
 namespace Smdn;
 
 #pragma warning disable IDE0040
@@ -22,7 +24,7 @@ partial class MimeType
 #endif
 {
 #if OBSOLETE_MEMBER
-  [Obsolete($"The method will be deprecated in the future release. Use {nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.TrySplit)}() instead.")]
+  [Obsolete($"The method will be deprecated in the future release. Use Smdn.Formats.Mime.{nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.TrySplit)}() instead.")]
   public static bool TryParse(
     string? s,
 #pragma warning disable SA1316
@@ -96,7 +98,7 @@ partial class MimeType
   }
 
 #if OBSOLETE_MEMBER
-  [Obsolete($"The return type of this method will be changed to MimeType in the future release. Use Use {nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.Split)}() instead.")]
+  [Obsolete($"The return type of this method will be changed to MimeType in the future release. Use Use Smdn.Formats.Mime.{nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.Split)}() instead.")]
 #pragma warning disable SA1316
   public static (string type, string subType) Parse(string s)
     => MimeTypeStringExtensions.Split(s);

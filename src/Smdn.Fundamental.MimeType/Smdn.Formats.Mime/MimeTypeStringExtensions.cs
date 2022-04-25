@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 
-namespace Smdn;
+namespace Smdn.Formats.Mime;
 
 public static class MimeTypeStringExtensions {
   public static bool TrySplit(
