@@ -98,7 +98,7 @@ partial class MimeType
   }
 
 #if OBSOLETE_MEMBER
-  [Obsolete($"The return type of this method will be changed to MimeType in the future release. Use Use Smdn.Formats.Mime.{nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.Split)}() instead.")]
+  [Obsolete($"The return type of this method will be changed to MimeType in the future release. Use Smdn.Formats.Mime.{nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.Split)}() instead.")]
 #pragma warning disable SA1316
   public static (string type, string subType) Parse(string s)
     => MimeTypeStringExtensions.Split(s);
