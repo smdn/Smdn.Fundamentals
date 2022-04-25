@@ -1,17 +1,15 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NET5_0_OR_GREATER
-#define MICROSOFT_WIN32_REGISTRY
-#endif
-
-#if MICROSOFT_WIN32_REGISTRY
-using Microsoft.Win32;
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Runtime.InteropServices;
+#if SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMATTRIBUTE || SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMGUARDATTRIBUTE
+using System.Runtime.Versioning;
+#endif
+#if MICROSOFT_WIN32_REGISTRY
+using Microsoft.Win32;
+#endif
 namespace Smdn;
 
 #pragma warning disable IDE0040
@@ -19,7 +17,10 @@ partial class MimeType {
 #pragma warning restore IDE0040
   private const string DefaultMimeTypesFile = "/etc/mime.types";
 
-  private static bool IsRunningOnWindows => System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows);
+#if SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMGUARDATTRIBUTE
+  [SupportedOSPlatformGuard("windows")]
+#endif
+  private static bool IsRunningOnWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
   public static MimeType? FindMimeTypeByExtension(string extensionOrPath) => FindMimeTypeByExtension(extensionOrPath, DefaultMimeTypesFile);
 
@@ -85,6 +86,9 @@ partial class MimeType {
     return null;
   }
 
+#if SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMATTRIBUTE
+  [SupportedOSPlatform("windows")]
+#endif
   private static MimeType? FindMimeTypeByExtensionWin(string extensionOrPath)
   {
     var extension = Path.GetExtension(extensionOrPath);
@@ -148,6 +152,9 @@ partial class MimeType {
     }
   }
 
+#if SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMATTRIBUTE
+  [SupportedOSPlatform("windows")]
+#endif
   private static IEnumerable<string> FindExtensionsByMimeTypeWin(string mimeType)
   {
 #if MICROSOFT_WIN32_REGISTRY
