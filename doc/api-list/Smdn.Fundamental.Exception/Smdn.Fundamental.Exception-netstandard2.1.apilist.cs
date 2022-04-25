@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.2)
+// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.3)
 //   Name: Smdn.Fundamental.Exception
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+ca9595af421c26474f7e6fe593fc9def4ab21784
+//   AssemblyVersion: 3.0.3.0
+//   InformationalVersion: 3.0.3+501637c48b59b5e1527398dfc5b219db6419f3fb
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
