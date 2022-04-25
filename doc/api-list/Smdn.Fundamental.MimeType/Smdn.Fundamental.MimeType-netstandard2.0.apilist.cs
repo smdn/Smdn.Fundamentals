@@ -1,67 +1,168 @@
-// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-3.0.2)
+// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-3.1.0)
 //   Name: Smdn.Fundamental.MimeType
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+53f78e8e599784381721a51f463d3202aeade3d8
+//   AssemblyVersion: 3.1.0.0
+//   InformationalVersion: 3.1.0+73609d14a9c7ae47c72f6d32f87ad6ebc0a2d166
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Smdn;
 
 namespace Smdn {
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class MimeType :
     IEquatable<MimeType>,
-    IEquatable<string>
+    IEquatable<string>,
+    IFormattable
   {
     public static readonly MimeType ApplicationOctetStream; // = "application/octet-stream"
+    public static readonly MimeType ApplicationXWwwFormUrlEncoded; // = "application/x-www-form-urlencoded"
     public static readonly MimeType MessageExternalBody; // = "message/external-body"
     public static readonly MimeType MessagePartial; // = "message/partial"
     public static readonly MimeType MessageRfc822; // = "message/rfc822"
     public static readonly MimeType MultipartAlternative; // = "multipart/alternative"
+    public static readonly MimeType MultipartDigest; // = "multipart/digest"
+    public static readonly MimeType MultipartFormData; // = "multipart/form-data"
     public static readonly MimeType MultipartMixed; // = "multipart/mixed"
+    public static readonly MimeType MultipartParallel; // = "multipart/parallel"
+    public static readonly MimeType TextHtml; // = "text/html"
     public static readonly MimeType TextPlain; // = "text/plain"
+    public static readonly MimeType TextRtf; // = "text/rtf"
 
-    public MimeType((string type, string subType) mimeType) {}
+    public MimeType([Nullable] (string type, string subType) mimeType) {}
     public MimeType(string mimeType) {}
     public MimeType(string type, string subType) {}
 
+    public bool IsApplication { get; }
+    public bool IsApplicationOctetStream { get; }
+    public bool IsApplicationXWwwFormUrlEncoded { get; }
+    public bool IsAudio { get; }
+    public bool IsFont { get; }
+    public bool IsImage { get; }
+    public bool IsMessage { get; }
+    public bool IsMessageExternalBody { get; }
+    public bool IsMessagePartial { get; }
+    public bool IsMessageRfc822 { get; }
+    public bool IsModel { get; }
+    public bool IsMultipart { get; }
+    public bool IsMultipartAlternative { get; }
+    public bool IsMultipartDigest { get; }
+    public bool IsMultipartFormData { get; }
+    public bool IsMultipartMixed { get; }
+    public bool IsMultipartParallel { get; }
+    public bool IsText { get; }
+    public bool IsTextHtml { get; }
+    public bool IsTextPlain { get; }
+    public bool IsVideo { get; }
     public string SubType { get; }
     public string Type { get; }
 
     public static MimeType CreateApplicationType(string subtype) {}
     public static MimeType CreateAudioType(string subtype) {}
+    public static MimeType CreateFontType(string subtype) {}
     public static MimeType CreateImageType(string subtype) {}
+    public static MimeType CreateModelType(string subtype) {}
     public static MimeType CreateMultipartType(string subtype) {}
     public static MimeType CreateTextType(string subtype) {}
     public static MimeType CreateVideoType(string subtype) {}
     public void Deconstruct(out string type, out string subType) {}
+    [Obsolete("Use `Equals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
+    [NullableContext(2)]
     public bool Equals(MimeType other) {}
+    [NullableContext(2)]
+    public bool Equals(MimeType other, StringComparison comparisonType) {}
+    [NullableContext(byte.MinValue)]
+    public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase) {}
+    [Obsolete("Use `Equals(string, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
+    [NullableContext(2)]
     public bool Equals(string other) {}
+    [NullableContext(2)]
+    public bool Equals(string other, StringComparison comparisonType) {}
+    [NullableContext(2)]
     public override bool Equals(object obj) {}
+    [Obsolete("Use `Equals(MimeType, StringComparison)` instead.")]
+    [NullableContext(2)]
     public bool EqualsIgnoreCase(MimeType other) {}
+    [Obsolete("Use `Equals(string, StringComparison)` instead.")]
+    [NullableContext(2)]
     public bool EqualsIgnoreCase(string other) {}
     public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType) {}
     public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile) {}
     public static IEnumerable<string> FindExtensionsByMimeType(string mimeType) {}
     public static IEnumerable<string> FindExtensionsByMimeType(string mimeType, string mimeTypesFile) {}
-    public static MimeType FindMimeTypeByExtension(string extensionOrPath) {}
-    public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile) {}
+    [return: Nullable(2)] public static MimeType FindMimeTypeByExtension(string extensionOrPath) {}
+    [return: Nullable(2)] public static MimeType FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile) {}
     public override int GetHashCode() {}
-    public static (string type, string subType) Parse(string s) {}
+    [NullableContext(byte.MinValue)]
+    [return: Nullable(1)] public static MimeType Parse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider = null) {}
+    [Obsolete("The return type of this method will be changed to MimeType in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.Split() instead.")]
+    [return: Nullable] public static (string type, string subType) Parse(string s) {}
+    public static MimeType Parse(string s, [Nullable(2)] IFormatProvider provider = null) {}
+    [Obsolete("Use `SubTypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
+    [NullableContext(2)]
     public bool SubTypeEquals(MimeType mimeType) {}
+    [NullableContext(2)]
+    public bool SubTypeEquals(MimeType mimeType, StringComparison comparisonType) {}
+    [NullableContext(byte.MinValue)]
+    public bool SubTypeEquals(ReadOnlySpan<char> subType, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase) {}
+    [Obsolete("Use `SubTypeEquals(string, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
+    [NullableContext(2)]
     public bool SubTypeEquals(string subType) {}
+    [NullableContext(2)]
+    public bool SubTypeEquals(string subType, StringComparison comparisonType) {}
+    [Obsolete("Use `SubTypeEquals(MimeType, StringComparison)` instead.")]
+    [NullableContext(2)]
     public bool SubTypeEqualsIgnoreCase(MimeType mimeType) {}
+    [Obsolete("Use `SubTypeEquals(string, StringComparison)` instead.")]
+    [NullableContext(2)]
     public bool SubTypeEqualsIgnoreCase(string subType) {}
+    [NullableContext(2)]
+    [return: Nullable(1)] public string ToString(string format, IFormatProvider formatProvider) {}
     public override string ToString() {}
-    public static bool TryParse(string s, out (string type, string subType) result) {}
+    [NullableContext(byte.MinValue)]
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, [Nullable(2)] IFormatProvider provider) {}
+    [NullableContext(byte.MinValue)]
+    public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, [Nullable(1)] out MimeType result) {}
+    [NullableContext(2)]
+    public static bool TryParse(string s, IFormatProvider provider, [Nullable(1)] out MimeType result) {}
+    [Obsolete("The method will be deprecated in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.TrySplit() instead.")]
+    [NullableContext(2)]
+    public static bool TryParse(string s, [Nullable] out (string type, string subType) result) {}
+    [NullableContext(2)]
     public static bool TryParse(string s, out MimeType result) {}
+    [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
+    [NullableContext(2)]
     public bool TypeEquals(MimeType mimeType) {}
+    [NullableContext(2)]
+    public bool TypeEquals(MimeType mimeType, StringComparison comparisonType) {}
+    [NullableContext(byte.MinValue)]
+    public bool TypeEquals(ReadOnlySpan<char> type, StringComparison comparisonType = StringComparison.OrdinalIgnoreCase) {}
+    [Obsolete("Use `TypeEquals(string, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
+    [NullableContext(2)]
     public bool TypeEquals(string type) {}
+    [NullableContext(2)]
+    public bool TypeEquals(string type, StringComparison comparisonType) {}
+    [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead.")]
+    [NullableContext(2)]
     public bool TypeEqualsIgnoreCase(MimeType mimeType) {}
+    [Obsolete("Use `TypeEquals(string, StringComparison)` instead.")]
+    [NullableContext(2)]
     public bool TypeEqualsIgnoreCase(string type) {}
+    [NullableContext(2)]
     public static explicit operator string(MimeType mimeType) {}
+  }
+}
+
+namespace Smdn.Formats.Mime {
+  [Nullable(byte.MinValue)]
+  [NullableContext(2)]
+  public static class MimeTypeStringExtensions {
+    [return: Nullable] public static (string Type, string SubType) Split(string mimeType) {}
+    public static bool TrySplit(string mimeType, [Nullable] out (string Type, string SubType) result) {}
   }
 }
 

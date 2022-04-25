@@ -2,11 +2,12 @@
 //   Name: Smdn.Fundamental.MimeType
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+73609d14a9c7ae47c72f6d32f87ad6ebc0a2d166
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Smdn;
 
@@ -17,7 +18,7 @@ namespace Smdn {
   public class MimeType :
     IEquatable<MimeType>,
     IEquatable<string>,
-    IFormattable
+    ISpanFormattable
   {
     public static readonly MimeType ApplicationOctetStream; // = "application/octet-stream"
     public static readonly MimeType ApplicationXWwwFormUrlEncoded; // = "application/x-www-form-urlencoded"
@@ -128,12 +129,12 @@ namespace Smdn {
     [NullableContext(byte.MinValue)]
     public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, [Nullable(1)] out MimeType result) {}
     [NullableContext(2)]
-    public static bool TryParse(string s, IFormatProvider provider, [Nullable(1)] out MimeType result) {}
+    public static bool TryParse(string s, IFormatProvider provider, [NotNullWhen(true)] [Nullable(1)] out MimeType result) {}
+    [NullableContext(2)]
+    public static bool TryParse(string s, [NotNullWhen(true)] out MimeType result) {}
     [Obsolete("The method will be deprecated in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.TrySplit() instead.")]
     [NullableContext(2)]
     public static bool TryParse(string s, [Nullable] out (string type, string subType) result) {}
-    [NullableContext(2)]
-    public static bool TryParse(string s, out MimeType result) {}
     [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
     [NullableContext(2)]
     public bool TypeEquals(MimeType mimeType) {}
