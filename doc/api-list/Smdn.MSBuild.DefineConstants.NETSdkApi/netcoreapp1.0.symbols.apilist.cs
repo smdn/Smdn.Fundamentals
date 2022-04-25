@@ -1,8 +1,9 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.2.3
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.2.4
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.2.3
+//   InformationalVersion: 1.2.4
 
 // List of symbols defined on target framework 'netcoreapp1.0'
+#define MICROSOFT_WIN32_REGISTRY // Microsoft.Win32.Registry (NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_ARRAY_EMPTY // System.Array.Empty (NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_ASSEMBLY_GETEXPORTEDTYPES // System.Assembly.GetExportedTypes (NETFRAMEWORK || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_ASSEMBLY_GETTYPES // System.Assembly.GetTypes (NETFRAMEWORK || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
