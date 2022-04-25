@@ -64,16 +64,12 @@ partial class MimeType {
 
   private static MimeType? FindMimeTypeByExtensionUnix(string mimeTypesFile, string extensionOrPath)
   {
-    var extension = Path.GetExtension(extensionOrPath);
+    var extension = Path.GetExtension(extensionOrPath).AsSpan();
 
-#if SYSTEM_STRING_STARTSWITH_CHAR
-    if (extension.StartsWith('.'))
-#else
     if (0 < extension.Length && extension[0] == '.')
-#endif
-      extension = extension.Substring(1);
+      extension = extension.Slice(1);
 
-    if (extension.Length == 0)
+    if (extension.IsEmpty)
       return null;
 
     if (!File.Exists(mimeTypesFile))
@@ -81,7 +77,7 @@ partial class MimeType {
 
     foreach (var entry in ReadMimeTypesFileLines(mimeTypesFile)) {
       for (var index = 1; index < entry.Value.Length; index++) {
-        if (string.Equals(entry.Value[index], extension, StringComparison.OrdinalIgnoreCase))
+        if (extension.Equals(entry.Value[index].AsSpan(), StringComparison.OrdinalIgnoreCase))
           return new MimeType(entry.Key);
       }
     }
