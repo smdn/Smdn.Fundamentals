@@ -147,7 +147,7 @@ public class DateTimeFormatTests {
     );
 
   [Test]
-  public void ToISO8601DateTimeString_DateTime_DateTimeKindUtc()
+  public void ToISO8601DateTimeString_ReturnValueEqualsToToW3CDateTimeString()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
