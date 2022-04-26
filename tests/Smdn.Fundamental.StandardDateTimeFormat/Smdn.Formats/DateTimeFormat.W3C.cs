@@ -78,10 +78,18 @@ partial class DateTimeFormatTests {
 
   private static IEnumerable YieldTestCases_FromW3CDateTimeString_Utc()
   {
-    yield return new object[] { "2008-04-11T12:34:56.7893333Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.789Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc) };
-    yield return new object[] { "2008-04-11T12:34:56Z", new DateTime(2008, 4, 11, 12, 34, 56, DateTimeKind.Utc) };
-    yield return new object[] { "2008-04-11T12:34Z", new DateTime(2008, 4, 11, 12, 34, 0, DateTimeKind.Utc) };
+    foreach (var T in new[] { "T", " "}) {
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.789333Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc).AddTicks(3330) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.78933Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc).AddTicks(3300) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc).AddTicks(3000) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.789Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.78Z", new DateTime(2008, 4, 11, 12, 34, 56, 780, DateTimeKind.Utc) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7Z", new DateTime(2008, 4, 11, 12, 34, 56, 700, DateTimeKind.Utc) };
+      yield return new object[] { $"2008-04-11{T}12:34:56Z", new DateTime(2008, 4, 11, 12, 34, 56, DateTimeKind.Utc) };
+      yield return new object[] { $"2008-04-11{T}12:34Z", new DateTime(2008, 4, 11, 12, 34, 0, DateTimeKind.Utc) };
+      yield return new object[] { $"2008-04-11{T}12Z", new DateTime(2008, 4, 11, 12, 0, 0, DateTimeKind.Utc) };
+    }
   }
 
   [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeString_Utc))]
@@ -93,12 +101,20 @@ partial class DateTimeFormatTests {
 
   private static IEnumerable YieldTestCases_FromW3CDateTimeString_Local()
   {
-    yield return new object[] { "2008-04-11T12:34:56.7893333 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.7893333 -04:00", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.7893333 +12:45", new DateTime(2008, 4, 10, 23, 49, 56, 789, DateTimeKind.Local).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.789 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local) };
-    yield return new object[] { "2008-04-11T12:34:56 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, DateTimeKind.Local) };
-    yield return new object[] { "2008-04-11T12:34 +09:00", new DateTime(2008, 4, 11, 3, 34, 0, DateTimeKind.Local) };
+    foreach (var T in new[] { "T", " "}) {
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -04:00", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +12:45", new DateTime(2008, 4, 10, 23, 49, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.789333 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3330) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.78933 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3300) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3000) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.789 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.78 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 780, DateTimeKind.Local) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 700, DateTimeKind.Local) };
+      yield return new object[] { $"2008-04-11{T}12:34:56 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, DateTimeKind.Local) };
+      yield return new object[] { $"2008-04-11{T}12:34 +09:00", new DateTime(2008, 4, 11, 3, 34, 0, DateTimeKind.Local) };
+      yield return new object[] { $"2008-04-11{T}12 +09:00", new DateTime(2008, 4, 11, 3, 0, 0, DateTimeKind.Local) };
+    }
   }
 
   [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeString_Local))]
@@ -114,12 +130,21 @@ partial class DateTimeFormatTests {
 
   private static IEnumerable YieldTestCases_FromW3CDateTimeOffsetString()
   {
-    yield return new object[] { "2008-04-11T12:34:56.7893333 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.7893333 -04:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.7893333 +12:45", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(12) + TimeSpan.FromMinutes(45)).AddTicks(3333) };
-    yield return new object[] { "2008-04-11T12:34:56.789 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)) };
-    yield return new object[] { "2008-04-11T12:34:56 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, TimeSpan.FromHours(+9)) };
-    yield return new object[] { "2008-04-11T12:34 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 0, TimeSpan.FromHours(+9)) };
+    foreach (var T in new[] { "T", " "}) {
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -04:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +12:45", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(12) + TimeSpan.FromMinutes(45)).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.789333 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3330) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.78933 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3300) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3000) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.789 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.78 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 780, TimeSpan.FromHours(+9)) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 700, TimeSpan.FromHours(+9)) };
+      yield return new object[] { $"2008-04-11{T}12:34:56 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, TimeSpan.FromHours(+9)) };
+      yield return new object[] { $"2008-04-11{T}12:34:05 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 5, TimeSpan.FromHours(+9)) };
+      yield return new object[] { $"2008-04-11{T}12:34 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 0, TimeSpan.FromHours(+9)) };
+      yield return new object[] { $"2008-04-11{T}12 +09:00", new DateTimeOffset(2008, 4, 11, 12, 0, 0, TimeSpan.FromHours(+9)) };
+    }
   }
 
   [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeOffsetString))]
