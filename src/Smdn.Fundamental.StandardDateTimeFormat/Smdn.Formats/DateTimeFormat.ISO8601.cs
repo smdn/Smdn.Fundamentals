@@ -8,14 +8,17 @@ namespace Smdn.Formats;
 partial class DateTimeFormat {
 #pragma warning restore IDE0040
   public static string ToISO8601DateTimeString(DateTime dateTime)
-    => ToW3CDateTimeString(dateTime);
+    => dateTime.ToString("o");
 
   public static string ToISO8601DateTimeString(DateTimeOffset dateTimeOffset)
-    => ToW3CDateTimeString(dateTimeOffset);
+    => dateTimeOffset.ToString("o");
 
   public static DateTime FromISO8601DateTimeString(string s)
-    => FromW3CDateTimeString(s);
+    => FromDateTimeString(s, iso8601DateTimeFormats, iso8601UniversalTimeString);
 
   public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
-    => FromW3CDateTimeOffsetString(s);
+    => FromDateTimeOffsetString(s, iso8601DateTimeFormats, iso8601UniversalTimeString);
+
+  private static readonly string iso8601UniversalTimeString = w3cUniversalTimeString;
+  private static readonly string[] iso8601DateTimeFormats = w3cDateTimeFormats;
 }
