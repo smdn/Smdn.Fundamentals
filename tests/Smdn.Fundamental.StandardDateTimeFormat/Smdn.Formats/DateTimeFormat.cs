@@ -197,14 +197,6 @@ public class DateTimeFormatTests {
     );
   }
 
-  private static IEnumerable YieldTestCases_FromISO8601DateTimeString()
-  {
-    yield return new object[] { "2008-04-11T12:34:56.7893333Z" };
-    yield return new object[] { "" };
-    yield return new object[] { "2008-04-11T12:34:56.7893333Z" };
-    yield return new object[] { "2008-04-11T12:34:56.7893333Z" };
-  }
-
   [TestCase("2008-04-11T12:34:56.7893333Z")]
   [TestCase("2008-04-11T12:34:56.789Z")]
   [TestCase("2008-04-11T12:34:56Z")]
