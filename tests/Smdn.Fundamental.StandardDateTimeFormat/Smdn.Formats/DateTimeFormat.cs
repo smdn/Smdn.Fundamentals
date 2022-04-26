@@ -96,6 +96,8 @@ public class DateTimeFormatTests {
   private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local()
   {
     yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 -0400", new DateTime(2003, 6, 10, 13, 41, 1, 123, DateTimeKind.Local).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 +1245", new DateTime(2003, 6,  9, 20, 56, 1, 123, DateTimeKind.Local).AddTicks(4567) };
     yield return new object[] { "Tue, 10 Jun 2003 09:41:01.123 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local) };
     yield return new object[] { "Tue, 10 Jun 2003 09:41:01 +0900", new DateTime(2003, 6, 10, 0, 41, 1, DateTimeKind.Local) };
     yield return new object[] { "Tue, 10 Jun 2003 09:41 +0900", new DateTime(2003, 6, 10, 0, 41, 0, DateTimeKind.Local) };
@@ -115,6 +117,8 @@ public class DateTimeFormatTests {
   private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString()
   {
     yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 -0400", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(-4)).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 +1245", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(12) + TimeSpan.FromMinutes(45)).AddTicks(4567) };
     yield return new object[] { "Tue, 10 Jun 2003 09:41:01.123 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)) };
     yield return new object[] { "Tue, 10 Jun 2003 09:41:01 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, TimeSpan.FromHours(+9)) };
     yield return new object[] { "Tue, 10 Jun 2003 09:41 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 0, TimeSpan.FromHours(+9)) };
@@ -226,6 +230,8 @@ public class DateTimeFormatTests {
   private static IEnumerable YieldTestCases_FromW3CDateTimeString_Local()
   {
     yield return new object[] { "2008-04-11T12:34:56.7893333 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.7893333 -04:00", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.7893333 +12:45", new DateTime(2008, 4, 10, 23, 49, 56, 789, DateTimeKind.Local).AddTicks(3333) };
     yield return new object[] { "2008-04-11T12:34:56.789 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local) };
     yield return new object[] { "2008-04-11T12:34:56 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, DateTimeKind.Local) };
     yield return new object[] { "2008-04-11T12:34 +09:00", new DateTime(2008, 4, 11, 3, 34, 0, DateTimeKind.Local) };
@@ -245,6 +251,8 @@ public class DateTimeFormatTests {
   private static IEnumerable YieldTestCases_FromW3CDateTimeOffsetString()
   {
     yield return new object[] { "2008-04-11T12:34:56.7893333 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.7893333 -04:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.7893333 +12:45", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(12) + TimeSpan.FromMinutes(45)).AddTicks(3333) };
     yield return new object[] { "2008-04-11T12:34:56.789 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)) };
     yield return new object[] { "2008-04-11T12:34:56 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, TimeSpan.FromHours(+9)) };
     yield return new object[] { "2008-04-11T12:34 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 0, TimeSpan.FromHours(+9)) };
