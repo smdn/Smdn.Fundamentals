@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections;
 
 using NUnit.Framework;
 
@@ -77,254 +78,69 @@ public class DateTimeFormatTests {
     );
   }
 
-  [Test]
-  public void FromRFC822DateTimeString_Utc()
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Utc()
   {
-    var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 GMT");
-    var c = "case1";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(9, dtm.Hour, c);
-    Assert.AreEqual(41, dtm.Minute, c);
-    Assert.AreEqual(1, dtm.Second, c);
-    Assert.AreEqual(123, dtm.Millisecond, c);
-    Assert.AreEqual(4567, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.123 GMT");
-    c = "case2";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(9, dtm.Hour, c);
-    Assert.AreEqual(41, dtm.Minute, c);
-    Assert.AreEqual(1, dtm.Second, c);
-    Assert.AreEqual(123, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 GMT");
-    c = "case3";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(9, dtm.Hour, c);
-    Assert.AreEqual(41, dtm.Minute, c);
-    Assert.AreEqual(1, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41 GMT");
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(9, dtm.Hour, c);
-    Assert.AreEqual(41, dtm.Minute, c);
-    Assert.AreEqual(0, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.123 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01 GMT", new DateTime(2003, 6, 10, 9, 41, 1, DateTimeKind.Utc) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41 GMT", new DateTime(2003, 6, 10, 9, 41, 0, DateTimeKind.Utc) };
   }
 
-  [Test]
-  public void FromRFC822DateTimeString_Local()
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Utc))]
+  public void FromRFC822DateTimeString_Utc(string s, DateTime expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromRFC822DateTimeString(s)
+    );
+
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local()
   {
-    var localTimeZone = TimeZoneInfo.Local;
-    var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
-    var c = "case1";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(1, dtm.Second, c);
-    Assert.AreEqual(123, dtm.Millisecond, c);
-    Assert.AreEqual(4567, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.123 +0900");
-    c = "case2";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(1, dtm.Second, c);
-    Assert.AreEqual(123, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01 +0900");
-    c = "case3";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(1, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41 +0900");
-    c = "case4";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dtm.DayOfWeek, c);
-    Assert.AreEqual(10, dtm.Day, c);
-    Assert.AreEqual(6, dtm.Month, c);
-    Assert.AreEqual(2003, dtm.Year, c);
-    Assert.AreEqual(0 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(41 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(0, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.123 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01 +0900", new DateTime(2003, 6, 10, 0, 41, 1, DateTimeKind.Local) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41 +0900", new DateTime(2003, 6, 10, 0, 41, 0, DateTimeKind.Local) };
   }
 
-  [Test/*, Ignore("Mono Bug #547675")*/]
-  public void FromRFC822DateTimeOffsetString()
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local))]
+  public void FromRFC822DateTimeString_Local(string s, DateTime expected)
   {
-    var dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
-    var c = "case1";
+    var actual = DateTimeFormat.FromRFC822DateTimeString(s);
 
-    Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
-    Assert.AreEqual(10, dto.Day, c);
-    Assert.AreEqual(6, dto.Month, c);
-    Assert.AreEqual(2003, dto.Year, c);
-    Assert.AreEqual(9, dto.Hour, c);
-    Assert.AreEqual(41, dto.Minute, c);
-    Assert.AreEqual(1, dto.Second, c);
-    Assert.AreEqual(123, dto.Millisecond, c);
-    Assert.AreEqual(4567, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.123 +0900");
-    c = "case2";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
-    Assert.AreEqual(10, dto.Day, c);
-    Assert.AreEqual(6, dto.Month, c);
-    Assert.AreEqual(2003, dto.Year, c);
-    Assert.AreEqual(9, dto.Hour, c);
-    Assert.AreEqual(41, dto.Minute, c);
-    Assert.AreEqual(1, dto.Second, c);
-    Assert.AreEqual(123, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01 +0900");
-    c = "case3";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
-    Assert.AreEqual(10, dto.Day, c);
-    Assert.AreEqual(6, dto.Month, c);
-    Assert.AreEqual(2003, dto.Year, c);
-    Assert.AreEqual(9, dto.Hour, c);
-    Assert.AreEqual(41, dto.Minute, c);
-    Assert.AreEqual(1, dto.Second, c);
-    Assert.AreEqual(0, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41 +0900");
-    c = "case4";
-
-    Assert.AreEqual(DayOfWeek.Tuesday, dto.DayOfWeek, c);
-    Assert.AreEqual(10, dto.Day, c);
-    Assert.AreEqual(6, dto.Month, c);
-    Assert.AreEqual(2003, dto.Year, c);
-    Assert.AreEqual(9, dto.Hour, c);
-    Assert.AreEqual(41, dto.Minute, c);
-    Assert.AreEqual(0, dto.Second, c);
-    Assert.AreEqual(0, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
+    Assert.AreEqual(
+      expected + TimeZoneInfo.Local.GetUtcOffset(actual),
+      actual
+    );
   }
 
-  [Test]
-  public void FromRFC822DateTimeOffsetStringGmt()
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString()
   {
-    var dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.1234567 GMT");
-    var c = "case1";
-
-    Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
-    Assert.AreEqual(13, dto.Day, c);
-    Assert.AreEqual(4, dto.Month, c);
-    Assert.AreEqual(2001, dto.Year, c);
-    Assert.AreEqual(19, dto.Hour, c);
-    Assert.AreEqual(23, dto.Minute, c);
-    Assert.AreEqual(2, dto.Second, c);
-    Assert.AreEqual(123, dto.Millisecond, c);
-    Assert.AreEqual(4567, dto.Ticks % 10000, c);
-    Assert.AreEqual(0, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.123 GMT");
-    c = "case2";
-
-    Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
-    Assert.AreEqual(13, dto.Day, c);
-    Assert.AreEqual(4, dto.Month, c);
-    Assert.AreEqual(2001, dto.Year, c);
-    Assert.AreEqual(19, dto.Hour, c);
-    Assert.AreEqual(23, dto.Minute, c);
-    Assert.AreEqual(2, dto.Second, c);
-    Assert.AreEqual(123, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(0, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02 GMT");
-    c = "case3";
-
-    Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
-    Assert.AreEqual(13, dto.Day, c);
-    Assert.AreEqual(4, dto.Month, c);
-    Assert.AreEqual(2001, dto.Year, c);
-    Assert.AreEqual(19, dto.Hour, c);
-    Assert.AreEqual(23, dto.Minute, c);
-    Assert.AreEqual(2, dto.Second, c);
-    Assert.AreEqual(0, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(0, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23 GMT");
-    c = "case4";
-
-    Assert.AreEqual(DayOfWeek.Friday, dto.DayOfWeek, c);
-    Assert.AreEqual(13, dto.Day, c);
-    Assert.AreEqual(4, dto.Month, c);
-    Assert.AreEqual(2001, dto.Year, c);
-    Assert.AreEqual(19, dto.Hour, c);
-    Assert.AreEqual(23, dto.Minute, c);
-    Assert.AreEqual(0, dto.Second, c);
-    Assert.AreEqual(0, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(0, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.1234567 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4567) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01.123 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41:01 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, TimeSpan.FromHours(+9)) };
+    yield return new object[] { "Tue, 10 Jun 2003 09:41 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 0, TimeSpan.FromHours(+9)) };
   }
 
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString))/*, Ignore("Mono Bug #547675")*/]
+  public void FromRFC822DateTimeOffsetString(string s, DateTimeOffset expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s)
+    );
+
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_Gmt()
+  {
+    yield return new object[] { "Fri, 13 Apr 2001 19:23:02.1234567 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4567) };
+    yield return new object[] { "Fri, 13 Apr 2001 19:23:02.123 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)) };
+    yield return new object[] { "Fri, 13 Apr 2001 19:23:02 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.FromHours(0)) };
+    yield return new object[] { "Fri, 13 Apr 2001 19:23 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 0, TimeSpan.FromHours(0)) };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_Gmt))]
+  public void FromRFC822DateTimeOffsetString_Gmt(string s, DateTimeOffset expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s)
+    );
 
   [Test]
   public void ToISO8601DateTimeString_DateTime_DateTimeKindUtc()
@@ -381,208 +197,71 @@ public class DateTimeFormatTests {
     );
   }
 
-  [Test]
-  public void FromISO8601DateTimeString()
+  private static IEnumerable YieldTestCases_FromISO8601DateTimeString()
   {
-    var dtm = "2008-04-11T12:34:56.7893333Z";
+    yield return new object[] { "2008-04-11T12:34:56.7893333Z" };
+    yield return new object[] { "" };
+    yield return new object[] { "2008-04-11T12:34:56.7893333Z" };
+    yield return new object[] { "2008-04-11T12:34:56.7893333Z" };
+  }
 
-    Assert.AreEqual(
-      DateTimeFormat.FromW3CDateTimeString(dtm),
-      DateTimeFormat.FromISO8601DateTimeString(dtm)
+  [TestCase("2008-04-11T12:34:56.7893333Z")]
+  [TestCase("2008-04-11T12:34:56.789Z")]
+  [TestCase("2008-04-11T12:34:56Z")]
+  [TestCase("2008-04-11T12:34Z")]
+
+  public void FromISO8601DateTimeString_ReturnValueEqualsToFromW3CDateTimeString(string s)
+    => Assert.AreEqual(
+      DateTimeFormat.FromW3CDateTimeString(s),
+      DateTimeFormat.FromISO8601DateTimeString(s)
     );
 
-    dtm = "2008-04-11T12:34:56.789Z";
+  private static IEnumerable YieldTestCases_FromW3CDateTimeString_Utc()
+  {
+    yield return new object[] { "2008-04-11T12:34:56.7893333Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.789Z", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Utc) };
+    yield return new object[] { "2008-04-11T12:34:56Z", new DateTime(2008, 4, 11, 12, 34, 56, DateTimeKind.Utc) };
+    yield return new object[] { "2008-04-11T12:34Z", new DateTime(2008, 4, 11, 12, 34, 0, DateTimeKind.Utc) };
+  }
 
-    Assert.AreEqual(
-      DateTimeFormat.FromW3CDateTimeString(dtm),
-      DateTimeFormat.FromISO8601DateTimeString(dtm)
+  [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeString_Utc))]
+  public void FromW3CDateTimeString_Utc(string s, DateTime expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromW3CDateTimeString(s)
     );
 
-    dtm = "2008-04-11T12:34:56Z";
+  private static IEnumerable YieldTestCases_FromW3CDateTimeString_Local()
+  {
+    yield return new object[] { "2008-04-11T12:34:56.7893333 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.789 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, 789, DateTimeKind.Local) };
+    yield return new object[] { "2008-04-11T12:34:56 +09:00", new DateTime(2008, 4, 11, 3, 34, 56, DateTimeKind.Local) };
+    yield return new object[] { "2008-04-11T12:34 +09:00", new DateTime(2008, 4, 11, 3, 34, 0, DateTimeKind.Local) };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeString_Local))]
+  public void FromW3CDateTimeString_Local(string s, DateTime expected)
+  {
+    var actual = DateTimeFormat.FromW3CDateTimeString(s);
 
     Assert.AreEqual(
-      DateTimeFormat.FromW3CDateTimeString(dtm),
-      DateTimeFormat.FromISO8601DateTimeString(dtm)
-    );
-
-    dtm = "2008-04-11T12:34Z";
-
-    Assert.AreEqual(
-      DateTimeFormat.FromW3CDateTimeString(dtm),
-      DateTimeFormat.FromISO8601DateTimeString(dtm)
+      expected + TimeZoneInfo.Local.GetUtcOffset(actual),
+      actual
     );
   }
 
-  [Test]
-  public void FromW3CDateTimeString_Utc()
+  private static IEnumerable YieldTestCases_FromW3CDateTimeOffsetString()
   {
-    var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333Z");
-    var c = "case1";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(12, dtm.Hour, c);
-    Assert.AreEqual(34, dtm.Minute, c);
-    Assert.AreEqual(56, dtm.Second, c);
-    Assert.AreEqual(789, dtm.Millisecond, c);
-    Assert.AreEqual(3333, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.789Z");
-    c = "case2";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(12, dtm.Hour, c);
-    Assert.AreEqual(34, dtm.Minute, c);
-    Assert.AreEqual(56, dtm.Second, c);
-    Assert.AreEqual(789, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56Z");
-    c = "case3";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(12, dtm.Hour, c);
-    Assert.AreEqual(34, dtm.Minute, c);
-    Assert.AreEqual(56, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34Z");
-    c = "case4";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(12, dtm.Hour, c);
-    Assert.AreEqual(34, dtm.Minute, c);
-    Assert.AreEqual(0, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Utc, dtm.Kind, c);
+    yield return new object[] { "2008-04-11T12:34:56.7893333 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)).AddTicks(3333) };
+    yield return new object[] { "2008-04-11T12:34:56.789 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(+9)) };
+    yield return new object[] { "2008-04-11T12:34:56 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, TimeSpan.FromHours(+9)) };
+    yield return new object[] { "2008-04-11T12:34 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 0, TimeSpan.FromHours(+9)) };
   }
 
-  [Test]
-  public void FromW3CDateTimeString_Local()
-  {
-    var localTimeZone = TimeZoneInfo.Local;
-    var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333 +09:00");
-    var c = "case1";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(56, dtm.Second, c);
-    Assert.AreEqual(789, dtm.Millisecond, c);
-    Assert.AreEqual(3333, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.789 +09:00");
-    c = "case2";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(56, dtm.Second, c);
-    Assert.AreEqual(789, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56 +09:00");
-    c = "case3";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(56, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-
-    dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34 +09:00");
-    c = "case4";
-
-    Assert.AreEqual(2008, dtm.Year, c);
-    Assert.AreEqual(04, dtm.Month, c);
-    Assert.AreEqual(11, dtm.Day, c);
-    Assert.AreEqual(3 + localTimeZone.GetUtcOffset(dtm).Hours, dtm.Hour, c);
-    Assert.AreEqual(34 + localTimeZone.GetUtcOffset(dtm).Minutes, dtm.Minute, c);
-    Assert.AreEqual(0, dtm.Second, c);
-    Assert.AreEqual(0, dtm.Millisecond, c);
-    Assert.AreEqual(0, dtm.Ticks % 10000, c);
-    Assert.AreEqual(DateTimeKind.Local, dtm.Kind, c);
-  }
-
-  [Test]
-  public void FromW3CDateTimeOffsetString()
-  {
-    var dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.7893333 +09:00");
-    var c = "case1";
-
-    Assert.AreEqual(2008, dto.Year, c);
-    Assert.AreEqual(04, dto.Month, c);
-    Assert.AreEqual(11, dto.Day, c);
-    Assert.AreEqual(12, dto.Hour, c);
-    Assert.AreEqual(34, dto.Minute, c);
-    Assert.AreEqual(56, dto.Second, c);
-    Assert.AreEqual(789, dto.Millisecond, c);
-    Assert.AreEqual(3333, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.789 +09:00");
-    c = "case2";
-
-    Assert.AreEqual(2008, dto.Year, c);
-    Assert.AreEqual(04, dto.Month, c);
-    Assert.AreEqual(11, dto.Day, c);
-    Assert.AreEqual(12, dto.Hour, c);
-    Assert.AreEqual(34, dto.Minute, c);
-    Assert.AreEqual(56, dto.Second, c);
-    Assert.AreEqual(789, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56 +09:00");
-    c = "case3";
-
-    Assert.AreEqual(2008, dto.Year, c);
-    Assert.AreEqual(04, dto.Month, c);
-    Assert.AreEqual(11, dto.Day, c);
-    Assert.AreEqual(12, dto.Hour, c);
-    Assert.AreEqual(34, dto.Minute, c);
-    Assert.AreEqual(56, dto.Second, c);
-    Assert.AreEqual(0, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-
-    dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34 +09:00");
-    c = "case4";
-
-    Assert.AreEqual(2008, dto.Year, c);
-    Assert.AreEqual(04, dto.Month, c);
-    Assert.AreEqual(11, dto.Day, c);
-    Assert.AreEqual(12, dto.Hour, c);
-    Assert.AreEqual(34, dto.Minute, c);
-    Assert.AreEqual(0, dto.Second, c);
-    Assert.AreEqual(0, dto.Millisecond, c);
-    Assert.AreEqual(0, dto.Ticks % 10000, c);
-    Assert.AreEqual(9, dto.Offset.Hours, c);
-    Assert.AreEqual(0, dto.Offset.Minutes, c);
-  }
+  [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeOffsetString))]
+  public void FromW3CDateTimeOffsetString(string s, DateTimeOffset expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromW3CDateTimeOffsetString(s)
+    );
 }
