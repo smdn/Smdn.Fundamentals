@@ -42,7 +42,31 @@ partial class DateTimeFormatTests {
   }
 
   [Test]
+  [SetCulture("it-IT")] // '.' is used instead of ':'
+  public void ToRFC822DateTimeString_DateTime_TimeSeparator()
+  {
+    var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
+
+    Assert.AreEqual(
+      "Mon, 25 Feb 2008 15:01:12 GMT",
+      DateTimeFormat.ToRFC822DateTimeString(dtm)
+    );
+  }
+
+  [Test]
   public void ToRFC822DateTimeString_DateTimeOffset()
+  {
+    var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
+
+    Assert.AreEqual(
+      "Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
+      DateTimeFormat.ToRFC822DateTimeString(dto)
+    );
+  }
+
+  [Test]
+  [SetCulture("it-IT")] // '.' is used instead of ':'
+  public void ToRFC822DateTimeString_DateTimeOffset_TimeSeparator()
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
 
@@ -100,6 +124,14 @@ partial class DateTimeFormatTests {
 
   [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString))/*, Ignore("Mono Bug #547675")*/]
   public void FromRFC822DateTimeOffsetString(string s, DateTimeOffset expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s)
+    );
+
+  [SetCulture("it-IT")] // '.' is used instead of ':'
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString))]
+  public void FromRFC822DateTimeOffsetString_TimeSeparator(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
       DateTimeFormat.FromRFC822DateTimeOffsetString(s)

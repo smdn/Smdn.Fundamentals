@@ -42,7 +42,31 @@ partial class DateTimeFormatTests {
   }
 
   [Test]
+  [SetCulture("it-IT")] // '.' is used instead of ':'
+  public void ToW3CDateTimeString_DateTime_TimeSeparator()
+  {
+    var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Utc);
+
+    Assert.AreEqual(
+      "2008-02-25T15:01:12.4560000Z",
+      DateTimeFormat.ToW3CDateTimeString(dtm)
+    );
+  }
+
+  [Test]
   public void ToW3CDateTimeString_DateTimeOffset()
+  {
+    var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, 456, DateTimeOffset.Now.Offset);
+
+    Assert.AreEqual(
+      "2008-02-25T15:01:12.4560000" + timezoneOffset,
+      DateTimeFormat.ToW3CDateTimeString(dto)
+    );
+  }
+
+  [Test]
+  [SetCulture("it-IT")] // '.' is used instead of ':'
+  public void ToW3CDateTimeString_DateTimeOffset_TimeSeparator()
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, 456, DateTimeOffset.Now.Offset);
 
@@ -100,6 +124,14 @@ partial class DateTimeFormatTests {
 
   [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeOffsetString))]
   public void FromW3CDateTimeOffsetString(string s, DateTimeOffset expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromW3CDateTimeOffsetString(s)
+    );
+
+  [SetCulture("it-IT")] // '.' is used instead of ':'
+  [TestCaseSource(nameof(YieldTestCases_FromW3CDateTimeOffsetString))]
+  public void FromW3CDateTimeOffsetString_TimeSeparator(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
       DateTimeFormat.FromW3CDateTimeOffsetString(s)
