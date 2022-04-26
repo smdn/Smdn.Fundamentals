@@ -30,17 +30,17 @@ partial class DateTimeFormat {
       : null;
 
   public static DateTime FromRFC822DateTimeString(string s)
-    => FromDateTimeString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
+    => FromDateTimeString(s, rfc822DateTimeFormats, RFC822UniversalTimeString);
 
   public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, rfc822DateTimeFormats, rfc822UniversalTimeString);
+    => FromDateTimeOffsetString(s, rfc822DateTimeFormats, RFC822UniversalTimeString);
 
   public static DateTimeOffset? FromRFC822DateTimeOffsetStringNullable(string s)
     => s is null
       ? null
       : FromRFC822DateTimeOffsetString(s);
 
-  private static readonly string rfc822UniversalTimeString = " GMT";
+  private const string RFC822UniversalTimeString = " GMT";
 
   private static readonly string[] rfc822DateTimeFormats = new[]
   {

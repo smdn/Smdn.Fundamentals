@@ -14,11 +14,11 @@ partial class DateTimeFormat {
     => dateTimeOffset.ToString("o");
 
   public static DateTime FromISO8601DateTimeString(string s)
-    => FromDateTimeString(s, iso8601DateTimeFormats, iso8601UniversalTimeString);
+    => FromDateTimeString(s, iso8601DateTimeFormats, ISO8601UniversalTimeString);
 
   public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, iso8601DateTimeFormats, iso8601UniversalTimeString);
+    => FromDateTimeOffsetString(s, iso8601DateTimeFormats, ISO8601UniversalTimeString);
 
-  private static readonly string iso8601UniversalTimeString = w3cUniversalTimeString;
+  private const string ISO8601UniversalTimeString = "Z";
   private static readonly string[] iso8601DateTimeFormats = w3cDateTimeFormats;
 }

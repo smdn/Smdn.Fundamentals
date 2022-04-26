@@ -19,17 +19,17 @@ partial class DateTimeFormat {
       : null;
 
   public static DateTime FromW3CDateTimeString(string s)
-    => FromDateTimeString(s, w3cDateTimeFormats, w3cUniversalTimeString);
+    => FromDateTimeString(s, w3cDateTimeFormats, W3cUniversalTimeString);
 
   public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, w3cDateTimeFormats, w3cUniversalTimeString);
+    => FromDateTimeOffsetString(s, w3cDateTimeFormats, W3cUniversalTimeString);
 
   public static DateTimeOffset? FromW3CDateTimeOffsetStringNullable(string s)
     => s is null
       ? null
       : FromW3CDateTimeOffsetString(s);
 
-  private static readonly string w3cUniversalTimeString = "Z";
+  private const string W3cUniversalTimeString = "Z";
 
   private static readonly string[] w3cDateTimeFormats = new string[]
   {
