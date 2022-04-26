@@ -27,14 +27,14 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestGetCurrentTimeZoneOffsetString()
+  public void GetCurrentTimeZoneOffsetString()
   {
     Assert.AreEqual(timezoneOffset, DateTimeFormat.GetCurrentTimeZoneOffsetString(true));
     Assert.AreEqual(timezoneOffsetNoDelim, DateTimeFormat.GetCurrentTimeZoneOffsetString(false));
   }
 
   [Test]
-  public void TestToRFC822DateTimeStringUtc()
+  public void ToRFC822DateTimeString_DateTime_DateTimeKindUtc()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
@@ -45,7 +45,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToRFC822DateTimeStringLocal()
+  public void ToRFC822DateTimeString_DateTime_DateTimeKindLocal()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Local);
 
@@ -56,7 +56,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToRFC822DateTimeStringUnspecifiedKind()
+  public void ToRFC822DateTimeString_DateTime_DateTimeKindUnspecified()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Unspecified);
 
@@ -67,7 +67,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToRFC822DateTimeStringDateTimeOffset()
+  public void ToRFC822DateTimeString_DateTimeOffset()
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
 
@@ -78,7 +78,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromRFC822DateTimeStringUtc()
+  public void FromRFC822DateTimeString_Utc()
   {
     var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 GMT");
     var c = "case1";
@@ -137,7 +137,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromRFC822DateTimeStringLocal()
+  public void FromRFC822DateTimeString_Local()
   {
     var localTimeZone = TimeZoneInfo.Local;
     var dtm = DateTimeFormat.FromRFC822DateTimeString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
@@ -198,7 +198,7 @@ public class DateTimeFormatTests {
   }
 
   [Test/*, Ignore("Mono Bug #547675")*/]
-  public void TestFromRFC822DateTimeOffsetString()
+  public void FromRFC822DateTimeOffsetString()
   {
     var dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Tue, 10 Jun 2003 09:41:01.1234567 +0900");
     var c = "case1";
@@ -262,7 +262,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromRFC822DateTimeOffsetStringGmt()
+  public void FromRFC822DateTimeOffsetStringGmt()
   {
     var dto = DateTimeFormat.FromRFC822DateTimeOffsetString("Fri, 13 Apr 2001 19:23:02.1234567 GMT");
     var c = "case1";
@@ -327,7 +327,7 @@ public class DateTimeFormatTests {
 
 
   [Test]
-  public void TestToISO8601DateTimeStringUtc()
+  public void ToISO8601DateTimeString_DateTime_DateTimeKindUtc()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
@@ -338,7 +338,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToW3CDateTimeStringUtc()
+  public void ToW3CDateTimeString_DateTime_DateTimeKindUtc()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Utc);
 
@@ -349,7 +349,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToW3CDateTimeStringLocal()
+  public void ToW3CDateTimeString_DateTime_DateTimeKindLocal()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Local);
 
@@ -360,7 +360,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToW3CDateTimeStringUnspecifiedKind()
+  public void ToW3CDateTimeString_DateTime_DateTimeKindUnspecified()
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Unspecified);
 
@@ -371,7 +371,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestToW3CDateTimeStringDateTimeOffset()
+  public void ToW3CDateTimeString_DateTimeOffset()
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, 456, DateTimeOffset.Now.Offset);
 
@@ -382,7 +382,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromISO8601DateTimeString()
+  public void FromISO8601DateTimeString()
   {
     var dtm = "2008-04-11T12:34:56.7893333Z";
 
@@ -414,7 +414,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromW3CDateTimeStringUtc()
+  public void FromW3CDateTimeString_Utc()
   {
     var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333Z");
     var c = "case1";
@@ -470,7 +470,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromW3CDateTimeStringLocal()
+  public void FromW3CDateTimeString_Local()
   {
     var localTimeZone = TimeZoneInfo.Local;
     var dtm = DateTimeFormat.FromW3CDateTimeString("2008-04-11T12:34:56.7893333 +09:00");
@@ -527,7 +527,7 @@ public class DateTimeFormatTests {
   }
 
   [Test]
-  public void TestFromW3CDateTimeOffsetString()
+  public void FromW3CDateTimeOffsetString()
   {
     var dto = DateTimeFormat.FromW3CDateTimeOffsetString("2008-04-11T12:34:56.7893333 +09:00");
     var c = "case1";
