@@ -101,7 +101,8 @@ partial class DateTimeFormatTests {
   public void FromRFC822DateTimeString_UniversalTime(string s, DateTime expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromRFC822DateTimeString(s)
+      DateTimeFormat.FromRFC822DateTimeString(s),
+      s
     );
 
   private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local()
@@ -132,7 +133,8 @@ partial class DateTimeFormatTests {
 
     Assert.AreEqual(
       expected + TimeZoneInfo.Local.GetUtcOffset(actual),
-      actual
+      actual,
+      s
     );
   }
 
@@ -162,7 +164,8 @@ partial class DateTimeFormatTests {
   public void FromRFC822DateTimeOffsetString(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromRFC822DateTimeOffsetString(s)
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s),
+      s
     );
 
   [SetCulture("it-IT")] // '.' is used instead of ':'
@@ -170,7 +173,8 @@ partial class DateTimeFormatTests {
   public void FromRFC822DateTimeOffsetString_TimeSeparator(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromRFC822DateTimeOffsetString(s)
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s),
+      s
     );
 
   private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_UniversalTime()
@@ -199,6 +203,7 @@ partial class DateTimeFormatTests {
   public void FromRFC822DateTimeOffsetString_UniversalTime(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromRFC822DateTimeOffsetString(s)
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s),
+      s
     );
 }

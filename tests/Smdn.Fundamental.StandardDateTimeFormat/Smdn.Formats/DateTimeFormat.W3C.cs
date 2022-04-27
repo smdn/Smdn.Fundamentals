@@ -96,7 +96,8 @@ partial class DateTimeFormatTests {
   public void FromW3CDateTimeString_Utc(string s, DateTime expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromW3CDateTimeString(s)
+      DateTimeFormat.FromW3CDateTimeString(s),
+      s
     );
 
   private static IEnumerable YieldTestCases_FromW3CDateTimeString_Local()
@@ -124,7 +125,8 @@ partial class DateTimeFormatTests {
 
     Assert.AreEqual(
       expected + TimeZoneInfo.Local.GetUtcOffset(actual),
-      actual
+      actual,
+      s
     );
   }
 
@@ -151,7 +153,8 @@ partial class DateTimeFormatTests {
   public void FromW3CDateTimeOffsetString(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromW3CDateTimeOffsetString(s)
+      DateTimeFormat.FromW3CDateTimeOffsetString(s),
+      s
     );
 
   [SetCulture("it-IT")] // '.' is used instead of ':'
@@ -159,6 +162,7 @@ partial class DateTimeFormatTests {
   public void FromW3CDateTimeOffsetString_TimeSeparator(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
-      DateTimeFormat.FromW3CDateTimeOffsetString(s)
+      DateTimeFormat.FromW3CDateTimeOffsetString(s),
+      s
     );
 }

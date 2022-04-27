@@ -37,7 +37,8 @@ partial class DateTimeFormatTests {
   public void FromISO8601DateTimeString_DateTime_ReturnValueEqualsToFromW3CDateTimeString(string s)
     => Assert.AreEqual(
       DateTimeFormat.FromW3CDateTimeString(s),
-      DateTimeFormat.FromISO8601DateTimeString(s)
+      DateTimeFormat.FromISO8601DateTimeString(s),
+      s
     );
 
   [TestCase("2008-04-11T12:34:56.7893333 +09:00")]
@@ -49,6 +50,7 @@ partial class DateTimeFormatTests {
   public void FromISO8601DateTimeString_DateTimeOffset_ReturnValueEqualsToFromW3CDateTimeString(string s)
     => Assert.AreEqual(
       DateTimeFormat.FromW3CDateTimeString(s),
-      DateTimeFormat.FromISO8601DateTimeString(s)
+      DateTimeFormat.FromISO8601DateTimeString(s),
+      s
     );
 }
