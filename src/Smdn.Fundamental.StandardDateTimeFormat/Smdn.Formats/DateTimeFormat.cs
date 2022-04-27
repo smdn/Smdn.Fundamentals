@@ -24,6 +24,8 @@ public static partial class DateTimeFormat {
 #endif
   }
 
+  private const DateTimeStyles WhiteSpaceStyles = DateTimeStyles.AllowWhiteSpaces;
+
   private static DateTime FromDateTimeString(
     string s,
     string[] formats,
@@ -33,22 +35,23 @@ public static partial class DateTimeFormat {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
-    (s, var tz) = ProcessTimeZoneSpecifier(
+    s = ProcessTimeZoneSpecifier(
       s,
       timeZoneDefinitions,
-      out var dateTimeStylesOfTimeZone
+      out var timeZoneStyles,
+      out var tz
     );
 
     var dateAndTime = DateTime.ParseExact(
       s,
       formats,
       CultureInfo.InvariantCulture,
-      dateTimeStylesOfTimeZone | DateTimeStyles.AllowWhiteSpaces
+      timeZoneStyles | WhiteSpaceStyles
     );
 
     return tz is null || tz.IsUniversal
       ? dateAndTime
-      : tz.AdjustToTimeZone(dateAndTime); // TODO: JST, EST, etc; use TimeZoneInfo
+      : tz.AdjustToTimeZone(dateAndTime);
   }
 
   private static DateTimeOffset FromDateTimeOffsetString(
@@ -60,43 +63,45 @@ public static partial class DateTimeFormat {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
-    (s, var tz) = ProcessTimeZoneSpecifier(
+    s = ProcessTimeZoneSpecifier(
       s,
       timeZoneDefinitions,
-      out var dateTimeStylesOfTimeZone
+      out var timeZoneStyles,
+      out var tz
     );
 
     var dateAndTime = DateTimeOffset.ParseExact(
       s,
       formats,
       CultureInfo.InvariantCulture,
-      dateTimeStylesOfTimeZone | DateTimeStyles.AllowWhiteSpaces
+      timeZoneStyles | WhiteSpaceStyles
     );
 
     return tz is null || tz.IsUniversal
       ? dateAndTime
-      : tz.AdjustToTimeZone(dateAndTime); // TODO: JST, EST, etc; use TimeZoneInfo
+      : tz.AdjustToTimeZone(dateAndTime);
   }
 
-  private static (string StringWithoutTimeZoneSpecifier, TimeZoneDefinition TimeZone) ProcessTimeZoneSpecifier(
+  private static string ProcessTimeZoneSpecifier(
     string s,
     IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions,
-    out DateTimeStyles dateTimeStylesOfTimeZone
+    out DateTimeStyles dateTimeStylesOfTimeZone,
+    out TimeZoneDefinition timeZone
   )
   {
     dateTimeStylesOfTimeZone = DateTimeStyles.AssumeLocal;
 
-    var tz = timeZoneDefinitions.FirstOrDefault(
+    timeZone = timeZoneDefinitions.FirstOrDefault(
       tz => s.EndsWith(tz.Suffix, StringComparison.Ordinal)
     );
 
-    if (tz is null)
-      return (s, null);
+    if (timeZone is null)
+      return s;
 
-    dateTimeStylesOfTimeZone = tz.IsUniversal
+    dateTimeStylesOfTimeZone = timeZone.IsUniversal
       ? DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
       : DateTimeStyles.RoundtripKind;
 
-    return (s.Substring(0, s.Length - tz.Suffix.Length), tz);
+    return s.Substring(0, s.Length - timeZone.Suffix.Length);
   }
 }

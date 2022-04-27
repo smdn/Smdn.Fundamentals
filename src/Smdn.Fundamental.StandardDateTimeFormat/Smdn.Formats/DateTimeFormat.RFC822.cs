@@ -46,6 +46,14 @@ partial class DateTimeFormat {
   private static readonly IReadOnlyList<TimeZoneDefinition> RFC822TimeZoneDefinitions = new TimeZoneDefinition[] {
     new UniversalTimeZoneDefinition(" GMT"),
     new UniversalTimeZoneDefinition(" UT"),
+    new RFC5322EasternTimeZoneDefinition(" EST"),
+    new RFC5322EasternTimeZoneDefinition(" EDT"),
+    new RFC5322CentralTimeZoneDefinition(" CST"),
+    new RFC5322CentralTimeZoneDefinition(" CDT"),
+    new RFC5322MountainTimeZoneDefinition(" MST"),
+    new RFC5322MountainTimeZoneDefinition(" MDT"),
+    new RFC5322PacificTimeZoneDefinition(" PST"),
+    new RFC5322PacificTimeZoneDefinition(" PDT"),
     new RFC5322MilitaryTimeZoneDefinition(" A"),
     new RFC5322MilitaryTimeZoneDefinition(" B"),
     new RFC5322MilitaryTimeZoneDefinition(" C"),
@@ -90,6 +98,97 @@ partial class DateTimeFormat {
       => dateAndTime; // DateTime.SpecifyKind(dateAndTime, DateTimeKind.Unspecified);
     public override DateTimeOffset AdjustToTimeZone(DateTimeOffset dateAndTime)
       => new(dateAndTime.DateTime, TimeSpan.FromHours(-0.0));
+  }
+
+  // EST(-05:00)/EDT(-04:00)
+  private class RFC5322EasternTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+      "US/Eastern",
+      "Eastern Standard Time",
+      "America/New_York",
+      "EST",
+    };
+
+    public RFC5322EasternTimeZoneDefinition(string prefix)
+      : base(prefix, "EST", timeZoneIds)
+    {
+    }
+  }
+
+  // CST(-06:00)/CDT(-05:00)
+  private class RFC5322CentralTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+      "US/Central",
+      "Central Standard Time",
+      "America/Chicago",
+      "CST",
+    };
+
+    public RFC5322CentralTimeZoneDefinition(string prefix)
+      : base(prefix, "CST", timeZoneIds)
+    {
+    }
+  }
+
+  // MST(-07:00)/MDT(-06:00)
+  private class RFC5322MountainTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+      "US/Mountain",
+      "Mountain Standard Time",
+      "America/Denver",
+      "MST",
+    };
+
+    public RFC5322MountainTimeZoneDefinition(string prefix)
+      : base(prefix, "MST", timeZoneIds)
+    {
+    }
+  }
+
+  // PST(-08:00)/PDT(-07:00)
+  private class RFC5322PacificTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+      "US/Pacific",
+      "Pacific Standard Time",
+      "America/Los_Angeles",
+      "PST",
+    };
+
+    public RFC5322PacificTimeZoneDefinition(string prefix)
+      : base(prefix, "PST", timeZoneIds)
+    {
+    }
+  }
+
+  private abstract class RFC5322NorthAmericanTimeZoneDefinition : TimeZoneDefinition {
+    private readonly string timeZoneName;
+    private readonly TimeZoneInfo timeZoneInfo;
+
+    protected RFC5322NorthAmericanTimeZoneDefinition(string suffix, string timeZoneName, IReadOnlyList<string> timeZoneIds)
+      : base(suffix)
+    {
+      this.timeZoneName = timeZoneName;
+
+      foreach (var id in timeZoneIds) {
+        try {
+          // ref: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+          timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(id);
+          break;
+        }
+        catch (TimeZoneNotFoundException) {
+          continue;
+        }
+      }
+    }
+
+    private TimeZoneInfo ThrowIfTimeZoneNotFound()
+      => timeZoneInfo ?? throw new TimeZoneNotFoundException($"could not find TimeZoneInfo for the time zone '{timeZoneName}'");
+
+    public override DateTime AdjustToTimeZone(DateTime dateAndTime)
+      => new DateTimeOffset(dateAndTime, ThrowIfTimeZoneNotFound().GetUtcOffset(dateAndTime)).UtcDateTime;
+
+    public override DateTimeOffset AdjustToTimeZone(DateTimeOffset dateAndTime)
+      => new(dateAndTime.DateTime, ThrowIfTimeZoneNotFound().GetUtcOffset(dateAndTime.DateTime));
   }
 
   private static readonly string[] rfc822DateTimeFormats = new[]

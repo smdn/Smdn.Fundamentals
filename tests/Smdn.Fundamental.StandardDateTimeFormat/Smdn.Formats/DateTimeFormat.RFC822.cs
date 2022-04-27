@@ -284,4 +284,40 @@ partial class DateTimeFormatTests {
       DateTimeFormat.FromRFC822DateTimeOffsetString(s),
       s
     );
+
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local_NorthAmericanTimeZones()
+  {
+    yield return new object[] { "12 Jun 2006 11:00:00.0000000 EDT", "2006-06-12T11:00:00.0000000-04:00" };
+    yield return new object[] { "04 Nov 2007 01:00:00.0000000 EST", "2007-11-04T01:00:00.0000000-05:00" };
+    yield return new object[] { "10 Dec 2006 15:00:00.0000000 EST", "2006-12-10T15:00:00.0000000-05:00" };
+    yield return new object[] { "11 Mar 2007 02:30:00.0000000 EST", "2007-03-11T02:30:00.0000000-05:00" };
+    yield return new object[] { "12 Jun 2006 11:00:00.0000000 CDT", "2006-06-12T11:00:00.0000000-05:00" };
+    yield return new object[] { "04 Nov 2007 01:00:00.0000000 CST", "2007-11-04T01:00:00.0000000-06:00" };
+    yield return new object[] { "10 Dec 2006 15:00:00.0000000 CST", "2006-12-10T15:00:00.0000000-06:00" };
+    yield return new object[] { "11 Mar 2007 02:30:00.0000000 CST", "2007-03-11T02:30:00.0000000-06:00" };
+    yield return new object[] { "12 Jun 2006 11:00:00.0000000 MDT", "2006-06-12T11:00:00.0000000-06:00" };
+    yield return new object[] { "04 Nov 2007 01:00:00.0000000 MST", "2007-11-04T01:00:00.0000000-07:00" };
+    yield return new object[] { "10 Dec 2006 15:00:00.0000000 MST", "2006-12-10T15:00:00.0000000-07:00" };
+    yield return new object[] { "11 Mar 2007 02:30:00.0000000 MST", "2007-03-11T02:30:00.0000000-07:00" };
+    yield return new object[] { "12 Jun 2006 11:00:00.0000000 PDT", "2006-06-12T11:00:00.0000000-07:00" };
+    yield return new object[] { "04 Nov 2007 01:00:00.0000000 PST", "2007-11-04T01:00:00.0000000-08:00" };
+    yield return new object[] { "10 Dec 2006 15:00:00.0000000 PST", "2006-12-10T15:00:00.0000000-08:00" };
+    yield return new object[] { "11 Mar 2007 02:30:00.0000000 PST", "2007-03-11T02:30:00.0000000-08:00" };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local_NorthAmericanTimeZones))]
+  public void FromRFC822DateTimeString_NorthAmericanTimeZones(string s, string expected)
+    => Assert.AreEqual(
+      DateTimeOffset.ParseExact(expected, "o", null).UtcDateTime,
+      DateTimeFormat.FromRFC822DateTimeString(s),
+      s
+    );
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local_NorthAmericanTimeZones))]
+  public void FromRFC822DateTimeOffsetString_NorthAmericanTimeZones(string s, string expected)
+    => Assert.AreEqual(
+      DateTimeOffset.ParseExact(expected, "o", null),
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s),
+      s
+    );
 }
