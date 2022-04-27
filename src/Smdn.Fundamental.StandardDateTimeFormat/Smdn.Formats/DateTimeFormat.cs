@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+using Smdn.Formats.DateAndTime;
+
 namespace Smdn.Formats;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -25,66 +27,76 @@ public static partial class DateTimeFormat {
   private static DateTime FromDateTimeString(
     string s,
     string[] formats,
-    IReadOnlyList<string> universalTimeStrings
+    IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions
   )
   {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
-    var styles = DateTimeStyles.AllowWhiteSpaces;
+    (s, var tz) = ProcessTimeZoneSpecifier(
+      s,
+      timeZoneDefinitions,
+      out var dateTimeStylesOfTimeZone
+    );
 
-    if (TryRemoveUniversalTimeSuffix(s, universalTimeStrings, out var str)) {
-      styles |= DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal;
-      s = str;
-    }
-    else {
-      // TODO: JST, EST, etc; use TimeZoneInfo
-      styles |= DateTimeStyles.AssumeLocal;
-    }
+    var dateAndTime = DateTime.ParseExact(
+      s,
+      formats,
+      CultureInfo.InvariantCulture,
+      dateTimeStylesOfTimeZone | DateTimeStyles.AllowWhiteSpaces
+    );
 
-    return DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, styles);
+    return tz is null || tz.IsUniversal
+      ? dateAndTime
+      : tz.AdjustToTimeZone(dateAndTime); // TODO: JST, EST, etc; use TimeZoneInfo
   }
 
   private static DateTimeOffset FromDateTimeOffsetString(
     string s,
     string[] formats,
-    IReadOnlyList<string> universalTimeStrings
+    IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions
   )
   {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
-    var styles = DateTimeStyles.AllowWhiteSpaces;
-
-    if (TryRemoveUniversalTimeSuffix(s, universalTimeStrings, out var str)) {
-      styles |= DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal;
-      s = str;
-    }
-    else {
-      // TODO: JST, EST, etc; use TimeZoneInfo
-      styles |= DateTimeStyles.AssumeLocal;
-    }
-
-    return DateTimeOffset.ParseExact(s, formats, CultureInfo.InvariantCulture, styles);
-  }
-
-  private static bool TryRemoveUniversalTimeSuffix(
-    string s,
-    IReadOnlyList<string> universalTimeStrings,
-    out string stringWithoutUniversalTimeSuffix
-  )
-  {
-    stringWithoutUniversalTimeSuffix = default;
-
-    var universalTimeSuffix = universalTimeStrings.FirstOrDefault(
-      ut => s.EndsWith(ut, StringComparison.Ordinal)
+    (s, var tz) = ProcessTimeZoneSpecifier(
+      s,
+      timeZoneDefinitions,
+      out var dateTimeStylesOfTimeZone
     );
 
-    if (universalTimeSuffix is not null) {
-      stringWithoutUniversalTimeSuffix = s.Substring(0, s.Length - universalTimeSuffix.Length);
-      return true;
-    }
+    var dateAndTime = DateTimeOffset.ParseExact(
+      s,
+      formats,
+      CultureInfo.InvariantCulture,
+      dateTimeStylesOfTimeZone | DateTimeStyles.AllowWhiteSpaces
+    );
 
-    return false;
+    return tz is null || tz.IsUniversal
+      ? dateAndTime
+      : tz.AdjustToTimeZone(dateAndTime); // TODO: JST, EST, etc; use TimeZoneInfo
+  }
+
+  private static (string StringWithoutTimeZoneSpecifier, TimeZoneDefinition TimeZone) ProcessTimeZoneSpecifier(
+    string s,
+    IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions,
+    out DateTimeStyles dateTimeStylesOfTimeZone
+  )
+  {
+    dateTimeStylesOfTimeZone = DateTimeStyles.AssumeLocal;
+
+    var tz = timeZoneDefinitions.FirstOrDefault(
+      tz => s.EndsWith(tz.Suffix, StringComparison.Ordinal)
+    );
+
+    if (tz is null)
+      return (s, null);
+
+    dateTimeStylesOfTimeZone = tz.IsUniversal
+      ? DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
+      : DateTimeStyles.RoundtripKind;
+
+    return (s.Substring(0, s.Length - tz.Suffix.Length), tz);
   }
 }

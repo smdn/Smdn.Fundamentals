@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
+using Smdn.Formats.DateAndTime;
+
 namespace Smdn.Formats;
 
 #pragma warning disable IDE0040
@@ -31,17 +33,64 @@ partial class DateTimeFormat {
       : null;
 
   public static DateTime FromRFC822DateTimeString(string s)
-    => FromDateTimeString(s, rfc822DateTimeFormats, RFC822UniversalTimeStrings);
+    => FromDateTimeString(s, rfc822DateTimeFormats, RFC822TimeZoneDefinitions);
 
   public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, rfc822DateTimeFormats, RFC822UniversalTimeStrings);
+    => FromDateTimeOffsetString(s, rfc822DateTimeFormats, RFC822TimeZoneDefinitions);
 
   public static DateTimeOffset? FromRFC822DateTimeOffsetStringNullable(string s)
     => s is null
       ? null
       : FromRFC822DateTimeOffsetString(s);
 
-  private static readonly IReadOnlyList<string> RFC822UniversalTimeStrings = new[] { " GMT", " UT" };
+  private static readonly IReadOnlyList<TimeZoneDefinition> RFC822TimeZoneDefinitions = new TimeZoneDefinition[] {
+    new UniversalTimeZoneDefinition(" GMT"),
+    new UniversalTimeZoneDefinition(" UT"),
+    new RFC5322MilitaryTimeZoneDefinition(" A"),
+    new RFC5322MilitaryTimeZoneDefinition(" B"),
+    new RFC5322MilitaryTimeZoneDefinition(" C"),
+    new RFC5322MilitaryTimeZoneDefinition(" D"),
+    new RFC5322MilitaryTimeZoneDefinition(" E"),
+    new RFC5322MilitaryTimeZoneDefinition(" F"),
+    new RFC5322MilitaryTimeZoneDefinition(" G"),
+    new RFC5322MilitaryTimeZoneDefinition(" H"),
+    new RFC5322MilitaryTimeZoneDefinition(" I"),
+    new RFC5322MilitaryTimeZoneDefinition(" K"),
+    new RFC5322MilitaryTimeZoneDefinition(" L"),
+    new RFC5322MilitaryTimeZoneDefinition(" M"),
+    new RFC5322MilitaryTimeZoneDefinition(" N"),
+    new RFC5322MilitaryTimeZoneDefinition(" O"),
+    new RFC5322MilitaryTimeZoneDefinition(" P"),
+    new RFC5322MilitaryTimeZoneDefinition(" Q"),
+    new RFC5322MilitaryTimeZoneDefinition(" R"),
+    new RFC5322MilitaryTimeZoneDefinition(" S"),
+    new RFC5322MilitaryTimeZoneDefinition(" T"),
+    new RFC5322MilitaryTimeZoneDefinition(" U"),
+    new RFC5322MilitaryTimeZoneDefinition(" V"),
+    new RFC5322MilitaryTimeZoneDefinition(" W"),
+    new RFC5322MilitaryTimeZoneDefinition(" X"),
+    new RFC5322MilitaryTimeZoneDefinition(" Y"),
+    new RFC5322MilitaryTimeZoneDefinition(" Z"),
+  };
+
+  private class RFC5322MilitaryTimeZoneDefinition : TimeZoneDefinition {
+    public RFC5322MilitaryTimeZoneDefinition(string suffix)
+      : base(suffix)
+    {
+    }
+
+    /*
+     * [RFC5322] Internet Message Format 4.3.  Obsolete Date and Time
+     * 'However, because of
+     * the error in [RFC0822], they SHOULD all be considered equivalent to
+     * "-0000" unless there is out-of-band information confirming their
+     * meaning.'
+     */
+    public override DateTime AdjustToTimeZone(DateTime dateAndTime)
+      => dateAndTime; // DateTime.SpecifyKind(dateAndTime, DateTimeKind.Unspecified);
+    public override DateTimeOffset AdjustToTimeZone(DateTimeOffset dateAndTime)
+      => new(dateAndTime.DateTime, TimeSpan.FromHours(-0.0));
+  }
 
   private static readonly string[] rfc822DateTimeFormats = new[]
   {

@@ -138,6 +138,51 @@ partial class DateTimeFormatTests {
     );
   }
 
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local_MilitaryTimeZones()
+  {
+    var expected = new DateTime(2022, 4, 27, 20, 54, 1, 123, DateTimeKind.Unspecified).AddTicks(4567);
+
+    foreach (var dayOfWeek in new[] { "Wed, ", string.Empty }) {
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 A", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 B", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 C", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 D", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 E", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 F", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 G", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 H", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 I", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 K", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 L", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 M", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 N", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 O", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 P", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Q", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 R", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 S", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 T", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 U", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 V", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 W", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 X", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Y", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Z", expected };
+    }
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local_MilitaryTimeZones))]
+  public void FromRFC822DateTimeString_Local_MilitaryTimeZones(string s, DateTime expected)
+  {
+    var actual = DateTimeFormat.FromRFC822DateTimeString(s);
+
+    Assert.AreEqual(
+      expected,
+      actual,
+      s
+    );
+  }
+
   private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString()
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
@@ -199,8 +244,41 @@ partial class DateTimeFormatTests {
     }
   }
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_UniversalTime))]
-  public void FromRFC822DateTimeOffsetString_UniversalTime(string s, DateTimeOffset expected)
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_Local_MilitaryTimeZones()
+  {
+    var expected = new DateTimeOffset(2022, 4, 27, 20, 54, 1, 123, TimeSpan.FromHours(-0.0)).AddTicks(4567);
+
+    foreach (var dayOfWeek in new[] { "Wed, ", string.Empty }) {
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 A", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 B", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 C", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 D", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 E", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 F", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 G", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 H", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 I", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 K", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 L", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 M", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 N", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 O", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 P", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Q", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 R", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 S", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 T", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 U", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 V", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 W", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 X", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Y", expected };
+      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Z", expected };
+    }
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_Local_MilitaryTimeZones))]
+  public void FromRFC822DateTimeOffsetString_MilitaryTimeZones(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
       DateTimeFormat.FromRFC822DateTimeOffsetString(s),

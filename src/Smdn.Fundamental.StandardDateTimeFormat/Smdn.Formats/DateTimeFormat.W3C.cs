@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 
+using Smdn.Formats.DateAndTime;
+
 namespace Smdn.Formats;
 
 #pragma warning disable IDE0040
@@ -20,17 +22,19 @@ partial class DateTimeFormat {
       : null;
 
   public static DateTime FromW3CDateTimeString(string s)
-    => FromDateTimeString(s, w3cDateTimeFormats, W3cUniversalTimeStrings);
+    => FromDateTimeString(s, w3cDateTimeFormats, W3cTimeZoneDefinitions);
 
   public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, w3cDateTimeFormats, W3cUniversalTimeStrings);
+    => FromDateTimeOffsetString(s, w3cDateTimeFormats, W3cTimeZoneDefinitions);
 
   public static DateTimeOffset? FromW3CDateTimeOffsetStringNullable(string s)
     => s is null
       ? null
       : FromW3CDateTimeOffsetString(s);
 
-  private static readonly IReadOnlyList<string> W3cUniversalTimeStrings = new[] { "Z" };
+  private static readonly IReadOnlyList<TimeZoneDefinition> W3cTimeZoneDefinitions = new[] {
+    new UniversalTimeZoneDefinition("Z"),
+  };
 
   private static readonly string[] w3cDateTimeFormats = new string[]
   {

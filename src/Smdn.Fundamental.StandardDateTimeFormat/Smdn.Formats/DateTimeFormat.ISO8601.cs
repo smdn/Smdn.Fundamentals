@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Generic;
 
+using Smdn.Formats.DateAndTime;
+
 namespace Smdn.Formats;
 
 #pragma warning disable IDE0040
@@ -15,10 +17,12 @@ partial class DateTimeFormat {
     => dateTimeOffset.ToString("o");
 
   public static DateTime FromISO8601DateTimeString(string s)
-    => FromDateTimeString(s, w3cDateTimeFormats, ISO8601UniversalTimeStrings);
+    => FromDateTimeString(s, w3cDateTimeFormats, ISO8601TimeZoneDefinitions);
 
   public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, w3cDateTimeFormats, ISO8601UniversalTimeStrings);
+    => FromDateTimeOffsetString(s, w3cDateTimeFormats, ISO8601TimeZoneDefinitions);
 
-  private static readonly IReadOnlyList<string> ISO8601UniversalTimeStrings = new[] { "Z" };
+  private static readonly IReadOnlyList<TimeZoneDefinition> ISO8601TimeZoneDefinitions = new[] {
+    new UniversalTimeZoneDefinition("Z"),
+  };
 }
