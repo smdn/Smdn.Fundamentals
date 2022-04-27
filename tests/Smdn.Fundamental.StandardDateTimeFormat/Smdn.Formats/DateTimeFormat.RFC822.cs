@@ -76,27 +76,29 @@ partial class DateTimeFormatTests {
     );
   }
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Utc()
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_UniversalTime()
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4567) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.123456 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4560) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.12345 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4500) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4000) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.123 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.12 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 120, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1 GMT", new DateTime(2003, 6, 10, 9, 41, 1, 100, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01 GMT", new DateTime(2003, 6, 10, 9, 41, 1, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:1 GMT", new DateTime(2003, 6, 10, 9, 41, 1, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41 GMT", new DateTime(2003, 6, 10, 9, 41, 0, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 09:4 GMT", new DateTime(2003, 6, 10, 9, 4, 0, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 9:04 GMT", new DateTime(2003, 6, 10, 9, 4, 0, DateTimeKind.Utc) };
-      yield return new object[] { dayOfWeek + "10 Jun 2003 9:4 GMT", new DateTime(2003, 6, 10, 9, 4, 0, DateTimeKind.Utc) };
+      foreach (var zone in new[] { "GMT", "UT" }) {
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.1234567 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4567) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.123456 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4560) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.12345 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4500) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.1234 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc).AddTicks(4000) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.123 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 123, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.12 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 120, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01.1 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, 100, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:01 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41:1 {zone}", new DateTime(2003, 6, 10, 9, 41, 1, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:41 {zone}", new DateTime(2003, 6, 10, 9, 41, 0, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 09:4 {zone}", new DateTime(2003, 6, 10, 9, 4, 0, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 9:04 {zone}", new DateTime(2003, 6, 10, 9, 4, 0, DateTimeKind.Utc) };
+        yield return new object[] { $"{dayOfWeek}10 Jun 2003 9:4 {zone}", new DateTime(2003, 6, 10, 9, 4, 0, DateTimeKind.Utc) };
+      }
     }
   }
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Utc))]
-  public void FromRFC822DateTimeString_Utc(string s, DateTime expected)
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_UniversalTime))]
+  public void FromRFC822DateTimeString_UniversalTime(string s, DateTime expected)
     => Assert.AreEqual(
       expected,
       DateTimeFormat.FromRFC822DateTimeString(s)
@@ -171,28 +173,30 @@ partial class DateTimeFormatTests {
       DateTimeFormat.FromRFC822DateTimeOffsetString(s)
     );
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_Gmt()
+  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_UniversalTime()
   {
     foreach (var dayOfWeek in new[] { "Fri, ", string.Empty }) {
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.1234567 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4567) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.123456 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4560) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.12345 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4500) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.1234 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4000) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.123 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.12 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 120, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02.1 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 100, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:02 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23:2 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:23 GMT", new DateTimeOffset(2001, 4, 13, 19, 23, 0, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 19:2 GMT", new DateTimeOffset(2001, 4, 13, 19, 2, 0, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 01:2 GMT", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 1:02 GMT", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.FromHours(0)) };
-      yield return new object[] { dayOfWeek + "13 Apr 2001 1:2 GMT", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.FromHours(0)) };
+      foreach (var zone in new[] { "GMT", "UT" }) {
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.1234567 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4567) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.123456 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4560) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.12345 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4500) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.1234 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)).AddTicks(4000) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.123 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.12 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 120, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02.1 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 100, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:02 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23:2 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:23 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 0, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 19:2 {zone}", new DateTimeOffset(2001, 4, 13, 19, 2, 0, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 01:2 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 1:02 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.FromHours(0)) };
+        yield return new object[] { $"{dayOfWeek}13 Apr 2001 1:2 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.FromHours(0)) };
+      }
     }
   }
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_Gmt))]
-  public void FromRFC822DateTimeOffsetString_Gmt(string s, DateTimeOffset expected)
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_UniversalTime))]
+  public void FromRFC822DateTimeOffsetString_UniversalTime(string s, DateTimeOffset expected)
     => Assert.AreEqual(
       expected,
       DateTimeFormat.FromRFC822DateTimeOffsetString(s)

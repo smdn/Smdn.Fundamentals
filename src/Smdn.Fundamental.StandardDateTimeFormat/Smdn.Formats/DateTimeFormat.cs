@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Smdn.Formats;
 
@@ -20,37 +22,69 @@ public static partial class DateTimeFormat {
 #endif
   }
 
-  private static DateTime FromDateTimeString(string s, string[] formats, string universalTimeString)
+  private static DateTime FromDateTimeString(
+    string s,
+    string[] formats,
+    IReadOnlyList<string> universalTimeStrings
+  )
   {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
-    var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
     var styles = DateTimeStyles.AllowWhiteSpaces;
 
-    if (universal)
+    if (TryRemoveUniversalTimeSuffix(s, universalTimeStrings, out var str)) {
       styles |= DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal;
-    else
+      s = str;
+    }
+    else {
       // TODO: JST, EST, etc; use TimeZoneInfo
       styles |= DateTimeStyles.AssumeLocal;
+    }
 
     return DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, styles);
   }
 
-  private static DateTimeOffset FromDateTimeOffsetString(string s, string[] formats, string universalTimeString)
+  private static DateTimeOffset FromDateTimeOffsetString(
+    string s,
+    string[] formats,
+    IReadOnlyList<string> universalTimeStrings
+  )
   {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
-    var universal = s.EndsWith(universalTimeString, StringComparison.Ordinal);
     var styles = DateTimeStyles.AllowWhiteSpaces;
 
-    if (universal)
+    if (TryRemoveUniversalTimeSuffix(s, universalTimeStrings, out var str)) {
       styles |= DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal;
-    else
+      s = str;
+    }
+    else {
       // TODO: JST, EST, etc; use TimeZoneInfo
       styles |= DateTimeStyles.AssumeLocal;
+    }
 
     return DateTimeOffset.ParseExact(s, formats, CultureInfo.InvariantCulture, styles);
+  }
+
+  private static bool TryRemoveUniversalTimeSuffix(
+    string s,
+    IReadOnlyList<string> universalTimeStrings,
+    out string stringWithoutUniversalTimeSuffix
+  )
+  {
+    stringWithoutUniversalTimeSuffix = default;
+
+    var universalTimeSuffix = universalTimeStrings.FirstOrDefault(
+      ut => s.EndsWith(ut, StringComparison.Ordinal)
+    );
+
+    if (universalTimeSuffix is not null) {
+      stringWithoutUniversalTimeSuffix = s.Substring(0, s.Length - universalTimeSuffix.Length);
+      return true;
+    }
+
+    return false;
   }
 }

@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections.Generic;
 
 namespace Smdn.Formats;
 
@@ -14,11 +15,10 @@ partial class DateTimeFormat {
     => dateTimeOffset.ToString("o");
 
   public static DateTime FromISO8601DateTimeString(string s)
-    => FromDateTimeString(s, w3cDateTimeFormats, ISO8601UniversalTimeString);
+    => FromDateTimeString(s, w3cDateTimeFormats, ISO8601UniversalTimeStrings);
 
   public static DateTimeOffset FromISO8601DateTimeOffsetString(string s)
-    => FromDateTimeOffsetString(s, w3cDateTimeFormats, ISO8601UniversalTimeString);
+    => FromDateTimeOffsetString(s, w3cDateTimeFormats, ISO8601UniversalTimeStrings);
 
-  private const string ISO8601UniversalTimeString = "Z";
-  // private static readonly string[] iso8601DateTimeFormats = w3cDateTimeFormats;
+  private static readonly IReadOnlyList<string> ISO8601UniversalTimeStrings = new[] { "Z" };
 }
