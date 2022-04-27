@@ -14,7 +14,7 @@ partial class DateTimeFormatTests {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
     Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 GMT",
+      "Mon, 25 Feb 2008 15:01:12 +0000",
       DateTimeFormat.ToRFC822DateTimeString(dtm)
     );
   }
@@ -48,7 +48,7 @@ partial class DateTimeFormatTests {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
     Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 GMT",
+      "Mon, 25 Feb 2008 15:01:12 +0000",
       DateTimeFormat.ToRFC822DateTimeString(dtm)
     );
   }

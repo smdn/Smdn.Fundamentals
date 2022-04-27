@@ -15,10 +15,12 @@ partial class DateTimeFormat {
   {
     var str = dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture);
 
-    if (dateTime.Kind == DateTimeKind.Utc)
-      return str + "GMT";
-    else
-      return str + GetCurrentTimeZoneOffsetString(false);
+    return string.Concat(
+      str,
+      dateTime.Kind == DateTimeKind.Utc
+        ? "+0000"
+        : GetCurrentTimeZoneOffsetString(false)
+    );
   }
 
   public static string ToRFC822DateTimeString(DateTimeOffset dateTimeOffset)
