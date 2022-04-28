@@ -26,7 +26,7 @@ partial class DateTimeFormat {
   public static DateTimeOffset FromW3CDateTimeOffsetString(string s)
     => W3CDateTimeFormats.ParseDateTimeOffset(s);
 
-  public static DateTimeOffset? FromW3CDateTimeOffsetStringNullable(string s)
+  public static DateTimeOffset? FromW3CDateTimeOffsetStringNullable(string? s)
     => s is null
       ? null
       : W3CDateTimeFormats.ParseDateTimeOffset(s);

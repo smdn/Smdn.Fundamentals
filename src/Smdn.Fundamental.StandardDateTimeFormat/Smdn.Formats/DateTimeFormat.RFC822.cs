@@ -27,7 +27,7 @@ partial class DateTimeFormat {
   public static DateTimeOffset FromRFC822DateTimeOffsetString(string s)
     => RFC822DateTimeFormats.ParseDateTimeOffset(s);
 
-  public static DateTimeOffset? FromRFC822DateTimeOffsetStringNullable(string s)
+  public static DateTimeOffset? FromRFC822DateTimeOffsetStringNullable(string? s)
     => s is null
       ? null
       : RFC822DateTimeFormats.ParseDateTimeOffset(s);
