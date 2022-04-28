@@ -68,6 +68,20 @@ SPDX-License-Identifier: MIT
             "Enum.IsDefined&lt;TEnum&gt;"
             "Int32.Parse(ReadOnlySpan&lt;Char&gt;)"
             "%2A" (entire namespace)
+
+    _NETSdkAvailableApiGroup
+      description:
+        This item defines the target for generating symbols for the API group and the framework version in which the API is supported.
+        Symbols will be generated from the attribute value of Include.
+      attributes:
+        TargetFrameworkCondition:
+          description:
+            Same as _NETSdkAvailableApi.
+        Include:
+          description:
+            The name of the API group.
+          example:
+            "GENERIC_MATH_INTERFACES"
   -->
   <Target
     Name="ListNETSdkAvailableApiName"
@@ -503,6 +517,9 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- ref: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis -->
+      <_NETSdkAvailableApiGroup TargetFrameworkCondition="$(_TargetFrameworkCondition)" Include="NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES" TargetApiFullName="System.Diagnostics.CodeAnalysis" />
+
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Index"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Range"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ArrayBufferWriter"/>
@@ -673,6 +690,9 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- ref: https://devblogs.microsoft.com/dotnet/preview-features-in-net-6-generic-math/ -->
+      <_NETSdkAvailableApiGroup TargetFrameworkCondition="$(_TargetFrameworkCondition)" Include="GENERIC_MATH_INTERFACES" TargetApiFullName="System" />
+
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IBinaryInteger"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IBinaryNumber"/>
@@ -716,6 +736,7 @@ SPDX-License-Identifier: MIT
         Include="@(_NETSdkAvailableApiSymbol->Metadata('Constant'))"
         TargetApiFullName="%(_NETSdkAvailableApiSymbol.TargetApiFullName)"
       />
+      <NETSdkAvailableApiSymbol Include="@(_NETSdkAvailableApiGroup)" />
     </ItemGroup>
   </Target>
 
