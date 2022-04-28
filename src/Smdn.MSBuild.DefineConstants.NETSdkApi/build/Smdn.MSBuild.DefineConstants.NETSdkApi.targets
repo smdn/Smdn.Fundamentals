@@ -73,7 +73,9 @@ SPDX-License-Identifier: MIT
     Name="ListNETSdkAvailableApiName"
     Returns="@(NETSdkAvailableApiSymbol)"
   >
-    <!-- NETFRAMEWORK -->
+    <!--
+      Applies to: NETFRAMEWORK
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETFRAMEWORK</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -86,7 +88,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default_ANSI"/>
     </ItemGroup>
 
-    <!-- NETFRAMEWORK || NETSTANDARD1_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD1_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD1_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -108,7 +112,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.FromResult"/>
     </ItemGroup>
 
-    <!-- NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET45_OR_GREATER;NETSTANDARD1_1_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -126,7 +132,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="MemoryMarshal"/>
     </ItemGroup>
 
-    <!-- NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD1_3_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -152,7 +160,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols.Tls12"/>
     </ItemGroup>
 
-    <!-- NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET46_OR_GREATER;NETSTANDARD1_3_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -171,7 +181,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.FromException"/>
     </ItemGroup>
 
-    <!-- NETFRAMEWORK || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD1_5_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -187,7 +199,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="ICustomAttributeProvider"/>
     </ItemGroup>
 
-    <!-- NET461_OR_GREATER || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NET461_OR_GREATER || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET461_OR_GREATER;NETSTANDARD1_5_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -200,7 +214,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Loader" Include="%2A"/> <!-- '*'/entire namespace -->
     </ItemGroup>
 
-    <!-- NET461_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NET461_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET461_OR_GREATER;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -217,7 +233,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.Unicode" Include="%2A"/> <!-- '*'/entire namespace -->
     </ItemGroup>
 
-    <!-- NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -335,7 +353,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MemberInfo.GetCustomAttributesData"/>
     </ItemGroup>
 
-    <!-- NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET472_OR_GREATER;NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -364,7 +384,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols.Tls13"/>
     </ItemGroup>
 
-    <!-- NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -377,7 +399,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default_UTF8"/> <!-- Encoding.Default but except NETFRAMEWORK -->
     </ItemGroup>
 
-    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -412,7 +436,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.AppendJoin"/>
     </ItemGroup>
 
-    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -465,7 +491,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask"/>
     </ItemGroup>
 
-    <!-- NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -483,7 +511,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.DisposeAsync"/>
     </ItemGroup>
 
-    <!-- NETFRAMEWORK || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETFRAMEWORK || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETFRAMEWORK;NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -498,7 +528,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Activator.CreateInstanceFrom(assemblyFile,typeName)"/>
     </ItemGroup>
 
-    <!-- NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -523,7 +555,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.GetChunks"/>
     </ItemGroup>
 
-    <!-- NET5_0_OR_GREATER -->
+    <!--
+      Applies to: NET5_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET5_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -562,7 +596,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromResult"/>
     </ItemGroup>
 
-    <!-- NET6_0_OR_GREATER -->
+    <!--
+      Applies to: NET6_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET6_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -625,7 +661,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.WaitAsync"/>
     </ItemGroup>
 
-    <!-- NET7_0_OR_GREATER -->
+    <!--
+      Applies to: NET7_0_OR_GREATER
+    -->
     <PropertyGroup>
       <_TargetFrameworkCondition>NET7_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
