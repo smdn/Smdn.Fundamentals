@@ -36,7 +36,39 @@ SPDX-License-Identifier: MIT
     Condition="'$(AddNETSdkApiDefineConstantsAfterTargets)' != ''"
   />
 
-  <!-- ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks -->
+  <!--
+    _NETSdkAvailableApi
+      description:
+        This item defines the target for generating symbols for the API and the framework version in which the API is supported.
+        Symbols will be generated based on the attribute values of Namespace and Include.
+        example:
+          @Namespace="System", @Include="Array.Empty" -> "SYSTEM_ARRAY_EMPTY"
+          @Namespace="System", @Include="Enum.IsDefined&lt;TEnum&gt;" -> "SYSTEM_ENUM_ISDEFINED_OF_TENUM"
+          @Namespace="System.Text.Unicode", @Include="%2A" -> "SYSTEM_TEXT_UNICODE"
+      attributes:
+        TargetFrameworkCondition:
+          description:
+            The target framework version where the API support have been available.
+            ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks
+          example:
+            "NETFRAMEWORK"
+            "NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NET5_0_OR_GREATER"
+        Namespace:
+          description: The namespace of the API.
+          example: "System", "System.Buffers"
+        Include:
+          description:
+            The name of type or member of the API.
+            The character '*' represents the entire namespace.
+          example:
+            "IAsyncDisposable"
+            "Array.Empty"
+            "Exception.ctor(SerializationInfo)"
+            "CryptoStream.ctor(leaveOpen)"
+            "Enum.IsDefined&lt;TEnum&gt;"
+            "Int32.Parse(ReadOnlySpan&lt;Char&gt;)"
+            "%2A" (entire namespace)
+  -->
   <Target
     Name="ListNETSdkAvailableApiName"
     Returns="@(NETSdkAvailableApiSymbol)"
