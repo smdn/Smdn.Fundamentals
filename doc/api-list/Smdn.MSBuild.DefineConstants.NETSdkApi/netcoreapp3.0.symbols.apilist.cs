@@ -1,8 +1,9 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.2.4
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.0
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.2.4
+//   InformationalVersion: 1.3.0
 
 // List of symbols defined on target framework 'netcoreapp3.0'
+#define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
 #define MICROSOFT_WIN32_REGISTRY // Microsoft.Win32.Registry (NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_ACTIVATOR_CREATEINSTANCE_ASSEMBLYNAME_TYPENAME // System.Activator.CreateInstance(assemblyName,typeName) (NETFRAMEWORK || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_ACTIVATOR_CREATEINSTANCEFROM_ASSEMBLYFILE_TYPENAME // System.Activator.CreateInstanceFrom(assemblyFile,typeName) (NETFRAMEWORK || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
