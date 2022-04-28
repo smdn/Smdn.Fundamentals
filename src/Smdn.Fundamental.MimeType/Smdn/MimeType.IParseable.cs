@@ -2,10 +2,6 @@
 // SPDX-License-Identifier: MIT
 #define OBSOLETE_MEMBER
 
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
-#define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
-#endif
-
 using System;
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;

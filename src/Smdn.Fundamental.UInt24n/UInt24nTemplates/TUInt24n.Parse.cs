@@ -2,12 +2,8 @@
 // SPDX-License-Identifier: MIT
 #nullable enable
 
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
-#define NULL_STATE_ATTRIBUTES
-#endif
-
 using System;
-#if NULL_STATE_ATTRIBUTES
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
 #endif
 using System.Globalization;
@@ -37,7 +33,7 @@ partial struct TUInt24n {
 #endif
 
   public static bool TryParse(
-#if NULL_STATE_ATTRIBUTES
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
     [NotNullWhen(true)] string? s,
 #else
     string? s,
@@ -48,7 +44,7 @@ partial struct TUInt24n {
 
   // IParseable<TSelf>.TryParse(String, IFormatProvider, TSelf)
   public static bool TryParse(
-#if NULL_STATE_ATTRIBUTES
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
     [NotNullWhen(true)] string? s,
 #else
     string? s,
@@ -60,7 +56,7 @@ partial struct TUInt24n {
 
   // INumber<TSelf>.TryParse(ReadOnlySpan<char>, NumberStyles, IFormatProvider?, out TSelf)
   public static bool TryParse(
-#if NULL_STATE_ATTRIBUTES
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
     [NotNullWhen(true)] string? s,
 #else
     string? s,
