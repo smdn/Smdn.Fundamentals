@@ -36,7 +36,7 @@ partial class DateTimeFormat {
       dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture).Replace(":", string.Empty);
   }
 
-  public static string ToRFC822DateTimeStringNullable(DateTimeOffset? dateTimeOffset)
+  public static string? ToRFC822DateTimeStringNullable(DateTimeOffset? dateTimeOffset)
     => dateTimeOffset.HasValue
       ? ToRFC822DateTimeString(dateTimeOffset.Value)
       : null;
@@ -220,7 +220,7 @@ partial class DateTimeFormat {
   private abstract class RFC5322NorthAmericanTimeZoneDefinition : TimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private readonly string timeZoneName;
-    private readonly TimeZoneInfo timeZoneInfo;
+    private readonly TimeZoneInfo? timeZoneInfo;
 
     protected RFC5322NorthAmericanTimeZoneDefinition(string suffix, string timeZoneName, IReadOnlyList<string> timeZoneIds)
       : base(suffix)

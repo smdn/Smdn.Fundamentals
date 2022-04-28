@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -29,6 +32,9 @@ public static partial class DateTimeFormat {
   private static DateTime FromDateTimeString(
     string s,
     string[] formats,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [DisallowNull]
+#endif
     IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions
   )
   {
@@ -57,6 +63,9 @@ public static partial class DateTimeFormat {
   private static DateTimeOffset FromDateTimeOffsetString(
     string s,
     string[] formats,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [DisallowNull]
+#endif
     IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions
   )
   {
@@ -84,9 +93,12 @@ public static partial class DateTimeFormat {
 
   private static string ProcessTimeZoneSpecifier(
     string s,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [DisallowNull]
+#endif
     IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions,
     out DateTimeStyles dateTimeStylesOfTimeZone,
-    out TimeZoneDefinition timeZone
+    out TimeZoneDefinition? timeZone
   )
   {
     dateTimeStylesOfTimeZone = DateTimeStyles.AssumeLocal;

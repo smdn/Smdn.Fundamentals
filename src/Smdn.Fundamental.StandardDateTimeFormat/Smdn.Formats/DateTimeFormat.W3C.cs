@@ -16,7 +16,7 @@ partial class DateTimeFormat {
   public static string ToW3CDateTimeString(DateTimeOffset dateTimeOffset)
     => dateTimeOffset.ToString("o");
 
-  public static string ToW3CDateTimeStringNullable(DateTimeOffset? dateTimeOffset)
+  public static string? ToW3CDateTimeStringNullable(DateTimeOffset? dateTimeOffset)
     => dateTimeOffset.HasValue
       ? ToW3CDateTimeString(dateTimeOffset.Value)
       : null;
