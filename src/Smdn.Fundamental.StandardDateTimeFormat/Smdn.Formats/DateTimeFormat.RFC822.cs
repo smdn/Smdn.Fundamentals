@@ -233,15 +233,14 @@ partial class DateTimeFormat {
           timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(id);
           break;
         }
-#pragma warning disable CS0168
-        catch (Exception ex)
-#if SYSTEM_TIMEZONENOTFOUNDEXCEPTION
-          when (ex is TimeZoneNotFoundException)
-#endif
-#pragma warning restore CS0168
-        {
+        catch (InvalidTimeZoneException) {
           continue;
         }
+#if SYSTEM_TIMEZONENOTFOUNDEXCEPTION
+        catch (TimeZoneNotFoundException) {
+          continue;
+        }
+#endif
       }
     }
 
