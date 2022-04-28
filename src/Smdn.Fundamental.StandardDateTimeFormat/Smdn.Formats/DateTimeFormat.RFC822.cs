@@ -1,5 +1,12 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+
+#if NET35_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
+#endif
+#if NET35_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TIMEZONENOTFOUNDEXCEPTION
+#endif
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -104,6 +111,7 @@ partial class DateTimeFormat {
 
   // EST(-05:00)/EDT(-04:00)
   private class RFC5322EasternTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+#if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Eastern",
       "Eastern Standard Time",
@@ -115,10 +123,22 @@ partial class DateTimeFormat {
       : base(prefix, "EST", timeZoneIds)
     {
     }
+#else
+    public RFC5322EasternTimeZoneDefinition(string prefix)
+      : base(
+        prefix,
+        prefix.EndsWith("EST", StringComparison.Ordinal)
+          ? TimeSpan.FromHours(-5.0)
+          : TimeSpan.FromHours(-4.0)
+      )
+    {
+    }
+#endif
   }
 
   // CST(-06:00)/CDT(-05:00)
   private class RFC5322CentralTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+#if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Central",
       "Central Standard Time",
@@ -130,10 +150,22 @@ partial class DateTimeFormat {
       : base(prefix, "CST", timeZoneIds)
     {
     }
+#else
+    public RFC5322CentralTimeZoneDefinition(string prefix)
+      : base(
+        prefix,
+        prefix.EndsWith("CST", StringComparison.Ordinal)
+          ? TimeSpan.FromHours(-6.0)
+          : TimeSpan.FromHours(-5.0)
+      )
+    {
+    }
+#endif
   }
 
   // MST(-07:00)/MDT(-06:00)
   private class RFC5322MountainTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+#if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Mountain",
       "Mountain Standard Time",
@@ -145,10 +177,22 @@ partial class DateTimeFormat {
       : base(prefix, "MST", timeZoneIds)
     {
     }
+#else
+    public RFC5322MountainTimeZoneDefinition(string prefix)
+      : base(
+        prefix,
+        prefix.EndsWith("MST", StringComparison.Ordinal)
+          ? TimeSpan.FromHours(-7.0)
+          : TimeSpan.FromHours(-6.0)
+      )
+    {
+    }
+#endif
   }
 
   // PST(-08:00)/PDT(-07:00)
   private class RFC5322PacificTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+#if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Pacific",
       "Pacific Standard Time",
@@ -160,9 +204,21 @@ partial class DateTimeFormat {
       : base(prefix, "PST", timeZoneIds)
     {
     }
+#else
+    public RFC5322PacificTimeZoneDefinition(string prefix)
+      : base(
+        prefix,
+        prefix.EndsWith("PST", StringComparison.Ordinal)
+          ? TimeSpan.FromHours(-8.0)
+          : TimeSpan.FromHours(-7.0)
+      )
+    {
+    }
+#endif
   }
 
   private abstract class RFC5322NorthAmericanTimeZoneDefinition : TimeZoneDefinition {
+#if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private readonly string timeZoneName;
     private readonly TimeZoneInfo timeZoneInfo;
 
@@ -177,20 +233,53 @@ partial class DateTimeFormat {
           timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(id);
           break;
         }
-        catch (TimeZoneNotFoundException) {
+#pragma warning disable CS0168
+        catch (Exception ex)
+#if SYSTEM_TIMEZONENOTFOUNDEXCEPTION
+          when (ex is TimeZoneNotFoundException)
+#endif
+#pragma warning restore CS0168
+        {
           continue;
         }
       }
     }
 
-    private TimeZoneInfo ThrowIfTimeZoneNotFound()
-      => timeZoneInfo ?? throw new TimeZoneNotFoundException($"could not find TimeZoneInfo for the time zone '{timeZoneName}'");
+    private TimeSpan GetUtcOffset(DateTime dateAndTime)
+    {
+      if (timeZoneInfo is null) {
+#pragma warning disable SA1114
+#if SYSTEM_TIMEZONENOTFOUNDEXCEPTION
+        throw new TimeZoneNotFoundException(
+#else
+        throw new InvalidOperationException(
+#endif
+          $"could not find TimeZoneInfo for the time zone '{timeZoneName}'"
+        );
+#pragma warning restore SA1114
+      }
+
+      return timeZoneInfo.GetUtcOffset(dateAndTime);
+    }
+#else // SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
+    private readonly TimeSpan utcOffset;
+
+    protected RFC5322NorthAmericanTimeZoneDefinition(string suffix, TimeSpan utcOffset)
+      : base(suffix)
+    {
+      this.utcOffset = utcOffset;
+    }
+
+#pragma warning disable IDE0060
+    private TimeSpan GetUtcOffset(DateTime dateAndTime) => utcOffset;
+#pragma warning restore IDE0060
+#endif
 
     public override DateTime AdjustToTimeZone(DateTime dateAndTime)
-      => new DateTimeOffset(dateAndTime, ThrowIfTimeZoneNotFound().GetUtcOffset(dateAndTime)).UtcDateTime;
+      => new DateTimeOffset(dateAndTime, GetUtcOffset(dateAndTime)).UtcDateTime;
 
     public override DateTimeOffset AdjustToTimeZone(DateTimeOffset dateAndTime)
-      => new(dateAndTime.DateTime, ThrowIfTimeZoneNotFound().GetUtcOffset(dateAndTime.DateTime));
+      => new(dateAndTime.DateTime, GetUtcOffset(dateAndTime.DateTime));
   }
 
   private static readonly string[] rfc822DateTimeFormats = new[]
