@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_READONLYSPAN
+#endif
+
 using System;
 using System.Runtime.CompilerServices;
 
@@ -37,6 +41,7 @@ public static class StringShim {
   /*
    * SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
    */
+#if SYSTEM_READONLYSPAN
 #if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
@@ -55,4 +60,5 @@ public static class StringShim {
     }
 #endif
   }
+#endif // SYSTEM_READONLYSPAN
 }

@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.1;netstandard2.0;netstandard1.6;net45</TargetFrameworks>
+    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1;netstandard2.1;netstandard2.0;netstandard1.6;netstandard1.3;netstandard1.1;netstandard1.0;net45</TargetFrameworks>
     <VersionPrefix>3.1.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <PackageReference Include="System.Memory" />
+    <PackageReference Include="System.Memory" Condition="$(TargetFramework) != 'netstandard1.0'" />
     <PackageReference Include="System.Threading.Tasks.Extensions" />
     <PackageReference Include="System.ValueTuple" />
   </ItemGroup>

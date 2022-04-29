@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_READONLYSPAN
+#endif
+
 using System;
 using NUnit.Framework;
 
@@ -91,6 +95,7 @@ public class StringShimTests {
                     "same as EndsWith(string) #4");
   }
 
+#if SYSTEM_READONLYSPAN
   [Test]
   public void TestConstruct()
   {
@@ -100,4 +105,5 @@ public class StringShimTests {
     Assert.AreEqual("A\u0000C", StringShim.Construct(stackalloc char[] { 'A', '\u0000', 'C' } ), "#4");
     Assert.AreEqual("🌟", StringShim.Construct(stackalloc char[] { '\uD83C', '\uDF1F' } ), "#5");
   }
+#endif
 }
