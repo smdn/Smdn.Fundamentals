@@ -5,7 +5,9 @@
 #endif
 
 using System;
+#if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
 using System.Runtime.CompilerServices;
+#endif
 
 namespace Smdn;
 
