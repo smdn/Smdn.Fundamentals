@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Shim
 //   AssemblyVersion: 3.1.3.0
 //   InformationalVersion: 3.1.3+776c90f65c448c72e1f3c8c16c24fe988b1af46a
-//   TargetFramework: .NETStandard,Version=v2.1
+//   TargetFramework: .NETStandard,Version=v1.1
 //   Configuration: Release
 
 using System;
@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace Smdn {
   public static class ArrayShim {
-    public static TOutput[] ConvertAll<TInput, TOutput>(this TInput[] array, Converter<TInput, TOutput> converter) {}
     public static TOutput[] ConvertAll<TInput, TOutput>(this TInput[] array, Func<TInput, TOutput> converter) {}
     public static T[] Empty<T>() {}
   }
