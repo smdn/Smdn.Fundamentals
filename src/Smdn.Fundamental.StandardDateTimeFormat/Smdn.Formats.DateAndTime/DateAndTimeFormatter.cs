@@ -27,7 +27,7 @@ public static class DateAndTimeFormatter {
     // hours
     var duration = offset.Duration();
 
-    duration.Hours.TryFormat(buf, out _, "D2", CultureInfo.InvariantCulture);
+    duration.Hours.TryFormat(buf, out _, "D2", CultureInfo.InvariantCulture.NumberFormat);
     buf = buf.Slice(2);
 
     // delimiter
@@ -37,7 +37,7 @@ public static class DateAndTimeFormatter {
     }
 
     // minutes
-    duration.Minutes.TryFormat(buf, out _, "D2", CultureInfo.InvariantCulture);
+    duration.Minutes.TryFormat(buf, out _, "D2", CultureInfo.InvariantCulture.NumberFormat);
 
     return new string(buffer);
 #else // SYSTEM_READONLYSPAN
@@ -49,7 +49,7 @@ public static class DateAndTimeFormatter {
         ? "'-'hh':'mm"
         : "'-'hhmm";
 
-    return offset.Duration().ToString(format, CultureInfo.InvariantCulture);
+    return offset.Duration().ToString(format, CultureInfo.InvariantCulture.NumberFormat);
 #endif
   }
 }

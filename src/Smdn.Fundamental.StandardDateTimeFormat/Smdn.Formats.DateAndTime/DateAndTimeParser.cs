@@ -37,7 +37,7 @@ internal static class DateAndTimeParser {
     var dateAndTime = DateTime.ParseExact(
       s,
       formats,
-      CultureInfo.InvariantCulture,
+      CultureInfo.InvariantCulture.DateTimeFormat,
       timeZoneStyles | WhiteSpaceStyles
     );
 
@@ -70,7 +70,7 @@ internal static class DateAndTimeParser {
     var dateAndTime = DateTimeOffset.ParseExact(
       s,
       formats,
-      CultureInfo.InvariantCulture,
+      CultureInfo.InvariantCulture.DateTimeFormat,
       timeZoneStyles | WhiteSpaceStyles
     );
 
