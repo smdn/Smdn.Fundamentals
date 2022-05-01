@@ -23,6 +23,7 @@ public class RFC822DateTimeFormatsTests {
       yield return new object[] { $"{dayOfWeek}01 May 2022 25:17:14.0123456 +0000" }; // hour / invalid
       yield return new object[] { $"{dayOfWeek}01 May 2022 23:60:14.0123456 +0000" }; // minute / invalid
       yield return new object[] { $"{dayOfWeek}01 May 2022 23:17:61.0123456 +0000" }; // second / invalid
+      yield return new object[] { $"{dayOfWeek}01 May 2022 23:17:14. +0000" }; // second / invalid
       yield return new object[] { $"{dayOfWeek}01 May 2022 23:17:14.01234567 +0000" }; // precision / overflow
       yield return new object[] { $"{dayOfWeek}01 May 2022 23:17:14.0123456 J" }; // time zone / non-existent
       yield return new object[] { $"{dayOfWeek}01 May 2022 23:17:14.0123456 GM" }; // time zone / invalid
