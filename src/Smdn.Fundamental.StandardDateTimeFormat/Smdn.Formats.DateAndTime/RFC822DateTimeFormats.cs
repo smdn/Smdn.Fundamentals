@@ -15,22 +15,18 @@ namespace Smdn.Formats.DateAndTime;
 
 internal static class RFC822DateTimeFormats {
   public static string ToString(DateTime dateTime)
-  {
-    var str = dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat);
-
-    return string.Concat(
-      str,
+    => string.Concat(
+      dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat),
       dateTime.Kind == DateTimeKind.Utc
         ? "+0000"
         : DateTimeFormat.GetCurrentTimeZoneOffsetString(false)
     );
-  }
 
   public static string ToString(DateTimeOffset dateTimeOffset)
-  {
-    return dateTimeOffset.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat) +
-      dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture.DateTimeFormat).Replace(":", string.Empty);
-  }
+    => string.Concat(
+      dateTimeOffset.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat),
+      dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture.DateTimeFormat).Replace(":", string.Empty)
+    );
 
   public static DateTime ParseDateTime(string s)
     => DateAndTimeParser.ParseDateTime(s, formatStrings, timeZoneDefinitions);
