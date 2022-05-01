@@ -33,7 +33,7 @@ public static class ISO8601DateTimeFormats {
 #if SYSTEM_GLOBALIZATION_ISOWEEK
 #if SYSTEM_DATEONLY
   public static string ToWeekDateString(DateOnly date)
-    => ToWeekDateString(date.ToDateTime(default(TimeOnly), DateTimeKind.Unspecified));
+    => ToWeekDateString(date.ToDateTime(time: default, DateTimeKind.Unspecified));
 #endif
 
   public static string ToWeekDateString(DateTimeOffset date)
