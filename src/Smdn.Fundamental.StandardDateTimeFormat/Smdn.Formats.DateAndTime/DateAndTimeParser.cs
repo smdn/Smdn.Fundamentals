@@ -25,10 +25,12 @@ internal static class DateAndTimeParser {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
+    var timeZoneStyles = DateTimeStyles.AssumeLocal;
+
     s = ProcessTimeZoneSpecifier(
       s,
       timeZoneDefinitions,
-      out var timeZoneStyles,
+      ref timeZoneStyles,
       out var tz
     );
 
@@ -56,10 +58,12 @@ internal static class DateAndTimeParser {
     if (s is null)
       throw new ArgumentNullException(nameof(s));
 
+    var timeZoneStyles = DateTimeStyles.AssumeUniversal;
+
     s = ProcessTimeZoneSpecifier(
       s,
       timeZoneDefinitions,
-      out var timeZoneStyles,
+      ref timeZoneStyles,
       out var tz
     );
 
@@ -81,12 +85,10 @@ internal static class DateAndTimeParser {
     [DisallowNull]
 #endif
     IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions,
-    out DateTimeStyles dateTimeStylesOfTimeZone,
+    ref DateTimeStyles dateTimeStylesOfTimeZone,
     out TimeZoneDefinition? timeZone
   )
   {
-    dateTimeStylesOfTimeZone = DateTimeStyles.AssumeLocal;
-
     timeZone = timeZoneDefinitions.FirstOrDefault(
       tz => s.EndsWith(tz.Suffix, StringComparison.Ordinal)
     );

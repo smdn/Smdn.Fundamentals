@@ -56,13 +56,12 @@ public class W3CDateTimeFormatsTests {
         yield return new object[] { $"2022-05-01{T}23:17:14.{tz}" }; // lack of millisecond
         yield return new object[] { $"2022-05-01{T}23:17:{tz}" }; // lack of second
         yield return new object[] { $"2022-05-01{T}23:{tz}" }; // lack of minute
-        yield return new object[] { $"2022-05-01{T}" }; // lack of hour
-        yield return new object[] { $"2022-05-" }; // lack of day
-        yield return new object[] { $"2022-05" }; // lack of day
-        yield return new object[] { $"2022-" }; // lack of month
-        yield return new object[] { $"2022" }; // lack of month
       }
     }
+
+    yield return new object[] { "2022-05-01T" }; // lack of hour
+    yield return new object[] { "2022-05-" }; // lack of day
+    yield return new object[] { "2022-" }; // lack of month
   }
 
   [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]

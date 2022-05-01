@@ -65,5 +65,8 @@ internal static class W3CDateTimeFormats {
     "yyyy'-'MM'-'dd' 'HH':'mm",
     "yyyy'-'MM'-'dd' 'HHzzz",
     "yyyy'-'MM'-'dd' 'HH",
+    "yyyy'-'MM'-'dd",
+    "yyyy'-'MM",
+    "yyyy",
   };
 }

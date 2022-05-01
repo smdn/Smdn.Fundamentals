@@ -90,6 +90,9 @@ partial class DateTimeFormatTests {
       yield return new object[] { $"2008-04-11{T}12:34:56Z", new DateTime(2008, 4, 11, 12, 34, 56, DateTimeKind.Utc) };
       yield return new object[] { $"2008-04-11{T}12:34Z", new DateTime(2008, 4, 11, 12, 34, 0, DateTimeKind.Utc) };
       yield return new object[] { $"2008-04-11{T}12Z", new DateTime(2008, 4, 11, 12, 0, 0, DateTimeKind.Utc) };
+      yield return new object[] { "2008-04-11", new DateTime(2008, 4, 11, 0, 0, 0, DateTimeKind.Utc) };
+      yield return new object[] { "2008-04", new DateTime(2008, 4, 1, 0, 0, 0, DateTimeKind.Utc) };
+      yield return new object[] { "2008", new DateTime(2008, 1, 1, 0, 0, 0, DateTimeKind.Utc) };
     }
   }
 
@@ -157,6 +160,9 @@ partial class DateTimeFormatTests {
       yield return new object[] { $"2008-04-11{T}12:34:05 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 5, TimeSpan.FromHours(+9)) };
       yield return new object[] { $"2008-04-11{T}12:34 +09:00", new DateTimeOffset(2008, 4, 11, 12, 34, 0, TimeSpan.FromHours(+9)) };
       yield return new object[] { $"2008-04-11{T}12 +09:00", new DateTimeOffset(2008, 4, 11, 12, 0, 0, TimeSpan.FromHours(+9)) };
+      yield return new object[] { "2008-04-11", new DateTimeOffset(2008, 4, 11, 0, 0, 0, TimeSpan.Zero) };
+      yield return new object[] { "2008-04", new DateTimeOffset(2008, 4, 1, 0, 0, 0, TimeSpan.Zero) };
+      yield return new object[] { "2008", new DateTimeOffset(2008, 1, 1, 0, 0, 0, TimeSpan.Zero) };
     }
   }
 
