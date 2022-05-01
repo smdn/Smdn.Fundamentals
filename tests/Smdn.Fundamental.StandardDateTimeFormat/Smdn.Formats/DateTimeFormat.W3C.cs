@@ -106,6 +106,8 @@ partial class DateTimeFormatTests {
     foreach (var T in new[] { "T", " "}) {
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333-0400", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) }; // invalid but acceptable
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -0400", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) }; // invalid but acceptable
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +00:00", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -00:00", new DateTime(2008, 4, 11, 12, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) }; // invalid but acceptable
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333-04:00", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -04:00", new DateTime(2008, 4, 11, 16, 34, 56, 789, DateTimeKind.Local).AddTicks(3333) };
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +12:45", new DateTime(2008, 4, 10, 23, 49, 56, 789, DateTimeKind.Local).AddTicks(3333) };
@@ -139,6 +141,8 @@ partial class DateTimeFormatTests {
     foreach (var T in new[] { "T", " "}) {
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333-0400", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) }; // invalid but acceptable
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -0400", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) }; // invalid but acceptable
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +00:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.Zero).AddTicks(3333) };
+      yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -00:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.Zero).AddTicks(3333) }; // invalid but acceptable
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333-04:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) };
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333 -04:00", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(-4)).AddTicks(3333) };
       yield return new object[] { $"2008-04-11{T}12:34:56.7893333 +12:45", new DateTimeOffset(2008, 4, 11, 12, 34, 56, 789, TimeSpan.FromHours(12) + TimeSpan.FromMinutes(45)).AddTicks(3333) };

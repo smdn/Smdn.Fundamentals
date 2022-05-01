@@ -22,6 +22,8 @@ public class W3CDateTimeFormatsTests {
       yield return new object[] { $"2022-05-01{T}23:17:14.0123456+00" }; // time zone / invalid
       yield return new object[] { $"2022-05-01{T}23:17:14.0123456 +00" }; // time zone / invalid
 #if false
+      yield return new object[] { $"2022-05-01{T}23:17:14.0123456-00:00" }; // time zone / invalid but acceptable
+      yield return new object[] { $"2022-05-01{T}23:17:14.0123456 -00:00" }; // time zone / invalid but acceptable
       yield return new object[] { $"2022-05-01{T}23:17:14.0123456+0000" }; // time zone / invalid but acceptable
       yield return new object[] { $"2022-05-01{T}23:17:14.0123456 +0000" }; // time zone / invalid but acceptable
 #endif
