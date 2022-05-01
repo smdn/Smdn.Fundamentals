@@ -111,6 +111,7 @@ partial class DateTimeFormatTests {
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4567) };
+      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 +09:00", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4567) }; // invalid but acceptable
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.123456 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4560) };
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.12345 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4500) };
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4000) };
@@ -189,6 +190,7 @@ partial class DateTimeFormatTests {
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4567) };
+      yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 +09:00", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4567) }; // invalid but acceptable
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.123456 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4560) };
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.12345 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4500) };
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4000) };
