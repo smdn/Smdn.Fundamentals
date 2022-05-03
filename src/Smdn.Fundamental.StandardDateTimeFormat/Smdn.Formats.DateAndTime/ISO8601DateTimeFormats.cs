@@ -1,15 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_GLOBALIZATION_ISOWEEK
-#endif
-#if NET6_0_OR_GREATER
-#define SYSTEM_DATEONLY
-#endif
-#if NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_READONLYSPAN
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;
