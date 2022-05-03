@@ -6,6 +6,9 @@
 #if NET6_0_OR_GREATER
 #define SYSTEM_DATEONLY
 #endif
+#if NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_READONLYSPAN
+#endif
 
 using System;
 using System.Collections;
@@ -19,6 +22,107 @@ namespace Smdn.Formats.DateAndTime;
 
 [TestFixture()]
 public class ISO8601DateTimeFormatsTests {
+  private static IEnumerable YieldTestCases_ParseDateTime()
+    => DateTimeFormatTests.YieldTestCases_FromW3CDateTimeString_UniversalTime();
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime))]
+  public void ParseDateTime(string s, DateTime expected)
+    => Assert.AreEqual(expected, ISO8601DateTimeFormats.ParseDateTime(s));
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime))]
+  public void TryParseDateTime(string s, DateTime expected)
+  {
+    Assert.IsTrue(ISO8601DateTimeFormats.TryParseDateTime(s, out var result));
+    Assert.AreEqual(expected, result);
+  }
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime))]
+  public void ParseDateTime_ReadOnlySpanOfChar(string s, DateTime expected)
+    => Assert.AreEqual(expected, ISO8601DateTimeFormats.ParseDateTime(s.AsSpan()));
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime))]
+  public void TryParseDateTime_ReadOnlySpanOfChar(string s, DateTime expected)
+  {
+    Assert.IsTrue(ISO8601DateTimeFormats.TryParseDateTime(s.AsSpan(), out var result));
+    Assert.AreEqual(expected, result);
+  }
+#endif
+
+  private static IEnumerable YieldTestCases_ParseDateTime_Local()
+    => DateTimeFormatTests.YieldTestCases_FromW3CDateTimeString_Local();
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime_Local))]
+  public void ParseDateTime_Local(string s, DateTime expected)
+  {
+    var result = ISO8601DateTimeFormats.ParseDateTime(s);
+
+    Assert.AreEqual(
+      expected + TimeZoneInfo.Local.GetUtcOffset(result),
+      result
+    );
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime_Local))]
+  public void TryParseDateTime_Local(string s, DateTime expected)
+  {
+    Assert.IsTrue(ISO8601DateTimeFormats.TryParseDateTime(s, out var result));
+    Assert.AreEqual(
+      expected + TimeZoneInfo.Local.GetUtcOffset(result),
+      result
+    );
+  }
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime_Local))]
+  public void ParseDateTime_ReadOnlySpanOfChar_Local(string s, DateTime expected)
+  {
+    var result = ISO8601DateTimeFormats.ParseDateTime(s.AsSpan());
+
+    Assert.AreEqual(
+      expected + TimeZoneInfo.Local.GetUtcOffset(result),
+      result
+    );
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTime_Local))]
+  public void TryParseDateTime_ReadOnlySpanOfChar_Local(string s, DateTime expected)
+  {
+    Assert.IsTrue(ISO8601DateTimeFormats.TryParseDateTime(s.AsSpan(), out var result));
+    Assert.AreEqual(
+      expected + TimeZoneInfo.Local.GetUtcOffset(result),
+      result
+    );
+  }
+#endif
+
+  private static IEnumerable YieldTestCases_ParseDateTimeOffset()
+    => DateTimeFormatTests.YieldTestCases_FromW3CDateTimeOffsetString();
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTimeOffset))]
+  public void ParseDateTimeOffset(string s, DateTimeOffset expected)
+    => Assert.AreEqual(expected, ISO8601DateTimeFormats.ParseDateTimeOffset(s));
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTimeOffset))]
+  public void TryParseDateTimeOffset(string s, DateTimeOffset expected)
+  {
+    Assert.IsTrue(ISO8601DateTimeFormats.TryParseDateTimeOffset(s, out var result));
+    Assert.AreEqual(expected, result);
+  }
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTimeOffset))]
+  public void ParseDateTimeOffset_ReadOnlySpanOfChar(string s, DateTimeOffset expected)
+    => Assert.AreEqual(expected, ISO8601DateTimeFormats.ParseDateTimeOffset(s.AsSpan()));
+
+  [TestCaseSource(nameof(YieldTestCases_ParseDateTimeOffset))]
+  public void TryParseDateTimeOffset_ReadOnlySpanOfChar(string s, DateTimeOffset expected)
+  {
+    Assert.IsTrue(ISO8601DateTimeFormats.TryParseDateTimeOffset(s.AsSpan(), out var result));
+    Assert.AreEqual(expected, result);
+  }
+#endif
+
   internal static IEnumerable YieldTestCases_ParseCommon_InvalidFormat()
   {
     foreach (var testCase in W3CDateTimeFormatsTests.YieldTestCases_ParseCommon_InvalidFormat()) {
@@ -36,11 +140,59 @@ public class ISO8601DateTimeFormatsTests {
 
   [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
   public void ParseDateTime_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => DateTimeFormat.FromISO8601DateTimeString(s)); // TODO: test ISO8601DateTimeFormats.ParseDateTime
+    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTime(s));
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
+  public void ParseDateTime_ReadOnlySpanOfChar_InvalidFormat(string s)
+    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTime(s.AsSpan()));
+#endif
+
+  [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
+  public void TryParseDateTime_InvalidFormat(string s)
+    => Assert.IsFalse(ISO8601DateTimeFormats.TryParseDateTime(s, out _));
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
+  public void TryParseDateTime_ReadOnlySpanOfChar_InvalidFormat(string s)
+    => Assert.IsFalse(ISO8601DateTimeFormats.TryParseDateTime(s.AsSpan(), out _));
+#endif
 
   [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
   public void ParseDateTimeOffset_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => DateTimeFormat.FromISO8601DateTimeOffsetString(s)); // TODO: test ISO8601DateTimeFormats.ParseDateTimeOffset
+    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset(s));
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
+  public void ParseDateTimeOffset_ReadOnlySpanOfChar_InvalidFormat(string s)
+    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset(s.AsSpan()));
+#endif
+
+  [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
+  public void TryParseDateTimeOffset_InvalidFormat(string s)
+    => Assert.IsFalse(ISO8601DateTimeFormats.TryParseDateTimeOffset(s, out _));
+
+#if SYSTEM_READONLYSPAN
+  [TestCaseSource(nameof(YieldTestCases_ParseCommon_InvalidFormat))]
+  public void TryParseDateTimeOffset_ReadOnlySpanOfChar_InvalidFormat(string s)
+    => Assert.IsFalse(ISO8601DateTimeFormats.TryParseDateTimeOffset(s.AsSpan(), out _));
+#endif
+
+  [Test]
+  public void ParseDateTime_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTime((string)null));
+
+  [Test]
+  public void TryParseDateTime_ArgumentNull()
+    => Assert.IsFalse(ISO8601DateTimeFormats.TryParseDateTime((string)null, out _));
+
+  [Test]
+  public void ParseDateTimeOffset_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset((string)null));
+
+  [Test]
+  public void TryParseDateTimeOffset_ArgumentNull()
+    => Assert.IsFalse(ISO8601DateTimeFormats.TryParseDateTimeOffset((string)null, out _));
 
 #if SYSTEM_GLOBALIZATION_ISOWEEK
   private static IEnumerable YieldTestCases_ToWeekDateString(bool time, bool offset)

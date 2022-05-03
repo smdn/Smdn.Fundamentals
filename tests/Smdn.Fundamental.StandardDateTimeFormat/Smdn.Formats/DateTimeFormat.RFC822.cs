@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -76,7 +77,7 @@ partial class DateTimeFormatTests {
     );
   }
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_UniversalTime()
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeString_UniversalTime()
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
       foreach (var year in new[] { "2003", "03" }) {
@@ -107,7 +108,7 @@ partial class DateTimeFormatTests {
       s
     );
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local()
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local()
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 +0900", new DateTime(2003, 6, 10, 0, 41, 1, 123, DateTimeKind.Local).AddTicks(4567) };
@@ -141,52 +142,70 @@ partial class DateTimeFormatTests {
     );
   }
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local_MilitaryTimeZones()
+  private static IEnumerable<(string Input, DateTimeOffset Expected)> YieldTestCases_FromRFC822String_MilitaryTimeZones()
   {
-    var expected = new DateTime(2022, 4, 27, 20, 54, 1, 123, DateTimeKind.Unspecified).AddTicks(4567);
+    var expected = new DateTimeOffset(2022, 4, 27, 20, 54, 1, 123, TimeSpan.FromHours(-0.0)).AddTicks(4567);
 
     foreach (var dayOfWeek in new[] { "Wed, ", string.Empty }) {
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 A", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 B", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 C", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 D", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 E", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 F", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 G", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 H", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 I", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 K", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 L", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 M", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 N", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 O", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 P", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Q", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 R", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 S", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 T", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 U", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 V", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 W", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 X", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Y", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Z", expected };
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 A", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 B", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 C", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 D", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 E", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 F", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 G", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 H", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 I", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 K", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 L", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 M", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 N", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 O", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 P", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 Q", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 R", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 S", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 T", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 U", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 V", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 W", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 X", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 Y", expected);
+      yield return (dayOfWeek + "27 Apr 2022 20:54:01.1234567 Z", expected);
     }
   }
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local_MilitaryTimeZones))]
-  public void FromRFC822DateTimeString_Local_MilitaryTimeZones(string s, DateTime expected)
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_MilitaryTimeZones()
   {
-    var actual = DateTimeFormat.FromRFC822DateTimeString(s);
-
-    Assert.AreEqual(
-      expected,
-      actual,
-      s
-    );
+    foreach (var testCase in YieldTestCases_FromRFC822String_MilitaryTimeZones()) {
+      yield return new object[] { testCase.Input, testCase.Expected };
+    }
   }
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString()
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeString_MilitaryTimeZones()
+  {
+    foreach (var testCase in YieldTestCases_FromRFC822String_MilitaryTimeZones()) {
+      yield return new object[] { testCase.Input, DateTime.SpecifyKind(testCase.Expected.DateTime, DateTimeKind.Unspecified) };
+    }
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_MilitaryTimeZones))]
+  public void FromRFC822DateTimeOffsetString_MilitaryTimeZones(string s, DateTimeOffset expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromRFC822DateTimeOffsetString(s),
+      s
+    );
+
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_MilitaryTimeZones))]
+  public void FromRFC822DateTimeString_Local_MilitaryTimeZones(string s, DateTime expected)
+    => Assert.AreEqual(
+      expected,
+      DateTimeFormat.FromRFC822DateTimeString(s),
+      s
+    );
+
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString()
   {
     foreach (var dayOfWeek in new[] { "Tue, ", string.Empty }) {
       yield return new object[] { dayOfWeek + "10 Jun 2003 09:41:01.1234567 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4567) };
@@ -226,7 +245,7 @@ partial class DateTimeFormatTests {
       s
     );
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_UniversalTime()
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_UniversalTime()
   {
     foreach (var dayOfWeek in new[] { "Fri, ", string.Empty }) {
       foreach (var year in new[] { "2001", "01" }) {
@@ -250,79 +269,52 @@ partial class DateTimeFormatTests {
     }
   }
 
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_Local_MilitaryTimeZones()
+  private static IEnumerable<(string Input, string Expected)> YieldTestCases_FromRFC822String_NorthAmericanTimeZones()
   {
-    var expected = new DateTimeOffset(2022, 4, 27, 20, 54, 1, 123, TimeSpan.FromHours(-0.0)).AddTicks(4567);
+    yield return ("12 Jun 2006 11:00:00.0000000 EDT", "2006-06-12T11:00:00.0000000-04:00");
+    yield return ("04 Nov 2007 01:00:00.0000000 EST", "2007-11-04T01:00:00.0000000-05:00");
+    yield return ("10 Dec 2006 15:00:00.0000000 EST", "2006-12-10T15:00:00.0000000-05:00");
+    yield return ("11 Mar 2007 02:30:00.0000000 EST", "2007-03-11T02:30:00.0000000-05:00");
+    yield return ("12 Jun 2006 11:00:00.0000000 CDT", "2006-06-12T11:00:00.0000000-05:00");
+    yield return ("04 Nov 2007 01:00:00.0000000 CST", "2007-11-04T01:00:00.0000000-06:00");
+    yield return ("10 Dec 2006 15:00:00.0000000 CST", "2006-12-10T15:00:00.0000000-06:00");
+    yield return ("11 Mar 2007 02:30:00.0000000 CST", "2007-03-11T02:30:00.0000000-06:00");
+    yield return ("12 Jun 2006 11:00:00.0000000 MDT", "2006-06-12T11:00:00.0000000-06:00");
+    yield return ("04 Nov 2007 01:00:00.0000000 MST", "2007-11-04T01:00:00.0000000-07:00");
+    yield return ("10 Dec 2006 15:00:00.0000000 MST", "2006-12-10T15:00:00.0000000-07:00");
+    yield return ("11 Mar 2007 02:30:00.0000000 MST", "2007-03-11T02:30:00.0000000-07:00");
+    yield return ("12 Jun 2006 11:00:00.0000000 PDT", "2006-06-12T11:00:00.0000000-07:00");
+    yield return ("04 Nov 2007 01:00:00.0000000 PST", "2007-11-04T01:00:00.0000000-08:00");
+    yield return ("10 Dec 2006 15:00:00.0000000 PST", "2006-12-10T15:00:00.0000000-08:00");
+    yield return ("11 Mar 2007 02:30:00.0000000 PST", "2007-03-11T02:30:00.0000000-08:00");
+  }
 
-    foreach (var dayOfWeek in new[] { "Wed, ", string.Empty }) {
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 A", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 B", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 C", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 D", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 E", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 F", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 G", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 H", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 I", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 K", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 L", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 M", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 N", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 O", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 P", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Q", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 R", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 S", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 T", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 U", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 V", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 W", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 X", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Y", expected };
-      yield return new object[] { dayOfWeek + "27 Apr 2022 20:54:01.1234567 Z", expected };
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeString_NorthAmericanTimeZones()
+  {
+    foreach (var (input, expected) in YieldTestCases_FromRFC822String_NorthAmericanTimeZones()) {
+      yield return new object[] { input, DateTimeOffset.ParseExact(expected, "o", null).UtcDateTime };
     }
   }
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_Local_MilitaryTimeZones))]
-  public void FromRFC822DateTimeOffsetString_MilitaryTimeZones(string s, DateTimeOffset expected)
-    => Assert.AreEqual(
-      expected,
-      DateTimeFormat.FromRFC822DateTimeOffsetString(s),
-      s
-    );
-
-  private static IEnumerable YieldTestCases_FromRFC822DateTimeString_Local_NorthAmericanTimeZones()
+  internal static IEnumerable YieldTestCases_FromRFC822DateTimeOffsetString_NorthAmericanTimeZones()
   {
-    yield return new object[] { "12 Jun 2006 11:00:00.0000000 EDT", "2006-06-12T11:00:00.0000000-04:00" };
-    yield return new object[] { "04 Nov 2007 01:00:00.0000000 EST", "2007-11-04T01:00:00.0000000-05:00" };
-    yield return new object[] { "10 Dec 2006 15:00:00.0000000 EST", "2006-12-10T15:00:00.0000000-05:00" };
-    yield return new object[] { "11 Mar 2007 02:30:00.0000000 EST", "2007-03-11T02:30:00.0000000-05:00" };
-    yield return new object[] { "12 Jun 2006 11:00:00.0000000 CDT", "2006-06-12T11:00:00.0000000-05:00" };
-    yield return new object[] { "04 Nov 2007 01:00:00.0000000 CST", "2007-11-04T01:00:00.0000000-06:00" };
-    yield return new object[] { "10 Dec 2006 15:00:00.0000000 CST", "2006-12-10T15:00:00.0000000-06:00" };
-    yield return new object[] { "11 Mar 2007 02:30:00.0000000 CST", "2007-03-11T02:30:00.0000000-06:00" };
-    yield return new object[] { "12 Jun 2006 11:00:00.0000000 MDT", "2006-06-12T11:00:00.0000000-06:00" };
-    yield return new object[] { "04 Nov 2007 01:00:00.0000000 MST", "2007-11-04T01:00:00.0000000-07:00" };
-    yield return new object[] { "10 Dec 2006 15:00:00.0000000 MST", "2006-12-10T15:00:00.0000000-07:00" };
-    yield return new object[] { "11 Mar 2007 02:30:00.0000000 MST", "2007-03-11T02:30:00.0000000-07:00" };
-    yield return new object[] { "12 Jun 2006 11:00:00.0000000 PDT", "2006-06-12T11:00:00.0000000-07:00" };
-    yield return new object[] { "04 Nov 2007 01:00:00.0000000 PST", "2007-11-04T01:00:00.0000000-08:00" };
-    yield return new object[] { "10 Dec 2006 15:00:00.0000000 PST", "2006-12-10T15:00:00.0000000-08:00" };
-    yield return new object[] { "11 Mar 2007 02:30:00.0000000 PST", "2007-03-11T02:30:00.0000000-08:00" };
+    foreach (var (input, expected) in YieldTestCases_FromRFC822String_NorthAmericanTimeZones()) {
+      yield return new object[] { input, DateTimeOffset.ParseExact(expected, "o", null) };
+    }
   }
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local_NorthAmericanTimeZones))]
-  public void FromRFC822DateTimeString_NorthAmericanTimeZones(string s, string expected)
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_NorthAmericanTimeZones))]
+  public void FromRFC822DateTimeString_NorthAmericanTimeZones(string s, DateTime expected)
     => Assert.AreEqual(
-      DateTimeOffset.ParseExact(expected, "o", null).UtcDateTime,
+      expected,
       DateTimeFormat.FromRFC822DateTimeString(s),
       s
     );
 
-  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeString_Local_NorthAmericanTimeZones))]
-  public void FromRFC822DateTimeOffsetString_NorthAmericanTimeZones(string s, string expected)
+  [TestCaseSource(nameof(YieldTestCases_FromRFC822DateTimeOffsetString_NorthAmericanTimeZones))]
+  public void FromRFC822DateTimeOffsetString_NorthAmericanTimeZones(string s, DateTimeOffset expected)
     => Assert.AreEqual(
-      DateTimeOffset.ParseExact(expected, "o", null),
+      expected,
       DateTimeFormat.FromRFC822DateTimeOffsetString(s),
       s
     );

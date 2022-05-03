@@ -7,14 +7,18 @@
 #if NET35_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
 #define SYSTEM_TIMEZONENOTFOUNDEXCEPTION
 #endif
+#if NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_READONLYSPAN
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
 namespace Smdn.Formats.DateAndTime;
 
-internal static class RFC822DateTimeFormats {
-  public static string ToString(DateTime dateTime)
+public static class RFC822DateTimeFormats {
+  internal static string ToString(DateTime dateTime)
     => string.Concat(
       dateTime.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat),
       dateTime.Kind == DateTimeKind.Utc
@@ -22,17 +26,87 @@ internal static class RFC822DateTimeFormats {
         : DateTimeFormat.GetCurrentTimeZoneOffsetString(false)
     );
 
-  public static string ToString(DateTimeOffset dateTimeOffset)
+  internal static string ToString(DateTimeOffset dateTimeOffset)
     => string.Concat(
       dateTimeOffset.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat),
       dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture.DateTimeFormat).Replace(":", string.Empty)
     );
 
   public static DateTime ParseDateTime(string s)
-    => DateAndTimeParser.ParseDateTime(s, formatStrings, timeZoneDefinitions);
+    => DateAndTimeParser.ParseDateTime(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions
+    );
+
+#if SYSTEM_READONLYSPAN
+  public static DateTime ParseDateTime(ReadOnlySpan<char> s)
+    => DateAndTimeParser.ParseDateTime(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions
+    );
+#endif
+
+  public static bool TryParseDateTime(string? s, out DateTime result)
+    => DateAndTimeParser.TryParseDateTime(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions,
+      out result
+    );
+
+#if SYSTEM_READONLYSPAN
+  public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result)
+    => DateAndTimeParser.TryParseDateTime(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions,
+      out result
+    );
+#endif
 
   public static DateTimeOffset ParseDateTimeOffset(string s)
-    => DateAndTimeParser.ParseDateTimeOffset(s, formatStrings, timeZoneDefinitions);
+    => DateAndTimeParser.ParseDateTimeOffset(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions
+    );
+
+#if SYSTEM_READONLYSPAN
+  public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s)
+    => DateAndTimeParser.ParseDateTimeOffset(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions
+    );
+#endif
+
+  public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result)
+    => DateAndTimeParser.TryParseDateTimeOffset(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions,
+      out result
+    );
+
+#if SYSTEM_READONLYSPAN
+  public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result)
+    => DateAndTimeParser.TryParseDateTimeOffset(
+      s,
+      formatStrings,
+      formatsDateOnly: null,
+      timeZoneDefinitions,
+      out result
+    );
+#endif
 
   private static readonly IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions = new TimeZoneDefinition[] {
     new UniversalTimeZoneDefinition(" GMT"),
