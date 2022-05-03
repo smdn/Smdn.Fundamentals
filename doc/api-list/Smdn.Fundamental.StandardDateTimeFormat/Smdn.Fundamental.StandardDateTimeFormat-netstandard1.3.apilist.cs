@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.StandardDateTimeFormat
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+e70d21c3633ec38bff9bacbccb59b3fb48138896
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System;

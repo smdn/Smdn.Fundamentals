@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.StandardDateTimeFormat
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+e70d21c3633ec38bff9bacbccb59b3fb48138896
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
 
 using System;
@@ -45,52 +45,32 @@ namespace Smdn.Formats.DateAndTime {
   [Nullable(byte.MinValue)]
   [NullableContext(1)]
   public static class ISO8601DateTimeFormats {
-    [NullableContext(byte.MinValue)]
-    public static DateTime ParseDateTime(ReadOnlySpan<char> s) {}
     public static DateTime ParseDateTime(string s) {}
-    [NullableContext(byte.MinValue)]
-    public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
-    [NullableContext(byte.MinValue)]
-    public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
     [NullableContext(2)]
     public static bool TryParseDateTime(string s, out DateTime result) {}
-    [NullableContext(byte.MinValue)]
-    public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result) {}
+    [NullableContext(2)]
+    public static bool TryParseDateTimeOffset(string s, out DateTimeOffset result) {}
+  }
+
+  public static class RFC822DateTimeFormats {
+    [NullableContext(1)]
+    public static DateTime ParseDateTime(string s) {}
+    [NullableContext(1)]
+    public static DateTimeOffset ParseDateTimeOffset(string s) {}
+    [NullableContext(2)]
+    public static bool TryParseDateTime(string s, out DateTime result) {}
     [NullableContext(2)]
     public static bool TryParseDateTimeOffset(string s, out DateTimeOffset result) {}
   }
 
   [Nullable(byte.MinValue)]
   [NullableContext(1)]
-  public static class RFC822DateTimeFormats {
-    [NullableContext(byte.MinValue)]
-    public static DateTime ParseDateTime(ReadOnlySpan<char> s) {}
-    public static DateTime ParseDateTime(string s) {}
-    [NullableContext(byte.MinValue)]
-    public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s) {}
-    public static DateTimeOffset ParseDateTimeOffset(string s) {}
-    [NullableContext(byte.MinValue)]
-    public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
-    [NullableContext(2)]
-    public static bool TryParseDateTime(string s, out DateTime result) {}
-    [NullableContext(byte.MinValue)]
-    public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result) {}
-    [NullableContext(2)]
-    public static bool TryParseDateTimeOffset(string s, out DateTimeOffset result) {}
-  }
-
   public static class W3CDateTimeFormats {
-    public static DateTime ParseDateTime(ReadOnlySpan<char> s) {}
-    [NullableContext(1)]
     public static DateTime ParseDateTime(string s) {}
-    public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s) {}
-    [NullableContext(1)]
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
-    public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
     [NullableContext(2)]
     public static bool TryParseDateTime(string s, out DateTime result) {}
-    public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result) {}
     [NullableContext(2)]
     public static bool TryParseDateTimeOffset(string s, out DateTimeOffset result) {}
   }
