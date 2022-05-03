@@ -341,7 +341,7 @@ public static class RFC822DateTimeFormats {
 
   private static readonly string[] formatStrings = new[]
   {
-    "r",
+    // "r", // RFC1123 "ddd, dd MMM yyyy HH':'mm':'ss 'GMT'"
     "ddd',' d MMM yyyy H':'m':'s'.'fffffff zzz",
     "ddd',' d MMM yyyy H':'m':'s'.'fffffff",
     "ddd',' d MMM yyyy H':'m':'s'.'ffffff zzz",

@@ -104,9 +104,9 @@ public static class ISO8601DateTimeFormats {
   };
 
   internal static readonly string[] DateAndTimeFormatStrings = new string[] {
-    "u",
-    "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffzzz",
-    "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff",
+    "o",
+    // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffzzz", // is coverd by format string 'o'
+    // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", // is coverd by format string 'o'
     "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffffzzz",
     "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff",
     "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffzzz",
