@@ -147,6 +147,8 @@ public static class RFC822DateTimeFormats {
   };
 
   private class RFC5322MilitaryTimeZoneDefinition : TimeZoneDefinition {
+    public override StringComparison SuffixComparison => StringComparison.OrdinalIgnoreCase;
+
     public RFC5322MilitaryTimeZoneDefinition(string suffix)
       : base(suffix)
     {

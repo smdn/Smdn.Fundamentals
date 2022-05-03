@@ -6,6 +6,7 @@ namespace Smdn.Formats.DateAndTime;
 
 internal abstract class TimeZoneDefinition {
   public string Suffix { get; }
+  public virtual StringComparison SuffixComparison => StringComparison.Ordinal;
   public virtual bool IsUniversal => false;
   public abstract DateTime AdjustToTimeZone(DateTime dateAndTime);
   public abstract DateTimeOffset AdjustToTimeZone(DateTimeOffset dateAndTime);

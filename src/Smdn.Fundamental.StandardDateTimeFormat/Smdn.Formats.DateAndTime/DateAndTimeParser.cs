@@ -364,7 +364,7 @@ internal static class DateAndTimeParser {
       var suffix = tz.Suffix;
 #endif
 
-      if (s.EndsWith(suffix, StringComparison.Ordinal)) {
+      if (s.EndsWith(suffix, tz.SuffixComparison)) {
         timeZone = tz;
         break;
       }
