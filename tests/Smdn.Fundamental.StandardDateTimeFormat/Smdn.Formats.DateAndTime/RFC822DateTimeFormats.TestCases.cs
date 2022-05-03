@@ -188,9 +188,12 @@ partial class RFC822DateTimeFormatsTests {
     const DateTimeKind expectedKind = DateTimeKind.Unspecified;
     var expectedDateTime = new DateTimeOffset(2022, 4, 27, 20, 54, 1, 123, TimeSpan.FromHours(-0.0)).AddTicks(4567);
 
-    foreach (var dayOfWeek in new[] { "Wed, ", string.Empty }) {
-      foreach (var (level, tz) in timeZoneAndTestCaseLevels) {
-        yield return (level, $"{dayOfWeek}27 Apr 2022 20:54:01.1234567 {tz}", expectedDateTime, expectedKind);
+    foreach (var (level, tz) in timeZoneAndTestCaseLevels) {
+      foreach (var (lv, dayOfWeek) in new[] {
+        (level, "Wed, "),
+        (TestCaseLevel.Complemental, string.Empty),
+      }) {
+        yield return (lv, $"{dayOfWeek}27 Apr 2022 20:54:01.1234567 {tz}", expectedDateTime, expectedKind);
       }
     }
   }
