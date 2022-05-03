@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
+#endif
+
 using System;
 using System.Text;
 
@@ -15,7 +19,10 @@ public class OctetEncoding : Encoding {
 
   static OctetEncoding()
   {
-#if NET45 || NET452
+#if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
+    SevenBits = new OctetEncoding(7);
+    EightBits = new OctetEncoding(8);
+#else
     SevenBits = new OctetEncoding(7).Clone() as Encoding;
     SevenBits.DecoderFallback = new DecoderExceptionFallback();
     SevenBits.EncoderFallback = new EncoderExceptionFallback();
@@ -23,14 +30,17 @@ public class OctetEncoding : Encoding {
     EightBits = new OctetEncoding(8).Clone() as Encoding;
     EightBits.DecoderFallback = new DecoderExceptionFallback();
     EightBits.EncoderFallback = new EncoderExceptionFallback();
-#else
-    SevenBits = new OctetEncoding(7);
-    EightBits = new OctetEncoding(8);
 #endif
   }
 
-#if NET45 || NET452
+#if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
   public OctetEncoding(int bits)
+    : this(bits, new EncoderExceptionFallback(), new DecoderExceptionFallback())
+  {
+  }
+
+  public OctetEncoding(int bits, EncoderFallback encoderFallback, DecoderFallback decoderFallback)
+    : base(0, encoderFallback, decoderFallback)
   {
     if (bits is < 1 or > 8)
       throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
@@ -39,12 +49,6 @@ public class OctetEncoding : Encoding {
   }
 #else
   public OctetEncoding(int bits)
-    : this(bits, new EncoderExceptionFallback(), new DecoderExceptionFallback())
-  {
-  }
-
-  public OctetEncoding(int bits, EncoderFallback encoderFallback, DecoderFallback decoderFallback)
-    : base(0, encoderFallback, decoderFallback)
   {
     if (bits is < 1 or > 8)
       throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
