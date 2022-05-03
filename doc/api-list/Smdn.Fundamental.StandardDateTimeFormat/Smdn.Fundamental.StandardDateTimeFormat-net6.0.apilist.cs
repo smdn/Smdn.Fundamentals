@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.StandardDateTimeFormat
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+e70d21c3633ec38bff9bacbccb59b3fb48138896
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
@@ -51,6 +51,9 @@ namespace Smdn.Formats.DateAndTime {
     [NullableContext(byte.MinValue)]
     public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
+    public static string ToWeekDateString(DateOnly date) {}
+    public static string ToWeekDateString(DateTime date) {}
+    public static string ToWeekDateString(DateTimeOffset date) {}
     [NullableContext(byte.MinValue)]
     public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
     [NullableContext(2)]
