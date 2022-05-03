@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Encoding.OctetEncoding.dll (Smdn.Fundamental.Encoding.OctetEncoding-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.Encoding.OctetEncoding.dll (Smdn.Fundamental.Encoding.OctetEncoding-3.0.1)
 //   Name: Smdn.Fundamental.Encoding.OctetEncoding
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+a8efaa66645cdba0dfd996d21cad4994bb5fd86b
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
