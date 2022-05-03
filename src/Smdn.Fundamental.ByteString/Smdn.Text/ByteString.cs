@@ -1112,10 +1112,10 @@ public class ByteString :
   {
     fixed (byte* str0 = sequence) {
       if (encoding != null)
-#if NET45 || NET452
-        return encoding.GetString(sequence.ToArray());
-#else
+#if SYSTEM_TEXT_ENCODING_GETSTRING_READONLYSPAN_OF_BYTE
         return encoding.GetString(str0, sequence.Length);
+#else
+        return encoding.GetString(sequence.ToArray());
 #endif
 
       var chars = new char[sequence.Length];
