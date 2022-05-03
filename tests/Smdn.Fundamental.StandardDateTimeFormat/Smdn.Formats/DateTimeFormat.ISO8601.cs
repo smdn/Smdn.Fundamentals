@@ -4,6 +4,8 @@ using System;
 
 using NUnit.Framework;
 
+using Smdn.Formats.DateAndTime;
+
 namespace Smdn.Formats;
 
 partial class DateTimeFormatTests {
@@ -29,28 +31,11 @@ partial class DateTimeFormatTests {
     );
   }
 
-  [TestCase("2008-04-11T12:34:56.7893333Z")]
-  [TestCase("2008-04-11T12:34:56.789Z")]
-  [TestCase("2008-04-11T12:34:56Z")]
-  [TestCase("2008-04-11T12:34Z")]
+  [TestCaseSource(typeof(ISO8601DateTimeFormatsTests), nameof(ISO8601DateTimeFormatsTests.YieldTestCases_ParseDateTime))]
+  public void FromISO8601DateTimeString(string s, DateTime expected)
+    => Assert.AreEqual(expected, DateTimeFormat.FromISO8601DateTimeString(s));
 
-  public void FromISO8601DateTimeString_ReturnValueEqualsToFromW3CDateTimeString(string s)
-    => Assert.AreEqual(
-      DateTimeFormat.FromW3CDateTimeString(s),
-      DateTimeFormat.FromISO8601DateTimeString(s),
-      s
-    );
-
-  [TestCase("2008-04-11T12:34:56.7893333 +09:00")]
-  [TestCase("2008-04-11T12:34:56.7893333 -04:00")]
-  [TestCase("2008-04-11T12:34:56.7893333 -12:45")]
-  [TestCase("2008-04-11T12:34:56.789 +09:00")]
-  [TestCase("2008-04-11T12:34:56 +09:00")]
-  [TestCase("2008-04-11T12:34 +09:00")]
-  public void FromISO8601DateTimeOffsetString_ReturnValueEqualsToFromW3CDateTimeOffsetString(string s)
-    => Assert.AreEqual(
-      DateTimeFormat.FromW3CDateTimeOffsetString(s),
-      DateTimeFormat.FromISO8601DateTimeOffsetString(s),
-      s
-    );
+  [TestCaseSource(typeof(ISO8601DateTimeFormatsTests), nameof(ISO8601DateTimeFormatsTests.YieldTestCases_ParseDateTimeOffset))]
+  public void FromISO8601DateTimeOffsetString(string s, DateTimeOffset expected)
+    => Assert.AreEqual(expected, DateTimeFormat.FromISO8601DateTimeOffsetString(s));
 }
