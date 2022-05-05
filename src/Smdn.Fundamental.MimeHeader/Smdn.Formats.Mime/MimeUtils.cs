@@ -22,14 +22,14 @@ public static partial class MimeUtils {
     bool keepWhitespaces = false,
     bool ignoreMalformed = true,
     CancellationToken cancellationToken = default
-  ) =>
-  ParseHeaderAsyncCore(
-    stream: stream ?? throw new ArgumentNullException(nameof(stream)),
-    converter: ParseHeaderAsNameValuePairsConverter,
-    arg: keepWhitespaces,
-    ignoreMalformed: ignoreMalformed,
-    cancellationToken: cancellationToken
-  );
+  )
+    => ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: ParseHeaderAsNameValuePairsConverter,
+      arg: keepWhitespaces,
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
 
   private static KeyValuePair<string, string> ParseHeaderAsNameValuePairsConverter(RawHeaderField header, bool keepWhitespaces)
   {
@@ -53,19 +53,18 @@ public static partial class MimeUtils {
 #endif
   }
 
-
   public static Task<IReadOnlyList<RawHeaderField>> ParseHeaderAsync(
     LineOrientedStream stream,
     bool ignoreMalformed = true,
     CancellationToken cancellationToken = default
-  ) =>
-  ParseHeaderAsyncCore(
-    stream: stream ?? throw new ArgumentNullException(nameof(stream)),
-    converter: ParseHeaderNullConverter,
-    arg: default(int),
-    ignoreMalformed: ignoreMalformed,
-    cancellationToken: cancellationToken
-  );
+  )
+    => ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: ParseHeaderNullConverter,
+      arg: default(int),
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
 
   private static RawHeaderField ParseHeaderNullConverter(RawHeaderField f, int discard) => f;
 
@@ -78,14 +77,14 @@ public static partial class MimeUtils {
 #endif
     bool ignoreMalformed = true,
     CancellationToken cancellationToken = default
-  ) =>
-  ParseHeaderAsyncCore(
-    stream: stream ?? throw new ArgumentNullException(nameof(stream)),
-    converter: ParseHeaderConverter,
-    arg: converter ?? throw new ArgumentNullException(nameof(converter)),
-    ignoreMalformed: ignoreMalformed,
-    cancellationToken: cancellationToken
-  );
+  )
+    => ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: ParseHeaderConverter,
+      arg: converter ?? throw new ArgumentNullException(nameof(converter)),
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
 
   private static THeaderField ParseHeaderConverter<THeaderField>(
     RawHeaderField header,
@@ -103,14 +102,14 @@ public static partial class MimeUtils {
     TArg arg,
     bool ignoreMalformed = true,
     CancellationToken cancellationToken = default
-  ) =>
-  ParseHeaderAsyncCore(
-    stream: stream ?? throw new ArgumentNullException(nameof(stream)),
-    converter: converter ?? throw new ArgumentNullException(nameof(converter)),
-    arg: arg,
-    ignoreMalformed: ignoreMalformed,
-    cancellationToken: cancellationToken
-  );
+  )
+    => ParseHeaderAsyncCore(
+      stream: stream ?? throw new ArgumentNullException(nameof(stream)),
+      converter: converter ?? throw new ArgumentNullException(nameof(converter)),
+      arg: arg,
+      ignoreMalformed: ignoreMalformed,
+      cancellationToken: cancellationToken
+    );
 
   private static /*IAsyncEnumerable<T>*/ async Task<IReadOnlyList<THeaderField>> ParseHeaderAsyncCore<THeaderField, TArg>(
     LineOrientedStream stream,
