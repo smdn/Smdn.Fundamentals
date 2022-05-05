@@ -14,24 +14,8 @@ using Smdn.IO.Streams.LineOriented;
 namespace Smdn.Formats.Mime;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-public static class MimeUtils {
-  [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
-  public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream)
-    => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
-
-  [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
-  public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream, bool keepWhitespaces)
-    => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
-
-  [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
-  public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream)
-    => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
-
+public static partial class MimeUtils {
   private static readonly char[] lineDelmiters = new char[] { '\r', '\n' };
-
-  [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
-  public static IEnumerable<KeyValuePair<string, string>> ParseHeader(LineOrientedStream stream, bool keepWhitespaces)
-    => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
 
   public static Task<IReadOnlyList<KeyValuePair<string, string>>> ParseHeaderAsNameValuePairsAsync(
     LineOrientedStream stream,
@@ -69,12 +53,6 @@ public static class MimeUtils {
 #endif
   }
 
-  [Obsolete("use ParseHeaderAsync() instead", error: true)]
-  public struct HeaderField { }
-
-  [Obsolete("use ParseHeaderAsync() instead", error: true)]
-  public static IEnumerable<HeaderField> ParseHeaderRaw(LineOrientedStream stream)
-    => throw new NotSupportedException("use ParseHeaderAsync() instead");
 
   public static Task<IReadOnlyList<RawHeaderField>> ParseHeaderAsync(
     LineOrientedStream stream,
