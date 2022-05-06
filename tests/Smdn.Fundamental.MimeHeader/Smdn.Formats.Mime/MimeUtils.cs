@@ -388,7 +388,7 @@ MIME-Version: 1.0";
     {
       var input =
         "Content-Type\t\t\t:\t\t\ttext/plain\r\n" +
-        "From:       from@example.com\r\n" + 
+        "From:       from@example.com\r\n" +
         "To:to@example.com\r\n" +
         "Subject\t  : \tsubject\r\n";
 
@@ -416,7 +416,7 @@ MIME-Version: 1.0";
     [Test]
     public void TestParseHeaderAsNameValuePairsAsync_MultilineValue()
     {
-      var input = 
+      var input =
         "Subject: line1\r\n" +
         " line2\r\n" +
         "\tline3\r\n" +
@@ -437,7 +437,7 @@ MIME-Version: 1.0";
     [Test]
     public void TestParseHeaderAsNameValuePairsAsync_MultilineValueKeepWhitespace()
     {
-      var input = 
+      var input =
         "Subject: \t line1\r\n" +
           " line2\n" +
           "\tline3\r" +
