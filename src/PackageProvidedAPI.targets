@@ -17,6 +17,22 @@ SPDX-License-Identifier: MIT
     </Otherwise>
   </Choose>
 
+  <!--
+  <Choose>
+    <When Condition="
+      $(TargetFramework.StartsWith('net48')) or
+      $(TargetFramework.StartsWith('net47')) or
+      ($(TargetFramework.StartsWith('net46')) and '$(TargetFramework)' != 'net46') or
+      $(TargetFramework.StartsWith('netstandard2'))
+    ">
+      <ItemGroup><PackageReference Update="System.IO.Pipelines" Version="6.0.2" /></ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup><PackageReference Remove="System.IO.Pipelines" /></ItemGroup>
+    </Otherwise>
+  </Choose>
+  -->
+
   <Choose>
     <When Condition="
       $(TargetFramework.StartsWith('net4')) or
