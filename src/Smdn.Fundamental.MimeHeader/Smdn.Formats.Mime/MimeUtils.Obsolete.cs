@@ -8,7 +8,9 @@ using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.Formats.Mime;
 
+#pragma warning disable IDE0040
 partial class MimeUtils {
+#pragma warning restore IDE0040
   [Obsolete("use ParseHeaderAsNameValuePairsAsync() instead", error: true)]
   public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream)
     => throw new NotSupportedException("use ParseHeaderAsNameValuePairsAsync() instead");
