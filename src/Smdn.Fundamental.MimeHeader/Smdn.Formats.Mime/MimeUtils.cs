@@ -199,7 +199,6 @@ public static partial class MimeUtils {
     }
   }
 
-
   /// <param name="val">header field value.</param>
   public static string RemoveHeaderWhiteSpaceAndComment(string val)
   {
