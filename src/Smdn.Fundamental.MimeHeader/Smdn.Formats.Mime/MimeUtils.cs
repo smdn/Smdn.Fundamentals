@@ -135,7 +135,12 @@ public static partial class MimeUtils {
         break;
 
       var line = ret.Value.SequenceWithNewLine;
-      var firstByteOfLine = line.First.Span[0]; // XXX: use FirstSpan[0] (.NET Core 3.0)
+      var firstByteOfLine = line
+#if SYSTEM_BUFFERS_READONLYSEQUENCE_FIRSTSPAN
+        .FirstSpan[0];
+#else
+        .First.Span[0];
+#endif
 
       if (firstByteOfLine is HT or SP) { // LWSP-char
         // folding
