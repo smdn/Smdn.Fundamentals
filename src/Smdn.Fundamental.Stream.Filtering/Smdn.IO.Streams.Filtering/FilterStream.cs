@@ -123,6 +123,9 @@ public partial class FilterStream : Stream {
   {
     ThrowIfDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
     if (buffer == null)
       throw new ArgumentNullException(nameof(buffer));
     if (count < 0)
@@ -131,6 +134,7 @@ public partial class FilterStream : Stream {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
     if (buffer.Length < count + offset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
 
     return ReadUnchecked(buffer, offset, count);
   }
@@ -159,6 +163,9 @@ public partial class FilterStream : Stream {
   {
     ThrowIfDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
     if (buffer == null)
       throw new ArgumentNullException(nameof(buffer));
     if (count < 0)
@@ -167,6 +174,7 @@ public partial class FilterStream : Stream {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
     if (buffer.Length < count + offset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
 
     if (cancellationToken.IsCancellationRequested)
 #if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
