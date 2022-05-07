@@ -503,6 +503,42 @@ namespace Smdn.IO.Streams.LineOriented {
       }
     }
 
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidCopyToArguments)
+    )]
+    public void TestCopyTo_InvalidBufferArguments(
+      Stream destination,
+      int bufferSize,
+      Type expectedExceptionType,
+      string message
+    )
+    {
+      foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
+        using var stream = CreateStream(type, new MemoryStream(), 8);
+
+        Assert.Throws(expectedExceptionType, () => stream.CopyTo(destination, bufferSize), $"{message} (type = {type})");
+      }
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidCopyToArguments)
+    )]
+    public void TestCopyToAsync_InvalidBufferArguments(
+      Stream destination,
+      int bufferSize,
+      Type expectedExceptionType,
+      string message
+    )
+    {
+      foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
+        using var stream = CreateStream(type, new MemoryStream(), 8);
+
+        Assert.Throws(expectedExceptionType, () => stream.CopyToAsync(destination, bufferSize), $"{message} (type = {type})");
+      }
+    }
+
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
     public async Task TestCopyToAsync(StreamType type)

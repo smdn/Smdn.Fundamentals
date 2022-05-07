@@ -26,4 +26,30 @@ public class StreamTestCaseSource {
 
   public static IEnumerable YieldTestCases_InvalidWriteBufferArguments()
     => YieldTestCases_InvalidReadBufferArguments();
+
+  public static IEnumerable YieldTestCases_InvalidCopyToArguments()
+  {
+    // destination, bufferSize, expectedExceptionType, message
+    yield return new object[] { null, 1, typeof(ArgumentNullException), "destination: null" };
+    yield return new object[] { CreateNonWritableStream(), 1, typeof(NotSupportedException), "destination: not-writable" };
+#if SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
+    yield return new object[] { CreateDisposedStream(), 1, typeof(ObjectDisposedException), "destination: disposed" };
+#endif
+    yield return new object[] { Stream.Null, 0, typeof(ArgumentOutOfRangeException), "bufferSize: zero" };
+    yield return new object[] { Stream.Null, -1, typeof(ArgumentOutOfRangeException), "bufferSize: minus" };
+
+    static Stream CreateNonWritableStream()
+      => new MemoryStream(new byte[1], writable: false);
+
+#if SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
+    static Stream CreateDisposedStream()
+    {
+      var stream = new MemoryStream(new byte[1]);
+
+      stream.Dispose();
+
+      return stream;
+    }
+#endif
+  }
 }

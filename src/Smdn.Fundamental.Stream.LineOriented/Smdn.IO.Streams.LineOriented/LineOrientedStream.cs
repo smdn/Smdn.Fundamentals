@@ -637,8 +637,17 @@ public class LineOrientedStream : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
+    ValidateCopyToArguments(destination, bufferSize);
+#else
+    if (destination is null)
+      throw new ArgumentNullException(nameof(destination));
+    if (!destination.CanWrite)
+      throw new NotSupportedException("The destination stream does not support writing."); // ExceptionUtils.CreateArgumentMustBeWritableStream(nameof(destination));
+#endif
+
     return ReadAsyncCore(
-      destination ?? throw new ArgumentNullException(nameof(destination)),
+      destination,
       null, // read to end
       cancellationToken
     );
