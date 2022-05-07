@@ -629,9 +629,11 @@ public class LineOrientedStream : Stream {
   }
 #endif
 
+  /// <param name="destination">The destination stream.</param>
+  /// <param name="bufferSize">The value of this parameter does not affect to the behavior of the method.</param>
   public override Task CopyToAsync(
     Stream destination,
-    int bufferSize = 0, // don't care
+    int bufferSize = 1,
     CancellationToken cancellationToken = default
   )
   {
@@ -644,6 +646,8 @@ public class LineOrientedStream : Stream {
       throw new ArgumentNullException(nameof(destination));
     if (!destination.CanWrite)
       throw new NotSupportedException("The destination stream does not support writing."); // ExceptionUtils.CreateArgumentMustBeWritableStream(nameof(destination));
+    if (bufferSize <= 0)
+      throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(bufferSize), bufferSize);
 #endif
 
     return ReadAsyncCore(

@@ -553,7 +553,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
         var targetStream = new MemoryStream();
 
-        await stream.CopyToAsync(targetStream, 0, cancellationToken: default);
+        await stream.CopyToAsync(targetStream, bufferSize: 1, cancellationToken: default);
 
         CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
 
@@ -573,7 +573,7 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
         var targetStream = new MemoryStream();
 
-        await stream.CopyToAsync(targetStream, 0, cancellationToken: default);
+        await stream.CopyToAsync(targetStream, bufferSize: 1, cancellationToken: default);
 
         CollectionAssert.AreEqual(data, targetStream.ToArray());
 
@@ -592,13 +592,13 @@ namespace Smdn.IO.Streams.LineOriented {
       Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0, cancellationToken: default));
     }
 
-    [TestCase(StreamType.Strict, -1)]
-    [TestCase(StreamType.Loose, -1)]
-    [TestCase(StreamType.Strict, 0)]
-    [TestCase(StreamType.Loose, 0)]
+    [TestCase(StreamType.Strict, 1)]
+    [TestCase(StreamType.Loose, 1)]
+    [TestCase(StreamType.Strict, 1024)]
+    [TestCase(StreamType.Loose, 1024)]
     [TestCase(StreamType.Strict, int.MaxValue)]
     [TestCase(StreamType.Loose, int.MaxValue)]
-    public async Task TestCopyToAsync_BufferSizeShouldBeIgnored(StreamType type, int bufferSize)
+    public async Task TestCopyToAsync_BufferSizeDoesNotAffectToBehaviour(StreamType type, int bufferSize)
     {
       var data = new byte[] {
         0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
