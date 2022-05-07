@@ -553,7 +553,7 @@ namespace Smdn.IO.Streams.LineOriented {
 
         var targetStream = new MemoryStream();
 
-        await stream.CopyToAsync(targetStream, bufferSize: 1, cancellationToken: default);
+        await stream.CopyToAsync(targetStream, cancellationToken: default);
 
         CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
 
@@ -573,7 +573,7 @@ namespace Smdn.IO.Streams.LineOriented {
       using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
         var targetStream = new MemoryStream();
 
-        await stream.CopyToAsync(targetStream, bufferSize: 1, cancellationToken: default);
+        await stream.CopyToAsync(targetStream, cancellationToken: default);
 
         CollectionAssert.AreEqual(data, targetStream.ToArray());
 

@@ -629,11 +629,25 @@ public class LineOrientedStream : Stream {
   }
 #endif
 
+  private const int CopyToDefaultBufferSize = 1;
+
+#pragma warning disable CS0109
+  public new Task CopyToAsync(
+    Stream destination,
+    CancellationToken cancellationToken
+  )
+#pragma warning restore CS0109
+    => CopyToAsync(
+      destination: destination,
+      bufferSize: CopyToDefaultBufferSize,
+      cancellationToken: cancellationToken
+    );
+
   /// <param name="destination">The destination stream.</param>
   /// <param name="bufferSize">The value of this parameter does not affect to the behavior of the method.</param>
   public override Task CopyToAsync(
     Stream destination,
-    int bufferSize = 1,
+    int bufferSize = CopyToDefaultBufferSize,
     CancellationToken cancellationToken = default
   )
   {
