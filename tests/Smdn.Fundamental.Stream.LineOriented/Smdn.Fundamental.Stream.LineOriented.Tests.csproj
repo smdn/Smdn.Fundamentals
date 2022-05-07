@@ -9,6 +9,10 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\TestCaseSources\StreamTestCaseSources.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\Smdn.Test.NUnit.Constraints\Smdn.Test.NUnit.Constraints.csproj" />
   </ItemGroup>
 </Project>

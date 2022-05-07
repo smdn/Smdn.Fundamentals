@@ -54,6 +54,42 @@ namespace Smdn.IO.Streams.LineOriented {
       }
     }
 
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
+        using var stream = CreateStream(type, new MemoryStream(), 8);
+
+        Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count), $"type = {type}");
+      }
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
+        using var stream = CreateStream(type, new MemoryStream(), 8);
+
+        Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count), $"type = {type}");
+      }
+    }
+
     [TestCase(StreamType.Strict)]
     [TestCase(StreamType.Loose)]
     public async Task TestReadLineAsync_EndOfStream(StreamType type)
@@ -541,6 +577,42 @@ namespace Smdn.IO.Streams.LineOriented {
         CollectionAssert.AreEqual(data, targetStream.ToArray());
 
         Assert.AreEqual(-1, stream.ReadByte());
+      }
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWrite_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
+        using var stream = CreateStream(type, new MemoryStream(), 8);
+
+        Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count), $"type = {type}");
+      }
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWriteAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
+        using var stream = CreateStream(type, new MemoryStream(), 8);
+
+        Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count), $"type = {type}");
       }
     }
 

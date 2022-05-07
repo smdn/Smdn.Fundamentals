@@ -438,6 +438,9 @@ public class LineOrientedStream : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
     if (buffer == null)
       throw new ArgumentNullException(nameof(buffer));
     if (offset < 0)
@@ -446,6 +449,7 @@ public class LineOrientedStream : Stream {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
     if (buffer.Length - count < offset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
 
     if (cancellationToken.IsCancellationRequested)
 #if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
@@ -598,12 +602,20 @@ public class LineOrientedStream : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
+
     stream.Write(buffer, offset, count);
   }
 
   public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
   {
     CheckDisposed();
+
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
 
     return stream.WriteAsync(buffer, offset, count, cancellationToken);
   }
