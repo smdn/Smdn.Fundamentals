@@ -365,6 +365,38 @@ namespace Smdn.IO.Streams {
       Assert.AreEqual(6, stream.InnerStream.Position);
     }
 
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
+
+      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
+
+      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+    }
+
     [Test]
     public void TestReadByte_LengthNotSpecified()
     {
@@ -516,6 +548,39 @@ namespace Smdn.IO.Streams {
       }
 
       Assert.AreEqual(new byte[] {0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}, inner.ToArray());
+    }
+
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWrite_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
+
+      Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count));
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWriteAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
+
+      Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count));
     }
 
     [Test]

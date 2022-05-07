@@ -185,6 +185,38 @@ namespace Smdn.IO.Streams {
       }
     }
 
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new NonClosingStream(new MemoryStream(new byte[8]));
+
+      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new NonClosingStream(new MemoryStream(new byte[8]));
+
+      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+    }
+
     [Test]
     public void TestWrite()
     {
@@ -288,6 +320,38 @@ namespace Smdn.IO.Streams {
         Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()));
 #endif
       }
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWrite_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new NonClosingStream(new MemoryStream(new byte[4], true));
+
+      Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count));
+    }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWriteAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new NonClosingStream(new MemoryStream(new byte[4], true));
+
+      Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count));
     }
 
     [Test]

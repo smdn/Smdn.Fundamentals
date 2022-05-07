@@ -281,6 +281,10 @@ public class PartialStream :
     CheckWritable();
     CheckWriteRemainder(count, nameof(count));
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
+
     stream.Write(buffer, offset, count);
   }
 
@@ -289,6 +293,10 @@ public class PartialStream :
     CheckDisposed();
     CheckWritable();
     CheckWriteRemainder(count, nameof(count));
+
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
 
     return stream.WriteAsync(buffer, offset, count, cancellationToken);
   }

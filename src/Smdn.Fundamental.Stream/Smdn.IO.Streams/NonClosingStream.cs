@@ -85,6 +85,10 @@ public class NonClosingStream : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
+
     return stream.Read(buffer, offset, count);
   }
 
@@ -114,6 +118,10 @@ public class NonClosingStream : Stream {
     if (readOnly)
       throw ExceptionUtils.CreateNotSupportedWritingStream();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
+
     stream.Write(buffer, offset, count);
   }
 
@@ -123,6 +131,10 @@ public class NonClosingStream : Stream {
 
     if (readOnly)
       throw ExceptionUtils.CreateNotSupportedWritingStream();
+
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
 
     return stream.WriteAsync(buffer, offset, count, cancellationToken);
   }

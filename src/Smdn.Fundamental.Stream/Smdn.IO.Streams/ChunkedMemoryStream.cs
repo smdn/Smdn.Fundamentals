@@ -392,6 +392,9 @@ public sealed class ChunkedMemoryStream : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
     if (buffer == null)
       throw new ArgumentNullException(nameof(buffer));
     if (offset < 0)
@@ -400,6 +403,7 @@ public sealed class ChunkedMemoryStream : Stream {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
     if (buffer.Length - count < offset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
 
     if (count == 0)
       return 0;
@@ -418,6 +422,9 @@ public sealed class ChunkedMemoryStream : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
     if (buffer == null)
       throw new ArgumentNullException(nameof(buffer));
     if (offset < 0)
@@ -426,6 +433,7 @@ public sealed class ChunkedMemoryStream : Stream {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
     if (buffer.Length - count < offset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
 
     if (count == 0)
       return;

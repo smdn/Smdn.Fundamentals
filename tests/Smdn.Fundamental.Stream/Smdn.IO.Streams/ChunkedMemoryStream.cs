@@ -555,6 +555,40 @@ namespace Smdn.IO.Streams {
       }
     }
 
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new ChunkedMemoryStream(8);
+
+      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    }
+
+#if false
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new ChunkedMemoryStream(8);
+
+      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+    }
+#endif
+
     [Test]
     public void TestWriteByte()
     {
@@ -715,6 +749,40 @@ namespace Smdn.IO.Streams {
         Assert.AreEqual(0L, stream.Length);
       }
     }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWrite_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new ChunkedMemoryStream(8);
+
+      Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count));
+    }
+
+#if false
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
+    )]
+    public void TestWriteAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new ChunkedMemoryStream(8);
+
+      Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count));
+    }
+#endif
 
     [Test]
     public void TestSeekAndReadRandom()
