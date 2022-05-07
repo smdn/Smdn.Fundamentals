@@ -186,6 +186,39 @@ namespace Smdn.IO.Streams.Caching {
       }
     }
 
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = CreateCachedStream(new MemoryStream(8), 4, true);
+
+      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    }
+
+#if false
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = CreateCachedStream(new MemoryStream(8), 4, true);
+
+      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+    }
+#endif
 
     [Test]
     public void TestSeekAndReadRandom()

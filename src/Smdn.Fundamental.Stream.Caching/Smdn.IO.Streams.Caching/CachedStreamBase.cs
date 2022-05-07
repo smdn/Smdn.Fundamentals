@@ -133,6 +133,9 @@ public abstract class CachedStreamBase : Stream {
   {
     CheckDisposed();
 
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
     if (buffer == null)
       throw new ArgumentNullException(nameof(buffer));
     if (offset < 0)
@@ -141,6 +144,7 @@ public abstract class CachedStreamBase : Stream {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
     if (buffer.Length - count < offset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
 
     var ret = 0;
 

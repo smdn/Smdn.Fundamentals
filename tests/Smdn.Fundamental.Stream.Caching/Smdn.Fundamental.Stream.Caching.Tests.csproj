@@ -7,4 +7,8 @@ SPDX-License-Identifier: MIT
     <TargetFrameworks>net6.0;net5.0;net48;net45;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Smdn</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\TestCaseSources\StreamTestCaseSources.cs" />
+  </ItemGroup>
 </Project>
