@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using NUnit.Framework;
 
+using Smdn.IO.Streams;
+
 namespace Smdn.Formats.UUEncodings {
   [TestFixture]
   public class UUDecodingStreamTests {
@@ -353,6 +355,42 @@ end
         Assert.IsTrue(stream.EndOfFile, "EndOfFile #5");
       }
     }
+
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      var input = @"begin 644 cat.txt
+#0V%T
+`
+end";
+      using var stream = new UUDecodingStream(CreateStream(input));
+
+      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    }
+
+#if false
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+    }
+#endif
   }
 }
 
