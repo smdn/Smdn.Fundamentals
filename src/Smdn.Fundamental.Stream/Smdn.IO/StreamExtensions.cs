@@ -157,7 +157,7 @@ public static class StreamExtensions {
       return;
 
     var pos = sequence.Start;
-#if !NETSTANDARD2_1
+#if !SYSTEM_IO_STREAM_WRITE_READONLYSPAN_OF_BYTE
     byte[] buffer = null;
 #endif
 
@@ -201,7 +201,7 @@ public static class StreamExtensions {
   )
   {
     var pos = sequence.Start;
-#if !NETSTANDARD2_1
+#if !SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
     byte[] buffer = null;
 #endif
 
