@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Smdn.IO.Streams;
 
@@ -86,6 +88,25 @@ public class NonClosingStream : Stream {
     return stream.Read(buffer, offset, count);
   }
 
+  public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+  {
+    CheckDisposed();
+
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#endif
+
+    return stream.ReadAsync(buffer, offset, count, cancellationToken);
+  }
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default)
+  {
+    CheckDisposed();
+
+    return stream.ReadAsync(buffer, cancellationToken);
+  }
+#endif
   public override void Write(byte[] buffer, int offset, int count)
   {
     CheckDisposed();
@@ -95,6 +116,28 @@ public class NonClosingStream : Stream {
 
     stream.Write(buffer, offset, count);
   }
+
+  public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
+  {
+    CheckDisposed();
+
+    if (readOnly)
+      throw ExceptionUtils.CreateNotSupportedWritingStream();
+
+    return stream.WriteAsync(buffer, offset, count, cancellationToken);
+  }
+
+#if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
+  public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
+  {
+    CheckDisposed();
+
+    if (readOnly)
+      throw ExceptionUtils.CreateNotSupportedWritingStream();
+
+    return stream.WriteAsync(buffer, cancellationToken);
+  }
+#endif
 
   private void CheckDisposed()
   {
