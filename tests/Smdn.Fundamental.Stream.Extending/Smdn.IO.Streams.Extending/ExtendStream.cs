@@ -196,39 +196,36 @@ namespace Smdn.IO.Streams.Extending {
       }
     }
 
-    [Test] public void TestRead_ArgumentOutOfRange() => TestRead_ArgumentException(runAsync: false);
-    [Test] public void TestReadAsync_ArgumentOutOfRange() => TestRead_ArgumentException(runAsync: true);
-
-    private void TestRead_ArgumentException(bool runAsync)
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestRead_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
     {
-      using (var stream = new ExtendStream(Stream.Null, Stream.Null, Stream.Null)) {
-        var buffer = new byte[2];
+      using var stream = new ExtendStream(Stream.Null, Stream.Null, Stream.Null);
 
-        if (runAsync)
-          Assert.Throws<ArgumentNullException>(() => stream.ReadAsync(buffer: null, 0, 2));
-        else
-          Assert.Throws<ArgumentNullException>(() => stream.Read(buffer: null, 0, 2));
+      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    }
 
-        if (runAsync)
-          Assert.Throws<ArgumentOutOfRangeException>(() => stream.ReadAsync(buffer, -1, 0));
-        else
-          Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buffer, -1, 0));
+    [TestCaseSource(
+      typeof(StreamTestCaseSource),
+      nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
+    )]
+    public void TestReadAsync_InvalidBufferArguments(
+      byte[] buffer,
+      int offset,
+      int count,
+      Type expectedExceptionType
+    )
+    {
+      using var stream = new ExtendStream(Stream.Null, Stream.Null, Stream.Null);
 
-        if (runAsync)
-          Assert.Throws<ArgumentOutOfRangeException>(() => stream.ReadAsync(buffer, 0, -1));
-        else
-          Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(buffer, 0, -1));
-
-        if (runAsync)
-          Assert.Throws<ArgumentException>(() => stream.ReadAsync(buffer, 1, 2));
-        else
-          Assert.Throws<ArgumentException>(() => stream.Read(buffer, 1, 2));
-
-        if (runAsync)
-          Assert.Throws<ArgumentException>(() => stream.ReadAsync(buffer, 2, 1));
-        else
-          Assert.Throws<ArgumentException>(() => stream.Read(buffer, 2, 1));
-      }
+      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
     }
 
     [Test] public Task TestRead_AcrossRange() => TestRead_AcrossRange(runAsync: false);
