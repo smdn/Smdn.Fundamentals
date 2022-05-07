@@ -172,7 +172,7 @@ public abstract class CachedStreamBase : Stream {
 #if SYSTEM_MATH_DIVREM
       Math.DivRem(position, blockSize, out var blockOffset);
 #else
-      MathUtils.DivRem(position, blockSize, out var blockOffset);
+      MathShim.DivRem(position, blockSize, out var blockOffset);
 #endif
 
     block = default;
