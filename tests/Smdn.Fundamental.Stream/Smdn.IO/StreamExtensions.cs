@@ -197,6 +197,7 @@ namespace Smdn.IO {
       }
     }
 
+#if SYSTEM_BUFFERS_READONLYSEQUENCE
     private class SequenceSegment : ReadOnlySequenceSegment<byte> {
       public SequenceSegment(Memory<byte> memory, int runningIndex, SequenceSegment next)
       {
@@ -269,5 +270,6 @@ namespace Smdn.IO {
         Assert.AreEqual(new byte[0], stream.ToArray());
       }
     }
+#endif // SYSTEM_BUFFERS_READONLYSEQUENCE
   }
 }

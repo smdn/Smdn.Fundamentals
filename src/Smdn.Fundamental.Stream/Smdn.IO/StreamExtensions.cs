@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_BUFFERS_READONLYSEQUENCE
 using System.Buffers;
+#endif
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -145,6 +147,7 @@ public static class StreamExtensions {
     stream.Write(segment.Array, segment.Offset, segment.Count);
   }
 
+#if SYSTEM_BUFFERS_READONLYSEQUENCE
   public static void Write(
     this Stream stream,
     ReadOnlySequence<byte> sequence
@@ -218,4 +221,5 @@ public static class StreamExtensions {
 #endif
     }
   }
+#endif // SYSTEM_BUFFERS_READONLYSEQUENCE
 }
