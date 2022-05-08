@@ -45,14 +45,14 @@ public class LineOrientedStreamTests {
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
-    using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-      Assert.IsTrue(stream.CanRead, "can read");
-      Assert.IsTrue(stream.CanWrite, "can write");
-      Assert.IsTrue(stream.CanSeek, "can seek");
-      Assert.IsFalse(stream.CanTimeout, "can timeout");
-      Assert.AreEqual(8L, stream.Length);
-      Assert.AreEqual(0L, stream.Position);
-    }
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
+
+    Assert.IsTrue(stream.CanRead, "can read");
+    Assert.IsTrue(stream.CanWrite, "can write");
+    Assert.IsTrue(stream.CanSeek, "can seek");
+    Assert.IsFalse(stream.CanTimeout, "can timeout");
+    Assert.AreEqual(8L, stream.Length);
+    Assert.AreEqual(0L, stream.Position);
   }
 
   [TestCaseSource(
@@ -97,13 +97,13 @@ public class LineOrientedStreamTests {
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43};
 
-    using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-      stream.CopyTo(Stream.Null);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
-      var ret = await stream.ReadLineAsync();
+    stream.CopyTo(Stream.Null);
 
-      Assert.IsNull(ret);
-    }
+    var ret = await stream.ReadLineAsync();
+
+    Assert.IsNull(ret);
   }
 
   [TestCase(StreamType.Strict, false)]
@@ -112,11 +112,11 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose, true)]
   public async Task ReadLineAsync_EndOfStream_NothingBuffered(StreamType type, bool keepEOL)
   {
-    using (var stream = CreateStream(type, Stream.Null, 8)) {
-      var ret = await stream.ReadLineAsync();
+    using var stream = CreateStream(type, Stream.Null, 8);
 
-      Assert.IsNull(ret);
-    }
+    var ret = await stream.ReadLineAsync();
+
+    Assert.IsNull(ret);
   }
 
   [TestCase(StreamType.Strict)]
@@ -125,18 +125,18 @@ public class LineOrientedStreamTests {
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF};
 
-    using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
-      var ret = await stream.ReadLineAsync();
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8);
 
-      Assert.IsNotNull(ret);
-      Assert.IsFalse(ret.Value.IsEmpty);
-      Assert.IsTrue(ret.Value.SequenceWithNewLine.IsSingleSegment);
-      Assert.IsTrue(ret.Value.Sequence.IsSingleSegment);
-      CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, CR, LF },
-                                ret.Value.SequenceWithNewLine.ToArray());
-      CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43 },
-                                ret.Value.Sequence.ToArray());
-    }
+    var ret = await stream.ReadLineAsync();
+
+    Assert.IsNotNull(ret);
+    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsTrue(ret.Value.SequenceWithNewLine.IsSingleSegment);
+    Assert.IsTrue(ret.Value.Sequence.IsSingleSegment);
+    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, CR, LF },
+                              ret.Value.SequenceWithNewLine.ToArray());
+    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43 },
+                              ret.Value.Sequence.ToArray());
   }
 
   [TestCase(StreamType.Strict, false)]
@@ -147,18 +147,18 @@ public class LineOrientedStreamTests {
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF};
 
-    using (var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8)) {
-      var ret = await stream.ReadLineAsync();
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8);
 
-      Assert.IsNotNull(ret);
-      Assert.IsFalse(ret.Value.IsEmpty);
-      Assert.IsFalse(ret.Value.SequenceWithNewLine.IsSingleSegment);
-      Assert.IsFalse(ret.Value.Sequence.IsSingleSegment);
-      CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF },
-                                ret.Value.SequenceWithNewLine.ToArray());
-      CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f },
-                                ret.Value.Sequence.ToArray());
-    }
+    var ret = await stream.ReadLineAsync();
+
+    Assert.IsNotNull(ret);
+    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret.Value.SequenceWithNewLine.IsSingleSegment);
+    Assert.IsFalse(ret.Value.Sequence.IsSingleSegment);
+    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF },
+                              ret.Value.SequenceWithNewLine.ToArray());
+    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f },
+                              ret.Value.Sequence.ToArray());
   }
 
   [TestCase(StreamType.Strict)]
@@ -166,7 +166,8 @@ public class LineOrientedStreamTests {
   public void ReadByte(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
+
     var index = 0;
 
     for (; ; ) {
@@ -189,7 +190,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadToStream_ArgumentNull_TargetStream(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
 
     Assert.Throws<ArgumentNullException>(() => stream.Read(null, 16L));
     Assert.Throws<ArgumentNullException>(() => stream.ReadAsync(null, 16L));
@@ -199,7 +200,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadToStream_ArgumentOutOfRange_Length(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
 
     Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(Stream.Null, -1L));
     Assert.Throws<ArgumentOutOfRangeException>(() => stream.ReadAsync(Stream.Null, -1L));
@@ -209,7 +210,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadToStream_LengthZero(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
     var copyStream = new MemoryStream();
 
     Assert.AreEqual(0L, stream.Read(copyStream, 0L));
@@ -224,7 +225,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadToStreamAsync_LengthZero(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
     var copyStream = new MemoryStream();
 
     var t = stream.ReadAsync(copyStream, 0L);
@@ -242,18 +243,17 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadToStreamAsync_CancelledToken(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
+    using var cts = new CancellationTokenSource();
 
-    using (var cts = new CancellationTokenSource()) {
-      cts.Cancel();
+    cts.Cancel();
 
-      var t = stream.ReadAsync(Stream.Null, 0L, cts.Token);
+    var t = stream.ReadAsync(Stream.Null, 0L, cts.Token);
 
-      Assert.IsTrue(t.IsCanceled);
-      Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
+    Assert.IsTrue(t.IsCanceled);
+    Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
-      Assert.AreEqual(0L, stream.Position, "Position");
-    }
+    Assert.AreEqual(0L, stream.Position, "Position");
   }
 
   [TestCase(StreamType.Strict)]
@@ -261,7 +261,7 @@ public class LineOrientedStreamTests {
   public void ReadToStream_BufferEmpty(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
     var copyStream = new MemoryStream();
 
@@ -279,7 +279,7 @@ public class LineOrientedStreamTests {
   public void Read_BufferEmpty(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
     var buffer = new byte[12];
 
@@ -296,7 +296,7 @@ public class LineOrientedStreamTests {
   public async Task ReadAsync_ToMemory_BufferEmpty(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
     Memory<byte> buffer = new byte[12];
 
@@ -313,7 +313,7 @@ public class LineOrientedStreamTests {
   public void Read_LessThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 16);
+    using var stream = CreateStream(type, new MemoryStream(data), 16);
 
     var line = stream.ReadLine(true);
 
@@ -336,7 +336,7 @@ public class LineOrientedStreamTests {
   public async Task ReadAsync_ToMemory_LessThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 16);
+    using var stream = CreateStream(type, new MemoryStream(data), 16);
 
     var line = stream.ReadLine(true);
 
@@ -359,7 +359,7 @@ public class LineOrientedStreamTests {
   public void Read_LongerThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
     var line = stream.ReadLine(true);
 
@@ -382,7 +382,7 @@ public class LineOrientedStreamTests {
   public async Task ReadAsync_ToMemory_LongerThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
     var line = stream.ReadLine(true);
 
@@ -405,7 +405,7 @@ public class LineOrientedStreamTests {
   public void ReadToStream_LessThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 16);
+    using var stream = CreateStream(type, new MemoryStream(data), 16);
 
     var line = stream.ReadLine(true);
 
@@ -429,7 +429,7 @@ public class LineOrientedStreamTests {
   public void ReadToStream_LongerThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
     var line = stream.ReadLine(true);
 
@@ -452,7 +452,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void Read_LengthZero(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
     var buffer = new byte[1];
 
     Assert.AreEqual(0, stream.Read(buffer, 0, 0));
@@ -464,7 +464,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadAsync_LengthZero(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
     var buffer = new byte[1];
 
     var t = stream.ReadAsync(buffer, 0, 0);
@@ -479,7 +479,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public async Task ReadAsync_ToMemory_LengthZero(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
 
     Assert.AreEqual(0L, await stream.ReadAsync(Memory<byte>.Empty));
     Assert.AreEqual(0L, stream.Position, "Position");
@@ -490,18 +490,18 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose)]
   public void ReadAsync_CancelledToken(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    using (var cts = new CancellationTokenSource()) {
-      cts.Cancel();
+    using var cts = new CancellationTokenSource();
 
-      var t = stream.ReadAsync(new byte[1], 0, 1, cts.Token);
+    cts.Cancel();
 
-      Assert.IsTrue(t.IsCanceled);
-      Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
+    var t = stream.ReadAsync(new byte[1], 0, 1, cts.Token);
 
-      Assert.AreEqual(0L, stream.Position, "Position");
-    }
+    Assert.IsTrue(t.IsCanceled);
+    Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
+
+    Assert.AreEqual(0L, stream.Position, "Position");
   }
 
   [TestCaseSource(
@@ -549,17 +549,17 @@ public class LineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
     };
 
-    using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-      Assert.AreEqual(data[0], stream.ReadByte());
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
-      var targetStream = new MemoryStream();
+    Assert.AreEqual(data[0], stream.ReadByte());
 
-      await stream.CopyToAsync(targetStream, cancellationToken: default);
+    var targetStream = new MemoryStream();
 
-      CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
+    await stream.CopyToAsync(targetStream, cancellationToken: default);
 
-      Assert.AreEqual(-1, stream.ReadByte());
-    }
+    CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
+
+    Assert.AreEqual(-1, stream.ReadByte());
   }
 
   [TestCase(StreamType.Strict)]
@@ -571,22 +571,22 @@ public class LineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
     };
 
-    using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-      var targetStream = new MemoryStream();
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
-      await stream.CopyToAsync(targetStream, cancellationToken: default);
+    var targetStream = new MemoryStream();
 
-      CollectionAssert.AreEqual(data, targetStream.ToArray());
+    await stream.CopyToAsync(targetStream, cancellationToken: default);
 
-      Assert.AreEqual(-1, stream.ReadByte());
-    }
+    CollectionAssert.AreEqual(data, targetStream.ToArray());
+
+    Assert.AreEqual(-1, stream.ReadByte());
   }
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
   public void CopyToAsync_ArgumentNull_Destination(StreamType type)
   {
-    var stream = CreateStream(type, new MemoryStream(), 8);
+    using var stream = CreateStream(type, new MemoryStream(), 8);
 
     Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null));
     Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0));
@@ -606,15 +606,15 @@ public class LineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
     };
 
-    using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-      var targetStream = new MemoryStream();
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
-      await stream.CopyToAsync(targetStream, bufferSize: bufferSize, cancellationToken: default);
+    var targetStream = new MemoryStream();
 
-      CollectionAssert.AreEqual(data, targetStream.ToArray());
+    await stream.CopyToAsync(targetStream, bufferSize: bufferSize, cancellationToken: default);
 
-      Assert.AreEqual(-1, stream.ReadByte());
-    }
+    CollectionAssert.AreEqual(data, targetStream.ToArray());
+
+    Assert.AreEqual(-1, stream.ReadByte());
   }
 
   [TestCaseSource(
@@ -718,43 +718,43 @@ public class LineOrientedStreamTests {
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
-    using (var stream = CreateStream(type, new MemoryStream(data), 8)) {
-      stream.Dispose();
+    using var stream = CreateStream(type, new MemoryStream(data), 8);
 
-      Assert.IsFalse(stream.CanRead, "CanRead");
-      Assert.IsFalse(stream.CanWrite, "CanWrite");
-      Assert.IsFalse(stream.CanSeek, "CanSeek");
-      Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+    stream.Dispose();
 
-      var buffer = new byte[8];
+    Assert.IsFalse(stream.CanRead, "CanRead");
+    Assert.IsFalse(stream.CanWrite, "CanWrite");
+    Assert.IsFalse(stream.CanSeek, "CanSeek");
+    Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
-      Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(0, stream.Position));
-      Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.Length));
-      Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.BufferSize));
-      Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream));
-      Assert.Throws<ObjectDisposedException>(() => Assert.IsFalse(stream.NewLine.IsEmpty));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
+    var buffer = new byte[8];
+
+    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(0, stream.Position));
+    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.Length));
+    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.BufferSize));
+    Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream));
+    Assert.Throws<ObjectDisposedException>(() => Assert.IsFalse(stream.NewLine.IsEmpty));
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+    Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty));
+    Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty));
 #endif
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(Stream.Null, 8));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Stream.Null, 8));
-      Assert.Throws<ObjectDisposedException>(() => stream.Flush());
-      Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync());
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(buffer, 0, 8));
+    Assert.Throws<ObjectDisposedException>(() => stream.Read(Stream.Null, 8));
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Stream.Null, 8));
+    Assert.Throws<ObjectDisposedException>(() => stream.Flush());
+    Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync());
+    Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
+    Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
+    Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(buffer, 0, 8));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-      Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(Memory<byte>.Empty));
+    Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(Memory<byte>.Empty));
 #endif
-      Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
+    Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
 
-      stream.Dispose();
-    }
+    stream.Dispose();
   }
 
   [TestCase(StreamType.Strict)]
@@ -763,23 +763,22 @@ public class LineOrientedStreamTests {
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
-    using (var baseStream = new MemoryStream(data)) {
-      var stream = CreateStream(type, baseStream, 8, true);
+    using var baseStream = new MemoryStream(data);
+    using var stream = CreateStream(type, baseStream, 8, true);
 
-      stream.Dispose();
+    stream.Dispose();
 
-      Assert.IsFalse(stream.CanRead, "CanRead");
-      Assert.IsFalse(stream.CanWrite, "CanWrite");
-      Assert.IsFalse(stream.CanSeek, "CanSeek");
-      Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+    Assert.IsFalse(stream.CanRead, "CanRead");
+    Assert.IsFalse(stream.CanWrite, "CanWrite");
+    Assert.IsFalse(stream.CanSeek, "CanSeek");
+    Assert.IsFalse(stream.CanTimeout, "CanTimeout");
 
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+    Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
 
-      Assert.DoesNotThrow(() => baseStream.ReadByte());
-      Assert.DoesNotThrow(() => baseStream.WriteByte(0x00));
+    Assert.DoesNotThrow(() => baseStream.ReadByte());
+    Assert.DoesNotThrow(() => baseStream.WriteByte(0x00));
 
-      stream.Dispose();
-    }
+    stream.Dispose();
   }
 }

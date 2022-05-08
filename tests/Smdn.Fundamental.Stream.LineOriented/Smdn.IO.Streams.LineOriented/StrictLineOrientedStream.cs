@@ -17,18 +17,18 @@ public class StrictLineOrientedStreamTests {
   [Test]
   public void NewLine()
   {
-    using (var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
-      Assert.IsFalse(stream.NewLine.IsEmpty);
-      CollectionAssert.AreEqual(new byte[] {0x0d, 0x0a}, stream.NewLine.ToArray(), "must return CRLF");
-    }
+    using var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8);
+
+    Assert.IsFalse(stream.NewLine.IsEmpty);
+    CollectionAssert.AreEqual(new byte[] {0x0d, 0x0a}, stream.NewLine.ToArray(), "must return CRLF");
   }
 
   [Test]
   public void IsStrictNewLine()
   {
-    using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
-      Assert.IsFalse(stream.IsStrictNewLine);
-    }
+    using var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8);
+
+    Assert.IsFalse(stream.IsStrictNewLine);
   }
 
   [Test]
@@ -40,50 +40,50 @@ public class StrictLineOrientedStreamTests {
       0x42, CR, 0x43, LF,
     };
 
-    using (var stream = new StrictLineOrientedStream(new MemoryStream(data), 8)) {
-      // CRLF
-      var ret = await stream.ReadLineAsync();
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
-      Assert.IsNotNull(ret);
-      Assert.IsFalse(ret.Value.IsEmpty);
-      CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, CR, LF },
-                                ret.Value.SequenceWithNewLine.ToArray());
-      CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
-                                ret.Value.Sequence.ToArray());
-      CollectionAssert.AreEqual(new byte[] { CR, LF },
-                                ret.Value.NewLine.ToArray());
+    // CRLF
+    var ret = await stream.ReadLineAsync();
 
-      // CRLF (empty line)
-      ret = await stream.ReadLineAsync();
+    Assert.IsNotNull(ret);
+    Assert.IsFalse(ret.Value.IsEmpty);
+    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, CR, LF },
+                              ret.Value.SequenceWithNewLine.ToArray());
+    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
+                              ret.Value.Sequence.ToArray());
+    CollectionAssert.AreEqual(new byte[] { CR, LF },
+                              ret.Value.NewLine.ToArray());
 
-      Assert.IsNotNull(ret);
-      Assert.IsTrue(ret.Value.IsEmpty);
-      CollectionAssert.AreEqual(new byte[] { CR, LF },
-                                ret.Value.SequenceWithNewLine.ToArray());
-      CollectionAssert.AreEqual(new byte[0],
-                                ret.Value.Sequence.ToArray());
-      CollectionAssert.AreEqual(new byte[] { CR, LF },
-                                ret.Value.NewLine.ToArray());
+    // CRLF (empty line)
+    ret = await stream.ReadLineAsync();
 
-      // <EOS>
-      ret = await stream.ReadLineAsync();
+    Assert.IsNotNull(ret);
+    Assert.IsTrue(ret.Value.IsEmpty);
+    CollectionAssert.AreEqual(new byte[] { CR, LF },
+                              ret.Value.SequenceWithNewLine.ToArray());
+    CollectionAssert.AreEqual(new byte[0],
+                              ret.Value.Sequence.ToArray());
+    CollectionAssert.AreEqual(new byte[] { CR, LF },
+                              ret.Value.NewLine.ToArray());
 
-      Assert.IsNotNull(ret);
-      Assert.IsFalse(ret.Value.IsEmpty);
-      CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
-                                ret.Value.SequenceWithNewLine.ToArray());
-      CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
-                                ret.Value.Sequence.ToArray());
-      CollectionAssert.AreEqual(new byte[0],
-                                ret.Value.NewLine.ToArray());
-    }
+    // <EOS>
+    ret = await stream.ReadLineAsync();
+
+    Assert.IsNotNull(ret);
+    Assert.IsFalse(ret.Value.IsEmpty);
+    CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
+                              ret.Value.SequenceWithNewLine.ToArray());
+    CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
+                              ret.Value.Sequence.ToArray());
+    CollectionAssert.AreEqual(new byte[0],
+                              ret.Value.NewLine.ToArray());
   }
 
   [Test]
   public void ReadAndReadLine()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
     var buffer = new byte[8];
 
     Assert.AreEqual(0L, stream.Position, "Position");
@@ -104,7 +104,7 @@ public class StrictLineOrientedStreamTests {
   public void ReadLine_CRLF()
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -122,7 +122,7 @@ public class StrictLineOrientedStreamTests {
   public void ReadLine_DiscardEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -140,7 +140,7 @@ public class StrictLineOrientedStreamTests {
   public void ReadLine_KeepEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -160,7 +160,7 @@ public class StrictLineOrientedStreamTests {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, CR, LF,
       0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
     };
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -181,7 +181,7 @@ public class StrictLineOrientedStreamTests {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, CR, LF,
       0x60, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67, 0x68, 0x69,
     };
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -204,7 +204,7 @@ public class StrictLineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, LF,
       CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
     };
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -227,7 +227,7 @@ public class StrictLineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, LF,
       CR, 0x69, 0x6a, 0x6b, 0x6c, 0x6d, 0x6e, 0x6f,
     };
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -247,7 +247,7 @@ public class StrictLineOrientedStreamTests {
     var data = new byte[] {
       0x40, 0x41, 0x42, CR,
     };
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -261,7 +261,7 @@ public class StrictLineOrientedStreamTests {
     var data = new byte[] {
       0x40, 0x41, 0x42, CR,
     };
-    var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
