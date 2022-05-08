@@ -41,7 +41,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestConstructFromMemoryStream(StreamType type)
+  public void Construct_FromMemoryStream(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
@@ -59,7 +59,7 @@ public class LineOrientedStreamTests {
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
   )]
-  public void TestRead_InvalidBufferArguments(
+  public void Read_InvalidBufferArguments(
     byte[] buffer,
     int offset,
     int count,
@@ -77,7 +77,7 @@ public class LineOrientedStreamTests {
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidReadBufferArguments)
   )]
-  public void TestReadAsync_InvalidBufferArguments(
+  public void ReadAsync_InvalidBufferArguments(
     byte[] buffer,
     int offset,
     int count,
@@ -93,7 +93,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestReadLineAsync_EndOfStream(StreamType type)
+  public async Task ReadLineAsync_EndOfStream(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43};
 
@@ -110,7 +110,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Strict, true)]
   [TestCase(StreamType.Loose, false)]
   [TestCase(StreamType.Loose, true)]
-  public async Task TestReadLineAsync_EndOfStream_NothingBuffered(StreamType type, bool keepEOL)
+  public async Task ReadLineAsync_EndOfStream_NothingBuffered(StreamType type, bool keepEOL)
   {
     using (var stream = CreateStream(type, Stream.Null, 8)) {
       var ret = await stream.ReadLineAsync();
@@ -121,7 +121,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestReadLineAsync_SingleSegment(StreamType type)
+  public async Task ReadLineAsync_SingleSegment(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF};
 
@@ -143,7 +143,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Strict, true)]
   [TestCase(StreamType.Loose, false)]
   [TestCase(StreamType.Loose, true)]
-  public async Task TestReadLineAsync_MultipleSegment(StreamType type, bool keepEOL)
+  public async Task ReadLineAsync_MultipleSegment(StreamType type, bool keepEOL)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF};
 
@@ -163,7 +163,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadByte(StreamType type)
+  public void ReadByte(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -187,7 +187,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStream_ArgumentNull_TargetStream(StreamType type)
+  public void ReadToStream_ArgumentNull_TargetStream(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
 
@@ -197,7 +197,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStream_ArgumentOutOfRange_Length(StreamType type)
+  public void ReadToStream_ArgumentOutOfRange_Length(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
 
@@ -207,7 +207,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStream_LengthZero(StreamType type)
+  public void ReadToStream_LengthZero(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
     var copyStream = new MemoryStream();
@@ -222,7 +222,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStreamAsync_LengthZero(StreamType type)
+  public void ReadToStreamAsync_LengthZero(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
     var copyStream = new MemoryStream();
@@ -240,7 +240,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStreamAsync_CancelledToken(StreamType type)
+  public void ReadToStreamAsync_CancelledToken(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
 
@@ -258,7 +258,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStream_BufferEmpty(StreamType type)
+  public void ReadToStream_BufferEmpty(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -276,7 +276,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestRead_BufferEmpty(StreamType type)
+  public void Read_BufferEmpty(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -293,7 +293,7 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestReadAsync_ToMemory_BufferEmpty(StreamType type)
+  public async Task ReadAsync_ToMemory_BufferEmpty(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -310,7 +310,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestRead_LessThanBuffered(StreamType type)
+  public void Read_LessThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 16);
@@ -333,7 +333,7 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestReadAsync_ToMemory_LessThanBuffered(StreamType type)
+  public async Task ReadAsync_ToMemory_LessThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 16);
@@ -356,7 +356,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestRead_LongerThanBuffered(StreamType type)
+  public void Read_LongerThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -379,7 +379,7 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestReadAsync_ToMemory_LongerThanBuffered(StreamType type)
+  public async Task ReadAsync_ToMemory_LongerThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -402,7 +402,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStream_LessThanBuffered(StreamType type)
+  public void ReadToStream_LessThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 16);
@@ -426,7 +426,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadToStream_LongerThanBuffered(StreamType type)
+  public void ReadToStream_LongerThanBuffered(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
     var stream = CreateStream(type, new MemoryStream(data), 8);
@@ -450,7 +450,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestRead_LengthZero(StreamType type)
+  public void Read_LengthZero(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
     var buffer = new byte[1];
@@ -462,7 +462,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadAsync_LengthZero(StreamType type)
+  public void ReadAsync_LengthZero(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
     var buffer = new byte[1];
@@ -477,7 +477,7 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestReadAsync_ToMemory_LengthZero(StreamType type)
+  public async Task ReadAsync_ToMemory_LengthZero(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
 
@@ -488,7 +488,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestReadAsync_CancelledToken(StreamType type)
+  public void ReadAsync_CancelledToken(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
 
@@ -508,7 +508,7 @@ public class LineOrientedStreamTests {
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidCopyToArguments)
   )]
-  public void TestCopyTo_InvalidBufferArguments(
+  public void CopyTo_InvalidBufferArguments(
     Stream destination,
     int bufferSize,
     Type expectedExceptionType,
@@ -526,7 +526,7 @@ public class LineOrientedStreamTests {
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidCopyToArguments)
   )]
-  public void TestCopyToAsync_InvalidBufferArguments(
+  public void CopyToAsync_InvalidBufferArguments(
     Stream destination,
     int bufferSize,
     Type expectedExceptionType,
@@ -542,7 +542,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestCopyToAsync(StreamType type)
+  public async Task CopyToAsync(StreamType type)
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
@@ -564,7 +564,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestCopyToAsync_NothingBuffered(StreamType type)
+  public async Task CopyToAsync_NothingBuffered(StreamType type)
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
@@ -584,7 +584,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestCopyToAsync_ArgumentNull_Destination(StreamType type)
+  public void CopyToAsync_ArgumentNull_Destination(StreamType type)
   {
     var stream = CreateStream(type, new MemoryStream(), 8);
 
@@ -599,7 +599,7 @@ public class LineOrientedStreamTests {
   [TestCase(StreamType.Loose, 1024)]
   [TestCase(StreamType.Strict, int.MaxValue)]
   [TestCase(StreamType.Loose, int.MaxValue)]
-  public async Task TestCopyToAsync_BufferSizeDoesNotAffectToBehaviour(StreamType type, int bufferSize)
+  public async Task CopyToAsync_BufferSizeDoesNotAffectToBehaviour(StreamType type, int bufferSize)
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47,
@@ -621,7 +621,7 @@ public class LineOrientedStreamTests {
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
   )]
-  public void TestWrite_InvalidBufferArguments(
+  public void Write_InvalidBufferArguments(
     byte[] buffer,
     int offset,
     int count,
@@ -639,7 +639,7 @@ public class LineOrientedStreamTests {
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)
   )]
-  public void TestWriteAsync_InvalidBufferArguments(
+  public void WriteAsync_InvalidBufferArguments(
     byte[] buffer,
     int offset,
     int count,
@@ -655,7 +655,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestWrite(StreamType type)
+  public void Write(StreamType type)
   {
     using var baseStream = new MemoryStream(capacity: 8);
     using var stream = CreateStream(type, baseStream, 8);
@@ -674,7 +674,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestWriteAsync(StreamType type)
+  public async Task WriteAsync(StreamType type)
   {
     using var baseStream = new MemoryStream(capacity: 8);
     using var stream = CreateStream(type, baseStream, 8);
@@ -694,7 +694,7 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public async Task TestWriteAsync_ToReadOnlyMemory(StreamType type)
+  public async Task WriteAsync_ToReadOnlyMemory(StreamType type)
   {
     using var baseStream = new MemoryStream(capacity: 8);
     using var stream = CreateStream(type, baseStream, 8);
@@ -714,7 +714,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestClose(StreamType type)
+  public void Close(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
@@ -759,7 +759,7 @@ public class LineOrientedStreamTests {
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
-  public void TestCloseLeaveStreamOpen(StreamType type)
+  public void Close_LeaveStreamOpen(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 

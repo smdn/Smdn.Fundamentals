@@ -15,7 +15,7 @@ public class StrictLineOrientedStreamTests {
   private const byte LF = (byte)'\n';
 
   [Test]
-  public void TestNewLine()
+  public void NewLine()
   {
     using (var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
       Assert.IsFalse(stream.NewLine.IsEmpty);
@@ -24,7 +24,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestIsStrictNewLine()
+  public void IsStrictNewLine()
   {
     using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
       Assert.IsFalse(stream.IsStrictNewLine);
@@ -32,7 +32,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public async Task TestReadLineAsync()
+  public async Task ReadLineAsync()
   {
     var data = new byte[] {
       0x40, 0x41, CR, LF,
@@ -80,7 +80,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadAndReadLine()
+  public void ReadAndReadLine()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
@@ -101,7 +101,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineCRLF()
+  public void ReadLine_CRLF()
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
@@ -119,7 +119,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineDiscardEOL()
+  public void ReadLine_DiscardEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
@@ -137,7 +137,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineKeepEOL()
+  public void ReadLine_KeepEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
@@ -154,7 +154,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineLongerThanBufferDiscardEOL()
+  public void ReadLine_LongerThanBuffer_DiscardEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, CR, LF,
@@ -175,7 +175,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineLongerThanBufferKeepEOL()
+  public void ReadLine_LongerThanBuffer_KeepEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, CR, LF,
@@ -196,7 +196,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineEOLSplittedBetweenBufferDiscardEOL()
+  public void ReadLine_EOLSplittedBetweenBuffer_DiscardEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR,
@@ -219,7 +219,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineEOLSplittedBetweenBufferKeepEOL()
+  public void ReadLine_EOLSplittedBetweenBuffer_KeepEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR,
@@ -242,7 +242,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineIncompleteEOLDiscardEOL()
+  public void ReadLine_IncompleteEOL_DiscardEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, CR,
@@ -256,7 +256,7 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineIncompleteEOLKeepEOL()
+  public void ReadLine_IncompleteEOL_KeepEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, CR,

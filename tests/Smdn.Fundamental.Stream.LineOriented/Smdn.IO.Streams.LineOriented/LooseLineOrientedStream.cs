@@ -15,7 +15,7 @@ public class LooseLineOrientedStreamTests {
   private const byte LF = (byte)'\n';
 
   [Test]
-  public void TestNewLine()
+  public void NewLine()
   {
     using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
       Assert.IsTrue(stream.NewLine.IsEmpty);
@@ -23,7 +23,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestIsStrictNewLine()
+  public void IsStrictNewLine()
   {
     using (var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8)) {
       Assert.IsFalse(stream.IsStrictNewLine);
@@ -31,7 +31,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public async Task TestReadLineAsync()
+  public async Task ReadLineAsync()
   {
     var data = new byte[] {
       0x40, 0x41, CR, LF,
@@ -105,7 +105,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadAndReadLineKeepEOL()
+  public void ReadAndReadLine_KeepEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
@@ -129,7 +129,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadAndReadLineDiscardEOL()
+  public void ReadAndReadLine_DiscardEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
@@ -153,7 +153,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineKeepEOL()
+  public void ReadLine_KeepEOL()
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
@@ -183,7 +183,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineDiscardEOL()
+  public void ReadLine_DiscardEOL()
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
@@ -213,7 +213,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineBufferEndsWithEOLKeepEOL()
+  public void ReadLine_BufferEndsWithEOL_KeepEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
     var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
@@ -226,7 +226,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineBufferEndsWithEOLDiscardEOL()
+  public void ReadLine_BufferEndsWithEOL_DiscardEOL()
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
     var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
@@ -239,7 +239,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineEOLSplittedBetweenBufferDiscardEOL()
+  public void ReadLine_EOLSplittedBetweenBuffer_DiscardEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR,
@@ -271,7 +271,7 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void TestReadLineEOLSplittedBetweenBufferKeepEOL()
+  public void ReadLine_EOLSplittedBetweenBuffer_KeepEOL()
   {
     var data = new byte[] {
       0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR,
