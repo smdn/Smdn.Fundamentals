@@ -750,19 +750,21 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void Close(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(true, false)] bool leaveStreamOpen
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var baseStream = new MemoryStream(data);
+    using var stream = CreateStream(type, baseStream, 8, leaveStreamOpen);
 
     stream.Dispose();
 
-    Assert.IsFalse(stream.CanRead, "CanRead");
-    Assert.IsFalse(stream.CanWrite, "CanWrite");
-    Assert.IsFalse(stream.CanSeek, "CanSeek");
-    Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+    Assert.IsFalse(stream.CanRead, nameof(stream.CanRead));
+    Assert.IsFalse(stream.CanWrite, nameof(stream.CanWrite));
+    Assert.IsFalse(stream.CanSeek, nameof(stream.CanSeek));
+    Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
 
     var buffer = new byte[8];
 
@@ -791,32 +793,15 @@ public class LineOrientedStreamTests {
 #endif
     Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
 
-    stream.Dispose();
-  }
+    Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() multiple time");
 
-  [Test]
-  public void Close_LeaveStreamOpen(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
-  )
-  {
-    var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-
-    using var baseStream = new MemoryStream(data);
-    using var stream = CreateStream(type, baseStream, 8, true);
-
-    stream.Dispose();
-
-    Assert.IsFalse(stream.CanRead, "CanRead");
-    Assert.IsFalse(stream.CanWrite, "CanWrite");
-    Assert.IsFalse(stream.CanSeek, "CanSeek");
-    Assert.IsFalse(stream.CanTimeout, "CanTimeout");
-
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-    Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
-
-    Assert.DoesNotThrow(() => baseStream.ReadByte());
-    Assert.DoesNotThrow(() => baseStream.WriteByte(0x00));
-
-    stream.Dispose();
+    if (leaveStreamOpen) {
+      Assert.DoesNotThrow(() => baseStream.ReadByte(), "Read, base stream");
+      Assert.DoesNotThrow(() => baseStream.WriteByte(0x00), "Write, base stream");
+    }
+    else {
+      Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte(), "Read, base stream");
+      Assert.Throws<ObjectDisposedException>(() => baseStream.WriteByte(0x00), "Write, base stream");
+    }
   }
 }
