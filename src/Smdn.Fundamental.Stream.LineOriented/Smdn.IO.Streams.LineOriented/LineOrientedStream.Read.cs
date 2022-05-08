@@ -14,7 +14,7 @@ partial class LineOrientedStream {
   {
     CheckDisposed();
 
-    if (bufRemain == 0 && FillBufferAsync(default).GetAwaiter().GetResult() <= 0)
+    if (bufRemain == 0 && FillBuffer() <= 0)
       return -1;
 
     bufRemain--;

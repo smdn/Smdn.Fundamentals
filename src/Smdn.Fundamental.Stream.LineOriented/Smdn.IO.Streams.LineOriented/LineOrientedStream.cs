@@ -93,6 +93,27 @@ public partial class LineOrientedStream : Stream {
     return stream.Seek(offset, origin);
   }
 
+  private int FillBuffer()
+  {
+    bufOffset = 0;
+
+    bufRemain =
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+      stream.Read(
+        buffer.AsSpan()
+#else
+#pragma warning disable CA1835
+      stream.Read(
+        buffer,
+        0,
+        buffer.Length
+#pragma warning restore CA1835
+#endif
+      );
+
+    return bufRemain;
+  }
+
   private async Task<int> FillBufferAsync(CancellationToken cancellationToken)
   {
     bufOffset = 0;
