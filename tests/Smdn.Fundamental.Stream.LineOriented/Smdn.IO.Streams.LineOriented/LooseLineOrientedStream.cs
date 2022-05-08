@@ -31,7 +31,9 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public async Task ReadLineAsync()
+  public async Task ReadLineAsync(
+    [Values(1, 2, 3, 4, 8)] int bufferSize
+  )
   {
     var data = new byte[] {
       0x40, 0x41, CR, LF,
@@ -41,7 +43,7 @@ public class LooseLineOrientedStreamTests {
       0x46, 0x47
     };
 
-    using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
     // CRLF
     var ret = await stream.ReadLineAsync();
@@ -105,10 +107,12 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void ReadAndReadLine_KeepEOL()
+  public void ReadAndReadLine_KeepEOL(
+    [Values(1, 2, 3, 4, 8)] int bufferSize
+  )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
     Assert.AreEqual(0L, stream.Position, "Position");
@@ -129,10 +133,12 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void ReadAndReadLine_DiscardEOL()
+  public void ReadAndReadLine_DiscardEOL(
+    [Values(1, 2, 3, 4, 8)] int bufferSize
+  )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
     Assert.AreEqual(0L, stream.Position, "Position");
@@ -153,10 +159,12 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void ReadLine_KeepEOL()
+  public void ReadLine_KeepEOL(
+    [Values(1, 2, 3, 4, 8)] int bufferSize
+  )
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
-    using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
@@ -183,10 +191,12 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public void ReadLine_DiscardEOL()
+  public void ReadLine_DiscardEOL(
+    [Values(1, 2, 3, 4, 8)] int bufferSize
+  )
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
-    using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
+    using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
     Assert.AreEqual(0L, stream.Position, "Position");
 

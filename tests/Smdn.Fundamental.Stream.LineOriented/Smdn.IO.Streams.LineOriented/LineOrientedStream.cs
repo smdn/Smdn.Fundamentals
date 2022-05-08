@@ -36,19 +36,21 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void Construct_FromMemoryStream(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
 
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
-    Assert.IsTrue(stream.CanRead, "can read");
-    Assert.IsTrue(stream.CanWrite, "can write");
-    Assert.IsTrue(stream.CanSeek, "can seek");
-    Assert.IsFalse(stream.CanTimeout, "can timeout");
-    Assert.AreEqual(8L, stream.Length);
-    Assert.AreEqual(0L, stream.Position);
+    Assert.IsTrue(stream.CanRead, nameof(stream.CanRead));
+    Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
+    Assert.IsTrue(stream.CanSeek, nameof(stream.CanSeek));
+    Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
+    Assert.AreEqual(8L, stream.Length, nameof(stream.Length));
+    Assert.AreEqual(0L, stream.Position, nameof(stream.Position));
+    Assert.AreEqual(bufferSize, stream.BufferSize, nameof(stream.BufferSize));
   }
 
   [TestCaseSource(
@@ -89,12 +91,13 @@ public class LineOrientedStreamTests {
 
   [Test]
   public async Task ReadLineAsync_EndOfStream(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43};
 
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     stream.CopyTo(Stream.Null);
 
@@ -117,12 +120,13 @@ public class LineOrientedStreamTests {
 
   [Test]
   public async Task ReadLineAsync_SingleSegment(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(6, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF};
 
-    using var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var ret = await stream.ReadLineAsync();
 
@@ -138,12 +142,13 @@ public class LineOrientedStreamTests {
 
   [Test]
   public async Task ReadLineAsync_MultipleSegment(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF};
 
-    using var stream = CreateStream(type, new MemoryStream(data), bufferSize: 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var ret = await stream.ReadLineAsync();
 
@@ -159,11 +164,12 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void ReadByte(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 3, 4, 5, 6)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var index = 0;
 
@@ -260,11 +266,12 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void ReadToStream_BufferEmpty(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var copyStream = new MemoryStream();
 
@@ -279,11 +286,12 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void Read_BufferEmpty(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var buffer = new byte[12];
 
@@ -297,11 +305,12 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [Test]
   public async Task ReadAsync_ToMemory_BufferEmpty(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     Memory<byte> buffer = new byte[12];
 
@@ -315,7 +324,8 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void Read_LessThanBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(16, 32)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
@@ -339,11 +349,12 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [Test]
   public async Task ReadAsync_ToMemory_LessThanBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(16, 32)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 16);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var line = stream.ReadLine(true);
 
@@ -363,11 +374,12 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void Read_LongerThanBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var line = stream.ReadLine(true);
 
@@ -387,11 +399,12 @@ public class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   [Test]
   public async Task ReadAsync_ToMemory_LongerThanBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var line = stream.ReadLine(true);
 
@@ -411,11 +424,12 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void ReadToStream_LessThanBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(16, 32)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 16);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var line = stream.ReadLine(true);
 
@@ -436,11 +450,12 @@ public class LineOrientedStreamTests {
 
   [Test]
   public void ReadToStream_LongerThanBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var line = stream.ReadLine(true);
 
@@ -557,7 +572,8 @@ public class LineOrientedStreamTests {
 
   [Test]
   public async Task CopyToAsync(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {
@@ -565,7 +581,7 @@ public class LineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
     };
 
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     Assert.AreEqual(data[0], stream.ReadByte());
 
@@ -580,7 +596,8 @@ public class LineOrientedStreamTests {
 
   [Test]
   public async Task CopyToAsync_NothingBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
     var data = new byte[] {
@@ -588,7 +605,7 @@ public class LineOrientedStreamTests {
       0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f,
     };
 
-    using var stream = CreateStream(type, new MemoryStream(data), 8);
+    using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
     var targetStream = new MemoryStream();
 
