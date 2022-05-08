@@ -22,22 +22,17 @@ public class LineOrientedStreamTests {
     Loose,
   }
 
-  private static LineOrientedStream CreateStream(StreamType type, Stream baseStream, int bufferSize)
-  {
-    return CreateStream(type, baseStream, bufferSize, false);
-  }
-
-  private static LineOrientedStream CreateStream(StreamType type, Stream baseStream, int bufferSize, bool leaveStreamOpen)
-  {
-    switch (type) {
-      case StreamType.Loose:
-        return new LooseLineOrientedStream(baseStream, bufferSize, leaveStreamOpen);
-      case StreamType.Strict:
-        return new StrictLineOrientedStream(baseStream, bufferSize, leaveStreamOpen);
-      default:
-        return new LooseLineOrientedStream(baseStream, bufferSize, leaveStreamOpen); // XXX
-    }
-  }
+  private static LineOrientedStream CreateStream(
+    StreamType type,
+    Stream baseStream,
+    int bufferSize,
+    bool leaveStreamOpen = false
+  )
+    => type switch {
+      StreamType.Loose => new LooseLineOrientedStream(baseStream, bufferSize, leaveStreamOpen),
+      StreamType.Strict => new StrictLineOrientedStream(baseStream, bufferSize, leaveStreamOpen),
+      _ => throw new InvalidOperationException("invalid stream type"),
+    };
 
   [TestCase(StreamType.Strict)]
   [TestCase(StreamType.Loose)]
