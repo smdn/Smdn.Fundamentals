@@ -10,8 +10,8 @@ namespace Smdn.IO.Streams.LineOriented;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public partial class LineOrientedStream : Stream {
   protected const int DefaultBufferSize = 1024;
-  protected const int MinimumBufferSize = 1;
-  protected const bool DefaultLeaveStreamOpen = false;
+  /*private*/ protected const int MinimumBufferSize = 1;
+  /*private*/ protected const bool DefaultLeaveStreamOpen = false;
 
   public override bool CanSeek => !IsClosed && stream.CanSeek;
   public override bool CanRead => !IsClosed && stream.CanRead;
