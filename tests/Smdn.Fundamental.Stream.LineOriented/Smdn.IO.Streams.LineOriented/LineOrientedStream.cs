@@ -101,11 +101,9 @@ public class LineOrientedStreamTests {
     Assert.IsNull(ret);
   }
 
-  [TestCase(StreamType.Strict, false)]
-  [TestCase(StreamType.Strict, true)]
-  [TestCase(StreamType.Loose, false)]
-  [TestCase(StreamType.Loose, true)]
-  public async Task ReadLineAsync_EndOfStream_NothingBuffered(StreamType type, bool keepEOL)
+  [TestCase(StreamType.Strict)]
+  [TestCase(StreamType.Loose)]
+  public async Task ReadLineAsync_EndOfStream_NothingBuffered(StreamType type)
   {
     using var stream = CreateStream(type, Stream.Null, 8);
 
@@ -134,11 +132,9 @@ public class LineOrientedStreamTests {
                               ret.Value.Sequence.ToArray());
   }
 
-  [TestCase(StreamType.Strict, false)]
-  [TestCase(StreamType.Strict, true)]
-  [TestCase(StreamType.Loose, false)]
-  [TestCase(StreamType.Loose, true)]
-  public async Task ReadLineAsync_MultipleSegment(StreamType type, bool keepEOL)
+  [TestCase(StreamType.Strict)]
+  [TestCase(StreamType.Loose)]
+  public async Task ReadLineAsync_MultipleSegment(StreamType type)
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF};
 
