@@ -13,13 +13,6 @@ public partial class LineOrientedStream : Stream {
   protected const int MinimumBufferSize = 1;
   protected const bool DefaultLeaveStreamOpen = false;
 
-  private enum EolState {
-    NotMatched = 0,
-    NewLine,
-    CR,
-    LF,
-  }
-
   public override bool CanSeek => !IsClosed && stream.CanSeek;
   public override bool CanRead => !IsClosed && stream.CanRead;
   public override bool CanWrite => !IsClosed && stream.CanWrite;

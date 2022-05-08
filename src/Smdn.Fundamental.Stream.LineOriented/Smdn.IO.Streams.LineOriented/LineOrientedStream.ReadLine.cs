@@ -23,6 +23,13 @@ partial class LineOrientedStream {
     return ReadLineAsyncCore(cancellationToken: cancellationToken);
   }
 
+  private enum EolState {
+    NotMatched = 0,
+    NewLine,
+    CR,
+    LF,
+  }
+
   private async Task<Line?> ReadLineAsyncCore(
     CancellationToken cancellationToken
   )
