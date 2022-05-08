@@ -23,7 +23,9 @@ partial class LineOrientedStream {
     return ReadLineAsyncCore(cancellationToken: cancellationToken);
   }
 
-  private async Task<Line?> ReadLineAsyncCore(CancellationToken cancellationToken = default)
+  private async Task<Line?> ReadLineAsyncCore(
+    CancellationToken cancellationToken
+  )
   {
     if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
       return null;
@@ -39,7 +41,7 @@ partial class LineOrientedStream {
     LineSequenceSegment segmentTail = null;
 
     for (; ; ) {
-      if (newLine == null) {
+      if (newLine is null) {
         // loose EOL (CR/LF/CRLF)
         if (buffer[bufOffset] == CR) {
           eol = EolState.CR;
@@ -64,11 +66,16 @@ partial class LineOrientedStream {
       bufRemain--;
       bufOffset++;
 
-      if (bufRemain == 0 &&
-          (eol == EolState.NotMatched || eol == EolState.CR /* read ahead; CRLF */)) {
+      if (
+        bufRemain == 0 &&
+        (eol == EolState.NotMatched || eol == EolState.CR /* read ahead; CRLF */)
+      ) {
         var count = bufOffset - bufCopyFrom;
 
-        segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, count).ToArray()); // XXX
+        segmentTail = new(
+          segmentTail,
+          buffer.AsSpan(bufCopyFrom, count).ToArray() // TODO: allocation
+        );
         segmentHead ??= segmentTail;
 
         retCount += count;
@@ -96,12 +103,20 @@ partial class LineOrientedStream {
     if (eol == EolState.NotMatched)
       newLineLength = 0;
 
-    if (segmentHead == null || 0 < retLength - retCount) {
-      segmentTail = new LineSequenceSegment(segmentTail, buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray()); // XXX
+    if (segmentHead is null || 0 < retLength - retCount) {
+      segmentTail = new(
+        segmentTail,
+        buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray() // TODO: allocation
+      );
       segmentHead ??= segmentTail;
     }
 
-    var sequenceWithNewLine = new ReadOnlySequence<byte>(segmentHead, 0, segmentTail, segmentTail.Memory.Length).Slice(0, retLength);
+    var sequenceWithNewLine = new ReadOnlySequence<byte>(
+      segmentHead,
+      0,
+      segmentTail,
+      segmentTail.Memory.Length
+    ).Slice(0, retLength);
 
     return new Line(
       sequenceWithNewLine: sequenceWithNewLine,
