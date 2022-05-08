@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections;
+using System.IO;
 
 namespace Smdn.IO.Streams;
 
