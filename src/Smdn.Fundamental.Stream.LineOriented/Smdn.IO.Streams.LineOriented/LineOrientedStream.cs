@@ -11,7 +11,7 @@ namespace Smdn.IO.Streams.LineOriented;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public class LineOrientedStream : Stream {
   protected const int DefaultBufferSize = 1024;
-  protected const int MinimumBufferSize = 8;
+  protected const int MinimumBufferSize = 1;
   protected const bool DefaultLeaveStreamOpen = false;
 
   private enum EolState {
