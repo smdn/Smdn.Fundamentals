@@ -20,114 +20,209 @@ partial class LineOrientedStream {
   {
     CheckDisposed();
 
-    return ReadLineAsyncCore(cancellationToken: cancellationToken);
+    return ReadToEndOfLineAsync(cancellationToken);
   }
 
-  private enum EolState {
-    NotMatched = 0,
+  private const byte CR = 0x0D;
+  private const byte LF = 0x0A;
+
+  private enum LineTerminator {
+    None = 0,
     NewLine,
     CR,
     LF,
+    CRLF,
   }
 
-  private async Task<Line?> ReadLineAsyncCore(
+  private Line? ReadToEndOfLine()
+    => throw new NotImplementedException();
+
+  private async Task<Line?> ReadToEndOfLineAsync(
     CancellationToken cancellationToken
   )
   {
     if (bufRemain == 0 && await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0)
-      return null;
+      return default;
 
-    const byte CR = 0x0d;
-    const byte LF = 0x0a;
-    var newLineLength = 0;
-    var bufCopyFrom = bufOffset;
-    var eol = EolState.NotMatched;
-    var eos = false;
-    var retCount = 0;
-    LineSequenceSegment segmentHead = null;
-    LineSequenceSegment segmentTail = null;
+    var bufOffsetReadStart = bufOffset;
+    LineTerminator lineTerminator;
+    LineSequenceSegment lineSegmentHead = null;
+    LineSequenceSegment lineSegmentTail = null;
+    var testedOffsetOfLineTerminator = 0;
 
     for (; ; ) {
+      int offsetAdvanced;
+
       if (newLine is null) {
-        // loose EOL (CR/LF/CRLF)
-        if (buffer[bufOffset] == CR) {
-          eol = EolState.CR;
-          newLineLength = 1;
-        }
-        else if (buffer[bufOffset] == LF) {
-          eol = EolState.LF;
-          newLineLength = 1;
-        }
+        AdvanceToLineTerminatorAny(
+          buffer.AsSpan(bufOffset, bufRemain),
+          out lineTerminator,
+          out offsetAdvanced
+        );
       }
       else {
-        // strict EOL
-        if (buffer[bufOffset] == newLine[newLineLength]) {
-          if (newLine.Length == ++newLineLength)
-            eol = EolState.NewLine;
-        }
-        else {
-          newLineLength = 0;
-        }
+        AdvanceToLineTerminator(
+          buffer.AsSpan(bufOffset, bufRemain),
+          newLine.AsSpan(),
+          ref testedOffsetOfLineTerminator,
+          out lineTerminator,
+          out offsetAdvanced
+        );
       }
 
-      bufRemain--;
-      bufOffset++;
+      bufRemain -= offsetAdvanced;
+      bufOffset += offsetAdvanced;
 
+      // fill buffer if not have been reached to any line terminater or have been reached to CR (to test CRLF sequence)
       if (
         bufRemain == 0 &&
-        (eol == EolState.NotMatched || eol == EolState.CR /* read ahead; CRLF */)
+        (lineTerminator == LineTerminator.None || lineTerminator == LineTerminator.CR)
       ) {
-        var count = bufOffset - bufCopyFrom;
-
-        segmentTail = new(
-          segmentTail,
-          buffer.AsSpan(bufCopyFrom, count).ToArray() // TODO: allocation
+        AppendLineSequence(
+          ref lineSegmentHead,
+          ref lineSegmentTail,
+          buffer.AsSpan(bufOffsetReadStart, bufOffset - bufOffsetReadStart)
         );
-        segmentHead ??= segmentTail;
 
-        retCount += count;
+        var reachedToEndOfStream = await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0;
 
-        eos = await FillBufferAsync(cancellationToken).ConfigureAwait(false) <= 0;
+        bufOffsetReadStart = bufOffset;
 
-        bufCopyFrom = bufOffset;
+        if (reachedToEndOfStream)
+          break;
       }
 
-      if (eol != EolState.NotMatched || eos)
+      if (lineTerminator != LineTerminator.None)
         break;
     }
 
-    var retLength = retCount + (bufOffset - bufCopyFrom);
+    return PostProcessReadToEndOfLine(
+      lineTerminator,
+      lineSegmentHead,
+      lineSegmentTail,
+      bufOffsetReadStart
+    );
+  }
 
-    if (eol == EolState.CR && buffer[bufOffset] == LF) {
-      // CRLF
-      retLength++;
-      newLineLength++;
+  private Line? PostProcessReadToEndOfLine(
+    LineTerminator lineTerminator,
+    LineSequenceSegment lineSegmentHead,
+    LineSequenceSegment lineSegmentTail,
+    int bufOffsetReadStart
+  )
+  {
+    // read ahead to test CRLF sequece
+    if (lineTerminator == LineTerminator.CR && buffer[bufOffset] == LF) {
+      // line terminator is sequence of CRLF
+      lineTerminator = LineTerminator.CRLF;
 
+      // consume LF
       bufOffset++;
       bufRemain--;
     }
 
-    if (eol == EolState.NotMatched)
-      newLineLength = 0;
-
-    if (segmentHead is null || 0 < retLength - retCount) {
-      segmentTail = new(
-        segmentTail,
-        buffer.AsSpan(bufCopyFrom, retLength - retCount).ToArray() // TODO: allocation
+    if (lineSegmentHead is null || bufOffsetReadStart < bufOffset) {
+      AppendLineSequence(
+        ref lineSegmentHead,
+        ref lineSegmentTail,
+        buffer.AsSpan(bufOffsetReadStart, bufOffset - bufOffsetReadStart)
       );
-      segmentHead ??= segmentTail;
     }
 
-    var sequenceWithNewLine = new ReadOnlySequence<byte>(
-      segmentHead,
-      0,
-      segmentTail,
-      segmentTail.Memory.Length
-    ).Slice(0, retLength);
+    if (lineSegmentHead is null)
+      return null;
 
-    return new Line(
-      sequenceWithNewLine: sequenceWithNewLine,
-      positionOfNewLine: sequenceWithNewLine.GetPosition(retLength - newLineLength)
+    var lineSequence = new ReadOnlySequence<byte>(
+      lineSegmentHead,
+      0,
+      lineSegmentTail,
+      lineSegmentTail.Memory.Length
     );
+    var lengthOfLineTerminator = lineTerminator switch {
+      LineTerminator.CR or LineTerminator.LF => 1,
+      LineTerminator.CRLF => 2,
+      LineTerminator.NewLine => newLine.Length,
+      _ => 0,
+    };
+
+    return new(
+      sequenceWithNewLine: lineSequence,
+      positionOfNewLine: lineSequence.GetPosition(
+#pragma warning disable SA1114
+#if SYSTEM_BUFFERS_READONLYSEQUENCE_GETOFFSET
+        lineSequence.GetOffset(lineSequence.End) - lengthOfLineTerminator
+#else
+        lineSequence.Length - lengthOfLineTerminator
+#endif
+#pragma warning restore SA1114
+      )
+    );
+  }
+
+  private static void AdvanceToLineTerminator(
+    ReadOnlySpan<byte> buffer, // must be non-empty
+    ReadOnlySpan<byte> expectedLineTerminator, // must be non-empty
+    ref int testedOffsetOfLineTerminator,
+    out LineTerminator terminator,
+    out int offsetAdvanced
+  )
+  {
+    offsetAdvanced = 0;
+
+    for (; ; ) {
+      terminator = LineTerminator.None;
+
+      if (buffer[offsetAdvanced++] == expectedLineTerminator[testedOffsetOfLineTerminator]) {
+        if (expectedLineTerminator.Length == ++testedOffsetOfLineTerminator) {
+          terminator = LineTerminator.NewLine;
+          return; // reached to end of line
+        }
+      }
+      else {
+        testedOffsetOfLineTerminator = 0;
+      }
+
+      if (offsetAdvanced == buffer.Length)
+        return; // reached to end of buffer
+    }
+  }
+
+  private static void AdvanceToLineTerminatorAny(
+    ReadOnlySpan<byte> buffer, // must be non-empty
+    out LineTerminator terminator,
+    out int offsetAdvanced
+  )
+  {
+    offsetAdvanced = 0;
+
+    for (; ; ) {
+      switch (buffer[offsetAdvanced++]) {
+        case CR:
+          terminator = LineTerminator.CR; // CR (including the case for the first byte of CRLF sequence)
+          return; // reached to end of line
+        case LF:
+          terminator = LineTerminator.LF; // LF
+          return; // reached to end of line
+        default:
+          terminator = LineTerminator.None;
+          break;
+      }
+
+      if (offsetAdvanced == buffer.Length)
+        return; // reached to end of buffer
+    }
+  }
+
+  private static void AppendLineSequence(
+    ref LineSequenceSegment head,
+    ref LineSequenceSegment tail,
+    ReadOnlySpan<byte> lineSequence
+  )
+  {
+    tail = new(
+      tail,
+      lineSequence.ToArray() // TODO: allocation
+    );
+    head ??= tail;
   }
 }
