@@ -11,7 +11,11 @@ namespace Smdn.IO.Streams.LineOriented;
 partial class LineOrientedStream {
 #pragma warning restore IDE0040
   public Line? ReadLine()
-    => ReadLineAsync().GetAwaiter().GetResult();
+  {
+    CheckDisposed();
+
+    return ReadToEndOfLine();
+  }
 
   public byte[] ReadLine(bool keepEOL)
     => ReadLine()?.GetLine(keepEOL)?.ToArray();
@@ -35,7 +39,69 @@ partial class LineOrientedStream {
   }
 
   private Line? ReadToEndOfLine()
-    => throw new NotImplementedException();
+  {
+    if (bufRemain == 0 && FillBuffer() <= 0)
+      return default;
+
+    var bufOffsetReadStart = bufOffset;
+    LineTerminator lineTerminator;
+    LineSequenceSegment lineSegmentHead = null;
+    LineSequenceSegment lineSegmentTail = null;
+    var testedOffsetOfLineTerminator = 0;
+
+    for (; ; ) {
+      int offsetAdvanced;
+
+      if (newLine is null) {
+        AdvanceToLineTerminatorAny(
+          buffer.AsSpan(bufOffset, bufRemain),
+          out lineTerminator,
+          out offsetAdvanced
+        );
+      }
+      else {
+        AdvanceToLineTerminator(
+          buffer.AsSpan(bufOffset, bufRemain),
+          newLine.AsSpan(),
+          ref testedOffsetOfLineTerminator,
+          out lineTerminator,
+          out offsetAdvanced
+        );
+      }
+
+      bufRemain -= offsetAdvanced;
+      bufOffset += offsetAdvanced;
+
+      // fill buffer if not have been reached to any line terminater or have been reached to CR (to test CRLF sequence)
+      if (
+        bufRemain == 0 &&
+        (lineTerminator == LineTerminator.None || lineTerminator == LineTerminator.CR)
+      ) {
+        AppendLineSequence(
+          ref lineSegmentHead,
+          ref lineSegmentTail,
+          buffer.AsSpan(bufOffsetReadStart, bufOffset - bufOffsetReadStart)
+        );
+
+        var reachedToEndOfStream = FillBuffer() <= 0;
+
+        bufOffsetReadStart = bufOffset;
+
+        if (reachedToEndOfStream)
+          break;
+      }
+
+      if (lineTerminator != LineTerminator.None)
+        break;
+    }
+
+    return PostProcessReadToEndOfLine(
+      lineTerminator,
+      lineSegmentHead,
+      lineSegmentTail,
+      bufOffsetReadStart
+    );
+  }
 
   private async Task<Line?> ReadToEndOfLineAsync(
     CancellationToken cancellationToken
