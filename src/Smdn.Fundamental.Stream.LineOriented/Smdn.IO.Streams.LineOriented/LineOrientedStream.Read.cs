@@ -1,7 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Buffers;
+#if !SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+using System.Buffers; // ArrayPool
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +25,59 @@ partial class LineOrientedStream {
   }
 
   public override int Read(byte[] buffer, int offset, int count)
-    => ReadAsync(buffer, offset, count, default).GetAwaiter().GetResult();
+  {
+    CheckDisposed();
+
+#if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
+    ValidateBufferArguments(buffer, offset, count);
+#else
+    if (buffer == null)
+      throw new ArgumentNullException(nameof(buffer));
+    if (offset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(offset), offset);
+    if (count < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+    if (buffer.Length - count < offset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
+#endif
+
+    var destination = buffer.AsSpan(offset, count);
+
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+    return Read(destination);
+#else
+    if (destination.IsEmpty)
+      return 0; // do nothing
+
+    destination = ReadFromBuffer(destination, out var bytesRead);
+
+    if (destination.IsEmpty)
+      return bytesRead;
+
+    return ReadFromUnderlyingStream(
+      bytesAlreadyReadIntoDestination: bytesRead,
+      destination: new ArraySegment<byte>(buffer, offset + bytesRead, count - bytesRead)
+    );
+#endif
+  }
+
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+  public override int Read(Span<byte> buffer)
+  {
+    if (buffer.IsEmpty)
+      return 0; // do nothing
+
+    var destination = ReadFromBuffer(buffer, out var bytesRead);
+
+    if (destination.IsEmpty)
+      return bytesRead;
+
+    return ReadFromUnderlyingStream(
+      bytesAlreadyReadIntoDestination: bytesRead,
+      destination: destination
+    );
+  }
+#endif
 
   public override Task<int> ReadAsync(
     byte[] buffer,
@@ -53,11 +107,20 @@ partial class LineOrientedStream {
 #else
       return new Task<int>(() => default, cancellationToken);
 #endif
-    if (count == 0L)
+
+    if (count == 0)
       return Task.FromResult(0); // do nothing
 
-    return ReadAsyncCore(
-      destination: buffer.AsMemory(offset, count),
+    var destination = buffer.AsMemory(offset, count);
+
+    ReadFromBuffer(ref destination, out var bytesRead);
+
+    if (destination.IsEmpty)
+      return Task.FromResult(bytesRead);
+
+    return ReadFromUnderlyingStreamAsync(
+      bytesAlreadyReadIntoDestination: bytesRead,
+      destination: destination,
       cancellationToken: cancellationToken
 #if SYSTEM_THREADING_TASKS_VALUETASK
     ).AsTask();
@@ -88,12 +151,93 @@ partial class LineOrientedStream {
     if (buffer.IsEmpty)
       return new(0); // do nothing
 
-    return ReadAsyncCore(
+    ReadFromBuffer(ref buffer, out var bytesRead);
+
+    if (buffer.IsEmpty)
+      return new(bytesRead);
+
+    return ReadFromUnderlyingStreamAsync(
+      bytesAlreadyReadIntoDestination: bytesRead,
       destination: buffer,
       cancellationToken: cancellationToken
     );
   }
 #endif
+
+  private void ReadFromBuffer(ref Memory<byte> destination, out int bytesRead)
+  {
+    ReadFromBuffer(destination.Span, out bytesRead);
+
+    destination = destination.Slice(bytesRead);
+  }
+
+  private Span<byte> ReadFromBuffer(Span<byte> destination, out int bytesRead)
+  {
+    var bytesToRead = Math.Min(destination.Length, bufRemain);
+
+    if (0 < bytesToRead) {
+      buffer.AsSpan(bufOffset, bytesToRead).CopyTo(destination);
+
+      bufOffset += bytesToRead;
+      bufRemain -= bytesToRead;
+
+      destination = destination.Slice(bytesToRead);
+    }
+
+    bytesRead = bytesToRead;
+
+    return destination;
+  }
+
+  private int ReadFromUnderlyingStream(
+    int bytesAlreadyReadIntoDestination,
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+    Span<byte> destination
+#else
+    ArraySegment<byte> destination
+#endif
+  )
+  {
+#if DEBUG
+    if (0 < bufRemain)
+      throw new InvalidOperationException($"call {nameof(ReadFromBuffer)} first");
+#endif
+
+    var read = bytesAlreadyReadIntoDestination;
+
+    for (; ; ) {
+      if (
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+        destination.IsEmpty
+#else
+        destination.Count == 0
+#endif
+      ) {
+        break;
+      }
+
+      var r =
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+        stream.Read(destination);
+#else
+        stream.Read(destination.Array, destination.Offset, destination.Count);
+#endif
+
+      if (r <= 0)
+        break;
+
+      destination =
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+        destination.Slice(r);
+#else
+        new(destination.Array, destination.Offset + r, destination.Count - r);
+#endif
+
+      read += r;
+    }
+
+    return read;
+  }
 
   private async
 #if SYSTEM_THREADING_TASKS_VALUETASK
@@ -101,32 +245,19 @@ partial class LineOrientedStream {
 #else
   Task<int>
 #endif
-  ReadAsyncCore(
+  ReadFromUnderlyingStreamAsync(
+    int bytesAlreadyReadIntoDestination,
     Memory<byte> destination,
     CancellationToken cancellationToken
   )
   {
-    if (destination.Length <= bufRemain) {
-      buffer.AsSpan(bufOffset, destination.Length).CopyTo(destination.Span);
-      bufOffset += destination.Length;
-      bufRemain -= destination.Length;
+#if DEBUG
+    if (0 < bufRemain)
+      throw new InvalidOperationException($"call {nameof(ReadFromBuffer)} first");
+#endif
 
-      return destination.Length;
-    }
+    var read = bytesAlreadyReadIntoDestination;
 
-    var read = 0;
-
-    if (bufRemain != 0) {
-      buffer.AsSpan(bufOffset, bufRemain).CopyTo(destination.Span);
-
-      read = bufRemain;
-
-      destination = destination.Slice(bufRemain);
-
-      bufRemain = 0;
-    }
-
-    // read from base stream
     for (; ; ) {
       if (destination.IsEmpty)
         break;
