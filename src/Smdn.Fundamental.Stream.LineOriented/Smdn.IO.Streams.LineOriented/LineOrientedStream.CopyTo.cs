@@ -16,6 +16,12 @@ partial class LineOrientedStream {
 #pragma warning restore IDE0040
   private const int CopyToDefaultBufferSize = 1;
 
+  public new void CopyTo(Stream destination)
+    => CopyTo(
+      destination: destination,
+      bufferSize: CopyToDefaultBufferSize
+    );
+
 #if SYSTEM_IO_STREAM_COPYTO_VIRTUAL
   /// <param name="destination">The destination stream.</param>
   /// <param name="bufferSize">The value of this parameter does not affect to the behavior of the method.</param>
