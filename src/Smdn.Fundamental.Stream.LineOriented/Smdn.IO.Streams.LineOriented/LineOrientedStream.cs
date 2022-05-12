@@ -72,7 +72,6 @@ public partial class LineOrientedStream : Stream {
     }
 
     stream = null;
-    buffer = null;
 
     base.Dispose(disposing);
   }
@@ -138,7 +137,7 @@ public partial class LineOrientedStream : Stream {
   private Stream stream;
   private readonly byte[] newLine;
   private readonly bool leaveStreamOpen;
-  private byte[] buffer;
+  private readonly byte[] buffer;
   private int bufOffset;
   private int bufRemain;
 }
