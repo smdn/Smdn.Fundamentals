@@ -11,7 +11,7 @@ namespace Smdn.IO.Streams.LineOriented;
 partial class LineOrientedStream {
   public override void SetLength(long @value)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     bufRemain = 0; // discard buffered
 
@@ -20,14 +20,14 @@ partial class LineOrientedStream {
 
   public override void Flush()
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     stream.Flush();
   }
 
   public override Task FlushAsync(CancellationToken cancellationToken)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     return stream.FlushAsync(cancellationToken);
   }
@@ -35,7 +35,7 @@ partial class LineOrientedStream {
 #pragma warning restore IDE0040
   public override void Write(byte[] buffer, int offset, int count)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
 #if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
     ValidateBufferArguments(buffer, offset, count);
@@ -46,7 +46,7 @@ partial class LineOrientedStream {
 
   public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
 #if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
     ValidateBufferArguments(buffer, offset, count);
@@ -58,7 +58,7 @@ partial class LineOrientedStream {
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
   public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     return stream.WriteAsync(buffer, cancellationToken);
   }

@@ -16,7 +16,7 @@ partial class LineOrientedStream {
     CancellationToken cancellationToken = default
   )
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     ValidateReadToStreamArguments(targetStream, length);
 

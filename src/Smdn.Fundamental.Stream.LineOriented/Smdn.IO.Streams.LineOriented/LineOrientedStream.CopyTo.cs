@@ -30,7 +30,7 @@ partial class LineOrientedStream {
     int bufferSize = CopyToDefaultBufferSize
   )
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
 #if SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
     ValidateCopyToArguments(destination, bufferSize);
@@ -70,7 +70,7 @@ partial class LineOrientedStream {
     CancellationToken cancellationToken = default
   )
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
 #if SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
     ValidateCopyToArguments(destination, bufferSize);

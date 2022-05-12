@@ -20,28 +20,28 @@ public partial class LineOrientedStream : Stream {
   private bool IsClosed => stream is null;
 
   public override long Position {
-    get { CheckDisposed(); return stream.Position - bufRemain; }
+    get { ThrowIfDisposed(); return stream.Position - bufRemain; }
     set => Seek(value, SeekOrigin.Begin);
   }
 
   public override long Length {
-    get { CheckDisposed(); return stream.Length; }
+    get { ThrowIfDisposed(); return stream.Length; }
   }
 
   public ReadOnlySpan<byte> NewLine {
-    get { CheckDisposed(); return newLine; }
+    get { ThrowIfDisposed(); return newLine; }
   }
 
   public bool IsStrictNewLine {
-    get { CheckDisposed(); return newLine != null; }
+    get { ThrowIfDisposed(); return newLine != null; }
   }
 
   public int BufferSize {
-    get { CheckDisposed(); return buffer.Length; }
+    get { ThrowIfDisposed(); return buffer.Length; }
   }
 
   public virtual Stream InnerStream {
-    get { CheckDisposed(); return stream; }
+    get { ThrowIfDisposed(); return stream; }
   }
 
   public LineOrientedStream(
@@ -79,7 +79,7 @@ public partial class LineOrientedStream : Stream {
 
   public override long Seek(long offset, SeekOrigin origin)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     bufRemain = 0; // discard buffered
 
@@ -129,7 +129,7 @@ public partial class LineOrientedStream : Stream {
     return bufRemain;
   }
 
-  private void CheckDisposed()
+  private void ThrowIfDisposed()
   {
     if (IsClosed)
       throw new ObjectDisposedException(GetType().FullName);

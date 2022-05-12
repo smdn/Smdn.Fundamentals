@@ -12,7 +12,7 @@ partial class LineOrientedStream {
 #pragma warning restore IDE0040
   public Line? ReadLine()
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     return ReadToEndOfLine();
   }
@@ -22,7 +22,7 @@ partial class LineOrientedStream {
 
   public Task<Line?> ReadLineAsync(CancellationToken cancellationToken = default)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     return ReadToEndOfLineAsync(cancellationToken);
   }

@@ -14,7 +14,7 @@ partial class LineOrientedStream {
 #pragma warning restore IDE0040
   public override int ReadByte()
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     if (bufRemain == 0 && FillBuffer() <= 0)
       return -1;
@@ -26,7 +26,7 @@ partial class LineOrientedStream {
 
   public override int Read(byte[] buffer, int offset, int count)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
 #if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
     ValidateBufferArguments(buffer, offset, count);
@@ -86,7 +86,7 @@ partial class LineOrientedStream {
     CancellationToken cancellationToken
   )
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
 #if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
     ValidateBufferArguments(buffer, offset, count);
@@ -135,7 +135,7 @@ partial class LineOrientedStream {
     CancellationToken cancellationToken = default
   )
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     if (cancellationToken.IsCancellationRequested)
 #if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED

@@ -18,7 +18,7 @@ partial class LineOrientedStream {
 
   public long Read(Stream targetStream, long length)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     ValidateReadToStreamArguments(targetStream, length);
 
