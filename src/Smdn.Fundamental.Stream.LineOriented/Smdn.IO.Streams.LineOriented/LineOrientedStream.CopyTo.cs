@@ -45,10 +45,10 @@ partial class LineOrientedStream {
       throw ExceptionUtils.CreateArgumentMustBeNonZeroPositive(nameof(bufferSize), bufferSize);
 #endif
 
-    return ReadAsyncCore(
-      destination,
-      null, // read to end
-      cancellationToken
+    return ReadToStreamAsync(
+      destination: destination,
+      bytesToRead: null, // read to end
+      cancellationToken: cancellationToken
     );
   }
 }
