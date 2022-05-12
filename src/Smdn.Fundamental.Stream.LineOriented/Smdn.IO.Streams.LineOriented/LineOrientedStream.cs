@@ -139,6 +139,6 @@ public partial class LineOrientedStream : Stream {
   private readonly byte[] newLine;
   private readonly bool leaveStreamOpen;
   private byte[] buffer;
-  private int bufOffset = 0;
-  private int bufRemain  = 0;
+  private int bufOffset;
+  private int bufRemain;
 }
