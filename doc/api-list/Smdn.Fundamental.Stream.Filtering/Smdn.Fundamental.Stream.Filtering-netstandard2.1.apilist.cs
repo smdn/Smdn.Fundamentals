@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.Filtering.dll (Smdn.Fundamental.Stream.Filtering-3.0.1)
+// Smdn.Fundamental.Stream.Filtering.dll (Smdn.Fundamental.Stream.Filtering-3.0.2)
 //   Name: Smdn.Fundamental.Stream.Filtering
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+6c46ed4e09b48a74bff0ead44a7ab8664fcf0ef8
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+a9bf25ebdf0c65c74cd8aedfc5ea58f5d190ccc4
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 

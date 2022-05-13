@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.Filtering
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+a9bf25ebdf0c65c74cd8aedfc5ea58f5d190ccc4
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETStandard,Version=v1.1
 //   Configuration: Release
 
 using System;
@@ -91,8 +91,8 @@ namespace Smdn.IO.Streams.Filtering {
     public override long Length { get; }
     public override long Position { get; set; }
 
-    public override void Close() {}
     public static FilterStream.Filter CreateFilter(long offset, long length, FilterStream.FilterAction filter) {}
+    protected override void Dispose(bool disposing) {}
     public override void Flush() {}
     public override Task FlushAsync(CancellationToken cancellationToken) {}
     public override int Read(byte[] buffer, int offset, int count) {}

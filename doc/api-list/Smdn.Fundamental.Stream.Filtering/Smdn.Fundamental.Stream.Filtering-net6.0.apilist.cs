@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.Filtering
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+a9bf25ebdf0c65c74cd8aedfc5ea58f5d190ccc4
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
@@ -97,15 +97,17 @@ namespace Smdn.IO.Streams.Filtering {
     public override Task FlushAsync(CancellationToken cancellationToken) {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default) {}
-    protected virtual Task<int> ReadAsyncUnchecked(Memory<byte> destination, CancellationToken cancellationToken) {}
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
     [Obsolete("use Memory<byte> version instead")]
     protected virtual Task<int> ReadAsyncUnchecked(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    protected virtual ValueTask<int> ReadAsyncUnchecked(Memory<byte> destination, CancellationToken cancellationToken) {}
     protected virtual int ReadUnchecked(byte[] buffer, int offset, int count) {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     protected void ThrowIfDisposed() {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 }
 
