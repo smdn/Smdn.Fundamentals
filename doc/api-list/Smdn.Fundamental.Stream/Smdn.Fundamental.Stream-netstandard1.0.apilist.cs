@@ -2,11 +2,10 @@
 //   Name: Smdn.Fundamental.Stream
 //   AssemblyVersion: 3.0.3.0
 //   InformationalVersion: 3.0.3+e21051dca94564f87fa26449ca8be59194f51ead
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
 
 using System;
-using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,8 +20,6 @@ namespace Smdn.IO {
     public static byte[] ReadToEnd(this Stream stream, int readBufferSize = 4096, int initialCapacity = 4096) {}
     public static Task<byte[]> ReadToEndAsync(this Stream stream, int readBufferSize = 4096, int initialCapacity = 4096, CancellationToken cancellationToken = default) {}
     public static void Write(this Stream stream, ArraySegment<byte> segment) {}
-    public static void Write(this Stream stream, ReadOnlySequence<byte> sequence) {}
-    public static Task WriteAsync(this Stream stream, ReadOnlySequence<byte> sequence, CancellationToken cancellationToken = default) {}
   }
 }
 

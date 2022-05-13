@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.2)
+// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.3)
 //   Name: Smdn.Fundamental.Stream
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+d1a21184e7ae3f93d7ec2857d6ec2ae152e5f517
+//   AssemblyVersion: 3.0.3.0
+//   InformationalVersion: 3.0.3+e21051dca94564f87fa26449ca8be59194f51ead
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
@@ -80,9 +80,11 @@ namespace Smdn.IO.Streams {
     public override void Close() {}
     public override void Flush() {}
     public override int Read(byte[] buffer, int offset, int count) {}
+    public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     public override void Write(byte[] buffer, int offset, int count) {}
+    public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
