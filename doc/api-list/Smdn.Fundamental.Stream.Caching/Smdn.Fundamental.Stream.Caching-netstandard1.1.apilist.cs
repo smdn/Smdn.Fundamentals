@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.Caching
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+5d6c4605b04017bfcf25bb41821556a4a8af61d6
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.1
 //   Configuration: Release
 
 using System.IO;
