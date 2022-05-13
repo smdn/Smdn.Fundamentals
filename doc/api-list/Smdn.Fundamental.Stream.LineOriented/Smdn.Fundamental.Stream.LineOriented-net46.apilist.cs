@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.LineOriented
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+9f376fbefdaee2cc51ca4d0636a210d354e186c3
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETFramework,Version=v4.6
 //   Configuration: Release
 
 using System;

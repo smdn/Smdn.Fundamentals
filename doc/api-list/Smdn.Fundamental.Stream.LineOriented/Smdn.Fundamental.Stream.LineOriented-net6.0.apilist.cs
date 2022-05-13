@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.LineOriented
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+9f376fbefdaee2cc51ca4d0636a210d354e186c3
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
@@ -48,6 +48,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public ReadOnlySpan<byte> NewLine { get; }
     public override long Position { get; set; }
 
+    public override void CopyTo(Stream destination, int bufferSize) {}
     public void CopyTo(Stream destination) {}
     public Task CopyToAsync(Stream destination, CancellationToken cancellationToken) {}
     public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken = default) {}
@@ -55,9 +56,13 @@ namespace Smdn.IO.Streams.LineOriented {
     public override void Flush() {}
     public override Task FlushAsync(CancellationToken cancellationToken) {}
     public long Read(Stream targetStream, long length) {}
+    [NullableContext(byte.MinValue)]
+    public override int Read(Span<byte> buffer) {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public Task<long> ReadAsync(Stream targetStream, long length, CancellationToken cancellationToken = default) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    [NullableContext(byte.MinValue)]
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
     public override int ReadByte() {}
     public LineOrientedStream.Line? ReadLine() {}
     [NullableContext(2)]
@@ -68,6 +73,8 @@ namespace Smdn.IO.Streams.LineOriented {
     public override void SetLength(long @value) {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    [NullableContext(byte.MinValue)]
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
