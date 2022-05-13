@@ -27,6 +27,25 @@ partial class LineOrientedStream {
     return ReadToEndOfLineAsync(cancellationToken);
   }
 
+  public Task<ReadOnlySequence<byte>?> ReadLineAsync(
+    bool keepEOL,
+    CancellationToken cancellationToken = default
+  )
+  {
+    ThrowIfDisposed();
+
+    return ReadLineAsyncCore();
+
+    async Task<ReadOnlySequence<byte>?> ReadLineAsyncCore()
+    {
+      var line = await ReadToEndOfLineAsync(cancellationToken).ConfigureAwait(false);
+
+      return line.HasValue
+        ? line.Value.GetLine(keepEOL: keepEOL)
+        : null;
+    }
+  }
+
   private const byte CR = 0x0D;
   private const byte LF = 0x0A;
 

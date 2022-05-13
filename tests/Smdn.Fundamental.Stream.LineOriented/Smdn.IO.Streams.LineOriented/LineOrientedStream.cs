@@ -75,6 +75,7 @@ public partial class LineOrientedStreamTests {
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLine(keepEOL: true));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync(keepEOL: true));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
     Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
