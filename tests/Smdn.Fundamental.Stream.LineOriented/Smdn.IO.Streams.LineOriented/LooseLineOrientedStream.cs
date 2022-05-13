@@ -31,8 +31,9 @@ public class LooseLineOrientedStreamTests {
   }
 
   [Test]
-  public async Task ReadLineAsync(
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+  public async Task ReadLine(
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {
@@ -46,7 +47,9 @@ public class LooseLineOrientedStreamTests {
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
     // CRLF
-    var ret = await stream.ReadLineAsync();
+    var ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
@@ -58,7 +61,9 @@ public class LooseLineOrientedStreamTests {
                               ret.Value.NewLine.ToArray());
 
     // CR
-    ret = await stream.ReadLineAsync();
+    ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
@@ -70,7 +75,9 @@ public class LooseLineOrientedStreamTests {
                               ret.Value.NewLine.ToArray());
 
     // LF
-    ret = await stream.ReadLineAsync();
+    ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
@@ -82,7 +89,9 @@ public class LooseLineOrientedStreamTests {
                               ret.Value.NewLine.ToArray());
 
     // LF (empty line)
-    ret = await stream.ReadLineAsync();
+    ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsTrue(ret.Value.IsEmpty);
@@ -94,7 +103,9 @@ public class LooseLineOrientedStreamTests {
                               ret.Value.NewLine.ToArray());
 
     // <EOS>
-    ret = await stream.ReadLineAsync();
+    ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);

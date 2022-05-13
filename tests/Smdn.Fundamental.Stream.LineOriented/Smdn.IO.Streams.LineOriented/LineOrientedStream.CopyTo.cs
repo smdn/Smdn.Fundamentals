@@ -47,9 +47,10 @@ partial class LineOrientedStreamTests {
   }
 
   [Test]
-  public async Task CopyToAsync(
+  public async Task CopyTo(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {
@@ -63,7 +64,10 @@ partial class LineOrientedStreamTests {
 
     var targetStream = new MemoryStream();
 
-    await stream.CopyToAsync(targetStream, cancellationToken: default);
+    if (runAsync)
+      await stream.CopyToAsync(targetStream, cancellationToken: default);
+    else
+      stream.CopyTo(targetStream);
 
     CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
 
@@ -71,9 +75,10 @@ partial class LineOrientedStreamTests {
   }
 
   [Test]
-  public async Task CopyToAsync_NothingBuffered(
+  public async Task CopyTo_NothingBuffered(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {
@@ -85,11 +90,25 @@ partial class LineOrientedStreamTests {
 
     var targetStream = new MemoryStream();
 
-    await stream.CopyToAsync(targetStream, cancellationToken: default);
+    if (runAsync)
+      await stream.CopyToAsync(targetStream, cancellationToken: default);
+    else
+      stream.CopyTo(targetStream);
 
     CollectionAssert.AreEqual(data, targetStream.ToArray());
 
     Assert.AreEqual(-1, stream.ReadByte());
+  }
+
+  [Test]
+  public void CopyTo_ArgumentNull_Destination(
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+  )
+  {
+    using var stream = CreateStream(type, new MemoryStream(), 8);
+
+    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null));
+    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null, bufferSize: 0));
   }
 
   [Test]
@@ -105,9 +124,10 @@ partial class LineOrientedStreamTests {
   }
 
   [Test]
-  public async Task CopyToAsync_BufferSizeDoesNotAffectToBehaviour(
+  public async Task CopyTo_BufferSizeDoesNotAffectToBehaviour(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(1, 1024, int.MaxValue)] int bufferSize
+    [Values(1, 1024, int.MaxValue)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {
@@ -119,7 +139,10 @@ partial class LineOrientedStreamTests {
 
     var targetStream = new MemoryStream();
 
-    await stream.CopyToAsync(targetStream, bufferSize: bufferSize, cancellationToken: default);
+    if (runAsync)
+      await stream.CopyToAsync(targetStream, bufferSize: bufferSize, cancellationToken: default);
+    else
+      stream.CopyTo(targetStream, bufferSize: bufferSize);
 
     CollectionAssert.AreEqual(data, targetStream.ToArray());
 

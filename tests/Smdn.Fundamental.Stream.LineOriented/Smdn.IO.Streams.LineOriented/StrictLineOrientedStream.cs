@@ -32,8 +32,9 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public async Task ReadLineAsync(
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+  public async Task ReadLine(
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {
@@ -45,7 +46,9 @@ public class StrictLineOrientedStreamTests {
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
     // CRLF
-    var ret = await stream.ReadLineAsync();
+    var ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
@@ -57,7 +60,9 @@ public class StrictLineOrientedStreamTests {
                               ret.Value.NewLine.ToArray());
 
     // CRLF (empty line)
-    ret = await stream.ReadLineAsync();
+    ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsTrue(ret.Value.IsEmpty);
@@ -69,7 +74,9 @@ public class StrictLineOrientedStreamTests {
                               ret.Value.NewLine.ToArray());
 
     // <EOS>
-    ret = await stream.ReadLineAsync();
+    ret = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
@@ -82,8 +89,9 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void ReadAndReadLine(
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+  public async Task ReadAndReadLine(
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
@@ -97,7 +105,12 @@ public class StrictLineOrientedStreamTests {
     Assert.AreEqual(data.Skip(0).Take(5).ToArray(), buffer.Skip(0).Take(5).ToArray());
     Assert.AreEqual(5L, stream.Position, "Position");
 
-    Assert.AreEqual(data.Skip(5).Take(3).ToArray(), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
+    var line = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
+
+    Assert.IsNotNull(line);
+    Assert.AreEqual(data.Skip(5).Take(3).ToArray(), line.Value.SequenceWithNewLine.ToArray());
     Assert.AreEqual(8L, stream.Position, "Position");
 
     Assert.IsNull(stream.ReadLine());
@@ -105,8 +118,9 @@ public class StrictLineOrientedStreamTests {
   }
 
   [Test]
-  public void ReadLine_CRLF(
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+  public async Task ReadLine_CRLF(
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
@@ -114,13 +128,27 @@ public class StrictLineOrientedStreamTests {
 
     Assert.AreEqual(0L, stream.Position, "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(10).ToArray(), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
+    var line = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
+
+    Assert.IsNotNull(line);
+    Assert.AreEqual(data.Skip(0).Take(10).ToArray(), line.Value.SequenceWithNewLine.ToArray());
     Assert.AreEqual(10L, stream.Position, "Position");
 
-    Assert.AreEqual(data.Skip(10).Take(1).ToArray(), stream.ReadLine().Value.SequenceWithNewLine.ToArray());
+    line = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
+
+    Assert.IsNotNull(line);
+    Assert.AreEqual(data.Skip(10).Take(1).ToArray(), line.Value.SequenceWithNewLine.ToArray());
     Assert.AreEqual(11L, stream.Position, "Position");
 
-    Assert.IsNull(stream.ReadLine());
+    line = runAsync
+      ? await stream.ReadLineAsync()
+      : stream.ReadLine();
+
+    Assert.IsNull(line);
     Assert.AreEqual(11L, stream.Position, "Position");
   }
 

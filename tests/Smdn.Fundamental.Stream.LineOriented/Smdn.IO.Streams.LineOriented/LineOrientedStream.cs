@@ -73,10 +73,14 @@ public partial class LineOrientedStreamTests {
     Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream));
     Assert.Throws<ObjectDisposedException>(() => Assert.IsFalse(stream.NewLine.IsEmpty));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadLine(keepEOL: true));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
     Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
     Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 8));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
+#if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
+    Assert.Throws<ObjectDisposedException>(() => stream.Read(Span<byte>.Empty));
+#endif
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
     Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty));
 #endif
@@ -87,10 +91,16 @@ public partial class LineOrientedStreamTests {
     Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
     Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
     Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(buffer, 0, 8));
+#if SYSTEM_IO_STREAM_WRITE_READONLYSPAN_OF_BYTE
+    Assert.Throws<ObjectDisposedException>(() => stream.Write(Span<byte>.Empty));
+#endif
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
     Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(Memory<byte>.Empty));
 #endif
+    Assert.Throws<ObjectDisposedException>(() => stream.CopyTo(Stream.Null));
+    Assert.Throws<ObjectDisposedException>(() => stream.CopyTo(Stream.Null, bufferSize: 1024));
     Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
+    Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null, bufferSize: 1024));
 
     Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() multiple time");
 

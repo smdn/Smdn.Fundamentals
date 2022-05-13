@@ -48,8 +48,9 @@ public partial class LineOrientedStreamTests {
   }
 
   [Test]
-  public void Write(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+  public async Task Write(
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(true, false)] bool runAsync
   )
   {
     using var baseStream = new MemoryStream(capacity: 8);
@@ -59,27 +60,10 @@ public partial class LineOrientedStreamTests {
 
     var data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
 
-    stream.Write(data, 0, data.Length);
-
-    Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
-    Assert.AreEqual(4L, stream.Position, nameof(stream.Position));
-
-    Assert.That(baseStream.ToArray().AsMemory(), Is.EqualTo(data.AsMemory()));
-  }
-
-  [Test]
-  public async Task WriteAsync(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
-  )
-  {
-    using var baseStream = new MemoryStream(capacity: 8);
-    using var stream = CreateStream(type, baseStream, 8);
-
-    Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
-
-    var data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
-
-    await stream.WriteAsync(data, 0, data.Length);
+    if (runAsync)
+      await stream.WriteAsync(data, 0, data.Length);
+    else
+      stream.Write(data, 0, data.Length);
 
     Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
     Assert.AreEqual(4L, stream.Position, nameof(stream.Position));

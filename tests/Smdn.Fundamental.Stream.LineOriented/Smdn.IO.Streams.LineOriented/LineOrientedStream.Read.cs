@@ -51,9 +51,10 @@ partial class LineOrientedStreamTests {
   }
 
   [Test]
-  public void Read_BufferEmpty(
+  public async Task Read_BufferEmpty(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(1, 2, 3, 4, 8)] int bufferSize
+    [Values(1, 2, 3, 4, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
@@ -61,7 +62,12 @@ partial class LineOrientedStreamTests {
 
     var buffer = new byte[12];
 
-    Assert.AreEqual(12L, stream.Read(buffer, 0, 12));
+    Assert.AreEqual(
+      12L,
+      runAsync
+        ? await stream.ReadAsync(buffer, 0, 12)
+        : stream.Read(buffer, 0, 12)
+    );
 
     Assert.AreEqual(12L, stream.Position, "Position");
 
@@ -89,30 +95,21 @@ partial class LineOrientedStreamTests {
 #endif
 
   [Test]
-  public void Read_LengthZero(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+  public async Task Read_LengthZero(
+    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values(true, false)] bool runAsync
   )
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
     var buffer = new byte[1];
 
-    Assert.AreEqual(0, stream.Read(buffer, 0, 0));
+    Assert.AreEqual(
+      0,
+      runAsync
+        ? await stream.ReadAsync(buffer, 0, 0)
+        : stream.Read(buffer, 0, 0)
+    );
 
-    Assert.AreEqual(0L, stream.Position, "Position");
-  }
-
-  [Test]
-  public void ReadAsync_LengthZero(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
-  )
-  {
-    using var stream = CreateStream(type, new MemoryStream(), 8);
-    var buffer = new byte[1];
-
-    var t = stream.ReadAsync(buffer, 0, 0);
-
-    Assert.IsTrue(t.IsCompleted);
-    Assert.AreEqual(0L, t.GetAwaiter().GetResult());
     Assert.AreEqual(0L, stream.Position, "Position");
   }
 
@@ -148,11 +145,11 @@ partial class LineOrientedStreamTests {
     Assert.AreEqual(0L, stream.Position, "Position");
   }
 
-
   [Test]
-  public void Read_LessThanBuffered(
+  public async Task Read_LessThanBuffered(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(16, 32)] int bufferSize
+    [Values(16, 32)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
@@ -166,7 +163,12 @@ partial class LineOrientedStreamTests {
 
     var buffer = new byte[4];
 
-    Assert.AreEqual(4, stream.Read(buffer, 0, 4));
+    Assert.AreEqual(
+      4,
+      runAsync
+        ? await stream.ReadAsync(buffer, 0, 4)
+        : stream.Read(buffer, 0, 4)
+    );
 
     Assert.AreEqual(8L, stream.Position, "Position");
 
@@ -200,9 +202,10 @@ partial class LineOrientedStreamTests {
 #endif
 
   [Test]
-  public void Read_LongerThanBuffered(
+  public async Task Read_LongerThanBuffered(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(1, 2, 3, 8)] int bufferSize
+    [Values(1, 2, 3, 8)] int bufferSize,
+    [Values(true, false)] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, CR, LF, 0x42, 0x43, 0x44, CR, LF, 0x45, 0x46, 0x47};
@@ -216,7 +219,12 @@ partial class LineOrientedStreamTests {
 
     var buffer = new byte[10];
 
-    Assert.AreEqual(8, stream.Read(buffer, 0, 10));
+    Assert.AreEqual(
+      8,
+      runAsync
+        ? await stream.ReadAsync(buffer, 0, 10)
+        : stream.Read(buffer, 0, 10)
+    );
 
     Assert.AreEqual(12L, stream.Position, "Position");
 
@@ -248,11 +256,6 @@ partial class LineOrientedStreamTests {
     Assert.That(buffer.Slice(0, 8), Is.EqualTo(data.AsMemory(4, 8)), nameof(buffer));
   }
 #endif
-
-
-
-
-
 
   [Test]
   public void ReadByte(
