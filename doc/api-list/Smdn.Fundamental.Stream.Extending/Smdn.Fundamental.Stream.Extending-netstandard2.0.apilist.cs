@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.Extending
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+60d5c23ca06a9ab9d31d1fafc141dedbc6b86edf
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
 using System.IO;
@@ -19,7 +19,7 @@ namespace Smdn.IO.Streams.Extending {
     protected override bool CanSeekAppendedData { get; }
     protected override bool CanSeekPrependedData { get; }
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     protected override int ReadAppendedData(byte[] buffer, int offset, int count) {}
     protected override Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
     protected override int ReadPrependedData(byte[] buffer, int offset, int count) {}
@@ -51,7 +51,7 @@ namespace Smdn.IO.Streams.Extending {
     public override long Position { get; set; }
     protected ExtendStreamBase.StreamSection Section { get; }
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     public override void Flush() {}
     public override Task FlushAsync(CancellationToken cancellationToken) {}
     public override int Read(byte[] buffer, int offset, int count) {}
