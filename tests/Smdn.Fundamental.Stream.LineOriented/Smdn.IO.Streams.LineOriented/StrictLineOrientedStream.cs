@@ -52,12 +52,18 @@ public class StrictLineOrientedStreamTests {
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, CR, LF },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[] { CR, LF },
-                              ret.Value.NewLine.ToArray());
+    CollectionAssert.AreEqual(
+      new byte[] { 0x40, 0x41, CR, LF },
+      ret.Value.SequenceWithNewLine.ToArray()
+    );
+    CollectionAssert.AreEqual(
+      new byte[] { 0x40, 0x41 },
+      ret.Value.Sequence.ToArray()
+    );
+    CollectionAssert.AreEqual(
+      new byte[] { CR, LF },
+      ret.Value.NewLine.ToArray()
+    );
 
     // CRLF (empty line)
     ret = runAsync
@@ -66,12 +72,18 @@ public class StrictLineOrientedStreamTests {
 
     Assert.IsNotNull(ret);
     Assert.IsTrue(ret.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { CR, LF },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[0],
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[] { CR, LF },
-                              ret.Value.NewLine.ToArray());
+    CollectionAssert.AreEqual(
+      new byte[] { CR, LF },
+      ret.Value.SequenceWithNewLine.ToArray()
+    );
+    CollectionAssert.AreEqual(
+      new byte[0],
+      ret.Value.Sequence.ToArray()
+    );
+    CollectionAssert.AreEqual(
+      new byte[] { CR, LF },
+      ret.Value.NewLine.ToArray()
+    );
 
     // <EOS>
     ret = runAsync
@@ -80,12 +92,18 @@ public class StrictLineOrientedStreamTests {
 
     Assert.IsNotNull(ret);
     Assert.IsFalse(ret.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[] { 0x42, CR, 0x43, LF, },
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[0],
-                              ret.Value.NewLine.ToArray());
+    CollectionAssert.AreEqual(
+      new byte[] { 0x42, CR, 0x43, LF, },
+      ret.Value.SequenceWithNewLine.ToArray()
+    );
+    CollectionAssert.AreEqual(
+      new byte[] { 0x42, CR, 0x43, LF, },
+      ret.Value.Sequence.ToArray()
+    );
+    CollectionAssert.AreEqual(
+      new byte[0],
+      ret.Value.NewLine.ToArray()
+    );
   }
 
   [Test]
