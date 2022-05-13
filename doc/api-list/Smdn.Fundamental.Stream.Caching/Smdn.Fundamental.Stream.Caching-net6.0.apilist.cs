@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.Caching
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+5d6c4605b04017bfcf25bb41821556a4a8af61d6
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System.IO;
@@ -23,7 +23,7 @@ namespace Smdn.IO.Streams.Caching {
     public override long Length { get; }
     public override long Position { get; set; }
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     public override void Flush() {}
     protected abstract byte[] GetBlock(long blockIndex);
     public override int Read(byte[] buffer, int offset, int count) {}
@@ -42,7 +42,7 @@ namespace Smdn.IO.Streams.Caching {
     public NonPersistentCachedStream(Stream innerStream, int blockSize) {}
     public NonPersistentCachedStream(Stream innerStream, int blockSize, bool leaveInnerStreamOpen) {}
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     protected override byte[] GetBlock(long blockIndex) {}
   }
 
@@ -53,7 +53,7 @@ namespace Smdn.IO.Streams.Caching {
     public PersistentCachedStream(Stream innerStream, int blockSize) {}
     public PersistentCachedStream(Stream innerStream, int blockSize, bool leaveInnerStreamOpen) {}
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     protected override byte[] GetBlock(long blockIndex) {}
   }
 }
