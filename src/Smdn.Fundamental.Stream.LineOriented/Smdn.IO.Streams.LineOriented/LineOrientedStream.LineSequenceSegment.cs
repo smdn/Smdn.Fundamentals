@@ -9,7 +9,7 @@ namespace Smdn.IO.Streams.LineOriented;
 partial class LineOrientedStream {
 #pragma warning restore IDE0040
   private class LineSequenceSegment : ReadOnlySequenceSegment<byte> {
-    public LineSequenceSegment(LineSequenceSegment prev, ReadOnlyMemory<byte> memory)
+    public LineSequenceSegment(LineSequenceSegment? prev, ReadOnlyMemory<byte> memory)
     {
       Memory = memory;
 

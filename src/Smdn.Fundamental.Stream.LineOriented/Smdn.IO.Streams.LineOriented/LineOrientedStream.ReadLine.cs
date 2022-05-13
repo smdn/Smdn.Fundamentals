@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Buffers;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +20,7 @@ partial class LineOrientedStream {
     return ReadToEndOfLine();
   }
 
-  public byte[] ReadLine(bool keepEOL)
+  public byte[]? ReadLine(bool keepEOL)
   {
     var line = ReadLine();
 
@@ -70,8 +73,8 @@ partial class LineOrientedStream {
 
     var bufOffsetReadStart = bufOffset;
     LineTerminator lineTerminator;
-    LineSequenceSegment lineSegmentHead = null;
-    LineSequenceSegment lineSegmentTail = null;
+    LineSequenceSegment? lineSegmentHead = null;
+    LineSequenceSegment? lineSegmentTail = null;
     var testedOffsetOfLineTerminator = 0;
 
     for (; ; ) {
@@ -137,8 +140,8 @@ partial class LineOrientedStream {
 
     var bufOffsetReadStart = bufOffset;
     LineTerminator lineTerminator;
-    LineSequenceSegment lineSegmentHead = null;
-    LineSequenceSegment lineSegmentTail = null;
+    LineSequenceSegment? lineSegmentHead = null;
+    LineSequenceSegment? lineSegmentTail = null;
     var testedOffsetOfLineTerminator = 0;
 
     for (; ; ) {
@@ -197,8 +200,8 @@ partial class LineOrientedStream {
 
   private Line? PostProcessReadToEndOfLine(
     LineTerminator lineTerminator,
-    LineSequenceSegment lineSegmentHead,
-    LineSequenceSegment lineSegmentTail,
+    LineSequenceSegment? lineSegmentHead,
+    LineSequenceSegment? lineSegmentTail,
     int bufOffsetReadStart
   )
   {
@@ -222,17 +225,21 @@ partial class LineOrientedStream {
 
     if (lineSegmentHead is null)
       return null;
+#if DEBUG
+    if (lineSegmentTail is null)
+      throw new InvalidOperationException($"{nameof(lineSegmentTail)} is null");
+#endif
 
     var lineSequence = new ReadOnlySequence<byte>(
       lineSegmentHead,
       0,
-      lineSegmentTail,
-      lineSegmentTail.Memory.Length
+      lineSegmentTail!,
+      lineSegmentTail!.Memory.Length
     );
     var lengthOfLineTerminator = lineTerminator switch {
       LineTerminator.CR or LineTerminator.LF => 1,
       LineTerminator.CRLF => 2,
-      LineTerminator.NewLine => newLine.Length,
+      LineTerminator.NewLine => newLine!.Length,
       _ => 0,
     };
 
@@ -305,8 +312,13 @@ partial class LineOrientedStream {
   }
 
   private static void AppendLineSequence(
-    ref LineSequenceSegment head,
-    ref LineSequenceSegment tail,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNull] ref LineSequenceSegment? head,
+    [NotNull] ref LineSequenceSegment? tail,
+#else
+    ref LineSequenceSegment? head,
+    ref LineSequenceSegment? tail,
+#endif
     ReadOnlySpan<byte> lineSequence
   )
   {

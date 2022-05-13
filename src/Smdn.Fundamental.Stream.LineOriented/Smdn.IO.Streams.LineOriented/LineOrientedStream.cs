@@ -1,6 +1,14 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET5_0_OR_GREATER
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLATTRIBUTE
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#endif
+
 using System;
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLATTRIBUTE || SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +25,9 @@ public partial class LineOrientedStream : Stream {
   public override bool CanRead => !IsClosed && stream.CanRead;
   public override bool CanWrite => !IsClosed && stream.CanWrite;
   public override bool CanTimeout => !IsClosed && stream.CanTimeout;
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+  [MemberNotNullWhen(false, nameof(stream))]
+#endif
   private bool IsClosed => stream is null;
 
   public override long Position {
@@ -71,7 +82,9 @@ public partial class LineOrientedStream : Stream {
 #endif
     }
 
+#pragma warning disable CS8625
     stream = null;
+#pragma warning restore CS8625
 
     base.Dispose(disposing);
   }
@@ -87,15 +100,19 @@ public partial class LineOrientedStream : Stream {
 
   private int FillBuffer()
   {
+#if DEBUG
+    ThrowIfDisposed();
+#endif
+
     bufOffset = 0;
 
     bufRemain =
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      stream.Read(
+      stream!.Read(
         buffer.AsSpan()
 #else
 #pragma warning disable CA1835
-      stream.Read(
+      stream!.Read(
         buffer,
         0,
         buffer.Length
@@ -108,15 +125,19 @@ public partial class LineOrientedStream : Stream {
 
   private async Task<int> FillBufferAsync(CancellationToken cancellationToken)
   {
+#if DEBUG
+    ThrowIfDisposed();
+#endif
+
     bufOffset = 0;
 
     bufRemain =
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      await stream.ReadAsync(
+      await stream!.ReadAsync(
         buffer.AsMemory(),
 #else
 #pragma warning disable CA1835
-      await stream.ReadAsync(
+      await stream!.ReadAsync(
         buffer,
         0,
         buffer.Length,
@@ -128,14 +149,22 @@ public partial class LineOrientedStream : Stream {
     return bufRemain;
   }
 
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLATTRIBUTE
+  [MemberNotNull(nameof(stream))]
+#endif
   private void ThrowIfDisposed()
   {
     if (IsClosed)
       throw new ObjectDisposedException(GetType().FullName);
   }
 
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLATTRIBUTE && SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+  private Stream? stream;
+#else
   private Stream stream;
-  private readonly byte[] newLine;
+#endif
+
+  private readonly byte[]? newLine;
   private readonly bool leaveStreamOpen;
   private readonly byte[] buffer;
   private int bufOffset;

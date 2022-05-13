@@ -201,6 +201,8 @@ partial class LineOrientedStream {
   )
   {
 #if DEBUG
+    ThrowIfDisposed();
+
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadFromBuffer)} first");
 #endif
@@ -220,7 +222,7 @@ partial class LineOrientedStream {
 
       var r =
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
-        stream.Read(destination);
+        stream!.Read(destination);
 #else
         stream.Read(destination.Array, destination.Offset, destination.Count);
 #endif
@@ -254,6 +256,8 @@ partial class LineOrientedStream {
   )
   {
 #if DEBUG
+    ThrowIfDisposed();
+
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadFromBuffer)} first");
 #endif
@@ -265,13 +269,13 @@ partial class LineOrientedStream {
         break;
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      var r = await stream.ReadAsync(
+      var r = await stream!.ReadAsync(
         destination,
         cancellationToken
       ).ConfigureAwait(false);
 #else
 #pragma warning disable CA1835
-      byte[] readBuffer = null;
+      byte[]? readBuffer = null;
       int r = 0;
 
       try {
