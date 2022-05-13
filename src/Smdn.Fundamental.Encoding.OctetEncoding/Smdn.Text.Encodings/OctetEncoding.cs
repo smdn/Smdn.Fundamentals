@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
-#endif
-
 using System;
 using System.Text;
 

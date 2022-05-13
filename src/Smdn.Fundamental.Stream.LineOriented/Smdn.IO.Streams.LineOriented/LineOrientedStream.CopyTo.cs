@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_IO_STREAM_COPYTO_VIRTUAL
-#endif
-
 #if !SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
 using System; // NotSupportedException
 #endif

@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET11_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_ARRAY_COPY_INT64
-#endif
-
 using System;
 using System.IO;
 
@@ -244,7 +240,7 @@ public sealed class ChunkedMemoryStream : Stream {
     public byte[] ToArray()
     {
       var buffer = new byte[Length];
-#if SYSTEM_ARRAY_COPY_INT64
+#if SYSTEM_ARRAY_COPY_INT64LENGTH
       long offset = 0L;
 #else
       int offset = 0;
