@@ -4,7 +4,9 @@
 #define SYSTEM_IO_STREAM_COPYTO_VIRTUAL
 #endif
 
-using System;
+#if !SYSTEM_IO_STREAM_VALIDATECOPYTOARGUMENTS
+using System; // NotSupportedException
+#endif
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
