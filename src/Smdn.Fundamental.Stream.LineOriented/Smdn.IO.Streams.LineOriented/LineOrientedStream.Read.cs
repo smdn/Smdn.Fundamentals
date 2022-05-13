@@ -64,6 +64,8 @@ partial class LineOrientedStream {
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
   public override int Read(Span<byte> buffer)
   {
+    ThrowIfDisposed();
+
     if (buffer.IsEmpty)
       return 0; // do nothing
 
