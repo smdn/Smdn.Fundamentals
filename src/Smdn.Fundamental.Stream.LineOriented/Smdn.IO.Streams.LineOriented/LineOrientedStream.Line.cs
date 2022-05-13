@@ -22,6 +22,6 @@ partial class LineOrientedStream {
       PositionOfNewLine = positionOfNewLine;
     }
 
-    internal ReadOnlySequence<byte>? GetLine(bool keepEOL) => keepEOL ? SequenceWithNewLine : Sequence;
+    internal ReadOnlySequence<byte> GetLine(bool keepEOL) => keepEOL ? SequenceWithNewLine : Sequence;
   }
 }

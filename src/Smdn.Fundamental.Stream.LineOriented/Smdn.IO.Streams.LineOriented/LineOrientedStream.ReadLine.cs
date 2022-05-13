@@ -18,7 +18,13 @@ partial class LineOrientedStream {
   }
 
   public byte[] ReadLine(bool keepEOL)
-    => ReadLine()?.GetLine(keepEOL)?.ToArray();
+  {
+    var line = ReadLine();
+
+    return line.HasValue
+      ? line.Value.GetLine(keepEOL).ToArray()
+      : null;
+  }
 
   public Task<Line?> ReadLineAsync(CancellationToken cancellationToken = default)
   {
