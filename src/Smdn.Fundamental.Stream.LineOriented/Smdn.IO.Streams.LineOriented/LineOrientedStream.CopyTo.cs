@@ -27,7 +27,7 @@ partial class LineOrientedStream {
   /// <param name="bufferSize">The value of this parameter does not affect to the behavior of the method.</param>
   public override void CopyTo(
     Stream destination,
-    int bufferSize = CopyToDefaultBufferSize
+    int bufferSize
   )
   {
     ThrowIfDisposed();
@@ -66,7 +66,7 @@ partial class LineOrientedStream {
   /// <param name="bufferSize">The value of this parameter does not affect to the behavior of the method.</param>
   public override Task CopyToAsync(
     Stream destination,
-    int bufferSize = CopyToDefaultBufferSize,
+    int bufferSize,
     CancellationToken cancellationToken = default
   )
   {
