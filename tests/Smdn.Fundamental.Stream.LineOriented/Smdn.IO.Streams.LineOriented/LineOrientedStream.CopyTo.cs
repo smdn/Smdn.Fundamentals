@@ -123,6 +123,7 @@ partial class LineOrientedStreamTests {
     Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0, cancellationToken: default));
   }
 
+#if SYSTEM_IO_STREAM_COPYTO_VIRTUAL
   [Test]
   public async Task CopyTo_BufferSizeDoesNotAffectToBehaviour(
     [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
@@ -148,4 +149,5 @@ partial class LineOrientedStreamTests {
 
     Assert.AreEqual(-1, stream.ReadByte());
   }
+#endif
 }
