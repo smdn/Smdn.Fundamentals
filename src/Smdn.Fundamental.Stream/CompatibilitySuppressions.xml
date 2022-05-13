@@ -3,6 +3,18 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Smdn.IO.StreamExtensions.Close(System.IO.Stream)</Target>
+    <Left>lib/netstandard1.1/Smdn.Fundamental.Stream.dll</Left>
+    <Right>lib/net45/Smdn.Fundamental.Stream.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.IO.StreamExtensions.Close(System.IO.Stream)</Target>
+    <Left>lib/netstandard1.6/Smdn.Fundamental.Stream.dll</Left>
+    <Right>lib/netstandard2.0/Smdn.Fundamental.Stream.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.IO.StreamExtensions.Close(System.IO.Stream)</Target>
     <Left>lib/netstandard1.6/Smdn.Fundamental.Stream.dll</Left>
     <Right>lib/netstandard2.1/Smdn.Fundamental.Stream.dll</Right>
   </Suppression>
