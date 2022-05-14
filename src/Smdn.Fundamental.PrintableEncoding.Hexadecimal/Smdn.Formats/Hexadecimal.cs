@@ -42,5 +42,8 @@ public static partial class Hexadecimal {
 #if SYSTEM_READONLYSPAN
   public static ReadOnlySpan<char> UpperCaseHexChars => UpperCaseHexCharsInString.AsSpan();
   public static ReadOnlySpan<char> LowerCaseHexChars => LowerCaseHexCharsInString.AsSpan();
+#else
+  private static readonly char[] upperCaseHexChars = UpperCaseHexCharsInString.ToCharArray();
+  private static readonly char[] lowerCaseHexChars = LowerCaseHexCharsInString.ToCharArray();
 #endif
 }
