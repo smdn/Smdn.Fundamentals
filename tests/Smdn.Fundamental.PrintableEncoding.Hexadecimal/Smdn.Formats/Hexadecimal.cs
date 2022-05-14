@@ -11,16 +11,27 @@ namespace Smdn.Formats {
   public class HexadecimalTests {
 #if SYSTEM_READONLYSPAN
     [Test]
-    public void ToUpperCaseString()
+    public void ToUpperCaseString_OfReadOnlySpan()
     {
       Assert.AreEqual(string.Empty, Hexadecimal.ToUpperCaseString(new byte[0]));
       Assert.AreEqual("00", Hexadecimal.ToUpperCaseString(new byte[] { 0x00 }));
       Assert.AreEqual("FF", Hexadecimal.ToUpperCaseString(new byte[] { 0xFF }));
       Assert.AreEqual("0123456789ABCDEF", Hexadecimal.ToUpperCaseString(new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF }));
     }
+#endif
 
     [Test]
-    public void ToLowerCaseString()
+    public void ToUpperCaseString_OfArraySegment()
+    {
+      Assert.AreEqual(string.Empty, Hexadecimal.ToUpperCaseString(ArraySegment<byte>.Empty));
+      Assert.AreEqual("00", Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0x00 })));
+      Assert.AreEqual("FF", Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0xFF })));
+      Assert.AreEqual("0123456789ABCDEF", Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0xFF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0xFF }, 1, 8)));
+    }
+
+#if SYSTEM_READONLYSPAN
+    [Test]
+    public void ToLowerCaseString_OfReadOnlySpan()
     {
       Assert.AreEqual(string.Empty, Hexadecimal.ToLowerCaseString(new byte[0]));
       Assert.AreEqual("00", Hexadecimal.ToLowerCaseString(new byte[] { 0x00 }));
@@ -28,6 +39,15 @@ namespace Smdn.Formats {
       Assert.AreEqual("0123456789abcdef", Hexadecimal.ToLowerCaseString(new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF }));
     }
 #endif
+
+    [Test]
+    public void ToLowerCaseString_OfArraySegment()
+    {
+      Assert.AreEqual(string.Empty, Hexadecimal.ToLowerCaseString(ArraySegment<byte>.Empty));
+      Assert.AreEqual("00", Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0x00 })));
+      Assert.AreEqual("ff", Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0xFF })));
+      Assert.AreEqual("0123456789abcdef", Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0xFF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0xFF }, 1, 8)));
+    }
 
 #if SYSTEM_SPAN
     [Test]
@@ -143,6 +163,74 @@ namespace Smdn.Formats {
 
 #if SYSTEM_SPAN
     [Test]
+    public void TryEncodeUpperCase_OfReadOnlySpanDataSequence()
+    {
+      var input = new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF };
+      var destinationBytes = new byte[18];
+      var destinationChars = new byte[18];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(input.AsSpan(), destinationBytes.AsSpan(1, 16), out var bytesWritten));
+      Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+      CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationBytes));
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(input.AsSpan(), destinationChars.AsSpan(1, 16), out var charsWritten));
+      Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+      CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationChars));
+    }
+#endif
+
+    [Test]
+    public void TryEncodeUpperCase_OfArraySegmentDataSequence()
+    {
+      var input = new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF };
+      var destinationBytes = new byte[18];
+      var destinationChars = new byte[18];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationBytes, 1, 16), out var bytesWritten));
+      Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+      CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationBytes));
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationChars, 1, 16), out var charsWritten));
+      Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+      CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationChars));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
+    public void TryEncodeLowerCase_OfReadOnlySpanDataSequence()
+    {
+      var input = new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF };
+      var destinationBytes = new byte[18];
+      var destinationChars = new byte[18];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(input.AsSpan(), destinationBytes.AsSpan(1, 16), out var bytesWritten));
+      Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+      CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationBytes));
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(input.AsSpan(), destinationChars.AsSpan(1, 16), out var charsWritten));
+      Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+      CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationChars));
+    }
+#endif
+
+    [Test]
+    public void TryEncodeLowerCase_OfArraySegmentDataSequence()
+    {
+      var input = new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF };
+      var destinationBytes = new byte[18];
+      var destinationChars = new byte[18];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationBytes, 1, 16), out var bytesWritten));
+      Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+      CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationBytes));
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationChars, 1, 16), out var charsWritten));
+      Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+      CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationChars));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
     public void TryEncodeUpperCase_OfData_ToByteSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new byte[0], out _));
@@ -239,7 +327,31 @@ namespace Smdn.Formats {
       Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
       CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x41, 0x42}, $"#2 {dest}");
     }
+#endif
 
+    [Test]
+    public void TryEncodeUpperCase_DestinationArray()
+    {
+      var dest = new byte[4];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0x01, dest, 0 , out var bytesEncoded), $"#0 {nameof(Hexadecimal.TryEncodeUpperCase)}");
+      Assert.AreEqual(bytesEncoded, 2, $"#0 {nameof(bytesEncoded)}");
+      CollectionAssert.AreEqual(dest, new byte[] {0x30, 0x31, 0x00, 0x00}, $"#0 {dest}");
+
+      Array.Clear(dest, 0, dest.Length);
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0x23, dest, 1, out bytesEncoded), $"#1 {nameof(Hexadecimal.TryEncodeUpperCase)}");
+      Assert.AreEqual(bytesEncoded, 2, $"#1 {nameof(bytesEncoded)}");
+      CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x32, 0x33, 0x00}, $"#1 {dest}");
+
+      Array.Clear(dest, 0, dest.Length);
+
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0xAB, dest, 2, out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeUpperCase)}");
+      Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
+      CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x41, 0x42}, $"#2 {dest}");
+    }
+
+#if SYSTEM_SPAN
     [Test]
     public void TryEncodeLowerCase_DestinationSpan()
     {
@@ -262,6 +374,28 @@ namespace Smdn.Formats {
       CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x61, 0x62}, $"#2 {dest}");
     }
 #endif
+
+    [Test]
+    public void TryEncodeLowerCase_DestinationArray()
+    {
+      var dest = new byte[4];
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0x01, dest, 0, out var bytesEncoded), $"#0 {nameof(Hexadecimal.TryEncodeLowerCase)}");
+      Assert.AreEqual(bytesEncoded, 2, $"#0 {nameof(bytesEncoded)}");
+      CollectionAssert.AreEqual(dest, new byte[] {0x30, 0x31, 0x00, 0x00}, $"#0 {dest}");
+
+      Array.Clear(dest, 0, dest.Length);
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0x23, dest, 1, out bytesEncoded), $"#1 {nameof(Hexadecimal.TryEncodeLowerCase)}");
+      Assert.AreEqual(bytesEncoded, 2, $"#1 {nameof(bytesEncoded)}");
+      CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x32, 0x33, 0x00}, $"#1 {dest}");
+
+      Array.Clear(dest, 0, dest.Length);
+
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0xAB, dest, 2, out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeLowerCase)}");
+      Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
+      CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x61, 0x62}, $"#2 {dest}");
+    }
 
 #if SYSTEM_SPAN
     [TestCase(0x01, '0', '1')]
