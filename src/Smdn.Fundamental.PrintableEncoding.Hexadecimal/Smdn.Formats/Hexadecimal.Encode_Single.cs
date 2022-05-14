@@ -109,8 +109,8 @@ partial class Hexadecimal {
     if (destination.Length - 2 < index)
       return false;
 
-    destination[lengthEncoded++] = hex[data >> 4];
-    destination[lengthEncoded++] = hex[data & 0xf];
+    destination[index + lengthEncoded++] = hex[data >> 4];
+    destination[index + lengthEncoded++] = hex[data & 0xf];
 
     return true;
   }

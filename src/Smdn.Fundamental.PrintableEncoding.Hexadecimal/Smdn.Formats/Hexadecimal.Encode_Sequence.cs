@@ -81,7 +81,7 @@ partial class Hexadecimal {
       return false; // destination too short
 
     while (dataSequence.Count != 0) {
-      if (!TryEncode(dataSequence.Array[0], destination.Array, destination.Offset, hex, out var len))
+      if (!TryEncode(dataSequence.Array[dataSequence.Offset], destination.Array, destination.Offset, hex, out var len))
         return false;
 
       lengthEncoded += len;
