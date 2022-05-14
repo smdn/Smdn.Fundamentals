@@ -98,8 +98,8 @@ partial class HexadecimalTests {
   [Test]
   public void TryEncodeUpperCase_OfArraySegmentDataSequence_Empty()
   {
-    Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(ArraySegment<byte>.Empty, ArraySegment<byte>.Empty, out _));
-    Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(ArraySegment<byte>.Empty, ArraySegment<char>.Empty, out _));
+    Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(CreateEmptyArraySegment<byte>(), CreateEmptyArraySegment<byte>(), out _));
+    Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(CreateEmptyArraySegment<byte>(), CreateEmptyArraySegment<char>(), out _));
   }
 
 #if SYSTEM_SPAN
@@ -114,8 +114,8 @@ partial class HexadecimalTests {
   [Test]
   public void TryEncodeLowerCase_OfArraySegmentDataSequence_Empty()
   {
-    Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(ArraySegment<byte>.Empty, ArraySegment<byte>.Empty, out _));
-    Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(ArraySegment<byte>.Empty, ArraySegment<char>.Empty, out _));
+    Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(CreateEmptyArraySegment<byte>(), CreateEmptyArraySegment<byte>(), out _));
+    Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(CreateEmptyArraySegment<byte>(), CreateEmptyArraySegment<char>(), out _));
   }
 
 #if SYSTEM_SPAN
