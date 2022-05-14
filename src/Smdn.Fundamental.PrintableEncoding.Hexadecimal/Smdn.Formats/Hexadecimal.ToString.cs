@@ -12,6 +12,9 @@ partial class Hexadecimal {
 #pragma warning restore IDE0040
   public static string ToUpperCaseString(ArraySegment<byte> dataSequence)
   {
+    if (dataSequence.Count == 0)
+      return string.Empty;
+
 #if SYSTEM_READONLYSPAN
     return ToUpperCaseString(dataSequence.AsSpan());
 #else
@@ -26,6 +29,9 @@ partial class Hexadecimal {
 #if SYSTEM_READONLYSPAN
   public static string ToUpperCaseString(ReadOnlySpan<byte> dataSequence)
   {
+    if (dataSequence.Length == 0)
+      return string.Empty;
+
 #if false && SYSTEM_STRING_CREATE
     // XXX: string.Create does not accept ReadOnlySpan<T>, dotnet/runtime#30175
     return string.Create(
@@ -59,6 +65,9 @@ partial class Hexadecimal {
 
   public static string ToLowerCaseString(ArraySegment<byte> dataSequence)
   {
+    if (dataSequence.Count == 0)
+      return string.Empty;
+
 #if SYSTEM_READONLYSPAN
     return ToLowerCaseString(dataSequence.AsSpan());
 #else
@@ -73,6 +82,9 @@ partial class Hexadecimal {
 #if SYSTEM_READONLYSPAN
   public static string ToLowerCaseString(ReadOnlySpan<byte> dataSequence)
   {
+    if (dataSequence.Length == 0)
+      return string.Empty;
+
 #if false && SYSTEM_STRING_CREATE
     // XXX: string.Create does not accept ReadOnlySpan<T>, dotnet/runtime#30175
     return string.Create(
