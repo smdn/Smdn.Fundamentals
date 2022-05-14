@@ -28,7 +28,7 @@ partial class Hexadecimal {
       return true;
 
     if (destination.Length < dataSequence.Length * 2)
-      return false; // destination to short
+      return false; // destination too short
 
     while (!dataSequence.IsEmpty) {
       if (!TryEncode(dataSequence[0], destination, hex, out var len))
