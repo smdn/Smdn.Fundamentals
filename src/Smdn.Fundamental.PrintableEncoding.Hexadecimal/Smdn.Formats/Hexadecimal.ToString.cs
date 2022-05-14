@@ -10,6 +10,18 @@ namespace Smdn.Formats;
 #pragma warning disable IDE0040
 partial class Hexadecimal {
 #pragma warning restore IDE0040
+  public static string ToUpperCaseString(ArraySegment<byte> dataSequence)
+  {
+#if SYSTEM_READONLYSPAN
+    return ToUpperCaseString(dataSequence.AsSpan());
+#else
+    var destination = new char[dataSequence.Count * 2];
+
+    TryEncodeUpperCase(dataSequence, new ArraySegment<char>(destination), out _);
+
+    return new string(destination);
+#endif // SYSTEM_READONLYSPAN
+  }
 
 #if SYSTEM_READONLYSPAN
   public static string ToUpperCaseString(ReadOnlySpan<byte> dataSequence)
@@ -44,6 +56,19 @@ partial class Hexadecimal {
 #endif
   }
 #endif
+
+  public static string ToLowerCaseString(ArraySegment<byte> dataSequence)
+  {
+#if SYSTEM_READONLYSPAN
+    return ToLowerCaseString(dataSequence.AsSpan());
+#else
+    var destination = new char[dataSequence.Count * 2];
+
+    TryEncodeLowerCase(dataSequence, new ArraySegment<char>(destination), out _);
+
+    return new string(destination);
+#endif
+  }
 
 #if SYSTEM_READONLYSPAN
   public static string ToLowerCaseString(ReadOnlySpan<byte> dataSequence)
