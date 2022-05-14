@@ -31,55 +31,115 @@ namespace Smdn.Formats {
 
 #if SYSTEM_SPAN
     [Test]
-    public void TryEncodeUpperCase_OfDataSequence_ToByteSpan_DestinatioTooShort()
+    public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new byte[0], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new byte[1], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00, 0x00 }, new byte[2], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00, 0x00 }, new byte[3], out _));
     }
+#endif
 
     [Test]
-    public void TryEncodeUpperCase_OfDataSequence_ToCharSpan_DestinatioTooShort()
+    public void TryEncodeUpperCase_OfArraySegmentDataSequence_ToByteArraySegment_DestinatioTooShort()
+    {
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[0]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[1]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<byte>(new byte[2]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<byte>(new byte[3]), out _));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
+    public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToCharSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new char[0], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new char[1], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00, 0x00 }, new char[2], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00, 0x00 }, new char[3], out _));
     }
+#endif
 
     [Test]
-    public void TryEncodeLowerCase_OfDataSequence_ToByteSpan_DestinatioTooShort()
+    public void TryEncodeUpperCase_OfArraySegmentDataSequence_ToCharArraySegment_DestinatioTooShort()
+    {
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[0]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[1]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<char>(new char[2]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<char>(new char[3]), out _));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
+    public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new byte[0], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new byte[1], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00, 0x00 }, new byte[2], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00, 0x00 }, new byte[3], out _));
     }
+#endif
 
     [Test]
-    public void TryEncodeLowerCase_OfDataSequence_ToCharSpan_DestinatioTooShort()
+    public void TryEncodeLowerCase_OfArraySegmentDataSequence_ToByteArraySegment_DestinatioTooShort()
+    {
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[0]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[1]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<byte>(new byte[2]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<byte>(new byte[3]), out _));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
+    public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_ToCharSpan_DestinatioTooShort()
     {
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new char[0], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new char[1], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00, 0x00 }, new char[2], out _));
       Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00, 0x00 }, new char[3], out _));
     }
+#endif
 
     [Test]
-    public void TryEncodeUpperCase_OfDataSequence_Empty()
+    public void TryEncodeLowerCase_OfArraySegmentDataSequence_ToCharArraySegment_DestinatioTooShort()
+    {
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[0]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[1]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<char>(new char[2]), out _));
+      Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00, 0x00 }), new ArraySegment<char>(new char[3]), out _));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
+    public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_Empty()
     {
       Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(ReadOnlySpan<byte>.Empty, Span<byte>.Empty, out _));
       Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(ReadOnlySpan<byte>.Empty, Span<char>.Empty, out _));
     }
+#endif
 
     [Test]
-    public void TryEncodeLowerCase_OfDataSequence_Empty()
+    public void TryEncodeUpperCase_OfArraySegmentDataSequence_Empty()
+    {
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(ArraySegment<byte>.Empty, ArraySegment<byte>.Empty, out _));
+      Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(ArraySegment<byte>.Empty, ArraySegment<char>.Empty, out _));
+    }
+
+#if SYSTEM_SPAN
+    [Test]
+    public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_Empty()
     {
       Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(ReadOnlySpan<byte>.Empty, Span<byte>.Empty, out _));
       Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(ReadOnlySpan<byte>.Empty, Span<char>.Empty, out _));
     }
 #endif
+
+    [Test]
+    public void TryEncodeLowerCase_OfArraySegmentDataSequence_Empty()
+    {
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(ArraySegment<byte>.Empty, ArraySegment<byte>.Empty, out _));
+      Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(ArraySegment<byte>.Empty, ArraySegment<char>.Empty, out _));
+    }
 
 #if SYSTEM_SPAN
     [Test]
