@@ -35,7 +35,7 @@ partial class Hexadecimal {
       return false; // destination too short
 
     for (var i = 0; i < length; i++) {
-      if (!TryDecode(dataSequence.Slice(0, 2), allowUpperCase, allowLowerCase, out byte decodedData))
+      if (!TryDecode(dataSequence, allowUpperCase, allowLowerCase, out byte decodedData))
         return false;
 
       destination[i] = decodedData;
