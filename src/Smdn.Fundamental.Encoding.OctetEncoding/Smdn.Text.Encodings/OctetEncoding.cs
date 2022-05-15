@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET20_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TEXT_ENCODING_DECODERFALLBACK
+#define SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
+#endif
+
 using System;
 using System.Text;
 
@@ -18,7 +23,7 @@ public class OctetEncoding : Encoding {
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
     SevenBits = new OctetEncoding(7);
     EightBits = new OctetEncoding(8);
-#else
+#elif SYSTEM_TEXT_ENCODING_DECODERFALLBACK && SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
     SevenBits = new OctetEncoding(7).Clone() as Encoding;
     SevenBits.DecoderFallback = new DecoderExceptionFallback();
     SevenBits.EncoderFallback = new EncoderExceptionFallback();
@@ -26,7 +31,18 @@ public class OctetEncoding : Encoding {
     EightBits = new OctetEncoding(8).Clone() as Encoding;
     EightBits.DecoderFallback = new DecoderExceptionFallback();
     EightBits.EncoderFallback = new EncoderExceptionFallback();
+#else
+    SevenBits = new OctetEncoding(7, encoderReplacement: null /* throw exception */);
+    EightBits = new OctetEncoding(8, encoderReplacement: null /* throw exception */);
 #endif
+  }
+
+  private static char ValidateMaxValue(int bits, string nameOfBitsParameter)
+  {
+    if (bits is < 1 or > 8)
+      throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameOfBitsParameter, bits);
+
+    return (char)(1 << bits);
   }
 
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
@@ -38,18 +54,23 @@ public class OctetEncoding : Encoding {
   public OctetEncoding(int bits, EncoderFallback encoderFallback, DecoderFallback decoderFallback)
     : base(0, encoderFallback, decoderFallback)
   {
-    if (bits is < 1 or > 8)
-      throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
-
-    maxValue = (char)(1 << bits);
+    maxValue = ValidateMaxValue(bits, nameof(bits));
+  }
+#elif SYSTEM_TEXT_ENCODING_DECODERFALLBACK && SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
+  public OctetEncoding(int bits)
+  {
+    maxValue = ValidateMaxValue(bits, nameof(bits));
   }
 #else
   public OctetEncoding(int bits)
+    : this(bits, encoderReplacement: null)
   {
-    if (bits is < 1 or > 8)
-      throw ExceptionUtils.CreateArgumentMustBeInRange(1, 8, nameof(bits), bits);
+  }
 
-    maxValue = (char)(1 << bits);
+  /*public*/ private OctetEncoding(int bits, byte? encoderReplacement)
+  {
+    maxValue = ValidateMaxValue(bits, nameof(bits));
+    this.encoderReplacement = encoderReplacement;
   }
 #endif
 
@@ -76,6 +97,7 @@ public class OctetEncoding : Encoding {
     if (count < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
+#if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
     if (EncoderFallback == null)
       return count - index;
 
@@ -103,6 +125,21 @@ public class OctetEncoding : Encoding {
     }
 
     return byteCount;
+#else
+    if (encoderReplacement.HasValue)
+      return count - index;
+
+    var byteCount = 0;
+
+    for (; index < count; index++) {
+      if (chars[index] < maxValue)
+        byteCount++;
+      else
+        throw new EncoderFallbackException();
+    }
+
+    return byteCount;
+#endif
   }
 
   public override int GetCharCount(byte[] bytes, int index, int count)
@@ -138,6 +175,7 @@ public class OctetEncoding : Encoding {
         byteCount++;
       }
       else {
+#if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
         if (EncoderFallback == null) {
           bytes[byteIndex] = (byte)'?';
           byteCount++;
@@ -162,6 +200,15 @@ public class OctetEncoding : Encoding {
             byteCount++;
           }
         }
+#else
+        if (encoderReplacement.HasValue) {
+          bytes[byteIndex] = encoderReplacement.Value;
+          byteCount++;
+        }
+        else {
+          throw new EncoderFallbackException();
+        }
+#endif
       }
     }
 
@@ -193,4 +240,7 @@ public class OctetEncoding : Encoding {
   }
 
   private readonly char maxValue;
+#if !SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
+  private readonly byte? encoderReplacement;
+#endif
 }
