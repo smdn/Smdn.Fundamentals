@@ -8,6 +8,27 @@ namespace Smdn.Formats;
 #pragma warning disable IDE0040
 partial class Hexadecimal {
 #pragma warning restore IDE0040
+  public static bool TryDecodeUpperCase(ArraySegment<byte> upperCaseData, out byte decodedData)
+#if SYSTEM_READONLYSPAN
+    => TryDecode(upperCaseData.AsSpan(), allowUpperCase: true, allowLowerCase: false, out decodedData);
+#else
+    => TryDecode(upperCaseData, allowUpperCase: true, allowLowerCase: false, out decodedData);
+#endif
+
+  public static bool TryDecodeLowerCase(ArraySegment<byte> lowerCaseData, out byte decodedData)
+#if SYSTEM_READONLYSPAN
+    => TryDecode(lowerCaseData.AsSpan(), allowUpperCase: false, allowLowerCase: true, out decodedData);
+#else
+    => TryDecode(lowerCaseData, allowUpperCase: false, allowLowerCase: true, out decodedData);
+#endif
+
+  public static bool TryDecode(ArraySegment<byte> data, out byte decodedData)
+#if SYSTEM_READONLYSPAN
+    => TryDecode(data.AsSpan(), allowUpperCase: true, allowLowerCase: true, out decodedData);
+#else
+    => TryDecode(data, allowUpperCase: true, allowLowerCase: true, out decodedData);
+#endif
+
 #if SYSTEM_READONLYSPAN
   public static bool TryDecodeUpperCase(ReadOnlySpan<byte> upperCaseData, out byte decodedData)
     => TryDecode(upperCaseData, allowUpperCase: true, allowLowerCase: false, out decodedData);
@@ -34,6 +55,44 @@ partial class Hexadecimal {
 
     return true;
   }
+#else
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  internal static bool TryDecode(ArraySegment<byte> data, bool allowUpperCase, bool allowLowerCase, out byte decodedData)
+  {
+    decodedData = 0;
+
+    if (data.Count < 2)
+      return false;
+    if (!TryDecodeValue(data.Array[data.Offset], allowUpperCase, allowLowerCase, out var high))
+      return false;
+    if (!TryDecodeValue(data.Array[data.Offset + 1], allowUpperCase, allowLowerCase, out var low))
+      return false;
+
+    decodedData = (byte)((high << 4) | low);
+
+    return true;
+  }
+#endif
+
+  public static bool TryDecodeUpperCase(ArraySegment<char> upperCaseData, out byte decodedData)
+#if SYSTEM_READONLYSPAN
+    => TryDecode(upperCaseData.AsSpan(), allowUpperCase: true, allowLowerCase: false, out decodedData);
+#else
+    => TryDecode(upperCaseData, allowUpperCase: true, allowLowerCase: false, out decodedData);
+#endif
+
+  public static bool TryDecodeLowerCase(ArraySegment<char> lowerCaseData, out byte decodedData)
+#if SYSTEM_READONLYSPAN
+    => TryDecode(lowerCaseData.AsSpan(), allowUpperCase: false, allowLowerCase: true, out decodedData);
+#else
+    => TryDecode(lowerCaseData, allowUpperCase: false, allowLowerCase: true, out decodedData);
+#endif
+
+  public static bool TryDecode(ArraySegment<char> data, out byte decodedData)
+#if SYSTEM_READONLYSPAN
+    => TryDecode(data.AsSpan(), allowUpperCase: true, allowLowerCase: true, out decodedData);
+#else
+    => TryDecode(data, allowUpperCase: true, allowLowerCase: true, out decodedData);
 #endif
 
 #if SYSTEM_READONLYSPAN
@@ -56,6 +115,23 @@ partial class Hexadecimal {
     if (!TryDecodeValue(data[0], allowUpperCase, allowLowerCase, out var high))
       return false;
     if (!TryDecodeValue(data[1], allowUpperCase, allowLowerCase, out var low))
+      return false;
+
+    decodedData = (byte)((high << 4) | low);
+
+    return true;
+  }
+#else
+  [MethodImpl(MethodImplOptions.AggressiveInlining)]
+  internal static bool TryDecode(ArraySegment<char> data, bool allowUpperCase, bool allowLowerCase, out byte decodedData)
+  {
+    decodedData = 0;
+
+    if (data.Count < 2)
+      return false;
+    if (!TryDecodeValue(data.Array[data.Offset], allowUpperCase, allowLowerCase, out var high))
+      return false;
+    if (!TryDecodeValue(data.Array[data.Offset + 1], allowUpperCase, allowLowerCase, out var low))
       return false;
 
     decodedData = (byte)((high << 4) | low);
