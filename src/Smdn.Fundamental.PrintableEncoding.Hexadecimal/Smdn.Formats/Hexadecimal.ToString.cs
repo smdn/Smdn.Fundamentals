@@ -40,7 +40,7 @@ partial class Hexadecimal {
       static (destination, sequence) => TryEncodeUpperCase(sequence, destination, out _)
     );
 #else
-    char[] destination = null;
+    char[]? destination = null;
 
     try {
       var length = dataSequence.Length * 2;
@@ -93,7 +93,7 @@ partial class Hexadecimal {
       static (destination, sequence) => TryEncodeLowerCase(sequence, destination, out _)
     );
 #else
-    char[] destination = null;
+    char[]? destination = null;
 
     try {
       var length = dataSequence.Length * 2;
