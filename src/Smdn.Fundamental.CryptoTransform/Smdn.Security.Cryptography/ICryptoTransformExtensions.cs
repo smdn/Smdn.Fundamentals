@@ -6,6 +6,12 @@ using System.Text;
 
 using Smdn.Text.Encodings;
 
+#if SYSTEM_MATH_DIVREM
+using MathDivRemType = System.Math;
+#else
+using MathDivRemType = Smdn.Security.Cryptography.MathDivRemShim;
+#endif
+
 namespace Smdn.Security.Cryptography;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -56,12 +62,11 @@ public static class ICryptoTransformExtensions {
     if (inputBuffer.Length - inputCount < inputOffset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
 
-    var blockCountWithoutRemainder =
-#if SYSTEM_MATH_DIVREM
-      Math.DivRem(inputCount, transform.InputBlockSize, out var inputBlockRemainder);
-#else
-      MathUtils.DivRem(inputCount, transform.InputBlockSize, out var inputBlockRemainder);
-#endif
+    var blockCountWithoutRemainder = MathDivRemType.DivRem(
+      inputCount,
+      transform.InputBlockSize,
+      out var inputBlockRemainder
+    );
     var outputBuffer = new byte[
       (blockCountWithoutRemainder + (inputBlockRemainder == 0 ? 0 : 1)) * transform.OutputBlockSize
     ];

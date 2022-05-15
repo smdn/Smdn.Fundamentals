@@ -21,6 +21,5 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding.OctetEncoding\Smdn.Fundamental.Encoding.OctetEncoding.csproj" />
-    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Math\Smdn.Fundamental.Math.csproj"  Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) " />
   </ItemGroup>
 </Project>
