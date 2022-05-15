@@ -360,7 +360,6 @@ partial class HexadecimalTests {
   }
 #endif
 
-#if SYSTEM_READONLYSPAN
   [TestCase((byte)'0', true, 0x0)]
   [TestCase((byte)'1', true, 0x1)]
   [TestCase((byte)'2', true, 0x2)]
@@ -552,5 +551,4 @@ partial class HexadecimalTests {
     if (canDecode)
       Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
   }
-#endif
 }
