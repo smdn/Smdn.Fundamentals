@@ -12,7 +12,7 @@ namespace Smdn.Security.Cryptography;
 [TestFixture]
 public class ICryptoTransformExtensionsTests {
   [Test]
-  public void TestTransformBytes()
+  public void TransformBytes()
   {
     var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
     var expected = new byte[] {0x59, 0x57, 0x4a, 0x6a, 0x5a, 0x47, 0x55, 0x3d};
@@ -32,7 +32,7 @@ public class ICryptoTransformExtensionsTests {
   [TestCase("A",   "QQ==")]
   [TestCase("AA",  "QUE=")]
   [TestCase("AAA", "QUFB")]
-  public void TestTransformBytes_InputShorterThanInputBlockSize(string input, string output)
+  public void TransformBytes_InputShorterThanInputBlockSize(string input, string output)
   {
     using var transform = Smdn.Formats.Base64.CreateToBase64Transform();
 
@@ -46,7 +46,7 @@ public class ICryptoTransformExtensionsTests {
   }
 
   [Test]
-  public void TestTransformBytesArgumentException()
+  public void TransformBytes_ArgumentException()
   {
     var buffer = new byte[] {0xff, 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff};
 
@@ -93,7 +93,7 @@ public class ICryptoTransformExtensionsTests {
 
 #if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NET5_O_OR_GREATER
   [Test]
-  public void TestTranformBytesWithHashAlgorithm()
+  public void TranformBytes_WithHashAlgorithm()
   {
     var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
@@ -124,7 +124,7 @@ public class ICryptoTransformExtensionsTests {
   }
 
   [Test]
-  public void TestTranformBytesWithSymmetricAlgorithm()
+  public void TranformBytes_WithSymmetricAlgorithm()
   {
     var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
