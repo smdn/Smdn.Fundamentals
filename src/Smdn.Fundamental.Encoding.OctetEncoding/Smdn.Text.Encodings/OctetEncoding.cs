@@ -24,11 +24,11 @@ public class OctetEncoding : Encoding {
     SevenBits = new OctetEncoding(7);
     EightBits = new OctetEncoding(8);
 #elif SYSTEM_TEXT_ENCODING_DECODERFALLBACK && SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
-    SevenBits = new OctetEncoding(7).Clone() as Encoding;
+    SevenBits = (Encoding)new OctetEncoding(7).Clone();
     SevenBits.DecoderFallback = new DecoderExceptionFallback();
     SevenBits.EncoderFallback = new EncoderExceptionFallback();
 
-    EightBits = new OctetEncoding(8).Clone() as Encoding;
+    EightBits = (Encoding)new OctetEncoding(8).Clone();
     EightBits.DecoderFallback = new DecoderExceptionFallback();
     EightBits.EncoderFallback = new EncoderExceptionFallback();
 #else
@@ -101,7 +101,7 @@ public class OctetEncoding : Encoding {
     if (EncoderFallback == null)
       return count - index;
 
-    EncoderFallbackBuffer buffer = null;
+    EncoderFallbackBuffer? buffer = null;
     var byteCount = 0;
 
     for (; index < count; index++) {
