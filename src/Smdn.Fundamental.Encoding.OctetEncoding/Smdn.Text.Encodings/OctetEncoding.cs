@@ -98,9 +98,6 @@ public class OctetEncoding : Encoding {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
 
 #if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
-    if (EncoderFallback == null)
-      return count - index;
-
     EncoderFallbackBuffer? buffer = null;
     var byteCount = 0;
 
@@ -111,16 +108,21 @@ public class OctetEncoding : Encoding {
       else {
         if (buffer == null)
           buffer = EncoderFallback.CreateFallbackBuffer();
+        else
+          buffer.Reset();
 
-        buffer.Fallback(chars[index], index);
+        if (buffer.Fallback(chars[index], index)) {
+          var fallbackChars = new char[buffer.Remaining];
 
-        var fallbackChars = new char[buffer.Remaining];
+          for (var r = 0; r < fallbackChars.Length; r++) {
+            fallbackChars[r] = buffer.GetNextChar();
+          }
 
-        for (var r = 0; r < fallbackChars.Length; r++) {
-          fallbackChars[r] = buffer.GetNextChar();
+          byteCount += GetByteCount(fallbackChars, 0, fallbackChars.Length);
         }
-
-        byteCount += GetByteCount(fallbackChars, 0, fallbackChars.Length);
+        else {
+          byteCount++;
+        }
       }
     }
 
@@ -167,6 +169,7 @@ public class OctetEncoding : Encoding {
     if (byteIndex < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteIndex), byteIndex);
 
+    EncoderFallbackBuffer? buffer = null;
     var byteCount = 0;
 
     for (var i = 0; i < charCount; i++, charIndex++, byteIndex++, byteCount++) {
@@ -176,29 +179,23 @@ public class OctetEncoding : Encoding {
       }
       else {
 #if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
-        if (EncoderFallback == null) {
-          bytes[byteIndex] = (byte)'?';
-          byteCount++;
+        if (buffer is null)
+          buffer = EncoderFallback.CreateFallbackBuffer();
+        else
+          buffer.Reset();
+
+        if (buffer.Fallback(chars[charIndex], charIndex)) {
+          var fallbackChars = new char[buffer.Remaining];
+
+          for (var r = 0; r < fallbackChars.Length; r++) {
+            fallbackChars[r] = buffer.GetNextChar();
+          }
+
+          byteCount += GetBytes(fallbackChars, 0, fallbackChars.Length, bytes, byteIndex);
         }
         else {
-          var buffer = EncoderFallback.CreateFallbackBuffer();
-
-          if (buffer.Fallback(chars[charIndex], charIndex)) {
-            var fallbackChars = new char[buffer.Remaining];
-
-            for (var r = 0; r < fallbackChars.Length; r++) {
-              fallbackChars[r] = buffer.GetNextChar();
-            }
-
-            var c = GetBytes(fallbackChars, 0, fallbackChars.Length, bytes, byteIndex);
-
-            byteIndex += c - 1;
-            byteCount += c;
-          }
-          else {
-            bytes[byteIndex] = (byte)'?';
-            byteCount++;
-          }
+          bytes[byteIndex] = (byte)'?';
+          byteCount++;
         }
 #else
         if (encoderReplacement.HasValue) {
