@@ -101,9 +101,10 @@ public class OctetEncoding : Encoding {
     EncoderFallbackBuffer? buffer = null;
     var byteCount = 0;
 
-    for (; index < count; index++) {
+    for (; index < count; ) {
       if (chars[index] < maxValue) {
         byteCount++;
+        index++;
       }
       else {
         if (buffer == null)
@@ -111,7 +112,19 @@ public class OctetEncoding : Encoding {
         else
           buffer.Reset();
 
-        if (buffer.Fallback(chars[index], index)) {
+        var (charUnknownHigh, charUnknownLow, isRune) =
+          2 <= (count - index) && char.IsSurrogatePair(chars[index], chars[index + 1])
+            ? (chars[index], chars[index + 1], true)
+            : char.IsSurrogate(chars[index])
+              ? (default, default, false)
+              : (chars[index], default, true);
+
+        if (
+          isRune &&
+          charUnknownLow == default
+            ? buffer.Fallback(charUnknownHigh, index)
+            : buffer.Fallback(charUnknownHigh, charUnknownLow, index)
+        ) {
           var fallbackChars = new char[buffer.Remaining];
 
           for (var r = 0; r < fallbackChars.Length; r++) {
@@ -119,9 +132,10 @@ public class OctetEncoding : Encoding {
           }
 
           byteCount += GetByteCount(fallbackChars, 0, fallbackChars.Length);
+          index += (charUnknownLow == default) ? 1 : 2;
         }
         else {
-          byteCount++;
+          index++;
         }
       }
     }
@@ -172,9 +186,9 @@ public class OctetEncoding : Encoding {
     EncoderFallbackBuffer? buffer = null;
     var byteCount = 0;
 
-    for (var i = 0; i < charCount; i++, charIndex++, byteIndex++, byteCount++) {
+    for (; charIndex < charCount; ) {
       if (chars[charIndex] < maxValue) {
-        bytes[byteIndex] = (byte)chars[charIndex];
+        bytes[byteIndex++] = (byte)chars[charIndex++];
         byteCount++;
       }
       else {
@@ -184,22 +198,41 @@ public class OctetEncoding : Encoding {
         else
           buffer.Reset();
 
-        if (buffer.Fallback(chars[charIndex], charIndex)) {
+        var (charUnknownHigh, charUnknownLow, isRune) =
+          2 <= (charCount - charIndex) && char.IsSurrogatePair(chars[charIndex], chars[charIndex + 1])
+            ? (chars[charIndex], chars[charIndex + 1], true)
+            : char.IsSurrogate(chars[charIndex])
+              ? (default, default, false)
+              : (chars[charIndex], default, true);
+
+        if (
+          isRune &&
+          charUnknownLow == default
+            ? buffer.Fallback(charUnknownHigh, charIndex)
+            : buffer.Fallback(charUnknownHigh, charUnknownLow, charIndex)
+        ) {
           var fallbackChars = new char[buffer.Remaining];
 
           for (var r = 0; r < fallbackChars.Length; r++) {
             fallbackChars[r] = buffer.GetNextChar();
           }
 
-          byteCount += GetBytes(fallbackChars, 0, fallbackChars.Length, bytes, byteIndex);
+          var c = GetBytes(fallbackChars, 0, fallbackChars.Length, bytes, byteIndex);
+
+          byteIndex += c;
+          byteCount += c;
+
+          charIndex += (charUnknownLow == default) ? 1 : 2;
         }
         else {
-          bytes[byteIndex] = (byte)'?';
+          bytes[byteIndex++] = (byte)'?';
+          charIndex++;
           byteCount++;
         }
 #else
         if (encoderReplacement.HasValue) {
-          bytes[byteIndex] = encoderReplacement.Value;
+          bytes[byteIndex++] = encoderReplacement.Value;
+          charIndex++;
           byteCount++;
         }
         else {
