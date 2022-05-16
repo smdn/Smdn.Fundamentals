@@ -88,4 +88,42 @@ public class OctetEncodingTests {
   {
     Assert.Throws<EncoderFallbackException>(() => OctetEncoding.EightBits.GetBytes("INBOX.日本語"));
   }
+
+#if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
+  private static Encoding CreateEncoding(int bits, EncoderFallback encoderFallback)
+  {
+    var e = (Encoding)new OctetEncoding(bits).Clone();
+
+    e.EncoderFallback = encoderFallback;
+
+    return e;
+  }
+
+  [Test]
+  public void GetByteCount_EncoderFallback_Replacement()
+    => Assert.AreEqual(
+      10,
+      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetByteCount(" aA\u0080あ😩💥?")
+    );
+
+  [Test]
+  public void GetByteCount_EncoderFallback_Exception()
+    => Assert.Throws<EncoderFallbackException>(
+      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?")
+    );
+
+  [Test]
+  public void GetBytes_EncoderFallback_Replacement()
+    => CollectionAssert.AreEqual(
+      new byte[] { (byte)' ', (byte)'a', (byte)'A', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'?' },
+      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetBytes(" aA\u0080あ😩💥?")
+    );
+
+
+  [Test]
+  public void GetBytes_EncoderFallback_Exception()
+    => Assert.Throws<EncoderFallbackException>(
+      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?")
+    );
+#endif
 }
