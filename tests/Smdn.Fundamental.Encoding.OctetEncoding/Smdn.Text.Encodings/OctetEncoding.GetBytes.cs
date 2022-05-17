@@ -13,8 +13,7 @@ using NUnit.Framework;
 
 namespace Smdn.Text.Encodings;
 
-[TestFixture]
-public partial class OctetEncodingTests {
+partial class OctetEncodingTests {
   [Test]
   public void GetBytes_OfArray_SevenBits()
   {
@@ -161,15 +160,6 @@ public partial class OctetEncodingTests {
     => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.EightBits.GetBytes("INBOX.日本語"));
 
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
-  private static Encoding CreateEncoding(int bits, EncoderFallback encoderFallback)
-  {
-    var e = (Encoding)new OctetEncoding(bits).Clone();
-
-    e.EncoderFallback = encoderFallback;
-
-    return e;
-  }
-
   [Test]
   public void GetByteCount_OfString_EncoderFallback_Replacement()
     => Assert.AreEqual(
