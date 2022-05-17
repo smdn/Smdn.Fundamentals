@@ -6,6 +6,9 @@
 #endif
 
 using System;
+#if SYSTEM_BUFFERS_ARRAYPOOL
+using System.Buffers;
+#endif
 using System.Text;
 
 namespace Smdn.Text.Encodings;
@@ -195,18 +198,31 @@ public class OctetEncoding : Encoding {
               : (buffer.Fallback(chars[charIndex], charIndex), false);
 
         if (fallback) {
-          var fallbackChars = new char[buffer.Remaining];
+          var fallbackCharsLength = buffer.Remaining;
+          var fallbackChars =
+#if SYSTEM_BUFFERS_ARRAYPOOL
+            ArrayPool<char>.Shared.Rent(fallbackCharsLength);
+#else
+            new char[fallbackCharsLength];
+#endif
 
-          for (var r = 0; r < fallbackChars.Length; r++) {
-            fallbackChars[r] = buffer.GetNextChar();
+          try {
+            for (var r = 0; r < fallbackCharsLength; r++) {
+              fallbackChars[r] = buffer.GetNextChar();
+            }
+
+            var c = GetBytes(fallbackChars, 0, fallbackCharsLength, bytes, byteIndex);
+
+            byteIndex += c;
+            byteCount += c;
+
+            charIndex += isSurrogatePair ? 2 : 1;
           }
-
-          var c = GetBytes(fallbackChars, 0, fallbackChars.Length, bytes, byteIndex);
-
-          byteIndex += c;
-          byteCount += c;
-
-          charIndex += isSurrogatePair ? 2 : 1;
+          finally {
+#if SYSTEM_BUFFERS_ARRAYPOOL
+            ArrayPool<char>.Shared.Return(fallbackChars);
+#endif
+          }
         }
         else {
           bytes[byteIndex++] = (byte)'?';
