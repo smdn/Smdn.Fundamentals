@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace Smdn.Text.Encodings;
 
 [TestFixture]
-public class OctetEncodingTests {
+public partial class OctetEncodingTests {
   [Test]
   public void GetBytes_OfArray_SevenBits()
   {

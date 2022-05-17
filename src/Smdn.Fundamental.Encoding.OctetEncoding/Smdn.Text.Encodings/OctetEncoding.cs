@@ -7,6 +7,7 @@
 
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
 #define SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+#define SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
 #endif
 
 using System;
@@ -178,6 +179,11 @@ public class OctetEncoding : Encoding {
     return count;
   }
 
+#if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
+  public override int GetCharCount(ReadOnlySpan<byte> bytes)
+    => bytes.Length;
+#endif
+
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
     => GetBytes(
@@ -314,6 +320,18 @@ public class OctetEncoding : Encoding {
 
     return charCount;
   }
+
+#if SYSTEM_TEXT_ENCODING_GETCHARS_READONLYSPAN_OF_BYTE
+  public override int GetChars(ReadOnlySpan<byte> bytes, Span<char> chars)
+  {
+    // TODO: vectorize
+    for (var i = 0; i < bytes.Length; i++) {
+      chars[i] = (char)bytes[i];
+    }
+
+    return chars.Length;
+  }
+#endif
 
   private readonly char maxValue;
 #if !SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
