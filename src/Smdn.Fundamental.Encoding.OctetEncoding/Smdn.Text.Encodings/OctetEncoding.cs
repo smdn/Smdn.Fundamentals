@@ -175,7 +175,9 @@ public class OctetEncoding : Encoding {
     if (byteIndex < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteIndex), byteIndex);
 
+#if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
     EncoderFallbackBuffer? buffer = null;
+#endif
     var byteCount = 0;
 
     for (; charIndex < charCount; ) {
