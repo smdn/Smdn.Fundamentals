@@ -22,6 +22,7 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Buffers" />
+    <PackageReference Include="System.Memory" />
     <PackageReference Include="System.ValueTuple" />
   </ItemGroup>
 </Project>

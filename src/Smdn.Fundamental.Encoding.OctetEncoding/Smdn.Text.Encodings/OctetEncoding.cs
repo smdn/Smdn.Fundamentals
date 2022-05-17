@@ -5,6 +5,10 @@
 #define SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
 #endif
 
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+#endif
+
 using System;
 #if SYSTEM_BUFFERS_ARRAYPOOL
 using System.Buffers;
@@ -93,12 +97,26 @@ public class OctetEncoding : Encoding {
     return charCount;
   }
 
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
   public override int GetByteCount(char[] chars, int index, int count)
+    => GetByteCount(
+      (chars ?? throw new ArgumentNullException(nameof(chars))).AsSpan(index, count)
+    );
+
+  public override int GetByteCount(ReadOnlySpan<char> chars)
+#else
+  public override int GetByteCount(char[] chars, int index, int count)
+#endif
   {
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+    var index = 0;
+    var count = chars.Length;
+#else
     if (index < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
     if (count < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(count), count);
+#endif
 
 #if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
     EncoderFallbackBuffer? buffer = null;
@@ -160,8 +178,23 @@ public class OctetEncoding : Encoding {
     return count;
   }
 
+#if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
+    => GetBytes(
+      (chars ?? throw new ArgumentNullException(nameof(chars))).AsSpan(charIndex, charCount),
+      (bytes ?? throw new ArgumentNullException(nameof(bytes))).AsSpan(byteIndex)
+    );
+
+  public override int GetBytes(ReadOnlySpan<char> chars, Span<byte> bytes)
+#else
+  public override int GetBytes(char[] chars, int charIndex, int charCount, byte[] bytes, int byteIndex)
+#endif
   {
+#if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
+    var charIndex = 0;
+    var charCount = chars.Length;
+    var byteIndex = 0;
+#else
     if (chars == null)
       throw new ArgumentNullException(nameof(chars));
     if (bytes == null)
@@ -174,6 +207,7 @@ public class OctetEncoding : Encoding {
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(charIndex), chars, charIndex, charCount);
     if (byteIndex < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(byteIndex), byteIndex);
+#endif
 
 #if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
     EncoderFallbackBuffer? buffer = null;
@@ -218,7 +252,12 @@ public class OctetEncoding : Encoding {
               fallbackChars[r] = fallbackChar;
             }
 
-            var c = GetBytes(fallbackChars, 0, fallbackCharsLength, bytes, byteIndex);
+            var c =
+#if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
+              GetBytes(fallbackChars.AsSpan(0, fallbackCharsLength), bytes.Slice(byteIndex));
+#else
+              GetBytes(fallbackChars, 0, fallbackCharsLength, bytes, byteIndex);
+#endif
 
             byteIndex += c;
             byteCount += c;
