@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
   <Choose>
     <When Condition="
       $(TargetFramework.StartsWith('net4')) or
-      $(TargetFramework.StartsWith('netstandard1')) or
+      ($(TargetFramework.StartsWith('netstandard1')) and '$(TargetFramework)' != 'netstandard1.0') or
       $(TargetFramework.StartsWith('netstandard2.0'))
     ">
       <ItemGroup><PackageReference Update="System.Buffers" Version="4.5.1" /></ItemGroup>
