@@ -119,6 +119,17 @@ public class OctetEncodingTests {
       CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetBytes(" aA\u0080あ😩💥?")
     );
 
+  [Test]
+  public void GetBytes_EncoderFallback_Replacement_FallbackCharGreaterThanMaxValue_7bit()
+    => Assert.Throws<EncoderFallbackException>(
+      () => CreateEncoding(bits: 7, new EncoderReplacementFallback("\u0080")).GetBytes(" aA\u0080あ😩💥?")
+    );
+
+  [Test]
+  public void GetBytes_EncoderFallback_Replacement_FallbackCharGreaterThanMaxValue_8bit()
+    => Assert.Throws<EncoderFallbackException>(
+      () => CreateEncoding(bits: 8, new EncoderReplacementFallback("\u0100")).GetBytes(" aA\u0080あ😩💥?")
+    );
 
   [Test]
   public void GetBytes_EncoderFallback_Exception()

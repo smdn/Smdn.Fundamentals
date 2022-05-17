@@ -210,7 +210,12 @@ public class OctetEncoding : Encoding {
 
           try {
             for (var r = 0; r < fallbackCharsLength; r++) {
-              fallbackChars[r] = buffer.GetNextChar();
+              var fallbackChar = buffer.GetNextChar();
+
+              if (maxValue <= fallbackChar)
+                throw new EncoderFallbackException($"The value of fallback character must be less than 'U+{(int)maxValue:X4}'." );
+
+              fallbackChars[r] = fallbackChar;
             }
 
             var c = GetBytes(fallbackChars, 0, fallbackCharsLength, bytes, byteIndex);
