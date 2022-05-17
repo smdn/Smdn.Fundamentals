@@ -112,27 +112,16 @@ public class OctetEncoding : Encoding {
         else
           buffer.Reset();
 
-        var (charUnknownHigh, charUnknownLow, isRune) =
+        var (fallback, isSurrogatePair) =
           2 <= (count - index) && char.IsSurrogatePair(chars[index], chars[index + 1])
-            ? (chars[index], chars[index + 1], true)
+            ? (buffer.Fallback(chars[index], chars[index + 1], index), true)
             : char.IsSurrogate(chars[index])
-              ? (default, default, false)
-              : (chars[index], default, true);
+              ? (false, false)
+              : (buffer.Fallback(chars[index], index), false);
 
-        if (
-          isRune &&
-          charUnknownLow == default
-            ? buffer.Fallback(charUnknownHigh, index)
-            : buffer.Fallback(charUnknownHigh, charUnknownLow, index)
-        ) {
-          var fallbackChars = new char[buffer.Remaining];
-
-          for (var r = 0; r < fallbackChars.Length; r++) {
-            fallbackChars[r] = buffer.GetNextChar();
-          }
-
-          byteCount += GetByteCount(fallbackChars, 0, fallbackChars.Length);
-          index += (charUnknownLow == default) ? 1 : 2;
+        if (fallback) {
+          byteCount += buffer.Remaining;
+          index += isSurrogatePair ? 2 : 1;
         }
         else {
           index++;
@@ -198,19 +187,14 @@ public class OctetEncoding : Encoding {
         else
           buffer.Reset();
 
-        var (charUnknownHigh, charUnknownLow, isRune) =
+        var (fallback, isSurrogatePair) =
           2 <= (charCount - charIndex) && char.IsSurrogatePair(chars[charIndex], chars[charIndex + 1])
-            ? (chars[charIndex], chars[charIndex + 1], true)
+            ? (buffer.Fallback(chars[charIndex], chars[charIndex + 1], charIndex), true)
             : char.IsSurrogate(chars[charIndex])
-              ? (default, default, false)
-              : (chars[charIndex], default, true);
+              ? (false, false)
+              : (buffer.Fallback(chars[charIndex], charIndex), false);
 
-        if (
-          isRune &&
-          charUnknownLow == default
-            ? buffer.Fallback(charUnknownHigh, charIndex)
-            : buffer.Fallback(charUnknownHigh, charUnknownLow, charIndex)
-        ) {
+        if (fallback) {
           var fallbackChars = new char[buffer.Remaining];
 
           for (var r = 0; r < fallbackChars.Length; r++) {
@@ -222,7 +206,7 @@ public class OctetEncoding : Encoding {
           byteIndex += c;
           byteCount += c;
 
-          charIndex += (charUnknownLow == default) ? 1 : 2;
+          charIndex += isSurrogatePair ? 2 : 1;
         }
         else {
           bytes[byteIndex++] = (byte)'?';
