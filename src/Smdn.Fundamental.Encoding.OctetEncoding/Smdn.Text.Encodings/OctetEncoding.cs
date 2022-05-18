@@ -113,6 +113,8 @@ public class OctetEncoding : Encoding {
     var index = 0;
     var count = chars.Length;
 #else
+    if (chars is null)
+      throw new ArgumentNullException(nameof(chars));
     if (index < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
     if (count < 0)
@@ -171,6 +173,8 @@ public class OctetEncoding : Encoding {
 
   public override int GetCharCount(byte[] bytes, int index, int count)
   {
+    if (bytes is null)
+      throw new ArgumentNullException(nameof(bytes));
     if (index < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(index), index);
     if (count < 0)
