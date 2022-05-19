@@ -125,7 +125,7 @@ public class OctetEncoding : Encoding {
     EncoderFallbackBuffer? buffer = null;
     var byteCount = 0;
 
-    for (; index < count; ) {
+    for (var i = 0; i < count; i++) {
       if (chars[index] < maxValue) {
         byteCount++;
         index++;
@@ -146,8 +146,10 @@ public class OctetEncoding : Encoding {
         if (fallback) {
           byteCount += buffer.Remaining;
           index += isSurrogatePair ? 2 : 1;
+          i += isSurrogatePair ? 1 : 0;
         }
         else {
+          byteCount++;
           index++;
         }
       }
@@ -156,12 +158,12 @@ public class OctetEncoding : Encoding {
     return byteCount;
 #else
     if (encoderReplacement.HasValue)
-      return count - index;
+      return count;
 
     var byteCount = 0;
 
-    for (; index < count; index++) {
-      if (chars[index] < maxValue)
+    for (var i = 0; i < count; i++) {
+      if (chars[index++] < maxValue)
         byteCount++;
       else
         throw new EncoderFallbackException();
@@ -224,7 +226,7 @@ public class OctetEncoding : Encoding {
 #endif
     var byteCount = 0;
 
-    for (; charIndex < charCount; ) {
+    for (var i = 0; i < charCount; i++) {
       if (chars[charIndex] < maxValue) {
         bytes[byteIndex++] = (byte)chars[charIndex++];
         byteCount++;
@@ -273,6 +275,7 @@ public class OctetEncoding : Encoding {
             byteCount += c;
 
             charIndex += isSurrogatePair ? 2 : 1;
+            i += isSurrogatePair ? 1 : 0;
           }
           finally {
 #if SYSTEM_BUFFERS_ARRAYPOOL
@@ -333,7 +336,7 @@ public class OctetEncoding : Encoding {
       chars[i] = (char)bytes[i];
     }
 
-    return chars.Length;
+    return bytes.Length;
   }
 #endif
 
