@@ -14,6 +14,49 @@ namespace Smdn.Text.Encodings;
 
 partial class OctetEncodingTests {
   [Test]
+  public void GetCharCount()
+  {
+    var bytes = new byte[] { (byte)'a', (byte)'b', (byte)'c' };
+
+    Assert.AreEqual(3, OctetEncoding.SevenBits.GetCharCount(bytes), "#1");
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetCharCount(bytes, 1, 1), "#2");
+#if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
+    Assert.AreEqual(3, OctetEncoding.SevenBits.GetCharCount(bytes.AsSpan()), "#3");
+#endif
+  }
+
+  [Test]
+  public void GetCharChars()
+  {
+    var bytes = new byte[] { (byte)'a', (byte)'b', (byte)'c' };
+
+    CollectionAssert.AreEqual(new[] { 'a', 'b', 'c' }, OctetEncoding.SevenBits.GetChars(bytes), "#1");
+    CollectionAssert.AreEqual(new[] { 'b' }, OctetEncoding.SevenBits.GetChars(bytes, 1, 1), "#2");
+
+    var chars_3 = new char[3];
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetChars(bytes, 1, 1, chars_3, 1), "#3");
+    CollectionAssert.AreEqual(new[] { '\0', 'b', '\0' }, chars_3, nameof(chars_3));
+
+#if SYSTEM_TEXT_ENCODING_GETCHARS_READONLYSPAN_OF_BYTE
+    var chars_4 = new char[3];
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetChars(bytes.AsSpan(1, 1), chars_4.AsSpan(1)), "#3");
+    CollectionAssert.AreEqual(new[] { '\0', 'b', '\0' }, chars_4, nameof(chars_4));
+#endif
+  }
+
+  [Test]
+  public void GetString()
+  {
+    var bytes = new byte[] { (byte)'a', (byte)'b', (byte)'c' };
+
+    Assert.AreEqual("abc", OctetEncoding.SevenBits.GetString(bytes), "#1");
+    Assert.AreEqual("b", OctetEncoding.SevenBits.GetString(bytes, 1, 1), "#2");
+#if SYSTEM_TEXT_ENCODING_GETSTRING_READONLYSPAN_OF_BYTE
+    Assert.AreEqual("b", OctetEncoding.SevenBits.GetString(bytes.AsSpan(1, 1)), "#3");
+#endif
+  }
+
+  [Test]
   public void GetCharCount_ArgumentNull()
   {
     Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetCharCount((byte[])null));

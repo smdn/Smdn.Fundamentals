@@ -196,7 +196,21 @@ public class OctetEncoding : Encoding {
 #endif
   }
 
+  public override int GetCharCount(byte[] bytes)
+#if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
+    => GetCharCount((bytes ?? throw new ArgumentNullException(nameof(bytes))).AsSpan());
+#else
+    => GetCharCount(
+      bytes: bytes ?? throw new ArgumentNullException(nameof(bytes)),
+      index: 0,
+      count: bytes.Length
+    );
+#endif
+
   public override int GetCharCount(byte[] bytes, int index, int count)
+#if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
+    => GetCharCount((bytes ?? throw new ArgumentNullException(nameof(bytes))).AsSpan(index, count));
+#else
   {
     if (bytes is null)
       throw new ArgumentNullException(nameof(bytes));
@@ -207,6 +221,7 @@ public class OctetEncoding : Encoding {
 
     return count;
   }
+#endif
 
 #if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
   public override int GetCharCount(ReadOnlySpan<byte> bytes)
