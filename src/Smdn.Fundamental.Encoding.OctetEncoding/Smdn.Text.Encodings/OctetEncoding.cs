@@ -5,6 +5,11 @@
 #define SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
 #endif
 
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
+#define SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
+#endif
+
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
 #define SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
 #define SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
@@ -98,6 +103,24 @@ public class OctetEncoding : Encoding {
     return charCount;
   }
 
+  public override int GetByteCount(string s)
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+    => GetByteCount((s ?? throw new ArgumentNullException(nameof(s))).AsSpan());
+#else
+    => GetByteCount((s ?? throw new ArgumentNullException(nameof(s))).ToCharArray());
+#endif
+
+  public override int GetByteCount(char[] chars)
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+    => GetByteCount((chars ?? throw new ArgumentNullException(nameof(chars))).AsSpan());
+#else
+    => GetByteCount(
+      chars ?? throw new ArgumentNullException(nameof(chars)),
+      index: 0,
+      count: chars.Length
+    );
+#endif
+
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
   public override int GetByteCount(char[] chars, int index, int count)
     => GetByteCount(
@@ -188,6 +211,46 @@ public class OctetEncoding : Encoding {
 #if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
   public override int GetCharCount(ReadOnlySpan<byte> bytes)
     => bytes.Length;
+#endif
+
+#if false
+  public override byte[] GetBytes(string s)
+    => base.GetBytes(s);
+
+  public override byte[] GetBytes(char[] chars)
+    => GetBytes(
+      chars: chars ?? throw new ArgumentNullException(nameof(chars)),
+      index: 0,
+      count: chars.Length
+    );
+
+  public override byte[] GetBytes(char[] chars, int index, int count)
+    => base.GetBytes(chars, index, count);
+#endif
+
+  public override int GetBytes(string s, int charIndex, int charCount, byte[] bytes, int byteIndex)
+#if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
+    => GetBytes(
+      chars: (s ?? throw new ArgumentNullException(nameof(s))).AsSpan(charIndex, charCount),
+      bytes: (bytes ?? throw new ArgumentNullException(nameof(bytes))).AsSpan(byteIndex)
+    );
+#else
+  {
+    if (s is null)
+      throw new ArgumentNullException(nameof(s));
+    if (bytes is null)
+      throw new ArgumentNullException(nameof(bytes));
+
+    var chars = s.ToCharArray(charIndex, charCount);
+
+    return GetBytes(
+      chars: chars,
+      charIndex: 0,
+      charCount: chars.Length,
+      bytes: bytes,
+      byteIndex: byteIndex
+    );
+  }
 #endif
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR

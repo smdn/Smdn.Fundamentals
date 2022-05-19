@@ -20,6 +20,45 @@ namespace Smdn.Text.Encodings;
 
 partial class OctetEncodingTests {
   [Test]
+  public void GetByteCount()
+  {
+    Assert.AreEqual(3, OctetEncoding.SevenBits.GetByteCount("abc"), "#1");
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetByteCount("abc", 1, 1), "#2");
+#endif
+    Assert.AreEqual(3, OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray()), "#3");
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 1), "#4");
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+    Assert.AreEqual(3, OctetEncoding.SevenBits.GetByteCount("abc".AsSpan()), "#5");
+#endif
+  }
+
+  [Test]
+  public void GetBytes()
+  {
+    CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, OctetEncoding.SevenBits.GetBytes("abc"), "#1");
+#if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
+    CollectionAssert.AreEqual(new[] { (byte)'b' }, OctetEncoding.SevenBits.GetBytes("abc", 1, 1), "#2");
+#endif
+    var bytes_3 = new byte[3];
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetBytes("abc", 1, 1, bytes_3, 1), "#3");
+    CollectionAssert.AreEqual(new[] { (byte)'\0', (byte)'b', (byte)'\0' }, bytes_3, nameof(bytes_3));
+
+    CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray()), "#4");
+    CollectionAssert.AreEqual(new[] { (byte)'b' }, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 1), "#5");
+
+    var bytes_6 = new byte[3];
+    Assert.AreEqual(1, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 1, bytes_6, 1), "#6");
+    CollectionAssert.AreEqual(new[] { (byte)'\0', (byte)'b', (byte)'\0' }, bytes_6, nameof(bytes_6));
+
+#if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
+    var bytes_7 = new byte[3];
+    Assert.AreEqual(3, OctetEncoding.SevenBits.GetBytes("abc".AsSpan(), bytes_7.AsSpan()), "#7");
+    CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, bytes_7, nameof(bytes_7));
+#endif
+  }
+
+  [Test]
   public void GetByteCount_ArgumentNull()
   {
     Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null));
