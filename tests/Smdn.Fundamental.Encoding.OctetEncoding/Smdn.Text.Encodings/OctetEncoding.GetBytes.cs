@@ -34,6 +34,20 @@ partial class OctetEncodingTests {
   }
 
   [Test]
+  public void GetByteCount_Empty()
+  {
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount(string.Empty), "#1");
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount("abc", 1, 0), "#2");
+#endif
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount(string.Empty.ToCharArray()), "#3");
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 0), "#4");
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount(string.Empty.AsSpan()), "#5");
+#endif
+  }
+
+  [Test]
   public void GetBytes()
   {
     CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, OctetEncoding.SevenBits.GetBytes("abc"), "#1");
@@ -55,6 +69,22 @@ partial class OctetEncodingTests {
     var bytes_7 = new byte[3];
     Assert.AreEqual(3, OctetEncoding.SevenBits.GetBytes("abc".AsSpan(), bytes_7.AsSpan()), "#7");
     CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, bytes_7, nameof(bytes_7));
+#endif
+  }
+
+  [Test]
+  public void GetBytes_Empty()
+  {
+    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes(string.Empty), "#1");
+#if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
+    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes("abc", 1, 0), "#2");
+#endif
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetBytes("abc", 1, 0, new byte[0], 0), "#3");
+    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(1, 0)), "#4");
+    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0), "#5");
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0, new byte[0], 0), "#6");
+#if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetBytes(string.Empty.AsSpan(), new byte[0].AsSpan()), "#7");
 #endif
   }
 

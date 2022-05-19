@@ -57,6 +57,37 @@ partial class OctetEncodingTests {
   }
 
   [Test]
+  public void GetCharCount_Empty()
+  {
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetCharCount(new byte[0]), "#1");
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetCharCount(new byte[1], 1, 0), "#2");
+#if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetCharCount(new byte[0].AsSpan()), "#3");
+#endif
+  }
+
+  [Test]
+  public void GetCharChars_Empty()
+  {
+    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetChars(new byte[0]), "#1");
+    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetChars(new byte[1], 1, 0), "#2");
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetChars(new byte[1], 1, 0, new char[0], 0), "#3");
+#if SYSTEM_TEXT_ENCODING_GETCHARS_READONLYSPAN_OF_BYTE
+    Assert.AreEqual(0, OctetEncoding.SevenBits.GetChars(new byte[0].AsSpan(), new char[0].AsSpan()), "#4");
+#endif
+  }
+
+  [Test]
+  public void GetString_Empty()
+  {
+    Assert.AreEqual(string.Empty, OctetEncoding.SevenBits.GetString(new byte[0]), "#1");
+    Assert.AreEqual(string.Empty, OctetEncoding.SevenBits.GetString(new byte[1], 1, 0), "#2");
+#if SYSTEM_TEXT_ENCODING_GETSTRING_READONLYSPAN_OF_BYTE
+    Assert.AreEqual(string.Empty, OctetEncoding.SevenBits.GetString(new byte[0].AsSpan()), "#3");
+#endif
+  }
+
+  [Test]
   public void GetCharCount_ArgumentNull()
   {
     Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetCharCount((byte[])null));
