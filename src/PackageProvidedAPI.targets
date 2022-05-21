@@ -87,7 +87,11 @@ SPDX-License-Identifier: MIT
 
   <Choose>
     <When Condition="
-      $(TargetFramework.StartsWith('netstandard1')) or
+      $(TargetFramework.StartsWith('net46')) or
+      '$(TargetFramework)' == 'netstandard1.3' or
+      '$(TargetFramework)' == 'netstandard1.4' or
+      '$(TargetFramework)' == 'netstandard1.5' or
+      '$(TargetFramework)' == 'netstandard1.6' or
       $(TargetFramework.StartsWith('netcoreapp1'))">
       <ItemGroup><PackageReference Update="System.Runtime.Serialization.Formatters" Version="4.3.0" /></ItemGroup>
     </When>
