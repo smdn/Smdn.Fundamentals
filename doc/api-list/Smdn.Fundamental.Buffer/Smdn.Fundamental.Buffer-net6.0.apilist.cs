@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Buffer
 //   AssemblyVersion: 3.0.3.0
 //   InformationalVersion: 3.0.3+0eca389a90f3c44689f04f1d6d623d990adf601a
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
