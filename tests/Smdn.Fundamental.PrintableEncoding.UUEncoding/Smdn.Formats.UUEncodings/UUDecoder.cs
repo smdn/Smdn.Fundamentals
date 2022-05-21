@@ -175,6 +175,46 @@ extra text block
         Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
       }
     }
+
+    [Test]
+    public void TestExtractFiles_EmptyFileName()
+    {
+      const string filename = "";
+      var input = @$"
+begin 644 {filename}
+#0V%T
+`
+end
+".Replace("\r\n", "\n").Replace("\n", "\r\n");
+
+      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(input))) {
+        var fileCount = 0;
+
+        UUDecoder.ExtractFiles(stream, delegate(UUDecoder.FileEntry file) {
+          if (fileCount == 0) {
+            Assert.AreEqual(string.Empty, file.FileName, "extracted file name #1");
+            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #1");
+            Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */, file.Stream.ReadToEnd(), "extracted file content #1");
+
+            Assert.Throws<InvalidOperationException>(() => file.Save());
+          }
+          else {
+            Assert.Fail("unexpected file entry");
+          }
+
+          fileCount++;
+
+          file.Dispose();
+
+          Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(file.Stream));
+          Assert.DoesNotThrow(() => file.Dispose(), "dispose again");
+        });
+
+        Assert.AreEqual(1, fileCount, "extracted file count");
+
+        Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
+      }
+    }
   }
 }
 

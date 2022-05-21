@@ -41,7 +41,12 @@ public static class UUDecoder {
         throw new ObjectDisposedException(GetType().FullName);
     }
 
-    public void Save() => Save(FileName);
+    public void Save()
+      => Save(
+        string.IsNullOrEmpty(FileName)
+          ? throw new InvalidOperationException($"{nameof(FileName)} is null or empty. Specify the file path explicitly.")
+          : FileName
+      );
 
     public void Save(string path)
     {
