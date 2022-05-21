@@ -32,11 +32,19 @@ public static class StringReplacementExtensions {
       var index = str.IndexOfAny(oldChars, lastIndex);
 
       if (index < 0) {
+#if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
+        sb.Append(str.AsSpan(lastIndex));
+#else
         sb.Append(str.Substring(lastIndex));
+#endif
         break;
       }
       else {
+#if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
+        sb.Append(str.AsSpan(lastIndex, index - lastIndex));
+#else
         sb.Append(str.Substring(lastIndex, index - lastIndex));
+#endif
 
         if (evaluator != null)
           sb.Append(evaluator(str[index], str, index));
@@ -74,11 +82,19 @@ public static class StringReplacementExtensions {
         var index = str.IndexOf(oldValue, lastIndex, StringComparison.Ordinal);
 
         if (index < 0) {
+#if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
+          sb.Append(str.AsSpan(lastIndex));
+#else
           sb.Append(str.Substring(lastIndex));
+#endif
           break;
         }
         else {
+#if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
+          sb.Append(str.AsSpan(lastIndex, index - lastIndex));
+#else
           sb.Append(str.Substring(lastIndex, index - lastIndex));
+#endif
 
           if (evaluator != null)
             sb.Append(evaluator(oldValue, str, index));
