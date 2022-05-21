@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.Hexadecimal
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+c73d3360cd4c334c1a6c2d66a2f54b0097a6b969
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
