@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_IO_FILE
+#endif
+
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -45,6 +49,7 @@ public static class PathUtils {
     return string.Equals(pathX, pathY, DefaultPathStringComparison);
   }
 
+#if SYSTEM_IO_FILE
   public static bool AreSameFile(string pathX, string pathY)
   {
     if (File.Exists(pathX) && File.Exists(pathY))
@@ -53,6 +58,7 @@ public static class PathUtils {
     else
       return false;
   }
+#endif
 
   /// <param name="path">The path to compare.</param>
   /// <param name="pathOrExtension">extension must contain ".".</param>

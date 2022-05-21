@@ -1,5 +1,13 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_IO_DIRECTORYINFO
+#endif
+#if NET20_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_IO_SEARCHOPTION
+#endif
+
+#if SYSTEM_IO_DIRECTORYINFO
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,3 +52,4 @@ public static class DirectoryInfoExtensions {
     return matched;
   }
 }
+#endif
