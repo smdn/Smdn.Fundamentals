@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.CryptoTransform
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+9cea7b339599949ee66f26f57ac11445d6975b49
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System.Security.Cryptography;
