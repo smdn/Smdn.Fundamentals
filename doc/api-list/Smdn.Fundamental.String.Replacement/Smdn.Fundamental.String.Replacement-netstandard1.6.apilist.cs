@@ -1,7 +1,7 @@
-// Smdn.Fundamental.String.Replacement.dll (Smdn.Fundamental.String.Replacement-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.String.Replacement.dll (Smdn.Fundamental.String.Replacement-3.0.1)
 //   Name: Smdn.Fundamental.String.Replacement
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard1.6)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+7921ab9727f5482fc8ec06c01fdc506d02fd451c
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
@@ -11,6 +11,8 @@ namespace Smdn {
   public delegate string ReplaceCharEvaluator(char ch, string str, int index);
   public delegate string ReplaceStringEvaluator(string matched, string str, int index);
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class StringReplacementExtensions {
     public static string Remove(this string str, params string[] oldValues) {}
     public static string RemoveChars(this string str, params char[] oldChars) {}
