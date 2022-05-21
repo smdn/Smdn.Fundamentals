@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.FileSystem
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+88a74531a79909c9ffa85e23006da7fc8c31296f
-//   TargetFramework: .NETCoreApp,Version=v6.0
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System;
@@ -46,9 +46,9 @@ namespace Smdn.IO {
     public static bool ContainsShellEscapeChar(string path, Encoding encoding) {}
     public static bool ContainsShellPipeChar(string path, Encoding encoding) {}
     public static bool ContainsShellSpecialChars(string path, Encoding encoding, params byte[] specialChars) {}
+    public static string GetRelativePath(string basePath, string path) {}
     public static string RemoveInvalidFileNameChars(string path) {}
     public static string RemoveInvalidPathChars(string path) {}
-    public static string RenameUnique(string file) {}
     public static string ReplaceInvalidFileNameChars(string path, ReplaceCharEvaluator evaluator) {}
     public static string ReplaceInvalidFileNameChars(string path, string newValue) {}
     public static string ReplaceInvalidFileNameCharsWithBlanks(string path) {}
