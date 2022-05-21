@@ -73,7 +73,7 @@ public static class StringReplacementExtensions {
 
     foreach (var oldValue in oldValues) {
       var lastIndex = 0;
-      var sb = new StringBuilder();
+      var sb = new StringBuilder(str.Length);
 
       if (oldValue.Length == 0)
         continue;
