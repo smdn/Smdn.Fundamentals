@@ -43,10 +43,10 @@ public static class DirectoryInfoExtensions {
     var recursive = searchOption == SearchOption.AllDirectories;
 
     foreach (var entry in directory.GetFileSystemInfos()) {
-      if (entry is TFileSystemInfo && searchPattern(entry as TFileSystemInfo))
-        matched.Add(entry as TFileSystemInfo);
-      if (recursive && entry is DirectoryInfo)
-        matched.AddRange(FindFileSystemEntries(entry as DirectoryInfo, searchOption, searchPattern));
+      if (entry is TFileSystemInfo fileSystemInfo && searchPattern(fileSystemInfo))
+        matched.Add(fileSystemInfo);
+      if (recursive && entry is DirectoryInfo directoryInfo)
+        matched.AddRange(FindFileSystemEntries(directoryInfo, searchOption, searchPattern));
     }
 
     return matched;

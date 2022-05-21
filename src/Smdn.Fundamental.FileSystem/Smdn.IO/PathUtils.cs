@@ -22,7 +22,7 @@ public static class PathUtils {
     if (newFileName == null)
       throw new ArgumentNullException(nameof(newFileName));
 
-    var dir = Path.GetDirectoryName(path);
+    var dir = Path.GetDirectoryName(path) ?? string.Empty;
     var ext = Path.GetExtension(path);
 
     return Path.Combine(dir, newFileName + ext);
@@ -162,7 +162,7 @@ public static class PathUtils {
     if (!File.Exists(file))
       throw new DirectoryNotFoundException($"file '{file}' not found");
 
-    var directory = Path.GetDirectoryName(file);
+    var directory = Path.GetDirectoryName(file) ?? string.Empty;
     var extension = Path.GetExtension(file);
 
     for (var index = 0; ; index++) {
