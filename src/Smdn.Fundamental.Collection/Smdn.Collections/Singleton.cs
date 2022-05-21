@@ -32,7 +32,7 @@ public static class Singleton {
 #endif
   {
 #pragma warning restore IDE0055
-    public T this[int index] => index == 0 ? element : throw ExceptionUtils.CreateArgumentMustBeInRange(0, 0, nameof(index), index);
+    public T this[int index] => index == 0 ? element! : throw ExceptionUtils.CreateArgumentMustBeInRange(0, 0, nameof(index), index);
     public int Count => 1;
 
     public SingletonList(T element)
@@ -43,7 +43,7 @@ public static class Singleton {
 #if SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONINFO
     protected SingletonList(SerializationInfo info, StreamingContext context)
     {
-      this.element = (T)info.GetValue(nameof(element), typeof(T));
+      this.element = (T?)info.GetValue(nameof(element), typeof(T));
     }
 
     public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -54,12 +54,12 @@ public static class Singleton {
 
     public IEnumerator<T> GetEnumerator()
     {
-      yield return element;
+      yield return element!;
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-    private readonly T element;
+    private readonly T? element;
   }
 
 #if false

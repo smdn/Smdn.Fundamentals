@@ -80,13 +80,13 @@ public static class IReadOnlyListExtensions {
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
   }
 
-  public static int IndexOf<T>(this IReadOnlyList<T> list, T item, IEqualityComparer<T> equalityComparer = default)
+  public static int IndexOf<T>(this IReadOnlyList<T> list, T item, IEqualityComparer<T>? equalityComparer = default)
     => IndexOf(list ?? throw new ArgumentNullException(nameof(list)), item, 0, list.Count, equalityComparer);
 
-  public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, IEqualityComparer<T> equalityComparer = default)
+  public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, IEqualityComparer<T>? equalityComparer = default)
     => IndexOf(list ?? throw new ArgumentNullException(nameof(list)), item, index, list.Count - index, equalityComparer);
 
-  public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, int count, IEqualityComparer<T> equalityComparer = default)
+  public static int IndexOf<T>(this IReadOnlyList<T> list, T item, int index, int count, IEqualityComparer<T>? equalityComparer = default)
   {
     if (list == null)
       throw new ArgumentNullException(nameof(list));
