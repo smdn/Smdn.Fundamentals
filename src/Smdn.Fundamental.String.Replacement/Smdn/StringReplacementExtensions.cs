@@ -18,7 +18,7 @@ public static class StringReplacementExtensions {
     return ReplaceInternal(str, oldChars, evaluator);
   }
 
-  private static string ReplaceInternal(string str, char[] oldChars, ReplaceCharEvaluator evaluator)
+  private static string ReplaceInternal(string str, char[] oldChars, ReplaceCharEvaluator? evaluator)
   {
     if (str == null)
       throw new ArgumentNullException(nameof(str));
@@ -64,7 +64,7 @@ public static class StringReplacementExtensions {
     return ReplaceInternal(str, oldValues, evaluator);
   }
 
-  private static string ReplaceInternal(string str, string[] oldValues, ReplaceStringEvaluator evaluator)
+  private static string ReplaceInternal(string str, string[] oldValues, ReplaceStringEvaluator? evaluator)
   {
     if (str == null)
       throw new ArgumentNullException(nameof(str));
