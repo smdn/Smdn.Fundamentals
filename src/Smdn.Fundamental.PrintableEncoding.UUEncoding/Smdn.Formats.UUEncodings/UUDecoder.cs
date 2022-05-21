@@ -13,11 +13,11 @@ public static class UUDecoder {
   public sealed class FileEntry : IDisposable {
     [CLSCompliant(false)]
     public uint Permissions {
-      get; internal set;
+      get; init;
     }
 
     public string FileName {
-      get; internal set;
+      get; init;
     }
 
     public Stream Stream {
