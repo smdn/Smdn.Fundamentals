@@ -96,7 +96,7 @@ public static class ReadOnlySequenceExtensions {
       ToCharSequence
     );
 #else
-    char[] buffer = null;
+    char[]? buffer = null;
     var length = (int)Math.Min(int.MaxValue, sequence.Length);
 
     try {
