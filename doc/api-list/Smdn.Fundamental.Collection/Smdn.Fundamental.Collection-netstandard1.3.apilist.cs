@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Collection
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+fe45d5416d90bdf36487ef596bf2bfe669ae4950
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System.Collections.Generic;
