@@ -25,6 +25,9 @@ public static class StringReplacementExtensions {
     if (oldChars == null)
       throw new ArgumentNullException(nameof(oldChars));
 
+    if (str.Length == 0)
+      return string.Empty;
+
     var lastIndex = 0;
     var sb = new StringBuilder(str.Length);
 
@@ -70,6 +73,9 @@ public static class StringReplacementExtensions {
       throw new ArgumentNullException(nameof(str));
     if (oldValues == null)
       throw new ArgumentNullException(nameof(oldValues));
+
+    if (str.Length == 0)
+      return string.Empty;
 
     foreach (var oldValue in oldValues) {
       var lastIndex = 0;
