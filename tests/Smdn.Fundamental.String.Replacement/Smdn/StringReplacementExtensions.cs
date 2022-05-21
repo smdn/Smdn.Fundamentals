@@ -40,4 +40,24 @@ public class StringReplacementExtensionsTests {
       return string.Format("{0}{1}", i, matched.ToUpper());
     }), "replace strings");
   }
+
+  [Test]
+  public void TestReplace_Null()
+  {
+    var str = "abcdefghijklmnopqrstuvwxyz";
+
+    Assert.AreEqual("defghijklpqrstuvw", str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
+      return null;
+    }), "replace strings");
+  }
+
+  [Test]
+  public void TestReplace_Empty()
+  {
+    var str = "abcdefghijklmnopqrstuvwxyz";
+
+    Assert.AreEqual("defghijklpqrstuvw", str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
+      return string.Empty;
+    }), "replace strings");
+  }
 }
