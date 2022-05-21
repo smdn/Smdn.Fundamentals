@@ -6,19 +6,28 @@ using System.Text;
 namespace Smdn;
 
 public static class StringReplacementExtensions {
-  public static string RemoveChars(this string str, params char[] oldChars) => ReplaceInternal(str, oldChars, null);
+  public static string RemoveChars(this string str, params char[] oldChars)
+    => ReplaceInternal(str, oldChars, null);
 
-  public static string Remove(this string str, params string[] oldValues) => ReplaceInternal(str, oldValues, null);
+  public static string Remove(this string str, params string[] oldValues)
+    => ReplaceInternal(str, oldValues, null);
 
-  public static string Replace(this string str, char[] oldChars, ReplaceCharEvaluator evaluator)
-  {
-    if (evaluator == null)
-      throw new ArgumentNullException(nameof(evaluator));
+  public static string Replace(
+    this string str,
+    char[] oldChars,
+    ReplaceCharEvaluator evaluator
+  )
+    => ReplaceInternal(
+      str,
+      oldChars,
+      evaluator ?? throw new ArgumentNullException(nameof(evaluator))
+    );
 
-    return ReplaceInternal(str, oldChars, evaluator);
-  }
-
-  private static string ReplaceInternal(string str, char[] oldChars, ReplaceCharEvaluator? evaluator)
+  private static string ReplaceInternal(
+    string str,
+    char[] oldChars,
+    ReplaceCharEvaluator? evaluator
+  )
   {
     if (str == null)
       throw new ArgumentNullException(nameof(str));
@@ -59,15 +68,22 @@ public static class StringReplacementExtensions {
     return sb.ToString();
   }
 
-  public static string Replace(this string str, string[] oldValues, ReplaceStringEvaluator evaluator)
-  {
-    if (evaluator == null)
-      throw new ArgumentNullException(nameof(evaluator));
+  public static string Replace(
+    this string str,
+    string[] oldValues,
+    ReplaceStringEvaluator evaluator
+  )
+    => ReplaceInternal(
+      str,
+      oldValues,
+      evaluator ?? throw new ArgumentNullException(nameof(evaluator))
+    );
 
-    return ReplaceInternal(str, oldValues, evaluator);
-  }
-
-  private static string ReplaceInternal(string str, string[] oldValues, ReplaceStringEvaluator? evaluator)
+  private static string ReplaceInternal(
+    string str,
+    string[] oldValues,
+    ReplaceStringEvaluator? evaluator
+  )
   {
     if (str == null)
       throw new ArgumentNullException(nameof(str));
