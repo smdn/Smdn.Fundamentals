@@ -1,7 +1,7 @@
-// Smdn.Fundamental.FileSystem.dll (Smdn.Fundamental.FileSystem-3.0.1.1)
+// Smdn.Fundamental.FileSystem.dll (Smdn.Fundamental.FileSystem-3.0.2)
 //   Name: Smdn.Fundamental.FileSystem
-//   AssemblyVersion: 3.0.1.1
-//   InformationalVersion: 3.0.1.1+5f06cefdd6e0e438d2e42e688f01cb7d40790529
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+88a74531a79909c9ffa85e23006da7fc8c31296f
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
@@ -12,6 +12,8 @@ using System.Text;
 using Smdn;
 
 namespace Smdn.IO {
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class DirectoryInfoExtensions {
     public static IEnumerable<DirectoryInfo> GetDirectories(this DirectoryInfo directory, Predicate<DirectoryInfo> searchPattern) {}
     public static IEnumerable<DirectoryInfo> GetDirectories(this DirectoryInfo directory, SearchOption searchOption, Predicate<DirectoryInfo> searchPattern) {}
@@ -21,6 +23,8 @@ namespace Smdn.IO {
     public static IEnumerable<FileInfo> GetFiles(this DirectoryInfo directory, SearchOption searchOption, Predicate<FileInfo> searchPattern) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class DirectoryUtils {
     public static IEnumerable<string> GetDirectories(string directory, Predicate<string> searchPattern) {}
     public static IEnumerable<string> GetDirectories(string directory, SearchOption searchOption, Predicate<string> searchPattern) {}
@@ -28,6 +32,8 @@ namespace Smdn.IO {
     public static IEnumerable<string> GetFiles(string directory, SearchOption searchOption, Predicate<string> searchPattern) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class PathUtils {
     public static StringComparer DefaultPathStringComparer { get; }
     public static StringComparison DefaultPathStringComparison { get; }
