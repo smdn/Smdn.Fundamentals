@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0001</DiagnosticId>
+    <Target>T:Smdn.Collections.KeyValuePair</Target>
+    <Left>lib/netstandard2.0/Smdn.Fundamental.Collection.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.Collection.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.Collections.IReadOnlyCollectionExtensions.ConvertAll``2(System.Collections.Generic.IReadOnlyCollection{``0},System.Func{``0,``1})</Target>
+    <Left>lib/netstandard1.0/Smdn.Fundamental.Collection.dll</Left>
+    <Right>lib/net45/Smdn.Fundamental.Collection.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.Collections.IReadOnlyCollectionExtensions.ConvertAll``2(System.Collections.Generic.IReadOnlyCollection{``0},System.Func{``0,``1})</Target>
+    <Left>lib/netstandard1.6/Smdn.Fundamental.Collection.dll</Left>
+    <Right>lib/netstandard2.0/Smdn.Fundamental.Collection.dll</Right>
+  </Suppression>
+</Suppressions>
