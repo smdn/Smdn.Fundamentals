@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Encoding.OctetEncoding
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+7aea3f3356a484ee5606309cf5d8302a9c7794d6
-//   TargetFramework: .NETFramework,Version=v4.6
+//   TargetFramework: .NETStandard,Version=v1.1
 //   Configuration: Release
 
 using System.Text;
@@ -16,7 +16,6 @@ namespace Smdn.Text.Encodings {
     public static readonly Encoding SevenBits; // = "Smdn.Text.Encodings.OctetEncoding"
 
     public OctetEncoding(int bits) {}
-    public OctetEncoding(int bits, EncoderFallback encoderFallback, DecoderFallback decoderFallback) {}
 
     public override int GetByteCount(char[] chars) {}
     public override int GetByteCount(char[] chars, int index, int count) {}
