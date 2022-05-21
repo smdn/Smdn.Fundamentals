@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.String.Replacement
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+7921ab9727f5482fc8ec06c01fdc506d02fd451c
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using Smdn;
