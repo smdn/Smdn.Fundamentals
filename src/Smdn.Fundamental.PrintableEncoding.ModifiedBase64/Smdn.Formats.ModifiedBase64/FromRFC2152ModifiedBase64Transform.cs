@@ -97,5 +97,5 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
 #endif
 
   private int count = 0;
-  private ICryptoTransform fromBase64Transform;
+  private ICryptoTransform? fromBase64Transform;
 }

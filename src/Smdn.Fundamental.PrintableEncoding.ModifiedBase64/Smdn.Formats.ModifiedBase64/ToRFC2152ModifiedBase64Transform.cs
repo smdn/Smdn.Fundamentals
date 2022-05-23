@@ -67,5 +67,5 @@ public class ToRFC2152ModifiedBase64Transform : ICryptoTransform {
     return transformed;
   }
 
-  private ICryptoTransform toBase64Transform;
+  private ICryptoTransform? toBase64Transform;
 }
