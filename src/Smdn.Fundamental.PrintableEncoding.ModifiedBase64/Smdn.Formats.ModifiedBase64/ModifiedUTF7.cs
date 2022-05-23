@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_BUFFERS_ARRAYPOOL
+using System.Buffers;
+#endif
 using System.Text;
 
 using Smdn.Security.Cryptography;
@@ -98,21 +101,34 @@ public static class ModifiedUTF7 {
         continue;
       }
 
-      var nonPrintableChars = new byte[str.Length - index]; // TODO: array pool
+      var nonPrintableCharBufferLength = str.Length - index;
+      var nonPrintableChars =
+#if SYSTEM_BUFFERS_ARRAYPOOL
+        ArrayPool<byte>.Shared.Rent(nonPrintableCharBufferLength);
+#else
+        new byte[nonPrintableCharBufferLength];
+#endif
       var len = 0;
 
-      for (; index < str.Length; index++) {
-        c = str[index];
+      try {
+        for (; index < str.Length; index++) {
+          c = str[index];
 
-        if (c == '-')
-          // "-" is used to shift back to US-ASCII
-          break;
-        else
-          nonPrintableChars[len++] = (byte)c;
+          if (c == '-')
+            // "-" is used to shift back to US-ASCII
+            break;
+          else
+            nonPrintableChars[len++] = (byte)c;
+        }
+
+        // modified UTF7 -> string
+        decoded.Append(Encoding.BigEndianUnicode.GetString(transform.TransformBytes(nonPrintableChars, 0, len)));
       }
-
-      // modified UTF7 -> string
-      decoded.Append(Encoding.BigEndianUnicode.GetString(transform.TransformBytes(nonPrintableChars, 0, len)));
+      finally {
+#if SYSTEM_BUFFERS_ARRAYPOOL
+        ArrayPool<byte>.Shared.Return(nonPrintableChars);
+#endif
+      }
     }
 
     return decoded.ToString();

@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_BUFFERS_ARRAYPOOL
+using System.Buffers;
+#endif
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.ModifiedBase64;
@@ -73,12 +76,23 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     switch (paddingCount) {
       case 1:
       case 2:
-        var paddedInputBuffer = new byte[inputCount + paddingCount];
+        var paddedInputBufferLength = inputCount + paddingCount;
+        var paddedInputBuffer =
+#if SYSTEM_BUFFERS_ARRAYPOOL
+          ArrayPool<byte>.Shared.Rent(paddedInputBufferLength);
+#else
+          new byte[paddedInputBufferLength];
+#endif
 
-        Buffer.BlockCopy(inputBuffer, inputOffset, paddedInputBuffer, 0, inputCount);
-        Buffer.BlockCopy(paddingBuffer, 0, paddedInputBuffer, inputCount, paddingCount);
+        try {
+          Buffer.BlockCopy(inputBuffer, inputOffset, paddedInputBuffer, 0, inputCount);
+          Buffer.BlockCopy(paddingBuffer, 0, paddedInputBuffer, inputCount, paddingCount);
 
-        return fromBase64Transform.TransformFinalBlock(paddedInputBuffer, 0, paddedInputBuffer.Length);
+          return fromBase64Transform.TransformFinalBlock(paddedInputBuffer, 0, paddedInputBufferLength);
+        }
+        finally {
+          ArrayPool<byte>.Shared.Return(paddedInputBuffer);
+        }
 
       case 3:
         throw new FormatException("incorrect form");

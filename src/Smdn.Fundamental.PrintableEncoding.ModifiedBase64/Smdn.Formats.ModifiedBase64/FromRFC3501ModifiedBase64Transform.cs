@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_BUFFERS_ARRAYPOOL
+using System.Buffers;
+#endif
 using System.Security.Cryptography;
 
 namespace Smdn.Formats.ModifiedBase64;
@@ -27,35 +30,67 @@ public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase
   {
   }
 
-  private static byte[] ReplaceInput(byte[] inputBuffer, int inputOffset, int inputCount)
+  private static void ModifyInput(byte[] inputBuffer, int inputOffset, int inputCount, byte[] destination)
   {
-    var replaced = new byte[inputCount];
-
-    Buffer.BlockCopy(inputBuffer, inputOffset, replaced, 0, inputCount);
+    Buffer.BlockCopy(inputBuffer, inputOffset, destination, 0, inputCount);
 
     // "," is used instead of "/"
     for (var i = 0; i < inputCount; i++) {
-      if (replaced[i] == 0x2c)
+      if (destination[i] == 0x2c)
         // replace ',' 0x2c to '/' 0x2f
-        replaced[i] = 0x2f;
+        destination[i] = 0x2f;
     }
-
-    return replaced;
   }
 
   public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
-    => base.TransformBlock(
-      ReplaceInput(inputBuffer, inputOffset, inputCount),
-      0,
-      inputCount,
-      outputBuffer,
-      outputOffset
-    );
+  {
+    var modifiedInputBuffer =
+#if SYSTEM_BUFFERS_ARRAYPOOL
+      ArrayPool<byte>.Shared.Rent(inputCount);
+#else
+      new byte[inputCount];
+#endif
+
+    try {
+      ModifyInput(inputBuffer, inputOffset, inputCount, modifiedInputBuffer);
+
+      return base.TransformBlock(
+        modifiedInputBuffer,
+        0,
+        inputCount,
+        outputBuffer,
+        outputOffset
+      );
+    }
+    finally {
+#if SYSTEM_BUFFERS_ARRAYPOOL
+      ArrayPool<byte>.Shared.Return(modifiedInputBuffer);
+#endif
+    }
+  }
 
   public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
-    => base.TransformFinalBlock(
-      ReplaceInput(inputBuffer, inputOffset, inputCount),
-      0,
-      inputCount
-    );
+  {
+    var modifiedInputBuffer =
+#if SYSTEM_BUFFERS_ARRAYPOOL
+      ArrayPool<byte>.Shared.Rent(inputCount);
+#else
+      new byte[inputCount];
+#endif
+
+    try {
+      ModifyInput(inputBuffer, inputOffset, inputCount, modifiedInputBuffer);
+
+      return base.TransformFinalBlock(
+        modifiedInputBuffer,
+        0,
+        inputCount
+      );
+    }
+    finally {
+#if SYSTEM_BUFFERS_ARRAYPOOL
+      ArrayPool<byte>.Shared.Return(modifiedInputBuffer);
+#endif
+    }
+  }
 }
