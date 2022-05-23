@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.PercentEncoding
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+4d376c711449be0850ff8007549f0c988ffaa33f
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System.Security.Cryptography;
