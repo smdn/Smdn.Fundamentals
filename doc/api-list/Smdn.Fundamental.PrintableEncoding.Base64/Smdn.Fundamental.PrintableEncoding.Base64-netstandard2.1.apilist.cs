@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.Base64.dll (Smdn.Fundamental.PrintableEncoding.Base64-3.0.1)
+// Smdn.Fundamental.PrintableEncoding.Base64.dll (Smdn.Fundamental.PrintableEncoding.Base64-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.Base64
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+c9ae68d71ad7d729c814c50b0ec0464d38c45c66
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+d177dfeb0b6cea960613cd36dfa705263690a4a7
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -10,6 +10,8 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace Smdn.Formats {
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Base64 {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
