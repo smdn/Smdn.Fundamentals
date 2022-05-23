@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.Base64
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+d177dfeb0b6cea960613cd36dfa705263690a4a7
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System.IO;
