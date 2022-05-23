@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+using System.Collections;
 using System.Text;
 using NUnit.Framework;
 
@@ -9,20 +10,20 @@ namespace Smdn.Formats.ModifiedBase64;
 
 [TestFixture]
 public class ToRFC2152ModifiedBase64TransformTests {
-  [Test]
-  public void TestTransform()
+  private static IEnumerable YieldTestCases_Transform()
   {
-    foreach (var test in new[] {
-      new {Data = new byte[] {0xfb},              ExpectedBase64 = "+w==", Expected2152Base64 = "+w"},
-      new {Data = new byte[] {0xfb, 0xf0},        ExpectedBase64 = "+/A=", Expected2152Base64 = "+/A"},
-      new {Data = new byte[] {0xfb, 0xf0, 0x00},  ExpectedBase64 = "+/AA", Expected2152Base64 = "+/AA"},
-    }) {
-      //Assert.AreEqual(test.ExpectedBase64, TextConvert.ToBase64String(test.Data), "Base64");
-      Assert.AreEqual(
-        Encoding.ASCII.GetBytes(test.Expected2152Base64),
-        ICryptoTransformExtensions.TransformBytes(new ToRFC2152ModifiedBase64Transform(), test.Data),
-        "RFC2152 Base64"
-      );
-    }
+    yield return new object[] { new byte[] { 0xfb },             "+w==", "+w" };
+    yield return new object[] { new byte[] { 0xfb, 0xf0 },       "+/A=", "+/A" };
+    yield return new object[] { new byte[] { 0xfb, 0xf0, 0x00 }, "+/AA", "+/AA" };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Transform))]
+  public void Transform(byte[] input, string expectedBase64, string expectedModifiedBase64)
+  {
+    //CollectionAssert.AreEqual(expectedBase64, TextConvert.ToBase64String(input), "Base64");
+    CollectionAssert.AreEqual(
+      Encoding.ASCII.GetBytes(expectedModifiedBase64),
+      ICryptoTransformExtensions.TransformBytes(new ToRFC2152ModifiedBase64Transform(), input)
+    );
   }
 }
