@@ -1,7 +1,14 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#pragma warning disable CS8602, CS8603, CS8604
+#endif
+
 using System;
 using System.Collections.Generic;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES || SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.IO;
 
 using Smdn.IO.Streams;
@@ -11,17 +18,22 @@ namespace Smdn.Formats.UUEncodings;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static class UUDecoder {
   public sealed class FileEntry : IDisposable {
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+    [MemberNotNullWhen(false, nameof(stream))]
+#endif
+    private bool IsClosed => stream is null;
+
     [CLSCompliant(false)]
     public uint Permissions {
       get; init;
     }
 
-    public string FileName {
+    public string? FileName {
       get; init;
     }
 
     public Stream Stream {
-      get { CheckDisposed(); return stream; }
+      get { ThrowObjectDisposedExceptionIf(IsClosed); return stream; }
       internal set => stream = value;
     }
 
@@ -35,9 +47,14 @@ public static class UUDecoder {
       stream = null;
     }
 
-    private void CheckDisposed()
+    private void ThrowObjectDisposedExceptionIf(
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+      [DoesNotReturnIf(true)]
+#endif
+      bool condition
+    )
     {
-      if (stream == null)
+      if (condition)
         throw new ObjectDisposedException(GetType().FullName);
     }
 
@@ -53,12 +70,14 @@ public static class UUDecoder {
       if (path == null)
         throw new ArgumentNullException(nameof(path));
 
+      ThrowObjectDisposedExceptionIf(IsClosed);
+
       using var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
 
       stream.CopyTo(fileStream);
     }
 
-    private Stream stream;
+    private Stream? stream;
   }
 
   public static IEnumerable<FileEntry> ExtractFiles(Stream stream)

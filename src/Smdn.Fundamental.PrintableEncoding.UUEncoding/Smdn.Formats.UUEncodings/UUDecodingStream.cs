@@ -1,7 +1,14 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#pragma warning disable CS8602
+#endif
+
 using System;
 using System.Buffers;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES || SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.IO;
 
 using Smdn.Buffers;
@@ -23,7 +30,11 @@ public class UUDecodingStream : Stream {
   public override bool CanRead => !IsClosed;
   public override bool CanWrite => false;
   public override bool CanTimeout => !IsClosed && stream.CanTimeout;
-  private bool IsClosed => stream == null;
+
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+  [MemberNotNullWhen(false, nameof(stream))]
+#endif
+  private bool IsClosed => stream is null;
 
   public override long Position {
     get => throw ExceptionUtils.CreateNotSupportedSeekingStream();
@@ -32,9 +43,9 @@ public class UUDecodingStream : Stream {
 
   public override long Length => throw ExceptionUtils.CreateNotSupportedSeekingStream();
 
-  public string FileName {
+  public string? FileName {
     get {
-      CheckDisposed();
+      ThrowIfDisposed();
 
       if (state == State.Initial)
         InternalSeekToNextFile();
@@ -46,7 +57,7 @@ public class UUDecodingStream : Stream {
   [CLSCompliant(false)]
   public uint Permissions {
     get {
-      CheckDisposed();
+      ThrowIfDisposed();
 
       if (state == State.Initial)
         InternalSeekToNextFile();
@@ -56,7 +67,7 @@ public class UUDecodingStream : Stream {
   }
 
   public bool EndOfFile {
-    get { CheckDisposed(); return state is State.EndOfFile or State.EndOfStream; }
+    get { ThrowIfDisposed(); return state is State.EndOfFile or State.EndOfStream; }
   }
 
   public UUDecodingStream(Stream baseStream)
@@ -107,8 +118,6 @@ public class UUDecodingStream : Stream {
 
   public bool SeekToNextFile()
   {
-    CheckDisposed();
-
     InternalSeekToNextFile();
 
     return state == State.DataLine;
@@ -118,6 +127,8 @@ public class UUDecodingStream : Stream {
 
   private void InternalSeekToNextFile()
   {
+    ThrowObjectDisposedExceptionIf(IsClosed);
+
     permissions = 0u;
     fileName = null;
 
@@ -212,12 +223,12 @@ public class UUDecodingStream : Stream {
 
   public override int ReadByte()
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     if (state is State.EndOfFile or State.EndOfStream) {
       return -1;
     }
-    else if (state == State.DataLine && 0 < dataLineRemainder) {
+    else if (state == State.DataLine && decodedDataLine is not null && 0 < dataLineRemainder) {
       var ret = decodedDataLine[dataLineOffset];
 
       dataLineRemainder--;
@@ -232,7 +243,7 @@ public class UUDecodingStream : Stream {
 
   public override int Read(byte[] buffer, int offset, int count)
   {
-    CheckDisposed();
+    ThrowObjectDisposedExceptionIf(IsClosed);
 
 #if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
     ValidateBufferArguments(buffer, offset, count);
@@ -279,7 +290,7 @@ public class UUDecodingStream : Stream {
           break;
         }
         else {
-          decodedDataLine = transform.TransformBytes(dataLine, 0, dataLine.Length);
+          decodedDataLine = transform!.TransformBytes(dataLine, 0, dataLine.Length);
           dataLineOffset = 0;
           dataLineRemainder = decodedDataLine.Length;
         }
@@ -287,14 +298,16 @@ public class UUDecodingStream : Stream {
 
       var bytesToCopy = Math.Min(dataLineRemainder, count);
 
-      Buffer.BlockCopy(decodedDataLine, dataLineOffset, buffer, offset, bytesToCopy);
+      if (0 < dataLineRemainder) {
+        Buffer.BlockCopy(decodedDataLine!, dataLineOffset, buffer, offset, bytesToCopy);
 
-      dataLineOffset += bytesToCopy;
-      dataLineRemainder -= bytesToCopy;
+        dataLineOffset += bytesToCopy;
+        dataLineRemainder -= bytesToCopy;
 
-      offset += bytesToCopy;
-      count -= bytesToCopy;
-      ret += bytesToCopy;
+        offset += bytesToCopy;
+        count -= bytesToCopy;
+        ret += bytesToCopy;
+      }
 
       if (count <= 0)
         break;
@@ -305,45 +318,53 @@ public class UUDecodingStream : Stream {
 
   public override void SetLength(long @value)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     throw ExceptionUtils.CreateNotSupportedSettingStreamLength();
   }
 
   public override long Seek(long offset, SeekOrigin origin)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     throw ExceptionUtils.CreateNotSupportedSeekingStream();
   }
 
   public override void Flush()
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     // do nothing
   }
 
   public override void Write(byte[] buffer, int offset, int count)
   {
-    CheckDisposed();
+    ThrowIfDisposed();
 
     throw ExceptionUtils.CreateNotSupportedWritingStream();
   }
 
-  private void CheckDisposed()
+  private void ThrowObjectDisposedExceptionIf(
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [DoesNotReturnIf(true)]
+#endif
+    bool condition
+  )
   {
-    if (IsClosed)
+    if (condition)
       throw new ObjectDisposedException(GetType().FullName);
   }
 
+  private void ThrowIfDisposed()
+    => ThrowObjectDisposedExceptionIf(IsClosed);
+
   private readonly bool leaveStreamOpen;
-  private LineOrientedStream stream;
+  private LineOrientedStream? stream;
   private State state = State.Initial;
   private uint permissions;
-  private string fileName;
-  private UUDecodingTransform transform;
-  private byte[] decodedDataLine;
+  private string? fileName;
+  private UUDecodingTransform? transform;
+  private byte[]? decodedDataLine;
   private int dataLineOffset;
   private int dataLineRemainder;
 }
