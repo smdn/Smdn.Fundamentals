@@ -44,6 +44,22 @@ public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase
 
   public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
+    if (inputBuffer is null)
+      throw new ArgumentNullException(nameof(inputBuffer));
+    if (inputOffset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
+    if (inputCount < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
+    if (inputBuffer.Length - inputCount < inputOffset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
+
+    if (outputBuffer is null)
+      throw new ArgumentNullException(nameof(outputBuffer));
+    if (outputOffset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
+    if (outputBuffer.Length <= outputOffset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, outputBuffer.Length);
+
     var modifiedInputBuffer =
 #if SYSTEM_BUFFERS_ARRAYPOOL
       ArrayPool<byte>.Shared.Rent(inputCount);
@@ -71,6 +87,17 @@ public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase
 
   public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
   {
+    if (inputBuffer == null)
+      throw new ArgumentNullException(nameof(inputBuffer));
+    if (inputOffset < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
+    if (inputCount < 0)
+      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
+    if (inputBuffer.Length - inputCount < inputOffset)
+      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
+    if (InputBlockSize < inputCount)
+      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(InputBlockSize), nameof(inputCount), inputCount);
+
     var modifiedInputBuffer =
 #if SYSTEM_BUFFERS_ARRAYPOOL
       ArrayPool<byte>.Shared.Rent(inputCount);
