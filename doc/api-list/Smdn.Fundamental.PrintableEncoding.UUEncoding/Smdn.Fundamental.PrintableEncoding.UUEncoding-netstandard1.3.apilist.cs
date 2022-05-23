@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.UUEncoding
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+b9b52f6e91d12e075b7f97628129c5797147fc79
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System;
@@ -55,7 +55,7 @@ namespace Smdn.Formats.UUEncodings {
     public uint Permissions { get; }
     public override long Position { get; set; }
 
-    public override void Close() {}
+    protected override void Dispose(bool disposing) {}
     public override void Flush() {}
     [NullableContext(1)]
     public override int Read(byte[] buffer, int offset, int count) {}
