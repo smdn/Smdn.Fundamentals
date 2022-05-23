@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.PercentEncoding.dll (Smdn.Fundamental.PrintableEncoding.PercentEncoding-3.0.1)
+// Smdn.Fundamental.PrintableEncoding.PercentEncoding.dll (Smdn.Fundamental.PrintableEncoding.PercentEncoding-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.PercentEncoding
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+3f981874cd944302006694008d41e4c519abc647
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+4d376c711449be0850ff8007549f0c988ffaa33f
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
@@ -38,10 +38,14 @@ namespace Smdn.Formats.PercentEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
+    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
+    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class PercentEncoding {
     public static byte[] Decode(string str) {}
@@ -58,6 +62,8 @@ namespace Smdn.Formats.PercentEncodings {
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToPercentEncodedTransform : ICryptoTransform {
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode) {}
