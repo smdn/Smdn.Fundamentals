@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.QuotedPrintable.dll (Smdn.Fundamental.PrintableEncoding.QuotedPrintable-3.0.0 (net5.0))
+// Smdn.Fundamental.PrintableEncoding.QuotedPrintable.dll (Smdn.Fundamental.PrintableEncoding.QuotedPrintable-3.0.1)
 //   Name: Smdn.Fundamental.PrintableEncoding.QuotedPrintable
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net5.0)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+4922cfd17c82616fd10ad7911adc4655528b166e
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
 
@@ -34,10 +34,14 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
+    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
+    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class QuotedPrintableEncoding {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
@@ -64,7 +68,9 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
+    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
+    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 }

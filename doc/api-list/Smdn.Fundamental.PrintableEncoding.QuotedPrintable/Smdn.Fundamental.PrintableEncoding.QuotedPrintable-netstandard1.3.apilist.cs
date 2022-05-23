@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.QuotedPrintable
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+4922cfd17c82616fd10ad7911adc4655528b166e
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System.IO;
