@@ -14,6 +14,10 @@ namespace Smdn.Formats.QuotedPrintableEncodings;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static class QuotedPrintableEncoding {
+#if !SYSTEM_ARRAY_EMPTY
+  internal static readonly byte[] EmptyByteArray = new byte[0];
+#endif
+
   public static string GetEncodedString(string str)
     => GetEncodedString(str, Encoding.ASCII);
 

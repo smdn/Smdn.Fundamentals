@@ -91,6 +91,13 @@ public sealed class ToQuotedPrintableTransform : ICryptoTransform {
       inputCount
     );
 
+    if (inputCount == 0)
+#if SYSTEM_ARRAY_EMPTY
+      return Array.Empty<byte>();
+#else
+      return QuotedPrintableEncoding.EmptyByteArray;
+#endif
+
     var outputBuffer = new byte[inputCount * OutputBlockSize];
     var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputBuffer.Length);
 
