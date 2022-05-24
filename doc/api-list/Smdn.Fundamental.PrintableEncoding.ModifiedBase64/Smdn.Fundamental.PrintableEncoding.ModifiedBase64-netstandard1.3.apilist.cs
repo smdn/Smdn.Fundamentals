@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.ModifiedBase64
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+0e9f0b7daefd807b9370c2f7a3a4bf5b9cb9194a
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System.Security.Cryptography;
