@@ -9,6 +9,10 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\src\Common\System.Runtime.CompilerServices\IsExternalInit.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.ValueTuple" />
   </ItemGroup>
 </Project>

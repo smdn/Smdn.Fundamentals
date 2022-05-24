@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo-netfx.cs" />
+    <Compile Include="..\Common\CommonAssemblyInfo-netfx.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Smdn\ConsoleUtils.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
