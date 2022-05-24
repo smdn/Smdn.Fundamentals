@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.UUEncoding.dll (Smdn.Fundamental.PrintableEncoding.UUEncoding-3.0.1)
+// Smdn.Fundamental.PrintableEncoding.UUEncoding.dll (Smdn.Fundamental.PrintableEncoding.UUEncoding-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.UUEncoding
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+b9b52f6e91d12e075b7f97628129c5797147fc79
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+39445fb5e721cdeeae3d079c9e5f8bd11086f16e
 //   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 

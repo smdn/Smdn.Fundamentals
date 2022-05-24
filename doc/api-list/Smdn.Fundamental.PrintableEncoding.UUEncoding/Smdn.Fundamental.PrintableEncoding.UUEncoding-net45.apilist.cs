@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.UUEncoding.dll (Smdn.Fundamental.PrintableEncoding.UUEncoding-3.0.1)
+// Smdn.Fundamental.PrintableEncoding.UUEncoding.dll (Smdn.Fundamental.PrintableEncoding.UUEncoding-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.UUEncoding
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+b9b52f6e91d12e075b7f97628129c5797147fc79
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+39445fb5e721cdeeae3d079c9e5f8bd11086f16e
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
@@ -67,6 +67,8 @@ namespace Smdn.Formats.UUEncodings {
     public override void Write(byte[] buffer, int offset, int count) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class UUDecodingTransform : ICryptoTransform {
     public UUDecodingTransform() {}
@@ -78,9 +80,7 @@ namespace Smdn.Formats.UUEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
-    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 }
