@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.QuotedPrintable.dll (Smdn.Fundamental.PrintableEncoding.QuotedPrintable-3.0.1)
+// Smdn.Fundamental.PrintableEncoding.QuotedPrintable.dll (Smdn.Fundamental.PrintableEncoding.QuotedPrintable-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.QuotedPrintable
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+4922cfd17c82616fd10ad7911adc4655528b166e
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+eab6d2d8d9ea03032d8e0a3e6e6fde2b2f6de060
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
