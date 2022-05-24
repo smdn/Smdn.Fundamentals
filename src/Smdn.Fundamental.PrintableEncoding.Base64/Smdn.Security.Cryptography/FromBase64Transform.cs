@@ -41,7 +41,8 @@ internal class FromBase64Transform : ICryptoTransform {
       inputOffset,
       inputCount,
       outputBuffer,
-      outputOffset
+      outputOffset,
+      considerBlockSize: false
     );
 
     return UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset, false);
@@ -126,7 +127,8 @@ internal class FromBase64Transform : ICryptoTransform {
       this,
       inputBuffer,
       inputOffset,
-      inputCount
+      inputCount,
+      considerBlockSize: false
     );
 
     var ret = new byte[((inputCount / 4) + 1) * 3];

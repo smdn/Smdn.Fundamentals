@@ -14,7 +14,8 @@ internal static partial class CryptoTransformUtils {
     int inputOffset,
     int inputCount,
     byte[] outputBuffer,
-    int outputOffset
+    int outputOffset,
+    bool considerBlockSize = true
   )
   {
     if (transform is null)
@@ -28,7 +29,7 @@ internal static partial class CryptoTransformUtils {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
     if (inputBuffer.Length - inputCount < inputOffset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-    if (inputCount < transform.InputBlockSize)
+    if (considerBlockSize && inputCount < transform.InputBlockSize)
       throw ExceptionUtils.CreateArgumentMustBeGreaterThan(transform.InputBlockSize, nameof(inputCount), inputCount);
 
     if (outputBuffer is null)
@@ -37,7 +38,7 @@ internal static partial class CryptoTransformUtils {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
     if (outputBuffer.Length <= outputOffset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, outputBuffer.Length);
-    if (outputBuffer.Length < outputOffset + transform.OutputBlockSize)
+    if (considerBlockSize && outputBuffer.Length < outputOffset + transform.OutputBlockSize)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputBuffer), outputBuffer, outputOffset, outputBuffer.Length);
   }
 
@@ -45,7 +46,8 @@ internal static partial class CryptoTransformUtils {
     this ICryptoTransform transform,
     byte[] inputBuffer,
     int inputOffset,
-    int inputCount
+    int inputCount,
+    bool considerBlockSize = true
   )
   {
     if (transform is null)
@@ -59,7 +61,7 @@ internal static partial class CryptoTransformUtils {
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
     if (inputBuffer.Length - inputCount < inputOffset)
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-    if (transform.InputBlockSize < inputCount)
+    if (considerBlockSize && transform.InputBlockSize < inputCount)
       throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(transform.InputBlockSize, nameof(inputCount), inputCount);
   }
 }
