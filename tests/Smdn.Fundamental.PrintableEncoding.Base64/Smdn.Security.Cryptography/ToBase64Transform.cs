@@ -3,15 +3,8 @@
 using System;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 using Smdn.Formats;
-
-#if NET5_0_OR_GREATER
-using ExpectedInputBufferRangeException = System.ArgumentOutOfRangeException;
-using ExpectedOutputBufferRangeException = System.ArgumentOutOfRangeException;
-#else
-using ExpectedInputBufferRangeException = System.ArgumentException;
-using ExpectedOutputBufferRangeException = System.ArgumentException;
-#endif
 
 namespace Smdn.Security.Cryptography {
   [TestFixture]
@@ -114,76 +107,25 @@ namespace Smdn.Security.Cryptography {
       Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
     }
 
-    [Test]
-    public void TestTransformBlock_InputBufferNull()
+    [TestCaseSource(
+      typeof(ICryptoTransformTestCaseSources),
+      nameof(ICryptoTransformTestCaseSources.YieldTestCases_TransformBlock_InvalidArguments)
+    )]
+    public void TransformBlock_ArgumentException(
+      byte[] inputBuffer,
+      int inputOffset,
+      int inputCount,
+      byte[] outputBuffer,
+      int outputOffset,
+      IResolveConstraint constraint
+    )
     {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentNullException>(() => t.TransformBlock(null, 0, 3, new byte[4], 0));
-      }
-    }
+      using var t = Base64.CreateToBase64Transform();
 
-    [Test]
-    public void TestTransformBlock_InputBufferInvalidLength()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformBlock(new byte[3], 0, 4, new byte[4], 0));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_InputBufferInvalidOffset()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformBlock(new byte[3], 1, 3, new byte[4], 0));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_InputBufferRangeNegative()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(new byte[3], -1, 3, new byte[4], 0));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_InputBufferRangeOverflow()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformBlock(new byte[3], 1, int.MaxValue, new byte[4], 0));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_OutputBufferNull()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentNullException>(() => t.TransformBlock(new byte[3], 0, 3, null, 0));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_OutputBufferInvalidOffset1()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ExpectedOutputBufferRangeException>(() => t.TransformBlock(new byte[3], 0, 3, new byte[4], 4));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_OutputBufferInvalidOffset2()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ExpectedOutputBufferRangeException>(() => t.TransformBlock(new byte[3], 0, 3, new byte[4], 1));
-      }
-    }
-
-    [Test]
-    public void TestTransformBlock_OutputBufferRangeNegative()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformBlock(new byte[3], 0, 3, new byte[4], -1));
-      }
+      Assert.Throws(
+        constraint,
+        () => t.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+      );
     }
 
     [TestCase("A",   "QQ==")]
@@ -230,44 +172,23 @@ namespace Smdn.Security.Cryptography {
 #endif
     }
 
-    [Test]
-    public void TestTransformFinalBlock_InputBufferNull()
+    [TestCaseSource(
+      typeof(ICryptoTransformTestCaseSources),
+      nameof(ICryptoTransformTestCaseSources.YieldTestCases_TransformFinalBlock_InvalidArguments)
+    )]
+    public void TransformFinalBlock_ArgumentException(
+      byte[] inputBuffer,
+      int inputOffset,
+      int inputCount,
+      IResolveConstraint constraint
+    )
     {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentNullException>(() => t.TransformFinalBlock(null, 0, 3));
-      }
-    }
+      using var t = Base64.CreateToBase64Transform();
 
-    [Test]
-    public void TestTransformFinalBlock_InputBufferInvalidLength()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformFinalBlock(new byte[3], 0, 4));
-      }
-    }
-
-    [Test]
-    public void TestTransformFinalBlock_InputBufferInvalidOffset()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentException>(() => t.TransformFinalBlock(new byte[3], 1, 3));
-      }
-    }
-
-    [Test]
-    public void TestTransformFinalBlock_InputBufferRangeNegative()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ArgumentOutOfRangeException>(() => t.TransformFinalBlock(new byte[3], -1, 3));
-      }
-    }
-
-    [Test]
-    public void TestTransformFinalBlock_InputBufferRangeOverflow()
-    {
-      using (var t = Base64.CreateToBase64Transform()) {
-        Assert.Throws<ExpectedInputBufferRangeException>(() => t.TransformFinalBlock(new byte[3], 1, int.MaxValue));
-      }
+      Assert.Throws(
+        constraint,
+        () => t.TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+      );
     }
   }
 }
