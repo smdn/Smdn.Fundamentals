@@ -6,6 +6,8 @@ using System.Buffers;
 #endif
 using System.Security.Cryptography;
 
+using Smdn.Security.Cryptography;
+
 namespace Smdn.Formats.ModifiedBase64;
 
 // RFC 3501 INTERNET MESSAGE ACCESS PROTOCOL - VERSION 4rev1
@@ -44,21 +46,14 @@ public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase
 
   public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
-    if (inputBuffer is null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-
-    if (outputBuffer is null)
-      throw new ArgumentNullException(nameof(outputBuffer));
-    if (outputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
-    if (outputBuffer.Length <= outputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, outputBuffer.Length);
+    CryptoTransformUtils.ValidateTransformBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount,
+      outputBuffer,
+      outputOffset
+    );
 
     var modifiedInputBuffer =
 #if SYSTEM_BUFFERS_ARRAYPOOL
@@ -87,16 +82,12 @@ public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase
 
   public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
   {
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-    if (InputBlockSize < inputCount)
-      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(InputBlockSize), nameof(inputCount), inputCount);
+    CryptoTransformUtils.ValidateTransformFinalBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount
+    );
 
     var modifiedInputBuffer =
 #if SYSTEM_BUFFERS_ARRAYPOOL

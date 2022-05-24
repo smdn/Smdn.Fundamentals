@@ -6,6 +6,8 @@ using System.Buffers;
 #endif
 using System.Security.Cryptography;
 
+using Smdn.Security.Cryptography;
+
 namespace Smdn.Formats.ModifiedBase64;
 
 // RFC 2152 - UTF-7 A Mail-Safe Transformation Format of Unicode
@@ -53,6 +55,15 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     if (fromBase64Transform == null)
       throw new ObjectDisposedException(GetType().FullName);
 
+    CryptoTransformUtils.ValidateTransformBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount,
+      outputBuffer,
+      outputOffset
+    );
+
     count += inputCount;
 
     return fromBase64Transform.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
@@ -64,6 +75,13 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
   {
     if (fromBase64Transform == null)
       throw new ObjectDisposedException(GetType().FullName);
+
+    CryptoTransformUtils.ValidateTransformFinalBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount
+    );
 
     // The pad character "=" is not used when encoding
     // Modified Base64 because of the conflict with its use as an escape

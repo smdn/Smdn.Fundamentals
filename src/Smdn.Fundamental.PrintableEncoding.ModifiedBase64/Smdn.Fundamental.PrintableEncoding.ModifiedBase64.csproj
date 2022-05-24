@@ -20,6 +20,10 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\Common\Smdn.Security.Cryptography\CryptoTransformUtils.ValidateArguments.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
     <ProjectReference VersionRange="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
