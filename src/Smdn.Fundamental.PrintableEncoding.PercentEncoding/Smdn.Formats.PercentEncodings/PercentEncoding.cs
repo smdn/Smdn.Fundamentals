@@ -9,6 +9,10 @@ namespace Smdn.Formats.PercentEncodings;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static class PercentEncoding {
+#if !SYSTEM_ARRAY_EMPTY
+  internal static readonly byte[] EmptyByteArray = new byte[0];
+#endif
+
   public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode)
     => GetEncodedString(str, mode, Encoding.ASCII);
 

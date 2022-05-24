@@ -96,6 +96,13 @@ public sealed class FromPercentEncodedTransform : ICryptoTransform {
       inputCount
     );
 
+    if (inputCount == 0)
+#if SYSTEM_ARRAY_EMPTY
+      return Array.Empty<byte>();
+#else
+      return PercentEncoding.EmptyByteArray;
+#endif
+
     var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
     var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
 
