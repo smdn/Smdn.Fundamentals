@@ -4,6 +4,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Security.Cryptography;
+
 namespace Smdn.Security.Cryptography;
 
 internal class ToBase64Transform : ICryptoTransform {
@@ -22,25 +24,14 @@ internal class ToBase64Transform : ICryptoTransform {
 
   public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-    if (inputCount < InputBlockSize)
-      throw ExceptionUtils.CreateArgumentMustBeGreaterThan(InputBlockSize, nameof(inputCount), inputCount);
-
-    if (outputBuffer == null)
-      throw new ArgumentNullException(nameof(outputBuffer));
-    if (outputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
-    if (outputBuffer.Length <= outputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, outputBuffer.Length);
-    if (outputBuffer.Length < outputOffset + OutputBlockSize)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputBuffer), outputBuffer, outputOffset, outputBuffer.Length);
+    CryptoTransformUtils.ValidateTransformBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount,
+      outputBuffer,
+      outputOffset
+    );
 
     return UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
   }
@@ -98,16 +89,12 @@ internal class ToBase64Transform : ICryptoTransform {
 
   public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
   {
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-    if (InputBlockSize < inputCount)
-      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(InputBlockSize, nameof(inputCount), inputCount);
+    CryptoTransformUtils.ValidateTransformFinalBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount
+    );
 
     if (inputCount == 0)
       return Array.Empty<byte>();

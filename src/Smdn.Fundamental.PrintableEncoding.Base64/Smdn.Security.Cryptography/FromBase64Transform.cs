@@ -4,6 +4,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Security.Cryptography;
+
 namespace Smdn.Security.Cryptography;
 
 internal class FromBase64Transform : ICryptoTransform {
@@ -33,21 +35,14 @@ internal class FromBase64Transform : ICryptoTransform {
     if (disposed)
       throw new ObjectDisposedException(GetType().FullName);
 
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-
-    if (outputBuffer == null)
-      throw new ArgumentNullException(nameof(outputBuffer));
-    if (outputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
-    if (outputBuffer.Length <= outputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, outputBuffer.Length);
+    CryptoTransformUtils.ValidateTransformBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount,
+      outputBuffer,
+      outputOffset
+    );
 
     return UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset, false);
   }
@@ -127,14 +122,12 @@ internal class FromBase64Transform : ICryptoTransform {
     if (disposed)
       throw new ObjectDisposedException(GetType().FullName);
 
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
+    CryptoTransformUtils.ValidateTransformFinalBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount
+    );
 
     var ret = new byte[((inputCount / 4) + 1) * 3];
     var len = UncheckedTransformBlock(inputBuffer, inputOffset, inputCount, ret, 0, true);

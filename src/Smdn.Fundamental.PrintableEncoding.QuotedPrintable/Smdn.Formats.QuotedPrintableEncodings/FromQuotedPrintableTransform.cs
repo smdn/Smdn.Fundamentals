@@ -3,6 +3,8 @@
 using System;
 using System.Security.Cryptography;
 
+using Smdn.Security.Cryptography;
+
 namespace Smdn.Formats.QuotedPrintableEncodings;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
@@ -33,21 +35,14 @@ public sealed class FromQuotedPrintableTransform : ICryptoTransform {
     if (disposed)
       throw new ObjectDisposedException(GetType().FullName);
 
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-
-    if (outputBuffer == null)
-      throw new ArgumentNullException(nameof(outputBuffer));
-    if (outputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(outputOffset), outputOffset);
-    if (outputBuffer.Length - inputCount < outputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(outputOffset), outputBuffer, outputOffset, inputCount);
+    CryptoTransformUtils.ValidateTransformBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount,
+      outputBuffer,
+      outputOffset
+    );
 
     const byte CR = 0x0d;
     const byte LF = 0x0a;
@@ -111,16 +106,13 @@ public sealed class FromQuotedPrintableTransform : ICryptoTransform {
   {
     if (disposed)
       throw new ObjectDisposedException(GetType().FullName);
-    if (inputBuffer == null)
-      throw new ArgumentNullException(nameof(inputBuffer));
-    if (inputOffset < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputOffset), inputOffset);
-    if (inputCount < 0)
-      throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(inputCount), inputCount);
-    if (inputBuffer.Length - inputCount < inputOffset)
-      throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(inputOffset), inputBuffer, inputOffset, inputCount);
-    if (InputBlockSize < inputCount)
-      throw ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(nameof(InputBlockSize), nameof(inputCount), inputCount);
+
+    CryptoTransformUtils.ValidateTransformFinalBlockArguments(
+      this,
+      inputBuffer,
+      inputOffset,
+      inputCount
+    );
 
     var outputBuffer = new byte[inputCount/* * OutputBlockSize */];
     var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
