@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.Base64.dll (Smdn.Fundamental.PrintableEncoding.Base64-3.0.2)
+// Smdn.Fundamental.PrintableEncoding.Base64.dll (Smdn.Fundamental.PrintableEncoding.Base64-3.0.3)
 //   Name: Smdn.Fundamental.PrintableEncoding.Base64
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+d177dfeb0b6cea960613cd36dfa705263690a4a7
+//   AssemblyVersion: 3.0.3.0
+//   InformationalVersion: 3.0.3+4acdf8653895790ff473d032b1c94abfe4aeb215
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
