@@ -131,6 +131,13 @@ public sealed class UUDecodingTransform : ICryptoTransform {
       inputCount
     );
 
+    if (inputCount == 0)
+#if SYSTEM_ARRAY_EMPTY
+      return Array.Empty<byte>();
+#else
+      return EmptyByteArray;
+#endif
+
     var outputBuffer = new byte[inputCount * OutputBlockSize];
     var len = TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, 0);
 
@@ -145,6 +152,10 @@ public sealed class UUDecodingTransform : ICryptoTransform {
 
     return outputBuffer;
   }
+
+#if !SYSTEM_ARRAY_EMPTY
+  private static readonly byte[] EmptyByteArray = new byte[0];
+#endif
 
   private long buffer = 0L;
   private int bufferOffset = 0;
