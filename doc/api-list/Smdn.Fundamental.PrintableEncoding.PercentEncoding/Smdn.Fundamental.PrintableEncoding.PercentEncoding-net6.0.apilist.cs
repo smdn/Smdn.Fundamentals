@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.PercentEncoding.dll (Smdn.Fundamental.PrintableEncoding.PercentEncoding-3.0.2)
+// Smdn.Fundamental.PrintableEncoding.PercentEncoding.dll (Smdn.Fundamental.PrintableEncoding.PercentEncoding-3.0.3)
 //   Name: Smdn.Fundamental.PrintableEncoding.PercentEncoding
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+4d376c711449be0850ff8007549f0c988ffaa33f
+//   AssemblyVersion: 3.0.3.0
+//   InformationalVersion: 3.0.3+97a0808ac5af96ca43ed25793e778b2b9cf1677e
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
