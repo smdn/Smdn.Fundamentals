@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.ModifiedBase64
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+0e9f0b7daefd807b9370c2f7a3a4bf5b9cb9194a
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System.Security.Cryptography;
@@ -12,6 +12,7 @@ namespace Smdn.Formats.ModifiedBase64 {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     public FromRFC2152ModifiedBase64Transform() {}
+    public FromRFC2152ModifiedBase64Transform(FromBase64TransformMode mode) {}
     public FromRFC2152ModifiedBase64Transform(bool ignoreWhiteSpaces) {}
 
     public bool CanReuseTransform { get; }
@@ -32,6 +33,7 @@ namespace Smdn.Formats.ModifiedBase64 {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
     public FromRFC3501ModifiedBase64Transform() {}
+    public FromRFC3501ModifiedBase64Transform(FromBase64TransformMode mode) {}
     public FromRFC3501ModifiedBase64Transform(bool ignoreWhiteSpaces) {}
 
     public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}

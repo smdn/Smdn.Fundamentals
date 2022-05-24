@@ -1,7 +1,7 @@
-// Smdn.Fundamental.PrintableEncoding.ModifiedBase64.dll (Smdn.Fundamental.PrintableEncoding.ModifiedBase64-3.0.1 (net45))
+// Smdn.Fundamental.PrintableEncoding.ModifiedBase64.dll (Smdn.Fundamental.PrintableEncoding.ModifiedBase64-3.0.2)
 //   Name: Smdn.Fundamental.PrintableEncoding.ModifiedBase64
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1 (net45)
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+0e9f0b7daefd807b9370c2f7a3a4bf5b9cb9194a
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
@@ -9,6 +9,8 @@ using System.Security.Cryptography;
 using Smdn.Formats.ModifiedBase64;
 
 namespace Smdn.Formats.ModifiedBase64 {
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     public FromRFC2152ModifiedBase64Transform() {}
@@ -26,6 +28,8 @@ namespace Smdn.Formats.ModifiedBase64 {
     public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
     public FromRFC3501ModifiedBase64Transform() {}
@@ -36,6 +40,8 @@ namespace Smdn.Formats.ModifiedBase64 {
     public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ModifiedUTF7 {
     public static string Decode(string str) {}
@@ -53,7 +59,9 @@ namespace Smdn.Formats.ModifiedBase64 {
 
     protected virtual void Dispose(bool disposing) {}
     public void Dispose() {}
+    [NullableContext(1)]
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
+    [NullableContext(1)]
     public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
@@ -61,7 +69,9 @@ namespace Smdn.Formats.ModifiedBase64 {
   public sealed class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform {
     public ToRFC3501ModifiedBase64Transform() {}
 
+    [NullableContext(1)]
     public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
+    [NullableContext(1)]
     public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 }
