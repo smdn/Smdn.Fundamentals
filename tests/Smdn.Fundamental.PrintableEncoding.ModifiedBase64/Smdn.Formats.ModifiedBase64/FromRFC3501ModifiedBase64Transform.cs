@@ -1,8 +1,10 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+using System;
 using System.Collections;
 using System.Text;
 using NUnit.Framework;
+using NUnit.Framework.Constraints;
 
 using Smdn.Security.Cryptography;
 
@@ -29,4 +31,36 @@ public class FromRFC3501ModifiedBase64TransformTests {
       )
     );
   }
+
+  [TestCaseSource(
+    typeof(ICryptoTransformTestCaseSources),
+    nameof(ICryptoTransformTestCaseSources.YieldTestCases_TransformBlock_InvalidArguments)
+  )]
+  public void TransformBlock_ArgumentException(
+    byte[] inputBuffer,
+    int inputOffset,
+    int inputCount,
+    byte[] outputBuffer,
+    int outputOffset,
+    IResolveConstraint constraint
+  )
+    => Assert.Throws(
+      constraint,
+      () => new FromRFC3501ModifiedBase64Transform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+    );
+
+  [TestCaseSource(
+    typeof(ICryptoTransformTestCaseSources),
+    nameof(ICryptoTransformTestCaseSources.YieldTestCases_TransformFinalBlock_InvalidArguments)
+  )]
+  public void TransformFinalBlock_ArgumentException(
+    byte[] inputBuffer,
+    int inputOffset,
+    int inputCount,
+    IResolveConstraint constraint
+  )
+    => Assert.Throws(
+      constraint,
+      () => new FromRFC3501ModifiedBase64Transform().TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+    );
 }
