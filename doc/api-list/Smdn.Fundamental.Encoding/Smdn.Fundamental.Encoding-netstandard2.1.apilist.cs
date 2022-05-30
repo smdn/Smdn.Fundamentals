@@ -1,11 +1,14 @@
-// Smdn.Fundamental.Encoding.dll (Smdn.Fundamental.Encoding-3.0.1.1)
+// Smdn.Fundamental.Encoding.dll (Smdn.Fundamental.Encoding-3.0.2)
 //   Name: Smdn.Fundamental.Encoding
-//   AssemblyVersion: 3.0.1.1
-//   InformationalVersion: 3.0.1.1+a0f6e52cd3b31755404137f392bf6c953a4d28db
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+aa0e4ec96fdd36708d229778a1b0fd543f49b04d
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
 using Smdn.Text.Encodings;
@@ -14,6 +17,8 @@ namespace Smdn.Text.Encodings {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public delegate Encoding EncodingSelectionCallback(string name);
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [Serializable]
   public class EncodingNotSupportedException : NotSupportedException {
@@ -29,12 +34,18 @@ namespace Smdn.Text.Encodings {
     public override void GetObjectData(SerializationInfo info, StreamingContext context) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class EncodingUtils {
-    public static Encoding GetEncoding(string name) {}
-    public static Encoding GetEncoding(string name, EncodingSelectionCallback selectFallbackEncoding) {}
+    [return: Nullable(2)] public static Encoding GetEncoding(string name) {}
+    [NullableContext(2)]
+    public static Encoding GetEncoding([Nullable(1)] string name, EncodingSelectionCallback selectFallbackEncoding) {}
+    public static Encoding GetEncoding(string name, [Nullable] IReadOnlyDictionary<string, int> codePageCollationTable, [Nullable(2)] EncodingSelectionCallback selectFallbackEncoding) {}
     public static Encoding GetEncodingThrowException(string name) {}
-    public static Encoding GetEncodingThrowException(string name, EncodingSelectionCallback selectFallbackEncoding) {}
+    public static Encoding GetEncodingThrowException(string name, [Nullable(2)] EncodingSelectionCallback selectFallbackEncoding) {}
+    [NullableContext(2)]
+    public static bool TryGetEncoding(string name, [Nullable] IReadOnlyDictionary<string, int> codePageCollationTable, EncodingSelectionCallback selectFallbackEncoding, [NotNullWhen(true)] [Nullable(1)] out Encoding encoding) {}
   }
 }
 

@@ -2,11 +2,12 @@
 //   Name: Smdn.Fundamental.Encoding
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+aa0e4ec96fdd36708d229778a1b0fd543f49b04d
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text;
@@ -44,7 +45,7 @@ namespace Smdn.Text.Encodings {
     public static Encoding GetEncodingThrowException(string name) {}
     public static Encoding GetEncodingThrowException(string name, [Nullable(2)] EncodingSelectionCallback selectFallbackEncoding) {}
     [NullableContext(2)]
-    public static bool TryGetEncoding(string name, [Nullable] IReadOnlyDictionary<string, int> codePageCollationTable, EncodingSelectionCallback selectFallbackEncoding, [Nullable(1)] out Encoding encoding) {}
+    public static bool TryGetEncoding(string name, [Nullable] IReadOnlyDictionary<string, int> codePageCollationTable, EncodingSelectionCallback selectFallbackEncoding, [NotNullWhen(true)] [Nullable(1)] out Encoding encoding) {}
   }
 }
 
