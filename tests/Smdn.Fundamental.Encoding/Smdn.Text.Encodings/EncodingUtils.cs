@@ -8,7 +8,7 @@ using EncodingProvider = Smdn.Test.NUnit.Encodings;
 namespace Smdn.Text.Encodings;
 
 [TestFixture]
-public class EncodingUtilsTests {
+public partial class EncodingUtilsTests {
   [SetUp]
   public void SetUp()
   {
