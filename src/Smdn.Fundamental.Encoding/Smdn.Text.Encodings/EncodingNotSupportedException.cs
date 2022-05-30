@@ -18,14 +18,10 @@ namespace Smdn.Text.Encodings;
 public class EncodingNotSupportedException : NotSupportedException {
   /*
    * XXX: code page not supported
-  public int CodePage {
-    get; private set;
-  }
+  public int CodePage { get; }
   */
 
-  public string EncodingName {
-    get; private set;
-  }
+  public string EncodingName { get; }
 
   public EncodingNotSupportedException()
     : this(
