@@ -1,12 +1,20 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_SERIALIZABLEATTRIBUTE
+#endif
+
 using System;
+#if SYSTEM_EXCEPTION_CTOR_SERIALIZATIONINFO
 using System.Runtime.Serialization;
+#endif
 
 namespace Smdn.Text.Encodings;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+#if SYSTEM_SERIALIZABLEATTRIBUTE
 [Serializable]
+#endif
 public class EncodingNotSupportedException : NotSupportedException {
   /*
    * XXX: code page not supported
