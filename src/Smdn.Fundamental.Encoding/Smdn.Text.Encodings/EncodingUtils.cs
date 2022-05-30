@@ -8,7 +8,7 @@ namespace Smdn.Text.Encodings;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static partial class EncodingUtils {
-  public static Encoding GetEncoding(string name)
+  public static Encoding? GetEncoding(string name)
     => GetEncoding(name, null);
 
   private static readonly char[] whiteSpaceChars = new[] { '-', '_', ' ' };
@@ -46,9 +46,9 @@ public static partial class EncodingUtils {
     }
   }
 
-  public static Encoding GetEncoding(
+  public static Encoding? GetEncoding(
     string name,
-    EncodingSelectionCallback selectFallbackEncoding
+    EncodingSelectionCallback? selectFallbackEncoding
   )
   {
     if (name == null)
@@ -74,7 +74,7 @@ public static partial class EncodingUtils {
 
   public static Encoding GetEncodingThrowException(
     string name,
-    EncodingSelectionCallback selectFallbackEncoding
+    EncodingSelectionCallback? selectFallbackEncoding
   )
     => GetEncoding(name, selectFallbackEncoding) ?? throw new EncodingNotSupportedException(name);
 

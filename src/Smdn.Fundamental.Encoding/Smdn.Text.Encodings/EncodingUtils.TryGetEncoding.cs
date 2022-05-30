@@ -7,6 +7,9 @@
 #if SYSTEM_TEXT_ENCODING_GETENCODING_CODEPAGE
 using System;
 using System.Collections.Generic;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Text;
 
 namespace Smdn.Text.Encodings;
@@ -16,8 +19,8 @@ partial class EncodingUtils {
 #pragma warning restore IDE0040
   public static Encoding GetEncoding(
     string name,
-    IReadOnlyDictionary<string, int> codePageCollationTable,
-    EncodingSelectionCallback selectFallbackEncoding
+    IReadOnlyDictionary<string, int>? codePageCollationTable,
+    EncodingSelectionCallback? selectFallbackEncoding
   )
   {
     var result = TryGetEncoding(
@@ -33,13 +36,16 @@ partial class EncodingUtils {
   }
 
   public static bool TryGetEncoding(
-    string name,
-    IReadOnlyDictionary<string, int> codePageCollationTable,
-    EncodingSelectionCallback selectFallbackEncoding,
+    string? name,
+    IReadOnlyDictionary<string, int>? codePageCollationTable,
+    EncodingSelectionCallback? selectFallbackEncoding,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
     out Encoding encoding
   )
   {
-    encoding = default;
+    encoding = null!;
 
     if (name is null)
       return false;

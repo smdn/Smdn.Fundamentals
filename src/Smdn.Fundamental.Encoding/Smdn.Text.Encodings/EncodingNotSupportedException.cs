@@ -29,9 +29,9 @@ public class EncodingNotSupportedException : NotSupportedException {
 
   public EncodingNotSupportedException()
     : this(
-      null,
+      null!,
       "encoding is not supported by runtime",
-      null
+      null!
     )
   {
   }
@@ -40,7 +40,7 @@ public class EncodingNotSupportedException : NotSupportedException {
     : this(
       encodingName,
       $"encoding '{encodingName}' is not supported by runtime",
-      null
+      null!
     )
   {
   }
@@ -55,7 +55,7 @@ public class EncodingNotSupportedException : NotSupportedException {
   }
 
   public EncodingNotSupportedException(string encodingName, string message)
-    : this(encodingName, message, null)
+    : this(encodingName, message, null!)
   {
   }
 
@@ -69,7 +69,7 @@ public class EncodingNotSupportedException : NotSupportedException {
   protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
-    EncodingName = info.GetString("EncodingName");
+    EncodingName = info.GetString("EncodingName")!;
   }
 
   public override void GetObjectData(SerializationInfo info, StreamingContext context)
