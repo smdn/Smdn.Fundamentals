@@ -222,55 +222,53 @@ public static class MimeEncoding {
     Encoding lastCharset = null;
     var lastEncoding = MimeEncodingMethod.None;
 
-    lock (mimeEncodedWordRegex) {
-      var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
-        // charset
-        var charsetString = m.Groups["charset"].Value;
+    var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
+      // charset
+      var charsetString = m.Groups["charset"].Value;
 
-        lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
+      lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
 
-        if (lastCharset == null)
-          throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
+      if (lastCharset == null)
+        throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
 
-        // encoding
-        var encodingString = m.Groups["encoding"].Value;
-        var encodedText = m.Groups["text"].Value;
-        ICryptoTransform transform;
+      // encoding
+      var encodingString = m.Groups["encoding"].Value;
+      var encodedText = m.Groups["text"].Value;
+      ICryptoTransform transform;
 
-        switch (encodingString) {
-          case "b":
-          case "B":
-            lastEncoding = MimeEncodingMethod.Base64;
-            transform = Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true);
-            break;
-          case "q":
-          case "Q":
-            lastEncoding = MimeEncodingMethod.QuotedPrintable;
-            transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
-            break;
-          default:
-            if (decodeMalformedOrUnsupported == null)
-              throw new FormatException($"{encodingString} is an invalid encoding");
-            else
-              return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
-        }
-
-        try {
-          return transform.TransformStringFrom(encodedText, lastCharset);
-        }
-        catch (FormatException) {
+      switch (encodingString) {
+        case "b":
+        case "B":
+          lastEncoding = MimeEncodingMethod.Base64;
+          transform = Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true);
+          break;
+        case "q":
+        case "Q":
+          lastEncoding = MimeEncodingMethod.QuotedPrintable;
+          transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
+          break;
+        default:
           if (decodeMalformedOrUnsupported == null)
-            throw;
+            throw new FormatException($"{encodingString} is an invalid encoding");
           else
             return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
-        }
-      });
+      }
 
-      charset = lastCharset;
-      encoding = lastEncoding;
+      try {
+        return transform.TransformStringFrom(encodedText, lastCharset);
+      }
+      catch (FormatException) {
+        if (decodeMalformedOrUnsupported == null)
+          throw;
+        else
+          return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
+      }
+    });
 
-      return ret;
-    }
+    charset = lastCharset;
+    encoding = lastEncoding;
+
+    return ret;
   }
 
   public static string DecodeNullable(string str)
