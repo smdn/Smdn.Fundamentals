@@ -3,6 +3,12 @@
   <Suppression>
     <DiagnosticId>CP0002</DiagnosticId>
     <Target>M:Smdn.Formats.Mime.MimeUtils.ParseHeaderAsync``1(Smdn.IO.Streams.LineOriented.LineOrientedStream,System.Func{Smdn.Formats.Mime.RawHeaderField,``0},System.Boolean,System.Threading.CancellationToken)</Target>
+    <Left>lib/netstandard1.1/Smdn.Fundamental.MimeHeader.dll</Left>
+    <Right>lib/net45/Smdn.Fundamental.MimeHeader.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.Formats.Mime.MimeUtils.ParseHeaderAsync``1(Smdn.IO.Streams.LineOriented.LineOrientedStream,System.Func{Smdn.Formats.Mime.RawHeaderField,``0},System.Boolean,System.Threading.CancellationToken)</Target>
     <Left>lib/netstandard1.6/Smdn.Fundamental.MimeHeader.dll</Left>
     <Right>lib/netstandard2.0/Smdn.Fundamental.MimeHeader.dll</Right>
   </Suppression>
