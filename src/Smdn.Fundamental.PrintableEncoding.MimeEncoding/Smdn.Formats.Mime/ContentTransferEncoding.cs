@@ -16,8 +16,8 @@ namespace Smdn.Formats.Mime;
 public static class ContentTransferEncoding {
   public const string HeaderName = "Content-Transfer-Encoding";
 
-  private static readonly Dictionary<string, ContentTransferEncodingMethod> contentTransferEncodingMethods =
-    new(StringComparer.OrdinalIgnoreCase) {
+  private static readonly IReadOnlyDictionary<string, ContentTransferEncodingMethod> contentTransferEncodingMethods
+    = new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
       // standards
       { "7bit",              ContentTransferEncodingMethod.SevenBit },
       { "8bit",              ContentTransferEncodingMethod.EightBit },
