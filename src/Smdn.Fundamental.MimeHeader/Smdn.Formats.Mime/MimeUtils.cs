@@ -31,7 +31,10 @@ public static partial class MimeUtils {
       cancellationToken: cancellationToken
     );
 
-  private static KeyValuePair<string, string> ParseHeaderAsNameValuePairsConverter(RawHeaderField header, bool keepWhitespaces)
+  private static KeyValuePair<string, string> ParseHeaderAsNameValuePairsConverter(
+    RawHeaderField header,
+    bool keepWhitespaces
+  )
   {
     if (keepWhitespaces)
 #if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
@@ -96,7 +99,9 @@ public static partial class MimeUtils {
   )
     => converter(header);
 
-  public static /*IAsyncEnumerable<T>*/ Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField, TArg>(
+  public static
+  Task<IReadOnlyList<THeaderField>> // IAsyncEnumerable<T>
+  ParseHeaderAsync<THeaderField, TArg>(
     LineOrientedStream stream,
     Func<RawHeaderField, TArg, THeaderField> converter,
     TArg arg,
@@ -111,7 +116,9 @@ public static partial class MimeUtils {
       cancellationToken: cancellationToken
     );
 
-  private static /*IAsyncEnumerable<T>*/ async Task<IReadOnlyList<THeaderField>> ParseHeaderAsyncCore<THeaderField, TArg>(
+  private static
+  async Task<IReadOnlyList<THeaderField>> // IAsyncEnumerable<T>
+  ParseHeaderAsyncCore<THeaderField, TArg>(
     LineOrientedStream stream,
     Func<RawHeaderField, TArg, THeaderField> converter,
     TArg arg,

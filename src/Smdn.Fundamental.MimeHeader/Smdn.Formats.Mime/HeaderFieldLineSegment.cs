@@ -26,7 +26,10 @@ internal class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
     return last;
   }
 
-  private HeaderFieldLineSegment(HeaderFieldLineSegment? prev, ReadOnlyMemory<byte> memory)
+  private HeaderFieldLineSegment(
+    HeaderFieldLineSegment? prev,
+    ReadOnlyMemory<byte> memory
+  )
   {
     Memory = memory;
 
