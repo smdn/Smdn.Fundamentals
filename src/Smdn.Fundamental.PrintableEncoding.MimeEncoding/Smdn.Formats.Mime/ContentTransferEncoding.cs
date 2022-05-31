@@ -116,9 +116,15 @@ public static class ContentTransferEncoding {
     if (encoding == ContentTransferEncodingMethod.Binary)
       throw new InvalidOperationException("can't create TextReader from message of binary transfer encoding");
 
-    stream = CreateDecodingStream(stream, encoding, false);
-
-    return new StreamReader(stream, charset, true, 1024, leaveStreamOpen);
+    return new(
+      stream: CreateDecodingStream(stream, encoding, false),
+      encoding: charset,
+#if !(NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
+      detectEncodingFromByteOrderMarks: true,
+      bufferSize: 1024,
+#endif
+      leaveOpen: leaveStreamOpen
+    );
   }
 
   public static BinaryReader CreateBinaryReader(Stream stream, string encoding)
