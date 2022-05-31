@@ -122,8 +122,8 @@ public static partial class MimeUtils {
     const byte HT = (byte)'\t';
     const byte SP = (byte)' ';
     var headerFields = new List<THeaderField>();
-    HeaderFieldLineSegment lineFirst = null;
-    HeaderFieldLineSegment lineLast = null;
+    HeaderFieldLineSegment? lineFirst = null;
+    HeaderFieldLineSegment? lineLast = null;
     var offsetOfDelimiter = -1;
 
     for (; ; ) {
@@ -182,15 +182,15 @@ public static partial class MimeUtils {
     return headerFields;
 
     static bool TryGetHeaderField(
-      ref HeaderFieldLineSegment first,
-      HeaderFieldLineSegment last,
+      ref HeaderFieldLineSegment? first,
+      HeaderFieldLineSegment? last,
       int offsetOfDelimiter,
       out RawHeaderField rawHeaderField
     )
     {
       rawHeaderField = default;
 
-      if (first is null)
+      if (first is null || last is null)
         return false;
 
       rawHeaderField = new(

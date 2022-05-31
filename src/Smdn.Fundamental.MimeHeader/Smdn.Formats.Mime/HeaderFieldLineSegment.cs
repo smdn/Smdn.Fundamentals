@@ -6,10 +6,10 @@ using System.Buffers;
 namespace Smdn.Formats.Mime;
 
 internal class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
-  public static HeaderFieldLineSegment Append(
-    HeaderFieldLineSegment last,
+  public static HeaderFieldLineSegment? Append(
+    HeaderFieldLineSegment? last,
     ReadOnlySequence<byte> line,
-    out HeaderFieldLineSegment first
+    out HeaderFieldLineSegment? first
   )
   {
     first = null;
@@ -26,7 +26,7 @@ internal class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
     return last;
   }
 
-  private HeaderFieldLineSegment(HeaderFieldLineSegment prev, ReadOnlyMemory<byte> memory)
+  private HeaderFieldLineSegment(HeaderFieldLineSegment? prev, ReadOnlyMemory<byte> memory)
   {
     Memory = memory;
 
