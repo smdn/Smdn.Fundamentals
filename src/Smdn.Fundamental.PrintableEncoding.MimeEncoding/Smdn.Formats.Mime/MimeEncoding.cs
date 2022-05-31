@@ -222,7 +222,7 @@ public static class MimeEncoding {
     Encoding lastCharset = null;
     var lastEncoding = MimeEncodingMethod.None;
 
-    var ret = mimeEncodedWordRegex.Replace(str, delegate(Match m) {
+    var ret = mimeEncodedWordRegex.Replace(str, m => {
       // charset
       var charsetString = m.Groups["charset"].Value;
 
