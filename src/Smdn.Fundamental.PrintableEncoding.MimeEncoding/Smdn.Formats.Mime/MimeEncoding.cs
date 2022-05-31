@@ -75,11 +75,17 @@ public static class MimeEncoding {
       _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding),
     };
 
+    var preambleText = string.Concat(
+      "=?",
 #if SYSTEM_TEXT_ENCODING_BODYNAME
-    var preambleText = string.Concat("=?", charset.BodyName, "?", encodingChar, "?");
+      charset.BodyName,
 #else
-    var preambleText = string.Concat("=?", charset.WebName, "?", encodingChar, "?");
+      charset.WebName,
 #endif
+      "?",
+      encodingChar,
+      "?"
+    );
 
     if (!doFold)
       return string.Concat(preambleText, transform.TransformStringTo(str, charset), "?=");
