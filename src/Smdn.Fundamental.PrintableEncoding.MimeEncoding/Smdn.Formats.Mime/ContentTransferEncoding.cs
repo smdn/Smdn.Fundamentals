@@ -103,7 +103,12 @@ public static class ContentTransferEncoding {
       stream,
       GetEncodingMethodThrowException(encoding),
       charset is null
-        ? Encoding.GetEncoding("ISO-8859-1")
+        ?
+#if SYSTEM_TEXT_ENCODING_LATIN1
+          Encoding.Latin1
+#else
+          Encoding.GetEncoding("ISO-8859-1")
+#endif
         : EncodingUtils.GetEncodingThrowException(charset),
       leaveStreamOpen
     );
