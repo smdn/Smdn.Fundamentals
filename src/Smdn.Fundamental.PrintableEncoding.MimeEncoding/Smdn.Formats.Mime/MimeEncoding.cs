@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET7_0_OR_GREATER
+#define SYSTEM_TEXT_REGULAREXPRESSIONS_REGEXGENERATORATTRIBUTE
+#endif
+
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -206,10 +210,20 @@ public static class MimeEncoding {
    *       encoded-word := "=?" charset ["*" language] "?" encoding "?"
    *                       encoded-text "?="
    */
+#pragma warning disable SA1203
+  private const string MimeEncodedWordPattern
+    = @"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*";
+#pragma warning restore SA1203
+
   private static readonly Regex mimeEncodedWordRegex = new(
-    @"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*",
+    MimeEncodedWordPattern,
     RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
   );
+
+#if SYSTEM_TEXT_REGULAREXPRESSIONS_REGEXGENERATORATTRIBUTE
+  [RegexGenerator(MimeEncodedWordPattern, RegexOptions.Singleline | RegexOptions.CultureInvariant)]
+  private static partial Regex GetMimeEncodedWordRegex();
+#endif
 
   public static string Decode(
     string str,
@@ -228,48 +242,57 @@ public static class MimeEncoding {
     Encoding lastCharset = null;
     var lastEncoding = MimeEncodingMethod.None;
 
-    var ret = mimeEncodedWordRegex.Replace(str, m => {
-      // charset
-      var charsetString = m.Groups["charset"].Value;
+    var ret =
+#if SYSTEM_TEXT_REGULAREXPRESSIONS_REGEXGENERATORATTRIBUTE
+      GetMimeEncodedWordRegex()
+#else
+      mimeEncodedWordRegex
+#endif
+      .Replace(
+        str,
+        m => {
+          // charset
+          var charsetString = m.Groups["charset"].Value;
 
-      lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
+          lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
 
-      if (lastCharset == null)
-        throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
+          if (lastCharset == null)
+            throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
 
-      // encoding
-      var encodingString = m.Groups["encoding"].Value;
-      var encodedText = m.Groups["text"].Value;
-      ICryptoTransform transform;
+          // encoding
+          var encodingString = m.Groups["encoding"].Value;
+          var encodedText = m.Groups["text"].Value;
+          ICryptoTransform transform;
 
-      switch (encodingString) {
-        case "b":
-        case "B":
-          lastEncoding = MimeEncodingMethod.Base64;
-          transform = Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true);
-          break;
-        case "q":
-        case "Q":
-          lastEncoding = MimeEncodingMethod.QuotedPrintable;
-          transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
-          break;
-        default:
-          if (decodeMalformedOrUnsupported == null)
-            throw new FormatException($"{encodingString} is an invalid encoding");
-          else
-            return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
-      }
+          switch (encodingString) {
+            case "b":
+            case "B":
+              lastEncoding = MimeEncodingMethod.Base64;
+              transform = Base64.CreateFromBase64Transform(ignoreWhiteSpaces: true);
+              break;
+            case "q":
+            case "Q":
+              lastEncoding = MimeEncodingMethod.QuotedPrintable;
+              transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.MimeEncoding);
+              break;
+            default:
+              if (decodeMalformedOrUnsupported == null)
+                throw new FormatException($"{encodingString} is an invalid encoding");
+              else
+                return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
+          }
 
-      try {
-        return transform.TransformStringFrom(encodedText, lastCharset);
-      }
-      catch (FormatException) {
-        if (decodeMalformedOrUnsupported == null)
-          throw;
-        else
-          return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
-      }
-    });
+          try {
+            return transform.TransformStringFrom(encodedText, lastCharset);
+          }
+          catch (FormatException) {
+            if (decodeMalformedOrUnsupported == null)
+              throw;
+            else
+              return decodeMalformedOrUnsupported(lastCharset, encodingString, encodedText) ?? m.Value;
+          }
+        }
+      );
 
     charset = lastCharset;
     encoding = lastEncoding;
