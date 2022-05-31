@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.MimeHeader
 //   AssemblyVersion: 3.0.2.0
 //   InformationalVersion: 3.0.2+9d26436577acb277f29738784168deb702c45bd4
-//   TargetFramework: .NETStandard,Version=v2.0
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System.Buffers;
