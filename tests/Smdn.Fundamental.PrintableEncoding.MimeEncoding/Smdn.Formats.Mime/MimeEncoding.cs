@@ -19,7 +19,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestEncodeNoFolding()
+    public void Encode_NoFolding()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=",
                       MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, Encoding.UTF8),
@@ -30,7 +30,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestEncodeWithFolding()
+    public void Encode_WithFolding()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=\r\n\t=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK?=",
                       MimeEncoding.Encode("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncodingMethod.Base64, Encoding.UTF8, 76, 0),
@@ -41,7 +41,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestEncodeSpecifiedFormat()
+    public void Encode_SpecifiedFormat()
     {
       Assert.AreEqual("=?utf-8?b?5ryi5a2XYWJj44GL44GqMTIz44Kr44OK5ryi5a2X?=\n =?utf-8?b?YWJj44GL44GqMTIz44Kr44OK5ryi5a2XYWJj44GL44GqMTIz44Kr?=\n =?utf-8?b?44OK?=",
                       MimeEncoding.Encode("漢字abcかな123カナ漢字abcかな123カナ漢字abcかな123カナ", MimeEncodingMethod.Base64, Encoding.UTF8, 64, 9, "\n "),
@@ -52,19 +52,19 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestEncodeInvalidCharset()
+    public void Encode_InvalidCharset()
     {
       Assert.Throws<ArgumentNullException>(() => MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null));
     }
 
     [Test]
-    public void TestEncodeInvalidEncoding()
+    public void Encode_InvalidEncoding()
     {
       Assert.Throws<ArgumentException>(() => MimeEncoding.Encode("漢字abcかな123カナ", (MimeEncodingMethod)0x7fffffff, Encoding.UTF8));
     }
 
     [Test]
-    public void TestDecodeContainsLanguageSpecification()
+    public void Decode_ContainsLanguageSpecification()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -76,7 +76,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeQEncoding()
+    public void Decode_QEncoding()
     {
       // http://tools.ietf.org/html/rfc2047#section-8
       // 8. Examples
@@ -91,14 +91,14 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestEncodeQEncodingWhitespaces()
+    public void Encode_QEncoding_Whitespaces()
     {
       Assert.AreEqual("=?utf-8?q?=E6=BC=A2=20=E5=AD=97=09=E3=81=8B=E3=81=AA?=",
                       MimeEncoding.Encode("漢 字\tかな", MimeEncodingMethod.QEncoding, Encoding.UTF8));
     }
 
     [Test]
-    public void TestDecodeQEncodingWhitespaces()
+    public void Decode_QEncoding_Whitespaces()
     {
       Assert.AreEqual("漢 字\tかな",
                       MimeEncoding.Decode("=?utf-8?q?=E6=BC=A2=20=E5=AD=97=09=E3=81=8B=E3=81=AA?="));
@@ -107,21 +107,21 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestEncodeQEncodingSpecialChars()
+    public void Encode_QEncoding_SpecialChars()
     {
       Assert.AreEqual("=?utf-8?q?a=3Fb=3Dc=5Fd?=",
                       MimeEncoding.Encode("a?b=c_d", MimeEncodingMethod.QEncoding, Encoding.UTF8));
     }
 
     [Test]
-    public void TestDecodeQEncodingSpecialChars()
+    public void Decode_QEncoding_SpecialChars()
     {
       Assert.AreEqual("a?b=c_d", MimeEncoding.Decode("=?utf-8?q?a=3Fb=3Dc=5Fd?="));
       Assert.AreEqual("a?b=c d", MimeEncoding.Decode("=?utf-8?q?a=3Fb=3Dc_d?="));
     }
 
     [Test]
-    public void TestDecodeQEncodingCharsets()
+    public void Decode_QEncoding_Charsets()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -160,7 +160,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeQEncodingEscapedWhitespace()
+    public void Decode_QEncoding_EscapedWhitespace()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -177,7 +177,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeBEncoding()
+    public void Decode_BEncoding()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -216,7 +216,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeBEncodingBug()
+    public void Decode_BEncoding_Bug()
     {
       Assert.AreEqual("【Microsoft】欽ちゃん球団の片岡安祐美さんが Office にチャレンジ! ワクワクの春 開幕!",
                       MimeEncoding.Decode("=?iso-2022-jp?B?GyRCIVobKEJNaWNyb3NvZnQbJEIhWzZWJEEkYyRzNWVDRBsoQg==?=" +
@@ -247,13 +247,13 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeInvalidEncoding()
+    public void Decode_InvalidEncoding()
     {
       Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="));
     }
 
     [Test]
-    public void TestDecodeInvalidEncodingConvertToAlternativeText()
+    public void Decode_InvalidEncoding_ConvertToAlternativeText()
     {
       bool called = false;
 
@@ -283,7 +283,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeInvalidCharset()
+    public void Decode_InvalidCharset()
     {
       var ex = Assert.Throws<EncodingNotSupportedException>(() => MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="));
 
@@ -291,7 +291,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeValidCharsetSelectFallback()
+    public void Decode_ValidCharset_SelectFallback()
     {
       bool called = false;
       EncodingSelectionCallback callback = delegate(string name) {
@@ -314,7 +314,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeInvalidCharsetSelectFallback()
+    public void Decode_InvalidCharset_SelectFallback()
     {
       bool called = false;
       EncodingSelectionCallback callback = delegate(string name) {
@@ -337,7 +337,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeInvalidCharsetSelectFallbackReturnNull()
+    public void Decode_InvalidCharset_SelectFallbackReturnNull()
     {
       bool called = false;
       EncodingSelectionCallback callback = delegate(string name) {
@@ -358,7 +358,7 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeInvalidFormatConvertToAlternativeText()
+    public void Decode_InvalidFormat_ConvertToAlternativeText()
     {
       Encoding charset;
       MimeEncodingMethod encoding;
@@ -379,13 +379,13 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeQEncodingInvalidFormat()
+    public void Decode_QEncoding_InvalidFormat()
     {
       Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?q?===?="));
     }
 
     [Test]
-    public void TestDecodeQEncodingInvalidFormatConvertToAlternativeText()
+    public void Decode_QEncoding_InvalidFormat_ConvertToAlternativeText()
     {
       Assert.AreEqual("<alt>",
                       MimeEncoding.Decode("=?utf-8?q?===?=", null, (c, m, t) => "<alt>"));
@@ -404,13 +404,13 @@ namespace Smdn.Formats.Mime {
     }
 
     [Test]
-    public void TestDecodeBEncodingInvalidFormat()
+    public void Decode_BEncoding_InvalidFormat()
     {
       Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?b?****?="));
     }
 
     [Test]
-    public void TestDecodeBEncodingInvalidFormatConvertToAlternativeText()
+    public void Decode_BEncoding_InvalidFormat_ConvertToAlternativeText()
     {
       Assert.AreEqual("<alt>",
                       MimeEncoding.Decode("=?utf-8?b?****?=", null, (c, m, t) => "<alt>"));
