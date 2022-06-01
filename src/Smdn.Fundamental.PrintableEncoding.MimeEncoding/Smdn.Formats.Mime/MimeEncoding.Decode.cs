@@ -37,19 +37,65 @@ namespace Smdn.Formats.Mime;
 static partial class MimeEncoding {
 #pragma warning restore IDE0040
   public static string Decode(string str)
-    => Decode(str, null, null, out _, out _);
+    => Decode(
+      str: str,
+      selectFallbackEncoding: null,
+      decodeMalformedOrUnsupported: null,
+      encoding: out _,
+      charset: out _
+    );
 
-  public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding)
-    => Decode(str, selectFallbackEncoding, null, out _, out _);
+  public static string Decode(
+    string str,
+    EncodingSelectionCallback selectFallbackEncoding
+  )
+    => Decode(
+      str: str,
+      selectFallbackEncoding: selectFallbackEncoding,
+      decodeMalformedOrUnsupported: null,
+      encoding: out _,
+      charset: out _
+    );
 
-  public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
-    => Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out _, out _);
+  public static string Decode(
+    string str,
+    EncodingSelectionCallback selectFallbackEncoding,
+    MimeEncodedWordConverter decodeMalformedOrUnsupported
+  )
+    => Decode(
+      str: str,
+      selectFallbackEncoding: selectFallbackEncoding,
+      decodeMalformedOrUnsupported: decodeMalformedOrUnsupported,
+      encoding: out _,
+      charset: out _
+    );
 
-  public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset)
-    => Decode(str, null, null, out encoding, out charset);
+  public static string Decode(
+    string str,
+    out MimeEncodingMethod encoding,
+    out Encoding charset
+  )
+    => Decode(
+      str: str,
+      selectFallbackEncoding: null,
+      decodeMalformedOrUnsupported: null,
+      encoding: out encoding,
+      charset: out charset
+    );
 
-  public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding charset)
-    => Decode(str, selectFallbackEncoding, null, out encoding, out charset);
+  public static string Decode(
+    string str,
+    EncodingSelectionCallback selectFallbackEncoding,
+    out MimeEncodingMethod encoding,
+    out Encoding charset
+  )
+    => Decode(
+      str: str,
+      selectFallbackEncoding: selectFallbackEncoding,
+      decodeMalformedOrUnsupported: null,
+      encoding: out encoding,
+      charset: out charset
+    );
 
   /*
    * RFC 2231 - MIME Parameter Value and Encoded Word Extensions: Character Sets, Languages, and Continuations
@@ -156,41 +202,51 @@ static partial class MimeEncoding {
   }
 
   public static string DecodeNullable(string str)
-  {
-    if (str == null)
-      return null;
+    => DecodeNullable(
+      str: str,
+      selectFallbackEncoding: null,
+      decodeMalformedOrUnsupported: null,
+      encoding: out _,
+      charset: out _
+    );
 
-    return Decode(str, null, null, out _, out _);
-  }
+  public static string DecodeNullable(
+    string str,
+    EncodingSelectionCallback selectFallbackEncoding
+  )
+    => DecodeNullable(
+      str: str,
+      selectFallbackEncoding: selectFallbackEncoding,
+      decodeMalformedOrUnsupported: null,
+      encoding: out _,
+      charset: out _
+    );
 
-  public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding)
-  {
-    if (str == null)
-      return null;
+  public static string DecodeNullable(
+    string str,
+    EncodingSelectionCallback selectFallbackEncoding,
+    MimeEncodedWordConverter decodeMalformedOrUnsupported
+  )
+    => DecodeNullable(
+      str: str,
+      selectFallbackEncoding: selectFallbackEncoding,
+      decodeMalformedOrUnsupported: decodeMalformedOrUnsupported,
+      encoding: out _,
+      charset: out _
+    );
 
-    return Decode(str, selectFallbackEncoding, null, out _, out _);
-  }
-
-  public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported)
-  {
-    if (str == null)
-      return null;
-
-    return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out _, out _);
-  }
-
-  public static string DecodeNullable(string str, out MimeEncodingMethod encoding, out Encoding charset)
-  {
-    if (str == null) {
-      encoding = MimeEncodingMethod.None;
-      charset = null;
-
-      return null;
-    }
-    else {
-      return Decode(str, null, null, out encoding, out charset);
-    }
-  }
+  public static string DecodeNullable(
+    string str,
+    out MimeEncodingMethod encoding,
+    out Encoding charset
+  )
+    => DecodeNullable(
+      str: str,
+      selectFallbackEncoding: null,
+      decodeMalformedOrUnsupported: null,
+      encoding: out encoding,
+      charset: out charset
+    );
 
   public static string DecodeNullable(
     string str,
@@ -198,17 +254,13 @@ static partial class MimeEncoding {
     out MimeEncodingMethod encoding,
     out Encoding charset
   )
-  {
-    if (str == null) {
-      encoding = MimeEncodingMethod.None;
-      charset = null;
-
-      return null;
-    }
-    else {
-      return Decode(str, selectFallbackEncoding, null, out encoding, out charset);
-    }
-  }
+    => DecodeNullable(
+      str: str,
+      selectFallbackEncoding: selectFallbackEncoding,
+      decodeMalformedOrUnsupported: null,
+      encoding: out encoding,
+      charset: out charset
+    );
 
   public static string DecodeNullable(
     string str,
@@ -224,8 +276,13 @@ static partial class MimeEncoding {
 
       return null;
     }
-    else {
-      return Decode(str, selectFallbackEncoding, decodeMalformedOrUnsupported, out encoding, out charset);
-    }
+
+    return Decode(
+      str,
+      selectFallbackEncoding,
+      decodeMalformedOrUnsupported,
+      out encoding,
+      out charset
+    );
   }
 }

@@ -33,25 +33,112 @@ static partial class MimeEncoding {
   private static readonly string mimeEncodingFoldingString = "\r\n\t";
   private static readonly byte[] mimeEncodingPostamble = new byte[] { 0x3f, 0x3d }; // "?="
 
-  public static string Encode(string str, MimeEncodingMethod encoding)
-    => Encode(str, encoding, Encoding.ASCII, false, 0, 0, null);
+  public static string Encode(
+    string str,
+    MimeEncodingMethod encoding
+  )
+    => EncodeCore(
+      str: str,
+      encoding: encoding,
+      charset: Encoding.ASCII,
+      doFold: false,
+      foldingLimit: default,
+      foldingOffset: default,
+      foldingString: default
+    );
 
-  public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset)
-    => Encode(str, encoding, charset, false, 0, 0, null);
+  public static string Encode(
+    string str,
+    MimeEncodingMethod encoding,
+    Encoding charset
+  )
+    => EncodeCore(
+      str: str,
+      encoding: encoding,
+      charset: charset,
+      doFold: false,
+      foldingLimit: default,
+      foldingOffset: default,
+      foldingString: default
+    );
 
-  public static string Encode(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset)
-    => Encode(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
+  public static string Encode(
+    string str,
+    MimeEncodingMethod encoding,
+    int foldingLimit,
+    int foldingOffset
+  )
+    => EncodeCore(
+      str: str,
+      encoding: encoding,
+      charset: Encoding.ASCII,
+      doFold: true,
+      foldingLimit: foldingLimit,
+      foldingOffset: foldingOffset,
+      foldingString: mimeEncodingFoldingString
+    );
 
-  public static string Encode(string str, MimeEncodingMethod encoding, int foldingLimit, int foldingOffset, string foldingString)
-    => Encode(str, encoding, Encoding.ASCII, true, foldingLimit, foldingOffset, foldingString);
+  public static string Encode(
+    string str,
+    MimeEncodingMethod encoding,
+    int foldingLimit,
+    int foldingOffset,
+    string foldingString
+  )
+    => EncodeCore(
+      str: str,
+      encoding: encoding,
+      charset: Encoding.ASCII,
+      doFold: true,
+      foldingLimit: foldingLimit,
+      foldingOffset: foldingOffset,
+      foldingString: foldingString
+    );
 
-  public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset)
-    => Encode(str, encoding, charset, true, foldingLimit, foldingOffset, mimeEncodingFoldingString);
+  public static string Encode(
+    string str,
+    MimeEncodingMethod encoding,
+    Encoding charset,
+    int foldingLimit,
+    int foldingOffset
+  )
+    => EncodeCore(
+      str: str,
+      encoding: encoding,
+      charset: charset,
+      doFold: true,
+      foldingLimit: foldingLimit,
+      foldingOffset: foldingOffset,
+      foldingString: mimeEncodingFoldingString
+    );
 
-  public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset, string foldingString)
-    => Encode(str, encoding, charset, true, foldingLimit, foldingOffset, foldingString);
+  public static string Encode(
+    string str,
+    MimeEncodingMethod encoding,
+    Encoding charset,
+    int foldingLimit,
+    int foldingOffset,
+    string foldingString
+  )
+    => EncodeCore(
+      str: str,
+      encoding: encoding,
+      charset: charset,
+      doFold: true,
+      foldingLimit: foldingLimit,
+      foldingOffset: foldingOffset,
+      foldingString: foldingString
+    );
 
-  private static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, bool doFold, int foldingLimit, int foldingOffset, string foldingString)
+  private static string EncodeCore(
+    string str,
+    MimeEncodingMethod encoding,
+    Encoding charset,
+    bool doFold,
+    int foldingLimit,
+    int foldingOffset,
+    string foldingString
+  )
   {
     if (str == null)
       throw new ArgumentNullException(nameof(str));
