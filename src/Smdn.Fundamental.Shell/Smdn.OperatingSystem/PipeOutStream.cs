@@ -127,8 +127,9 @@ public class PipeOutStream : Stream {
     startInfo.RedirectStandardInput = true;
     startInfo.UseShellExecute = false; // redirecting stdout
 
-    process = new();
-    process.StartInfo = startInfo;
+    process = new() {
+      StartInfo = startInfo,
+    };
 
     if (onOutputDataReceived != null) {
       startInfo.RedirectStandardOutput = true;
