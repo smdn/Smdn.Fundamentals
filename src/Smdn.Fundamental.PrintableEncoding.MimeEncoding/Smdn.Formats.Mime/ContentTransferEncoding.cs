@@ -154,10 +154,10 @@ public static class ContentTransferEncoding {
       leaveStreamOpen
     );
 
-  public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset)
+  public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding? charset)
     => CreateBinaryReader(stream, encoding, charset, false);
 
-  public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen)
+  public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding? charset, bool leaveStreamOpen)
     => new(
       CreateDecodingStream(stream, encoding, false),
       charset ?? Encoding.UTF8,

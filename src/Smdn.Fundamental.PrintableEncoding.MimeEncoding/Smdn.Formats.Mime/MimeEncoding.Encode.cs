@@ -44,7 +44,7 @@ static partial class MimeEncoding {
       doFold: false,
       foldingLimit: default,
       foldingOffset: default,
-      foldingString: default
+      foldingString: null!
     );
 
   public static string Encode(
@@ -59,7 +59,7 @@ static partial class MimeEncoding {
       doFold: false,
       foldingLimit: default,
       foldingOffset: default,
-      foldingString: default
+      foldingString: null!
     );
 
   public static string Encode(
@@ -209,7 +209,7 @@ static partial class MimeEncoding {
       }
 
       // transform chars
-      byte[] transformed = null;
+      byte[]? transformed = null;
 
       for (; ; ) {
         var bytes = charset.GetBytes(inputCharBuffer, inputCharOffset, transformCharCount);

@@ -47,7 +47,7 @@ static partial class MimeEncoding {
 
   public static string Decode(
     string str,
-    EncodingSelectionCallback selectFallbackEncoding
+    EncodingSelectionCallback? selectFallbackEncoding
   )
     => Decode(
       str: str,
@@ -59,8 +59,8 @@ static partial class MimeEncoding {
 
   public static string Decode(
     string str,
-    EncodingSelectionCallback selectFallbackEncoding,
-    MimeEncodedWordConverter decodeMalformedOrUnsupported
+    EncodingSelectionCallback? selectFallbackEncoding,
+    MimeEncodedWordConverter? decodeMalformedOrUnsupported
   )
     => Decode(
       str: str,
@@ -73,7 +73,7 @@ static partial class MimeEncoding {
   public static string Decode(
     string str,
     out MimeEncodingMethod encoding,
-    out Encoding charset
+    out Encoding? charset
   )
     => Decode(
       str: str,
@@ -85,9 +85,9 @@ static partial class MimeEncoding {
 
   public static string Decode(
     string str,
-    EncodingSelectionCallback selectFallbackEncoding,
+    EncodingSelectionCallback? selectFallbackEncoding,
     out MimeEncodingMethod encoding,
-    out Encoding charset
+    out Encoding? charset
   )
     => Decode(
       str: str,
@@ -128,10 +128,10 @@ static partial class MimeEncoding {
 
   public static string Decode(
     string str,
-    EncodingSelectionCallback selectFallbackEncoding,
-    MimeEncodedWordConverter decodeMalformedOrUnsupported,
+    EncodingSelectionCallback? selectFallbackEncoding,
+    MimeEncodedWordConverter? decodeMalformedOrUnsupported,
     out MimeEncodingMethod encoding,
-    out Encoding charset
+    out Encoding? charset
   )
   {
     if (str == null)
@@ -140,7 +140,7 @@ static partial class MimeEncoding {
     charset = null;
     encoding = MimeEncodingMethod.None;
 
-    Encoding lastCharset = null;
+    Encoding? lastCharset = null;
     var lastEncoding = MimeEncodingMethod.None;
 
     var ret =
@@ -201,7 +201,7 @@ static partial class MimeEncoding {
     return ret;
   }
 
-  public static string DecodeNullable(string str)
+  public static string? DecodeNullable(string? str)
     => DecodeNullable(
       str: str,
       selectFallbackEncoding: null,
@@ -210,9 +210,9 @@ static partial class MimeEncoding {
       charset: out _
     );
 
-  public static string DecodeNullable(
-    string str,
-    EncodingSelectionCallback selectFallbackEncoding
+  public static string? DecodeNullable(
+    string? str,
+    EncodingSelectionCallback? selectFallbackEncoding
   )
     => DecodeNullable(
       str: str,
@@ -222,10 +222,10 @@ static partial class MimeEncoding {
       charset: out _
     );
 
-  public static string DecodeNullable(
-    string str,
-    EncodingSelectionCallback selectFallbackEncoding,
-    MimeEncodedWordConverter decodeMalformedOrUnsupported
+  public static string? DecodeNullable(
+    string? str,
+    EncodingSelectionCallback? selectFallbackEncoding,
+    MimeEncodedWordConverter? decodeMalformedOrUnsupported
   )
     => DecodeNullable(
       str: str,
@@ -235,10 +235,10 @@ static partial class MimeEncoding {
       charset: out _
     );
 
-  public static string DecodeNullable(
-    string str,
+  public static string? DecodeNullable(
+    string? str,
     out MimeEncodingMethod encoding,
-    out Encoding charset
+    out Encoding? charset
   )
     => DecodeNullable(
       str: str,
@@ -248,11 +248,11 @@ static partial class MimeEncoding {
       charset: out charset
     );
 
-  public static string DecodeNullable(
-    string str,
-    EncodingSelectionCallback selectFallbackEncoding,
+  public static string? DecodeNullable(
+    string? str,
+    EncodingSelectionCallback? selectFallbackEncoding,
     out MimeEncodingMethod encoding,
-    out Encoding charset
+    out Encoding? charset
   )
     => DecodeNullable(
       str: str,
@@ -262,12 +262,12 @@ static partial class MimeEncoding {
       charset: out charset
     );
 
-  public static string DecodeNullable(
-    string str,
-    EncodingSelectionCallback selectFallbackEncoding,
-    MimeEncodedWordConverter decodeMalformedOrUnsupported,
+  public static string? DecodeNullable(
+    string? str,
+    EncodingSelectionCallback? selectFallbackEncoding,
+    MimeEncodedWordConverter? decodeMalformedOrUnsupported,
     out MimeEncodingMethod encoding,
-    out Encoding charset
+    out Encoding? charset
   )
   {
     if (str == null) {
