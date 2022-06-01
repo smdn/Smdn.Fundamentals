@@ -3,210 +3,222 @@
 using System;
 using System.IO;
 using System.Text;
+
 using NUnit.Framework;
+
 using Smdn.Test.NUnit;
 
-namespace Smdn.Formats.Mime {
-  [TestFixture]
-  public class ContentTransferEncodingTests {
-    [Test]
-    public void GetEncodingMethod()
-    {
-      foreach (var test in new[] {
-        new {Expected = ContentTransferEncodingMethod.SevenBit, Name = "7bit"},
-        new {Expected = ContentTransferEncodingMethod.SevenBit, Name = "7BIT"},
+namespace Smdn.Formats.Mime;
 
-        new {Expected = ContentTransferEncodingMethod.EightBit, Name = "8bit"},
+[TestFixture]
+public class ContentTransferEncodingTests {
+  [TestCase("7bit", ContentTransferEncodingMethod.SevenBit)]
+  [TestCase("7BIT", ContentTransferEncodingMethod.SevenBit)]
+  [TestCase("8bit", ContentTransferEncodingMethod.EightBit)]
+  [TestCase("binary", ContentTransferEncodingMethod.Binary)]
+  [TestCase("base64", ContentTransferEncodingMethod.Base64)]
+  [TestCase("Base64", ContentTransferEncodingMethod.Base64)]
+  [TestCase("BASE64", ContentTransferEncodingMethod.Base64)]
+  [TestCase("quoted-printable", ContentTransferEncodingMethod.QuotedPrintable)]
+  [TestCase("x-gzip64", ContentTransferEncodingMethod.GZip64)]
+  [TestCase("gzip64", ContentTransferEncodingMethod.GZip64)]
+  [TestCase("x-uuencode", ContentTransferEncodingMethod.UUEncode)]
+  [TestCase("x-uuencoded", ContentTransferEncodingMethod.UUEncode)]
+  [TestCase("uuencode", ContentTransferEncodingMethod.UUEncode)]
+  [TestCase("x-unknown", ContentTransferEncodingMethod.Unknown)]
+  [TestCase("unknown", ContentTransferEncodingMethod.Unknown)]
+  public void GetEncodingMethod(string name, ContentTransferEncodingMethod expected)
+    => Assert.AreEqual(
+      expected,
+      ContentTransferEncoding.GetEncodingMethod(name),
+      name
+    );
 
-        new {Expected = ContentTransferEncodingMethod.Binary, Name = "binary"},
+  [TestCase("x-unknown")]
+  [TestCase("unknown")]
+  [TestCase("base32")]
+  public void GetEncodingMethod_ThrowException(string name)
+    => Assert.Throws<NotSupportedException>(
+      () => ContentTransferEncoding.GetEncodingMethodThrowException(name),
+      name
+    );
 
-        new {Expected = ContentTransferEncodingMethod.Base64, Name = "base64"},
-        new {Expected = ContentTransferEncodingMethod.Base64, Name = "Base64"},
-        new {Expected = ContentTransferEncodingMethod.Base64, Name = "BASE64"},
+  [TestCase(ContentTransferEncodingMethod.SevenBit)]
+  [TestCase(ContentTransferEncodingMethod.EightBit)]
+  [TestCase(ContentTransferEncodingMethod.Binary)]
+  [TestCase(ContentTransferEncodingMethod.Base64)]
+  [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
+  [TestCase(ContentTransferEncodingMethod.UUEncode)]
+  public void CreateDecodingStream_CloseInnerStream(ContentTransferEncodingMethod method)
+  {
+    using var inputStream = new MemoryStream(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+    using var decodingStream = ContentTransferEncoding.CreateDecodingStream(
+      inputStream,
+      method,
+      false
+    );
 
-        new {Expected = ContentTransferEncodingMethod.QuotedPrintable, Name = "quoted-printable"},
+    decodingStream.Dispose();
 
-        new {Expected = ContentTransferEncodingMethod.GZip64, Name = "x-gzip64"},
-        new {Expected = ContentTransferEncodingMethod.GZip64, Name = "gzip64"},
+    Assert.Throws<ObjectDisposedException>(() => inputStream.ReadByte());
+  }
 
-        new {Expected = ContentTransferEncodingMethod.UUEncode, Name = "x-uuencode"},
-        new {Expected = ContentTransferEncodingMethod.UUEncode, Name = "x-uuencoded"},
-        new {Expected = ContentTransferEncodingMethod.UUEncode, Name = "uuencode"},
+  [TestCase(ContentTransferEncodingMethod.SevenBit)]
+  [TestCase(ContentTransferEncodingMethod.EightBit)]
+  [TestCase(ContentTransferEncodingMethod.Binary)]
+  [TestCase(ContentTransferEncodingMethod.Base64)]
+  [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
+  [TestCase(ContentTransferEncodingMethod.UUEncode)]
+  public void CreateDecodingStream_LeaveInnerStreamOpen(ContentTransferEncodingMethod method)
+  {
+    using var inputStream = new MemoryStream(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7 });
+    using var decodingStream = ContentTransferEncoding.CreateDecodingStream(
+      inputStream,
+      method,
+      true
+    );
 
-        new {Expected = ContentTransferEncodingMethod.Unknown, Name = "x-unknown"},
-        new {Expected = ContentTransferEncodingMethod.Unknown, Name = "unknown"},
-      }) {
-        Assert.AreEqual(test.Expected, ContentTransferEncoding.GetEncodingMethod(test.Name), "name: {0}", test.Name);
-      }
-    }
+    decodingStream.Dispose();
 
-    [Test]
-    public void GetEncodingMethod_ThrowException()
-    {
-      foreach (var name in new[] {
-        "x-unkwnon",
-        "unknown",
-        "base32",
-      }) {
-        Assert.Throws<NotSupportedException>(() => ContentTransferEncoding.GetEncodingMethodThrowException(name), name);
-      }
-    }
+    Assert.DoesNotThrow(() => inputStream.ReadByte());
+  }
 
-    [TestCase(ContentTransferEncodingMethod.SevenBit)]
-    [TestCase(ContentTransferEncodingMethod.EightBit)]
-    [TestCase(ContentTransferEncodingMethod.Binary)]
-    [TestCase(ContentTransferEncodingMethod.Base64)]
-    [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
-    [TestCase(ContentTransferEncodingMethod.UUEncode)]
-    public void CreateDecodingStream_CloseInnerStream(ContentTransferEncodingMethod method)
-    {
-      using (var inputStream = new MemoryStream(new byte[] {0, 1, 2, 3, 4, 5, 6, 7})) {
-        using (var decodingStream = ContentTransferEncoding.CreateDecodingStream(inputStream,
-                                                                                 method,
-                                                                                 false)) {
-        }
+  [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+  [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+  [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+  public void CreateTextReader(ContentTransferEncodingMethod cte, string content)
+  {
+    using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+    var reader = ContentTransferEncoding.CreateTextReader(
+      stream,
+      cte,
+      Encodings.Jis
+    );
 
-        Assert.Throws<ObjectDisposedException>(() => inputStream.ReadByte());
-      }
-    }
+    Assert.AreEqual(Encodings.Jis, reader.CurrentEncoding);
+    Assert.AreEqual("漢字abcかな123カナ", reader.ReadToEnd());
 
-    [TestCase(ContentTransferEncodingMethod.SevenBit)]
-    [TestCase(ContentTransferEncodingMethod.EightBit)]
-    [TestCase(ContentTransferEncodingMethod.Binary)]
-    [TestCase(ContentTransferEncodingMethod.Base64)]
-    [TestCase(ContentTransferEncodingMethod.QuotedPrintable)]
-    [TestCase(ContentTransferEncodingMethod.UUEncode)]
-    public void CreateDecodingStream_LeaveInnerStreamOpen(ContentTransferEncodingMethod method)
-    {
-      using (var inputStream = new MemoryStream(new byte[] {0, 1, 2, 3, 4, 5, 6, 7})) {
-        using (var decodingStream = ContentTransferEncoding.CreateDecodingStream(inputStream,
-                                                                                 method,
-                                                                                 true)) {
-        }
+    stream.Position = 0L;
 
-        Assert.DoesNotThrow(() => inputStream.ReadByte());
-      }
-    }
+    reader.Dispose();
 
-    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
-    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
-    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
-    public void CreateTextReader(ContentTransferEncodingMethod cte, string content)
-    {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
-        var reader = ContentTransferEncoding.CreateTextReader(stream,
-                                                              cte,
-                                                              Encodings.Jis);
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+  }
 
-        Assert.AreEqual(Encodings.Jis, reader.CurrentEncoding);
-        Assert.AreEqual("漢字abcかな123カナ", reader.ReadToEnd());
+  [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+  [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+  [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+  public void CreateTextReader_LeaveInnerStreamOpen(ContentTransferEncodingMethod cte, string content)
+  {
+    using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
+    var reader1 = ContentTransferEncoding.CreateTextReader(
+      stream,
+      cte,
+      Encodings.Jis,
+      true
+    );
 
-        stream.Position = 0L;
+    Assert.AreEqual("漢字abcかな123カナ", reader1.ReadToEnd());
 
-        reader.Dispose();
+    stream.Position = 0L;
 
-        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-      }
-    }
+    reader1.Dispose();
 
-    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
-    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
-    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
-    public void CreateTextReader_LeaveInnerStreamOpen(ContentTransferEncodingMethod cte, string content)
-    {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
-        var reader1 = ContentTransferEncoding.CreateTextReader(stream,
-                                                               cte,
-                                                               Encodings.Jis,
-                                                               true);
+    var reader2 = ContentTransferEncoding.CreateTextReader(
+      stream,
+      cte,
+      Encodings.Jis
+    );
 
-        Assert.AreEqual("漢字abcかな123カナ", reader1.ReadToEnd());
+    Assert.AreEqual("漢字abcかな123カナ", reader2.ReadToEnd(), "read again");
+  }
 
-        stream.Position = 0L;
+  [TestCase(true)]
+  [TestCase(false)]
+  public void CreateTextReader_FromBinaryContentTransferEncoding(bool leaveStreamOpen)
+  {
+    var content = "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42";
 
-        reader1.Dispose();
+    using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
 
-        var reader2 = ContentTransferEncoding.CreateTextReader(stream,
-                                                               cte,
-                                                               Encodings.Jis);
+    Assert.Throws<InvalidOperationException>(
+      () => ContentTransferEncoding.CreateTextReader(
+        stream,
+        ContentTransferEncodingMethod.Binary,
+        Encodings.Jis,
+        leaveStreamOpen
+      )
+    );
+  }
 
-        Assert.AreEqual("漢字abcかな123カナ", reader2.ReadToEnd(), "read again");
-      }
-    }
+  [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.Binary, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+  [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+  [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+  public void CreateBinaryReader(ContentTransferEncodingMethod cte, string content)
+  {
+    using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
 
-    [TestCase(true)]
-    [TestCase(false)]
-    public void CreateTextReader_FromBinaryContentTransferEncoding(bool leaveStreamOpen)
-    {
-      var content = "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42";
+    var reader = ContentTransferEncoding.CreateBinaryReader(
+      stream,
+      cte,
+      Encodings.Jis
+    );
 
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
-        Assert.Throws<InvalidOperationException>(delegate {
-          ContentTransferEncoding.CreateTextReader(stream,
-                                                   ContentTransferEncodingMethod.Binary,
-                                                   Encodings.Jis,
-                                                   leaveStreamOpen);
-        });
-      }
-    }
+    Assert.AreEqual(
+      Encodings.Jis.GetBytes("漢字abcかな123カナ"),
+      reader.ReadBytes((int)stream.Length)
+    );
 
-    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.Binary, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
-    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
-    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
-    public void CreateBinaryReader(ContentTransferEncodingMethod cte, string content)
-    {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
-        var reader = ContentTransferEncoding.CreateBinaryReader(stream,
-                                                                cte,
-                                                                Encodings.Jis);
+    stream.Position = 0L;
 
-        Assert.AreEqual(Encodings.Jis.GetBytes("漢字abcかな123カナ"),
-                        reader.ReadBytes((int)stream.Length));
+    reader.Dispose();
 
-        stream.Position = 0L;
+    Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+  }
 
-        reader.Dispose();
+  [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.Binary, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
+  [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
+  [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
+  [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
+  public void CreateBinaryReader_LeaveInnerStreamOpen(ContentTransferEncodingMethod cte, string content)
+  {
+    using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
 
-        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-      }
-    }
+    var reader1 = ContentTransferEncoding.CreateBinaryReader(
+      stream,
+      cte,
+      Encodings.Jis,
+      true
+    );
 
-    [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.EightBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.Binary, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
-    [TestCase(ContentTransferEncodingMethod.Base64, "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC")]
-    [TestCase(ContentTransferEncodingMethod.QuotedPrintable, "=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B")]
-    [TestCase(ContentTransferEncodingMethod.UUEncode, "begin 664 test.txt\nD&R1\"-$$[>ALH0F%B8QLD0B0K)$H;*$(Q,C,;)$(E*R5*&RA\"\n`\nend")]
-    public void CreateBinaryReader_LeaveInnerStreamOpen(ContentTransferEncodingMethod cte, string content)
-    {
-      using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(content))) {
-        var reader1 = ContentTransferEncoding.CreateBinaryReader(stream,
-                                                                 cte,
-                                                                 Encodings.Jis,
-                                                                 true);
+    Assert.AreEqual(
+      Encodings.Jis.GetBytes("漢字abcかな123カナ"),
+      reader1.ReadBytes((int)stream.Length)
+    );
 
-        Assert.AreEqual(Encodings.Jis.GetBytes("漢字abcかな123カナ"),
-                        reader1.ReadBytes((int)stream.Length));
+    stream.Position = 0L;
 
-        stream.Position = 0L;
+    reader1.Dispose();
 
-        reader1.Dispose();
+    var reader2 = ContentTransferEncoding.CreateBinaryReader(
+      stream,
+      cte,
+      Encodings.Jis
+    );
 
-        var reader2 = ContentTransferEncoding.CreateBinaryReader(stream,
-                                                                 cte,
-                                                                 Encodings.Jis);
-
-        Assert.AreEqual(Encodings.Jis.GetBytes("漢字abcかな123カナ"),
-                        reader2.ReadBytes((int)stream.Length),
-                        "read again");
-      }
-    }
+    Assert.AreEqual(
+      Encodings.Jis.GetBytes("漢字abcかな123カナ"),
+      reader2.ReadBytes((int)stream.Length),
+      "read again"
+    );
   }
 }
