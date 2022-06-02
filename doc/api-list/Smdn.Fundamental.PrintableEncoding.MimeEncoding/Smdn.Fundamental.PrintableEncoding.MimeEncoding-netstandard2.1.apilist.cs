@@ -1,11 +1,13 @@
-// Smdn.Fundamental.PrintableEncoding.MimeEncoding.dll (Smdn.Fundamental.PrintableEncoding.MimeEncoding-3.0.2)
+// Smdn.Fundamental.PrintableEncoding.MimeEncoding.dll (Smdn.Fundamental.PrintableEncoding.MimeEncoding-3.1.0)
 //   Name: Smdn.Fundamental.PrintableEncoding.MimeEncoding
-//   AssemblyVersion: 3.0.2.0
-//   InformationalVersion: 3.0.2+1e8bd98413dde3a6f4250a3c8eaff318c493b38d
+//   AssemblyVersion: 3.1.0.0
+//   InformationalVersion: 3.1.0+0f59827eced400bac9539e303fb615aaa372eb7f
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 
+using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Smdn.Formats.Mime;
 using Smdn.Text.Encodings;
@@ -35,13 +37,15 @@ namespace Smdn.Formats.Mime {
     QuotedPrintable = 2,
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ContentTransferEncoding {
     public const string HeaderName = "Content-Transfer-Encoding";
 
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding) {}
-    public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset) {}
-    public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen) {}
+    public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, [Nullable(2)] Encoding charset) {}
+    public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, [Nullable(2)] Encoding charset, bool leaveStreamOpen) {}
     public static BinaryReader CreateBinaryReader(Stream stream, ContentTransferEncodingMethod encoding, bool leaveStreamOpen) {}
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding) {}
     public static BinaryReader CreateBinaryReader(Stream stream, string encoding, bool leaveStreamOpen) {}
@@ -53,24 +57,39 @@ namespace Smdn.Formats.Mime {
     public static StreamReader CreateTextReader(Stream stream, ContentTransferEncodingMethod encoding, Encoding charset, bool leaveStreamOpen) {}
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset) {}
     public static StreamReader CreateTextReader(Stream stream, string encoding, string charset, bool leaveStreamOpen) {}
+    [Obsolete("Use TryParse() instead.")]
     public static ContentTransferEncodingMethod GetEncodingMethod(string encoding) {}
+    [Obsolete("Use Parse() instead.")]
     public static ContentTransferEncodingMethod GetEncodingMethodThrowException(string encoding) {}
     public static string GetEncodingName(ContentTransferEncodingMethod method) {}
+    public static ContentTransferEncodingMethod Parse(string str) {}
+    [NullableContext(byte.MinValue)]
+    public static bool TryFormat(ContentTransferEncodingMethod encoding, Span<char> destination, out int charsWritten) {}
+    public static bool TryParse(string str, out ContentTransferEncodingMethod encoding) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class MimeEncoding {
+    [NullableContext(2)]
+    [return: Nullable(1)] public static string Decode([Nullable(1)] string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported, out MimeEncodingMethod encoding, out Encoding charset) {}
     public static string Decode(string str) {}
-    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding) {}
-    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported) {}
-    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported, out MimeEncodingMethod encoding, out Encoding charset) {}
-    public static string Decode(string str, EncodingSelectionCallback selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding charset) {}
-    public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding charset) {}
+    public static string Decode(string str, [Nullable(2)] EncodingSelectionCallback selectFallbackEncoding) {}
+    public static string Decode(string str, [Nullable(2)] EncodingSelectionCallback selectFallbackEncoding, [Nullable(2)] MimeEncodedWordConverter decodeMalformedOrUnsupported) {}
+    public static string Decode(string str, [Nullable(2)] EncodingSelectionCallback selectFallbackEncoding, out MimeEncodingMethod encoding, [Nullable(2)] out Encoding charset) {}
+    public static string Decode(string str, out MimeEncodingMethod encoding, [Nullable(2)] out Encoding charset) {}
+    [NullableContext(2)]
     public static string DecodeNullable(string str) {}
+    [NullableContext(2)]
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding) {}
+    [NullableContext(2)]
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported) {}
+    [NullableContext(2)]
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, MimeEncodedWordConverter decodeMalformedOrUnsupported, out MimeEncodingMethod encoding, out Encoding charset) {}
+    [NullableContext(2)]
     public static string DecodeNullable(string str, EncodingSelectionCallback selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding charset) {}
+    [NullableContext(2)]
     public static string DecodeNullable(string str, out MimeEncodingMethod encoding, out Encoding charset) {}
     public static string Encode(string str, MimeEncodingMethod encoding) {}
     public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset) {}
