@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.PrintableEncoding.MimeEncoding
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+0f59827eced400bac9539e303fb615aaa372eb7f
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 
 using System;
