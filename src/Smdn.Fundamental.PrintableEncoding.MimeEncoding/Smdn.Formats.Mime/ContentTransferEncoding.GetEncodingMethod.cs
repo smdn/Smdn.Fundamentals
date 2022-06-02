@@ -7,6 +7,7 @@ namespace Smdn.Formats.Mime;
 #pragma warning disable IDE0040
 static partial class ContentTransferEncoding {
 #pragma warning restore IDE0040
+  [Obsolete($"Use {nameof(TryParse)}() instead.")]
   public static ContentTransferEncodingMethod GetEncodingMethod(string encoding)
   {
     if (encoding == null)
@@ -18,6 +19,7 @@ static partial class ContentTransferEncoding {
       return ContentTransferEncodingMethod.Unknown;
   }
 
+  [Obsolete($"Use {nameof(Parse)}() instead.")]
   public static ContentTransferEncodingMethod GetEncodingMethodThrowException(string encoding)
   {
     var ret = GetEncodingMethod(encoding);
