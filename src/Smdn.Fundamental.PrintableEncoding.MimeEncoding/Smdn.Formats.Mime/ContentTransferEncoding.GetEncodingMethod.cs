@@ -30,13 +30,13 @@ static partial class ContentTransferEncoding {
 
   public static string GetEncodingName(ContentTransferEncodingMethod method)
     => method switch {
-      ContentTransferEncodingMethod.SevenBit => "7bit",
-      ContentTransferEncodingMethod.EightBit => "8bit",
-      ContentTransferEncodingMethod.Binary => "binary",
-      ContentTransferEncodingMethod.Base64 => "base64",
-      ContentTransferEncodingMethod.QuotedPrintable => "quoted-printable",
-      ContentTransferEncodingMethod.UUEncode => "x-uuencode",
-      ContentTransferEncodingMethod.GZip64 => "x-gzip64",
+      ContentTransferEncodingMethod.SevenBit => ContentTransferEncodingMethodStringSevenBit,
+      ContentTransferEncodingMethod.EightBit => ContentTransferEncodingMethodStringEightBit,
+      ContentTransferEncodingMethod.Binary => ContentTransferEncodingMethodStringBinary,
+      ContentTransferEncodingMethod.Base64 => ContentTransferEncodingMethodStringBase64,
+      ContentTransferEncodingMethod.QuotedPrintable => ContentTransferEncodingMethodStringQuotedPrintable,
+      ContentTransferEncodingMethod.UUEncode => ContentTransferEncodingMethodStringUUEncode,
+      ContentTransferEncodingMethod.GZip64 => ContentTransferEncodingMethodStringGZip64,
       _ => throw ExceptionUtils.CreateNotSupportedEnumValue(method),
     };
 }
