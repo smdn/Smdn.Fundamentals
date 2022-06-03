@@ -470,8 +470,8 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Stack.TryPeek"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Stack.TryPop"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.GetRelativePath"/>
-      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetByteCount(string, int, int)"/>
-      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetBytes(string, int, int)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetByteCount(string,int,int)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetBytes(string,int,int)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.AppendJoin"/>
     </ItemGroup>
 
