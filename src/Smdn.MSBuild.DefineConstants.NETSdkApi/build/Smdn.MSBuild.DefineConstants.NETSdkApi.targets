@@ -448,6 +448,7 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArraySegment.Slice"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArraySegment.Empty"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.Parse&lt;TEnum&gt;"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="MathF"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.EndsWith(char)"/>
