@@ -1,8 +1,5 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET6_0_OR_GREATER
-#define SYSTEM_STRING_COPYTO_SPAN_OF_CHAR
-#endif
 using System;
 
 namespace Smdn.Formats.Mime;

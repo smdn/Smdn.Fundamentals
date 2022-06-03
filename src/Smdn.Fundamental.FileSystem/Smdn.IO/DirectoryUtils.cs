@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET20_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_IO_SEARCHOPTION
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.IO;

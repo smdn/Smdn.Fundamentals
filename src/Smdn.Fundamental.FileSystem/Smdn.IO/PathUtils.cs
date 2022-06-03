@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_IO_FILE
-#endif
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;

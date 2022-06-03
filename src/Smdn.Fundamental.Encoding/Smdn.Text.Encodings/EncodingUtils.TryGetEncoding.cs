@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_TEXT_ENCODING_GETENCODING_CODEPAGE
-#endif
-
 #if SYSTEM_TEXT_ENCODING_GETENCODING_CODEPAGE
 using System;
 using System.Collections.Generic;
