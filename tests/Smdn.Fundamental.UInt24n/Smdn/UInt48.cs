@@ -505,7 +505,7 @@ namespace Smdn {
       Assert.IsFalse(UInt48.TryParse("X", style: NumberStyles.AllowHexSpecifier, provider: null, out _), "#2");
     }
 
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
+#if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
     [Test]
     public void TestTryParse_ReadOnlySpanOfChar()
     {

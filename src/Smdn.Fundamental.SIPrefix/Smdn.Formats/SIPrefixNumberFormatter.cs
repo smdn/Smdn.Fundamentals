@@ -143,7 +143,7 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
 
     if (format.Length == 1)
       digits = 0;
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
+#if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
     else if (!int.TryParse(format.AsSpan(1), out digits) || digits < 0)
 #else
     else if (!int.TryParse(format.Substring(1), out digits) || digits < 0)

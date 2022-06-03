@@ -8,13 +8,13 @@ namespace Smdn;
 internal static class ReadOnlySpanOfCharExtensions {
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   public static
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
+#if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
   ReadOnlySpan<char>
 #else
   string
 #endif
   ToParseableType(this ReadOnlySpan<char> s)
-#if SYSTEM_INUMBER_TRYPARSE_READONLYSPAN_OF_CHAR
+#if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
     => s;
 #else
     => StringShim.Construct(s);
