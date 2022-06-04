@@ -168,7 +168,7 @@ namespace Smdn.IO.Streams {
 #endif
       Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_AArrayEmptyShimrray.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty));
 #endif
