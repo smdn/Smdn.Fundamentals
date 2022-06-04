@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 #if SYSTEM_ARRAY_EMPTY
-using _Array = System.Array; // System.Array.Empty
+using ArrayEmptyShim = System.Array; // System.Array.Empty
 #else
-using _Array = Smdn.ArrayShim; // Smdn.ArrayShim.Empty
+using ArrayEmptyShim = Smdn.ArrayShim; // Smdn.ArrayShim.Empty
 #endif
 
 namespace Smdn.IO.Streams.Extending {
@@ -122,11 +122,11 @@ namespace Smdn.IO.Streams.Extending {
       Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream), nameof(stream.InnerStream));
       Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.LeaveInnerStreamOpen), nameof(stream.LeaveInnerStreamOpen));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(_Array.Empty<byte>(), 0, 0), nameof(stream.Read));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Write));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty), nameof(stream.WriteAsync));
 #endif

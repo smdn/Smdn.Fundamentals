@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 #if SYSTEM_ARRAY_EMPTY
-using _Array = System.Array; // System.Array.Empty
+using ArrayEmptyShim = System.Array; // System.Array.Empty
 #else
-using _Array = Smdn.ArrayShim; // Smdn.ArrayShim.Empty
+using ArrayEmptyShim = Smdn.ArrayShim; // Smdn.ArrayShim.Empty
 #endif
 
 namespace Smdn.IO.Streams.Filtering {
@@ -56,14 +56,14 @@ namespace Smdn.IO.Streams.Filtering {
       Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
 
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(_Array.Empty<byte>(), 0, 0), nameof(stream.Read));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
       Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty), nameof(stream.ReadAsync));
 #endif
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(_Array.Empty<byte>(), 0, 0), nameof(stream.Write));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(_Array.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
+      Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Write));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty), nameof(stream.WriteAsync));
 #endif
@@ -88,8 +88,8 @@ namespace Smdn.IO.Streams.Filtering {
     public void TestConstruct_BufferSizeOutOfRange(int bufferSize)
       => Assert.Throws<ArgumentOutOfRangeException>(() => new FilterStream(Stream.Null, EmptyFilters(), bufferSize));
 
-    [Test] public void TestWrite() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Write(_Array.Empty<byte>(), 0, 0));
-    [Test] public void TestWriteAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(_Array.Empty<byte>(), 0, 0));
+    [Test] public void TestWrite() => Assert.Throws<NotSupportedException>(() => new FilterStream(Stream.Null, EmptyFilters()).Write(ArrayEmptyShim.Empty<byte>(), 0, 0));
+    [Test] public void TestWriteAsync() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
     [Test] public void TestWriteAsync_FromReadOnlyMemory() => Assert.ThrowsAsync<NotSupportedException>(async () => await new FilterStream(Stream.Null, EmptyFilters()).WriteAsync(ReadOnlyMemory<byte>.Empty));
 #endif
@@ -250,7 +250,7 @@ namespace Smdn.IO.Streams.Filtering {
           (2, 2, 3L, expected.Skip(1).Take(2).ToArray()),
           (2, 2, 5L, expected.Skip(3).Take(2).ToArray()),
           (4, 3, 8L, expected.Skip(5).Take(3).ToArray()),
-          (8, 0, 8L, _Array.Empty<byte>()),
+          (8, 0, 8L, ArrayEmptyShim.Empty<byte>()),
         }) {
           var read = readMethod switch {
             ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, lengthToRead),
