@@ -9,6 +9,6 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
+    <PackageReference Include="Smdn.Fundamental.Collection" Version="[3.0.0,4.0.0)" />
   </ItemGroup>
 </Project>
