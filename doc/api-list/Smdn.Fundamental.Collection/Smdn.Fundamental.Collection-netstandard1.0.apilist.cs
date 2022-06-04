@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Collection.dll (Smdn.Fundamental.Collection-3.0.1)
+// Smdn.Fundamental.Collection.dll (Smdn.Fundamental.Collection-3.0.2)
 //   Name: Smdn.Fundamental.Collection
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+fe45d5416d90bdf36487ef596bf2bfe669ae4950
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+3c76000a6d02045406b6b9a98506ce0d4fe87b70
 //   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
 
