@@ -47,6 +47,12 @@ on:
         type: string
         default: ''
 
+      verbose:
+        description: "If true, enables verbose output."
+        required: false
+        type: boolean
+        default: false
+
     secrets:
       token_repo:
         description: 'The token which is used to checkout code.'
@@ -77,14 +83,17 @@ jobs:
       id: runs-on-os-list
       shell: pwsh
       run: |
+        $verbose = '${{ inputs.verbose }}' -ieq 'true'
         $os_list = $Env:RUNS_ON_OS_LIST_DEFAULT | ConvertFrom-Json
 
         if ( ! [string]::IsNullOrEmpty( '${{ inputs.os }}' ) ) {
           $os_list = @('${{ inputs.os }}')
         }
 
-        foreach ($os in $os_list) {
-          "::notice::test runs on: ${os}"
+        if ( $verbose ) {
+          foreach ($os in $os_list) {
+            "::notice::test runs on: ${os}"
+          }
         }
 
         "::set-output name=runs-ons::$($os_list | ConvertTo-Json -Compress)"
@@ -93,6 +102,7 @@ jobs:
       id: test-projects
       shell: pwsh
       run: |
+        $verbose = '${{ inputs.verbose }}' -ieq 'true'
         $directory_tests = [System.IO.Path]::Join('${{ github.workspace }}', '${{ inputs.path_prefix_tests }}')
         $directory_src   = [System.IO.Path]::Join('${{ github.workspace }}', '${{ inputs.path_prefix_source }}')
 
@@ -123,7 +133,9 @@ jobs:
               -Value "$([System.IO.Path]::GetRelativePath('${{ github.workspace }}', $test_target_proj.FullName))"
           }
 
-          "::notice::test project: $($proj.'Name') ($($proj.'PathToTestProject'))"
+          if ( $verbose ) {
+            "::notice::test project: $($proj.'Name') ($($proj.'PathToTestProject'))"
+          }
         }
 
         $output_json = $projects | ConvertTo-Json -Compress
@@ -165,10 +177,10 @@ jobs:
         $installed_version = [System.Version]::Parse($(dotnet --version))
         $required_version  = [System.Version]::Parse('${{ inputs.dotnet_sdk_version }}')
 
-        "::notice::.NET SDK version: installed ${installed_version}, required ${required_version}"
-
         if ( $required_version -gt $installed_version ) {
           # required SDK version is not installed
+          "::notice::.NET SDK version: installed ${installed_version}, required ${required_version}"
+
           "::set-output name=install::${required_version}"
         }
 
@@ -186,13 +198,16 @@ jobs:
     - name: Set NUGET_PACKAGES
       shell: pwsh
       run: |
+        $verbose = '${{ inputs.verbose }}' -ieq 'true'
         $dir_nuget_packages =[System.IO.Path]::Combine(
           '${{ github.workspace }}',
           '.nuget',
           'packages'
         )
 
-        "::notice::NUGET_PACKAGES=${dir_nuget_packages}"
+        if ( $verbose ) {
+          "::notice::NUGET_PACKAGES=${dir_nuget_packages}"
+        }
 
         "NUGET_PACKAGES=${dir_nuget_packages}" >> $Env:GITHUB_ENV
 
