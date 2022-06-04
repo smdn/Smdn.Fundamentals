@@ -24,7 +24,7 @@ public static class Stringification {
         string.Join(
           ", ",
           nameAndValuePairs.Select(
-            ((string n, object v) p) => string.Concat(p.n, "=", ValueToString(p.v))
+            ((string Name, object Value) p) => string.Concat(p.Name, "=", ValueToString(p.Value))
           )
         ),
         "}"
