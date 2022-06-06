@@ -358,7 +358,7 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    private static IEnumerable YieldTestCase_Write()
+    private static IEnumerable YieldTestCases_Write()
     {
       yield return new object[] { (byte)0,       1L };
       yield return new object[] { (sbyte)0,      1L };
@@ -373,7 +373,7 @@ namespace Smdn.IO.Binary {
       yield return new object[] { FourCC.Empty,  4L };
     }
 
-    [TestCaseSource(nameof(YieldTestCase_Write))]
+    [TestCaseSource(nameof(YieldTestCases_Write))]
     public void TestWrite(object value, long expectedPosition)
     {
       using var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream());
@@ -399,7 +399,7 @@ namespace Smdn.IO.Binary {
       Assert.AreEqual(expectedPosition, writer.BaseStream.Position);
     }
 
-    [TestCaseSource(nameof(YieldTestCase_Write))]
+    [TestCaseSource(nameof(YieldTestCases_Write))]
     public void TestWriteToClosedWriter(object value, long discard)
     {
       using var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream());

@@ -27,8 +27,7 @@ partial class UuidTests {
     Assert.Throws<FormatException>(() => Uuid.Nil.ToString("Z", null));
   }
 
-
-  private static System.Collections.IEnumerable YieldTestCase_Format()
+  private static System.Collections.IEnumerable YieldTestCases_Format()
   {
     yield return new object[] { Uuid.RFC4122NamespaceDns, null, "6ba7b810-9dad-11d1-80b4-00c04fd430c8", 36 };
     yield return new object[] { Uuid.RFC4122NamespaceDns, string.Empty, "6ba7b810-9dad-11d1-80b4-00c04fd430c8", 36 };
@@ -46,11 +45,11 @@ partial class UuidTests {
     yield return new object[] { Uuid.Nil, "X", "{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}", 68 };
   }
 
-  [TestCaseSource(nameof(YieldTestCase_Format))]
+  [TestCaseSource(nameof(YieldTestCases_Format))]
   public void TestToString(Uuid uuid, string format, string expectedString, int discard)
     => Assert.AreEqual(expectedString, uuid.ToString(format, formatProvider: null));
 
-  [TestCaseSource(nameof(YieldTestCase_Format))]
+  [TestCaseSource(nameof(YieldTestCases_Format))]
   public void TestTryFormat(Uuid uuid, string format, string expectedString, int expectedCharsWritten)
   {
     if (format is null)

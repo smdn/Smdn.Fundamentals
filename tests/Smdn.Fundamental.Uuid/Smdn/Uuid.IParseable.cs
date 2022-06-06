@@ -71,7 +71,7 @@ partial class UuidTests {
 #endif
   }
 
-  private static System.Collections.IEnumerable YieldTestCase_Parse_FormatException()
+  private static System.Collections.IEnumerable YieldTestCases_Parse_FormatException()
   {
     yield return new object[] { "", "invalid UUID" };
     yield return new object[] { "6", "invalid UUID" };
@@ -133,7 +133,7 @@ partial class UuidTests {
     yield return new object[] { "6ba7b810-9dad-11d1-80b4-00c04fd430c*", "invalid node" };
   }
 
-  [TestCaseSource(nameof(YieldTestCase_Parse_FormatException))]
+  [TestCaseSource(nameof(YieldTestCases_Parse_FormatException))]
   public void TestParse_FormatException(string uuid, string expectedExceptionMessage)
   {
     var exString = Assert.Throws<FormatException>(() => Uuid.Parse(uuid), "Parse<string>");
@@ -154,7 +154,7 @@ partial class UuidTests {
 #endif
   }
 
-  [TestCaseSource(nameof(YieldTestCase_Parse_FormatException))]
+  [TestCaseSource(nameof(YieldTestCases_Parse_FormatException))]
   public void TestTryParse_FormatError(string uuid, string discard)
   {
     Assert.IsFalse(Uuid.TryParse(uuid, provider: null, out _), "TryParse<string>");
