@@ -10,8 +10,15 @@ using System.Text;
 namespace Smdn;
 
 public static class Stringification {
-  // TODO: fix tuple element name casing
-  public static string Stringify(Type type, IEnumerable<(string name, object value)> nameAndValuePairs)
+  public static string Stringify(
+    Type type,
+#if API_VERSION_3_X_X
+#pragma warning disable SA1316
+#endif
+    // TODO: fix tuple element name casing
+    IEnumerable<(string name, object value)> nameAndValuePairs
+#pragma warning restore SA1316
+  )
   {
     if (nameAndValuePairs == null) {
       return string.Concat("{", type?.Name, "}");
