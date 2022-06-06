@@ -247,7 +247,7 @@ public class ExtendStreamTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_Read))]
-  public async Task TestRead_AcrossRange(ReadMethod readMethod)
+  public async Task Read_AcrossRange(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b };
 
@@ -299,7 +299,7 @@ public class ExtendStreamTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_Read))]
-  public async Task TestRead_AcrossRange_PrependAppendNull(ReadMethod readMethod)
+  public async Task Read_AcrossRange_PrependAppendNull(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x04, 0x05, 0x06, 0x07 };
 
@@ -349,7 +349,7 @@ public class ExtendStreamTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_Read))]
-  public async Task TestRead_ExtendedStream(ReadMethod readMethod)
+  public async Task Read_ExtendedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0xff, 0xff, 0xff, 0xff };
 
@@ -383,7 +383,7 @@ public class ExtendStreamTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_Read))]
-  public async Task TestRead_PrependedStream(ReadMethod readMethod)
+  public async Task Read_PrependedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0xff, 0xff, 0xff, 0xff };
 
@@ -417,7 +417,7 @@ public class ExtendStreamTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_Read))]
-  public async Task TestRead_AppendedStream(ReadMethod readMethod)
+  public async Task Read_AppendedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0xff, 0xff, 0xff, 0xff };
 
@@ -451,7 +451,7 @@ public class ExtendStreamTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_Read))]
-  public async Task TestRead_NonExtendedStream(ReadMethod readMethod)
+  public async Task Read_NonExtendedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0xff, 0xff, 0xff, 0xff };
 
