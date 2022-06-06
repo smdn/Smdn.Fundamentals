@@ -8,5 +8,8 @@ SPDX-License-Identifier: MIT
     <RootNamespace>Smdn</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="$(TestTargetProjectDirectory)\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets" />
+  <Import
+    Condition=" '$(TestReleasedPackage)' != 'true' "
+    Project="$(TestTargetProjectDirectory)\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets"
+  />
 </Project>
