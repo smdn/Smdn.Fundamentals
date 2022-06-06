@@ -51,7 +51,7 @@ public class StrictLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(
       new byte[] { 0x40, 0x41, CR, LF },
       ret.Value.SequenceWithNewLine.ToArray()
@@ -71,7 +71,7 @@ public class StrictLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsTrue(ret.Value.IsEmpty);
+    Assert.IsTrue(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(
       new byte[] { CR, LF },
       ret.Value.SequenceWithNewLine.ToArray()
@@ -91,7 +91,7 @@ public class StrictLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(
       new byte[] { 0x42, CR, 0x43, LF, },
       ret.Value.SequenceWithNewLine.ToArray()
@@ -128,7 +128,7 @@ public class StrictLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(line);
-    Assert.AreEqual(data.Skip(5).Take(3).ToArray(), line.Value.SequenceWithNewLine.ToArray());
+    Assert.AreEqual(data.Skip(5).Take(3).ToArray(), line!.Value.SequenceWithNewLine.ToArray());
     Assert.AreEqual(8L, stream.Position, "Position");
 
     Assert.IsNull(stream.ReadLine());
@@ -151,7 +151,7 @@ public class StrictLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(line);
-    Assert.AreEqual(data.Skip(0).Take(10).ToArray(), line.Value.SequenceWithNewLine.ToArray());
+    Assert.AreEqual(data.Skip(0).Take(10).ToArray(), line!.Value.SequenceWithNewLine.ToArray());
     Assert.AreEqual(10L, stream.Position, "Position");
 
     line = runAsync
@@ -159,7 +159,7 @@ public class StrictLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(line);
-    Assert.AreEqual(data.Skip(10).Take(1).ToArray(), line.Value.SequenceWithNewLine.ToArray());
+    Assert.AreEqual(data.Skip(10).Take(1).ToArray(), line!.Value.SequenceWithNewLine.ToArray());
     Assert.AreEqual(11L, stream.Position, "Position");
 
     line = runAsync

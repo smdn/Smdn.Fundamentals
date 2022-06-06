@@ -39,7 +39,7 @@ namespace Smdn.Reflection {
     {
       var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-      Assert.AreEqual(expected, ev.IsStatic(), $"{type.Name}.{ev.Name}");
+      Assert.AreEqual(expected, ev.IsStatic(), $"{type.Name}.{ev!.Name}");
     }
 
     [Test]

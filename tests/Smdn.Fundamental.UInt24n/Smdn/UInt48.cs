@@ -426,7 +426,7 @@ namespace Smdn {
       Assert.AreEqual((UInt48)1, UInt48.Parse("1", provider: null));
       Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, UInt48.Parse("281474976710655", provider: null));
 
-      Assert.Throws<ArgumentNullException>(() => UInt48.Parse(null, provider: null));
+      Assert.Throws<ArgumentNullException>(() => UInt48.Parse(null!, provider: null));
       Assert.Throws<OverflowException>(() => UInt48.Parse("-1", provider: null));
       Assert.Throws<OverflowException>(() => UInt48.Parse("281474976710656", provider: null));
       Assert.Throws<FormatException>(() => UInt48.Parse("FFFFFFFFFFFF", provider: null));

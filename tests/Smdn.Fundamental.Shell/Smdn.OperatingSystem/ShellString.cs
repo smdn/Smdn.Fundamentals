@@ -88,9 +88,9 @@ namespace Smdn.OperatingSystem {
         Assert.IsTrue(str1.Equals(new ShellString("foo")));
         Assert.IsTrue(str1.Equals("foo"));
 
-        Assert.IsFalse(str1.Equals((ShellString)null));
-        Assert.IsFalse(str1.Equals((string)null));
-        Assert.IsFalse(str1.Equals((object)1));
+        Assert.IsFalse(str1.Equals((ShellString)null!));
+        Assert.IsFalse(str1!.Equals((string)null!));
+        Assert.IsFalse(str1!.Equals((object)1));
 
         Assert.IsTrue(str1.Equals(str1));
         Assert.IsFalse(str1.Equals(str2));

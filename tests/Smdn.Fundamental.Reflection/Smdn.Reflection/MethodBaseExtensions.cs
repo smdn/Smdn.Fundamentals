@@ -163,7 +163,7 @@ namespace Smdn.Reflection {
           if (attr == null)
             continue;
 
-          var expected = method.GetCustomAttribute<ExpectedMethodSpecialNameAttribute>().Expected;
+          var expected = method!.GetCustomAttribute<ExpectedMethodSpecialNameAttribute>()!.Expected;
 
           Assert.AreEqual(expected, method.GetNameType(), $"{type.FullName} : {method.Name}");
         }

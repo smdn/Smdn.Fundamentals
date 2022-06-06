@@ -19,7 +19,7 @@ public partial class EncodingUtilsTests {
 
   [Test]
   public void TestGetEncodingNameNull()
-    => Assert.Throws<ArgumentNullException>(() => EncodingUtils.GetEncoding(name: null));
+    => Assert.Throws<ArgumentNullException>(() => EncodingUtils.GetEncoding(name: null!));
 
   [Test]
   public void TestGetEncodingNameEmpty()
@@ -129,7 +129,7 @@ public partial class EncodingUtilsTests {
       () => EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding")
     );
 
-    Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
+    Assert.AreEqual("x-unkwnown-encoding", ex!.EncodingName);
     Assert.IsNotNull(ex.Message);
     Assert.IsNull(ex.InnerException);
   }
@@ -159,7 +159,7 @@ public partial class EncodingUtilsTests {
     );
 
     Assert.AreEqual("x-unkwnown-encoding", encodingName);
-    Assert.AreEqual("x-unkwnown-encoding", ex.EncodingName);
+    Assert.AreEqual("x-unkwnown-encoding", ex!.EncodingName);
     Assert.IsNotNull(ex.Message);
     Assert.IsNull(ex.InnerException);
   }

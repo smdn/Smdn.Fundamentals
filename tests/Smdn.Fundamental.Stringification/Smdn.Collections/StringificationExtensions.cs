@@ -47,9 +47,9 @@ namespace Smdn.Collections {
     public void Stringify_IEnumerableOfKeyValuePair_KeyOrValueNull()
     {
       var pairs = new[] {
-        _KeyValuePair.Create("key1", (string)null),
-        _KeyValuePair.Create((string)null, "value2"),
-        _KeyValuePair.Create((string)null, (string)null),
+        _KeyValuePair.Create("key1", (string)null!),
+        _KeyValuePair.Create((string)null!, "value2"),
+        _KeyValuePair.Create((string)null!, (string)null!),
       };
 
       Assert.AreEqual("{key1 => }, { => value2}, { => }", pairs.Stringify());

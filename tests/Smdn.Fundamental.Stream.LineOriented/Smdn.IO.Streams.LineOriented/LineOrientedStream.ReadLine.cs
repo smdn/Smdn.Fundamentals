@@ -25,7 +25,7 @@ partial class LineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     Assert.IsTrue(ret.Value.SequenceWithNewLine.IsSingleSegment);
     Assert.IsTrue(ret.Value.Sequence.IsSingleSegment);
     CollectionAssert.AreEqual(
@@ -54,7 +54,7 @@ partial class LineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     Assert.IsFalse(ret.Value.SequenceWithNewLine.IsSingleSegment);
     Assert.IsFalse(ret.Value.Sequence.IsSingleSegment);
     CollectionAssert.AreEqual(

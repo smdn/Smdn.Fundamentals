@@ -135,10 +135,10 @@ namespace Smdn.Reflection {
         type = type.GetNestedType(nestedTypeName, BindingFlags.Public | BindingFlags.NonPublic);
 
       if (memberName == null) {
-        Assert.AreEqual(expected, type.IsPrivateOrAssembly(), type.FullName);
+        Assert.AreEqual(expected, type.IsPrivateOrAssembly(), type!.FullName);
       }
       else {
-        var member = type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
+        var member = type!.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
 
         Assert.AreEqual(expected, member.IsPrivateOrAssembly(), $"{type.FullName}.{member.Name}");
       }

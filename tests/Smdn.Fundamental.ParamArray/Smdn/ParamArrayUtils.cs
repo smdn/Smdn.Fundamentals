@@ -55,13 +55,13 @@ namespace Smdn {
       ArgumentException ex;
 
       ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToEnumerableNonNullable(paramName, (string)null).ToList());
-      Assert.AreEqual(paramName, ex.ParamName);
+      Assert.AreEqual(paramName, ex!.ParamName);
 
       ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", (string)null).ToList());
-      Assert.AreEqual(paramName, ex.ParamName);
+      Assert.AreEqual(paramName, ex!.ParamName);
 
       ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", new string[] { null }).ToList());
-      Assert.AreEqual(paramName, ex.ParamName);
+      Assert.AreEqual(paramName, ex!.ParamName);
     }
 
     [Test]
@@ -112,13 +112,13 @@ namespace Smdn {
       ArgumentException ex;
 
       ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToListNonNullable(paramName, (string)null).ToList());
-      Assert.AreEqual(paramName, ex.ParamName);
+      Assert.AreEqual(paramName, ex!.ParamName);
 
       ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToListNonNullable(paramName, "foo", (string)null).ToList());
-      Assert.AreEqual(paramName, ex.ParamName);
+      Assert.AreEqual(paramName, ex!.ParamName);
 
       ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToListNonNullable(paramName, "foo", new string[] { null }).ToList());
-      Assert.AreEqual(paramName, ex.ParamName);
+      Assert.AreEqual(paramName, ex!.ParamName);
     }
   }
 }

@@ -133,7 +133,7 @@ public partial class RFC822DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTime_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => RFC822DateTimeFormats.ParseDateTime((string)null));
+    => Assert.Throws<ArgumentNullException>(() => RFC822DateTimeFormats.ParseDateTime((string)null!));
 
   [Test]
   public void TryParseDateTime_ArgumentNull()
@@ -141,7 +141,7 @@ public partial class RFC822DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTimeOffset_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => RFC822DateTimeFormats.ParseDateTimeOffset((string)null));
+    => Assert.Throws<ArgumentNullException>(() => RFC822DateTimeFormats.ParseDateTimeOffset((string)null!));
 
   [Test]
   public void TryParseDateTimeOffset_ArgumentNull()

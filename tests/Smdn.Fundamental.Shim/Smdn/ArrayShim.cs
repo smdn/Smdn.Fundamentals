@@ -63,7 +63,7 @@ public class ArrayShimTests {
   [Test]
   public void TestConvertAll_ArgumentArrayNull()
   {
-    int[] array = null;
+    int[] array = null!;
 
     Assert.Throws<ArgumentNullException>(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i));
   }
@@ -73,9 +73,9 @@ public class ArrayShimTests {
   {
     var array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 #if SYSTEM_CONVERTER
-    Converter<int, long> converter = null;
+    Converter<int, long> converter = null!;
 #else
-    Func<int, long> converter = null;
+    Func<int, long> converter = null!;
 #endif
 
     Assert.Throws<ArgumentNullException>(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, converter));

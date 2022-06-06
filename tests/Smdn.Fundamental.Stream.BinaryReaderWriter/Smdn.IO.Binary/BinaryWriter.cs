@@ -383,7 +383,7 @@ namespace Smdn.IO.Binary {
                                                .GetMethod("Write",
                                                           new[] {test.Item1.GetType()},
                                                           null)
-                                               .Invoke(writer, new[] {test.Item1});
+                                               !.Invoke(writer, new[] {test.Item1});
           }
           catch (MissingMethodException) {
             Assert.Fail("invocation failed: type = {0}", test.Item1.GetType().FullName);
@@ -418,10 +418,10 @@ namespace Smdn.IO.Binary {
                                                .GetMethod("Write",
                                                           new[] {arg.GetType()},
                                                           null)
-                                               .Invoke(writer, new[] {arg});
+                                               !.Invoke(writer, new[] {arg});
           });
 
-          Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
+          Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
         }
       }
     }

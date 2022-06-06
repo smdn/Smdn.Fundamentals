@@ -137,10 +137,10 @@ partial class UuidTests {
   public void TestParse_FormatException(string uuid, string expectedExceptionMessage)
   {
     var exString = Assert.Throws<FormatException>(() => Uuid.Parse(uuid), "Parse<string>");
-    StringAssert.Contains(expectedExceptionMessage, exString.Message, "Parse<string> exception message");
+    StringAssert.Contains(expectedExceptionMessage, exString!.Message, "Parse<string> exception message");
 
     var exReadOnlySpanOfChar = Assert.Throws<FormatException>(() => Uuid.Parse(uuid.AsSpan()), "Parse<ReadOnlySpan<char>>");
-    StringAssert.Contains(expectedExceptionMessage, exReadOnlySpanOfChar.Message, "Parse<<ReadOnlySpan<char>> exception message");
+    StringAssert.Contains(expectedExceptionMessage, exReadOnlySpanOfChar!.Message, "Parse<<ReadOnlySpan<char>> exception message");
 
 #if FEATURE_GENERIC_MATH
     var exStringGM = Assert.Throws<FormatException>(() => ParseString<Uuid>(uuid), "IParseable.Parse<string>");

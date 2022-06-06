@@ -52,9 +52,9 @@ namespace Smdn.Buffers {
     {
       var baseWriter = new ByteArrayBufferWriter();
 
-      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create<byte>(null, null));
-      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create(null, baseWriter));
-      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create(baseWriter, null));
+      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create<byte>(null!, null!));
+      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create(null!, baseWriter));
+      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create(baseWriter, null!));
     }
 
     [Test]

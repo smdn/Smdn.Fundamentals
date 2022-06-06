@@ -107,8 +107,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null));
-    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null, bufferSize: 0));
+    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null!));
+    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null!, bufferSize: 0));
   }
 
   [Test]
@@ -118,9 +118,9 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null));
-    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0));
-    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null, bufferSize: 0, cancellationToken: default));
+    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null!));
+    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null!, bufferSize: 0));
+    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null!, bufferSize: 0, cancellationToken: default));
   }
 
 #if SYSTEM_IO_STREAM_COPYTO_VIRTUAL

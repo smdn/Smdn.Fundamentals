@@ -39,19 +39,19 @@ namespace Smdn {
 
       ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(-1, 0), "#1");
 
-      Assert.AreEqual("from", ex.ParamName, "#1");
+      Assert.AreEqual("from", ex!.ParamName, "#1");
 
       ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(3, 4), "#2");
 
-      Assert.AreEqual("from", ex.ParamName, "#2");
+      Assert.AreEqual("from", ex!.ParamName, "#2");
 
       ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(1, 0), "#3");
 
-      Assert.AreEqual("to", ex.ParamName, "#3");
+      Assert.AreEqual("to", ex!.ParamName, "#3");
 
       ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(0, 4), "#4");
 
-      Assert.AreEqual("to", ex.ParamName, "#4");
+      Assert.AreEqual("to", ex!.ParamName, "#4");
     }
 
     [Test]
@@ -71,7 +71,7 @@ namespace Smdn {
 
       var ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".IndexOfNot('a', -1));
 
-      Assert.AreEqual("startIndex", ex.ParamName, "#1");
+      Assert.AreEqual("startIndex", ex!.ParamName, "#1");
 
       Assert.Throws<ArgumentException>(() => "abc".IndexOfNot('a', 4));
     }

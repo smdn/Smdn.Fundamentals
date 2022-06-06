@@ -115,7 +115,7 @@ public partial class W3CDateTimeFormatsTests {
 
   [Test]
   public void ParseDateTime_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => W3CDateTimeFormats.ParseDateTime((string)null));
+    => Assert.Throws<ArgumentNullException>(() => W3CDateTimeFormats.ParseDateTime((string)null!));
 
   [Test]
   public void TryParseDateTime_ArgumentNull()
@@ -123,7 +123,7 @@ public partial class W3CDateTimeFormatsTests {
 
   [Test]
   public void ParseDateTimeOffset_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => W3CDateTimeFormats.ParseDateTimeOffset((string)null));
+    => Assert.Throws<ArgumentNullException>(() => W3CDateTimeFormats.ParseDateTimeOffset((string)null!));
 
   [Test]
   public void TryParseDateTimeOffset_ArgumentNull()

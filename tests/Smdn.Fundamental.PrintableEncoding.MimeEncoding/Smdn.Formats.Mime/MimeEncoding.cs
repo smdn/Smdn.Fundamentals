@@ -88,7 +88,7 @@ public class MimeEncodingTests {
 
   [Test]
   public void Encode_InvalidCharset()
-    => Assert.Throws<ArgumentNullException>(() => MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null));
+    => Assert.Throws<ArgumentNullException>(() => MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null!));
 
   [TestCase(0x7fffffff)]
   [TestCase(MimeEncodingMethod.None)]
@@ -266,7 +266,7 @@ public class MimeEncodingTests {
       () => MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=")
     );
 
-    Assert.AreEqual("invalid", ex.EncodingName, "EncodingName");
+    Assert.AreEqual("invalid", ex!.EncodingName, "EncodingName");
   }
 
   [Test]
@@ -337,7 +337,7 @@ public class MimeEncodingTests {
       )
     );
 
-    Assert.AreEqual("x-invalid", ex.EncodingName, "EncodingName");
+    Assert.AreEqual("x-invalid", ex!.EncodingName, "EncodingName");
     Assert.IsTrue(called);
     Assert.AreEqual(MimeEncodingMethod.None, encoding);
     Assert.IsNull(charset);

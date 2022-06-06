@@ -64,12 +64,12 @@ namespace Smdn.Collections {
       }) {
         var ex1 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list[1]));
 
-        Assert.AreEqual("index", ex1.ParamName);
+        Assert.AreEqual("index", ex1!.ParamName);
         //Assert.AreEqual(1, ex1.ActualValue);
 
         var ex2 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list[-1]));
 
-        Assert.AreEqual("index", ex2.ParamName);
+        Assert.AreEqual("index", ex2!.ParamName);
         //Assert.AreEqual(-1, ex2.ActualValue);
       }
     }

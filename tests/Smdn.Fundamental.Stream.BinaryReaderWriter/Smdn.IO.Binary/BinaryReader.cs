@@ -344,7 +344,7 @@ namespace Smdn.IO.Binary {
 
           var ret = typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
                                                        .GetDeclaredMethod(test.Method)
-                                                       .Invoke(reader, null);
+                                                       !.Invoke(reader, null);
 
           Assert.AreNotEqual(0, ret, "read value must be non-zero value");
           Assert.AreEqual((long)test.Count, reader.BaseStream.Position);
@@ -376,10 +376,10 @@ namespace Smdn.IO.Binary {
           var ex = Assert.Throws<TargetInvocationException>(() => {
             typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
                                                .GetDeclaredMethod(test.Method)
-                                               .Invoke(reader, null);
+                                               !.Invoke(reader, null);
           });
 
-          Assert.IsInstanceOf<ObjectDisposedException>(ex.InnerException);
+          Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
         }
       }
     }
@@ -413,7 +413,7 @@ namespace Smdn.IO.Binary {
           Assert.Throws<TargetInvocationException>(() => {
             typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
                                                .GetDeclaredMethod(test.Method)
-                                               .Invoke(reader, null);
+                                               !.Invoke(reader, null);
           });
 
           Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", test.Method);

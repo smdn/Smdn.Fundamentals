@@ -28,7 +28,7 @@ public class MimeTypeStringExtensionsTests {
     Assert.AreEqual("text", type);
     Assert.AreEqual("plain", subType);
 
-    Assert.Throws<ArgumentNullException>(() => MimeType.Parse(null));
+    Assert.Throws<ArgumentNullException>(() => MimeType.Parse(null!));
     Assert.Throws<ArgumentException>(() => MimeType.Parse(string.Empty));
     Assert.Throws<ArgumentException>(() => MimeType.Parse("text/"));
     Assert.Throws<ArgumentException>(() => MimeType.Parse("/plain"));

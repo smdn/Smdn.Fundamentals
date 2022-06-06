@@ -136,7 +136,7 @@ public partial class ISO8601DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTime_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTime((string)null));
+    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTime((string)null!));
 
   [Test]
   public void TryParseDateTime_ArgumentNull()
@@ -144,7 +144,7 @@ public partial class ISO8601DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTimeOffset_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset((string)null));
+    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset((string)null!));
 
   [Test]
   public void TryParseDateTimeOffset_ArgumentNull()

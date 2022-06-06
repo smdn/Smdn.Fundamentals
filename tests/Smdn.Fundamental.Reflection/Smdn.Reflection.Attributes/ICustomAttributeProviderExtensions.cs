@@ -55,11 +55,11 @@ namespace Smdn.Reflection.Attributes {
 
     private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfParameterInfoTestCases()
     {
-      var paras = typeof(C).GetMethod(nameof(C.M)).GetParameters();
+      var paras = typeof(C).GetMethod(nameof(C.M))!.GetParameters();
 
       yield return new object[] { paras[0], typeof(CallerFilePathAttribute) };
       yield return new object[] { paras[1], typeof(CallerLineNumberAttribute) };
-      yield return new object[] { typeof(C).GetMethod(nameof(C.M)).ReturnParameter, typeof(MarshalAsAttribute) };
+      yield return new object[] { typeof(C).GetMethod(nameof(C.M))!.ReturnParameter, typeof(MarshalAsAttribute) };
     }
 
     [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfParameterInfoTestCases))]

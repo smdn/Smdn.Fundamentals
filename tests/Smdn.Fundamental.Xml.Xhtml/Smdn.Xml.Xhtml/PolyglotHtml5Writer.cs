@@ -166,7 +166,7 @@ namespace Smdn.Xml.Xhtml {
     public void TestWrite_Html5Document()
     {
       var doc = new XDocument(
-        new XDocumentType("html", null, null, null),
+        new XDocumentType("html", null!, null!, null!),
         new XElement(
           "html",
           new XElement(
@@ -248,7 +248,7 @@ namespace Smdn.Xml.Xhtml {
     public void TestWriteDocType_XDocument_NullId()
     {
       var doc = new XDocument(
-        new XDocumentType("html", null, null, null),
+        new XDocumentType("html", null!, null!, null!),
         new XElement("html")
       );
 
@@ -273,7 +273,7 @@ namespace Smdn.Xml.Xhtml {
     {
       var doc = new XmlDocument() {
 #if SYSTEM_XML_XMLDOCUMENT_XMLRESOLVER
-        XmlResolver = null
+        XmlResolver = null!
 #endif
       };
 
@@ -509,11 +509,11 @@ namespace Smdn.Xml.Xhtml {
     {
       var content = "<body><p></p></body>";
       var doc = new XmlDocument() {
-        XmlResolver = null
+        XmlResolver = null!
       };
       var settings = new XmlReaderSettings() {
         DtdProcessing = DtdProcessing.Ignore,
-        XmlResolver = null,
+        XmlResolver = null!,
       };
 
       doc.Load(XmlReader.Create(new StringReader(content), settings));

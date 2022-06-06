@@ -69,7 +69,7 @@ public class MethodInfoExtensionsTests {
   public void IsOverridden_AccessorMethod(Type type, string propertyName, bool isOverridden)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-    var getter = property.GetGetMethod();
+    var getter = property!.GetGetMethod();
 
     Assert.AreEqual(isOverridden, getter.IsOverridden(), $"is overridden? {type}.{propertyName}");
   }

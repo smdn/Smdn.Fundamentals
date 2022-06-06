@@ -18,7 +18,7 @@ partial class HexadecimalTests {
   [Test]
   public void TryEncodeUpperCase_OfData_ToByteArray_InvalidArguments()
   {
-    Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, (byte[])null, 0, out _)); // null
+    Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, (byte[])null!, 0, out _)); // null
     Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new byte[0], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new byte[1], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new byte[2], 1, out _)); // destination too short
@@ -37,7 +37,7 @@ partial class HexadecimalTests {
   [Test]
   public void TryEncodeLowerCase_OfData_ToByteArray_InvalidArguments()
   {
-    Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, (byte[])null, 0, out _)); // null
+    Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, (byte[])null!, 0, out _)); // null
     Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new byte[0], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new byte[1], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new byte[2], 1, out _)); // destination too short
@@ -56,7 +56,7 @@ partial class HexadecimalTests {
   [Test]
   public void TryEncodeUpperCase_OfData_ToCharArray_InvalidArguments()
   {
-    Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, (char[])null, 0, out _)); // null
+    Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, (char[])null!, 0, out _)); // null
     Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new char[0], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new char[1], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeUpperCase(0x00, new char[2], 1, out _)); // destination too short
@@ -75,7 +75,7 @@ partial class HexadecimalTests {
   [Test]
   public void TryEncodeLowerCase_OfData_ToCharArray_InvalidArguments()
   {
-    Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, (char[])null, 0, out _)); // null
+    Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, (char[])null!, 0, out _)); // null
     Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new char[0], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new char[1], 0, out _)); // destination too short
     Assert.IsFalse(Hexadecimal.TryEncodeLowerCase(0x00, new char[2], 1, out _)); // destination too short

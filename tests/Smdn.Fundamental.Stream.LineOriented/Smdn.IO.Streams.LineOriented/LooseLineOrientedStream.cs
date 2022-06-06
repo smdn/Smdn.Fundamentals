@@ -52,7 +52,7 @@ public class LooseLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, CR, LF },
                               ret.Value.SequenceWithNewLine.ToArray());
     CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
@@ -66,7 +66,7 @@ public class LooseLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(new byte[] { 0x42, 0x43, CR },
                               ret.Value.SequenceWithNewLine.ToArray());
     CollectionAssert.AreEqual(new byte[] { 0x42, 0x43 },
@@ -80,7 +80,7 @@ public class LooseLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(new byte[] { 0x44, 0x45, LF },
                               ret.Value.SequenceWithNewLine.ToArray());
     CollectionAssert.AreEqual(new byte[] { 0x44, 0x45 },
@@ -94,7 +94,7 @@ public class LooseLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsTrue(ret.Value.IsEmpty);
+    Assert.IsTrue(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(new byte[] { LF },
                               ret.Value.SequenceWithNewLine.ToArray());
     CollectionAssert.AreEqual(new byte[0],
@@ -108,7 +108,7 @@ public class LooseLineOrientedStreamTests {
       : stream.ReadLine();
 
     Assert.IsNotNull(ret);
-    Assert.IsFalse(ret.Value.IsEmpty);
+    Assert.IsFalse(ret!.Value.IsEmpty);
     CollectionAssert.AreEqual(new byte[] { 0x46, 0x47 },
                               ret.Value.SequenceWithNewLine.ToArray());
     CollectionAssert.AreEqual(new byte[] { 0x46, 0x47 },

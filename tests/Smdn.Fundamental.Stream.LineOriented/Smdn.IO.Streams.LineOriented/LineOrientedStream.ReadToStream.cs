@@ -18,8 +18,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentNullException>(() => stream.Read(null, 16L));
-    Assert.Throws<ArgumentNullException>(() => stream.ReadAsync(null, 16L));
+    Assert.Throws<ArgumentNullException>(() => stream.Read(null!, 16L));
+    Assert.Throws<ArgumentNullException>(() => stream.ReadAsync(null!, 16L));
   }
 
   [Test]

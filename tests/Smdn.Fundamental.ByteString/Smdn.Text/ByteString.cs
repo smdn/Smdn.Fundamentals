@@ -34,7 +34,7 @@ namespace Smdn.Text {
       var actualSegment = new byte[actual.Count];
 
       Buffer.BlockCopy(expected.Array, expected.Offset, expectedSegment, 0, expected.Count);
-      Buffer.BlockCopy(actual.Array, actual.Offset, actualSegment, 0, actual.Count);
+      Buffer.BlockCopy(actual.Array!, actual.Offset, actualSegment, 0, actual.Count);
 
       Assert.AreEqual(expectedSegment, actualSegment);
     }
@@ -832,10 +832,10 @@ namespace Smdn.Text {
       Assert.IsTrue(str.Equals((object)new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)));
       Assert.IsTrue(str.Equals((object)new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3)));
 
-      Assert.IsFalse(str.Equals((ByteString)null));
-      Assert.IsFalse(str.Equals((string)null));
-      Assert.IsFalse(str.Equals((byte[])null));
-      Assert.IsFalse(str.Equals((object)1));
+      Assert.IsFalse(str.Equals((ByteString)null!));
+      Assert.IsFalse(str!.Equals((string)null!));
+      Assert.IsFalse(str!.Equals((byte[])null!));
+      Assert.IsFalse(str!.Equals((object)1));
       Assert.IsFalse(str.Equals((object)new byte[] {0x41, 0x42, 0x43}));
       Assert.IsFalse(str.Equals((object)new byte[] {0x41}));
       Assert.IsFalse(str.Equals(ByteString.CreateImmutable("ABC")));

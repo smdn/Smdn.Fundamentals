@@ -9,7 +9,7 @@ partial class NodeTests {
   [Test]
   public void TestParse_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => Node.Parse((string)null, provider: null));
+    Assert.Throws<ArgumentNullException>(() => Node.Parse((string)null!, provider: null));
 
 #if FEATURE_GENERIC_MATH
     Assert.Throws<ArgumentNullException>(() => Parse<Node>(null, provider: null), "IParseable");

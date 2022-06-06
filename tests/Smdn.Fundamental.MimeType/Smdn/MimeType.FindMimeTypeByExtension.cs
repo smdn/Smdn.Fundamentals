@@ -33,13 +33,13 @@ partial class MimeTypeTests {
     Assert.AreEqual(null, MimeType.FindMimeTypeByExtension(string.Empty));
     Assert.AreEqual(null, MimeType.FindMimeTypeByExtension("."));
 
-    Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension(null));
+    Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension(null!));
 
     if (IsRunningOnUnix)
-      Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null));
+      Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null!));
 
     if (IsRunningOnWindows)
-      Assert.DoesNotThrow(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null));
+      Assert.DoesNotThrow(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null!));
   }
 
   [Test]
@@ -103,14 +103,14 @@ partial class MimeTypeTests {
 
     Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge"));
 
-    Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((string)null));
-    Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null));
+    Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((string)null!));
+    Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null!));
 
     if (IsRunningOnUnix)
-      Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null));
+      Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null!));
 
     if (IsRunningOnWindows)
-      Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null));
+      Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null!));
   }
 
   [Test]

@@ -116,7 +116,7 @@ public class AssertSerializationTests {
 
       Assert.IsNotNull(ex.InnerException);
       Assert.IsInstanceOf<NotImplementedException>(ex.InnerException);
-      Assert.AreEqual(innerException.Message, ex.InnerException.Message);
+      Assert.AreEqual(innerException.Message, ex!.InnerException!.Message);
 
       testActionCalled = true;
     });

@@ -82,27 +82,27 @@ partial class OctetEncodingTests {
   [Test]
   public void GetByteCount_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null!));
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null, 0, 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null!, 0, 0));
 #endif
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((char[])null));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((char[])null, 0, 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((char[])null!));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((char[])null!, 0, 0));
   }
 
   [Test]
   public void GetBytes_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null!));
 #if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null, 0, 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null!, 0, 0));
 #endif
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null, 0, 0, new byte[0], 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes(string.Empty, 0, 0, (byte[])null, 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null, 0, 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null, 0, 0, new byte[0], 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes(new char[0], 0, 0, (byte[])null, 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null!, 0, 0, new byte[0], 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes(string.Empty, 0, 0, (byte[])null!, 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null!));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null!, 0, 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null!, 0, 0, new byte[0], 0));
+    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes(new char[0], 0, 0, (byte[])null!, 0));
   }
 
   [Test]

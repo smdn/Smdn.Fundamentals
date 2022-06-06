@@ -37,11 +37,11 @@ public class ModifiedUTF7Tests {
 
   [Test]
   public void TestDecodeArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ModifiedUTF7.Decode(null));
+    => Assert.Throws<ArgumentNullException>(() => ModifiedUTF7.Decode(null!));
 
   [Test]
   public void TestEncodeArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ModifiedUTF7.Encode(null));
+    => Assert.Throws<ArgumentNullException>(() => ModifiedUTF7.Encode(null!));
 
   [Test]
   public void TestDecodeIncorrectForm()

@@ -38,7 +38,7 @@ partial class EncodingUtilsTests {
   public void GetEncoding_Null()
     => Assert.Throws<ArgumentNullException>(
       () => EncodingUtils.GetEncoding(
-        name: null,
+        name: null!,
         codePageCollationTable: null,
         selectFallbackEncoding: null
       )

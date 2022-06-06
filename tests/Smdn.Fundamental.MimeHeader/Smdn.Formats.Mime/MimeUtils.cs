@@ -36,7 +36,8 @@ namespace Smdn.Formats.Mime {
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream));
 
-        Assert.AreEqual(3, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(3, headers!.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].NameString);
         Assert.AreEqual(" 1.0\n", headers[0].ValueString);
@@ -56,7 +57,7 @@ namespace Smdn.Formats.Mime {
     [Test]
     public void TestParseHeaderAsync_ArgumentNull_Stream()
     {
-      LineOrientedStream nullStream = null;
+      LineOrientedStream nullStream = null!;
 
       Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream: nullStream));
     }
@@ -66,9 +67,9 @@ namespace Smdn.Formats.Mime {
     {
       WithStream("MIME-Version: 1.0\r\n", stream => {
 #if SYSTEM_CONVERTER
-        Converter<RawHeaderField, int> nullConverter = null;
+        Converter<RawHeaderField, int> nullConverter = null!;
 #else
-        Func<RawHeaderField, int> nullConverter = null;
+        Func<RawHeaderField, int> nullConverter = null!;
 #endif
 
         Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream, converter: nullConverter));
@@ -131,7 +132,8 @@ namespace Smdn.Formats.Mime {
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: true));
 
-        Assert.AreEqual(expectedParsedHeaderCount, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(expectedParsedHeaderCount, headers!.Count);
       });
     }
 
@@ -151,7 +153,8 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.AreEqual(3, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(3, headers!.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
         Assert.AreEqual("1.0", headers[0].Value);
@@ -171,7 +174,7 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
     [Test]
     public void TestParseHeaderAsNameValuePairsAsync_ArgumentNull_Stream()
     {
-      LineOrientedStream nullStream = null;
+      LineOrientedStream nullStream = null!;
 
       Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsNameValuePairsAsync(stream: nullStream));
     }
@@ -192,7 +195,8 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
 
-        Assert.AreEqual(3, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(3, headers!.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
         Assert.AreEqual(" 1.0\r\n", headers[0].Value);
@@ -221,7 +225,8 @@ Content-Type: text/plain
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.AreEqual(2, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(2, headers!.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
         Assert.AreEqual("1.0", headers[0].Value);
@@ -245,7 +250,8 @@ Content-Type: text/plain
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.AreEqual(4, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(4, headers!.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
         Assert.AreEqual("1.0", headers[0].Value);
@@ -271,7 +277,8 @@ Content-Type: text/plain
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.AreEqual(1, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(1, headers!.Count);
 
         Assert.AreEqual("MIME-Version", headers[0].Key);
         Assert.IsEmpty(headers[0].Value);
@@ -303,7 +310,8 @@ X-Invalid-Header
         if (ignoreMalformed) {
           Assert.DoesNotThrowAsync(testAction);
 
-          Assert.AreEqual(1, headers.Count);
+          Assert.IsNotNull(headers);
+          Assert.AreEqual(1, headers!.Count);
 
           Assert.AreEqual("MIME-Version", headers[0].Key);
           Assert.AreEqual("1.0", headers[0].Value.Trim());
@@ -338,7 +346,8 @@ MIME-Version: 1.0
         if (ignoreMalformed) {
           Assert.DoesNotThrowAsync(testAction);
 
-          Assert.AreEqual(1, headers.Count);
+          Assert.IsNotNull(headers);
+          Assert.AreEqual(1, headers!.Count);
 
           Assert.AreEqual("MIME-Version", headers[0].Key);
           Assert.AreEqual("1.0", headers[0].Value.Trim());
@@ -372,7 +381,8 @@ MIME-Version: 1.0";
         if (ignoreMalformed) {
           Assert.DoesNotThrowAsync(testAction);
 
-          Assert.AreEqual(1, headers.Count);
+          Assert.IsNotNull(headers);
+          Assert.AreEqual(1, headers!.Count);
 
           Assert.AreEqual("MIME-Version", headers[0].Key);
           Assert.AreEqual("1.0", headers[0].Value.Trim());
@@ -397,7 +407,8 @@ MIME-Version: 1.0";
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.AreEqual(4, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(4, headers!.Count);
 
         Assert.AreEqual("Content-Type", headers[0].Key);
         Assert.AreEqual("text/plain", headers[0].Value);
@@ -427,7 +438,8 @@ MIME-Version: 1.0";
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.AreEqual(1, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(1, headers!.Count);
 
         Assert.AreEqual("Subject", headers[0].Key);
         Assert.AreEqual("line1line2line3line4", headers[0].Value);
@@ -448,7 +460,8 @@ MIME-Version: 1.0";
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
 
-        Assert.AreEqual(1, headers.Count);
+        Assert.IsNotNull(headers);
+        Assert.AreEqual(1, headers!.Count);
 
         Assert.AreEqual("Subject", headers[0].Key);
         Assert.AreEqual(" \t line1\r\n line2\n\tline3\r   \tline4\r\n", headers[0].Value);
