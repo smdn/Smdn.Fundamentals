@@ -318,109 +318,99 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    [Test]
-    public void TestRead()
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadByte), 1)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadSByte), 1)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt16), 2)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt16), 2)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt32), 4)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt32), 4)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt64), 8)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt64), 8)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt24), 3)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt48), 6)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadFourCC), 4)]
+    public void TestRead(string methodName, int expectedCount)
     {
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
-      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        foreach (var test in new[] {
-          new {Method = "ReadByte",   Count = 1},
-          new {Method = "ReadSByte",  Count = 1},
-          new {Method = "ReadInt16",  Count = 2},
-          new {Method = "ReadUInt16", Count = 2},
-          new {Method = "ReadInt32",  Count = 4},
-          new {Method = "ReadUInt32", Count = 4},
-          new {Method = "ReadInt64",  Count = 8},
-          new {Method = "ReadUInt64", Count = 8},
-          new {Method = "ReadUInt24", Count = 3},
-          new {Method = "ReadUInt48", Count = 6},
-          new {Method = "ReadFourCC", Count = 4},
-        }) {
-          reader.BaseStream.Seek(0L, SeekOrigin.Begin);
+      using var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual));
 
-          Assert.IsFalse(reader.EndOfStream);
-          Assert.AreEqual(0L, reader.BaseStream.Position);
+      reader.BaseStream.Seek(0L, SeekOrigin.Begin);
 
-          var ret = typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
-                                                       .GetDeclaredMethod(test.Method)
-                                                       !.Invoke(reader, null);
+      Assert.IsFalse(reader.EndOfStream);
+      Assert.AreEqual(0L, reader.BaseStream.Position);
 
-          Assert.AreNotEqual(0, ret, "read value must be non-zero value");
-          Assert.AreEqual((long)test.Count, reader.BaseStream.Position);
-        }
-      }
+      var ret = typeof(Smdn.IO.Binary.BinaryReader)
+        .GetTypeInfo()
+        .GetDeclaredMethod(methodName)
+        !.Invoke(reader, null);
+
+      Assert.AreNotEqual(0, ret, "read value must be non-zero value");
+      Assert.AreEqual((long)expectedCount, reader.BaseStream.Position);
     }
 
-    [Test]
-    public void TestReadFromClosedReader()
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadByte))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadSByte))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt16))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt16))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt32))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt32))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt64))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt64))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt24))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt48))]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadFourCC))]
+    public void TestReadFromClosedReader(string methodName)
     {
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
-      foreach (var test in new[] {
-        new {Method = "ReadByte",   Count = 1},
-        new {Method = "ReadSByte",  Count = 1},
-        new {Method = "ReadInt16",  Count = 2},
-        new {Method = "ReadUInt16", Count = 2},
-        new {Method = "ReadInt32",  Count = 4},
-        new {Method = "ReadUInt32", Count = 4},
-        new {Method = "ReadInt64",  Count = 8},
-        new {Method = "ReadUInt64", Count = 8},
-        new {Method = "ReadUInt24", Count = 3},
-        new {Method = "ReadUInt48", Count = 6},
-        new {Method = "ReadFourCC", Count = 4},
-      }) {
-        using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-          reader.Close();
+      using var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual));
+      reader.Close();
 
-          var ex = Assert.Throws<TargetInvocationException>(() => {
-            typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
-                                               .GetDeclaredMethod(test.Method)
-                                               !.Invoke(reader, null);
-          });
+      var ex = Assert.Throws<TargetInvocationException>(() => {
+        typeof(Smdn.IO.Binary.BinaryReader)
+          .GetTypeInfo()
+          .GetDeclaredMethod(methodName)
+          !.Invoke(reader, null);
+      });
 
-          Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
-        }
-      }
+      Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
     }
 
-    [Test]
-    public void TestReadEndOfStreamException()
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadByte), 1)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadSByte), 1)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt16), 2)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt16), 2)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt32), 4)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt32), 4)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadInt64), 8)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt64), 8)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt24), 3)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadUInt48), 6)]
+    [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadFourCC), 4)]
+    public void TestReadEndOfStreamException(string methodName, int expectedCount)
     {
       var actual = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08};
 
-      using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        foreach (var test in new[] {
-          new {Method = "ReadByte",   Count = 1},
-          new {Method = "ReadSByte",  Count = 1},
-          new {Method = "ReadInt16",  Count = 2},
-          new {Method = "ReadUInt16", Count = 2},
-          new {Method = "ReadInt32",  Count = 4},
-          new {Method = "ReadUInt32", Count = 4},
-          new {Method = "ReadInt64",  Count = 8},
-          new {Method = "ReadUInt64", Count = 8},
-          new {Method = "ReadUInt24", Count = 3},
-          new {Method = "ReadUInt48", Count = 6},
-          new {Method = "ReadFourCC", Count = 4},
-        }) {
-          reader.BaseStream.Seek(-(test.Count - 1), SeekOrigin.End);
+      using var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual));
 
-          if (1 < test.Count)
-            Assert.IsFalse(reader.EndOfStream, "EndOfStream before read: {0}", test.Method);
-          else
-            Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", test.Method);
+      reader.BaseStream.Seek(-(expectedCount - 1), SeekOrigin.End);
 
-          Assert.Throws<TargetInvocationException>(() => {
-            typeof(Smdn.IO.Binary.BinaryReader).GetTypeInfo()
-                                               .GetDeclaredMethod(test.Method)
-                                               !.Invoke(reader, null);
-          });
+      if (1 < expectedCount)
+        Assert.IsFalse(reader.EndOfStream, "EndOfStream before read: {0}", methodName);
+      else
+        Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", methodName);
 
-          Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", test.Method);
+      Assert.Throws<TargetInvocationException>(() => {
+        typeof(Smdn.IO.Binary.BinaryReader)
+          .GetTypeInfo()
+          .GetDeclaredMethod(methodName)
+          !.Invoke(reader, null);
+      });
 
-          Assert.IsTrue(reader.EndOfStream, "EndOfStream after read: {0}", test.Method);
-        }
-      }
+      Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", methodName);
+
+      Assert.IsTrue(reader.EndOfStream, "EndOfStream after read: {0}", methodName);
     }
   }
 }

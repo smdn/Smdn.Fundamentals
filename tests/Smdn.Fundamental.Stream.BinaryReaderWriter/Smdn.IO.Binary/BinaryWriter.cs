@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -357,73 +358,66 @@ namespace Smdn.IO.Binary {
       }
     }
 
-    [Test]
-    public void TestWrite()
+    private static IEnumerable YieldTestCase_Write()
     {
-      using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        foreach (var test in new[] {
-          Tuple.Create<object, long>((byte)0,       1L),
-          Tuple.Create<object, long>((sbyte)0,      1L),
-          Tuple.Create<object, long>((short)0,      2L),
-          Tuple.Create<object, long>((ushort)0,     2L),
-          Tuple.Create<object, long>((int)0,        4L),
-          Tuple.Create<object, long>((uint)0,       4L),
-          Tuple.Create<object, long>((long)0,       8L),
-          Tuple.Create<object, long>((ulong)0,      8L),
-          Tuple.Create<object, long>(UInt24.Zero,   3L),
-          Tuple.Create<object, long>(UInt48.Zero,   6L),
-          Tuple.Create<object, long>(FourCC.Empty,  4L),
-        }) {
-          writer.BaseStream.Seek(0L, SeekOrigin.Begin);
-
-          Assert.AreEqual(0L, writer.BaseStream.Position);
-
-          try {
-            typeof(Smdn.IO.Binary.BinaryWriter).GetTypeInfo()
-                                               .GetMethod("Write",
-                                                          new[] {test.Item1.GetType()},
-                                                          null)
-                                               !.Invoke(writer, new[] {test.Item1});
-          }
-          catch (MissingMethodException) {
-            Assert.Fail("invocation failed: type = {0}", test.Item1.GetType().FullName);
-          }
-
-          Assert.AreEqual(test.Item2, writer.BaseStream.Position);
-        }
-      }
+      yield return new object[] { (byte)0,       1L };
+      yield return new object[] { (sbyte)0,      1L };
+      yield return new object[] { (short)0,      2L };
+      yield return new object[] { (ushort)0,     2L };
+      yield return new object[] { (int)0,        4L };
+      yield return new object[] { (uint)0,       4L };
+      yield return new object[] { (long)0,       8L };
+      yield return new object[] { (ulong)0,      8L };
+      yield return new object[] { UInt24.Zero,   3L };
+      yield return new object[] { UInt48.Zero,   6L };
+      yield return new object[] { FourCC.Empty,  4L };
     }
 
-    [Test]
-    public void TestWriteToClosedWriter()
+    [TestCaseSource(nameof(YieldTestCase_Write))]
+    public void TestWrite(object value, long expectedPosition)
     {
-      foreach (var arg in new object[] {
-        (byte)0,
-        (sbyte)0,
-        (short)0,
-        (ushort)0,
-        (int)0,
-        (uint)0,
-        (long)0,
-        (ulong)0,
-        UInt24.Zero,
-        UInt48.Zero,
-        FourCC.Empty,
-      }) {
-        using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-          writer.Close();
+      using var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream());
 
-          var ex = Assert.Throws<TargetInvocationException>(() => {
-            typeof(Smdn.IO.Binary.BinaryWriter).GetTypeInfo()
-                                               .GetMethod("Write",
-                                                          new[] {arg.GetType()},
-                                                          null)
-                                               !.Invoke(writer, new[] {arg});
-          });
+      writer.BaseStream.Seek(0L, SeekOrigin.Begin);
 
-          Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
-        }
+      Assert.AreEqual(0L, writer.BaseStream.Position);
+
+      try {
+        typeof(Smdn.IO.Binary.BinaryWriter)
+          .GetTypeInfo()
+          .GetMethod(
+            "Write",
+            new[] { value.GetType() },
+            null
+          )
+          !.Invoke(writer, new[] { value });
       }
+      catch (MissingMethodException) {
+        Assert.Fail("invocation failed: type = {0}", value.GetType().FullName);
+      }
+
+      Assert.AreEqual(expectedPosition, writer.BaseStream.Position);
+    }
+
+    [TestCaseSource(nameof(YieldTestCase_Write))]
+    public void TestWriteToClosedWriter(object value, long discard)
+    {
+      using var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream());
+
+      writer.Close();
+
+      var ex = Assert.Throws<TargetInvocationException>(() => {
+        typeof(Smdn.IO.Binary.BinaryWriter)
+          .GetTypeInfo()
+          .GetMethod(
+            "Write",
+            new[] { value.GetType() },
+            null
+          )
+          !.Invoke(writer, new[] { value });
+      });
+
+      Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
     }
   }
 }
