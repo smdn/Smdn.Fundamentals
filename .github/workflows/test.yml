@@ -47,6 +47,12 @@ on:
         type: string
         default: ''
 
+      extra_options_common:
+        description: "The common extra options to be set on running the `dotnet restore/build/test` command."
+        required: false
+        type: string
+        default: ''
+
       verbose:
         description: "If true, enables verbose output."
         required: false
@@ -230,6 +236,7 @@ jobs:
 
         dotnet restore `
           --nologo `
+          ${{ inputs.extra_options_common }} `
           ${{ matrix.project.PathToTestProject }}
 
     - name: Build test project ${{ matrix.project.Name }}
@@ -239,6 +246,7 @@ jobs:
           --nologo `
           --no-restore `
           -consoleLoggerParameters:NoSummary `
+          ${{ inputs.extra_options_common }} `
           ${{ matrix.project.PathToTestProject }}
 
     - name: Determine test timeout values
@@ -277,4 +285,5 @@ jobs:
           --no-build `
           --verbosity quiet `
           --blame-hang-timeout '${{ steps.test-timeouts.outputs.timeout_hang }}' `
+          ${{ inputs.extra_options_common }} `
           ${{ matrix.project.PathToTestProject }}
