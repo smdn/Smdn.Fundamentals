@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -230,10 +231,23 @@ public class ExtendStreamTests {
     Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
   }
 
-  [Test] public Task TestRead_AcrossRange() => TestRead_AcrossRange(runAsync: false);
-  [Test] public Task TestReadAsync_AcrossRange() => TestRead_AcrossRange(runAsync: true);
+  public enum ReadMethod {
+    Read,
+    ReadAsyncArray,
+    ReadAsyncMemory,
+  }
 
-  private async Task TestRead_AcrossRange(bool runAsync)
+  private static IEnumerable YieldTestCases_Read()
+  {
+    yield return new object[] { ReadMethod.Read };
+    yield return new object[] { ReadMethod.ReadAsyncArray };
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    yield return new object[] { ReadMethod.ReadAsyncMemory };
+#endif
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Read))]
+  public async Task TestRead_AcrossRange(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b };
 
@@ -254,9 +268,14 @@ public class ExtendStreamTests {
 
         extended.Position = offset;
 
-        var ret = runAsync
-          ? await extended.ReadAsync(buffer, 0, buffer.Length)
-          : extended.Read(buffer, 0, buffer.Length);
+        var ret = readMethod switch {
+          ReadMethod.Read => extended.Read(buffer, 0, buffer.Length),
+          ReadMethod.ReadAsyncArray => await extended.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncMemory => await extended.ReadAsync(buffer.AsMemory(0, buffer.Length)),
+#endif
+          _ => throw new InvalidOperationException(),
+        };
 
         var expectedReadLength = Math.Min(buffer.Length, extended.Length - offset);
         var expectedPosition = Math.Min(offset + buffer.Length, extended.Length);
@@ -279,10 +298,8 @@ public class ExtendStreamTests {
     }
   }
 
-  [Test] public Task TestRead_AcrossRange_PrependAppendNull() => TestRead_AcrossRange_PrependAppendNull(runAsync: false);
-  [Test] public Task TestReadAsync_AcrossRange_PrependAppendNull() => TestRead_AcrossRange_PrependAppendNull(runAsync: true);
-
-  private async Task TestRead_AcrossRange_PrependAppendNull(bool runAsync)
+  [TestCaseSource(nameof(YieldTestCases_Read))]
+  public async Task TestRead_AcrossRange_PrependAppendNull(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x04, 0x05, 0x06, 0x07 };
 
@@ -301,9 +318,14 @@ public class ExtendStreamTests {
 
         extended.Position = offset;
 
-        var ret = runAsync
-          ? await extended.ReadAsync(buffer, 0, buffer.Length)
-          : extended.Read(buffer, 0, buffer.Length);
+        var ret = readMethod switch {
+          ReadMethod.Read => extended.Read(buffer, 0, buffer.Length),
+          ReadMethod.ReadAsyncArray => await extended.ReadAsync(buffer, 0, buffer.Length),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+          ReadMethod.ReadAsyncMemory => await extended.ReadAsync(buffer.AsMemory(0, buffer.Length)),
+#endif
+          _ => throw new InvalidOperationException(),
+        };
 
         var expectedReadLength = Math.Min(buffer.Length, extended.Length - offset);
         var expectedPosition = Math.Min(offset + buffer.Length, extended.Length);
@@ -326,10 +348,8 @@ public class ExtendStreamTests {
     }
   }
 
-  [Test] public Task TestRead_ExtendedStream() => TestRead_ExtendedStream(runAsync: false);
-  [Test] public Task TestReadAsync_ExtendedStream() => TestRead_ExtendedStream(runAsync: true);
-
-  private async Task TestRead_ExtendedStream(bool runAsync)
+  [TestCaseSource(nameof(YieldTestCases_Read))]
+  public async Task TestRead_ExtendedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0xff, 0xff, 0xff, 0xff };
 
@@ -339,9 +359,14 @@ public class ExtendStreamTests {
       using var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 });
       using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
-      var ret = runAsync
-        ? await extended.ReadAsync(buffer, 0, len)
-        : extended.Read(buffer, 0, len);
+      var ret = readMethod switch {
+        ReadMethod.Read => extended.Read(buffer, 0, len),
+        ReadMethod.ReadAsyncArray => await extended.ReadAsync(buffer, 0, len),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        ReadMethod.ReadAsyncMemory => await extended.ReadAsync(buffer.AsMemory(0, len)),
+#endif
+        _ => throw new InvalidOperationException(),
+      };
 
       if (extended.Length < len) {
         Assert.AreEqual(extended.Length, ret, "read length {0}", len);
@@ -357,10 +382,8 @@ public class ExtendStreamTests {
     }
   }
 
-  [Test] public Task TestRead_PrependedStream() => TestRead_PrependedStream(runAsync: false);
-  [Test] public Task TestReadAsync_PrependedStream() => TestRead_PrependedStream(runAsync: true);
-
-  private async Task TestRead_PrependedStream(bool runAsync)
+  [TestCaseSource(nameof(YieldTestCases_Read))]
+  public async Task TestRead_PrependedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0xff, 0xff, 0xff, 0xff };
 
@@ -370,9 +393,14 @@ public class ExtendStreamTests {
       using var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 });
       using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, null);
 
-      var ret = runAsync
-        ? await extended.ReadAsync(buffer, 0, len)
-        : extended.Read(buffer, 0, len);
+      var ret = readMethod switch {
+        ReadMethod.Read => extended.Read(buffer, 0, len),
+        ReadMethod.ReadAsyncArray => await extended.ReadAsync(buffer, 0, len),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        ReadMethod.ReadAsyncMemory => await extended.ReadAsync(buffer.AsMemory(0, len)),
+#endif
+        _ => throw new InvalidOperationException(),
+      };
 
       if (extended.Length < len) {
         Assert.AreEqual(extended.Length, ret, "read length {0}", len);
@@ -388,10 +416,8 @@ public class ExtendStreamTests {
     }
   }
 
-  [Test] public Task TestRead_AppendedStream() => TestRead_AppendedStream(runAsync: false);
-  [Test] public Task TestReadAsync_AppendedStream() => TestRead_AppendedStream(runAsync: true);
-
-  private async Task TestRead_AppendedStream(bool runAsync)
+  [TestCaseSource(nameof(YieldTestCases_Read))]
+  public async Task TestRead_AppendedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0xff, 0xff, 0xff, 0xff };
 
@@ -401,9 +427,14 @@ public class ExtendStreamTests {
       using var innerStream = new MemoryStream(new byte[] { 0x00, 0x01, 0x02, 0x03 });
       using var extended = new ExtendStream(innerStream, null, new byte[] { 0x04, 0x05, 0x06, 0x07 });
 
-      var ret = runAsync
-        ? await extended.ReadAsync(buffer, 0, len)
-        : extended.Read(buffer, 0, len);
+      var ret = readMethod switch {
+        ReadMethod.Read => extended.Read(buffer, 0, len),
+        ReadMethod.ReadAsyncArray => await extended.ReadAsync(buffer, 0, len),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        ReadMethod.ReadAsyncMemory => await extended.ReadAsync(buffer.AsMemory(0, len)),
+#endif
+        _ => throw new InvalidOperationException(),
+      };
 
       if (extended.Length < len) {
         Assert.AreEqual(extended.Length, ret, "read length {0}", len);
@@ -419,10 +450,8 @@ public class ExtendStreamTests {
     }
   }
 
-  [Test] public Task TestRead_NonExtendedStream() => TestRead_NonExtendedStream(runAsync: false);
-  [Test] public Task TestReadAsync_NonExtendedStream() => TestRead_NonExtendedStream(runAsync: true);
-
-  private async Task TestRead_NonExtendedStream(bool runAsync)
+  [TestCaseSource(nameof(YieldTestCases_Read))]
+  public async Task TestRead_NonExtendedStream(ReadMethod readMethod)
   {
     var expected = new byte[] { 0x00, 0x01, 0x02, 0x03, 0xff, 0xff, 0xff, 0xff };
 
@@ -432,9 +461,14 @@ public class ExtendStreamTests {
       using var innerStream = new MemoryStream(new byte[] { 0x00, 0x01, 0x02, 0x03 });
       using var extended = new ExtendStream(innerStream, (Stream)null, (Stream)null);
 
-      var ret = runAsync
-        ? await extended.ReadAsync(buffer, 0, len)
-        : extended.Read(buffer, 0, len);
+      var ret = readMethod switch {
+        ReadMethod.Read => extended.Read(buffer, 0, len),
+        ReadMethod.ReadAsyncArray => await extended.ReadAsync(buffer, 0, len),
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        ReadMethod.ReadAsyncMemory => await extended.ReadAsync(buffer.AsMemory(0, len)),
+#endif
+        _ => throw new InvalidOperationException(),
+      };
 
       if (extended.Length < len) {
         Assert.AreEqual(extended.Length, ret, "read length {0}", len);
