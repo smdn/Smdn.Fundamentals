@@ -1,7 +1,11 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_BUFFERS_ARRAYPOOL
+using System.Buffers;
+#endif
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -230,15 +234,86 @@ public abstract class ExtendStreamBase : Stream {
   }
 
   protected abstract Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  protected virtual async ValueTask<int> ReadPrependedDataAsync(Memory<byte> buffer, CancellationToken cancellationToken)
+  {
+    if (buffer.Length == 0)
+      return 0;
+
+    if (MemoryMarshal.TryGetArray<byte>(buffer, out var segment))
+      return await ReadPrependedDataAsync(segment.Array, segment.Offset, segment.Count, cancellationToken).ConfigureAwait(false);
+
+    byte[] destination = null;
+    var count = buffer.Length;
+
+    try {
+      destination = ArrayPool<byte>.Shared.Rent(count);
+
+      var ret = await ReadPrependedDataAsync(destination, 0, count, cancellationToken).ConfigureAwait(false);
+
+      destination.AsMemory(0, count).CopyTo(buffer);
+
+      return ret;
+    }
+    finally {
+      if (destination is not null)
+        ArrayPool<byte>.Shared.Return(destination);
+    }
+  }
+#endif
+
   protected abstract Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken);
 
-#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE && false
-  // TODO: override ReadAsync(Memory<byte>, CancellationToken)
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  protected virtual async ValueTask<int> ReadAppendedDataAsync(Memory<byte> buffer, CancellationToken cancellationToken)
+  {
+    if (buffer.Length == 0)
+      return 0;
+
+    if (MemoryMarshal.TryGetArray<byte>(buffer, out var segment))
+      return await ReadAppendedDataAsync(segment.Array, segment.Offset, segment.Count, cancellationToken).ConfigureAwait(false);
+
+    byte[] destination = null;
+    var count = buffer.Length;
+
+    try {
+      destination = ArrayPool<byte>.Shared.Rent(count);
+
+      var ret = await ReadAppendedDataAsync(destination, 0, count, cancellationToken).ConfigureAwait(false);
+
+      destination.AsMemory(0, count).CopyTo(buffer);
+
+      return ret;
+    }
+    finally {
+      if (destination is not null)
+        ArrayPool<byte>.Shared.Return(destination);
+    }
+  }
+#endif
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   public override ValueTask<int> ReadAsync(
     Memory<byte> buffer,
     CancellationToken cancellationToken = default
   )
-    => throw new NotImplementedException();
+  {
+    ThrowIfDisposed();
+
+    if (cancellationToken.IsCancellationRequested)
+#if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
+      return ValueTask.FromCanceled<int>(cancellationToken);
+#else
+#if SYSTEM_THREADING_TASKS_TASK_FROMCANCELED
+      return new(Task.FromCanceled<int>(cancellationToken));
+#else
+      return new(new Task<int>(() => default, cancellationToken));
+#endif
+#endif
+
+    return ReadAsyncCore(buffer, cancellationToken);
+  }
 #endif
 
   public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
@@ -258,55 +333,112 @@ public abstract class ExtendStreamBase : Stream {
       throw ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray(nameof(offset), buffer, offset, count);
 #endif
 
-    return ReadAsyncCore();
-
-    async Task<int> ReadAsyncCore()
-    {
-      var ret = 0;
-
-      while (0 < count) {
-        int readCount;
-        StreamSection nextSection;
-
-        switch (Section) {
-          case StreamSection.Prepend:
-            readCount = await ReadPrependedDataAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
-            nextSection = StreamSection.Stream;
-            break;
-
-          case StreamSection.Stream:
-            readCount =
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-              await stream.ReadAsync(buffer.AsMemory(offset, count), cancellationToken)
+    return ReadAsyncCore(
+      buffer.AsMemory(offset, count),
+      cancellationToken
+    ).AsTask();
 #else
-              await stream.ReadAsync(buffer, offset, count, cancellationToken)
+    return ReadAsyncCore(
+      buffer,
+      offset,
+      count,
+      cancellationToken
+    );
 #endif
-              .ConfigureAwait(false);
-            nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
-            break;
+  }
 
-          case StreamSection.Append:
-            readCount = await ReadAppendedDataAsync(buffer, offset, count, cancellationToken).ConfigureAwait(false);
-            nextSection = StreamSection.EndOfStream;
-            break;
+  private async
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  ValueTask<int>
+#else
+  Task<int>
+#endif
+  ReadAsyncCore(
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+    Memory<byte> buffer,
+#else
+    byte[] buffer,
+    int offset,
+    int count,
+#endif
+    CancellationToken cancellationToken = default
+  )
+  {
+    var ret = 0;
 
-          default:
-            // case StreamSection.EndOfStream:
-            return ret;
-        } // switch
+    while (
+#pragma warning disable SA1003
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+      !buffer.IsEmpty
+#else
+      0 < count
+#endif
+#pragma warning restore SA1003
+    ) {
+      int readCount;
+      StreamSection nextSection;
 
-        if (readCount == 0) {
-          Section = nextSection;
-        }
-        else {
-          ret += readCount;
-          count -= readCount;
-          offset += readCount;
-          position += readCount;
-        }
-      } // while
+      switch (Section) {
+        case StreamSection.Prepend:
+          readCount = await ReadPrependedDataAsync(
+            buffer,
+#if !SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            offset,
+            count,
+#endif
+            cancellationToken
+          ).ConfigureAwait(false);
 
-      return ret;
-    }
+          nextSection = StreamSection.Stream;
+          break;
+
+        case StreamSection.Stream:
+          readCount = await stream.ReadAsync(
+            buffer,
+#if !SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            offset,
+            count,
+#endif
+            cancellationToken
+          ).ConfigureAwait(false);
+
+          nextSection = (appendLength == 0L) ? StreamSection.EndOfStream : StreamSection.Append;
+          break;
+
+        case StreamSection.Append:
+          readCount = await ReadAppendedDataAsync(
+            buffer,
+#if !SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+            offset,
+            count,
+#endif
+            cancellationToken
+          ).ConfigureAwait(false);
+
+          nextSection = StreamSection.EndOfStream;
+          break;
+
+        default:
+          // case StreamSection.EndOfStream:
+          return ret;
+      } // switch
+
+      if (readCount == 0) {
+        Section = nextSection;
+      }
+      else {
+        ret += readCount;
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+        buffer = buffer.Slice(readCount);
+#else
+        count -= readCount;
+        offset += readCount;
+#endif
+        position += readCount;
+      }
+    } // while
+
+    return ret;
   }
 }

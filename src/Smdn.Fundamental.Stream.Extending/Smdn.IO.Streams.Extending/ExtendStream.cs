@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -98,11 +99,21 @@ public class ExtendStream : ExtendStreamBase {
   protected override Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     => prependStream.ReadAsync(buffer, offset, count, cancellationToken);
 
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  protected override ValueTask<int> ReadPrependedDataAsync(Memory<byte> buffer, CancellationToken cancellationToken)
+    => prependStream.ReadAsync(buffer, cancellationToken);
+#endif
+
   protected override int ReadAppendedData(byte[] buffer, int offset, int count)
     => appendStream.Read(buffer, offset, count);
 
   protected override Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
     => appendStream.ReadAsync(buffer, offset, count, cancellationToken);
+
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
+  protected override ValueTask<int> ReadAppendedDataAsync(Memory<byte> buffer, CancellationToken cancellationToken)
+    => appendStream.ReadAsync(buffer, cancellationToken);
+#endif
 
   private Stream prependStream;
   private Stream appendStream;
