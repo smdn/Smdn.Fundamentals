@@ -24,26 +24,36 @@ on:
         default: false
 
 jobs:
-  # If the workflow is triggered by 'release' event,
-  # wait for a while until the package is published on NuGet
-  defer-until-publish-package:
-    name: Delay until the package is published
+  prerequisites:
     runs-on: ubuntu-latest
+    outputs:
+      verbose: ${{ steps.input-prerequisites.outputs.verbose }}
     steps:
-    - name: Wait for a while
+    - name: Delay until the package is published
       run: |
+        # If the workflow is triggered by 'release' event,
+        # wait for a while until the package is published on NuGet
         if [ '${{ github.event_name }}' = 'release' ]; then
           sleep 5.0m
         fi
 
+    - name: Determine prerequisites
+      id: input-prerequisites
+      run: |
+        if [ '${{ github.event.inputs.verbose }}' = 'true' ]; then
+          echo '::set-output name=verbose::true'
+        else
+          echo '::set-output name=verbose::false'
+        fi
+
   run-test:
     uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.5
-    needs: defer-until-publish-package
+    needs: prerequisites
     with:
       project:              ${{ github.event.inputs.project }}
       os:                   ${{ github.event.inputs.os }}
       extra_options_common: '/p:TestReleasedPackage=true'
-      verbose:              ${{ fromJSON(github.event.inputs.verbose) }}
+      verbose:              ${{ fromJSON(needs.prerequisites.outputs.verbose) }}
       dotnet_sdk_version:   '6.0.200'
       timeout_hang:               "[ {'OS':'windows','Timeout':'6min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
       timeout_vstest_connection:  "[ {'OS':'windows','Timeout':360}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"

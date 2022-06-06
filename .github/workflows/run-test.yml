@@ -37,12 +37,27 @@ on:
         default: false
 
 jobs:
+  prerequisites:
+    runs-on: ubuntu-latest
+    outputs:
+      verbose: ${{ steps.input-prerequisites.outputs.verbose }}
+    steps:
+    - name: Determine prerequisites
+      id: input-prerequisites
+      run: |
+        if [ '${{ github.event.inputs.verbose }}' = 'true' ]; then
+          echo '::set-output name=verbose::true'
+        else
+          echo '::set-output name=verbose::false'
+        fi
+
   run-test:
     uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.4
+    needs: prerequisites
     with:
       project:            ${{ github.event.inputs.project }}
       os:                 ${{ github.event.inputs.os }}
-      verbose:            ${{ fromJSON(github.event.inputs.verbose) }}
+      verbose:            ${{ fromJSON(needs.prerequisites.outputs.verbose) }}
       dotnet_sdk_version: '6.0.200'
       timeout_hang:               "[ {'OS':'windows','Timeout':'6min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
       timeout_vstest_connection:  "[ {'OS':'windows','Timeout':360}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"
