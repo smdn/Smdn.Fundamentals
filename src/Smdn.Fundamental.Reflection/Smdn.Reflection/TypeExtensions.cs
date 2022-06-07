@@ -40,6 +40,7 @@ public static class TypeExtensions {
     public static bool IsEnum(Type type)
       => IsSubclassOf(type, typeof(Enum));
 
+    /// <returns>Returns <see cref="Type"/> which represents the underlying type if <paramref name="nullableType"/> is a <see cref="Nullable{T}"/>, otherwise <see langword="null"/>.</returns>
     public static Type? GetUnderlyingTypeOfNullable(Type nullableType)
     {
       if (!nullableType.IsGenericType) // is not Nullable<T>
@@ -87,6 +88,7 @@ public static class TypeExtensions {
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal)
       );
 
+  /// <returns>Returns <see cref="MethodInfo"/> which represents the signature of the delegate if <paramref name="t"/> is a <see cref="Delegate"/>, otherwise <see langword="null"/>.</returns>
   public static MethodInfo? GetDelegateSignatureMethod(this Type t)
     => IsDelegate(t ?? throw new ArgumentNullException(nameof(t))) ? t.GetMethod("Invoke") : null;
 
