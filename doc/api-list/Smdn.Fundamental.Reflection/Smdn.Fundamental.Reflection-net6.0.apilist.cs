@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Reflection
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+2988f87a51f42ed43388b349616da769ea6ac345
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;

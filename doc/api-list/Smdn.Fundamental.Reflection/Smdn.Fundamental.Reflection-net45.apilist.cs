@@ -1,13 +1,14 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.0.4 (net45))
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.1.0)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.0.4.0
-//   InformationalVersion: 3.0.4 (net45)
+//   AssemblyVersion: 3.1.0.0
+//   InformationalVersion: 3.1.0+2988f87a51f42ed43388b349616da769ea6ac345
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Smdn.Reflection;
 
 namespace Smdn.Reflection {
@@ -53,40 +54,52 @@ namespace Smdn.Reflection {
     Unknown = -1,
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class EventInfoExtensions {
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev) {}
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic) {}
     public static bool IsStatic(this EventInfo ev) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class MemberInfoExtensions {
     public static Accessibility GetAccessibility(this MemberInfo member) {}
     public static bool IsPrivateOrAssembly(this MemberInfo member) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class MethodBaseExtensions {
-    public static MethodInfo FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false) {}
+    [return: Nullable(2)] public static MethodInfo FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false) {}
     public static MethodSpecialName GetNameType(this MethodBase m) {}
     public static IEnumerable<Type> GetSignatureTypes(this MethodBase m) {}
     public static bool IsExplicitlyImplemented(this MethodBase m) {}
-    public static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces = false) {}
+    public static bool TryFindExplicitInterfaceMethod(this MethodBase m, [Nullable(2)] out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces = false) {}
   }
 
   public static class MethodInfoExtensions {
+    [NullableContext(1)]
     public static bool IsOverridden(this MethodInfo m) {}
   }
 
   public static class ParameterInfoExtensions {
+    [NullableContext(1)]
     public static bool IsReturnParameter(this ParameterInfo param) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class PropertyInfoExtensions {
     public static bool IsSetMethodInitOnly(this PropertyInfo property) {}
     public static bool IsStatic(this PropertyInfo property) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class TypeExtensions {
-    public static MethodInfo GetDelegateSignatureMethod(this Type t) {}
+    [return: Nullable(2)] public static MethodInfo GetDelegateSignatureMethod(this Type t) {}
     public static IEnumerable<Type> GetExplicitBaseTypeAndInterfaces(this Type t) {}
     public static string GetGenericTypeName(this Type t) {}
     public static IEnumerable<string> GetNamespaces(this Type t) {}
@@ -102,10 +115,12 @@ namespace Smdn.Reflection {
 
 namespace Smdn.Reflection.Attributes {
   public static class CustomAttributeTypedArgumentExtensions {
+    [NullableContext(2)]
     public static object GetTypedValue(this CustomAttributeTypedArgument typedArg) {}
   }
 
   public static class ICustomAttributeProviderExtensions {
+    [NullableContext(1)]
     public static IList<CustomAttributeData> GetCustomAttributeDataList(this ICustomAttributeProvider attributeProvider) {}
   }
 }
