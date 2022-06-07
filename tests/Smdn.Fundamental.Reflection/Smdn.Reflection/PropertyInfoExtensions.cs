@@ -49,6 +49,14 @@ public class PropertyInfoExtensionsTests {
     Assert.AreEqual(expected, property!.IsStatic(), $"{type.Name}.{property!.Name}");
   }
 
+  [Test]
+  public void IsStatic_ArgumentNull()
+  {
+    PropertyInfo p = null!;
+
+    Assert.Throws<ArgumentNullException>(() => p.IsStatic());
+  }
+
   [TestCase(typeof(C), nameof(C.P0), true)]
   [TestCase(typeof(C), nameof(C.P1), false)]
   [TestCase(typeof(S), nameof(S.P0), true)]
@@ -70,5 +78,13 @@ public class PropertyInfoExtensionsTests {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
     Assert.Throws<InvalidOperationException>(() => property!.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
+  }
+
+  [Test]
+  public void IsSetMethodInitOnly_ArgumentNull()
+  {
+    PropertyInfo p = null!;
+
+    Assert.Throws<ArgumentNullException>(() => p.IsSetMethodInitOnly());
   }
 }

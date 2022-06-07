@@ -9,12 +9,24 @@ namespace Smdn.Reflection;
 
 public static class EventInfoExtensions {
   public static bool IsStatic(this EventInfo ev)
-    => GetMethods(ev, nonPublic: true).Any(static m => m.IsStatic);
+    => GetMethodsCore(
+      ev ?? throw new ArgumentNullException(nameof(ev)),
+      nonPublic: true
+    ).Any(static m => m.IsStatic);
 
   public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev)
-    => GetMethods(ev, nonPublic: false);
+    => GetMethodsCore(
+      ev ?? throw new ArgumentNullException(nameof(ev)),
+      nonPublic: false
+    );
 
   public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic)
+    => GetMethodsCore(
+      ev ?? throw new ArgumentNullException(nameof(ev)),
+      nonPublic: nonPublic
+    );
+
+  private static IEnumerable<MethodInfo> GetMethodsCore(EventInfo ev, bool nonPublic)
   {
     var methodAdd = ev.GetAddMethod(nonPublic);
     var methodRemove = ev.GetRemoveMethod(nonPublic);

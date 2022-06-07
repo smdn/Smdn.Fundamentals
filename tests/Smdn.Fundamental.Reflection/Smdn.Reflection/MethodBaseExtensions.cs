@@ -24,6 +24,14 @@ public class MethodBaseExtensionsTests {
   public void GetSignatureTypes(Type type, string methodName, Type[] expected)
     => CollectionAssert.AreEqual(expected, type.GetMethod(methodName)!.GetSignatureTypes());
 
+  [Test]
+  public void GetSignatureTypes_ArgumentNull()
+  {
+    MethodBase m = null!;
+
+    Assert.Throws<ArgumentNullException>(() => m.GetSignatureTypes());
+  }
+
   class C2 : ICloneable, IDisposable {
     public void M() => throw new NotImplementedException();
     public object Clone() => throw new NotImplementedException();
@@ -41,6 +49,14 @@ public class MethodBaseExtensionsTests {
     Assert.AreEqual(expectedMethod, method!.FindExplicitInterfaceMethod());
   }
 
+  [Test]
+  public void FindExplicitInterfaceMethod_ArgumentNull()
+  {
+    MethodBase m = null!;
+
+    Assert.Throws<ArgumentNullException>(() => m.FindExplicitInterfaceMethod());
+  }
+
   [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true, typeof(IDisposable), nameof(IDisposable.Dispose))]
@@ -53,6 +69,14 @@ public class MethodBaseExtensionsTests {
     Assert.AreEqual(expectedMethod, actualMethod, "actual method");
   }
 
+  [Test]
+  public void TryFindExplicitInterfaceMethod_ArgumentNull()
+  {
+    MethodBase m = null!;
+
+    Assert.Throws<ArgumentNullException>(() => m.TryFindExplicitInterfaceMethod(out _));
+  }
+
   [TestCase(typeof(C2), nameof(C2.M), false)]
   [TestCase(typeof(C2), nameof(C2.Clone), false)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true)]
@@ -61,6 +85,14 @@ public class MethodBaseExtensionsTests {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
     Assert.AreEqual(expected, method!.IsExplicitlyImplemented());
+  }
+
+  [Test]
+  public void IsExplicitlyImplemented_ArgumentNull()
+  {
+    MethodBase m = null!;
+
+    Assert.Throws<ArgumentNullException>(() => m.IsExplicitlyImplemented());
   }
 
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.I1.M", "M")]
@@ -166,5 +198,13 @@ public class MethodBaseExtensionsTests {
         Assert.AreEqual(expected, method.GetNameType(), $"{type.FullName} : {method.Name}");
       }
     }
+  }
+
+  [Test]
+  public void GetNameType_ArgumentNull()
+  {
+    MethodBase m = null!;
+
+    Assert.Throws<ArgumentNullException>(() => m.GetNameType());
   }
 }

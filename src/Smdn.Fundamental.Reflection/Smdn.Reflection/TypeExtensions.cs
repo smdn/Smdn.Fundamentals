@@ -57,70 +57,83 @@ public static class TypeExtensions {
 
   public static bool IsDelegate(this Type t)
     =>
-      ROCType.IsSubclassOf(t, typeof(Delegate)) ||
+      ROCType.IsSubclassOf(t ?? throw new ArgumentNullException(nameof(t)), typeof(Delegate)) ||
       ROCType.Equals(t, typeof(Delegate));
 
   public static bool IsConcreteDelegate(this Type t)
     =>
-      !ROCType.Equals(t, typeof(Delegate)) &&
+      !ROCType.Equals(t ?? throw new ArgumentNullException(nameof(t)), typeof(Delegate)) &&
       !ROCType.Equals(t, typeof(MulticastDelegate)) &&
       ROCType.IsSubclassOf(t, typeof(Delegate));
 
   public static bool IsEnumFlags(this Type t)
     =>
-      ROCType.IsEnum(t) &&
+      ROCType.IsEnum(t ?? throw new ArgumentNullException(nameof(t))) &&
       t.GetCustomAttributesData().Any(
         static d => string.Equals(d.AttributeType.FullName, typeof(FlagsAttribute).FullName, StringComparison.Ordinal)
       );
 
   public static bool IsReadOnlyValueType(this Type t)
     =>
-      ROCType.IsValueType(t) &&
+      ROCType.IsValueType(t ?? throw new ArgumentNullException(nameof(t))) &&
       t.GetCustomAttributesData().Any(
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal)
       );
 
   public static bool IsByRefLikeValueType(this Type t)
     =>
-      ROCType.IsValueType(t) &&
+      ROCType.IsValueType(t ?? throw new ArgumentNullException(nameof(t))) &&
       t.GetCustomAttributesData().Any(
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal)
       );
 
   public static MethodInfo? GetDelegateSignatureMethod(this Type t)
-    => IsDelegate(t) ? t.GetMethod("Invoke") : null;
+    => IsDelegate(t ?? throw new ArgumentNullException(nameof(t))) ? t.GetMethod("Invoke") : null;
 
   public static IEnumerable<Type> GetExplicitBaseTypeAndInterfaces(this Type t)
   {
-    if (ROCType.IsEnum(t) || t.IsDelegate())
-      yield break;
+    return GetExplicitBaseTypeAndInterfacesCore(
+      t ?? throw new ArgumentNullException(nameof(t))
+    );
 
-    // explicit base type
-    if (
-      t.BaseType is not null &&
-      !ROCType.Equals(t.BaseType, typeof(object)) &&
-      !ROCType.Equals(t.BaseType, typeof(ValueType))
-    ) {
-      yield return t.BaseType;
+    static IEnumerable<Type> GetExplicitBaseTypeAndInterfacesCore(Type t)
+    {
+      if (ROCType.IsEnum(t) || t.IsDelegate())
+        yield break;
+
+      // explicit base type
+      if (
+        t.BaseType is not null &&
+        !ROCType.Equals(t.BaseType, typeof(object)) &&
+        !ROCType.Equals(t.BaseType, typeof(ValueType))
+      ) {
+        yield return t.BaseType;
+      }
+
+      // interfaces
+      var allInterfaces = t.GetInterfaces();
+      var interfaces = allInterfaces
+        .Except(
+          allInterfaces.SelectMany(static i => i.GetInterfaces()) // flatten
+        )
+        .Except(t.BaseType?.GetInterfaces() ?? Type.EmptyTypes);
+
+      foreach (var iface in interfaces)
+        yield return iface;
     }
-
-    // interfaces
-    var allInterfaces = t.GetInterfaces();
-    var interfaces = allInterfaces
-      .Except(
-        allInterfaces.SelectMany(static i => i.GetInterfaces()) // flatten
-      )
-      .Except(t.BaseType?.GetInterfaces() ?? Type.EmptyTypes);
-
-    foreach (var iface in interfaces)
-      yield return iface;
   }
 
   public static IEnumerable<string> GetNamespaces(this Type t)
-    => GetAllNamespaces(t, static type => false).Distinct();
+    => GetAllNamespaces(
+      t ?? throw new ArgumentNullException(nameof(t)),
+      static type => false
+    ).Distinct();
 
   public static IEnumerable<string> GetNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive)
-    => GetAllNamespaces(t, isLanguagePrimitive).Distinct();
+    => GetAllNamespaces(
+      t ?? throw new ArgumentNullException(nameof(t)),
+      isLanguagePrimitive ?? throw new ArgumentNullException(nameof(isLanguagePrimitive))
+    ).Distinct();
 
   private static IEnumerable<string> GetAllNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive)
   {
@@ -154,6 +167,8 @@ public static class TypeExtensions {
 
   public static string GetGenericTypeName(this Type t)
   {
+    if (t is null)
+      throw new ArgumentNullException(nameof(t));
     if (!t.IsGenericType)
       throw new ArgumentException($"{t} is not a generic type", nameof(t));
 

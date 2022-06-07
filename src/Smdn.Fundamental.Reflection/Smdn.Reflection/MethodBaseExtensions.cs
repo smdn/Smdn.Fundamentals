@@ -9,11 +9,18 @@ namespace Smdn.Reflection;
 public static class MethodBaseExtensions {
   public static IEnumerable<Type> GetSignatureTypes(this MethodBase m)
   {
-    foreach (var p in m.GetParameters())
-      yield return p.ParameterType;
+    return GetSignatureTypesCore(
+      m ?? throw new ArgumentNullException(nameof(m))
+    );
 
-    if (m is MethodInfo mm)
-      yield return mm.ReturnType;
+    static IEnumerable<Type> GetSignatureTypesCore(MethodBase m)
+    {
+      foreach (var p in m.GetParameters())
+        yield return p.ParameterType;
+
+      if (m is MethodInfo mm)
+        yield return mm.ReturnType;
+    }
   }
 
   public static bool IsExplicitlyImplemented(this MethodBase m)
@@ -31,6 +38,9 @@ public static class MethodBaseExtensions {
 
   private static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo? explicitInterfaceMethod, bool findOnlyPublicInterfaces, bool throwException)
   {
+    if (m is null)
+      throw new ArgumentNullException(nameof(m));
+
     explicitInterfaceMethod = default;
 
     if (m is MethodInfo im && im.IsFinal && im.IsPrivate) {
@@ -105,6 +115,9 @@ public static class MethodBaseExtensions {
 
   public static MethodSpecialName GetNameType(this MethodBase m)
   {
+    if (m is null)
+      throw new ArgumentNullException(nameof(m));
+
     if (!m.IsSpecialName)
       return MethodSpecialName.None;
 

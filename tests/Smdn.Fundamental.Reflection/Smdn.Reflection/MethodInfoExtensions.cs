@@ -74,5 +74,13 @@ public class MethodInfoExtensionsTests {
 
     Assert.AreEqual(isOverridden, getter!.IsOverridden(), $"is overridden? {type}.{propertyName}");
   }
+
+  [Test]
+  public void IsOverridden_ArgumentNull()
+  {
+    MethodInfo m = null!;
+
+    Assert.Throws<ArgumentNullException>(() => m.IsOverridden());
+  }
 }
 

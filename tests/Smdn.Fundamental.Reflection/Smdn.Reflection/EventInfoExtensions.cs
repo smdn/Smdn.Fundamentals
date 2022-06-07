@@ -44,6 +44,14 @@ public class EventInfoExtensionsTests {
   }
 
   [Test]
+  public void IsStatic_ArgumentNull()
+  {
+    EventInfo ev = null!;
+
+    Assert.Throws<ArgumentNullException>(() => ev.IsStatic());
+  }
+
+  [Test]
   public void GetMethods()
   {
     var e1 = GetType().GetEvent("E1", BindingFlags.Instance | BindingFlags.Public)!;
@@ -60,6 +68,16 @@ public class EventInfoExtensionsTests {
 
     CollectionAssert.IsEmpty(e3.GetMethods(false));
     CollectionAssert.IsNotEmpty(e3.GetMethods(true));
+  }
+
+  [Test]
+  public void GetMethods_ArgumentNull()
+  {
+    EventInfo ev = null!;
+
+    Assert.Throws<ArgumentNullException>(() => ev.GetMethods());
+    Assert.Throws<ArgumentNullException>(() => ev.GetMethods(nonPublic: true), "nonPublic: true");
+    Assert.Throws<ArgumentNullException>(() => ev.GetMethods(nonPublic: false), "nonPublic: false");
   }
 
 #if false
