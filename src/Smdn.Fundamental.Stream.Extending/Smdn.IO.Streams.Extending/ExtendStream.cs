@@ -14,14 +14,14 @@ public class ExtendStream : ExtendStreamBase {
 
   public ExtendStream(
     Stream innerStream,
-    byte[] prependData,
-    byte[] appendData,
+    byte[]? prependData,
+    byte[]? appendData,
     bool leaveInnerStreamOpen = true
   )
     : this(
       innerStream,
-      (prependData == null) ? null : new MemoryStream(prependData, false),
-      (appendData == null) ? null : new MemoryStream(appendData, false),
+      prependData is null ? null : new MemoryStream(prependData, false),
+      appendData is null ? null : new MemoryStream(appendData, false),
       leaveInnerStreamOpen,
       leavePrependStreamOpen: false,
       leaveAppendStreamOpen: false
@@ -31,16 +31,16 @@ public class ExtendStream : ExtendStreamBase {
 
   public ExtendStream(
     Stream innerStream,
-    Stream prependStream,
-    Stream appendStream,
+    Stream? prependStream,
+    Stream? appendStream,
     bool leaveInnerStreamOpen = true,
     bool leavePrependStreamOpen = true,
     bool leaveAppendStreamOpen = true
   )
     : base(
       innerStream,
-      (prependStream == null) ? 0L : prependStream.Length,
-      (appendStream == null) ? 0L : appendStream.Length,
+      prependStream?.Length ?? 0L,
+      appendStream?.Length ?? 0L,
       leaveInnerStreamOpen
     )
   {
@@ -83,40 +83,58 @@ public class ExtendStream : ExtendStreamBase {
 
   protected override void SetPrependedDataPosition(long position)
   {
-    if (prependStream != null)
+    if (prependStream is not null)
       prependStream.Position = position;
   }
 
   protected override void SetAppendedDataPosition(long position)
   {
-    if (appendStream != null)
+    if (appendStream is not null)
       appendStream.Position = position;
   }
 
+  private static Exception CreateAccessToNullPrependDataException()
+    => new InvalidOperationException("prepend data is not set");
+
   protected override int ReadPrependedData(byte[] buffer, int offset, int count)
-    => prependStream.Read(buffer, offset, count);
+    => prependStream is null
+      ? throw CreateAccessToNullPrependDataException()
+      : prependStream.Read(buffer, offset, count);
 
   protected override Task<int> ReadPrependedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-    => prependStream.ReadAsync(buffer, offset, count, cancellationToken);
+    => prependStream is null
+      ? throw CreateAccessToNullPrependDataException()
+      : prependStream.ReadAsync(buffer, offset, count, cancellationToken);
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   protected override ValueTask<int> ReadPrependedDataAsync(Memory<byte> buffer, CancellationToken cancellationToken)
-    => prependStream.ReadAsync(buffer, cancellationToken);
+    => prependStream is null
+      ? throw CreateAccessToNullPrependDataException()
+      : prependStream.ReadAsync(buffer, cancellationToken);
 #endif
 
+  private static Exception CreateAccessToNullAppendDataException()
+    => new InvalidOperationException("append data is not set");
+
   protected override int ReadAppendedData(byte[] buffer, int offset, int count)
-    => appendStream.Read(buffer, offset, count);
+    => appendStream is null
+      ? throw CreateAccessToNullAppendDataException()
+      : appendStream.Read(buffer, offset, count);
 
   protected override Task<int> ReadAppendedDataAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken)
-    => appendStream.ReadAsync(buffer, offset, count, cancellationToken);
+    => appendStream is null
+      ? throw CreateAccessToNullAppendDataException()
+      : appendStream.ReadAsync(buffer, offset, count, cancellationToken);
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
   protected override ValueTask<int> ReadAppendedDataAsync(Memory<byte> buffer, CancellationToken cancellationToken)
-    => appendStream.ReadAsync(buffer, cancellationToken);
+    => appendStream is null
+      ? throw CreateAccessToNullAppendDataException()
+      : appendStream.ReadAsync(buffer, cancellationToken);
 #endif
 
-  private Stream prependStream;
-  private Stream appendStream;
+  private Stream? prependStream;
+  private Stream? appendStream;
   private readonly bool leavePrependStreamOpen;
   private readonly bool leaveAppendStreamOpen;
 }

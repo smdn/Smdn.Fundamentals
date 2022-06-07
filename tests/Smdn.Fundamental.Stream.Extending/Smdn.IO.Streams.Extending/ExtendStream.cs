@@ -33,8 +33,8 @@ public class ExtendStreamTests {
   [Test]
   public void Construct_StreamNull()
   {
-    Assert.Throws<ArgumentNullException>(() => new ExtendStream(null, Stream.Null, Stream.Null));
-    Assert.Throws<ArgumentNullException>(() => new ExtendStream(null, new byte[0], new byte[0]));
+    Assert.Throws<ArgumentNullException>(() => new ExtendStream(null!, Stream.Null, Stream.Null));
+    Assert.Throws<ArgumentNullException>(() => new ExtendStream(null!, new byte[0], new byte[0]));
   }
 
   [TestCase(true)]

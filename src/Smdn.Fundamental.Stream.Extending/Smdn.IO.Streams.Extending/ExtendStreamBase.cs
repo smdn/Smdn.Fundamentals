@@ -1,8 +1,15 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#pragma warning disable CS8602, CS8603
+#endif
+
 using System;
 #if SYSTEM_BUFFERS_ARRAYPOOL
 using System.Buffers;
+#endif
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES || SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+using System.Diagnostics.CodeAnalysis;
 #endif
 using System.IO;
 using System.Runtime.InteropServices;
@@ -15,10 +22,14 @@ namespace Smdn.IO.Streams.Extending;
 #pragma warning disable CA1710 // Identifiers should have correct suffix
 public abstract class ExtendStreamBase : Stream {
 #pragma warning restore CA1710
-  private Stream stream = null;
+  private Stream? stream;
+
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+  [MemberNotNullWhen(false, nameof(stream))]
+#endif
   private bool IsClosed => stream == null;
 
-  public Stream InnerStream { get { ThrowIfDisposed(); return stream; } }
+  public Stream InnerStream { get { ThrowObjectDisposedExceptionIf(IsClosed); return stream; } }
 
   private readonly bool leaveInnerStreamOpen;
   public bool LeaveInnerStreamOpen { get { ThrowIfDisposed(); return leaveInnerStreamOpen; } }
@@ -27,7 +38,7 @@ public abstract class ExtendStreamBase : Stream {
   public override bool CanRead => !IsClosed && stream.CanRead;
   public override bool CanWrite => /*!IsClosed &&*/ false;
   public override bool CanTimeout => !IsClosed && stream.CanTimeout;
-  public override long Length { get { ThrowIfDisposed(); return prependLength + stream.Length + appendLength; } }
+  public override long Length { get { ThrowObjectDisposedExceptionIf(IsClosed); return prependLength + stream.Length + appendLength; } }
 
   private long position;
   public override long Position {
@@ -58,11 +69,19 @@ public abstract class ExtendStreamBase : Stream {
 
   protected StreamSection Section { get; private set; }
 
-  protected void ThrowIfDisposed()
+  private void ThrowObjectDisposedExceptionIf(
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [DoesNotReturnIf(true)]
+#endif
+    bool condition
+  )
   {
-    if (stream == null)
+    if (condition)
       throw new ObjectDisposedException(GetType().FullName);
   }
+
+  protected void ThrowIfDisposed()
+    => ThrowObjectDisposedExceptionIf(IsClosed);
 
   private void ThrowIfNotSeekable()
   {
@@ -151,6 +170,12 @@ public abstract class ExtendStreamBase : Stream {
 
   private long SetPosition(long newPosition)
   {
+#if DEBUG
+    ThrowObjectDisposedExceptionIf(IsClosed);
+#else
+#pragma warning disable CS8602
+#endif
+
     if (0L < prependLength && newPosition < prependLength) {
       Section = StreamSection.Prepend;
       stream.Seek(0L, SeekOrigin.Begin);
@@ -170,6 +195,9 @@ public abstract class ExtendStreamBase : Stream {
     }
 
     return position = newPosition;
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#pragma warning restore CS8602
+#endif
   }
 
   protected abstract int ReadPrependedData(byte[] buffer, int offset, int count);
@@ -177,7 +205,7 @@ public abstract class ExtendStreamBase : Stream {
 
   public override int Read(byte[] buffer, int offset, int count)
   {
-    ThrowIfDisposed();
+    ThrowObjectDisposedExceptionIf(IsClosed);
 
 #if SYSTEM_IO_STREAM_VALIDATEBUFFERARGUMENTS
     ValidateBufferArguments(buffer, offset, count);
@@ -242,9 +270,9 @@ public abstract class ExtendStreamBase : Stream {
       return 0;
 
     if (MemoryMarshal.TryGetArray<byte>(buffer, out var segment))
-      return await ReadPrependedDataAsync(segment.Array, segment.Offset, segment.Count, cancellationToken).ConfigureAwait(false);
+      return await ReadPrependedDataAsync(segment.Array!, segment.Offset, segment.Count, cancellationToken).ConfigureAwait(false);
 
-    byte[] destination = null;
+    byte[]? destination = null;
     var count = buffer.Length;
 
     try {
@@ -272,9 +300,9 @@ public abstract class ExtendStreamBase : Stream {
       return 0;
 
     if (MemoryMarshal.TryGetArray<byte>(buffer, out var segment))
-      return await ReadAppendedDataAsync(segment.Array, segment.Offset, segment.Count, cancellationToken).ConfigureAwait(false);
+      return await ReadAppendedDataAsync(segment.Array!, segment.Offset, segment.Count, cancellationToken).ConfigureAwait(false);
 
-    byte[] destination = null;
+    byte[]? destination = null;
     var count = buffer.Length;
 
     try {
@@ -365,6 +393,12 @@ public abstract class ExtendStreamBase : Stream {
     CancellationToken cancellationToken = default
   )
   {
+#if DEBUG
+    ThrowObjectDisposedExceptionIf(IsClosed);
+#else
+#pragma warning disable CS8602
+#endif
+
     var ret = 0;
 
     while (
@@ -440,5 +474,9 @@ public abstract class ExtendStreamBase : Stream {
     } // while
 
     return ret;
+
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#pragma warning restore CS8602
+#endif
   }
 }
