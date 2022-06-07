@@ -3,4 +3,4 @@
 
 namespace Smdn;
 
-public delegate string ReplaceCharEvaluator(char ch, string str, int index);
+public delegate string? ReplaceCharEvaluator(char ch, string str, int index);
