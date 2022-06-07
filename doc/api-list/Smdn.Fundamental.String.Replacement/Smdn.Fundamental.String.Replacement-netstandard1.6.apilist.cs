@@ -1,7 +1,7 @@
-// Smdn.Fundamental.String.Replacement.dll (Smdn.Fundamental.String.Replacement-3.0.1)
+// Smdn.Fundamental.String.Replacement.dll (Smdn.Fundamental.String.Replacement-3.0.2)
 //   Name: Smdn.Fundamental.String.Replacement
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+7921ab9727f5482fc8ec06c01fdc506d02fd451c
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+9805a70fc9d7e01ace74c4db2ba31bb729f9e567
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 
