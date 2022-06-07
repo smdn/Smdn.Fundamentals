@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Stream.Extending
 //   AssemblyVersion: 3.0.3.0
 //   InformationalVersion: 3.0.3+62b030d52118749c63983987fb6ae99a47e81e56
-//   TargetFramework: .NETStandard,Version=v1.6
+//   TargetFramework: .NETStandard,Version=v1.1
 //   Configuration: Release
 
 using System.IO;
