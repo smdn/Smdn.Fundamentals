@@ -27,7 +27,7 @@ partial class EncodingUtils {
     );
 
     return result
-      ? encoding
+      ? encoding!
       : throw new EncodingNotSupportedException(name);
   }
 
@@ -38,10 +38,10 @@ partial class EncodingUtils {
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
     [NotNullWhen(true)]
 #endif
-    out Encoding encoding
+    out Encoding? encoding
   )
   {
-    encoding = null!;
+    encoding = null;
 
     if (name is null)
       return false;

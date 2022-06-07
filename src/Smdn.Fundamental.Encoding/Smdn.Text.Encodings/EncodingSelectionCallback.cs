@@ -5,4 +5,4 @@ using System.Text;
 namespace Smdn.Text.Encodings;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-public delegate Encoding EncodingSelectionCallback(string name);
+public delegate Encoding? EncodingSelectionCallback(string name);
