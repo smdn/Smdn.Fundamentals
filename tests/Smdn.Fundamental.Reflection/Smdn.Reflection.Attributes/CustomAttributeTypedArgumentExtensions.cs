@@ -5,41 +5,41 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace Smdn.Reflection.Attributes {
-  [TestFixture()]
-  public class CustomAttributeTypedArgumentExtensionsTests {
-    [AttributeUsage(AttributeTargets.All)]
-    private class TestAttribute : Attribute {
-      public TestAttribute(
-        DateTimeKind arg0,
-        int arg1,
-        string arg2
-      )
-      { }
-    }
+namespace Smdn.Reflection.Attributes;
 
-    [TestAttribute(DateTimeKind.Local, 42, "foo")]
-    private class C { }
+[TestFixture()]
+public class CustomAttributeTypedArgumentExtensionsTests {
+  [AttributeUsage(AttributeTargets.All)]
+  private class TestAttribute : Attribute {
+    public TestAttribute(
+      DateTimeKind arg0,
+      int arg1,
+      string arg2
+    )
+    { }
+  }
 
-    private static System.Collections.IEnumerable YieldGetTypedValueTestCases()
-    {
-      var ctorArgs = CustomAttributeData
-        .GetCustomAttributes(typeof(C))
-        .First(a => a.AttributeType == typeof(TestAttribute))
-        .ConstructorArguments;
+  [TestAttribute(DateTimeKind.Local, 42, "foo")]
+  private class C { }
 
-      yield return new object[] { ctorArgs[0], typeof(DateTimeKind), DateTimeKind.Local };
-      yield return new object[] { ctorArgs[1], typeof(int), 42 };
-      yield return new object[] { ctorArgs[2], typeof(string), "foo" };
-    }
+  private static System.Collections.IEnumerable YieldGetTypedValueTestCases()
+  {
+    var ctorArgs = CustomAttributeData
+      .GetCustomAttributes(typeof(C))
+      .First(a => a.AttributeType == typeof(TestAttribute))
+      .ConstructorArguments;
 
-    [TestCaseSource(nameof(YieldGetTypedValueTestCases))]
-    public void GetTypedValue(CustomAttributeTypedArgument typedArg, Type expectedType, object expectedValue)
-    {
-      object val = typedArg.GetTypedValue();
+    yield return new object[] { ctorArgs[0], typeof(DateTimeKind), DateTimeKind.Local };
+    yield return new object[] { ctorArgs[1], typeof(int), 42 };
+    yield return new object[] { ctorArgs[2], typeof(string), "foo" };
+  }
 
-      Assert.AreEqual(expectedType, val.GetType(), "type of value");
-      Assert.AreEqual(expectedValue, val, "value");
-    }
+  [TestCaseSource(nameof(YieldGetTypedValueTestCases))]
+  public void GetTypedValue(CustomAttributeTypedArgument typedArg, Type expectedType, object expectedValue)
+  {
+    object val = typedArg.GetTypedValue();
+
+    Assert.AreEqual(expectedType, val.GetType(), "type of value");
+    Assert.AreEqual(expectedValue, val, "value");
   }
 }

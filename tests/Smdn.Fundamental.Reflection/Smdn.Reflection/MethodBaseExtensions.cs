@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -22,9 +21,7 @@ namespace Smdn.Reflection {
     [TestCase(typeof(C1), nameof(C1.M4), new[] { typeof(int), typeof(int) })]
     [TestCase(typeof(C1), nameof(C1.M5), new[] { typeof(int), typeof(int), typeof(int) })]
     public void TestGetSignatureTypes(Type type, string methodName, Type[] expected)
-    {
-      CollectionAssert.AreEqual(expected, type.GetMethod(methodName).GetSignatureTypes());
-    }
+      => CollectionAssert.AreEqual(expected, type.GetMethod(methodName).GetSignatureTypes());
 
     class C2 : ICloneable, IDisposable {
       public void M() => throw new NotImplementedException();
@@ -87,7 +84,7 @@ namespace Smdn.Reflection {
 
       public ExpectedMethodSpecialNameAttribute(MethodSpecialName expected)
       {
-        this.Expected = expected;
+        Expected = expected;
       }
     }
 

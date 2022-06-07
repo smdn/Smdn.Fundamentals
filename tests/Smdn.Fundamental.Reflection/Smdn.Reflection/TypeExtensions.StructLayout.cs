@@ -119,17 +119,13 @@ namespace Smdn.Reflection {
     [TestCase(typeof(TestCases.StructLayouts.SCharSetUnicode), false)]
     [TestCase(typeof(TestCases.StructLayouts.SCharSetNone), true)]
     public void IsStructLayoutDefault(Type type, bool expected)
-    {
-      Assert.That(type.IsStructLayoutDefault(), Is.EqualTo(expected), type.FullName);
-    }
+      => Assert.That(type.IsStructLayoutDefault(), Is.EqualTo(expected), type.FullName);
 
     [TestCase(typeof(TestCases.StructLayouts.SSizeNotSpecified), true)]
     [TestCase(typeof(TestCases.StructLayouts.SSize1), true)]
     [TestCase(typeof(TestCases.StructLayouts.SSize2), true)]
     public void IsStructLayoutDefault_SizeMustNotBetConsidered(Type type, bool expected)
-    {
-      Assert.That(type.IsStructLayoutDefault(), Is.EqualTo(expected), type.FullName);
-    }
+      => Assert.That(type.IsStructLayoutDefault(), Is.EqualTo(expected), type.FullName);
 
     [Test]
     public void IsStructLayoutDefault_ArgumentNull()
@@ -144,8 +140,6 @@ namespace Smdn.Reflection {
     [TestCase(typeof(Func<>))]
     [TestCase(typeof(LayoutKind))]
     public void IsStructLayoutDefault_InvalidType(Type type)
-    {
-      Assert.Throws<ArgumentException>(() => type.IsStructLayoutDefault(), type.FullName);
-    }
+      => Assert.Throws<ArgumentException>(() => type.IsStructLayoutDefault(), type.FullName);
   }
 }

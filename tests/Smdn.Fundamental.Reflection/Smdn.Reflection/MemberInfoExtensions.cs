@@ -47,10 +47,7 @@ namespace Smdn.Reflection {
   [TestFixture()]
   public class MemberInfoExtensionsTests {
     private void TestGetAccessibility(MemberInfo member, Accessibility expected)
-    {
-      Assert.AreEqual(expected,
-                      member.GetAccessibility());
-    }
+      => Assert.AreEqual(expected, member.GetAccessibility());
 
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C1), null, Accessibility.Public)]
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C2), null, Accessibility.Assembly)]
@@ -75,10 +72,10 @@ namespace Smdn.Reflection {
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), "M5", Accessibility.FamilyAndAssembly)]
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), "M6", Accessibility.Private)]
     public void TestGetAccessibility_Methods(Type type, string memberName, Accessibility expected)
-    {
-      TestGetAccessibility(type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First(),
-                           expected);
-    }
+      => TestGetAccessibility(
+        type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First(),
+        expected
+      );
 
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), nameof(TestTypesForMemberInfoExtensionsTests.C.F1), Accessibility.Public)]
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), nameof(TestTypesForMemberInfoExtensionsTests.C.F2), Accessibility.Assembly)]
@@ -87,10 +84,10 @@ namespace Smdn.Reflection {
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), "F5", Accessibility.FamilyAndAssembly)]
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), "F6", Accessibility.Private)]
     public void TestGetAccessibility_Fields(Type type, string memberName, Accessibility expected)
-    {
-      TestGetAccessibility(type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First(),
-                           expected);
-    }
+      => TestGetAccessibility(
+        type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First(),
+        expected
+      );
 
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), "P1")]
     [TestCase(typeof(TestTypesForMemberInfoExtensionsTests.C), "E1")]

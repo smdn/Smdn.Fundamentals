@@ -5,6 +5,7 @@ using System.Reflection;
 using NUnit.Framework;
 
 namespace Smdn.Reflection;
+
 [TestFixture()]
 public class MethodInfoExtensionsTests {
   abstract class CAbstract {

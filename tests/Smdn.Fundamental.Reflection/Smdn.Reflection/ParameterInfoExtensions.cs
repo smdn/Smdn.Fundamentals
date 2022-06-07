@@ -4,36 +4,34 @@ using System;
 using System.Reflection;
 using NUnit.Framework;
 
-namespace Smdn.Reflection {
-  [TestFixture()]
-  public class ParameterInfoExtensionsTests {
-    class C {
-      public C(int x) => throw new NotImplementedException();
-      public int M(int x, string y) => throw new NotImplementedException();
-      public void M(object z) => throw new NotImplementedException();
-    }
+namespace Smdn.Reflection;
 
-    public static System.Collections.IEnumerable YieldIsReturnParameterTestCases()
-    {
-      foreach (var method in typeof(C).GetMethods()) {
-        foreach (var para in method.GetParameters()) {
-          yield return new object[] { para, false };
-        }
+[TestFixture()]
+public class ParameterInfoExtensionsTests {
+  class C {
+    public C(int x) => throw new NotImplementedException();
+    public int M(int x, string y) => throw new NotImplementedException();
+    public void M(object z) => throw new NotImplementedException();
+  }
 
-        yield return new object[] { method.ReturnParameter, true };
+  public static System.Collections.IEnumerable YieldIsReturnParameterTestCases()
+  {
+    foreach (var method in typeof(C).GetMethods()) {
+      foreach (var para in method.GetParameters()) {
+        yield return new object[] { para, false };
       }
 
-      foreach (var ctor in typeof(C).GetConstructors()) {
-        foreach (var p in ctor.GetParameters()) {
-          yield return new object[] { p, false };
-        }
-      }
+      yield return new object[] { method.ReturnParameter, true };
     }
 
-    [TestCaseSource(nameof(YieldIsReturnParameterTestCases))]
-    public void IsReturnParameter(ParameterInfo para, bool expected)
-    {
-      Assert.AreEqual(expected, para.IsReturnParameter(), $"{para.Member} {para.Name}");
+    foreach (var ctor in typeof(C).GetConstructors()) {
+      foreach (var p in ctor.GetParameters()) {
+        yield return new object[] { p, false };
+      }
     }
   }
+
+  [TestCaseSource(nameof(YieldIsReturnParameterTestCases))]
+  public void IsReturnParameter(ParameterInfo para, bool expected)
+    => Assert.AreEqual(expected, para.IsReturnParameter(), $"{para.Member} {para.Name}");
 }

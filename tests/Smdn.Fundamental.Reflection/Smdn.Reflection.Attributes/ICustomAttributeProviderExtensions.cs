@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -12,104 +11,104 @@ using NUnit.Framework;
 [assembly: Smdn.Reflection.Attributes.ICustomAttributeProviderExtensionsTestsAssemblyAttribute]
 [module: Smdn.Reflection.Attributes.ICustomAttributeProviderExtensionsTestsModuleAttribute]
 
-namespace Smdn.Reflection.Attributes {
-  [AttributeUsage(AttributeTargets.Assembly)]
-  public class ICustomAttributeProviderExtensionsTestsAssemblyAttribute : Attribute {
-    public ICustomAttributeProviderExtensionsTestsAssemblyAttribute() { }
+namespace Smdn.Reflection.Attributes;
+
+[AttributeUsage(AttributeTargets.Assembly)]
+public class ICustomAttributeProviderExtensionsTestsAssemblyAttribute : Attribute {
+  public ICustomAttributeProviderExtensionsTestsAssemblyAttribute() { }
+}
+
+[AttributeUsage(AttributeTargets.Module)]
+public class ICustomAttributeProviderExtensionsTestsModuleAttribute : Attribute {
+  public ICustomAttributeProviderExtensionsTestsModuleAttribute() { }
+}
+
+[TestFixture()]
+public class ICustomAttributeProviderExtensionsTests {
+  [Serializable]
+  public class C {
+    [Obsolete]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public bool M(
+      [CallerFilePath] string sourceFilePath = default,
+      [CallerLineNumber] int sourceLineNumber = default
+    )
+      => throw new NotImplementedException();
   }
 
-  [AttributeUsage(AttributeTargets.Module)]
-  public class ICustomAttributeProviderExtensionsTestsModuleAttribute : Attribute {
-    public ICustomAttributeProviderExtensionsTestsModuleAttribute() { }
+  private static void AssertCustomAttributeDataList(IList<CustomAttributeData> list, Type attributeTypeWhichExpectedToBeContained)
+  {
+    Assert.IsNotNull(list);
+    CollectionAssert.IsNotEmpty(list);
+    CollectionAssert.Contains(list.Select(cad => cad.AttributeType), attributeTypeWhichExpectedToBeContained);
   }
 
-  [TestFixture()]
-  public class ICustomAttributeProviderExtensionsTests {
-    [Serializable]
-    public class C {
-      [Obsolete]
-      [return: MarshalAs(UnmanagedType.Bool)]
-      public bool M(
-        [CallerFilePath] string sourceFilePath = default,
-        [CallerLineNumber] int sourceLineNumber = default
-      )
-        => throw new NotImplementedException();
-    }
+  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfMemberInfoTestCases()
+  {
+    yield return new object[] { typeof(C), typeof(SerializableAttribute) };
+    yield return new object[] { typeof(C).GetMethod(nameof(C.M)), typeof(ObsoleteAttribute) };
+  }
 
-    private static void AssertCustomAttributeDataList(IList<CustomAttributeData> list, Type attributeTypeWhichExpectedToBeContained)
-    {
-      Assert.IsNotNull(list);
-      CollectionAssert.IsNotEmpty(list);
-      CollectionAssert.Contains(list.Select(cad => cad.AttributeType), attributeTypeWhichExpectedToBeContained);
-    }
+  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfMemberInfoTestCases))]
+  public void GetCustomAttributeDataList_OfMemberInfo(MemberInfo member, Type attributeTypeWhichExpectedToBeContained)
+    => AssertCustomAttributeDataList(member.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-    private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfMemberInfoTestCases()
-    {
-      yield return new object[] { typeof(C), typeof(SerializableAttribute) };
-      yield return new object[] { typeof(C).GetMethod(nameof(C.M)), typeof(ObsoleteAttribute) };
-    }
+  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfParameterInfoTestCases()
+  {
+    var paras = typeof(C).GetMethod(nameof(C.M))!.GetParameters();
 
-    [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfMemberInfoTestCases))]
-    public void GetCustomAttributeDataList_OfMemberInfo(MemberInfo member, Type attributeTypeWhichExpectedToBeContained)
-      => AssertCustomAttributeDataList(member.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
+    yield return new object[] { paras[0], typeof(CallerFilePathAttribute) };
+    yield return new object[] { paras[1], typeof(CallerLineNumberAttribute) };
+    yield return new object[] { typeof(C).GetMethod(nameof(C.M))!.ReturnParameter, typeof(MarshalAsAttribute) };
+  }
 
-    private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfParameterInfoTestCases()
-    {
-      var paras = typeof(C).GetMethod(nameof(C.M))!.GetParameters();
+  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfParameterInfoTestCases))]
+  public void GetCustomAttributeDataList_OfParameterInfo(ParameterInfo param, Type attributeTypeWhichExpectedToBeContained)
+    => AssertCustomAttributeDataList(param.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-      yield return new object[] { paras[0], typeof(CallerFilePathAttribute) };
-      yield return new object[] { paras[1], typeof(CallerLineNumberAttribute) };
-      yield return new object[] { typeof(C).GetMethod(nameof(C.M))!.ReturnParameter, typeof(MarshalAsAttribute) };
-    }
+  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfAssemblyTestCases()
+  {
+    yield return new object[] {
+      typeof(ICustomAttributeProviderExtensionsTestsAssemblyAttribute).Assembly,
+      typeof(ICustomAttributeProviderExtensionsTestsAssemblyAttribute)
+    };
+  }
 
-    [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfParameterInfoTestCases))]
-    public void GetCustomAttributeDataList_OfParameterInfo(ParameterInfo param, Type attributeTypeWhichExpectedToBeContained)
-      => AssertCustomAttributeDataList(param.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
+  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfAssemblyTestCases))]
+  public void GetCustomAttributeDataList_OfAssembly(Assembly assm, Type attributeTypeWhichExpectedToBeContained)
+    => AssertCustomAttributeDataList(assm.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-    private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfAssemblyTestCases()
-    {
-      yield return new object[] {
-        typeof(ICustomAttributeProviderExtensionsTestsAssemblyAttribute).Assembly,
-        typeof(ICustomAttributeProviderExtensionsTestsAssemblyAttribute)
-      };
-    }
+  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfModuleTestCases()
+  {
+    yield return new object[] {
+      typeof(ICustomAttributeProviderExtensionsTestsModuleAttribute).Module,
+      typeof(ICustomAttributeProviderExtensionsTestsModuleAttribute)
+    };
+  }
 
-    [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfAssemblyTestCases))]
-    public void GetCustomAttributeDataList_OfAssembly(Assembly assm, Type attributeTypeWhichExpectedToBeContained)
-      => AssertCustomAttributeDataList(assm.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
+  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfModuleTestCases))]
+  public void GetCustomAttributeDataList_OfModule(Module module, Type attributeTypeWhichExpectedToBeContained)
+    => AssertCustomAttributeDataList(module.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-    private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfModuleTestCases()
-    {
-      yield return new object[] {
-        typeof(ICustomAttributeProviderExtensionsTestsModuleAttribute).Module,
-        typeof(ICustomAttributeProviderExtensionsTestsModuleAttribute)
-      };
-    }
+  [Test]
+  public void GetCustomAttributeDataList_ArgumentNull()
+  {
+    ICustomAttributeProvider provider = null;
 
-    [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfModuleTestCases))]
-    public void GetCustomAttributeDataList_OfModule(Module module, Type attributeTypeWhichExpectedToBeContained)
-      => AssertCustomAttributeDataList(module.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
+    Assert.Throws<ArgumentNullException>(() => provider.GetCustomAttributeDataList());
+  }
 
-    [Test]
-    public void GetCustomAttributeDataList_ArgumentNull()
-    {
-      ICustomAttributeProvider provider = null;
+  private class CustomAttributeProvider : ICustomAttributeProvider {
+    public object[] GetCustomAttributes (bool inherit) => throw new NotImplementedException();
+    public object[] GetCustomAttributes (Type attributeType, bool inherit) => throw new NotImplementedException();
+    public bool IsDefined (Type attributeType, bool inherit) => throw new NotImplementedException();
+  }
 
-      Assert.Throws<ArgumentNullException>(() => provider.GetCustomAttributeDataList());
-    }
+  [Test]
+  public void GetCustomAttributeDataList_UnsupportedAttributeProvider()
+  {
+    CustomAttributeProvider provider = new();
 
-    private class CustomAttributeProvider : ICustomAttributeProvider {
-      public object[] GetCustomAttributes (bool inherit) => throw new NotImplementedException();
-      public object[] GetCustomAttributes (Type attributeType, bool inherit) => throw new NotImplementedException();
-      public bool IsDefined (Type attributeType, bool inherit) => throw new NotImplementedException();
-    }
-
-    [Test]
-    public void GetCustomAttributeDataList_UnsupportedAttributeProvider()
-    {
-      CustomAttributeProvider provider = new();
-
-      Assert.Throws<ArgumentException>(() => provider.GetCustomAttributeDataList());
-    }
+    Assert.Throws<ArgumentException>(() => provider.GetCustomAttributeDataList());
   }
 }
