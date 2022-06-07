@@ -45,11 +45,7 @@ public class EventInfoExtensionsTests {
 
   [Test]
   public void IsStatic_ArgumentNull()
-  {
-    EventInfo ev = null!;
-
-    Assert.Throws<ArgumentNullException>(() => ev.IsStatic());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).IsStatic());
 
   [Test]
   public void GetMethods()

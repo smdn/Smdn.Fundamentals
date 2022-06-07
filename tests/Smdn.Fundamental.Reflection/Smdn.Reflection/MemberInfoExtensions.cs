@@ -64,11 +64,7 @@ public class MemberInfoExtensionsTests {
 
   [Test]
   public void GetAccessibility_ArgumentNull()
-  {
-    MemberInfo member = null!;
-
-    Assert.Throws<ArgumentNullException>(() => member.GetAccessibility());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MemberInfo)null!).GetAccessibility());
 
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C1), null, null, false)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C2), null, null, true)]
@@ -116,9 +112,5 @@ public class MemberInfoExtensionsTests {
 
   [Test]
   public void IsPrivateOrAssembly_ArgumentNull()
-  {
-    MemberInfo member = null!;
-
-    Assert.Throws<ArgumentNullException>(() => member.IsPrivateOrAssembly());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MemberInfo)null!).IsPrivateOrAssembly());
 }

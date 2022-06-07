@@ -77,10 +77,6 @@ public class MethodInfoExtensionsTests {
 
   [Test]
   public void IsOverridden_ArgumentNull()
-  {
-    MethodInfo m = null!;
-
-    Assert.Throws<ArgumentNullException>(() => m.IsOverridden());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverridden());
 }
 

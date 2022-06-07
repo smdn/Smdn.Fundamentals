@@ -51,11 +51,7 @@ public class PropertyInfoExtensionsTests {
 
   [Test]
   public void IsStatic_ArgumentNull()
-  {
-    PropertyInfo p = null!;
-
-    Assert.Throws<ArgumentNullException>(() => p.IsStatic());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsStatic());
 
   [TestCase(typeof(C), nameof(C.P0), true)]
   [TestCase(typeof(C), nameof(C.P1), false)]
@@ -82,9 +78,5 @@ public class PropertyInfoExtensionsTests {
 
   [Test]
   public void IsSetMethodInitOnly_ArgumentNull()
-  {
-    PropertyInfo p = null!;
-
-    Assert.Throws<ArgumentNullException>(() => p.IsSetMethodInitOnly());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsSetMethodInitOnly());
 }

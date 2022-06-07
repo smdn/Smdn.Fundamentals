@@ -26,11 +26,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void GetSignatureTypes_ArgumentNull()
-  {
-    MethodBase m = null!;
-
-    Assert.Throws<ArgumentNullException>(() => m.GetSignatureTypes());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).GetSignatureTypes());
 
   class C2 : ICloneable, IDisposable {
     public void M() => throw new NotImplementedException();
@@ -51,11 +47,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void FindExplicitInterfaceMethod_ArgumentNull()
-  {
-    MethodBase m = null!;
-
-    Assert.Throws<ArgumentNullException>(() => m.FindExplicitInterfaceMethod());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).FindExplicitInterfaceMethod());
 
   [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
@@ -71,11 +63,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void TryFindExplicitInterfaceMethod_ArgumentNull()
-  {
-    MethodBase m = null!;
-
-    Assert.Throws<ArgumentNullException>(() => m.TryFindExplicitInterfaceMethod(out _));
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).TryFindExplicitInterfaceMethod(out _));
 
   [TestCase(typeof(C2), nameof(C2.M), false)]
   [TestCase(typeof(C2), nameof(C2.Clone), false)]
@@ -89,11 +77,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void IsExplicitlyImplemented_ArgumentNull()
-  {
-    MethodBase m = null!;
-
-    Assert.Throws<ArgumentNullException>(() => m.IsExplicitlyImplemented());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).IsExplicitlyImplemented());
 
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.I1.M", "M")]
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.I2.M", null)]
@@ -202,9 +186,5 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void GetNameType_ArgumentNull()
-  {
-    MethodBase m = null!;
-
-    Assert.Throws<ArgumentNullException>(() => m.GetNameType());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).GetNameType());
 }

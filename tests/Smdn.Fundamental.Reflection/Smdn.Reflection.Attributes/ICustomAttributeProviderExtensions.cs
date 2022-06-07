@@ -92,11 +92,7 @@ public class ICustomAttributeProviderExtensionsTests {
 
   [Test]
   public void GetCustomAttributeDataList_ArgumentNull()
-  {
-    ICustomAttributeProvider provider = null!;
-
-    Assert.Throws<ArgumentNullException>(() => provider.GetCustomAttributeDataList());
-  }
+    => Assert.Throws<ArgumentNullException>(() => ((ICustomAttributeProvider)null!).GetCustomAttributeDataList());
 
   private class CustomAttributeProvider : ICustomAttributeProvider {
     public object[] GetCustomAttributes (bool inherit) => throw new NotImplementedException();
