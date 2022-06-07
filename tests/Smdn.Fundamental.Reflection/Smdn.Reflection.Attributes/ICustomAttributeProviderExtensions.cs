@@ -93,7 +93,7 @@ public class ICustomAttributeProviderExtensionsTests {
   [Test]
   public void GetCustomAttributeDataList_ArgumentNull()
   {
-    ICustomAttributeProvider provider = null;
+    ICustomAttributeProvider provider = null!;
 
     Assert.Throws<ArgumentNullException>(() => provider.GetCustomAttributeDataList());
   }

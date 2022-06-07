@@ -34,7 +34,7 @@ partial class TypeExtensionsTests {
   [Test]
   public void IsStructLayoutDefault_ArgumentNull()
   {
-    Type type = null;
+    Type type = null!;
 
     Assert.Throws<ArgumentNullException>(() => type.IsStructLayoutDefault());
   }

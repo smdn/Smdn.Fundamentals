@@ -22,7 +22,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C1), nameof(C1.M4), new[] { typeof(int), typeof(int) })]
   [TestCase(typeof(C1), nameof(C1.M5), new[] { typeof(int), typeof(int), typeof(int) })]
   public void GetSignatureTypes(Type type, string methodName, Type[] expected)
-    => CollectionAssert.AreEqual(expected, type.GetMethod(methodName).GetSignatureTypes());
+    => CollectionAssert.AreEqual(expected, type.GetMethod(methodName)!.GetSignatureTypes());
 
   class C2 : ICloneable, IDisposable {
     public void M() => throw new NotImplementedException();
@@ -38,7 +38,7 @@ public class MethodBaseExtensionsTests {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
-    Assert.AreEqual(expectedMethod, method.FindExplicitInterfaceMethod());
+    Assert.AreEqual(expectedMethod, method!.FindExplicitInterfaceMethod());
   }
 
   [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
@@ -49,7 +49,7 @@ public class MethodBaseExtensionsTests {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
-    Assert.AreEqual(expectedResult, method.TryFindExplicitInterfaceMethod(out var actualMethod), "result");
+    Assert.AreEqual(expectedResult, method!.TryFindExplicitInterfaceMethod(out var actualMethod), "result");
     Assert.AreEqual(expectedMethod, actualMethod, "actual method");
   }
 
@@ -60,7 +60,7 @@ public class MethodBaseExtensionsTests {
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.AreEqual(expected, method.IsExplicitlyImplemented());
+    Assert.AreEqual(expected, method!.IsExplicitlyImplemented());
   }
 
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.I1.M", "M")]
@@ -74,7 +74,7 @@ public class MethodBaseExtensionsTests {
   public void FindExplicitInterfaceMethod_PublicInterfaceOnly(Type type, string methodName, string expectedMethodName)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-    var explicitInterfaceMethod = method.FindExplicitInterfaceMethod(findOnlyPublicInterfaces: true);
+    var explicitInterfaceMethod = method!.FindExplicitInterfaceMethod(findOnlyPublicInterfaces: true);
 
     Assert.AreEqual(expectedMethodName, explicitInterfaceMethod?.Name, methodName);
   }

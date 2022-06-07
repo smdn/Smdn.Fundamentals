@@ -21,13 +21,15 @@ public static class TypeExtensions {
       if (Equals(type, t))
         return false;
 
-      for (; ; ) {
-        type = type.BaseType;
+      Type? ty = type;
 
-        if (type is null)
+      for (; ; ) {
+        ty = ty.BaseType;
+
+        if (ty is null)
           return false;
 
-        if (Equals(type, t))
+        if (Equals(ty, t))
           return true;
       }
     }
@@ -38,7 +40,7 @@ public static class TypeExtensions {
     public static bool IsEnum(Type type)
       => IsSubclassOf(type, typeof(Enum));
 
-    public static Type GetUnderlyingTypeOfNullable(Type nullableType)
+    public static Type? GetUnderlyingTypeOfNullable(Type nullableType)
     {
       if (!nullableType.IsGenericType) // is not Nullable<T>
         return null;
@@ -85,7 +87,7 @@ public static class TypeExtensions {
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal)
       );
 
-  public static MethodInfo GetDelegateSignatureMethod(this Type t)
+  public static MethodInfo? GetDelegateSignatureMethod(this Type t)
     => IsDelegate(t) ? t.GetMethod("Invoke") : null;
 
   public static IEnumerable<Type> GetExplicitBaseTypeAndInterfaces(this Type t)
@@ -137,7 +139,8 @@ public static class TypeExtensions {
       yield break;
 
     if (t.IsConstructedGenericType || (t.IsGenericType && t.ContainsGenericParameters)) {
-      yield return t.Namespace;
+      if (t.Namespace is not null)
+        yield return t.Namespace;
 
       foreach (var ns in t.GetGenericArguments().SelectMany(type => GetNamespaces(type, isLanguagePrimitive)))
         yield return ns;
@@ -145,7 +148,7 @@ public static class TypeExtensions {
       yield break;
     }
 
-    if (!isLanguagePrimitive(t))
+    if (!isLanguagePrimitive(t) && t.Namespace is not null)
       yield return t.Namespace;
   }
 
@@ -163,7 +166,7 @@ public static class TypeExtensions {
   }
 
   private struct DefaultLayoutStruct { }
-  private static readonly StructLayoutAttribute DefaultStructLayoutAttribute = typeof(DefaultLayoutStruct).StructLayoutAttribute;
+  private static readonly StructLayoutAttribute DefaultStructLayoutAttribute = typeof(DefaultLayoutStruct).StructLayoutAttribute!;
 
   /// <remarks>The value of <see ref="StructLayoutAttribute.Size"/> is not considered.</remarks>
   public static bool IsStructLayoutDefault(this Type t)
@@ -172,6 +175,8 @@ public static class TypeExtensions {
       throw new ArgumentNullException(nameof(t));
     if (!t.IsValueType || t.IsEnum || t == typeof(ValueType))
       throw new ArgumentException($"{t} is not a struct type", nameof(t));
+    if (t.StructLayoutAttribute is null)
+      throw new InvalidOperationException($"{nameof(Type)}.{nameof(Type.StructLayoutAttribute)} is null");
 
     return
       t.StructLayoutAttribute.Value == DefaultStructLayoutAttribute.Value &&

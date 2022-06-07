@@ -40,23 +40,23 @@ public class EventInfoExtensionsTests {
   {
     var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(expected, ev.IsStatic(), $"{type.Name}.{ev!.Name}");
+    Assert.AreEqual(expected, ev!.IsStatic(), $"{type.Name}.{ev!.Name}");
   }
 
   [Test]
   public void GetMethods()
   {
-    var e1 = GetType().GetEvent("E1", BindingFlags.Instance | BindingFlags.Public);
+    var e1 = GetType().GetEvent("E1", BindingFlags.Instance | BindingFlags.Public)!;
 
     CollectionAssert.IsNotEmpty(e1.GetMethods());
     Assert.AreEqual(2, e1.GetMethods().Count());
 
-    var e2 = GetType().GetEvent("E2", BindingFlags.Instance | BindingFlags.Public);
+    var e2 = GetType().GetEvent("E2", BindingFlags.Instance | BindingFlags.Public)!;
 
     CollectionAssert.IsNotEmpty(e2.GetMethods());
     Assert.AreEqual(2, e2.GetMethods().Count());
 
-    var e3 = GetType().GetEvent("E3", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+    var e3 = GetType().GetEvent("E3", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!;
 
     CollectionAssert.IsEmpty(e3.GetMethods(false));
     CollectionAssert.IsNotEmpty(e3.GetMethods(true));

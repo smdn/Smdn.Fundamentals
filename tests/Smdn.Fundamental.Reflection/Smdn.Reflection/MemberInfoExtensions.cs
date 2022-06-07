@@ -65,7 +65,7 @@ public class MemberInfoExtensionsTests {
   [Test]
   public void GetAccessibility_ArgumentNull()
   {
-    MemberInfo member = null;
+    MemberInfo member = null!;
 
     Assert.Throws<ArgumentNullException>(() => member.GetAccessibility());
   }
@@ -96,7 +96,7 @@ public class MemberInfoExtensionsTests {
       type = type.GetNestedType(nestedTypeName, BindingFlags.Public | BindingFlags.NonPublic);
 
     if (memberName == null) {
-      Assert.AreEqual(expected, type.IsPrivateOrAssembly(), type!.FullName);
+      Assert.AreEqual(expected, type!.IsPrivateOrAssembly(), type!.FullName);
     }
     else {
       var member = type!.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
@@ -117,7 +117,7 @@ public class MemberInfoExtensionsTests {
   [Test]
   public void IsPrivateOrAssembly_ArgumentNull()
   {
-    MemberInfo member = null;
+    MemberInfo member = null!;
 
     Assert.Throws<ArgumentNullException>(() => member.IsPrivateOrAssembly());
   }

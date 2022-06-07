@@ -58,7 +58,7 @@ public partial class TypeExtensionsTests {
   {
     var m = type.GetDelegateSignatureMethod();
 
-    Assert.AreEqual(expectedReturnType, m.ReturnType, "return type");
+    Assert.AreEqual(expectedReturnType, m!.ReturnType, "return type");
     CollectionAssert.AreEqual(expectedParameterTypes, m.GetParameters().Select(p => p.ParameterType), "parameter types");
   }
 

@@ -19,21 +19,24 @@ public static class MethodBaseExtensions {
   public static bool IsExplicitlyImplemented(this MethodBase m)
     => TryFindExplicitInterfaceMethod(m, out var im, findOnlyPublicInterfaces: false, throwException: false) && im is not null;
 
-  public static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces = false)
+  public static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo? explicitInterfaceMethod, bool findOnlyPublicInterfaces = false)
     => TryFindExplicitInterfaceMethod(m, out explicitInterfaceMethod, findOnlyPublicInterfaces, throwException: false);
 
-  public static MethodInfo FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false)
+  public static MethodInfo? FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false)
   {
     TryFindExplicitInterfaceMethod(m, out var im, findOnlyPublicInterfaces, throwException: true);
 
     return im;
   }
 
-  private static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces, bool throwException)
+  private static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo? explicitInterfaceMethod, bool findOnlyPublicInterfaces, bool throwException)
   {
     explicitInterfaceMethod = default;
 
     if (m is MethodInfo im && im.IsFinal && im.IsPrivate) {
+      if (im.DeclaringType is null)
+        return false;
+
       foreach (var iface in im.DeclaringType.GetInterfaces()) {
         if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
           continue;

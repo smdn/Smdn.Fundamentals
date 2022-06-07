@@ -37,7 +37,7 @@ public class CustomAttributeTypedArgumentExtensionsTests {
   [TestCaseSource(nameof(YieldTestCases_GetTypedValue))]
   public void GetTypedValue(CustomAttributeTypedArgument typedArg, Type expectedType, object expectedValue)
   {
-    object val = typedArg.GetTypedValue();
+    object val = typedArg.GetTypedValue()!;
 
     Assert.AreEqual(expectedType, val.GetType(), "type of value");
     Assert.AreEqual(expectedValue, val, "value");

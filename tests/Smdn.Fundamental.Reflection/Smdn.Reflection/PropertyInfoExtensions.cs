@@ -46,7 +46,7 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(expected, property.IsStatic(), $"{type.Name}.{property!.Name}");
+    Assert.AreEqual(expected, property!.IsStatic(), $"{type.Name}.{property!.Name}");
   }
 
   [TestCase(typeof(C), nameof(C.P0), true)]
@@ -59,7 +59,7 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.AreEqual(expected, property.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
+    Assert.AreEqual(expected, property!.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
   }
 
   [TestCase(typeof(C), nameof(C.P2))]
@@ -69,6 +69,6 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.Throws<InvalidOperationException>(() => property.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
+    Assert.Throws<InvalidOperationException>(() => property!.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
   }
 }

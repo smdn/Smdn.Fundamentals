@@ -7,8 +7,8 @@ namespace Smdn.Reflection.Attributes;
 
 public static class CustomAttributeTypedArgumentExtensions {
   // CustomAttributeTypedArgument.Value holds an underlying typed value if the ArgumentType is enum
-  public static object GetTypedValue(this CustomAttributeTypedArgument typedArg)
-    => typedArg.ArgumentType.IsEnum
+  public static object? GetTypedValue(this CustomAttributeTypedArgument typedArg)
+    => typedArg.ArgumentType.IsEnum && typedArg.Value is not null
       ? Enum.ToObject(typedArg.ArgumentType, typedArg.Value)
       : typedArg.Value;
 }

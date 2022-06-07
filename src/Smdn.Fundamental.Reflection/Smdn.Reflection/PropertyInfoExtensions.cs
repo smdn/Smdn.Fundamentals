@@ -9,9 +9,9 @@ namespace Smdn.Reflection;
 public static class PropertyInfoExtensions {
   public static bool IsStatic(this PropertyInfo property)
   {
-    if (property.CanRead)
+    if (property.CanRead && property.GetMethod is not null)
       return property.GetMethod.IsStatic;
-    if (property.CanWrite)
+    if (property.CanWrite && property.SetMethod is not null)
       return property.SetMethod.IsStatic;
 
     return false;
@@ -21,6 +21,8 @@ public static class PropertyInfoExtensions {
   {
     if (!property.CanWrite)
       throw new InvalidOperationException($"property {property.Name} is read-only");
+    if (property.SetMethod is null)
+      throw new InvalidOperationException($"cannot get {nameof(property.SetMethod)} from property {property.Name}");
 
     return property.SetMethod.ReturnParameter.GetRequiredCustomModifiers().Any(
       modreq => "System.Runtime.CompilerServices.IsExternalInit".Equals(modreq.FullName, StringComparison.Ordinal)

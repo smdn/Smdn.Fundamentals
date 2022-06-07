@@ -29,7 +29,7 @@ public static class EventInfoExtensions {
     if (methodRaise != null)
       yield return methodRaise;
 
-    IEnumerable<MethodInfo> otherMethods = null;
+    IEnumerable<MethodInfo>? otherMethods = null;
 
     try {
       otherMethods = ev.GetOtherMethods(nonPublic);

@@ -56,7 +56,7 @@ public class MethodInfoExtensionsTests {
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.AreEqual(isOverridden, method.IsOverridden(), $"has override? {type}.{methodName}");
+    Assert.AreEqual(isOverridden, method!.IsOverridden(), $"has override? {type}.{methodName}");
   }
 
   [TestCase(typeof(CAbstract), nameof(CAbstract.PAbstract), false)]
@@ -72,7 +72,7 @@ public class MethodInfoExtensionsTests {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var getter = property!.GetGetMethod();
 
-    Assert.AreEqual(isOverridden, getter.IsOverridden(), $"is overridden? {type}.{propertyName}");
+    Assert.AreEqual(isOverridden, getter!.IsOverridden(), $"is overridden? {type}.{propertyName}");
   }
 }
 
