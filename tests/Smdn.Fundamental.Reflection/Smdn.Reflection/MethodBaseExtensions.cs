@@ -21,7 +21,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C1), nameof(C1.M3), new[] { typeof(int), typeof(void) })]
   [TestCase(typeof(C1), nameof(C1.M4), new[] { typeof(int), typeof(int) })]
   [TestCase(typeof(C1), nameof(C1.M5), new[] { typeof(int), typeof(int), typeof(int) })]
-  public void TestGetSignatureTypes(Type type, string methodName, Type[] expected)
+  public void GetSignatureTypes(Type type, string methodName, Type[] expected)
     => CollectionAssert.AreEqual(expected, type.GetMethod(methodName).GetSignatureTypes());
 
   class C2 : ICloneable, IDisposable {
@@ -33,7 +33,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C2), nameof(C2.M), null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", typeof(IDisposable), nameof(IDisposable.Dispose))]
-  public void TestFindExplicitInterfaceMethod(Type type, string methodName, Type expectedInterface, string expectedMethodName)
+  public void FindExplicitInterfaceMethod(Type type, string methodName, Type expectedInterface, string expectedMethodName)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
@@ -44,7 +44,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true, typeof(IDisposable), nameof(IDisposable.Dispose))]
-  public void TestTryFindExplicitInterfaceMethod(Type type, string methodName, bool expectedResult, Type expectedInterface, string expectedMethodName)
+  public void TryFindExplicitInterfaceMethod(Type type, string methodName, bool expectedResult, Type expectedInterface, string expectedMethodName)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
@@ -56,7 +56,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C2), nameof(C2.M), false)]
   [TestCase(typeof(C2), nameof(C2.Clone), false)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true)]
-  public void TestIsExplicitlyImplemented(Type type, string methodName, bool expected)
+  public void IsExplicitlyImplemented(Type type, string methodName, bool expected)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -71,7 +71,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.C1.I6.M", "M")]
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.C1.I7.M", null)]
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.C1.I8.M", null)]
-  public void TestFindExplicitInterfaceMethod_PublicInterfaceOnly(Type type, string methodName, string expectedMethodName)
+  public void FindExplicitInterfaceMethod_PublicInterfaceOnly(Type type, string methodName, string expectedMethodName)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var explicitInterfaceMethod = method.FindExplicitInterfaceMethod(findOnlyPublicInterfaces: true);
@@ -152,7 +152,7 @@ public class MethodBaseExtensionsTests {
 
   [TestCase(typeof(SpecialMethods.C))]
   [TestCase(typeof(SpecialMethods.P))]
-  public void TestGetNameType(Type type)
+  public void GetNameType(Type type)
   {
     foreach (var member in type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
       if (member is MethodBase method) {

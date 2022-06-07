@@ -43,17 +43,17 @@ public class ICustomAttributeProviderExtensionsTests {
     CollectionAssert.Contains(list.Select(cad => cad.AttributeType), attributeTypeWhichExpectedToBeContained);
   }
 
-  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfMemberInfoTestCases()
+  private static System.Collections.IEnumerable YieldTestCases_GetCustomAttributeDataList_OfMemberInfo()
   {
     yield return new object[] { typeof(C), typeof(SerializableAttribute) };
     yield return new object[] { typeof(C).GetMethod(nameof(C.M)), typeof(ObsoleteAttribute) };
   }
 
-  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfMemberInfoTestCases))]
+  [TestCaseSource(nameof(YieldTestCases_GetCustomAttributeDataList_OfMemberInfo))]
   public void GetCustomAttributeDataList_OfMemberInfo(MemberInfo member, Type attributeTypeWhichExpectedToBeContained)
     => AssertCustomAttributeDataList(member.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfParameterInfoTestCases()
+  private static System.Collections.IEnumerable YieldTestCases_GetCustomAttributeDataList_OfParameterInfo()
   {
     var paras = typeof(C).GetMethod(nameof(C.M))!.GetParameters();
 
@@ -62,11 +62,11 @@ public class ICustomAttributeProviderExtensionsTests {
     yield return new object[] { typeof(C).GetMethod(nameof(C.M))!.ReturnParameter, typeof(MarshalAsAttribute) };
   }
 
-  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfParameterInfoTestCases))]
+  [TestCaseSource(nameof(YieldTestCases_GetCustomAttributeDataList_OfParameterInfo))]
   public void GetCustomAttributeDataList_OfParameterInfo(ParameterInfo param, Type attributeTypeWhichExpectedToBeContained)
     => AssertCustomAttributeDataList(param.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfAssemblyTestCases()
+  private static System.Collections.IEnumerable YieldTestCases_GetCustomAttributeDataList_OfAssembly()
   {
     yield return new object[] {
       typeof(ICustomAttributeProviderExtensionsTestsAssemblyAttribute).Assembly,
@@ -74,11 +74,11 @@ public class ICustomAttributeProviderExtensionsTests {
     };
   }
 
-  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfAssemblyTestCases))]
+  [TestCaseSource(nameof(YieldTestCases_GetCustomAttributeDataList_OfAssembly))]
   public void GetCustomAttributeDataList_OfAssembly(Assembly assm, Type attributeTypeWhichExpectedToBeContained)
     => AssertCustomAttributeDataList(assm.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 
-  private static System.Collections.IEnumerable YieldGetCustomAttributeDataListOfModuleTestCases()
+  private static System.Collections.IEnumerable YieldTestCases_GetCustomAttributeDataList_OfModule()
   {
     yield return new object[] {
       typeof(ICustomAttributeProviderExtensionsTestsModuleAttribute).Module,
@@ -86,7 +86,7 @@ public class ICustomAttributeProviderExtensionsTests {
     };
   }
 
-  [TestCaseSource(nameof(YieldGetCustomAttributeDataListOfModuleTestCases))]
+  [TestCaseSource(nameof(YieldTestCases_GetCustomAttributeDataList_OfModule))]
   public void GetCustomAttributeDataList_OfModule(Module module, Type attributeTypeWhichExpectedToBeContained)
     => AssertCustomAttributeDataList(module.GetCustomAttributeDataList(), attributeTypeWhichExpectedToBeContained);
 

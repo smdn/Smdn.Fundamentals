@@ -15,14 +15,14 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(Guid), false)]
   [TestCase(typeof(System.Delegate), true)]
   [TestCase(typeof(System.MulticastDelegate), true)]
-  public void TestIsDelegate(Type type, bool expected)
+  public void IsDelegate(Type type, bool expected)
     => Assert.AreEqual(expected, type.IsDelegate());
 
   [TestCase(typeof(D), true)]
   [TestCase(typeof(Guid), false)]
   [TestCase(typeof(System.Delegate), false)]
   [TestCase(typeof(System.MulticastDelegate), false)]
-  public void TestIsConcreteDelegate(Type type, bool expected)
+  public void IsConcreteDelegate(Type type, bool expected)
     => Assert.AreEqual(expected, type.IsConcreteDelegate());
 
   enum E1 { }
@@ -32,7 +32,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(E2), true)]
   [TestCase(typeof(System.IO.FileAttributes), true)]
   [TestCase(typeof(System.DateTimeKind), false)]
-  public void TestIsEnumFlags(Type type, bool expected)
+  public void IsEnumFlags(Type type, bool expected)
     => Assert.AreEqual(expected, type.IsEnumFlags());
 
   struct SReadOnly1 {}
@@ -40,7 +40,7 @@ public partial class TypeExtensionsTests {
 
   [TestCase(typeof(SReadOnly1), false)]
   [TestCase(typeof(SReadOnly2), true)]
-  public void TestIsReadOnlyValueType(Type type, bool expected)
+  public void IsReadOnlyValueType(Type type, bool expected)
     => Assert.AreEqual(expected, type.IsReadOnlyValueType());
 
   struct SByRefLike1 { }
@@ -48,13 +48,13 @@ public partial class TypeExtensionsTests {
 
   [TestCase(typeof(SByRefLike1), false)]
   [TestCase(typeof(SByRefLike2), true)]
-  public void TestIsByRefLikeValueType(Type type, bool expected)
+  public void IsByRefLikeValueType(Type type, bool expected)
     => Assert.AreEqual(expected, type.IsByRefLikeValueType());
 
   [TestCase(typeof(Action), new Type[] { }, typeof(void))]
   [TestCase(typeof(Action<int>), new[] { typeof(int) }, typeof(void))]
   [TestCase(typeof(Func<int, string>), new[] { typeof(int) }, typeof(string))]
-  public void TestGetDelegateSignatureMethod(Type type, Type[] expectedParameterTypes, Type expectedReturnType)
+  public void GetDelegateSignatureMethod(Type type, Type[] expectedParameterTypes, Type expectedReturnType)
   {
     var m = type.GetDelegateSignatureMethod();
 
@@ -82,7 +82,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(STest2), new[] { typeof(IDisposable) })]
   [TestCase(typeof(CTestBase), new[] { typeof(ICloneable) })]
   [TestCase(typeof(CTest), new[] { typeof(CTestBase), typeof(IDisposable) })]
-  public void TestGetExplicitBaseTypeAndInterfaces(Type type, Type[] expectedBaseTypes)
+  public void GetExplicitBaseTypeAndInterfaces(Type type, Type[] expectedBaseTypes)
     => CollectionAssert.AreEquivalent(
       expectedBaseTypes,
       type.GetExplicitBaseTypeAndInterfaces()
@@ -100,7 +100,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(List<int?>), new[] { "System", "System.Collections.Generic" })]
   [TestCase(typeof(List<int[]>), new[] { "System", "System.Collections.Generic" })]
   [TestCase(typeof(List<KeyValuePair<int, int>>), new[] { "System", "System.Collections.Generic" })]
-  public void TestGetNamespaces(Type type, string[] expected)
+  public void GetNamespaces(Type type, string[] expected)
     => CollectionAssert.AreEquivalent(
       expected,
       type.GetNamespaces()
@@ -110,7 +110,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(int[]), new string[] { })]
   [TestCase(typeof(List<>), new[] { "System.Collections.Generic" })]
   [TestCase(typeof(List<int>), new[] { "System.Collections.Generic" })]
-  public void TestGetNamespacesWithPrimitiveType(Type type, string[] expected)
+  public void GetNamespacesWithPrimitiveType(Type type, string[] expected)
     => CollectionAssert.AreEquivalent(
       expected,
       type.GetNamespaces(t => t == typeof(int))
@@ -123,12 +123,12 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(Dictionary<int, int>), "Dictionary")]
   [TestCase(typeof(Dictionary<,>.KeyCollection), "KeyCollection")]
   [TestCase(typeof(Dictionary<int, int>.KeyCollection), "KeyCollection")]
-  public void TestGetGenericTypeName(Type type, string expected)
+  public void GetGenericTypeName(Type type, string expected)
     => Assert.AreEqual(expected, type.GetGenericTypeName());
 
   [TestCase(typeof(void))]
   [TestCase(typeof(int))]
   [TestCase(typeof(System.Collections.IList))]
-  public void TestGetGenericTypeName_NonGenericTypes(Type type)
+  public void GetGenericTypeName_NonGenericTypes(Type type)
     => Assert.Throws<ArgumentException>(() => type.GetGenericTypeName());
 }

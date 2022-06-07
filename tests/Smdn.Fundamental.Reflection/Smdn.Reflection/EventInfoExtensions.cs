@@ -36,7 +36,7 @@ public class EventInfoExtensionsTests {
   [TestCase(typeof(C), "E1", false)]
   [TestCase(typeof(C), nameof(C.SE0), true)]
   [TestCase(typeof(C), "SE1", true)]
-  public void TestIsStatic(Type type, string eventName, bool expected)
+  public void IsStatic(Type type, string eventName, bool expected)
   {
     var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
@@ -44,7 +44,7 @@ public class EventInfoExtensionsTests {
   }
 
   [Test]
-  public void TestGetMethods()
+  public void GetMethods()
   {
     var e1 = GetType().GetEvent("E1", BindingFlags.Instance | BindingFlags.Public);
 

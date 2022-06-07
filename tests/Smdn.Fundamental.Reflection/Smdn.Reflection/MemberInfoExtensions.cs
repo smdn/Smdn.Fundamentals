@@ -21,7 +21,7 @@ public class MemberInfoExtensionsTests {
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C.C6), null, Accessibility.FamilyOrAssembly)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "C7", Accessibility.FamilyAndAssembly)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "C8", Accessibility.Private)]
-  public void TestGetAccessibility_Types(Type type, string nestedTypeName, Accessibility expected)
+  public void GetAccessibility_Types(Type type, string nestedTypeName, Accessibility expected)
   {
     if (nestedTypeName != null)
       type = type.GetNestedType(nestedTypeName, BindingFlags.Public | BindingFlags.NonPublic);
@@ -35,7 +35,7 @@ public class MemberInfoExtensionsTests {
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), nameof(MemberInfoExtensionsTestTypes.C.M4), Accessibility.FamilyOrAssembly)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "M5", Accessibility.FamilyAndAssembly)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "M6", Accessibility.Private)]
-  public void TestGetAccessibility_Methods(Type type, string memberName, Accessibility expected)
+  public void GetAccessibility_Methods(Type type, string memberName, Accessibility expected)
     => TestGetAccessibility(
       type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First(),
       expected
@@ -47,7 +47,7 @@ public class MemberInfoExtensionsTests {
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), nameof(MemberInfoExtensionsTestTypes.C.F4), Accessibility.FamilyOrAssembly)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "F5", Accessibility.FamilyAndAssembly)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "F6", Accessibility.Private)]
-  public void TestGetAccessibility_Fields(Type type, string memberName, Accessibility expected)
+  public void GetAccessibility_Fields(Type type, string memberName, Accessibility expected)
     => TestGetAccessibility(
       type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First(),
       expected
@@ -55,7 +55,7 @@ public class MemberInfoExtensionsTests {
 
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "P1")]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), "E1")]
-  public void TestGetAccessibility_OtherMembers(Type type, string memberName)
+  public void GetAccessibility_OtherMembers(Type type, string memberName)
   {
     var member = type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
 
@@ -63,7 +63,7 @@ public class MemberInfoExtensionsTests {
   }
 
   [Test]
-  public void TestGetAccessibility_ArgumentNull()
+  public void GetAccessibility_ArgumentNull()
   {
     MemberInfo member = null;
 
@@ -90,7 +90,7 @@ public class MemberInfoExtensionsTests {
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), null, nameof(MemberInfoExtensionsTestTypes.C.F4), false)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), null, "F5", true)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), null, "F6", true)]
-  public void TestIsPrivateOrAssembly(Type type, string nestedTypeName, string memberName, bool expected)
+  public void IsPrivateOrAssembly(Type type, string nestedTypeName, string memberName, bool expected)
   {
     if (nestedTypeName != null)
       type = type.GetNestedType(nestedTypeName, BindingFlags.Public | BindingFlags.NonPublic);
@@ -107,7 +107,7 @@ public class MemberInfoExtensionsTests {
 
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), nameof(MemberInfoExtensionsTestTypes.C.P1))]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C), nameof(MemberInfoExtensionsTestTypes.C.E1))]
-  public void TestIsPrivateOrAssembly_MemberInvalid(Type type, string memberName)
+  public void IsPrivateOrAssembly_MemberInvalid(Type type, string memberName)
   {
     var member = type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
 
@@ -115,7 +115,7 @@ public class MemberInfoExtensionsTests {
   }
 
   [Test]
-  public void TestIsPrivateOrAssembly_ArgumentNull()
+  public void IsPrivateOrAssembly_ArgumentNull()
   {
     MemberInfo member = null;
 

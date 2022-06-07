@@ -42,7 +42,7 @@ public class PropertyInfoExtensionsTests {
   [TestCase(typeof(C), nameof(C.SP1), true)]
   [TestCase(typeof(C), nameof(C.SP2), true)]
   [TestCase(typeof(SC), nameof(SC.SP0), true)]
-  public void TestIsStatic(Type type, string propertyName, bool expected)
+  public void IsStatic(Type type, string propertyName, bool expected)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
@@ -55,7 +55,7 @@ public class PropertyInfoExtensionsTests {
   [TestCase(typeof(S), nameof(S.P1), false)]
   [TestCase(typeof(S), nameof(S.P3), true)]
   [TestCase(typeof(S), nameof(ROS.P0), true)]
-  public void TestIsSetMethodInitOnly(Type type, string propertyName, bool expected)
+  public void IsSetMethodInitOnly(Type type, string propertyName, bool expected)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -65,7 +65,7 @@ public class PropertyInfoExtensionsTests {
   [TestCase(typeof(C), nameof(C.P2))]
   [TestCase(typeof(S), nameof(S.P2))]
   [TestCase(typeof(ROS), nameof(ROS.P2))]
-  public void TestIsSetMethodInitOnly_ReadOnly(Type type, string propertyName)
+  public void IsSetMethodInitOnly_ReadOnly(Type type, string propertyName)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 

@@ -22,7 +22,7 @@ public class CustomAttributeTypedArgumentExtensionsTests {
   [TestAttribute(DateTimeKind.Local, 42, "foo")]
   private class C { }
 
-  private static System.Collections.IEnumerable YieldGetTypedValueTestCases()
+  private static System.Collections.IEnumerable YieldTestCases_GetTypedValue()
   {
     var ctorArgs = CustomAttributeData
       .GetCustomAttributes(typeof(C))
@@ -34,7 +34,7 @@ public class CustomAttributeTypedArgumentExtensionsTests {
     yield return new object[] { ctorArgs[2], typeof(string), "foo" };
   }
 
-  [TestCaseSource(nameof(YieldGetTypedValueTestCases))]
+  [TestCaseSource(nameof(YieldTestCases_GetTypedValue))]
   public void GetTypedValue(CustomAttributeTypedArgument typedArg, Type expectedType, object expectedValue)
   {
     object val = typedArg.GetTypedValue();

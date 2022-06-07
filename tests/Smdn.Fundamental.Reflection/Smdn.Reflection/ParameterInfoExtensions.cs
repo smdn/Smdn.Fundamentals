@@ -14,7 +14,7 @@ public class ParameterInfoExtensionsTests {
     public void M(object z) => throw new NotImplementedException();
   }
 
-  public static System.Collections.IEnumerable YieldIsReturnParameterTestCases()
+  private static System.Collections.IEnumerable YieldTestCases_IsReturnParameter()
   {
     foreach (var method in typeof(C).GetMethods()) {
       foreach (var para in method.GetParameters()) {
@@ -31,7 +31,7 @@ public class ParameterInfoExtensionsTests {
     }
   }
 
-  [TestCaseSource(nameof(YieldIsReturnParameterTestCases))]
+  [TestCaseSource(nameof(YieldTestCases_IsReturnParameter))]
   public void IsReturnParameter(ParameterInfo para, bool expected)
     => Assert.AreEqual(expected, para.IsReturnParameter(), $"{para.Member} {para.Name}");
 }
