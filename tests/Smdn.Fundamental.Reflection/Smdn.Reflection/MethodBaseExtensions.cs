@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -29,17 +30,25 @@ public class MethodBaseExtensionsTests {
     => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).GetSignatureTypes());
 
   class C2 : ICloneable, IDisposable {
+    static C2() {}
+    public C2() {}
+
     public void M() => throw new NotImplementedException();
     public object Clone() => throw new NotImplementedException();
     void IDisposable.Dispose() => throw new NotImplementedException();
   }
 
+  [TestCase(typeof(C2), ".ctor", null, null)]
+  [TestCase(typeof(C2), ".cctor", null, null)]
   [TestCase(typeof(C2), nameof(C2.M), null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", typeof(IDisposable), nameof(IDisposable.Dispose))]
   public void FindExplicitInterfaceMethod(Type type, string methodName, Type expectedInterface, string expectedMethodName)
   {
-    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    var method = type.GetMember(
+      methodName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+    ).First() as MethodBase;
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
     Assert.AreEqual(expectedMethod, method!.FindExplicitInterfaceMethod());
@@ -49,12 +58,17 @@ public class MethodBaseExtensionsTests {
   public void FindExplicitInterfaceMethod_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).FindExplicitInterfaceMethod());
 
+  [TestCase(typeof(C2), ".ctor", true, null, null)]
+  [TestCase(typeof(C2), ".cctor", true, null, null)]
   [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true, typeof(IDisposable), nameof(IDisposable.Dispose))]
   public void TryFindExplicitInterfaceMethod(Type type, string methodName, bool expectedResult, Type expectedInterface, string expectedMethodName)
   {
-    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    var method = type.GetMember(
+      methodName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+    ).First() as MethodBase;
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
     Assert.AreEqual(expectedResult, method!.TryFindExplicitInterfaceMethod(out var actualMethod), "result");
@@ -65,12 +79,17 @@ public class MethodBaseExtensionsTests {
   public void TryFindExplicitInterfaceMethod_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).TryFindExplicitInterfaceMethod(out _));
 
+  [TestCase(typeof(C2), ".ctor", false)]
+  [TestCase(typeof(C2), ".cctor", false)]
   [TestCase(typeof(C2), nameof(C2.M), false)]
   [TestCase(typeof(C2), nameof(C2.Clone), false)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true)]
   public void IsExplicitlyImplemented(Type type, string methodName, bool expected)
   {
-    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    var method = type.GetMember(
+      methodName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+    ).First() as MethodBase;;
 
     Assert.AreEqual(expected, method!.IsExplicitlyImplemented());
   }
