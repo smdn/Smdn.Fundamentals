@@ -46,3 +46,76 @@ public class C1 : I1, I2, C1.I3, C1.I4, C1.I5, C1.I6, C1.I7, C1.I8 {
     void M();
   }
 }
+
+#if NET7_0_OR_GREATER
+public interface IStaticMembers {
+  static abstract void MStaticAbstract();
+  static virtual void MStaticVirtual() => throw new NotImplementedException();
+}
+
+public class CImplicitlyImplementedStaticInterfaceMembers : IStaticMembers {
+  static CImplicitlyImplementedStaticInterfaceMembers() { }
+
+  public static void M() => throw new NotImplementedException();
+  public static void MStaticAbstract() => throw new NotImplementedException();
+  public static void MStaticVirtual() => throw new NotImplementedException();
+}
+
+public class CExplicitlyImplementedStaticInterfaceMembers : IStaticMembers {
+  public static void M() => throw new NotImplementedException();
+  static void IStaticMembers.MStaticAbstract() => throw new NotImplementedException();
+  static void IStaticMembers.MStaticVirtual() => throw new NotImplementedException();
+}
+
+public interface IStaticMembersPublic {
+  static abstract void M();
+}
+
+internal interface IStaticMembersInternal {
+  static abstract void M();
+}
+
+public class CStaticMembers :
+  IStaticMembersPublic,
+  IStaticMembersInternal,
+  CStaticMembers.IPublic,
+  CStaticMembers.IInternal,
+  CStaticMembers.IProtected,
+  CStaticMembers.IProtectedInternal,
+  CStaticMembers.IPrivateProtected,
+  CStaticMembers.IPrivate
+{
+  static void IStaticMembersPublic.M() => throw new NotImplementedException();
+  static void IStaticMembersInternal.M() => throw new NotImplementedException();
+  static void IPublic.M() => throw new NotImplementedException();
+  static void IInternal.M() => throw new NotImplementedException();
+  static void IProtected.M() => throw new NotImplementedException();
+  static void IProtectedInternal.M() => throw new NotImplementedException();
+  static void IPrivateProtected.M() => throw new NotImplementedException();
+  static void IPrivate.M() => throw new NotImplementedException();
+
+  public interface IPublic {
+    static abstract void M();
+  }
+
+  internal interface IInternal {
+    static abstract void M();
+  }
+
+  protected interface IProtected {
+    static abstract void M();
+  }
+
+  protected internal interface IProtectedInternal {
+    static abstract void M();
+  }
+
+  private protected interface IPrivateProtected {
+    static abstract void M();
+  }
+
+  private interface IPrivate {
+    static abstract void M();
+  }
+}
+#endif

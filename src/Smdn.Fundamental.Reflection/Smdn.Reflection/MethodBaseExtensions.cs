@@ -45,7 +45,7 @@ public static class MethodBaseExtensions {
 
     if (m is not MethodInfo im)
       return true; // TODO: this should be false?
-    if (!im.IsFinal) // explicit interface method must be final
+    if (!(m.IsStatic || im.IsFinal)) // explicit interface method must be final or static (in case of static interface members)
       return true; // TODO: this should be false?
     if (!im.IsPrivate) // explicit interface method must be private
       return true; // TODO: this should be false?

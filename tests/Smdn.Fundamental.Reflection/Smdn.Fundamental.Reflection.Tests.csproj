@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
     <TargetFrameworks>net6.0;net5.0;net48;net471;net45;netcoreapp3.1</TargetFrameworks>
     <RootNamespace>Smdn.Reflection</RootNamespace>
     <Nullable>warnings</Nullable>
+    <EnablePreviewFeatures Condition="$(TargetFramework.StartsWith('net7'))">true</EnablePreviewFeatures>
   </PropertyGroup>
+
+  <Import Project="..\..\src\EnableNetSdkPreview.props" />
 
   <ItemGroup>
     <Compile Include="..\..\src\Common\System.Runtime.CompilerServices\IsExternalInit.cs" />

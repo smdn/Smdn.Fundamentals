@@ -43,11 +43,49 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C2), nameof(C2.M), null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", typeof(IDisposable), nameof(IDisposable.Dispose))]
+#if NET7_0_OR_GREATER
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    ".cctor",
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.M),
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticAbstract),
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticVirtual),
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract)
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual)
+  )]
+#endif
   public void FindExplicitInterfaceMethod(Type type, string methodName, Type expectedInterface, string expectedMethodName)
   {
     var method = type.GetMember(
       methodName,
-      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
     ).First() as MethodBase;
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
@@ -63,11 +101,55 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
   [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true, typeof(IDisposable), nameof(IDisposable.Dispose))]
+#if NET7_0_OR_GREATER
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    ".cctor",
+    true,
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.M),
+    true,
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticAbstract),
+    true,
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticVirtual),
+    true,
+    null,
+    null
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    true,
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract)
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    true,
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual)
+  )]
+#endif
   public void TryFindExplicitInterfaceMethod(Type type, string methodName, bool expectedResult, Type expectedInterface, string expectedMethodName)
   {
     var method = type.GetMember(
       methodName,
-      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
     ).First() as MethodBase;
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
@@ -84,11 +166,43 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C2), nameof(C2.M), false)]
   [TestCase(typeof(C2), nameof(C2.Clone), false)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true)]
+#if NET7_0_OR_GREATER
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    ".cctor",
+    false
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.M),
+    false
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticAbstract),
+    false
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticVirtual),
+    false
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    true
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    true
+  )]
+#endif
   public void IsExplicitlyImplemented(Type type, string methodName, bool expected)
   {
     var method = type.GetMember(
       methodName,
-      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
     ).First() as MethodBase;;
 
     Assert.AreEqual(expected, method!.IsExplicitlyImplemented());
@@ -106,9 +220,19 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.C1.I6.M", "M")]
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.C1.I7.M", null)]
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.C1.I8.M", null)]
+#if NET7_0_OR_GREATER
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembersPublic) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembersPublic.M), "M")]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembersInternal) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembersInternal.M), null)]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.CStaticMembers) + ".IPublic.M", "M")]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.CStaticMembers) + ".IInternal.M", null)]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.CStaticMembers) + ".IProtected.M", "M")]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.CStaticMembers) + ".IProtectedInternal.M", "M")]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.CStaticMembers) + ".IPrivateProtected.M", null)]
+  [TestCase(typeof(MethodBaseExtensionsTestTypes.CStaticMembers), "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.CStaticMembers) + ".IPrivate.M", null)]
+#endif
   public void FindExplicitInterfaceMethod_PublicInterfaceOnly(Type type, string methodName, string expectedMethodName)
   {
-    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
     var explicitInterfaceMethod = method!.FindExplicitInterfaceMethod(findOnlyPublicInterfaces: true);
 
     Assert.AreEqual(expectedMethodName, explicitInterfaceMethod?.Name, methodName);
