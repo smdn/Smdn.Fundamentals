@@ -96,37 +96,37 @@ public class MethodBaseExtensionsTests {
   public void FindExplicitInterfaceMethod_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).FindExplicitInterfaceMethod());
 
-  [TestCase(typeof(C2), ".ctor", true, null, null)]
-  [TestCase(typeof(C2), ".cctor", true, null, null)]
-  [TestCase(typeof(C2), nameof(C2.M), true, null, null)]
-  [TestCase(typeof(C2), nameof(C2.Clone), true, null, null)]
+  [TestCase(typeof(C2), ".ctor", false, null, null)]
+  [TestCase(typeof(C2), ".cctor", false, null, null)]
+  [TestCase(typeof(C2), nameof(C2.M), false, null, null)]
+  [TestCase(typeof(C2), nameof(C2.Clone), false, null, null)]
   [TestCase(typeof(C2), "System.IDisposable.Dispose", true, typeof(IDisposable), nameof(IDisposable.Dispose))]
 #if NET7_0_OR_GREATER
   [TestCase(
     typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
     ".cctor",
-    true,
+    false,
     null,
     null
   )]
   [TestCase(
     typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
     nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.M),
-    true,
+    false,
     null,
     null
   )]
   [TestCase(
     typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
     nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticAbstract),
-    true,
+    false,
     null,
     null
   )]
   [TestCase(
     typeof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers),
     nameof(MethodBaseExtensionsTestTypes.CImplicitlyImplementedStaticInterfaceMembers.MStaticVirtual),
-    true,
+    false,
     null,
     null
   )]

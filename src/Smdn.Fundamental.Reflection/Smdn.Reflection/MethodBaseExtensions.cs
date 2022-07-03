@@ -26,10 +26,10 @@ public static class MethodBaseExtensions {
   public static bool IsExplicitlyImplemented(this MethodBase m)
     => TryFindExplicitInterfaceMethod(
       m ?? throw new ArgumentNullException(nameof(m)),
-      out var im,
+      out _,
       findOnlyPublicInterfaces: false,
       throwException: false
-    ) && im is not null;
+    );
 
   public static bool TryFindExplicitInterfaceMethod(
     this MethodBase m,
@@ -64,16 +64,17 @@ public static class MethodBaseExtensions {
   {
     explicitInterfaceMethod = default;
 
-    if (m is null)
-      return false;
     if (m is not MethodInfo im)
-      return true; // TODO: this should be false?
-    if (!(m.IsStatic || im.IsFinal)) // explicit interface method must be final or static (in case of static interface members)
-      return true; // TODO: this should be false?
-    if (!im.IsPrivate) // explicit interface method must be private
-      return true; // TODO: this should be false?
-    if (im.DeclaringType is null)
       return false;
+    if (!(m.IsStatic || im.IsFinal)) // explicit interface method must be final or static (in case of static interface members)
+      return false;
+    if (!im.IsPrivate) // explicit interface method must be private
+      return false;
+    if (im.DeclaringType is null) {
+      return throwException
+        ? throw new NotSupportedException($"can not get {nameof(MemberInfo.DeclaringType)} of {m}")
+        : false;
+    }
 
     foreach (var iface in im.DeclaringType.GetInterfaces()) {
       if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
@@ -99,9 +100,7 @@ public static class MethodBaseExtensions {
       }
     }
 
-    explicitInterfaceMethod = null;
-
-    return true;
+    return false;
   }
 
   private static readonly Dictionary<string, MethodSpecialName> specialMethodNames = new(StringComparer.Ordinal) {
