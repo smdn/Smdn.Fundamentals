@@ -43,31 +43,35 @@ public static class MethodBaseExtensions {
 
     explicitInterfaceMethod = default;
 
-    if (m is MethodInfo im && im.IsFinal && im.IsPrivate) {
-      if (im.DeclaringType is null)
-        return false;
+    if (m is not MethodInfo im)
+      return true; // TODO: this should be false?
+    if (!im.IsFinal) // explicit interface method must be final
+      return true; // TODO: this should be false?
+    if (!im.IsPrivate) // explicit interface method must be private
+      return true; // TODO: this should be false?
+    if (im.DeclaringType is null)
+      return false;
 
-      foreach (var iface in im.DeclaringType.GetInterfaces()) {
-        if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
-          continue;
+    foreach (var iface in im.DeclaringType.GetInterfaces()) {
+      if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
+        continue;
 
-        InterfaceMapping interfaceMap = default;
+      InterfaceMapping interfaceMap = default;
 
-        try {
-          interfaceMap = im.DeclaringType.GetInterfaceMap(iface);
-        }
-        catch (NotSupportedException ex) {
-          return throwException
-            ? throw new NotSupportedException("cannot get interface map on assemblies loaded in reflection-only context", ex)
-            : false;
-        }
+      try {
+        interfaceMap = im.DeclaringType.GetInterfaceMap(iface);
+      }
+      catch (NotSupportedException ex) {
+        return throwException
+          ? throw new NotSupportedException("cannot get interface map on assemblies loaded in reflection-only context", ex)
+          : false;
+      }
 
-        for (var index = 0; index < interfaceMap.TargetMethods.Length; index++) {
-          if (interfaceMap.TargetMethods[index] == im) {
-            explicitInterfaceMethod = interfaceMap.InterfaceMethods[index];
+      for (var index = 0; index < interfaceMap.TargetMethods.Length; index++) {
+        if (interfaceMap.TargetMethods[index] == im) {
+          explicitInterfaceMethod = interfaceMap.InterfaceMethods[index];
 
-            return true;
-          }
+          return true;
         }
       }
     }
