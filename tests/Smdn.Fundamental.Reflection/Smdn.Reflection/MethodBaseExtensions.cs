@@ -159,7 +159,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void TryFindExplicitInterfaceMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).TryFindExplicitInterfaceMethod(out _));
+    => Assert.DoesNotThrow(() => Assert.IsFalse(((MethodBase)null!).TryFindExplicitInterfaceMethod(out _)));
 
   [TestCase(typeof(C2), ".ctor", false)]
   [TestCase(typeof(C2), ".cctor", false)]

@@ -24,25 +24,48 @@ public static class MethodBaseExtensions {
   }
 
   public static bool IsExplicitlyImplemented(this MethodBase m)
-    => TryFindExplicitInterfaceMethod(m, out var im, findOnlyPublicInterfaces: false, throwException: false) && im is not null;
+    => TryFindExplicitInterfaceMethod(
+      m ?? throw new ArgumentNullException(nameof(m)),
+      out var im,
+      findOnlyPublicInterfaces: false,
+      throwException: false
+    ) && im is not null;
 
-  public static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo? explicitInterfaceMethod, bool findOnlyPublicInterfaces = false)
-    => TryFindExplicitInterfaceMethod(m, out explicitInterfaceMethod, findOnlyPublicInterfaces, throwException: false);
+  public static bool TryFindExplicitInterfaceMethod(
+    this MethodBase m,
+    out MethodInfo? explicitInterfaceMethod,
+    bool findOnlyPublicInterfaces = false
+  )
+    => TryFindExplicitInterfaceMethod(
+      m,
+      out explicitInterfaceMethod,
+      findOnlyPublicInterfaces,
+      throwException: false
+    );
 
   public static MethodInfo? FindExplicitInterfaceMethod(this MethodBase m, bool findOnlyPublicInterfaces = false)
   {
-    TryFindExplicitInterfaceMethod(m, out var im, findOnlyPublicInterfaces, throwException: true);
+    TryFindExplicitInterfaceMethod(
+      m ?? throw new ArgumentNullException(nameof(m)),
+      out var im,
+      findOnlyPublicInterfaces,
+      throwException: true
+    );
 
     return im;
   }
 
-  private static bool TryFindExplicitInterfaceMethod(this MethodBase m, out MethodInfo? explicitInterfaceMethod, bool findOnlyPublicInterfaces, bool throwException)
+  private static bool TryFindExplicitInterfaceMethod(
+    MethodBase m,
+    out MethodInfo? explicitInterfaceMethod,
+    bool findOnlyPublicInterfaces,
+    bool throwException
+  )
   {
-    if (m is null)
-      throw new ArgumentNullException(nameof(m));
-
     explicitInterfaceMethod = default;
 
+    if (m is null)
+      return false;
     if (m is not MethodInfo im)
       return true; // TODO: this should be false?
     if (!(m.IsStatic || im.IsFinal)) // explicit interface method must be final or static (in case of static interface members)
