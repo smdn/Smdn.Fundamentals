@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.1.0)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.2.0)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.1.0.0
-//   InformationalVersion: 3.1.0+2988f87a51f42ed43388b349616da769ea6ac345
+//   AssemblyVersion: 3.2.0.0
+//   InformationalVersion: 3.2.0+8423d906d4f5589dd25ca6873b6264ea44b5eb3d
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
