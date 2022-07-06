@@ -91,6 +91,10 @@ public class FieldInfoExtensionsTests {
       Assert.IsFalse(f.IsPropertyBackingField());
   }
 
+  [TestCase]
+  public void IsPropertyBackingField_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsPropertyBackingField());
+
   private static System.Collections.IEnumerable YieldTestCases_IsEventBackingField()
   {
     foreach (var field in GetTestTargetFields()) {
@@ -106,4 +110,8 @@ public class FieldInfoExtensionsTests {
     else
       Assert.IsFalse(f.IsEventBackingField());
   }
+
+  [TestCase]
+  public void IsEventBackingField_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsEventBackingField());
 }
