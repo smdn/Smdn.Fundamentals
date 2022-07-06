@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace Smdn.Reflection;
 
 [TestFixture()]
-public class MethodInfoExtensionsTests {
+public partial class MethodInfoExtensionsTests {
   abstract class CAbstract {
     public abstract void MAbstract();
     public virtual void MVirtual() => throw new NotImplementedException();
