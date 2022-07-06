@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -30,36 +29,37 @@ public static class ParameterInfoExtensions {
       throw new ArgumentNullException(nameof(param));
     if (param.Member is not MethodInfo accessor)
       return null;
-    if (!accessor.IsSpecialName) // property accessor methods must have special name
-      return null;
-    if (accessor.DeclaringType is null)
-      return null;
 
-    var properties = accessor.DeclaringType.GetProperties(GetBindingFlagsForAccessorOwner(accessor));
+    var isReturnParameter = IsReturnParameter(param);
 
-    return IsReturnParameter(param)
-      ? properties.FirstOrDefault(property => accessor == property.GetMethod)
-      : properties.FirstOrDefault(property => accessor == property.SetMethod);
+    MethodInfoExtensions.TryGetPropertyFromAccessorMethod(
+      accessor: accessor,
+      expectGet: isReturnParameter,
+      expectSet: !isReturnParameter,
+      property: out var property
+    );
+
+    return property;
   }
 
   public static EventInfo? GetDeclaringEvent(this ParameterInfo param)
   {
     if (param is null)
       throw new ArgumentNullException(nameof(param));
+    if (param.Member is not MethodInfo accessor)
+      return null;
     if (IsReturnParameter(param)) // event accessor methods never have return value
       return null;
     if (!string.Equals("value", param.Name, StringComparison.Ordinal)) // parameter name of event accessor method must be `value`
       return null;
-    if (param.Member is not MethodInfo accessor)
-      return null;
-    if (!accessor.IsSpecialName) // event accessor methods must have special name
-      return null;
-    if (accessor.DeclaringType is null)
-      return null;
 
-    return accessor
-      .DeclaringType
-      .GetEvents(GetBindingFlagsForAccessorOwner(accessor))
-      .FirstOrDefault(ev => accessor == ev.AddMethod || accessor == ev.RemoveMethod);
+    MethodInfoExtensions.TryGetEventFromAccessorMethod(
+      accessor: accessor,
+      expectAdd: true,
+      expectRemove: true,
+      ev: out var ev
+    );
+
+    return ev;
   }
 }
