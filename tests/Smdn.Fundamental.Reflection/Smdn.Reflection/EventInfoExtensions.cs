@@ -13,15 +13,17 @@ public class EventInfoExtensionsTests {
   public event EventHandler E1;
 
   public event EventHandler E2 {
-    add {
-      throw new NotImplementedException();
-    }
-    remove {
-      throw new NotImplementedException();
-    }
+    add => throw new NotImplementedException();
+    remove => throw new NotImplementedException();
   }
 
   private event EventHandler E3;
+
+  public static event EventHandler SE0;
+  public static event EventHandler SE1 {
+    add => throw new NotImplementedException();
+    remove => throw new NotImplementedException();
+  }
 
   class C {
     public event EventHandler E0;
@@ -75,6 +77,25 @@ public class EventInfoExtensionsTests {
     Assert.Throws<ArgumentNullException>(() => ev.GetMethods(nonPublic: true), "nonPublic: true");
     Assert.Throws<ArgumentNullException>(() => ev.GetMethods(nonPublic: false), "nonPublic: false");
   }
+
+  [TestCase(typeof(EventInfoExtensionsTests), nameof(E1), true)]
+  [TestCase(typeof(EventInfoExtensionsTests), nameof(E2), false)]
+  [TestCase(typeof(EventInfoExtensionsTests), nameof(E3), true)]
+  [TestCase(typeof(EventInfoExtensionsTests), nameof(SE0), true)]
+  [TestCase(typeof(EventInfoExtensionsTests), nameof(SE1), false)]
+  public void GetBackingField(Type type, string propertyName, bool hasBackingField)
+  {
+    var ev = type.GetEvent(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    if (hasBackingField)
+      Assert.IsNotNull(ev!.GetBackingField());
+    else
+      Assert.IsNull(ev!.GetBackingField());
+  }
+
+  [Test]
+  public void GetBackingField_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).GetBackingField());
 
 #if false
 Public Custom Event E As EventHandler
