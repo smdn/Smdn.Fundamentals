@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable CS8597
+
 using System;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -78,5 +81,62 @@ public partial class MethodInfoExtensionsTests {
   [Test]
   public void IsOverridden_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverridden());
-}
 
+  class CDelegateSignatureMethod {
+    public void M() => throw null;
+    public virtual void Invoke() => throw null;
+
+    private delegate void D0();
+    public delegate void D1();
+
+    public class NonDelegate {
+      public virtual void Invoke() => throw null;
+    }
+  }
+
+  private static System.Collections.IEnumerable YieldTestCases_IsDelegateSignatureMethod()
+  {
+    var testCaseType = typeof(CDelegateSignatureMethod);
+
+    foreach (var m in testCaseType.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
+      yield return new object[] { m, false };
+    }
+
+    foreach (var nestedType in testCaseType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)) {
+      foreach (var m in nestedType.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
+        yield return new object[] { m, nestedType.IsDelegate() && GetExpectedResult(m) };
+      }
+    }
+
+    foreach (var (t, isConcreteDelegate) in new[] {
+      (typeof(Delegate), false),
+      (typeof(MulticastDelegate), false),
+      (typeof(Action), true),
+      (typeof(Action<int>), true),
+      (typeof(Func<int, int>), true),
+    }) {
+      foreach (var m in t.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)) {
+        if (m.IsPropertyAccessorMethod())
+          continue;
+
+        yield return new object[] { m, isConcreteDelegate && GetExpectedResult(m) };
+      }
+    }
+
+    static bool GetExpectedResult(MethodInfo m)
+    {
+      return !m.IsPropertyAccessorMethod() &&
+        m.DeclaringType != typeof(object) &&
+        m.DeclaringType != typeof(Delegate) &&
+        m.DeclaringType != typeof(MulticastDelegate) &&
+        !m.GetParameters().Concat(Enumerable.Repeat(m.ReturnParameter, 1)).Any(p => p.ParameterType == typeof(IAsyncResult)); // BeginInvoke/EndInvoke
+    }
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_IsDelegateSignatureMethod))]
+  public void IsDelegateSignatureMethod(MethodInfo m, bool expected)
+    => Assert.AreEqual(expected, m.IsDelegateSignatureMethod(), $"Type: {m.DeclaringType}, {m}");
+
+  public void IsDelegateSignatureMethod_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsDelegateSignatureMethod());
+}

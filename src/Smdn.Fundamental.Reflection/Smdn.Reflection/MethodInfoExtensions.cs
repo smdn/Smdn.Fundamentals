@@ -151,4 +151,12 @@ public static class MethodInfoExtensions {
 
     return ev is not null;
   }
+
+  public static bool IsDelegateSignatureMethod(this MethodInfo m)
+    => m is null
+      ? throw new ArgumentNullException(nameof(m))
+      : m.DeclaringType is not null &&
+        m.DeclaringType != typeof(Delegate) &&
+        m.DeclaringType != typeof(MulticastDelegate) &&
+        m == TypeExtensions.GetDelegateSignatureMethod(m.DeclaringType);
 }
