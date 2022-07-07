@@ -203,4 +203,36 @@ public static class TypeExtensions {
 #endif
       t.StructLayoutAttribute.CharSet == DefaultStructLayoutAttribute.CharSet;
   }
+
+  public static bool IsHidingInheritedType(this Type t, bool nonPublic)
+  {
+    if (t is null)
+      throw new ArgumentNullException(nameof(t));
+    if (!t.IsNested)
+      return false; // non-nested type never hides any types
+
+    var bindingFlagsVisibility = nonPublic
+      ? BindingFlags.Public | BindingFlags.NonPublic
+      : BindingFlags.Public;
+
+    // is hiding any nested type in type hierarchy?
+    return EnumerateTypeHierarchy(t.DeclaringType!)
+      .SelectMany(th => th.GetNestedTypes(bindingFlagsVisibility))
+      .Any(tn =>
+        !tn.IsNestedPrivate && // cannot hide nested private types
+        string.Equals(tn.Name, t.Name, StringComparison.Ordinal)
+      );
+
+    static IEnumerable<Type> EnumerateTypeHierarchy(Type t)
+    {
+      Type? _t = t;
+
+      for (; ; ) {
+        if ((_t = _t?.BaseType) is not null)
+          yield return _t;
+        else
+          break;
+      }
+    }
+  }
 }
