@@ -34,7 +34,7 @@ partial class MethodInfoExtensionsTests {
 
       return type.GetMember(
         name: DeclaringMemberName,
-        bindingAttr: BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+        bindingAttr: BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly
       ).FirstOrDefault();
     }
   }
@@ -67,7 +67,7 @@ partial class MethodInfoExtensionsTests {
     public void M0() => throw new NotImplementedException();
     public static void M1() => throw new NotImplementedException();
 
-    public int P0 {
+    public virtual int P0 {
       [PropertyAccessor(nameof(P0), AccessorType.PropertyGet)] get;
       [PropertyAccessor(nameof(P0), AccessorType.PropertySet)] set;
     }
@@ -88,7 +88,7 @@ partial class MethodInfoExtensionsTests {
       [PropertyAccessor(nameof(P4), AccessorType.PropertySet)] private set;
     }
 
-    public event EventHandler E0 {
+    public virtual event EventHandler E0 {
       [EventAccessor(nameof(E0), AccessorType.EventAdd)] add => throw null;
       [EventAccessor(nameof(E0), AccessorType.EventRemove)] remove => throw null;
     }
@@ -102,8 +102,36 @@ partial class MethodInfoExtensionsTests {
     }
   }
 
+  private class CAccessorsOverridingBaseAccessor : CAccessors {
+    public override int P0 {
+      [PropertyAccessor(nameof(P0), AccessorType.PropertyGet)] get;
+      [PropertyAccessor(nameof(P0), AccessorType.PropertySet)] set;
+    }
+
+    public override event EventHandler E0 {
+      [EventAccessor(nameof(E0), AccessorType.EventAdd)] add => throw null;
+      [EventAccessor(nameof(E0), AccessorType.EventRemove)] remove => throw null;
+    }
+  }
+
+  private class CAccessorsHidingBaseAccessor : CAccessors {
+    public new int P0 {
+      [PropertyAccessor(nameof(P0), AccessorType.PropertyGet)] get;
+      [PropertyAccessor(nameof(P0), AccessorType.PropertySet)] set;
+    }
+
+    public new event EventHandler E0 {
+      [EventAccessor(nameof(E0), AccessorType.EventAdd)] add => throw null;
+      [EventAccessor(nameof(E0), AccessorType.EventRemove)] remove => throw null;
+    }
+  }
+
   private static IEnumerable<MethodInfo> GetMethods()
-    => typeof(CAccessors).GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+    => new[] {
+      typeof(CAccessors),
+      typeof(CAccessorsOverridingBaseAccessor),
+      typeof(CAccessorsHidingBaseAccessor),
+    }.SelectMany(static t => t.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly));
 
   private static System.Collections.IEnumerable YieldTestCases_PropertyAccessors()
   {
