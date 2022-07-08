@@ -216,23 +216,60 @@ public static class TypeExtensions {
       : BindingFlags.Public;
 
     // is hiding any nested type in type hierarchy?
-    return EnumerateTypeHierarchy(t.DeclaringType!)
+    return EnumerateTypeHierarchy(t.DeclaringType!, includeSelf: false)
       .SelectMany(th => th.GetNestedTypes(bindingFlagsVisibility))
       .Any(tn =>
         !tn.IsNestedPrivate && // cannot hide nested private types
         string.Equals(tn.Name, t.Name, StringComparison.Ordinal)
       );
+  }
 
-    static IEnumerable<Type> EnumerateTypeHierarchy(Type t)
-    {
-      Type? _t = t;
-
-      for (; ; ) {
-        if ((_t = _t?.BaseType) is not null)
-          yield return _t;
-        else
-          break;
+  internal static IEnumerable<Type> EnumerateBaseTypeOrInterfaces(Type t)
+  {
+    if (t.IsInterface) {
+      foreach (var i in t.GetInterfaces()) {
+        yield return i;
       }
     }
+    else if (t.BaseType is not null) {
+      yield return t.BaseType;
+    }
+  }
+
+  internal static IEnumerable<Type> EnumerateTypeHierarchy(Type t, bool includeSelf)
+  {
+    Type? _t = t;
+
+    if (includeSelf)
+      yield return _t;
+
+    for (; ; ) {
+      if ((_t = _t?.BaseType) is not null)
+        yield return _t;
+      else
+        break;
+    }
+  }
+
+  internal static IEnumerable<Type> EnumerateNestedTypeInFlattenHierarchy(
+    Type t,
+    string? name,
+    bool nonPublic,
+    Func<Type, bool>? predicate
+  )
+  {
+    var bindingFlags = nonPublic ? BindingFlags.Public | BindingFlags.NonPublic : BindingFlags.Public;
+    var typeHierarchy = EnumerateTypeHierarchy(t, includeSelf: true);
+
+    var nestedTypes = name is null
+      ? typeHierarchy.SelectMany(t => t.GetNestedTypes(bindingFlags))
+#pragma warning disable IDE0004
+      : (IEnumerable<Type>)typeHierarchy.Select(t => t.GetNestedType(name, bindingFlags)).Where(static t => t is not null);
+#pragma warning restore IDE0004
+
+    if (predicate is not null)
+      nestedTypes = nestedTypes.Where(predicate);
+
+    return nestedTypes;
   }
 }

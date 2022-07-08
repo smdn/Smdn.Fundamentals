@@ -94,4 +94,18 @@ public static class EventInfoExtensions {
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   internal static string GetEventNameFromBackingField(FieldInfo backingField)
     => backingField.Name; // XXX: undocumented spec
+
+  internal static bool IsPrivate(EventInfo ev)
+    => ev.AddMethod is null
+      ? ev.RemoveMethod is not null && ev.RemoveMethod.IsPrivate
+      : ev.RemoveMethod is null
+        ? ev.AddMethod.IsPrivate
+        : ev.AddMethod.IsPrivate && ev.RemoveMethod.IsPrivate;
+
+  internal static bool IsOverride(EventInfo ev)
+    => ev.AddMethod is null
+      ? ev.RemoveMethod is not null && ev.RemoveMethod.IsOverridden()
+      : ev.RemoveMethod is null
+        ? ev.AddMethod.IsOverridden()
+        : ev.AddMethod.IsOverridden() && ev.RemoveMethod.IsOverridden();
 }

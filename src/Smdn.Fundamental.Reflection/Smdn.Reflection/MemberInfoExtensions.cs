@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Linq;
 using System.Reflection;
 
 namespace Smdn.Reflection;
@@ -89,5 +90,111 @@ public static class MemberInfoExtensions {
       default:
         throw new NotSupportedException("unknown member type");
     }
+  }
+
+  public static bool IsHidingInheritedMember(this MemberInfo member, bool nonPublic)
+  {
+    if (member is null)
+      throw new ArgumentNullException(nameof(member));
+    if (member is ConstructorInfo)
+      return false; // constructors can not be 'new'
+
+    if (member is MethodInfo mayBeAccessor) {
+#if !NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+#pragma warning disable CS8604
+#endif
+      if (mayBeAccessor.TryGetPropertyFromAccessorMethod(out var property))
+        return IsHidingInheritedMember(property, nonPublic); // TODO: or throw exception?
+      if (mayBeAccessor.TryGetEventFromAccessorMethod(out var ev))
+        return IsHidingInheritedMember(ev, nonPublic); // TODO: or throw exception?
+#pragma warning restore CS8604
+    }
+
+    if (member is FieldInfo mayBeEventBackingField) {
+#if !NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+#pragma warning disable CS8604
+#endif
+      if (mayBeEventBackingField.TryGetEventFromBackingField(out var ev))
+        return IsHidingInheritedMember(ev, nonPublic);
+#pragma warning restore CS8604
+    }
+
+    var declaringType = member.DeclaringType;
+
+    if (declaringType is null)
+      return false; // XXX: ???
+
+    /*
+     * test nested types
+     */
+    var sameNameNestedTypesInHerarchy = declaringType.BaseType is null
+      ? Enumerable.Empty<MemberInfo>()
+      : TypeExtensions.EnumerateNestedTypeInFlattenHierarchy(
+          declaringType.BaseType,
+          member.Name,
+          nonPublic,
+          static t => !t.IsNestedPrivate // cannot hide private nested types
+        );
+
+    if (sameNameNestedTypesInHerarchy.Any())
+      return true;
+
+    /*
+     * test inherited members
+     */
+    var memberBindingFlags = BindingFlags.FlattenHierarchy;
+
+    // TODO: member.IsStatic ? BindingFlags.Static : BindingFlags.Instance
+    memberBindingFlags |= BindingFlags.Instance | BindingFlags.Static;
+
+    memberBindingFlags |= nonPublic
+      ? BindingFlags.Public | BindingFlags.NonPublic
+      : BindingFlags.Public;
+
+    var sameNameMembersInHierarchy = TypeExtensions.EnumerateBaseTypeOrInterfaces(declaringType)
+      .SelectMany(t => t.GetMember(member.Name, memberBindingFlags)) // inherited nested types are not included
+      .Where(static member => member switch {
+        // cannot hide private members / nested types
+        FieldInfo f => !f.IsPrivate,
+        MethodInfo m => !m.IsPrivate,
+        PropertyInfo p => !PropertyInfoExtensions.IsPrivate(p),
+        EventInfo ev => !EventInfoExtensions.IsPrivate(ev),
+
+        // cannot hide constructors
+        ConstructorInfo ctor => false,
+
+        // exclude nested types (already tested on above)
+        Type t => false,
+
+        _ => true,
+      });
+
+    if (member is MethodInfo method) {
+      if (!declaringType.IsInterface && method.IsOverridden()) {
+        // `override` method does not hide any inherited methods
+        sameNameMembersInHierarchy =
+          sameNameMembersInHierarchy.Where(static member => member is not MethodInfo);
+      }
+      else {
+        // interface method and non-`override` method only hides the method which have same signature
+        sameNameMembersInHierarchy = sameNameMembersInHierarchy
+          .Where(member => member switch {
+            MethodInfo methodWithSameName => MethodInfoExtensions.SignatureEqual(method, methodWithSameName),
+            _ => true,
+          });
+      }
+    }
+    else if (member is PropertyInfo property && PropertyInfoExtensions.IsOverride(property)) {
+      // `override` property does not hide any inherited properties
+      sameNameMembersInHierarchy =
+        sameNameMembersInHierarchy.Where(static member => member is not PropertyInfo);
+    }
+    else if (member is EventInfo ev && EventInfoExtensions.IsOverride(ev)) {
+      // `override` event does not hide any inherited events
+      sameNameMembersInHierarchy =
+        sameNameMembersInHierarchy.Where(static member => member is not EventInfo);
+    }
+
+    return sameNameMembersInHierarchy.Any();
   }
 }

@@ -85,4 +85,18 @@ public static class PropertyInfoExtensions {
     => property
       .GetAccessors(nonPublic: true)
       .Any(static accessor => accessor.IsDefined(typeof(CompilerGeneratedAttribute)));
+
+  internal static bool IsPrivate(PropertyInfo property)
+    => property.GetMethod is null
+      ? property.SetMethod is not null && property.SetMethod.IsPrivate
+      : property.SetMethod is null
+        ? property.GetMethod.IsPrivate
+        : property.GetMethod.IsPrivate && property.SetMethod.IsPrivate;
+
+  internal static bool IsOverride(PropertyInfo property)
+    => property.GetMethod is null
+      ? property.SetMethod is not null && property.SetMethod.IsOverridden()
+      : property.SetMethod is null
+        ? property.GetMethod.IsOverridden()
+        : property.GetMethod.IsOverridden() && property.SetMethod.IsOverridden();
 }

@@ -159,4 +159,23 @@ public static class MethodInfoExtensions {
         m.DeclaringType != typeof(Delegate) &&
         m.DeclaringType != typeof(MulticastDelegate) &&
         m == TypeExtensions.GetDelegateSignatureMethod(m.DeclaringType);
+
+  internal static bool SignatureEqual(MethodInfo x, MethodInfo y)
+  {
+    if (x.ReturnParameter.ParameterType != y.ReturnParameter.ParameterType)
+      return false;
+
+    var paramsX = x.GetParameters();
+    var paramsY = y.GetParameters();
+
+    if (paramsX.Length != paramsY.Length)
+      return false;
+
+    for (var i = 0; i < paramsX.Length; i++) {
+      if (paramsX[i].ParameterType != paramsY[i].ParameterType)
+        return false;
+    }
+
+    return true;
+  }
 }
