@@ -47,6 +47,12 @@ public partial class MethodInfoExtensionsTests {
     public new int PVirtual => throw new NotImplementedException();
   }
 
+  abstract class CNewVirtual : CVirtual {
+    public new virtual void MVirtual() => throw new NotImplementedException();
+
+    public new virtual int PVirtual => throw new NotImplementedException();
+  }
+
   [TestCase(typeof(CAbstract), nameof(CAbstract.MAbstract), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), false)]
   [TestCase(typeof(COverride), nameof(COverride.MAbstract), true)]
@@ -55,6 +61,7 @@ public partial class MethodInfoExtensionsTests {
   [TestCase(typeof(CSealed), nameof(CSealed.MVirtual), true)]
   [TestCase(typeof(CVirtual), nameof(CVirtual.MVirtual), false)]
   [TestCase(typeof(CNew), nameof(CNew.MVirtual), false)]
+  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.MVirtual), false)]
   public void IsOverridden_Method(Type type, string methodName, bool isOverridden)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
@@ -70,6 +77,7 @@ public partial class MethodInfoExtensionsTests {
   [TestCase(typeof(CSealed), nameof(CSealed.PVirtual), true)]
   [TestCase(typeof(CVirtual), nameof(CVirtual.PVirtual), false)]
   [TestCase(typeof(CNew), nameof(CNew.PVirtual), false)]
+  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.PVirtual), false)]
   public void IsOverridden_AccessorMethod(Type type, string propertyName, bool isOverridden)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
