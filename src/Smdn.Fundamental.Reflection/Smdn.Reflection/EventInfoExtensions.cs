@@ -72,7 +72,7 @@ public static class EventInfoExtensions {
       return null; // or throw exception?
 
     var backingField = ev.DeclaringType.GetField(
-      name: GetBackingFieldNameFromEvent(ev),
+      name: GetBackingFieldNameOf(ev),
       bindingAttr: (IsStatic(ev) ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.NonPublic
     );
 
@@ -88,10 +88,10 @@ public static class EventInfoExtensions {
       ev.RemoveMethod?.GetCustomAttribute<CompilerGeneratedAttribute>() is not null;
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private static string GetBackingFieldNameFromEvent(EventInfo ev)
+  private static string GetBackingFieldNameOf(EventInfo ev)
     => ev.Name; // XXX: undocumented spec
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  internal static string GetEventNameFromBackingField(FieldInfo f)
-    => f.Name; // XXX: undocumented spec
+  internal static string GetEventNameFromBackingField(FieldInfo backingField)
+    => backingField.Name; // XXX: undocumented spec
 }
