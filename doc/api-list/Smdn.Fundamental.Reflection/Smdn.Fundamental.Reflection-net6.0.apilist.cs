@@ -1,12 +1,13 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.2.0)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.3.0)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.2.0.0
-//   InformationalVersion: 3.2.0+8423d906d4f5589dd25ca6873b6264ea44b5eb3d
+//   AssemblyVersion: 3.3.0.0
+//   InformationalVersion: 3.3.0+61f4ebda7b596d7dc0ab6f5f3f842f89f0df3d6e
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Smdn.Reflection;
@@ -57,6 +58,7 @@ namespace Smdn.Reflection {
   [Nullable(byte.MinValue)]
   [NullableContext(1)]
   public static class EventInfoExtensions {
+    [return: Nullable(2)] public static FieldInfo GetBackingField(this EventInfo ev) {}
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev) {}
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic) {}
     public static bool IsStatic(this EventInfo ev) {}
@@ -64,8 +66,18 @@ namespace Smdn.Reflection {
 
   [Nullable(byte.MinValue)]
   [NullableContext(1)]
+  public static class FieldInfoExtensions {
+    public static bool IsEventBackingField(this FieldInfo f) {}
+    public static bool IsPropertyBackingField(this FieldInfo f) {}
+    public static bool TryGetEventFromBackingField(this FieldInfo backingField, [NotNullWhen(true)] [Nullable(2)] out EventInfo ev) {}
+    public static bool TryGetPropertyFromBackingField(this FieldInfo backingField, [NotNullWhen(true)] [Nullable(2)] out PropertyInfo property) {}
+  }
+
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class MemberInfoExtensions {
     public static Accessibility GetAccessibility(this MemberInfo member) {}
+    public static bool IsHidingInheritedMember(this MemberInfo member, bool nonPublic) {}
     public static bool IsPrivateOrAssembly(this MemberInfo member) {}
   }
 
@@ -79,19 +91,37 @@ namespace Smdn.Reflection {
     public static bool TryFindExplicitInterfaceMethod(this MethodBase m, [Nullable(2)] out MethodInfo explicitInterfaceMethod, bool findOnlyPublicInterfaces = false) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class MethodInfoExtensions {
-    [NullableContext(1)]
+    public static bool IsDelegateSignatureMethod(this MethodInfo m) {}
+    public static bool IsEventAccessorMethod(this MethodInfo m) {}
+    public static bool IsEventAddMethod(this MethodInfo m) {}
+    public static bool IsEventRemoveMethod(this MethodInfo m) {}
+    [Obsolete("use IsOverride instead")]
     public static bool IsOverridden(this MethodInfo m) {}
+    public static bool IsOverride(this MethodInfo m) {}
+    public static bool IsPropertyAccessorMethod(this MethodInfo m) {}
+    public static bool IsPropertyGetMethod(this MethodInfo m) {}
+    public static bool IsPropertySetMethod(this MethodInfo m) {}
+    [NullableContext(2)]
+    public static bool TryGetEventFromAccessorMethod(this MethodInfo accessor, [NotNullWhen(true)] out EventInfo ev) {}
+    [NullableContext(2)]
+    public static bool TryGetPropertyFromAccessorMethod(this MethodInfo accessor, [NotNullWhen(true)] out PropertyInfo property) {}
   }
 
+  [Nullable(byte.MinValue)]
+  [NullableContext(1)]
   public static class ParameterInfoExtensions {
-    [NullableContext(1)]
+    [return: Nullable(2)] public static EventInfo GetDeclaringEvent(this ParameterInfo param) {}
+    [return: Nullable(2)] public static PropertyInfo GetDeclaringProperty(this ParameterInfo param) {}
     public static bool IsReturnParameter(this ParameterInfo param) {}
   }
 
   [Nullable(byte.MinValue)]
   [NullableContext(1)]
   public static class PropertyInfoExtensions {
+    [return: Nullable(2)] public static FieldInfo GetBackingField(this PropertyInfo property) {}
     public static bool IsSetMethodInitOnly(this PropertyInfo property) {}
     public static bool IsStatic(this PropertyInfo property) {}
   }
@@ -108,6 +138,7 @@ namespace Smdn.Reflection {
     public static bool IsConcreteDelegate(this Type t) {}
     public static bool IsDelegate(this Type t) {}
     public static bool IsEnumFlags(this Type t) {}
+    public static bool IsHidingInheritedType(this Type t, bool nonPublic) {}
     public static bool IsReadOnlyValueType(this Type t) {}
     public static bool IsStructLayoutDefault(this Type t) {}
   }
