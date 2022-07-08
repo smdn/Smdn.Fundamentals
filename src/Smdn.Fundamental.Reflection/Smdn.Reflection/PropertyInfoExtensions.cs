@@ -95,8 +95,8 @@ public static class PropertyInfoExtensions {
 
   internal static bool IsOverride(PropertyInfo property)
     => property.GetMethod is null
-      ? property.SetMethod is not null && property.SetMethod.IsOverridden()
+      ? property.SetMethod is not null && property.SetMethod.IsOverride()
       : property.SetMethod is null
-        ? property.GetMethod.IsOverridden()
-        : property.GetMethod.IsOverridden() && property.SetMethod.IsOverridden();
+        ? property.GetMethod.IsOverride()
+        : property.GetMethod.IsOverride() && property.SetMethod.IsOverride();
 }

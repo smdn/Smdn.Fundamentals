@@ -62,11 +62,11 @@ public partial class MethodInfoExtensionsTests {
   [TestCase(typeof(CVirtual), nameof(CVirtual.MVirtual), false)]
   [TestCase(typeof(CNew), nameof(CNew.MVirtual), false)]
   [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.MVirtual), false)]
-  public void IsOverridden_Method(Type type, string methodName, bool isOverridden)
+  public void IsOverride_Method(Type type, string methodName, bool isOverride)
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.AreEqual(isOverridden, method!.IsOverridden(), $"has override? {type}.{methodName}");
+    Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
   }
 
   [TestCase(typeof(CAbstract), nameof(CAbstract.PAbstract), false)]
@@ -78,17 +78,17 @@ public partial class MethodInfoExtensionsTests {
   [TestCase(typeof(CVirtual), nameof(CVirtual.PVirtual), false)]
   [TestCase(typeof(CNew), nameof(CNew.PVirtual), false)]
   [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.PVirtual), false)]
-  public void IsOverridden_AccessorMethod(Type type, string propertyName, bool isOverridden)
+  public void IsOverride_AccessorMethod(Type type, string propertyName, bool isOverride)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var getter = property!.GetGetMethod();
 
-    Assert.AreEqual(isOverridden, getter!.IsOverridden(), $"is overridden? {type}.{propertyName}");
+    Assert.AreEqual(isOverride, getter!.IsOverride(), $"is override? {type}.{propertyName}");
   }
 
   [Test]
-  public void IsOverridden_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverridden());
+  public void IsOverride_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverride());
 
   class CDelegateSignatureMethod {
     public void M() => throw null;

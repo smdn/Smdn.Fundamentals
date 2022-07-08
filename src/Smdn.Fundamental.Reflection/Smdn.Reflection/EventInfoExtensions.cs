@@ -104,8 +104,8 @@ public static class EventInfoExtensions {
 
   internal static bool IsOverride(EventInfo ev)
     => ev.AddMethod is null
-      ? ev.RemoveMethod is not null && ev.RemoveMethod.IsOverridden()
+      ? ev.RemoveMethod is not null && ev.RemoveMethod.IsOverride()
       : ev.RemoveMethod is null
-        ? ev.AddMethod.IsOverridden()
-        : ev.AddMethod.IsOverridden() && ev.RemoveMethod.IsOverridden();
+        ? ev.AddMethod.IsOverride()
+        : ev.AddMethod.IsOverride() && ev.RemoveMethod.IsOverride();
 }

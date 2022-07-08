@@ -170,7 +170,7 @@ public static class MemberInfoExtensions {
       });
 
     if (member is MethodInfo method) {
-      if (!declaringType.IsInterface && method.IsOverridden()) {
+      if (!declaringType.IsInterface && method.IsOverride()) {
         // `override` method does not hide any inherited methods
         sameNameMembersInHierarchy =
           sameNameMembersInHierarchy.Where(static member => member is not MethodInfo);

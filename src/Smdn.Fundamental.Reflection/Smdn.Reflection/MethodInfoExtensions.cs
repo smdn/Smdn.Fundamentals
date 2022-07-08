@@ -11,10 +11,17 @@ using System.Runtime.CompilerServices;
 namespace Smdn.Reflection;
 
 public static class MethodInfoExtensions {
+  [Obsolete($"use {nameof(IsOverride)} instead")]
   public static bool IsOverridden(this MethodInfo m)
     => m is null
       ? throw new ArgumentNullException(nameof(m))
       : (m.Attributes & MethodAttributes.Virtual) != 0 && (m.Attributes & MethodAttributes.NewSlot) == 0;
+
+  public static bool IsOverride(this MethodInfo m)
+    => m is null
+      ? throw new ArgumentNullException(nameof(m))
+      : m != m.GetBaseDefinition();
+      // (m.Attributes & MethodAttributes.Virtual) != 0 && (m.Attributes & MethodAttributes.NewSlot) == 0;
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   private static BindingFlags GetBindingFlagsForAccessorOwner(MethodInfo accessor)
