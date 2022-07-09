@@ -62,9 +62,10 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <ItemGroup>
-      <NupkgReadmeLines Include="# $(AssemblyName)" />
-      <NupkgReadmeLines Include="$(Description)" />
-      <NupkgReadmeLines Include="# API List" />
+      <NupkgReadmeLines Include="# $(Product)" />
+      <NupkgReadmeLines Include="$(Description)%0A" />
+      <NupkgReadmeLines Include="## API List" />
+      <NupkgReadmeLines Include="List of APIs exposed by assembly `$(AssemblyName)-$(InformationalVersion)` ($(LatestTargetFramework)).%0A" />
       <NupkgReadmeLines Include="```cs" />
       <NupkgReadmeLines Include="$([System.IO.File]::ReadAllText('%(ApiListFileOfLatestFramework.Identity)'))" />
       <NupkgReadmeLines Include="```" />
