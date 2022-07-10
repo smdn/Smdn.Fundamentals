@@ -4,14 +4,13 @@
 //   InformationalVersion: 3.0.3+4acdf8653895790ff473d032b1c94abfe4aeb215
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace Smdn.Formats {
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Base64 {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
@@ -35,4 +34,3 @@ namespace Smdn.Formats {
     public static string GetEncodedString(string str, Encoding encoding) {}
   }
 }
-

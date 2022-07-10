@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+eab6d2d8d9ea03032d8e0a3e6e6fde2b2f6de060
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System.IO;
 using System.Security.Cryptography;
@@ -34,14 +35,10 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
-    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class QuotedPrintableEncoding {
     public static Stream CreateDecodingStream(Stream stream, bool leaveStreamOpen = false) {}
@@ -68,10 +65,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
-    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 }
-

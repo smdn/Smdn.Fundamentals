@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+0e9f0b7daefd807b9370c2f7a3a4bf5b9cb9194a
 //   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
+#nullable enable annotations
 
 using System.Security.Cryptography;
 using Smdn.Formats.ModifiedBase64;
@@ -21,14 +22,10 @@ namespace Smdn.Formats.ModifiedBase64 {
 
     protected virtual void Dispose(bool disposing) {}
     public void Dispose() {}
-    [NullableContext(1)]
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class FromRFC3501ModifiedBase64Transform : FromRFC2152ModifiedBase64Transform {
     public FromRFC3501ModifiedBase64Transform() {}
@@ -38,8 +35,6 @@ namespace Smdn.Formats.ModifiedBase64 {
     public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class ModifiedUTF7 {
     public static string Decode(string str) {}
@@ -57,9 +52,7 @@ namespace Smdn.Formats.ModifiedBase64 {
 
     protected virtual void Dispose(bool disposing) {}
     public void Dispose() {}
-    [NullableContext(1)]
     public virtual int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
@@ -67,10 +60,7 @@ namespace Smdn.Formats.ModifiedBase64 {
   public sealed class ToRFC3501ModifiedBase64Transform : ToRFC2152ModifiedBase64Transform {
     public ToRFC3501ModifiedBase64Transform() {}
 
-    [NullableContext(1)]
     public override int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public override byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 }
-

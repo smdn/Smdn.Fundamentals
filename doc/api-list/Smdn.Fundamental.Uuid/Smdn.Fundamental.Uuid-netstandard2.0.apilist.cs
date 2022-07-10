@@ -4,10 +4,10 @@
 //   InformationalVersion: 3.1.0+ae4a97a93ac395fe5044a3c8ed3ba4411533bc12
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Smdn;
 using Smdn.Formats.UniversallyUniqueIdentifiers;
@@ -89,21 +89,21 @@ namespace Smdn {
     public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng) {}
     public static Uuid CreateFromRandomNumber(ReadOnlySpan<byte> randomNumber) {}
     public static Uuid CreateFromRandomNumber(byte[] randomNumber) {}
+    public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Namespace ns, UuidVersion version) {}
     public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Uuid namespaceId, UuidVersion version) {}
-    public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Uuid.Namespace ns, UuidVersion version) {}
     public static Uuid CreateNameBased(Uri url, UuidVersion version) {}
+    public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version) {}
     public static Uuid CreateNameBased(byte[] name, Uuid namespaceId, UuidVersion version) {}
-    public static Uuid CreateNameBased(byte[] name, Uuid.Namespace ns, UuidVersion version) {}
+    public static Uuid CreateNameBased(string name, Namespace ns, UuidVersion version) {}
     public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version) {}
-    public static Uuid CreateNameBased(string name, Uuid.Namespace ns, UuidVersion version) {}
-    public static Uuid CreateNameBasedMD5(ReadOnlySpan<byte> name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedMD5(ReadOnlySpan<byte> name, Namespace ns) {}
     public static Uuid CreateNameBasedMD5(Uri url) {}
-    public static Uuid CreateNameBasedMD5(byte[] name, Uuid.Namespace ns) {}
-    public static Uuid CreateNameBasedMD5(string name, Uuid.Namespace ns) {}
-    public static Uuid CreateNameBasedSHA1(ReadOnlySpan<byte> name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedMD5(byte[] name, Namespace ns) {}
+    public static Uuid CreateNameBasedMD5(string name, Namespace ns) {}
+    public static Uuid CreateNameBasedSHA1(ReadOnlySpan<byte> name, Namespace ns) {}
     public static Uuid CreateNameBasedSHA1(Uri url) {}
-    public static Uuid CreateNameBasedSHA1(byte[] name, Uuid.Namespace ns) {}
-    public static Uuid CreateNameBasedSHA1(string name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedSHA1(byte[] name, Namespace ns) {}
+    public static Uuid CreateNameBasedSHA1(string name, Namespace ns) {}
     public static Uuid CreateTimeBased() {}
     public static Uuid CreateTimeBased(DateTime timestamp, int clock) {}
     public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node) {}
@@ -117,22 +117,18 @@ namespace Smdn {
     public void GetBytes(byte[] buffer, int startIndex, bool asBigEndian) {}
     public override int GetHashCode() {}
     public static Uuid NewUuid() {}
-    public static Uuid Parse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider = null) {}
-    [NullableContext(1)]
-    public static Uuid Parse(string s, [Nullable(2)] IFormatProvider provider = null) {}
+    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
+    public static Uuid Parse(string s, IFormatProvider? provider = null) {}
     public byte[] ToByteArray() {}
     public byte[] ToByteArray(bool asBigEndian) {}
     public Guid ToGuid() {}
-    [NullableContext(2)]
-    [return: Nullable(1)] public string ToString(string format, IFormatProvider formatProvider) {}
     public override string ToString() {}
-    [NullableContext(1)]
     public string ToString(string format) {}
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, [Nullable(2)] IFormatProvider provider = null) {}
-    public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, out Uuid result) {}
+    public string ToString(string? format, IFormatProvider? formatProvider) {}
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Uuid result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Uuid result) {}
-    [NullableContext(2)]
-    public static bool TryParse(string s, IFormatProvider provider, out Uuid result) {}
+    public static bool TryParse(string? s, IFormatProvider? provider, out Uuid? result) {}
     public bool TryWriteBytes(Span<byte> destination, bool asBigEndian) {}
     public void WriteBytes(Span<byte> destination, bool asBigEndian) {}
     public static bool operator == (Uuid x, Uuid y) {}
@@ -181,19 +177,15 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public bool Equals(Node other) {}
     public override bool Equals(object obj) {}
     public override int GetHashCode() {}
-    public static Node Parse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider = null) {}
-    [NullableContext(1)]
-    public static Node Parse(string s, [Nullable(2)] IFormatProvider provider = null) {}
+    public static Node Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
+    public static Node Parse(string s, IFormatProvider? provider = null) {}
     public PhysicalAddress ToPhysicalAddress() {}
-    [NullableContext(2)]
-    [return: Nullable(1)] public string ToString(string format, IFormatProvider formatProvider = null) {}
     public override string ToString() {}
-    public static bool TryParse(ReadOnlySpan<char> s, [Nullable(2)] IFormatProvider provider, out Node result) {}
+    public string ToString(string? format, IFormatProvider? formatProvider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Node result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Node result) {}
-    [NullableContext(2)]
-    public static bool TryParse(string s, IFormatProvider provider, out Node result) {}
-    [NullableContext(2)]
-    public static bool TryParse(string s, out Node result) {}
+    public static bool TryParse(string? s, IFormatProvider? provider, out Node? result) {}
+    public static bool TryParse(string? s, out Node? result) {}
     public bool TryWriteBytes(Span<byte> destination) {}
     public void WriteBytes(Span<byte> destination) {}
     public static bool operator == (Node x, Node y) {}
@@ -204,4 +196,3 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public static bool operator <= (Node x, Node y) {}
   }
 }
-

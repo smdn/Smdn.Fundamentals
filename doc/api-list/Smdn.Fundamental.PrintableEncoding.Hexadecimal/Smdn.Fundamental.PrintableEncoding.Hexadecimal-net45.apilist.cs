@@ -4,9 +4,9 @@
 //   InformationalVersion: 3.0.1+c73d3360cd4c334c1a6c2d66a2f54b0097a6b969
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats {
   public static class Hexadecimal {
@@ -15,10 +15,10 @@ namespace Smdn.Formats {
     public static ReadOnlySpan<char> UpperCaseHexChars { get; }
     public static ReadOnlySpan<byte> UpperCaseHexOctets { get; }
 
-    [return: Nullable(1)] public static string ToLowerCaseString(ArraySegment<byte> dataSequence) {}
-    [return: Nullable(1)] public static string ToLowerCaseString(ReadOnlySpan<byte> dataSequence) {}
-    [return: Nullable(1)] public static string ToUpperCaseString(ArraySegment<byte> dataSequence) {}
-    [return: Nullable(1)] public static string ToUpperCaseString(ReadOnlySpan<byte> dataSequence) {}
+    public static string ToLowerCaseString(ArraySegment<byte> dataSequence) {}
+    public static string ToLowerCaseString(ReadOnlySpan<byte> dataSequence) {}
+    public static string ToUpperCaseString(ArraySegment<byte> dataSequence) {}
+    public static string ToUpperCaseString(ReadOnlySpan<byte> dataSequence) {}
     public static bool TryDecode(ArraySegment<byte> data, out byte decodedData) {}
     public static bool TryDecode(ArraySegment<char> data, out byte decodedData) {}
     public static bool TryDecode(ArraySegment<char> dataSequence, ArraySegment<byte> destination, out int decodedLength) {}
@@ -49,9 +49,7 @@ namespace Smdn.Formats {
     public static bool TryEncodeLowerCase(ReadOnlySpan<byte> dataSequence, Span<char> destination, out int charsEncoded) {}
     public static bool TryEncodeLowerCase(byte data, Span<byte> destination, out int bytesEncoded) {}
     public static bool TryEncodeLowerCase(byte data, Span<char> destination, out int charsEncoded) {}
-    [NullableContext(1)]
     public static bool TryEncodeLowerCase(byte data, byte[] destination, int index, out int bytesEncoded) {}
-    [NullableContext(1)]
     public static bool TryEncodeLowerCase(byte data, char[] destination, int index, out int charsEncoded) {}
     public static bool TryEncodeUpperCase(ArraySegment<byte> dataSequence, ArraySegment<byte> destination, out int bytesEncoded) {}
     public static bool TryEncodeUpperCase(ArraySegment<byte> dataSequence, ArraySegment<char> destination, out int charsEncoded) {}
@@ -59,10 +57,7 @@ namespace Smdn.Formats {
     public static bool TryEncodeUpperCase(ReadOnlySpan<byte> dataSequence, Span<char> destination, out int charsEncoded) {}
     public static bool TryEncodeUpperCase(byte data, Span<byte> destination, out int bytesEncoded) {}
     public static bool TryEncodeUpperCase(byte data, Span<char> destination, out int charsEncoded) {}
-    [NullableContext(1)]
     public static bool TryEncodeUpperCase(byte data, byte[] destination, int index, out int bytesEncoded) {}
-    [NullableContext(1)]
     public static bool TryEncodeUpperCase(byte data, char[] destination, int index, out int charsEncoded) {}
   }
 }
-

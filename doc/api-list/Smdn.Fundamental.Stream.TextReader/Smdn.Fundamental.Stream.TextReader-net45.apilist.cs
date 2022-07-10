@@ -1,9 +1,10 @@
-// Smdn.Fundamental.Stream.TextReader.dll (Smdn.Fundamental.Stream.TextReader-3.0.0 (net45))
+// Smdn.Fundamental.Stream.TextReader.dll (Smdn.Fundamental.Stream.TextReader-3.0.0)
 //   Name: Smdn.Fundamental.Stream.TextReader
 //   AssemblyVersion: 3.0.0.0
 //   InformationalVersion: 3.0.0 (net45)
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System.Collections.Generic;
 using System.IO;
@@ -15,4 +16,3 @@ namespace Smdn.IO {
     public static Task<IReadOnlyList<string>> ReadAllLinesAsync(this TextReader reader) {}
   }
 }
-

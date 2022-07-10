@@ -4,22 +4,18 @@
 //   InformationalVersion: 3.0.3+62b030d52118749c63983987fb6ae99a47e81e56
 //   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
+#nullable enable annotations
 
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Smdn.IO.Streams.Extending;
 
 namespace Smdn.IO.Streams.Extending {
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class ExtendStream : ExtendStreamBase {
-    [NullableContext(2)]
-    public ExtendStream([Nullable(1)] Stream innerStream, Stream prependStream, Stream appendStream, bool leaveInnerStreamOpen = true, bool leavePrependStreamOpen = true, bool leaveAppendStreamOpen = true) {}
-    [NullableContext(2)]
-    public ExtendStream([Nullable(1)] Stream innerStream, byte[] prependData, byte[] appendData, bool leaveInnerStreamOpen = true) {}
+    public ExtendStream(Stream innerStream, Stream? prependStream, Stream? appendStream, bool leaveInnerStreamOpen = true, bool leavePrependStreamOpen = true, bool leaveAppendStreamOpen = true) {}
+    public ExtendStream(Stream innerStream, byte[]? prependData, byte[]? appendData, bool leaveInnerStreamOpen = true) {}
 
     protected override bool CanSeekAppendedData { get; }
     protected override bool CanSeekPrependedData { get; }
@@ -33,11 +29,8 @@ namespace Smdn.IO.Streams.Extending {
     protected override void SetPrependedDataPosition(long position) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class ExtendStreamBase : Stream {
-    [NullableContext(byte.MinValue)]
     protected enum StreamSection : int {
       Append = 2,
       EndOfStream = 3,
@@ -77,4 +70,3 @@ namespace Smdn.IO.Streams.Extending {
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
   }
 }
-

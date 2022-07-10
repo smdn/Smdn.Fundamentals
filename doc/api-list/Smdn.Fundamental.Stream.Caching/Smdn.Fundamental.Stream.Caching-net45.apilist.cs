@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.1+5d6c4605b04017bfcf25bb41821556a4a8af61d6
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System.IO;
 using Smdn.IO.Streams.Caching;
@@ -57,4 +58,3 @@ namespace Smdn.IO.Streams.Caching {
     protected override byte[] GetBlock(long blockIndex) {}
   }
 }
-

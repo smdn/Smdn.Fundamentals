@@ -1,9 +1,10 @@
-// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.0)
 //   Name: Smdn.Fundamental.Xml.Xhtml
 //   AssemblyVersion: 3.0.0.0
 //   InformationalVersion: 3.0.0 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Collections.Generic;
@@ -261,4 +262,3 @@ namespace Smdn.Xml.Xhtml {
     public const string Xhtml = "http://www.w3.org/1999/xhtml";
   }
 }
-

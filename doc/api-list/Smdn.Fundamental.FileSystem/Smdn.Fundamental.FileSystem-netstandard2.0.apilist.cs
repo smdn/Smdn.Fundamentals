@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+88a74531a79909c9ffa85e23006da7fc8c31296f
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ using System.Text;
 using Smdn;
 
 namespace Smdn.IO {
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   public static class DirectoryInfoExtensions {
     public static IEnumerable<DirectoryInfo> GetDirectories(this DirectoryInfo directory, Predicate<DirectoryInfo> searchPattern) {}
     public static IEnumerable<DirectoryInfo> GetDirectories(this DirectoryInfo directory, SearchOption searchOption, Predicate<DirectoryInfo> searchPattern) {}
@@ -23,8 +22,6 @@ namespace Smdn.IO {
     public static IEnumerable<FileInfo> GetFiles(this DirectoryInfo directory, SearchOption searchOption, Predicate<FileInfo> searchPattern) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   public static class DirectoryUtils {
     public static IEnumerable<string> GetDirectories(string directory, Predicate<string> searchPattern) {}
     public static IEnumerable<string> GetDirectories(string directory, SearchOption searchOption, Predicate<string> searchPattern) {}
@@ -32,8 +29,6 @@ namespace Smdn.IO {
     public static IEnumerable<string> GetFiles(string directory, SearchOption searchOption, Predicate<string> searchPattern) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   public static class PathUtils {
     public static StringComparer DefaultPathStringComparer { get; }
     public static StringComparison DefaultPathStringComparison { get; }
@@ -58,4 +53,3 @@ namespace Smdn.IO {
     public static string ReplaceInvalidPathCharsWithBlanks(string path) {}
   }
 }
-

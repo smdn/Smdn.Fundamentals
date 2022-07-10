@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.3+97a0808ac5af96ca43ed25793e778b2b9cf1677e
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+#nullable enable annotations
 
 using System.Security.Cryptography;
 using System.Text;
@@ -38,14 +39,10 @@ namespace Smdn.Formats.PercentEncodings {
 
     public void Clear() {}
     void IDisposable.Dispose() {}
-    [NullableContext(1)]
     public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset) {}
-    [NullableContext(1)]
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class PercentEncoding {
     public static byte[] Decode(string str) {}
@@ -62,8 +59,6 @@ namespace Smdn.Formats.PercentEncodings {
     public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding) {}
   }
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public sealed class ToPercentEncodedTransform : ICryptoTransform {
     public ToPercentEncodedTransform(ToPercentEncodedTransformMode mode) {}
@@ -79,4 +74,3 @@ namespace Smdn.Formats.PercentEncodings {
     public byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount) {}
   }
 }
-

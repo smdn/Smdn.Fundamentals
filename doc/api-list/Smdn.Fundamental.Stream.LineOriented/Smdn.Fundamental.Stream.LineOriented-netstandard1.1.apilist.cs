@@ -4,21 +4,18 @@
 //   InformationalVersion: 3.1.0+9f376fbefdaee2cc51ca4d0636a210d354e186c3
 //   TargetFramework: .NETStandard,Version=v1.1
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Buffers;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Smdn.IO.Streams.LineOriented;
 
 namespace Smdn.IO.Streams.LineOriented {
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LineOrientedStream : Stream {
-    [NullableContext(byte.MinValue)]
     public readonly struct Line {
       public Line(ReadOnlySequence<byte> sequenceWithNewLine, SequencePosition positionOfNewLine) {}
 
@@ -33,8 +30,7 @@ namespace Smdn.IO.Streams.LineOriented {
     protected const bool DefaultLeaveStreamOpen = false;
     protected const int MinimumBufferSize = 1;
 
-    [NullableContext(byte.MinValue)]
-    public LineOrientedStream([Nullable(1)] Stream stream, ReadOnlySpan<byte> newLine, int bufferSize = 1024, bool leaveStreamOpen = false) {}
+    public LineOrientedStream(Stream stream, ReadOnlySpan<byte> newLine, int bufferSize = 1024, bool leaveStreamOpen = false) {}
 
     public int BufferSize { get; }
     public override bool CanRead { get; }
@@ -44,12 +40,11 @@ namespace Smdn.IO.Streams.LineOriented {
     public virtual Stream InnerStream { get; }
     public bool IsStrictNewLine { get; }
     public override long Length { get; }
-    [Nullable(byte.MinValue)]
     public ReadOnlySpan<byte> NewLine { get; }
     public override long Position { get; set; }
 
-    public void CopyTo(Stream destination) {}
-    public Task CopyToAsync(Stream destination, CancellationToken cancellationToken) {}
+    new public void CopyTo(Stream destination) {}
+    new public Task CopyToAsync(Stream destination, CancellationToken cancellationToken) {}
     public override Task CopyToAsync(Stream destination, int bufferSize, CancellationToken cancellationToken = default) {}
     protected override void Dispose(bool disposing) {}
     public override void Flush() {}
@@ -60,10 +55,9 @@ namespace Smdn.IO.Streams.LineOriented {
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
     public override int ReadByte() {}
     public LineOrientedStream.Line? ReadLine() {}
-    [NullableContext(2)]
-    public byte[] ReadLine(bool keepEOL) {}
-    [return: Nullable] public Task<ReadOnlySequence<byte>?> ReadLineAsync(bool keepEOL, CancellationToken cancellationToken = default) {}
+    public byte[]? ReadLine(bool keepEOL) {}
     public Task<LineOrientedStream.Line?> ReadLineAsync(CancellationToken cancellationToken = default) {}
+    public Task<ReadOnlySequence?> ReadLineAsync(bool keepEOL, CancellationToken cancellationToken = default) {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     public override void Write(byte[] buffer, int offset, int count) {}
@@ -72,15 +66,12 @@ namespace Smdn.IO.Streams.LineOriented {
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class LooseLineOrientedStream : LineOrientedStream {
-    [NullableContext(1)]
     public LooseLineOrientedStream(Stream stream, int bufferSize = 1024, bool leaveStreamOpen = false) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class StrictLineOrientedStream : LineOrientedStream {
-    [NullableContext(1)]
+    public StrictLineOrientedStream(Stream stream, ReadOnlySpan<byte> newLine, int bufferSize = 1024, bool leaveStreamOpen = false) {}
     public StrictLineOrientedStream(Stream stream, int bufferSize = 1024, bool leaveStreamOpen = false) {}
-    public StrictLineOrientedStream([Nullable(1)] Stream stream, ReadOnlySpan<byte> newLine, int bufferSize = 1024, bool leaveStreamOpen = false) {}
   }
 }
-

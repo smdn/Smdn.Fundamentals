@@ -1,9 +1,10 @@
-// Smdn.Fundamental.ParamArray.dll (Smdn.Fundamental.ParamArray-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.ParamArray.dll (Smdn.Fundamental.ParamArray-3.0.0)
 //   Name: Smdn.Fundamental.ParamArray
 //   AssemblyVersion: 3.0.0.0
 //   InformationalVersion: 3.0.0 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+#nullable enable annotations
 
 
 namespace Smdn {
@@ -15,4 +16,3 @@ namespace Smdn {
     public static IReadOnlyList<TParam> ToListNonNullable<TParam>(string paramName, TParam first, params TParam[] subsequence) where TParam : class {}
   }
 }
-

@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+a9bf25ebdf0c65c74cd8aedfc5ea58f5d190ccc4
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Collections.Generic;
@@ -80,8 +81,8 @@ namespace Smdn.IO.Streams.Filtering {
     protected const int MinimumBufferSize = 2;
     public static readonly FilterStream.IFilter NullFilter; // = "Smdn.IO.Streams.Filtering.FilterStream+NullFilterImpl"
 
-    public FilterStream(Stream stream, FilterStream.IFilter filter, int bufferSize = 1024, bool leaveStreamOpen = false) {}
-    public FilterStream(Stream stream, IEnumerable<FilterStream.IFilter> filters, int bufferSize = 1024, bool leaveStreamOpen = false) {}
+    public FilterStream(Stream stream, IEnumerable<IFilter> filters, int bufferSize = 1024, bool leaveStreamOpen = false) {}
+    public FilterStream(Stream stream, IFilter filter, int bufferSize = 1024, bool leaveStreamOpen = false) {}
 
     public override bool CanRead { get; }
     public override bool CanSeek { get; }
@@ -92,7 +93,7 @@ namespace Smdn.IO.Streams.Filtering {
     public override long Position { get; set; }
 
     public override void Close() {}
-    public static FilterStream.Filter CreateFilter(long offset, long length, FilterStream.FilterAction filter) {}
+    public static FilterStream.Filter CreateFilter(long offset, long length, FilterAction filter) {}
     public override void Flush() {}
     public override Task FlushAsync(CancellationToken cancellationToken) {}
     public override int Read(byte[] buffer, int offset, int count) {}
@@ -108,4 +109,3 @@ namespace Smdn.IO.Streams.Filtering {
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
   }
 }
-

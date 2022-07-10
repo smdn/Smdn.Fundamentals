@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+a456410c941c5943b157d2f12a5f8ebe6b40b5e2
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Collections.Generic;
@@ -60,4 +61,3 @@ namespace Smdn.Formats.Csv {
     public void WriteLine(params string[] columns) {}
   }
 }
-

@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+ef8468f4e05e903d9dbf13b3b9739faf9a06f1e6
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using Smdn;
@@ -46,4 +47,3 @@ namespace Smdn {
     public static bool operator != (FourCC x, FourCC y) {}
   }
 }
-

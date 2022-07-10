@@ -1,9 +1,10 @@
-// Smdn.Fundamental.Xml.Linq.dll (Smdn.Fundamental.Xml.Linq-3.0.0 (net45))
+// Smdn.Fundamental.Xml.Linq.dll (Smdn.Fundamental.Xml.Linq-3.0.0)
 //   Name: Smdn.Fundamental.Xml.Linq
 //   AssemblyVersion: 3.0.0.0
 //   InformationalVersion: 3.0.0 (net45)
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Xml;
@@ -26,4 +27,3 @@ namespace Smdn.Xml.Linq {
     public override void WriteTo(XmlWriter writer) {}
   }
 }
-

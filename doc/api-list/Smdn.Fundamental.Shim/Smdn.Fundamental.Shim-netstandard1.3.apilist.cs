@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.1.3+776c90f65c448c72e1f3c8c16c24fe988b1af46a
 //   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.IO;
@@ -89,4 +90,3 @@ namespace Smdn.Threading {
     public static ValueTask<TResult> FromResult<TResult>(TResult result) {}
   }
 }
-

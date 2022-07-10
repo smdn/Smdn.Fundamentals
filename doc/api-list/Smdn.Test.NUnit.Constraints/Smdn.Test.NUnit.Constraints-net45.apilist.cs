@@ -1,9 +1,10 @@
-// Smdn.Test.NUnit.Constraints.dll (Smdn.Test.NUnit.Constraints-1.0.0 (net45))
+// Smdn.Test.NUnit.Constraints.dll (Smdn.Test.NUnit.Constraints-1.0.0)
 //   Name: Smdn.Test.NUnit.Constraints
 //   AssemblyVersion: 1.0.0.0
 //   InformationalVersion: 1.0.0 (net45)
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using NUnit.Framework;
@@ -52,4 +53,3 @@ namespace Smdn.Test.NUnit.Constraints.Buffers {
     public override ConstraintResult ApplyTo<TActual>(TActual actual) {}
   }
 }
-

@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.2+e1cdf5b57693d8430e0ef803045395521eb5d6f5
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Buffers;
@@ -176,4 +177,3 @@ namespace Smdn.Text {
     public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) {}
   }
 }
-

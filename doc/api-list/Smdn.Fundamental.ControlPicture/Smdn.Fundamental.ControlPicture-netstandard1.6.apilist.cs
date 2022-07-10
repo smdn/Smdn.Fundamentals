@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.0.1+dc20ebef71437f6ae0e2cacb43e17d83d13c8ef0
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Buffers;
@@ -25,4 +26,3 @@ namespace Smdn.Text.Unicode.ControlPictures {
     public static string ToControlCharsPicturized(this string str) {}
   }
 }
-

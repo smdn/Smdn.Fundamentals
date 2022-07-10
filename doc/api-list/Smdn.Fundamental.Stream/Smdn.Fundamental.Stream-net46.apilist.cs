@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.3+e21051dca94564f87fa26449ca8be59194f51ead
 //   TargetFramework: .NETFramework,Version=v4.6
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Buffers;
@@ -41,9 +42,9 @@ namespace Smdn.IO.Streams {
     public static readonly int DefaultChunkSize = 40960;
 
     public ChunkedMemoryStream() {}
-    public ChunkedMemoryStream(ChunkedMemoryStream.Allocator allocator) {}
+    public ChunkedMemoryStream(Allocator allocator) {}
     public ChunkedMemoryStream(int chunkSize) {}
-    public ChunkedMemoryStream(int chunkSize, ChunkedMemoryStream.Allocator allocator) {}
+    public ChunkedMemoryStream(int chunkSize, Allocator allocator) {}
 
     public override bool CanRead { get; }
     public override bool CanSeek { get; }
@@ -128,4 +129,3 @@ namespace Smdn.IO.Streams {
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default) {}
   }
 }
-

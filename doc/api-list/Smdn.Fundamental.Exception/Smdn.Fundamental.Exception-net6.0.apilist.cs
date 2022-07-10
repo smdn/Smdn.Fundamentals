@@ -4,6 +4,7 @@
 //   InformationalVersion: 3.0.3+501637c48b59b5e1527398dfc5b219db6419f3fb
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.IO;
@@ -43,4 +44,3 @@ namespace Smdn {
     public static NotSupportedException CreateNotSupportedWritingStream() {}
   }
 }
-

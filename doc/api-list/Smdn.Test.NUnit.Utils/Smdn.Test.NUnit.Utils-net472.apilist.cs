@@ -4,6 +4,7 @@
 //   InformationalVersion: 1.0.0+7598ad3f6134b7fcb21ff256682be15e2cd04b61
 //   TargetFramework: .NETFramework,Version=v4.7.2
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.IO;
@@ -22,16 +23,13 @@ namespace Smdn.Test.NUnit {
 
   public static class IOUtils {
     public static void UsingCurrentDirectory(string path, Action action) {}
-    [AsyncStateMachine]
-    public static Task UsingCurrentDirectoryAsync(string path, Func<Task> action) {}
+    public static async Task UsingCurrentDirectoryAsync(string path, Func<Task> action) {}
     public static void UsingDirectory(string path, Action<DirectoryInfo> action) {}
     public static void UsingDirectory(string path, bool ensureDirectoryCreated, Action<DirectoryInfo> action) {}
     public static Task UsingDirectoryAsync(string path, Func<DirectoryInfo, Task> action) {}
-    [AsyncStateMachine]
-    public static Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<DirectoryInfo, Task> action) {}
+    public static async Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<DirectoryInfo, Task> action) {}
     public static void UsingFile(string path, Action<FileInfo> action) {}
-    [AsyncStateMachine]
-    public static Task UsingFileAsync(string path, Func<FileInfo, Task> action) {}
+    public static async Task UsingFileAsync(string path, Func<FileInfo, Task> action) {}
   }
 }
 
@@ -50,4 +48,3 @@ namespace Smdn.Test.NUnit.Assertion {
     public static TException ThrowsOrAggregates<TException>(TestDelegate code) where TException : Exception {}
   }
 }
-

@@ -1,9 +1,10 @@
-// Smdn.Fundamental.Math.dll (Smdn.Fundamental.Math-3.0.0 (netstandard1.6))
+// Smdn.Fundamental.Math.dll (Smdn.Fundamental.Math-3.0.0)
 //   Name: Smdn.Fundamental.Math
 //   AssemblyVersion: 3.0.0.0
 //   InformationalVersion: 3.0.0 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+#nullable enable annotations
 
 
 namespace Smdn {
@@ -25,4 +26,3 @@ namespace Smdn {
     public static long NextPrimeNumber(long n) {}
   }
 }
-

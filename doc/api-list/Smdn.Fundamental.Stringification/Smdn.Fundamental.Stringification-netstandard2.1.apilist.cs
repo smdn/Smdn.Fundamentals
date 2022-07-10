@@ -1,9 +1,10 @@
-// Smdn.Fundamental.Stringification.dll (Smdn.Fundamental.Stringification-3.0.1 (netstandard2.1))
+// Smdn.Fundamental.Stringification.dll (Smdn.Fundamental.Stringification-3.0.1)
 //   Name: Smdn.Fundamental.Stringification
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+#nullable enable annotations
 
 using System;
 using System.Collections.Generic;
@@ -20,4 +21,3 @@ namespace Smdn.Collections {
     public static string Stringify<TKey, TValue>(this KeyValuePair<TKey, TValue> pair) {}
   }
 }
-

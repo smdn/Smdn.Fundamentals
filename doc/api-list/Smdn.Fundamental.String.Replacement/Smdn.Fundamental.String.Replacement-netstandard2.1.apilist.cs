@@ -4,15 +4,14 @@
 //   InformationalVersion: 3.0.2+9805a70fc9d7e01ace74c4db2ba31bb729f9e567
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+#nullable enable annotations
 
 using Smdn;
 
 namespace Smdn {
-  public delegate string ReplaceCharEvaluator(char ch, string str, int index);
-  public delegate string ReplaceStringEvaluator(string matched, string str, int index);
+  public delegate string? ReplaceCharEvaluator(char ch, string str, int index);
+  public delegate string? ReplaceStringEvaluator(string matched, string str, int index);
 
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   public static class StringReplacementExtensions {
     public static string Remove(this string str, params string[] oldValues) {}
     public static string RemoveChars(this string str, params char[] oldChars) {}
@@ -20,4 +19,3 @@ namespace Smdn {
     public static string Replace(this string str, string[] oldValues, ReplaceStringEvaluator evaluator) {}
   }
 }
-

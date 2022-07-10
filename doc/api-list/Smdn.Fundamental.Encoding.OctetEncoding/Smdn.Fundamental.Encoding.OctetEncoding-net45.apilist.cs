@@ -4,12 +4,11 @@
 //   InformationalVersion: 3.0.2+7aea3f3356a484ee5606309cf5d8302a9c7794d6
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+#nullable enable annotations
 
 using System.Text;
 
 namespace Smdn.Text.Encodings {
-  [Nullable(byte.MinValue)]
-  [NullableContext(1)]
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class OctetEncoding : Encoding {
     public static readonly Encoding EightBits; // = "Smdn.Text.Encodings.OctetEncoding"
@@ -29,4 +28,3 @@ namespace Smdn.Text.Encodings {
     public override int GetMaxCharCount(int byteCount) {}
   }
 }
-
