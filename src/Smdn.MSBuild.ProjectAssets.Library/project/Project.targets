@@ -30,7 +30,16 @@ SPDX-License-Identifier: MIT
       </GenerateApiListTargets>
     </ItemGroup>
 
-    <GenerateApiList Assemblies="@(GenerateApiListTargets)">
+    <GenerateApiList
+      Assemblies="@(GenerateApiListTargets)"
+      GenerateLanguagePrimitiveType="true"
+      GenerateFullTypeName="false"
+      GenerateTypeNameWithDeclaringTypeName="false"
+      GenerateAttributeWithNamedArguments="false"
+      GenerateStaticMembersFirst="false"
+      GenerateValueWithDefaultLiteral="true"
+      GenerateNullableAnnotations = "true"
+    >
       <Output TaskParameter="GeneratedFiles" ItemName="_GeneratedApiListFiles" />
     </GenerateApiList>
 

@@ -31,7 +31,7 @@ SPDX-License-Identifier: MIT
     <!-- API list configurations -->
     <APIListEnableGenerating Condition="'$(Configuration)' == 'Release'">true</APIListEnableGenerating>
     <APIListOutputBaseDirectory Condition="'$(APIListOutputBaseDirectory)' == ''">api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion Condition="$(APIListPackageVersion) == ''">1.1.0</APIListPackageVersion>
+    <APIListPackageVersion Condition="$(APIListPackageVersion) == ''">1.1.1</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
 
     <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
