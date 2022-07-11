@@ -92,4 +92,13 @@ SPDX-License-Identifier: MIT
       IncludeAssets="build"
     />
   </ItemGroup>
+  <!--
+    using task from local build assembly instead of tasks from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks package reference
+    (consider using with `/nr:false`, see https://github.com/dotnet/msbuild/issues/7693)
+
+  <UsingTask
+    TaskName="GenerateApiList"
+    AssemblyFile="/path/to/build/Smdn.Reflection.ReverseGenerating/src/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks/bin/Release/net6.0/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks.dll"
+  />
+  -->
 </Project>
