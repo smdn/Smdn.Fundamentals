@@ -4,7 +4,6 @@
 //   InformationalVersion: 1.0.0 (netstandard2.0)
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using NUnit.Framework;

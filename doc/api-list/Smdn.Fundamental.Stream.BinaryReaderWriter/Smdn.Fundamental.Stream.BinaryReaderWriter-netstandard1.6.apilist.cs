@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.1.1+3286420ed0a2903dd6ebc753d030d262e9a72deb
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.IO;

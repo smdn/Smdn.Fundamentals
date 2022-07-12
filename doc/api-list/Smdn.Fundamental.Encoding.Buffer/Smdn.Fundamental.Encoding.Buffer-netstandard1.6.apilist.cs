@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.0 (netstandard1.6)
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
-#nullable enable annotations
 
 using System.Buffers;
 using System.Text;

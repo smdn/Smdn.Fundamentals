@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.1.0+ae4a97a93ac395fe5044a3c8ed3ba4411533bc12
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.Security.Cryptography;
@@ -109,18 +108,18 @@ namespace Smdn {
     public void GetBytes(byte[] buffer, int startIndex) {}
     public void GetBytes(byte[] buffer, int startIndex, bool asBigEndian) {}
     public override int GetHashCode() {}
-    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
-    public static Uuid Parse(string s, IFormatProvider? provider = null) {}
+    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
+    public static Uuid Parse(string s, IFormatProvider provider = null) {}
     public byte[] ToByteArray() {}
     public byte[] ToByteArray(bool asBigEndian) {}
     public Guid ToGuid() {}
     public override string ToString() {}
     public string ToString(string format) {}
-    public string ToString(string? format, IFormatProvider? formatProvider) {}
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = null) {}
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Uuid result) {}
+    public string ToString(string format, IFormatProvider formatProvider) {}
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider provider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Uuid result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Uuid result) {}
-    public static bool TryParse(string? s, IFormatProvider? provider, out Uuid? result) {}
+    public static bool TryParse(string s, IFormatProvider provider, out Uuid result) {}
     public bool TryWriteBytes(Span<byte> destination, bool asBigEndian) {}
     public void WriteBytes(Span<byte> destination, bool asBigEndian) {}
     public static bool operator == (Uuid x, Uuid y) {}
@@ -166,14 +165,14 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public bool Equals(Node other) {}
     public override bool Equals(object obj) {}
     public override int GetHashCode() {}
-    public static Node Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
-    public static Node Parse(string s, IFormatProvider? provider = null) {}
+    public static Node Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
+    public static Node Parse(string s, IFormatProvider provider = null) {}
     public override string ToString() {}
-    public string ToString(string? format, IFormatProvider? formatProvider = null) {}
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Node result) {}
+    public string ToString(string format, IFormatProvider formatProvider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Node result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Node result) {}
-    public static bool TryParse(string? s, IFormatProvider? provider, out Node? result) {}
-    public static bool TryParse(string? s, out Node? result) {}
+    public static bool TryParse(string s, IFormatProvider provider, out Node result) {}
+    public static bool TryParse(string s, out Node result) {}
     public bool TryWriteBytes(Span<byte> destination) {}
     public void WriteBytes(Span<byte> destination) {}
     public static bool operator == (Node x, Node y) {}

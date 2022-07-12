@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.0 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.Collections.Generic;

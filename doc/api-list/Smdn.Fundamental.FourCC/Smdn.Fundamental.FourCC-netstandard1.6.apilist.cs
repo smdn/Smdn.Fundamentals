@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.2+ef8468f4e05e903d9dbf13b3b9739faf9a06f1e6
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using Smdn;

@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.2+e1cdf5b57693d8430e0ef803045395521eb5d6f5
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.Buffers;

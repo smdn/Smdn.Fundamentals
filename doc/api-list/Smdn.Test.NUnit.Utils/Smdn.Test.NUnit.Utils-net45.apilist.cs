@@ -4,7 +4,6 @@
 //   InformationalVersion: 1.0.0+7598ad3f6134b7fcb21ff256682be15e2cd04b61
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.IO;

@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.3.1+0f838f8a06f48ffc1ddbe92fcdcbcfa93a9cdbdc
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.Globalization;
@@ -56,8 +55,8 @@ namespace Smdn {
     public static int Log2(UInt24 @value) {}
     public static UInt24 Max(UInt24 x, UInt24 y) {}
     public static UInt24 Min(UInt24 x, UInt24 y) {}
-    public static UInt24 Parse(string s, IFormatProvider? provider = null) {}
-    public static UInt24 Parse(string s, NumberStyles style, IFormatProvider? provider = null) {}
+    public static UInt24 Parse(string s, IFormatProvider provider = null) {}
+    public static UInt24 Parse(string s, NumberStyles style, IFormatProvider provider = null) {}
     public static int PopCount(UInt24 @value) {}
     public static UInt24 RotateLeft(UInt24 @value, int rotateAmount) {}
     public static UInt24 RotateRight(UInt24 @value, int rotateAmount) {}
@@ -81,14 +80,14 @@ namespace Smdn {
     ulong IConvertible.ToUInt64(IFormatProvider provider) {}
     public int ToInt32() {}
     public override string ToString() {}
-    public string ToString(IFormatProvider? formatProvider) {}
-    public string ToString(string? format) {}
-    public string ToString(string? format, IFormatProvider? formatProvider) {}
+    public string ToString(IFormatProvider formatProvider) {}
+    public string ToString(string format) {}
+    public string ToString(string format, IFormatProvider formatProvider) {}
     public uint ToUInt32() {}
     public static int TrailingZeroCount(UInt24 @value) {}
-    public static bool TryParse(string? s, IFormatProvider? provider, out UInt24? result) {}
-    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out UInt24? result) {}
-    public static bool TryParse(string? s, out UInt24? result) {}
+    public static bool TryParse(string s, IFormatProvider provider, out UInt24 result) {}
+    public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out UInt24 result) {}
+    public static bool TryParse(string s, out UInt24 result) {}
     public static UInt24 operator + (UInt24 left, UInt24 right) {}
     public static UInt24 operator & (UInt24 left, UInt24 right) {}
     public static UInt24 operator | (UInt24 left, UInt24 right) {}
@@ -171,8 +170,8 @@ namespace Smdn {
     public static int Log2(UInt48 @value) {}
     public static UInt48 Max(UInt48 x, UInt48 y) {}
     public static UInt48 Min(UInt48 x, UInt48 y) {}
-    public static UInt48 Parse(string s, IFormatProvider? provider = null) {}
-    public static UInt48 Parse(string s, NumberStyles style, IFormatProvider? provider = null) {}
+    public static UInt48 Parse(string s, IFormatProvider provider = null) {}
+    public static UInt48 Parse(string s, NumberStyles style, IFormatProvider provider = null) {}
     public static int PopCount(UInt48 @value) {}
     public static UInt48 RotateLeft(UInt48 @value, int rotateAmount) {}
     public static UInt48 RotateRight(UInt48 @value, int rotateAmount) {}
@@ -196,14 +195,14 @@ namespace Smdn {
     ulong IConvertible.ToUInt64(IFormatProvider provider) {}
     public long ToInt64() {}
     public override string ToString() {}
-    public string ToString(IFormatProvider? formatProvider) {}
-    public string ToString(string? format) {}
-    public string ToString(string? format, IFormatProvider? formatProvider) {}
+    public string ToString(IFormatProvider formatProvider) {}
+    public string ToString(string format) {}
+    public string ToString(string format, IFormatProvider formatProvider) {}
     public ulong ToUInt64() {}
     public static int TrailingZeroCount(UInt48 @value) {}
-    public static bool TryParse(string? s, IFormatProvider? provider, out UInt48? result) {}
-    public static bool TryParse(string? s, NumberStyles style, IFormatProvider? provider, out UInt48? result) {}
-    public static bool TryParse(string? s, out UInt48? result) {}
+    public static bool TryParse(string s, IFormatProvider provider, out UInt48 result) {}
+    public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out UInt48 result) {}
+    public static bool TryParse(string s, out UInt48 result) {}
     public static UInt48 operator + (UInt48 left, UInt48 right) {}
     public static UInt48 operator & (UInt48 left, UInt48 right) {}
     public static UInt48 operator | (UInt48 left, UInt48 right) {}

@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.1+5d6c4605b04017bfcf25bb41821556a4a8af61d6
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
-#nullable enable annotations
 
 using System.IO;
 using Smdn.IO.Streams.Caching;

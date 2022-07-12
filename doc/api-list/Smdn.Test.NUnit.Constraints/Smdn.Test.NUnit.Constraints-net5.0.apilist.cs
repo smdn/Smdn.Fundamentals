@@ -4,7 +4,6 @@
 //   InformationalVersion: 1.0.0 (net5.0)
 //   TargetFramework: .NETCoreApp,Version=v5.0
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using NUnit.Framework;

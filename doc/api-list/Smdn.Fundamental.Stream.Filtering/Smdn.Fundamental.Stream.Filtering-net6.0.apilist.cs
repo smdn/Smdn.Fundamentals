@@ -4,7 +4,6 @@
 //   InformationalVersion: 3.0.2+a9bf25ebdf0c65c74cd8aedfc5ea58f5d190ccc4
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
-#nullable enable annotations
 
 using System;
 using System.Collections.Generic;
