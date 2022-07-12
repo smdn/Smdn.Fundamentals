@@ -31,8 +31,8 @@ namespace Smdn.Formats.Mime {
     public static IEnumerable<KeyValuePair<string, string>> ParseHeader(Stream stream, bool keepWhitespaces) {}
     public static Task<IReadOnlyList<KeyValuePair<string, string>>> ParseHeaderAsNameValuePairsAsync(LineOrientedStream stream, bool keepWhitespaces = false, bool ignoreMalformed = true, CancellationToken cancellationToken = default) {}
     public static Task<IReadOnlyList<RawHeaderField>> ParseHeaderAsync(LineOrientedStream stream, bool ignoreMalformed = true, CancellationToken cancellationToken = default) {}
-    public static Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField, TArg>(LineOrientedStream stream, Func<RawHeaderField, TArg?, THeaderField?> converter, TArg? arg, bool ignoreMalformed = true, CancellationToken cancellationToken = default) {}
-    public static Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField>(LineOrientedStream stream, Func<RawHeaderField, THeaderField?> converter, bool ignoreMalformed = true, CancellationToken cancellationToken = default) {}
+    public static Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField, TArg>(LineOrientedStream stream, Func<RawHeaderField, TArg, THeaderField> converter, TArg arg, bool ignoreMalformed = true, CancellationToken cancellationToken = default) {}
+    public static Task<IReadOnlyList<THeaderField>> ParseHeaderAsync<THeaderField>(LineOrientedStream stream, Func<RawHeaderField, THeaderField> converter, bool ignoreMalformed = true, CancellationToken cancellationToken = default) {}
     [Obsolete("use ParseHeaderAsync() instead", true)]
     public static IEnumerable<MimeUtils.HeaderField> ParseHeaderRaw(LineOrientedStream stream) {}
     public static string RemoveHeaderWhiteSpaceAndComment(string val) {}

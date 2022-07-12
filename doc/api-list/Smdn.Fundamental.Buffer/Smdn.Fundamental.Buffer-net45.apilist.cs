@@ -13,7 +13,7 @@ namespace Smdn.Buffers {
   public sealed class DuplicateBufferWriter {
     public DuplicateBufferWriter() {}
 
-    public static IBufferWriter<T?> Create<T>(IBufferWriter<T?> firstWriter, IBufferWriter<T?> secondWriter) {}
+    public static IBufferWriter<T> Create<T>(IBufferWriter<T> firstWriter, IBufferWriter<T> secondWriter) {}
   }
 
   public static class ReadOnlySequenceExtensions {

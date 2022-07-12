@@ -60,7 +60,7 @@ namespace Smdn.IO.Streams.LineOriented {
     public LineOrientedStream.Line? ReadLine() {}
     public byte[]? ReadLine(bool keepEOL) {}
     public Task<LineOrientedStream.Line?> ReadLineAsync(CancellationToken cancellationToken = default) {}
-    public Task<ReadOnlySequence?> ReadLineAsync(bool keepEOL, CancellationToken cancellationToken = default) {}
+    public Task<ReadOnlySequence<byte>?> ReadLineAsync(bool keepEOL, CancellationToken cancellationToken = default) {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     public override void Write(byte[] buffer, int offset, int count) {}
