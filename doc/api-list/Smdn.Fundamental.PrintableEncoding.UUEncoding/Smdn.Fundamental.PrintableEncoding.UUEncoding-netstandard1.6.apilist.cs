@@ -28,7 +28,7 @@ namespace Smdn.Formats.UUEncodings {
     }
 
     public static IEnumerable<UUDecoder.FileEntry> ExtractFiles(Stream stream) {}
-    public static void ExtractFiles(Stream stream, Action<FileEntry> extractAction) {}
+    public static void ExtractFiles(Stream stream, Action<UUDecoder.FileEntry> extractAction) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]

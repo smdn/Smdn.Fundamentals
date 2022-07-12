@@ -22,28 +22,10 @@ namespace Smdn.Text {
     IEquatable<string>,
     ISerializable
   {
-    protected ByteString(SerializationInfo info, StreamingContext context) {}
-    public ByteString(ArraySegment<byte> segment, bool asMutable) {}
-    public ByteString(string @value, bool asMutable) {}
-
-    public byte this[int index] { get; set; }
-    public bool IsEmpty { get; }
-    public bool IsMutable { get; }
-    public int Length { get; }
-    public ArraySegment<byte> Segment { get; }
-
     public static ByteString Concat(bool asMutable, params ByteString[] values) {}
     public static ByteString Concat(params ByteString[] values) {}
     public static ByteString ConcatImmutable(params ByteString[] values) {}
     public static ByteString ConcatMutable(params ByteString[] values) {}
-    public bool Contains(ByteString @value) {}
-    public bool Contains(byte[] @value) {}
-    public void CopyTo(byte[] dest) {}
-    public void CopyTo(byte[] dest, int destOffset) {}
-    public void CopyTo(byte[] dest, int destOffset, int count) {}
-    public void CopyTo(int startIndex, byte[] dest) {}
-    public void CopyTo(int startIndex, byte[] dest, int destOffset) {}
-    public void CopyTo(int startIndex, byte[] dest, int destOffset, int count) {}
     public static ByteString Create(bool asMutable, byte[] @value, int offset) {}
     public static ByteString Create(bool asMutable, byte[] @value, int offset, int count) {}
     public static ByteString Create(bool asMutable, params byte[] @value) {}
@@ -58,6 +40,34 @@ namespace Smdn.Text {
     public static ByteString CreateMutable(params byte[] @value) {}
     public static ByteString CreateMutable(string str) {}
     public static ByteString CreateMutable(string str, int startIndex, int count) {}
+    public static bool IsNullOrEmpty(ByteString str) {}
+    public static bool IsTerminatedByCRLF(ByteString str) {}
+    public static byte[] ToByteArray(string @value) {}
+    public static byte[] ToByteArray(string @value, int startIndex, int count) {}
+    public static string ToString(ReadOnlySequence<byte> sequence, Encoding encoding = null) {}
+    public static ByteString operator + (ByteString x, ByteString y) {}
+    public static bool operator == (ByteString x, ByteString y) {}
+    public static bool operator != (ByteString x, ByteString y) {}
+    public static ByteString operator * (ByteString x, int y) {}
+
+    protected ByteString(SerializationInfo info, StreamingContext context) {}
+    public ByteString(ArraySegment<byte> segment, bool asMutable) {}
+    public ByteString(string @value, bool asMutable) {}
+
+    public byte this[int index] { get; set; }
+    public bool IsEmpty { get; }
+    public bool IsMutable { get; }
+    public int Length { get; }
+    public ArraySegment<byte> Segment { get; }
+
+    public bool Contains(ByteString @value) {}
+    public bool Contains(byte[] @value) {}
+    public void CopyTo(byte[] dest) {}
+    public void CopyTo(byte[] dest, int destOffset) {}
+    public void CopyTo(byte[] dest, int destOffset, int count) {}
+    public void CopyTo(int startIndex, byte[] dest) {}
+    public void CopyTo(int startIndex, byte[] dest, int destOffset) {}
+    public void CopyTo(int startIndex, byte[] dest, int destOffset, int count) {}
     public bool EndsWith(ArraySegment<byte> @value) {}
     public bool EndsWith(ByteString @value) {}
     public bool EndsWith(byte[] @value) {}
@@ -97,11 +107,9 @@ namespace Smdn.Text {
     public int IndexOfNot(byte @value, int startIndex) {}
     public int IndexOfNot(char @value) {}
     public int IndexOfNot(char @value, int startIndex) {}
-    public static bool IsNullOrEmpty(ByteString str) {}
     public bool IsPrefixOf(ArraySegment<byte> @value) {}
     public bool IsPrefixOf(ByteString @value) {}
     public bool IsPrefixOf(byte[] @value) {}
-    public static bool IsTerminatedByCRLF(ByteString str) {}
     public ByteString[] Split(byte delimiter) {}
     public ByteString[] Split(char delimiter) {}
     public bool StartsWith(ArraySegment<byte> @value) {}
@@ -116,11 +124,8 @@ namespace Smdn.Text {
     public byte[] ToArray() {}
     public byte[] ToArray(int startIndex) {}
     public byte[] ToArray(int startIndex, int count) {}
-    public static byte[] ToByteArray(string @value) {}
-    public static byte[] ToByteArray(string @value, int startIndex, int count) {}
     public ByteString ToLower() {}
     public override string ToString() {}
-    public static string ToString(ReadOnlySequence<byte> sequence, Encoding encoding = null) {}
     public string ToString(Encoding encoding) {}
     public string ToString(Encoding encoding, int startIndex) {}
     public string ToString(Encoding encoding, int startIndex, int count) {}
@@ -132,10 +137,6 @@ namespace Smdn.Text {
     public ByteString Trim() {}
     public ByteString TrimEnd() {}
     public ByteString TrimStart() {}
-    public static ByteString operator + (ByteString x, ByteString y) {}
-    public static bool operator == (ByteString x, ByteString y) {}
-    public static bool operator != (ByteString x, ByteString y) {}
-    public static ByteString operator * (ByteString x, int y) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]

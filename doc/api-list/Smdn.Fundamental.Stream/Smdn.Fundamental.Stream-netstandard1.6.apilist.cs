@@ -42,9 +42,9 @@ namespace Smdn.IO.Streams {
     public static readonly int DefaultChunkSize = 40960;
 
     public ChunkedMemoryStream() {}
-    public ChunkedMemoryStream(Allocator allocator) {}
+    public ChunkedMemoryStream(ChunkedMemoryStream.Allocator allocator) {}
     public ChunkedMemoryStream(int chunkSize) {}
-    public ChunkedMemoryStream(int chunkSize, Allocator allocator) {}
+    public ChunkedMemoryStream(int chunkSize, ChunkedMemoryStream.Allocator allocator) {}
 
     public override bool CanRead { get; }
     public override bool CanSeek { get; }
@@ -90,6 +90,11 @@ namespace Smdn.IO.Streams {
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public class PartialStream : Stream {
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length) {}
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin) {}
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length) {}
+    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin) {}
+
     public PartialStream(Stream innerStream, long offset) {}
     public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen) {}
     public PartialStream(Stream innerStream, long offset, bool @readonly, bool leaveInnerStreamOpen, bool seekToBegin) {}
@@ -109,10 +114,6 @@ namespace Smdn.IO.Streams {
     public override long Position { get; set; }
 
     public PartialStream Clone() {}
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length) {}
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin) {}
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length) {}
-    public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin) {}
     protected override void Dispose(bool disposing) {}
     public override void Flush() {}
     protected long GetRemainderLength() {}

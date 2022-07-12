@@ -34,8 +34,6 @@ namespace Smdn.Test.NUnit {
 
 namespace Smdn.Test.NUnit.Assertion {
   public class Assert : Assert {
-    public Assert() {}
-
     public static void Elapses(TimeSpan expected, TestDelegate code, string message = null) {}
     public static void ElapsesAsync(TimeSpan expected, AsyncTestDelegate code, string message = null) {}
     public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, TestDelegate code, string message = null) {}
@@ -45,5 +43,7 @@ namespace Smdn.Test.NUnit.Assertion {
     public static void NotElapse(TimeSpan expected, TestDelegate code, string message = null) {}
     public static void NotElapseAsync(TimeSpan expected, AsyncTestDelegate code, string message = null) {}
     public static TException ThrowsOrAggregates<TException>(TestDelegate code) where TException : Exception {}
+
+    public Assert() {}
   }
 }

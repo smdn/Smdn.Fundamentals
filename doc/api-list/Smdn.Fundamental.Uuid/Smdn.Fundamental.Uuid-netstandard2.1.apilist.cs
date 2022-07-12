@@ -56,6 +56,46 @@ namespace Smdn {
     public static readonly Uuid RFC4122NamespaceUrl; // = "6ba7b811-9dad-11d1-80b4-00c04fd430c8"
     public static readonly Uuid RFC4122NamespaceX500; // = "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
 
+    public static Uuid CreateFromRandomNumber() {}
+    public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng) {}
+    public static Uuid CreateFromRandomNumber(ReadOnlySpan<byte> randomNumber) {}
+    public static Uuid CreateFromRandomNumber(byte[] randomNumber) {}
+    public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Uuid namespaceId, UuidVersion version) {}
+    public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Uuid.Namespace ns, UuidVersion version) {}
+    public static Uuid CreateNameBased(Uri url, UuidVersion version) {}
+    public static Uuid CreateNameBased(byte[] name, Uuid namespaceId, UuidVersion version) {}
+    public static Uuid CreateNameBased(byte[] name, Uuid.Namespace ns, UuidVersion version) {}
+    public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version) {}
+    public static Uuid CreateNameBased(string name, Uuid.Namespace ns, UuidVersion version) {}
+    public static Uuid CreateNameBasedMD5(ReadOnlySpan<byte> name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedMD5(Uri url) {}
+    public static Uuid CreateNameBasedMD5(byte[] name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedMD5(string name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedSHA1(ReadOnlySpan<byte> name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedSHA1(Uri url) {}
+    public static Uuid CreateNameBasedSHA1(byte[] name, Uuid.Namespace ns) {}
+    public static Uuid CreateNameBasedSHA1(string name, Uuid.Namespace ns) {}
+    public static Uuid CreateTimeBased() {}
+    public static Uuid CreateTimeBased(DateTime timestamp, int clock) {}
+    public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node) {}
+    public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node) {}
+    public static Uuid CreateTimeBased(PhysicalAddress node) {}
+    public static Uuid CreateTimeBased(byte[] node) {}
+    public static Uuid NewUuid() {}
+    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
+    public static Uuid Parse(string s, IFormatProvider provider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Uuid result) {}
+    public static bool TryParse(ReadOnlySpan<char> s, out Uuid result) {}
+    public static bool TryParse(string s, IFormatProvider provider, out Uuid result) {}
+    public static bool operator == (Uuid x, Uuid y) {}
+    public static explicit operator Guid(Uuid @value) {}
+    public static explicit operator Uuid(Guid @value) {}
+    public static bool operator > (Uuid x, Uuid y) {}
+    public static bool operator >= (Uuid x, Uuid y) {}
+    public static bool operator != (Uuid x, Uuid y) {}
+    public static bool operator < (Uuid x, Uuid y) {}
+    public static bool operator <= (Uuid x, Uuid y) {}
+
     public Uuid(Guid guidValue) {}
     public Uuid(ReadOnlySpan<byte> octets) {}
     public Uuid(ReadOnlySpan<byte> octets, bool isBigEndian) {}
@@ -84,40 +124,12 @@ namespace Smdn {
     public int CompareTo(Guid other) {}
     public int CompareTo(Uuid other) {}
     public int CompareTo(object obj) {}
-    public static Uuid CreateFromRandomNumber() {}
-    public static Uuid CreateFromRandomNumber(RandomNumberGenerator rng) {}
-    public static Uuid CreateFromRandomNumber(ReadOnlySpan<byte> randomNumber) {}
-    public static Uuid CreateFromRandomNumber(byte[] randomNumber) {}
-    public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Namespace ns, UuidVersion version) {}
-    public static Uuid CreateNameBased(ReadOnlySpan<byte> name, Uuid namespaceId, UuidVersion version) {}
-    public static Uuid CreateNameBased(Uri url, UuidVersion version) {}
-    public static Uuid CreateNameBased(byte[] name, Namespace ns, UuidVersion version) {}
-    public static Uuid CreateNameBased(byte[] name, Uuid namespaceId, UuidVersion version) {}
-    public static Uuid CreateNameBased(string name, Namespace ns, UuidVersion version) {}
-    public static Uuid CreateNameBased(string name, Uuid namespaceId, UuidVersion version) {}
-    public static Uuid CreateNameBasedMD5(ReadOnlySpan<byte> name, Namespace ns) {}
-    public static Uuid CreateNameBasedMD5(Uri url) {}
-    public static Uuid CreateNameBasedMD5(byte[] name, Namespace ns) {}
-    public static Uuid CreateNameBasedMD5(string name, Namespace ns) {}
-    public static Uuid CreateNameBasedSHA1(ReadOnlySpan<byte> name, Namespace ns) {}
-    public static Uuid CreateNameBasedSHA1(Uri url) {}
-    public static Uuid CreateNameBasedSHA1(byte[] name, Namespace ns) {}
-    public static Uuid CreateNameBasedSHA1(string name, Namespace ns) {}
-    public static Uuid CreateTimeBased() {}
-    public static Uuid CreateTimeBased(DateTime timestamp, int clock) {}
-    public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node) {}
-    public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node) {}
-    public static Uuid CreateTimeBased(PhysicalAddress node) {}
-    public static Uuid CreateTimeBased(byte[] node) {}
     public bool Equals(Guid other) {}
     public bool Equals(Uuid other) {}
     public override bool Equals(object obj) {}
     public void GetBytes(byte[] buffer, int startIndex) {}
     public void GetBytes(byte[] buffer, int startIndex, bool asBigEndian) {}
     public override int GetHashCode() {}
-    public static Uuid NewUuid() {}
-    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
-    public static Uuid Parse(string s, IFormatProvider provider = null) {}
     public byte[] ToByteArray() {}
     public byte[] ToByteArray(bool asBigEndian) {}
     public Guid ToGuid() {}
@@ -125,27 +137,14 @@ namespace Smdn {
     public string ToString(string format) {}
     public string ToString(string format, IFormatProvider formatProvider) {}
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider provider = null) {}
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Uuid result) {}
-    public static bool TryParse(ReadOnlySpan<char> s, out Uuid result) {}
-    public static bool TryParse(string s, IFormatProvider provider, out Uuid result) {}
     public bool TryWriteBytes(Span<byte> destination, bool asBigEndian) {}
     public void WriteBytes(Span<byte> destination, bool asBigEndian) {}
-    public static bool operator == (Uuid x, Uuid y) {}
-    public static explicit operator Guid(Uuid @value) {}
-    public static explicit operator Uuid(Guid @value) {}
-    public static bool operator > (Uuid x, Uuid y) {}
-    public static bool operator >= (Uuid x, Uuid y) {}
-    public static bool operator != (Uuid x, Uuid y) {}
-    public static bool operator < (Uuid x, Uuid y) {}
-    public static bool operator <= (Uuid x, Uuid y) {}
   }
 }
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public abstract class UuidGenerator {
-    protected UuidGenerator() {}
-
     public static UuidGenerator CreateTimeBased() {}
     public static UuidGenerator CreateTimeBased(DateTimeOffset timeStamp) {}
     public static UuidGenerator CreateTimeBased(DateTimeOffset timeStamp, Func<ushort> clockSequenceSource) {}
@@ -157,6 +156,9 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public static UuidGenerator CreateTimeBased(Func<ulong> timeStampSource, Func<ushort> clockSequenceSource, Node node) {}
     public static UuidGenerator CreateTimeBased(Func<ulong> timeStampSource, int clockSequence) {}
     public static UuidGenerator CreateTimeBased(Func<ulong> timeStampSource, int clockSequence, Node node) {}
+
+    protected UuidGenerator() {}
+
     public abstract Uuid GenerateNext();
   }
 
@@ -168,30 +170,31 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     IEquatable<Node>,
     IFormattable
   {
-    public Node(PhysicalAddress physicalAddress) {}
-
-    public int CompareTo(Node other) {}
-    public int CompareTo(object obj) {}
     public static Node CreateRandom() {}
-    public bool Equals(Node other) {}
-    public override bool Equals(object obj) {}
-    public override int GetHashCode() {}
     public static Node Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
     public static Node Parse(string s, IFormatProvider provider = null) {}
-    public PhysicalAddress ToPhysicalAddress() {}
-    public override string ToString() {}
-    public string ToString(string format, IFormatProvider formatProvider = null) {}
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Node result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Node result) {}
     public static bool TryParse(string s, IFormatProvider provider, out Node result) {}
     public static bool TryParse(string s, out Node result) {}
-    public bool TryWriteBytes(Span<byte> destination) {}
-    public void WriteBytes(Span<byte> destination) {}
     public static bool operator == (Node x, Node y) {}
     public static bool operator > (Node x, Node y) {}
     public static bool operator >= (Node x, Node y) {}
     public static bool operator != (Node x, Node y) {}
     public static bool operator < (Node x, Node y) {}
     public static bool operator <= (Node x, Node y) {}
+
+    public Node(PhysicalAddress physicalAddress) {}
+
+    public int CompareTo(Node other) {}
+    public int CompareTo(object obj) {}
+    public bool Equals(Node other) {}
+    public override bool Equals(object obj) {}
+    public override int GetHashCode() {}
+    public PhysicalAddress ToPhysicalAddress() {}
+    public override string ToString() {}
+    public string ToString(string format, IFormatProvider formatProvider = null) {}
+    public bool TryWriteBytes(Span<byte> destination) {}
+    public void WriteBytes(Span<byte> destination) {}
   }
 }

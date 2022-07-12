@@ -41,9 +41,9 @@ SPDX-License-Identifier: MIT
       Assemblies="@(GenerateApiListTargets)"
       GenerateLanguagePrimitiveType="true"
       GenerateFullTypeName="false"
-      GenerateTypeNameWithDeclaringTypeName="false"
+      GenerateTypeNameWithDeclaringTypeName="true"
       GenerateAttributeWithNamedArguments="false"
-      GenerateStaticMembersFirst="false"
+      GenerateStaticMembersFirst="true"
       GenerateValueWithDefaultLiteral="true"
       GenerateNullableAnnotations = "$(GenerateApiList_GenerateNullableAnnotations)"
     >

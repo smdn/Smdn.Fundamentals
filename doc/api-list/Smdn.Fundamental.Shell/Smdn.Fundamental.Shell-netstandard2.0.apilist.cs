@@ -59,6 +59,13 @@ namespace Smdn.OperatingSystem {
     IEquatable<ShellString>,
     IEquatable<string>
   {
+    public static string Expand(ShellString str) {}
+    public static bool IsNullOrEmpty(ShellString str) {}
+    public static bool operator == (ShellString x, ShellString y) {}
+    public static explicit operator string(ShellString str) {}
+    public static implicit operator ShellString(string str) {}
+    public static bool operator != (ShellString x, ShellString y) {}
+
     public ShellString(string raw) {}
 
     public string Expanded { get; }
@@ -69,14 +76,8 @@ namespace Smdn.OperatingSystem {
     public bool Equals(ShellString other) {}
     public bool Equals(string other) {}
     public override bool Equals(object obj) {}
-    public static string Expand(ShellString str) {}
     public override int GetHashCode() {}
-    public static bool IsNullOrEmpty(ShellString str) {}
     object ICloneable.Clone() {}
     public override string ToString() {}
-    public static bool operator == (ShellString x, ShellString y) {}
-    public static explicit operator string(ShellString str) {}
-    public static implicit operator ShellString(string str) {}
-    public static bool operator != (ShellString x, ShellString y) {}
   }
 }

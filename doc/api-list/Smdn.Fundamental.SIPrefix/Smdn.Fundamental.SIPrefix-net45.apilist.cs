@@ -15,14 +15,15 @@ namespace Smdn.Formats {
     ICustomFormatter,
     IFormatProvider
   {
+    public static SIPrefixNumberFormatter CurrentInfo { get; }
+    public static SIPrefixNumberFormatter InvaliantInfo { get; }
+
     protected SIPrefixNumberFormatter(CultureInfo cultureInfo, bool isReadOnly) {}
     public SIPrefixNumberFormatter() {}
     public SIPrefixNumberFormatter(CultureInfo cultureInfo) {}
 
     public string ByteUnit { get; set; }
     public string ByteUnitAbbreviation { get; set; }
-    public static SIPrefixNumberFormatter CurrentInfo { get; }
-    public static SIPrefixNumberFormatter InvaliantInfo { get; }
     public bool IsReadOnly { get; }
     public string PrefixUnitDelimiter { get; set; }
     public string ValuePrefixDelimiter { get; set; }

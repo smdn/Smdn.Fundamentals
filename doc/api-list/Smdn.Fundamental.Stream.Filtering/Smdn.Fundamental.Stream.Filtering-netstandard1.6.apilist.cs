@@ -80,8 +80,10 @@ namespace Smdn.IO.Streams.Filtering {
     protected const int MinimumBufferSize = 2;
     public static readonly FilterStream.IFilter NullFilter; // = "Smdn.IO.Streams.Filtering.FilterStream+NullFilterImpl"
 
-    public FilterStream(Stream stream, IEnumerable<IFilter> filters, int bufferSize = 1024, bool leaveStreamOpen = false) {}
-    public FilterStream(Stream stream, IFilter filter, int bufferSize = 1024, bool leaveStreamOpen = false) {}
+    public static FilterStream.Filter CreateFilter(long offset, long length, FilterStream.FilterAction filter) {}
+
+    public FilterStream(Stream stream, FilterStream.IFilter filter, int bufferSize = 1024, bool leaveStreamOpen = false) {}
+    public FilterStream(Stream stream, IEnumerable<FilterStream.IFilter> filters, int bufferSize = 1024, bool leaveStreamOpen = false) {}
 
     public override bool CanRead { get; }
     public override bool CanSeek { get; }
@@ -91,7 +93,6 @@ namespace Smdn.IO.Streams.Filtering {
     public override long Length { get; }
     public override long Position { get; set; }
 
-    public static FilterStream.Filter CreateFilter(long offset, long length, FilterAction filter) {}
     protected override void Dispose(bool disposing) {}
     public override void Flush() {}
     public override Task FlushAsync(CancellationToken cancellationToken) {}

@@ -32,6 +32,31 @@ namespace Smdn {
     public static readonly MimeType TextPlain; // = "text/plain"
     public static readonly MimeType TextRtf; // = "text/rtf"
 
+    public static MimeType CreateApplicationType(string subtype) {}
+    public static MimeType CreateAudioType(string subtype) {}
+    public static MimeType CreateFontType(string subtype) {}
+    public static MimeType CreateImageType(string subtype) {}
+    public static MimeType CreateModelType(string subtype) {}
+    public static MimeType CreateMultipartType(string subtype) {}
+    public static MimeType CreateTextType(string subtype) {}
+    public static MimeType CreateVideoType(string subtype) {}
+    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType) {}
+    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile) {}
+    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType) {}
+    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType, string mimeTypesFile) {}
+    public static MimeType? FindMimeTypeByExtension(string extensionOrPath) {}
+    public static MimeType? FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile) {}
+    [Obsolete("The return type of this method will be changed to MimeType in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.Split() instead.")]
+    public static (string type, string subType) Parse(string s) {}
+    public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
+    public static MimeType Parse(string s, IFormatProvider? provider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out MimeType result) {}
+    public static bool TryParse(string? s, IFormatProvider? provider, [NotNullWhen(true)] out MimeType result) {}
+    public static bool TryParse(string? s, [NotNullWhen(true)] out MimeType? result) {}
+    [Obsolete("The method will be deprecated in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.TrySplit() instead.")]
+    public static bool TryParse(string? s, out (string type, string subType) result) {}
+    public static explicit operator string?(MimeType? mimeType) {}
+
     public MimeType((string type, string subType) mimeType) {}
     public MimeType(string mimeType) {}
     public MimeType(string type, string subType) {}
@@ -60,14 +85,6 @@ namespace Smdn {
     public string SubType { get; }
     public string Type { get; }
 
-    public static MimeType CreateApplicationType(string subtype) {}
-    public static MimeType CreateAudioType(string subtype) {}
-    public static MimeType CreateFontType(string subtype) {}
-    public static MimeType CreateImageType(string subtype) {}
-    public static MimeType CreateModelType(string subtype) {}
-    public static MimeType CreateMultipartType(string subtype) {}
-    public static MimeType CreateTextType(string subtype) {}
-    public static MimeType CreateVideoType(string subtype) {}
     public void Deconstruct(out string type, out string subType) {}
     [Obsolete("Use `Equals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
     public bool Equals(MimeType? other) {}
@@ -81,17 +98,7 @@ namespace Smdn {
     public bool EqualsIgnoreCase(MimeType? other) {}
     [Obsolete("Use `Equals(string, StringComparison)` instead.")]
     public bool EqualsIgnoreCase(string? other) {}
-    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType) {}
-    public static IEnumerable<string> FindExtensionsByMimeType(MimeType mimeType, string mimeTypesFile) {}
-    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType) {}
-    public static IEnumerable<string> FindExtensionsByMimeType(string mimeType, string mimeTypesFile) {}
-    public static MimeType? FindMimeTypeByExtension(string extensionOrPath) {}
-    public static MimeType? FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile) {}
     public override int GetHashCode() {}
-    [Obsolete("The return type of this method will be changed to MimeType in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.Split() instead.")]
-    public static (string type, string subType) Parse(string s) {}
-    public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
-    public static MimeType Parse(string s, IFormatProvider? provider = null) {}
     [Obsolete("Use `SubTypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
     public bool SubTypeEquals(MimeType? mimeType) {}
     public bool SubTypeEquals(MimeType? mimeType, StringComparison comparisonType) {}
@@ -106,11 +113,6 @@ namespace Smdn {
     public override string ToString() {}
     public string ToString(string? format, IFormatProvider? formatProvider) {}
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) {}
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out MimeType result) {}
-    public static bool TryParse(string? s, IFormatProvider? provider, [NotNullWhen(true)] out MimeType result) {}
-    public static bool TryParse(string? s, [NotNullWhen(true)] out MimeType? result) {}
-    [Obsolete("The method will be deprecated in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.TrySplit() instead.")]
-    public static bool TryParse(string? s, out (string type, string subType) result) {}
     [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
     public bool TypeEquals(MimeType? mimeType) {}
     public bool TypeEquals(MimeType? mimeType, StringComparison comparisonType) {}
@@ -122,7 +124,6 @@ namespace Smdn {
     public bool TypeEqualsIgnoreCase(MimeType? mimeType) {}
     [Obsolete("Use `TypeEquals(string, StringComparison)` instead.")]
     public bool TypeEqualsIgnoreCase(string? type) {}
-    public static explicit operator string?(MimeType? mimeType) {}
   }
 }
 

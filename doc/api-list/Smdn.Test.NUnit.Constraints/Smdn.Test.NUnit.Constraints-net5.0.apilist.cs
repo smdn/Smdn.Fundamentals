@@ -12,14 +12,14 @@ using Smdn.Test.NUnit.Constraints.Buffers;
 
 namespace Smdn.Test.NUnit.Constraints.Buffers {
   public class Is : Is {
-    public Is() {}
-
     public static ReadOnlyByteMemoryEqualConstraint EqualTo(Memory<byte> expected) {}
     public static ReadOnlyByteMemoryEqualConstraint EqualTo(ReadOnlyMemory<byte> expected) {}
     public static ReadOnlyByteMemoryEqualConstraint EqualTo(byte[] expected) {}
     public static ReadOnlyMemoryEqualConstraint<T> EqualTo<T>(Memory<T> expected) where T : IEquatable<T> {}
     public static ReadOnlyMemoryEqualConstraint<T> EqualTo<T>(ReadOnlyMemory<T> expected) where T : IEquatable<T> {}
     public static ReadOnlyMemoryEqualConstraint<T> EqualTo<T>(T[] expected) where T : IEquatable<T> {}
+
+    public Is() {}
   }
 
   public class ReadOnlyByteMemoryEqualConstraint : EqualConstraint {

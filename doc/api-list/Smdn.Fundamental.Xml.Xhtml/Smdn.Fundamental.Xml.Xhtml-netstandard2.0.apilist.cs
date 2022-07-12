@@ -47,11 +47,11 @@ namespace Smdn.Xml.Linq.Xhtml {
   }
 
   public class XHtmlClassAttribute : XAttribute {
+    public static string JoinClassList(IEnumerable<string> classList) {}
+
     public XHtmlClassAttribute(IEnumerable<string> classList) {}
     public XHtmlClassAttribute(params string[] classList) {}
     public XHtmlClassAttribute(string @class) {}
-
-    public static string JoinClassList(IEnumerable<string> classList) {}
   }
 
   public static class XHtmlElementNames {
@@ -178,13 +178,13 @@ namespace Smdn.Xml.Linq.Xhtml {
   }
 
   public class XHtmlStyleAttribute : XAttribute {
+    protected static string ToJoined(IEnumerable<KeyValuePair<string, string>> styles) {}
+    protected static string ToJoined(KeyValuePair<string, string> style) {}
+
     public XHtmlStyleAttribute(IEnumerable<KeyValuePair<string, string>> styles) {}
     public XHtmlStyleAttribute(IReadOnlyDictionary<string, string> styles) {}
     public XHtmlStyleAttribute(KeyValuePair<string, string> style) {}
     public XHtmlStyleAttribute(params KeyValuePair<string, string>[] styles) {}
-
-    protected static string ToJoined(IEnumerable<KeyValuePair<string, string>> styles) {}
-    protected static string ToJoined(KeyValuePair<string, string> style) {}
   }
 }
 
