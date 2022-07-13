@@ -6,10 +6,18 @@ SPDX-License-Identifier: MIT
   Calls target 'Assets_Deploy' of Smdn.MSBuild.ProjectAssets.Common.
   This file is used to deploy assets prior to building test projects.
 -->
-<Project InitialTargets="Assets_Deploy">
-  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.props" />
-  <Import Project="$(MSBuildThisFileDirectory)Directory.Build.targets" />
+<Project DefaultTargets="DeployProjectAssets">
+  <ImportGroup Label="project assets">
+    <Import Project="$(MSBuildThisFileDirectory)ProjectAssets.props" />
+    <Import Project="$(SmdnProjectAssets_PropsImports)" />
+    <Import Project="$(SmdnProjectAssets_TargetsImports)" />
+  </ImportGroup>
 
-  <!-- override target GetRepositoryProperties to disable retrieving repository properties -->
-  <Target Name="GetRepositoryProperties" />
+  <PropertyGroup>
+    <SmdnBuildAssetRootDirectory>$(MSBuildThisFileDirectory)..\</SmdnBuildAssetRootDirectory>
+  </PropertyGroup>
+
+  <Target Name="DeployProjectAssets">
+    <CallTarget Targets="Assets_Deploy" />
+  </Target>
 </Project>
