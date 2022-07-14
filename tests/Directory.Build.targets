@@ -10,8 +10,12 @@ SPDX-License-Identifier: MIT
     <PackageReference Update="Smdn.Test.NUnit.Utils" Version="1.0.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <CanTestReleasedPackage Condition=" '$(CanTestReleasedPackage)' == '' ">true</CanTestReleasedPackage>
+  </PropertyGroup>
+
   <Choose>
-    <When Condition=" '$(TestReleasedPackage)' == 'true' ">
+    <When Condition=" '$(TestReleasedPackage)' == 'true' and '$(CanTestReleasedPackage)' == 'true' ">
       <ItemGroup Label="add test target package reference">
         <PackageReference
           Condition=" '$(TestTargetProjectName)' != '' "
@@ -29,6 +33,14 @@ SPDX-License-Identifier: MIT
       </ItemGroup>
     </Otherwise>
   </Choose>
+
+  <Target
+    Name="WarnCannotTestReleasedPackage"
+    BeforeTargets="BeforeBuild"
+    Condition=" '$(TestReleasedPackage)' == 'true' and '$(CanTestReleasedPackage)' != 'true' "
+  >
+    <Warning Text="cannot test with released package"/>
+  </Target>
 
   <!-- deploy project assets before building test projects and its referencing projects -->
   <Target Name="DeployProjectAssets" BeforeTargets="BeforeBuild">
