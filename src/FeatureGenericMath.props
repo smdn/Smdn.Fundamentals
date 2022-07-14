@@ -3,10 +3,11 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <PropertyGroup Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0.0'))">
-    <TargetFrameworks>net7.0;$(TargetFrameworks)</TargetFrameworks>
-    <DefineConstants Condition="$(TargetFramework.StartsWith('net7'))">FEATURE_GENERIC_MATH;$(DefineConstants)</DefineConstants>
-    <EnablePreviewFeatures Condition="$(TargetFramework.StartsWith('net7'))">true</EnablePreviewFeatures>
+  <Import Project="EnableNetSdkPreview.props" />
+
+  <PropertyGroup Condition="$(TargetFramework.StartsWith('net7'))">
+    <DefineConstants>FEATURE_GENERIC_MATH;$(DefineConstants)</DefineConstants>
+    <EnablePreviewFeatures>true</EnablePreviewFeatures>
   </PropertyGroup>
 
   <ItemGroup Condition="
