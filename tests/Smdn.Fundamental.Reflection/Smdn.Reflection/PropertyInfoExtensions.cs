@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable CS8597
+
 using System;
 using System.Reflection;
 using NUnit.Framework;
@@ -25,6 +27,11 @@ public class PropertyInfoExtensionsTests {
     public virtual int PVirtual2 { get => 0; }
     public abstract int PAbstract0 { get; }
     public abstract int PAbstract1 { get; }
+    public virtual int PVirtualHidden { get; }
+    public virtual int PVirtualInherited { get; }
+    public virtual int PVirtualGet { get; }
+    public virtual int PVirtualSet { set => throw null; }
+    public virtual int PVirtualGetSet { get; set; }
   }
 
   public class CEx : CBase {
@@ -33,6 +40,10 @@ public class PropertyInfoExtensionsTests {
     public override int PVirtual2 { get; }
     public override int PAbstract0 { get; }
     public override int PAbstract1 { get => 0; }
+    public new int PVirtualHidden { get; }
+    public override int PVirtualGet { get; }
+    public override int PVirtualSet { set => throw null; }
+    public override int PVirtualGetSet { get; set; }
   }
 
   static class SC {
@@ -136,4 +147,41 @@ public class PropertyInfoExtensionsTests {
   [Test]
   public void GetBackingField_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).GetBackingField());
+
+  [TestCase(typeof(C), nameof(C.P0), false)]
+  [TestCase(typeof(C), nameof(C.SP0), false)]
+  [TestCase(typeof(S), nameof(S.P0), false)]
+  [TestCase(typeof(S), nameof(S.SP0), false)]
+  [TestCase(typeof(CBase), nameof(CBase.PAbstract0), false)]
+  [TestCase(typeof(CBase), nameof(CBase.PVirtual0), false)]
+  [TestCase(typeof(CBase), nameof(CBase.PVirtualHidden), false)]
+  [TestCase(typeof(CEx), nameof(CEx.PAbstract0), true)]
+  [TestCase(typeof(CEx), nameof(CEx.PVirtual0), true)]
+  [TestCase(typeof(CEx), nameof(CEx.PVirtualHidden), false)]
+  [TestCase(typeof(CEx), nameof(CEx.PVirtualGet), true)]
+  [TestCase(typeof(CEx), nameof(CEx.PVirtualSet), true)]
+  [TestCase(typeof(CEx), nameof(CEx.PVirtualGetSet), true)]
+  public void IsOverride(Type type, string propertyName, bool expected)
+  {
+    var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.AreEqual(expected, property!.IsOverride(), $"{type.Name}.{property!.Name}");
+  }
+
+  [TestCase(typeof(System.IO.TextWriter), nameof(System.IO.TextWriter.NewLine), typeof(System.IO.TextWriter), false)]
+  [TestCase(typeof(System.IO.StreamWriter), nameof(System.IO.StreamWriter.NewLine), typeof(System.IO.TextWriter), false)] // = TextWriter.NewLine
+  [TestCase(typeof(CBase), nameof(CBase.PVirtualInherited), typeof(CBase), false)]
+  [TestCase(typeof(CEx), nameof(CEx.PVirtualInherited), typeof(CBase), false)] // = CBase.PVirtualInherited
+  public void IsOverride_IgnoreRelectedType(Type type, string propertyName, Type declaringType, bool expected)
+  {
+    var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.AreEqual(property!.ReflectedType, type, nameof(property.ReflectedType));
+    Assert.AreEqual(property!.DeclaringType, declaringType, nameof(property.DeclaringType));
+    Assert.AreEqual(expected, property!.IsOverride(), $"{type.Name}.{property!.Name}");
+  }
+
+  [Test]
+  public void IsOverride_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsOverride());
 }

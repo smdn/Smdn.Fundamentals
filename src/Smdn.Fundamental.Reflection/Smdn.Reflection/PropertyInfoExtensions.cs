@@ -93,10 +93,12 @@ public static class PropertyInfoExtensions {
         ? property.GetMethod.IsPrivate
         : property.GetMethod.IsPrivate && property.SetMethod.IsPrivate;
 
-  internal static bool IsOverride(PropertyInfo property)
-    => property.GetMethod is null
-      ? property.SetMethod is not null && property.SetMethod.IsOverride()
-      : property.SetMethod is null
-        ? property.GetMethod.IsOverride()
-        : property.GetMethod.IsOverride() && property.SetMethod.IsOverride();
+  public static bool IsOverride(this PropertyInfo property)
+    => property is null
+      ? throw new ArgumentNullException(nameof(property))
+      : property.GetMethod is null
+        ? property.SetMethod is not null && property.SetMethod.IsOverride()
+        : property.SetMethod is null
+          ? property.GetMethod.IsOverride()
+          : property.GetMethod.IsOverride() && property.SetMethod.IsOverride();
 }

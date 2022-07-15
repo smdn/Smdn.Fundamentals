@@ -117,18 +117,6 @@ public partial class MethodInfoExtensionsTests {
     Assert.AreEqual(isOverride, getter!.IsOverride(), $"is override? {type}.{propertyName}");
   }
 
-  [TestCase(typeof(System.IO.TextWriter), nameof(System.IO.TextWriter.NewLine), typeof(System.IO.TextWriter), false)]
-  [TestCase(typeof(System.IO.StreamWriter), nameof(System.IO.StreamWriter.NewLine), typeof(System.IO.TextWriter), false)] // = TextWriter.NewLine
-  public void IsOverride_AccessorMethod_IgnoreRelectedType(Type type, string propertyName, Type declaringType, bool isOverride)
-  {
-    var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-    var getter = property!.GetGetMethod();
-
-    Assert.AreEqual(getter!.ReflectedType, type, nameof(getter.ReflectedType));
-    Assert.AreEqual(getter!.DeclaringType, declaringType, nameof(getter.DeclaringType));
-    Assert.AreEqual(isOverride, getter!.IsOverride(), $"is override? {type}.{propertyName}");
-  }
-
   [Test]
   public void IsOverride_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverride());
