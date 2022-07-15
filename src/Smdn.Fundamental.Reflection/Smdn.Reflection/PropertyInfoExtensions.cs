@@ -32,7 +32,7 @@ public static class PropertyInfoExtensions {
       throw new InvalidOperationException($"cannot get {nameof(property.SetMethod)} from property {property.Name}");
 
     return property.SetMethod.ReturnParameter.GetRequiredCustomModifiers().Any(
-      modreq => "System.Runtime.CompilerServices.IsExternalInit".Equals(modreq.FullName, StringComparison.Ordinal)
+      static modreq => "System.Runtime.CompilerServices.IsExternalInit".Equals(modreq.FullName, StringComparison.Ordinal)
     );
   }
 
