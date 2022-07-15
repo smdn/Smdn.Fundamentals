@@ -12,6 +12,9 @@ namespace Smdn.Reflection;
 [TestFixture()]
 public partial class MethodInfoExtensionsTests {
   abstract class CAbstract {
+    public void M() => throw new NotImplementedException();
+    public int P => throw new NotImplementedException();
+
     public abstract void MAbstract();
     public virtual void MVirtual() => throw new NotImplementedException();
 
@@ -53,6 +56,7 @@ public partial class MethodInfoExtensionsTests {
     public new virtual int PVirtual => throw new NotImplementedException();
   }
 
+  [TestCase(typeof(CAbstract), nameof(CAbstract.M), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.MAbstract), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), false)]
   [TestCase(typeof(COverride), nameof(COverride.MAbstract), true)]
@@ -95,6 +99,7 @@ public partial class MethodInfoExtensionsTests {
     Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
   }
 
+  [TestCase(typeof(CAbstract), nameof(CAbstract.P), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.PAbstract), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.PVirtual), false)]
   [TestCase(typeof(COverride), nameof(COverride.PAbstract), true)]
