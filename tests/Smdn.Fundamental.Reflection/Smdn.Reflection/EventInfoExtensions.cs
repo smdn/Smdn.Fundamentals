@@ -97,6 +97,74 @@ public class EventInfoExtensionsTests {
   public void GetBackingField_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).GetBackingField());
 
+#pragma warning disable CS0067
+  class CStatic {
+    public static event EventHandler EStatic;
+  }
+
+  abstract class CAbstract {
+    public abstract event EventHandler EAbstract;
+    public virtual event EventHandler EVirtual;
+  }
+
+  class COverride : CAbstract {
+    public override event EventHandler EAbstract;
+    public override event EventHandler EVirtual;
+  }
+
+  class CSealed : COverride {
+    public sealed override event EventHandler EAbstract;
+    public sealed override event EventHandler EVirtual;
+  }
+
+  class CVirtual {
+    public virtual event EventHandler EVirtual;
+    public virtual event EventHandler EVirtualInherited;
+  }
+
+  abstract class CNew : CVirtual {
+    public new event EventHandler EVirtual;
+  }
+
+  abstract class CNewVirtual : CVirtual {
+    public new virtual event EventHandler EVirtual;
+  }
+#pragma warning restore CS0067
+
+  [TestCase(typeof(C), nameof(C.E0), false)]
+  [TestCase(typeof(C), nameof(C.SE0), false)]
+  [TestCase(typeof(CStatic), nameof(CStatic.EStatic), false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.EAbstract), false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.EVirtual), false)]
+  [TestCase(typeof(COverride), nameof(COverride.EAbstract), true)]
+  [TestCase(typeof(COverride), nameof(COverride.EVirtual), true)]
+  [TestCase(typeof(CSealed), nameof(CSealed.EAbstract), true)]
+  [TestCase(typeof(CSealed), nameof(CSealed.EVirtual), true)]
+  [TestCase(typeof(CVirtual), nameof(CVirtual.EVirtual), false)]
+  [TestCase(typeof(CNew), nameof(CNew.EVirtual), false)]
+  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.EVirtual), false)]
+  public void IsOverride(Type type, string eventName, bool expected)
+  {
+    var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.AreEqual(expected, ev!.IsOverride(), $"{type.Name}.{ev!.Name}");
+  }
+
+  [TestCase(typeof(CVirtual), nameof(CVirtual.EVirtualInherited), typeof(CVirtual), false)]
+  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.EVirtualInherited), typeof(CVirtual), false)] // = CVirtual.EVirtualInherited
+  public void IsOverride_IgnoreRelectedType(Type type, string eventName, Type declaringType, bool expected)
+  {
+    var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.AreEqual(ev!.ReflectedType, type, nameof(ev.ReflectedType));
+    Assert.AreEqual(ev!.DeclaringType, declaringType, nameof(ev.DeclaringType));
+    Assert.AreEqual(expected, ev!.IsOverride(), $"{type.Name}.{ev!.Name}");
+  }
+
+  [Test]
+  public void IsOverride_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsOverride());
+
 #if false
 Public Custom Event E As EventHandler
   AddHandler(value As EventHandler)

@@ -102,10 +102,12 @@ public static class EventInfoExtensions {
         ? ev.AddMethod.IsPrivate
         : ev.AddMethod.IsPrivate && ev.RemoveMethod.IsPrivate;
 
-  internal static bool IsOverride(EventInfo ev)
-    => ev.AddMethod is null
-      ? ev.RemoveMethod is not null && ev.RemoveMethod.IsOverride()
-      : ev.RemoveMethod is null
-        ? ev.AddMethod.IsOverride()
-        : ev.AddMethod.IsOverride() && ev.RemoveMethod.IsOverride();
+  public static bool IsOverride(this EventInfo ev)
+    => ev is null
+      ? throw new ArgumentNullException(nameof(ev))
+      : ev.AddMethod is null
+        ? ev.RemoveMethod is not null && ev.RemoveMethod.IsOverride()
+        : ev.RemoveMethod is null
+          ? ev.AddMethod.IsOverride()
+          : ev.AddMethod.IsOverride() && ev.RemoveMethod.IsOverride();
 }
