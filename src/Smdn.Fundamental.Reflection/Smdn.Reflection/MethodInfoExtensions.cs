@@ -13,15 +13,15 @@ namespace Smdn.Reflection;
 public static class MethodInfoExtensions {
   [Obsolete($"use {nameof(IsOverride)} instead")]
   public static bool IsOverridden(this MethodInfo m)
-    => m is null
-      ? throw new ArgumentNullException(nameof(m))
-      : (m.Attributes & MethodAttributes.Virtual) != 0 && (m.Attributes & MethodAttributes.NewSlot) == 0;
+    => IsOverride(m);
+
+  private const MethodAttributes MethodAttributesIsOverrideMask = MethodAttributes.Virtual | MethodAttributes.VtableLayoutMask;
+  private const MethodAttributes MethodAttributesIsOverride = MethodAttributes.Virtual | MethodAttributes.ReuseSlot;
 
   public static bool IsOverride(this MethodInfo m)
     => m is null
       ? throw new ArgumentNullException(nameof(m))
-      : m != m.GetBaseDefinition();
-      // (m.Attributes & MethodAttributes.Virtual) != 0 && (m.Attributes & MethodAttributes.NewSlot) == 0;
+      : (m.Attributes & MethodAttributesIsOverrideMask) == MethodAttributesIsOverride;
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   private static BindingFlags GetBindingFlagsForAccessorOwner(MethodInfo accessor)

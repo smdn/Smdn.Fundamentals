@@ -69,6 +69,32 @@ public partial class MethodInfoExtensionsTests {
     Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
   }
 
+  private class CObject : object { }
+
+  [TestCase(typeof(object), nameof(object.ToString), typeof(object), false)]
+  [TestCase(typeof(CObject), nameof(CObject.ToString), typeof(object), false)] // = object.ToString
+  [TestCase(typeof(Convert), nameof(Convert.ToString), typeof(object), false)] // = object.ToString
+  [TestCase(typeof(object), nameof(object.GetHashCode), typeof(object), false)]
+  [TestCase(typeof(CObject), nameof(CObject.GetHashCode), typeof(object), false)] // = object.GetHashCode
+  [TestCase(typeof(System.IO.Stream), nameof(System.IO.Stream.Close), typeof(System.IO.Stream), false)]
+  [TestCase(typeof(System.IO.MemoryStream), nameof(System.IO.MemoryStream.Close), typeof(System.IO.Stream), false)] // = Stream.Close
+  [TestCase(typeof(System.IO.Stream), nameof(System.IO.Stream.Dispose), typeof(System.IO.Stream), false)]
+  [TestCase(typeof(System.IO.MemoryStream), nameof(System.IO.MemoryStream.Dispose), typeof(System.IO.Stream), false)] // = Stream.Dispose
+  public void IsOverride_Method_IgnoreRelectedType(Type type, string methodName, Type declaringType, bool isOverride)
+  {
+    var method = type.GetMethod(
+      name: methodName,
+      bindingAttr: BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
+      binder: null,
+      types: Type.EmptyTypes,
+      modifiers: null
+    );
+
+    Assert.AreEqual(method!.ReflectedType, type, nameof(method.ReflectedType));
+    Assert.AreEqual(method!.DeclaringType, declaringType, nameof(method.DeclaringType));
+    Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
+  }
+
   [TestCase(typeof(CAbstract), nameof(CAbstract.PAbstract), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.PVirtual), false)]
   [TestCase(typeof(COverride), nameof(COverride.PAbstract), true)]
@@ -83,6 +109,18 @@ public partial class MethodInfoExtensionsTests {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var getter = property!.GetGetMethod();
 
+    Assert.AreEqual(isOverride, getter!.IsOverride(), $"is override? {type}.{propertyName}");
+  }
+
+  [TestCase(typeof(System.IO.TextWriter), nameof(System.IO.TextWriter.NewLine), typeof(System.IO.TextWriter), false)]
+  [TestCase(typeof(System.IO.StreamWriter), nameof(System.IO.StreamWriter.NewLine), typeof(System.IO.TextWriter), false)] // = TextWriter.NewLine
+  public void IsOverride_AccessorMethod_IgnoreRelectedType(Type type, string propertyName, Type declaringType, bool isOverride)
+  {
+    var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    var getter = property!.GetGetMethod();
+
+    Assert.AreEqual(getter!.ReflectedType, type, nameof(getter.ReflectedType));
+    Assert.AreEqual(getter!.DeclaringType, declaringType, nameof(getter.DeclaringType));
     Assert.AreEqual(isOverride, getter!.IsOverride(), $"is override? {type}.{propertyName}");
   }
 
