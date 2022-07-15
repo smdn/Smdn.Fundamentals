@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.3.0)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.3.1)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.3.0.0
-//   InformationalVersion: 3.3.0+61f4ebda7b596d7dc0ab6f5f3f842f89f0df3d6e
+//   AssemblyVersion: 3.3.1.0
+//   InformationalVersion: 3.3.1+c3ddc9716162f8474dc58674949b919e2e28035b
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 #nullable enable annotations
@@ -58,6 +58,7 @@ namespace Smdn.Reflection {
     public static FieldInfo? GetBackingField(this EventInfo ev) {}
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev) {}
     public static IEnumerable<MethodInfo> GetMethods(this EventInfo ev, bool nonPublic) {}
+    public static bool IsOverride(this EventInfo ev) {}
     public static bool IsStatic(this EventInfo ev) {}
   }
 
@@ -105,6 +106,7 @@ namespace Smdn.Reflection {
 
   public static class PropertyInfoExtensions {
     public static FieldInfo? GetBackingField(this PropertyInfo property) {}
+    public static bool IsOverride(this PropertyInfo property) {}
     public static bool IsSetMethodInitOnly(this PropertyInfo property) {}
     public static bool IsStatic(this PropertyInfo property) {}
   }
