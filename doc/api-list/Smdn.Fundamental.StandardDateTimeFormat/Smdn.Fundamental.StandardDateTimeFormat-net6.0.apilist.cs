@@ -45,9 +45,9 @@ namespace Smdn.Formats.DateAndTime {
     public static string ToWeekDateString(DateTime date) {}
     public static string ToWeekDateString(DateTimeOffset date) {}
     public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
-    public static bool TryParseDateTime(string? s, out DateTime? result) {}
+    public static bool TryParseDateTime(string? s, out DateTime result) {}
     public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result) {}
-    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset? result) {}
+    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result) {}
   }
 
   public static class RFC822DateTimeFormats {
@@ -56,9 +56,9 @@ namespace Smdn.Formats.DateAndTime {
     public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
     public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
-    public static bool TryParseDateTime(string? s, out DateTime? result) {}
+    public static bool TryParseDateTime(string? s, out DateTime result) {}
     public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result) {}
-    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset? result) {}
+    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result) {}
   }
 
   public static class W3CDateTimeFormats {
@@ -67,8 +67,8 @@ namespace Smdn.Formats.DateAndTime {
     public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
     public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result) {}
-    public static bool TryParseDateTime(string? s, out DateTime? result) {}
+    public static bool TryParseDateTime(string? s, out DateTime result) {}
     public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result) {}
-    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset? result) {}
+    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result) {}
   }
 }

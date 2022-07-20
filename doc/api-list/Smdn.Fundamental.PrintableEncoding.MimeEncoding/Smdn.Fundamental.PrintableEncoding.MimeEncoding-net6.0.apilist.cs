@@ -70,15 +70,15 @@ namespace Smdn.Formats.Mime {
     public static string Decode(string str) {}
     public static string Decode(string str, EncodingSelectionCallback? selectFallbackEncoding) {}
     public static string Decode(string str, EncodingSelectionCallback? selectFallbackEncoding, MimeEncodedWordConverter? decodeMalformedOrUnsupported) {}
-    public static string Decode(string str, EncodingSelectionCallback? selectFallbackEncoding, MimeEncodedWordConverter? decodeMalformedOrUnsupported, out MimeEncodingMethod? encoding, out Encoding? charset) {}
+    public static string Decode(string str, EncodingSelectionCallback? selectFallbackEncoding, MimeEncodedWordConverter? decodeMalformedOrUnsupported, out MimeEncodingMethod encoding, out Encoding? charset) {}
     public static string Decode(string str, EncodingSelectionCallback? selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding? charset) {}
     public static string Decode(string str, out MimeEncodingMethod encoding, out Encoding? charset) {}
     public static string? DecodeNullable(string? str) {}
     public static string? DecodeNullable(string? str, EncodingSelectionCallback? selectFallbackEncoding) {}
     public static string? DecodeNullable(string? str, EncodingSelectionCallback? selectFallbackEncoding, MimeEncodedWordConverter? decodeMalformedOrUnsupported) {}
-    public static string? DecodeNullable(string? str, EncodingSelectionCallback? selectFallbackEncoding, MimeEncodedWordConverter? decodeMalformedOrUnsupported, out MimeEncodingMethod? encoding, out Encoding? charset) {}
-    public static string? DecodeNullable(string? str, EncodingSelectionCallback? selectFallbackEncoding, out MimeEncodingMethod? encoding, out Encoding? charset) {}
-    public static string? DecodeNullable(string? str, out MimeEncodingMethod? encoding, out Encoding? charset) {}
+    public static string? DecodeNullable(string? str, EncodingSelectionCallback? selectFallbackEncoding, MimeEncodedWordConverter? decodeMalformedOrUnsupported, out MimeEncodingMethod encoding, out Encoding? charset) {}
+    public static string? DecodeNullable(string? str, EncodingSelectionCallback? selectFallbackEncoding, out MimeEncodingMethod encoding, out Encoding? charset) {}
+    public static string? DecodeNullable(string? str, out MimeEncodingMethod encoding, out Encoding? charset) {}
     public static string Encode(string str, MimeEncodingMethod encoding) {}
     public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset) {}
     public static string Encode(string str, MimeEncodingMethod encoding, Encoding charset, int foldingLimit, int foldingOffset) {}

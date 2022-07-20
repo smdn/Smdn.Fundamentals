@@ -39,21 +39,21 @@ namespace Smdn.Formats.DateAndTime {
   public static class ISO8601DateTimeFormats {
     public static DateTime ParseDateTime(string s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
-    public static bool TryParseDateTime(string? s, out DateTime? result) {}
-    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset? result) {}
+    public static bool TryParseDateTime(string? s, out DateTime result) {}
+    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result) {}
   }
 
   public static class RFC822DateTimeFormats {
     public static DateTime ParseDateTime(string s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
-    public static bool TryParseDateTime(string? s, out DateTime? result) {}
-    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset? result) {}
+    public static bool TryParseDateTime(string? s, out DateTime result) {}
+    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result) {}
   }
 
   public static class W3CDateTimeFormats {
     public static DateTime ParseDateTime(string s) {}
     public static DateTimeOffset ParseDateTimeOffset(string s) {}
-    public static bool TryParseDateTime(string? s, out DateTime? result) {}
-    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset? result) {}
+    public static bool TryParseDateTime(string? s, out DateTime result) {}
+    public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result) {}
   }
 }
