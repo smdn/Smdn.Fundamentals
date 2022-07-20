@@ -322,7 +322,7 @@ public class OctetEncoding : Encoding {
               var fallbackChar = buffer.GetNextChar();
 
               if (maxValue <= fallbackChar)
-                throw new EncoderFallbackException($"The value of fallback character must be less than 'U+{(int)maxValue:X4}'." );
+                throw new EncoderFallbackException($"The value of fallback character must be less than 'U+{(int)maxValue:X4}'.");
 
               fallbackChars[r] = fallbackChar;
             }

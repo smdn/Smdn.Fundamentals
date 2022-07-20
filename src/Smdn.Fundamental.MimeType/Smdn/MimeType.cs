@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using Smdn.Formats.Mime;
 
 namespace Smdn;

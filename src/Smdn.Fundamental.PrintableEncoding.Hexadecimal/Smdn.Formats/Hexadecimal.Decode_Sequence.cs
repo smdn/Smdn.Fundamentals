@@ -97,5 +97,5 @@ partial class Hexadecimal {
 
     return true;
   }
-  #endif
+#endif
 }
