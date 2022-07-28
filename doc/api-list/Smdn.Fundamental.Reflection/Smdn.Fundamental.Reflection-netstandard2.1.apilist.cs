@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.3.1)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.3.2)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.3.1.0
-//   InformationalVersion: 3.3.1+c3ddc9716162f8474dc58674949b919e2e28035b
+//   AssemblyVersion: 3.3.2.0
+//   InformationalVersion: 3.3.2+aa9530da405ac816d457488d1528b1c6c72211f6
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 #nullable enable annotations
