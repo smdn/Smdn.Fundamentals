@@ -308,6 +308,9 @@ partial class MemberInfoExtensions {
     static sealed void MStatic() => throw null;
     static virtual void MStaticVirtualHiddenByChildInterface() => throw null;
     static virtual void MStaticVirtualOverriddenByImplementation() => throw null;
+
+    static abstract int PStaticAbstractHiddenByChildInterface { get; set; }
+    static abstract event EventHandler EStaticAbstractHiddenByChildInterface;
 #endif
   }
 
@@ -322,6 +325,9 @@ partial class MemberInfoExtensions {
 
 #if NET7_0_OR_GREATER
     [HidingInheritedMember(HidingNonPublic = false)] new static virtual void MStaticVirtualHiddenByChildInterface() => throw null;
+
+    [HidingInheritedMember(HidingNonPublic = false)] new static abstract string PStaticAbstractHiddenByChildInterface { get; set; }
+    [HidingInheritedMember(HidingNonPublic = false)] new static abstract event EventHandler<int> EStaticAbstractHiddenByChildInterface;
 #endif
   }
 
@@ -338,6 +344,13 @@ partial class MemberInfoExtensions {
     static void MStatic() => throw null; // does not hide IParent0.MStatic()
     static void MStaticVirtualHiddenByChildInterface() => throw null;
     static void MStaticVirtualOverriddenByChildInterface() => throw null;
+
+    // explicitly implemented interface members are not `new`
+    static int IParent0.PStaticAbstractHiddenByChildInterface { get => throw null; set => throw null; }
+    static event EventHandler IParent0.EStaticAbstractHiddenByChildInterface { add => throw null; remove => throw null; }
+
+    public static string PStaticAbstractHiddenByChildInterface { get => throw null; set => throw null; }
+    public static event EventHandler<int> EStaticAbstractHiddenByChildInterface;
 #endif
   }
 
