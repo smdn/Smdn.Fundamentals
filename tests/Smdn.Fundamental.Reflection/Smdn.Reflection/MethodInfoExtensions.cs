@@ -56,6 +56,35 @@ public partial class MethodInfoExtensionsTests {
     public new virtual int PVirtual => throw new NotImplementedException();
   }
 
+#if NET7_0_OR_GREATER
+  interface IStaticAbstract {
+    static abstract void MStaticAbstract();
+  }
+
+  interface IStaticVirtual {
+    static virtual void MStaticVirtual() => throw new NotImplementedException();
+    static virtual void MStaticVirtualToBeReimplemented() => throw new NotImplementedException();
+  }
+
+  class CImplementationOfIStaticAbstract : IStaticAbstract {
+    public static void MStaticAbstract() => throw new NotImplementedException();
+  }
+
+  class CImplementationOfIStaticVirtual : IStaticVirtual {
+    public static void MStaticVirtualToBeReimplemented() => throw new NotImplementedException();
+  }
+
+  interface IStaticNew : IStaticAbstract, IStaticVirtual {
+    new static void MStaticAbstract() => throw new NotImplementedException();
+    new static void MStaticVirtual() => throw new NotImplementedException();
+  }
+
+  class CImplementationOfIStaticNew : IStaticNew {
+    public static void MStaticAbstract() => throw new NotImplementedException();
+    public static void MStaticVirtual() => throw new NotImplementedException();
+  }
+#endif
+
   [TestCase(typeof(CAbstract), nameof(CAbstract.M), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.MAbstract), false)]
   [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), false)]
@@ -66,9 +95,20 @@ public partial class MethodInfoExtensionsTests {
   [TestCase(typeof(CVirtual), nameof(CVirtual.MVirtual), false)]
   [TestCase(typeof(CNew), nameof(CNew.MVirtual), false)]
   [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.MVirtual), false)]
+#if NET7_0_OR_GREATER
+  [TestCase(typeof(IStaticAbstract), nameof(IStaticAbstract.MStaticAbstract), false)]
+  [TestCase(typeof(IStaticVirtual), nameof(IStaticVirtual.MStaticVirtual), false)]
+  [TestCase(typeof(CImplementationOfIStaticAbstract), nameof(CImplementationOfIStaticAbstract.MStaticAbstract), false)]
+  //[TestCase(typeof(CImplementationOfIStaticVirtual), $"Smdn.Reflection.{nameof(MethodInfoExtensionsTests)}.{nameof(IStaticVirtual)}.{nameof(IStaticVirtual.MStaticVirtual)}", false)]
+  [TestCase(typeof(CImplementationOfIStaticVirtual), nameof(CImplementationOfIStaticVirtual.MStaticVirtualToBeReimplemented), false)]
+  [TestCase(typeof(IStaticNew), nameof(IStaticNew.MStaticAbstract), false)]
+  [TestCase(typeof(IStaticNew), nameof(IStaticNew.MStaticVirtual), false)]
+  [TestCase(typeof(CImplementationOfIStaticNew), nameof(CImplementationOfIStaticNew.MStaticAbstract), false)]
+  [TestCase(typeof(CImplementationOfIStaticNew), nameof(CImplementationOfIStaticNew.MStaticVirtual), false)]
+#endif
   public void IsOverride_Method(Type type, string methodName, bool isOverride)
   {
-    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
     Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
   }

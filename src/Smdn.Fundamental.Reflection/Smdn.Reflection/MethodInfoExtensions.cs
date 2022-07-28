@@ -15,8 +15,8 @@ public static class MethodInfoExtensions {
   public static bool IsOverridden(this MethodInfo m)
     => IsOverride(m);
 
-  private const MethodAttributes MethodAttributesIsOverrideMask = MethodAttributes.Virtual | MethodAttributes.VtableLayoutMask;
-  private const MethodAttributes MethodAttributesIsOverride = MethodAttributes.Virtual | MethodAttributes.ReuseSlot;
+  private const MethodAttributes MethodAttributesIsOverrideMask = MethodAttributes.Virtual | MethodAttributes.VtableLayoutMask | MethodAttributes.Static;
+  private const MethodAttributes MethodAttributesIsOverride = MethodAttributes.Virtual | MethodAttributes.ReuseSlot; /* except static methods */
 
   public static bool IsOverride(this MethodInfo m)
     => m is null
