@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Xml.Linq.dll (Smdn.Fundamental.Xml.Linq-3.0.0)
+// Smdn.Fundamental.Xml.Linq.dll (Smdn.Fundamental.Xml.Linq-3.0.1)
 //   Name: Smdn.Fundamental.Xml.Linq
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (netstandard2.0)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+31a6e8af75b332a596dca9d2c754455314498e91
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
@@ -18,6 +18,7 @@ namespace Smdn.Xml.Linq {
     public static bool HasAttributeWithValue(this XElement element, XName attributeName, Predicate<string> predicate) {}
     public static bool HasAttributeWithValue(this XElement element, XName attributeName, string @value) {}
     public static string TextContent(this XContainer container) {}
+    public static bool TryGetAttribute(this XElement element, XName attributeName, out XAttribute attribute) {}
   }
 
   public class XEntityReference : XText {
