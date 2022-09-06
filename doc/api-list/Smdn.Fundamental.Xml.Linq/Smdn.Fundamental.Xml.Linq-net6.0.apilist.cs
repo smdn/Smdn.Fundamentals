@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Xml.Linq
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+31a6e8af75b332a596dca9d2c754455314498e91
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
