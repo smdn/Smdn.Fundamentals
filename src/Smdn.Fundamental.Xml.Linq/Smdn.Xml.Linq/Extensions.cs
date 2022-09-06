@@ -52,6 +52,16 @@ public static class Extensions {
     => HasAttribute(element, attributeName, out var attributeValue) &&
        (predicate?.Invoke(attributeValue) ?? false);
 
+  public static bool TryGetAttribute(this XElement element, XName attributeName, out XAttribute attribute)
+  {
+    if (element is null)
+      throw new ArgumentNullException(nameof(element));
+
+    attribute = element.Attribute(attributeName);
+
+    return attribute is not null;
+  }
+
   public static string TextContent(this XContainer container)
   {
     return string.Concat(container.DescendantNodes()
