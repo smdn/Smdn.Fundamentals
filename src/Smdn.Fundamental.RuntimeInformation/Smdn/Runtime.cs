@@ -59,7 +59,7 @@ public static class Runtime {
   [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
   public static bool IsRunningOnWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-  [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
+  [Obsolete("use Smdn.Platform.IsRunningOnUnix")]
   public static bool IsRunningOnUnix
     => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
