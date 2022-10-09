@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
+using System.Linq;
+#endif
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -17,39 +20,47 @@ public static class Runtime {
       Name = ".NET Framework";
       return;
     }
-    else if (RuntimeInformation.FrameworkDescription.Contains(".NET Core")) {
-      RuntimeEnvironment = RuntimeEnvironment.NetCore;
-      Name = ".NET Core";
-      return;
-    }
     else if (RuntimeInformation.FrameworkDescription.Contains("Mono")) {
       RuntimeEnvironment = RuntimeEnvironment.Mono;
       Name = "Mono";
-      // return; // mono?
+      return;
     }
 
-    if (Type.GetType("Mono.Runtime") != null) {
+    var clr = RuntimeEnvironment.Unknown;
+    string? name = null;
+
+    if (Type.GetType("Mono.Runtime") is not null) {
       /*
        * http://mono-project.com/FAQ:_Technical
        */
-      RuntimeEnvironment = RuntimeEnvironment.Mono;
-      Name = "Mono";
+      clr = RuntimeEnvironment.Mono;
+      name = "Mono";
     }
-#if false
-    else if (Type.GetType("FXAssembly") != null) {
-      RuntimeEnvironment = RuntimeEnvironment.NetFx;
-      Name = ".NET Framework";
+    else if (Type.GetType("FXAssembly") is not null) {
+      clr = RuntimeEnvironment.NetFx;
+      name = ".NET Framework";
     }
-    // XXX
-    else if (typeof(Runtime).GetTypeInfo().Assembly.GetReferencedAssemblies().Any(n => n.Name.Equals("System.Runtime", StringComparison.Ordinal))) {
-      RuntimeEnvironment = RuntimeEnvironment.NetCore;
-      Name = ".NET Core";
-    }
+    else if (
+#if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
+      typeof(Runtime)
+        .GetTypeInfo()
+        .Assembly
+        .GetReferencedAssemblies()
+        .Any(static n => "System.Runtime".Equals(n.Name, StringComparison.Ordinal))
+#else
+      RuntimeInformation.FrameworkDescription.Contains(".NET Core")
 #endif
-    else {
-      RuntimeEnvironment = RuntimeEnvironment.Unknown;
-      Name = ".NET Framework compatible";
+    ) {
+      clr = RuntimeEnvironment.NetCore;
+#if SYSTEM_ENVIRONMENT_VERSION
+      name = 5 <= Environment.Version.Major ? ".NET" : ".NET Core";
+#else
+      name = ".NET Core";
+#endif
     }
+
+    RuntimeEnvironment = clr;
+    Name = name ?? ".NET compatible runtime"; // fallback
   }
 
   public static bool IsRunningOnNetFx => RuntimeEnvironment == RuntimeEnvironment.NetFx;

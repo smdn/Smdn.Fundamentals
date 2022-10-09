@@ -53,13 +53,10 @@ namespace Smdn {
       Assert.Inconclusive("see output");
     }
 
-#if NETFRAMEWORK
     [Test]
     public void TestVersionString()
     {
       // returns non-null value always
-      Assert.IsNotNull(Runtime.VersionString);
-      Assert.IsNotNull(Runtime.VersionString);
       Assert.IsNotNull(Runtime.VersionString);
 
       var version = Runtime.VersionString.ToLower();
@@ -68,12 +65,17 @@ namespace Smdn {
         case RuntimeEnvironment.Mono:
           StringAssert.Contains("mono", version);
           break;
+        case RuntimeEnvironment.NetFx:
+          StringAssert.Contains(".net framework", version);
+          break;
+        case RuntimeEnvironment.NetCore:
+          StringAssert.Contains(".net", version); // .NET Core, .NET
+          break;
         default:
           StringAssert.Contains(".net", version);
           break;
       }
     }
-#endif
 
     [Test]
     public void TestName()
@@ -90,10 +92,10 @@ namespace Smdn {
           StringAssert.Contains("mono", name);
           break;
         case RuntimeEnvironment.NetFx:
-          StringAssert.Contains(".net", name);
+          StringAssert.Contains(".net framework", name);
           break;
         case RuntimeEnvironment.NetCore:
-          StringAssert.Contains(".net core", name);
+          StringAssert.Contains(".net", name);
           break;
         default:
 #if NETFRAMEWORK
