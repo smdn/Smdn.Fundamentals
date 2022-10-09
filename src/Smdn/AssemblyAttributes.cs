@@ -136,6 +136,12 @@ using System.Runtime.CompilerServices;
 [assembly: TypeForwardedTo(typeof(Smdn.Text.RegularExpressions.RegexExtensions))]
 
 /*
+ * Smdn.Fundamental.RuntimeInformation
+ */
+[assembly: TypeForwardedTo(typeof(Smdn.Runtime))]
+[assembly: TypeForwardedTo(typeof(Smdn.RuntimeEnvironment))]
+
+/*
  * Smdn.Fundamental.Shell
  */
 [assembly: TypeForwardedTo(typeof(Smdn.OperatingSystem.EnvironmentVariable))]

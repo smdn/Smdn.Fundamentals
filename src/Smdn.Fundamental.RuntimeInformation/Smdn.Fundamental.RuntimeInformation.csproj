@@ -1,0 +1,27 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;net45;netstandard1.1</TargetFrameworks>
+    <RootNamespace>Smdn</RootNamespace>
+    <VersionPrefix>3.0.0</VersionPrefix>
+    <VersionSuffix></VersionSuffix>
+    <!-- <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion> -->
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Label="assembly attributes">
+    <Description>A utility library for retrieving .NET runtime environment information.</Description>
+    <CopyrightYear>2022</CopyrightYear>
+  </PropertyGroup>
+
+  <PropertyGroup Label="package properties">
+    <PackageTags>runtime;utility</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
+  </ItemGroup>
+</Project>

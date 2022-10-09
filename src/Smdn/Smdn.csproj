@@ -46,6 +46,7 @@ SPDX-License-Identifier: MIT
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.RegularExpression\Smdn.Fundamental.RegularExpression.csproj" />
+    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.RuntimeInformation\Smdn.Fundamental.RuntimeInformation.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.SIPrefix\Smdn.Fundamental.SIPrefix.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Shell\Smdn.Fundamental.Shell.csproj" />
     <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" />
