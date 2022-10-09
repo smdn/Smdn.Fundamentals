@@ -111,7 +111,14 @@ public static class Runtime {
         }
 
         case RuntimeEnvironment.Mono: {
-          var displayName = (string)Type.GetType("Mono.Runtime").GetTypeInfo().GetDeclaredMethod("GetDisplayName").Invoke(null, null);
+          var displayName = (string?)Type
+            .GetType("Mono.Runtime")
+            ?.GetTypeInfo()
+            ?.GetDeclaredMethod("GetDisplayName")
+            ?.Invoke(null, null);
+
+          if (displayName is null)
+            break;
 
           foreach (var s in displayName.Split(' ')) {
             if (Version.TryParse(s, out var v))
