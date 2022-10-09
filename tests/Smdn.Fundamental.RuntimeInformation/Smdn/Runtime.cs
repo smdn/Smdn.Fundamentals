@@ -13,6 +13,7 @@ namespace Smdn {
     [Test]
     public void OutputRuntimeEnvironment()
     {
+      TestContext.Out.WriteLine("[Runtime environment information]");
       TestContext.Out.WriteLine($"{nameof(RuntimeInformation)}.{nameof(RuntimeInformation.FrameworkDescription)}: {RuntimeInformation.FrameworkDescription}");
 
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
@@ -77,12 +78,6 @@ namespace Smdn {
           Assert.IsFalse(Runtime.IsRunningOnNetCore);
           break;
       }
-
-      TestContext.Out.WriteLine($"{nameof(Runtime.IsRunningOnNetFx)}: {Runtime.IsRunningOnNetFx}");
-      TestContext.Out.WriteLine($"{nameof(Runtime.IsRunningOnNetCore)}: {Runtime.IsRunningOnNetCore}");
-      TestContext.Out.WriteLine($"{nameof(Runtime.IsRunningOnMono)}: {Runtime.IsRunningOnMono}");
-
-      Assert.Inconclusive("see output");
     }
 
     [Test]
@@ -104,7 +99,9 @@ namespace Smdn {
           StringAssert.Contains(".net", version); // .NET Core, .NET
           break;
         default:
-          StringAssert.Contains(".net", version);
+          TestContext.Out.WriteLine($"[Test: {nameof(TestVersionString)}]");
+          TestContext.Out.WriteLine($"{nameof(Runtime.VersionString)}: {Runtime.VersionString}");
+          Assert.Inconclusive("see output");
           break;
       }
     }
@@ -113,8 +110,6 @@ namespace Smdn {
     public void TestName()
     {
       // returns non-null value always
-      Assert.IsNotNull(Runtime.Name);
-      Assert.IsNotNull(Runtime.Name);
       Assert.IsNotNull(Runtime.Name);
 
       var name = Runtime.Name.ToLower();
@@ -127,7 +122,18 @@ namespace Smdn {
           StringAssert.Contains(".net framework", name);
           break;
         case RuntimeEnvironment.NetCore:
-          StringAssert.Contains(".net", name);
+          if (Runtime.Version is null) {
+            TestContext.Out.WriteLine($"[Test: {nameof(TestName)}]");
+            TestContext.Out.WriteLine($"{nameof(Runtime.Name)}: {Runtime.Name}");
+
+            Assert.Inconclusive("see output");
+          }
+          else {
+            if (5 <= Runtime.Version.Major)
+              StringAssert.Contains(".net", name);
+            else
+              StringAssert.Contains(".net core", name);
+          }
           break;
         default:
 #if NETFRAMEWORK
@@ -145,6 +151,7 @@ namespace Smdn {
 #if SYSTEM_ENVIRONMENT_VERSION
       Assert.IsNotNull(Runtime.Version);
 #else
+      TestContext.Out.WriteLine($"[Test: {nameof(TestVersion)}]");
       TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
 
       Assert.Inconclusive("see output");
@@ -160,6 +167,7 @@ namespace Smdn {
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
       }
       else {
+        TestContext.Out.WriteLine($"[Test: {nameof(TestVersion)}]");
         TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
 
         Assert.Inconclusive("see output");
