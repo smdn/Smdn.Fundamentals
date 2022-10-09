@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
@@ -16,7 +17,7 @@ namespace Smdn {
 
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
       TestContext.Out.WriteLine(
-        "ReferencedAssemblies: {0}"
+        "ReferencedAssemblies: {0}",
         string.Join(
           ", ",
           typeof(Runtime)
