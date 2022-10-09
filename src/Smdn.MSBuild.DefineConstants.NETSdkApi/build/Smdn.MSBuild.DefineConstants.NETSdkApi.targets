@@ -232,6 +232,7 @@ SPDX-License-Identifier: MIT
       <!-- NET10_OR_GREATER -->
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetTypes"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetExportedTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetReferencedAssemblies"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="ICustomAttributeProvider"/>
     </ItemGroup>
 
