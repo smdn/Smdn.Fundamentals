@@ -145,7 +145,7 @@ namespace Smdn {
       Assert.IsNotNull(Runtime.Version);
 
       if (Runtime.IsRunningOnMono) {
-        var version = Runtime.Version;
+        var version = Runtime.Version!;
 
         Assert.IsTrue(version.Major != 0 || version.Minor != 0);
 

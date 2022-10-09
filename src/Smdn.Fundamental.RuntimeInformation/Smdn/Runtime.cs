@@ -90,7 +90,7 @@ public static partial class Runtime {
 
   public static string VersionString => RuntimeInformation.FrameworkDescription;
 
-  public static Version Version {
+  public static Version? Version {
     get {
       switch (RuntimeEnvironment) {
         case RuntimeEnvironment.NetFx:
