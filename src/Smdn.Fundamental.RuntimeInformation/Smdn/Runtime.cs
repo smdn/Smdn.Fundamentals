@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 
 namespace Smdn;
 
-public static class Runtime {
+public static partial class Runtime {
   public static RuntimeEnvironment RuntimeEnvironment { get; }
   public static string Name { get; }
 
@@ -87,13 +87,6 @@ public static class Runtime {
   public static bool IsRunningOnNetFx => RuntimeEnvironment == RuntimeEnvironment.NetFx;
   public static bool IsRunningOnNetCore => RuntimeEnvironment == RuntimeEnvironment.NetCore;
   public static bool IsRunningOnMono => RuntimeEnvironment == RuntimeEnvironment.Mono;
-
-  [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
-  public static bool IsRunningOnWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-
-  [Obsolete("use Smdn.Platform.IsRunningOnUnix")]
-  public static bool IsRunningOnUnix
-    => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
   public static string VersionString => RuntimeInformation.FrameworkDescription;
 
