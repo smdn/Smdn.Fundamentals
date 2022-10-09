@@ -1,16 +1,37 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Reflection;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture()]
   public class RuntimeTests {
     [Test]
-    public void TestRuntimeEnvironment()
+    public void OutputRuntimeEnvironment()
     {
+      TestContext.Out.WriteLine($"{nameof(RuntimeInformation)}.{nameof(RuntimeInformation.FrameworkDescription)}: {RuntimeInformation.FrameworkDescription}");
+
+#if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
+      TestContext.Out.WriteLine(
+        "ReferencedAssemblies: {0}"
+        string.Join(
+          ", ",
+          typeof(Runtime)
+            .GetTypeInfo()
+            .Assembly
+            .GetReferencedAssemblies()
+            .Select(static a => a.Name)
+        )
+      );
+#endif
+
+#if SYSTEM_ENVIRONMENT_VERSION
+      TestContext.Out.WriteLine($"{nameof(Environment)}.{nameof(Environment.Version)}: {Environment.Version}");
+#endif
+
       TestContext.Out.WriteLine($"{nameof(Runtime.RuntimeEnvironment)}: {Runtime.RuntimeEnvironment}");
       TestContext.Out.WriteLine($"{nameof(Runtime.Name)}: {Runtime.Name}");
       TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
