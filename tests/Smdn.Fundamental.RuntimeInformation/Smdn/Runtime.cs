@@ -17,7 +17,17 @@ namespace Smdn {
 
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
       TestContext.Out.WriteLine(
-        "ReferencedAssemblies: {0}",
+        "ReferencedAssemblies(entry assembly): {0}",
+        string.Join(
+          ", ",
+          Assembly
+            .GetEntryAssembly()
+            ?.GetReferencedAssemblies()
+            ?.Select(static a => a.Name)
+        )
+      );
+      TestContext.Out.WriteLine(
+        "ReferencedAssemblies(Runtime class): {0}",
         string.Join(
           ", ",
           typeof(Runtime)

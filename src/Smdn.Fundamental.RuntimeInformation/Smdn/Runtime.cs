@@ -20,6 +20,11 @@ public static class Runtime {
       Name = ".NET Framework";
       return;
     }
+    else if (RuntimeInformation.FrameworkDescription.Contains(".NET Core")) {
+      RuntimeEnvironment = RuntimeEnvironment.NetCore;
+      Name = ".NET Core";
+      return;
+    }
     else if (RuntimeInformation.FrameworkDescription.Contains("Mono")) {
       RuntimeEnvironment = RuntimeEnvironment.Mono;
       Name = "Mono";
@@ -40,16 +45,13 @@ public static class Runtime {
       clr = RuntimeEnvironment.NetFx;
       name = ".NET Framework";
     }
-    else if (
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
-      typeof(Runtime)
-        .GetTypeInfo()
-        .Assembly
-        .GetReferencedAssemblies()
-        .Any(static n => "System.Runtime".Equals(n.Name, StringComparison.Ordinal))
-#else
-      RuntimeInformation.FrameworkDescription.Contains(".NET Core")
-#endif
+    else if (
+      Assembly
+        .GetEntryAssembly()
+        ?.GetReferencedAssemblies()
+        ?.Any(static n => "System.Runtime".Equals(n.Name, StringComparison.Ordinal))
+        ?? false
     ) {
       clr = RuntimeEnvironment.NetCore;
 #if SYSTEM_ENVIRONMENT_VERSION
@@ -58,6 +60,7 @@ public static class Runtime {
       name = ".NET Core";
 #endif
     }
+#endif
 
     RuntimeEnvironment = clr;
     Name = name ?? ".NET compatible runtime"; // fallback
