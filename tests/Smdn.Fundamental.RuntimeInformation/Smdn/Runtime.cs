@@ -161,16 +161,34 @@ namespace Smdn {
 
       var version = Runtime.Version!;
 
-      Assert.IsTrue(version.Major != 0 || version.Minor != 0);
+      Assert.AreNotEqual(0, version.Major, nameof(version.Major));
+      Assert.AreNotEqual(-1, version.Minor, nameof(version.Minor));
 
-      if (Runtime.RuntimeEnvironment == RuntimeEnvironment.Mono) {
-        StringAssert.Contains(version.ToString(), Runtime.VersionString);
-      }
-      else {
-        TestContext.Out.WriteLine($"[Test: {nameof(TestVersion)}]");
-        TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
+      switch (Runtime.RuntimeEnvironment) {
+        case RuntimeEnvironment.Mono:
+          StringAssert.Contains(version.ToString(), Runtime.VersionString, "Mono verion string");
+          break;
 
-        Assert.Inconclusive("see output");
+        case RuntimeEnvironment.NetFx:
+          Assert.Less(5, version.Major, ".NET Framework major verion must be less than 5");
+          StringAssert.Contains(version.ToString(), Runtime.VersionString, ".NET Framework verion string");
+          break;
+
+        case RuntimeEnvironment.NetCore:
+          if (!Runtime.Name.Contains(".NET Core"))
+            Assert.GreaterOrEqual(version.Major, 5, ".NET major verion must be greater than or equal to 5");
+#if SYSTEM_ENVIRONMENT_VERSION
+          Assert.AreEqual(Environment.Version, version, "CoreCLR version must be equal to Environment.Version");
+#endif
+          StringAssert.Contains(version.ToString(), Runtime.VersionString, "CoreCLR version string");
+          break;
+
+        default:
+          TestContext.Out.WriteLine($"[Test: {nameof(TestVersion)}]");
+          TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
+
+          Assert.Inconclusive("see output");
+          break;
       }
     }
   }
