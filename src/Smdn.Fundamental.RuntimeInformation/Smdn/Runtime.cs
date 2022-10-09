@@ -12,6 +12,7 @@ namespace Smdn;
 public static partial class Runtime {
   public static RuntimeEnvironment RuntimeEnvironment { get; }
   public static string Name { get; }
+  public static Version? Version { get; }
 
   static Runtime()
   {
@@ -70,6 +71,7 @@ public static partial class Runtime {
 
     RuntimeEnvironment = clr;
     Name = name ?? ".NET compatible runtime"; // fallback
+    Version = GetRuntimeVersion(clr);
 
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
     static bool IsAssemblyNameSystemRuntime(AssemblyName n)
@@ -82,44 +84,29 @@ public static partial class Runtime {
       => ".NET Core";
 #endif
 #endif
-  }
 
-  public static bool IsRunningOnNetFx => RuntimeEnvironment == RuntimeEnvironment.NetFx;
-  public static bool IsRunningOnNetCore => RuntimeEnvironment == RuntimeEnvironment.NetCore;
-  public static bool IsRunningOnMono => RuntimeEnvironment == RuntimeEnvironment.Mono;
+    static Version? GetRuntimeVersion(RuntimeEnvironment clr)
+    {
+      if (clr == RuntimeEnvironment.Mono) {
+        // attempt to get version from return value of Mono.Runtime.GetDisplayName()
+        var displayName = (string?)Type
+          .GetType("Mono.Runtime")
+          ?.GetTypeInfo()
+          ?.GetDeclaredMethod("GetDisplayName")
+          ?.Invoke(null, null);
 
-  public static string VersionString => RuntimeInformation.FrameworkDescription;
-
-  public static Version? Version {
-    get {
-      switch (RuntimeEnvironment) {
-        case RuntimeEnvironment.NetFx:
-        case RuntimeEnvironment.NetCore: {
-          foreach (var s in RuntimeInformation.FrameworkDescription.Split(' ')) {
-            if (Version.TryParse(s, out var v))
-              return v;
-          }
-
-          break;
-        }
-
-        case RuntimeEnvironment.Mono: {
-          var displayName = (string?)Type
-            .GetType("Mono.Runtime")
-            ?.GetTypeInfo()
-            ?.GetDeclaredMethod("GetDisplayName")
-            ?.Invoke(null, null);
-
-          if (displayName is null)
-            break;
-
+        if (displayName is not null) {
           foreach (var s in displayName.Split(' ')) {
             if (Version.TryParse(s, out var v))
               return v;
           }
-
-          break;
         }
+      }
+
+      // attempt to get version from the string of RuntimeInformation.FrameworkDescription
+      foreach (var s in RuntimeInformation.FrameworkDescription.Split(' ')) {
+        if (Version.TryParse(s, out var v))
+          return v;
       }
 
 #if SYSTEM_ENVIRONMENT_VERSION
@@ -129,4 +116,10 @@ public static partial class Runtime {
 #endif
     }
   }
+
+  public static bool IsRunningOnNetFx => RuntimeEnvironment == RuntimeEnvironment.NetFx;
+  public static bool IsRunningOnNetCore => RuntimeEnvironment == RuntimeEnvironment.NetCore;
+  public static bool IsRunningOnMono => RuntimeEnvironment == RuntimeEnvironment.Mono;
+
+  public static string VersionString => RuntimeInformation.FrameworkDescription;
 }
