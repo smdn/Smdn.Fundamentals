@@ -7,12 +7,12 @@ public enum RuntimeEnvironment {
   /// <summary>DotGNU, etc.</summary>
   Unknown = 0,
 
-  /// <summary>.NET Framework.</summary>
+  /// <summary>.NET Framework Runtime.</summary>
   NetFx,
 
-  /// <summary>Mono.</summary>
+  /// <summary>Mono Runtime.</summary>
   Mono,
 
-  /// <summary>.NET Core.</summary>
+  /// <summary>.NET/.NET Core (CoreCLR).</summary>
   NetCore,
 }
