@@ -23,7 +23,7 @@ namespace Smdn {
           Assembly
             .GetEntryAssembly()
             ?.GetReferencedAssemblies()
-            ?.Select(static a => a.Name)
+            ?.Select(static a => a.Name) ?? Enumerable.Empty<string>()
         )
       );
       TestContext.Out.WriteLine(
