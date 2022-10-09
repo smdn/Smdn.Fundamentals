@@ -170,7 +170,7 @@ namespace Smdn {
           break;
 
         case RuntimeEnvironment.NetFx:
-          Assert.Less(5, version.Major, ".NET Framework major verion must be less than 5");
+          Assert.Less(version.Major, 5, ".NET Framework major verion must be less than 5");
           StringAssert.Contains(version.ToString(), Runtime.VersionString, ".NET Framework verion string");
           break;
 
