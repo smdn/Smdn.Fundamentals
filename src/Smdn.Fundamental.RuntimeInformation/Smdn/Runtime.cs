@@ -60,6 +60,20 @@ public static class Runtime {
       name = ".NET Core";
 #endif
     }
+    else if (
+      typeof(Runtime)
+        .GetTypeInfo()
+        .Assembly
+        .GetReferencedAssemblies()
+        .Any(static n => "System.Runtime".Equals(n.Name, StringComparison.Ordinal))
+    ) {
+      clr = RuntimeEnvironment.NetCore;
+#if SYSTEM_ENVIRONMENT_VERSION
+      name = 5 <= Environment.Version.Major ? ".NET" : ".NET Core";
+#else
+      name = ".NET Core";
+#endif
+    }
 #endif
 
     RuntimeEnvironment = clr;
