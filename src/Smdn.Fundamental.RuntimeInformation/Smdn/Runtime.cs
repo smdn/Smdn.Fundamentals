@@ -57,10 +57,11 @@ public static class Runtime {
   public static bool IsRunningOnMono => RuntimeEnvironment == RuntimeEnvironment.Mono;
 
   [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
-  public static bool IsRunningOnWindows => Platform.IsRunningOnWindows;
+  public static bool IsRunningOnWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
   [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
-  public static bool IsRunningOnUnix => Platform.IsRunningOnUnix;
+  public static bool IsRunningOnUnix
+    => RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 
   public static string VersionString => RuntimeInformation.FrameworkDescription;
 
