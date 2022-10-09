@@ -50,34 +50,38 @@ public static class Runtime {
       Assembly
         .GetEntryAssembly()
         ?.GetReferencedAssemblies()
-        ?.Any(static n => "System.Runtime".Equals(n.Name, StringComparison.Ordinal))
+        ?.Any(IsAssemblyNameSystemRuntime)
         ?? false
     ) {
       clr = RuntimeEnvironment.NetCore;
-#if SYSTEM_ENVIRONMENT_VERSION
-      name = 5 <= Environment.Version.Major ? ".NET" : ".NET Core";
-#else
-      name = ".NET Core";
-#endif
+      name = DetermineNetCoreRuntimeName();
     }
     else if (
       typeof(Runtime)
         .GetTypeInfo()
         .Assembly
         .GetReferencedAssemblies()
-        .Any(static n => "System.Runtime".Equals(n.Name, StringComparison.Ordinal))
+        .Any(IsAssemblyNameSystemRuntime)
     ) {
       clr = RuntimeEnvironment.NetCore;
-#if SYSTEM_ENVIRONMENT_VERSION
-      name = 5 <= Environment.Version.Major ? ".NET" : ".NET Core";
-#else
-      name = ".NET Core";
-#endif
+      name = DetermineNetCoreRuntimeName();
     }
 #endif
 
     RuntimeEnvironment = clr;
     Name = name ?? ".NET compatible runtime"; // fallback
+
+#if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
+    static bool IsAssemblyNameSystemRuntime(AssemblyName n)
+      => "System.Runtime".Equals(n.Name, StringComparison.Ordinal);
+
+    static string DetermineNetCoreRuntimeName()
+#if SYSTEM_ENVIRONMENT_VERSION
+      => 5 <= Environment.Version.Major ? ".NET" : ".NET Core";
+#else
+      => ".NET Core";
+#endif
+#endif
   }
 
   public static bool IsRunningOnNetFx => RuntimeEnvironment == RuntimeEnvironment.NetFx;
