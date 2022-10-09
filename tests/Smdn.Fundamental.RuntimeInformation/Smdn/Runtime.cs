@@ -142,14 +142,27 @@ namespace Smdn {
     [Test]
     public void TestVersion()
     {
+#if SYSTEM_ENVIRONMENT_VERSION
       Assert.IsNotNull(Runtime.Version);
+#else
+      TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
 
-      if (Runtime.IsRunningOnMono) {
-        var version = Runtime.Version!;
+      Assert.Inconclusive("see output");
 
-        Assert.IsTrue(version.Major != 0 || version.Minor != 0);
+      return;
+#endif
 
+      var version = Runtime.Version!;
+
+      Assert.IsTrue(version.Major != 0 || version.Minor != 0);
+
+      if (Runtime.RuntimeEnvironment == RuntimeEnvironment.Mono) {
         StringAssert.Contains(version.ToString(), Runtime.VersionString);
+      }
+      else {
+        TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
+
+        Assert.Inconclusive("see output");
       }
     }
   }
