@@ -37,17 +37,13 @@ SPDX-License-Identifier: MIT
     so do not use IncludeAssets and import *.props/*targets manually instead.
   -->
   <ItemGroup Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
-    <PackageReference
+    <PackageDownload
       Include="Smdn.MSBuild.ProjectAssets.Common"
       Version="[$(SmdnProjectAssets_Common_PackageVersion)]"
-      PrivateAssets="all"
-      IncludeAssets="none"
     />
-    <PackageReference
+    <PackageDownload
       Include="Smdn.MSBuild.ProjectAssets.Library"
       Version="[$(SmdnProjectAssets_Library_PackageVersion)]"
-      PrivateAssets="all"
-      IncludeAssets="none"
     />
   </ItemGroup>
 
