@@ -4,10 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <PropertyGroup>
-    <!-- build defaults -->
-    <LangVersion>latest</LangVersion>
-    <Deterministic>true</Deterministic>
+    <IsLibraryTestProject Condition="$(MSBuildProjectName.EndsWith('.Tests'))">true</IsLibraryTestProject>
+  </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(IsLibraryTestProject)' != 'true' " Label="Properties for the library project">
     <!-- assembly defaults -->
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
 
@@ -33,7 +33,27 @@ SPDX-License-Identifier: MIT
     <APIListOutputBaseDirectory Condition="'$(APIListOutputBaseDirectory)' == ''">api-list\</APIListOutputBaseDirectory>
     <APIListPackageVersion Condition="$(APIListPackageVersion) == ''">1.1.4</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
+  </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(IsLibraryTestProject)' == 'true' " Label="Properties for the library test project">
+    <IsPackable>false</IsPackable>
+
+    <!-- determines the test target project name from the test project name (Smdn.*.Tests -> Smdn.*) -->
+    <_LibraryTestProjectSuffix>.Tests$(MSBuildProjectExtension)</_LibraryTestProjectSuffix>
+    <TestTargetLibraryProjectName>$(MSBuildProjectFile.Replace('$(_LibraryTestProjectSuffix)', ''))</TestTargetLibraryProjectName>
+
+    <!-- code analysis defaults -->
+    <AnalysisMode>None</AnalysisMode>
+    <AnalysisModeInteroperability>Recommended</AnalysisModeInteroperability>
+    <AnalysisModeReliability>Recommended</AnalysisModeReliability>
+    <AnalysisModeSecurity>Recommended</AnalysisModeSecurity>
+    <AnalysisModeUsage>Recommended</AnalysisModeUsage>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'" Label="C#-only properties">
+    <!-- build defaults -->
+    <LangVersion>latest</LangVersion>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <ItemGroup Label="build assets">
@@ -50,7 +70,7 @@ SPDX-License-Identifier: MIT
   <!--
     code analysis
   -->
-  <ItemGroup Label="code analysis">
+  <ItemGroup Condition=" '$(IsLibraryTestProject)' != 'true' " Label="code analysis">
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -58,7 +78,7 @@ SPDX-License-Identifier: MIT
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
-  <PropertyGroup Label="code analysis">
+  <PropertyGroup Condition=" '$(IsLibraryTestProject)' != 'true' " Label="code analysis">
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
@@ -68,13 +88,13 @@ SPDX-License-Identifier: MIT
   <ItemGroup>
     <PackageReference
       Include="Microsoft.SourceLink.GitHub"
-      Condition="'$(GITHUB_ACTIONS)' == 'true'"
+      Condition=" '$(IsTestProject)' != 'true' and '$(GITHUB_ACTIONS)' == 'true' "
       Version="1.1.1"
       PrivateAssets="All"
     />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+  <PropertyGroup Condition=" '$(IsTestProject)' != 'true' and '$(GITHUB_ACTIONS)' == 'true' ">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 </Project>
