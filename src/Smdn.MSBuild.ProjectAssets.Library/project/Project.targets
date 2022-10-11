@@ -3,7 +3,36 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <!-- PackageReadmeFile auto-generating -->
+  <!--
+    API list generator
+  -->
+  <ItemGroup Label="API list generator" Condition="'$(APIListEnableGenerating)' == 'true'">
+    <PackageReference
+      Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
+      Version="[$(APIListPackageVersion)]"
+      PrivateAssets="all"
+      IncludeAssets="build"
+    />
+  </ItemGroup>
+
+  <PropertyGroup Label="API list generator" Condition="'$(APIListEnableGenerating)' == 'true'">
+    <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
+    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
+  </PropertyGroup>
+
+  <!--
+    using task from local build assembly instead of tasks from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks package reference
+    (consider using with `/nr:false`, see https://github.com/dotnet/msbuild/issues/7693)
+
+  <UsingTask
+    TaskName="GenerateApiList"
+    AssemblyFile="/path/to/build/Smdn.Reflection.ReverseGenerating/src/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks/bin/Release/net6.0/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks.dll"
+  />
+  -->
+
+  <!--
+    PackageReadmeFile auto-generating
+  -->
   <PropertyGroup Condition="'$(APIListEnableGenerating)' == 'true' and '$(GeneratePackageReadmeFile)' == 'true'">
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</PackageReadmeFileOutputPath>

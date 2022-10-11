@@ -34,8 +34,6 @@ SPDX-License-Identifier: MIT
     <APIListPackageVersion Condition="$(APIListPackageVersion) == ''">1.1.4</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
 
-    <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
-    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
   </PropertyGroup>
 
   <ItemGroup Label="build assets">
@@ -79,26 +77,4 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
-
-  <!--
-    API list generator
-  -->
-  <ItemGroup Label="API list generator">
-    <PackageReference
-      Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
-      Version="[$(APIListPackageVersion)]"
-      Condition="'$(APIListEnableGenerating)' == 'true'"
-      PrivateAssets="all"
-      IncludeAssets="build"
-    />
-  </ItemGroup>
-  <!--
-    using task from local build assembly instead of tasks from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks package reference
-    (consider using with `/nr:false`, see https://github.com/dotnet/msbuild/issues/7693)
-
-  <UsingTask
-    TaskName="GenerateApiList"
-    AssemblyFile="/path/to/build/Smdn.Reflection.ReverseGenerating/src/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks/bin/Release/net6.0/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks.dll"
-  />
-  -->
 </Project>
