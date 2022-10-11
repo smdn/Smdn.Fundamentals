@@ -42,6 +42,9 @@ SPDX-License-Identifier: MIT
 
     <None Pack="true"  Include="project\Project.props"                        PackagePath="project\" />
     <None Pack="true"  Include="project\Project.targets"                      PackagePath="project\" />
+
+    <None Pack="true"  Include="project\CodeAnalysis.StyleCop.props"          PackagePath="project\" />
+    <None Pack="true"  Include="project\SourceLink.props"                     PackagePath="project\" />
     <None Pack="true"  Include="project\StyleCop.Analyzers.ruleset"           PackagePath="project\" />
     <None Pack="true"  Include="project\stylecop.json"                        PackagePath="project\" />
   </ItemGroup>
