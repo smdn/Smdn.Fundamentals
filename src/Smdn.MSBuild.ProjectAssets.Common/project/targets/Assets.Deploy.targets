@@ -2,10 +2,9 @@
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
-<Project>
+<Project InitialTargets="Assets_Deploy">
   <Target
     Name="Assets_Deploy"
-    BeforeTargets="DispatchToInnerBuilds;BeforeBuild"
   >
     <Copy
       SourceFiles="%(SmdnBuildAssetFiles.Identity)"
