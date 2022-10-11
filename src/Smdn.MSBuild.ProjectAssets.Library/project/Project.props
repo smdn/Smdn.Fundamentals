@@ -67,34 +67,10 @@ SPDX-License-Identifier: MIT
     </SmdnBuildAssetFiles>
   </ItemGroup>
 
-  <!--
-    code analysis
-  -->
-  <ItemGroup Condition=" '$(IsLibraryTestProject)' != 'true' " Label="code analysis">
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json" Link="stylecop.json" />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(IsLibraryTestProject)' != 'true' " Label="code analysis">
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-
-  <!--
-    source link
-  -->
-  <ItemGroup>
-    <PackageReference
-      Include="Microsoft.SourceLink.GitHub"
-      Condition=" '$(IsTestProject)' != 'true' and '$(GITHUB_ACTIONS)' == 'true' "
-      Version="1.1.1"
-      PrivateAssets="All"
-    />
-  </ItemGroup>
-
-  <PropertyGroup Condition=" '$(IsTestProject)' != 'true' and '$(GITHUB_ACTIONS)' == 'true' ">
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-  </PropertyGroup>
+  <ImportGroup Condition=" '$(IsLibraryTestProject)' != 'true' ">
+    <!-- StyleCop code analysis -->
+    <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.StyleCop.props" />
+    <!-- source link -->
+    <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
+  </ImportGroup>
 </Project>
