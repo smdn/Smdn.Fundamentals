@@ -52,12 +52,15 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <!--
-    Define the path to *.props/*.targets file to be imported.
+    Import *.props files.
+  -->
+  <Import Project="$(_SmdnProjectAssets_Common_PathToPackageRoot)project\Project.props" />
+  <Import Project="$(_SmdnProjectAssets_Library_PathToPackageRoot)project\Project.props" />
+
+  <!--
+    Define the path to *.targets files to be imported.
   -->
   <PropertyGroup>
-    <SmdnProjectAssets_PropsImports>$(SmdnProjectAssets_PropsImports);$(_SmdnProjectAssets_Common_PathToPackageRoot)project\Project.props</SmdnProjectAssets_PropsImports>
-    <SmdnProjectAssets_PropsImports>$(SmdnProjectAssets_PropsImports);$(_SmdnProjectAssets_Library_PathToPackageRoot)project\Project.props</SmdnProjectAssets_PropsImports>
-
     <SmdnProjectAssets_TargetsImports>$(SmdnProjectAssets_TargetsImports);$(_SmdnProjectAssets_Common_PathToPackageRoot)project\Project.targets</SmdnProjectAssets_TargetsImports>
     <SmdnProjectAssets_TargetsImports>$(SmdnProjectAssets_TargetsImports);$(_SmdnProjectAssets_Library_PathToPackageRoot)project\Project.targets</SmdnProjectAssets_TargetsImports>
   </PropertyGroup>
