@@ -52,7 +52,7 @@ jobs:
         fi
 
   run-test:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.0.6
+    uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.1.0
     needs: prerequisites
     with:
       project:            ${{ github.event.inputs.project }}
