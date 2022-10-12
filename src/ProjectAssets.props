@@ -34,7 +34,7 @@ SPDX-License-Identifier: MIT
 
   <!--
     Importing by *.nuget.g.props/*.nuget.g.targets file does not properly set the properties defined in the asset library,
-    so do not use IncludeAssets and import *.props/*targets manually instead.
+    so do not use PackageReference with IncludeAssets, and import *.props/*targets manually instead.
   -->
   <ItemGroup Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
     <PackageDownload
