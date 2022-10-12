@@ -46,9 +46,9 @@ jobs:
       id: input-prerequisites
       run: |
         if [ '${{ github.event.inputs.verbose }}' = 'true' ]; then
-          echo '::set-output name=verbose::true'
+          echo 'verbose=true' >> $GITHUB_OUTPUT
         else
-          echo '::set-output name=verbose::false'
+          echo 'verbose=false' >> $GITHUB_OUTPUT
         fi
 
   run-test:

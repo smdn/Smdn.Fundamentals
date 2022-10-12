@@ -102,7 +102,7 @@ jobs:
           }
         }
 
-        "::set-output name=runs-ons::$($os_list | ConvertTo-Json -Compress)"
+        "runs-ons=$($os_list | ConvertTo-Json -Compress)" >> $Env:GITHUB_OUTPUT
 
     - name: Determine test projects
       id: test-projects
@@ -147,7 +147,7 @@ jobs:
         $output_json = $projects | ConvertTo-Json -Compress
         $output_json
 
-        "::set-output name=projects::${output_json}"
+        "projects=${output_json}" >> $Env:GITHUB_OUTPUT
 
   env-info:
     name: Environment information of ${{ matrix.os }}
@@ -187,7 +187,7 @@ jobs:
           # required SDK version is not installed
           "::notice::.NET SDK version: installed ${installed_version}, required ${required_version}"
 
-          "::set-output name=install::${required_version}"
+          "install=${required_version}" >> $Env:GITHUB_OUTPUT
         }
 
     - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install }}
@@ -271,8 +271,8 @@ jobs:
         $timeout_vstest_connection ??= 90
 
         # set output
-        "::set-output name=timeout_hang::${timeout_hang}"
-        "::set-output name=timeout_vstest_connection::${timeout_vstest_connection}"
+        "timeout_hang=${timeout_hang}" >> $Env:GITHUB_OUTPUT
+        "timeout_vstest_connection=${timeout_vstest_connection}" >> $Env:GITHUB_OUTPUT
 
     - name: Test ${{ matrix.project.Name }}
       shell: pwsh
