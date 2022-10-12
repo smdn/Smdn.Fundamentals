@@ -3,11 +3,12 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <PropertyGroup>
-    <IsLibraryTestProject Condition="$(MSBuildProjectName.EndsWith('.Tests'))">true</IsLibraryTestProject>
+  <!-- Consider the project file named with '*.Tests.*proj' a test project -->
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(IsLibraryTestProject)' != 'true' " Label="Properties for the library project">
+  <PropertyGroup Condition=" '$(IsTestProject)' != 'true' " Label="Properties for the library project">
     <!-- assembly defaults -->
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
 
@@ -35,7 +36,7 @@ SPDX-License-Identifier: MIT
     <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(IsLibraryTestProject)' == 'true' " Label="Properties for the library test project">
+  <PropertyGroup Condition=" '$(IsTestProject)' == 'true' " Label="Properties for the test project">
     <IsPackable>false</IsPackable>
 
     <!-- determines the test target project name from the test project name (Smdn.*.Tests -> Smdn.*) -->
@@ -67,7 +68,7 @@ SPDX-License-Identifier: MIT
     </SmdnBuildAssetFiles>
   </ItemGroup>
 
-  <ImportGroup Condition=" '$(IsLibraryTestProject)' != 'true' ">
+  <ImportGroup Condition=" '$(IsTestProject)' != 'true' ">
     <!-- StyleCop code analysis -->
     <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.StyleCop.props" />
     <!-- source link -->
