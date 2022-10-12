@@ -11,15 +11,18 @@ SPDX-License-Identifier: MIT
     <Import Project="$(MSBuildThisFileDirectory)..\src\ProjectAssets.props" />
   </ImportGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
     <Nullable>warnings</Nullable>
 
-    <TestTargetLibraryProjectDirectory
-      Condition="'$(TestTargetLibraryProjectName)' != ''"
-    >$(MSBuildThisFileDirectory)..\src\$(TestTargetLibraryProjectName)\</TestTargetLibraryProjectDirectory>
+    <SmdnTestTargetProjectDirectory
+      Condition=" '$(SmdnTestTargetProjectName)' != '' "
+    >$(MSBuildThisFileDirectory)..\src\$(SmdnTestTargetProjectName)\</SmdnTestTargetProjectDirectory>
+    <SmdnTestTargetProjectFullPath
+      Condition=" '$(SmdnTestTargetProjectName)' != '' "
+    >$(SmdnTestTargetProjectDirectory)$(SmdnTestTargetProjectName).csproj</SmdnTestTargetProjectFullPath>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TestTargetLibraryProjectName)' != '' ">
+  <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0"/>

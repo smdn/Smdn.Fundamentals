@@ -18,8 +18,8 @@ SPDX-License-Identifier: MIT
     <When Condition=" '$(TestReleasedPackage)' == 'true' and '$(CanTestReleasedPackage)' == 'true' ">
       <ItemGroup Label="add test target package reference">
         <PackageReference
-          Condition=" '$(TestTargetLibraryProjectName)' != '' "
-          Include="$(TestTargetLibraryProjectName)"
+          Condition=" '$(SmdnTestTargetProjectName)' != '' "
+          Include="$(SmdnTestTargetProjectName)"
           Version="*-*"
         />
       </ItemGroup>
@@ -27,8 +27,8 @@ SPDX-License-Identifier: MIT
     <Otherwise>
       <ItemGroup Label="add test target project reference">
         <ProjectReference
-          Condition=" '$(TestTargetLibraryProjectName)' != '' and Exists('$(TestTargetLibraryProjectDirectory)') "
-          Include="$(TestTargetLibraryProjectDirectory)$(TestTargetLibraryProjectName).csproj"
+          Condition=" '$(SmdnTestTargetProjectFullPath)' != '' and Exists('$(SmdnTestTargetProjectFullPath)') "
+          Include="$(SmdnTestTargetProjectFullPath)"
         />
       </ItemGroup>
     </Otherwise>

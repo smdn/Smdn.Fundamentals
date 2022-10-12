@@ -10,6 +10,6 @@ SPDX-License-Identifier: MIT
 
   <Import
     Condition=" '$(TestReleasedPackage)' != 'true' "
-    Project="$(TestTargetLibraryProjectDirectory)\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets"
+    Project="$(SmdnTestTargetProjectDirectory)\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets"
   />
 </Project>
