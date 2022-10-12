@@ -234,6 +234,14 @@ jobs:
         # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
         dotnet nuget list source
 
+        # note: restore the test target project first due to dependencies such as build assets (Smdn.MSBuild.ProjectAssets.*) have to be installed and restored
+        dotnet restore `
+          --nologo `
+          --no-dependencies `
+          ${{ inputs.extra_options_common }} `
+          ${{ matrix.project.PathToTestTargetProject }}
+
+        # then restore the test project and its dependencies
         dotnet restore `
           --nologo `
           ${{ inputs.extra_options_common }} `
