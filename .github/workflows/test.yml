@@ -81,7 +81,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3.0.2
+      uses: actions/checkout@v3.1.0
       with:
         token: ${{ secrets.token_repo }}
 
@@ -197,7 +197,7 @@ jobs:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install }}'
 
     - name: Checkout repository
-      uses: actions/checkout@v3.0.2
+      uses: actions/checkout@v3.1.0
       with:
         token: ${{ secrets.token_repo }}
 
