@@ -173,6 +173,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Fundamental.Xml.Linq.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Test.NUnit.Utils.Tests", "Smdn.Test.NUnit.Utils\Smdn.Test.NUnit.Utils.Tests.csproj", "{94E5F3E2-6C28-4ADD-AF99-A8AF4CFEC4C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smdn.Fundamental.RuntimeInformation.Tests", "Smdn.Fundamental.RuntimeInformation\Smdn.Fundamental.RuntimeInformation.Tests.csproj", "{0BBAB622-046D-4929-BFB2-4866053DE7CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1179,6 +1181,18 @@ Global
 		{94E5F3E2-6C28-4ADD-AF99-A8AF4CFEC4C1}.Release|x64.Build.0 = Release|Any CPU
 		{94E5F3E2-6C28-4ADD-AF99-A8AF4CFEC4C1}.Release|x86.ActiveCfg = Release|Any CPU
 		{94E5F3E2-6C28-4ADD-AF99-A8AF4CFEC4C1}.Release|x86.Build.0 = Release|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Release|x64.Build.0 = Release|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{0BBAB622-046D-4929-BFB2-4866053DE7CF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
