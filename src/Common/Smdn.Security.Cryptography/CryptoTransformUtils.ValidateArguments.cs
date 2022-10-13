@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable IDE0240 // Nullable directive is redundant
 #nullable enable
+#pragma warning restore IDE0240
 
 using System;
 using System.Security.Cryptography;
