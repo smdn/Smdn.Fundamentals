@@ -2,18 +2,20 @@
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
-<Project>
-  <!-- disable running tests with some target frameworks on Ubuntu 22.04 -->
-  <PropertyGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier.StartsWith('ubuntu.22.04'))">
-    <!-- disable .NET Core <= 3.1 (cannot run .NET Core <= 3.1) -->
-    <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'netcoreapp[0-9]\.[0-9]\s*;?', ''))</TargetFrameworks>
-    <!-- disable Mono (test runner not working?) -->
-    <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'net4[0-9]{1,2}\s*;?', ''))</TargetFrameworks>
-  </PropertyGroup>
+<Project InitialTargets="ModifyTargetFrameworksByEnvironment">
+  <Target Name="ModifyTargetFrameworksByEnvironment" BeforeTargets="Build;DispatchToInnerBuilds">
+    <!-- disable running tests with some target frameworks on Ubuntu 22.04 -->
+    <PropertyGroup Condition="$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier.StartsWith('ubuntu.22.04'))">
+      <!-- disable .NET Core <= 3.1 (cannot run .NET Core <= 3.1) -->
+      <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'netcoreapp[0-9]\.[0-9]\s*;?', ''))</TargetFrameworks>
+      <!-- disable Mono (test runner not working?) -->
+      <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', 'net4[0-9]{1,2}\s*;?', ''))</TargetFrameworks>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <!-- trim start and end -->
-    <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', '^\s*;?', ''))</TargetFrameworks>
-    <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', ';\s*$', ''))</TargetFrameworks>
-  </PropertyGroup>
+    <PropertyGroup>
+      <!-- trim start and end -->
+      <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', '^\s*;?', ''))</TargetFrameworks>
+      <TargetFrameworks>$([System.Text.RegularExpressions.Regex]::Replace('$(TargetFrameworks)', ';\s*$', ''))</TargetFrameworks>
+    </PropertyGroup>
+  </Target>
 </Project>
