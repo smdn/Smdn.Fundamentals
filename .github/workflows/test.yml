@@ -13,7 +13,7 @@ on:
         type: string
 
       os:
-        description: "The OS label which run the test on. (ex: ubuntu-latest, windows-latest, macos-latest)"
+        description: "The OS label which run the test on. (ex: ubuntu-22.04, ubuntu-20.04, windows-latest, macos-latest)"
         required: false
         type: string
 
@@ -93,7 +93,7 @@ jobs:
         $os_list = $Env:RUNS_ON_OS_LIST_DEFAULT | ConvertFrom-Json
 
         if ( ! [string]::IsNullOrEmpty( '${{ inputs.os }}' ) ) {
-          $os_list = @('${{ inputs.os }}')
+          $os_list = "${{ inputs.os }}".Split(",", [System.StringSplitOptions]::TrimEntries -bor [System.StringSplitOptions]::RemoveEmptyEntries)
         }
 
         if ( $verbose ) {
