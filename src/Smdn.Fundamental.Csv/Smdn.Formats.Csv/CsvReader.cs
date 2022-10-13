@@ -181,8 +181,7 @@ public class CsvReader : StreamReader {
         if (!escaped && 1 <= field.Length && (field[0] == CR || field[0] == LF))
           break;
 
-        if (record == null)
-          record = new List<string>();
+        record ??= new List<string>();
 
         record.Add(field);
       }

@@ -19,8 +19,7 @@ internal class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
     while (line.TryGet(ref position, out var memory, advance: true)) {
       last = new HeaderFieldLineSegment(last, memory);
 
-      if (first == null)
-        first = last;
+      first ??= last;
     }
 
     return last;

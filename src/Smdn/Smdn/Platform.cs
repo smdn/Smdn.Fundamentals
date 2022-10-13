@@ -41,6 +41,7 @@ public static class Platform {
 
   public static string KernelName {
     get {
+#pragma warning disable IDE0074
       if (kernelName == null) {
         kernelName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture}"; // default
 
@@ -54,6 +55,7 @@ public static class Platform {
         }
 #endif
       }
+#pragma warning restore IDE0074
 
       return kernelName;
     }
@@ -63,6 +65,7 @@ public static class Platform {
 
   public static string DistributionName {
     get {
+#pragma warning disable IDE0074
       if (distributionName == null) {
         distributionName = RuntimeInformation.OSDescription; // default
 
@@ -76,6 +79,7 @@ public static class Platform {
         }
 #endif
       }
+#pragma warning restore IDE0074
 
       return distributionName;
     }

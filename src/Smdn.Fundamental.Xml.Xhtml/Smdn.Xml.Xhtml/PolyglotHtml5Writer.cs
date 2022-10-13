@@ -88,8 +88,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
   private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
   {
-    if (settings == null)
-      settings = defaultSettings;
+    settings ??= defaultSettings;
 
     var s = settings.Clone();
 

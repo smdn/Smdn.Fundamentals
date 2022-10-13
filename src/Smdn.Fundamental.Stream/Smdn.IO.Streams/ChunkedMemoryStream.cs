@@ -87,8 +87,7 @@ public sealed class ChunkedMemoryStream : Stream {
 
       // allocate
       while (ChunkSize <= length) {
-        if (chunk.Next == null)
-          chunk.Next = allocator(ChunkSize);
+        chunk.Next ??= allocator(ChunkSize);
 
         chunk = chunk.Next;
         chunkCount++;
