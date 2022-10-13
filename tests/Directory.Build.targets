@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <Import Project="..\src\PackageProvidedAPI.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)..\src\PackageProvidedAPI.targets" />
 
   <ItemGroup>
     <PackageReference Update="Smdn.Test.NUnit.Constraints" Version="1.0.0" />
