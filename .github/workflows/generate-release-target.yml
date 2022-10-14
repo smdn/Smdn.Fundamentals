@@ -211,6 +211,12 @@ jobs:
         # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
         dotnet nuget list source
 
+        # first, restore the direct dependencies (including Smdn.MSBuild.ProjectAssets.*)
+        dotnet restore `
+          --nologo `
+          ${{ steps.package-info.outputs.package_source_dir }}
+
+        # next, restore the dependencies by assets, etc.
         dotnet restore `
           --nologo `
           ${{ steps.package-info.outputs.package_source_dir }}
