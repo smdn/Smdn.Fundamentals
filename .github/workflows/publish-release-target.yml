@@ -120,6 +120,7 @@ jobs:
         }
 
         [string]$package_target_tag = $null
+        [string]$package_prevver_ref = $null
         [string]$package_id = $null
         [string]$package_id_with_version = $null
         [string]$package_version = $null
@@ -131,6 +132,10 @@ jobs:
 
         if ( ! $release_info_dict.TryGetValue( "package_target_tag", [ref]$package_target_tag ) ) {
           "::error::package_target_tag could not be determined."
+          exit 1
+        }
+        if ( ! $release_info_dict.TryGetValue( "package_prevver_ref", [ref]$package_prevver_ref ) ) {
+          "::error::package_prevver_ref could not be determined."
           exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "package_id", [ref]$package_id ) ) {
@@ -433,6 +438,20 @@ jobs:
           [void]$release_notes_body.Append($section_body.ToString())
         }
 
+        # append release notes content for a release
+        # ref: https://docs.github.com/ja/rest/releases/releases#generate-release-notes-content-for-a-release
+        $generated_release_notes = gh api `
+          --method POST `
+          -H 'Accept: application/vnd.github+json' `
+          '/repos/${{ github.repository_owner }}/${{ github.repository }}/releases/generate-notes' `
+          -f tag_name='${{ steps.release-info.outputs.release_tag }}' `
+          -f target_commitish='${{ steps.release-info.outputs.package_branch }}' `
+          -f previous_tag_name='${{ steps.release-info.outputs.package_prevver_ref' `
+          | ConvertFrom-Json
+
+        [void]$section_body.AppendLine("## Notes")
+        [void]$section_body.AppendLine($generated_release_notes.body)
+
         # write release notes file
         if ( $dry_run ) {
           $release_notes_body.ToString()
@@ -460,7 +479,6 @@ jobs:
           '--repo', '${{ github.repository }}',
           '--title', $release_title,
           '--target', '${{ steps.release-info.outputs.package_branch }}',
-          '--generate-notes',
           '--notes-file', $release_notes_file,
           ('${{ steps.release-info.outputs.release_draft }}' -ieq 'True' ? '--draft' : ''),
           '${{ steps.release-info.outputs.release_tag }}'
