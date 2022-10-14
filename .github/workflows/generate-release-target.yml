@@ -409,7 +409,7 @@ jobs:
           where Target -eq 'releasenote' |
           select -ExpandProperty FileName
 
-        if ( $files.Count -le 0 ) {
+        if ( -not $dry_run -and $files.Count -le 0 ) {
           "::warning::could not create gist with empty files"
           exit 0
         }
