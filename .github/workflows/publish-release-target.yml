@@ -173,6 +173,7 @@ jobs:
 
         # notice determined info
         "::notice::package_target_tag=${package_target_tag}"
+        "::notice::package_prevver_ref=${package_prevver_ref}"
         "::notice::package_id=${package_id}"
         "::notice::package_id_with_version=${package_id_with_version}"
         "::notice::package_version=${package_version}"
@@ -184,16 +185,17 @@ jobs:
         "::notice::precedent_workflow_run_id=${precedent_workflow_run_id}"
 
         # set outputs
-        ":package_target_tag=${package_target_tag}"                 >> $Env:GITHUB_OUTPUT
-        ":package_id=${package_id}"                                 >> $Env:GITHUB_OUTPUT
-        ":package_id_with_version=${package_id_with_version}"       >> $Env:GITHUB_OUTPUT
-        ":package_version=${package_version}"                       >> $Env:GITHUB_OUTPUT
-        ":package_branch=${package_branch}"                         >> $Env:GITHUB_OUTPUT
-        ":release_working_branch=${release_working_branch}"         >> $Env:GITHUB_OUTPUT
-        ":release_tag=${release_tag}"                               >> $Env:GITHUB_OUTPUT
-        ":release_draft=${release_draft}"                           >> $Env:GITHUB_OUTPUT
-        ":release_note_url=${release_note_url}"                     >> $Env:GITHUB_OUTPUT
-        ":precedent_workflow_run_id=${precedent_workflow_run_id}"   >> $Env:GITHUB_OUTPUT
+        "package_target_tag=${package_target_tag}"                  >> $Env:GITHUB_OUTPUT
+        "package_prevver_ref=${package_prevver_ref}"                >> $Env:GITHUB_OUTPUT
+        "package_id=${package_id}"                                  >> $Env:GITHUB_OUTPUT
+        "package_id_with_version=${package_id_with_version}"        >> $Env:GITHUB_OUTPUT
+        "package_version=${package_version}"                        >> $Env:GITHUB_OUTPUT
+        "package_branch=${package_branch}"                          >> $Env:GITHUB_OUTPUT
+        "release_working_branch=${release_working_branch}"          >> $Env:GITHUB_OUTPUT
+        "release_tag=${release_tag}"                                >> $Env:GITHUB_OUTPUT
+        "release_draft=${release_draft}"                            >> $Env:GITHUB_OUTPUT
+        "release_note_url=${release_note_url}"                      >> $Env:GITHUB_OUTPUT
+        "precedent_workflow_run_id=${precedent_workflow_run_id}"    >> $Env:GITHUB_OUTPUT
 
         [string]$artifact_name_nupkg = $null
 
