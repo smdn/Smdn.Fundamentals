@@ -409,6 +409,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.token_gist }}
       run: |
+        $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
         $description = '${{ steps.package-info.outputs.package_id }} ${{ steps.package-info.outputs.package_version }} Release Notes'
         $files = '${{ steps.extra-release-contents.outputs.contents }}' |
           ConvertFrom-Json |
@@ -420,10 +421,12 @@ jobs:
           exit 0
         }
 
-        $url = gh gist create `
-          --public `
-          --desc "${description}" `
-          @files
+        $url = $dry_run `
+          ? '(dry-run)' `
+          : gh gist create `
+            --public `
+            --desc "${description}" `
+            @files
 
         if ( [string]::IsNullOrEmpty($url) ) {
           "::error::could not create gist '${description}'"
