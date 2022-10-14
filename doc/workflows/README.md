@@ -48,9 +48,9 @@
       - prefixはworkflow input `release_tag_prefix`で変更可能、デフォルトは`releases/`
    2. release working branchを作成する
       - ブランチ名は`<release-tag>-<unixtime>`の形式で決定する
-      - ビルド時にAPIリストが作成される場合は、release working branchにcommitする
+      - ビルド時にAPIリストが作成・更新される場合は、release working branchにcommitする
       - 作成されない場合は空のcommitを追加する
-3. release  notesに含める内容を作成する
+3. release notesに含める内容を作成する
    1. nuspec, Change log, API changes, Full changesを取得しファイルに出力する
    2. nuspecはPull Request本文に含める
    3. 他の内容はgistにアップロードする
@@ -61,6 +61,10 @@
       2. リリース前の確認用にrelease target情報を含める
       3. nuspecの内容を含める
    3. Pull Requestを作成する
+5. 途中でキャンセルあるいは失敗した場合
+   1. 作成済みの場合は、リリース準備のPull Requestを削除する
+   2. 作成済みの場合は、release working branchを削除する
+   3. アップロード済みの場合は、gistに作成したrelease notesを削除する
 
 ### [publish-release-target.yml](/.github/workflows/publish-release-target.yml)
 このworkflowでは作成されたrelease targetをもとに、NuGet packageのpushと、GitHub Releaseの公開を行う。
@@ -86,7 +90,7 @@
       3. リリース情報を取得する
          1. release notesのgist URLを取得する
          2. release working branch名と、release tag名を取得する
-2. artifactとして保存されているNuGet packageをダウンロードし
+2. artifactとして保存されているNuGet packageの名前が空でない場合は、artifactをダウンロードし
    1. (`token_push_nuget_org`が設定されている場合) `nuget.org`にpushする
    2. (`token_push_github_packages` が設定されている場合)GitHub Packagesにpushする
 3. release tagを作成する (Pull Requestがmergeされた時点のHEADをポイントする)
@@ -95,6 +99,7 @@
    2. release notes fileを構成する
       1. gistからChange log, API changes, Full changesを取得し、release notesに含める
       2. このとき最大文字数を超える場合は、含めずに中断する
+      3. REST API `/repos/OWNER/REPO/releases/generate-notes`を実行、自動生成noteを取得し、release notesに含める
    3. 構成したrelease notes fileをもとにGitHub Releaseを作成・公開する
 5. 後処理を行う
    1. release target tagを削除する
@@ -104,10 +109,7 @@
 - API diffがバージョンのみとなる場合は省略する
 - Pull Requestの作成時にissue label `release_target_pr_label`が存在しない場合、PRの作成に失敗する `could not add label: 'release-target' not found`
 - workflowの途中でエラーが発生した場合、
-  - `generate-release-target.yml`: artifact, release working branch, release notesのgistを削除する
   - `publish-release-target.yml`: revert, retryできるか検討する
-- gh create releaseで自動選択される直前バージョンのタグ
-  - 現状、パッケージとは無関係に直近のタグが選択される。　`release.yml`等のカスタマイズの手段がない。
 - nupkg README.mdにgist release notesのURLを含める
   - URLは事前に決定不可能であるため、gistをuploadするタイミングを`dotnet pack`より前にする必要がある
     - API changesは`dotnet pack`で生成される
