@@ -249,6 +249,12 @@ jobs:
 
         exit 0
 
+    - name: Prepare for updating API list of ${{ steps.package-info.outputs.package_id }}
+      shell: pwsh
+      run: |
+        # delete existing API list files firstly to make the API list of reduced target frameworks removed from the history
+        git rm --ignore-unmatch '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/*.apilist.cs'
+
     - name: Pack ${{ steps.package-info.outputs.package_id }}
       id: pack
       shell: pwsh
