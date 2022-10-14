@@ -559,6 +559,14 @@ jobs:
       run: |
         false
 
+    - name: Dispose pull request
+      continue-on-error: true
+      if: inputs.dry_run != 'true' && (failure() || cancelled()) && steps.pullrequest.outputs.url != ''
+      env:
+        GH_TOKEN: ${{ secrets.token_pullrequest }}
+      run: |
+        gh pr close ${{ steps.pullrequest.outputs.url }} --delete-branch --comment 'This release target was cancelled or failed.'
+
     - name: Dispose release working branch
       continue-on-error: true
       if: inputs.dry_run != 'true' && (failure() || cancelled())
@@ -572,11 +580,3 @@ jobs:
         GH_TOKEN: ${{ secrets.token_gist }}
       run: |
         gh gist delete ${{ steps.releasenote.outputs.url }}
-
-    - name: Dispose pull request
-      continue-on-error: true
-      if: inputs.dry_run != 'true' && (failure() || cancelled()) && steps.pullrequest.outputs.url != ''
-      env:
-        GH_TOKEN: ${{ secrets.token_pullrequest }}
-      run: |
-        gh pr close ${{ steps.pullrequest.outputs.url }} --delete-branch --comment 'This release target was cancelled or failed.'
