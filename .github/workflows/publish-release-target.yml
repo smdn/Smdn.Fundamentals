@@ -179,23 +179,23 @@ jobs:
         "::notice::precedent_workflow_run_id=${precedent_workflow_run_id}"
 
         # set outputs
-        "::set-output name=package_target_tag::${package_target_tag}"
-        "::set-output name=package_id::${package_id}"
-        "::set-output name=package_id_with_version::${package_id_with_version}"
-        "::set-output name=package_version::${package_version}"
-        "::set-output name=package_branch::${package_branch}"
-        "::set-output name=release_working_branch::${release_working_branch}"
-        "::set-output name=release_tag::${release_tag}"
-        "::set-output name=release_draft::${release_draft}"
-        "::set-output name=release_note_url::${release_note_url}"
-        "::set-output name=precedent_workflow_run_id::${precedent_workflow_run_id}"
+        ":package_target_tag=${package_target_tag}"                 >> $Env:GITHUB_OUTPUT
+        ":package_id=${package_id}"                                 >> $Env:GITHUB_OUTPUT
+        ":package_id_with_version=${package_id_with_version}"       >> $Env:GITHUB_OUTPUT
+        ":package_version=${package_version}"                       >> $Env:GITHUB_OUTPUT
+        ":package_branch=${package_branch}"                         >> $Env:GITHUB_OUTPUT
+        ":release_working_branch=${release_working_branch}"         >> $Env:GITHUB_OUTPUT
+        ":release_tag=${release_tag}"                               >> $Env:GITHUB_OUTPUT
+        ":release_draft=${release_draft}"                           >> $Env:GITHUB_OUTPUT
+        ":release_note_url=${release_note_url}"                     >> $Env:GITHUB_OUTPUT
+        ":precedent_workflow_run_id=${precedent_workflow_run_id}"   >> $Env:GITHUB_OUTPUT
 
         [string]$artifact_name_nupkg = $null
 
         if ( $release_info_dict.TryGetValue( "artifact_name_nupkg", [ref] $artifact_name_nupkg ) ) {
           "::notice::artifact_name_nupkg=${artifact_name_nupkg}"
 
-          "::set-output name=artifact_name_nupkg::${artifact_name_nupkg}"
+          "artifact_name_nupkg=${artifact_name_nupkg}" >> $Env:GITHUB_OUTPUT
         }
         else {
           '::notice::No packages will be published.'
@@ -244,7 +244,7 @@ jobs:
             --source $NUGET_SOURCE \
             '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
-          echo "::set-output name=pushed::true"
+          echo "pushed=true" >> $GITHUB_OUTPUT
           echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
         fi
 
@@ -263,7 +263,7 @@ jobs:
             --source $NUGET_SOURCE \
             '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
-          echo "::set-output name=pushed::true"
+          echo "pushed=true" >> $GITHUB_OUTPUT
           echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
         fi
 
@@ -444,7 +444,7 @@ jobs:
         }
 
         # set outputs
-        "::set-output name=path::${release_notes_output_path}"
+        "path=${release_notes_output_path}" >> $Env:GITHUB_OUTPUT
 
     - name: Create release notes for ${{ steps.release-info.outputs.release_tag }}
       env:
