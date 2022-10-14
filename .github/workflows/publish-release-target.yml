@@ -231,41 +231,33 @@ jobs:
 
     - name: Publish package ${{ steps.release-info.outputs.artifact_name_nupkg }} to nuget.org
       id: push-nuget-org
-      if: ${{ !inputs.dry_run && env.NUGET_APIKEY != null }}
+      if: ${{ !inputs.dry_run && env.NUGET_APIKEY != null && steps.release-info.outputs.artifact_name_nupkg != '' }}
       env:
         NUGET_APIKEY: ${{ secrets.token_push_nuget_org }}
         NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
       run: |
-        if [[ -z '${{ steps.release-info.outputs.artifact_name_nupkg }}' ]]; then
-          echo "::notice::No packages was pushed to '$NUGET_SOURCE'."
-        else
-          dotnet nuget push \
-            --api-key $NUGET_APIKEY \
-            --source $NUGET_SOURCE \
-            '${{ steps.release-info.outputs.artifact_name_nupkg }}'
+        dotnet nuget push \
+          --api-key $NUGET_APIKEY \
+          --source $NUGET_SOURCE \
+          '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
-          echo "::set-output name=pushed::true"
-          echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
-        fi
+        echo "pushed=true" >> $GITHUB_OUTPUT
+        echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
 
     - name: Publish package ${{ steps.release-info.outputs.artifact_name_nupkg }} to GitHub packages
       id: push-github-packages
-      if: ${{ !inputs.dry_run && env.NUGET_APIKEY != null }}
+      if: ${{ !inputs.dry_run && env.NUGET_APIKEY != null && steps.release-info.outputs.artifact_name_nupkg != '' }}
       env:
         NUGET_APIKEY: ${{ secrets.token_push_github_packages }}
         NUGET_SOURCE: 'https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json'
       run: |
-        if [[ -z '${{ steps.release-info.outputs.artifact_name_nupkg }}' ]]; then
-          echo "::notice::No packages was pushed to '$NUGET_SOURCE'."
-        else
-          dotnet nuget push \
-            --api-key $NUGET_APIKEY \
-            --source $NUGET_SOURCE \
-            '${{ steps.release-info.outputs.artifact_name_nupkg }}'
+        dotnet nuget push \
+          --api-key $NUGET_APIKEY \
+          --source $NUGET_SOURCE \
+          '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
-          echo "::set-output name=pushed::true"
-          echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
-        fi
+        echo "pushed=true" >> $GITHUB_OUTPUT
+        echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
 
     - name: Delete package ${{ steps.release-info.outputs.artifact_name_nupkg }}
       if: ${{ steps.release-info.outputs.artifact_name_nupkg != '' }}
