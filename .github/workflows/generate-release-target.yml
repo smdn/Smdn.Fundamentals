@@ -218,9 +218,9 @@ jobs:
     - name: Build ${{ steps.package-info.outputs.package_id }}
       shell: pwsh
       run: |
-        # note: do not specify --no-restore option here since dependencies in build assets (Smdn.MSBuild.ProjectAssets.*) have to be restored
         dotnet build `
           --nologo `
+          --no-restore `
           --configuration Release `
           -consoleLoggerParameters:NoSummary `
           /p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }} `
