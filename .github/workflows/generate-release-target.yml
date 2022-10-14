@@ -435,7 +435,9 @@ jobs:
         "::notice::Created gist '${description}': ${url}"
 
         # set outputs
-        "url=${url}" >> $Env:GITHUB_OUTPUT
+        if (-not $dry_run) {
+          "url=${url}" >> $Env:GITHUB_OUTPUT
+        }
 
     - name: Create pull request from branch ${{ steps.release-info.outputs.working_branch }}
       id: pullrequest
@@ -556,6 +558,8 @@ jobs:
         "::notice::Created pull request for ${pr_title}: ${pr_url}"
 
         # set outputs
-        "url=${pr_url}" >> $Env:GITHUB_OUTPUT
+        if (-not $dry_run) {
+          "url=${pr_url}" >> $Env:GITHUB_OUTPUT
+        }
 
         exit 0
