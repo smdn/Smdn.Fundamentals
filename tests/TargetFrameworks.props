@@ -18,13 +18,15 @@ SPDX-License-Identifier: MIT
   >
     <!-- disable .NET Core (cannot run .NET Core on Ubuntu 22.04) -->
     <EnableTargetFrameworkNetCoreApp>false</EnableTargetFrameworkNetCoreApp>
+    <!-- disable Mono (test runner not working on local environment?) -->
+    <EnableTargetFrameworkNetFx>false</EnableTargetFrameworkNetFx>
   </PropertyGroup>
 
-  <!-- On Ubuntu 22.04 (except on GitHub Actions) -->
+  <!-- On Ubuntu 20.04 -->
   <PropertyGroup
-    Condition=" '$(GITHUB_ACTIONS)' != 'true' and $([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier.StartsWith('ubuntu.22.04')) "
+    Condition=" $([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier.StartsWith('ubuntu.20.04')) "
   >
-    <!-- disable Mono (test runner not working?) -->
-    <EnableTargetFrameworkNetFx>false</EnableTargetFrameworkNetFx>
+    <!-- enable Mono on GitHub Actions -->
+    <EnableTargetFrameworkNetFx Condition=" '$(GITHUB_ACTIONS)' == 'true' ">true</EnableTargetFrameworkNetFx>
   </PropertyGroup>
 </Project>
