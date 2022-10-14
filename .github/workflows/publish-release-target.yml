@@ -451,8 +451,8 @@ jobs:
           -f previous_tag_name='${{ steps.release-info.outputs.package_prevver_ref }}' `
           | ConvertFrom-Json
 
-        [void]$section_body.AppendLine("## Notes")
-        [void]$section_body.AppendLine($generated_release_notes.body)
+        [void]$release_notes_body.AppendLine("## Notes")
+        [void]$release_notes_body.AppendLine($generated_release_notes.body)
 
         # write release notes file
         if ( $dry_run ) {
