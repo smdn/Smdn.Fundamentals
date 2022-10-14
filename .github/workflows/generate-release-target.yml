@@ -558,6 +558,10 @@ jobs:
 
         exit 0
 
+    - name: Fail
+      run: |
+        false
+
     - name: Dispose release working branch
       continue-on-error: true
       if: inputs.dry_run != 'true' && (failure() || cancelled())
