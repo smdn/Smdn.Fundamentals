@@ -132,13 +132,13 @@ jobs:
           "::notice::package_source_dir=${package_source_dir}"
 
           # set outputs
-          "::set-output name=package_target_tag::${package_target_tag}"
-          "::set-output name=package_branch::${package_branch}"
-          "::set-output name=package_can_release::${package_can_release}"
-          "::set-output name=package_id::${package_id}"
-          "::set-output name=package_id_with_version::${package_id_with_version}"
-          "::set-output name=package_version::${package_version}"
-          "::set-output name=package_source_dir::${package_source_dir}"
+          "package_target_tag=${package_target_tag}"            >> $Env:GITHUB_OUTPUT
+          "package_branch=${package_branch}"                    >> $Env:GITHUB_OUTPUT
+          "package_can_release=${package_can_release}"          >> $Env:GITHUB_OUTPUT
+          "package_id=${package_id}"                            >> $Env:GITHUB_OUTPUT
+          "package_id_with_version=${package_id_with_version}"  >> $Env:GITHUB_OUTPUT
+          "package_version=${package_version}"                  >> $Env:GITHUB_OUTPUT
+          "package_source_dir=${package_source_dir}"            >> $Env:GITHUB_OUTPUT
         }
         else {
           "::error::tag name format mismatch: $package_target_tag"
@@ -156,7 +156,7 @@ jobs:
         }
 
         "::notice::package_prevver_ref=${package_prevver_ref}"
-        "::set-output name=package_prevver_ref::${package_prevver_ref}"
+        "package_prevver_ref=${package_prevver_ref}" >> $Env:GITHUB_OUTPUT
 
     - name: Determine the release info of ${{ steps.package-info.outputs.package_id_with_version }}
       id: release-info
@@ -170,8 +170,8 @@ jobs:
         "::notice::working_branch=${release_working_branch}"
 
         # set outputs
-        "::set-output name=tag::${release_tag}"
-        "::set-output name=working_branch::${release_working_branch}"
+        "tag=${release_tag}" >> $Env:GITHUB_OUTPUT
+        "working_branch=${release_working_branch}" >> $Env:GITHUB_OUTPUT
 
     - name: Set NUGET_PACKAGES
       shell: pwsh
@@ -274,9 +274,9 @@ jobs:
           "::notice::package '${expected_nupkg}' was generated successfully"
 
           # set outputs
-          "::set-output name=artifact_name_nupkg::${file_nupkg}"
-          "::set-output name=path_nupkg::${expected_nupkg}"
-          "::set-output name=path_nuspec::${expected_nuspec}"
+          "artifact_name_nupkg=${file_nupkg}" >> $Env:GITHUB_OUTPUT
+          "path_nupkg=${expected_nupkg}" >> $Env:GITHUB_OUTPUT
+          "path_nuspec=${expected_nuspec}" >> $Env:GITHUB_OUTPUT
         }
         else {
           "::error::'${expected_nupkg}' was not generated. Make sure that the Version/VersionPrefix/VersionSuffix in '${{ steps.package-info.outputs.package_id }}.csproj' are defined correctly."
@@ -389,7 +389,7 @@ jobs:
         "::notice::output: '${contents_json}'"
 
         # set outputs
-        "::set-output name=contents::${contents_json}"
+        "contents=${contents_json}" >> $Env:GITHUB_OUTPUT
 
     - name: Create release note for ${{ steps.package-info.outputs.package_id_with_version }}
       id: releasenote
