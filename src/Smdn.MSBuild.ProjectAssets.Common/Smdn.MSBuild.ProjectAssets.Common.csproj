@@ -31,14 +31,13 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <None Pack="false" Include="assets\**" Visible="true" />
-    <None Pack="false" Include="project\**" Visible="true" />
+    <None Include="assets\**" Pack="false" Visible="true" />
+    <None Include="project\**" Pack="false" Visible="true" />
 
-    <None Pack="true"  Include="assets\include.editorconfig"                  PackagePath="assets\.editorconfig" />
-
-    <None Pack="true"  Include="project\Project.props"                        PackagePath="project\" />
-    <None Pack="true"  Include="project\Project.targets"                      PackagePath="project\" />
-    <None Pack="true"  Include="project\targets\*.targets"                    PackagePath="project\targets\" />
-    <None Pack="true"  Include="project\images\package-icon.png"              PackagePath="project\images\" />
+    <None Include="assets\include.editorconfig"            Pack="true" PackagePath="assets\.editorconfig" />
+    <None Include="project\Project.props"                  Pack="true" PackagePath="project\" />
+    <None Include="project\Project.targets"                Pack="true" PackagePath="project\" />
+    <None Include="project\targets\*.targets"              Pack="true" PackagePath="project\targets\" />
+    <None Include="project\images\package-icon.png"        Pack="true" PackagePath="project\images\package-icon.png" />
   </ItemGroup>
 </Project>
