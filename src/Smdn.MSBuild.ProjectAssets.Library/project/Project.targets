@@ -6,12 +6,15 @@ SPDX-License-Identifier: MIT
   <!--
     API list generator
   -->
-  <ItemGroup Label="API list generator" Condition="'$(APIListEnableGenerating)' == 'true'">
+  <ItemGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
     <PackageReference
-      Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
+      Condition=" '$(APIListEnableGenerating)' == 'true' "
+      Update="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
       Version="[$(APIListPackageVersion)]"
-      PrivateAssets="all"
-      IncludeAssets="build"
+    />
+    <PackageReference
+      Condition=" '$(APIListEnableGenerating)' != 'true' "
+      Remove="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
     />
   </ItemGroup>
 

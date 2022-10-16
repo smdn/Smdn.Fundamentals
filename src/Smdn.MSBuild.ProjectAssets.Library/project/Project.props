@@ -74,4 +74,12 @@ SPDX-License-Identifier: MIT
     <!-- source link -->
     <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
   </ImportGroup>
+
+  <ItemGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
+    <PackageReference
+      Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
+      PrivateAssets="all"
+      IncludeAssets="build"
+    />
+  </ItemGroup>
 </Project>
