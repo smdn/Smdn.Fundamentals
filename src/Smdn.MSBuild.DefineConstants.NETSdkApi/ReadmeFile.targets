@@ -3,19 +3,9 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <PropertyGroup>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    <NupkgReadmeFileOutputPath>$(OutputPath)$(PackageReadmeFile)</NupkgReadmeFileOutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="$(NupkgReadmeFileOutputPath)" Pack="true" PackagePath="$(PackageReadmeFile)" />
-  </ItemGroup>
-
-  <!-- overrides the target GenerateNupkgReadmeFile from Smdn.MSBuild.ProjectAssets.Library -->
   <Target
-    Name="GenerateNupkgReadmeFile"
-    BeforeTargets="GenerateNuspec"
+    Name="GeneratePackageReadmeFileContentPostamble"
+    BeforeTargets="GenerateNupkgReadmeFile"
     DependsOnTargets="AddAllCompatibleFrameworkVersionConstants"
   >
     <CallTarget Targets="ListNETSdkAvailableApiName">
@@ -27,17 +17,15 @@ SPDX-License-Identifier: MIT
     </SortNETSdkAvailableApiSymbol>
 
     <ItemGroup>
-      <_NupkgReadmeLines Include="# $(AssemblyName)" />
-      <_NupkgReadmeLines Include="$(Description)" />
-      <_NupkgReadmeLines Include="## List of symbols to be defined by this package" />
-      <_NupkgReadmeLines Include="- `%(_SortedNETSdkAvailableApiSymbol.Identity)` (`%(_SortedNETSdkAvailableApiSymbol.TargetApiFullName)`)" />
+      <_ListOfSymbols Include="- `%(_SortedNETSdkAvailableApiSymbol.Identity)` (`%(_SortedNETSdkAvailableApiSymbol.TargetApiFullName)`)" />
     </ItemGroup>
 
-    <WriteLinesToFile
-      File="$(NupkgReadmeFileOutputPath)"
-      Lines="@(_NupkgReadmeLines)"
-      Overwrite="true"
-    />
+    <PropertyGroup>
+      <PackageReadmeFileContentPostamble><![CDATA[
+## List of symbols to be defined by this package
+@(_ListOfSymbols, '%0A')
+```]]></PackageReadmeFileContentPostamble>
+    </PropertyGroup>
   </Target>
 
   <UsingTask
