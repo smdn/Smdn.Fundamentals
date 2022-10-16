@@ -67,13 +67,7 @@ SPDX-License-Identifier: MIT
     <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.StyleCop.props" />
     <!-- source link -->
     <Import Project="$(MSBuildThisFileDirectory)SourceLink.props" />
+    <!-- API list generator -->
+    <Import Project="$(MSBuildThisFileDirectory)ApiListGenerator.props" />
   </ImportGroup>
-
-  <ItemGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
-    <PackageReference
-      Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
-      PrivateAssets="all"
-      IncludeAssets="build"
-    />
-  </ItemGroup>
 </Project>

@@ -3,45 +3,10 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <!--
-    API list generator
-  -->
-  <PropertyGroup Condition=" '$(IsTestProject)' != 'true' " Label="Properties for the library project">
-    <!-- API list default configurations -->
-    <APIListEnableGenerating Condition=" '$(Configuration)' == 'Release' ">true</APIListEnableGenerating>
-    <APIListOutputBaseDirectory Condition=" '$(APIListOutputBaseDirectory)' == '' ">api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion Condition=" '$(APIListPackageVersion)' == '' ">1.1.4</APIListPackageVersion>
-    <APIListLoadIntoReflectionOnlyContext Condition=" '$(APIListLoadIntoReflectionOnlyContext)' == '' ">false</APIListLoadIntoReflectionOnlyContext>
-  </PropertyGroup>
-
-  <ItemGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
-    <PackageReference
-      Condition=" '$(APIListEnableGenerating)' == 'true' "
-      Update="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
-      Version="[$(APIListPackageVersion)]"
-    />
-    <PackageReference
-      Condition=" '$(APIListEnableGenerating)' != 'true' "
-      Remove="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
-    />
-  </ItemGroup>
-
-  <PropertyGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
-    <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
-    <ExcludeRestorePackageImports
-      Condition=" '$(APIListEnableGenerating)' == 'true' and $([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '6.0')) "
-    >false</ExcludeRestorePackageImports>
-  </PropertyGroup>
-
-  <!--
-    using task from local build assembly instead of tasks from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks package reference
-    (consider using with `/nr:false`, see https://github.com/dotnet/msbuild/issues/7693)
-
-  <UsingTask
-    TaskName="GenerateApiList"
-    AssemblyFile="/path/to/build/Smdn.Reflection.ReverseGenerating/src/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks/bin/Release/net6.0/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks.dll"
-  />
-  -->
+  <ImportGroup Condition=" '$(IsTestProject)' != 'true' ">
+    <!-- API list generator -->
+    <Import Project="$(MSBuildThisFileDirectory)ApiListGenerator.targets" />
+  </ImportGroup>
 
   <!--
     PackageReadmeFile auto-generating
