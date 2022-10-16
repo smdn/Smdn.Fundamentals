@@ -6,6 +6,14 @@ SPDX-License-Identifier: MIT
   <!--
     API list generator
   -->
+  <PropertyGroup Condition=" '$(IsTestProject)' != 'true' " Label="Properties for the library project">
+    <!-- API list default configurations -->
+    <APIListEnableGenerating Condition=" '$(Configuration)' == 'Release' ">true</APIListEnableGenerating>
+    <APIListOutputBaseDirectory Condition=" '$(APIListOutputBaseDirectory)' == '' ">api-list\</APIListOutputBaseDirectory>
+    <APIListPackageVersion Condition=" '$(APIListPackageVersion)' == '' ">1.1.4</APIListPackageVersion>
+    <APIListLoadIntoReflectionOnlyContext Condition=" '$(APIListLoadIntoReflectionOnlyContext)' == '' ">false</APIListLoadIntoReflectionOnlyContext>
+  </PropertyGroup>
+
   <ItemGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
     <PackageReference
       Condition=" '$(APIListEnableGenerating)' == 'true' "

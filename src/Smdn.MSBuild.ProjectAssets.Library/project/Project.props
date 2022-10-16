@@ -32,12 +32,6 @@ SPDX-License-Identifier: MIT
     <EnablePackageValidation>true</EnablePackageValidation>
     <GeneratePackageReadmeFile>true</GeneratePackageReadmeFile>
     <Authors>smdn</Authors>
-
-    <!-- API list configurations -->
-    <APIListEnableGenerating Condition="'$(Configuration)' == 'Release'">true</APIListEnableGenerating>
-    <APIListOutputBaseDirectory Condition="'$(APIListOutputBaseDirectory)' == ''">api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion Condition="$(APIListPackageVersion) == ''">1.1.4</APIListPackageVersion>
-    <APIListLoadIntoReflectionOnlyContext>false</APIListLoadIntoReflectionOnlyContext>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' " Label="Properties for the test project">
