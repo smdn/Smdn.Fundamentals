@@ -26,9 +26,11 @@ SPDX-License-Identifier: MIT
     />
   </ItemGroup>
 
-  <PropertyGroup Label="API list generator" Condition="'$(APIListEnableGenerating)' == 'true'">
+  <PropertyGroup Label="API list generator" Condition=" '$(IsTestProject)' != 'true' ">
     <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
-    <ExcludeRestorePackageImports>false</ExcludeRestorePackageImports>
+    <ExcludeRestorePackageImports
+      Condition=" '$(APIListEnableGenerating)' == 'true' and $([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '6.0')) "
+    >false</ExcludeRestorePackageImports>
   </PropertyGroup>
 
   <!--
