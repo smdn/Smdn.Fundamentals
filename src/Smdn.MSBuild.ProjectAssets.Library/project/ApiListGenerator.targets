@@ -37,4 +37,54 @@ SPDX-License-Identifier: MIT
     AssemblyFile="/path/to/build/Smdn.Reflection.ReverseGenerating/src/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks/bin/Release/net6.0/Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks.dll"
   />
   -->
+
+  <Target
+    Name="GenerateAPIListOfPackage"
+    BeforeTargets="GenerateNuspec"
+    Condition=" '$(APIListEnableGenerating)' == 'true' "
+    Label="API list generator"
+  >
+    <ItemGroup>
+      <GenerateApiListTargets Include="%(NuGetPackInput.Identity)" Condition="
+        '%(NuGetPackInput.MSBuildSourceProjectFile)' == '$(MSBuildProjectFullPath)' and
+        '' != '%(NuGetPackInput.TargetFramework)' and
+        $([System.String]::new('%(NuGetPackInput.TargetPath)').EndsWith('.dll'))
+      ">
+        <OutputFilePath>$(APIListOutputBaseDirectory)$(AssemblyName)\$(AssemblyName)-%(NuGetPackInput.TargetFramework).apilist.cs</OutputFilePath>
+        <LoadIntoReflectionOnlyContext>$(APIListLoadIntoReflectionOnlyContext)</LoadIntoReflectionOnlyContext>
+      </GenerateApiListTargets>
+    </ItemGroup>
+
+    <PropertyGroup Condition="'$(GenerateApiList_GenerateNullableAnnotations)' == ''">
+      <GenerateApiList_GenerateNullableAnnotations>false</GenerateApiList_GenerateNullableAnnotations>
+      <GenerateApiList_GenerateNullableAnnotations
+        Condition="'$(Nullable)' == 'enable' or '$(Nullable)' == 'annotations'"
+      >true</GenerateApiList_GenerateNullableAnnotations>
+    </PropertyGroup>
+
+    <GenerateApiList
+      Assemblies="@(GenerateApiListTargets)"
+      GenerateLanguagePrimitiveType="true"
+      GenerateFullTypeName="false"
+      GenerateTypeNameWithDeclaringTypeName="true"
+      GenerateAttributeWithNamedArguments="false"
+      GenerateStaticMembersFirst="true"
+      GenerateValueWithDefaultLiteral="true"
+      GenerateNullableAnnotations="$(GenerateApiList_GenerateNullableAnnotations)"
+    >
+      <Output TaskParameter="GeneratedFiles" ItemName="_GeneratedApiListFiles" />
+    </GenerateApiList>
+
+    <ItemGroup>
+      <ApiListFiles Include="%(_GeneratedApiListFiles.Identity)">
+        <SourceAssembly>%(_GeneratedApiListFiles.SourceAssembly)</SourceAssembly>
+        <TargetFramework>$([System.IO.Path]::GetDirectoryName(
+          $([System.IO.Path]::GetRelativePath(
+            $([System.IO.Path]::GetFullPath('$(OutputPath)', '$(MSBuildProjectDirectory)')),
+            '%(_GeneratedApiListFiles.SourceAssembly)'
+          ))
+        ))</TargetFramework>
+      </ApiListFiles>
+    </ItemGroup>
+  </Target>
 </Project>
