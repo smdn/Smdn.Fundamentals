@@ -1,0 +1,19 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)ProjectSettings.NoAssemblies.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.0</TargetFramework>
+    <!-- requires no stdlib -->
+    <NoStdLib>true</NoStdLib>
+    <!-- disable build -->
+    <NoBuild>true</NoBuild>
+    <!-- supress generating .deps.json -->
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <!-- supress generating .AssemblyInfo.cs -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+</Project>
