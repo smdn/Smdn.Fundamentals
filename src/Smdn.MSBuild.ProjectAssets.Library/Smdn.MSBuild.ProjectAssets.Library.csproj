@@ -32,13 +32,9 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <None Pack="false" Include="assets\**" Visible="true" />
-    <None Pack="false" Include="buildTransitive\**" Visible="true" />
     <None Pack="false" Include="project\**" Visible="true" />
 
     <None Pack="true"  Include="assets\src\include.editorconfig"              PackagePath="assets\src\.editorconfig" />
-
-    <None Pack="true"  Include="buildTransitive\$(AssemblyName).props"        PackagePath="buildTransitive\" />
-    <None Pack="true"  Include="buildTransitive\$(AssemblyName).targets"      PackagePath="buildTransitive\" />
 
     <None Pack="true"  Include="project\Project.props"                        PackagePath="project\" />
     <None Pack="true"  Include="project\Project.targets"                      PackagePath="project\" />
