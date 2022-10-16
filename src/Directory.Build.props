@@ -3,10 +3,8 @@ SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <PropertyGroup>
+  <PropertyGroup Label="project assets">
     <SmdnBuildAssetRootDirectory>$(MSBuildThisFileDirectory)..\</SmdnBuildAssetRootDirectory>
-    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\doc\api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion>1.1.4</APIListPackageVersion>
     <!-- <_SmdnProjectAssets_ImportFromLocal Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == ''">true</_SmdnProjectAssets_ImportFromLocal> -->
   </PropertyGroup>
 
@@ -25,6 +23,11 @@ SPDX-License-Identifier: MIT
   <!--
   <Import Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.DefineConstants.NETSdkApi\build\Smdn.MSBuild.DefineConstants.NETSdkApi.targets" />
   -->
+
+  <PropertyGroup Label="API list generator configurations">
+    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\doc\api-list\</APIListOutputBaseDirectory>
+    <APIListPackageVersion>1.1.4</APIListPackageVersion>
+  </PropertyGroup>
 
   <PropertyGroup Label="package properties">
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
