@@ -209,6 +209,7 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="AppContext"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="FormattableString"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="MemoryStream.TryGetBuffer"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MethodInfoExtensions.GetBaseDefinition"/>
