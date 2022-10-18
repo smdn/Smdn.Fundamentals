@@ -195,8 +195,10 @@ public class RuntimeTests {
   [Test]
   public void SupportsIanaTimeZoneName()
   {
-    if (Runtime.IsRunningOnNetFx)
+    if (Runtime.IsRunningOnNetFx) {
       Assert.IsFalse(Runtime.SupportsIanaTimeZoneName); // .NET Framework
+      return;
+    }
 
     if (
       RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
@@ -204,6 +206,7 @@ public class RuntimeTests {
       Runtime.Version < new Version(5, 0)
     ) {
       Assert.IsFalse(Runtime.SupportsIanaTimeZoneName); // .NET Core on Windows
+      return;
     }
 
     Assert.IsTrue(Runtime.SupportsIanaTimeZoneName);
