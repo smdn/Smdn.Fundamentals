@@ -191,4 +191,21 @@ public class RuntimeTests {
         break;
     }
   }
+
+  [Test]
+  public void SupportsIanaTimeZoneName()
+  {
+    if (Runtime.IsRunningOnNetFx)
+      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName); // .NET Framework
+
+    if (
+      RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
+      Runtime.IsRunningOnNetCore &&
+      Runtime.Version < new Version(5, 0)
+    ) {
+      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName); // .NET Core on Windows
+    }
+
+    Assert.IsTrue(Runtime.SupportsIanaTimeZoneName);
+  }
 }
