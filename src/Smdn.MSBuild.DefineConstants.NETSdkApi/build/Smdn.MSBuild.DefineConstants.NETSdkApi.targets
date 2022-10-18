@@ -397,6 +397,21 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <!--
+      Applies to: NET47_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET47_OR_GREATER;NETSTANDARD1_6_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="AppContext.GetData"/>
+    </ItemGroup>
+
+    <!--
       Applies to: NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
     -->
     <PropertyGroup>
