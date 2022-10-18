@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET5_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NETSTANDARD1_3_OR_GREATER
+#define SYSTEM_RUNTIME_VERSIONING_FRAMEWORKNAME
+#endif
+
+#if SYSTEM_RUNTIME_VERSIONING_FRAMEWORKNAME
 using System;
 using System.Runtime.Versioning;
 using NUnit.Framework;
@@ -57,3 +62,4 @@ public class FrameworkNameUtilsTests {
       Assert.AreEqual(expectedOutput, moniker, nameof(moniker));
   }
 }
+#endif // SYSTEM_RUNTIME_VERSIONING_FRAMEWORKNAME
