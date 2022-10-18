@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_APPCONTEXT
+#endif
+
 using System;
 using System.Runtime.InteropServices;
 
@@ -22,8 +26,10 @@ partial class Runtime {
         //    https://learn.microsoft.com/ja-jp/dotnet/core/runtime-config/globalization#nls
         //    https://github.com/dotnet/runtime/blob/main/docs/design/features/framework-version-resolution.md
         var useNlsValue =
-          Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_USENLS") ??
-          AppContext.GetData("System.Globalization.UseNls");
+          Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_USENLS")
+#if SYSTEM_APPCONTEXT
+          ?? AppContext.GetData("System.Globalization.UseNls");
+#endif
 
         if (useNlsValue is string useNlsString && bool.TryParse(useNlsString, out var useNls) && useNls)
           return false; // .NET runtime is configured to use NLS
