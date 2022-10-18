@@ -1,7 +1,10 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_APPCONTEXT
+#if NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_ENVIRONMENT_GETENVIRONMENTVARIABLE
+#endif
+#if NET47_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_APPCONTEXT_GETDATA
 #endif
 
 using System;
@@ -25,11 +28,7 @@ partial class Runtime {
         // ref:
         //    https://learn.microsoft.com/ja-jp/dotnet/core/runtime-config/globalization#nls
         //    https://github.com/dotnet/runtime/blob/main/docs/design/features/framework-version-resolution.md
-        var useNlsValue =
-          Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_USENLS")
-#if SYSTEM_APPCONTEXT
-          ?? AppContext.GetData("System.Globalization.UseNls");
-#endif
+        var useNlsValue = GetRuntimeConfigurationSystemGlobalizationUseNls();
 
         if (useNlsValue is string useNlsString && bool.TryParse(useNlsString, out var useNls) && useNls)
           return false; // .NET runtime is configured to use NLS
@@ -38,5 +37,24 @@ partial class Runtime {
       // in all other cases, .NET runtime uses ICU, or IANA time zone name
       return true;
     }
+  }
+
+  private static object? GetRuntimeConfigurationSystemGlobalizationUseNls()
+  {
+#if SYSTEM_ENVIRONMENT_GETENVIRONMENTVARIABLE
+    var envvar = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_USENLS");
+
+    if (envvar is not null)
+      return envvar;
+#endif
+
+#if SYSTEM_APPCONTEXT_GETDATA
+    var configProperty = AppContext.GetData("System.Globalization.UseNls");
+
+    if (configProperty is not null)
+      return configProperty;
+#endif
+
+    return null;
   }
 }
