@@ -8,15 +8,13 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial class Runtime {
 #pragma warning restore IDE0040
-  private static readonly Version runtimeVersionNET5 = new(5, 0);
-
   // ref: https://learn.microsoft.com/ja-jp/dotnet/core/extensions/globalization-icu
   public static bool SupportsIanaTimeZoneName {
     get {
       if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
         if (IsRunningOnNetFx)
           return false; // .NET Framework uses NLS (National Language Support), or Windows time zone name
-        if (Version < runtimeVersionNET5)
+        if (Version < RuntimeVersionNET5)
           return false; // .NET Core on Windows uses NLS
 
         // .NET >= 5.0 on Windows uses ICU by default and can also be configured to use NLS

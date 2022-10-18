@@ -11,6 +11,8 @@ using System.Threading;
 namespace Smdn;
 
 public static partial class Runtime {
+  internal static readonly Version RuntimeVersionNET5 = new(5, 0);
+
   public static RuntimeEnvironment RuntimeEnvironment { get; }
   public static string Name { get; }
 
@@ -83,7 +85,7 @@ public static partial class Runtime {
 
     static string DetermineNetCoreRuntimeName()
 #if SYSTEM_ENVIRONMENT_VERSION
-      => 5 <= Environment.Version.Major ? ".NET" : ".NET Core";
+      => RuntimeVersionNET5 <= Environment.Version ? ".NET" : ".NET Core";
 #else
       => ".NET Core";
 #endif

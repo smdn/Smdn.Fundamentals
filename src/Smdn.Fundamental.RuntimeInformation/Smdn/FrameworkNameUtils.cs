@@ -14,8 +14,6 @@ using System.Runtime.Versioning;
 namespace Smdn;
 
 public static class FrameworkNameUtils {
-  private static readonly Version versionNET5 = new(5, 0);
-
   public static bool TryGetMoniker(
     string? frameworkName,
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
@@ -56,7 +54,7 @@ public static class FrameworkNameUtils {
 
     // TODO: frameworkName.Profile, osSpecifier
     switch (frameworkName.Identifier) {
-      case ".NETCoreApp" when versionNET5 <= frameworkName.Version:
+      case ".NETCoreApp" when Runtime.RuntimeVersionNET5 <= frameworkName.Version:
         frameworkMoniker = $"net{frameworkName.Version.Major}.{frameworkName.Version.Minor}";
         return true;
 
