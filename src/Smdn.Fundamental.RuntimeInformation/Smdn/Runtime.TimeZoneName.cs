@@ -28,9 +28,7 @@ partial class Runtime {
         // ref:
         //    https://learn.microsoft.com/ja-jp/dotnet/core/runtime-config/globalization#nls
         //    https://github.com/dotnet/runtime/blob/main/docs/design/features/framework-version-resolution.md
-        var useNlsValue = GetRuntimeConfigurationSystemGlobalizationUseNls();
-
-        if (useNlsValue is string useNlsString && bool.TryParse(useNlsString, out var useNls) && useNls)
+        if (GetRuntimeConfigurationSystemGlobalizationUseNls())
           return false; // .NET runtime is configured to use NLS
       }
 
@@ -39,22 +37,27 @@ partial class Runtime {
     }
   }
 
-  private static object? GetRuntimeConfigurationSystemGlobalizationUseNls()
+  private static bool GetRuntimeConfigurationSystemGlobalizationUseNls()
   {
 #if SYSTEM_ENVIRONMENT_GETENVIRONMENTVARIABLE
-    var envvar = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_USENLS");
+    var useNlsEnvVarString = Environment.GetEnvironmentVariable("DOTNET_SYSTEM_GLOBALIZATION_USENLS");
 
-    if (envvar is not null)
-      return envvar;
+    if (useNlsEnvVarString is not null) {
+      // 'true' or '1'
+      if (bool.TryParse(useNlsEnvVarString, out var useNlsEnvVarBool) && useNlsEnvVarBool)
+        return true;
+      if (int.TryParse(useNlsEnvVarString, out var useNlsEnvVarInt) && useNlsEnvVarInt == 1)
+        return true;
+    }
 #endif
 
 #if SYSTEM_APPCONTEXT_GETDATA
-    var configProperty = AppContext.GetData("System.Globalization.UseNls");
+    var useNlsConfig = AppContext.GetData("System.Globalization.UseNls");
 
-    if (configProperty is not null)
-      return configProperty;
+    if (useNlsConfig is string useNlsConfigString && bool.TryParse(useNlsConfigString, out var useNlsConfigBool) && useNlsConfigBool)
+      return true;
 #endif
 
-    return null;
+    return false;
   }
 }
