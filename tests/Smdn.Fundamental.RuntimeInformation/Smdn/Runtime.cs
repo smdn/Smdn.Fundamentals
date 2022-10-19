@@ -296,6 +296,11 @@ public class RuntimeTests {
   [Test]
   public void SupportsIanaTimeZoneName_UseNls_RuntimeConfiguration()
   {
+    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+      Assert.Ignore();
+      return;
+    }
+
     var processSupportsIanaTimeZoneName = bool.Parse(
       ExecutePrintRuntimeInformation(
         args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
@@ -303,16 +308,18 @@ public class RuntimeTests {
       ).TrimEnd()
     );
 
-    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-      Assert.IsFalse(processSupportsIanaTimeZoneName);
-    else
-      Assert.IsTrue(processSupportsIanaTimeZoneName);
+    Assert.IsFalse(processSupportsIanaTimeZoneName);
   }
 
   [TestCase("true")]
   [TestCase("1")]
   public void SupportsIanaTimeZoneName_UseNls_EnvironmentVariable(string value)
   {
+    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
+      Assert.Ignore();
+      return;
+    }
+
     var processSupportsIanaTimeZoneName = bool.Parse(
       ExecutePrintRuntimeInformation(
         args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
@@ -320,9 +327,6 @@ public class RuntimeTests {
       ).TrimEnd()
     );
 
-    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-      Assert.IsFalse(processSupportsIanaTimeZoneName);
-    else
-      Assert.IsTrue(processSupportsIanaTimeZoneName);
+    Assert.IsFalse(processSupportsIanaTimeZoneName);
   }
 }
