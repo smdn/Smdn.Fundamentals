@@ -10,6 +10,7 @@ using System.Threading;
 
 namespace Smdn;
 
+[System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static partial class Runtime {
   internal static readonly Version RuntimeVersionNET5 = new(5, 0);
 
