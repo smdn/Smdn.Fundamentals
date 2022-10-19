@@ -1,7 +1,7 @@
-// Smdn.Fundamental.RuntimeInformation.dll (Smdn.Fundamental.RuntimeInformation-3.0.1)
+// Smdn.Fundamental.RuntimeInformation.dll (Smdn.Fundamental.RuntimeInformation-3.0.2)
 //   Name: Smdn.Fundamental.RuntimeInformation
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+90ccc6113020a51c2d5326ab073866967dd8ec17
+//   AssemblyVersion: 3.0.2.0
+//   InformationalVersion: 3.0.2+2b7169e01e02e90474ecf7f27e6d37aaa0a385f9
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 #nullable enable annotations
@@ -24,6 +24,7 @@ namespace Smdn {
     public static bool TryGetMoniker(string? frameworkName, [NotNullWhen(true)] out string? frameworkMoniker) {}
   }
 
+  [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class Runtime {
     public static bool IsRunningOnDotNet5OrOver { get; }
     public static bool IsRunningOnMono { get; }
