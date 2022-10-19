@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Smdn.OperatingSystem;
@@ -47,11 +48,40 @@ public static class Shell {
   }
 
   public static int Execute(string command, out string stdout)
-    => Execute(command, out stdout, out _);
+    => Execute(
+      command: command,
+      arguments: null,
+      environmentVariables: null,
+      out stdout,
+      out _
+    );
 
   public static int Execute(string command, out string stdout, out string stderr)
+    => Execute(
+      command: command,
+      arguments: null,
+      environmentVariables: null,
+      out stdout,
+      out stderr
+    );
+
+#nullable enable
+  public static int Execute(
+    string command,
+    IEnumerable<string>? arguments,
+    IReadOnlyDictionary<string, string>? environmentVariables,
+    out string stdout,
+    out string stderr
+  )
   {
-    var psi = CreateProcessStartInfo(command, string.Empty);
+    var args = arguments is null ? string.Empty : string.Join(" ", arguments);
+    var psi = CreateProcessStartInfo(command, args);
+
+    if (environmentVariables is not null) {
+      foreach (var pair in environmentVariables) {
+        psi.EnvironmentVariables[pair.Key] = pair.Value;
+      }
+    }
 
     psi.RedirectStandardOutput = true;
     psi.RedirectStandardError = true;
@@ -65,5 +95,8 @@ public static class Shell {
 
     return process.ExitCode;
   }
+#pragma warning disable IDE0241
+#nullable restore
+#pragma warning restore IDE0241
 }
 #endif
