@@ -1,0 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net6.0;netcoreapp3.1;net48;net47;net45</TargetFrameworks>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\..\src\Smdn.Fundamental.RuntimeInformation\Smdn.Fundamental.RuntimeInformation.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(RuntimeConfigurationSystemGlobalizationUseNls)' != '' ">
+    <RuntimeHostConfigurationOption Include="System.Globalization.UseNls" Value="$(RuntimeConfigurationSystemGlobalizationUseNls)" />
+  </ItemGroup>
+</Project>

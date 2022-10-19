@@ -11,6 +11,39 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="print-runtime-information\**\*" />
+    <Compile Remove="print-runtime-information\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)..\..\src\Smdn.Fundamental.Shell\Smdn.Fundamental.Shell.csproj" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
   </ItemGroup>
+
+  <Target
+    Name="GeneratePrintRuntimeInformationProps"
+    BeforeTargets="BeforeBuild"
+    Condition="'$(TargetFramework)' != ''"
+  >
+    <PropertyGroup>
+      <PrintRuntimeInformationPropsOutputPath>$(IntermediateOutputPath)PrintRuntimeInformationProps.g.cs</PrintRuntimeInformationPropsOutputPath>
+      <PrintRuntimeInformationPropsCode><![CDATA[
+namespace Smdn%3B
+public static class PrintRuntimeInformationProps {
+  public static readonly string TargetFrameworkMoniker = @"$(TargetFramework)"%3B
+  public static readonly string ProjectPath = @"$(MSBuildThisFileDirectory)print-runtime-information\print-runtime-information.csproj"%3B
+}
+]]></PrintRuntimeInformationPropsCode>
+    </PropertyGroup>
+
+    <WriteLinesToFile
+      File="$(PrintRuntimeInformationPropsOutputPath)"
+      Lines="$(PrintRuntimeInformationPropsCode)"
+      Overwrite="true"
+    />
+
+    <ItemGroup>
+      <Compile Include="$(PrintRuntimeInformationPropsOutputPath)" Visible="false" AutoGen="true" />
+    </ItemGroup>
+  </Target>
 </Project>

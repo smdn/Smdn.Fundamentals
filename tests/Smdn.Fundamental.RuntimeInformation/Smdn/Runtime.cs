@@ -1,10 +1,13 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
+using Smdn.OperatingSystem;
 
 namespace Smdn;
 
@@ -196,19 +199,119 @@ public class RuntimeTests {
   public void SupportsIanaTimeZoneName()
   {
     if (Runtime.IsRunningOnNetFx) {
-      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName); // .NET Framework
+      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Framework does not support IANA time zone name");
       return;
     }
 
-    if (
-      RuntimeInformation.IsOSPlatform(OSPlatform.Windows) &&
-      Runtime.IsRunningOnNetCore &&
-      Runtime.Version < new Version(5, 0)
-    ) {
-      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName); // .NET Core on Windows
-      return;
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Runtime.IsRunningOnNetCore) {
+      if (Runtime.Version < new Version(5, 0)) {
+        // .NET Core
+        Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Core on Windows does not support IANA time zone name");
+        return;
+      }
+      else {
+        // .NET >= 5.0
+        Assert.Inconclusive(".NET on Windows supports IANA time zone name, but is configurable");
+        return;
+      }
     }
 
-    Assert.IsTrue(Runtime.SupportsIanaTimeZoneName);
+    Assert.IsTrue(Runtime.SupportsIanaTimeZoneName, "Mono or .NET on non-windows OS supports IANA time zone name");
+  }
+
+  private static string ExecutePrintRuntimeInformation(
+    string[] args,
+    string[] buildAdditionalProperties = null,
+    IReadOnlyDictionary<string, string> environmentVariables = null
+  )
+  {
+    int exitCode;
+    string stdout, stderr;
+
+    /*
+     * execute 'dotnet clean'
+     */
+    var cleanPrintRuntimeInformationCommandLineArgs = new List<string>() {
+      "clean", // dotnet clean
+      PrintRuntimeInformationProps.ProjectPath,
+      "--framework",
+      PrintRuntimeInformationProps.TargetFrameworkMoniker,
+    };
+
+    exitCode = Shell.Execute(
+      command: "dotnet",
+      arguments: cleanPrintRuntimeInformationCommandLineArgs,
+      environmentVariables: null,
+      out stdout,
+      out stderr
+    );
+
+    if (exitCode != 0)
+      throw new InvalidOperationException($"clean failed: (stdout: {stdout}, stderr: {stderr})");
+
+    /*
+     * execute 'dotnet run'
+     */
+    var runPrintRuntimeInformationCommandLineArgs = new List<string>() {
+      "run", // dotnet run
+      "--project",
+      PrintRuntimeInformationProps.ProjectPath,
+      "--nologo",
+      "--framework",
+      PrintRuntimeInformationProps.TargetFrameworkMoniker,
+    };
+
+    runPrintRuntimeInformationCommandLineArgs.AddRange(
+      (buildAdditionalProperties ?? Enumerable.Empty<string>()).Select(static p => "--property:" + p)
+    );
+
+    runPrintRuntimeInformationCommandLineArgs.Add("--");
+    runPrintRuntimeInformationCommandLineArgs.AddRange(args);
+
+    exitCode = Shell.Execute(
+      command: "dotnet",
+      arguments: runPrintRuntimeInformationCommandLineArgs,
+      environmentVariables: environmentVariables,
+      out stdout,
+      out stderr
+    );
+
+    if (exitCode != 0)
+      throw new InvalidOperationException($"run failed: (stdout: {stdout}, stderr: {stderr})");
+
+    return stdout;
+  }
+
+  [Test]
+  public void SupportsIanaTimeZoneName_UseNls_RuntimeConfiguration()
+  {
+    var processSupportsIanaTimeZoneName = bool.Parse(
+      ExecutePrintRuntimeInformation(
+        args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
+        buildAdditionalProperties: new[] { "RuntimeConfigurationSystemGlobalizationUseNls=true" }
+      )
+    );
+
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      Assert.IsFalse(processSupportsIanaTimeZoneName);
+    else
+      Assert.IsTrue(processSupportsIanaTimeZoneName);
+  }
+
+  [TestCase("true")]
+  [TestCase("1")]
+  public void SupportsIanaTimeZoneName_UseNls_EnvironmentVariable(string value)
+  {
+    var processSupportsIanaTimeZoneName = bool.Parse(
+      ExecutePrintRuntimeInformation(
+        args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
+        environmentVariables: new Dictionary<string, string>() { ["DOTNET_SYSTEM_GLOBALIZATION_USENLS"] = value }
+      )
+    );
+
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      Assert.IsFalse(processSupportsIanaTimeZoneName);
+    else
+      Assert.IsTrue(processSupportsIanaTimeZoneName);
   }
 }
