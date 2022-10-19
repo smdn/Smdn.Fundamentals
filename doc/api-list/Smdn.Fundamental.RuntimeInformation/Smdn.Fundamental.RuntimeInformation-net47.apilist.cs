@@ -2,13 +2,11 @@
 //   Name: Smdn.Fundamental.RuntimeInformation
 //   AssemblyVersion: 3.0.1.0
 //   InformationalVersion: 3.0.1+90ccc6113020a51c2d5326ab073866967dd8ec17
-//   TargetFramework: .NETCoreApp,Version=v6.0
+//   TargetFramework: .NETFramework,Version=v4.7
 //   Configuration: Release
 #nullable enable annotations
 
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Versioning;
 using Smdn;
 
 namespace Smdn {
@@ -17,11 +15,6 @@ namespace Smdn {
     NetCore = 3,
     NetFx = 1,
     Unknown = 0,
-  }
-
-  public static class FrameworkNameUtils {
-    public static bool TryGetMoniker(FrameworkName? frameworkName, [NotNullWhen(true)] out string? frameworkMoniker) {}
-    public static bool TryGetMoniker(string? frameworkName, [NotNullWhen(true)] out string? frameworkMoniker) {}
   }
 
   public static class Runtime {
