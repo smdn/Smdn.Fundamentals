@@ -289,7 +289,7 @@ public class RuntimeTests {
       ExecutePrintRuntimeInformation(
         args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
         buildAdditionalProperties: new[] { "RuntimeConfigurationSystemGlobalizationUseNls=true" }
-      )
+      ).TrimEnd()
     );
 
     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -306,7 +306,7 @@ public class RuntimeTests {
       ExecutePrintRuntimeInformation(
         args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
         environmentVariables: new Dictionary<string, string>() { ["DOTNET_SYSTEM_GLOBALIZATION_USENLS"] = value }
-      )
+      ).TrimEnd()
     );
 
     if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
