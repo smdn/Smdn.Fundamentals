@@ -63,22 +63,32 @@ public class RuntimeTests {
         Assert.IsTrue(Runtime.IsRunningOnNetFx);
         Assert.IsFalse(Runtime.IsRunningOnNetCore);
         Assert.IsFalse(Runtime.IsRunningOnMono);
+        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
         break;
+
       case RuntimeEnvironment.NetCore:
         Assert.IsTrue(Runtime.IsRunningOnNetCore);
         Assert.IsFalse(Runtime.IsRunningOnNetFx);
         Assert.IsFalse(Runtime.IsRunningOnMono);
+
+        if (RuntimeInformation.FrameworkDescription.Contains(".NET Core"))
+          Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
+        else
+          Assert.IsTrue(Runtime.IsRunningOnDotNet5OrOver);
         break;
+
       case RuntimeEnvironment.Mono:
         Assert.IsTrue(Runtime.IsRunningOnMono);
         Assert.IsFalse(Runtime.IsRunningOnNetFx);
         Assert.IsFalse(Runtime.IsRunningOnNetCore);
+        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
         break;
 
       default:
         Assert.IsFalse(Runtime.IsRunningOnMono);
         Assert.IsFalse(Runtime.IsRunningOnNetFx);
         Assert.IsFalse(Runtime.IsRunningOnNetCore);
+        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
         break;
     }
   }
@@ -198,26 +208,27 @@ public class RuntimeTests {
   [Test]
   public void SupportsIanaTimeZoneName()
   {
-    if (Runtime.IsRunningOnNetFx) {
-      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Framework does not support IANA time zone name");
-      return;
-    }
-
-    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) && Runtime.IsRunningOnNetCore) {
-      if (Runtime.Version < new Version(5, 0)) {
-        // .NET Core
-        Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Core on Windows does not support IANA time zone name");
-        return;
-      }
-      else {
-        // .NET >= 5.0
-        Assert.Inconclusive(".NET on Windows supports IANA time zone name, but is configurable");
-        return;
-      }
-    }
-
-    Assert.IsTrue(Runtime.SupportsIanaTimeZoneName, "Mono or .NET on non-windows OS supports IANA time zone name");
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+      SupportsIanaTimeZoneName_Windows();
+    else
+      SupportsIanaTimeZoneName_NonWindowsOS();
   }
+
+  private void SupportsIanaTimeZoneName_Windows()
+  {
+    if (Runtime.IsRunningOnNetFx)
+      // .NET Framework
+      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Framework does not support IANA time zone name");
+    else if (Runtime.IsRunningOnDotNet5OrOver)
+      // .NET >= 5.0
+      Assert.Inconclusive(".NET on Windows supports IANA time zone name, but is configurable");
+    else
+      // .NET Core
+      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Core on Windows does not support IANA time zone name");
+  }
+
+  private void SupportsIanaTimeZoneName_NonWindowsOS()
+    => Assert.IsTrue(Runtime.SupportsIanaTimeZoneName, "Mono or .NET on non-windows OS supports IANA time zone name");
 
   private static string ExecutePrintRuntimeInformation(
     string[] args,

@@ -96,6 +96,9 @@ public static partial class Runtime {
   public static bool IsRunningOnNetCore => RuntimeEnvironment == RuntimeEnvironment.NetCore;
   public static bool IsRunningOnMono => RuntimeEnvironment == RuntimeEnvironment.Mono;
 
+  public static bool IsRunningOnDotNet5OrOver
+    => RuntimeEnvironment == RuntimeEnvironment.NetCore && RuntimeVersionNET5 <= Version;
+
   public static string VersionString => RuntimeInformation.FrameworkDescription;
 
   private static Version? GetRuntimeVersion()

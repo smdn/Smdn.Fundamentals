@@ -21,7 +21,7 @@ partial class Runtime {
       if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
         if (IsRunningOnNetFx)
           return false; // .NET Framework uses NLS (National Language Support), or Windows time zone name
-        if (Version < RuntimeVersionNET5)
+        if (!IsRunningOnDotNet5OrOver)
           return false; // .NET Core on Windows uses NLS
 
         // .NET >= 5.0 on Windows uses ICU by default and can also be configured to use NLS
