@@ -60,35 +60,35 @@ public class RuntimeTests {
   {
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.NetFx:
-        Assert.IsTrue(Runtime.IsRunningOnNetFx);
-        Assert.IsFalse(Runtime.IsRunningOnNetCore);
-        Assert.IsFalse(Runtime.IsRunningOnMono);
-        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
+        Assert.IsTrue(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
+        Assert.IsFalse(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
+        Assert.IsFalse(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
+        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
 
       case RuntimeEnvironment.NetCore:
-        Assert.IsTrue(Runtime.IsRunningOnNetCore);
-        Assert.IsFalse(Runtime.IsRunningOnNetFx);
-        Assert.IsFalse(Runtime.IsRunningOnMono);
+        Assert.IsTrue(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
+        Assert.IsFalse(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
+        Assert.IsFalse(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
 
         if (RuntimeInformation.FrameworkDescription.Contains(".NET Core"))
-          Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
+          Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
         else
-          Assert.IsTrue(Runtime.IsRunningOnDotNet5OrOver);
+          Assert.IsTrue(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
 
       case RuntimeEnvironment.Mono:
-        Assert.IsTrue(Runtime.IsRunningOnMono);
-        Assert.IsFalse(Runtime.IsRunningOnNetFx);
-        Assert.IsFalse(Runtime.IsRunningOnNetCore);
-        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
+        Assert.IsTrue(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
+        Assert.IsFalse(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
+        Assert.IsFalse(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
+        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
 
       default:
-        Assert.IsFalse(Runtime.IsRunningOnMono);
-        Assert.IsFalse(Runtime.IsRunningOnNetFx);
-        Assert.IsFalse(Runtime.IsRunningOnNetCore);
-        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver);
+        Assert.IsFalse(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
+        Assert.IsFalse(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
+        Assert.IsFalse(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
+        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
     }
   }
