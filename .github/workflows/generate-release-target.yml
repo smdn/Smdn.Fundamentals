@@ -173,6 +173,12 @@ jobs:
         "tag=${release_tag}" >> $Env:GITHUB_OUTPUT
         "working_branch=${release_working_branch}" >> $Env:GITHUB_OUTPUT
 
+    - name: Prepare for updating API list of ${{ steps.package-info.outputs.package_id }}
+      run: |
+        # delete existing API list files firstly to make the API list of reduced target frameworks removed from the history
+        # this must be done before the generation of new API list, i.e. before running the target 'Build' or 'Pack'.
+        git rm --ignore-unmatch '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/*.apilist.cs'
+
     - name: Set NUGET_PACKAGES
       shell: pwsh
       run: |
@@ -248,11 +254,6 @@ jobs:
         }
 
         exit 0
-
-    - name: Prepare for updating API list of ${{ steps.package-info.outputs.package_id }}
-      run: |
-        # delete existing API list files firstly to make the API list of reduced target frameworks removed from the history
-        git rm --ignore-unmatch '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/*.apilist.cs'
 
     - name: Pack ${{ steps.package-info.outputs.package_id }}
       id: pack
