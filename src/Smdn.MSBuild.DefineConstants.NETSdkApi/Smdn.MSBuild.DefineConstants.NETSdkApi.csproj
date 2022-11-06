@@ -26,6 +26,16 @@ SPDX-License-Identifier: MIT
 
   <PropertyGroup Label="package properties">
     <PackageTags>MSBuild;DefineConstants;targets;build-assets</PackageTags>
+    <PackageReadmeFileContent><![CDATA[# $(AssemblyName)-$(VersionPrefix)
+$(Description)
+
+This package defines the build time symbols such as `SYSTEM_ARRAY_EMPTY`, according to the target framework that the corresponding APIs are available.
+
+## Notes for the projects targeting the .NET Framework
+The symbols defined in this package assume that the target framework is used in a project with .NET Framework 4.5 or later.
+
+As an example, the symbol `SYSTEM_ENUM_PARSE_OF_TENUM` corresponding to `System.Enum.TryParse<TEnum>()`, which is available on .NET Framework 4.0 and later, is assumed to be available on all versions of .NET Framework.
+]]></PackageReadmeFileContent>
   </PropertyGroup>
 
   <ItemGroup>
