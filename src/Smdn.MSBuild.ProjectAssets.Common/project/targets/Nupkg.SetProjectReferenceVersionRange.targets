@@ -5,7 +5,11 @@ SPDX-License-Identifier: MIT
 <Project>
   <!-- Replaces %(ProjectReferencesWithVersions.ProjectVersion) with custom defined metadata %(ProjectReference.VersionRange) -->
   <!-- ref: https://github.com/NuGet/Home/issues/5556 -->
-  <Target Name="Nupkg_SetProjectReferenceVersionRange" AfterTargets="_GetProjectReferenceVersions">
+  <Target
+    Name="Nupkg_SetProjectReferenceVersionRange"
+    BeforeTargets="GenerateNuspec"
+    DependsOnTargets="_GetProjectReferenceVersions"
+  >
     <ItemGroup>
       <_ProjectReferencesWithVersionsToUpdate
         Include="@(ProjectReference->'%(FullPath)')"
