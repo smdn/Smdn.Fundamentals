@@ -17,8 +17,13 @@ SPDX-License-Identifier: MIT
         Condition=" '%(ProjectReference.VersionRange)' != '' "
       />
 
-      <_ProjectReferencesWithVersions Remove="%(ProjectReferencesWithVersionsToUpdate.Identity)" />
-      <_ProjectReferencesWithVersions Include="%(ProjectReferencesWithVersionsToUpdate.Identity)" ProjectVersion="%(ProjectReferencesWithVersionsToUpdate.ProjectVersion)" />
+      <_ProjectReferencesWithVersions
+        Remove="%(_ProjectReferencesWithVersionsToUpdate.Identity)"
+      />
+      <_ProjectReferencesWithVersions
+        Include="%(_ProjectReferencesWithVersionsToUpdate.Identity)"
+        ProjectVersion="%(_ProjectReferencesWithVersionsToUpdate.ProjectVersion)"
+      />
     </ItemGroup>
   </Target>
 </Project>
