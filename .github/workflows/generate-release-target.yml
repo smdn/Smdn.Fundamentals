@@ -41,6 +41,12 @@ on:
         type: string
         default: "doc/api-list/"
 
+      workflow_runs_on:
+        description: "The OS label which run the workflow on. (ex: ubuntu-latest, ubuntu-22.04, ubuntu-20.04)"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
       dry_run:
         description: "If true, performs a trial run."
         required: false
@@ -67,7 +73,7 @@ env:
 
 jobs:
   generate-release-target:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.workflow_runs_on }}
     if: startsWith(inputs.release_target_tag_name, inputs.release_target_tag_prefix)
 
     steps:
