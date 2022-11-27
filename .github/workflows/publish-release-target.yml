@@ -171,17 +171,21 @@ jobs:
         }
 
         # notice determined info
-        "::notice::package_target_tag=${package_target_tag}"
-        "::notice::package_prevver_tag=${package_prevver_tag}"
-        "::notice::package_id=${package_id}"
-        "::notice::package_id_with_version=${package_id_with_version}"
-        "::notice::package_version=${package_version}"
-        "::notice::package_branch=${package_branch}"
-        "::notice::release_working_branch=${release_working_branch}"
-        "::notice::release_tag=${release_tag}"
-        "::notice::release_draft=${release_draft}"
-        "::notice::release_note_url=${release_note_url}"
-        "::notice::precedent_workflow_run_id=${precedent_workflow_run_id}"
+        "# Release target information" >> $Env:GITHUB_STEP_SUMMARY
+        "" >> $Env:GITHUB_STEP_SUMMARY
+        "| name | value |" >> $Env:GITHUB_STEP_SUMMARY
+        "| ---- | ----- |" >> $Env:GITHUB_STEP_SUMMARY
+        "| package_target_tag | `${package_target_tag}` |"                  >> $Env:GITHUB_STEP_SUMMARY
+        "| package_prevver_tag | `${package_prevver_tag}` |"                >> $Env:GITHUB_STEP_SUMMARY
+        "| package_id | `${package_id}` |"                                  >> $Env:GITHUB_STEP_SUMMARY
+        "| package_id_with_version | `${package_id_with_version}` |"        >> $Env:GITHUB_STEP_SUMMARY
+        "| package_version | `${package_version}` |"                        >> $Env:GITHUB_STEP_SUMMARY
+        "| package_branch | `${package_branch}` |"                          >> $Env:GITHUB_STEP_SUMMARY
+        "| release_working_branch | `${release_working_branch}` |"          >> $Env:GITHUB_STEP_SUMMARY
+        "| release_tag | `${release_tag}` |"                                >> $Env:GITHUB_STEP_SUMMARY
+        "| release_draft | `${release_draft}` |"                            >> $Env:GITHUB_STEP_SUMMARY
+        "| release_note_url | `${release_note_url}` |"                      >> $Env:GITHUB_STEP_SUMMARY
+        "| precedent_workflow_run_id | `${precedent_workflow_run_id}` |"    >> $Env:GITHUB_STEP_SUMMARY
 
         # set outputs
         "package_target_tag=${package_target_tag}"                  >> $Env:GITHUB_OUTPUT
@@ -199,12 +203,13 @@ jobs:
         [string]$artifact_name_nupkg = $null
 
         if ( $release_info_dict.TryGetValue( "artifact_name_nupkg", [ref] $artifact_name_nupkg ) ) {
-          "::notice::artifact_name_nupkg=${artifact_name_nupkg}"
+          "| artifact_name_nupkg | `${artifact_name_nupkg}` |" >> $Env:GITHUB_STEP_SUMMARY
 
           "artifact_name_nupkg=${artifact_name_nupkg}" >> $Env:GITHUB_OUTPUT
         }
         else {
-          '::notice::No packages will be published.'
+          "" >> $Env:GITHUB_STEP_SUMMARY
+          "No packages will be published." >> $Env:GITHUB_STEP_SUMMARY
         }
 
         # check working and package branch
@@ -248,7 +253,8 @@ jobs:
           '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
         echo "pushed=true" >> $GITHUB_OUTPUT
-        echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
+
+        echo "The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully." >> $GITHUB_STEP_SUMMARY
 
     - name: Publish package ${{ steps.release-info.outputs.artifact_name_nupkg }} to GitHub packages
       id: push-github-packages
@@ -263,7 +269,8 @@ jobs:
           '${{ steps.release-info.outputs.artifact_name_nupkg }}'
 
         echo "pushed=true" >> $GITHUB_OUTPUT
-        echo "::notice::The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully."
+
+        echo "The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully." >> $GITHUB_STEP_SUMMARY
 
     - name: Delete package ${{ steps.release-info.outputs.artifact_name_nupkg }}
       if: ${{ steps.release-info.outputs.artifact_name_nupkg != '' }}
@@ -456,14 +463,14 @@ jobs:
         [void]$release_notes_body.AppendLine($generated_release_notes.body)
 
         # write release notes file
-        if ( $dry_run ) {
-          $release_notes_body.ToString()
-        }
-        else {
+        if (-not $dry_run) {
           Out-File -FilePath $release_notes_output_path -Encoding utf8 -InputObject $release_notes_body.ToString()
 
-          "::notice::Create release notes file: '${release_notes_output_path}' ($($release_notes_body.Length) characters)"
+          "Created release notes file: '${release_notes_output_path}' ($($release_notes_body.Length) characters)" >> $Env:GITHUB_STEP_SUMMARY
         }
+
+        "" >> $Env:GITHUB_STEP_SUMMARY
+        $release_notes_body.ToString() >> $Env:GITHUB_STEP_SUMMARY
 
         # set outputs
         "path=${release_notes_output_path}" >> $Env:GITHUB_OUTPUT
@@ -496,7 +503,7 @@ jobs:
           $release_url = gh release create $release_create_options
         }
 
-        "::notice::Created release '${release_title}': ${release_url}"
+        "Created release: [${release_title}](${release_url})" >> $Env:GITHUB_STEP_SUMMARY
 
     - name: Delete release target tag ${{ steps.release-info.outputs.package_target_tag }}
       if: ${{ !inputs.dry_run }}
