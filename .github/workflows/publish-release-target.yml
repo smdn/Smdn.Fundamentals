@@ -434,7 +434,7 @@ jobs:
         # append release notes content for a release
         # ref: https://docs.github.com/ja/rest/releases/releases#generate-release-notes-content-for-a-release
         $release_api_generate_notes_options = @(
-          '-method', 'POST',
+          '--method', 'POST',
           '-H', 'Accept: application/vnd.github+json',
           '/repos/${{ github.repository }}/releases/generate-notes',
           '-f', 'tag_name=${{ steps.release-info.outputs.release_tag }}',
