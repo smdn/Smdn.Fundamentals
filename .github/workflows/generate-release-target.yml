@@ -129,13 +129,17 @@ jobs:
           $package_can_release = $Matches['suffix'] -ne "-unreleased"
 
           # notice determined info
-          "::notice::package_target_tag=${package_target_tag}"
-          "::notice::package_branch=${package_branch}"
-          "::notice::package_can_release=${package_can_release}"
-          "::notice::package_id=${package_id}"
-          "::notice::package_id_with_version=${package_id_with_version}"
-          "::notice::package_version=${package_version}"
-          "::notice::package_source_dir=${package_source_dir}"
+          "## Package information" >> $Env:GITHUB_STEP_SUMMARY
+          "" >> $Env:GITHUB_STEP_SUMMARY
+          "| name | value |" >> $Env:GITHUB_STEP_SUMMARY
+          "| ---- | ----- |" >> $Env:GITHUB_STEP_SUMMARY
+          "| package_target_tag | ``${package_target_tag}`` |"              >> $Env:GITHUB_STEP_SUMMARY
+          "| package_branch | ``${package_branch}`` |"                      >> $Env:GITHUB_STEP_SUMMARY
+          "| package_can_release | ``${package_can_release}`` |"            >> $Env:GITHUB_STEP_SUMMARY
+          "| package_id | ``${package_id}`` |"                              >> $Env:GITHUB_STEP_SUMMARY
+          "| package_id_with_version | ``${package_id_with_version}`` |"    >> $Env:GITHUB_STEP_SUMMARY
+          "| package_version | ``${package_version}`` |"                    >> $Env:GITHUB_STEP_SUMMARY
+          "| package_source_dir | ``${package_source_dir}`` |"              >> $Env:GITHUB_STEP_SUMMARY
 
           # set outputs
           "package_target_tag=${package_target_tag}"            >> $Env:GITHUB_OUTPUT
@@ -165,7 +169,11 @@ jobs:
           $package_prevver_ref = git rev-list HEAD | tail -1
         }
 
-        "::notice::package_prevver_ref=${package_prevver_ref}"
+        # notice determined info
+        "| package_prevver_ref | ``${package_prevver_ref}`` |" >> $Env:GITHUB_STEP_SUMMARY
+        "| package_prevver_tag | ``${package_prevver_tag}`` |" >> $Env:GITHUB_STEP_SUMMARY
+
+        # set outputs
         "package_prevver_ref=${package_prevver_ref}" >> $Env:GITHUB_OUTPUT
         "package_prevver_tag=${package_prevver_tag}" >> $Env:GITHUB_OUTPUT
 
@@ -177,8 +185,12 @@ jobs:
         $release_working_branch = "${release_tag}-$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds().ToString("D"))"
 
         # notice determined info
-        "::notice::tag=${release_tag}"
-        "::notice::working_branch=${release_working_branch}"
+        "## Release information" >> $Env:GITHUB_STEP_SUMMARY
+        "" >> $Env:GITHUB_STEP_SUMMARY
+        "| name | value |" >> $Env:GITHUB_STEP_SUMMARY
+        "| ---- | ----- |" >> $Env:GITHUB_STEP_SUMMARY
+        "| tag | ``${release_tag}`` |" >> $Env:GITHUB_STEP_SUMMARY
+        "| working_branch | ``${release_working_branch}`` |" >> $Env:GITHUB_STEP_SUMMARY
 
         # set outputs
         "tag=${release_tag}" >> $Env:GITHUB_OUTPUT
@@ -199,7 +211,7 @@ jobs:
           'packages'
         )
 
-        "::notice::NUGET_PACKAGES=${dir_nuget_packages}"
+        "::debug::NUGET_PACKAGES=${dir_nuget_packages}"
 
         "NUGET_PACKAGES=${dir_nuget_packages}" >> $Env:GITHUB_ENV
 
@@ -288,7 +300,12 @@ jobs:
           ( Test-Path -Path $expected_nupkg  -PathType Leaf ) -and
           ( Test-Path -Path $expected_nuspec -PathType Leaf )
         ) {
-          "::notice::package '${expected_nupkg}' was generated successfully"
+          "## :package: nupkg/nuspec" >> $Env:GITHUB_STEP_SUMMARY
+          "A package '${expected_nupkg}' was generated successfully." >> $Env:GITHUB_STEP_SUMMARY
+          "" >> $Env:GITHUB_STEP_SUMMARY
+          '```xml' >> $Env:GITHUB_STEP_SUMMARY
+          cat $expected_nuspec >> $Env:GITHUB_STEP_SUMMARY
+          '```' >> $Env:GITHUB_STEP_SUMMARY
 
           # set outputs
           "artifact_name_nupkg=${file_nupkg}" >> $Env:GITHUB_OUTPUT
@@ -322,7 +339,8 @@ jobs:
         fi
 
         if [ -z "$HAS_COMMIT" ]; then
-          echo "::notice::API list not generated or changed"
+          "## API list" >> $GITHUB_STEP_SUMMARY
+          "The API list was not generated or changed." >> $GITHUB_STEP_SUMMARY
 
           # commit an empty commit instead. it is required to create pull request.
           git commit --allow-empty -m "create release branch for ${{ steps.package-info.outputs.package_id_with_version }}"
@@ -403,7 +421,7 @@ jobs:
 
         $contents_json = $contents | where IsWritten | select Title,FileName,Target | ConvertTo-Json -Compress
 
-        "::notice::output: '${contents_json}'"
+        "::debug::output: '${contents_json}'"
 
         # set outputs
         "contents=${contents_json}" >> $Env:GITHUB_OUTPUT
@@ -435,12 +453,13 @@ jobs:
           exit 1
         }
 
-        "::notice::Created gist '${description}': ${url}"
-
         # set outputs
         if (-not $dry_run) {
           "url=${url}" >> $Env:GITHUB_OUTPUT
         }
+
+        "## Release notes" >> $Env:GITHUB_STEP_SUMMARY
+        "Created gist: [${description}](${url})" >> $Env:GITHUB_STEP_SUMMARY
 
     - name: Create pull request from branch ${{ steps.release-info.outputs.working_branch }}
       id: pullrequest
@@ -565,12 +584,13 @@ jobs:
           exit 1
         }
 
-        "::notice::Created pull request for ${pr_title}: ${pr_url}"
-
         # set outputs
         if (-not $dry_run) {
           "url=${pr_url}" >> $Env:GITHUB_OUTPUT
         }
+
+        "## Pull request" >> $Env:GITHUB_STEP_SUMMARY
+        "Created pull request: [${pr_title}](${pr_url})" >> $Env:GITHUB_STEP_SUMMARY
 
         exit 0
 
