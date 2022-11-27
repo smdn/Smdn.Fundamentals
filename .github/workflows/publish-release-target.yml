@@ -135,8 +135,7 @@ jobs:
           exit 1
         }
         if ( ! $release_info_dict.TryGetValue( "package_prevver_tag", [ref]$package_prevver_tag ) ) {
-          "::error::package_prevver_tag could not be determined."
-          exit 1
+          "::warning::package_prevver_tag could not be determined."
         }
         if ( ! $release_info_dict.TryGetValue( "package_id", [ref]$package_id ) ) {
           "::error::package_id could not be determined."
