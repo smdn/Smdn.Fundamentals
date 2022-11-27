@@ -158,7 +158,7 @@ jobs:
           $package_prevver_tag = $package_prevver_ref
         }
         else {
-          "::warning::could not find a tag of the previous version"
+          "::warning::could not find a tag of the previous version (${{ inputs.release_tag_prefix }}${package_id}-*)"
           $package_prevver_tag = $null
 
           # refer initial commit as previous version instead
@@ -470,7 +470,12 @@ jobs:
         [void]$pr_body.AppendLine('# Release target')
         [void]$pr_body.AppendLine('- package_target_tag: `${{ steps.package-info.outputs.package_target_tag }}`')
         [void]$pr_body.AppendLine('- package_prevver_ref: `${{ steps.package-info.outputs.package_prevver_ref }}`')
-        [void]$pr_body.AppendLine('- package_prevver_tag: `${{ steps.package-info.outputs.package_prevver_tag }}`')
+        if ('${{ steps.package-info.outputs.package_prevver_tag }}') {
+          [void]$pr_body.AppendLine('- package_prevver_tag: `${{ steps.package-info.outputs.package_prevver_tag }}`')
+        }
+        else {
+          [void]$pr_body.AppendLine('- package_prevver_tag: -')
+        }
         [void]$pr_body.AppendLine('- package_id: `${{ steps.package-info.outputs.package_id }}`')
         [void]$pr_body.AppendLine('- package_id_with_version: `${{ steps.package-info.outputs.package_id_with_version }}`')
         [void]$pr_body.AppendLine('- package_version: `${{ steps.package-info.outputs.package_version }}`')
