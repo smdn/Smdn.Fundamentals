@@ -154,8 +154,12 @@ jobs:
         # find the tag of the previous version
         $package_prevver_ref = git describe --tags --abbrev=0 --match "${{ inputs.release_tag_prefix }}${package_id}-*"
 
-        if ( -not $package_prevver_ref ) {
-          "::warning::could not find a tag of the previous version"
+        if ( $package_prevver_ref ) {
+          $package_prevver_tag = $package_prevver_ref
+        }
+        else {
+          "::warning::could not find a tag of the previous version (${{ inputs.release_tag_prefix }}${package_id}-*)"
+          $package_prevver_tag = $null
 
           # refer initial commit as previous version instead
           $package_prevver_ref = git rev-list HEAD | tail -1
@@ -163,6 +167,7 @@ jobs:
 
         "::notice::package_prevver_ref=${package_prevver_ref}"
         "package_prevver_ref=${package_prevver_ref}" >> $Env:GITHUB_OUTPUT
+        "package_prevver_tag=${package_prevver_tag}" >> $Env:GITHUB_OUTPUT
 
     - name: Determine the release info of ${{ steps.package-info.outputs.package_id_with_version }}
       id: release-info
@@ -463,6 +468,12 @@ jobs:
         [void]$pr_body.AppendLine('# Release target')
         [void]$pr_body.AppendLine('- package_target_tag: `${{ steps.package-info.outputs.package_target_tag }}`')
         [void]$pr_body.AppendLine('- package_prevver_ref: `${{ steps.package-info.outputs.package_prevver_ref }}`')
+        if ('${{ steps.package-info.outputs.package_prevver_tag }}') {
+          [void]$pr_body.AppendLine('- package_prevver_tag: `${{ steps.package-info.outputs.package_prevver_tag }}`')
+        }
+        else {
+          [void]$pr_body.AppendLine('- package_prevver_tag: -')
+        }
         [void]$pr_body.AppendLine('- package_id: `${{ steps.package-info.outputs.package_id }}`')
         [void]$pr_body.AppendLine('- package_id_with_version: `${{ steps.package-info.outputs.package_id_with_version }}`')
         [void]$pr_body.AppendLine('- package_version: `${{ steps.package-info.outputs.package_version }}`')
