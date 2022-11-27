@@ -129,17 +129,17 @@ jobs:
           $package_can_release = $Matches['suffix'] -ne "-unreleased"
 
           # notice determined info
-          "# Package information" >> $Env:GITHUB_STEP_SUMMARY
+          "## Package information" >> $Env:GITHUB_STEP_SUMMARY
           "" >> $Env:GITHUB_STEP_SUMMARY
           "| name | value |" >> $Env:GITHUB_STEP_SUMMARY
           "| ---- | ----- |" >> $Env:GITHUB_STEP_SUMMARY
-          "| package_target_tag | `${package_target_tag}` |"             >> $Env:GITHUB_STEP_SUMMARY
-          "| package_branch | `${package_branch}` |"                     >> $Env:GITHUB_STEP_SUMMARY
-          "| package_can_release | `${package_can_release}` |"           >> $Env:GITHUB_STEP_SUMMARY
-          "| package_id: |`${package_id}` |"                             >> $Env:GITHUB_STEP_SUMMARY
-          "| package_id_with_version | `${package_id_with_version}` |"   >> $Env:GITHUB_STEP_SUMMARY
-          "| package_version | `${package_version}` |"                   >> $Env:GITHUB_STEP_SUMMARY
-          "| package_source_dir | `${package_source_dir}` |"             >> $Env:GITHUB_STEP_SUMMARY
+          "| package_target_tag | ``${package_target_tag}`` |"              >> $Env:GITHUB_STEP_SUMMARY
+          "| package_branch | ``${package_branch}`` |"                      >> $Env:GITHUB_STEP_SUMMARY
+          "| package_can_release | ``${package_can_release}`` |"            >> $Env:GITHUB_STEP_SUMMARY
+          "| package_id | ``${p`ackage_id}`` |"                             >> $Env:GITHUB_STEP_SUMMARY
+          "| package_id_with_version | ``${package_id_with_version}`` |"    >> $Env:GITHUB_STEP_SUMMARY
+          "| package_version | ``${package_version}`` |"                    >> $Env:GITHUB_STEP_SUMMARY
+          "| package_source_dir | ``${package_source_dir}`` |"              >> $Env:GITHUB_STEP_SUMMARY
 
           # set outputs
           "package_target_tag=${package_target_tag}"            >> $Env:GITHUB_OUTPUT
@@ -170,8 +170,8 @@ jobs:
         }
 
         # notice determined info
-        "| package_prevver_ref | `${package_prevver_ref}` |" >> $Env:GITHUB_STEP_SUMMARY
-        "| package_prevver_tag | `${package_prevver_tag}` |" >> $Env:GITHUB_STEP_SUMMARY
+        "| package_prevver_ref | ``${package_prevver_ref}`` |" >> $Env:GITHUB_STEP_SUMMARY
+        "| package_prevver_tag | ``${package_prevver_tag}`` |" >> $Env:GITHUB_STEP_SUMMARY
 
         # set outputs
         "package_prevver_ref=${package_prevver_ref}" >> $Env:GITHUB_OUTPUT
@@ -185,7 +185,7 @@ jobs:
         $release_working_branch = "${release_tag}-$([DateTimeOffset]::UtcNow.ToUnixTimeSeconds().ToString("D"))"
 
         # notice determined info
-        "# Release information" >> $Env:GITHUB_STEP_SUMMARY
+        "## Release information" >> $Env:GITHUB_STEP_SUMMARY
         "" >> $Env:GITHUB_STEP_SUMMARY
         "| name | value |" >> $Env:GITHUB_STEP_SUMMARY
         "| ---- | ----- |" >> $Env:GITHUB_STEP_SUMMARY
@@ -300,7 +300,12 @@ jobs:
           ( Test-Path -Path $expected_nupkg  -PathType Leaf ) -and
           ( Test-Path -Path $expected_nuspec -PathType Leaf )
         ) {
+          "## :package: nupkg/nuspec" >> $Env:GITHUB_STEP_SUMMARY
           "A package '${expected_nupkg}' was generated successfully." >> $Env:GITHUB_STEP_SUMMARY
+          "" >> $Env:GITHUB_STEP_SUMMARY
+          '```xml' >> $Env:GITHUB_STEP_SUMMARY
+          cat $expected_nuspec >> $Env:GITHUB_STEP_SUMMARY
+          '```' >> $Env:GITHUB_STEP_SUMMARY
 
           # set outputs
           "artifact_name_nupkg=${file_nupkg}" >> $Env:GITHUB_OUTPUT
@@ -334,6 +339,7 @@ jobs:
         fi
 
         if [ -z "$HAS_COMMIT" ]; then
+          "## API list" >> $GITHUB_STEP_SUMMARY
           "The API list was not generated or changed." >> $GITHUB_STEP_SUMMARY
 
           # commit an empty commit instead. it is required to create pull request.
@@ -452,8 +458,8 @@ jobs:
           "url=${url}" >> $Env:GITHUB_OUTPUT
         }
 
-        "# Release note" >> $Env:GITHUB_STEP_SUMMARY
-        "Created gist: ['${description}'](${url})" >> $Env:GITHUB_STEP_SUMMARY
+        "## Release notes" >> $Env:GITHUB_STEP_SUMMARY
+        "Created gist: [${description}](${url})" >> $Env:GITHUB_STEP_SUMMARY
 
     - name: Create pull request from branch ${{ steps.release-info.outputs.working_branch }}
       id: pullrequest
@@ -583,7 +589,7 @@ jobs:
           "url=${pr_url}" >> $Env:GITHUB_OUTPUT
         }
 
-        "# Pull request" >> $Env:GITHUB_STEP_SUMMARY
+        "## Pull request" >> $Env:GITHUB_STEP_SUMMARY
         "Created pull request: [${pr_title}](${pr_url})" >> $Env:GITHUB_STEP_SUMMARY
 
         exit 0

@@ -171,21 +171,21 @@ jobs:
         }
 
         # notice determined info
-        "# Release target information" >> $Env:GITHUB_STEP_SUMMARY
+        "## :shipit: Release target information" >> $Env:GITHUB_STEP_SUMMARY
         "" >> $Env:GITHUB_STEP_SUMMARY
         "| name | value |" >> $Env:GITHUB_STEP_SUMMARY
         "| ---- | ----- |" >> $Env:GITHUB_STEP_SUMMARY
-        "| package_target_tag | `${package_target_tag}` |"                  >> $Env:GITHUB_STEP_SUMMARY
-        "| package_prevver_tag | `${package_prevver_tag}` |"                >> $Env:GITHUB_STEP_SUMMARY
-        "| package_id | `${package_id}` |"                                  >> $Env:GITHUB_STEP_SUMMARY
-        "| package_id_with_version | `${package_id_with_version}` |"        >> $Env:GITHUB_STEP_SUMMARY
-        "| package_version | `${package_version}` |"                        >> $Env:GITHUB_STEP_SUMMARY
-        "| package_branch | `${package_branch}` |"                          >> $Env:GITHUB_STEP_SUMMARY
-        "| release_working_branch | `${release_working_branch}` |"          >> $Env:GITHUB_STEP_SUMMARY
-        "| release_tag | `${release_tag}` |"                                >> $Env:GITHUB_STEP_SUMMARY
-        "| release_draft | `${release_draft}` |"                            >> $Env:GITHUB_STEP_SUMMARY
-        "| release_note_url | `${release_note_url}` |"                      >> $Env:GITHUB_STEP_SUMMARY
-        "| precedent_workflow_run_id | `${precedent_workflow_run_id}` |"    >> $Env:GITHUB_STEP_SUMMARY
+        "| package_target_tag | ``${package_target_tag}`` |"                  >> $Env:GITHUB_STEP_SUMMARY
+        "| package_prevver_tag | ``${package_prevver_tag}`` |"                >> $Env:GITHUB_STEP_SUMMARY
+        "| package_id | ``${package_id}`` |"                                  >> $Env:GITHUB_STEP_SUMMARY
+        "| package_id_with_version | ``${package_id_with_version}`` |"        >> $Env:GITHUB_STEP_SUMMARY
+        "| package_version | ``${package_version}`` |"                        >> $Env:GITHUB_STEP_SUMMARY
+        "| package_branch | ``${package_branch}`` |"                          >> $Env:GITHUB_STEP_SUMMARY
+        "| release_working_branch | ``${release_working_branch}`` |"          >> $Env:GITHUB_STEP_SUMMARY
+        "| release_tag | ``${release_tag}`` |"                                >> $Env:GITHUB_STEP_SUMMARY
+        "| release_draft | ``${release_draft}`` |"                            >> $Env:GITHUB_STEP_SUMMARY
+        "| release_note_url | ``${release_note_url}`` |"                      >> $Env:GITHUB_STEP_SUMMARY
+        "| precedent_workflow_run_id | ``${precedent_workflow_run_id}`` |"    >> $Env:GITHUB_STEP_SUMMARY
 
         # set outputs
         "package_target_tag=${package_target_tag}"                  >> $Env:GITHUB_OUTPUT
@@ -203,13 +203,13 @@ jobs:
         [string]$artifact_name_nupkg = $null
 
         if ( $release_info_dict.TryGetValue( "artifact_name_nupkg", [ref] $artifact_name_nupkg ) ) {
-          "| artifact_name_nupkg | `${artifact_name_nupkg}` |" >> $Env:GITHUB_STEP_SUMMARY
+          "| artifact_name_nupkg | ``${artifact_name_nupkg}`` |" >> $Env:GITHUB_STEP_SUMMARY
 
           "artifact_name_nupkg=${artifact_name_nupkg}" >> $Env:GITHUB_OUTPUT
         }
         else {
           "" >> $Env:GITHUB_STEP_SUMMARY
-          "No packages will be published." >> $Env:GITHUB_STEP_SUMMARY
+          ":warning: No packages will be published." >> $Env:GITHUB_STEP_SUMMARY
         }
 
         # check working and package branch
@@ -254,6 +254,7 @@ jobs:
 
         echo "pushed=true" >> $GITHUB_OUTPUT
 
+        echo "## :package: nuget.org" >> $GITHUB_STEP_SUMMARY
         echo "The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully." >> $GITHUB_STEP_SUMMARY
 
     - name: Publish package ${{ steps.release-info.outputs.artifact_name_nupkg }} to GitHub packages
@@ -270,6 +271,7 @@ jobs:
 
         echo "pushed=true" >> $GITHUB_OUTPUT
 
+        echo "## :package: GitHub packages" >> $GITHUB_STEP_SUMMARY
         echo "The package '${{ steps.release-info.outputs.artifact_name_nupkg }}' was pushed to '$NUGET_SOURCE' successfully." >> $GITHUB_STEP_SUMMARY
 
     - name: Delete package ${{ steps.release-info.outputs.artifact_name_nupkg }}
@@ -466,6 +468,7 @@ jobs:
         if (-not $dry_run) {
           Out-File -FilePath $release_notes_output_path -Encoding utf8 -InputObject $release_notes_body.ToString()
 
+          "## :page_with_curl: Release notes" >> $Env:GITHUB_STEP_SUMMARY
           "Created release notes file: '${release_notes_output_path}' ($($release_notes_body.Length) characters)" >> $Env:GITHUB_STEP_SUMMARY
         }
 
@@ -503,6 +506,7 @@ jobs:
           $release_url = gh release create $release_create_options
         }
 
+        "## :sparkles: Released"
         "Created release: [${release_title}](${release_url})" >> $Env:GITHUB_STEP_SUMMARY
 
     - name: Delete release target tag ${{ steps.release-info.outputs.package_target_tag }}
