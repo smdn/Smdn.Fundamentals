@@ -1,7 +1,7 @@
-// Smdn.Null.dll (Smdn.Null-0.0.2)
+// Smdn.Null.dll (Smdn.Null-0.0.3)
 //   Name: Smdn.Null
-//   AssemblyVersion: 0.0.2.0
-//   InformationalVersion: 0.0.2+bf91bebab5fbfedcf0878c801af7d3af727c94d5
+//   AssemblyVersion: 0.0.3.0
+//   InformationalVersion: 0.0.3+d6465796d4e819d6b9001200c26e3a0018d3d022
 //   TargetFramework: 
 //   Configuration: Release
 
