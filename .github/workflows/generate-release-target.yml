@@ -347,8 +347,8 @@ jobs:
         fi
 
         if [ -z "$HAS_COMMIT" ]; then
-          "## API list" >> $GITHUB_STEP_SUMMARY
-          "The API list was not generated or has no changes." >> $GITHUB_STEP_SUMMARY
+          echo "## API list" >> $GITHUB_STEP_SUMMARY
+          echo "The API list was not generated or has no changes." >> $GITHUB_STEP_SUMMARY
 
           # commit an empty commit instead. it is required to create pull request.
           git commit --allow-empty -m "create release branch for ${{ steps.package-info.outputs.package_id_with_version }}"
