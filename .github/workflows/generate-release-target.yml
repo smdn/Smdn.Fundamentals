@@ -331,16 +331,24 @@ jobs:
         git checkout -b '${{ steps.release-info.outputs.working_branch }}'
 
         # attempt to add changes of API list
-        if git add '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/*.apilist.cs'; then
-          # commit API list changes to release working branch
-          if git commit -m "update API list ${{ steps.package-info.outputs.package_id_with_version }}"; then
-            HAS_COMMIT=true
+        API_LIST_DIR='${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}'
+
+        if [ -d "$API_LIST_DIR" ]; then
+          if git add "${API_LIST_DIR}/*.apilist.cs"; then
+            # commit API list changes to release working branch
+            if git commit -m "update API list ${{ steps.package-info.outputs.package_id_with_version }}"; then
+              HAS_COMMIT=true
+            fi
+          else
+            echo "The API list has no changes."
           fi
+        else
+          echo "The API list was not generated."
         fi
 
         if [ -z "$HAS_COMMIT" ]; then
           "## API list" >> $GITHUB_STEP_SUMMARY
-          "The API list was not generated or changed." >> $GITHUB_STEP_SUMMARY
+          "The API list was not generated or has no changes." >> $GITHUB_STEP_SUMMARY
 
           # commit an empty commit instead. it is required to create pull request.
           git commit --allow-empty -m "create release branch for ${{ steps.package-info.outputs.package_id_with_version }}"
