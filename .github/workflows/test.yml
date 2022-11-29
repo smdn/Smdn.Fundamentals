@@ -287,11 +287,13 @@ jobs:
       env:
         VSTEST_CONNECTION_TIMEOUT: ${{ steps.test-timeouts.outputs.timeout_vstest_connection }}
       run: |
+        # workaround for the vstest issue (https://github.com/microsoft/vstest/issues/4014)
+        cd $([System.IO.Path]::GetDirectoryName('${{ matrix.project.PathToTestProject }}'))
+
         dotnet test `
           --nologo `
           --no-restore `
           --no-build `
           --verbosity quiet `
           --blame-hang-timeout '${{ steps.test-timeouts.outputs.timeout_hang }}' `
-          ${{ inputs.extra_options_common }} `
-          ${{ matrix.project.PathToTestProject }}
+          ${{ inputs.extra_options_common }}
