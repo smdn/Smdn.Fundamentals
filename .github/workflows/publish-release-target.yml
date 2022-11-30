@@ -467,15 +467,22 @@ jobs:
         # write release notes file
         if (-not $dry_run) {
           Out-File -FilePath $release_notes_output_path -Encoding utf8 -InputObject $release_notes_body.ToString()
-
-          "## :page_with_curl: Release notes" >> $Env:GITHUB_STEP_SUMMARY
-          "Created release notes file, total $($release_notes_body.Length) characters)." >> $Env:GITHUB_STEP_SUMMARY
-          "-----" >> $Env:GITHUB_STEP_SUMMARY
         }
 
-        "" >> $Env:GITHUB_STEP_SUMMARY
-        $release_notes_body.ToString() >> $Env:GITHUB_STEP_SUMMARY
-        "-----" >> $Env:GITHUB_STEP_SUMMARY
+        "## :page_with_curl: Release notes" >> $Env:GITHUB_STEP_SUMMARY
+        "Created release notes file (total $($release_notes_body.Length) characters)." >> $Env:GITHUB_STEP_SUMMARY
+        ''      >> $Env:GITHUB_STEP_SUMMARY
+        '-----' >> $Env:GITHUB_STEP_SUMMARY
+        ''      >> $Env:GITHUB_STEP_SUMMARY
+        [System.Text.RegularExpressions.Regex]::Replace(
+          $release_notes_body.ToString(),
+          '^#',
+          '###',
+          [System.Text.RegularExpressions.RegexOptions]::MultiLine
+        ) >> $Env:GITHUB_STEP_SUMMARY
+        ''      >> $Env:GITHUB_STEP_SUMMARY
+        '-----' >> $Env:GITHUB_STEP_SUMMARY
+        ''      >> $Env:GITHUB_STEP_SUMMARY
 
         # set outputs
         "path=${release_notes_output_path}" >> $Env:GITHUB_OUTPUT
