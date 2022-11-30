@@ -538,7 +538,7 @@ jobs:
 
           "::debug::pr_body.legnth: ${pr_body.Length} pr_body_appendix.length: ${pr_body_appendix.Length}"
 
-          if ($pr_body_max_chars -lt ($pr_body.Length + $pr_body_appendix.Length)) {
+          if ($true -or ($pr_body_max_chars -lt ($pr_body.Length + $pr_body_appendix.Length))) {
             "::warning::The length of the PR body exceeds the maximum character count. (Title: ${pr_body_content.Title})"
 
             if (-not $pr_body_content_has_redirected_to_step_summary) {
