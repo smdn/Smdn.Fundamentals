@@ -372,6 +372,7 @@ jobs:
             Target = "pullrequest"
             FileName = 'release-target.nuspec'
             Content = Get-Content -Path ${{ steps.pack.outputs.path_nuspec }}
+            OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
             # this entry is expected to be shown as a gist's summary
@@ -379,6 +380,7 @@ jobs:
             Target = "releasenote"
             FileName = 'releasenote-${{ steps.package-info.outputs.package_id_with_version }}.md'
             Content = '${{ steps.package-info.outputs.package_branch }}/${{ steps.package-info.outputs.package_id_with_version }}'
+            OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
             Title = "Change log"
@@ -389,6 +391,7 @@ jobs:
               --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' `
               -- `
               ${{ steps.package-info.outputs.package_source_dir }}
+            OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
             Title = "API changes"
@@ -399,6 +402,7 @@ jobs:
               ${{ github.sha }}..${{ steps.release-info.outputs.working_branch }} `
               -- `
               '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/'
+            OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
             Title = "Full changes"
@@ -412,6 +416,7 @@ jobs:
               ${{ steps.package-info.outputs.package_prevver_ref }}..HEAD `
               -- `
               ${{ steps.package-info.outputs.package_source_dir }}
+            OutputToSummaryIfExceededMaxChars = $false
           }
         )
 
@@ -427,7 +432,7 @@ jobs:
           }
         }
 
-        $contents_json = $contents | where IsWritten | select Title,FileName,Target | ConvertTo-Json -Compress
+        $contents_json = $contents | where IsWritten | select Title,FileName,Target,OutputToSummaryIfExceededMaxChars | ConvertTo-Json -Compress
 
         "::debug::output: '${contents_json}'"
 
@@ -478,6 +483,10 @@ jobs:
         $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
         $pr_title = 'Release ${{ steps.package-info.outputs.package_branch }}/${{ steps.package-info.outputs.package_id_with_version }}'
 
+        # limit the maximum number of characters in the PR body text to the value below
+        # 'pull request create failed: GraphQL: Body is too long (maximum is 65536 characters) (createPullRequest)'
+        Set-Variable -Name pr_body_max_chars -Value 60000 -Option Constant
+
         #
         # construct pull request body
         # note: beware of changing output format on this section; these information will be parsed and referenced by subsequent workflows
@@ -516,19 +525,40 @@ jobs:
 
         [void]$pr_body.AppendLine()
 
+        #
         # append extra contents
+        #
+        $pr_body_content_has_redirected_to_step_summary = $false
         $pr_body_contents = '${{ steps.extra-release-contents.outputs.contents }}' |
           ConvertFrom-Json |
           where Target -eq 'pullrequest'
 
-        foreach ($content in $pr_body_contents) {
-          $ext = [System.IO.Path]::GetExtension($($content.FileName)).TrimStart('.')
+        foreach ($pr_body_content in $pr_body_contents) {
+          $pr_body_appendix = New-Object System.Text.StringBuilder -ArgumentList 2048
 
-          [void]$pr_body.AppendLine("# $($content.Title)")
+          [void]$pr_body_appendix.AppendLine("# $($pr_body_content.Title)")
+          [void]$pr_body_appendix.AppendLine('```' + [System.IO.Path]::GetExtension($($pr_body_content.FileName)).TrimStart('.'))
+          [void]$pr_body_appendix.AppendLine($(Get-Content -Path $pr_body_content.FileName) -join "`n")
+          [void]$pr_body_appendix.AppendLine('```')
 
-          [void]$pr_body.AppendLine('```' + $ext)
-          [void]$pr_body.AppendLine($(Get-Content -Path $content.FileName) -join "`n")
-          [void]$pr_body.AppendLine('```')
+          "::debug::pr_body.legnth: $($pr_body.Length) pr_body_appendix.length: $($pr_body_appendix.Length)"
+
+          if ($pr_body_max_chars -lt ($pr_body.Length + $pr_body_appendix.Length)) {
+            "::warning::The length of the PR body exceeds the maximum character count. (Title: $($pr_body_content.Title))"
+
+            if ($pr_body_content.OutputToSummaryIfExceededMaxChars -ieq 'true') {
+              if (-not $pr_body_content_has_redirected_to_step_summary) {
+                "## Pull request extra content" >> $Env:GITHUB_STEP_SUMMARY
+
+                $pr_body_content_has_redirected_to_step_summary = $true
+              }
+
+              '##' + $pr_body_appendix.ToString() >> $Env:GITHUB_STEP_SUMMARY
+            }
+          }
+          else {
+            [void]$pr_body.Append($pr_body_appendix.ToString())
+          }
         }
 
         #
