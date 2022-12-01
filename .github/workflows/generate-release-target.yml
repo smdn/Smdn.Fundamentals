@@ -447,10 +447,14 @@ jobs:
       run: |
         $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
         $description = '${{ steps.package-info.outputs.package_id }} ${{ steps.package-info.outputs.package_version }} Release Notes'
-        $files = '${{ steps.extra-release-contents.outputs.contents }}' |
+
+        # 'select' returns single scalar value if number of selected item is zero, so converts to an array again
+        $files = @(
+          '${{ steps.extra-release-contents.outputs.contents }}' |
           ConvertFrom-Json |
           where Target -eq 'releasenote' |
           select -ExpandProperty FileName
+        )
 
         if ( -not $dry_run -and $files.Count -le 0 ) {
           "::warning::could not create gist with empty files"
