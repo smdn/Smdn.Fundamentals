@@ -266,14 +266,14 @@ jobs:
             expression={$_.Groups['error'].Value}
           }
 
-        if ( 0 -lt ($build_error_codes).Count){
-          "::error::build errors: $(($build_error_codes | Select-Object -ExpandProperty ErrorCode) -join ', ')"
-        }
-
         # ignore the build error NETSDK1085; occurs if <NoBuild> is specified in project file.
         if ( 0 -lt ($build_error_codes | Where-Object -Property ErrorCode -NE 'NETSDK1085').Count ) {
           # build error occurred other than NETSDK1085
+          "::error::unexpected build errors: $(($build_error_codes | Select-Object -ExpandProperty ErrorCode) -join ', ')"
           exit 1
+        }
+        elseif ( 0 -lt ($build_error_codes).Count ) {
+          "::warning::build errors: $(($build_error_codes | Select-Object -ExpandProperty ErrorCode) -join ', ')"
         }
 
         exit 0
