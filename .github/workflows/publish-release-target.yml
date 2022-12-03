@@ -450,6 +450,8 @@ jobs:
           '-f', 'target_commitish=${{ steps.release-info.outputs.package_branch }}'
         )
 
+        $package_prevver_tag = '${{ steps.release-info.outputs.package_prevver_tag }}'
+
         if ( $package_prevver_tag ) {
           $release_api_generate_notes_options += @(
             '-f', 'previous_tag_name=${{ steps.release-info.outputs.package_prevver_tag }}'
