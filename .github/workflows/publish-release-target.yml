@@ -232,7 +232,7 @@ jobs:
         }
 
     - name: Download package ${{ steps.release-info.outputs.artifact_name_nupkg }}
-      if: ${{ steps.release-info.outputs.artifact_name_nupkg != '' }}
+      if: ${{ !inputs.dry_run && steps.release-info.outputs.artifact_name_nupkg != '' }}
       uses: dawidd6/action-download-artifact@v2.24.0
       with:
         github_token: ${{ secrets.token_repo }}
