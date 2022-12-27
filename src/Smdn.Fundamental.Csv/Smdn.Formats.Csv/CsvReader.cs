@@ -59,17 +59,18 @@ public class CsvReader : StreamReader {
   private const char CR = '\r';
   private const char LF = '\n';
   private const string CRLF = "\r\n";
+  private static readonly string CRString = "\r";
+  private static readonly string LFString = "\n";
 
-  private string ReadField(out bool escaped)
+  private string ReadField(out bool escaped, out bool isEndOfLine)
   {
     escaped = false;
+    isEndOfLine = false;
 
-    var field = new StringBuilder();
     var c = Read();
 
     if (c == -1)
-      // EOS
-      return null;
+      return null; // EOS
 
     var ch = (char)c;
 
@@ -84,18 +85,24 @@ public class CsvReader : StreamReader {
     }
     else if (ch == CR) {
       // unescaped newline
+      isEndOfLine = true;
+
       if (LF == Peek()) {
         Read(); // CRLF
         return CRLF;
       }
       else {
-        return new string(LF, 1);
+        return LFString;
       }
     }
     else if (ch == LF) {
       // unescaped newline
-      return new string(CR, 1);
+      isEndOfLine = true;
+
+      return CRString;
     }
+
+    var field = new StringBuilder();
 
     if (escaped) {
       // escaped field
@@ -173,20 +180,18 @@ public class CsvReader : StreamReader {
 
     try {
       for (; ; ) {
-        var field = ReadField(out var escaped);
+        var field = ReadField(out var escaped, out var isEndOfLine);
 
-        if (field == null)
+        if (field is null)
           return record; // end of stream
-
-        if (!escaped && 1 <= field.Length && (field[0] == CR || field[0] == LF))
-          break;
 
         record ??= new List<string>();
 
+        if (isEndOfLine)
+          return record;
+
         record.Add(field);
       }
-
-      return record;
     }
     catch (InvalidDataException ex) {
       throw new InvalidDataException($"format exception after '{string.Join(", ", record)}'", ex);
