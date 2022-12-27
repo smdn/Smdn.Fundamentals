@@ -58,9 +58,6 @@ public class CsvReader : StreamReader {
 
   private const char CR = '\r';
   private const char LF = '\n';
-  private const string CRLF = "\r\n";
-  private static readonly string CRString = "\r";
-  private static readonly string LFString = "\n";
 
   private string ReadField(out bool isDelimited, out bool isEndOfLine)
   {
@@ -72,107 +69,111 @@ public class CsvReader : StreamReader {
     if (c == -1)
       return null; // EOS
 
-    var ch = (char)c;
-    var escaped = false;
+    var firstChar = (char)c;
 
     // switch by first character
-    if (ch == Quotator) {
-      // escaped column
-      escaped = true;
-    }
-    else if (ch == Delimiter) {
+    if (firstChar == Delimiter) {
       // empty column
       isDelimited = true;
       return string.Empty;
     }
-    else if (ch == CR) {
-      // unescaped newline
+    else if (firstChar == CR) {
+      // unescaped CR/CRLF
       isEndOfLine = true;
 
       if (LF == Peek()) {
         Read(); // CRLF
-        return CRLF;
+        return string.Empty;
       }
       else {
-        return LFString;
+        return string.Empty;
       }
     }
-    else if (ch == LF) {
-      // unescaped newline
+    else if (firstChar == LF) {
+      // unescaped LF
       isEndOfLine = true;
-
-      return CRString;
+      return string.Empty;
     }
+
+    return firstChar == Quotator
+      ? ReadQuotedField(out isDelimited)
+      : ReadUnquoatedField(firstChar, out isDelimited);
+  }
+
+  private string ReadQuotedField(out bool isDelimited)
+  {
+    isDelimited = false;
 
     var field = new StringBuilder();
+    var quot = 1;
+    var prev = Quotator;
 
-    if (escaped) {
-      // escaped field
-      var quot = 1;
-      var prev = ch;
+    for (; ; ) {
+      var c = Peek();
 
-      for (; ; ) {
-        c = Peek();
+      if (c == -1)
+        break;
 
-        if (c == -1)
-          break;
+      var ch = (char)c;
 
-        ch = (char)c;
-
-        if (ch == Quotator) {
-          if (quot == 0) {
-            quot = 1;
-            if (prev == Quotator)
-              field.Append((char)Read());
-            else
-              throw new InvalidDataException($"invalid quotation after '{field}'");
-          }
-          else {
-            quot = 0;
-            Read();
-          }
+      if (ch == Quotator) {
+        if (quot == 0) {
+          quot = 1;
+          if (prev == Quotator)
+            field.Append((char)Read());
+          else
+            throw new InvalidDataException($"invalid quotation after '{field}'");
         }
         else {
-          if (quot == 0 && ch == Delimiter) {
-            Read();
-            isDelimited = true;
-            break;
-          }
-          else if (quot == 0 && (ch == CR || ch == LF)) {
-            break;
-          }
-          else {
-            field.Append((char)Read());
-          }
+          quot = 0;
+          Read();
         }
-
-        prev = ch;
       }
-    }
-    else {
-      // unescaped field
-      field.Append(ch);
-
-      for (; ; ) {
-        c = Peek();
-
-        if (c == -1)
-          break;
-
-        ch = (char)c;
-
-        if (ch == Delimiter) {
+      else {
+        if (quot == 0 && ch == Delimiter) {
           Read();
           isDelimited = true;
           break;
         }
-        else if (ch is CR or LF) {
+
+        if (quot == 0 && ch is CR or LF)
           break;
-        }
-        else {
-          field.Append((char)Read());
-        }
+
+        field.Append((char)Read());
       }
+
+      prev = ch;
+    }
+
+    return field.ToString();
+  }
+
+  private string ReadUnquoatedField(char first, out bool isDelimited)
+  {
+    isDelimited = false;
+
+    var field = new StringBuilder();
+
+    field.Append(first);
+
+    for (; ; ) {
+      var c = Peek();
+
+      if (c == -1)
+        break;
+
+      var ch = (char)c;
+
+      if (ch == Delimiter) {
+        Read();
+        isDelimited = true;
+        break;
+      }
+
+      if (ch is CR or LF)
+        break;
+
+      field.Append((char)Read());
     }
 
     return field.ToString();
