@@ -1,5 +1,5 @@
 [![GitHub license](https://img.shields.io/github/license/smdn/Smdn.Fundamentals)](https://github.com/smdn/Smdn.Fundamentals/blob/main/LICENSE.txt)
-[![tests/main](https://img.shields.io/github/workflow/status/smdn/Smdn.Fundamentals/Run%20tests/main?label=tests%2Fmain)](https://github.com/smdn/Smdn.Fundamentals/actions/workflows/run-test.yml)
+[![tests/main](https://img.shields.io/github/actions/workflow/status/smdn/Smdn.Fundamentals/run-test.yml?branch=main&label=tests%2Fmain)](https://github.com/smdn/Smdn.Fundamentals/actions/workflows/run-test.yml)
 [![CodeQL](https://github.com/smdn/Smdn.Fundamentals/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/smdn/Smdn.Fundamentals/actions/workflows/codeql-analysis.yml)
 
 # Smdn.Fundamentals
