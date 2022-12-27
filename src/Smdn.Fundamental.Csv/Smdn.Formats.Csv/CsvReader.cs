@@ -178,6 +178,8 @@ public class CsvReader : StreamReader {
     return field.ToString();
   }
 
+  private static readonly IReadOnlyList<string> EmptyLineRecord = new string[] { string.Empty };
+
   public IReadOnlyList<string> ReadRecord()
   {
     List<string> record = null;
@@ -188,27 +190,16 @@ public class CsvReader : StreamReader {
       for (; ; ) {
         var field = ReadField(out var isDelimited, out var isEndOfLine);
 
-        // is end of stream?
-        if (field is null) {
-          if (isPrefFieldEndsWithDelimiter) {
-            record ??= new List<string>(capacity: 1);
-            record.Add(string.Empty); // append empty field
-          }
+        if (field is null /*end of stream*/ || isEndOfLine) {
+          if (isPrefFieldEndsWithDelimiter)
+            record.Add(string.Empty); // append empty field (record must be allocated already at this time)
 
-          return record;
+          return isEndOfLine
+            ? record ?? EmptyLineRecord
+            : record;
         }
 
         record ??= new List<string>();
-
-        if (isEndOfLine) {
-          if (isPrefFieldEndsWithDelimiter)
-            record.Add(string.Empty); // append empty field
-          else if (record.Count == 0) // empty line
-            record.Add(string.Empty);
-
-          return record;
-        }
-
         record.Add(field);
 
         isPrefFieldEndsWithDelimiter = isDelimited;
