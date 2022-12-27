@@ -237,16 +237,16 @@ public class CsvReaderTests {
   [Test]
   public void TestReadRecord_FieldEnclosedByQuotator_DQuote()
   {
-    var input = @"""aaa"",""bbb"",""ccc""";
+    var input = @""""",""a"",""bb"",""ccc""";
 
     using var reader = CreateReader(input);
 
     var records = reader.ReadRecord();
 
     Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
+    Assert.AreEqual(4, records.Count, "line #1");
     CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
+      new[] { "", "a", "bb", "ccc" },
       records,
       "line #1"
     );
@@ -259,7 +259,7 @@ public class CsvReaderTests {
   [Test]
   public void TestReadRecord_FieldEnclosedByQuotator_SpecificQuotator()
   {
-    var input = @"%aaa%,%bbb%,%ccc%";
+    var input = @"%%,%""%,%a%,%bb%,%ccc%";
 
     using var reader = CreateReader(input);
 
@@ -268,9 +268,9 @@ public class CsvReaderTests {
     var records = reader.ReadRecord();
 
     Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
+    Assert.AreEqual(5, records.Count, "line #1");
     CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
+      new[] { "", "\"", "a", "bb", "ccc" },
       records,
       "line #1"
     );
@@ -285,16 +285,16 @@ public class CsvReaderTests {
   [TestCase("\r\n")]
   public void TestReadRecord_FieldContainingLineBreaks(string lineBreak)
   {
-    var input = $"\"aaa\",\"b{lineBreak}bb\",\"ccc\"";
+    var input = $"\"{lineBreak}\",\"aaa\",\"b{lineBreak}bb\",\"ccc\"";
 
     using var reader = CreateReader(input);
 
     var records = reader.ReadRecord();
 
     Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
+    Assert.AreEqual(4, records.Count, "line #1");
     CollectionAssert.AreEqual(
-      new[] { "aaa", $"b{lineBreak}bb", "ccc" },
+      new[] { lineBreak, "aaa", $"b{lineBreak}bb", "ccc" },
       records,
       "line #1"
     );
@@ -308,7 +308,7 @@ public class CsvReaderTests {
   [TestCase('%')]
   public void TestReadRecord_FieldContainingQuotetor(char quotator)
   {
-    var input = $"{quotator}aaa{quotator},{quotator}b{quotator}{quotator}bb{quotator},{quotator}ccc{quotator}";
+    var input = $"{quotator}{quotator}{quotator}{quotator},{quotator}aaa{quotator},{quotator}b{quotator}{quotator}bb{quotator},{quotator}ccc{quotator}";
 
     using var reader = CreateReader(input);
 
@@ -317,9 +317,9 @@ public class CsvReaderTests {
     var records = reader.ReadRecord();
 
     Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
+    Assert.AreEqual(4, records.Count, "line #1");
     CollectionAssert.AreEqual(
-      new[] { "aaa", $"b{quotator}bb", "ccc" },
+      new[] { $"{quotator}", "aaa", $"b{quotator}bb", "ccc" },
       records,
       "line #1"
     );
