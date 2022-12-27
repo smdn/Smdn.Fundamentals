@@ -62,9 +62,9 @@ public class CsvReader : StreamReader {
   private static readonly string CRString = "\r";
   private static readonly string LFString = "\n";
 
-  private string ReadField(out bool escaped, out bool isEndOfLine)
+  private string ReadField(out bool isDelimited, out bool isEndOfLine)
   {
-    escaped = false;
+    isDelimited = false;
     isEndOfLine = false;
 
     var c = Read();
@@ -73,6 +73,7 @@ public class CsvReader : StreamReader {
       return null; // EOS
 
     var ch = (char)c;
+    var escaped = false;
 
     // switch by first character
     if (ch == Quotator) {
@@ -81,6 +82,7 @@ public class CsvReader : StreamReader {
     }
     else if (ch == Delimiter) {
       // empty column
+      isDelimited = true;
       return string.Empty;
     }
     else if (ch == CR) {
@@ -133,6 +135,7 @@ public class CsvReader : StreamReader {
         else {
           if (quot == 0 && ch == Delimiter) {
             Read();
+            isDelimited = true;
             break;
           }
           else if (quot == 0 && (ch == CR || ch == LF)) {
@@ -160,6 +163,7 @@ public class CsvReader : StreamReader {
 
         if (ch == Delimiter) {
           Read();
+          isDelimited = true;
           break;
         }
         else if (ch is CR or LF) {
@@ -179,18 +183,35 @@ public class CsvReader : StreamReader {
     List<string> record = null;
 
     try {
-      for (; ; ) {
-        var field = ReadField(out var escaped, out var isEndOfLine);
+      var isPrefFieldEndsWithDelimiter = false;
 
-        if (field is null)
-          return record; // end of stream
+      for (; ; ) {
+        var field = ReadField(out var isDelimited, out var isEndOfLine);
+
+        // is end of stream?
+        if (field is null) {
+          if (isPrefFieldEndsWithDelimiter) {
+            record ??= new List<string>(capacity: 1);
+            record.Add(string.Empty); // append empty field
+          }
+
+          return record;
+        }
 
         record ??= new List<string>();
 
-        if (isEndOfLine)
+        if (isEndOfLine) {
+          if (isPrefFieldEndsWithDelimiter)
+            record.Add(string.Empty); // append empty field
+          else if (record.Count == 0) // empty line
+            record.Add(string.Empty);
+
           return record;
+        }
 
         record.Add(field);
+
+        isPrefFieldEndsWithDelimiter = isDelimited;
       }
     }
     catch (InvalidDataException ex) {

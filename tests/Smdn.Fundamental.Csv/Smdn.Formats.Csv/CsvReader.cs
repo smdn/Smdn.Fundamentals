@@ -98,7 +98,6 @@ public class CsvReaderTests {
   [TestCase(',')]
   [TestCase('\t')]
   [TestCase('#')]
-  [Ignore("not implemented")]
   public void TestReadRecord_EndsWithEmptyField(char delimiter)
   {
     var input = $"aaa{delimiter}bbb{delimiter}ccc{delimiter}";
@@ -156,9 +155,43 @@ public class CsvReaderTests {
     Assert.IsNull(records, "end of stream");
   }
 
+  private static System.Collections.IEnumerable YieldTestCases_TestReadRecord_EmptyFields_SingleLine()
+  {
+    yield return new object[] { "", null };
+    yield return new object[] { "\r\n", new string[] { string.Empty } };
+
+    foreach (var lineBreak in new[] { string.Empty, "\r\n" } ) {
+      yield return new object[] { "," + lineBreak, new string[] { string.Empty, string.Empty } };
+      yield return new object[] { "a," + lineBreak, new string[] { "a", string.Empty } };
+      yield return new object[] { ",a" + lineBreak, new string[] { string.Empty, "a" } };
+      yield return new object[] { ",," + lineBreak, new string[] { string.Empty, string.Empty, string.Empty } };
+      yield return new object[] { "a,," + lineBreak, new string[] { "a", string.Empty, string.Empty } };
+      yield return new object[] { ",a," + lineBreak, new string[] { string.Empty, "a", string.Empty } };
+      yield return new object[] { ",,a" + lineBreak, new string[] { string.Empty, string.Empty, "a" } };
+      yield return new object[] { "a,,a" + lineBreak, new string[] { "a", string.Empty, "a" } };
+    }
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TestReadRecord_EmptyFields_SingleLine))]
+  public void TestReadRecord_EmptyFields_SingleLine(string input, string[] expected)
+  {
+    ///System.Console.WriteLine($"input: \"{input}\"");
+    using var reader = CreateReader(input);
+
+    var records = reader.ReadRecord();
+
+    CollectionAssert.AreEqual(
+      expected,
+      records
+    );
+
+    records = reader.ReadRecord();
+
+    Assert.IsNull(records, "end of stream");
+  }
+
   [Test]
-  [Ignore("not implemented")]
-  public void TestReadRecord_EmptyFields()
+  public void TestReadRecord_EmptyFields_MultipleLines()
   {
     var input = @"
 ,
@@ -320,6 +353,43 @@ public class CsvReaderTests {
       new[] { "zzz", "yyy", "xxx" },
       records[1],
       "records[1]"
+    );
+
+    Assert.IsNull(reader.ReadRecord());
+
+    CollectionAssert.IsEmpty(reader.ReadRecords());
+  }
+
+  [TestCase("\r")]
+  [TestCase("\n")]
+  [TestCase("\r\n")]
+  public void TestReadRecords_ContainsEmptyLine(string lineBreak)
+  {
+    var input = @$"aaa,bbb,ccc{lineBreak}{lineBreak}zzz,yyy,xxx{lineBreak}";
+
+    using var reader = CreateReader(input);
+
+    var records = reader.ReadRecords().ToList();
+
+    Assert.IsNotNull(records);
+    Assert.AreEqual(3, records.Count);
+
+    CollectionAssert.AreEqual(
+      new[] { "aaa", "bbb", "ccc" },
+      records[0],
+      "records[0]"
+    );
+
+    CollectionAssert.AreEqual(
+      new string[] { string.Empty },
+      records[1],
+      "records[1]"
+    );
+
+    CollectionAssert.AreEqual(
+      new[] { "zzz", "yyy", "xxx" },
+      records[2],
+      "records[2]"
     );
 
     Assert.IsNull(reader.ReadRecord());
