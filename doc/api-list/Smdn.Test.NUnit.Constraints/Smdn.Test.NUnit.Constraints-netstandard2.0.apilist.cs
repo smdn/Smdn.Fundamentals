@@ -1,7 +1,7 @@
-// Smdn.Test.NUnit.Constraints.dll (Smdn.Test.NUnit.Constraints-1.0.0)
+// Smdn.Test.NUnit.Constraints.dll (Smdn.Test.NUnit.Constraints-1.0.1)
 //   Name: Smdn.Test.NUnit.Constraints
-//   AssemblyVersion: 1.0.0.0
-//   InformationalVersion: 1.0.0 (netstandard2.0)
+//   AssemblyVersion: 1.0.1.0
+//   InformationalVersion: 1.0.1+22d13e8bac8188bdb5b18a03d0357887e371a50f
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 
