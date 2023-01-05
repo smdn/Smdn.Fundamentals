@@ -103,6 +103,11 @@ jobs:
           $os_list = "${{ inputs.os }}".Split(",", [System.StringSplitOptions]::TrimEntries -bor [System.StringSplitOptions]::RemoveEmptyEntries)
         }
 
+        '### Test runs on' >> $Env:GITHUB_STEP_SUMMARY
+        foreach ($os in $os_list) {
+          "- ``${os}``" >> $Env:GITHUB_STEP_SUMMARY
+        }
+
         if ( $verbose ) {
           foreach ($os in $os_list) {
             "::notice::test runs on: ${os}"
@@ -135,6 +140,11 @@ jobs:
           $projects = $projects | where Name -eq '${{ inputs.project }}'
         }
 
+        '### Test target project'   >> $Env:GITHUB_STEP_SUMMARY
+        ''                          >> $Env:GITHUB_STEP_SUMMARY
+        '|Name|Project path|'       >> $Env:GITHUB_STEP_SUMMARY
+        '|----|------------|'       >> $Env:GITHUB_STEP_SUMMARY
+
         foreach ($proj in $projects) {
           # find test target project
           $test_target_proj = Get-ChildItem -Path "${directory_src}/$($proj.'Name')/$($proj.'Name').csproj" -File | select -First 1
@@ -145,6 +155,8 @@ jobs:
               -Name 'PathToTestTargetProject' `
               -Value "$([System.IO.Path]::GetRelativePath('${{ github.workspace }}', $test_target_proj.FullName))"
           }
+
+          "|``$($proj.'Name')``|``$($proj.'PathToTestProject')``|" >> $Env:GITHUB_STEP_SUMMARY
 
           if ( $verbose ) {
             "::notice::test project: $($proj.'Name') ($($proj.'PathToTestProject'))"
@@ -169,7 +181,12 @@ jobs:
 
     steps:
     - name: .NET info
-      run: dotnet --info
+      shell: pwsh
+      run: |
+        '### .NET info'   >> $Env:GITHUB_STEP_SUMMARY
+        '```txt'          >> $Env:GITHUB_STEP_SUMMARY
+        dotnet --info     >> $Env:GITHUB_STEP_SUMMARY
+        '```'             >> $Env:GITHUB_STEP_SUMMARY
 
   run-tests:
     name: Test ${{ matrix.project.Name }} on ${{ matrix.os }}
