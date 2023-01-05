@@ -73,6 +73,7 @@ jobs:
   setup:
     name: Set up
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     outputs:
       runs-ons: ${{ steps.runs-on-os-list.outputs.runs-ons }}
       test-projects: ${{ steps.test-projects.outputs.projects }}
@@ -153,6 +154,7 @@ jobs:
     name: Environment information of ${{ matrix.os }}
     needs: [setup]
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 3
     strategy:
       fail-fast: false
       matrix:
