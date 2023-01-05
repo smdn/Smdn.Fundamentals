@@ -41,4 +41,43 @@ SPDX-License-Identifier: MIT
   >
     <Warning Text="cannot test with released package"/>
   </Target>
+
+  <Target
+    Name="ListUpPackageReferencesToGitHubStepSummary"
+    AfterTargets="ResolveAssemblyReferences"
+    Condition="
+      '$(GITHUB_STEP_SUMMARY)' != '' and
+      '$(TargetFramework)' != '' and
+      '$(TestReleasedPackage)' == 'true' and
+      '$(CanTestReleasedPackage)' == 'true'
+    "
+  >
+    <ItemGroup>
+      <_NuGetPackageReferences Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != ''" />
+      <_NuGetPackageReferenceTableMarkdownLines
+        Include="|%(_NuGetPackageReferences.NuGetPackageId)|%(_NuGetPackageReferences.NuGetPackageVersion)|"
+        Condition=" '@(_NuGetPackageReferences)' != '' "
+      />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <GitHubStepSummaryContent
+        Condition="Exists('$(GITHUB_STEP_SUMMARY)')"
+      >$([System.IO.File]::ReadAllText('$(GITHUB_STEP_SUMMARY)'))</GitHubStepSummaryContent>
+      <GitHubStepSummaryContent><![CDATA[$(GitHubStepSummaryContent)
+
+### PackageReference ($(TargetFramework))
+
+|Package ID|Package version|
+|----------|---------------|
+@(_NuGetPackageReferenceTableMarkdownLines, '%0A')
+]]></GitHubStepSummaryContent>
+    </PropertyGroup>
+
+    <WriteLinesToFile
+      File="$(GITHUB_STEP_SUMMARY)"
+      Lines="$(GitHubStepSummaryContent)"
+      Overwrite="true"
+    />
+  </Target>
 </Project>
