@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.3)
+// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.4)
 //   Name: Smdn.Fundamental.Exception
-//   AssemblyVersion: 3.0.3.0
-//   InformationalVersion: 3.0.3+501637c48b59b5e1527398dfc5b219db6419f3fb
+//   AssemblyVersion: 3.0.4.0
+//   InformationalVersion: 3.0.4+be1018d82c9a09283edf2882e2fc8a83deeb84b8
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
