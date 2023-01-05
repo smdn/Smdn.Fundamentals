@@ -18,8 +18,10 @@ SPDX-License-Identifier: MIT
     <PackageTags>uint24;uint48;24bit;48bit;interger</PackageTags>
   </PropertyGroup>
 
-  <!-- enable feature 'generic math' -->
+  <!-- to enable the 'generic math' feature, uncomment this -->
+  <!--
   <Import Project="..\FeatureGenericMath.props" />
+  -->
 
   <ItemGroup>
     <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
