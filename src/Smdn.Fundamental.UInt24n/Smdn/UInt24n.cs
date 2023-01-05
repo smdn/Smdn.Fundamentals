@@ -6,7 +6,7 @@ using System;
 
 namespace Smdn;
 
-internal class UInt24n {
+internal static class UInt24n {
   public static NotSupportedException CreateTypeIsNotConvertibleException<TUInt24n, TOther>()
     => new($"The type '{typeof(TOther)}' is not convertible to {typeof(TUInt24n).Name}");
 
