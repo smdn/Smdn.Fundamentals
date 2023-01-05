@@ -1,8 +1,8 @@
-// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.0)
+// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.1)
 //   Name: Smdn.Fundamental.Xml.Xhtml
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net5.0)
-//   TargetFramework: .NETCoreApp,Version=v5.0
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+c848761b03aeddaf02bfeb277f3f5672e904cf60
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 
 using System;
