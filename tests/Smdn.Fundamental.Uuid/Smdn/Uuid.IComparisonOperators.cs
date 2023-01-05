@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 
 using NUnit.Framework;
 
@@ -82,8 +85,8 @@ partial class UuidTests {
     Assert.AreEqual(lessThan, OpLessThan(new Uuid(x), new Uuid(y)), "IComparisonOperators <");
     Assert.AreEqual(lessThanOrEqual, OpLessThanOrEqual(new Uuid(x), new Uuid(y)), "IComparisonOperators <=");
 
-    static bool OpLessThan<T>(T x, T y) where T : IComparisonOperators<T, T> => x < y;
-    static bool OpLessThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T> => x <= y;
+    static bool OpLessThan<T>(T x, T y) where T : IComparisonOperators<T, T, bool> => x < y;
+    static bool OpLessThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T, bool> => x <= y;
 #endif
   }
 
@@ -120,8 +123,8 @@ partial class UuidTests {
     Assert.AreEqual(greaterThan, OpGreaterThan(new Uuid(x), new Uuid(y)), "IComparisonOperators >");
     Assert.AreEqual(greaterThanOrEqual, OpGreaterThanOrEqual(new Uuid(x), new Uuid(y)), "IComparisonOperators >=");
 
-    static bool OpGreaterThan<T>(T x, T y) where T : IComparisonOperators<T, T> => x > y;
-    static bool OpGreaterThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T> => x >= y;
+    static bool OpGreaterThan<T>(T x, T y) where T : IComparisonOperators<T, T, bool> => x > y;
+    static bool OpGreaterThanOrEqual<T>(T x, T y) where T : IComparisonOperators<T, T, bool> => x >= y;
 #endif
   }
 }

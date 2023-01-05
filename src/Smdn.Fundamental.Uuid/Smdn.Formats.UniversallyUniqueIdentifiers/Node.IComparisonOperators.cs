@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
@@ -8,7 +11,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 partial struct Node :
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
-  IComparisonOperators<Node, Node>
+  IComparisonOperators<Node, Node, bool>
 #else
   IComparable<Node>,
   IComparable

@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 using NUnit.Framework;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
@@ -29,8 +32,8 @@ partial class NodeTests {
     Assert.AreEqual(isEqual, OpEquality(Node.Parse(x), Node.Parse(y)), "IEqualityOperators ==");
     Assert.AreEqual(!isEqual, OpInequality(Node.Parse(x), Node.Parse(y)), "IEqualityOperators !=");
 
-    static bool OpEquality<T>(T x, T y) where T : IEqualityOperators<T, T> => x == y;
-    static bool OpInequality<T>(T x, T y) where T : IEqualityOperators<T, T> => x != y;
+    static bool OpEquality<T>(T x, T y) where T : IEqualityOperators<T, T, bool> => x == y;
+    static bool OpInequality<T>(T x, T y) where T : IEqualityOperators<T, T, bool> => x != y;
 #endif
   }
 

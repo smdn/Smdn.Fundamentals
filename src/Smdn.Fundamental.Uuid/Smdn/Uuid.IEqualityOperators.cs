@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 
 namespace Smdn;
 
@@ -9,7 +12,7 @@ partial struct Uuid :
 #pragma warning restore IDE0040
 #pragma warning disable format
 #if FEATURE_GENERIC_MATH
-  IEqualityOperators<Uuid, Uuid>,
+  IEqualityOperators<Uuid, Uuid, bool>,
 #else
   IEquatable<Uuid>,
 #endif
