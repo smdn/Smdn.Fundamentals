@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.0)
+// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.1)
 //   Name: Smdn.Fundamental.Xml.Xhtml
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net45)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+c848761b03aeddaf02bfeb277f3f5672e904cf60
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
