@@ -53,40 +53,40 @@ partial class MimeTypeTests {
 
 #if FEATURE_GENERIC_MATH
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void IParseable_Parse(string s, MimeType expected)
+  public void IParsable_Parse(string s, MimeType expected)
   {
     Assert.AreEqual(expected, Parse<MimeType>(s));
 
-    static TSelf Parse<TSelf>(string s) where TSelf : IParseable<TSelf>
+    static TSelf Parse<TSelf>(string s) where TSelf : IParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void ISpanParseable_Parse(string s, MimeType expected)
+  public void ISpanParsable_Parse(string s, MimeType expected)
   {
     Assert.AreEqual(expected, Parse<MimeType>(s.AsSpan()));
 
-    static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParseable<TSelf>
+    static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void IParseable_TryParse(string s, MimeType expected)
+  public void IParsable_TryParse(string s, MimeType expected)
   {
     Assert.IsTrue(TryParse<MimeType>(s, out var result));
     Assert.AreEqual(expected, result);
 
-    static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParseable<TSelf>
+    static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParsable<TSelf>
       => TSelf.TryParse(s, provider: null, out result);
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
-  public void ISpanParseable_TryParse(string s, MimeType expected)
+  public void ISpanParsable_TryParse(string s, MimeType expected)
   {
     Assert.IsTrue(TryParse<MimeType>(s.AsSpan(), out var result));
     Assert.AreEqual(expected, result);
 
-    static bool TryParse<TSelf>(ReadOnlySpan<char> s, out TSelf result) where TSelf : ISpanParseable<TSelf>
+    static bool TryParse<TSelf>(ReadOnlySpan<char> s, out TSelf result) where TSelf : ISpanParsable<TSelf>
       => TSelf.TryParse(s, provider: null, out result);
   }
 #endif
@@ -119,47 +119,47 @@ partial class MimeTypeTests {
 
 #if FEATURE_GENERIC_MATH
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void IParseable_Parse_InvalidFormat(string s, Type expectedExceptionType)
+  public void IParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
   {
     Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s));
 
-    static TSelf Parse<TSelf>(string s) where TSelf : IParseable<TSelf>
+    static TSelf Parse<TSelf>(string s) where TSelf : IParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void ISpanParseable_Parse_InvalidFormat(string s, Type expectedExceptionType)
+  public void ISpanParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
   {
     if (s is null)
       Assert.Pass();
 
     Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s.AsSpan()));
 
-    static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParseable<TSelf>
+    static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void IParseable_TryParse_InvalidFormat(string s, Type discard)
+  public void IParsable_TryParse_InvalidFormat(string s, Type discard)
   {
     if (s is null)
       Assert.Pass();
 
     Assert.IsFalse(TryParse<MimeType>(s, out _));
 
-    static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParseable<TSelf>
+    static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParsable<TSelf>
       => TSelf.TryParse(s, provider: null, out result);
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void ISpanParseable_TryParse_InvalidFormat(string s, Type discard)
+  public void ISpanParsable_TryParse_InvalidFormat(string s, Type discard)
   {
     if (s is null)
       Assert.Pass();
 
     Assert.IsFalse(TryParse<MimeType>(s.AsSpan(), out _));
 
-    static bool TryParse<TSelf>(ReadOnlySpan<char> s, out TSelf result) where TSelf : ISpanParseable<TSelf>
+    static bool TryParse<TSelf>(ReadOnlySpan<char> s, out TSelf result) where TSelf : ISpanParsable<TSelf>
       => TSelf.TryParse(s, provider: null, out result);
   }
 #endif

@@ -13,7 +13,7 @@ internal static class ReadOnlySpanOfCharExtensions {
 #else
   string
 #endif
-  ToParseableType(this ReadOnlySpan<char> s)
+  ToParsableType(this ReadOnlySpan<char> s)
 #if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
     => s;
 #else

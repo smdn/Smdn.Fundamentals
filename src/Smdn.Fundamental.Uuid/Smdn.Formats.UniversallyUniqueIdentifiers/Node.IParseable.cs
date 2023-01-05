@@ -12,8 +12,8 @@ partial struct Node
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
   :
-  IParseable<Node>,
-  ISpanParseable<Node>
+  IParsable<Node>,
+  ISpanParsable<Node>
 #endif
 {
   public static Node Parse(string s, IFormatProvider? provider = null)
@@ -64,7 +64,7 @@ partial struct Node
 
       if (
         !byte.TryParse(
-          span.ToParseableType(),
+          span.ToParsableType(),
           NumberStyles.HexNumber,
           provider: null,
           out var parsed

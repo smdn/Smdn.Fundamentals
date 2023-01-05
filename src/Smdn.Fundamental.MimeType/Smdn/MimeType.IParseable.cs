@@ -16,7 +16,7 @@ partial class MimeType
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
   :
-  ISpanParseable<MimeType>
+  ISpanParsable<MimeType>
 #endif
 {
 #if OBSOLETE_MEMBER
@@ -39,7 +39,7 @@ partial class MimeType
   )
     => TryParse(s, provider: null, out result);
 
-  // IParseable<TSelf>.TryParse
+  // IParsable<TSelf>.TryParse
   public static bool TryParse(
     string? s,
     IFormatProvider? provider,
@@ -71,7 +71,7 @@ partial class MimeType
     return true;
   }
 
-  // ISpanParseable<TSelf>.TryParse
+  // ISpanParsable<TSelf>.TryParse
   public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out MimeType result)
   {
     result = null!;
@@ -101,7 +101,7 @@ partial class MimeType
 #pragma warning restore SA1316
 #endif
 
-  // IParseable<TSelf>.Parse
+  // IParsable<TSelf>.Parse
   public static MimeType Parse(string s, IFormatProvider? provider = null)
   {
     TryParse(
@@ -115,7 +115,7 @@ partial class MimeType
     return new(result.Type, result.SubType);
   }
 
-  // ISpanParseable<TSelf>.Parse
+  // ISpanParsable<TSelf>.Parse
   public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
   {
     TryParse(

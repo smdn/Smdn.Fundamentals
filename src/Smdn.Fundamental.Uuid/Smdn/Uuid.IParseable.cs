@@ -12,8 +12,8 @@ partial struct Uuid
 #pragma warning restore IDE0040
 #if FEATURE_GENERIC_MATH
   :
-  IParseable<Uuid>,
-  ISpanParseable<Uuid>
+  IParsable<Uuid>,
+  ISpanParsable<Uuid>
 #endif
 {
   private enum TryParseResult {
@@ -80,36 +80,36 @@ partial struct Uuid
 
     if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldTimeLow))
       return TryParseResult.FormatError;
-    if (!(fieldTimeLow.Length == 8 && uint.TryParse(fieldTimeLow.ToParseableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeLow)))
+    if (!(fieldTimeLow.Length == 8 && uint.TryParse(fieldTimeLow.ToParsableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeLow)))
       return TryParseResult.FormatErrorOnTimeLow;
 
     if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldTimeMid))
       return TryParseResult.FormatError;
-    if (!(fieldTimeMid.Length == 4 && ushort.TryParse(fieldTimeMid.ToParseableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeMid)))
+    if (!(fieldTimeMid.Length == 4 && ushort.TryParse(fieldTimeMid.ToParsableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeMid)))
       return TryParseResult.FormatErrorOnTimeMid;
 
     if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldTimeHighAndVersion))
       return TryParseResult.FormatError;
-    if (!(fieldTimeHighAndVersion.Length == 4 && ushort.TryParse(fieldTimeHighAndVersion.ToParseableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeHiAndVersion)))
+    if (!(fieldTimeHighAndVersion.Length == 4 && ushort.TryParse(fieldTimeHighAndVersion.ToParsableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeHiAndVersion)))
       return TryParseResult.FormatErrorOnTimeHiAndVersion;
 
     if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldClockSeq))
       return TryParseResult.FormatError;
     if (fieldClockSeq.Length != 4)
       return TryParseResult.FormatErrorOnClockSeqHiAndReserved;
-    if (!byte.TryParse(fieldClockSeq.Slice(0, 2).ToParseableType(), NumberStyles.HexNumber, null, out var fieldValueClockSeqHiAndReserved))
+    if (!byte.TryParse(fieldClockSeq.Slice(0, 2).ToParsableType(), NumberStyles.HexNumber, null, out var fieldValueClockSeqHiAndReserved))
       return TryParseResult.FormatErrorOnClockSeqHiAndReserved;
-    if (!byte.TryParse(fieldClockSeq.Slice(2, 2).ToParseableType(), NumberStyles.HexNumber, null, out var fieldValueClockSeqLow))
+    if (!byte.TryParse(fieldClockSeq.Slice(2, 2).ToParsableType(), NumberStyles.HexNumber, null, out var fieldValueClockSeqLow))
       return TryParseResult.FormatErrorOnClockSeqLow;
 
     if (
       !(
-        byte.TryParse(s.Slice(0, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n0) &&
-        byte.TryParse(s.Slice(2, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n1) &&
-        byte.TryParse(s.Slice(4, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n2) &&
-        byte.TryParse(s.Slice(6, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n3) &&
-        byte.TryParse(s.Slice(8, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n4) &&
-        byte.TryParse(s.Slice(10, 2).ToParseableType(), NumberStyles.HexNumber, null, out var n5)
+        byte.TryParse(s.Slice(0, 2).ToParsableType(), NumberStyles.HexNumber, null, out var n0) &&
+        byte.TryParse(s.Slice(2, 2).ToParsableType(), NumberStyles.HexNumber, null, out var n1) &&
+        byte.TryParse(s.Slice(4, 2).ToParsableType(), NumberStyles.HexNumber, null, out var n2) &&
+        byte.TryParse(s.Slice(6, 2).ToParsableType(), NumberStyles.HexNumber, null, out var n3) &&
+        byte.TryParse(s.Slice(8, 2).ToParsableType(), NumberStyles.HexNumber, null, out var n4) &&
+        byte.TryParse(s.Slice(10, 2).ToParsableType(), NumberStyles.HexNumber, null, out var n5)
       )
     ) {
       return TryParseResult.FormatErrorOnNode;

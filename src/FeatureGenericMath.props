@@ -9,11 +9,4 @@ SPDX-License-Identifier: MIT
     <DefineConstants>FEATURE_GENERIC_MATH;$(DefineConstants)</DefineConstants>
     <EnablePreviewFeatures>true</EnablePreviewFeatures>
   </PropertyGroup>
-
-  <ItemGroup Condition="
-    $([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0.0')) and
-    $(NETCoreSdkVersion.Contains('-preview'))
-  ">
-    <PackageReference Include="System.Runtime.Experimental" Version="7.0.0-preview.2.22152.2" Condition="$(TargetFramework.StartsWith('net7'))" />
-  </ItemGroup>
 </Project>
