@@ -4,7 +4,7 @@ using System;
 
 namespace Smdn.Formats.DateAndTime;
 
-internal class UniversalTimeZoneDefinition : TimeZoneDefinition {
+internal sealed class UniversalTimeZoneDefinition : TimeZoneDefinition {
   public override bool IsUniversal => true;
 
   public UniversalTimeZoneDefinition(string suffix)

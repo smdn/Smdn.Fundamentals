@@ -135,7 +135,7 @@ public static class RFC822DateTimeFormats {
     new RFC5322MilitaryTimeZoneDefinition(" Z"),
   };
 
-  private class RFC5322MilitaryTimeZoneDefinition : TimeZoneDefinition {
+  private sealed class RFC5322MilitaryTimeZoneDefinition : TimeZoneDefinition {
     public override StringComparison SuffixComparison => StringComparison.OrdinalIgnoreCase;
 
     public RFC5322MilitaryTimeZoneDefinition(string suffix)
@@ -157,7 +157,7 @@ public static class RFC822DateTimeFormats {
   }
 
   // EST(-05:00)/EDT(-04:00)
-  private class RFC5322EasternTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+  private sealed class RFC5322EasternTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Eastern",
@@ -184,7 +184,7 @@ public static class RFC822DateTimeFormats {
   }
 
   // CST(-06:00)/CDT(-05:00)
-  private class RFC5322CentralTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+  private sealed class RFC5322CentralTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Central",
@@ -211,7 +211,7 @@ public static class RFC822DateTimeFormats {
   }
 
   // MST(-07:00)/MDT(-06:00)
-  private class RFC5322MountainTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+  private sealed class RFC5322MountainTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Mountain",
@@ -238,7 +238,7 @@ public static class RFC822DateTimeFormats {
   }
 
   // PST(-08:00)/PDT(-07:00)
-  private class RFC5322PacificTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
+  private sealed class RFC5322PacificTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
     private static readonly IReadOnlyList<string> timeZoneIds = new[] {
       "US/Pacific",
