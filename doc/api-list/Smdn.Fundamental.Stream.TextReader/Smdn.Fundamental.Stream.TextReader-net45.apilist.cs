@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Stream.TextReader.dll (Smdn.Fundamental.Stream.TextReader-3.0.0)
+// Smdn.Fundamental.Stream.TextReader.dll (Smdn.Fundamental.Stream.TextReader-3.0.1)
 //   Name: Smdn.Fundamental.Stream.TextReader
-//   AssemblyVersion: 3.0.0.0
-//   InformationalVersion: 3.0.0 (net45)
+//   AssemblyVersion: 3.0.1.0
+//   InformationalVersion: 3.0.1+c3fd43ebb35828d30dd34657e9cb09c2a9037f21
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 
