@@ -39,7 +39,7 @@ public class PolyglotHtml5Writer : XmlWriter {
   private ElementContext currentElementContext = null;
   private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
 
-  private class ElementContext {
+  private sealed class ElementContext {
     private static readonly HashSet<string> voidElements = new(StringComparer.OrdinalIgnoreCase) {
       "area",
       "base",
