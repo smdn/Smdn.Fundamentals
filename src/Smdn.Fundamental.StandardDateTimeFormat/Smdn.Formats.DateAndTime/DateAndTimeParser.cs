@@ -344,6 +344,9 @@ internal static class DateAndTimeParser {
     [DisallowNull]
 #endif
     IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions,
+#if LANG_VERSION_11_OR_GREATER
+    scoped
+#endif
     ref DateTimeStyles dateTimeStylesOfTimeZone,
     out TimeZoneDefinition? timeZone
   )
