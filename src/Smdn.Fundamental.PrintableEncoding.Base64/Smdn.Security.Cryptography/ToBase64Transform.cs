@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 namespace Smdn.Security.Cryptography;
 
-internal class ToBase64Transform : ICryptoTransform {
+internal sealed class ToBase64Transform : ICryptoTransform {
   public bool CanReuseTransform => true;
   public bool CanTransformMultipleBlocks => false;
   public int InputBlockSize => 3;

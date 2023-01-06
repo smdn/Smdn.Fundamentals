@@ -3,7 +3,7 @@
 namespace Smdn.Security.Cryptography;
 
 #if !SYSTEM_MATH_DIVREM
-internal class MathDivRemShim {
+internal sealed class MathDivRemShim {
   public static int DivRem(int a, int b, out int result)
   {
     var quotient = a / b;

@@ -17,7 +17,7 @@ public static class Singleton {
   [Serializable]
 #endif
 #pragma warning disable IDE0055
-  private class SingletonList<T> :
+  private sealed class SingletonList<T> :
     IReadOnlyList<T>
 #if SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
 #pragma warning disable SA1001
@@ -36,7 +36,7 @@ public static class Singleton {
     }
 
 #if SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONINFO
-    protected SingletonList(SerializationInfo info, StreamingContext context)
+    private SingletonList(SerializationInfo info, StreamingContext context)
     {
       this.element = (T?)info.GetValue(nameof(element), typeof(T));
     }

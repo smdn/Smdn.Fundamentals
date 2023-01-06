@@ -20,7 +20,7 @@ public sealed class ChunkedMemoryStream : Stream {
 #pragma warning restore SA1401, CA1051
   }
 
-  private class DefaultChunk : Chunk {
+  private sealed class DefaultChunk : Chunk {
     public static DefaultChunk Allocate(int chunkSize) => new(chunkSize);
 
     private DefaultChunk(int chunkSize)

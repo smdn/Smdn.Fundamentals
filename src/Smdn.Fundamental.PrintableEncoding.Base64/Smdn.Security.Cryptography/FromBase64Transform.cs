@@ -8,7 +8,7 @@ using Smdn.Security.Cryptography;
 
 namespace Smdn.Security.Cryptography;
 
-internal class FromBase64Transform : ICryptoTransform {
+internal sealed class FromBase64Transform : ICryptoTransform {
   public bool CanReuseTransform => true;
   public bool CanTransformMultipleBlocks => false;
   public int InputBlockSize => 1;

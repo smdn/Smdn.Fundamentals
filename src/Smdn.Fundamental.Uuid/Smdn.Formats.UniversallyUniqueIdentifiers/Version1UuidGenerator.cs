@@ -11,7 +11,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
  *
  * 4.2.  Algorithms for Creating a Time-Based UUID
  */
-internal class Version1UuidGenerator : UuidGenerator {
+internal sealed class Version1UuidGenerator : UuidGenerator {
   /*
    * 4.1.4.  Timestamp
    */

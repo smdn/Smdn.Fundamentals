@@ -5,7 +5,7 @@ using System.Buffers;
 
 namespace Smdn.Formats.Mime;
 
-internal class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
+internal sealed class HeaderFieldLineSegment : ReadOnlySequenceSegment<byte> {
   public static HeaderFieldLineSegment? Append(
     HeaderFieldLineSegment? last,
     ReadOnlySequence<byte> line,

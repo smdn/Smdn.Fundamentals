@@ -49,7 +49,7 @@ public static class IReadOnlyListExtensions {
     return new ReadOnlyListSegment<T>(list, index, count);
   }
 
-  private class ReadOnlyListSegment<T> : IReadOnlyList<T> {
+  private sealed class ReadOnlyListSegment<T> : IReadOnlyList<T> {
     private readonly IReadOnlyList<T> list;
     private readonly int offset;
     public int Count { get; }

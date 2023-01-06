@@ -12,7 +12,7 @@ public partial class FilterStream : Stream {
     void Apply(Span<byte> buffer, long offsetWithinFilter);
   }
 
-  private class NullFilterImpl : IFilter {
+  private sealed class NullFilterImpl : IFilter {
     public long Offset => throw new NotSupportedException();
     public long Length => throw new NotSupportedException();
     public void Apply(Span<byte> buffer, long offsetWithinFilter) => throw new NotSupportedException();
@@ -35,7 +35,7 @@ public partial class FilterStream : Stream {
 
   public delegate void FilterAction(Span<byte> buffer, long offsetWithinFilter);
 
-  private class DelegatedFilter : Filter {
+  private sealed class DelegatedFilter : Filter {
     private readonly FilterAction filter;
 
     public DelegatedFilter(long offset, long length, FilterAction filter)
