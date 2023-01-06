@@ -49,7 +49,7 @@ public static class IOUtils {
       var directory = new DirectoryInfo(path);
 
       if (ensureDirectoryCreated)
-        TryIO(() => directory.Create());
+        TryIO(directory.Create);
 
       action(directory);
     }
@@ -69,7 +69,7 @@ public static class IOUtils {
       var directory = new DirectoryInfo(path);
 
       if (ensureDirectoryCreated)
-        TryIO(() => directory.Create());
+        TryIO(directory.Create);
 
       await action(directory).ConfigureAwait(false);
     }
@@ -89,12 +89,12 @@ public static class IOUtils {
     var file = new FileInfo(path);
 
     try {
-      TryIO(() => file.Delete());
+      TryIO(file.Delete);
 
       action(file);
     }
     finally {
-      TryIO(() => file.Delete());
+      TryIO(file.Delete);
     }
   }
 
@@ -103,12 +103,12 @@ public static class IOUtils {
     var file = new FileInfo(path);
 
     try {
-      TryIO(() => file.Delete());
+      TryIO(file.Delete);
 
       await action(file).ConfigureAwait(false);
     }
     finally {
-      TryIO(() => file.Delete());
+      TryIO(file.Delete);
     }
   }
 

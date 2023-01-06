@@ -23,7 +23,7 @@ public static class Nonce {
     if (bytes == null)
       throw new ArgumentNullException(nameof(bytes));
 
-    LazyInitializer.EnsureInitialized(ref defaultRng, () => RandomNumberGenerator.Create());
+    LazyInitializer.EnsureInitialized(ref defaultRng, RandomNumberGenerator.Create);
 
     lock (defaultRng) {
       defaultRng.GetBytes(bytes);
