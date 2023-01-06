@@ -108,7 +108,7 @@ public readonly partial struct Uuid {
    */
   public int Clock => ((clock_seq_hi_and_reserved & 0x3f) << 8) | clock_seq_low;
 
-  public string IEEE802MacAddress => node.ToString("x");
+  public string IEEE802MacAddress => node.ToString("x", formatProvider: null);
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
   public PhysicalAddress PhysicalAddress => node.ToPhysicalAddress();
@@ -388,7 +388,10 @@ public readonly partial struct Uuid {
   public Uuid(string uuid)
     : this()
   {
-    this = Parse(uuid ?? throw new ArgumentNullException(nameof(uuid)));
+    this = Parse(
+      uuid ?? throw new ArgumentNullException(nameof(uuid)),
+      provider: null
+    );
   }
 
   public static explicit operator Guid(Uuid @value) => @value.ToGuid();
