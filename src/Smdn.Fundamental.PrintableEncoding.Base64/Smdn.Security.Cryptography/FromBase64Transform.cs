@@ -4,8 +4,6 @@
 using System;
 using System.Security.Cryptography;
 
-using Smdn.Security.Cryptography;
-
 namespace Smdn.Security.Cryptography;
 
 internal sealed class FromBase64Transform : ICryptoTransform {
