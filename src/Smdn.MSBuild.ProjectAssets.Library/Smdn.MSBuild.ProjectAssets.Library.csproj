@@ -29,5 +29,6 @@ SPDX-License-Identifier: MIT
     <None Include="project\*.targets"                     Pack="true" PackagePath="project\" />
     <None Include="project\StyleCop.Analyzers.ruleset"    Pack="true" PackagePath="project\" />
     <None Include="project\stylecop.json"                 Pack="true" PackagePath="project\" />
+    <None Include="project\TestReport.template.liquid.md" Pack="true" PackagePath="project\" />
   </ItemGroup>
 </Project>
