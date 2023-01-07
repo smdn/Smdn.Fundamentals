@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     Name="Assets_Deploy"
   >
     <Copy
+      Condition=" '$(SmdnBuildAssetRootDirectory)' != '' "
       SourceFiles="%(SmdnBuildAssetFiles.Identity)"
       DestinationFiles="$(SmdnBuildAssetRootDirectory)%(SmdnBuildAssetFiles.Destination)"
       SkipUnchangedFiles="true"
