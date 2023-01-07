@@ -31,6 +31,9 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(EnableLiquidTestReports)' == 'true' " Label="VSTestLogger parameters for LiquidTestReports">
+    <VSTestBeforeTargets Condition=" '$(GITHUB_STEP_SUMMARY)' != '' ">$(VSTestBeforeTargets);LiquidTestReportsInitGitHubStepSummary</VSTestBeforeTargets>
+    <VSTestAfterTargets Condition=" '$(GITHUB_STEP_SUMMARY)' != '' ">$(VSTestAfterTargets);LiquidTestReportsOutputTestLogToGitHubStepSummary</VSTestAfterTargets>
+
     <LiquidTestReportsTestReportFileExtensionWithTargetFramework>$(LiquidTestReportsTestReportFileExtension)</LiquidTestReportsTestReportFileExtensionWithTargetFramework>
     <LiquidTestReportsTestReportFileExtensionWithTargetFramework Condition=" '$(TargetFramework)' != '' ">.$(TargetFramework)$(LiquidTestReportsTestReportFileExtension)</LiquidTestReportsTestReportFileExtensionWithTargetFramework>
 
@@ -46,4 +49,46 @@ SPDX-License-Identifier: MIT
     <VSTestLogger>$(VSTestLogger)$(LiquidTestReportsLoggerParameter)</VSTestLogger>
     <VSTestResultsDirectory>$(LiquidTestReportsTestReportDirectory)</VSTestResultsDirectory>
   </PropertyGroup>
+
+  <Target Name="LiquidTestReportsInitGitHubStepSummary">
+    <PropertyGroup>
+      <LiquidTestReportsTestStartedAt>$([System.DateTime]::Now.Ticks)</LiquidTestReportsTestStartedAt>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="LiquidTestReportsOutputTestLogToGitHubStepSummary">
+    <PropertyGroup>
+      <LiquidTestReportsTestFinishedAt>$([System.DateTime]::Now.Ticks)</LiquidTestReportsTestFinishedAt>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <LiquidTestReportsLogFileCandidate Include="$(LiquidTestReportsTestReportDirectory)*$(LiquidTestReportsTestReportFileExtensionWithTargetFramework)" />
+      <!-- extract only log files that are created after the started time and before the finished time -->
+      <LiquidTestReportsLogFile
+        Include="@(LiquidTestReportsLogFileCandidate)"
+        Condition="
+          ($(LiquidTestReportsTestStartedAt)) &lt;= ($([System.DateTimeOffset]::Parse(%(CreatedTime)).Ticks)) and
+          ($([System.DateTimeOffset]::Parse(%(CreatedTime)).Ticks)) &lt; ($(LiquidTestReportsTestFinishedAt))
+        "
+      />
+      <LiquidTestReportsLogFileContent Include="$([System.IO.File]::ReadAllText('%(LiquidTestReportsLogFile.Identity)'))"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <GitHubStepSummaryContent
+        Condition="Exists('$(GITHUB_STEP_SUMMARY)')"
+      >$([System.IO.File]::ReadAllText('$(GITHUB_STEP_SUMMARY)'))</GitHubStepSummaryContent>
+      <GitHubStepSummaryContent
+        Condition=" '$(GitHubStepSummaryContent)' != '' "
+      >$(GitHubStepSummaryContent)%0A%0A</GitHubStepSummaryContent>
+      <GitHubStepSummaryContent
+      >$(GitHubStepSummaryContent)@(LiquidTestReportsLogFileContent, '%0A%0A----%0A%0A')</GitHubStepSummaryContent>
+    </PropertyGroup>
+
+    <WriteLinesToFile
+      File="$(GITHUB_STEP_SUMMARY)"
+      Lines="$(GitHubStepSummaryContent)"
+      Overwrite="true"
+    />
+  </Target>
 </Project>
