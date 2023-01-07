@@ -1,0 +1,13 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup Label="LiquidTestReports">
+    <EnableLiquidTestReports Condition=" '$(GITHUB_ACTIONS)' == 'true' ">true</EnableLiquidTestReports><!-- by default, enables LiquidTestReports only on GitHub Actions -->
+    <LiquidTestReportsTemplateFile>$(MSBuildThisFileDirectory)TestReport.template.liquid.md</LiquidTestReportsTemplateFile><!-- default test report template file for LiquidTestReports -->
+    <LiquidTestReportsCustomPackageReferenceVersion>1.0.9</LiquidTestReportsCustomPackageReferenceVersion>
+    <LiquidTestReportsEmitTestMessages>true</LiquidTestReportsEmitTestMessages> <!-- whether to let LiquidTestReports output test messages or not -->
+    <LiquidTestReportsEmitTestCaseResultMessages>true</LiquidTestReportsEmitTestCaseResultMessages> <!-- whether to let LiquidTestReports output test messages or not -->
+  </PropertyGroup>
+</Project>

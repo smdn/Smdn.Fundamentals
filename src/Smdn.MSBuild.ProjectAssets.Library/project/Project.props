@@ -70,4 +70,10 @@ SPDX-License-Identifier: MIT
     <!-- API list generator -->
     <Import Project="$(MSBuildThisFileDirectory)ApiListGenerator.props" />
   </ImportGroup>
+
+  <ImportGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <!-- LiquidTestReports -->
+    <Import Project="$(MSBuildThisFileDirectory)LiquidTestReports.props" />
+  </ImportGroup>
+
 </Project>

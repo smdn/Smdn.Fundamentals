@@ -1,0 +1,49 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup>
+    <!-- LiquidTestReports parameters not allowed to be changed -->
+    <LiquidTestReportsTestReportFileExtension>.liquid.md</LiquidTestReportsTestReportFileExtension> <!-- file extension for the test report file (note that the file name format of the test report output by LiquidTestReports.Custom is not customizable) -->
+    <LiquidTestReportsTestReportDirectory>$(MSBuildProjectDirectory)\TestResults\LiquidTestReports\</LiquidTestReportsTestReportDirectory> <!-- output directory for the test report file -->
+
+    <!-- LiquidTestReports.Custom requires framework >= net451 or >= netstandard2.0 -->
+    <LiquidTestReportsCustomAvailable>true</LiquidTestReportsCustomAvailable>
+    <LiquidTestReportsCustomAvailable
+      Condition="
+        '$(TargetFramework)' == 'net45' or
+        $(TargetFramework.StartsWith('netcoreapp1')) or
+        $(TargetFramework.StartsWith('netstandard1'))
+      "
+    >false</LiquidTestReportsCustomAvailable>
+
+    <!-- disable if LiquidTestReports.Custom is not available -->
+    <EnableLiquidTestReports Condition=" '$(LiquidTestReportsCustomAvailable)' != 'true' ">false</EnableLiquidTestReports>
+
+    <!-- Define values that can be used as parameters in templates -->
+    <LiquidTestReportsTemplateExtraParameter
+    >$(LiquidTestReportsTemplateExtraParameter)%3bRuntimeIdentifier=$([System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier)</LiquidTestReportsTemplateExtraParameter>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(EnableLiquidTestReports)' == 'true' ">
+    <PackageReference Include="LiquidTestReports.Custom" Version="$(LiquidTestReportsCustomPackageReferenceVersion)" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(EnableLiquidTestReports)' == 'true' " Label="VSTestLogger parameters for LiquidTestReports">
+    <LiquidTestReportsTestReportFileExtensionWithTargetFramework>$(LiquidTestReportsTestReportFileExtension)</LiquidTestReportsTestReportFileExtensionWithTargetFramework>
+    <LiquidTestReportsTestReportFileExtensionWithTargetFramework Condition=" '$(TargetFramework)' != '' ">.$(TargetFramework)$(LiquidTestReportsTestReportFileExtension)</LiquidTestReportsTestReportFileExtensionWithTargetFramework>
+
+    <LiquidTestReportsLoggerParameter>liquid.custom</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bTemplate=$(LiquidTestReportsTemplateFile)</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bExtension=$(LiquidTestReportsTestReportFileExtensionWithTargetFramework)</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bTestTargetName=$(MSBuildProjectName)</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bEmitTestMessages=$(LiquidTestReportsEmitTestMessages)</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bEmitTestCaseResultMessages=$(LiquidTestReportsEmitTestCaseResultMessages)</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3b$(LiquidTestReportsTemplateExtraParameter)</LiquidTestReportsLoggerParameter>
+
+    <VSTestLogger Condition=" '$(VSTestLogger)' != '' ">$(VSTestLogger);</VSTestLogger>
+    <VSTestLogger>$(VSTestLogger)$(LiquidTestReportsLoggerParameter)</VSTestLogger>
+    <VSTestResultsDirectory>$(LiquidTestReportsTestReportDirectory)</VSTestResultsDirectory>
+  </PropertyGroup>
+</Project>

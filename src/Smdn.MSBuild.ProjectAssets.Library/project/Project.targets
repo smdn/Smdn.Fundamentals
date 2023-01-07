@@ -11,6 +11,8 @@ SPDX-License-Identifier: MIT
   </ImportGroup>
 
   <ImportGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <!-- LiquidTestReports -->
+    <Import Project="$(MSBuildThisFileDirectory)LiquidTestReports.targets" />
     <!-- extension points for VSTest target -->
     <Import Project="$(MSBuildThisFileDirectory)VSTestExtensionPoints.targets" Condition=" '$(IsVSTestTargetOverridden)' == '' " />
   </ImportGroup>
