@@ -1,0 +1,41 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<!--
+  This file defines extension points for the 'VSTest' target.
+
+  # Background
+
+  With the original 'VSTest' target, any failed test terminates the MSBuild process with error.
+  Therefore, even if 'VSTest' is specified in any 'AfterTargets', that will not be invoked.
+
+    <Target Name="TargetToBeInvokedAfterVSTest" AfterTargets="VSTest">
+      <Error Text="If there is a failed test, this target will not be invoked." />
+    </Target>
+
+  # Summary
+
+  This file overrides 'VSTest' target. The overridden 'VSTest' target invokes MSBuild for
+  current project's 'VSTest' target, with property IsVSTestTargetOverridden=false appended.
+
+  By importing this file only when IsVSTestTargetOverridden is not defined, original
+  'VSTest' target can be invoked.
+
+  In addition, this file also invokes the targets specified in properties 'VSTestBeforeTargets' and
+  'VSTestAfterTargets', before and after the 'VSTest' target.
+-->
+<Project>
+  <Target Name="VSTest" Condition=" '$(IsVSTestTargetOverridden)' == '' ">
+    <CallTarget Targets="$(VSTestBeforeTargets)" />
+
+    <MSBuild
+      Projects="$(MSBuildProjectFullPath)"
+      Targets="VSTest"
+      Properties="IsVSTestTargetOverridden=false"
+      ContinueOnError="ErrorAndContinue"
+    />
+
+    <CallTarget Targets="$(VSTestAfterTargets)" />
+  </Target>
+</Project>

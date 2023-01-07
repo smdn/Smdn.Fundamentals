@@ -9,4 +9,9 @@ SPDX-License-Identifier: MIT
     <!-- PackageReadmeFile auto-generating -->
     <Import Project="$(MSBuildThisFileDirectory)PackageReadmeFile.targets" Condition=" '$(GeneratePackageReadmeFile)' == 'true' " />
   </ImportGroup>
+
+  <ImportGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <!-- extension points for VSTest target -->
+    <Import Project="$(MSBuildThisFileDirectory)VSTestExtensionPoints.targets" Condition=" '$(IsVSTestTargetOverridden)' == '' " />
+  </ImportGroup>
 </Project>
