@@ -183,10 +183,12 @@ jobs:
     - name: .NET info
       shell: pwsh
       run: |
-        '### .NET info'   >> $Env:GITHUB_STEP_SUMMARY
-        '```txt'          >> $Env:GITHUB_STEP_SUMMARY
-        dotnet --info     >> $Env:GITHUB_STEP_SUMMARY
-        '```'             >> $Env:GITHUB_STEP_SUMMARY
+        '<details>'                     >> $Env:GITHUB_STEP_SUMMARY
+        '<summary>.NET info</summary>'  >> $Env:GITHUB_STEP_SUMMARY
+        '<pre><code>'                   >> $Env:GITHUB_STEP_SUMMARY
+        dotnet --info                   >> $Env:GITHUB_STEP_SUMMARY
+        '</code></pre>'                 >> $Env:GITHUB_STEP_SUMMARY
+        '</details>'                    >> $Env:GITHUB_STEP_SUMMARY
 
   run-tests:
     name: Test ${{ matrix.project.Name }} on ${{ matrix.os }}
