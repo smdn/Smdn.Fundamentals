@@ -28,11 +28,12 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup Condition=" '$(EnableLiquidTestReports)' == 'true' ">
     <PackageReference Include="LiquidTestReports.Custom" Version="$(LiquidTestReportsCustomPackageReferenceVersion)" />
+    <PackageReference Include="DotLiquid" Version="$(DotLiquidPackageReferenceVersion)" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(EnableLiquidTestReports)' == 'true' " Label="VSTestLogger parameters for LiquidTestReports">
-    <VSTestBeforeTargets Condition=" '$(GITHUB_STEP_SUMMARY)' != '' ">$(VSTestBeforeTargets);LiquidTestReportsInitGitHubStepSummary</VSTestBeforeTargets>
-    <VSTestAfterTargets Condition=" '$(GITHUB_STEP_SUMMARY)' != '' ">$(VSTestAfterTargets);LiquidTestReportsOutputTestLogToGitHubStepSummary</VSTestAfterTargets>
+    <VSTestBeforeTargets Condition="'$(GITHUB_STEP_SUMMARY)' != '' and '$(EnableLiquidTestReportsGitHubStepSummary)' == 'true' ">$(VSTestBeforeTargets);LiquidTestReportsInitGitHubStepSummary</VSTestBeforeTargets>
+    <VSTestAfterTargets Condition=" '$(GITHUB_STEP_SUMMARY)' != '' and '$(EnableLiquidTestReportsGitHubStepSummary)' == 'true' ">$(VSTestAfterTargets);LiquidTestReportsOutputTestLogToGitHubStepSummary</VSTestAfterTargets>
 
     <LiquidTestReportsTestReportFileExtensionWithTargetFramework>$(LiquidTestReportsTestReportFileExtension)</LiquidTestReportsTestReportFileExtensionWithTargetFramework>
     <LiquidTestReportsTestReportFileExtensionWithTargetFramework Condition=" '$(TargetFramework)' != '' ">.$(TargetFramework)$(LiquidTestReportsTestReportFileExtension)</LiquidTestReportsTestReportFileExtensionWithTargetFramework>
@@ -41,6 +42,7 @@ SPDX-License-Identifier: MIT
     <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bTemplate=$(LiquidTestReportsTemplateFile)</LiquidTestReportsLoggerParameter>
     <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bExtension=$(LiquidTestReportsTestReportFileExtensionWithTargetFramework)</LiquidTestReportsLoggerParameter>
     <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bTestTargetName=$(MSBuildProjectName)</LiquidTestReportsLoggerParameter>
+    <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bOmitPassedTestResults=$(LiquidTestReportsOmitPassedTestResults)</LiquidTestReportsLoggerParameter>
     <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bEmitTestMessages=$(LiquidTestReportsEmitTestMessages)</LiquidTestReportsLoggerParameter>
     <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3bEmitTestCaseResultMessages=$(LiquidTestReportsEmitTestCaseResultMessages)</LiquidTestReportsLoggerParameter>
     <LiquidTestReportsLoggerParameter>$(LiquidTestReportsLoggerParameter)%3b$(LiquidTestReportsTemplateExtraParameter)</LiquidTestReportsLoggerParameter>

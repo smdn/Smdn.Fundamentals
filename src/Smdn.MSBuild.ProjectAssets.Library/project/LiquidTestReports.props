@@ -4,10 +4,13 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <PropertyGroup Label="LiquidTestReports">
-    <EnableLiquidTestReports Condition=" '$(GITHUB_ACTIONS)' == 'true' ">true</EnableLiquidTestReports><!-- by default, enables LiquidTestReports only on GitHub Actions -->
-    <LiquidTestReportsTemplateFile>$(MSBuildThisFileDirectory)TestReport.template.liquid.md</LiquidTestReportsTemplateFile><!-- default test report template file for LiquidTestReports -->
-    <LiquidTestReportsCustomPackageReferenceVersion>1.0.9</LiquidTestReportsCustomPackageReferenceVersion>
-    <LiquidTestReportsEmitTestMessages>true</LiquidTestReportsEmitTestMessages> <!-- whether to let LiquidTestReports output test messages or not -->
-    <LiquidTestReportsEmitTestCaseResultMessages>true</LiquidTestReportsEmitTestCaseResultMessages> <!-- whether to let LiquidTestReports output test messages or not -->
+    <EnableLiquidTestReports Condition=" '$(EnableLiquidTestReports)' == '' and '$(GITHUB_ACTIONS)' == 'true' ">true</EnableLiquidTestReports><!-- by default, enables LiquidTestReports only on GitHub Actions -->
+    <EnableLiquidTestReportsGitHubStepSummary Condition=" '$(EnableLiquidTestReportsGitHubStepSummary)' == '' ">true</EnableLiquidTestReportsGitHubStepSummary><!-- by default, enables outputting reports to GITHUB_STEP_SUMMARY -->
+    <LiquidTestReportsTemplateFile Condition=" '$(LiquidTestReportsTemplateFile)' == '' ">$(MSBuildThisFileDirectory)TestReport.template.liquid.md</LiquidTestReportsTemplateFile><!-- default test report template file for LiquidTestReports -->
+    <LiquidTestReportsCustomPackageReferenceVersion Condition=" '$(LiquidTestReportsCustomPackageReferenceVersion)' == '' ">1.0.9</LiquidTestReportsCustomPackageReferenceVersion>
+    <DotLiquidPackageReferenceVersion Condition=" '$(DotLiquidPackageReferenceVersion)' == '' " >2.2.677</DotLiquidPackageReferenceVersion>
+    <LiquidTestReportsOmitPassedTestResults Condition=" '$(LiquidTestReportsOmitPassedTestResults)' == '' " >true</LiquidTestReportsOmitPassedTestResults> <!-- whether or not to let LiquidTestReports omit output tests that passed -->
+    <LiquidTestReportsEmitTestMessages Condition=" '$(LiquidTestReportsEmitTestMessages)' == '' " >true</LiquidTestReportsEmitTestMessages> <!-- whether to let LiquidTestReports output test messages or not -->
+    <LiquidTestReportsEmitTestCaseResultMessages Condition=" '$(LiquidTestReportsEmitTestCaseResultMessages)' == '' ">true</LiquidTestReportsEmitTestCaseResultMessages> <!-- whether to let LiquidTestReports output test messages or not -->
   </PropertyGroup>
 </Project>
