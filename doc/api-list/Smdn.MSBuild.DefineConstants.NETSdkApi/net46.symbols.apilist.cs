@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.6
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.7
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.3.6
+//   InformationalVersion: 1.3.7
 
 // List of symbols defined on target framework 'net46'
 #define MICROSOFT_WIN32_REGISTRY // Microsoft.Win32.Registry (NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)

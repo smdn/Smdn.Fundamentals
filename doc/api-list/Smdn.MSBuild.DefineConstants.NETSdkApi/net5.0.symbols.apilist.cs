@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.6
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.7
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.3.6
+//   InformationalVersion: 1.3.7
 
 // List of symbols defined on target framework 'net5.0'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -43,6 +43,9 @@
 #define SYSTEM_DOUBLE_PARSE_READONLYSPAN_OF_CHAR // System.Double.Parse(ReadOnlySpan<Char>) (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_DOUBLE_TRYFORMAT // System.Double.TryFormat (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_DOUBLE_TRYPARSE_READONLYSPAN_OF_CHAR // System.Double.TryParse(ReadOnlySpan<Char>) (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
+#define SYSTEM_ENUM_GETNAME_OF_TENUM // System.Enum.GetName<TEnum> (NET5_0_OR_GREATER)
+#define SYSTEM_ENUM_GETNAMES_OF_TENUM // System.Enum.GetNames<TEnum> (NET5_0_OR_GREATER)
+#define SYSTEM_ENUM_GETVALUES_OF_TENUM // System.Enum.GetValues<TEnum> (NET5_0_OR_GREATER)
 #define SYSTEM_ENUM_ISDEFINED_OF_TENUM // System.Enum.IsDefined<TEnum> (NET5_0_OR_GREATER)
 #define SYSTEM_ENUM_PARSE_OF_TENUM // System.Enum.Parse<TEnum> (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_ENUM_TRYPARSE_OF_TENUM // System.Enum.TryParse<TEnum> (NETFRAMEWORK || NETSTANDARD1_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
