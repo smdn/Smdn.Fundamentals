@@ -767,6 +767,7 @@ SPDX-License-Identifier: MIT
       <!-- ref: https://devblogs.microsoft.com/dotnet/preview-features-in-net-6-generic-math/ -->
       <_NETSdkAvailableApiGroup TargetFrameworkCondition="$(_TargetFrameworkCondition)" Include="GENERIC_MATH_INTERFACES" TargetApiFullName="System.Numerics" />
 
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentException.ThrowIfNullOrEmpty"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IParsable"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanParsable"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetValuesAsUnderlyingType"/>
