@@ -769,6 +769,8 @@ SPDX-License-Identifier: MIT
 
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IParsable"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanParsable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetValuesAsUnderlyingType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetValuesAsUnderlyingType&lt;TEnum&gt;"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.TryReadExact"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.AsReadOnly"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics" Include="UnreachableException"/>
