@@ -17,14 +17,15 @@ SPDX-License-Identifier: MIT
     </SortNETSdkAvailableApiSymbol>
 
     <ItemGroup>
-      <_ListOfSymbols Include="- `%(_SortedNETSdkAvailableApiSymbol.Identity)` (`%(_SortedNETSdkAvailableApiSymbol.TargetApiFullName)`)" />
+      <_TableColumnsOfSymbol Include="|`%(_SortedNETSdkAvailableApiSymbol.Identity)`|`%(_SortedNETSdkAvailableApiSymbol.TargetApiFullName)`|`$([System.String]::new(%(_SortedNETSdkAvailableApiSymbol.TargetFrameworkCondition)).Replace(';', '` %26#x7C;%26#x7C; `'))`|" />
     </ItemGroup>
 
     <PropertyGroup>
-      <PackageReadmeFileContentPostamble><![CDATA[
-## List of symbols to be defined by this package
-@(_ListOfSymbols, '%0A')
-```]]></PackageReadmeFileContentPostamble>
+      <PackageReadmeFileContentPostamble><![CDATA[## List of symbols to be defined by this package
+|Symbol|Corresponding type, member, or namespace|Target framework condition|
+|-|-|-|
+@(_TableColumnsOfSymbol, '%0A')
+]]></PackageReadmeFileContentPostamble>
     </PropertyGroup>
   </Target>
 
