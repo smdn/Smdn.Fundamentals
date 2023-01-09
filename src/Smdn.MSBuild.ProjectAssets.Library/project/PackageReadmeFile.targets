@@ -30,9 +30,14 @@ SPDX-License-Identifier: MIT
     Name="GenerateNupkgReadmeFileContentAPIList"
     DependsOnTargets="GenerateNupkgReadmeFileContent"
   >
-    <GetLatestFramework Frameworks="$(TargetFrameworks)">
+    <GetLatestFramework Frameworks="$(TargetFrameworks)" Condition="'$(TargetFrameworks)' != ''">
       <Output TaskParameter="LatestFramework" PropertyName="LatestTargetFramework" />
     </GetLatestFramework>
+
+    <PropertyGroup>
+      <!-- refer TargetFramework instead of TargetFramework*s* -->
+      <LatestTargetFramework Condition="'$(LatestTargetFramework)' == ''">$(TargetFramework)</LatestTargetFramework>
+    </PropertyGroup>
 
     <ItemGroup>
       <ApiListFileOfLatestFramework Include="%(ApiListFiles.Identity)" Condition="'%(ApiListFiles.TargetFramework)' == '$(LatestTargetFramework)'" />

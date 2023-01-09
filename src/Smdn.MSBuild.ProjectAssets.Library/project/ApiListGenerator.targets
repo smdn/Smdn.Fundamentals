@@ -78,7 +78,8 @@ SPDX-License-Identifier: MIT
     <ItemGroup>
       <ApiListFiles Include="%(_GeneratedApiListFiles.Identity)">
         <SourceAssembly>%(_GeneratedApiListFiles.SourceAssembly)</SourceAssembly>
-        <TargetFramework>$([System.IO.Path]::GetDirectoryName(
+        <TargetFramework Condition="'$(TargetFrameworks)' == ''">$(TargetFramework)</TargetFramework>
+        <TargetFramework Condition="'$(TargetFrameworks)' != ''">$([System.IO.Path]::GetDirectoryName(
           $([System.IO.Path]::GetRelativePath(
             $([System.IO.Path]::GetFullPath('$(OutputPath)', '$(MSBuildProjectDirectory)')),
             '%(_GeneratedApiListFiles.SourceAssembly)'
