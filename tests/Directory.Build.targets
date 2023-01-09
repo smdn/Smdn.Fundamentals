@@ -66,11 +66,13 @@ SPDX-License-Identifier: MIT
       >$([System.IO.File]::ReadAllText('$(GITHUB_STEP_SUMMARY)'))</GitHubStepSummaryContent>
       <GitHubStepSummaryContent><![CDATA[$(GitHubStepSummaryContent)
 
-### PackageReference ($(TargetFramework))
+<details>
+  <summary>List of PackageReference ($(TargetFramework))</summary>
 
 |Package ID|Package version|
 |----------|---------------|
 @(_NuGetPackageReferenceTableMarkdownLines, '%0A')
+</details>
 ]]></GitHubStepSummaryContent>
     </PropertyGroup>
 
