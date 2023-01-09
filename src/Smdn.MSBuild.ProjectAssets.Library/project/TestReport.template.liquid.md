@@ -9,9 +9,12 @@ SPDX-License-Identifier: MIT
 {%- assign symbol_passed = "🟢" -%}
 {%- assign symbol_indeterminate = "🟡" -%}
 {%- assign symbol_failed = "🔴" -%}
+{%- assign symbol_inconclusive = "💭" -%}
+{%- assign symbol_not_found = "❔" -%}
 {%- assign test_count_passed   = run.test_run_statistics.passed_count -%}
 {%- assign test_count_failed   = run.test_run_statistics.failed_count -%}
 {%- assign test_count_skipped  = run.test_run_statistics.skipped_count -%}
+{%- assign test_count_other    = run.test_run_statistics.none_count | plus: run.test_run_statistics.not_found_count -%}
 {%- assign test_count_total    = run.test_run_statistics.executed_tests_count -%}
 {%- if test_count_passed == test_count_total -%}
 {%-   assign overall = symbol_passed | append: " Pass" *-%}
@@ -36,6 +39,7 @@ SPDX-License-Identifier: MIT
 {%- assign percentage_passed  = test_count_passed  | divided_by: test_count_total | times: 100.0 | round: 2 *-%}
 {%- assign percentage_failed  = test_count_failed  | divided_by: test_count_total | times: 100.0 | round: 2 *-%}
 {%- assign percentage_skipped = test_count_skipped | divided_by: test_count_total | times: 100.0 | round: 2 *-%}
+{%- assign percentage_other   = test_count_other   | divided_by: test_count_total | times: 100.0 | round: 2 *-%}
 {%- if test_count_passed != test_count_total -%}
 {%-   assign emit_overall_table = true -%}
 {%- else -%}
@@ -49,6 +53,7 @@ SPDX-License-Identifier: MIT
       <th scope="col">{{symbol_passed}} Passed</th>
       <th scope="col">{{symbol_failed}} Failed</th>
       <th scope="col">{{symbol_indeterminate}} Skipped</th>
+      <th scope="col">{{symbol_inconclusive}} Inconclusive<br/>{{symbol_not_found}} Not found</th>
       <th scope="col">Total</th>
     </tr>
   </thead>
@@ -58,6 +63,7 @@ SPDX-License-Identifier: MIT
       <td>{{ test_count_passed }}</td>
       <td>{{ test_count_failed }}</td>
       <td>{{ test_count_skipped }}</td>
+      <td>{{ test_count_other }}</td>
       <td>{{ test_count_total }}</td>
     </tr>
     <tr>
@@ -65,6 +71,7 @@ SPDX-License-Identifier: MIT
       <td>{{ percentage_passed }}</td>
       <td>{{ percentage_failed }}</td>
       <td>{{ percentage_skipped }}</td>
+      <td>{{ percentage_other }}</td>
       <td>100</td>
     </tr>
   </tbody>
