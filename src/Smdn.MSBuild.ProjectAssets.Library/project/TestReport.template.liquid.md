@@ -46,14 +46,35 @@ SPDX-License-Identifier: MIT
 {%-   assign emit_overall_table = parameter_emit_passed_test_results -%}
 {%- endif -%}
 {%- if emit_overall_table -%}
+{%-   if 0 < test_count_failed -%}
+{%-     assign emit_column_failed = true -%}
+{%-   else -%}
+{%-     assign emit_column_failed = false -%}
+{%-   endif -%}
+{%-   if 0 < test_count_skipped -%}
+{%-     assign emit_column_skipped = true -%}
+{%-   else -%}
+{%-     assign emit_column_skipped = false -%}
+{%-   endif -%}
+{%-   if 0 < test_count_other -%}
+{%-     assign emit_column_other = true -%}
+{%-   else -%}
+{%-     assign emit_column_other = false -%}
+{%-   endif -%}
 <table>
   <thead>
     <tr>
       <th></th>
       <th scope="col">{{symbol_passed}} Passed</th>
+{%- if emit_column_failed -%}
       <th scope="col">{{symbol_failed}} Failed</th>
+{%- endif -%}
+{%- if emit_column_skipped -%}
       <th scope="col">{{symbol_indeterminate}} Skipped</th>
+{%- endif -%}
+{%- if emit_column_other -%}
       <th scope="col">{{symbol_inconclusive}} Inconclusive<br/>{{symbol_not_found}} Not found</th>
+{%- endif -%}
       <th scope="col">Total</th>
     </tr>
   </thead>
@@ -61,17 +82,29 @@ SPDX-License-Identifier: MIT
     <tr>
       <th scope="row">#</th>
       <td>{{ test_count_passed }}</td>
+{%- if emit_column_failed -%}
       <td>{{ test_count_failed }}</td>
+{%- endif -%}
+{%- if emit_column_skipped -%}
       <td>{{ test_count_skipped }}</td>
+{%- endif -%}
+{%- if emit_column_other -%}
       <td>{{ test_count_other }}</td>
+{%- endif -%}
       <td>{{ test_count_total }}</td>
     </tr>
     <tr>
       <th scope="row">%</th>
       <td>{{ percentage_passed }}</td>
+{%- if emit_column_failed -%}
       <td>{{ percentage_failed }}</td>
+{%- endif -%}
+{%- if emit_column_skipped -%}
       <td>{{ percentage_skipped }}</td>
+{%- endif -%}
+{%- if emit_column_other-%}
       <td>{{ percentage_other }}</td>
+{%- endif -%}
       <td>100</td>
     </tr>
   </tbody>
