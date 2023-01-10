@@ -4,6 +4,9 @@
 //   InformationalVersion: 3.0.1+5d6c4605b04017bfcf25bb41821556a4a8af61d6
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System.IO;
 using Smdn.IO.Streams.Caching;

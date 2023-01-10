@@ -4,6 +4,16 @@
 //   InformationalVersion: 3.0.2+39445fb5e721cdeeae3d079c9e5f8bd11086f16e
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.Hexadecimal, Version=3.0.1.0, Culture=neutral
+//     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Stream.LineOriented, Version=3.1.0.0, Culture=neutral
+//     System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;

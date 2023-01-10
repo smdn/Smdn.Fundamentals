@@ -4,6 +4,11 @@
 //   InformationalVersion: 3.0.1+31a6e8af75b332a596dca9d2c754455314498e91
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
 using System.Xml;

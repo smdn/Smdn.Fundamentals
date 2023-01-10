@@ -4,6 +4,14 @@
 //   InformationalVersion: 3.0.1+c848761b03aeddaf02bfeb277f3f5672e904cf60
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Xml.Linq, Version=3.0.1.0, Culture=neutral
+//     System.Collections, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Xml.ReaderWriter, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Xml.XDocument, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
 using System.Collections.Generic;

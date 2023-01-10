@@ -4,6 +4,17 @@
 //   InformationalVersion: 3.0.2+88a74531a79909c9ffa85e23006da7fc8c31296f
 //   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     Smdn.Fundamental.String.Replacement, Version=3.0.2.0, Culture=neutral
+//     System.Collections, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.IO, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=4.0.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.Extensions, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Text.Encoding, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;

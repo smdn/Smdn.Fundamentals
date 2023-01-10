@@ -4,6 +4,12 @@
 //   InformationalVersion: 1.0.1+22d13e8bac8188bdb5b18a03d0357887e371a50f
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.ControlPicture, Version=3.0.0.1, Culture=neutral
+//     System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     nunit.framework, Version=3.13.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
 
 using System;
 using NUnit.Framework;

@@ -4,6 +4,10 @@
 //   InformationalVersion: 3.0.2+2b7169e01e02e90474ecf7f27e6d37aaa0a385f9
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.InteropServices.RuntimeInformation, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;

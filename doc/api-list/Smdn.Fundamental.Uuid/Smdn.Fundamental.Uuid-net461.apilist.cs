@@ -4,6 +4,15 @@
 //   InformationalVersion: 3.1.0+ae4a97a93ac395fe5044a3c8ed3ba4411533bc12
 //   TargetFramework: .NETFramework,Version=v4.6.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System;
 using System.Net.NetworkInformation;

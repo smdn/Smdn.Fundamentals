@@ -4,6 +4,12 @@
 //   InformationalVersion: 1.0.1+22d13e8bac8188bdb5b18a03d0357887e371a50f
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.ControlPicture, Version=3.0.0.1, Culture=neutral
+//     System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     nunit.framework, Version=3.13.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
 
 using System;
 using NUnit.Framework;

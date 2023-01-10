@@ -4,6 +4,13 @@
 //   InformationalVersion: 3.0.3+e21051dca94564f87fa26449ca8be59194f51ead
 //   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     System.Diagnostics.Debug, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.IO, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Threading.Tasks, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
 using System.IO;

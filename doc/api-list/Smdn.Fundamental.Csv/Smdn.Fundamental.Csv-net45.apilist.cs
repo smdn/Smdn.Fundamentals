@@ -4,6 +4,13 @@
 //   InformationalVersion: 3.1.0+ad2cc00a0ff6e5aaffa22f38b16db8977775c0d2
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System;
 using System.Collections.Generic;

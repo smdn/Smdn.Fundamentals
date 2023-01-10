@@ -4,6 +4,9 @@
 //   InformationalVersion: 3.0.0 (net45)
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System.Text.RegularExpressions;
 

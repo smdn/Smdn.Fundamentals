@@ -4,6 +4,12 @@
 //   InformationalVersion: 3.0.3+62b030d52118749c63983987fb6ae99a47e81e56
 //   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     System.Diagnostics.Debug, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.IO, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Threading.Tasks, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System.IO;

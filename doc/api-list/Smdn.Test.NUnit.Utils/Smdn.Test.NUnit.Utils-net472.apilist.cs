@@ -4,6 +4,11 @@
 //   InformationalVersion: 1.0.0+7598ad3f6134b7fcb21ff256682be15e2cd04b61
 //   TargetFramework: .NETFramework,Version=v4.7.2
 //   Configuration: Release
+//   Referenced assemblies:
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     nunit.framework, Version=3.13.2.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
 
 using System;
 using System.IO;

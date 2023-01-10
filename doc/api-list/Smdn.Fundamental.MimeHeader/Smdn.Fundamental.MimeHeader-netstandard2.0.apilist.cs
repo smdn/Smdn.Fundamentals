@@ -4,6 +4,11 @@
 //   InformationalVersion: 3.0.2+9d26436577acb277f29738784168deb702c45bd4
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Stream.LineOriented, Version=3.1.0.0, Culture=neutral
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System.Buffers;

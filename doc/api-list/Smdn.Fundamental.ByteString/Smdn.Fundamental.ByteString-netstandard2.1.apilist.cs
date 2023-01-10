@@ -4,6 +4,10 @@
 //   InformationalVersion: 3.0.2+e1cdf5b57693d8430e0ef803045395521eb5d6f5
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System;
 using System.Buffers;

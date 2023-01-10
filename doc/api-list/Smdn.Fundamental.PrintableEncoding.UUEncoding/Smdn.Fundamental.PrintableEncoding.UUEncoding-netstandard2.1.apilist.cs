@@ -4,6 +4,14 @@
 //   InformationalVersion: 3.0.2+39445fb5e721cdeeae3d079c9e5f8bd11086f16e
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.Hexadecimal, Version=3.0.1.0, Culture=neutral
+//     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Stream.LineOriented, Version=3.1.0.0, Culture=neutral
+//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System;

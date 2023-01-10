@@ -4,6 +4,8 @@
 //   InformationalVersion: 3.0.1+31a6e8af75b332a596dca9d2c754455314498e91
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System;
 using System.Xml;

@@ -4,6 +4,11 @@
 //   InformationalVersion: 3.1.3+776c90f65c448c72e1f3c8c16c24fe988b1af46a
 //   TargetFramework: .NETCoreApp,Version=v3.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     System.Linq, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.Extensions, Version=4.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
 using System.IO;

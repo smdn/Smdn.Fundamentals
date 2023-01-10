@@ -4,6 +4,11 @@
 //   InformationalVersion: 3.0.0.1+dc20ebef71437f6ae0e2cacb43e17d83d13c8ef0
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Text.Encodings.Web, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System;
 using System.Buffers;

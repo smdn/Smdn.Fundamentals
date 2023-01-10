@@ -4,6 +4,13 @@
 //   InformationalVersion: 3.0.2+88a74531a79909c9ffa85e23006da7fc8c31296f
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     Smdn.Fundamental.String.Replacement, Version=3.0.2.0, Culture=neutral
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations
 
 using System;

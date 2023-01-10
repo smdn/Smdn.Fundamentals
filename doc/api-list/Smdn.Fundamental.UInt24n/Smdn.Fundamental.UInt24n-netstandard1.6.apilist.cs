@@ -4,6 +4,14 @@
 //   InformationalVersion: 3.0.3.1+0f838f8a06f48ffc1ddbe92fcdcbcfa93a9cdbdc
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System;
 using System.Globalization;

@@ -4,6 +4,9 @@
 //   InformationalVersion: 3.3.2+aa9530da405ac816d457488d1528b1c6c72211f6
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations
 
 using System;

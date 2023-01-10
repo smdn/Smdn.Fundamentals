@@ -4,6 +4,9 @@
 //   InformationalVersion: 3.0.3+62b030d52118749c63983987fb6ae99a47e81e56
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations
 
 using System.IO;

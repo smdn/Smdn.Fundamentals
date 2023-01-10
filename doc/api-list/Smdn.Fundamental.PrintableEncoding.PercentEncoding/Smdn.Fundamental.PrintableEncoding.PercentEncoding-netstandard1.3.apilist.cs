@@ -4,6 +4,14 @@
 //   InformationalVersion: 3.0.3+97a0808ac5af96ca43ed25793e778b2b9cf1677e
 //   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.Hexadecimal, Version=3.0.1.0, Culture=neutral
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=4.0.20.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Security.Cryptography.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Text.Encoding, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System.Security.Cryptography;

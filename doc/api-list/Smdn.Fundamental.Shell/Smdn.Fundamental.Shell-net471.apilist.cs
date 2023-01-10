@@ -4,6 +4,10 @@
 //   InformationalVersion: 3.0.1+9d1fd8df380c745be94459a5479a55ac12ab3ada
 //   TargetFramework: .NETFramework,Version=v4.7.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System;
 using System.Collections.Generic;

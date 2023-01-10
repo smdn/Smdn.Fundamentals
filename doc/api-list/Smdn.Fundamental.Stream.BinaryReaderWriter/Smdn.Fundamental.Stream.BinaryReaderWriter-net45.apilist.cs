@@ -4,6 +4,12 @@
 //   InformationalVersion: 3.0.1.1+3286420ed0a2903dd6ebc753d030d262e9a72deb
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.FourCC, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.UInt24n, Version=3.0.3.1, Culture=neutral
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System;
 using System.IO;

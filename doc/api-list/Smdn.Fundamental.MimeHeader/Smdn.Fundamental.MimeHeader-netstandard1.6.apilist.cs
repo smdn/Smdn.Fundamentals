@@ -4,6 +4,17 @@
 //   InformationalVersion: 3.0.2+9d26436577acb277f29738784168deb702c45bd4
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Stream.LineOriented, Version=3.1.0.0, Culture=neutral
+//     System.Collections, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Diagnostics.Debug, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.IO, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Threading.Tasks, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System.Buffers;

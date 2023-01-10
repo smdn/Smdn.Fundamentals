@@ -4,6 +4,8 @@
 //   InformationalVersion: 3.0.1+c3fd43ebb35828d30dd34657e9cb09c2a9037f21
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System.Collections.Generic;
 using System.IO;

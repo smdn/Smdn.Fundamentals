@@ -4,6 +4,9 @@
 //   InformationalVersion: 3.0.2+fc52165d8eef02fb44623554044e3679d859f067
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System.Collections.Generic;

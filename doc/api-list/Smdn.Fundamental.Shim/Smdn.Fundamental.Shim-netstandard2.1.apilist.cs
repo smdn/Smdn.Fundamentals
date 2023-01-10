@@ -4,6 +4,9 @@
 //   InformationalVersion: 3.1.3+776c90f65c448c72e1f3c8c16c24fe988b1af46a
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System;
 using System.IO;

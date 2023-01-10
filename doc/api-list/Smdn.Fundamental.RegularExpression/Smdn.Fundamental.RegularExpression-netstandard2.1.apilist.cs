@@ -4,6 +4,8 @@
 //   InformationalVersion: 3.0.0 (netstandard2.1)
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
+//   Referenced assemblies:
+//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System.Text.RegularExpressions;
 

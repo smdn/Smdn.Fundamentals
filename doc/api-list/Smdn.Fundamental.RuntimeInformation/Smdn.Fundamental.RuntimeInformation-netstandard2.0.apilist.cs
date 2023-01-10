@@ -4,6 +4,8 @@
 //   InformationalVersion: 3.0.2+2b7169e01e02e90474ecf7f27e6d37aaa0a385f9
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System;

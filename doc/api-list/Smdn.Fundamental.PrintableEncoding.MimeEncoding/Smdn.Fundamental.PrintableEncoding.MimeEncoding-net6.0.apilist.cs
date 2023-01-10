@@ -4,6 +4,18 @@
 //   InformationalVersion: 3.1.0+0f59827eced400bac9539e303fb615aaa372eb7f
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Encoding, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
+//     System.Collections, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Security.Cryptography.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Text.RegularExpressions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;

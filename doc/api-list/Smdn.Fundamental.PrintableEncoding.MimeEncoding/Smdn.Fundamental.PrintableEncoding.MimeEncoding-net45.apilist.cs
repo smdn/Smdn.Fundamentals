@@ -4,6 +4,18 @@
 //   InformationalVersion: 3.1.0+0f59827eced400bac9539e303fb615aaa372eb7f
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Encoding, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
+//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations
 
 using System;

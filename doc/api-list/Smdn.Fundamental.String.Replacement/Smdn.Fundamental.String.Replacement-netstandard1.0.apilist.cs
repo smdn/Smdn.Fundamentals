@@ -4,6 +4,8 @@
 //   InformationalVersion: 3.0.2+9805a70fc9d7e01ace74c4db2ba31bb729f9e567
 //   TargetFramework: .NETStandard,Version=v1.0
 //   Configuration: Release
+//   Referenced assemblies:
+//     System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using Smdn;

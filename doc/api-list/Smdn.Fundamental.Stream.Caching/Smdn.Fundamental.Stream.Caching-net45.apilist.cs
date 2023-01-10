@@ -4,6 +4,10 @@
 //   InformationalVersion: 3.0.1+5d6c4605b04017bfcf25bb41821556a4a8af61d6
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 
 using System.IO;
 using Smdn.IO.Streams.Caching;

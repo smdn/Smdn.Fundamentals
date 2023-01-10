@@ -4,6 +4,10 @@
 //   InformationalVersion: 3.0.2+9cea7b339599949ee66f26f57ac11445d6975b49
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
+//   Referenced assemblies:
+//     Smdn.Fundamental.Encoding.OctetEncoding, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations
 
 using System.Security.Cryptography;
