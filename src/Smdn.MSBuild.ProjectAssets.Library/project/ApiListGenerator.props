@@ -3,6 +3,12 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
+  <!-- default configurations -->
+  <PropertyGroup>
+    <!-- enable if Configuration=Release by default -->
+    <APIListEnableGenerating Condition=" '$(APIListEnableGenerating)' == '' and '$(Configuration)' == 'Release' ">true</APIListEnableGenerating>
+  </PropertyGroup>
+
   <ItemGroup Label="API list generator">
     <PackageReference
       Include="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"

@@ -5,25 +5,31 @@ SPDX-License-Identifier: MIT
 <Project>
   <PropertyGroup Label="API list generator">
     <!-- default configurations -->
-    <APIListEnableGenerating Condition=" ('$(Configuration)' == 'Release') and ('$(IncludeBuildOutput)' != 'false') ">true</APIListEnableGenerating> <!-- default value of 'IncludeBuildOutput' is empty, not 'true' -->
     <APIListOutputBaseDirectory Condition=" '$(APIListOutputBaseDirectory)' == '' ">api-list\</APIListOutputBaseDirectory>
     <APIListPackageVersion Condition=" '$(APIListPackageVersion)' == '' ">1.1.4</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext Condition=" '$(APIListLoadIntoReflectionOnlyContext)' == '' ">false</APIListLoadIntoReflectionOnlyContext>
 
+    <_APIListDoGenerate>$(APIListEnableGenerating)</_APIListDoGenerate>
+    <!--
+      Disable if IncludeBuildOutput is falsy.
+      Note that the default value of 'IncludeBuildOutput' is empty, not 'true'.
+    -->
+    <_APIListDoGenerate Condition=" '$(IncludeBuildOutput)' != '' and '$(IncludeBuildOutput)' != 'true' ">false</_APIListDoGenerate>
+
     <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
     <ExcludeRestorePackageImports
-      Condition=" '$(APIListEnableGenerating)' == 'true' and $([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '6.0')) "
+      Condition=" '$(_APIListDoGenerate)' == 'true' and $([MSBuild]::VersionLessThan('$(NETCoreSdkVersion)', '6.0')) "
     >false</ExcludeRestorePackageImports>
   </PropertyGroup>
 
   <ItemGroup Label="API list generator">
     <PackageReference
-      Condition=" '$(APIListEnableGenerating)' == 'true' "
+      Condition=" '$(_APIListDoGenerate)' == 'true' "
       Update="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
       Version="[$(APIListPackageVersion)]"
     />
     <PackageReference
-      Condition=" '$(APIListEnableGenerating)' != 'true' "
+      Condition=" '$(_APIListDoGenerate)' != 'true' "
       Remove="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
     />
   </ItemGroup>
@@ -41,7 +47,7 @@ SPDX-License-Identifier: MIT
   <Target
     Name="GenerateAPIListOfPackage"
     BeforeTargets="GenerateNuspec"
-    Condition=" '$(APIListEnableGenerating)' == 'true' "
+    Condition=" '$(_APIListDoGenerate)' == 'true' "
     Label="API list generator"
   >
     <ItemGroup>
