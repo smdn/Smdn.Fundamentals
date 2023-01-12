@@ -21,7 +21,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference VersionRange="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ControlPicture\Smdn.Fundamental.ControlPicture.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ControlPicture\Smdn.Fundamental.ControlPicture.csproj" />
     <PackageReference Include="NUnit" Version="[3.13.0,4.0.0)" />
     <PackageReference Include="System.Memory" />
   </ItemGroup>

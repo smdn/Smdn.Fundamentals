@@ -22,11 +22,11 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <PackageReference Include="System.ValueTuple" />
-    <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
-    <ProjectReference VersionRange="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
-    <ProjectReference VersionRange="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
-    <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
-    <ProjectReference VersionRange="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
+    <ProjectReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
   </ItemGroup>
 </Project>
