@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: read
+
 name: Publish release target (reusable workflow)
 
 on:
