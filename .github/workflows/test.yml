@@ -3,6 +3,9 @@
 
 name: Run tests (reusable workflow)
 
+permissions:
+  contents: read
+
 # ref: https://docs.microsoft.com/en-us/dotnet/devops/dotnet-test-github-action
 on:
   workflow_call:
