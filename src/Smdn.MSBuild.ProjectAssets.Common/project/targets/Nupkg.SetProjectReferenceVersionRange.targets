@@ -3,7 +3,9 @@ SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <!-- Replaces %(ProjectReferencesWithVersions.ProjectVersion) with custom defined metadata %(ProjectReference.VersionRange) -->
+  <!--
+    Replaces %(_ProjectReferencesWithVersions.ProjectVersion) with custom defined metadata %(ProjectReference.ReferencePackageVersion)
+  -->
   <!-- ref: https://github.com/NuGet/Home/issues/5556 -->
   <Target
     Name="Nupkg_SetProjectReferenceVersionRange"
@@ -11,12 +13,20 @@ SPDX-License-Identifier: MIT
     DependsOnTargets="_GetProjectReferenceVersions"
   >
     <ItemGroup>
+      <!-- VersionRange is obsolete, will be replaced by ReferencePackageVersion -->
       <_ProjectReferencesWithVersionsToUpdate
         Include="@(ProjectReference->'%(FullPath)')"
         ProjectVersion="%(ProjectReference.VersionRange)"
         Condition=" '%(ProjectReference.VersionRange)' != '' "
       />
+      <!-- the value of VersionRange will be replaced by the value of ReferencePackageVersion -->
+      <_ProjectReferencesWithVersionsToUpdate
+        Include="@(ProjectReference->'%(FullPath)')"
+        ProjectVersion="%(ProjectReference.ReferencePackageVersion)"
+        Condition=" '%(ProjectReference.ReferencePackageVersion)' != '' "
+      />
 
+      <!-- set the value of ReferencePackageVersion (or VersionRange) to _ProjectReferencesWithVersions.ProjectVersion -->
       <_ProjectReferencesWithVersions
         Remove="%(_ProjectReferencesWithVersionsToUpdate.Identity)"
       />
@@ -25,5 +35,18 @@ SPDX-License-Identifier: MIT
         ProjectVersion="%(_ProjectReferencesWithVersionsToUpdate.ProjectVersion)"
       />
     </ItemGroup>
+  </Target>
+
+  <Target
+    Name="WarnUseOfProjectReferenceVersionRange"
+    BeforeTargets="BeforeBuild"
+    DependsOnTargets="_GetProjectReferenceVersions"
+  >
+    <!-- warn use of VersionRange with ProjectReference -->
+    <Warning
+      Text="ProjectReference.VersionRange is obsolete. Replace with &lt;ProjectReference Include=&quot;%(ProjectReference.Identity)&quot; ReferencePackageVersion=&quot;%(ProjectReference.VersionRange)&quot; /&gt;"
+      File="$(MSBuildProjectFullPath)"
+      Condition=" '%(ProjectReference.VersionRange)' != '' "
+    />
   </Target>
 </Project>
