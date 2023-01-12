@@ -5,7 +5,8 @@ name: Generate release target
 
 on:
   push:
-    tags: new-release/*/*
+    tags:
+      - new-release/*/*
 
   workflow_dispatch:
     inputs:
