@@ -24,46 +24,46 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ByteString\Smdn.Fundamental.ByteString.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Csv\Smdn.Fundamental.Csv.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.FourCC\Smdn.Fundamental.FourCC.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding.OctetEncoding\Smdn.Fundamental.Encoding.OctetEncoding.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.FileSystem\Smdn.Fundamental.FileSystem.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Math\Smdn.Fundamental.Math.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.MimeHeader\Smdn.Fundamental.MimeHeader.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.MimeType\Smdn.Fundamental.MimeType.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ParamArray\Smdn.Fundamental.ParamArray.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.MimeEncoding\Smdn.Fundamental.PrintableEncoding.MimeEncoding.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.ModifiedBase64\Smdn.Fundamental.PrintableEncoding.ModifiedBase64.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.PercentEncoding\Smdn.Fundamental.PrintableEncoding.PercentEncoding.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.RegularExpression\Smdn.Fundamental.RegularExpression.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.RuntimeInformation\Smdn.Fundamental.RuntimeInformation.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.SIPrefix\Smdn.Fundamental.SIPrefix.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Shell\Smdn.Fundamental.Shell.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.StandardDateTimeFormat\Smdn.Fundamental.StandardDateTimeFormat.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.BinaryReaderWriter\Smdn.Fundamental.Stream.BinaryReaderWriter.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Caching\Smdn.Fundamental.Stream.Caching.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Extending\Smdn.Fundamental.Stream.Extending.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Filtering\Smdn.Fundamental.Stream.Filtering.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.LineOriented\Smdn.Fundamental.Stream.LineOriented.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.TextReader\Smdn.Fundamental.Stream.TextReader.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.String.Replacement\Smdn.Fundamental.String.Replacement.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stringification\Smdn.Fundamental.Stringification.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uri\Smdn.Fundamental.Uri.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uuid\Smdn.Fundamental.Uuid.csproj" />
-    <ProjectReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Xml.Xhtml\Smdn.Fundamental.Xml.Xhtml.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ByteString\Smdn.Fundamental.ByteString.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Collection\Smdn.Fundamental.Collection.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Csv\Smdn.Fundamental.Csv.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.FourCC\Smdn.Fundamental.FourCC.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding\Smdn.Fundamental.Encoding.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Encoding.OctetEncoding\Smdn.Fundamental.Encoding.OctetEncoding.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.FileSystem\Smdn.Fundamental.FileSystem.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Math\Smdn.Fundamental.Math.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.MimeHeader\Smdn.Fundamental.MimeHeader.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.MimeType\Smdn.Fundamental.MimeType.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ParamArray\Smdn.Fundamental.ParamArray.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Base64\Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.MimeEncoding\Smdn.Fundamental.PrintableEncoding.MimeEncoding.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.ModifiedBase64\Smdn.Fundamental.PrintableEncoding.ModifiedBase64.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.PercentEncoding\Smdn.Fundamental.PrintableEncoding.PercentEncoding.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.QuotedPrintable\Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.UUEncoding\Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.RegularExpression\Smdn.Fundamental.RegularExpression.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.RuntimeInformation\Smdn.Fundamental.RuntimeInformation.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.SIPrefix\Smdn.Fundamental.SIPrefix.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Shell\Smdn.Fundamental.Shell.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.StandardDateTimeFormat\Smdn.Fundamental.StandardDateTimeFormat.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream\Smdn.Fundamental.Stream.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.BinaryReaderWriter\Smdn.Fundamental.Stream.BinaryReaderWriter.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Caching\Smdn.Fundamental.Stream.Caching.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Extending\Smdn.Fundamental.Stream.Extending.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.Filtering\Smdn.Fundamental.Stream.Filtering.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.LineOriented\Smdn.Fundamental.Stream.LineOriented.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stream.TextReader\Smdn.Fundamental.Stream.TextReader.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.String.Replacement\Smdn.Fundamental.String.Replacement.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Stringification\Smdn.Fundamental.Stringification.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.UInt24n\Smdn.Fundamental.UInt24n.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uri\Smdn.Fundamental.Uri.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Uuid\Smdn.Fundamental.Uuid.csproj" />
+    <ProjectReference ReferenceAssemblyVersion="3.0.0" ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Xml.Xhtml\Smdn.Fundamental.Xml.Xhtml.csproj" />
     <PackageReference Include="System.ValueTuple" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" />
