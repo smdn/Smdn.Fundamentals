@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
 
 name: Publish release target
+run-name: Publish release target ${{ github.head_ref }}
 
 on:
   pull_request:
