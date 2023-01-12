@@ -3,6 +3,11 @@
 
 name: Publish release target (reusable workflow)
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: read
+
 on:
   workflow_call:
     inputs:
