@@ -3,12 +3,17 @@ SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
+  <Target Name="Nupkg_SetProjectReferenceVersionRange">
+    <Warning Text="Use SetProjectReferenceVersionFromReferencePackageVersion instead" />
+    <CallTarget Targets="SetProjectReferenceVersionFromReferencePackageVersion" />
+  </Target>
+
   <!--
     Replaces %(_ProjectReferencesWithVersions.ProjectVersion) with custom defined metadata %(ProjectReference.ReferencePackageVersion)
   -->
   <!-- ref: https://github.com/NuGet/Home/issues/5556 -->
   <Target
-    Name="Nupkg_SetProjectReferenceVersionRange"
+    Name="SetProjectReferenceVersionFromReferencePackageVersion"
     BeforeTargets="GenerateNuspec"
     DependsOnTargets="_GetProjectReferenceVersions"
   >

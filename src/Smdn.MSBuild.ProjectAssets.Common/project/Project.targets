@@ -9,10 +9,10 @@ SPDX-License-Identifier: MIT
     <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.GenerateMetadata.Repository.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.SetDefaults.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Assets.Deploy.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.SetProjectReferenceVersionRange.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.WarnPackConfiguration.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.GenerateRepositoryProperties.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.SetDefaults.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\SetProjectReferenceVersionFromReferencePackageVersion.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\SetReferenceAssemblyVersionForProjectReference.targets" />
   </ImportGroup>
 </Project>
