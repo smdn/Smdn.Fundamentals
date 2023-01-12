@@ -5,7 +5,7 @@
 //   TargetFramework: .NETStandard,Version=v1.3
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.2.0, Culture=neutral
 //     System.IO, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Linq, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51

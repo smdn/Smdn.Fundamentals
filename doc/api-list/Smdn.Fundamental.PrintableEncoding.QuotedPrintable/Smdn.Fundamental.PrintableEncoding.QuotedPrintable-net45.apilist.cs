@@ -6,7 +6,7 @@
 //   Configuration: Release
 //   Referenced assemblies:
 //     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral
 //     Smdn.Fundamental.PrintableEncoding.Hexadecimal, Version=3.0.1.0, Culture=neutral
 //     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
 //     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51

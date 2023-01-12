@@ -5,7 +5,7 @@
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     Smdn.Fundamental.Shim, Version=3.1.2.0, Culture=neutral
 //     System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 //     System.Collections, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Diagnostics.Debug, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a

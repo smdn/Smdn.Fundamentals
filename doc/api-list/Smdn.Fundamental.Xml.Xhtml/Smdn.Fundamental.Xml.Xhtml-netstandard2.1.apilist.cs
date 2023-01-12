@@ -5,7 +5,7 @@
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Xml.Linq, Version=3.0.1.0, Culture=neutral
+//     Smdn.Fundamental.Xml.Linq, Version=3.0.0.0, Culture=neutral
 //     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System;

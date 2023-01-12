@@ -5,7 +5,7 @@
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Buffer, Version=3.0.0.0, Culture=neutral
 //     Smdn.Fundamental.Stream.LineOriented, Version=3.1.0.0, Culture=neutral
 //     System.Collections, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51

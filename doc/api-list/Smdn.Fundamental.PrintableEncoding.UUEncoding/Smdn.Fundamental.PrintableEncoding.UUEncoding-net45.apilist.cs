@@ -7,7 +7,7 @@
 //   Referenced assemblies:
 //     Smdn.Fundamental.Buffer, Version=3.0.3.0, Culture=neutral
 //     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral
 //     Smdn.Fundamental.PrintableEncoding.Hexadecimal, Version=3.0.1.0, Culture=neutral
 //     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
 //     Smdn.Fundamental.Stream.LineOriented, Version=3.1.0.0, Culture=neutral

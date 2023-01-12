@@ -6,8 +6,8 @@
 //   Configuration: Release
 //   Referenced assemblies:
 //     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Encoding, Version=3.0.3.0, Culture=neutral
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Encoding, Version=3.0.2.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral
 //     Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.3.0, Culture=neutral
 //     Smdn.Fundamental.PrintableEncoding.QuotedPrintable, Version=3.0.2.0, Culture=neutral
 //     Smdn.Fundamental.PrintableEncoding.UUEncoding, Version=3.0.2.0, Culture=neutral

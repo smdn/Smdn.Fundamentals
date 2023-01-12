@@ -6,8 +6,8 @@
 //   Configuration: Release
 //   Referenced assemblies:
 //     Smdn.Fundamental.CryptoTransform, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
-//     Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral
+//     Smdn.Fundamental.PrintableEncoding.Base64, Version=3.0.2.0, Culture=neutral
 //     System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 //     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations

@@ -6,7 +6,7 @@
 //   Configuration: Release
 //   Referenced assemblies:
 //     Smdn.Fundamental.Encoding.OctetEncoding, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
+//     Smdn.Fundamental.Exception, Version=3.0.0.0, Culture=neutral
 //     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 #nullable enable annotations
 

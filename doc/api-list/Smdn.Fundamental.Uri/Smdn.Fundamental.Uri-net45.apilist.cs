@@ -5,8 +5,8 @@
 //   TargetFramework: .NETFramework,Version=v4.5
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Collection, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
+//     Smdn.Fundamental.Collection, Version=3.0.0.0, Culture=neutral
+//     Smdn.Fundamental.Shim, Version=3.0.0.0, Culture=neutral
 //     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 //     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
 

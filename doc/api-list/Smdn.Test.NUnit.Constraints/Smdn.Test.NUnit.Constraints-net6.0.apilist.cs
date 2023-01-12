@@ -5,7 +5,7 @@
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.ControlPicture, Version=3.0.0.1, Culture=neutral
+//     Smdn.Fundamental.ControlPicture, Version=3.0.0.0, Culture=neutral
 //     System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Memory, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 //     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a

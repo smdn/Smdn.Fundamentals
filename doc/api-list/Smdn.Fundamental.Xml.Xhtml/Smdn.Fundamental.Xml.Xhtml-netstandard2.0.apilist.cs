@@ -5,8 +5,8 @@
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Shim, Version=3.1.3.0, Culture=neutral
-//     Smdn.Fundamental.Xml.Linq, Version=3.0.1.0, Culture=neutral
+//     Smdn.Fundamental.Shim, Version=3.1.2.0, Culture=neutral
+//     Smdn.Fundamental.Xml.Linq, Version=3.0.0.0, Culture=neutral
 //     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 //     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 

@@ -6,9 +6,9 @@
 //   Configuration: Release
 //   Referenced assemblies:
 //     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
-//     Smdn.Fundamental.FourCC, Version=3.0.2.0, Culture=neutral
-//     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
-//     Smdn.Fundamental.UInt24n, Version=3.0.3.1, Culture=neutral
+//     Smdn.Fundamental.FourCC, Version=3.0.0.0, Culture=neutral
+//     Smdn.Fundamental.Stream, Version=3.0.0.0, Culture=neutral
+//     Smdn.Fundamental.UInt24n, Version=3.0.0.0, Culture=neutral
 //     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 
 using System;

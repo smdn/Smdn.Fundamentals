@@ -5,7 +5,7 @@
 //   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Xml.Linq, Version=3.0.1.0, Culture=neutral
+//     Smdn.Fundamental.Xml.Linq, Version=3.0.0.0, Culture=neutral
 //     System.Collections, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Linq, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
