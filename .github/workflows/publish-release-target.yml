@@ -2,6 +2,7 @@
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
 
 name: Publish release target (reusable workflow)
+run-name: Publish release target (Release PR \#${{ inputs.pr_number_request_for_release }})
 
 permissions:
   contents: write
