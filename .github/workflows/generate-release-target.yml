@@ -395,7 +395,8 @@ jobs:
               ${{ steps.package-info.outputs.package_prevver_ref }}..HEAD `
               --pretty=format:'- %cs [%s](${{ github.server_url }}/${{ github.repository }}/commit/%H)' `
               -- `
-              ${{ steps.package-info.outputs.package_source_dir }}
+              ${{ steps.package-info.outputs.package_source_dir }} `
+              | jq -Rr `@html
             OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
