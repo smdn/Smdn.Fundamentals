@@ -27,7 +27,6 @@ SPDX-License-Identifier: MIT
     <None Include="assets\include.editorconfig"            Pack="true" PackagePath="assets\.editorconfig" />
     <None Include="project\Project.props"                  Pack="true" PackagePath="project\" />
     <None Include="project\Project.targets"                Pack="true" PackagePath="project\" />
-    <None Include="project\props\*.props"                  Pack="true" PackagePath="project\props\" />
     <None Include="project\targets\*.targets"              Pack="true" PackagePath="project\targets\" />
     <None Include="project\images\package-icon.png"        Pack="true" PackagePath="project\images\package-icon.png" />
   </ItemGroup>

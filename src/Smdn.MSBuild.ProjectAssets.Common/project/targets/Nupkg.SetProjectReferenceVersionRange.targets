@@ -1,0 +1,29 @@
+<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!-- Replaces %(ProjectReferencesWithVersions.ProjectVersion) with custom defined metadata %(ProjectReference.VersionRange) -->
+  <!-- ref: https://github.com/NuGet/Home/issues/5556 -->
+  <Target
+    Name="Nupkg_SetProjectReferenceVersionRange"
+    BeforeTargets="GenerateNuspec"
+    DependsOnTargets="_GetProjectReferenceVersions"
+  >
+    <ItemGroup>
+      <_ProjectReferencesWithVersionsToUpdate
+        Include="@(ProjectReference->'%(FullPath)')"
+        ProjectVersion="%(ProjectReference.VersionRange)"
+        Condition=" '%(ProjectReference.VersionRange)' != '' "
+      />
+
+      <_ProjectReferencesWithVersions
+        Remove="%(_ProjectReferencesWithVersionsToUpdate.Identity)"
+      />
+      <_ProjectReferencesWithVersions
+        Include="%(_ProjectReferencesWithVersionsToUpdate.Identity)"
+        ProjectVersion="%(_ProjectReferencesWithVersionsToUpdate.ProjectVersion)"
+      />
+    </ItemGroup>
+  </Target>
+</Project>
