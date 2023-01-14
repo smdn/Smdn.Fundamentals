@@ -25,5 +25,12 @@ SPDX-License-Identifier: MIT
         ProjectVersion="%(_ProjectReferencesWithVersionsToUpdate.ProjectVersion)"
       />
     </ItemGroup>
+
+    <!-- warn use of VersionRange with ProjectReference -->
+    <Warning
+      Text="ProjectReference.VersionRange is obsolete. Replace with &lt;ProjectOrPackageReference Include=&quot;%(ProjectReference.Identity)&quot; ReferencePackageVersion=&quot;%(ProjectReference.VersionRange)&quot; /&gt;"
+      File="$(MSBuildProjectFullPath)"
+      Condition=" '%(ProjectReference.VersionRange)' != '' "
+    />
   </Target>
 </Project>
