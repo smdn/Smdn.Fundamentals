@@ -1,0 +1,69 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project InitialTargets="IncludeProjectOrPackageReference">
+  <!-- set default value for ReplaceProjectReferenceToPackageReference -->
+  <PropertyGroup Condition=" '$(ReplaceProjectReferenceToPackageReference)' == '' ">
+    <!--
+      use PackageReference if current build is invoked by `dotnet pack`
+      note: _IsPacking is only set with .NET SDK 7.0 or later and when the `dotnet pack` command is run
+    -->
+    <ReplaceProjectOrPackageReferenceToPackageReference Condition=" '$(_IsPacking)' == 'true' ">true</ReplaceProjectOrPackageReferenceToPackageReference>
+    <!-- use PackageReference if 'Release' configuration -->
+    <ReplaceProjectOrPackageReferenceToPackageReference Condition=" '$(Configuration)' == 'Release' ">true</ReplaceProjectOrPackageReferenceToPackageReference>
+    <!-- use ProjectReference by default -->
+    <ReplaceProjectOrPackageReferenceToPackageReference
+      Condition=" '$(ReplaceProjectOrPackageReferenceToPackageReference)' == '' "
+    >false</ReplaceProjectOrPackageReferenceToPackageReference>
+  </PropertyGroup>
+
+  <Target Name="IncludeProjectOrPackageReference">
+    <CallTarget
+      Targets="IncludeProjectOrPackageReferenceAsPackageReference"
+      Condition=" '$(ReplaceProjectOrPackageReferenceToPackageReference)' == 'true' "
+    />
+    <CallTarget
+      Targets="IncludeProjectOrPackageReferenceAsProjectReference"
+      Condition=" '$(ReplaceProjectOrPackageReferenceToPackageReference)' != 'true' "
+    />
+  </Target>
+
+  <Target Name="IncludeProjectOrPackageReferenceAsPackageReference" Outputs="@(PackageReference)">
+    <ItemGroup>
+      <!-- determine package ID for PackageReference (use project file name as package ID by default) -->
+      <ProjectOrPackageReference
+        Update="@(ProjectOrPackageReference)"
+        PackageId="%(ProjectOrPackageReference.Filename)"
+        Condition="
+          '%(ProjectOrPackageReference.PackageId)' == '' and
+          '$(ReplaceProjectOrPackageReferenceToPackageReference)' == 'true'
+        "
+      />
+    </ItemGroup>
+
+    <Warning
+      Text="ProjectOrPackageReference '%(ProjectOrPackageReference.Identity)' must have a metadata ReferencePackageVersion."
+      File="$(MSBuildProjectFullPath)"
+      Condition=" '%(ProjectOrPackageReference.Identity)' != '' and '%(ProjectOrPackageReference.ReferencePackageVersion)' == '' "
+    />
+
+    <ItemGroup>
+      <!-- include ProjectOrPackageReference as PackageReference -->
+      <PackageReference
+        Include="%(ProjectOrPackageReference.PackageId)"
+        Version="%(ProjectOrPackageReference.ReferencePackageVersion)"
+        Condition=" '%(ProjectOrPackageReference.ReferencePackageVersion)' != '' "
+      />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="IncludeProjectOrPackageReferenceAsProjectReference">
+    <ItemGroup>
+      <!-- include ProjectOrPackageReference as ProjectReference -->
+      <ProjectReference
+        Include="@(ProjectOrPackageReference)"
+      />
+    </ItemGroup>
+  </Target>
+</Project>
