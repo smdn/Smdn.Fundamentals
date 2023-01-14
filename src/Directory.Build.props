@@ -5,7 +5,7 @@ SPDX-License-Identifier: MIT
 <Project>
   <PropertyGroup Label="project assets">
     <SmdnBuildAssetRootDirectory>$(MSBuildThisFileDirectory)..\</SmdnBuildAssetRootDirectory>
-    <!-- <_SmdnProjectAssets_ImportFromLocal Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == ''">true</_SmdnProjectAssets_ImportFromLocal> -->
+    <_SmdnProjectAssets_ImportFromLocal Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == ''">true</_SmdnProjectAssets_ImportFromLocal>
   </PropertyGroup>
 
   <ImportGroup Label="project assets">

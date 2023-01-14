@@ -22,8 +22,8 @@ SPDX-License-Identifier: MIT
   <Import Project="..\FeatureGenericMath.props" />
 
   <ItemGroup>
-    <ProjectReference ReferenceAssemblyVersion="3.0.2" ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectReference ReferenceAssemblyVersion="3.1.2" ReferencePackageVersion="[3.1.2,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.2,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     <PackageReference Include="System.ValueTuple" />

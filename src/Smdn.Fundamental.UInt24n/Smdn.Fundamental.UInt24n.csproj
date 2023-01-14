@@ -24,8 +24,8 @@ SPDX-License-Identifier: MIT
   -->
 
   <ItemGroup>
-    <ProjectReference ReferenceAssemblyVersion="3.0.2" ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectReference ReferenceAssemblyVersion="3.1.0" ReferencePackageVersion="[3.1.0,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard')) or $(TargetFramework.StartsWith('netcoreapp'))" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.0,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard')) or $(TargetFramework.StartsWith('netcoreapp'))" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.ValueTuple" />
   </ItemGroup>
