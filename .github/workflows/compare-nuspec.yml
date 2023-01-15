@@ -1,0 +1,29 @@
+name: "Compare nuspec"
+
+on:
+  workflow_call:
+    inputs:
+      path_to_project_directory:
+        description: "The project directory path to be compared."
+        required: true
+        type: string
+      package_id:
+        description: "The ID of the package to be compared."
+        required: true
+        type: string
+
+jobs:
+  compare:
+    name: Compare .nuspec
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3.1.0
+
+    - name: Compare .nuspec
+      shell: pwsh
+      run: |
+        ${{ github.action_path }}/scripts/nuspec-diff.ps1 -PackageId '${{ inputs.package_id }}' -ProjectDirectory '${{ inputs.path_to_project_directory }}'
