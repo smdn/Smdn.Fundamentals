@@ -17,7 +17,7 @@ on:
 
 jobs:
   run-compare:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/compare-nuspec.yml@devel-workflows/
+    uses: smdn/Smdn.Fundamentals/.github/workflows/compare-nuspec.yml@devel-workflows
     with:
       path_to_project_directory: src/${{ github.event.inputs.project }}/
       package_id: ${{ github.event.inputs.package_id }}
