@@ -9,21 +9,40 @@
 #
 # Parameters:
 #   -PackageId : An ID for the target package from which the .nuspec to be compared.
-#   -ProjectDirectory : A path to the directory that contains the target project. The .nuspec file generated from this project will be used for comparison.
+#   -ProjectDirectoryPath : A path to the directory that contains the target project. The .nuspec file generated from this project will be used for comparison.
+#   -NuSpecFilePath : A path to the .nuspec file that will be used for comparison.
 #   -FilePath : A path to the file which the generated differences will be output. If not specified or '-' is specified, standard output is used.
 #   -PackageSource : A package source URI from which the package to be downloaded. nuget.org is used by default.
 #   -NoBuild : A switch for specifying whether to build the project or not when generating the .nuspec.
 #
 # Usage:
-#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectory path/to/project/Smdn.Fundamental.Exception/
-#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectory path/to/project/Smdn.Fundamental.Exception/ output.diff
+#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/
+#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/ output.diff
+#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
 #
+[CmdletBinding(DefaultParameterSetName="CompareWithProject")]
 Param(
-  [parameter(mandatory=$true)][string]$PackageId,
-  [parameter(mandatory=$true)][string]$ProjectDirectory,
+  [Parameter(Mandatory = $true, ParameterSetName = 'CompareWithProject')]
+  [Parameter(Mandatory = $true, ParameterSetName = 'CompareWithNuSpecFile')]
+  [string]$PackageId,
+
+  [Parameter(Mandatory = $true, ParameterSetName = 'CompareWithProject')]
+  [string]$ProjectDirectoryPath,
+
+  [Parameter(Mandatory = $true, ParameterSetName = 'CompareWithNuSpecFile')]
+  [string]$NuSpecFilePath,
+
+  [Parameter(ParameterSetName = 'CompareWithProject')]
+  [Parameter(ParameterSetName = 'CompareWithNuSpecFile')]
   [string]$FilePath = $null,
+
+  [Parameter(ParameterSetName = 'CompareWithProject')]
+  [Parameter(ParameterSetName = 'CompareWithNuSpecFile')]
   [string]$PackageSource = 'https://api.nuget.org/v3/index.json',
-  [switch][bool]$NoBuild = $false
+
+  [Parameter(ParameterSetName = 'CompareWithProject')]
+  [switch]
+  [bool]$NoBuild = $false
 )
 
 # Summary: Fetches service index for the specified source, and returns resource base address (@id) for specified resource type (@type).
@@ -231,27 +250,15 @@ function Compare-NuSpecDifference {
   param(
     $package_source_path,
     $package_id,
-    $path_to_project_directory,
+    $path_to_nuspec_file,
     $no_build
   )
 
-  #
-  # generates .nuspec file for specified project
-  #
-  $path_to_nuspec_outout_directory = Join-Path -Path $path_to_project_directory -ChildPath 'nuspec/'
+  # gets content of specified .nuspec file
+  $nuspec_content_new = Get-Content -Path $path_to_nuspec_file
+  $nuspec_label_new = Split-Path $path_to_nuspec_file -Leaf
 
-  #$path_to_nuspec_new = '/home/smdn/Smdn.Fundamentals/src/Smdn.Fundamental.Exception/nuspec/Smdn.Fundamental.Exception.3.0.3.nuspec'
-  $path_to_nuspec_new = New-ProjectNuSpec `
-    $path_to_project_directory `
-    $path_to_nuspec_outout_directory `
-    $no_build
-
-  $nuspec_content_new = Get-Content -Path $path_to_nuspec_new
-  $nuspec_label_new = Split-Path $path_to_nuspec_new -Leaf
-
-  #
-  # downloads .nuspec file for specified NuGet package
-  #
+  # downloads .nuspec for specified NuGet package
   $package_base_address = Get-NuGetResourceBaseAddress $package_source_path 'PackageBaseAddress/3.0.0'
   $package_version_latest = Get-NuGetLatestPackageVersion $package_base_address $package_id
 
@@ -279,11 +286,26 @@ function Compare-NuSpecDifference {
 #
 # main
 #
+if ($PsCmdlet.ParameterSetName -eq "CompareWithProject") {
+  # generates .nuspec file for the specified project
+  $path_to_nuspec_outout_directory = Join-Path -Path $ProjectDirectoryPath -ChildPath 'nuspec/'
+
+  $path_to_nuspec_file = New-ProjectNuSpec `
+    $ProjectDirectoryPath `
+    $path_to_nuspec_outout_directory `
+    $NoBuild
+}
+elseif ($PsCmdlet.ParameterSetName -eq "CompareWithNuSpecFile") {
+  $path_to_nuspec_file = $NuSpecFilePath
+}
+else {
+  throw "unknown parameter set: $($PsCmdlet.ParameterSetName)";
+}
+
 $nuspec_diff = Compare-NuSpecDifference `
   $PackageSource `
   $PackageId `
-  $ProjectDirectory `
-  $NoBuild
+  $path_to_nuspec_file
 
 if ([string]::IsNullOrEmpty($FilePath) -or $FilePath -eq '-') {
   $nuspec_diff | Write-Host
