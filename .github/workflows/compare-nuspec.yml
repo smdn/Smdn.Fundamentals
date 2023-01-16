@@ -26,5 +26,9 @@ jobs:
     - name: Compare .nuspec
       shell: pwsh
       run: |
-        "${{ github.action_path }}"
-        ${{ github.action_path }}scripts/nuspec-diff.ps1 -PackageId '${{ inputs.package_id }}' -ProjectDirectory '${{ inputs.path_to_project_directory }}'
+        "github.action_path: ${{ github.action_path }}"
+        "github.workspace: ${{ github.workspace }}"
+        "runner.workspace: ${{ runner.workspace }}"
+        "GITHUB_WORKSPACE: $Env:GITHUB_WORKSPACE"
+        "RUNNER_WORKSPACE: $Env:RUNNER_WORKSPACE"
+        scripts/nuspec-diff.ps1 -PackageId '${{ inputs.package_id }}' -ProjectDirectory '${{ inputs.path_to_project_directory }}'
