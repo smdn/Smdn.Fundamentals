@@ -14,11 +14,13 @@
 #   -FilePath : A path to the file which the generated differences will be output. If not specified or '-' is specified, standard output is used.
 #   -PackageSource : A package source URI from which the package to be downloaded. nuget.org is used by default.
 #   -NoBuild : A switch for specifying whether to build the project or not when generating the .nuspec.
+#   -ExceptFilesElement: A switch for specifying whether to exclude <files> elements in nuspec files for comparison.
 #
 # Usage:
 #   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/
 #   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/ output.diff
 #   ./CompareNuSpecDifference.ps1 -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
+#   ./CompareNuSpecDifference.ps1 -ExceptFilesElement -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
 #
 [CmdletBinding(DefaultParameterSetName="CompareWithProject")]
 Param(
@@ -42,7 +44,12 @@ Param(
 
   [Parameter(ParameterSetName = 'CompareWithProject')]
   [switch]
-  [bool]$NoBuild = $false
+  [bool]$NoBuild = $false,
+
+  [Parameter(ParameterSetName = 'CompareWithProject')]
+  [Parameter(ParameterSetName = 'CompareWithNuSpecFile')]
+  [switch]
+  [bool]$ExceptFilesElement = $false
 )
 
 # Summary: Fetches service index for the specified source, and returns resource base address (@id) for specified resource type (@type).
@@ -170,10 +177,9 @@ function New-ProjectNuSpec {
   return $path_to_generated_nuspec_file
 }
 
-<#
 function Remove-NuSpecXmlFilesElement {
   param(
-    $nuspec_xml
+    [Parameter(Mandatory = $true)][System.Xml.XmlDocument]$nuspec_xml
   )
 
   # remove //package/files
@@ -185,7 +191,6 @@ function Remove-NuSpecXmlFilesElement {
     }
   }
 }
-#>
 
 # Summary: Writes XML document to the specified path with the format suitable for diff.
 function Out-XmlForDiff {
@@ -214,14 +219,17 @@ function Compare-NuSpecXmlDifference {
     [string]$nuspec_old = $null,
     [string]$nuspec_old_label = $null,
     [string]$nuspec_new = $null,
-    [string]$nuspec_new_label = $null
+    [string]$nuspec_new_label = $null,
+    [bool]$except_files_element = $false
   )
 
   $nuspec_xml_old = $null -eq $nuspec_old ? $null : [xml]$nuspec_old
   $nuspec_xml_new = $null -eq $nuspec_new ? $null : [xml]$nuspec_new
 
-  # Remove-NuSpecXmlFilesElement $nuspec_xml_old
-  # Remove-NuSpecXmlFilesElement $nuspec_xml_new
+  if ($except_files_element) {
+    Remove-NuSpecXmlFilesElement $nuspec_xml_old
+    Remove-NuSpecXmlFilesElement $nuspec_xml_new
+  }
 
   $path_to_temporary_directory = Join-Path -Path $([System.IO.Path]::GetTempPath()) -ChildPath $(New-Guid)
 
@@ -265,7 +273,8 @@ function Compare-NuSpecDifference {
   Param(
     [Parameter(Mandatory = $true)][string]$package_source_path,
     [Parameter(Mandatory = $true)][string]$package_id,
-    [Parameter(Mandatory = $true)][string]$path_to_nuspec_file
+    [Parameter(Mandatory = $true)][string]$path_to_nuspec_file,
+    [bool]$except_files_element = $false
   )
 
   # gets content of specified .nuspec file
@@ -294,7 +303,8 @@ function Compare-NuSpecDifference {
     $nuspec_content_old `
     $nuspec_label_old `
     $nuspec_content_new `
-    $nuspec_label_new
+    $nuspec_label_new `
+    $except_files_element
 }
 
 #
@@ -319,7 +329,8 @@ else {
 $nuspec_diff = Compare-NuSpecDifference `
   $PackageSource `
   $PackageId `
-  $path_to_nuspec_file
+  $path_to_nuspec_file `
+  $ExceptFilesElement
 
 if ([string]::IsNullOrEmpty($FilePath) -or $FilePath -eq '-') {
   $nuspec_diff | Write-Host
