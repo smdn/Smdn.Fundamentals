@@ -18,7 +18,7 @@
 # Usage:
 #   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/
 #   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/ output.diff
-#   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
+#   ./CompareNuSpecDifference.ps1 -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
 #
 [CmdletBinding(DefaultParameterSetName="CompareWithProject")]
 Param(
@@ -54,11 +54,13 @@ function Get-NuGetResourceBaseAddress {
     [Parameter(Mandatory = $true)][string]$resource_type
   )
 
-  $get_service_index_response = Invoke-WebRequest -URI $source_path
+  $get_service_index_response = Invoke-WebRequest `
+    -SkipHttpErrorCheck `
+    -URI $source_path
 
   if ($get_service_index_response.StatusCode -ne 200) {
     $get_service_index_response | Write-Error
-    throw "Failed to GET resource base address for ${resource_type}"
+    throw "Failed to GET resource base address for ${resource_type} (StatusCode: $($get_service_index_response.StatusCode))"
   }
 
   $service_index = $get_service_index_response.Content | ConvertFrom-Json
@@ -78,11 +80,17 @@ function Get-NuGetLatestPackageVersion {
     [Parameter(Mandatory = $true)][string]$package_id
   )
 
-  $get_package_versions_response = Invoke-WebRequest -URI "${nuget_service_package_base_address}$($package_id.ToLowerInvariant())/index.json"
+  $get_package_versions_response = Invoke-WebRequest `
+    -SkipHttpErrorCheck `
+    -URI "${nuget_service_package_base_address}$($package_id.ToLowerInvariant())/index.json"
 
-  if ($get_package_versions_response.StatusCode -ne 200) {
+  if ($get_package_versions_response.StatusCode -eq 404) {
+    Write-Warning "The package ${package_id} did not find."
+    return $null
+  }
+  elseif ($get_package_versions_response.StatusCode -ne 200) {
     $get_package_versions_response | Write-Error
-    throw "Failed to GET package versions for ${package_id}"
+    throw "Failed to GET package versions for ${package_id} (StatusCode: $($get_package_versions_response.StatusCode))"
   }
 
   $package_versions = $get_package_versions_response.Content | `
@@ -108,12 +116,13 @@ function Get-NuGetManifest {
   $package_lower_id = $package_id.ToLowerInvariant()
 
   $get_package_manifest_response = Invoke-WebRequest `
+    -SkipHttpErrorCheck `
     -URI "${nuget_service_package_base_address}${package_lower_id}/${package_version}/${package_lower_id}.nuspec" `
     -ContentType 'text/plain; charset=utf-8'
 
   if ($get_package_manifest_response.StatusCode -ne 200) {
     $get_package_manifest_response | Write-Error
-    throw "Failed to GET manifest for ${package_id} ${package_version}"
+    throw "Failed to GET manifest for ${package_id} ${package_version} (StatusCode: $($get_package_manifest_response.StatusCode))"
   }
 
   # Write-Host ($get_package_manifest_response.Headers | Format-Table | Out-String)
