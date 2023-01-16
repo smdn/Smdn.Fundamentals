@@ -16,9 +16,9 @@
 #   -NoBuild : A switch for specifying whether to build the project or not when generating the .nuspec.
 #
 # Usage:
-#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/
-#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/ output.diff
-#   ./nuspec-diff.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
+#   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/
+#   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -ProjectDirectoryPath path/to/project/Smdn.Fundamental.Exception/ output.diff
+#   ./CompareNuSpecDifference.ps1 -NoBuild -PackageId Smdn.Fundamental.Exception -NuSpecFilePath path/to/file.nuspec output.diff
 #
 [CmdletBinding(DefaultParameterSetName="CompareWithProject")]
 Param(
