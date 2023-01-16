@@ -322,6 +322,35 @@ jobs:
           exit 1
         }
 
+    - name: Diff NuSpec
+      id: nuspec-diff
+      shell: pwsh
+      run: |
+        $path_nuspec_diff = '${{ steps.pack.outputs.path_nuspec }}.diff'
+        $path_nuspec_diff_except_files = '${{ steps.pack.outputs.path_nuspec }}.except-files.diff'
+
+        ./eng/CompareNuSpecDifference.ps1 `
+          -PackageId '${{ steps.package-info.outputs.package_id }}' `
+          -NuSpecFilePath '${{ steps.pack.outputs.path_nuspec }}' `
+          -FilePath $path_nuspec_diff
+
+        # TODO: reduce duplicate downloading
+        ./eng/CompareNuSpecDifference.ps1 `
+          -ExceptFilesElement `
+          -PackageId '${{ steps.package-info.outputs.package_id }}' `
+          -NuSpecFilePath '${{ steps.pack.outputs.path_nuspec }}' `
+          -FilePath $path_nuspec_diff_except_files
+
+        '## :package: .nuspec diff'   >> $Env:GITHUB_STEP_SUMMARY
+        ''                            >> $Env:GITHUB_STEP_SUMMARY
+        '```diff'                     >> $Env:GITHUB_STEP_SUMMARY
+        cat $path_nuspec_diff         >> $Env:GITHUB_STEP_SUMMARY
+        '```'                         >> $Env:GITHUB_STEP_SUMMARY
+
+        # set outputs
+        "path_nuspec_diff=${path_nuspec_diff}" >> $Env:GITHUB_OUTPUT
+        "path_nuspec_diff_except_files=${path_nuspec_diff_except_files}" >> $Env:GITHUB_OUTPUT
+
     - name: Upload ${{ steps.pack.outputs.artifact_name_nupkg }}
       if: ${{ steps.package-info.outputs.package_can_release == 'True' }}
       uses: actions/upload-artifact@v3.1.0
@@ -373,10 +402,10 @@ jobs:
         #   "releasenote": Is an extra content for the release note. Will be uploaded to gist for this release.
         $contents = @(
           [PSCustomObject]@{
-            Title = ".nuspec"
+            Title = ".nuspec diff"
             Target = "pullrequest"
-            FileName = 'release-target.nuspec'
-            Content = Get-Content -Path ${{ steps.pack.outputs.path_nuspec }}
+            FileName = 'release-target.nuspec.diff'
+            Content = Get-Content -Path ${{ steps.nuspec-diff.outputs.path_nuspec_diff }}
             OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
@@ -411,9 +440,16 @@ jobs:
             OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
+            Title = "Package metadata changes"
+            Target = "releasenote"
+            FileName = 'releasenote.section3.package-changes.diff'
+            Content = Get-Content -Path ${{ steps.nuspec-diff.outputs.path_nuspec_diff_except_files }}
+            OutputToSummaryIfExceededMaxChars = $false
+          },
+          [PSCustomObject]@{
             Title = "Full changes"
             Target = "releasenote"
-            FileName = 'releasenote.section3.full-changes.diff'
+            FileName = 'releasenote.section4.full-changes.diff'
             Content = git diff `
               --ignore-cr-at-eol `
               --ignore-space-at-eol `
