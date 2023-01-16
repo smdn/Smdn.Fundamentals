@@ -1,13 +1,11 @@
-// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.0.3)
+// Smdn.Fundamental.Exception.dll (Smdn.Fundamental.Exception-3.1.0)
 //   Name: Smdn.Fundamental.Exception
-//   AssemblyVersion: 3.0.3.0
-//   InformationalVersion: 3.0.3+501637c48b59b5e1527398dfc5b219db6419f3fb
+//   AssemblyVersion: 3.1.0.0
+//   InformationalVersion: 3.1.0+1f9796a8360ae2b7743e479f27417296337def73
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 //   Referenced assemblies:
 //     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
-//   Embedded resources:
-//     exceptions-ja.txt (3,485 bytes, Embedded, ContainedInManifestFile)
 
 using System;
 using System.IO;
