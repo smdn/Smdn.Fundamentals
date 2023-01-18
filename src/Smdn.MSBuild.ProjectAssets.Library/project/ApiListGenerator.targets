@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Label="API list generator">
     <!-- default configurations -->
     <APIListOutputBaseDirectory Condition=" '$(APIListOutputBaseDirectory)' == '' ">api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion Condition=" '$(APIListPackageVersion)' == '' ">1.1.7</APIListPackageVersion>
+    <APIListPackageVersion Condition=" '$(APIListPackageVersion)' == '' ">1.2.0</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext Condition=" '$(APIListLoadIntoReflectionOnlyContext)' == '' ">false</APIListLoadIntoReflectionOnlyContext>
 
     <_APIListDoGenerate>$(APIListEnableGenerating)</_APIListDoGenerate>
