@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Smdn.Reflection.Attributes;
@@ -18,4 +19,14 @@ public static class ICustomAttributeProviderExtensions {
       null => throw new ArgumentNullException(nameof(attributeProvider)),
       _ => throw new ArgumentException($"unsupported type of {nameof(ICustomAttributeProvider)}", nameof(attributeProvider)),
     };
+
+  internal static bool HasCompilerGeneratedAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider)
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.CompilerGeneratedAttribute",
+          StringComparison.Ordinal
+        )
+      );
 }
