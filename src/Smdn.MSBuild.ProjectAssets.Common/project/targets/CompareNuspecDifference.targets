@@ -1,0 +1,93 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!--
+    This MSBuild target prepares a new package release.
+    - Verifies that the package can be created with the Release configuration.
+    - Verifies that the specified version has not already been released.
+    - Creates a release target tag that triggers the GitHub Actions' release workflow.
+  -->
+  <Target
+    Name="CompareNuspecDifference"
+    DependsOnTargets="GenerateNuspec"
+  >
+    <PropertyGroup>
+      <!-- set defaults -->
+      <NuspecDifferenceOutputPath
+        Condition=" '$(NuspecDifferenceOutputPath)' == '' "
+      >$(NuspecOutputPath)$(PackageId).nuspec.diff</NuspecDifferenceOutputPath>
+      <NuspecDifferenceExceptFilesOutputPath
+        Condition=" '$(NuspecDifferenceExceptFilesOutputPath)' == '' "
+      >$(NuspecOutputPath)$(PackageId).nuspec.except-files.diff</NuspecDifferenceExceptFilesOutputPath>
+
+      <!-- a file path to download and save the latest .nuspec file -->
+      <_LatestNuspecFilePath>$(NuspecOutputPath)$(PackageId).latest.nuspec</_LatestNuspecFilePath>
+    </PropertyGroup>
+
+    <!-- determine the path to generated .nuspec file from NuGetPackOutput item group. -->
+    <ItemGroup>
+      <_NuGetPackNuspecOutput Include="@(NuGetPackOutput)" Condition=" '%(Extension)' == '.nuspec' " />
+    </ItemGroup>
+    <PropertyGroup>
+      <_GeneratedNuspecFilePath>%(_NuGetPackNuspecOutput.Identity)</_GeneratedNuspecFilePath>
+    </PropertyGroup>
+
+    <!-- common command line prefix -->
+    <PropertyGroup>
+      <_InvokePowerShellScript>pwsh -NoLogo -NonInteractive -NoProfile -File $(MSBuildThisFileDirectory)..\scripts\</_InvokePowerShellScript>
+    </PropertyGroup>
+
+    <Error
+      Text=".nuspec file not generated or not found"
+      Condition="!Exists($(_GeneratedNuspecFilePath))"
+    />
+
+    <!-- get latest version of the released package -->
+    <Exec
+      Command="$(_InvokePowerShellScript)QueryNuGetPackageLatestVersion.ps1 -PackageId '$(PackageId)'"
+      ConsoleToMsBuild="true"
+      EchoOff="true"
+      StandardOutputImportance="low"
+    >
+      <Output TaskParameter="ConsoleOutput" PropertyName="_PackageVersionLatest" />
+    </Exec>
+
+    <Warning
+      Text="Package $(PackageId) has not been released yet."
+      Condition=" '$(_PackageVersionLatest)' == '' "
+    />
+
+    <!-- download latest nuspec (if not file is not exist) -->
+    <Exec
+      Command="$(_InvokePowerShellScript)DownloadNuspec.ps1 -PackageId '$(PackageId)' -PackageVersion '$(_PackageVersionLatest)' -FilePath '$(_LatestNuspecFilePath)'"
+      EchoOff="true"
+      Condition="!Exists($(_LatestNuspecFilePath))"
+    />
+
+    <!-- generate diff (without excluding <files> element) -->
+    <Exec
+      Command="$(_InvokePowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath '$(_GeneratedNuspecFilePath)' -OldNuspecPath '$(_LatestNuspecFilePath)' -FilePath '$(NuspecDifferenceOutputPath)'"
+      EchoOff="true"
+      Condition="Exists($(_LatestNuspecFilePath))"
+    />
+    <Exec
+      Command="$(_InvokePowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath '$(_GeneratedNuspecFilePath)' -FilePath '$(NuspecDifferenceOutputPath)'"
+      EchoOff="true"
+      Condition="!Exists($(_LatestNuspecFilePath))"
+    />
+
+    <!-- generate diff (excluding <files> element) -->
+    <Exec
+      Command="$(_InvokePowerShellScript)CompareNuspecDiff.ps1 -ExceptFilesElement -NewNuspecPath '$(_GeneratedNuspecFilePath)' -OldNuspecPath '$(_LatestNuspecFilePath)' -FilePath '$(NuspecDifferenceExceptFilesOutputPath)'"
+      EchoOff="true"
+      Condition="Exists($(_LatestNuspecFilePath))"
+    />
+    <Exec
+      Command="$(_InvokePowerShellScript)CompareNuspecDiff.ps1 -ExceptFilesElement -NewNuspecPath '$(_GeneratedNuspecFilePath)' -FilePath '$(NuspecDifferenceExceptFilesOutputPath)'"
+      EchoOff="true"
+      Condition="!Exists($(_LatestNuspecFilePath))"
+    />
+  </Target>
+</Project>
