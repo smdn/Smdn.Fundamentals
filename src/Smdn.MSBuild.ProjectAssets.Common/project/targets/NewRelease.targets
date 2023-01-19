@@ -26,7 +26,7 @@ SPDX-License-Identifier: MIT
     />
 
     <Exec
-      Command="pwsh -NoLogo -NonInteractive -NoProfile -File $(MSBuildThisFileDirectory)..\scripts\QueryNuGetPackageReleased.ps1 -PackageId '$(PackageId)' -PackageVersion '$(PackageVersion)'"
+      Command="$(_InvokeProjectAssetsCommonPowerShellScript)QueryNuGetPackageReleased.ps1 -PackageId '$(PackageId)' -PackageVersion '$(PackageVersion)'"
       IgnoreExitCode="true"
     >
       <Output TaskParameter="ExitCode" PropertyName="_QueryNuGetPackageReleasedExitCode" />

@@ -32,4 +32,9 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Label="package icon">
     <PackageIcon>$(MSBuildProjectName).png</PackageIcon>
   </PropertyGroup>
+
+  <!-- common command line prefix to invoke bundled PowerShell scripts in the package -->
+  <PropertyGroup>
+    <_InvokeProjectAssetsCommonPowerShellScript>pwsh -NoLogo -NonInteractive -NoProfile -File $(MSBuildThisFileDirectory).\scripts\</_InvokeProjectAssetsCommonPowerShellScript>
+  </PropertyGroup>
 </Project>
