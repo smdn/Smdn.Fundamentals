@@ -29,5 +29,6 @@ SPDX-License-Identifier: MIT
     <None Include="project\Project.targets"                Pack="true" PackagePath="project\" />
     <None Include="project\targets\*.targets"              Pack="true" PackagePath="project\targets\" />
     <None Include="project\images\package-icon.png"        Pack="true" PackagePath="project\images\package-icon.png" />
+    <None Include="project\scripts\*.ps1"                  Pack="true" PackagePath="project\scripts\" />
   </ItemGroup>
 </Project>
