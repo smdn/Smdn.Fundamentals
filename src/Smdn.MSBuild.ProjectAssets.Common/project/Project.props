@@ -5,10 +5,10 @@ SPDX-License-Identifier: MIT
 <Project>
   <PropertyGroup>
     <!-- assembly defaults -->
-    <CopyrightHolders>smdn</CopyrightHolders>
+    <CopyrightHolders Condition=" '$(CopyrightHolders)' == '' ">smdn</CopyrightHolders>
 
     <!-- package defaults -->
-    <Authors>smdn</Authors>
+    <Authors Condition=" '$(Authors)' == '' ">smdn</Authors>
   </PropertyGroup>
 
   <ItemGroup Label="build assets">
@@ -30,7 +30,7 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <PropertyGroup Label="package icon">
-    <PackageIcon>$(MSBuildProjectName).png</PackageIcon>
+    <PackageIcon Condition=" '$(PackageIcon)' == '' ">$(MSBuildProjectName).png</PackageIcon>
   </PropertyGroup>
 
   <!-- common command line prefix to invoke bundled PowerShell scripts in the package -->
