@@ -44,6 +44,10 @@ SPDX-License-Identifier: MIT
       File="$(MSBuildProjectFullPath)"
     />
 
-    <Exec Command="git tag --message=&quot;new release target tag for $(_PackageIdWithVersion)&quot; $(_ReleaseTargetTagName) $(RepositoryCommit)" />
+    <Exec
+      Command="git tag --message=&quot;new release target tag for $(_PackageIdWithVersion)&quot; $(_ReleaseTargetTagName) $(RepositoryCommit)"
+      EchoOff="false"
+    />
+    <Message Text="created release target tag '$(_ReleaseTargetTagName)'" Importance="high" />
   </Target>
 </Project>
