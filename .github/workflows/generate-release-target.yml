@@ -324,22 +324,20 @@ jobs:
 
     - name: Diff NuSpec
       id: nuspec-diff
+      continue-on-error: true
       shell: pwsh
       run: |
         $path_nuspec_diff = '${{ steps.pack.outputs.path_nuspec }}.diff'
         $path_nuspec_diff_except_files = '${{ steps.pack.outputs.path_nuspec }}.except-files.diff'
 
-        ./eng/CompareNuSpecDifference.ps1 `
-          -PackageId '${{ steps.package-info.outputs.package_id }}' `
-          -NuSpecFilePath '${{ steps.pack.outputs.path_nuspec }}' `
-          -FilePath $path_nuspec_diff
-
-        # TODO: reduce duplicate downloading
-        ./eng/CompareNuSpecDifference.ps1 `
-          -ExceptFilesElement `
-          -PackageId '${{ steps.package-info.outputs.package_id }}' `
-          -NuSpecFilePath '${{ steps.pack.outputs.path_nuspec }}' `
-          -FilePath $path_nuspec_diff_except_files
+        dotnet msbuild /t:GenerateNuspecDifference `
+          -nologo `
+          /p:Configuration=Release `
+          /p:NoBuild=true `
+          /p:APIListEnableGenerating=false `
+          /p:NuspecDifferenceOutputPath="$path_nuspec_diff" `
+          /p:NuspecDifferenceExceptFilesOutputPath="$path_nuspec_diff_except_files" `
+          ${{ steps.package-info.outputs.package_source_dir }}
 
         '## :package: .nuspec diff'   >> $Env:GITHUB_STEP_SUMMARY
         ''                            >> $Env:GITHUB_STEP_SUMMARY
@@ -397,6 +395,20 @@ jobs:
       id: extra-release-contents
       shell: pwsh
       run: |
+        if (Test-Path -Path '${{ steps.nuspec-diff.outputs.path_nuspec_diff }}') {
+          $nuspec_diff = Get-Content -Path '${{ steps.nuspec-diff.outputs.path_nuspec_diff }}'
+        }
+        else {
+          $nuspec_diff = ''
+        }
+
+        if (Test-Path -Path '${{ steps.nuspec-diff.outputs.path_nuspec_diff_except_files }}') {
+          $nuspec_diff_except_files = Get-Content -Path '${{ steps.nuspec-diff.outputs.path_nuspec_diff_except_files }}'
+        }
+        else {
+          $nuspec_diff_except_files = ''
+        }
+
         # Target:
         #   "pullrequest": Is an extra content for the pull request. Will be added to pull request body.
         #   "releasenote": Is an extra content for the release note. Will be uploaded to gist for this release.
@@ -405,7 +417,7 @@ jobs:
             Title = ".nuspec diff"
             Target = "pullrequest"
             FileName = 'release-target.nuspec.diff'
-            Content = Get-Content -Path ${{ steps.nuspec-diff.outputs.path_nuspec_diff }}
+            Content = $nuspec_diff
             OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
@@ -443,7 +455,7 @@ jobs:
             Title = "Package metadata changes"
             Target = "releasenote"
             FileName = 'releasenote.section3.package-changes.diff'
-            Content = Get-Content -Path ${{ steps.nuspec-diff.outputs.path_nuspec_diff_except_files }}
+            Content = $nuspec_diff_except_files
             OutputToSummaryIfExceededMaxChars = $false
           },
           [PSCustomObject]@{
