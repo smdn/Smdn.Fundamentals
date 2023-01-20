@@ -253,9 +253,9 @@ jobs:
       uses: actions/cache@v3.0.11
       with:
         path: ${{ env.NUGET_PACKAGES }}
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: test-NuGetPackages-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-nuget-
+          test-NuGetPackages-${{ runner.os }}-
 
     - name: Restore dependencies of ${{ matrix.project.Name }}
       shell: pwsh
