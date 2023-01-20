@@ -250,7 +250,9 @@ jobs:
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
-      uses: actions/cache@v3.0.11
+      uses: actions/cache@v3.2.3
+      env:
+        SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
       with:
         path: ${{ env.NUGET_PACKAGES }}
         key: test-NuGetPackages-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
