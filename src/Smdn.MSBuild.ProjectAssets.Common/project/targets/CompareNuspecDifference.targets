@@ -52,35 +52,35 @@ SPDX-License-Identifier: MIT
       Condition=" '$(_PackageVersionLatest)' == '' "
     />
 
-    <!-- download latest nuspec (if not file is not exist) -->
+    <!-- download nuspec of latest version (if not file is not exist) -->
     <Exec
       Command="$(_InvokeProjectAssetsCommonPowerShellScript)DownloadNuspec.ps1 -PackageId '$(PackageId)' -PackageVersion '$(_PackageVersionLatest)' -FilePath '$(_LatestNuspecFilePath)'"
       EchoOff="true"
       Condition="!Exists($(_LatestNuspecFilePath))"
     />
 
-    <!-- generate diff (without excluding <files> element) -->
-    <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath '$(_GeneratedNuspecFilePath)' -OldNuspecPath '$(_LatestNuspecFilePath)' -FilePath '$(NuspecDifferenceOutputPath)'"
-      EchoOff="true"
-      Condition="Exists($(_LatestNuspecFilePath))"
-    />
-    <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath '$(_GeneratedNuspecFilePath)' -FilePath '$(NuspecDifferenceOutputPath)'"
-      EchoOff="true"
-      Condition="!Exists($(_LatestNuspecFilePath))"
-    />
+    <!-- generate diff -->
+    <PropertyGroup>
+      <_InvokeCompareNuspecDiffCommandLine>$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath '$(_GeneratedNuspecFilePath)'</_InvokeCompareNuspecDiffCommandLine>
+      <_InvokeCompareNuspecDiffCommandLine
+        Condition="Exists($(_LatestNuspecFilePath))"
+      >$(_InvokeCompareNuspecDiffCommandLine) -OldNuspecPath '$(_LatestNuspecFilePath)'</_InvokeCompareNuspecDiffCommandLine>
+      <_InvokeCompareNuspecDiffExceptFilesElementCommandLine>$(_InvokeCompareNuspecDiffCommandLine) -ExceptFilesElement</_InvokeCompareNuspecDiffExceptFilesElementCommandLine>
 
-    <!-- generate diff (excluding <files> element) -->
+      <_NuspecDifferenceMessagePrefix>$(MSBuildProjectName) v$(PackageVersion)</_NuspecDifferenceMessagePrefix>
+      <_NuspecDifferenceMessagePrefix Condition=" '$(_PackageVersionLatest)' != '' ">$(MSBuildProjectName) v$(PackageVersion) vs v$(_PackageVersionLatest)</_NuspecDifferenceMessagePrefix>
+    </PropertyGroup>
+
     <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -ExceptFilesElement -NewNuspecPath '$(_GeneratedNuspecFilePath)' -OldNuspecPath '$(_LatestNuspecFilePath)' -FilePath '$(NuspecDifferenceExceptFilesOutputPath)'"
+      Command="$(_InvokeCompareNuspecDiffCommandLine) -FilePath '$(NuspecDifferenceOutputPath)'"
       EchoOff="true"
-      Condition="Exists($(_LatestNuspecFilePath))"
     />
+    <Message Text="$(_NuspecDifferenceMessagePrefix): $([System.IO.Path]::GetFullPath('$(NuspecDifferenceOutputPath)'))" Importance="high" />
+
     <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -ExceptFilesElement -NewNuspecPath '$(_GeneratedNuspecFilePath)' -FilePath '$(NuspecDifferenceExceptFilesOutputPath)'"
+      Command="$(_InvokeCompareNuspecDiffExceptFilesElementCommandLine) -FilePath '$(NuspecDifferenceExceptFilesOutputPath)'"
       EchoOff="true"
-      Condition="!Exists($(_LatestNuspecFilePath))"
     />
+    <Message Text="$(_NuspecDifferenceMessagePrefix): $([System.IO.Path]::GetFullPath('$(NuspecDifferenceExceptFilesOutputPath)'))" Importance="high" />
   </Target>
 </Project>
