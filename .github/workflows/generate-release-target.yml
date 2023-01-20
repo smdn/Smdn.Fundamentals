@@ -222,12 +222,14 @@ jobs:
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
-      uses: actions/cache@v3.0.11
+      uses: actions/cache@v3.2.3
+      env:
+        SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
       with:
         path: ${{ env.NUGET_PACKAGES }}
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        key: generate-release-NuGetPackages-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-nuget-
+          generate-release-NuGetPackages-${{ runner.os }}-
 
     #- name: Setup .NET 6.0
     #  uses: actions/setup-dotnet@v1
