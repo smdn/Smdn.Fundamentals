@@ -35,6 +35,6 @@ SPDX-License-Identifier: MIT
 
   <!-- common command line prefix to invoke bundled PowerShell scripts in the package -->
   <PropertyGroup>
-    <_InvokeProjectAssetsCommonPowerShellScript>pwsh -NoLogo -NonInteractive -NoProfile -File $(MSBuildThisFileDirectory).\scripts\</_InvokeProjectAssetsCommonPowerShellScript>
+    <_InvokeProjectAssetsCommonPowerShellScript>pwsh -NoLogo -NonInteractive -NoProfile -File $([MSBuild]::EnsureTrailingSlash('$(MSBuildThisFileDirectory)scripts'))</_InvokeProjectAssetsCommonPowerShellScript>
   </PropertyGroup>
 </Project>

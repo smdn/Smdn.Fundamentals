@@ -49,14 +49,14 @@ SPDX-License-Identifier: MIT
 
     <!-- download nuspec of latest version (if not file is not exist) -->
     <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)DownloadNuspec.ps1 -PackageId '$(PackageId)' -PackageVersion '$(_PackageVersionLatest)' -FilePath '$(_LatestNuspecFilePath)'"
+      Command="$(_InvokeProjectAssetsCommonPowerShellScript)DownloadNuspec.ps1 -PackageId &quot;$(PackageId)&quot; -PackageVersion &quot;$(_PackageVersionLatest)&quot; -FilePath &quot;$(_LatestNuspecFilePath)&quot;"
       EchoOff="true"
       Condition="!Exists($(_LatestNuspecFilePath))"
     />
 
     <!-- generate diff -->
     <PropertyGroup>
-      <_InvokeCompareNuspecDiffCommandLine>$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath '$(_GeneratedNuspecFilePath)'</_InvokeCompareNuspecDiffCommandLine>
+      <_InvokeCompareNuspecDiffCommandLine>$(_InvokeProjectAssetsCommonPowerShellScript)CompareNuspecDiff.ps1 -NewNuspecPath &quot;$(_GeneratedNuspecFilePath)&quot;</_InvokeCompareNuspecDiffCommandLine>
       <_InvokeCompareNuspecDiffCommandLine
         Condition="Exists($(_LatestNuspecFilePath))"
       >$(_InvokeCompareNuspecDiffCommandLine) -OldNuspecPath '$(_LatestNuspecFilePath)'</_InvokeCompareNuspecDiffCommandLine>
