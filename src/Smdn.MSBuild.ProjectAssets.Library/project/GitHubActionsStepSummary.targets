@@ -1,0 +1,38 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <UsingTask
+    TaskName="GitHubActionsStepSummaryAppendContent"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+  >
+    <ParameterGroup>
+      <Contents ParameterType="System.String" Required="true" />
+      <PrependNewLine ParameterType="System.Boolean" />
+    </ParameterGroup>
+
+    <Task>
+      <Using Namespace="System" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var pathToGitHubStepSummary = Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY");
+
+        if (string.IsNullOrEmpty(pathToGitHubStepSummary))
+          return Success;
+
+        if (PrependNewLine) {
+          System.IO.File.AppendAllText(
+            path: pathToGitHubStepSummary,
+            contents: Environment.NewLine + Environment.NewLine
+          );
+        }
+
+        System.IO.File.AppendAllText(
+          path: pathToGitHubStepSummary,
+          contents: Contents
+        );
+      ]]></Code>
+    </Task>
+  </UsingTask>
+</Project>

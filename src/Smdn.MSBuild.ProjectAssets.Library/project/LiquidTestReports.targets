@@ -77,20 +77,9 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <PropertyGroup>
-      <GitHubStepSummaryContent
-        Condition="Exists('$(GITHUB_STEP_SUMMARY)')"
-      >$([System.IO.File]::ReadAllText('$(GITHUB_STEP_SUMMARY)'))</GitHubStepSummaryContent>
-      <GitHubStepSummaryContent
-        Condition=" '$(GitHubStepSummaryContent)' != '' "
-      >$(GitHubStepSummaryContent)%0A%0A</GitHubStepSummaryContent>
-      <GitHubStepSummaryContent
-      >$(GitHubStepSummaryContent)@(LiquidTestReportsLogFileContent, '%0A%0A----%0A%0A')</GitHubStepSummaryContent>
+      <LiquidTestReportsStepSummaryContents>%0A%0A@(LiquidTestReportsLogFileContent, '%0A%0A----%0A%0A')</LiquidTestReportsStepSummaryContents>
     </PropertyGroup>
 
-    <WriteLinesToFile
-      File="$(GITHUB_STEP_SUMMARY)"
-      Lines="$(GitHubStepSummaryContent)"
-      Overwrite="true"
-    />
+    <GitHubActionsStepSummaryAppendContent Contents="$(LiquidTestReportsStepSummaryContents)" />
   </Target>
 </Project>

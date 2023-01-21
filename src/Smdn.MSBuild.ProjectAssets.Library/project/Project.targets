@@ -3,6 +3,9 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
+  <!-- GitHub Actions' GITHUB_STEP_SUMMARY -->
+  <Import Project="$(MSBuildThisFileDirectory)GitHubActionsStepSummary.targets" />
+
   <ImportGroup Condition=" '$(IsTestProject)' != 'true' ">
     <!-- API list generator -->
     <Import Project="$(MSBuildThisFileDirectory)ApiListGenerator.targets" />
