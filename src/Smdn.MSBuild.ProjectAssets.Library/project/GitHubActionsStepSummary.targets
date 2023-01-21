@@ -15,6 +15,9 @@ SPDX-License-Identifier: MIT
 
     <Task>
       <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Threading" />
+      <Using Namespace="System.Runtime.ExceptionServices" />
       <Code Type="Fragment" Language="cs"><![CDATA[
         var pathToGitHubStepSummary = Environment.GetEnvironmentVariable("GITHUB_STEP_SUMMARY");
 
@@ -22,16 +25,46 @@ SPDX-License-Identifier: MIT
           return Success;
 
         if (PrependNewLine) {
-          System.IO.File.AppendAllText(
-            path: pathToGitHubStepSummary,
-            contents: Environment.NewLine + Environment.NewLine
+          TryIO(
+            () => File.AppendAllText(
+              path: pathToGitHubStepSummary,
+              contents: Environment.NewLine + Environment.NewLine
+            )
           );
         }
 
-        System.IO.File.AppendAllText(
-          path: pathToGitHubStepSummary,
-          contents: Contents
+        TryIO(
+          () => File.AppendAllText(
+            path: pathToGitHubStepSummary,
+            contents: Contents
+          )
         );
+
+        static void TryIO(Action action)
+        {
+          const int maxRetry = 10;
+          const int interval = 200;
+
+          Exception caughtException = null;
+
+          for (var retry = maxRetry; retry != 0; retry--) {
+            try {
+              action();
+              return;
+            }
+            catch (IOException ex) {
+              caughtException = ex;
+            }
+            catch (UnauthorizedAccessException ex) {
+              caughtException = ex;
+            }
+
+            Thread.Sleep(interval);
+          }
+
+          if (caughtException is not null)
+            ExceptionDispatchInfo.Capture(caughtException).Throw();
+        }
       ]]></Code>
     </Task>
   </UsingTask>
