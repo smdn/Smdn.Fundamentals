@@ -42,6 +42,30 @@ SPDX-License-Identifier: MIT
   </Target>
 
   <Target
+    Name="UpdateTestTargetPackageVersionToLatest"
+    BeforeTargets="ResolveAssemblyReferences"
+    Condition=" '$(_RunTestWithReleasedPackage)' == 'true' "
+  >
+    <MSBuild Projects="$(SmdnTestTargetProjectFullPath)" Targets="GetNuGetPackageLatestVersion">
+      <Output TaskParameter="TargetOutputs" PropertyName="SmdnTestTargetPackageVersionLatest" />
+    </MSBuild>
+
+    <Message
+      Text="Run test with package $(SmdnTestTargetProjectName)-$(SmdnTestTargetPackageVersionLatest)"
+      Importance="high"
+      Condition=" '$(SmdnTestTargetPackageVersionLatest)' != '' "
+    />
+
+    <ItemGroup>
+      <PackageReference
+        Update="$(SmdnTestTargetProjectName)"
+        Version="$(SmdnTestTargetPackageVersionLatest)"
+        Condition=" '$(SmdnTestTargetPackageVersionLatest)' != '' "
+      />
+    </ItemGroup>
+  </Target>
+
+  <Target
     Name="ListUpPackageReferencesToGitHubStepSummary"
     AfterTargets="ResolveAssemblyReferences"
     Condition="
