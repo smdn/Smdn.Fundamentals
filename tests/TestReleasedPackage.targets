@@ -59,11 +59,7 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <PropertyGroup>
-      <GitHubStepSummaryContent
-        Condition="Exists('$(GITHUB_STEP_SUMMARY)')"
-      >$([System.IO.File]::ReadAllText('$(GITHUB_STEP_SUMMARY)'))</GitHubStepSummaryContent>
-      <GitHubStepSummaryContent><![CDATA[$(GitHubStepSummaryContent)
-
+      <_NuGetPackageReferenceTable><![CDATA[
 <details>
   <summary>List of PackageReference ($(TargetFramework))</summary>
 
@@ -71,13 +67,9 @@ SPDX-License-Identifier: MIT
 |----------|---------------|
 @(_NuGetPackageReferenceTableMarkdownLines, '%0A')
 </details>
-]]></GitHubStepSummaryContent>
+]]></_NuGetPackageReferenceTable>
     </PropertyGroup>
 
-    <WriteLinesToFile
-      File="$(GITHUB_STEP_SUMMARY)"
-      Lines="$(GitHubStepSummaryContent)"
-      Overwrite="true"
-    />
+    <GitHubActionsStepSummaryAppendContent Contents="$(_NuGetPackageReferenceTable)" />
   </Target>
 </Project>
