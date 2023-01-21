@@ -1,0 +1,22 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!--
+    This target gets the latest version of the released NuGet package from current project.
+  -->
+  <Target
+    Name="GetNuGetPackageLatestVersion"
+    Returns="$(_PackageVersionLatest)"
+  >
+    <Exec
+      Command="$(_InvokeProjectAssetsCommonPowerShellScript)QueryNuGetPackageLatestVersion.ps1 -PackageId '$(PackageId)'"
+      ConsoleToMsBuild="true"
+      EchoOff="true"
+      StandardOutputImportance="low"
+    >
+      <Output TaskParameter="ConsoleOutput" PropertyName="_PackageVersionLatest" />
+    </Exec>
+  </Target>
+</Project>

@@ -38,14 +38,9 @@ SPDX-License-Identifier: MIT
     />
 
     <!-- get latest version of the released package -->
-    <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)QueryNuGetPackageLatestVersion.ps1 -PackageId '$(PackageId)'"
-      ConsoleToMsBuild="true"
-      EchoOff="true"
-      StandardOutputImportance="low"
-    >
-      <Output TaskParameter="ConsoleOutput" PropertyName="_PackageVersionLatest" />
-    </Exec>
+    <CallTarget Targets="GetNuGetPackageLatestVersion">
+      <Output TaskParameter="TargetOutputs" PropertyName="_PackageVersionLatest" />
+    </CallTarget>
 
     <Warning
       Text="Package $(PackageId) has not been released yet."
