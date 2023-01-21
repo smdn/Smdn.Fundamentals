@@ -41,20 +41,20 @@ SPDX-License-Identifier: MIT
     <Warning Text="cannot test with released package"/>
   </Target>
 
+  <!--
+    ref: https://github.com/NuGet/NuGet.Client/blob/dev/src/NuGet.Core/NuGet.Build.Tasks/NuGet.targets
+  -->
   <Target
     Name="UpdateTestTargetPackageVersionToLatest"
-    BeforeTargets="ResolveAssemblyReferences"
-    Condition=" '$(_RunTestWithReleasedPackage)' == 'true' "
+    BeforeTargets="CollectPackageReferences"
+    Condition="
+      '$(_RunTestWithReleasedPackage)' == 'true' and
+      ('$(TargetFrameworks)' == '' or '$(TargetFramework)' == '')
+    "
   >
     <MSBuild Projects="$(SmdnTestTargetProjectFullPath)" Targets="GetNuGetPackageLatestVersion">
       <Output TaskParameter="TargetOutputs" PropertyName="SmdnTestTargetPackageVersionLatest" />
     </MSBuild>
-
-    <Message
-      Text="Run test with package $(SmdnTestTargetProjectName)-$(SmdnTestTargetPackageVersionLatest)"
-      Importance="high"
-      Condition=" '$(SmdnTestTargetPackageVersionLatest)' != '' "
-    />
 
     <ItemGroup>
       <PackageReference
@@ -63,6 +63,12 @@ SPDX-License-Identifier: MIT
         Condition=" '$(SmdnTestTargetPackageVersionLatest)' != '' "
       />
     </ItemGroup>
+
+    <Message
+      Text="Updated PackageReference version: $(SmdnTestTargetProjectName)-$(SmdnTestTargetPackageVersionLatest)"
+      Importance="high"
+      Condition=" '$(SmdnTestTargetPackageVersionLatest)' != '' "
+    />
   </Target>
 
   <Target
