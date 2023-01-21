@@ -12,13 +12,19 @@ SPDX-License-Identifier: MIT
 
   <PropertyGroup>
     <CanTestReleasedPackage Condition=" '$(CanTestReleasedPackage)' == '' ">true</CanTestReleasedPackage>
+    <_RunTestWithReleasedPackage
+      Condition="
+        '$(TestReleasedPackage)' == 'true' and
+        '$(CanTestReleasedPackage)' == 'true' and
+        '$(SmdnTestTargetProjectName)' != ''
+      "
+    >true</_RunTestWithReleasedPackage>
   </PropertyGroup>
 
   <Choose>
-    <When Condition=" '$(TestReleasedPackage)' == 'true' and '$(CanTestReleasedPackage)' == 'true' ">
+    <When Condition=" '$(_RunTestWithReleasedPackage)' == 'true' ">
       <ItemGroup Label="add test target package reference">
         <PackageReference
-          Condition=" '$(SmdnTestTargetProjectName)' != '' "
           Include="$(SmdnTestTargetProjectName)"
           Version="*-*"
         />
@@ -46,10 +52,9 @@ SPDX-License-Identifier: MIT
     Name="ListUpPackageReferencesToGitHubStepSummary"
     AfterTargets="ResolveAssemblyReferences"
     Condition="
+      '$(_RunTestWithReleasedPackage)' == 'true' and
       '$(GITHUB_STEP_SUMMARY)' != '' and
-      '$(TargetFramework)' != '' and
-      '$(TestReleasedPackage)' == 'true' and
-      '$(CanTestReleasedPackage)' == 'true'
+      '$(TargetFramework)' != ''
     "
   >
     <ItemGroup>
