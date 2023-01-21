@@ -4,89 +4,12 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)..\src\PackageProvidedAPI.targets" />
+  <Import Project="$(MSBuildThisFileDirectory)TestReleasedPackage.targets" Condition=" '$(IsTestProject)' == 'true' " />
 
   <ItemGroup>
     <PackageReference Update="Smdn.Test.NUnit.Constraints" Version="1.0.0" />
     <PackageReference Update="Smdn.Test.NUnit.Utils" Version="1.0.0" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <CanTestReleasedPackage Condition=" '$(CanTestReleasedPackage)' == '' ">true</CanTestReleasedPackage>
-    <_RunTestWithReleasedPackage
-      Condition="
-        '$(TestReleasedPackage)' == 'true' and
-        '$(CanTestReleasedPackage)' == 'true' and
-        '$(SmdnTestTargetProjectName)' != ''
-      "
-    >true</_RunTestWithReleasedPackage>
-  </PropertyGroup>
-
-  <Choose>
-    <When Condition=" '$(_RunTestWithReleasedPackage)' == 'true' ">
-      <ItemGroup Label="add test target package reference">
-        <PackageReference
-          Include="$(SmdnTestTargetProjectName)"
-          Version="*-*"
-        />
-      </ItemGroup>
-    </When>
-    <Otherwise>
-      <ItemGroup Label="add test target project reference">
-        <ProjectReference
-          Condition=" '$(SmdnTestTargetProjectFullPath)' != '' and Exists('$(SmdnTestTargetProjectFullPath)') "
-          Include="$(SmdnTestTargetProjectFullPath)"
-        />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
-
-  <Target
-    Name="WarnCannotTestReleasedPackage"
-    BeforeTargets="BeforeBuild"
-    Condition=" '$(TestReleasedPackage)' == 'true' and '$(CanTestReleasedPackage)' != 'true' "
-  >
-    <Warning Text="cannot test with released package"/>
-  </Target>
-
-  <Target
-    Name="ListUpPackageReferencesToGitHubStepSummary"
-    AfterTargets="ResolveAssemblyReferences"
-    Condition="
-      '$(_RunTestWithReleasedPackage)' == 'true' and
-      '$(GITHUB_STEP_SUMMARY)' != '' and
-      '$(TargetFramework)' != ''
-    "
-  >
-    <ItemGroup>
-      <_NuGetPackageReferences Include="@(ReferenceCopyLocalPaths)" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)' != ''" />
-      <_NuGetPackageReferenceTableMarkdownLines
-        Include="|%(_NuGetPackageReferences.NuGetPackageId)|%(_NuGetPackageReferences.NuGetPackageVersion)|"
-        Condition=" '@(_NuGetPackageReferences)' != '' "
-      />
-    </ItemGroup>
-
-    <PropertyGroup>
-      <GitHubStepSummaryContent
-        Condition="Exists('$(GITHUB_STEP_SUMMARY)')"
-      >$([System.IO.File]::ReadAllText('$(GITHUB_STEP_SUMMARY)'))</GitHubStepSummaryContent>
-      <GitHubStepSummaryContent><![CDATA[$(GitHubStepSummaryContent)
-
-<details>
-  <summary>List of PackageReference ($(TargetFramework))</summary>
-
-|Package ID|Package version|
-|----------|---------------|
-@(_NuGetPackageReferenceTableMarkdownLines, '%0A')
-</details>
-]]></GitHubStepSummaryContent>
-    </PropertyGroup>
-
-    <WriteLinesToFile
-      File="$(GITHUB_STEP_SUMMARY)"
-      Lines="$(GitHubStepSummaryContent)"
-      Overwrite="true"
-    />
-  </Target>
 
   <ImportGroup>
     <Import Project="$(SmdnProjectAssets_TargetsImports)" />
