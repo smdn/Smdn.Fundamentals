@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
     Returns="$(_PackageVersionLatest)"
   >
     <Exec
-      Command="$(_InvokeProjectAssetsCommonPowerShellScript)QueryNuGetPackageLatestVersion.ps1 -PackageId &quot;$(PackageId)&quot;"
+      Command="$(_InvokeProjectAssetsCommonPowerShellScript)QueryNuGetPackageLatestVersion.ps1 -WarningAction SilentlyContinue -PackageId &quot;$(PackageId)&quot;"
       ConsoleToMsBuild="true"
       EchoOff="true"
       StandardOutputImportance="low"
