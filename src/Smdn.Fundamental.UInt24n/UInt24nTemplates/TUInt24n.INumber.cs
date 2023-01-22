@@ -2,6 +2,20 @@
 // SPDX-License-Identifier: MIT
 using System;
 
+using ShimTypeSystemMathClamp =
+#if SYSTEM_MATH_CLAMP
+  System.Math;
+#else
+  Smdn.MathShim;
+#endif
+
+using ShimTypeSystemMathDivRemReturnValueTuple2 =
+#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+  System.Math;
+#else
+  Smdn.MathShim;
+#endif
+
 namespace Smdn;
 
 #pragma warning disable IDE0040

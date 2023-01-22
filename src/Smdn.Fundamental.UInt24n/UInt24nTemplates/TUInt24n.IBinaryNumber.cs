@@ -2,6 +2,20 @@
 // SPDX-License-Identifier: MIT
 using System;
 
+using ShimTypeSystemNumericsBitOperationsIsPow2 =
+#if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
+  System.Numerics.BitOperations;
+#else
+  Smdn.BitOperationsShim;
+#endif
+
+using ShimTypeSystemNumericsBitOperationsLog2 =
+#if SYSTEM_NUMERICS_BITOPERATIONS_LOG2
+  System.Numerics.BitOperations;
+#else
+  Smdn.BitOperationsShim;
+#endif
+
 namespace Smdn;
 
 #pragma warning disable IDE0040

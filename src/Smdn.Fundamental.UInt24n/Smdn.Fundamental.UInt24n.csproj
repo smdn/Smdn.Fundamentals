@@ -18,6 +18,11 @@ SPDX-License-Identifier: MIT
     <PackageTags>uint24;uint48;24bit;48bit;interger</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Label="Smdn.Fundamental.Shim">
+    <!-- disable global shim alias usings -->
+    <SmdnFundamentalShim_EnableShimAliasGlobalUsings>false</SmdnFundamentalShim_EnableShimAliasGlobalUsings>
+  </PropertyGroup>
+
   <!-- to enable the 'generic math' feature, uncomment this -->
   <!--
   <Import Project="..\FeatureGenericMath.props" />
@@ -25,38 +30,10 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard')) or $(TargetFramework.StartsWith('netcoreapp'))" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.ValueTuple" />
   </ItemGroup>
-
-  <ItemGroup Label="Smdn.Fundamental.Shim package reference">
-    <PackageReference Include="Smdn.Fundamental.Shim" Version="[3.1.4,4.0.0)" />
-    <!-- references only for shim alias global usings -->
-    <PackageReference
-      Update="Smdn.Fundamental.Shim"
-      PrivateAssets="all"
-      IncludeAssets="build"
-      Condition="!(
-        $(TargetFramework.StartsWith('net4')) or
-        $(TargetFramework.StartsWith('netstandard')) or
-        $(TargetFramework.StartsWith('netcoreapp'))
-      )"
-    />
-  </ItemGroup>
-
-  <!--
-    To use project references, disable PackageReference above and instead enable the following configurations.
-
-    <ItemGroup Label="Smdn.Fundamental.Shim project reference">
-      <ProjectReference
-        Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj"
-        Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard')) or $(TargetFramework.StartsWith('netcoreapp'))"
-      />
-    </ItemGroup>
-    <ImportGroup Label="Smdn.Fundamental.Shim project reference">
-      <Import Project="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.ShimAliasGlobalUsings.targets" />
-    </ImportGroup>
-  -->
 
   <!-- UInt24n templates -->
   <ItemGroup>
