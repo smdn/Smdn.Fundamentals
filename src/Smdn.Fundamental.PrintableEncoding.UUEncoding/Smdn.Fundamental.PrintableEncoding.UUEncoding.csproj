@@ -25,7 +25,7 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.0.4,4.0.0)" Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.2,4.0.0)" Include="..\Smdn.Fundamental.CryptoTransform\Smdn.Fundamental.CryptoTransform.csproj" />
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.1,4.0.0)" Include="..\Smdn.Fundamental.PrintableEncoding.Hexadecimal\Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
