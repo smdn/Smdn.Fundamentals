@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectOrPackageReference ReferencePackageVersion="[3.1.2,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Xml.Linq\Smdn.Fundamental.Xml.Linq.csproj" />
     <PackageReference Include="System.Memory" />
   </ItemGroup>
