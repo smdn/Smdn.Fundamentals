@@ -21,7 +21,6 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.4,4.0.0)" Include="..\Smdn.Fundamental.Buffer\Smdn.Fundamental.Buffer.csproj" />
-    <ProjectOrPackageReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" />
   </ItemGroup>
