@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.MathUtils.DivRem(System.Int32,System.Int32,System.Int32@)</Target>
+    <Left>lib/netstandard1.6/Smdn.Fundamental.Math.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.Math.dll</Right>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.MathUtils.DivRem(System.Int64,System.Int64,System.Int64@)</Target>
+    <Left>lib/netstandard1.6/Smdn.Fundamental.Math.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.Math.dll</Right>
+  </Suppression>
+</Suppressions>
