@@ -10,6 +10,8 @@ SPDX-License-Identifier: MIT
     <RootNamespace>Smdn</RootNamespace>
   </PropertyGroup>
 
-  <!-- enable feature 'generic math' -->
+  <!-- to enable the 'generic math' feature, uncomment this -->
+  <!--
   <Import Project="..\..\src\FeatureGenericMath.props" />
+  -->
 </Project>

@@ -18,8 +18,10 @@ SPDX-License-Identifier: MIT
     <PackageTags>UUID;UUIDv1;UUIDv3;UUIDv4;UUIDv5;GUID;RFC4122</PackageTags>
   </PropertyGroup>
 
-  <!-- enable feature 'generic math' -->
+  <!-- to enable the 'generic math' feature, uncomment this -->
+  <!--
   <Import Project="..\FeatureGenericMath.props" />
+  -->
 
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
