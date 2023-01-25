@@ -29,8 +29,78 @@ function Get-NuGetPackageVersions {
 
   return $get_package_versions_response.Content | `
     ConvertFrom-Json | `
-    Select-Object -ExpandProperty 'versions' | `
-    ForEach-Object { New-Object System.Version -ArgumentList $_ }
+    Select-Object -ExpandProperty 'versions'
+}
+
+<#
+  Summary: Parses and gets the semantic version from the specified version sstring.
+#>
+function Get-SemanticVersion {
+  Param(
+    [Parameter(Mandatory = $true)][string]$Version
+  )
+
+  $components = $Version -split { $_ -eq '+' -or $_-eq '-' }, 2
+
+  $version_core = $components[0]
+  $is_prerelease = $Version[$version_core.Length] -eq '-'
+
+  $suffix = $components.Count -eq 2 ? $components[1] : $null
+
+  if ($is_prerelease) {
+    $suffix_components = $suffix -split { $_ -eq '+' -or $_-eq '-' }, 2
+
+    if ($suffix_components.Count -eq 2) {
+      $prerelease = $suffix_components[0]
+      $build = $suffix_components[1]
+    }
+    else {
+      $prerelease = $suffix
+      $build = $null
+    }
+  }
+  else {
+    $build = $components[1]
+  }
+
+  return [PSCustomObject]@{
+    Version = $Version
+    VersionCore = New-Object System.Version -ArgumentList $version_core
+    Suffix = $suffix
+    IsPreRelease = $is_prerelease
+    PreRelease = $prerelease
+    Build = $build
+  }
+}
+
+<#
+  Summary: Sorts the version strings by order of the semantic version.
+#>
+function Get-OrderedSemanticVersions {
+  [OutputType([string[]])]
+  Param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$Versions,
+
+    [switch][bool]$Descending = $false,
+    [switch][bool]$Unique = $false
+  )
+
+  return $Versions | `
+    ForEach-Object {
+      Get-SemanticVersion $_
+    } | `
+    Sort-Object `
+      -Property `
+        @{Expression = "VersionCore"; Descending = $Descending}, `
+        @{Expression = { -not $_.IsPreRelease }; Descending = $Descending}, `
+        @{Expression = { $_.PreRelease.Length }; Descending = $Descending}, `
+        @{Expression = "PreRelease"; Descending = $Descending}, `
+        @{Expression = { $_.Build.Length }; Descending = $Descending}, `
+        @{Expression = "Build"; Descending = $Descending} | `
+    Select-Object `
+      -ExpandProperty Version `
+      -Unique:$Unique
 }
 
 <#
@@ -45,10 +115,15 @@ function Get-NuGetLatestPackageVersion {
     [Parameter(Mandatory = $true)][string]$package_id
   )
 
-  $package_versions = Get-NuGetPackageVersions $nuget_service_package_base_address $package_id | `
-    Sort-Object -Descending
+  $package_versions = Get-NuGetPackageVersions $nuget_service_package_base_address $package_id
 
-  return $package_versions.Count -gt 0 ? $package_versions[0] : $null
+  if ($package_versions.Count -le 0) {
+    return $null
+  }
+
+  $ordered_versions = Get-OrderedSemanticVersions $package_versions -Descending
+
+  return $ordered_versions[0]
 }
 
 <#
