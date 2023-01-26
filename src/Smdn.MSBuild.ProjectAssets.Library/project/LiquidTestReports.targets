@@ -65,6 +65,9 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup>
       <LiquidTestReportsLogFileCandidate Include="$(LiquidTestReportsTestReportDirectory)*$(LiquidTestReportsTestReportFileExtensionWithTargetFramework)" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '@(LiquidTestReportsLogFileCandidate)' != '' ">
       <!-- extract only log files that are created after the started time and before the finished time -->
       <LiquidTestReportsLogFile
         Include="@(LiquidTestReportsLogFileCandidate)"
@@ -73,13 +76,30 @@ SPDX-License-Identifier: MIT
           ($([System.DateTimeOffset]::Parse(%(CreatedTime)).Ticks)) &lt; ($(LiquidTestReportsTestFinishedAt))
         "
       />
-      <LiquidTestReportsLogFileContent Include="$([System.IO.File]::ReadAllText('%(LiquidTestReportsLogFile.Identity)'))"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <_HasLiquidTestReportsLogFileGenerated>false</_HasLiquidTestReportsLogFileGenerated>
+      <_HasLiquidTestReportsLogFileGenerated Condition=" '@(LiquidTestReportsLogFile)' != '' ">true</_HasLiquidTestReportsLogFileGenerated>
+    </PropertyGroup>
+
+    <Warning
+      Text="No test logs were output to directory '$(LiquidTestReportsTestReportDirectory)'. Make sure that the configurations are valid and there are no syntax errors in the template file."
+      File="$(MSBuildProjectFullPath)"
+      Condition=" '$(_HasLiquidTestReportsLogFileGenerated)' != 'true' "
+    />
+
+    <ItemGroup Condition=" '$(_HasLiquidTestReportsLogFileGenerated)' == 'true' ">
+      <LiquidTestReportsLogFileContent Include="$([System.IO.File]::ReadAllText('%(LiquidTestReportsLogFile.Identity)'))" />
     </ItemGroup>
 
     <PropertyGroup>
       <LiquidTestReportsStepSummaryContents>%0A%0A@(LiquidTestReportsLogFileContent, '%0A%0A----%0A%0A')</LiquidTestReportsStepSummaryContents>
     </PropertyGroup>
 
-    <GitHubActionsStepSummaryAppendContent Contents="$(LiquidTestReportsStepSummaryContents)" />
+    <GitHubActionsStepSummaryAppendContent
+      Contents="$(LiquidTestReportsStepSummaryContents)"
+      Condition=" '$(_HasLiquidTestReportsLogFileGenerated)' == 'true' "
+    />
   </Target>
 </Project>
