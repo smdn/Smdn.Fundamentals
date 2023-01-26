@@ -222,8 +222,9 @@ SPDX-License-Identifier: MIT
 {%-     comment -%}
           find and enumerate corresponding test results from their index
 {%-     endcomment -%}
-{%-     for result_index in result_indices -%}
-{%-       assign result = set.results | slice: result_index | first -%}{%- comment -%} array[index] does not works fine, so use slice+first instead {%- endcomment -%}
+{%-     for result_index_string in result_indices -%}
+{%-       assign result_index = result_index_string | floor -%}{%- comment -%} use `floor` to convert index from string to number {%- endcomment -%}
+{%-       assign result = set.results[result_index] -%}
       <tr>
         <td>
           <span>{{ result_symbol }} <code>{{- result.test_case.display_name | escape -}}</code></span>
