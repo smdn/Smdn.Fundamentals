@@ -1,0 +1,15 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard1.0</TargetFrameworks>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>preview1</VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup Label="assembly attributes">
+    <CopyrightYear>2023</CopyrightYear>
+  </PropertyGroup>
+</Project>
