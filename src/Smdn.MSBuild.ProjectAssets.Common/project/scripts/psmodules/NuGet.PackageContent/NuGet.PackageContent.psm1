@@ -33,7 +33,7 @@ function Get-NuGetPackageVersions {
 }
 
 <#
-  Summary: Parses and gets the semantic version from the specified version sstring.
+  Summary: Parses and gets the semantic version from the specified version string.
 #>
 function Get-SemanticVersion {
   Param(
