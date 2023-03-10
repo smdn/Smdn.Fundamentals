@@ -133,6 +133,18 @@ jobs:
           # treat the version ends with '-unreleased' as an unreleasable package
           $package_can_release = $Matches['suffix'] -ne "-unreleased"
 
+          # determine whether the package is 'prerelease' or not
+          $package_is_prerelease = $false
+
+          if ($package_can_release) {
+            if ("$package_version" -match '\-[0-9a-zA-Z\.]+') {
+              $package_is_prerelease = $true
+            }
+          }
+          else {
+            $package_is_prerelease = $true
+          }
+
           # notice determined info
           "## Package information" >> $Env:GITHUB_STEP_SUMMARY
           "" >> $Env:GITHUB_STEP_SUMMARY
@@ -144,6 +156,7 @@ jobs:
           "| package_id | ``${package_id}`` |"                              >> $Env:GITHUB_STEP_SUMMARY
           "| package_id_with_version | ``${package_id_with_version}`` |"    >> $Env:GITHUB_STEP_SUMMARY
           "| package_version | ``${package_version}`` |"                    >> $Env:GITHUB_STEP_SUMMARY
+          "| package_is_prerelease | ``${package_is_prerelease}`` |"        >> $Env:GITHUB_STEP_SUMMARY
           "| package_source_dir | ``${package_source_dir}`` |"              >> $Env:GITHUB_STEP_SUMMARY
 
           # set outputs
@@ -153,6 +166,7 @@ jobs:
           "package_id=${package_id}"                            >> $Env:GITHUB_OUTPUT
           "package_id_with_version=${package_id_with_version}"  >> $Env:GITHUB_OUTPUT
           "package_version=${package_version}"                  >> $Env:GITHUB_OUTPUT
+          "package_is_prerelease=${package_is_prerelease}"      >> $Env:GITHUB_OUTPUT
           "package_source_dir=${package_source_dir}"            >> $Env:GITHUB_OUTPUT
         }
         else {
@@ -576,7 +590,13 @@ jobs:
         [void]$pr_body.AppendLine('- package_branch: `${{ steps.package-info.outputs.package_branch }}`')
         [void]$pr_body.AppendLine('- release_working_branch: `${{ steps.release-info.outputs.working_branch }}`')
         [void]$pr_body.AppendLine('- release_tag: `${{ steps.release-info.outputs.tag }}`')
-        [void]$pr_body.AppendLine('- release_draft: `false` ❗Change this value to `true` to create release note as draft.')
+        if ( '${{ steps.package-info.outputs.package_can_release }}' -ieq 'True' ) {
+          [void]$pr_body.AppendLine('- release_prerelease: `${{ steps.package-info.outputs.package_is_prerelease }}` ❗Change this value to `true` to publish release note as a prerelease.')
+        }
+        else {
+          [void]$pr_body.AppendLine('- release_prerelease: `true`')
+        }
+        [void]$pr_body.AppendLine('- release_draft: `false` ❗Change this value to `true` to publish release note as a draft.')
         [void]$pr_body.AppendLine('- release_note_url: [`${{ steps.releasenote.outputs.url }}`](${{ steps.releasenote.outputs.url }})')
 
         if ( '${{ steps.package-info.outputs.package_can_release }}' -ieq 'True' ) {

@@ -133,6 +133,7 @@ jobs:
         [string]$package_branch = $null
         [string]$release_working_branch = $null
         [string]$release_tag = $null
+        [string]$release_prerelease = $null
         [string]$release_draft = $null
         [string]$release_note_url = $null
 
@@ -167,8 +168,12 @@ jobs:
           "::error::release_tag could not be determined."
           exit 1
         }
+        if ( ! $release_info_dict.TryGetValue( "release_prerelease", [ref]$release_prerelease ) ) {
+          # if value is not explicitly specified, publish release as a prerelease
+          $release_prerelease = "true"
+        }
         if ( ! $release_info_dict.TryGetValue( "release_draft", [ref]$release_draft ) ) {
-          # if value is not explicitly specified, create release as a draft
+          # if value is not explicitly specified, publish release as a draft
           $release_draft = "true"
         }
         if ( ! $release_info_dict.TryGetValue( "release_note_url", [ref]$release_note_url ) ) {
@@ -189,6 +194,7 @@ jobs:
         "| package_branch | ``${package_branch}`` |"                          >> $Env:GITHUB_STEP_SUMMARY
         "| release_working_branch | ``${release_working_branch}`` |"          >> $Env:GITHUB_STEP_SUMMARY
         "| release_tag | ``${release_tag}`` |"                                >> $Env:GITHUB_STEP_SUMMARY
+        "| release_prerelease | ``${release_prerelease}`` |"                  >> $Env:GITHUB_STEP_SUMMARY
         "| release_draft | ``${release_draft}`` |"                            >> $Env:GITHUB_STEP_SUMMARY
         "| release_note_url | ``${release_note_url}`` |"                      >> $Env:GITHUB_STEP_SUMMARY
         "| precedent_workflow_run_id | ``${precedent_workflow_run_id}`` |"    >> $Env:GITHUB_STEP_SUMMARY
@@ -202,6 +208,7 @@ jobs:
         "package_branch=${package_branch}"                          >> $Env:GITHUB_OUTPUT
         "release_working_branch=${release_working_branch}"          >> $Env:GITHUB_OUTPUT
         "release_tag=${release_tag}"                                >> $Env:GITHUB_OUTPUT
+        "release_prerelease=${release_prerelease}"                  >> $Env:GITHUB_OUTPUT
         "release_draft=${release_draft}"                            >> $Env:GITHUB_OUTPUT
         "release_note_url=${release_note_url}"                      >> $Env:GITHUB_OUTPUT
         "precedent_workflow_run_id=${precedent_workflow_run_id}"    >> $Env:GITHUB_OUTPUT
@@ -544,6 +551,7 @@ jobs:
           '--title', $release_title,
           '--target', '${{ steps.release-info.outputs.package_branch }}',
           '--notes-file', $release_notes_file,
+          ('${{ steps.release-info.outputs.release_prerelease }}' -ieq 'True' ? '--prerelease' : ''),
           ('${{ steps.release-info.outputs.release_draft }}' -ieq 'True' ? '--draft' : ''),
           '${{ steps.release-info.outputs.release_tag }}'
         )
