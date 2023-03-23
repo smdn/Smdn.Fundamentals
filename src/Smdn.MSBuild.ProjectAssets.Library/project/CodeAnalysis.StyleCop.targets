@@ -1,0 +1,26 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ItemGroup Label="StyleCop code analysis">
+    <AdditionalFiles
+      Include="$(StyleCopAnalyzersConfigurationFile)"
+      Link="stylecop.json"
+      Condition=" '$(StyleCopAnalyzersConfigurationFile)' != '' "
+    />
+    <!-- include default 'stylecop.json' to AdditionalFiles here if StyleCopAnalyzersConfigurationFile is not specified -->
+    <AdditionalFiles
+      Include="$(MSBuildThisFileDirectory)\stylecop.json"
+      Link="stylecop.json"
+      Condition=" '$(StyleCopAnalyzersConfigurationFile)' == '' "
+    />
+  </ItemGroup>
+
+  <PropertyGroup Label="StyleCop code analysis">
+    <!-- set default to CodeAnalysisRuleSet here if not set -->
+    <CodeAnalysisRuleSet
+      Condition=" '$(CodeAnalysisRuleSet)' == '' "
+    >$(MSBuildThisFileDirectory)\StyleCop.Analyzers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+</Project>
