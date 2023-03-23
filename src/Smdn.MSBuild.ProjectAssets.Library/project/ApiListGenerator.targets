@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
     -->
     <_APIListDoGenerate Condition=" '$(IncludeBuildOutput)' != '' and '$(IncludeBuildOutput)' != 'true' ">false</_APIListDoGenerate>
     <!-- Disable if IsPackable is falsy. -->
-    <_APIListDoGenerate Condition=" '$(IsPackable)' != 'true' ">false</_APIListDoGenerate>
+    <_APIListDoGenerate Condition=" '$(IsPackable)' != '' and '$(IsPackable)' != 'true' ">false</_APIListDoGenerate>
 
     <!-- This is required to import .props and .targets from Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks -->
     <ExcludeRestorePackageImports
