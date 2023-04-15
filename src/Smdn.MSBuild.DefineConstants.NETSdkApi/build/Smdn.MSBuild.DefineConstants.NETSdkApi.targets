@@ -884,6 +884,24 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <!--
+      Applies to: NET8_0_OR_GREATER
+    -->
+    <!--
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET8_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.IsPrivilegedProcess"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="IPNetwork"/>
+    </ItemGroup>
+    -->
+
+    <!--
       generate symbols
     -->
     <ItemGroup>
