@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_LINQ_ENUMERABLE_TOHASHSET
-#endif
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
