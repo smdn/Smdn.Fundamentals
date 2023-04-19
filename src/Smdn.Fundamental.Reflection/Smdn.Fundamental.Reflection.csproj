@@ -11,6 +11,7 @@ SPDX-License-Identifier: MIT
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
