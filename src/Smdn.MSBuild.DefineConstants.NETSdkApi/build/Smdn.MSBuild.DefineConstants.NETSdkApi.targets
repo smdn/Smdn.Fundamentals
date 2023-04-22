@@ -692,6 +692,13 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="MemberNotNullAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="MemberNotNullWhenAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetCultureInfo(name,predefinedOnly)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CopyToAsync(Stream,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CopyToAsync(Stream,TransportContext,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CreateContentReadStreamAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.ReadAsByteArrayAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.ReadAsStreamAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.ReadAsStringAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.SerializeToStreamAsync(Stream,TransportContext,CancellationToken)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Mail" Include="MailAddress.TryCreate"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.NetworkInformation" Include="PhysicalAddress.TryParse"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="IsExternalInit"/>
