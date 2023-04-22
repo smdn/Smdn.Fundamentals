@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.11
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.3.12
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.3.11
+//   InformationalVersion: 1.3.12
 
 // List of symbols defined on target framework 'net6.0'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -252,12 +252,23 @@
 #define SYSTEM_NET_DNS_GETHOSTENTRY_HOSTNAMEORADDRESS_FAMILY // System.Net.Dns.GetHostEntry(hostNameOrAddress,family) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_DNS_GETHOSTENTRYASYNC_HOSTNAMEORADDRESS_CANCELLATIONTOKEN // System.Net.Dns.GetHostEntryAsync(hostNameOrAddress,cancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_DNS_GETHOSTENTRYASYNC_HOSTNAMEORADDRESS_FAMILY_CANCELLATIONTOKEN // System.Net.Dns.GetHostEntryAsync(hostNameOrAddress,family,cancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_COPYTOASYNC_STREAM_CANCELLATIONTOKEN // System.Net.Http.HttpContent.CopyToAsync(Stream,CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_COPYTOASYNC_STREAM_TRANSPORTCONTEXT_CANCELLATIONTOKEN // System.Net.Http.HttpContent.CopyToAsync(Stream,TransportContext,CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_CREATECONTENTREADSTREAMASYNC_CANCELLATIONTOKEN // System.Net.Http.HttpContent.CreateContentReadStreamAsync(CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_READASBYTEARRAYASYNC_CANCELLATIONTOKEN // System.Net.Http.HttpContent.ReadAsByteArrayAsync(CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_READASSTREAMASYNC_CANCELLATIONTOKEN // System.Net.Http.HttpContent.ReadAsStreamAsync(CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_READASSTRINGASYNC_CANCELLATIONTOKEN // System.Net.Http.HttpContent.ReadAsStringAsync(CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_HTTP_HTTPCONTENT_SERIALIZETOSTREAMASYNC_STREAM_TRANSPORTCONTEXT_CANCELLATIONTOKEN // System.Net.Http.HttpContent.SerializeToStreamAsync(Stream,TransportContext,CancellationToken) (NET5_0_OR_GREATER)
 #define SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER // System.Net.Http.SocketsHttpHandler (NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NET_MAIL // System.Net.Mail (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NET_MAIL_MAILADDRESS_TRYCREATE // System.Net.Mail.MailAddress.TryCreate (NET5_0_OR_GREATER)
 #define SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS // System.Net.NetworkInformation.PhysicalAddress (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS_TRYPARSE // System.Net.NetworkInformation.PhysicalAddress.TryParse (NET5_0_OR_GREATER)
 #define SYSTEM_NET_SOCKETS_SOCKET_ACCEPTASYNC_CANCELLATIONTOKEN // System.Net.Sockets.Socket.AcceptAsync(CancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_ADDRESS_PORT_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(address,port,CancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_ADDRESSES_PORT_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(addresses,port,CancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_HOST_PORT_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(host,port,CancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_REMOTEEP_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(remoteEP,CancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_SOCKETS_SOCKET_DISCONNECTASYNC_REUSESOCKET_CANCELLATIONTOKEN // System.Net.Sockets.Socket.DisconnectAsync(reuseSocket,cancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2 // System.Numerics.BitOperations.IsPow2 (NET6_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT // System.Numerics.BitOperations.LeadingZeroCount (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
