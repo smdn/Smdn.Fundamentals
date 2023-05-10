@@ -56,18 +56,21 @@ public class CsvWriter : StreamWriter {
   }
 
   public CsvWriter(StreamWriter writer)
-    : this(writer.BaseStream)
+    : this((writer ?? throw new ArgumentNullException(nameof(writer))).BaseStream)
   {
   }
 
   public CsvWriter(StreamWriter writer, Encoding encoding)
-    : base(writer.BaseStream, encoding)
+    : base((writer ?? throw new ArgumentNullException(nameof(writer))).BaseStream, encoding)
   {
     NewLine = CRLF;
   }
 
   public void WriteLine(params string[] columns)
   {
+    if (columns is null)
+      throw new ArgumentNullException(nameof(columns));
+
     const char CR = '\r';
     const char LF = '\n';
 
@@ -122,6 +125,9 @@ public class CsvWriter : StreamWriter {
 
   public void WriteLine(params object[] columns)
   {
+    if (columns is null)
+      throw new ArgumentNullException(nameof(columns));
+
     var c = new List<string>();
 
     foreach (var column in columns) {
