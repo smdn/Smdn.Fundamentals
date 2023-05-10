@@ -16,10 +16,20 @@ public static class RFC822DateTimeFormats {
     );
 
   internal static string ToString(DateTimeOffset dateTimeOffset)
+#pragma warning disable SA1001, SA1113
     => string.Concat(
       dateTimeOffset.ToString("ddd, d MMM yyyy HH:mm:ss ", CultureInfo.InvariantCulture.DateTimeFormat),
-      dateTimeOffset.ToString("zzz", CultureInfo.InvariantCulture.DateTimeFormat).Replace(":", string.Empty)
+      dateTimeOffset
+        .ToString("zzz", CultureInfo.InvariantCulture.DateTimeFormat)
+        .Replace(
+          ":",
+          string.Empty
+#if SYSTEM_STRING_REPLACE_STRING_STRING_STRINGCOMPARISON
+          , StringComparison.Ordinal
+#endif
+        )
     );
+#pragma warning restore SA1001, SA1113
 
   public static DateTime ParseDateTime(string s)
     => DateAndTimeParser.ParseDateTime(
