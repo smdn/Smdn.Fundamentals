@@ -79,7 +79,7 @@ public static class ExceptionUtils {
         if (stream is null)
           return true; // resource stream not found, return empty catalog
 
-        var reader = new StreamReader(stream, Encoding.UTF8);
+        using var reader = new StreamReader(stream, Encoding.UTF8);
 
         string msgid = null;
 
