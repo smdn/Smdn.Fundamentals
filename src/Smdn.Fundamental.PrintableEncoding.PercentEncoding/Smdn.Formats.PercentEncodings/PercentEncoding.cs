@@ -17,11 +17,15 @@ public static class PercentEncoding {
     => GetEncodedString(str, mode, Encoding.ASCII);
 
   public static string GetEncodedString(string str, ToPercentEncodedTransformMode mode, Encoding encoding)
-    => ICryptoTransformExtensions.TransformStringTo(
-      new ToPercentEncodedTransform(mode),
+  {
+    using var transform = new ToPercentEncodedTransform(mode);
+
+    return ICryptoTransformExtensions.TransformStringTo(
+      transform,
       str,
       encoding
     );
+  }
 
   public static string GetEncodedString(byte[] bytes, ToPercentEncodedTransformMode mode)
   {
@@ -32,14 +36,18 @@ public static class PercentEncoding {
   }
 
   public static string GetEncodedString(byte[] bytes, int offset, int count, ToPercentEncodedTransformMode mode)
-    => Encoding.ASCII.GetString(
+  {
+    using var transform = new ToPercentEncodedTransform(mode);
+
+    return Encoding.ASCII.GetString(
       ICryptoTransformExtensions.TransformBytes(
-        new ToPercentEncodedTransform(mode),
+        transform,
         bytes,
         offset,
         count
       )
     );
+  }
 
   public static byte[] Encode(string str, ToPercentEncodedTransformMode mode)
     => Encode(str, mode, Encoding.ASCII);
@@ -49,10 +57,11 @@ public static class PercentEncoding {
     if (encoding == null)
       throw new ArgumentNullException(nameof(encoding));
 
+    using var transform = new ToPercentEncodedTransform(mode);
     var bytes = encoding.GetBytes(str);
 
     return ICryptoTransformExtensions.TransformBytes(
-      new ToPercentEncodedTransform(mode),
+      transform,
       bytes,
       0,
       bytes.Length
@@ -69,21 +78,26 @@ public static class PercentEncoding {
     => GetDecodedString(str, encoding, false);
 
   public static string GetDecodedString(string str, Encoding encoding, bool decodePlusToSpace)
-    => ICryptoTransformExtensions.TransformStringFrom(
-      new FromPercentEncodedTransform(decodePlusToSpace),
+  {
+    using var transform = new FromPercentEncodedTransform(decodePlusToSpace);
+
+    return ICryptoTransformExtensions.TransformStringFrom(
+      transform,
       str,
       encoding
     );
+  }
 
   public static byte[] Decode(string str)
     => Decode(str, false);
 
   public static byte[] Decode(string str, bool decodePlusToSpace)
   {
+    using var transform = new FromPercentEncodedTransform(decodePlusToSpace);
     var bytes = Encoding.ASCII.GetBytes(str);
 
     return ICryptoTransformExtensions.TransformBytes(
-      new FromPercentEncodedTransform(decodePlusToSpace),
+      transform,
       bytes,
       0,
       bytes.Length
