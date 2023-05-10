@@ -37,7 +37,7 @@ public static class MethodBaseExtensions {
     bool findOnlyPublicInterfaces = false
   )
     => TryFindExplicitInterfaceMethod(
-      m,
+      m ?? throw new ArgumentNullException(nameof(m)),
       out explicitInterfaceMethod,
       findOnlyPublicInterfaces,
       throwException: false
