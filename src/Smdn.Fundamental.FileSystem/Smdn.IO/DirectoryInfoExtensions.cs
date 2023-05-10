@@ -12,19 +12,19 @@ public static class DirectoryInfoExtensions {
     => GetFiles(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
   public static IEnumerable<FileInfo> GetFiles(this DirectoryInfo directory, SearchOption searchOption, Predicate<FileInfo> searchPattern)
-    => FindFileSystemEntries(directory, searchOption, searchPattern);
+    => FindFileSystemEntries(directory ?? throw new ArgumentNullException(nameof(directory)), searchOption, searchPattern);
 
   public static IEnumerable<DirectoryInfo> GetDirectories(this DirectoryInfo directory, Predicate<DirectoryInfo> searchPattern)
     => GetDirectories(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
   public static IEnumerable<DirectoryInfo> GetDirectories(this DirectoryInfo directory, SearchOption searchOption, Predicate<DirectoryInfo> searchPattern)
-    => FindFileSystemEntries(directory, searchOption, searchPattern);
+    => FindFileSystemEntries(directory ?? throw new ArgumentNullException(nameof(directory)), searchOption, searchPattern);
 
   public static IEnumerable<FileSystemInfo> GetFileSystemInfos(this DirectoryInfo directory, Predicate<FileSystemInfo> searchPattern)
     => GetFileSystemInfos(directory, SearchOption.TopDirectoryOnly, searchPattern);
 
   public static IEnumerable<FileSystemInfo> GetFileSystemInfos(this DirectoryInfo directory, SearchOption searchOption, Predicate<FileSystemInfo> searchPattern)
-    => FindFileSystemEntries(directory, searchOption, searchPattern);
+    => FindFileSystemEntries(directory ?? throw new ArgumentNullException(nameof(directory)), searchOption, searchPattern);
 
   private static IEnumerable<TFileSystemInfo> FindFileSystemEntries<TFileSystemInfo>(this DirectoryInfo directory, SearchOption searchOption, Predicate<TFileSystemInfo> searchPattern)
     where TFileSystemInfo : FileSystemInfo
