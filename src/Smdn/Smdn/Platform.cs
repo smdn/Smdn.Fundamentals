@@ -9,22 +9,19 @@ using Smdn.OperatingSystem;
 namespace Smdn;
 
 public static class Platform {
-  static Platform()
+  public static readonly Endianness Endianness = GetEndianness();
+
+  private static unsafe Endianness GetEndianness()
   {
-    // System.BitConverter.IsLittleEndian
-    unsafe {
-      int i = 1;
-      var b = (byte*)&i;
+    int i = 1;
+    var b = (byte*)&i;
 
-      Endianness = (b[0], b[3]) switch {
-        (1, 0) => Endianness.LittleEndian,
-        (0, 1) => Endianness.BigEndian,
-        _ => Endianness.Unknown,
-      };
-    }
+    return (b[0], b[3]) switch {
+      (1, 0) => Endianness.LittleEndian,
+      (0, 1) => Endianness.BigEndian,
+      _ => Endianness.Unknown,
+    };
   }
-
-  public static readonly Endianness Endianness;
 
   public static bool IsRunningOnWindows =>
     RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
