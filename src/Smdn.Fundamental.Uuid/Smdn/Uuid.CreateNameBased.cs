@@ -118,9 +118,9 @@ partial struct Uuid {
     }
     finally {
 #if SYSTEM_SECURITY_CRYPTOGRAPHY_HASHALGORITHM_CLEAR
-      hashAlgorithm?.Clear();
+      hashAlgorithm.Clear();
 #else
-      hashAlgorithm?.Dispose();
+      hashAlgorithm.Dispose();
 #endif
       hashAlgorithm = null;
     }
