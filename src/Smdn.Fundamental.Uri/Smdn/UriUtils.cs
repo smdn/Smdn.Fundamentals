@@ -69,7 +69,12 @@ public static class UriUtils {
 #pragma warning restore SA1114
 
     foreach (var nameAndValue in splitted) {
-      var pos = nameAndValue.IndexOf(NameValueSplitterChar);
+      var pos =
+#if SYSTEM_STRING_INDEXOF_CHAR_STRINGCOMPARISON
+        nameAndValue.IndexOf(NameValueSplitterChar, StringComparison.Ordinal);
+#else
+        nameAndValue.IndexOf(NameValueSplitterChar);
+#endif
       var (name, value) = pos < 0
         ? (nameAndValue, string.Empty) // name only
         : (nameAndValue.Substring(0, pos), nameAndValue.Substring(pos + 1)); // name = value
