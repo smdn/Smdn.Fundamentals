@@ -93,7 +93,14 @@ public static class Platform {
           if (IsRunningOnUnix) {
             foreach (var line in File.ReadAllLines("/proc/cpuinfo")) {
               if (line.StartsWith("model name", StringComparison.Ordinal)) {
-                processorName = line.Substring(line.IndexOf(':') + 1).Trim();
+                var indexOfDelimiter =
+#if SYSTEM_STRING_INDEXOF_CHAR_STRINGCOMPARISON
+                  line.IndexOf(':', StringComparison.Ordinal);
+#else
+                  line.IndexOf(':');
+#endif
+
+                processorName = line.Substring(indexOfDelimiter + 1).Trim();
                 break;
               }
             }
