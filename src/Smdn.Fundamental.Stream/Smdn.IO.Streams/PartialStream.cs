@@ -17,13 +17,13 @@ public class PartialStream :
 #pragma warning restore SA1001
 {
   public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length)
-    => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, true);
+    => CreateNonNested(innerOrPartialStream ?? throw new ArgumentNullException(nameof(innerOrPartialStream)), innerOrPartialStream.Position, length, true);
 
   public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin)
-    => CreateNonNested(innerOrPartialStream, innerOrPartialStream.Position, length, seekToBegin);
+    => CreateNonNested(innerOrPartialStream ?? throw new ArgumentNullException(nameof(innerOrPartialStream)), innerOrPartialStream.Position, length, seekToBegin);
 
   public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length)
-    => CreateNonNested(innerOrPartialStream, offset, length, true);
+    => CreateNonNested(innerOrPartialStream ?? throw new ArgumentNullException(nameof(innerOrPartialStream)), offset, length, true);
 
   public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length, bool seekToBegin)
   {
