@@ -155,11 +155,13 @@ static partial class MimeEncoding {
         throw new ArgumentNullException(nameof(foldingString));
     }
 
-    (char encodingChar, ICryptoTransform transform) = encoding switch {
+    (char encodingChar, ICryptoTransform tsform) = encoding switch {
       MimeEncodingMethod.Base64 => ('b', Base64.CreateToBase64Transform()),
       MimeEncodingMethod.QuotedPrintable => ('q', new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding)),
       _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding),
     };
+
+    using var transform = tsform;
 
     var preambleText = string.Concat(
       "=?",
