@@ -16,9 +16,11 @@ public static partial class Ascii {
     public static string ToUpperString(byte[] bytes)
       => Hexadecimal.ToUpperCaseString(bytes ?? throw new ArgumentNullException(nameof(bytes)));
 
-    public static byte[] ToLowerByteArray(byte[] bytes) => ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeLowerCase);
+    public static byte[] ToLowerByteArray(byte[] bytes)
+      => ConvertByteArrayToHex<byte>(bytes ?? throw new ArgumentNullException(nameof(bytes)), Hexadecimal.TryEncodeLowerCase);
 
-    public static byte[] ToUpperByteArray(byte[] bytes) => ConvertByteArrayToHex<byte>(bytes, Hexadecimal.TryEncodeUpperCase);
+    public static byte[] ToUpperByteArray(byte[] bytes)
+      => ConvertByteArrayToHex<byte>(bytes ?? throw new ArgumentNullException(nameof(bytes)), Hexadecimal.TryEncodeUpperCase);
 
     private delegate bool TryEncodeHex<T>(byte data, Span<T> destination, out int lengthEncoded);
 
@@ -36,11 +38,14 @@ public static partial class Ascii {
       return destination;
     }
 
-    public static byte[] ToByteArray(string hexString) => ConvertStringToByteArray(hexString, true, true);
+    public static byte[] ToByteArray(string hexString)
+      => ConvertStringToByteArray(hexString ?? throw new ArgumentNullException(nameof(hexString)), true, true);
 
-    public static byte[] ToByteArrayFromLowerString(string lowerCasedString) => ConvertStringToByteArray(lowerCasedString, true, false);
+    public static byte[] ToByteArrayFromLowerString(string lowerCasedString)
+      => ConvertStringToByteArray(lowerCasedString ?? throw new ArgumentNullException(nameof(lowerCasedString)), true, false);
 
-    public static byte[] ToByteArrayFromUpperString(string upperCasedString) => ConvertStringToByteArray(upperCasedString, false, true);
+    public static byte[] ToByteArrayFromUpperString(string upperCasedString)
+      => ConvertStringToByteArray(upperCasedString ?? throw new ArgumentNullException(nameof(upperCasedString)), false, true);
 
     private static byte[] ConvertStringToByteArray(string str, bool allowLowerCaseChar, bool allowUpperCaseChar)
     {
