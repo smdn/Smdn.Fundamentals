@@ -10,6 +10,9 @@ namespace Smdn.Xml.Linq.Xhtml;
 public static class Extensions {
   public static XElement GetElementById(this XContainer container, string id)
   {
+    if (container is null)
+      throw new ArgumentNullException(nameof(container));
+
     return container.Descendants()
                     .Attributes(XHtmlAttributeNames.Id)
                     .FirstOrDefault(a => string.Equals(a.Value, id, StringComparison.Ordinal))
@@ -18,6 +21,9 @@ public static class Extensions {
 
   public static bool HasHtmlClass(this XElement element, string @class)
   {
+    if (element is null)
+      throw new ArgumentNullException(nameof(element));
+
     var attr = element.Attribute(XHtmlAttributeNames.Class);
 
     if (attr == null)
