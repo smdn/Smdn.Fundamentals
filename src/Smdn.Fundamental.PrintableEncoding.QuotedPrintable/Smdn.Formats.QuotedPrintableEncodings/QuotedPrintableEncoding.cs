@@ -22,11 +22,15 @@ public static class QuotedPrintableEncoding {
     => GetEncodedString(str, Encoding.ASCII);
 
   public static string GetEncodedString(string str, Encoding encoding)
-    => ICryptoTransformExtensions.TransformStringTo(
-      new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
+  {
+    using var transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding);
+
+    return ICryptoTransformExtensions.TransformStringTo(
+      transform,
       str,
       encoding
     );
+  }
 
   public static string GetEncodedString(byte[] bytes)
   {
@@ -37,14 +41,18 @@ public static class QuotedPrintableEncoding {
   }
 
   public static string GetEncodedString(byte[] bytes, int offset, int count)
-    => Encoding.ASCII.GetString(
+  {
+    using var transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding);
+
+    return Encoding.ASCII.GetString(
       ICryptoTransformExtensions.TransformBytes(
-        new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
+        transform,
         bytes,
         offset,
         count
       )
     );
+  }
 
   public static byte[] Encode(string str)
     => Encode(str, Encoding.ASCII);
@@ -54,10 +62,11 @@ public static class QuotedPrintableEncoding {
     if (encoding == null)
       throw new ArgumentNullException(nameof(encoding));
 
+    using var transform = new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding);
     var bytes = encoding.GetBytes(str);
 
     return ICryptoTransformExtensions.TransformBytes(
-      new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.ContentTransferEncoding),
+      transform,
       bytes,
       0,
       bytes.Length
@@ -68,18 +77,23 @@ public static class QuotedPrintableEncoding {
     => GetDecodedString(str, Encoding.ASCII);
 
   public static string GetDecodedString(string str, Encoding encoding)
-    => ICryptoTransformExtensions.TransformStringFrom(
-      new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
+  {
+    using var transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding);
+
+    return ICryptoTransformExtensions.TransformStringFrom(
+      transform,
       str,
       encoding
     );
+  }
 
   public static byte[] Decode(string str)
   {
+    using var transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding);
     var bytes = Encoding.ASCII.GetBytes(str);
 
     return ICryptoTransformExtensions.TransformBytes(
-      new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding),
+      transform,
       bytes,
       0,
       bytes.Length
