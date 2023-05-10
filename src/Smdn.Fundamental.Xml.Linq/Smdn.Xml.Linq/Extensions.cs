@@ -64,6 +64,9 @@ public static class Extensions {
 
   public static string TextContent(this XContainer container)
   {
+    if (container is null)
+      throw new ArgumentNullException(nameof(container));
+
     return string.Concat(container.DescendantNodes()
                                   .Where(n => n.NodeType == XmlNodeType.Text)
                                   .Select(n => (n as XText).Value));

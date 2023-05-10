@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+using System;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -11,5 +12,6 @@ public class XEntityReference : XText {
   {
   }
 
-  public override void WriteTo(XmlWriter writer) => writer.WriteEntityRef(Value);
+  public override void WriteTo(XmlWriter writer)
+    => (writer ?? throw new ArgumentNullException(nameof(writer))).WriteEntityRef(Value);
 }
