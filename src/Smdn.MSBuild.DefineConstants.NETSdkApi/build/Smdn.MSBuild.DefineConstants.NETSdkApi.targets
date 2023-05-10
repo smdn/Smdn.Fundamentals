@@ -115,6 +115,7 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.IndexOf(string,StringComparison)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetGenericTypeDefinition"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.MakeGenericType"/>
       <!-- NET40_OR_GREATER -->
@@ -477,6 +478,8 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="MathF"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.EndsWith(char)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Join(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Replace(string,string,bool,CultureInfo)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Replace(string,string,StringComparison)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Split(char)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Split(string)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.StartsWith(char)"/>
@@ -535,6 +538,9 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(char,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(string,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.IndexOf(char,StringComparison)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.MakeGenericMethodParameter"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsGenericMethodParameter"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsGenericTypeParameter"/>
