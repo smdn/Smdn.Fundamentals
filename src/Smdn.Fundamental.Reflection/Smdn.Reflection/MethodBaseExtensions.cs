@@ -37,7 +37,7 @@ public static class MethodBaseExtensions {
     bool findOnlyPublicInterfaces = false
   )
     => TryFindExplicitInterfaceMethod(
-      m ?? throw new ArgumentNullException(nameof(m)),
+      m, // allow null
       out explicitInterfaceMethod,
       findOnlyPublicInterfaces,
       throwException: false
@@ -56,7 +56,7 @@ public static class MethodBaseExtensions {
   }
 
   private static bool TryFindExplicitInterfaceMethod(
-    MethodBase m,
+    MethodBase? m,
     out MethodInfo? explicitInterfaceMethod,
     bool findOnlyPublicInterfaces,
     bool throwException
@@ -66,7 +66,8 @@ public static class MethodBaseExtensions {
 
     if (m is not MethodInfo im)
       return false;
-    if (!(m.IsStatic || im.IsFinal)) // explicit interface method must be final or static (in case of static interface members)
+
+    if (!(im.IsStatic || im.IsFinal)) // explicit interface method must be final or static (in case of static interface members)
       return false;
     if (!im.IsPrivate) // explicit interface method must be private
       return false;
