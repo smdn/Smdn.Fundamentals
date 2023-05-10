@@ -84,10 +84,10 @@ public class CsvWriter : StreamWriter {
 
       var escape = EscapeAlways ||
 #if SYSTEM_STRING_CONTAINS_CHAR
-        column.Contains(Delimiter) ||
+        column.Contains(Delimiter, StringComparison.Ordinal) ||
         column.Contains(quotator, StringComparison.Ordinal) ||
-        column.Contains(CR) ||
-        column.Contains(LF);
+        column.Contains(CR, StringComparison.Ordinal) ||
+        column.Contains(LF, StringComparison.Ordinal);
 #else
         0 <= column.IndexOf(Delimiter) ||
         0 <= column.IndexOf(quotator, StringComparison.Ordinal) ||
@@ -97,7 +97,19 @@ public class CsvWriter : StreamWriter {
 
       if (escape) {
         Write(quotator);
-        Write(column.Replace(quotator, escapedQuotator));
+
+#pragma warning disable SA1001, SA1113
+        Write(
+          column.Replace(
+            quotator,
+            escapedQuotator
+#if SYSTEM_STRING_REPLACE_STRING_STRING_STRINGCOMPARISON
+            , StringComparison.Ordinal
+#endif
+          )
+        );
+#pragma warning restore SA1001, SA1113
+
         Write(quotator);
       }
       else {

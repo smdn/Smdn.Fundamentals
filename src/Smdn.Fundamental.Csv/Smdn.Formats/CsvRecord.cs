@@ -134,18 +134,36 @@ public static class CsvRecord {
 
   public static string ToJoined(IEnumerable<string> csv)
   {
+    static bool ShouldEscape(string value)
+      =>
+        value is not null &&
+#if SYSTEM_STRING_CONTAINS_CHAR
+        value.Contains('"', StringComparison.Ordinal);
+#else
+        value.Contains("\"");
+#endif
+
+#pragma warning disable SA1001, SA1113
+    static string Escape(string value)
+      => string.Concat(
+        "\"",
+        value.Replace(
+          "\"",
+          "\"\""
+#if SYSTEM_STRING_REPLACE_STRING_STRING_STRINGCOMPARISON
+          , StringComparison.Ordinal
+#endif
+        ),
+        "\""
+      );
+#pragma warning restore SA1001, SA1113
+
+    if (csv is null)
+      throw new ArgumentNullException(nameof(csv));
+
     return string.Join(
       ",",
-      (csv ?? throw new ArgumentNullException(nameof(csv)))
-        .Select(s =>
-#if SYSTEM_STRING_CONTAINS_CHAR
-          s != null && s.Contains('"')
-#else
-          s != null && s.Contains("\"")
-#endif
-            ? string.Concat("\"", s.Replace("\"", "\"\""), "\"")
-            : s
-        )
+      csv.Select(static s => ShouldEscape(s) ? Escape(s) : s)
     );
   }
 }
