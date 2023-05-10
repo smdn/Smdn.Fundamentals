@@ -11,6 +11,9 @@ public static class EncodingReadOnlySequenceExtensions {
 #if !NET5_0_OR_GREATER
   public static string GetString(this Encoding encoding, ReadOnlySequence<byte> sequence)
   {
+    if (encoding is null)
+      throw new ArgumentNullException(nameof(encoding));
+
     var sb = new StringBuilder((int)Math.Min(int.MaxValue, sequence.Length));
     var decoder = encoding.GetDecoder();
     var pos = sequence.Start;
