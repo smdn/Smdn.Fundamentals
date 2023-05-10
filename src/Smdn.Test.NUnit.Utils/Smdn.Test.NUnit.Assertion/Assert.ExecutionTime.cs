@@ -33,20 +33,20 @@ public partial class Assert : global::NUnit.Framework.Assert {
   }
 
   public static void Elapses(TimeSpan expected, TestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
+    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
 
   public static void ElapsesAsync(TimeSpan expected, AsyncTestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
+    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
 
   public static void NotElapse(TimeSpan expected, TestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
+    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
 
   public static void NotElapseAsync(TimeSpan expected, AsyncTestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
+    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
 
   public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, TestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
+    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
 
   public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, AsyncTestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
+    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
 }

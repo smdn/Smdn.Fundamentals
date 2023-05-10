@@ -10,6 +10,9 @@ public partial class Assert : global::NUnit.Framework.Assert {
   public static TException ThrowsOrAggregates<TException>(TestDelegate code)
     where TException : Exception
   {
+    if (code is null)
+      throw new ArgumentNullException(nameof(code));
+
     try {
       code();
 

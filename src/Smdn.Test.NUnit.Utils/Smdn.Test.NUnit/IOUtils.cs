@@ -12,6 +12,9 @@ namespace Smdn.Test.NUnit;
 public static class IOUtils {
   public static void UsingCurrentDirectory(string path, Action action)
   {
+    if (action is null)
+      throw new ArgumentNullException(nameof(action));
+
     var initialDirectory = Directory.GetCurrentDirectory();
 
     try {
@@ -26,6 +29,9 @@ public static class IOUtils {
 
   public static async Task UsingCurrentDirectoryAsync(string path, Func<Task> action)
   {
+    if (action is null)
+      throw new ArgumentNullException(nameof(action));
+
     var initialDirectory = Directory.GetCurrentDirectory();
 
     try {
@@ -43,6 +49,9 @@ public static class IOUtils {
 
   public static void UsingDirectory(string path, bool ensureDirectoryCreated, Action<DirectoryInfo> action)
   {
+    if (action is null)
+      throw new ArgumentNullException(nameof(action));
+
     try {
       TryDeleteDirectory(path);
 
@@ -63,6 +72,9 @@ public static class IOUtils {
 
   public static async Task UsingDirectoryAsync(string path, bool ensureDirectoryCreated, Func<DirectoryInfo, Task> action)
   {
+    if (action is null)
+      throw new ArgumentNullException(nameof(action));
+
     try {
       TryDeleteDirectory(path);
 
@@ -86,6 +98,9 @@ public static class IOUtils {
 
   public static void UsingFile(string path, Action<FileInfo> action)
   {
+    if (action is null)
+      throw new ArgumentNullException(nameof(action));
+
     var file = new FileInfo(path);
 
     try {
@@ -100,6 +115,9 @@ public static class IOUtils {
 
   public static async Task UsingFileAsync(string path, Func<FileInfo, Task> action)
   {
+    if (action is null)
+      throw new ArgumentNullException(nameof(action));
+
     var file = new FileInfo(path);
 
     try {
