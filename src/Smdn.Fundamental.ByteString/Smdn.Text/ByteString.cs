@@ -970,9 +970,6 @@ public class ByteString :
     if (y < 0)
       throw ExceptionUtils.CreateArgumentMustBeZeroOrPositive(nameof(y), y);
 
-    if (x == null)
-      return CreateEmpty();
-
     var bytes = new byte[x.segment.Count * y];
 
     for (int count = 0, offset = 0; count < y; count++, offset += x.segment.Count) {
