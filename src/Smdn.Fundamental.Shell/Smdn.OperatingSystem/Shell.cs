@@ -24,8 +24,15 @@ public static class Shell {
     ProcessStartInfo psi;
 
     if (IsRunningOnUnix) {
-      if (arguments != null)
-        arguments = arguments.Replace("\"", "\\\"");
+#pragma warning disable SA1001, SA1113
+      arguments = arguments?.Replace(
+        "\"",
+        "\\\""
+#if SYSTEM_STRING_REPLACE_STRING_STRING_STRINGCOMPARISON
+        , StringComparison.Ordinal
+#endif
+      );
+#pragma warning restore SA1001, SA1113
 
       psi = new ProcessStartInfo("/bin/sh", $"-c \"{command} {arguments}\"");
     }

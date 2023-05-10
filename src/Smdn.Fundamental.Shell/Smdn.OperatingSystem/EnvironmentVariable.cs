@@ -20,7 +20,12 @@ public static class EnvironmentVariable {
     var ret = new Dictionary<string, string>();
 
     foreach (var pair in variables.Split(new[] { Path.PathSeparator }, StringSplitOptions.RemoveEmptyEntries)) {
-      var delim = pair.IndexOf('=');
+      var delim =
+#if SYSTEM_STRING_INDEXOF_CHAR_STRINGCOMPARISON
+        pair.IndexOf('=', StringComparison.Ordinal);
+#else
+        pair.IndexOf('=');
+#endif
 
       if (delim < 0) {
         if (throwIfInvalid)
