@@ -11,27 +11,24 @@ namespace Smdn.Text.Encodings;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public class OctetEncoding : Encoding {
   // for string which contains 7-bit characters
-  public static readonly Encoding SevenBits;
+  public static readonly Encoding SevenBits = Create(7);
 
   // for string which contains 8-bit characters
-  public static readonly Encoding EightBits;
+  public static readonly Encoding EightBits = Create(8);
 
-  static OctetEncoding()
+  private static Encoding Create(int bit)
   {
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
-    SevenBits = new OctetEncoding(7);
-    EightBits = new OctetEncoding(8);
+    return new OctetEncoding(bit);
 #elif SYSTEM_TEXT_ENCODING_DECODERFALLBACK && SYSTEM_TEXT_ENCODING_ENCODERFALLBACK
-    SevenBits = (Encoding)new OctetEncoding(7).Clone();
-    SevenBits.DecoderFallback = new DecoderExceptionFallback();
-    SevenBits.EncoderFallback = new EncoderExceptionFallback();
+    var e = (Encoding)new OctetEncoding(bit).Clone();
 
-    EightBits = (Encoding)new OctetEncoding(8).Clone();
-    EightBits.DecoderFallback = new DecoderExceptionFallback();
-    EightBits.EncoderFallback = new EncoderExceptionFallback();
+    e.DecoderFallback = new DecoderExceptionFallback();
+    e.EncoderFallback = new EncoderExceptionFallback();
+
+    return e;
 #else
-    SevenBits = new OctetEncoding(7, encoderReplacement: null /* throw exception */);
-    EightBits = new OctetEncoding(8, encoderReplacement: null /* throw exception */);
+    return new OctetEncoding(bit, encoderReplacement: null /* throw exception */);
 #endif
   }
 
