@@ -8,47 +8,48 @@ namespace Smdn.Reflection;
 
 public static class MemberInfoExtensions {
   public static Accessibility GetAccessibility(this MemberInfo member)
+    => member switch {
+      null => throw new ArgumentNullException(nameof(member)),
+      Type t => GetAccessibility(t),
+      FieldInfo f => GetAccessibility(f),
+      MethodBase m => GetAccessibility(m),
+      PropertyInfo p => throw new InvalidOperationException("cannot get accessibility of " + nameof(PropertyInfo)),
+      EventInfo ev => throw new InvalidOperationException("cannot get accessibility of " + nameof(EventInfo)),
+      _ => throw new NotSupportedException("unknown member type"),
+    };
+
+  private static Accessibility GetAccessibility(Type t)
   {
-    switch (member) {
-      case null:
-        throw new ArgumentNullException(nameof(member));
+    if (t.IsPublic || t.IsNestedPublic) return Accessibility.Public;
+    if (t.IsNotPublic || t.IsNestedAssembly) return Accessibility.Assembly;
+    if (t.IsNestedFamily) return Accessibility.Family;
+    if (t.IsNestedFamORAssem) return Accessibility.FamilyOrAssembly;
+    if (t.IsNestedFamANDAssem) return Accessibility.FamilyAndAssembly;
+    if (t.IsNestedPrivate) return Accessibility.Private;
 
-      case Type t:
-        if (t.IsPublic || t.IsNestedPublic) return Accessibility.Public;
-        if (t.IsNotPublic || t.IsNestedAssembly) return Accessibility.Assembly;
-        if (t.IsNestedFamily) return Accessibility.Family;
-        if (t.IsNestedFamORAssem) return Accessibility.FamilyOrAssembly;
-        if (t.IsNestedFamANDAssem) return Accessibility.FamilyAndAssembly;
-        if (t.IsNestedPrivate) return Accessibility.Private;
-        break;
+    return Accessibility.Undefined;
+  }
 
-      case FieldInfo f:
-        if (f.IsPublic) return Accessibility.Public;
-        if (f.IsAssembly) return Accessibility.Assembly;
-        if (f.IsFamily) return Accessibility.Family;
-        if (f.IsFamilyOrAssembly) return Accessibility.FamilyOrAssembly;
-        if (f.IsFamilyAndAssembly) return Accessibility.FamilyAndAssembly;
-        if (f.IsPrivate) return Accessibility.Private;
-        break;
+  private static Accessibility GetAccessibility(FieldInfo f)
+  {
+    if (f.IsPublic) return Accessibility.Public;
+    if (f.IsAssembly) return Accessibility.Assembly;
+    if (f.IsFamily) return Accessibility.Family;
+    if (f.IsFamilyOrAssembly) return Accessibility.FamilyOrAssembly;
+    if (f.IsFamilyAndAssembly) return Accessibility.FamilyAndAssembly;
+    if (f.IsPrivate) return Accessibility.Private;
 
-      case MethodBase m:
-        if (m.IsPublic) return Accessibility.Public;
-        if (m.IsAssembly) return Accessibility.Assembly;
-        if (m.IsFamily) return Accessibility.Family;
-        if (m.IsFamilyOrAssembly) return Accessibility.FamilyOrAssembly;
-        if (m.IsFamilyAndAssembly) return Accessibility.FamilyAndAssembly;
-        if (m.IsPrivate) return Accessibility.Private;
-        break;
+    return Accessibility.Undefined;
+  }
 
-      case PropertyInfo p:
-        throw new InvalidOperationException("cannot get accessibility of " + nameof(PropertyInfo));
-
-      case EventInfo ev:
-        throw new InvalidOperationException("cannot get accessibility of " + nameof(EventInfo));
-
-      default:
-        throw new NotSupportedException("unknown member type");
-    }
+  private static Accessibility GetAccessibility(MethodBase m)
+  {
+    if (m.IsPublic) return Accessibility.Public;
+    if (m.IsAssembly) return Accessibility.Assembly;
+    if (m.IsFamily) return Accessibility.Family;
+    if (m.IsFamilyOrAssembly) return Accessibility.FamilyOrAssembly;
+    if (m.IsFamilyAndAssembly) return Accessibility.FamilyAndAssembly;
+    if (m.IsPrivate) return Accessibility.Private;
 
     return Accessibility.Undefined;
   }
