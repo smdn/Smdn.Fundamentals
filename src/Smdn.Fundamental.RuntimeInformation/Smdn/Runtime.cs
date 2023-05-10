@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Collections.Generic;
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
 using System.Linq;
 #endif
@@ -14,31 +15,31 @@ namespace Smdn;
 public static partial class Runtime {
   internal static readonly Version RuntimeVersionNET5 = new(5, 0);
 
-  public static RuntimeEnvironment RuntimeEnvironment { get; }
-  public static string Name { get; }
+  // use KeyValuePair`2 instead since ValueTuple`2 cannot be used
+  private static readonly KeyValuePair<RuntimeEnvironment, string> RuntimeEnvironmentAndName = GetRuntimeEnvironmentAndName();
 
-  private static readonly Lazy<Version?> lazyVersion;
+  public static RuntimeEnvironment RuntimeEnvironment => RuntimeEnvironmentAndName.Key;
+  public static string Name => RuntimeEnvironmentAndName.Value;
+
+  private static readonly Lazy<Version?> lazyVersion = new(GetRuntimeVersion, LazyThreadSafetyMode.PublicationOnly);
   public static Version? Version => lazyVersion.Value;
 
-  static Runtime()
+  private static KeyValuePair<RuntimeEnvironment, string> GetRuntimeEnvironmentAndName()
   {
-    lazyVersion = new(GetRuntimeVersion, LazyThreadSafetyMode.PublicationOnly);
+    static bool FrameworkDescriptionContains(string value)
+      => RuntimeInformation.FrameworkDescription
+#if SYSTEM_STRING_CONTAINS_STRING_STRINGCOMPARISON
+        .Contains(value, StringComparison.Ordinal);
+#else
+        .Contains(value);
+#endif
 
-    if (RuntimeInformation.FrameworkDescription.Contains(".NET Framework")) {
-      RuntimeEnvironment = RuntimeEnvironment.NetFx;
-      Name = ".NET Framework";
-      return;
-    }
-    else if (RuntimeInformation.FrameworkDescription.Contains(".NET Core")) {
-      RuntimeEnvironment = RuntimeEnvironment.NetCore;
-      Name = ".NET Core";
-      return;
-    }
-    else if (RuntimeInformation.FrameworkDescription.Contains("Mono")) {
-      RuntimeEnvironment = RuntimeEnvironment.Mono;
-      Name = "Mono";
-      return;
-    }
+    if (FrameworkDescriptionContains(".NET Framework"))
+      return new(RuntimeEnvironment.NetFx, ".NET Framework");
+    if (FrameworkDescriptionContains(".NET Core"))
+      return new(RuntimeEnvironment.NetCore, ".NET Core");
+    if (FrameworkDescriptionContains("Mono"))
+      return new(RuntimeEnvironment.Mono, "Mono");
 
     var clr = RuntimeEnvironment.Unknown;
     string? name = null;
@@ -77,8 +78,10 @@ public static partial class Runtime {
     }
 #endif
 
-    RuntimeEnvironment = clr;
-    Name = name ?? ".NET compatible runtime"; // fallback
+    return new(
+      clr,
+      name ?? ".NET compatible runtime" // fallback
+    );
 
 #if SYSTEM_ASSEMBLY_GETREFERENCEDASSEMBLIES
     static bool IsAssemblyNameSystemRuntime(AssemblyName n)
