@@ -12,13 +12,20 @@ public class ReadOnlyByteMemoryEqualConstraintResult : EqualConstraintResult {
   private readonly ReadOnlyMemory<byte> expectedValue;
 
   public ReadOnlyByteMemoryEqualConstraintResult(ReadOnlyByteMemoryEqualConstraint constraint, object actual, bool hasSucceeded)
-    : base(constraint, actual, hasSucceeded)
+    : base(
+      constraint ?? throw new ArgumentNullException(nameof(constraint)),
+      actual,
+      hasSucceeded
+    )
   {
     this.expectedValue = constraint.Expected;
   }
 
   public override void WriteMessageTo(MessageWriter writer)
   {
+    if (writer is null)
+      throw new ArgumentNullException(nameof(writer));
+
     writer.WriteMessageLine($"Expected: \"{expectedValue.Span.ToControlCharsPicturizedString()}\" ({BitConverter.ToString(expectedValue.ToArray())})");
 
     if (ActualValue is ReadOnlyMemory<byte> actualMemory)

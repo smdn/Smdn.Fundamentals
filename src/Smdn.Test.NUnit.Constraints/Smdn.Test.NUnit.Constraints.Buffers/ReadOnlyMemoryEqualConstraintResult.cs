@@ -18,13 +18,20 @@ public class ReadOnlyMemoryEqualConstraintResult<T> :
   private readonly ReadOnlyMemory<T> expectedValue;
 
   public ReadOnlyMemoryEqualConstraintResult(ReadOnlyMemoryEqualConstraint<T> constraint, object actual, bool hasSucceeded)
-    : base(constraint, actual, hasSucceeded)
+    : base(
+      constraint ?? throw new ArgumentNullException(nameof(constraint)),
+      actual,
+      hasSucceeded
+    )
   {
     this.expectedValue = constraint.Expected;
   }
 
   public override void WriteMessageTo(MessageWriter writer)
   {
+    if (writer is null)
+      throw new ArgumentNullException(nameof(writer));
+
     writer.WriteMessageLine($"Expected: {{{ToJoinedString(expectedValue)}}} (Length={expectedValue.Length})");
 
     if (ActualValue is Memory<T> actualMemory)
