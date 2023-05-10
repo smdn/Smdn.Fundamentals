@@ -19,10 +19,6 @@ public static class ParameterInfoExtensions {
 #endif
   }
 
-  [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  private static BindingFlags GetBindingFlagsForAccessorOwner(MethodInfo accessor)
-    => (accessor.IsStatic ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.Public | BindingFlags.NonPublic;
-
   public static PropertyInfo? GetDeclaringProperty(this ParameterInfo param)
   {
     if (param is null)
