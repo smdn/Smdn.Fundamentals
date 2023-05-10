@@ -69,6 +69,7 @@ public class PipeOutStream : Stream {
           process.Kill();
       }
 
+      process.Dispose();
       process = null;
     }
 
