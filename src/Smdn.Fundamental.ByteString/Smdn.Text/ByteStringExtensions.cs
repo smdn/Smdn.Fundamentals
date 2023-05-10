@@ -7,7 +7,8 @@ namespace Smdn.Text;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static class ByteStringExtensions {
-  public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str) => new(str.Segment.AsMemory());
+  public static ReadOnlySequence<byte> AsReadOnlySequence(this ByteString str)
+    => new((str ?? throw new ArgumentNullException(nameof(str))).Segment.AsMemory());
 
   [Obsolete("ByteString will be deprecated in future.")]
   public static ByteString ToByteString(this ReadOnlySequence<byte> sequence) => ByteString.CreateImmutable(sequence.ToArray());

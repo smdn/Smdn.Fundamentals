@@ -186,12 +186,18 @@ public class ByteString :
 
   protected ByteString(SerializationInfo info, StreamingContext context)
   {
+    if (info is null)
+      throw new ArgumentNullException(nameof(info));
+
     this.segment = (ArraySegment<byte>)info.GetValue("segment", typeof(ArraySegment<byte>));
     this.isMutable = info.GetBoolean("isMutable");
   }
 
   public void GetObjectData(SerializationInfo info, StreamingContext context)
   {
+    if (info is null)
+      throw new ArgumentNullException(nameof(info));
+
     info.AddValue("segment", segment);
     info.AddValue("isMutable", isMutable);
   }
