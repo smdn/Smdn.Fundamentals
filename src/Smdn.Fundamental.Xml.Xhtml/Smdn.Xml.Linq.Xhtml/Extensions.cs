@@ -23,7 +23,14 @@ public static class Extensions {
     if (attr == null)
       return false;
 
-    return string.Concat(" ", attr.Value, " ").Contains(string.Concat(" ", @class, " "));
+    var delimitedValue = string.Concat(" ", attr.Value, " ");
+    var delimitedClass = string.Concat(" ", @class, " ");
+
+#if SYSTEM_STRING_CONTAINS_STRING_STRINGCOMPARISON
+    return delimitedValue.Contains(delimitedClass, StringComparison.Ordinal);
+#else
+    return delimitedValue.Contains(delimitedClass);
+#endif
   }
 
   public static bool HasHtmlClass(this XElement element, IEnumerable<string> classList)
