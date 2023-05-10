@@ -1,0 +1,16 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="GenerateNupkgReleaseNote"
+    BeforeTargets="GenerateNuspec"
+    Condition=" '$(PackageReleaseNotes)' == '' "
+  >
+    <PropertyGroup Condition="$(RepositoryUrl.StartsWith('https://github.com/'))">
+      <RepositoryReleaseTag>releases/$(PackageId)-$(PackageVersion)</RepositoryReleaseTag>
+      <PackageReleaseNotes>$([MSBuild]::EnsureTrailingSlash('$(RepositoryUrl)'))releases/tag/$(RepositoryReleaseTag.Replace('/', '%252F').Replace('+', '%252B').Replace('+', '%252B'))</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
+</Project>

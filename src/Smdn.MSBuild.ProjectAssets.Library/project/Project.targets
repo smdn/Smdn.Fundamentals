@@ -11,6 +11,8 @@ SPDX-License-Identifier: MIT
     <Import Project="$(MSBuildThisFileDirectory)ApiListGenerator.targets" />
     <!-- PackageReadmeFile auto-generating -->
     <Import Project="$(MSBuildThisFileDirectory)PackageReadmeFile.targets" Condition=" '$(GeneratePackageReadmeFile)' == 'true' " />
+    <!-- PackageReleaseNotes auto-generating -->
+    <Import Project="$(MSBuildThisFileDirectory)PackageReleaseNotes.targets" />
     <!-- StyleCop code analysis -->
     <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.StyleCop.targets" />
   </ImportGroup>
