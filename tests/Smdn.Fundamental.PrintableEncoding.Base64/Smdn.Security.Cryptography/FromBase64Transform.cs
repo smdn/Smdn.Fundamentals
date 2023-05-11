@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections;
+using System.Reflection;
 using System.Text;
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
@@ -29,31 +30,35 @@ namespace Smdn.Security.Cryptography {
     [Test]
     public void TestDispose()
     {
-      using (var t = Base64.CreateFromBase64Transform()) {
-        t.Dispose();
+      using var t = Base64.CreateFromBase64Transform();
 
-        var input = new byte[1];
-        var output = new byte[3];
+      t.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
-      }
+      var input = new byte[1];
+      var output = new byte[3];
+
+      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
     }
 
-    // cannot test Clear() with ICryptoTransfrom
-#if false // NETFRAMEWORK || NETCOREAPP2_0
     [Test]
     public void TestClear()
     {
-      using (var t = Base64.CreateFromBase64Transform()) {
-        t.Clear();
+      using var t = Base64.CreateFromBase64Transform();
 
-        var input = new byte[1];
-        var output = new byte[3];
+      var clear = t.GetType().GetMethod("Clear", BindingFlags.Public | BindingFlags.Instance, Type.EmptyTypes);
 
-        Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+      if (clear is null) {
+        Assert.Ignore("cannot test Clear()");
+        return;
       }
+
+      clear.Invoke(t, parameters: null);
+
+      var input = new byte[1];
+      var output = new byte[3];
+
+      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
     }
-#endif
 
 #if false
       foreach (var pattern in new[] {
