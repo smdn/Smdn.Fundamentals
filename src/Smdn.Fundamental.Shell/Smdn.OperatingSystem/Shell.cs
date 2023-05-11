@@ -1,12 +1,12 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_DIAGNOSTICS_PROCESS
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Smdn.OperatingSystem;
 
-#if SYSTEM_DIAGNOSTICS_PROCESS
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static class Shell {
   private static bool IsRunningOnUnix =>
