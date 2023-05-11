@@ -59,12 +59,12 @@ public sealed class UUDecodingTransform : ICryptoTransform {
         if (0 < lineLength)
           ret += WriteBlock(outputBuffer, ref outputOffset);
 
-        lineLength = -1;
+        lineLength = LineLengthNotReadYet;
 
         continue;
       }
 
-      if (lineLength == -1) {
+      if (lineLength == LineLengthNotReadYet) {
         /*
          * <length character>
          */
@@ -157,8 +157,10 @@ public sealed class UUDecodingTransform : ICryptoTransform {
   private static readonly byte[] EmptyByteArray = new byte[0];
 #endif
 
+  private const int LineLengthNotReadYet = -1;
+
   private long buffer = 0L;
   private int bufferOffset = 0;
-  private int lineLength = -1;
+  private int lineLength = LineLengthNotReadYet;
   private bool disposed = false;
 }
