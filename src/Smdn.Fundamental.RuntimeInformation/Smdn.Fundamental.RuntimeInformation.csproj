@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
     <RootNamespace>Smdn</RootNamespace>
     <VersionPrefix>3.0.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <!-- <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion> -->
+    <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <Nullable>enable</Nullable>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
     <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0030 -->
