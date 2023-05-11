@@ -28,7 +28,7 @@ public static class ParameterInfoExtensions {
 
     var isReturnParameter = IsReturnParameter(param);
 
-    MethodInfoExtensions.TryGetPropertyFromAccessorMethod(
+    _ = MethodInfoExtensions.TryGetPropertyFromAccessorMethod(
       accessor: accessor,
       expectGet: isReturnParameter,
       expectSet: !isReturnParameter,
@@ -49,7 +49,7 @@ public static class ParameterInfoExtensions {
     if (!string.Equals("value", param.Name, StringComparison.Ordinal)) // parameter name of event accessor method must be `value`
       return null;
 
-    MethodInfoExtensions.TryGetEventFromAccessorMethod(
+    _ = MethodInfoExtensions.TryGetEventFromAccessorMethod(
       accessor: accessor,
       expectAdd: true,
       expectRemove: true,
