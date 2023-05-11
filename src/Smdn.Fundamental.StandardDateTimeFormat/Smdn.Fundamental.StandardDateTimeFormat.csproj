@@ -13,6 +13,7 @@ SPDX-License-Identifier: MIT
       Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '7.0.0'))"
     >$(DefineConstants);LANG_VERSION_11_OR_GREATER</DefineConstants> <!-- required to use the 'scoped' keyword in C# 11 -->
     <LangVersion>latest</LangVersion> <!-- clarify to use the latest lang version -->
+    <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0030 -->
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">

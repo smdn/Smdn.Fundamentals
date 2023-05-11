@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
     <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
+    <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0030 -->
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
