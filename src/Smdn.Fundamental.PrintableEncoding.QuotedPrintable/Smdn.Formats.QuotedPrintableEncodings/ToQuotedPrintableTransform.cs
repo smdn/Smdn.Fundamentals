@@ -24,11 +24,14 @@ public sealed class ToQuotedPrintableTransform : ICryptoTransform {
   }
 
   public void Clear()
+    => Dispose();
+
+  public void Dispose()
   {
     disposed = true;
-  }
 
-  void IDisposable.Dispose() => Clear();
+    GC.SuppressFinalize(this);
+  }
 
   public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
@@ -107,5 +110,5 @@ public sealed class ToQuotedPrintableTransform : ICryptoTransform {
   }
 
   private readonly bool quoteWhitespaces = true;
-  private bool disposed = false;
+  private bool disposed;
 }

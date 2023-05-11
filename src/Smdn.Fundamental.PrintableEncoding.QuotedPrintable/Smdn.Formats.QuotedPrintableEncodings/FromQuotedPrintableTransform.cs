@@ -24,11 +24,14 @@ public sealed class FromQuotedPrintableTransform : ICryptoTransform {
   }
 
   public void Clear()
+    => Dispose();
+
+  public void Dispose()
   {
     disposed = true;
-  }
 
-  void IDisposable.Dispose() => Clear();
+    GC.SuppressFinalize(this);
+  }
 
   public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
@@ -130,7 +133,7 @@ public sealed class FromQuotedPrintableTransform : ICryptoTransform {
   }
 
   private readonly byte[] buffer = new byte[3];
-  private int bufferOffset = 0;
+  private int bufferOffset;
   private readonly bool dequoteUnderscore;
-  private bool disposed = false;
+  private bool disposed;
 }
