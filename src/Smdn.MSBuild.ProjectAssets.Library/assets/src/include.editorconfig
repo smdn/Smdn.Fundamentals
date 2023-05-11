@@ -59,6 +59,9 @@ dotnet_diagnostic.IDE0022.severity    = suggestion    # Use expression body for 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/code-block-preferences
 dotnet_diagnostic.IDE0063.severity    = suggestion    # Use simple 'using' statement
 
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0130
+dotnet_diagnostic.IDE0130.severity    = warning       # Match namespaces to folder structure
+
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/unnecessary-code-rules
 dotnet_diagnostic.IDE0001.severity    = suggestion    # Simplify name
 dotnet_diagnostic.IDE0002.severity    = suggestion    # Simplify member access
