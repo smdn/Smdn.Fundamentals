@@ -105,7 +105,7 @@ public class UUDecodingStream : Stream {
     }
 
     if (transform != null) {
-      transform.Clear();
+      transform.Dispose();
       transform = null;
     }
 

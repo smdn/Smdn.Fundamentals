@@ -19,11 +19,14 @@ public sealed class UUDecodingTransform : ICryptoTransform {
   }
 
   public void Clear()
+    => Dispose();
+
+  public void Dispose()
   {
     disposed = true;
-  }
 
-  void IDisposable.Dispose() => Clear();
+    GC.SuppressFinalize(this);
+  }
 
   public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
@@ -159,8 +162,8 @@ public sealed class UUDecodingTransform : ICryptoTransform {
 
   private const int LineLengthNotReadYet = -1;
 
-  private long buffer = 0L;
-  private int bufferOffset = 0;
+  private long buffer;
+  private int bufferOffset;
   private int lineLength = LineLengthNotReadYet;
-  private bool disposed = false;
+  private bool disposed;
 }

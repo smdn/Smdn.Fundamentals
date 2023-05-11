@@ -11,6 +11,34 @@ using Smdn.Security.Cryptography;
 namespace Smdn.Formats.UUEncodings {
   [TestFixture]
   public class UUDecodingTransformTests {
+    [Test]
+    public void Clear()
+    {
+      using var t = new UUDecodingTransform();
+
+      t.Clear();
+
+      var input = new byte[t.InputBlockSize];
+      var output = new byte[t.OutputBlockSize];
+
+      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+      Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+    }
+
+    [Test]
+    public void Dispose()
+    {
+      using var t = new UUDecodingTransform();
+
+      t.Dispose();
+
+      var input = new byte[t.InputBlockSize];
+      var output = new byte[t.OutputBlockSize];
+
+      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+      Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+    }
+
     private static readonly byte[] testimg_png = new byte[] {
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
       0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0x00, 0x20, 0x08, 0x06, 0x00, 0x00, 0x00, 0x73, 0x7a, 0x7a,
