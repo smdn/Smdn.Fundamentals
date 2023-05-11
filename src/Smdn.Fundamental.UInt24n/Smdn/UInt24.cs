@@ -53,10 +53,12 @@ public partial struct UInt24 {
   /*
    * IConvertible
    */
+#pragma warning disable IDE0060
   byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt32());
   sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt32());
   ulong IConvertible.ToUInt64(IFormatProvider provider) => (ulong)ToUInt32();
   long IConvertible.ToInt64(IFormatProvider provider) => (long)ToInt32();
+#pragma warning restore IDE0060
 
 #if FEATURE_GENERIC_MATH
   private static bool TryCreateCore<TOther>(
