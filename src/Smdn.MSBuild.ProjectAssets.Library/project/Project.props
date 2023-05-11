@@ -17,7 +17,7 @@ SPDX-License-Identifier: MIT
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
 
     <!-- code analysis defaults -->
-    <!-- ref: https://docs.microsoft.com/ja-jp/dotnet/core/project-sdk/msbuild-props#code-analysis-properties -->
+    <!-- ref: https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#code-analysis-properties -->
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -42,11 +42,19 @@ SPDX-License-Identifier: MIT
     <IsPackable>false</IsPackable>
 
     <!-- code analysis defaults -->
-    <AnalysisMode>None</AnalysisMode>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisModeDesign>None</AnalysisModeDesign>
+    <AnalysisModeDocumentation>None</AnalysisModeDocumentation>
+    <AnalysisModeGlobalization>Recommended</AnalysisModeGlobalization>
     <AnalysisModeInteroperability>Recommended</AnalysisModeInteroperability>
+    <AnalysisModeMaintainability>Recommended</AnalysisModeMaintainability>
+    <AnalysisModeNaming>None</AnalysisModeNaming>
+    <AnalysisModePerformance>None</AnalysisModePerformance>
+    <AnalysisModeSingleFile>None</AnalysisModeSingleFile>
     <AnalysisModeReliability>Recommended</AnalysisModeReliability>
     <AnalysisModeSecurity>Recommended</AnalysisModeSecurity>
-    <AnalysisModeUsage>Recommended</AnalysisModeUsage>
+    <AnalysisModeStyle>Recommended</AnalysisModeStyle>
+    <AnalysisModeUsage>None</AnalysisModeUsage>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'" Label="C#-only properties">
