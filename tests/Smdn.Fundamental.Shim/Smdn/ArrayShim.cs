@@ -48,7 +48,7 @@ public class ArrayShimTests {
 
     CollectionAssert.AreEqual(
       expected,
-      ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i.ToString("D"))
+      ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i.ToString("D", null))
     );
   }
 

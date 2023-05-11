@@ -139,7 +139,7 @@ namespace Smdn.Formats {
           new {Expected = "976.6kB",          Format = "f"},
           new {Expected = "976.6 Kilo Bytes", Format = "F"},
         }) {
-          var format = string.Format("{{0:{0}}}", pair.Format);
+          var format = $"{{0:{pair.Format}}}";
           var expected = (sign < decimal.Zero) ? "-" + pair.Expected : pair.Expected;
 
           Assert.AreEqual(expected, string.Format(provider, format, sign * decimalValue));
@@ -172,7 +172,7 @@ namespace Smdn.Formats {
           new {Expected = "1.0MB",          Format = "f"},
           new {Expected = "1.0 Mega Bytes", Format = "F"},
         }) {
-          var format = string.Format("{{0:{0}}}", pair.Format);
+          var format = $"{{0:{pair.Format}}}";
           var expected = (sign < decimal.Zero) ? "-" + pair.Expected : pair.Expected;
 
           Assert.AreEqual(expected, string.Format(provider, format, sign * binaryValue));

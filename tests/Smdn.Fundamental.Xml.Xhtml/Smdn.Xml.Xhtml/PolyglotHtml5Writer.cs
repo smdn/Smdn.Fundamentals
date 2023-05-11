@@ -963,8 +963,12 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual(string.Format("<p>\n <{0} />\n <{0} />\n <{0} />\n</p>", voidElement),
-                      ToString(doc));
+      var e = voidElement;
+
+      Assert.AreEqual(
+        $"<p>\n <{e} />\n <{e} />\n <{e} />\n</p>",
+        ToString(doc)
+      );
     }
 
     [TestCase("area")]
@@ -1001,8 +1005,12 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual(string.Format("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <{0} />\n <{0} />\n <{0} />\n</p>", voidElement),
-                      ToString(doc));
+      var e = voidElement;
+
+      Assert.AreEqual(
+        $"<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <{e} />\n <{e} />\n <{e} />\n</p>",
+        ToString(doc)
+      );
     }
 
     [TestCase("area")]
@@ -1042,8 +1050,12 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual(string.Format("<p>\n <{0} id=\"v1\" />\n <{0} />\n <{0} id=\"v3\" />\n <{0} />\n</p>", voidElement),
-                      ToString(doc));
+      var e = voidElement;
+
+      Assert.AreEqual(
+        $"<p>\n <{e} id=\"v1\" />\n <{e} />\n <{e} id=\"v3\" />\n <{e} />\n</p>",
+        ToString(doc)
+      );
     }
 
     [TestCase("div")]
@@ -1069,8 +1081,12 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual(string.Format("<p>\n <{0}></{0}>\n <{0}></{0}>\n <{0}></{0}>\n</p>", selfClosingElement),
-                      ToString(doc));
+      var e = selfClosingElement;
+
+      Assert.AreEqual(
+        $"<p>\n <{e}></{e}>\n <{e}></{e}>\n <{e}></{e}>\n</p>",
+        ToString(doc)
+      );
     }
   }
 }

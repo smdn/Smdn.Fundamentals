@@ -171,8 +171,10 @@ namespace Smdn.IO {
       foreach (var c in ngchars.ToCharArray()) {
         var s = c.ToString();
 
-        Assert.IsTrue(PathUtils.ContainsShellEscapeChar(s, shift_jis),
-                      string.Format("char: {0}, bytes: {1}", s, BitConverter.ToString(shift_jis.GetBytes(s))));
+        Assert.IsTrue(
+          PathUtils.ContainsShellEscapeChar(s, shift_jis),
+          $"char: {s}, bytes: {BitConverter.ToString(shift_jis.GetBytes(s))}"
+        );
       }
 
       Assert.IsTrue(PathUtils.ContainsShellEscapeChar("六十年", shift_jis));
@@ -188,8 +190,10 @@ namespace Smdn.IO {
       foreach (var c in ngchars.ToCharArray()) {
         var s = c.ToString();
 
-        Assert.IsTrue(PathUtils.ContainsShellPipeChar(s, shift_jis),
-                      string.Format("char: {0}, bytes: {1}", s, BitConverter.ToString(shift_jis.GetBytes(s))));
+        Assert.IsTrue(
+          PathUtils.ContainsShellPipeChar(s, shift_jis),
+          $"char: {s}, bytes: {BitConverter.ToString(shift_jis.GetBytes(s))}"
+        );
       }
 
       Assert.IsTrue(PathUtils.ContainsShellPipeChar("竹取物語", shift_jis));

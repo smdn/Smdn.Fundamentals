@@ -86,7 +86,7 @@ namespace Smdn {
       Assert.IsNotNull(Platform.DistributionName);
       Assert.IsNotNull(Platform.DistributionName);
 
-      var dist = Platform.DistributionName.ToLower();
+      var dist = Platform.DistributionName.ToLowerInvariant();
 
       if (Platform.IsRunningOnUnix)
         Assert.That(dist, Does.Not.Contain("windows"));

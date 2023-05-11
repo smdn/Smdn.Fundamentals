@@ -142,7 +142,7 @@ namespace Smdn {
           UInt24 val = (UInt24)test.Value;
 
           Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
           Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
@@ -169,7 +169,7 @@ namespace Smdn {
           UInt24 val = (UInt24)test.Value;
 
           Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
           Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
@@ -199,7 +199,7 @@ namespace Smdn {
           UInt24 val = (UInt24)test.Value;
 
           Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
           Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
@@ -223,7 +223,7 @@ namespace Smdn {
         new {Value = (UInt24)0x000000,  ExpectedResult = (short)0x0000, ExpectedHex = "0"},
         new {Value = (UInt24)0x007fff,  ExpectedResult = (short)0x7fff, ExpectedHex = "7fff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         try {
           Assert.IsTrue(test.ExpectedResult == (short)test.Value);
@@ -238,7 +238,7 @@ namespace Smdn {
         new {Value = (UInt24)0xffffff,  ExpectedHex = "ffffff"},
         new {Value = UInt24.MaxValue,   ExpectedHex = "ffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         Assert.Throws<OverflowException>(() => { var s = (short)test.Value; });
       }
@@ -254,7 +254,7 @@ namespace Smdn {
         new {Value = (UInt24)0x008000,  ExpectedResult = (ushort)0x8000, ExpectedHex = "8000"},
         new {Value = (UInt24)0x00ffff,  ExpectedResult = (ushort)0xffff, ExpectedHex = "ffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         try {
           Assert.IsTrue(test.ExpectedResult == (ushort)test.Value);
@@ -269,7 +269,7 @@ namespace Smdn {
         new {Value = (UInt24)0xffffff,  ExpectedHex = "ffffff"},
         new {Value = UInt24.MaxValue,   ExpectedHex = "ffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         Assert.Throws<OverflowException>(() => { var us = (ushort)test.Value; });
       }
@@ -290,7 +290,7 @@ namespace Smdn {
         val = (UInt24)test.Value;
 
         Assert.IsTrue(test.ExpectedResult == val.ToInt32(), "value = {0}", val);
-        Assert.AreEqual(test.ExpectedHex, val.ToString("x"), "value = {0}", val);
+        Assert.AreEqual(test.ExpectedHex, val.ToString("x", null), "value = {0}", val);
       }
     }
 
@@ -409,7 +409,7 @@ namespace Smdn {
     public void TestTryFormat_DestinationTooShort()
     {
       Assert.IsFalse(UInt24.Zero.TryFormat(Array.Empty<char>(), out var charsWritten, string.Empty, provider: null), "#1");
-      Assert.IsFalse(UInt24.MaxValue.TryFormat(stackalloc char[UInt24.MaxValue.ToString().Length - 1], out charsWritten, string.Empty, provider: null), "#2");
+      Assert.IsFalse(UInt24.MaxValue.TryFormat(stackalloc char[UInt24.MaxValue.ToString("D", null).Length - 1], out charsWritten, string.Empty, provider: null), "#2");
     }
 #endif
 

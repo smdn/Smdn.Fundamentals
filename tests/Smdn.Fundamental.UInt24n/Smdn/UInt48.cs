@@ -144,7 +144,7 @@ namespace Smdn {
           UInt48 val = (UInt48)test.Value;
 
           Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
           Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
@@ -171,7 +171,7 @@ namespace Smdn {
           UInt48 val = (UInt48)test.Value;
 
           Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
           Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
@@ -201,7 +201,7 @@ namespace Smdn {
           UInt48 val = (UInt48)test.Value;
 
           Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x"));
+          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
           Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
@@ -225,7 +225,7 @@ namespace Smdn {
         new {Value = (UInt48)0x000000000000,  ExpectedResult = (int)0x00000000, ExpectedHex = "0"},
         new {Value = (UInt48)0x00007fffffff,  ExpectedResult = (int)0x7fffffff, ExpectedHex = "7fffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         try {
           Assert.IsTrue(test.ExpectedResult == (int)test.Value);
@@ -240,7 +240,7 @@ namespace Smdn {
         new {Value = (UInt48)0xffffffffffff,  ExpectedHex = "ffffffffffff"},
         new {Value = UInt48.MaxValue,         ExpectedHex = "ffffffffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         Assert.Throws<OverflowException>(() => { var i = (int)test.Value; });
       }
@@ -256,7 +256,7 @@ namespace Smdn {
         new {Value = (UInt48)0x000080000000,  ExpectedResult = (uint)0x80000000, ExpectedHex = "80000000"},
         new {Value = (UInt48)0x0000ffffffff,  ExpectedResult = (uint)0xffffffff, ExpectedHex = "ffffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         try {
           Assert.IsTrue(test.ExpectedResult == (uint)test.Value);
@@ -271,7 +271,7 @@ namespace Smdn {
         new {Value = (UInt48)0xffffffffffff,  ExpectedHex = "ffffffffffff"},
         new {Value = UInt48.MaxValue,         ExpectedHex = "ffffffffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x"));
+        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
 
         Assert.Throws<OverflowException>(() => { var ui = (uint)test.Value; });
       }
@@ -292,7 +292,7 @@ namespace Smdn {
         val = (UInt48)test.Value;
 
         Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", val);
-        Assert.AreEqual(test.ExpectedHex, val.ToString("x"), "value = {0}", val);
+        Assert.AreEqual(test.ExpectedHex, val.ToString("x", null), "value = {0}", val);
       }
     }
 
@@ -411,7 +411,7 @@ namespace Smdn {
     public void TestTryFormat_DestinationTooShort()
     {
       Assert.IsFalse(UInt48.Zero.TryFormat(Array.Empty<char>(), out var charsWritten, string.Empty, provider: null), "#1");
-      Assert.IsFalse(UInt48.MaxValue.TryFormat(stackalloc char[UInt48.MaxValue.ToString().Length - 1], out charsWritten, string.Empty, provider: null), "#2");
+      Assert.IsFalse(UInt48.MaxValue.TryFormat(stackalloc char[UInt48.MaxValue.ToString("D", null).Length - 1], out charsWritten, string.Empty, provider: null), "#2");
     }
 #endif
 

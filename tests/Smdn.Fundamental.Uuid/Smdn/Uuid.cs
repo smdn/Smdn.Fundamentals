@@ -44,7 +44,7 @@ namespace Smdn {
 
     [TestCaseSource(nameof(YieldUuid))]
     public void TestConstruct(string testCaseLabel, Uuid uuid)
-      => Assert.AreEqual("f81d4fae-7dec-11d0-a765-00a0c91e6bf6", uuid.ToString("D"), testCaseLabel);
+      => Assert.AreEqual("f81d4fae-7dec-11d0-a765-00a0c91e6bf6", uuid.ToString("D", formatProvider: null), testCaseLabel);
 
     [Test]
     public void TestConstruct1()

@@ -15,14 +15,16 @@ public partial class DateTimeFormatTests {
   public void Setup()
   {
     var offset = DateTimeOffset.Now.Offset;
+    var hh = offset.Hours;
+    var mm = offset.Minutes;
 
     if (TimeSpan.Zero <= offset) {
-      timezoneOffset        = string.Format("+{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
-      timezoneOffsetNoDelim = string.Format("+{0:d2}{1:d2}",  offset.Hours, offset.Minutes);
+      timezoneOffset        = $"+{hh:d2}:{mm:d2}";
+      timezoneOffsetNoDelim = $"+{hh:d2}{mm:d2}";
     }
     else {
-      timezoneOffset        = string.Format("-{0:d2}:{1:d2}", offset.Hours, offset.Minutes);
-      timezoneOffsetNoDelim = string.Format("-{0:d2}{1:d2}",  offset.Hours, offset.Minutes);
+      timezoneOffset        = $"-{hh:d2}:{mm:d2}";
+      timezoneOffsetNoDelim = $"-{hh:d2}{mm:d2}";
     }
   }
 

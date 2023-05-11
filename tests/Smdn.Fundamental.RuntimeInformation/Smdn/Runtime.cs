@@ -99,7 +99,7 @@ public class RuntimeTests {
     // returns non-null value always
     Assert.IsNotNull(Runtime.VersionString);
 
-    var version = Runtime.VersionString.ToLower();
+    var version = Runtime.VersionString.ToLowerInvariant();
 
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.Mono:
@@ -125,7 +125,7 @@ public class RuntimeTests {
     // returns non-null value always
     Assert.IsNotNull(Runtime.Name);
 
-    var name = Runtime.Name.ToLower();
+    var name = Runtime.Name.ToLowerInvariant();
 
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.Mono:
