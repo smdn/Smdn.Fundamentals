@@ -12,7 +12,9 @@ using System.Threading;
 namespace Smdn;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
+#pragma warning disable CA1724
 public static partial class Runtime {
+#pragma warning restore CA1724
   internal static readonly Version RuntimeVersionNET5 = new(5, 0);
 
   // use KeyValuePair`2 instead since ValueTuple`2 cannot be used

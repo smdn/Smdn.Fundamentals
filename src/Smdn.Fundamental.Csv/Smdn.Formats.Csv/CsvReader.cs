@@ -22,7 +22,9 @@ public class CsvReader : StreamReader {
   }
 
   public CsvReader(string path, Encoding encoding)
+#pragma warning disable CA2000
     : base(File.OpenRead(path), encoding)
+#pragma warning restore CA2000
   {
   }
 

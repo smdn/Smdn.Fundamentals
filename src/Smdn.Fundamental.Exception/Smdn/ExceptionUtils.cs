@@ -156,10 +156,12 @@ public static class ExceptionUtils {
 
         return true;
       }
+#pragma warning disable CA1031
       catch {
         // ignore exceptions, return empty catalog (parser error, etc.)
         return true;
       }
+#pragma warning restore CA1031
     }
 #endif
   }

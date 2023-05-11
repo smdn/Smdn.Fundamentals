@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma warning disable IDE0040
 #pragma warning disable CA1716
+#pragma warning disable CA1008
 
 namespace Smdn;
 

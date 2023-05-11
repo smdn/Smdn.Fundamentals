@@ -7,6 +7,7 @@ namespace Smdn.Collections;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static class IReadOnlyCollectionExtensions {
+#pragma warning disable CA1002
   public static List<TOutput> ConvertAll<TInput, TOutput>(
     this IReadOnlyCollection<TInput> collection,
 #if SYSTEM_CONVERTER
@@ -15,6 +16,7 @@ public static class IReadOnlyCollectionExtensions {
     Func<TInput, TOutput> converter
 #endif
   )
+#pragma warning restore CA1002
   {
     if (collection == null)
       throw new ArgumentNullException(nameof(collection));

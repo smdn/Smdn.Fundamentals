@@ -34,7 +34,12 @@ public class CsvWriter : StreamWriter {
 #if SYSTEM_IO_STREAMWRITER_CTOR_PATH_APPEND
     : base(path, false, encoding)
 #else
-    : base(File.Open(path, FileMode.Create), encoding)
+    : base(
+#pragma warning disable CA2000
+      File.Open(path, FileMode.Create),
+#pragma warning restore CA2000
+      encoding
+    )
 #endif
   {
     NewLine = CRLF;

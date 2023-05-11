@@ -341,6 +341,7 @@ namespace Smdn {
     [Test]
     public void TestIConvertible()
     {
+#pragma warning disable CA1305
       Assert.AreEqual(true, Convert.ChangeType((UInt48)1, typeof(bool)));
       Assert.AreEqual(false, Convert.ChangeType((UInt48)0, typeof(bool)));
       Assert.AreEqual((byte)0xff, Convert.ChangeType((UInt48)0xff, typeof(byte)));
@@ -351,6 +352,7 @@ namespace Smdn {
       Assert.AreEqual((uint)0xffffffff, Convert.ChangeType((UInt48)0xffffffff, typeof(uint)));
       Assert.AreEqual((long)0x0000ffffffffffff, Convert.ChangeType((UInt48)0x0000ffffffffffff, typeof(long)));
       Assert.AreEqual((ulong)0x0000ffffffffffff, Convert.ChangeType((UInt48)0x0000ffffffffffff, typeof(ulong)));
+#pragma warning restore CA1305
 
       foreach (var t in new[] {
         typeof(byte),
@@ -360,31 +362,39 @@ namespace Smdn {
         typeof(int),
         typeof(uint),
       }) {
+#pragma warning disable CA1305
         Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName);
+#pragma warning restore CA1305
       }
 
       foreach (var t in new[] {
         typeof(long),
         typeof(ulong),
       }) {
+#pragma warning disable CA1305
         Assert.DoesNotThrow(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName);
+#pragma warning restore CA1305
       }
     }
 
     [Test]
     public void TestIConvertible_ToDateTime()
     {
+#pragma warning disable CA1305
       Assert.Throws<InvalidCastException>(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)));
+#pragma warning restore CA1305
       Assert.Throws<InvalidCastException>(() => ((IConvertible)UInt24.Zero).ToDateTime(provider: null));
     }
 
     [Test]
     public void TestToString()
     {
+#pragma warning disable CA1305
       Assert.AreEqual("0", UInt48.Zero.ToString());
       Assert.AreEqual("0000", UInt48.Zero.ToString("D4"));
       Assert.AreEqual("281474976710655", UInt48.MaxValue.ToString());
       Assert.AreEqual("FFFFFFFFFFFF", UInt48.MaxValue.ToString("X"));
+#pragma warning restore CA1305
     }
 
 #if SYSTEM_ISPANFORMATTABLE

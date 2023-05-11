@@ -23,6 +23,7 @@ public class MimeTypeStringExtensionsTests {
   [Category("obsolete")]
   public void MimeType_Parse_Tuple()
   {
+#pragma warning disable CA1305
     (var type, var subType) = MimeType.Parse("text/plain");
 
     Assert.AreEqual("text", type);
@@ -32,6 +33,7 @@ public class MimeTypeStringExtensionsTests {
     Assert.Throws<ArgumentException>(() => MimeType.Parse(string.Empty));
     Assert.Throws<ArgumentException>(() => MimeType.Parse("text/"));
     Assert.Throws<ArgumentException>(() => MimeType.Parse("/plain"));
+#pragma warning restore CA1305
   }
 #pragma warning restore 0618
 

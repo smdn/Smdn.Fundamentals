@@ -112,10 +112,14 @@ public static class Base64 {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
+#pragma warning disable CA2000
+    var transform = CreateToBase64Transform();
+#pragma warning restore CA2000
+
 #if SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
-    return new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write, leaveStreamOpen);
+    return new CryptoStream(stream, transform, CryptoStreamMode.Write, leaveStreamOpen);
 #else
-    var s = new CryptoStream(stream, CreateToBase64Transform(), CryptoStreamMode.Write);
+    var s = new CryptoStream(stream, transform, CryptoStreamMode.Write);
 
     if (leaveStreamOpen)
       return new NonClosingStream(s);
@@ -129,10 +133,14 @@ public static class Base64 {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
+#pragma warning disable CA2000
+    var transform = CreateFromBase64Transform(ignoreWhiteSpaces: true);
+#pragma warning restore CA2000
+
 #if SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
-    return new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read, leaveStreamOpen);
+    return new CryptoStream(stream, transform, CryptoStreamMode.Read, leaveStreamOpen);
 #else
-    var s = new CryptoStream(stream, CreateFromBase64Transform(ignoreWhiteSpaces: true), CryptoStreamMode.Read);
+    var s = new CryptoStream(stream, transform, CryptoStreamMode.Read);
 
     if (leaveStreamOpen)
       return new NonClosingStream(s);

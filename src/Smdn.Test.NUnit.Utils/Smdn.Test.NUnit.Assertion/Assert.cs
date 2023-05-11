@@ -28,10 +28,12 @@ public partial class Assert : global::NUnit.Framework.Assert {
 
       return ex.InnerException as TException;
     }
+#pragma warning disable CA1031
     catch (Exception ex) {
       IsInstanceOf<TException>(ex);
 
       return ex as TException;
     }
+#pragma warning restore CA1031
   }
 }

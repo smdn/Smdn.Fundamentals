@@ -4,7 +4,9 @@ using System.Text;
 
 namespace Smdn.Test.NUnit;
 
+#pragma warning disable CA1724
 public static class Encodings {
+#pragma warning restore CA1724
   public static Encoding Latin1 =>
 #if SYSTEM_TEXT_ENCODING_LATIN1
     Encoding.Latin1;

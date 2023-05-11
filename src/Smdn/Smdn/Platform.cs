@@ -47,9 +47,11 @@ public static class Platform {
           if (IsRunningOnUnix)
             kernelName = Shell.Execute("uname -srvom").Trim();
         }
+#pragma warning disable CA1031
         catch {
           // ignore exceptions
         }
+#pragma warning restore CA1031
 #endif
       }
 #pragma warning restore IDE0074
@@ -71,9 +73,11 @@ public static class Platform {
           if (IsRunningOnUnix)
             distributionName = Shell.Execute("lsb_release -ds").Trim();
         }
+#pragma warning disable CA1031
         catch {
           // ignore exceptions
         }
+#pragma warning restore CA1031
 #endif
       }
 #pragma warning restore IDE0074
@@ -109,9 +113,11 @@ public static class Platform {
             // TODO:
           }
         }
+#pragma warning disable CA1031
         catch {
           // ignore exceptions
         }
+#pragma warning restore CA1031
       }
 
       return processorName;

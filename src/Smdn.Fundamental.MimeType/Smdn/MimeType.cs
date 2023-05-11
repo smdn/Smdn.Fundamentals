@@ -103,7 +103,10 @@ public partial class MimeType {
     subType = SubType;
   }
 
-  public override int GetHashCode() => ToString().GetHashCode(); // TODO: use System.HashCode
+  public override int GetHashCode()
+#pragma warning disable CA1307
+    => ToString().GetHashCode(); // TODO: use System.HashCode
+#pragma warning restore CA1307
 
   public static explicit operator string?(MimeType? mimeType)
     => mimeType?.ToString();

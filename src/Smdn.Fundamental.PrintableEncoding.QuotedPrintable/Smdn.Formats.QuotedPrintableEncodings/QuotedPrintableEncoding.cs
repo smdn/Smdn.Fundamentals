@@ -119,10 +119,14 @@ public static class QuotedPrintableEncoding {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
+#pragma warning disable CA2000
+    var transform = new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding);
+#pragma warning restore CA2000
+
 #if SYSTEM_SECURITY_CRYPTOGRAPHY_CRYPTOSTREAM_CTOR_LEAVEOPEN
-    return new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read, leaveStreamOpen);
+    return new CryptoStream(stream, transform, CryptoStreamMode.Read, leaveStreamOpen);
 #else
-    var s = new CryptoStream(stream, new FromQuotedPrintableTransform(FromQuotedPrintableTransformMode.ContentTransferEncoding), CryptoStreamMode.Read);
+    var s = new CryptoStream(stream, transform, CryptoStreamMode.Read);
 
     if (leaveStreamOpen)
       return new NonClosingStream(s);

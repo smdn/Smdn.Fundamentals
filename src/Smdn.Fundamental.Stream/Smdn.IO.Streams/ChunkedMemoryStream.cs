@@ -14,10 +14,10 @@ public sealed class ChunkedMemoryStream : Stream {
   public abstract class Chunk : IDisposable {
     public abstract void Dispose();
 
-#pragma warning disable SA1401, CA1051
+#pragma warning disable SA1401, CA1051, CA2213
     public byte[] Data;
     internal Chunk Next = null;
-#pragma warning restore SA1401, CA1051
+#pragma warning restore SA1401, CA1051, CA2213
   }
 
   private sealed class DefaultChunk : Chunk {
@@ -268,7 +268,9 @@ public sealed class ChunkedMemoryStream : Stream {
 
     private readonly Allocator allocator;
     private Chunk firstChunk;
+#pragma warning disable CA2213
     private Chunk currentChunk;
+#pragma warning restore CA2213
 
     private int currentChunkOffset;
     private long currentChunkIndex = 0;

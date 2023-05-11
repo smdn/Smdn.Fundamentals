@@ -51,10 +51,10 @@ partial struct Uuid {
        *       backward compatibility is not an issue, SHA-1 is preferred.
        */
       hashAlgorithm = version switch {
-#pragma warning disable CA5350, CA5351
+#pragma warning disable CA2000, CA5350, CA5351
         UuidVersion.NameBasedMD5Hash => MD5.Create(),
         UuidVersion.NameBasedSHA1Hash => SHA1.Create(),
-#pragma warning restore CA5350, CA5351
+#pragma warning restore CA2000, CA5350, CA5351
         _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5"),
       };
 

@@ -229,6 +229,8 @@ public abstract class BinaryReaderBase : IDisposable {
       throw new ObjectDisposedException(GetType().FullName);
   }
 
+#pragma warning disable CA2213
   private Stream stream;
+#pragma warning restore CA2213
   private readonly bool leaveBaseStreamOpen;
 }

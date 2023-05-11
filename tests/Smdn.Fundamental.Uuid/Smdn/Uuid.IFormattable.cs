@@ -124,7 +124,9 @@ partial class UuidTests {
   [TestCase("D2")]
   [TestCase("x")]
   public void TestToString_InvalidFormat(string format)
+#pragma warning disable CA1305
     => Assert.Throws<FormatException>(() => Uuid.Nil.ToString(format));
+#pragma warning restore CA1305
 
   [TestCase("Q")]
   [TestCase("D2")]

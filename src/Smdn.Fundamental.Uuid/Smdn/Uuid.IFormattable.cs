@@ -56,6 +56,7 @@ partial struct Uuid :
     Failed,
   }
 
+#pragma warning disable CA1502
   private TryFormatResult TryFormatCore(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format)
   {
     charsWritten = default;
@@ -215,4 +216,5 @@ partial struct Uuid :
       return true;
     }
   }
+#pragma warning restore CA1502
 }

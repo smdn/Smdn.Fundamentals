@@ -155,11 +155,13 @@ static partial class MimeEncoding {
         throw new ArgumentNullException(nameof(foldingString));
     }
 
+#pragma warning disable CA2000
     (char encodingChar, ICryptoTransform tsform) = encoding switch {
       MimeEncodingMethod.Base64 => ('b', Base64.CreateToBase64Transform()),
       MimeEncodingMethod.QuotedPrintable => ('q', new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding)),
       _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding),
     };
+#pragma warning restore CA2000
 
     using var transform = tsform;
 

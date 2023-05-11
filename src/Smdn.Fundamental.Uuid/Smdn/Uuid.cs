@@ -86,7 +86,11 @@ public readonly partial struct Uuid {
 #endif
 
   /// <value>node;The spatially unique node identifier.</value>
-  public byte[] Node => new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 };
+#pragma warning disable CA1819
+  // TODO: ReadOnlySpan<byte>
+  public byte[] Node
+#pragma warning restore CA1819
+    => new[] { node.N0, node.N1, node.N2, node.N3, node.N4, node.N5 };
 
   /*
    * 4.1.4. Timestamp

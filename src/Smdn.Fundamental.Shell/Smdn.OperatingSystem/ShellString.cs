@@ -99,12 +99,15 @@ public class ShellString :
   public override int GetHashCode()
   {
     if (Raw == null)
-#pragma warning disable CA2201
+#pragma warning disable CA2201, CA1065
       // TODO: throw InvalidOperationException or etc instead
       throw new NullReferenceException();
-#pragma warning restore CA2201
+#pragma warning restore CA2201, CA1065
     else
+#pragma warning disable CA1307
+      // TODO: specify StringComparison
       return Raw.GetHashCode();
+#pragma warning restore CA1307
   }
 
   public static explicit operator string(ShellString str)
