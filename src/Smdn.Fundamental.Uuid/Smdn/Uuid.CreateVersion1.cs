@@ -28,12 +28,10 @@ partial struct Uuid {
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
   private static Node GetNode()
   {
-    var nic = Array.Find(NetworkInterface.GetAllNetworkInterfaces(), delegate(NetworkInterface networkInterface) {
-      return networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback;
-    });
-
-    if (nic == null)
-      throw new NotSupportedException("network interface not found");
+    var nic = Array.Find(
+      NetworkInterface.GetAllNetworkInterfaces(),
+      static networkInterface => networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback
+    ) ?? throw new NotSupportedException("network interface not found");
 
     var physicalAddress = nic.GetPhysicalAddress().GetAddressBytes().AsSpan();
 
