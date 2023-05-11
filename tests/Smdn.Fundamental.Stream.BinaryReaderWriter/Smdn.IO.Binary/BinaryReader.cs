@@ -74,7 +74,7 @@ namespace Smdn.IO.Binary {
           reader.Close();
         }
         else {
-          (reader as IDisposable).Dispose();
+          reader.Dispose();
         }
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));

@@ -75,7 +75,7 @@ namespace Smdn.IO.Binary {
           writer.Close();
         }
         else {
-          (writer as IDisposable).Dispose();
+          writer.Dispose();
         }
 
         Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
