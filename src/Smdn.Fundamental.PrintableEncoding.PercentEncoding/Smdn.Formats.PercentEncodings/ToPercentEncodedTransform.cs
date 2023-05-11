@@ -76,11 +76,14 @@ public sealed class ToPercentEncodedTransform : ICryptoTransform {
   }
 
   public void Clear()
+    => Dispose();
+
+  public void Dispose()
   {
     disposed = true;
-  }
 
-  void IDisposable.Dispose() => Clear();
+    GC.SuppressFinalize(this);
+  }
 
   public int TransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
@@ -162,7 +165,7 @@ public sealed class ToPercentEncodedTransform : ICryptoTransform {
     return outputBuffer;
   }
 
-  private bool disposed = false;
+  private bool disposed;
   private readonly byte[] escapeOctets;
   private readonly bool escapeSpaceToPlus;
 }

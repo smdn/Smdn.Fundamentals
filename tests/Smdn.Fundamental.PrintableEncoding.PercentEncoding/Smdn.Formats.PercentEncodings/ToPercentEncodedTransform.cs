@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+using System;
+
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -9,6 +11,34 @@ namespace Smdn.Formats.PercentEncodings;
 
 [TestFixture]
 public class ToPercentEncodedTransformTests {
+  [Test]
+  public void Clear()
+  {
+    using var t = new ToPercentEncodedTransform(ToPercentEncodedTransformMode.UriEscapeUriString);
+
+    t.Clear();
+
+    var input = new byte[t.InputBlockSize];
+    var output = new byte[t.OutputBlockSize];
+
+    Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+    Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+  }
+
+  [Test]
+  public void Dispose()
+  {
+    using var t = new ToPercentEncodedTransform(ToPercentEncodedTransformMode.UriEscapeUriString);
+
+    t.Dispose();
+
+    var input = new byte[t.InputBlockSize];
+    var output = new byte[t.OutputBlockSize];
+
+    Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+    Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+  }
+
   [TestCaseSource(
     typeof(ICryptoTransformTestCaseSources),
     nameof(ICryptoTransformTestCaseSources.YieldTestCases_TransformBlock_InvalidArguments)
