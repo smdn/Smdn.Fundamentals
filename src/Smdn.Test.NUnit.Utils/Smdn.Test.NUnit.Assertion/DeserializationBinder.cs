@@ -56,9 +56,7 @@ internal sealed class DeserializationBinder : SerializationBinder {
     // try to get type
     var typeToDeserialize =
       Type.GetType(typeName, throwOnError: false) ??
-      GetTypeFromLoadedAssemblies(typeName);
-
-    if (typeToDeserialize is null)
+      GetTypeFromLoadedAssemblies(typeName) ??
       throw new InvalidOperationException($"could not bind to type: {typeName}, {assemblyName}");
 
     if (string.Equals(assemblyName, typeToDeserialize.Assembly.FullName, StringComparison.Ordinal))
