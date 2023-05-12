@@ -38,6 +38,12 @@ on:
         type: string
         default: "src/"
 
+      path_proj_install_project_assets:
+        description: "The path to the .NET project file that will install the project assets and/or the dependencies required for the build."
+        required: false
+        type: string
+        default: "eng/InstallProjectAssets.proj"
+
       timeout_minutes_test_job:
         description: "The timeout minutes for each test jobs."
         required: false
@@ -277,12 +283,26 @@ jobs:
         # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
         dotnet nuget list source
 
-        # note: restore the test target project first due to dependencies such as build assets (Smdn.MSBuild.ProjectAssets.*) have to be installed and restored
-        dotnet restore `
-          --nologo `
-          --no-dependencies `
-          ${{ inputs.extra_options_common }} `
-          ${{ matrix.project.PathToTestTargetProject }}
+        $path_to_proj_install_assets = [System.IO.Path]::Join(
+          '${{ github.workspace }}',
+          '${{ inputs.path_proj_install_project_assets }}'
+        )
+
+        # install project assets and/or dependencies first
+        if (Test-Path -Path $path_to_proj_install_assets -PathType Leaf) {
+          dotnet restore `
+            --nologo `
+            ${{ inputs.extra_options_common }} `
+            $path_to_proj_install_assets
+        }
+        else {
+          # note: restore the test target project first due to dependencies such as build assets (Smdn.MSBuild.ProjectAssets.*) have to be installed and restored
+          dotnet restore `
+            --nologo `
+            --no-dependencies `
+            ${{ inputs.extra_options_common }} `
+            ${{ matrix.project.PathToTestTargetProject }}
+        }
 
         # then restore the test project and its dependencies
         dotnet restore `
