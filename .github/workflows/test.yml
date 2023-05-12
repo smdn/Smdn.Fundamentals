@@ -225,14 +225,14 @@ jobs:
           # required SDK version is not installed
           "::notice::.NET SDK version: installed ${installed_version}, required ${required_version}"
 
-          "install=${required_version}" >> $Env:GITHUB_OUTPUT
+          "install-dotnet-sdk-version=${required_version}" >> $Env:GITHUB_OUTPUT
         }
 
-    - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install }}
-      if: ${{ steps.dotnet-sdk-version.outputs.install != '' }}
+    - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}
+      if: ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version != '' }}
       uses: actions/setup-dotnet@v3.0.0
       with:
-        dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install }}'
+        dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}'
 
     - name: Checkout repository
       uses: actions/checkout@v3.5.2
