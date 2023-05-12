@@ -222,17 +222,19 @@ jobs:
         git rm --ignore-unmatch '${{ inputs.path_prefix_apilist }}${{ steps.package-info.outputs.package_id }}/*.apilist.cs'
 
     - name: Set NUGET_PACKAGES
+      id: set-nuget-packages
       shell: pwsh
       run: |
-        $dir_nuget_packages =[System.IO.Path]::Combine(
+        $path_to_nuget_packages =[System.IO.Path]::Combine(
           '${{ github.workspace }}',
           '.nuget',
           'packages'
         )
 
-        "::debug::NUGET_PACKAGES=${dir_nuget_packages}"
+        "::debug::NUGET_PACKAGES=${path_to_nuget_packages}"
 
-        "NUGET_PACKAGES=${dir_nuget_packages}" >> $Env:GITHUB_ENV
+        "NUGET_PACKAGES=${path_to_nuget_packages}" >> $Env:GITHUB_ENV
+        "path-to-nuget-packages=${path_to_nuget_packages}" >> $Env:GITHUB_OUTPUT
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
@@ -240,7 +242,7 @@ jobs:
       env:
         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
       with:
-        path: ${{ env.NUGET_PACKAGES }}
+        path: ${{ steps.set-nuget-packages.outputs.path-to-nuget-packages }}
         key: generate-release-NuGetPackages-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           generate-release-NuGetPackages-${{ runner.os }}-

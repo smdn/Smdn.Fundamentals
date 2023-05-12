@@ -17,23 +17,25 @@ jobs:
 
     steps:
     - name: Set NUGET_PACKAGES
+      id: set-nuget-packages
       shell: pwsh
       run: |
-        $dir_nuget_packages =[System.IO.Path]::Combine(
+        $path_to_nuget_packages =[System.IO.Path]::Combine(
           '${{ github.workspace }}',
           '.nuget',
           'packages'
         )
 
-        "::notice::NUGET_PACKAGES=${dir_nuget_packages}"
+        "::notice::NUGET_PACKAGES=${path_to_nuget_packages}"
 
-        "NUGET_PACKAGES=${dir_nuget_packages}" >> $Env:GITHUB_ENV
+        "NUGET_PACKAGES=${path_to_nuget_packages}" >> $Env:GITHUB_ENV
+        "path-to-nuget-packages=${path_to_nuget_packages}" >> $Env:GITHUB_OUTPUT
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
       uses: actions/cache@v3.3.1
       with:
-        path: ${{ env.NUGET_PACKAGES }}
+        path: ${{ steps.set-nuget-packages.outputs.path-to-nuget-packages }}
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
         restore-keys: |
           ${{ runner.os }}-nuget-
