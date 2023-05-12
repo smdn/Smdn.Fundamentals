@@ -31,7 +31,7 @@ jobs:
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
-      uses: actions/cache@v3.0.11
+      uses: actions/cache@v3.3.1
       with:
         path: ${{ env.NUGET_PACKAGES }}
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}

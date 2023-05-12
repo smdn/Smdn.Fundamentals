@@ -252,7 +252,7 @@ jobs:
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
-      uses: actions/cache@v3.2.3
+      uses: actions/cache@v3.3.1
       env:
         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
       with:
