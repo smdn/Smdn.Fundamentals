@@ -224,7 +224,7 @@ jobs:
 
     - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install }}
       if: ${{ steps.dotnet-sdk-version.outputs.install != '' }}
-      uses: actions/setup-dotnet@v2.0.0
+      uses: actions/setup-dotnet@v3.0.0
       with:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install }}'
 
