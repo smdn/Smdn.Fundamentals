@@ -43,7 +43,13 @@ namespace Smdn.Security.Cryptography {
     {
       using var t = Base64.CreateToBase64Transform();
 
-      var clear = t.GetType().GetMethod("Clear", BindingFlags.Public | BindingFlags.Instance, Type.EmptyTypes);
+      var clear = t.GetType().GetMethod(
+        "Clear",
+        bindingAttr: BindingFlags.Public | BindingFlags.Instance,
+        binder: null,
+        types: Type.EmptyTypes,
+        modifiers: null
+      );
 
       if (clear is null) {
         Assert.Ignore("cannot test Clear()");
