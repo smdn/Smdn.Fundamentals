@@ -367,7 +367,7 @@ jobs:
 
     - name: Upload ${{ steps.pack.outputs.artifact_name_nupkg }}
       if: ${{ steps.package-info.outputs.package_can_release == 'True' }}
-      uses: actions/upload-artifact@v3.1.0
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: ${{ steps.pack.outputs.artifact_name_nupkg }}
         path: ${{ steps.pack.outputs.path_nupkg }}
