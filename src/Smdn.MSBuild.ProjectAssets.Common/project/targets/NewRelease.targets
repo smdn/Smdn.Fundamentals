@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
       Properties="Configuration=Release"
     />
 
+    <!-- check whether the current version has already released -->
     <Exec
       Command="$(_InvokeProjectAssetsCommonPowerShellScript)QueryNuGetPackageReleased.ps1 -PackageId &quot;$(PackageId)&quot; -PackageVersion &quot;$(PackageVersion)&quot;"
       IgnoreExitCode="true"
@@ -44,6 +45,7 @@ SPDX-License-Identifier: MIT
       File="$(MSBuildProjectFullPath)"
     />
 
+    <!-- create release tag -->
     <Exec
       Command="git tag --message=&quot;new release target tag for $(_PackageIdWithVersion)&quot; $(_ReleaseTargetTagName) $(RepositoryCommit)"
       EchoOff="false"
