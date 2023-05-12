@@ -91,9 +91,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3.1.0
+      uses: actions/checkout@v3.5.2
       with:
         token: ${{ secrets.token_repo }}
+        fetch-depth: 1
 
     - name: Determine OS list which run the tests on
       id: runs-on-os-list
@@ -228,9 +229,10 @@ jobs:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install }}'
 
     - name: Checkout repository
-      uses: actions/checkout@v3.1.0
+      uses: actions/checkout@v3.5.2
       with:
         token: ${{ secrets.token_repo }}
+        fetch-depth: 1
 
     - name: Set NUGET_PACKAGES
       shell: pwsh
