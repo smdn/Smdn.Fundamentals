@@ -36,9 +36,7 @@ jobs:
       uses: actions/cache@v3.3.1
       with:
         path: ${{ steps.set-nuget-packages.outputs.path-to-nuget-packages }}
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
+        key: test-NuGetPackages-${{ runner.os }}
 
     - name: List NuGet packages
       run: |

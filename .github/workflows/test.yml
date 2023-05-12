@@ -249,8 +249,15 @@ jobs:
           "::notice::NUGET_PACKAGES=${path_to_nuget_packages}"
         }
 
+        $cache_key_suffix = [System.String]::Concat(
+          $([System.Globalization.ISOWeek]::GetYear([System.DateTime]::Now)),
+          '-W',
+          $([System.Globalization.ISOWeek]::GetWeekOfYear([System.DateTime]::Now))
+        )
+
         "NUGET_PACKAGES=${path_to_nuget_packages}" >> $Env:GITHUB_ENV
         "path-to-nuget-packages=${path_to_nuget_packages}" >> $Env:GITHUB_OUTPUT
+        "cache-key-suffix=${cache_key_suffix}" >> $Env:GITHUB_OUTPUT
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
@@ -259,9 +266,8 @@ jobs:
         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
       with:
         path: ${{ steps.set-nuget-packages.outputs.path-to-nuget-packages }}
-        key: test-NuGetPackages-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          test-NuGetPackages-${{ runner.os }}-
+        key: test-NuGetPackages-${{ matrix.os }}-${{ steps.set-nuget-packages.outputs.cache-key-suffix }}
+        restore-keys: test-NuGetPackages-${{ matrix.os }}
 
     - name: Restore dependencies of ${{ matrix.project.Name }}
       shell: pwsh

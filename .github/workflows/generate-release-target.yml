@@ -233,8 +233,15 @@ jobs:
 
         "::debug::NUGET_PACKAGES=${path_to_nuget_packages}"
 
+        $cache_key_suffix = [System.String]::Concat(
+          $([System.Globalization.ISOWeek]::GetYear([System.DateTime]::Now)),
+          '-W',
+          $([System.Globalization.ISOWeek]::GetWeekOfYear([System.DateTime]::Now))
+        )
+
         "NUGET_PACKAGES=${path_to_nuget_packages}" >> $Env:GITHUB_ENV
         "path-to-nuget-packages=${path_to_nuget_packages}" >> $Env:GITHUB_OUTPUT
+        "cache-key-suffix=${cache_key_suffix}" >> $Env:GITHUB_OUTPUT
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
@@ -243,9 +250,8 @@ jobs:
         SEGMENT_DOWNLOAD_TIMEOUT_MINS: 5
       with:
         path: ${{ steps.set-nuget-packages.outputs.path-to-nuget-packages }}
-        key: generate-release-NuGetPackages-${{ runner.os }}-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          generate-release-NuGetPackages-${{ runner.os }}-
+        key: generate-release-NuGetPackages-${{ steps.set-nuget-packages.outputs.cache-key-suffix }}
+        restore-keys: generate-release-NuGetPackages
 
     #- name: Setup .NET 6.0
     #  uses: actions/setup-dotnet@v1
