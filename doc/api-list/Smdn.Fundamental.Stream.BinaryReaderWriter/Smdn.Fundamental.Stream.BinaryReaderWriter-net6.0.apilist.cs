@@ -2,14 +2,14 @@
 //   Name: Smdn.Fundamental.Stream.BinaryReaderWriter
 //   AssemblyVersion: 3.0.3.0
 //   InformationalVersion: 3.0.3+50cd3a5ddb6026e07a1bf790427b237a96c07bb8
-//   TargetFramework: .NETFramework,Version=v4.6
+//   TargetFramework: .NETCoreApp,Version=v6.0
 //   Configuration: Release
 //   Referenced assemblies:
 //     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
 //     Smdn.Fundamental.FourCC, Version=3.0.3.0, Culture=neutral
 //     Smdn.Fundamental.Stream, Version=3.0.3.0, Culture=neutral
 //     Smdn.Fundamental.UInt24n, Version=3.0.4.0, Culture=neutral
-//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Runtime, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
 using System.IO;
