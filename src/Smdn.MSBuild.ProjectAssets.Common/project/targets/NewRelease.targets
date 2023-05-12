@@ -19,11 +19,23 @@ SPDX-License-Identifier: MIT
     </PropertyGroup>
 
     <!-- Rebuild and Pack to verify that the package can be created -->
-    <MSBuild
-      Projects="$(MSBuildProjectFullPath)"
-      Targets="Clean;Pack"
-      Properties="Configuration=Release"
+    <!-- Packing by the MSBuild task seems problematic, so use the dotnet command instead. -->
+    <Exec
+      Command="dotnet clean --nologo --verbosity minimal -c Release $(MSBuildProjectFullPath)"
+      ConsoleToMSBuild="false"
+      EchoOff="false"
+      StandardOutputImportance="High"
     />
+    <Exec
+      Command="dotnet pack --nologo --verbosity minimal -c Release $(MSBuildProjectFullPath)"
+      ConsoleToMSBuild="false"
+      EchoOff="false"
+      StandardOutputImportance="High"
+    >
+      <Output TaskParameter="ExitCode" PropertyName="_PackReleaseExitCode"/>
+    </Exec>
+
+    <Error Text="failed to pack $(MSBuildProjectName)" Condition=" '$(_PackReleaseExitCode)' != '0' " />
 
     <!-- check whether the current version has already released -->
     <Exec
