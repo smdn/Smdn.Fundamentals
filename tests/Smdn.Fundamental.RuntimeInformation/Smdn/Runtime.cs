@@ -297,7 +297,7 @@ public class RuntimeTests {
   public void SupportsIanaTimeZoneName_UseNls_RuntimeConfiguration()
   {
     if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-      Assert.Ignore();
+      Assert.Ignore("This test case is intended only for Windows.");
       return;
     }
 
@@ -316,7 +316,7 @@ public class RuntimeTests {
   public void SupportsIanaTimeZoneName_UseNls_EnvironmentVariable(string value)
   {
     if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-      Assert.Ignore();
+      Assert.Ignore("This test case is intended only for Windows.");
       return;
     }
 
