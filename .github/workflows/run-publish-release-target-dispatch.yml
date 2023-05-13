@@ -3,6 +3,11 @@
 
 name: Publish release target manual dispatcher
 
+permissions:
+  contents: write
+  packages: write
+  pull-requests: read
+
 on:
   workflow_dispatch:
     inputs:
