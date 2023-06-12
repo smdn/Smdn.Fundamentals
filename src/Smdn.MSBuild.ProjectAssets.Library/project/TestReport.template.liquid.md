@@ -137,7 +137,7 @@ SPDX-License-Identifier: MIT
 {%-     endfor -%}</code></pre></dd>
 {%-   endif -%}
 {%-   if messages_warning.size != 0 -%}
-    <dt>⚠️ Warnings</summary>
+    <dt>⚠️ Warnings</dt>
     <dd><pre><code>{%- for msg in messages_warning -%}[{{ msg.level }}]{{ msg.message | escape }}
 {%-     endfor -%}</code></pre></dd>
 {%-   endif -%}
