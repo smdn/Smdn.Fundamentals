@@ -239,15 +239,33 @@ SPDX-License-Identifier: MIT
           {%-   else -%}
           {%-     assign result_has_error_stack_trace = false -%}
           {%-   endif -%}
-          {%-   if result_has_error_message or result_has_error_stack_trace -%}
+          {%-   if result.messages.size == 0 -%}
+          {%-     assign result_has_messages = false -%}
+          {%-   else -%}
+          {%-     assign result_has_messages = true -%}
+          {%-   endif -%}
+          {%-   if result_has_error_message or result_has_error_stack_trace or result_has_messages -%}
           <dl>
           {%-     if result_has_error_message -%}
-            <dt>Message:</dt>
+            <dt>Error message:</dt>
             <dd><pre><code>{{ result.error_message | escape }}</code></pre></dd>
           {%-     endif -%}
           {%-     if result_has_error_stack_trace -%}
             <dt>Stack trace:</dt>
             <dd><pre><code>{{ result.error_stack_trace | escape }}</code></pre></dd>
+          {%-     endif -%}
+          {%-     if result_has_messages -%}
+          {%-       for message in result.messages -%}
+          {%-         if message.text != result.error_message -%}
+            <dt>Message <code>{{ message.category | escape }}</code>:</dt>
+            <dd>
+              <details{{ result_details_open_attr }}>
+                <summary>{{ message.category | escape }}</summary>
+                <pre><code>{{ message.text | escape }}</code></pre>
+              </details>
+            </dd>
+          {%-         endif -%}
+          {%-       endfor -%}
           {%-     endif -%}
           {%-   endif -%}
           </dl>
