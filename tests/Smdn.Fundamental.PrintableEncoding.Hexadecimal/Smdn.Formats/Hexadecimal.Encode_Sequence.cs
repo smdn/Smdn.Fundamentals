@@ -127,11 +127,11 @@ partial class HexadecimalTests {
     var destinationChars = new byte[18];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(input.AsSpan(), destinationBytes.AsSpan(1, 16), out var bytesWritten));
-    Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+    Assert.AreEqual(16, bytesWritten, nameof(bytesWritten));
     CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationBytes));
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(input.AsSpan(), destinationChars.AsSpan(1, 16), out var charsWritten));
-    Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+    Assert.AreEqual(16, charsWritten, nameof(charsWritten));
     CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationChars));
   }
 #endif
@@ -144,11 +144,11 @@ partial class HexadecimalTests {
     var destinationChars = new byte[18];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationBytes, 1, 16), out var bytesWritten));
-    Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+    Assert.AreEqual(16, bytesWritten, nameof(bytesWritten));
     CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationBytes));
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationChars, 1, 16), out var charsWritten));
-    Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+    Assert.AreEqual(16, charsWritten, nameof(charsWritten));
     CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x00 }, nameof(destinationChars));
   }
 
@@ -161,11 +161,11 @@ partial class HexadecimalTests {
     var destinationChars = new byte[18];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(input.AsSpan(), destinationBytes.AsSpan(1, 16), out var bytesWritten));
-    Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+    Assert.AreEqual(16, bytesWritten, nameof(bytesWritten));
     CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationBytes));
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(input.AsSpan(), destinationChars.AsSpan(1, 16), out var charsWritten));
-    Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+    Assert.AreEqual(16, charsWritten, nameof(charsWritten));
     CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationChars));
   }
 #endif
@@ -178,11 +178,11 @@ partial class HexadecimalTests {
     var destinationChars = new byte[18];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationBytes, 1, 16), out var bytesWritten));
-    Assert.AreEqual(bytesWritten, 16, nameof(bytesWritten));
+    Assert.AreEqual(16, bytesWritten, nameof(bytesWritten));
     CollectionAssert.AreEqual(destinationBytes, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationBytes));
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(input), new ArraySegment<byte>(destinationChars, 1, 16), out var charsWritten));
-    Assert.AreEqual(charsWritten, 16, nameof(charsWritten));
+    Assert.AreEqual(16, charsWritten, nameof(charsWritten));
     CollectionAssert.AreEqual(destinationChars, new byte[] { 0x00, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0x00 }, nameof(destinationChars));
   }
 }

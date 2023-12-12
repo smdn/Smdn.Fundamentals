@@ -89,19 +89,19 @@ partial class HexadecimalTests {
     var dest = new byte[4];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0x01, dest.AsSpan(0), out var bytesEncoded), $"#0 {nameof(Hexadecimal.TryEncodeUpperCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#0 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#0 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x30, 0x31, 0x00, 0x00}, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0x23, dest.AsSpan(1), out bytesEncoded), $"#1 {nameof(Hexadecimal.TryEncodeUpperCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#1 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#1 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x32, 0x33, 0x00}, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0xAB, dest.AsSpan(2), out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeUpperCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#2 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x41, 0x42}, $"#2 {dest}");
   }
 #endif
@@ -112,19 +112,19 @@ partial class HexadecimalTests {
     var dest = new byte[4];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0x01, dest, 0 , out var bytesEncoded), $"#0 {nameof(Hexadecimal.TryEncodeUpperCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#0 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#0 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x30, 0x31, 0x00, 0x00}, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0x23, dest, 1, out bytesEncoded), $"#1 {nameof(Hexadecimal.TryEncodeUpperCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#1 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#1 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x32, 0x33, 0x00}, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(0xAB, dest, 2, out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeUpperCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#2 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x41, 0x42}, $"#2 {dest}");
   }
 
@@ -135,19 +135,19 @@ partial class HexadecimalTests {
     var dest = new byte[4];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0x01, dest.AsSpan(0), out var bytesEncoded), $"#0 {nameof(Hexadecimal.TryEncodeLowerCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#0 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#0 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x30, 0x31, 0x00, 0x00}, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0x23, dest.AsSpan(1), out bytesEncoded), $"#1 {nameof(Hexadecimal.TryEncodeLowerCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#1 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#1 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x32, 0x33, 0x00}, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0xAB, dest.AsSpan(2), out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeLowerCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#2 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x61, 0x62}, $"#2 {dest}");
   }
 #endif
@@ -158,19 +158,19 @@ partial class HexadecimalTests {
     var dest = new byte[4];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0x01, dest, 0, out var bytesEncoded), $"#0 {nameof(Hexadecimal.TryEncodeLowerCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#0 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#0 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x30, 0x31, 0x00, 0x00}, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0x23, dest, 1, out bytesEncoded), $"#1 {nameof(Hexadecimal.TryEncodeLowerCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#1 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#1 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x32, 0x33, 0x00}, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(0xAB, dest, 2, out bytesEncoded), $"#2 {nameof(Hexadecimal.TryEncodeLowerCase)}");
-    Assert.AreEqual(bytesEncoded, 2, $"#2 {nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"#2 {nameof(bytesEncoded)}");
     CollectionAssert.AreEqual(dest, new byte[] {0x00, 0x00, 0x61, 0x62}, $"#2 {dest}");
   }
 
@@ -188,14 +188,14 @@ partial class HexadecimalTests {
     var bytes = new byte[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(data, bytes.AsSpan(), out var bytesEncoded), $"{nameof(Hexadecimal.TryEncodeUpperCase)} Span<byte>");
-    Assert.AreEqual(bytesEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(bytes[0], (byte)expectedHigh, "bytes[0]");
     Assert.AreEqual(bytes[1], (byte)expectedLow, "bytes[1]");
 
     var chars = new char[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(data, chars.AsSpan(), out var charsEncoded), $"{nameof(Hexadecimal.TryEncodeUpperCase)} Span<char>");
-    Assert.AreEqual(charsEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, charsEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(chars[0], expectedHigh, "chars[0]");
     Assert.AreEqual(chars[1], expectedLow, "chars[1]");
   }
@@ -214,14 +214,14 @@ partial class HexadecimalTests {
     var bytes = new byte[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(data, bytes, 0, out var bytesEncoded), $"{nameof(Hexadecimal.TryEncodeUpperCase)} Span<byte>");
-    Assert.AreEqual(bytesEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(bytes[0], (byte)expectedHigh, "bytes[0]");
     Assert.AreEqual(bytes[1], (byte)expectedLow, "bytes[1]");
 
     var chars = new char[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeUpperCase(data, chars, 0, out var charsEncoded), $"{nameof(Hexadecimal.TryEncodeUpperCase)} Span<char>");
-    Assert.AreEqual(charsEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, charsEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(chars[0], expectedHigh, "chars[0]");
     Assert.AreEqual(chars[1], expectedLow, "chars[1]");
   }
@@ -240,14 +240,14 @@ partial class HexadecimalTests {
     var bytes = new byte[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(data, bytes.AsSpan(), out var bytesEncoded), $"{nameof(Hexadecimal.TryEncodeLowerCase)} Span<byte>");
-    Assert.AreEqual(bytesEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(bytes[0], (byte)expectedHigh, "bytes[0]");
     Assert.AreEqual(bytes[1], (byte)expectedLow, "bytes[1]");
 
     var chars = new char[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(data, chars.AsSpan(), out var charsEncoded), $"{nameof(Hexadecimal.TryEncodeLowerCase)} Span<char>");
-    Assert.AreEqual(charsEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, charsEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(chars[0], expectedHigh, "chars[0]");
     Assert.AreEqual(chars[1], expectedLow, "chars[1]");
   }
@@ -266,14 +266,14 @@ partial class HexadecimalTests {
     var bytes = new byte[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(data, bytes, 0, out var bytesEncoded), $"{nameof(Hexadecimal.TryEncodeLowerCase)} Span<byte>");
-    Assert.AreEqual(bytesEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, bytesEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(bytes[0], (byte)expectedHigh, "bytes[0]");
     Assert.AreEqual(bytes[1], (byte)expectedLow, "bytes[1]");
 
     var chars = new char[2];
 
     Assert.IsTrue(Hexadecimal.TryEncodeLowerCase(data, chars, 0, out var charsEncoded), $"{nameof(Hexadecimal.TryEncodeLowerCase)} Span<char>");
-    Assert.AreEqual(charsEncoded, 2, $"{nameof(bytesEncoded)}");
+    Assert.AreEqual(2, charsEncoded, $"{nameof(bytesEncoded)}");
     Assert.AreEqual(chars[0], expectedHigh, "chars[0]");
     Assert.AreEqual(chars[1], expectedLow, "chars[1]");
   }

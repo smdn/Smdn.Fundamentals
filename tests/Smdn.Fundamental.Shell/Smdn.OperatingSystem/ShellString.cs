@@ -64,8 +64,8 @@ namespace Smdn.OperatingSystem {
 
         var s2 = new ShellString("%Smdn.Tests.TestValue1%");
 
-        Assert.AreEqual(s2.Raw, "%Smdn.Tests.TestValue1%");
-        Assert.AreEqual(s2.Expanded, "foo");
+        Assert.AreEqual("%Smdn.Tests.TestValue1%", s2.Raw);
+        Assert.AreEqual("foo", s2.Expanded);
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
@@ -164,7 +164,7 @@ namespace Smdn.OperatingSystem {
 
         var str = new ShellString("%Smdn.Tests.TestValue1%");
 
-        Assert.AreEqual(str.ToString(), "%Smdn.Tests.TestValue1%");
+        Assert.AreEqual("%Smdn.Tests.TestValue1%", str.ToString());
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);

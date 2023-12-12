@@ -243,7 +243,7 @@ public class MimeEncodingTests {
     );
 
     Assert.IsTrue(called, "called");
-    Assert.AreEqual(ret, "foobazbar");
+    Assert.AreEqual("foobazbar", ret);
 
     Assert.AreEqual(
       "<alternative text>",
@@ -365,7 +365,7 @@ public class MimeEncodingTests {
       );
     });
 
-    Assert.AreEqual(ret, "foobazbar");
+    Assert.AreEqual("foobazbar", ret);
     Assert.AreEqual(MimeEncodingMethod.QEncoding, encoding);
     Assert.AreEqual(Encoding.UTF8, charset);
   }

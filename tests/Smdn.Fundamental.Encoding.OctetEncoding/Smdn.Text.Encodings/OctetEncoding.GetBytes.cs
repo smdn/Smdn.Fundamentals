@@ -295,7 +295,7 @@ partial class OctetEncodingTests {
     var buffer = new byte[0x10];
     var length = CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetBytes(" aA\u0080あ😩💥?".AsSpan(), buffer.AsSpan());
 
-    Assert.AreEqual(length, 10);
+    Assert.AreEqual(10, length, nameof(length));
     CollectionAssert.AreEqual(
       new byte[] { (byte)' ', (byte)'a', (byte)'A', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'?' },
       buffer.Take(length).ToArray()
