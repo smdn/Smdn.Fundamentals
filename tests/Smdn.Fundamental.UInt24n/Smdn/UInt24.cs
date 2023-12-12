@@ -145,7 +145,7 @@ namespace Smdn {
           Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -172,7 +172,7 @@ namespace Smdn {
           Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -202,7 +202,7 @@ namespace Smdn {
           Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -229,7 +229,7 @@ namespace Smdn {
           Assert.IsTrue(test.ExpectedResult == (short)test.Value);
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -260,7 +260,7 @@ namespace Smdn {
           Assert.IsTrue(test.ExpectedResult == (ushort)test.Value);
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 

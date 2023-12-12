@@ -393,7 +393,7 @@ namespace Smdn.IO.Binary {
           !.Invoke(writer, new[] { value });
       }
       catch (MissingMethodException) {
-        Assert.Fail("invocation failed: type = {0}", value.GetType().FullName);
+        Assert.Fail($"invocation failed: type = {value.GetType().FullName}");
       }
 
       Assert.AreEqual(expectedPosition, writer.BaseStream.Position);

@@ -251,7 +251,7 @@ namespace Smdn.IO.Streams.Caching {
               Assert.AreEqual(pair[index][1], stream.Seek(pair[index][0], SeekOrigin.Current), "seeked position {0}", index);
             }
             catch (IOException) {
-              Assert.Fail("IOException thrown while seeking ({0})", index);
+              Assert.Fail($"IOException thrown while seeking ({index})");
             }
 
             Assert.AreEqual(pair[index][1], stream.Position);

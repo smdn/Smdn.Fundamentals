@@ -48,7 +48,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         Assert.AreEqual(text, unquoted, "with " + encoding.EncodingName);
       }
       catch (FormatException ex) {
-        Assert.Fail("failed encoding:{0} text:{1} exception:{2}", encoding.EncodingName, text, ex);
+        Assert.Fail($"failed encoding:{encoding.EncodingName} text:{text} exception:{ex}");
       }
     }
 
