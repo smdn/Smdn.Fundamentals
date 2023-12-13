@@ -23,7 +23,7 @@ public class MethodBaseExtensionsTests {
   [TestCase(typeof(C1), nameof(C1.M4), new[] { typeof(int), typeof(int) })]
   [TestCase(typeof(C1), nameof(C1.M5), new[] { typeof(int), typeof(int), typeof(int) })]
   public void GetSignatureTypes(Type type, string methodName, Type[] expected)
-    => CollectionAssert.AreEqual(expected, type.GetMethod(methodName)!.GetSignatureTypes());
+    => Assert.That(type.GetMethod(methodName)!.GetSignatureTypes(), Is.EqualTo(expected).AsCollection);
 
   [Test]
   public void GetSignatureTypes_ArgumentNull()
@@ -89,7 +89,7 @@ public class MethodBaseExtensionsTests {
     ).First() as MethodBase;
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
-    Assert.AreEqual(expectedMethod, method!.FindExplicitInterfaceMethod());
+    Assert.That(method!.FindExplicitInterfaceMethod(), Is.EqualTo(expectedMethod));
   }
 
   [Test]
@@ -153,13 +153,13 @@ public class MethodBaseExtensionsTests {
     ).First() as MethodBase;
     var expectedMethod = expectedInterface?.GetMethod(expectedMethodName);
 
-    Assert.AreEqual(expectedResult, method!.TryFindExplicitInterfaceMethod(out var actualMethod), "result");
-    Assert.AreEqual(expectedMethod, actualMethod, "actual method");
+    Assert.That(method!.TryFindExplicitInterfaceMethod(out var actualMethod), Is.EqualTo(expectedResult), "result");
+    Assert.That(actualMethod, Is.EqualTo(expectedMethod), "actual method");
   }
 
   [Test]
   public void TryFindExplicitInterfaceMethod_ArgumentNull()
-    => Assert.DoesNotThrow(() => Assert.IsFalse(((MethodBase)null!).TryFindExplicitInterfaceMethod(out _)));
+    => Assert.DoesNotThrow(() => Assert.That(((MethodBase)null!).TryFindExplicitInterfaceMethod(out _), Is.False));
 
   [TestCase(typeof(C2), ".ctor", false)]
   [TestCase(typeof(C2), ".cctor", false)]
@@ -205,7 +205,7 @@ public class MethodBaseExtensionsTests {
       BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
     ).First() as MethodBase;;
 
-    Assert.AreEqual(expected, method!.IsExplicitlyImplemented());
+    Assert.That(method!.IsExplicitlyImplemented(), Is.EqualTo(expected));
   }
 
   [Test]
@@ -235,7 +235,7 @@ public class MethodBaseExtensionsTests {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
     var explicitInterfaceMethod = method!.FindExplicitInterfaceMethod(findOnlyPublicInterfaces: true);
 
-    Assert.AreEqual(expectedMethodName, explicitInterfaceMethod?.Name, methodName);
+    Assert.That(explicitInterfaceMethod?.Name, Is.EqualTo(expectedMethodName), methodName);
   }
 
   [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor)]
@@ -322,7 +322,7 @@ public class MethodBaseExtensionsTests {
 
         var expected = method!.GetCustomAttribute<ExpectedMethodSpecialNameAttribute>()!.Expected;
 
-        Assert.AreEqual(expected, method.GetNameType(), $"{type.FullName} : {method.Name}");
+        Assert.That(method.GetNameType(), Is.EqualTo(expected), $"{type.FullName} : {method.Name}");
       }
     }
   }

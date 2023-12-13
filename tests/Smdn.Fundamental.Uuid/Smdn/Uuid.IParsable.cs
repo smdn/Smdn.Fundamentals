@@ -14,14 +14,14 @@ partial class UuidTests {
 
     static void TestParsed(Uuid uuid, string testCaseLabel)
     {
-      Assert.AreEqual(0xf81d4fae, uuid.TimeLow, $"{testCaseLabel} {nameof(Uuid.TimeLow)}");
-      Assert.AreEqual(0x7dec, uuid.TimeMid, $"{testCaseLabel} {nameof(Uuid.TimeMid)}");
-      Assert.AreEqual(0x11d0, uuid.TimeHighAndVersion, $"{testCaseLabel} {nameof(Uuid.TimeHighAndVersion)}");
-      Assert.AreEqual(0xa7, uuid.ClockSeqHighAndReserved, $"{testCaseLabel} {nameof(Uuid.ClockSeqHighAndReserved)}");
-      Assert.AreEqual(0x65, uuid.ClockSeqLow, $"{testCaseLabel} {nameof(Uuid.ClockSeqLow)}");
-      Assert.AreEqual(new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6}, uuid.Node, $"{testCaseLabel} {nameof(Uuid.Node)}");
-      Assert.AreEqual(UuidVersion.Version1, uuid.Version, $"{testCaseLabel} {nameof(Uuid.Version)}");
-      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField, $"{testCaseLabel} {nameof(Uuid.VariantField)}");
+      Assert.That(uuid.TimeLow, Is.EqualTo(0xf81d4fae), $"{testCaseLabel} {nameof(Uuid.TimeLow)}");
+      Assert.That(uuid.TimeMid, Is.EqualTo(0x7dec), $"{testCaseLabel} {nameof(Uuid.TimeMid)}");
+      Assert.That(uuid.TimeHighAndVersion, Is.EqualTo(0x11d0), $"{testCaseLabel} {nameof(Uuid.TimeHighAndVersion)}");
+      Assert.That(uuid.ClockSeqHighAndReserved, Is.EqualTo(0xa7), $"{testCaseLabel} {nameof(Uuid.ClockSeqHighAndReserved)}");
+      Assert.That(uuid.ClockSeqLow, Is.EqualTo(0x65), $"{testCaseLabel} {nameof(Uuid.ClockSeqLow)}");
+      Assert.That(uuid.Node, Is.EqualTo(new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6}), $"{testCaseLabel} {nameof(Uuid.Node)}");
+      Assert.That(uuid.Version, Is.EqualTo(UuidVersion.Version1), $"{testCaseLabel} {nameof(Uuid.Version)}");
+      Assert.That(uuid.VariantField, Is.EqualTo(Uuid.Variant.RFC4122), $"{testCaseLabel} {nameof(Uuid.VariantField)}");
     }
 
     TestParsed(Uuid.Parse(s), "Parse<string>");
@@ -43,18 +43,18 @@ partial class UuidTests {
 
     static void TestParsed(Uuid uuid, string testCaseLabel)
     {
-      Assert.AreEqual(0xf81d4fae, uuid.TimeLow, $"{testCaseLabel} {nameof(Uuid.TimeLow)}");
-      Assert.AreEqual(0x7dec, uuid.TimeMid, $"{testCaseLabel} {nameof(Uuid.TimeMid)}");
-      Assert.AreEqual(0x11d0, uuid.TimeHighAndVersion, $"{testCaseLabel} {nameof(Uuid.TimeHighAndVersion)}");
-      Assert.AreEqual(0xa7, uuid.ClockSeqHighAndReserved, $"{testCaseLabel} {nameof(Uuid.ClockSeqHighAndReserved)}");
-      Assert.AreEqual(0x65, uuid.ClockSeqLow, $"{testCaseLabel} {nameof(Uuid.ClockSeqLow)}");
-      Assert.AreEqual(new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6}, uuid.Node, $"{testCaseLabel} {nameof(Uuid.Node)}");
-      Assert.AreEqual(UuidVersion.Version1, uuid.Version, $"{testCaseLabel} {nameof(Uuid.Version)}");
-      Assert.AreEqual(Uuid.Variant.RFC4122, uuid.VariantField, $"{testCaseLabel} {nameof(Uuid.VariantField)}");
+      Assert.That(uuid.TimeLow, Is.EqualTo(0xf81d4fae), $"{testCaseLabel} {nameof(Uuid.TimeLow)}");
+      Assert.That(uuid.TimeMid, Is.EqualTo(0x7dec), $"{testCaseLabel} {nameof(Uuid.TimeMid)}");
+      Assert.That(uuid.TimeHighAndVersion, Is.EqualTo(0x11d0), $"{testCaseLabel} {nameof(Uuid.TimeHighAndVersion)}");
+      Assert.That(uuid.ClockSeqHighAndReserved, Is.EqualTo(0xa7), $"{testCaseLabel} {nameof(Uuid.ClockSeqHighAndReserved)}");
+      Assert.That(uuid.ClockSeqLow, Is.EqualTo(0x65), $"{testCaseLabel} {nameof(Uuid.ClockSeqLow)}");
+      Assert.That(uuid.Node, Is.EqualTo(new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6}), $"{testCaseLabel} {nameof(Uuid.Node)}");
+      Assert.That(uuid.Version, Is.EqualTo(UuidVersion.Version1), $"{testCaseLabel} {nameof(Uuid.Version)}");
+      Assert.That(uuid.VariantField, Is.EqualTo(Uuid.Variant.RFC4122), $"{testCaseLabel} {nameof(Uuid.VariantField)}");
     }
 
-    Assert.IsTrue(Uuid.TryParse(s, provider: null, out var uuid0), "TryParse<string>");
-    Assert.IsTrue(Uuid.TryParse(s.AsSpan(), provider: null, out var uuid1), "TryParse<ReadOnlySpan<char>>");
+    Assert.That(Uuid.TryParse(s, provider: null, out var uuid0), Is.True, "TryParse<string>");
+    Assert.That(Uuid.TryParse(s.AsSpan(), provider: null, out var uuid1), Is.True, "TryParse<ReadOnlySpan<char>>");
 
     TestParsed(uuid0, "TryParse<string>");
     TestParsed(uuid1, "TryParse<ReadOnlySpan<char>>");
@@ -137,10 +137,10 @@ partial class UuidTests {
   public void TestParse_FormatException(string uuid, string expectedExceptionMessage)
   {
     var exString = Assert.Throws<FormatException>(() => Uuid.Parse(uuid), "Parse<string>");
-    StringAssert.Contains(expectedExceptionMessage, exString!.Message, "Parse<string> exception message");
+    Assert.That(exString!.Message, Does.Contain(expectedExceptionMessage), "Parse<string> exception message");
 
     var exReadOnlySpanOfChar = Assert.Throws<FormatException>(() => Uuid.Parse(uuid.AsSpan()), "Parse<ReadOnlySpan<char>>");
-    StringAssert.Contains(expectedExceptionMessage, exReadOnlySpanOfChar!.Message, "Parse<<ReadOnlySpan<char>> exception message");
+    Assert.That(exReadOnlySpanOfChar!.Message, Does.Contain(expectedExceptionMessage), "Parse<<ReadOnlySpan<char>> exception message");
 
 #if FEATURE_GENERIC_MATH
     var exStringGM = Assert.Throws<FormatException>(() => ParseString<Uuid>(uuid), "IParsable.Parse<string>");
@@ -157,8 +157,8 @@ partial class UuidTests {
   [TestCaseSource(nameof(YieldTestCases_Parse_FormatException))]
   public void TestTryParse_FormatError(string uuid, string discard)
   {
-    Assert.IsFalse(Uuid.TryParse(uuid, provider: null, out _), "TryParse<string>");
-    Assert.IsFalse(Uuid.TryParse(uuid.AsSpan(), provider: null, out _), "TryParse<ReadOnlySpan<char>>");
+    Assert.That(Uuid.TryParse(uuid, provider: null, out _), Is.False, "TryParse<string>");
+    Assert.That(Uuid.TryParse(uuid.AsSpan(), provider: null, out _), Is.False, "TryParse<ReadOnlySpan<char>>");
 
 #if FEATURE_GENERIC_MATH
     Assert.IsFalse(TryParseString<Uuid>(uuid), "IParsable.TryParse<string>");

@@ -21,9 +21,9 @@ public partial class MimeTypeTests {
   [TestCase(nameof(MimeType.MessageExternalBody), "message", "external-body")]
   [TestCase(nameof(MimeType.MessageRfc822), "message", "rfc822")]
   public void MimeTypeFields(string fieldName, string expectedMimeType, string expectedMimeSubType)
-    => Assert.AreEqual(
-      new MimeType(expectedMimeType, expectedMimeSubType),
-      typeof(MimeType).GetField(fieldName)?.GetValue(null) as MimeType
+    => Assert.That(
+      typeof(MimeType).GetField(fieldName)?.GetValue(null) as MimeType,
+      Is.EqualTo(new MimeType(expectedMimeType, expectedMimeSubType))
     );
 
   [TestCase("text/plain", "text", "plain")]
@@ -34,9 +34,9 @@ public partial class MimeTypeTests {
   {
     var mime = new MimeType(mimeType);
 
-    Assert.AreEqual(expectedType, mime.Type);
-    Assert.AreEqual(expectedSubType, mime.SubType);
-    Assert.AreEqual(mimeType, mime.ToString());
+    Assert.That(mime.Type, Is.EqualTo(expectedType));
+    Assert.That(mime.SubType, Is.EqualTo(expectedSubType));
+    Assert.That(mime.ToString(), Is.EqualTo(mimeType));
   }
 
   [TestCase("text", "plain")]
@@ -50,9 +50,9 @@ public partial class MimeTypeTests {
   {
     var mime = new MimeType(type, subtype);
 
-    Assert.AreEqual(type, mime.Type);
-    Assert.AreEqual(subtype, mime.SubType);
-    Assert.AreEqual($"{type}/{subtype}", mime.ToString());
+    Assert.That(mime.Type, Is.EqualTo(type));
+    Assert.That(mime.SubType, Is.EqualTo(subtype));
+    Assert.That(mime.ToString(), Is.EqualTo($"{type}/{subtype}"));
   }
 
   [TestCase("text", "plain")]
@@ -67,9 +67,9 @@ public partial class MimeTypeTests {
     var m = (type, subtype);
     var mime = new MimeType(m);
 
-    Assert.AreEqual(type, mime.Type);
-    Assert.AreEqual(subtype, mime.SubType);
-    Assert.AreEqual($"{type}/{subtype}", mime.ToString());
+    Assert.That(mime.Type, Is.EqualTo(type));
+    Assert.That(mime.SubType, Is.EqualTo(subtype));
+    Assert.That(mime.ToString(), Is.EqualTo($"{type}/{subtype}"));
   }
 
   [TestCase(null, typeof(ArgumentNullException))]
@@ -113,25 +113,25 @@ public partial class MimeTypeTests {
   {
     var (type, subType) = MimeType.TextPlain;
 
-    Assert.AreEqual("text", type);
-    Assert.AreEqual("plain", subType);
+    Assert.That(type, Is.EqualTo("text"));
+    Assert.That(subType, Is.EqualTo("plain"));
   }
 
   [Test]
   public void Test_ToString()
   {
-    Assert.AreEqual("text/plain", MimeType.TextPlain.ToString());
-    Assert.AreEqual("application/octet-stream", MimeType.ApplicationOctetStream.ToString());
-    Assert.AreEqual("text/html", MimeType.CreateTextType("html").ToString());
+    Assert.That(MimeType.TextPlain.ToString(), Is.EqualTo("text/plain"));
+    Assert.That(MimeType.ApplicationOctetStream.ToString(), Is.EqualTo("application/octet-stream"));
+    Assert.That(MimeType.CreateTextType("html").ToString(), Is.EqualTo("text/html"));
   }
 
   [Test]
   public void ExplicitToStringCoversion()
   {
-    Assert.AreEqual("text/plain", (string)MimeType.TextPlain);
-    Assert.AreEqual("application/octet-stream", (string)MimeType.ApplicationOctetStream);
-    Assert.AreEqual("text/html", (string)MimeType.CreateTextType("html"));
+    Assert.That((string)MimeType.TextPlain, Is.EqualTo("text/plain"));
+    Assert.That((string)MimeType.ApplicationOctetStream, Is.EqualTo("application/octet-stream"));
+    Assert.That((string)MimeType.CreateTextType("html"), Is.EqualTo("text/html"));
 
-    Assert.IsNull((string)((MimeType)null));
+    Assert.That((string)((MimeType)null), Is.Null);
   }
 }

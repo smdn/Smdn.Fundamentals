@@ -9,13 +9,14 @@ namespace Smdn;
 public class StringShimTests {
   [Test]
   public void ShimType_StartsWith_Char()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemStringStartsWithChar),
+    => Assert.That(
 #if SYSTEM_STRING_STARTSWITH_CHAR
       typeof(System.String)
 #else
       typeof(Smdn.StringShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemStringStartsWithChar))
     );
 
   [Test]
@@ -27,37 +28,34 @@ public class StringShimTests {
     Assert.Throws<ArgumentNullException>(() => nullString.StartsWith('a'));
 #endif
 
-    Assert.IsFalse(string.Empty.StartsWith('a'));
-    Assert.IsTrue("a".StartsWith('a'));
-    Assert.IsTrue("abc".StartsWith('a'));
-    Assert.IsFalse("abc".StartsWith('c'));
+    Assert.That(string.Empty.StartsWith('a'), Is.False);
+    Assert.That("a".StartsWith('a'), Is.True);
+    Assert.That("abc".StartsWith('a'), Is.True);
+    Assert.That("abc".StartsWith('c'), Is.False);
 
-    Assert.AreEqual(string.Empty.StartsWith("a", StringComparison.Ordinal),
-                    string.Empty.StartsWith('a'),
+    Assert.That(string.Empty.StartsWith('a'), Is.EqualTo(string.Empty.StartsWith("a", StringComparison.Ordinal)),
                     "same as StartsWith(string) #1");
 
-    Assert.AreEqual("a".StartsWith("a", StringComparison.Ordinal),
-                    "a".StartsWith('a'),
+    Assert.That("a".StartsWith('a'), Is.EqualTo("a".StartsWith("a", StringComparison.Ordinal)),
                     "same as StartsWith(string) #2");
 
-    Assert.AreEqual("abc".StartsWith("a", StringComparison.Ordinal),
-                    "abc".StartsWith('a'),
+    Assert.That("abc".StartsWith('a'), Is.EqualTo("abc".StartsWith("a", StringComparison.Ordinal)),
                     "same as StartsWith(string) #3");
 
-    Assert.AreEqual("abc".StartsWith("c", StringComparison.Ordinal),
-                    "abc".StartsWith('c'),
+    Assert.That("abc".StartsWith('c'), Is.EqualTo("abc".StartsWith("c", StringComparison.Ordinal)),
                     "same as StartsWith(string) #4");
   }
 
   [Test]
   public void ShimType_EndsWith_Char()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemStringEndsWithChar),
+    => Assert.That(
 #if SYSTEM_STRING_ENDSWITH_CHAR
       typeof(System.String)
 #else
       typeof(Smdn.StringShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemStringEndsWithChar))
     );
 
   [Test]
@@ -69,25 +67,21 @@ public class StringShimTests {
     Assert.Throws<ArgumentNullException>(() => nullString.EndsWith('a'));
 #endif
 
-    Assert.IsFalse(string.Empty.EndsWith('a'));
-    Assert.IsTrue("a".EndsWith('a'));
-    Assert.IsTrue("abc".EndsWith('c'));
-    Assert.IsFalse("abc".EndsWith('a'));
+    Assert.That(string.Empty.EndsWith('a'), Is.False);
+    Assert.That("a".EndsWith('a'), Is.True);
+    Assert.That("abc".EndsWith('c'), Is.True);
+    Assert.That("abc".EndsWith('a'), Is.False);
 
-    Assert.AreEqual(string.Empty.EndsWith("a", StringComparison.Ordinal),
-                    string.Empty.EndsWith('a'),
+    Assert.That(string.Empty.EndsWith('a'), Is.EqualTo(string.Empty.EndsWith("a", StringComparison.Ordinal)),
                     "same as EndsWith(string) #1");
 
-    Assert.AreEqual("a".EndsWith("a", StringComparison.Ordinal),
-                    "a".EndsWith('a'),
+    Assert.That("a".EndsWith('a'), Is.EqualTo("a".EndsWith("a", StringComparison.Ordinal)),
                     "same as EndsWith(string) #2");
 
-    Assert.AreEqual("abc".EndsWith("c", StringComparison.Ordinal),
-                    "abc".EndsWith('c'),
+    Assert.That("abc".EndsWith('c'), Is.EqualTo("abc".EndsWith("c", StringComparison.Ordinal)),
                     "same as EndsWith(string) #3");
 
-    Assert.AreEqual("abc".EndsWith("a", StringComparison.Ordinal),
-                    "abc".EndsWith('a'),
+    Assert.That("abc".EndsWith('a'), Is.EqualTo("abc".EndsWith("a", StringComparison.Ordinal)),
                     "same as EndsWith(string) #4");
   }
 
@@ -95,11 +89,11 @@ public class StringShimTests {
   [Test]
   public void TestConstruct()
   {
-    Assert.AreEqual(string.Empty, StringShim.Construct(default), "#1");
-    Assert.AreEqual("A", StringShim.Construct(stackalloc char[] { 'A' } ), "#2");
-    Assert.AreEqual("ABC", StringShim.Construct(stackalloc char[] { 'A', 'B', 'C' } ), "#3");
-    Assert.AreEqual("A\u0000C", StringShim.Construct(stackalloc char[] { 'A', '\u0000', 'C' } ), "#4");
-    Assert.AreEqual("🌟", StringShim.Construct(stackalloc char[] { '\uD83C', '\uDF1F' } ), "#5");
+    Assert.That(StringShim.Construct(default), Is.EqualTo(string.Empty), "#1");
+    Assert.That(StringShim.Construct(stackalloc char[] { 'A' } ), Is.EqualTo("A"), "#2");
+    Assert.That(StringShim.Construct(stackalloc char[] { 'A', 'B', 'C' } ), Is.EqualTo("ABC"), "#3");
+    Assert.That(StringShim.Construct(stackalloc char[] { 'A', '\u0000', 'C' } ), Is.EqualTo("A\u0000C"), "#4");
+    Assert.That(StringShim.Construct(stackalloc char[] { '\uD83C', '\uDF1F' } ), Is.EqualTo("🌟"), "#5");
   }
 #endif
 }

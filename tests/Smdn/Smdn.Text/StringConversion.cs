@@ -11,13 +11,13 @@ namespace Smdn.Text {
     [Test]
     public void TestToEnum()
     {
-      Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnum<DayOfWeek>("Sunday"));
-      Assert.AreEqual(DayOfWeek.Monday, StringConversion.ToEnum<DayOfWeek>("Monday"));
-      Assert.AreEqual(DayOfWeek.Tuesday, StringConversion.ToEnum<DayOfWeek>("Tuesday"));
-      Assert.AreEqual(DayOfWeek.Wednesday, StringConversion.ToEnum<DayOfWeek>("Wednesday"));
+      Assert.That(StringConversion.ToEnum<DayOfWeek>("Sunday"), Is.EqualTo(DayOfWeek.Sunday));
+      Assert.That(StringConversion.ToEnum<DayOfWeek>("Monday"), Is.EqualTo(DayOfWeek.Monday));
+      Assert.That(StringConversion.ToEnum<DayOfWeek>("Tuesday"), Is.EqualTo(DayOfWeek.Tuesday));
+      Assert.That(StringConversion.ToEnum<DayOfWeek>("Wednesday"), Is.EqualTo(DayOfWeek.Wednesday));
 
-      Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnum<DayOfWeek>("sUndaY", true));
-      Assert.AreEqual(DayOfWeek.Sunday, StringConversion.ToEnumIgnoreCase<DayOfWeek>("sUndaY"));
+      Assert.That(StringConversion.ToEnum<DayOfWeek>("sUndaY", true), Is.EqualTo(DayOfWeek.Sunday));
+      Assert.That(StringConversion.ToEnumIgnoreCase<DayOfWeek>("sUndaY"), Is.EqualTo(DayOfWeek.Sunday));
 
       Assert.Throws<ArgumentException>(() => StringConversion.ToEnum<DayOfWeek>("sUndaY"), "#1");
       Assert.Throws<ArgumentException>(() => StringConversion.ToEnum<DayOfWeek>("sUndaY", false), "#2");

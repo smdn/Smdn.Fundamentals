@@ -44,7 +44,7 @@ namespace Smdn.Buffers {
         new ByteArrayBufferWriter()
       );
 
-      Assert.IsNotNull(writer);
+      Assert.That(writer, Is.Not.Null);
     }
 
     [Test]

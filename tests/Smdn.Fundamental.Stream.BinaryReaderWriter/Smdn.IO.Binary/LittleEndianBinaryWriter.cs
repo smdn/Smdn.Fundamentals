@@ -28,8 +28,8 @@ namespace Smdn.IO.Binary {
         0x80,
       };
 
-      Assert.AreEqual(stream.Position, actual.Length, "length");
-      Assert.AreEqual(stream.ToArray(), actual);
+      Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
+      Assert.That(actual, Is.EqualTo(stream.ToArray()));
     }
 
     [Test]
@@ -53,8 +53,8 @@ namespace Smdn.IO.Binary {
         0x80,
       };
 
-      Assert.AreEqual(stream.Position, actual.Length, "length");
-      Assert.AreEqual(stream.ToArray(), actual);
+      Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
+      Assert.That(actual, Is.EqualTo(stream.ToArray()));
     }
 
     [Test]
@@ -69,8 +69,8 @@ namespace Smdn.IO.Binary {
         0x52, 0x49, 0x46, 0x46,
       };
 
-      Assert.AreEqual(stream.Position, actual.Length, "length");
-      Assert.AreEqual(stream.ToArray(), actual);
+      Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
+      Assert.That(actual, Is.EqualTo(stream.ToArray()));
     }
   }
 }

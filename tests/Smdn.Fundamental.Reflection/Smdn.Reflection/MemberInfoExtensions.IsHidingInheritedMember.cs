@@ -399,7 +399,7 @@ partial class MemberInfoExtensions {
     MemberInfo m,
     bool expected
   )
-    => Assert.AreEqual(expected, m.IsHidingInheritedMember(nonPublic), $"Type: {m.DeclaringType}, Member: {m}");
+    => Assert.That(m.IsHidingInheritedMember(nonPublic), Is.EqualTo(expected), $"Type: {m.DeclaringType}, Member: {m}");
 
   [TestCase(true)]
   [TestCase(false)]

@@ -17,12 +17,12 @@ partial class NodeTests {
     for (var n = 0; n < 1000; n++) {
       var node = Node.CreateRandom();
 
-      Assert.IsTrue(regexFormat_Default.IsMatch(node.ToString()), node.ToString());
-      Assert.IsTrue(regexFormat_Default.IsMatch(node.ToString(null)), node.ToString(null));
-      Assert.IsTrue(regexFormat_Default.IsMatch(node.ToString(string.Empty)), node.ToString(string.Empty));
-      Assert.IsTrue(regexFormat_Default.IsMatch(node.ToString(null, formatProvider: null)), node.ToString(null, formatProvider: null));
-      Assert.IsTrue(regexFormat_X.IsMatch(node.ToString("X")), node.ToString("X"));
-      Assert.IsTrue(regexFormat_x.IsMatch(node.ToString("x")), node.ToString("x"));
+      Assert.That(regexFormat_Default.IsMatch(node.ToString()), Is.True, node.ToString());
+      Assert.That(regexFormat_Default.IsMatch(node.ToString(null)), Is.True, node.ToString(null));
+      Assert.That(regexFormat_Default.IsMatch(node.ToString(string.Empty)), Is.True, node.ToString(string.Empty));
+      Assert.That(regexFormat_Default.IsMatch(node.ToString(null, formatProvider: null)), Is.True, node.ToString(null, formatProvider: null));
+      Assert.That(regexFormat_X.IsMatch(node.ToString("X")), Is.True, node.ToString("X"));
+      Assert.That(regexFormat_x.IsMatch(node.ToString("x")), Is.True, node.ToString("x"));
     }
   }
 
@@ -47,20 +47,20 @@ partial class NodeTests {
       var node = Node.CreateRandom();
       var destination = new char[20];
 
-      Assert.IsTrue(node.TryFormat(destination, out var charsWritten, format, provider: null), $"TryFormat {node}");
-      Assert.AreEqual(17, charsWritten, $"{nameof(charsWritten)} {node}");
-      Assert.IsTrue(expected.IsMatch(new string(destination, 0, charsWritten)), $"destination {node}");
+      Assert.That(node.TryFormat(destination, out var charsWritten, format, provider: null), Is.True, $"TryFormat {node}");
+      Assert.That(charsWritten, Is.EqualTo(17), $"{nameof(charsWritten)} {node}");
+      Assert.That(expected.IsMatch(new string(destination, 0, charsWritten)), Is.True, $"destination {node}");
     }
   }
 
   [Test]
   public void TestTryFormat_DestinationTooShort([Values(0, 1, 16)] int length)
   {
-    Assert.IsFalse(Node.CreateRandom().TryFormat(new char[length], out var charsWritten1, "X", provider: null), "format X");
-    Assert.AreEqual(0, charsWritten1, "format X");
+    Assert.That(Node.CreateRandom().TryFormat(new char[length], out var charsWritten1, "X", provider: null), Is.False, "format X");
+    Assert.That(charsWritten1, Is.EqualTo(0), "format X");
 
-    Assert.IsFalse(Node.CreateRandom().TryFormat(new char[length], out var charsWritten2, "x", provider: null), "format x");
-    Assert.AreEqual(0, charsWritten2, "format x");
+    Assert.That(Node.CreateRandom().TryFormat(new char[length], out var charsWritten2, "x", provider: null), Is.False, "format x");
+    Assert.That(charsWritten2, Is.EqualTo(0), "format x");
   }
 
   [TestCase("n")]
@@ -71,8 +71,8 @@ partial class NodeTests {
     var node = Node.CreateRandom();
     var destination = new char[17];
 
-    Assert.IsTrue(node.TryFormat(destination, out _, format, provider: null));
-    Assert.AreEqual(new string(destination), node.ToString("X"));
+    Assert.That(node.TryFormat(destination, out _, format, provider: null), Is.True);
+    Assert.That(node.ToString("X"), Is.EqualTo(new string(destination)));
   }
 #endif
 }

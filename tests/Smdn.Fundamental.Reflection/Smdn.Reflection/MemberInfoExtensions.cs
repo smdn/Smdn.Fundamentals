@@ -11,7 +11,7 @@ namespace Smdn.Reflection;
 [TestFixture()]
 public class MemberInfoExtensionsTests {
   private void TestGetAccessibility(MemberInfo member, Accessibility expected)
-    => Assert.AreEqual(expected, member.GetAccessibility());
+    => Assert.That(member.GetAccessibility(), Is.EqualTo(expected));
 
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C1), null, Accessibility.Public)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C2), null, Accessibility.Assembly)]
@@ -92,12 +92,12 @@ public class MemberInfoExtensionsTests {
       type = type.GetNestedType(nestedTypeName, BindingFlags.Public | BindingFlags.NonPublic);
 
     if (memberName == null) {
-      Assert.AreEqual(expected, type!.IsPrivateOrAssembly(), type!.FullName);
+      Assert.That(type!.IsPrivateOrAssembly(), Is.EqualTo(expected), type!.FullName);
     }
     else {
       var member = type!.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
 
-      Assert.AreEqual(expected, member.IsPrivateOrAssembly(), $"{type.FullName}.{member.Name}");
+      Assert.That(member.IsPrivateOrAssembly(), Is.EqualTo(expected), $"{type.FullName}.{member.Name}");
     }
   }
 

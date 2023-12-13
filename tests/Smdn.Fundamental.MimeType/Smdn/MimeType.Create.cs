@@ -13,7 +13,7 @@ public partial class MimeTypeTests {
       MimeType mimeType = default;
 
       Assert.DoesNotThrow(() => mimeType = create());
-      Assert.AreEqual(new MimeType(expectedMimeType), mimeType);
+      Assert.That(mimeType, Is.EqualTo(new MimeType(expectedMimeType)));
     }
     else {
       Assert.Throws(expectedExceptionType, () => create());

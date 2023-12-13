@@ -23,15 +23,15 @@ public class AssertSerializationTests {
     var arr = new int[] { 0, 1, 2 };
 
     Assert.IsSerializable(arr, obj => {
-      Assert.IsNotNull(obj);
-      Assert.IsInstanceOf<int[]>(obj);
-      CollectionAssert.AreEqual(arr, obj as int[]);
+      Assert.That(obj, Is.Not.Null);
+      Assert.That(obj, Is.InstanceOf<int[]>());
+      Assert.That(obj as int[], Is.EqualTo(arr).AsCollection);
 
       testActionCalled = true;
     });
 
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-    Assert.IsTrue(testActionCalled, "test action called");
+    Assert.That(testActionCalled, Is.True, "test action called");
 #else
     Assert.IsFalse(testActionCalled, "test action called");
 #endif
@@ -44,15 +44,15 @@ public class AssertSerializationTests {
     var testActionCalled = false;
 
     Assert.IsSerializable(new Uri(url), obj => {
-      Assert.IsNotNull(obj);
-      Assert.IsInstanceOf<Uri>(obj);
-      Assert.AreEqual(url, (obj as Uri).AbsoluteUri);
+      Assert.That(obj, Is.Not.Null);
+      Assert.That(obj, Is.InstanceOf<Uri>());
+      Assert.That((obj as Uri).AbsoluteUri, Is.EqualTo(url));
 
       testActionCalled = true;
     });
 
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-    Assert.IsTrue(testActionCalled, "test action called");
+    Assert.That(testActionCalled, Is.True, "test action called");
 #else
     Assert.IsFalse(testActionCalled, "test action called");
 #endif
@@ -64,15 +64,14 @@ public class AssertSerializationTests {
     var testActionCalled = false;
 
     Assert.IsSerializable(new IntPtr(1), obj => {
-      Assert.IsNotNull(obj);
-      Assert.IsInstanceOf<IntPtr>(obj);
-      Assert.AreEqual(new IntPtr(1), obj);
+      Assert.That(obj, Is.InstanceOf<IntPtr>());
+      Assert.That(obj, Is.EqualTo(new IntPtr(1)));
 
       testActionCalled = true;
     });
 
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-    Assert.IsTrue(testActionCalled, "test action called");
+    Assert.That(testActionCalled, Is.True, "test action called");
 #else
     Assert.IsFalse(testActionCalled, "test action called");
 #endif
@@ -85,15 +84,14 @@ public class AssertSerializationTests {
     var testActionCalled = false;
 
     Assert.IsSerializable(now, obj => {
-      Assert.IsNotNull(obj);
-      Assert.IsInstanceOf<DateTime>(obj);
-      Assert.AreEqual(now, obj);
+      Assert.That(obj, Is.InstanceOf<DateTime>());
+      Assert.That(obj, Is.EqualTo(now));
 
       testActionCalled = true;
     });
 
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-    Assert.IsTrue(testActionCalled, "test action called");
+    Assert.That(testActionCalled, Is.True, "test action called");
 #else
     Assert.IsFalse(testActionCalled, "test action called");
 #endif
@@ -107,22 +105,22 @@ public class AssertSerializationTests {
     var testActionCalled = false;
 
     Assert.IsSerializable(new NotSupportedException(message, innerException), obj => {
-      Assert.IsNotNull(obj);
-      Assert.IsInstanceOf<NotSupportedException>(obj);
+      Assert.That(obj, Is.Not.Null);
+      Assert.That(obj, Is.InstanceOf<NotSupportedException>());
 
       var ex = (obj as NotSupportedException);
 
-      Assert.AreEqual(message, ex.Message);
+      Assert.That(ex.Message, Is.EqualTo(message));
 
-      Assert.IsNotNull(ex.InnerException);
-      Assert.IsInstanceOf<NotImplementedException>(ex.InnerException);
-      Assert.AreEqual(innerException.Message, ex!.InnerException!.Message);
+      Assert.That(ex.InnerException, Is.Not.Null);
+      Assert.That(ex.InnerException, Is.InstanceOf<NotImplementedException>());
+      Assert.That(ex!.InnerException!.Message, Is.EqualTo(innerException.Message));
 
       testActionCalled = true;
     });
 
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
-    Assert.IsTrue(testActionCalled, "test action called");
+    Assert.That(testActionCalled, Is.True, "test action called");
 #else
     Assert.IsFalse(testActionCalled, "test action called");
 #endif

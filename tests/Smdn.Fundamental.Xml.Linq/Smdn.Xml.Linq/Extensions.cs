@@ -36,12 +36,12 @@ public class ExtensionsTests {
 
     var actualResult = e.TryGetAttribute(attrName, out var attr);
 
-    Assert.AreEqual(expectedResult, actualResult, "return value");
+    Assert.That(actualResult, Is.EqualTo(expectedResult), "return value");
 
     if (actualResult) {
-      Assert.IsNotNull(attr);
-      Assert.AreEqual(attrName, attr.Name);
-      Assert.AreEqual(expectedAttributeValue, attr.Value);
+      Assert.That(attr, Is.Not.Null);
+      Assert.That(attr.Name, Is.EqualTo(attrName));
+      Assert.That(attr.Value, Is.EqualTo(expectedAttributeValue));
     }
   }
 }

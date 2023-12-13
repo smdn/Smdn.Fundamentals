@@ -16,9 +16,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
-    Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 +0000",
-      DateTimeFormat.ToRFC822DateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToRFC822DateTimeString(dtm),
+      Is.EqualTo("Mon, 25 Feb 2008 15:01:12 +0000")
     );
   }
 
@@ -27,9 +27,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Local);
 
-    Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-      DateTimeFormat.ToRFC822DateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToRFC822DateTimeString(dtm),
+      Is.EqualTo("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim)
     );
   }
 
@@ -38,9 +38,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Unspecified);
 
-    Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-      DateTimeFormat.ToRFC822DateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToRFC822DateTimeString(dtm),
+      Is.EqualTo("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim)
     );
   }
 
@@ -50,9 +50,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, DateTimeKind.Utc);
 
-    Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 +0000",
-      DateTimeFormat.ToRFC822DateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToRFC822DateTimeString(dtm),
+      Is.EqualTo("Mon, 25 Feb 2008 15:01:12 +0000")
     );
   }
 
@@ -61,9 +61,9 @@ partial class DateTimeFormatTests {
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
 
-    Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-      DateTimeFormat.ToRFC822DateTimeString(dto)
+    Assert.That(
+      DateTimeFormat.ToRFC822DateTimeString(dto),
+      Is.EqualTo("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim)
     );
   }
 
@@ -73,17 +73,17 @@ partial class DateTimeFormatTests {
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, DateTimeOffset.Now.Offset);
 
-    Assert.AreEqual(
-      "Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim,
-      DateTimeFormat.ToRFC822DateTimeString(dto)
+    Assert.That(
+      DateTimeFormat.ToRFC822DateTimeString(dto),
+      Is.EqualTo("Mon, 25 Feb 2008 15:01:12 " + timezoneOffsetNoDelim)
     );
   }
 
   [TestCaseSource(typeof(RFC822DateTimeFormatsTests), nameof(RFC822DateTimeFormatsTests.YieldTestCases_ParseDateTime))]
   public void FromRFC822DateTimeString(string s, DateTime expected)
-    => Assert.AreEqual(expected, DateTimeFormat.FromRFC822DateTimeString(s));
+    => Assert.That(DateTimeFormat.FromRFC822DateTimeString(s), Is.EqualTo(expected));
 
   [TestCaseSource(typeof(RFC822DateTimeFormatsTests), nameof(RFC822DateTimeFormatsTests.YieldTestCases_ParseDateTimeOffset))]
   public void FromRFC822DateTimeOffsetString(string s, DateTimeOffset expected)
-    => Assert.AreEqual(expected, DateTimeFormat.FromRFC822DateTimeOffsetString(s));
+    => Assert.That(DateTimeFormat.FromRFC822DateTimeOffsetString(s), Is.EqualTo(expected));
 }

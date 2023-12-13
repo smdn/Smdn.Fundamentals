@@ -29,11 +29,11 @@ public class ModifiedUTF7Tests {
 
   [TestCaseSource(nameof(YieldTestCases))]
   public void TestDecode(string plainText, string modifiedUTF7Text, string description)
-    => Assert.AreEqual(plainText, ModifiedUTF7.Decode(modifiedUTF7Text), description);
+    => Assert.That(ModifiedUTF7.Decode(modifiedUTF7Text), Is.EqualTo(plainText), description);
 
   [TestCaseSource(nameof(YieldTestCases))]
   public void TestEncode(string plainText, string modifiedUTF7Text, string description)
-    => Assert.AreEqual(modifiedUTF7Text, ModifiedUTF7.Encode(plainText), description);
+    => Assert.That(ModifiedUTF7.Encode(plainText), Is.EqualTo(modifiedUTF7Text), description);
 
   [Test]
   public void TestDecodeArgumentNull()
@@ -50,7 +50,7 @@ public class ModifiedUTF7Tests {
   [Test]
   public void TestDecodeBroken()
   {
-    Assert.AreEqual("下書き", ModifiedUTF7.Decode("&Tgtm+DBN"));
-    Assert.AreEqual("Tgtm+DBN-", ModifiedUTF7.Decode("Tgtm+DBN-"));
+    Assert.That(ModifiedUTF7.Decode("&Tgtm+DBN"), Is.EqualTo("下書き"));
+    Assert.That(ModifiedUTF7.Decode("Tgtm+DBN-"), Is.EqualTo("Tgtm+DBN-"));
   }
 }

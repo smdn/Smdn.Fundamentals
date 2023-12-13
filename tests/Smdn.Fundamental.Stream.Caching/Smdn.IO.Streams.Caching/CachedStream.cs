@@ -36,13 +36,13 @@ namespace Smdn.IO.Streams.Caching {
         innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          Assert.IsTrue(stream.CanRead, "can read");
-          Assert.IsFalse(stream.CanWrite, "can write");
-          Assert.IsTrue(stream.CanSeek, "can seek");
-          Assert.AreEqual(8L, stream.Length, "length");
-          Assert.AreEqual(4L, stream.Position, "position");
-          Assert.AreEqual(4, stream.BlockSize, "block size");
-          Assert.IsTrue(stream.LeaveInnerStreamOpen, "leave inner stream open");
+          Assert.That(stream.CanRead, Is.True, "can read");
+          Assert.That(stream.CanWrite, Is.False, "can write");
+          Assert.That(stream.CanSeek, Is.True, "can seek");
+          Assert.That(stream.Length, Is.EqualTo(8L), "length");
+          Assert.That(stream.Position, Is.EqualTo(4L), "position");
+          Assert.That(stream.BlockSize, Is.EqualTo(4), "block size");
+          Assert.That(stream.LeaveInnerStreamOpen, Is.True, "leave inner stream open");
         }
       }
     }
@@ -57,10 +57,10 @@ namespace Smdn.IO.Streams.Caching {
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
           stream.Dispose();
 
-          Assert.IsFalse(stream.CanRead, "CanRead");
-          Assert.IsFalse(stream.CanWrite, "CanWrite");
-          Assert.IsFalse(stream.CanSeek, "CanSeek");
-          Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+          Assert.That(stream.CanRead, Is.False, "CanRead");
+          Assert.That(stream.CanWrite, Is.False, "CanWrite");
+          Assert.That(stream.CanSeek, Is.False, "CanSeek");
+          Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
           Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
           Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
@@ -78,21 +78,21 @@ namespace Smdn.IO.Streams.Caching {
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          Assert.AreEqual(4L, stream.Seek(4, SeekOrigin.Begin));
-          Assert.AreEqual(4L, stream.Position);
-          Assert.AreEqual(0x04, stream.ReadByte());
+          Assert.That(stream.Seek(4, SeekOrigin.Begin), Is.EqualTo(4L));
+          Assert.That(stream.Position, Is.EqualTo(4L));
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x04));
 
-          Assert.AreEqual(7L, stream.Seek(2, SeekOrigin.Current));
-          Assert.AreEqual(7L, stream.Position);
-          Assert.AreEqual(0x07, stream.ReadByte());
+          Assert.That(stream.Seek(2, SeekOrigin.Current), Is.EqualTo(7L));
+          Assert.That(stream.Position, Is.EqualTo(7L));
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x07));
 
-          Assert.AreEqual(14L, stream.Seek(-2, SeekOrigin.End));
-          Assert.AreEqual(14L, stream.Position);
-          Assert.AreEqual(0x0e, stream.ReadByte());
+          Assert.That(stream.Seek(-2, SeekOrigin.End), Is.EqualTo(14L));
+          Assert.That(stream.Position, Is.EqualTo(14L));
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x0e));
 
-          Assert.AreEqual(19L, stream.Seek(4, SeekOrigin.Current));
-          Assert.AreEqual(19L, stream.Position);
-          Assert.AreEqual(-1, stream.ReadByte());
+          Assert.That(stream.Seek(4, SeekOrigin.Current), Is.EqualTo(19L));
+          Assert.That(stream.Position, Is.EqualTo(19L));
+          Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
           Assert.Throws<IOException>(() => stream.Seek(-17L, SeekOrigin.End));
         }
@@ -107,33 +107,33 @@ namespace Smdn.IO.Streams.Caching {
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          Assert.AreEqual(0L, stream.Position);
-          Assert.AreEqual(0x00, stream.ReadByte());
-          Assert.AreEqual(1L, stream.Position);
+          Assert.That(stream.Position, Is.EqualTo(0L));
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+          Assert.That(stream.Position, Is.EqualTo(1L));
 
-          Assert.AreEqual(0x01, stream.ReadByte());
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x01));
 
-          Assert.AreEqual(0x02, stream.ReadByte());
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x02));
 
-          Assert.AreEqual(0x03, stream.ReadByte());
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x03));
 
-          Assert.AreEqual(0x04, stream.ReadByte());
-          Assert.AreEqual(5L, stream.Position);
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x04));
+          Assert.That(stream.Position, Is.EqualTo(5L));
 
           GC.Collect();
 
-          Assert.AreEqual(0x05, stream.ReadByte());
-          Assert.AreEqual(6L, stream.Position);
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x05));
+          Assert.That(stream.Position, Is.EqualTo(6L));
 
           stream.Position = 0L;
 
-          Assert.AreEqual(0x00, stream.ReadByte());
-          Assert.AreEqual(1L, stream.Position);
+          Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+          Assert.That(stream.Position, Is.EqualTo(1L));
 
           stream.Position = stream.Length;
 
-          Assert.AreEqual(-1, stream.ReadByte());
-          Assert.AreEqual(stream.Length, stream.Position);
+          Assert.That(stream.ReadByte(), Is.EqualTo(-1));
+          Assert.That(stream.Position, Is.EqualTo(stream.Length));
         }
       }
     }
@@ -148,40 +148,40 @@ namespace Smdn.IO.Streams.Caching {
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
           var buffer = new byte[stream.Length];
 
-          Assert.AreEqual(6, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(6L, stream.Position);
-          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}, buffer.Skip(0).Take(6).ToArray());
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(6));
+          Assert.That(stream.Position, Is.EqualTo(6L));
+          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}));
 
           GC.Collect();
 
-          Assert.AreEqual(6, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(12L, stream.Position);
-          Assert.AreEqual(new byte[] {0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}, buffer.Skip(0).Take(6).ToArray());
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(6));
+          Assert.That(stream.Position, Is.EqualTo(12L));
+          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] {0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}));
 
           stream.Position = 0L;
 
-          Assert.AreEqual(6, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(6L, stream.Position);
-          Assert.AreEqual(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}, buffer.Skip(0).Take(6).ToArray());
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(6));
+          Assert.That(stream.Position, Is.EqualTo(6L));
+          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}));
 
           stream.Position = 12L;
 
-          Assert.AreEqual(5, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(17L, stream.Position);
-          Assert.AreEqual(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}, buffer.Skip(0).Take(5).ToArray());
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(5));
+          Assert.That(stream.Position, Is.EqualTo(17L));
+          Assert.That(buffer.Skip(0).Take(5).ToArray(), Is.EqualTo(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}));
 
-          Assert.AreEqual(0, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(17L, stream.Position);
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(0));
+          Assert.That(stream.Position, Is.EqualTo(17L));
 
           stream.Position = 16L;
 
-          Assert.AreEqual(1, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(17L, stream.Position);
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(1));
+          Assert.That(stream.Position, Is.EqualTo(17L));
 
           stream.Position = stream.Length;
 
-          Assert.AreEqual(0, stream.Read(buffer, 0, 6));
-          Assert.AreEqual(17L, stream.Position);
+          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(0));
+          Assert.That(stream.Position, Is.EqualTo(17L));
         }
       }
     }
@@ -228,8 +228,8 @@ namespace Smdn.IO.Streams.Caching {
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          Assert.AreEqual(6L, stream.Seek(6L, SeekOrigin.Begin));
-          Assert.AreEqual(6L, stream.Position);
+          Assert.That(stream.Seek(6L, SeekOrigin.Begin), Is.EqualTo(6L));
+          Assert.That(stream.Position, Is.EqualTo(6L));
 
           var pair = new long[][] {
             // offset / position
@@ -248,24 +248,24 @@ namespace Smdn.IO.Streams.Caching {
 
           for (var index = 0; index < pair.Length; index++) {
             try {
-              Assert.AreEqual(pair[index][1], stream.Seek(pair[index][0], SeekOrigin.Current), "seeked position {0}", index);
+              Assert.That(stream.Seek(pair[index][0], SeekOrigin.Current), Is.EqualTo(pair[index][1]), $"seeked position {index}");
             }
             catch (IOException) {
               Assert.Fail($"IOException thrown while seeking ({index})");
             }
 
-            Assert.AreEqual(pair[index][1], stream.Position);
-            Assert.AreEqual(pair[index][1], stream.ReadByte(), "read value {0}", index);
-            Assert.AreEqual(pair[index][1] + 1, stream.Position);
+            Assert.That(stream.Position, Is.EqualTo(pair[index][1]));
+            Assert.That(stream.ReadByte(), Is.EqualTo(pair[index][1]), $"read value {index}");
+            Assert.That(stream.Position, Is.EqualTo(pair[index][1] + 1));
 
             if (index % 3 == 0)
               GC.Collect();
           }
 
-          Assert.AreEqual(-1, stream.ReadByte());
-          Assert.AreEqual(13, stream.Seek(1, SeekOrigin.Current));
-          Assert.AreEqual(-1, stream.ReadByte());
-          Assert.AreEqual(13, stream.Position);
+          Assert.That(stream.ReadByte(), Is.EqualTo(-1));
+          Assert.That(stream.Seek(1, SeekOrigin.Current), Is.EqualTo(13));
+          Assert.That(stream.ReadByte(), Is.EqualTo(-1));
+          Assert.That(stream.Position, Is.EqualTo(13));
         }
       }
     }
@@ -313,8 +313,8 @@ namespace Smdn.IO.Streams.Caching {
 
         Assert.DoesNotThrow(() => stream.Flush());
 
-        Assert.AreEqual(pos, stream.Position);
-        Assert.AreEqual(len, stream.Length);
+        Assert.That(stream.Position, Is.EqualTo(pos));
+        Assert.That(stream.Length, Is.EqualTo(len));
       }
     }
   }

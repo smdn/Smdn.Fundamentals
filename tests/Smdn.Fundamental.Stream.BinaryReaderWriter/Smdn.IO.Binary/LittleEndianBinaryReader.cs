@@ -19,15 +19,15 @@ namespace Smdn.IO.Binary {
 
       var reader = new LittleEndianBinaryReader(stream);
 
-      Assert.AreEqual((ulong)0x8000000000000000, reader.ReadUInt64());
-      Assert.AreEqual((uint)0x80000000, reader.ReadUInt32());
-      Assert.AreEqual((byte)0x80, reader.ReadByte());
-      Assert.AreEqual((ushort)0x8000, reader.ReadUInt16());
-      Assert.AreEqual((byte)0x00, reader.ReadByte());
-      Assert.AreEqual((UInt48)0x800000000000, reader.ReadUInt48());
-      Assert.AreEqual((UInt24)0x800000, reader.ReadUInt24());
+      Assert.That(reader.ReadUInt64(), Is.EqualTo((ulong)0x8000000000000000));
+      Assert.That(reader.ReadUInt32(), Is.EqualTo((uint)0x80000000));
+      Assert.That(reader.ReadByte(), Is.EqualTo((byte)0x80));
+      Assert.That(reader.ReadUInt16(), Is.EqualTo((ushort)0x8000));
+      Assert.That(reader.ReadByte(), Is.EqualTo((byte)0x00));
+      Assert.That(reader.ReadUInt48(), Is.EqualTo((UInt48)0x800000000000));
+      Assert.That(reader.ReadUInt24(), Is.EqualTo((UInt24)0x800000));
 
-      Assert.AreEqual(stream.Length, reader.BaseStream.Position, "position");
+      Assert.That(reader.BaseStream.Position, Is.EqualTo(stream.Length), "position");
     }
 
     [Test]
@@ -42,15 +42,15 @@ namespace Smdn.IO.Binary {
 
       var reader = new LittleEndianBinaryReader(stream);
 
-      Assert.AreEqual(long.MinValue, reader.ReadInt64());
-      Assert.AreEqual(int.MinValue, reader.ReadInt32());
-      Assert.AreEqual(sbyte.MinValue, reader.ReadSByte());
-      Assert.AreEqual(short.MinValue, reader.ReadInt16());
-      Assert.AreEqual((sbyte)0, reader.ReadSByte());
-      Assert.AreEqual((UInt48)0x800000000000, reader.ReadUInt48());
-      Assert.AreEqual((UInt24)0x800000, reader.ReadUInt24());
+      Assert.That(reader.ReadInt64(), Is.EqualTo(long.MinValue));
+      Assert.That(reader.ReadInt32(), Is.EqualTo(int.MinValue));
+      Assert.That(reader.ReadSByte(), Is.EqualTo(sbyte.MinValue));
+      Assert.That(reader.ReadInt16(), Is.EqualTo(short.MinValue));
+      Assert.That(reader.ReadSByte(), Is.EqualTo((sbyte)0));
+      Assert.That(reader.ReadUInt48(), Is.EqualTo((UInt48)0x800000000000));
+      Assert.That(reader.ReadUInt24(), Is.EqualTo((UInt24)0x800000));
 
-      Assert.AreEqual(stream.Length, reader.BaseStream.Position, "position");
+      Assert.That(reader.BaseStream.Position, Is.EqualTo(stream.Length), "position");
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Smdn.IO.Binary {
         0x52, 0x49, 0x46, 0x46,
       }));
 
-      Assert.AreEqual("RIFF", reader.ReadFourCC().ToString());
+      Assert.That(reader.ReadFourCC().ToString(), Is.EqualTo("RIFF"));
     }
   }
 }

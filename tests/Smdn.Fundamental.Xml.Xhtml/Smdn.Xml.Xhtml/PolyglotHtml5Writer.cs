@@ -19,7 +19,7 @@ namespace Smdn.Xml.Xhtml {
         var sb = new StringBuilder();
 
         using (var writer = new PolyglotHtml5Writer(sb)) {
-          Assert.IsNotNull(writer.Settings);
+          Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
         }
@@ -29,7 +29,7 @@ namespace Smdn.Xml.Xhtml {
         var sb = new StringBuilder();
 
         using (var writer = new PolyglotHtml5Writer(sb, null)) {
-          Assert.IsNotNull(writer.Settings);
+          Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
         }
@@ -39,7 +39,7 @@ namespace Smdn.Xml.Xhtml {
         var sb = new StringBuilder();
 
         using (var writer = new PolyglotHtml5Writer(Stream.Null)) {
-          Assert.IsNotNull(writer.Settings);
+          Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
         }
@@ -49,7 +49,7 @@ namespace Smdn.Xml.Xhtml {
         var sb = new StringBuilder();
 
         using (var writer = new PolyglotHtml5Writer(Stream.Null, null)) {
-          Assert.IsNotNull(writer.Settings);
+          Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
         }
@@ -59,7 +59,7 @@ namespace Smdn.Xml.Xhtml {
         var sb = new StringBuilder();
 
         using (var writer = new PolyglotHtml5Writer(TextWriter.Null)) {
-          Assert.IsNotNull(writer.Settings);
+          Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
         }
@@ -69,7 +69,7 @@ namespace Smdn.Xml.Xhtml {
         var sb = new StringBuilder();
 
         using (var writer = new PolyglotHtml5Writer(TextWriter.Null, null)) {
-          Assert.IsNotNull(writer.Settings);
+          Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
         }
@@ -222,7 +222,7 @@ namespace Smdn.Xml.Xhtml {
  </body>
 </html>";
 
-      Assert.AreEqual(expected.Replace("\r\n", "\n"), ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo(expected.Replace("\r\n", "\n")));
     }
 
     [Test]
@@ -235,13 +235,11 @@ namespace Smdn.Xml.Xhtml {
       settings.Indent = false;
       settings.OmitXmlDeclaration = false;
 
-      Assert.AreEqual("<html></html>",
-                      ToString(doc, settings));
+      Assert.That(ToString(doc, settings), Is.EqualTo("<html></html>"));
 
       settings.OmitXmlDeclaration = true;
 
-      Assert.AreEqual("<html></html>",
-                      ToString(doc, settings));
+      Assert.That(ToString(doc, settings), Is.EqualTo("<html></html>"));
     }
 
     [Test]
@@ -252,8 +250,7 @@ namespace Smdn.Xml.Xhtml {
         new XElement("html")
       );
 
-      Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!DOCTYPE html>\n<html></html>"));
     }
 
     [Test]
@@ -264,8 +261,7 @@ namespace Smdn.Xml.Xhtml {
         new XElement("html")
       );
 
-      Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!DOCTYPE html>\n<html></html>"));
     }
 
     [Test]
@@ -280,8 +276,7 @@ namespace Smdn.Xml.Xhtml {
       doc.AppendChild(doc.CreateDocumentType("html", null, null, null));
       doc.AppendChild(doc.CreateElement("html"));
 
-      Assert.AreEqual("<!DOCTYPE html>\n<html></html>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!DOCTYPE html>\n<html></html>"));
     }
 
     [TestCase(NewLineHandling.None)]
@@ -297,8 +292,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<meta name=\"description\" content=\"&lt;&gt;&amp;&quot;\'\" />",
-                      ToString(doc, newLineHandling));
+      Assert.That(ToString(doc, newLineHandling), Is.EqualTo("<meta name=\"description\" content=\"&lt;&gt;&amp;&quot;\'\" />"));
     }
 
     [Test]
@@ -312,8 +306,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<meta name=\"description\" content=\"\r\n\t\" />",
-                      ToString(doc, NewLineHandling.None));
+      Assert.That(ToString(doc, NewLineHandling.None), Is.EqualTo("<meta name=\"description\" content=\"\r\n\t\" />"));
     }
 
     [TestCase(NewLineHandling.Entitize)]
@@ -328,8 +321,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<meta name=\"description\" content=\"&#xD;&#xA;&#x9;\" />",
-                      ToString(doc, newLineHandling));
+      Assert.That(ToString(doc, newLineHandling), Is.EqualTo("<meta name=\"description\" content=\"&#xD;&#xA;&#x9;\" />"));
     }
 
     [TestCase(NewLineHandling.None)]
@@ -344,8 +336,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>&lt;&gt;&amp;\"\'</div>",
-                      ToString(doc, newLineHandling));
+      Assert.That(ToString(doc, newLineHandling), Is.EqualTo("<div>&lt;&gt;&amp;\"\'</div>"));
     }
 
     [Test]
@@ -358,8 +349,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>\r\n\t</div>",
-                      ToString(doc, NewLineHandling.None));
+      Assert.That(ToString(doc, NewLineHandling.None), Is.EqualTo("<div>\r\n\t</div>"));
     }
 
     [Test]
@@ -372,8 +362,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>&#xD;\n</div>",
-                      ToString(doc, NewLineHandling.Entitize));
+      Assert.That(ToString(doc, NewLineHandling.Entitize), Is.EqualTo("<div>&#xD;\n</div>"));
     }
 
     [Test]
@@ -386,10 +375,8 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>\n-\n-\n</div>",
-                      ToString(doc, NewLineHandling.Replace, "\n"));
-      Assert.AreEqual("<div>\r\n-\r\n-\r\n</div>",
-                      ToString(doc, NewLineHandling.Replace, "\r\n"));
+      Assert.That(ToString(doc, NewLineHandling.Replace, "\n"), Is.EqualTo("<div>\n-\n-\n</div>"));
+      Assert.That(ToString(doc, NewLineHandling.Replace, "\r\n"), Is.EqualTo("<div>\r\n-\r\n-\r\n</div>"));
     }
 
     [Test]
@@ -413,8 +400,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>\n <p>text</p>\n <p>text</p>\n <p>text</p>\n</div>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<div>\n <p>text</p>\n <p>text</p>\n <p>text</p>\n</div>"));
     }
 
     [Test]
@@ -448,8 +434,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div><p>text</p><p>text</p><p translate=\"no\">text</p></div>",
-                      ToString(doc, settings));
+      Assert.That(ToString(doc, settings), Is.EqualTo("<div><p>text</p><p>text</p><p translate=\"no\">text</p></div>"));
     }
 
     [Test]
@@ -469,8 +454,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>\n <p xml:space=\"default\">\n  <span>text</span>\n </p>\n</div>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<div>\n <p xml:space=\"default\">\n  <span>text</span>\n </p>\n</div>"));
     }
 
     [Test]
@@ -490,8 +474,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<div>\n <p xml:space=\"preserve\"><span>text</span></p>\n</div>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<div>\n <p xml:space=\"preserve\"><span>text</span></p>\n</div>"));
     }
 
     [Test]
@@ -500,8 +483,7 @@ namespace Smdn.Xml.Xhtml {
       var content = "<body><p></p></body>";
       var doc = XDocument.Load(new StringReader(content));
 
-      Assert.AreEqual("<body>\n <p></p>\n</body>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<body>\n <p></p>\n</body>"));
     }
 
     [Test]
@@ -518,8 +500,7 @@ namespace Smdn.Xml.Xhtml {
 
       doc.Load(XmlReader.Create(new StringReader(content), settings));
 
-      Assert.AreEqual("<body>\n <p></p>\n</body>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<body>\n <p></p>\n</body>"));
     }
 
     [Test]
@@ -545,8 +526,7 @@ namespace Smdn.Xml.Xhtml {
       settings.NewLineOnAttributes = true;
 
       Assert.Throws<NotSupportedException>(() => {
-        Assert.AreEqual("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>",
-                        ToString(doc, settings));
+        Assert.That(ToString(doc, settings), Is.EqualTo("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>"));
 
       });
     }
@@ -573,8 +553,7 @@ namespace Smdn.Xml.Xhtml {
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = true;
 
-      Assert.AreEqual("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\"><head></head></html>",
-                      ToString(doc, settings));
+      Assert.That(ToString(doc, settings), Is.EqualTo("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\"><head></head></html>"));
     }
 
     [Test]
@@ -599,8 +578,7 @@ namespace Smdn.Xml.Xhtml {
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = false;
 
-      Assert.AreEqual("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\">\n <head></head>\n</html>",
-                      ToString(doc, settings));
+      Assert.That(ToString(doc, settings), Is.EqualTo("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\">\n <head></head>\n</html>"));
     }
 
     [Test]
@@ -621,8 +599,7 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line6")
       );
 
-      Assert.AreEqual("<!--line1-->\n<div>\n <!--line2-->\n <!--line3-->\n <div>\n  <!--line4-->\n </div>\n <!--line5-->\n</div>\n<!--line6-->",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div>\n <!--line2-->\n <!--line3-->\n <div>\n  <!--line4-->\n </div>\n <!--line5-->\n</div>\n<!--line6-->"));
     }
 
     [Test]
@@ -638,8 +615,7 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line3")
       );
 
-      Assert.AreEqual("<!--line1-->\n<div id=\"body\">\n <!--line2-->\n</div>\n<!--line3-->",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div id=\"body\">\n <!--line2-->\n</div>\n<!--line3-->"));
     }
 
     [Test]
@@ -655,8 +631,7 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line3")
       );
 
-      Assert.AreEqual("<!--line1-->\n<div>text<!--line2--></div>\n<!--line3-->",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div>text<!--line2--></div>\n<!--line3-->"));
     }
 
     [Test]
@@ -672,8 +647,7 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line3")
       );
 
-      Assert.AreEqual("<!--line1-->\n<div xml:space=\"preserve\"><!--line2--></div>\n<!--line3-->",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div xml:space=\"preserve\"><!--line2--></div>\n<!--line3-->"));
     }
 
     [Test]
@@ -689,8 +663,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <pre> text </pre>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre> text </pre>\n</p>"));
     }
 
     [Test]
@@ -708,8 +681,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <pre>text <span>span</span> text</pre>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre>text <span>span</span> text</pre>\n</p>"));
     }
 
     [Test]
@@ -726,8 +698,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <pre>text<span>span</span></pre>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre>text<span>span</span></pre>\n</p>"));
     }
 
     [Test]
@@ -743,8 +714,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <pre><span>span</span></pre>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre><span>span</span></pre>\n</p>"));
     }
 
     [Test]
@@ -762,8 +732,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <pre><span>span</span></pre>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <pre><span>span</span></pre>\n</p>"));
     }
 
     [Test]
@@ -779,8 +748,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <p>\n  <span>span</span>\n </p>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>\n  <span>span</span>\n </p>\n</p>"));
     }
 
     [Test]
@@ -798,8 +766,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <p>\n  <span>span</span>\n </p>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <p>\n  <span>span</span>\n </p>\n</p>"));
     }
 
     [Test]
@@ -814,8 +781,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<head>\n <script></script>\n</head>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<head>\n <script></script>\n</head>"));
     }
 
     [Test]
@@ -831,8 +797,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<head>\n <script async=\"async\"></script>\n</head>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<head>\n <script async=\"async\"></script>\n</head>"));
     }
 
     [Test]
@@ -848,8 +813,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <p>text</p>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>text</p>\n</p>"));
     }
 
     [Test]
@@ -867,8 +831,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <p>text <span>span</span> text</p>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>text <span>span</span> text</p>\n</p>"));
     }
 
     [Test]
@@ -885,8 +848,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <p>text<span>span</span></p>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>text<span>span</span></p>\n</p>"));
     }
 
     [Test]
@@ -903,8 +865,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<p>\n <p>\n  <span>span</span>text</p>\n</p>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>\n  <span>span</span>text</p>\n</p>"));
     }
 
     [Test]
@@ -927,8 +888,7 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.AreEqual("<ul>\n <li>1<ul><li>2</li></ul></li>\n</ul>",
-                      ToString(doc));
+      Assert.That(ToString(doc), Is.EqualTo("<ul>\n <li>1<ul><li>2</li></ul></li>\n</ul>"));
     }
 
     [TestCase("area")]
@@ -965,9 +925,9 @@ namespace Smdn.Xml.Xhtml {
 
       var e = voidElement;
 
-      Assert.AreEqual(
-        $"<p>\n <{e} />\n <{e} />\n <{e} />\n</p>",
-        ToString(doc)
+      Assert.That(
+        ToString(doc),
+        Is.EqualTo($"<p>\n <{e} />\n <{e} />\n <{e} />\n</p>")
       );
     }
 
@@ -1007,9 +967,9 @@ namespace Smdn.Xml.Xhtml {
 
       var e = voidElement;
 
-      Assert.AreEqual(
-        $"<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <{e} />\n <{e} />\n <{e} />\n</p>",
-        ToString(doc)
+      Assert.That(
+        ToString(doc),
+        Is.EqualTo($"<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <{e} />\n <{e} />\n <{e} />\n</p>")
       );
     }
 
@@ -1052,9 +1012,9 @@ namespace Smdn.Xml.Xhtml {
 
       var e = voidElement;
 
-      Assert.AreEqual(
-        $"<p>\n <{e} id=\"v1\" />\n <{e} />\n <{e} id=\"v3\" />\n <{e} />\n</p>",
-        ToString(doc)
+      Assert.That(
+        ToString(doc),
+        Is.EqualTo($"<p>\n <{e} id=\"v1\" />\n <{e} />\n <{e} id=\"v3\" />\n <{e} />\n</p>")
       );
     }
 
@@ -1083,9 +1043,9 @@ namespace Smdn.Xml.Xhtml {
 
       var e = selfClosingElement;
 
-      Assert.AreEqual(
-        $"<p>\n <{e}></{e}>\n <{e}></{e}>\n <{e}></{e}>\n</p>",
-        ToString(doc)
+      Assert.That(
+        ToString(doc),
+        Is.EqualTo($"<p>\n <{e}></{e}>\n <{e}></{e}>\n <{e}></{e}>\n</p>")
       );
     }
   }

@@ -9,29 +9,29 @@ namespace Smdn.Xml.Xhtml {
     [Test]
     public void EscapeXhtml()
     {
-      Assert.AreEqual(string.Empty, HtmlConvert.EscapeXhtml(string.Empty.AsSpan()));
-      Assert.AreEqual("&lt;&gt;&amp;&quot;&apos;#😄", HtmlConvert.EscapeXhtml("<>&\"\'#😄".AsSpan()));
+      Assert.That(HtmlConvert.EscapeXhtml(string.Empty.AsSpan()), Is.EqualTo(string.Empty));
+      Assert.That(HtmlConvert.EscapeXhtml("<>&\"\'#😄".AsSpan()), Is.EqualTo("&lt;&gt;&amp;&quot;&apos;#😄"));
     }
 
     [Test]
     public void EscapeHtml()
     {
-      Assert.AreEqual(string.Empty, HtmlConvert.EscapeHtml(string.Empty.AsSpan()));
-      Assert.AreEqual("&lt;&gt;&amp;&quot;'#😄", HtmlConvert.EscapeHtml("<>&\"\'#😄".AsSpan()));
+      Assert.That(HtmlConvert.EscapeHtml(string.Empty.AsSpan()), Is.EqualTo(string.Empty));
+      Assert.That(HtmlConvert.EscapeHtml("<>&\"\'#😄".AsSpan()), Is.EqualTo("&lt;&gt;&amp;&quot;'#😄"));
     }
 
     [Test]
     public void UnescapeXhtml()
     {
-      Assert.AreEqual(string.Empty, HtmlConvert.UnescapeXhtml(string.Empty.AsSpan()));
-      Assert.AreEqual("<>&\"\'#😄", HtmlConvert.UnescapeXhtml("&lt;&gt;&amp;&quot;&apos;#😄".AsSpan()));
+      Assert.That(HtmlConvert.UnescapeXhtml(string.Empty.AsSpan()), Is.EqualTo(string.Empty));
+      Assert.That(HtmlConvert.UnescapeXhtml("&lt;&gt;&amp;&quot;&apos;#😄".AsSpan()), Is.EqualTo("<>&\"\'#😄"));
     }
 
     [Test]
     public void UnescapeHtml()
     {
-      Assert.AreEqual(string.Empty, HtmlConvert.UnescapeHtml(string.Empty.AsSpan()));
-      Assert.AreEqual("<>&\"&apos;#😄", HtmlConvert.UnescapeHtml("&lt;&gt;&amp;&quot;&apos;#😄".AsSpan()));
+      Assert.That(HtmlConvert.UnescapeHtml(string.Empty.AsSpan()), Is.EqualTo(string.Empty));
+      Assert.That(HtmlConvert.UnescapeHtml("&lt;&gt;&amp;&quot;&apos;#😄".AsSpan()), Is.EqualTo("<>&\"&apos;#😄"));
     }
 
     [Test]
@@ -39,12 +39,12 @@ namespace Smdn.Xml.Xhtml {
     {
       Assert.Throws<ArgumentNullException>(() => HtmlConvert.DecodeNumericCharacterReference(null));
 
-      Assert.AreEqual("Σ", HtmlConvert.DecodeNumericCharacterReference("&#931;"));
-      Assert.AreEqual("Σ", HtmlConvert.DecodeNumericCharacterReference("&#0931;"));
-      Assert.AreEqual("Σ", HtmlConvert.DecodeNumericCharacterReference("&#x3A3;"));
-      Assert.AreEqual("Σ", HtmlConvert.DecodeNumericCharacterReference("&#x03A3;"));
-      Assert.AreEqual("Σ", HtmlConvert.DecodeNumericCharacterReference("&#x3a3;"));
-      Assert.AreEqual("&lt;Σ&gt;😄", HtmlConvert.DecodeNumericCharacterReference("&lt;&#931;&gt;😄"));
+      Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#931;"), Is.EqualTo("Σ"));
+      Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#0931;"), Is.EqualTo("Σ"));
+      Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#x3A3;"), Is.EqualTo("Σ"));
+      Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#x03A3;"), Is.EqualTo("Σ"));
+      Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#x3a3;"), Is.EqualTo("Σ"));
+      Assert.That(HtmlConvert.DecodeNumericCharacterReference("&lt;&#931;&gt;😄"), Is.EqualTo("&lt;Σ&gt;😄"));
     }
   }
 }

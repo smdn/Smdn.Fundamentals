@@ -13,11 +13,11 @@ partial class UuidTests {
   [Test]
   public void TestCompareTo()
   {
-    Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns));
-    Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo((Guid)Uuid.RFC4122NamespaceDns));
-    Assert.AreEqual(0, Uuid.RFC4122NamespaceDns.CompareTo((object)Uuid.RFC4122NamespaceDns));
-    Assert.AreEqual(1, Uuid.RFC4122NamespaceDns.CompareTo(null));
-    Assert.AreNotEqual(0, Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns), Is.EqualTo(0));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo((Guid)Uuid.RFC4122NamespaceDns), Is.EqualTo(0));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo((object)Uuid.RFC4122NamespaceDns), Is.EqualTo(0));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(null), Is.EqualTo(1));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty), Is.Not.EqualTo(0));
 
     Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.CompareTo(1));
 
@@ -78,8 +78,8 @@ partial class UuidTests {
   [TestCase("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF", false,  true)]
   public void TestOpLessThan_OpLessThanOrEqual(string x, string y, bool lessThan, bool lessThanOrEqual)
   {
-    Assert.AreEqual(lessThan, new Uuid(x) < new Uuid(y), "op <");
-    Assert.AreEqual(lessThanOrEqual, new Uuid(x) <= new Uuid(y), "op <=");
+    Assert.That(new Uuid(x) < new Uuid(y), Is.EqualTo(lessThan), "op <");
+    Assert.That(new Uuid(x) <= new Uuid(y), Is.EqualTo(lessThanOrEqual), "op <=");
 
 #if FEATURE_GENERIC_MATH
     Assert.AreEqual(lessThan, OpLessThan(new Uuid(x), new Uuid(y)), "IComparisonOperators <");
@@ -116,8 +116,8 @@ partial class UuidTests {
   [TestCase("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF", false,  true)]
   public void TestOpGreaterThan_OpGreaterThanOrEqual(string x, string y, bool greaterThan, bool greaterThanOrEqual)
   {
-    Assert.AreEqual(greaterThan, new Uuid(x) > new Uuid(y), "op >");
-    Assert.AreEqual(greaterThanOrEqual, new Uuid(x) >= new Uuid(y), "op >=");
+    Assert.That(new Uuid(x) > new Uuid(y), Is.EqualTo(greaterThan), "op >");
+    Assert.That(new Uuid(x) >= new Uuid(y), Is.EqualTo(greaterThanOrEqual), "op >=");
 
 #if FEATURE_GENERIC_MATH
     Assert.AreEqual(greaterThan, OpGreaterThan(new Uuid(x), new Uuid(y)), "IComparisonOperators >");

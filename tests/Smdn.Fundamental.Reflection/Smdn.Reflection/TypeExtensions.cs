@@ -16,7 +16,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(System.Delegate), true)]
   [TestCase(typeof(System.MulticastDelegate), true)]
   public void IsDelegate(Type type, bool expected)
-    => Assert.AreEqual(expected, type.IsDelegate());
+    => Assert.That(type.IsDelegate(), Is.EqualTo(expected));
 
   [Test]
   public void IsDelegate_ArgumentNull()
@@ -27,7 +27,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(System.Delegate), false)]
   [TestCase(typeof(System.MulticastDelegate), false)]
   public void IsConcreteDelegate(Type type, bool expected)
-    => Assert.AreEqual(expected, type.IsConcreteDelegate());
+    => Assert.That(type.IsConcreteDelegate(), Is.EqualTo(expected));
 
   [Test]
   public void IsConcreteDelegate_ArgumentNull()
@@ -41,7 +41,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(System.IO.FileAttributes), true)]
   [TestCase(typeof(System.DateTimeKind), false)]
   public void IsEnumFlags(Type type, bool expected)
-    => Assert.AreEqual(expected, type.IsEnumFlags());
+    => Assert.That(type.IsEnumFlags(), Is.EqualTo(expected));
 
   [Test]
   public void IsEnumFlags_ArgumentNull()
@@ -53,7 +53,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(SReadOnly1), false)]
   [TestCase(typeof(SReadOnly2), true)]
   public void IsReadOnlyValueType(Type type, bool expected)
-    => Assert.AreEqual(expected, type.IsReadOnlyValueType());
+    => Assert.That(type.IsReadOnlyValueType(), Is.EqualTo(expected));
 
   [Test]
   public void IsReadOnlyValueType_ArgumentNull()
@@ -65,7 +65,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(SByRefLike1), false)]
   [TestCase(typeof(SByRefLike2), true)]
   public void IsByRefLikeValueType(Type type, bool expected)
-    => Assert.AreEqual(expected, type.IsByRefLikeValueType());
+    => Assert.That(type.IsByRefLikeValueType(), Is.EqualTo(expected));
 
   [Test]
   public void IsByRefLikeValueType_ArgumentNull()
@@ -78,8 +78,8 @@ public partial class TypeExtensionsTests {
   {
     var m = type.GetDelegateSignatureMethod();
 
-    Assert.AreEqual(expectedReturnType, m!.ReturnType, "return type");
-    CollectionAssert.AreEqual(expectedParameterTypes, m.GetParameters().Select(p => p.ParameterType), "parameter types");
+    Assert.That(m!.ReturnType, Is.EqualTo(expectedReturnType), "return type");
+    Assert.That(m.GetParameters().Select(p => p.ParameterType), Is.EqualTo(expectedParameterTypes).AsCollection, "parameter types");
   }
 
   [Test]
@@ -107,9 +107,9 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(CTestBase), new[] { typeof(ICloneable) })]
   [TestCase(typeof(CTest), new[] { typeof(CTestBase), typeof(IDisposable) })]
   public void GetExplicitBaseTypeAndInterfaces(Type type, Type[] expectedBaseTypes)
-    => CollectionAssert.AreEquivalent(
-      expectedBaseTypes,
-      type.GetExplicitBaseTypeAndInterfaces()
+    => Assert.That(
+      type.GetExplicitBaseTypeAndInterfaces(),
+      Is.EquivalentTo(expectedBaseTypes)
     );
 
   [Test]
@@ -129,9 +129,9 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(List<int[]>), new[] { "System", "System.Collections.Generic" })]
   [TestCase(typeof(List<KeyValuePair<int, int>>), new[] { "System", "System.Collections.Generic" })]
   public void GetNamespaces(Type type, string[] expected)
-    => CollectionAssert.AreEquivalent(
-      expected,
-      type.GetNamespaces()
+    => Assert.That(
+      type.GetNamespaces(),
+      Is.EquivalentTo(expected)
     );
 
   [TestCase(typeof(int), new string[] { })]
@@ -139,9 +139,9 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(List<>), new[] { "System.Collections.Generic" })]
   [TestCase(typeof(List<int>), new[] { "System.Collections.Generic" })]
   public void GetNamespacesWithPrimitiveType(Type type, string[] expected)
-    => CollectionAssert.AreEquivalent(
-      expected,
-      type.GetNamespaces(t => t == typeof(int))
+    => Assert.That(
+      type.GetNamespaces(t => t == typeof(int)),
+      Is.EquivalentTo(expected)
     );
 
   [Test]
@@ -162,7 +162,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(Dictionary<,>.KeyCollection), "KeyCollection")]
   [TestCase(typeof(Dictionary<int, int>.KeyCollection), "KeyCollection")]
   public void GetGenericTypeName(Type type, string expected)
-    => Assert.AreEqual(expected, type.GetGenericTypeName());
+    => Assert.That(type.GetGenericTypeName(), Is.EqualTo(expected));
 
   [TestCase(typeof(void))]
   [TestCase(typeof(int))]

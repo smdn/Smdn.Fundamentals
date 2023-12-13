@@ -23,7 +23,7 @@ public partial class EncodingUtilsTests {
 
   [Test]
   public void TestGetEncodingNameEmpty()
-    => Assert.IsNull(EncodingUtils.GetEncoding(name: string.Empty));
+    => Assert.That(EncodingUtils.GetEncoding(name: string.Empty), Is.Null);
 
   [TestCase("utf16")]
   [TestCase("UTF16")]
@@ -34,7 +34,7 @@ public partial class EncodingUtilsTests {
   [TestCase("utf 16")]
   [TestCase("UTF 16")]
   public void TestGetEncodingUTF16(string name)
-    => Assert.AreEqual(Encoding.Unicode, EncodingUtils.GetEncoding(name), name);
+    => Assert.That(EncodingUtils.GetEncoding(name), Is.EqualTo(Encoding.Unicode), name);
 
   [TestCase("utf8")]
   [TestCase("UTF8")]
@@ -45,7 +45,7 @@ public partial class EncodingUtilsTests {
   [TestCase("utf 8")]
   [TestCase("UTF 8")]
   public void TestGetEncodingUTF8(string name)
-    => Assert.AreEqual(Encoding.UTF8, EncodingUtils.GetEncoding(name), name);
+    => Assert.That(EncodingUtils.GetEncoding(name), Is.EqualTo(Encoding.UTF8), name);
 
   [TestCase("shiftjis")]
   [TestCase("SHIFTJIS")]
@@ -60,7 +60,7 @@ public partial class EncodingUtilsTests {
   [TestCase("x_sjis")]
   [TestCase("X_SJIS")]
   public void TestGetEncodingShiftJIS(string name)
-    => Assert.AreEqual(EncodingProvider.ShiftJis, EncodingUtils.GetEncoding(name), name);
+    => Assert.That(EncodingUtils.GetEncoding(name), Is.EqualTo(EncodingProvider.ShiftJis), name);
 
   [TestCase("iso-2022-jp")]
   [TestCase("ISO-2022-JP")]
@@ -69,7 +69,7 @@ public partial class EncodingUtilsTests {
   [TestCase("iso2022jp")]
   [TestCase("ISO2022JP")]
   public void TestGetEncodingISO2022JP(string name)
-    => Assert.AreEqual(EncodingProvider.Jis, EncodingUtils.GetEncoding(name), name);
+    => Assert.That(EncodingUtils.GetEncoding(name), Is.EqualTo(EncodingProvider.Jis), name);
 
   [TestCase("euc-jp")]
   [TestCase("EUC-JP")]
@@ -82,7 +82,7 @@ public partial class EncodingUtilsTests {
   [TestCase("x_euc_jp")]
   [TestCase("X_EUC_JP")]
   public void TestGetEncodingEUCJP(string name)
-    => Assert.AreEqual(EncodingProvider.EucJP, EncodingUtils.GetEncoding(name), name);
+    => Assert.That(EncodingUtils.GetEncoding(name), Is.EqualTo(EncodingProvider.EucJP), name);
 
   [TestCase("utf8 ")]
   [TestCase(" utf8")]
@@ -91,35 +91,35 @@ public partial class EncodingUtilsTests {
   [TestCase("\tutf8")]
   [TestCase("\tutf8\n")]
   public void TestGetEncodingContainsWhitespaces(string name)
-    => Assert.AreEqual(Encoding.UTF8, EncodingUtils.GetEncoding(name), name);
+    => Assert.That(EncodingUtils.GetEncoding(name), Is.EqualTo(Encoding.UTF8), name);
 
   [Test]
   public void TestGetEncodingUnsupported()
-    => Assert.IsNull(EncodingUtils.GetEncoding("x-unkwnown-encoding"));
+    => Assert.That(EncodingUtils.GetEncoding("x-unkwnown-encoding"), Is.Null);
 
   [Test]
   public void TestGetEncodingSelectFallback()
   {
     var ret = EncodingUtils.GetEncoding("x-unkwnown-encoding", name => {
-      Assert.AreEqual("x-unkwnown-encoding", name, "callback arg");
+      Assert.That(name, Is.EqualTo("x-unkwnown-encoding"), "callback arg");
 
       return Encoding.UTF8;
     });
 
-    Assert.IsNotNull(ret);
-    Assert.AreEqual(Encoding.UTF8, ret);
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret, Is.EqualTo(Encoding.UTF8));
   }
 
   [Test]
   public void TestGetEncodingSelectFallbackReturnNull()
   {
     var ret = EncodingUtils.GetEncoding("x-unkwnown-encoding", name => {
-      Assert.AreEqual("x-unkwnown-encoding", name, "callback arg");
+      Assert.That(name, Is.EqualTo("x-unkwnown-encoding"), "callback arg");
 
       return null;
     });
 
-    Assert.IsNull(ret);
+    Assert.That(ret, Is.Null);
   }
 
   [Test]
@@ -129,21 +129,21 @@ public partial class EncodingUtilsTests {
       () => EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding")
     );
 
-    Assert.AreEqual("x-unkwnown-encoding", ex!.EncodingName);
-    Assert.IsNotNull(ex.Message);
-    Assert.IsNull(ex.InnerException);
+    Assert.That(ex!.EncodingName, Is.EqualTo("x-unkwnown-encoding"));
+    Assert.That(ex.Message, Is.Not.Null);
+    Assert.That(ex.InnerException, Is.Null);
   }
 
   [Test]
   public void TestGetEncodingThrowExceptionSelectFallback()
   {
     var ret = EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", name => {
-      Assert.AreEqual("x-unkwnown-encoding", name);
+      Assert.That(name, Is.EqualTo("x-unkwnown-encoding"));
       return Encoding.UTF8;
     });
 
-    Assert.IsNotNull(ret);
-    Assert.AreEqual(Encoding.UTF8, ret);
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret, Is.EqualTo(Encoding.UTF8));
   }
 
   [Test]
@@ -158,9 +158,9 @@ public partial class EncodingUtilsTests {
       })
     );
 
-    Assert.AreEqual("x-unkwnown-encoding", encodingName);
-    Assert.AreEqual("x-unkwnown-encoding", ex!.EncodingName);
-    Assert.IsNotNull(ex.Message);
-    Assert.IsNull(ex.InnerException);
+    Assert.That(encodingName, Is.EqualTo("x-unkwnown-encoding"));
+    Assert.That(ex!.EncodingName, Is.EqualTo("x-unkwnown-encoding"));
+    Assert.That(ex.Message, Is.Not.Null);
+    Assert.That(ex.InnerException, Is.Null);
   }
 }

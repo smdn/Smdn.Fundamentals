@@ -9,46 +9,46 @@ partial class HexadecimalTests {
   [Test]
   public void TryDecode_OfDataArraySegment_DataTooShort()
   {
-    Assert.IsFalse(Hexadecimal.TryDecode(new ArraySegment<byte>(new byte[0]), out _));
-    Assert.IsFalse(Hexadecimal.TryDecode(new ArraySegment<byte>(new byte[1]), out _));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<byte>(new byte[0]), out _), Is.False);
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<byte>(new byte[1]), out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new byte[0]), out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new byte[1]), out _));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new byte[0]), out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new byte[1]), out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new byte[0]), out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new byte[1]), out _));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new byte[0]), out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new byte[1]), out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecode(new ArraySegment<char>(new char[0]), out _));
-    Assert.IsFalse(Hexadecimal.TryDecode(new ArraySegment<char>(new char[1]), out _));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<char>(new char[0]), out _), Is.False);
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<char>(new char[1]), out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new char[0]), out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new char[1]), out _));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new char[0]), out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new char[1]), out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new char[0]), out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new char[1]), out _));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new char[0]), out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new char[1]), out _), Is.False);
   }
 
 #if SYSTEM_READONLYSPAN
   [Test]
   public void TryDecode_OfDataSpan_DataTooShort()
   {
-    Assert.IsFalse(Hexadecimal.TryDecode(new byte[0], out _));
-    Assert.IsFalse(Hexadecimal.TryDecode(new byte[1], out _));
+    Assert.That(Hexadecimal.TryDecode(new byte[0], out _), Is.False);
+    Assert.That(Hexadecimal.TryDecode(new byte[1], out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new byte[0], out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new byte[1], out _));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new byte[0], out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new byte[1], out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new byte[0], out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new byte[1], out _));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new byte[0], out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new byte[1], out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecode(new char[0], out _));
-    Assert.IsFalse(Hexadecimal.TryDecode(new char[1], out _));
+    Assert.That(Hexadecimal.TryDecode(new char[0], out _), Is.False);
+    Assert.That(Hexadecimal.TryDecode(new char[1], out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new char[0], out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new char[1], out _));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new char[0], out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new char[1], out _), Is.False);
 
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new char[0], out _));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new char[1], out _));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new char[0], out _), Is.False);
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new char[1], out _), Is.False);
   }
 #endif
 
@@ -62,11 +62,11 @@ partial class HexadecimalTests {
   [TestCase(0x45, 0x46, 0xEF)]
   public void TryDecode_OfByteArraySegment_UpperCase(byte high, byte low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new ArraySegment<byte>(new[] {high, low}), out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<byte>(new[] {high, low}), out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new[] {high, low}), out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new[] {high, low}), out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -80,11 +80,11 @@ partial class HexadecimalTests {
   [TestCase(0x45, 0x46, 0xEF)]
   public void TryDecode_OfByteSpan_UpperCase(byte high, byte low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 #endif
 
@@ -98,11 +98,11 @@ partial class HexadecimalTests {
   [TestCase('E', 'F', 0xEF)]
   public void TryDecode_OfCharArraySegment_UpperCase(char high, char low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new ArraySegment<char>(new[] {high, low}), out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<char>(new[] {high, low}), out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new[] {high, low}), out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new[] {high, low}), out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -116,11 +116,11 @@ partial class HexadecimalTests {
   [TestCase('E', 'F', 0xEF)]
   public void TryDecode_OfCharSpan_UpperCase(char high, char low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 #endif
 
@@ -134,11 +134,11 @@ partial class HexadecimalTests {
   [TestCase(0x65, 0x66, 0xEF)]
   public void TryDecode_OfByteArraySegment_LowerCase(byte high, byte low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new ArraySegment<byte>(new[] {high, low}), out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<byte>(new[] {high, low}), out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new[] {high, low}), out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new[] {high, low}), out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -152,11 +152,11 @@ partial class HexadecimalTests {
   [TestCase(0x65, 0x66, 0xEF)]
   public void TryDecode_OfByteSpan_LowerCase(byte high, byte low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 #endif
 
@@ -170,11 +170,11 @@ partial class HexadecimalTests {
   [TestCase('e', 'f', 0xEF)]
   public void TryDecode_OfCharArraySegment_LowerCase(char high, char low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new ArraySegment<char>(new[] {high, low}), out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<char>(new[] {high, low}), out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new[] {high, low}), out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new[] {high, low}), out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -188,11 +188,11 @@ partial class HexadecimalTests {
   [TestCase('e', 'f', 0xEF)]
   public void TryDecode_OfCharSpan_LowerCase(char high, char low, byte expected)
   {
-    Assert.IsTrue(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), nameof(Hexadecimal.TryDecode));
-    Assert.AreEqual(decoded0, expected, nameof(decoded0));
+    Assert.That(Hexadecimal.TryDecode(new[] {high, low}, out var decoded0), Is.True, nameof(Hexadecimal.TryDecode));
+    Assert.That(decoded0, Is.EqualTo(expected), nameof(decoded0));
 
-    Assert.IsTrue(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out var decoded1), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.AreEqual(decoded1, expected, nameof(decoded1));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out var decoded1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(decoded1, Is.EqualTo(expected), nameof(decoded1));
   }
 #endif
 
@@ -211,9 +211,9 @@ partial class HexadecimalTests {
   [TestCase((byte)('f' + 1), 0x00)]
   public void TryDecode_OfByteArraySegment_InvalidOctet(byte high, byte low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecode(new ArraySegment<byte>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecode));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<byte>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecode));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -232,9 +232,9 @@ partial class HexadecimalTests {
   [TestCase((byte)('f' + 1), 0x00)]
   public void TryDecode_OfByteSpan_InvalidOctet(byte high, byte low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecode(new[] {high, low}, out _), nameof(Hexadecimal.TryDecode));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecode(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecode));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 #endif
 
@@ -253,9 +253,9 @@ partial class HexadecimalTests {
   [TestCase((char)('f' + 1), '\0')]
   public void TryDecode_OfCharArraySegment_InvalidOctet(char high, char low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecode(new ArraySegment<char>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecode));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecode(new ArraySegment<char>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecode));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -274,9 +274,9 @@ partial class HexadecimalTests {
   [TestCase((char)('f' + 1), '\0')]
   public void TryDecode_OfCharSpan_InvalidOctet(char high, char low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecode(new[] {high, low}, out _), nameof(Hexadecimal.TryDecode));
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecode(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecode));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 #endif
 
@@ -286,7 +286,7 @@ partial class HexadecimalTests {
   [TestCase((byte)('f'), 0x00)]
   public void TryDecodeUpperCase_OfByteArraySegment_InvalidOctet(byte high, byte low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<byte>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -296,7 +296,7 @@ partial class HexadecimalTests {
   [TestCase((byte)('f'), 0x00)]
   public void TryDecodeUpperCase_OfByteSpan_InvalidOctet(byte high, byte low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
   }
 #endif
 
@@ -306,7 +306,7 @@ partial class HexadecimalTests {
   [TestCase('f', '\0')]
   public void TryDecodeUpperCase_OfCharArraySegment_InvalidOctet(char high, char low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new ArraySegment<char>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -316,7 +316,7 @@ partial class HexadecimalTests {
   [TestCase('f', '\0')]
   public void TryDecodeUpperCase_OfCharSpan_InvalidOctet(char high, char low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeUpperCase));
+    Assert.That(Hexadecimal.TryDecodeUpperCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeUpperCase));
   }
 #endif
 
@@ -326,7 +326,7 @@ partial class HexadecimalTests {
   [TestCase((byte)('F'), 0x00)]
   public void TryDecodeLowerCase_OfByteArraySegment_InvalidOctet(byte high, byte low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<byte>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -336,7 +336,7 @@ partial class HexadecimalTests {
   [TestCase((byte)('F'), 0x00)]
   public void TryDecodeLowerCase_OfByteSpan_InvalidOctet(byte high, byte low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 #endif
 
@@ -346,7 +346,7 @@ partial class HexadecimalTests {
   [TestCase('F', '\0')]
   public void TryDecodeLowerCase_OfCharArraySegment_InvalidOctet(char high, char low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new[] {high, low}), out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new ArraySegment<char>(new[] {high, low}), out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -356,7 +356,7 @@ partial class HexadecimalTests {
   [TestCase('F', '\0')]
   public void TryDecodeLowerCase_OfCharSpan_InvalidOctet(char high, char low)
   {
-    Assert.IsFalse(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), nameof(Hexadecimal.TryDecodeLowerCase));
+    Assert.That(Hexadecimal.TryDecodeLowerCase(new[] {high, low}, out _), Is.False, nameof(Hexadecimal.TryDecodeLowerCase));
   }
 #endif
 
@@ -384,10 +384,10 @@ partial class HexadecimalTests {
   [TestCase((byte)'f', false, 0x0)]
   public void TryDecodeUpperCaseValue_OfByte(byte data, bool canDecode, byte expectedDecodedValue)
   {
-    Assert.AreEqual(canDecode, Hexadecimal.TryDecodeUpperCaseValue(data, out var decodedValue), nameof(canDecode));
+    Assert.That(Hexadecimal.TryDecodeUpperCaseValue(data, out var decodedValue), Is.EqualTo(canDecode), nameof(canDecode));
 
     if (canDecode)
-      Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+      Assert.That(decodedValue, Is.EqualTo(expectedDecodedValue), nameof(decodedValue));
   }
 
   [TestCase('0', true, 0x0)]
@@ -414,10 +414,10 @@ partial class HexadecimalTests {
   [TestCase('f', false, 0x0)]
   public void TryDecodeUpperCaseValue_OfChar(char data, bool canDecode, byte expectedDecodedValue)
   {
-    Assert.AreEqual(canDecode, Hexadecimal.TryDecodeUpperCaseValue(data, out var decodedValue), nameof(canDecode));
+    Assert.That(Hexadecimal.TryDecodeUpperCaseValue(data, out var decodedValue), Is.EqualTo(canDecode), nameof(canDecode));
 
     if (canDecode)
-      Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+      Assert.That(decodedValue, Is.EqualTo(expectedDecodedValue), nameof(decodedValue));
   }
 
   [TestCase((byte)'0', true, 0x0)]
@@ -444,10 +444,10 @@ partial class HexadecimalTests {
   [TestCase((byte)'F', false, 0x0)]
   public void TryDecodeLowerCaseValue_OfByte(byte data, bool canDecode, byte expectedDecodedValue)
   {
-    Assert.AreEqual(canDecode, Hexadecimal.TryDecodeLowerCaseValue(data, out var decodedValue), nameof(canDecode));
+    Assert.That(Hexadecimal.TryDecodeLowerCaseValue(data, out var decodedValue), Is.EqualTo(canDecode), nameof(canDecode));
 
     if (canDecode)
-      Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+      Assert.That(decodedValue, Is.EqualTo(expectedDecodedValue), nameof(decodedValue));
   }
 
   [TestCase('0', true, 0x0)]
@@ -474,10 +474,10 @@ partial class HexadecimalTests {
   [TestCase('F', false, 0x0)]
   public void TryDecodeLowerCaseValue_OfChar(char data, bool canDecode, byte expectedDecodedValue)
   {
-    Assert.AreEqual(canDecode, Hexadecimal.TryDecodeLowerCaseValue(data, out var decodedValue), nameof(canDecode));
+    Assert.That(Hexadecimal.TryDecodeLowerCaseValue(data, out var decodedValue), Is.EqualTo(canDecode), nameof(canDecode));
 
     if (canDecode)
-      Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+      Assert.That(decodedValue, Is.EqualTo(expectedDecodedValue), nameof(decodedValue));
   }
 
   [TestCase((byte)'0', true, 0x0)]
@@ -510,10 +510,10 @@ partial class HexadecimalTests {
   [TestCase((byte)('F' + 1), false, 0x0)]
   public void TryDecodeValue_OfByte(byte data, bool canDecode, byte expectedDecodedValue)
   {
-    Assert.AreEqual(canDecode, Hexadecimal.TryDecodeValue(data, out var decodedValue), nameof(canDecode));
+    Assert.That(Hexadecimal.TryDecodeValue(data, out var decodedValue), Is.EqualTo(canDecode), nameof(canDecode));
 
     if (canDecode)
-      Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+      Assert.That(decodedValue, Is.EqualTo(expectedDecodedValue), nameof(decodedValue));
   }
 
   [TestCase('0', true, 0x0)]
@@ -546,9 +546,9 @@ partial class HexadecimalTests {
   [TestCase((char)('F' + 1), false, 0x0)]
   public void TryDecodeValue_OfChar(char data, bool canDecode, byte expectedDecodedValue)
   {
-    Assert.AreEqual(canDecode, Hexadecimal.TryDecodeValue(data, out var decodedValue), nameof(canDecode));
+    Assert.That(Hexadecimal.TryDecodeValue(data, out var decodedValue), Is.EqualTo(canDecode), nameof(canDecode));
 
     if (canDecode)
-      Assert.AreEqual(expectedDecodedValue, decodedValue, nameof(decodedValue));
+      Assert.That(decodedValue, Is.EqualTo(expectedDecodedValue), nameof(decodedValue));
   }
 }

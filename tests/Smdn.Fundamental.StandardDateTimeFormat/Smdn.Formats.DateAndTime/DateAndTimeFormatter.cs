@@ -29,5 +29,5 @@ public class DateAndTimeFormatterTests {
 
   [TestCaseSource(nameof(YieldTestCases_FormatOffset))]
   public void FormatOffset(TimeSpan offset, bool delimiter, string expected)
-    => Assert.AreEqual(expected, DateAndTimeFormatter.FormatOffset(offset, delimiter));
+    => Assert.That(DateAndTimeFormatter.FormatOffset(offset, delimiter), Is.EqualTo(expected));
 }

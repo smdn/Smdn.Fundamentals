@@ -60,35 +60,35 @@ public class RuntimeTests {
   {
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.NetFx:
-        Assert.IsTrue(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
-        Assert.IsFalse(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
-        Assert.IsFalse(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
-        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
+        Assert.That(Runtime.IsRunningOnNetFx, Is.True, nameof(Runtime.IsRunningOnNetFx));
+        Assert.That(Runtime.IsRunningOnNetCore, Is.False, nameof(Runtime.IsRunningOnNetCore));
+        Assert.That(Runtime.IsRunningOnMono, Is.False, nameof(Runtime.IsRunningOnMono));
+        Assert.That(Runtime.IsRunningOnDotNet5OrOver, Is.False, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
 
       case RuntimeEnvironment.NetCore:
-        Assert.IsTrue(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
-        Assert.IsFalse(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
-        Assert.IsFalse(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
+        Assert.That(Runtime.IsRunningOnNetCore, Is.True, nameof(Runtime.IsRunningOnNetCore));
+        Assert.That(Runtime.IsRunningOnNetFx, Is.False, nameof(Runtime.IsRunningOnNetFx));
+        Assert.That(Runtime.IsRunningOnMono, Is.False, nameof(Runtime.IsRunningOnMono));
 
         if (RuntimeInformation.FrameworkDescription.Contains(".NET Core"))
-          Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
+          Assert.That(Runtime.IsRunningOnDotNet5OrOver, Is.False, nameof(Runtime.IsRunningOnDotNet5OrOver));
         else
-          Assert.IsTrue(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
+          Assert.That(Runtime.IsRunningOnDotNet5OrOver, Is.True, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
 
       case RuntimeEnvironment.Mono:
-        Assert.IsTrue(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
-        Assert.IsFalse(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
-        Assert.IsFalse(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
-        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
+        Assert.That(Runtime.IsRunningOnMono, Is.True, nameof(Runtime.IsRunningOnMono));
+        Assert.That(Runtime.IsRunningOnNetFx, Is.False, nameof(Runtime.IsRunningOnNetFx));
+        Assert.That(Runtime.IsRunningOnNetCore, Is.False, nameof(Runtime.IsRunningOnNetCore));
+        Assert.That(Runtime.IsRunningOnDotNet5OrOver, Is.False, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
 
       default:
-        Assert.IsFalse(Runtime.IsRunningOnMono, nameof(Runtime.IsRunningOnMono));
-        Assert.IsFalse(Runtime.IsRunningOnNetFx, nameof(Runtime.IsRunningOnNetFx));
-        Assert.IsFalse(Runtime.IsRunningOnNetCore, nameof(Runtime.IsRunningOnNetCore));
-        Assert.IsFalse(Runtime.IsRunningOnDotNet5OrOver, nameof(Runtime.IsRunningOnDotNet5OrOver));
+        Assert.That(Runtime.IsRunningOnMono, Is.False, nameof(Runtime.IsRunningOnMono));
+        Assert.That(Runtime.IsRunningOnNetFx, Is.False, nameof(Runtime.IsRunningOnNetFx));
+        Assert.That(Runtime.IsRunningOnNetCore, Is.False, nameof(Runtime.IsRunningOnNetCore));
+        Assert.That(Runtime.IsRunningOnDotNet5OrOver, Is.False, nameof(Runtime.IsRunningOnDotNet5OrOver));
         break;
     }
   }
@@ -97,19 +97,19 @@ public class RuntimeTests {
   public void TestVersionString()
   {
     // returns non-null value always
-    Assert.IsNotNull(Runtime.VersionString);
+    Assert.That(Runtime.VersionString, Is.Not.Null);
 
     var version = Runtime.VersionString.ToLowerInvariant();
 
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.Mono:
-        StringAssert.Contains("mono", version);
+        Assert.That(version, Does.Contain("mono"));
         break;
       case RuntimeEnvironment.NetFx:
-        StringAssert.Contains(".net framework", version);
+        Assert.That(version, Does.Contain(".net framework"));
         break;
       case RuntimeEnvironment.NetCore:
-        StringAssert.Contains(".net", version); // .NET Core, .NET
+        Assert.That(version, Does.Contain(".net")); // .NET Core, .NET
         break;
       default:
         TestContext.Out.WriteLine($"[Test: {nameof(TestVersionString)}]");
@@ -123,16 +123,16 @@ public class RuntimeTests {
   public void TestName()
   {
     // returns non-null value always
-    Assert.IsNotNull(Runtime.Name);
+    Assert.That(Runtime.Name, Is.Not.Null);
 
     var name = Runtime.Name.ToLowerInvariant();
 
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.Mono:
-        StringAssert.Contains("mono", name);
+        Assert.That(name, Does.Contain("mono"));
         break;
       case RuntimeEnvironment.NetFx:
-        StringAssert.Contains(".net framework", name);
+        Assert.That(name, Does.Contain(".net framework"));
         break;
       case RuntimeEnvironment.NetCore:
         if (Runtime.Version is null) {
@@ -143,16 +143,16 @@ public class RuntimeTests {
         }
         else {
           if (5 <= Runtime.Version.Major)
-            StringAssert.Contains(".net", name);
+            Assert.That(name, Does.Contain(".net"));
           else
-            StringAssert.Contains(".net core", name);
+            Assert.That(name, Does.Contain(".net core"));
         }
         break;
       default:
 #if NETFRAMEWORK
-        StringAssert.Contains("compatible", name);
+        Assert.That(name, Does.Contain("compatible"));
 #else
-        StringAssert.Contains(".net", name);
+        Assert.That(name, Does.Contain(".net"));
 #endif
         break;
     }
@@ -162,7 +162,7 @@ public class RuntimeTests {
   public void TestVersion()
   {
 #if SYSTEM_ENVIRONMENT_VERSION
-    Assert.IsNotNull(Runtime.Version);
+    Assert.That(Runtime.Version, Is.Not.Null);
 #else
     TestContext.Out.WriteLine($"[Test: {nameof(TestVersion)}]");
     TestContext.Out.WriteLine($"{nameof(Runtime.Version)}: {Runtime.Version}");
@@ -174,26 +174,26 @@ public class RuntimeTests {
 
     var version = Runtime.Version!;
 
-    Assert.AreNotEqual(0, version.Major, nameof(version.Major));
-    Assert.AreNotEqual(-1, version.Minor, nameof(version.Minor));
+    Assert.That(version.Major, Is.Not.EqualTo(0), nameof(version.Major));
+    Assert.That(version.Minor, Is.Not.EqualTo(-1), nameof(version.Minor));
 
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.Mono:
-        StringAssert.Contains(version.ToString(), Runtime.VersionString, "Mono verion string");
+        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), "Mono verion string");
         break;
 
       case RuntimeEnvironment.NetFx:
-        Assert.Less(version.Major, 5, ".NET Framework major verion must be less than 5");
-        StringAssert.Contains(version.ToString(), Runtime.VersionString, ".NET Framework verion string");
+        Assert.That(version.Major, Is.LessThan(5), ".NET Framework major verion must be less than 5");
+        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), ".NET Framework verion string");
         break;
 
       case RuntimeEnvironment.NetCore:
         if (!Runtime.Name.Contains(".NET Core"))
-          Assert.GreaterOrEqual(version.Major, 5, ".NET major verion must be greater than or equal to 5");
+          Assert.That(version.Major, Is.GreaterThanOrEqualTo(5), ".NET major verion must be greater than or equal to 5");
 #if SYSTEM_ENVIRONMENT_VERSION
-        Assert.AreEqual(Environment.Version, version, "CoreCLR version must be equal to Environment.Version");
+        Assert.That(version, Is.EqualTo(Environment.Version), "CoreCLR version must be equal to Environment.Version");
 #endif
-        StringAssert.Contains(version.ToString(), Runtime.VersionString, "CoreCLR version string");
+        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), "CoreCLR version string");
         break;
 
       default:
@@ -218,17 +218,17 @@ public class RuntimeTests {
   {
     if (Runtime.IsRunningOnNetFx)
       // .NET Framework
-      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Framework does not support IANA time zone name");
+      Assert.That(Runtime.SupportsIanaTimeZoneName, Is.False, ".NET Framework does not support IANA time zone name");
     else if (Runtime.IsRunningOnDotNet5OrOver)
       // .NET >= 5.0
       Assert.Inconclusive(".NET on Windows supports IANA time zone name, but is configurable");
     else
       // .NET Core
-      Assert.IsFalse(Runtime.SupportsIanaTimeZoneName, ".NET Core on Windows does not support IANA time zone name");
+      Assert.That(Runtime.SupportsIanaTimeZoneName, Is.False, ".NET Core on Windows does not support IANA time zone name");
   }
 
   private void SupportsIanaTimeZoneName_NonWindowsOS()
-    => Assert.IsTrue(Runtime.SupportsIanaTimeZoneName, "Mono or .NET on non-windows OS supports IANA time zone name");
+    => Assert.That(Runtime.SupportsIanaTimeZoneName, Is.True, "Mono or .NET on non-windows OS supports IANA time zone name");
 
   private static string ExecutePrintRuntimeInformation(
     string[] args,
@@ -308,7 +308,7 @@ public class RuntimeTests {
       ).TrimEnd()
     );
 
-    Assert.IsFalse(processSupportsIanaTimeZoneName);
+    Assert.That(processSupportsIanaTimeZoneName, Is.False);
   }
 
   [TestCase("true")]
@@ -327,6 +327,6 @@ public class RuntimeTests {
       ).TrimEnd()
     );
 
-    Assert.IsFalse(processSupportsIanaTimeZoneName);
+    Assert.That(processSupportsIanaTimeZoneName, Is.False);
   }
 }

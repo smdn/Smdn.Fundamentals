@@ -9,13 +9,14 @@ namespace Smdn;
 public class BitOperationsShimTests {
   [Test]
   public void ShimType_IsPow2()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemNumericsBitOperationsIsPow2),
+    => Assert.That(
 #if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
       typeof(System.Numerics.BitOperations)
 #else
       typeof(Smdn.BitOperationsShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsIsPow2))
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, false)]
@@ -54,8 +55,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_00000000_00000000_00000000_00000110u, false)]
   public void IsPow2_XInt32(uint value, bool expected)
   {
-    Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((int)value)), $"IsPow2<int>({value:X8})");
-    Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), $"IsPow2<uint>({value:X8})");
+    Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((int)value)), Is.EqualTo(expected), $"IsPow2<int>({value:X8})");
+    Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), Is.EqualTo(expected), $"IsPow2<uint>({value:X8})");
   }
 
   [TestCase(0b_10000000_00000000_00000000_00000000u,  true)]
@@ -64,7 +65,7 @@ public class BitOperationsShimTests {
   [TestCase(0b_11111111_11111111_11111111_11111111u, false)]
   [TestCase(0b_11111111_11111111_11111111_11111110u, false)]
   public void IsPow2_UInt32(uint value, bool expected)
-    => Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), $"IsPow2<uint>({value:X8})");
+    => Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), Is.EqualTo(expected), $"IsPow2<uint>({value:X8})");
 
   [TestCase(0b_10000000_00000000_00000000_00000000u, false)] // negative value
   [TestCase(0b_11000000_00000000_00000000_00000000u, false)] // negative value
@@ -72,7 +73,7 @@ public class BitOperationsShimTests {
   [TestCase(0b_11111111_11111111_11111111_11111111u, false)] // negative value
   [TestCase(0b_11111111_11111111_11111111_11111110u, false)] // negative value
   public void IsPow2_Int32(uint value, bool expected)
-    => Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((int)value)), $"IsPow2<int>({value:X8})");
+    => Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((int)value)), Is.EqualTo(expected), $"IsPow2<int>({value:X8})");
 
   [TestCase(0b_00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL, false)]
   [TestCase(0b_00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000001uL,  true)]
@@ -142,8 +143,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_00000000_00000000_00000000_00000000_00000000_00000000_00000000_00000110uL, false)]
   public void IsPow2_XInt64(ulong value, bool expected)
   {
-    Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((long)value)), $"IsPow2<long>({value:X16})");
-    Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), $"IsPow2<ulong>({value:X16})");
+    Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((long)value)), Is.EqualTo(expected), $"IsPow2<long>({value:X16})");
+    Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), Is.EqualTo(expected), $"IsPow2<ulong>({value:X16})");
   }
 
   [TestCase(0b_10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL,  true)]
@@ -152,7 +153,7 @@ public class BitOperationsShimTests {
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL, false)]
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111110uL, false)]
   public void IsPow2_UInt64(ulong value, bool expected)
-    => Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), $"IsPow2<ulong>({value:X16})");
+    => Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value), Is.EqualTo(expected), $"IsPow2<ulong>({value:X16})");
 
   [TestCase(0b_10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL, false)] // negative value
   [TestCase(0b_11000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL, false)] // negative value
@@ -160,17 +161,18 @@ public class BitOperationsShimTests {
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL, false)] // negative value
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111110uL, false)] // negative value
   public void IsPow2_Int64(ulong value, bool expected)
-    => Assert.AreEqual(expected, ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((long)value)), $"IsPow2<long>({value:X16})");
+    => Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((long)value)), Is.EqualTo(expected), $"IsPow2<long>({value:X16})");
 
   [Test]
   public void ShimType_Log2()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemNumericsBitOperationsLog2),
+    => Assert.That(
 #if SYSTEM_NUMERICS_BITOPERATIONS_LOG2
       typeof(System.Numerics.BitOperations)
 #else
       typeof(Smdn.BitOperationsShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsLog2))
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u,  0)]
@@ -209,8 +211,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_10000000_00000000_00000000_00000000u, 31)]
   [TestCase(0b_11111111_11111111_11111111_11111111u, 31)]
   public void Log2_UInt32(uint value, int expected)
-    => Assert.AreEqual(
-      expected, ShimTypeSystemNumericsBitOperationsLog2.Log2(value),
+    => Assert.That(
+ShimTypeSystemNumericsBitOperationsLog2.Log2(value), Is.EqualTo(expected),
       $"Log2<UInt32>({value:X8})"
     );
 
@@ -282,20 +284,21 @@ public class BitOperationsShimTests {
   [TestCase(0b_10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL, 63)]
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL, 63)]
   public void Log2_UInt64(ulong value, int expected)
-    => Assert.AreEqual(
-      expected, ShimTypeSystemNumericsBitOperationsLog2.Log2(value),
+    => Assert.That(
+ShimTypeSystemNumericsBitOperationsLog2.Log2(value), Is.EqualTo(expected),
       $"Log2<UInt64>({value:X16})"
     );
 
   [Test]
   public void ShimType_PopCount()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemNumericsBitOperationsPopCount),
+    => Assert.That(
 #if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
       typeof(System.Numerics.BitOperations)
 #else
       typeof(Smdn.BitOperationsShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsPopCount))
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u,  0)]
@@ -393,9 +396,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_11111111_11111111_11111111_11111110u, 31)]
   [TestCase(0b_11111111_11111111_11111111_11111111u, 32)]
   public void PopCount_UInt32(uint value, int expectedValue)
-    => Assert.AreEqual(
-      expectedValue,
-      ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value),
+    => Assert.That(
+      ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value), Is.EqualTo(expectedValue),
       $"PopCount<uint>({value:X8})"
     );
 
@@ -590,21 +592,21 @@ public class BitOperationsShimTests {
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111110uL, 63)]
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL, 64)]
   public void PopCount_UInt64(ulong value, int expectedValue)
-    => Assert.AreEqual(
-      expectedValue,
-      ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value),
+    => Assert.That(
+      ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value), Is.EqualTo(expectedValue),
       $"PopCount<ulong>({value:X16})"
     );
 
   [Test]
   public void ShimType_LeadingZeroCount()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemNumericsBitOperationsLeadingZeroCount),
+    => Assert.That(
 #if SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT
       typeof(System.Numerics.BitOperations)
 #else
       typeof(Smdn.BitOperationsShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsLeadingZeroCount))
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, 32)]
@@ -643,8 +645,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_10000000_00000000_00000000_00000000u,  0)]
   [TestCase(0b_11111111_11111111_11111111_11111111u,  0)]
   public void LeadingZeroCount_UInt32(uint value, int expected)
-    => Assert.AreEqual(
-      expected, ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value),
+    => Assert.That(
+ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value), Is.EqualTo(expected),
       $"LeadingZeroCount<UInt32>({value:X8})"
     );
 
@@ -716,20 +718,21 @@ public class BitOperationsShimTests {
   [TestCase(0b_10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL,  0)]
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL,  0)]
   public void LeadingZeroCount_UInt64(ulong value, int expected)
-    => Assert.AreEqual(
-      expected, ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value),
+    => Assert.That(
+ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value), Is.EqualTo(expected),
       $"LeadingZeroCount<UInt64>({value:X16})"
     );
 
   [Test]
   public void ShimType_TrailingZeroCount()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemNumericsBitOperationsTrailingZeroCount),
+    => Assert.That(
 #if SYSTEM_NUMERICS_BITOPERATIONS_TRAILINGZEROCOUNT
       typeof(System.Numerics.BitOperations)
 #else
       typeof(Smdn.BitOperationsShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsTrailingZeroCount))
     );
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, 32)]
@@ -769,8 +772,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_10000000_00000000_00000000_00000000u, 31)]
   [TestCase(0b_11111111_11111111_11111111_11111111u,  0)]
   public void TrailingZeroCount_UInt32(uint value, int expected)
-    => Assert.AreEqual(
-      expected, ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value),
+    => Assert.That(
+ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value), Is.EqualTo(expected),
       $"TrailingZeroCount<UInt32>({value:X8})"
     );
 
@@ -843,8 +846,8 @@ public class BitOperationsShimTests {
   [TestCase(0b_10000000_00000000_00000000_00000000_00000000_00000000_00000000_00000000uL, 63)]
   [TestCase(0b_11111111_11111111_11111111_11111111_11111111_11111111_11111111_11111111uL,  0)]
   public void TrailingZeroCount_UInt64(ulong value, int expected)
-    => Assert.AreEqual(
-      expected, ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value),
+    => Assert.That(
+ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value), Is.EqualTo(expected),
       $"TrailingZeroCount<UInt64>({value:X16})"
     );
 }

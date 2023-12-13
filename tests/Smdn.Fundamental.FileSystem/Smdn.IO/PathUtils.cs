@@ -15,9 +15,9 @@ namespace Smdn.IO {
     public void TestDefaultPathStringComparison()
     {
       if (IsRunningOnWindows)
-        Assert.IsTrue(string.Equals("C:\\path", "C:\\Path", PathUtils.DefaultPathStringComparison));
+        Assert.That(string.Equals("C:\\path", "C:\\Path", PathUtils.DefaultPathStringComparison), Is.True);
       else
-        Assert.IsFalse(string.Equals("/path", "/Path", PathUtils.DefaultPathStringComparison));
+        Assert.That(string.Equals("/path", "/Path", PathUtils.DefaultPathStringComparison), Is.False);
 
 #if SYSTEM_STRINGCOMPARER_FROMCOMPARISON
       StringComparer comparer = null;
@@ -29,18 +29,18 @@ namespace Smdn.IO {
       });
 
 #if SYSTEM_STRINGCOMPARER_ISWELLKNOWNORDINALCOMPARER
-      Assert.IsTrue(
+      Assert.That(
         StringComparer.IsWellKnownOrdinalComparer(
           PathUtils.DefaultPathStringComparer,
           out var isIgnoreCase
-        ),
+        ), Is.True,
         "IsWellKnownOrdinalComparer"
       );
 
       if (IsRunningOnWindows)
-        Assert.IsTrue(isIgnoreCase, nameof(isIgnoreCase));
+        Assert.That(isIgnoreCase, Is.True, nameof(isIgnoreCase));
       else
-        Assert.IsFalse(isIgnoreCase, nameof(isIgnoreCase));
+        Assert.That(isIgnoreCase, Is.False, nameof(isIgnoreCase));
 #endif
 #endif
     }
@@ -48,26 +48,26 @@ namespace Smdn.IO {
     [Test]
     public void TestDefaultPathStringComparer()
     {
-      Assert.IsNotNull(PathUtils.DefaultPathStringComparer);
+      Assert.That(PathUtils.DefaultPathStringComparer, Is.Not.Null);
 
       if (IsRunningOnWindows)
-        Assert.IsTrue(PathUtils.DefaultPathStringComparer.Equals("C:\\path", "C:\\Path"));
+        Assert.That(PathUtils.DefaultPathStringComparer.Equals("C:\\path", "C:\\Path"), Is.True);
       else
-        Assert.IsFalse(PathUtils.DefaultPathStringComparer.Equals("/path", "/Path"));
+        Assert.That(PathUtils.DefaultPathStringComparer.Equals("/path", "/Path"), Is.False);
 
 #if SYSTEM_STRINGCOMPARER_ISWELLKNOWNORDINALCOMPARER
-      Assert.IsTrue(
+      Assert.That(
         StringComparer.IsWellKnownOrdinalComparer(
           PathUtils.DefaultPathStringComparer,
           out var isIgnoreCase
-        ),
+        ), Is.True,
         "IsWellKnownOrdinalComparer"
       );
 
       if (IsRunningOnWindows)
-        Assert.IsTrue(isIgnoreCase, nameof(isIgnoreCase));
+        Assert.That(isIgnoreCase, Is.True, nameof(isIgnoreCase));
       else
-        Assert.IsFalse(isIgnoreCase, nameof(isIgnoreCase));
+        Assert.That(isIgnoreCase, Is.False, nameof(isIgnoreCase));
 #endif
     }
 
@@ -75,34 +75,34 @@ namespace Smdn.IO {
     public void TestChangeFileName()
     {
       if (IsRunningOnWindows) {
-        Assert.AreEqual(@"C:\WINDOWS\renamed.ini", PathUtils.ChangeFileName(@"C:\WINDOWS\boot.ini", "renamed"));
-        Assert.AreEqual(@"..\renamed.ini", PathUtils.ChangeFileName(@"..\boot.ini", "renamed"));
-        Assert.AreEqual(@"C:\WINDOWS\renamed", PathUtils.ChangeFileName(@"C:\WINDOWS\boot", "renamed"));
+        Assert.That(PathUtils.ChangeFileName(@"C:\WINDOWS\boot.ini", "renamed"), Is.EqualTo(@"C:\WINDOWS\renamed.ini"));
+        Assert.That(PathUtils.ChangeFileName(@"..\boot.ini", "renamed"), Is.EqualTo(@"..\renamed.ini"));
+        Assert.That(PathUtils.ChangeFileName(@"C:\WINDOWS\boot", "renamed"), Is.EqualTo(@"C:\WINDOWS\renamed"));
       }
       else {
-        Assert.AreEqual("/var/log/renamed.log", PathUtils.ChangeFileName("/var/log/test.log", "renamed"));
-        Assert.AreEqual("../renamed.log", PathUtils.ChangeFileName("../test.log", "renamed"));
-        Assert.AreEqual("/var/log/renamed", PathUtils.ChangeFileName("/var/log/test", "renamed"));
+        Assert.That(PathUtils.ChangeFileName("/var/log/test.log", "renamed"), Is.EqualTo("/var/log/renamed.log"));
+        Assert.That(PathUtils.ChangeFileName("../test.log", "renamed"), Is.EqualTo("../renamed.log"));
+        Assert.That(PathUtils.ChangeFileName("/var/log/test", "renamed"), Is.EqualTo("/var/log/renamed"));
       }
 
-      Assert.AreEqual(@"renamed.ini", PathUtils.ChangeFileName(@"boot.ini", "renamed"));
-      Assert.AreEqual("renamed", PathUtils.ChangeFileName("test", "renamed"));
+      Assert.That(PathUtils.ChangeFileName(@"boot.ini", "renamed"), Is.EqualTo(@"renamed.ini"));
+      Assert.That(PathUtils.ChangeFileName("test", "renamed"), Is.EqualTo("renamed"));
     }
 
     [Test]
     public void TestChangeDirectoryName()
     {
       if (IsRunningOnWindows) {
-        Assert.AreEqual(@"C:\renamed\boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", @"C:\renamed"));
-        Assert.AreEqual(@"..\renamed\boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", @"..\renamed"));
-        Assert.AreEqual("boot.ini", PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", string.Empty));
-        Assert.AreEqual(@".\boot.ini", PathUtils.ChangeDirectoryName(@"boot.ini", @".\"));
+        Assert.That(PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", @"C:\renamed"), Is.EqualTo(@"C:\renamed\boot.ini"));
+        Assert.That(PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", @"..\renamed"), Is.EqualTo(@"..\renamed\boot.ini"));
+        Assert.That(PathUtils.ChangeDirectoryName(@"C:\WINDOWS\boot.ini", string.Empty), Is.EqualTo("boot.ini"));
+        Assert.That(PathUtils.ChangeDirectoryName(@"boot.ini", @".\"), Is.EqualTo(@".\boot.ini"));
       }
       else {
-        Assert.AreEqual("/renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "/renamed"));
-        Assert.AreEqual("../renamed/test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", "../renamed"));
-        Assert.AreEqual("test.log", PathUtils.ChangeDirectoryName("/var/log/test.log", string.Empty));
-        Assert.AreEqual("./test.log", PathUtils.ChangeDirectoryName("test.log", "./"));
+        Assert.That(PathUtils.ChangeDirectoryName("/var/log/test.log", "/renamed"), Is.EqualTo("/renamed/test.log"));
+        Assert.That(PathUtils.ChangeDirectoryName("/var/log/test.log", "../renamed"), Is.EqualTo("../renamed/test.log"));
+        Assert.That(PathUtils.ChangeDirectoryName("/var/log/test.log", string.Empty), Is.EqualTo("test.log"));
+        Assert.That(PathUtils.ChangeDirectoryName("test.log", "./"), Is.EqualTo("./test.log"));
       }
     }
 
@@ -110,20 +110,20 @@ namespace Smdn.IO {
     public void TestArePathEqual()
     {
       if (IsRunningOnWindows) {
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\Windows\"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\Windows"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\windows\"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\windows"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/Windows/"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/Windows"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/windows/"));
-        Assert.IsTrue(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/windows"));
+        Assert.That(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\Windows\"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\Windows"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\windows\"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:\Windows\", @"C:\windows"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/Windows/"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/Windows"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/windows/"), Is.True);
+        Assert.That(PathUtils.ArePathEqual(@"C:/Windows/", @"C:/windows"), Is.True);
       }
       else {
-        Assert.IsTrue(PathUtils.ArePathEqual("/var/log/", "/var/log/"));
-        Assert.IsTrue(PathUtils.ArePathEqual("/var/log/", "/var/log"));
-        Assert.IsFalse(PathUtils.ArePathEqual("/var/log/", "/var/Log/"));
-        Assert.IsFalse(PathUtils.ArePathEqual("/var/log/", "/var/Log"));
+        Assert.That(PathUtils.ArePathEqual("/var/log/", "/var/log/"), Is.True);
+        Assert.That(PathUtils.ArePathEqual("/var/log/", "/var/log"), Is.True);
+        Assert.That(PathUtils.ArePathEqual("/var/log/", "/var/Log/"), Is.False);
+        Assert.That(PathUtils.ArePathEqual("/var/log/", "/var/Log"), Is.False);
       }
     }
 
@@ -131,34 +131,34 @@ namespace Smdn.IO {
     public void TestAreExtensionEqual()
     {
       if (IsRunningOnWindows) {
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".ini"));
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"C:\WINDOWS\BOOT.INI", ".ini"));
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"C:\WINDOWS\Boot.Ini", ".ini"));
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".ini"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\BOOT.INI", ".ini"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\Boot.Ini", ".ini"), Is.True);
 
-        Assert.IsFalse(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".txt"));
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".txt"), Is.False);
 
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".ini"));
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".INI"));
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".Ini"));
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".ini"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".INI"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"C:\WINDOWS\boot.ini", ".Ini"), Is.True);
 
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"test.jpeg", "test.jpeg"));
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"test.jpeg", "TEST.JPEG"));
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"test.jpeg", "Test.Jpeg"));
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "test.jpeg"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "TEST.JPEG"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "Test.Jpeg"), Is.True);
 
-        Assert.IsFalse(PathUtils.AreExtensionEqual(@"test.jpeg", "test.png"));
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "test.png"), Is.False);
       }
       else {
-        Assert.IsTrue(PathUtils.AreExtensionEqual("/etc/conf.ini", ".ini"));
-        Assert.IsFalse(PathUtils.AreExtensionEqual("/etc/CONF.INI", ".ini"));
-        Assert.IsFalse(PathUtils.AreExtensionEqual("/etc/Conf.Ini", ".ini"));
+        Assert.That(PathUtils.AreExtensionEqual("/etc/conf.ini", ".ini"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual("/etc/CONF.INI", ".ini"), Is.False);
+        Assert.That(PathUtils.AreExtensionEqual("/etc/Conf.Ini", ".ini"), Is.False);
 
-        Assert.IsFalse(PathUtils.AreExtensionEqual("/etc/conf.ini", ".txt"));
+        Assert.That(PathUtils.AreExtensionEqual("/etc/conf.ini", ".txt"), Is.False);
 
-        Assert.IsTrue(PathUtils.AreExtensionEqual(@"test.jpeg", "test.jpeg"));
-        Assert.IsFalse(PathUtils.AreExtensionEqual(@"test.jpeg", "TEST.JPEG"));
-        Assert.IsFalse(PathUtils.AreExtensionEqual(@"test.jpeg", "Test.Jpeg"));
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "test.jpeg"), Is.True);
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "TEST.JPEG"), Is.False);
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "Test.Jpeg"), Is.False);
 
-        Assert.IsFalse(PathUtils.AreExtensionEqual(@"test.jpeg", "test.png"));
+        Assert.That(PathUtils.AreExtensionEqual(@"test.jpeg", "test.png"), Is.False);
       }
     }
 
@@ -171,14 +171,15 @@ namespace Smdn.IO {
       foreach (var c in ngchars.ToCharArray()) {
         var s = c.ToString();
 
-        Assert.IsTrue(
+        Assert.That(
           PathUtils.ContainsShellEscapeChar(s, shift_jis),
+          Is.True,
           $"char: {s}, bytes: {BitConverter.ToString(shift_jis.GetBytes(s))}"
         );
       }
 
-      Assert.IsTrue(PathUtils.ContainsShellEscapeChar("六十年", shift_jis));
-      Assert.IsTrue(PathUtils.ContainsShellEscapeChar("明治十七年の上海アリス", shift_jis));
+      Assert.That(PathUtils.ContainsShellEscapeChar("六十年", shift_jis), Is.True);
+      Assert.That(PathUtils.ContainsShellEscapeChar("明治十七年の上海アリス", shift_jis), Is.True);
     }
 
     [Test]
@@ -190,14 +191,15 @@ namespace Smdn.IO {
       foreach (var c in ngchars.ToCharArray()) {
         var s = c.ToString();
 
-        Assert.IsTrue(
+        Assert.That(
           PathUtils.ContainsShellPipeChar(s, shift_jis),
+          Is.True,
           $"char: {s}, bytes: {BitConverter.ToString(shift_jis.GetBytes(s))}"
         );
       }
 
-      Assert.IsTrue(PathUtils.ContainsShellPipeChar("竹取物語", shift_jis));
-      Assert.IsTrue(PathUtils.ContainsShellPipeChar("ポケモン", shift_jis));
+      Assert.That(PathUtils.ContainsShellPipeChar("竹取物語", shift_jis), Is.True);
+      Assert.That(PathUtils.ContainsShellPipeChar("ポケモン", shift_jis), Is.True);
     }
 
     [Test]
@@ -206,10 +208,10 @@ namespace Smdn.IO {
       var shift_jis = Encodings.ShiftJis;
       var ngchars = new byte[] {0x5c, 0x7c};
 
-      Assert.IsTrue(PathUtils.ContainsShellSpecialChars("六十年", shift_jis, ngchars));
-      Assert.IsTrue(PathUtils.ContainsShellSpecialChars("明治十七年の上海アリス", shift_jis, ngchars));
-      Assert.IsTrue(PathUtils.ContainsShellSpecialChars("竹取物語", shift_jis, ngchars));
-      Assert.IsTrue(PathUtils.ContainsShellSpecialChars("ポケモン", shift_jis, ngchars));
+      Assert.That(PathUtils.ContainsShellSpecialChars("六十年", shift_jis, ngchars), Is.True);
+      Assert.That(PathUtils.ContainsShellSpecialChars("明治十七年の上海アリス", shift_jis, ngchars), Is.True);
+      Assert.That(PathUtils.ContainsShellSpecialChars("竹取物語", shift_jis, ngchars), Is.True);
+      Assert.That(PathUtils.ContainsShellSpecialChars("ポケモン", shift_jis, ngchars), Is.True);
     }
 
 #if !SYSTEM_IO_PATH_GETRELATIVEPATH
@@ -224,173 +226,271 @@ namespace Smdn.IO {
 
     private void GetRelativePathWin()
     {
-      Assert.AreEqual(@"child",
-                      PathUtils.GetRelativePath(@"C:\", @"C:\child"),
-                      "child #1");
-      Assert.AreEqual(@"child\",
-                      PathUtils.GetRelativePath(@"C:\", @"C:\child\"),
-                      "child #2");
-      Assert.AreEqual(@"child\file",
-                      PathUtils.GetRelativePath(@"C:\", @"C:\child\file"),
-                      "child #3");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\", @"C:\child"),
+        Is.EqualTo(@"child"),
+        "child #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\", @"C:\child\"),
+        Is.EqualTo(@"child\"),
+        "child #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\", @"C:\child\file"),
+        Is.EqualTo(@"child\file"),
+        "child #3"
+      );
 
-      Assert.AreEqual(@"..\",
-                      PathUtils.GetRelativePath(@"C:\child\", @"C:\"),
-                      "parent #1");
-      Assert.AreEqual(@"..\file",
-                      PathUtils.GetRelativePath(@"C:\child\", @"C:\file"),
-                      "parent #2");
-      Assert.AreEqual(@"..\dir\",
-                      PathUtils.GetRelativePath(@"C:\child\", @"C:\dir\"),
-                      "parent #3");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\child\", @"C:\"),
+        Is.EqualTo(@"..\"),
+        "parent #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\child\", @"C:\file"),
+        Is.EqualTo(@"..\file"),
+        "parent #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\child\", @"C:\dir\"),
+        Is.EqualTo(@"..\dir\"),
+        "parent #3"
+      );
 
-      Assert.AreEqual(@"file2",
-                      PathUtils.GetRelativePath(@"C:\file1", @"C:\file2"),
-                      "sibling #1");
-      Assert.AreEqual(@"dir\",
-                      PathUtils.GetRelativePath(@"C:\file1", @"C:\dir\"),
-                      "sibling #2");
-      Assert.AreEqual(@"dir\file2",
-                      PathUtils.GetRelativePath(@"C:\file1", @"C:\dir\file2"),
-                      "sibling #3");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\file1", @"C:\file2"),
+        Is.EqualTo(@"file2"),
+        "sibling #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\file1", @"C:\dir\"),
+        Is.EqualTo(@"dir\"),
+        "sibling #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\file1", @"C:\dir\file2"),
+        Is.EqualTo(@"dir\file2"),
+        "sibling #3"
+      );
 
-      Assert.AreEqual(@"..\file",
-                      PathUtils.GetRelativePath(@"C:\dir1\", @"C:\file"),
-                      "cousin #1");
-      Assert.AreEqual(@"..\dir2\",
-                      PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir2\"),
-                      "cousin #2");
-      Assert.AreEqual(@"..\dir2\file",
-                      PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir2\file"),
-                      "cousin #3");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\", @"C:\file"),
+        Is.EqualTo(@"..\file"),
+        "cousin #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir2\"),
+        Is.EqualTo(@"..\dir2\"),
+        "cousin #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir2\file"),
+        Is.EqualTo(@"..\dir2\file"),
+        "cousin #3"
+      );
 
-      Assert.AreEqual(@"..\..\dir2\",
-                      PathUtils.GetRelativePath(@"C:\dir1\subdir\", @"C:\dir2\"),
-                      "#1");
-      Assert.AreEqual(@"..\..\..\dir2\",
-                      PathUtils.GetRelativePath(@"C:\dir1\subdir1\subdir2\", @"C:\dir2\"),
-                      "#2");
-      Assert.AreEqual(@"..\dir2\",
-                      PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir2\"),
-                      "#3");
-      Assert.AreEqual(@"subdir\",
-                      PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir1\subdir\"),
-                      "#4");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\subdir\", @"C:\dir2\"),
+        Is.EqualTo(@"..\..\dir2\"),
+        "#1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\subdir1\subdir2\", @"C:\dir2\"),
+        Is.EqualTo(@"..\..\..\dir2\"),
+        "#2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir2\"),
+        Is.EqualTo(@"..\dir2\"),
+        "#3"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir1\", @"C:\dir1\subdir\"),
+        Is.EqualTo(@"subdir\"),
+        "#4"
+      );
 
-      Assert.AreEqual(@"..\%sibling\",
-                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\%sibling\"),
-                      "contains '%' #1");
-      Assert.AreEqual(@"..\%73ibling\",
-                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\%73ibling\"),
-                      "contains '%' #2");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir\", @"C:\%sibling\"),
+        Is.EqualTo(@"..\%sibling\"),
+        "contains '%' #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir\", @"C:\%73ibling\"),
+        Is.EqualTo(@"..\%73ibling\"),
+        "contains '%' #2"
+      );
 
-      Assert.AreEqual(@"..\foo:bar\",
-                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\foo:bar\"),
-                      "contains ':' #1");
-      Assert.AreEqual(@".\foo:bar", // XXX
-                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\dir\foo:bar"),
-                      "contains ':' #2");
-      Assert.AreEqual(@"foo",
-                      PathUtils.GetRelativePath(@"C:\dir\foo:bar", @"C:\dir\foo"),
-                      "contains ':' #3");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir\", @"C:\foo:bar\"),
+        Is.EqualTo(@"..\foo:bar\"),
+        "contains ':' #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir\", @"C:\dir\foo:bar"),
+        Is.EqualTo(@".\foo:bar"), // XXX
+        "contains ':' #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir\foo:bar", @"C:\dir\foo"),
+        Is.EqualTo(@"foo"),
+        "contains ':' #3"
+      );
 
-      Assert.AreEqual(@"..\兄弟\",
-                      PathUtils.GetRelativePath(@"C:\dir\", @"C:\兄弟\"),
-                      "contains non ascii #1");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\dir\", @"C:\兄弟\"),
+        Is.EqualTo(@"..\兄弟\"),
+        "contains non ascii #1"
+      );
 
-      Assert.AreEqual(@"D:\",
-                      PathUtils.GetRelativePath(@"C:\", @"D:\"),
-                      "rooted path #1");
-      Assert.AreEqual(@"D:\dir\",
-                      PathUtils.GetRelativePath(@"C:\", @"D:\dir\"),
-                      "rooted path #2");
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\", @"D:\"),
+        Is.EqualTo(@"D:\"),
+        "rooted path #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"C:\", @"D:\dir\"),
+        Is.EqualTo(@"D:\dir\"),
+        "rooted path #2"
+      );
 
-      Assert.AreEqual(@"C:\child",
-                      Path.GetFullPath(Path.Combine(@"C:\", PathUtils.GetRelativePath(@"C:\", @"C:\child"))),
-                      "re-combine #1");
-      Assert.AreEqual(@"C:\dir\",
-                      Path.GetFullPath(Path.Combine(@"C:\child\", PathUtils.GetRelativePath(@"C:\child\", @"C:\dir\"))),
-                      "re-combine #2");
-      Assert.AreEqual(@"C:\dir2\",
-                      Path.GetFullPath(Path.Combine(@"C:\dir1\subdir1\subdir2\", PathUtils.GetRelativePath(@"C:\dir1\subdir1\subdir2\", @"C:\dir2\"))),
-                      "re-combine #3");
+      Assert.That(
+        Path.GetFullPath(Path.Combine(@"C:\", PathUtils.GetRelativePath(@"C:\", @"C:\child"))),
+        Is.EqualTo(@"C:\child"),
+        "re-combine #1"
+      );
+      Assert.That(
+        Path.GetFullPath(Path.Combine(@"C:\child\", PathUtils.GetRelativePath(@"C:\child\", @"C:\dir\"))),
+        Is.EqualTo(@"C:\dir\"),
+        "re-combine #2"
+      );
+      Assert.That(
+        Path.GetFullPath(Path.Combine(@"C:\dir1\subdir1\subdir2\", PathUtils.GetRelativePath(@"C:\dir1\subdir1\subdir2\", @"C:\dir2\"))),
+        Is.EqualTo(@"C:\dir2\"),
+        "re-combine #3"
+      );
     }
 
     private void GetRelativePathUnix()
     {
-      Assert.AreEqual("root",
-                      PathUtils.GetRelativePath("/", "/root"),
-                      "child #1");
-      Assert.AreEqual("root/",
-                      PathUtils.GetRelativePath("/", "/root/"),
-                      "child #2");
-      Assert.AreEqual("root/file",
-                      PathUtils.GetRelativePath("/", "/root/file"),
-                      "child #3");
+      Assert.That(
+        PathUtils.GetRelativePath("/", "/root"),
+        Is.EqualTo("root"),
+        "child #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/", "/root/"),
+        Is.EqualTo("root/"),
+        "child #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/", "/root/file"),
+        Is.EqualTo("root/file"),
+        "child #3"
+      );
 
-      Assert.AreEqual("../",
-                      PathUtils.GetRelativePath("/root/", "/"),
-                      "parent #1");
-      Assert.AreEqual("../usr",
-                      PathUtils.GetRelativePath("/root/", "/usr"),
-                      "parent #2");
-      Assert.AreEqual("../usr/",
-                      PathUtils.GetRelativePath("/root/", "/usr/"),
-                      "parent #3");
+      Assert.That(
+        PathUtils.GetRelativePath("/root/", "/"),
+        Is.EqualTo("../"),
+        "parent #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/", "/usr"),
+        Is.EqualTo("../usr"),
+        "parent #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/", "/usr/"),
+        Is.EqualTo("../usr/"),
+        "parent #3"
+      );
 
-      Assert.AreEqual("usr",
-                      PathUtils.GetRelativePath("/file", "/usr"),
-                      "sibling #1");
-      Assert.AreEqual("usr/",
-                      PathUtils.GetRelativePath("/file", "/usr/"),
-                      "sibling #2");
-      Assert.AreEqual("usr/file",
-                      PathUtils.GetRelativePath("/file", "/usr/file"),
-                      "sibling #3");
+      Assert.That(
+        PathUtils.GetRelativePath("/file", "/usr"),
+        Is.EqualTo("usr"),
+        "sibling #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/file", "/usr/"),
+        Is.EqualTo("usr/"),
+        "sibling #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/file", "/usr/file"),
+        Is.EqualTo("usr/file"),
+        "sibling #3"
+      );
 
-      Assert.AreEqual("../usr",
-                      PathUtils.GetRelativePath("/root/", "/usr"),
-                      "cousin #1");
-      Assert.AreEqual("../usr/",
-                      PathUtils.GetRelativePath("/root/", "/usr/"),
-                      "cousin #2");
-      Assert.AreEqual("../usr/file",
-                      PathUtils.GetRelativePath("/root/", "/usr/file"),
-                      "cousin #3");
+      Assert.That(
+        PathUtils.GetRelativePath("/root/", "/usr"),
+        Is.EqualTo("../usr"),
+        "cousin #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/", "/usr/"),
+        Is.EqualTo("../usr/"),
+        "cousin #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/", "/usr/file"),
+        Is.EqualTo("../usr/file"),
+        "cousin #3"
+      );
 
-      Assert.AreEqual("../../usr/",
-                      PathUtils.GetRelativePath("/root/dir/", "/usr/"),
-                      "#1");
-      Assert.AreEqual("../../../usr/",
-                      PathUtils.GetRelativePath("/root/dir/subdir/", "/usr/"),
-                      "#2");
-      Assert.AreEqual("../dir2/",
-                      PathUtils.GetRelativePath("/root/dir1/", "/root/dir2/"),
-                      "#3");
-      Assert.AreEqual("subdir/",
-                      PathUtils.GetRelativePath("/root/dir1/", "/root/dir1/subdir/"),
-                      "#4");
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir/", "/usr/"),
+        Is.EqualTo("../../usr/"),
+        "#1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir/subdir/", "/usr/"),
+        Is.EqualTo("../../../usr/"),
+        "#2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir1/", "/root/dir2/"),
+        Is.EqualTo("../dir2/"),
+        "#3"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir1/", "/root/dir1/subdir/"),
+        Is.EqualTo("subdir/"),
+        "#4"
+      );
 
-      Assert.AreEqual("../%sibling/",
-                      PathUtils.GetRelativePath("/root/dir/", "/root/%sibling/"),
-                      "contains '%' #1");
-      Assert.AreEqual("../%73ibling/",
-                      PathUtils.GetRelativePath("/root/dir/", "/root/%73ibling/"),
-                      "contains '%' #2");
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir/", "/root/%sibling/"),
+        Is.EqualTo("../%sibling/"),
+        "contains '%' #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir/", "/root/%73ibling/"),
+        Is.EqualTo("../%73ibling/"),
+        "contains '%' #2"
+      );
 
-      Assert.AreEqual(@"../foo:bar/",
-                      PathUtils.GetRelativePath(@"/root/dir/", @"/root/foo:bar/"),
-                      "contains ':' #1");
-      Assert.AreEqual(@"foo:bar",
-                      PathUtils.GetRelativePath(@"/root/", @"/root/foo:bar"),
-                      "contains ':' #2");
-      Assert.AreEqual(@"foo",
-                      PathUtils.GetRelativePath(@"/root/foo:bar", @"/root/foo"),
-                      "contains ':' #3");
+      Assert.That(
+        PathUtils.GetRelativePath(@"/root/dir/", @"/root/foo:bar/"),
+        Is.EqualTo(@"../foo:bar/"),
+        "contains ':' #1"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"/root/", @"/root/foo:bar"),
+        Is.EqualTo(@"foo:bar"),
+        "contains ':' #2"
+      );
+      Assert.That(
+        PathUtils.GetRelativePath(@"/root/foo:bar", @"/root/foo"),
+        Is.EqualTo(@"foo"),
+        "contains ':' #3"
+      );
 
-      Assert.AreEqual("../兄弟/",
-                      PathUtils.GetRelativePath("/root/dir/", "/root/兄弟/"),
-                      "contains non ascii #1");
+      Assert.That(
+        PathUtils.GetRelativePath("/root/dir/", "/root/兄弟/"),
+        Is.EqualTo("../兄弟/"),
+        "contains non ascii #1"
+      );
     }
 #endif
   }

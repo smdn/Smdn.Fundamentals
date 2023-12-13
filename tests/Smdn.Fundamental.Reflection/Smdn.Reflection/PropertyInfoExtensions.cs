@@ -77,7 +77,7 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(expected, property!.IsStatic(), $"{type.Name}.{property!.Name}");
+    Assert.That(property!.IsStatic(), Is.EqualTo(expected), $"{type.Name}.{property!.Name}");
   }
 
   [Test]
@@ -94,7 +94,7 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.AreEqual(expected, property!.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
+    Assert.That(property!.IsSetMethodInitOnly(), Is.EqualTo(expected), $"{type.Name}.{property!.Name}");
   }
 
   [TestCase(typeof(C), nameof(C.P2))]
@@ -139,9 +139,9 @@ public class PropertyInfoExtensionsTests {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
     if (hasBackingField)
-      Assert.IsNotNull(property!.GetBackingField());
+      Assert.That(property!.GetBackingField(), Is.Not.Null);
     else
-      Assert.IsNull(property!.GetBackingField());
+      Assert.That(property!.GetBackingField(), Is.Null);
   }
 
   [Test]
@@ -165,7 +165,7 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(expected, property!.IsOverride(), $"{type.Name}.{property!.Name}");
+    Assert.That(property!.IsOverride(), Is.EqualTo(expected), $"{type.Name}.{property!.Name}");
   }
 
   [TestCase(typeof(System.IO.TextWriter), nameof(System.IO.TextWriter.NewLine), typeof(System.IO.TextWriter), false)]
@@ -176,9 +176,9 @@ public class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(property!.ReflectedType, type, nameof(property.ReflectedType));
-    Assert.AreEqual(property!.DeclaringType, declaringType, nameof(property.DeclaringType));
-    Assert.AreEqual(expected, property!.IsOverride(), $"{type.Name}.{property!.Name}");
+    Assert.That(type, Is.EqualTo(property!.ReflectedType), nameof(property.ReflectedType));
+    Assert.That(declaringType, Is.EqualTo(property!.DeclaringType), nameof(property.DeclaringType));
+    Assert.That(property!.IsOverride(), Is.EqualTo(expected), $"{type.Name}.{property!.Name}");
   }
 
   [Test]

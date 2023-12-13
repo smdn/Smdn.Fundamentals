@@ -31,7 +31,7 @@ public partial class DateTimeFormatTests {
   [Test]
   public void GetCurrentTimeZoneOffsetString()
   {
-    Assert.AreEqual(timezoneOffset, DateTimeFormat.GetCurrentTimeZoneOffsetString(true));
-    Assert.AreEqual(timezoneOffsetNoDelim, DateTimeFormat.GetCurrentTimeZoneOffsetString(false));
+    Assert.That(DateTimeFormat.GetCurrentTimeZoneOffsetString(true), Is.EqualTo(timezoneOffset));
+    Assert.That(DateTimeFormat.GetCurrentTimeZoneOffsetString(false), Is.EqualTo(timezoneOffsetNoDelim));
   }
 }

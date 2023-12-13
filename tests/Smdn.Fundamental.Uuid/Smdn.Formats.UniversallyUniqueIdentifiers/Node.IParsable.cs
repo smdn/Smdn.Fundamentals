@@ -42,8 +42,8 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Node.Parse(s, provider: null));
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), n.ToString("X"));
-      Assert.AreEqual(expectedString.ToLowerInvariant(), n.ToString("x"));
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
 #if FEATURE_GENERIC_MATH
@@ -85,8 +85,8 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Node.Parse(s.AsSpan(), provider: null));
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), n.ToString("X"));
-      Assert.AreEqual(expectedString.ToLowerInvariant(), n.ToString("x"));
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
 #if FEATURE_GENERIC_MATH
@@ -121,11 +121,11 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00-00", false, null)]
   public void TestTryParse(string s, bool expectValid, string expectedString)
   {
-    Assert.AreEqual(expectValid, Node.TryParse(s, out var node));
+    Assert.That(Node.TryParse(s, out var node), Is.EqualTo(expectValid));
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), node.ToString("X"));
-      Assert.AreEqual(expectedString.ToLowerInvariant(), node.ToString("x"));
+      Assert.That(node.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
+      Assert.That(node.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
 #if FEATURE_GENERIC_MATH
@@ -157,11 +157,11 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00-00", false, null)]
   public void TestTryParse_ISpanParsable(string s, bool expectValid, string expectedString)
   {
-    Assert.AreEqual(expectValid, Node.TryParse(s.AsSpan(), out var node));
+    Assert.That(Node.TryParse(s.AsSpan(), out var node), Is.EqualTo(expectValid));
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), node.ToString("X"));
-      Assert.AreEqual(expectedString.ToLowerInvariant(), node.ToString("x"));
+      Assert.That(node.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
+      Assert.That(node.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
 #if FEATURE_GENERIC_MATH

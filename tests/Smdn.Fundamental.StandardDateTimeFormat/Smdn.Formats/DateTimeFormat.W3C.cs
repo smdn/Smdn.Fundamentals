@@ -14,9 +14,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Utc);
 
-    Assert.AreEqual(
-      "2008-02-25T15:01:12.4560000Z",
-      DateTimeFormat.ToW3CDateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToW3CDateTimeString(dtm),
+      Is.EqualTo("2008-02-25T15:01:12.4560000Z")
     );
   }
 
@@ -25,9 +25,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Local);
 
-    Assert.AreEqual(
-      "2008-02-25T15:01:12.4560000" + timezoneOffset,
-      DateTimeFormat.ToW3CDateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToW3CDateTimeString(dtm),
+      Is.EqualTo("2008-02-25T15:01:12.4560000" + timezoneOffset)
     );
   }
 
@@ -36,9 +36,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Unspecified);
 
-    Assert.AreEqual(
-      "2008-02-25T15:01:12.4560000",
-      DateTimeFormat.ToW3CDateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToW3CDateTimeString(dtm),
+      Is.EqualTo("2008-02-25T15:01:12.4560000")
     );
   }
 
@@ -48,9 +48,9 @@ partial class DateTimeFormatTests {
   {
     var dtm = new DateTime(2008, 2, 25, 15, 1, 12, 456, DateTimeKind.Utc);
 
-    Assert.AreEqual(
-      "2008-02-25T15:01:12.4560000Z",
-      DateTimeFormat.ToW3CDateTimeString(dtm)
+    Assert.That(
+      DateTimeFormat.ToW3CDateTimeString(dtm),
+      Is.EqualTo("2008-02-25T15:01:12.4560000Z")
     );
   }
 
@@ -59,9 +59,9 @@ partial class DateTimeFormatTests {
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, 456, DateTimeOffset.Now.Offset);
 
-    Assert.AreEqual(
-      "2008-02-25T15:01:12.4560000" + timezoneOffset,
-      DateTimeFormat.ToW3CDateTimeString(dto)
+    Assert.That(
+      DateTimeFormat.ToW3CDateTimeString(dto),
+      Is.EqualTo("2008-02-25T15:01:12.4560000" + timezoneOffset)
     );
   }
 
@@ -71,17 +71,17 @@ partial class DateTimeFormatTests {
   {
     var dto = new DateTimeOffset(2008, 2, 25, 15, 1, 12, 456, DateTimeOffset.Now.Offset);
 
-    Assert.AreEqual(
-      "2008-02-25T15:01:12.4560000" + timezoneOffset,
-      DateTimeFormat.ToW3CDateTimeString(dto)
+    Assert.That(
+      DateTimeFormat.ToW3CDateTimeString(dto),
+      Is.EqualTo("2008-02-25T15:01:12.4560000" + timezoneOffset)
     );
   }
 
   [TestCaseSource(typeof(W3CDateTimeFormatsTests), nameof(W3CDateTimeFormatsTests.YieldTestCases_ParseDateTime))]
   public void FromW3CDateTimeString(string s, DateTime expected)
-    => Assert.AreEqual(expected, DateTimeFormat.FromW3CDateTimeString(s));
+    => Assert.That(DateTimeFormat.FromW3CDateTimeString(s), Is.EqualTo(expected));
 
   [TestCaseSource(typeof(W3CDateTimeFormatsTests), nameof(W3CDateTimeFormatsTests.YieldTestCases_ParseDateTimeOffset))]
   public void FromW3CDateTimeString(string s, DateTimeOffset expected)
-    => Assert.AreEqual(expected, DateTimeFormat.FromW3CDateTimeOffsetString(s));
+    => Assert.That(DateTimeFormat.FromW3CDateTimeOffsetString(s), Is.EqualTo(expected));
 }

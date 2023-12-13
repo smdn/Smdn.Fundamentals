@@ -23,9 +23,8 @@ public partial class ContentTransferEncodingTests {
   [TestCase("x-uue", ContentTransferEncodingMethod.UUEncode)]
   [TestCase("uuencode", ContentTransferEncodingMethod.UUEncode)]
   public void Parse(string input, ContentTransferEncodingMethod expected)
-    => Assert.AreEqual(
-      expected,
-      ContentTransferEncoding.Parse(input),
+    => Assert.That(
+      ContentTransferEncoding.Parse(input), Is.EqualTo(expected),
       input
     );
 
@@ -59,10 +58,10 @@ public partial class ContentTransferEncodingTests {
   [TestCase("unknown", false, ContentTransferEncodingMethod.Unknown)]
   public void TryParse(string input, bool expectedResult, ContentTransferEncodingMethod expectedEncoding)
   {
-    Assert.AreEqual(expectedResult, ContentTransferEncoding.TryParse(input, out var actualEncoding), nameof(expectedResult));
+    Assert.That(ContentTransferEncoding.TryParse(input, out var actualEncoding), Is.EqualTo(expectedResult), nameof(expectedResult));
 
     if (expectedResult)
-      Assert.AreEqual(expectedEncoding, actualEncoding, nameof(expectedEncoding));
+      Assert.That(actualEncoding, Is.EqualTo(expectedEncoding), nameof(expectedEncoding));
   }
 
   [TestCase(ContentTransferEncodingMethod.SevenBit, true, "7bit")]
@@ -78,11 +77,11 @@ public partial class ContentTransferEncodingTests {
   {
     Span<char> destination = stackalloc char[0x10];
 
-    Assert.AreEqual(expectedResult, ContentTransferEncoding.TryFormat(encoding, destination, out var charsWritten), nameof(expectedResult));
+    Assert.That(ContentTransferEncoding.TryFormat(encoding, destination, out var charsWritten), Is.EqualTo(expectedResult), nameof(expectedResult));
 
     if (expectedResult) {
-      Assert.AreEqual(expected.Length, charsWritten, nameof(charsWritten));
-      Assert.IsTrue(destination.Slice(0, charsWritten).SequenceEqual(expected.AsSpan()));
+      Assert.That(charsWritten, Is.EqualTo(expected.Length), nameof(charsWritten));
+      Assert.That(destination.Slice(0, charsWritten).SequenceEqual(expected.AsSpan()), Is.True);
     }
   }
 
@@ -97,8 +96,9 @@ public partial class ContentTransferEncodingTests {
   {
     Span<char> destination = stackalloc char[expected.Length - 1];
 
-    Assert.IsFalse(
-      ContentTransferEncoding.TryFormat(encoding, destination, out _)
+    Assert.That(
+      ContentTransferEncoding.TryFormat(encoding, destination, out _),
+      Is.False
     );
   }
 }

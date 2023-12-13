@@ -65,8 +65,8 @@ partial class ContentTransferEncodingTests {
       Encodings.Jis
     );
 
-    Assert.AreEqual(Encodings.Jis, reader.CurrentEncoding);
-    Assert.AreEqual("漢字abcかな123カナ", reader.ReadToEnd());
+    Assert.That(reader.CurrentEncoding, Is.EqualTo(Encodings.Jis));
+    Assert.That(reader.ReadToEnd(), Is.EqualTo("漢字abcかな123カナ"));
 
     stream.Position = 0L;
 
@@ -90,7 +90,7 @@ partial class ContentTransferEncodingTests {
       true
     );
 
-    Assert.AreEqual("漢字abcかな123カナ", reader1.ReadToEnd());
+    Assert.That(reader1.ReadToEnd(), Is.EqualTo("漢字abcかな123カナ"));
 
     stream.Position = 0L;
 
@@ -102,7 +102,7 @@ partial class ContentTransferEncodingTests {
       Encodings.Jis
     );
 
-    Assert.AreEqual("漢字abcかな123カナ", reader2.ReadToEnd(), "read again");
+    Assert.That(reader2.ReadToEnd(), Is.EqualTo("漢字abcかな123カナ"), "read again");
   }
 
   [TestCase(true)]
@@ -139,9 +139,9 @@ partial class ContentTransferEncodingTests {
       Encodings.Jis
     );
 
-    Assert.AreEqual(
-      Encodings.Jis.GetBytes("漢字abcかな123カナ"),
-      reader.ReadBytes((int)stream.Length)
+    Assert.That(
+      reader.ReadBytes((int)stream.Length),
+      Is.EqualTo(Encodings.Jis.GetBytes("漢字abcかな123カナ"))
     );
 
     stream.Position = 0L;
@@ -168,9 +168,9 @@ partial class ContentTransferEncodingTests {
       true
     );
 
-    Assert.AreEqual(
-      Encodings.Jis.GetBytes("漢字abcかな123カナ"),
-      reader1.ReadBytes((int)stream.Length)
+    Assert.That(
+      reader1.ReadBytes((int)stream.Length),
+      Is.EqualTo(Encodings.Jis.GetBytes("漢字abcかな123カナ"))
     );
 
     stream.Position = 0L;
@@ -183,9 +183,8 @@ partial class ContentTransferEncodingTests {
       Encodings.Jis
     );
 
-    Assert.AreEqual(
-      Encodings.Jis.GetBytes("漢字abcかな123カナ"),
-      reader2.ReadBytes((int)stream.Length),
+    Assert.That(
+      reader2.ReadBytes((int)stream.Length), Is.EqualTo(Encodings.Jis.GetBytes("漢字abcかな123カナ")),
       "read again"
     );
   }

@@ -16,7 +16,7 @@ namespace Smdn.Text.RegularExpressions {
 
       Assert.Throws<ArgumentNullException>(() => r.IsMatch("input", out m));
 
-      Assert.IsNull(m);
+      Assert.That(m, Is.Null);
     }
 
     [Test]
@@ -24,10 +24,10 @@ namespace Smdn.Text.RegularExpressions {
     {
       var r = new Regex("x+");
 
-      Assert.IsTrue(r.IsMatch("yyyxxxxzzz", out Match m));
-      Assert.IsNotNull(m);
-      Assert.IsTrue(m.Success);
-      Assert.AreEqual("xxxx", m.Value);
+      Assert.That(r.IsMatch("yyyxxxxzzz", out Match m), Is.True);
+      Assert.That(m, Is.Not.Null);
+      Assert.That(m.Success, Is.True);
+      Assert.That(m.Value, Is.EqualTo("xxxx"));
     }
 
     [Test]
@@ -35,9 +35,9 @@ namespace Smdn.Text.RegularExpressions {
     {
       var r = new Regex("x+");
 
-      Assert.IsFalse(r.IsMatch("yyyzzz", out Match m));
-      Assert.IsNotNull(m);
-      Assert.IsFalse(m.Success);
+      Assert.That(r.IsMatch("yyyzzz", out Match m), Is.False);
+      Assert.That(m, Is.Not.Null);
+      Assert.That(m.Success, Is.False);
     }
   }
 }

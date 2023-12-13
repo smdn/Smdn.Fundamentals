@@ -10,27 +10,27 @@ namespace Smdn {
     [Test]
     public void TestHypot()
     {
-      Assert.AreEqual(5.0f, MathUtils.Hypot(4.0f, 3.0f));
-      Assert.AreEqual(5.0f, MathUtils.Hypot(3.0f, 4.0f));
+      Assert.That(MathUtils.Hypot(4.0f, 3.0f), Is.EqualTo(5.0f));
+      Assert.That(MathUtils.Hypot(3.0f, 4.0f), Is.EqualTo(5.0f));
 
-      Assert.AreEqual(Math.Sqrt(2.0), MathUtils.Hypot(1.0, 1.0));
+      Assert.That(MathUtils.Hypot(1.0, 1.0), Is.EqualTo(Math.Sqrt(2.0)));
     }
 
     [Test]
     public void TestGcd()
     {
-      Assert.AreEqual(3, MathUtils.Gcd(3, 0));
-      Assert.AreEqual(4, MathUtils.Gcd(8, 4));
-      Assert.AreEqual(3, MathUtils.Gcd(12, 9));
-      Assert.AreEqual(8, MathUtils.Gcd(128, 72));
+      Assert.That(MathUtils.Gcd(3, 0), Is.EqualTo(3));
+      Assert.That(MathUtils.Gcd(8, 4), Is.EqualTo(4));
+      Assert.That(MathUtils.Gcd(12, 9), Is.EqualTo(3));
+      Assert.That(MathUtils.Gcd(128, 72), Is.EqualTo(8));
     }
 
     [Test]
     public void TestLcm()
     {
-      Assert.AreEqual(0, MathUtils.Lcm(3, 0));
-      Assert.AreEqual(36, MathUtils.Lcm(12, 18));
-      Assert.AreEqual(187, MathUtils.Lcm(17, 11));
+      Assert.That(MathUtils.Lcm(3, 0), Is.EqualTo(0));
+      Assert.That(MathUtils.Lcm(12, 18), Is.EqualTo(36));
+      Assert.That(MathUtils.Lcm(17, 11), Is.EqualTo(187));
     }
 
     private static readonly long[] primeNumbers = new long[] {
@@ -121,26 +121,25 @@ namespace Smdn {
     [Test]
     public void TestIsPrimeNumber()
     {
-      Assert.IsFalse(MathUtils.IsPrimeNumber(-1L), "-1");
-      Assert.IsFalse(MathUtils.IsPrimeNumber(0L), "0");
-      Assert.IsFalse(MathUtils.IsPrimeNumber(1L), "1");
-      Assert.IsTrue(MathUtils.IsPrimeNumber(2L), "2");
-      Assert.IsTrue(MathUtils.IsPrimeNumber(3L), "3");
-      Assert.IsFalse(MathUtils.IsPrimeNumber(4L), "4");
+      Assert.That(MathUtils.IsPrimeNumber(-1L), Is.False, "-1");
+      Assert.That(MathUtils.IsPrimeNumber(0L), Is.False, "0");
+      Assert.That(MathUtils.IsPrimeNumber(1L), Is.False, "1");
+      Assert.That(MathUtils.IsPrimeNumber(2L), Is.True, "2");
+      Assert.That(MathUtils.IsPrimeNumber(3L), Is.True, "3");
+      Assert.That(MathUtils.IsPrimeNumber(4L), Is.False, "4");
 
       var expected = (long[])primeNumbers.Clone();
 
-      CollectionAssert.AreEquivalent(expected,
-                                     Enumerable.Range(0, 10000).Select(n => (long)n).Where(MathUtils.IsPrimeNumber).ToArray());
+      Assert.That(Enumerable.Range(0, 10000).Select(n => (long)n).Where(MathUtils.IsPrimeNumber).ToArray(), Is.EquivalentTo(expected));
     }
 
     [Test]
     public void TestNextPrimeNumber()
     {
-      Assert.AreEqual(2L, MathUtils.NextPrimeNumber(-1L), "-1");
-      Assert.AreEqual(2L, MathUtils.NextPrimeNumber(0L), "0");
-      Assert.AreEqual(2L, MathUtils.NextPrimeNumber(1L), "1");
-      Assert.AreEqual(3L, MathUtils.NextPrimeNumber(2L), "2");
+      Assert.That(MathUtils.NextPrimeNumber(-1L), Is.EqualTo(2L), "-1");
+      Assert.That(MathUtils.NextPrimeNumber(0L), Is.EqualTo(2L), "0");
+      Assert.That(MathUtils.NextPrimeNumber(1L), Is.EqualTo(2L), "1");
+      Assert.That(MathUtils.NextPrimeNumber(2L), Is.EqualTo(3L), "2");
 
       var expected = (long[])primeNumbers.Clone();
       var index = 0;
@@ -148,12 +147,12 @@ namespace Smdn {
       for (var n = 1L; index < expected.Length;) {
         var np = MathUtils.NextPrimeNumber(n);
 
-        Assert.AreEqual(expected[index++], np, "next of {0}", n);
+        Assert.That(np, Is.EqualTo(expected[index++]), $"next of {n}");
 
         n = np;
       }
 
-      Assert.AreEqual(1000000007L, MathUtils.NextPrimeNumber(1000000000L), "next of 1000000000");
+      Assert.That(MathUtils.NextPrimeNumber(1000000000L), Is.EqualTo(1000000007L), "next of 1000000000");
     }
   }
 }

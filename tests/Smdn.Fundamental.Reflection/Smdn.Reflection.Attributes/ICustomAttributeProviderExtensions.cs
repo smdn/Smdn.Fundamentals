@@ -38,9 +38,9 @@ public class ICustomAttributeProviderExtensionsTests {
 
   private static void AssertCustomAttributeDataList(IList<CustomAttributeData> list, Type attributeTypeWhichExpectedToBeContained)
   {
-    Assert.IsNotNull(list);
-    CollectionAssert.IsNotEmpty(list);
-    CollectionAssert.Contains(list.Select(cad => cad.AttributeType), attributeTypeWhichExpectedToBeContained);
+    Assert.That(list, Is.Not.Null);
+    Assert.That(list, Is.Not.Empty);
+    Assert.That(list.Select(cad => cad.AttributeType), Has.Member(attributeTypeWhichExpectedToBeContained));
   }
 
   private static System.Collections.IEnumerable YieldTestCases_GetCustomAttributeDataList_OfMemberInfo()

@@ -24,30 +24,30 @@ namespace Smdn.IO.Streams {
 
         var stream = new NonClosingStream(baseStream);
 
-        Assert.AreSame(baseStream, stream.InnerStream);
-        Assert.AreEqual(baseStream.CanRead, stream.CanRead, "CanRead");
-        Assert.AreEqual(baseStream.CanWrite, stream.CanWrite, "CanWrite");
-        Assert.AreEqual(baseStream.CanSeek, stream.CanSeek, "CanSeek");
-        Assert.AreEqual(baseStream.CanTimeout, stream.CanTimeout, "CanTimeout");
-        Assert.AreEqual(baseStream.Length, stream.Length, "Length");
-        Assert.AreEqual(baseStream.Position, stream.Position, "Position");
+        Assert.That(stream.InnerStream, Is.SameAs(baseStream));
+        Assert.That(stream.CanRead, Is.EqualTo(baseStream.CanRead), "CanRead");
+        Assert.That(stream.CanWrite, Is.EqualTo(baseStream.CanWrite), "CanWrite");
+        Assert.That(stream.CanSeek, Is.EqualTo(baseStream.CanSeek), "CanSeek");
+        Assert.That(stream.CanTimeout, Is.EqualTo(baseStream.CanTimeout), "CanTimeout");
+        Assert.That(stream.Length, Is.EqualTo(baseStream.Length), "Length");
+        Assert.That(stream.Position, Is.EqualTo(baseStream.Position), "Position");
 
         stream.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(delegate { Assert.IsNull(stream.InnerStream); }, "InnerStream");
-        Assert.IsFalse(stream.CanRead, "CanRead");
-        Assert.IsFalse(stream.CanWrite, "CanWrite");
-        Assert.IsFalse(stream.CanSeek, "CanSeek");
-        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
-        Assert.Throws<ObjectDisposedException>(delegate { Assert.AreEqual(-1, stream.Length); }, "Length");
-        Assert.Throws<ObjectDisposedException>(delegate { Assert.AreEqual(-1, stream.Position); }, "Position");
+        Assert.Throws<ObjectDisposedException>(delegate { Assert.That(stream.InnerStream, Is.Null); }, "InnerStream");
+        Assert.That(stream.CanRead, Is.False, "CanRead");
+        Assert.That(stream.CanWrite, Is.False, "CanWrite");
+        Assert.That(stream.CanSeek, Is.False, "CanSeek");
+        Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
+        Assert.Throws<ObjectDisposedException>(delegate { Assert.That(stream.Length, Is.EqualTo(-1)); }, "Length");
+        Assert.Throws<ObjectDisposedException>(delegate { Assert.That(stream.Position, Is.EqualTo(-1)); }, "Position");
 
-        Assert.AreEqual(initialCanRead, baseStream.CanRead, "CanRead");
-        Assert.AreEqual(initialCanWrite, baseStream.CanWrite, "CanWrite");
-        Assert.AreEqual(initialCanSeek, baseStream.CanSeek, "CanSeek");
-        Assert.AreEqual(initialCanTimeout, baseStream.CanTimeout, "CanTimeout");
-        Assert.AreEqual(initialLength, baseStream.Length, "Length");
-        Assert.AreEqual(initialPosition, baseStream.Position, "Position");
+        Assert.That(baseStream.CanRead, Is.EqualTo(initialCanRead), "CanRead");
+        Assert.That(baseStream.CanWrite, Is.EqualTo(initialCanWrite), "CanWrite");
+        Assert.That(baseStream.CanSeek, Is.EqualTo(initialCanSeek), "CanSeek");
+        Assert.That(baseStream.CanTimeout, Is.EqualTo(initialCanTimeout), "CanTimeout");
+        Assert.That(baseStream.Length, Is.EqualTo(initialLength), "Length");
+        Assert.That(baseStream.Position, Is.EqualTo(initialPosition), "Position");
       }
     }
 
@@ -59,13 +59,13 @@ namespace Smdn.IO.Streams {
 
         var stream = new NonClosingStream(baseStream, writable: false);
 
-        Assert.IsFalse(stream.CanWrite, "CanWrite");
+        Assert.That(stream.CanWrite, Is.False, "CanWrite");
 
         stream.Dispose();
 
-        Assert.IsFalse(stream.CanWrite, "CanWrite");
+        Assert.That(stream.CanWrite, Is.False, "CanWrite");
 
-        Assert.AreEqual(initialCanWrite, baseStream.CanWrite, "CanWrite");
+        Assert.That(baseStream.CanWrite, Is.EqualTo(initialCanWrite), "CanWrite");
       }
     }
 
@@ -75,12 +75,12 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream()) {
         var stream = new NonClosingStream(baseStream);
 
-        Assert.AreEqual(baseStream.Length, stream.Length, "before");
+        Assert.That(stream.Length, Is.EqualTo(baseStream.Length), "before");
 
         stream.SetLength(8L);
 
-        Assert.AreEqual(8L, stream.Length);
-        Assert.AreEqual(baseStream.Length, stream.Length, "after");
+        Assert.That(stream.Length, Is.EqualTo(8L));
+        Assert.That(stream.Length, Is.EqualTo(baseStream.Length), "after");
 
         stream.Dispose();
 
@@ -94,13 +94,13 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream()) {
         var stream = new NonClosingStream(baseStream, writable: false);
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, stream.Length);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Length, Is.EqualTo(0L));
 
         Assert.Throws<NotSupportedException>(() => stream.SetLength(8L));
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, stream.Length);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Length, Is.EqualTo(0L));
 
         stream.Dispose();
 
@@ -114,14 +114,14 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream(new byte[8])) {
         var stream = new NonClosingStream(baseStream);
 
-        Assert.AreEqual(4L, stream.Seek(4L, SeekOrigin.Begin));
-        Assert.AreEqual(4L, baseStream.Position);
+        Assert.That(stream.Seek(4L, SeekOrigin.Begin), Is.EqualTo(4L));
+        Assert.That(baseStream.Position, Is.EqualTo(4L));
 
-        Assert.AreEqual(6L, stream.Seek(2L, SeekOrigin.Current));
-        Assert.AreEqual(6L, baseStream.Position);
+        Assert.That(stream.Seek(2L, SeekOrigin.Current), Is.EqualTo(6L));
+        Assert.That(baseStream.Position, Is.EqualTo(6L));
 
-        Assert.AreEqual(2L, stream.Seek(-6L, SeekOrigin.End));
-        Assert.AreEqual(2L, baseStream.Position);
+        Assert.That(stream.Seek(-6L, SeekOrigin.End), Is.EqualTo(2L));
+        Assert.That(baseStream.Position, Is.EqualTo(2L));
 
         stream.Dispose();
 
@@ -140,38 +140,34 @@ namespace Smdn.IO.Streams {
 
         Array.Clear(buffer, 0, 6);
 
-        Assert.AreEqual(1, stream.Read(buffer, 0, 1));
+        Assert.That(stream.Read(buffer, 0, 1), Is.EqualTo(1));
 
-        CollectionAssert.AreEqual(new byte[] {1, 0, 0, 0, 0, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 0, 0, 0, 0, 0}).AsCollection);
 
         Array.Clear(buffer, 0, 6);
 
-        Assert.AreEqual(4, stream.Read(buffer, 2, 4));
+        Assert.That(stream.Read(buffer, 2, 4), Is.EqualTo(4));
 
-        CollectionAssert.AreEqual(new byte[] {0, 0, 2, 3, 4, 5},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {0, 0, 2, 3, 4, 5}).AsCollection);
 
         stream.Position = 2L;
 
-        Assert.AreEqual(3, stream.ReadByte());
+        Assert.That(stream.ReadByte(), Is.EqualTo(3));
 
         stream.Position = 0L;
 
         Array.Clear(buffer, 0, 6);
 
-        Assert.AreEqual(3, await stream.ReadAsync(buffer, 1, 3));
+        Assert.That(await stream.ReadAsync(buffer, 1, 3), Is.EqualTo(3));
 
-        CollectionAssert.AreEqual(new byte[] {0, 1, 2, 3, 0, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {0, 1, 2, 3, 0, 0}).AsCollection);
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
         Array.Clear(buffer, 0, 6);
 
-        Assert.AreEqual(2, await stream.ReadAsync(buffer.AsMemory(2, 2)));
+        Assert.That(await stream.ReadAsync(buffer.AsMemory(2, 2)), Is.EqualTo(2));
 
-        CollectionAssert.AreEqual(new byte[] {0, 0, 4, 5, 0, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {0, 0, 4, 5, 0, 0}).AsCollection);
 #endif
 
         stream.Dispose();
@@ -229,22 +225,18 @@ namespace Smdn.IO.Streams {
 
         stream.Write(new byte[] {1}, 0, 1);
 
-        CollectionAssert.AreEqual(new byte[] {1, 0, 0, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 0, 0, 0}).AsCollection);
 
         stream.WriteByte(2);
 
-        CollectionAssert.AreEqual(new byte[] {1, 2, 0, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 0, 0}).AsCollection);
 
         Assert.DoesNotThrowAsync(async () => await stream.WriteAsync(new byte[] { 3 }, 0, 1));
-        CollectionAssert.AreEqual(new byte[] {1, 2, 3, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 3, 0}).AsCollection);
 
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
         Assert.DoesNotThrowAsync(async () => await stream.WriteAsync(new byte[] { 4 }.AsMemory()));
-        CollectionAssert.AreEqual(new byte[] {1, 2, 3, 4},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 3, 4}).AsCollection);
 #endif
 
         Assert.Throws<NotSupportedException>(delegate {
@@ -252,11 +244,9 @@ namespace Smdn.IO.Streams {
         }, "expand base array");
 
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-        CollectionAssert.AreEqual(new byte[] {1, 2, 3, 4},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 3, 4}).AsCollection);
 #else
-        CollectionAssert.AreEqual(new byte[] {1, 2, 3, 0},
-                                  buffer);
+        Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 3, 0}).AsCollection);
 #endif
 
         stream.Position = 0L;
@@ -278,29 +268,29 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream()) {
         var stream = new NonClosingStream(baseStream, writable: false);
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, baseStream.Position);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Position, Is.EqualTo(0L));
 
         Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] { 1 }, 0, 1));
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, baseStream.Position);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Position, Is.EqualTo(0L));
 
         Assert.Throws<NotSupportedException>(() => stream.WriteByte(2));
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, baseStream.Position);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Position, Is.EqualTo(0L));
 
         Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(new byte[] { 1 }, 0, 1));
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, baseStream.Position);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Position, Is.EqualTo(0L));
 
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
         Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()));
 
-        Assert.AreEqual(0L, baseStream.Length);
-        Assert.AreEqual(0L, baseStream.Position);
+        Assert.That(baseStream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Position, Is.EqualTo(0L));
 #endif
 
 #if SYSTEM_IO_STREAM_BEGINWRITE

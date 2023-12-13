@@ -31,7 +31,7 @@ line3
       else
         Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      CollectionAssert.AreEqual(expectedLines, actualLines);
+      Assert.That(actualLines, Is.EqualTo(expectedLines).AsCollection);
     }
 
     [TestCase(true)]
@@ -56,7 +56,7 @@ line3
       else
         Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      CollectionAssert.AreEqual(expectedLines, actualLines);
+      Assert.That(actualLines, Is.EqualTo(expectedLines).AsCollection);
     }
 
     [TestCase(true)]
@@ -71,7 +71,7 @@ line3
       else
         Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      CollectionAssert.IsEmpty(actualLines);
+      Assert.That(actualLines, Is.Empty);
     }
 
     [Test]

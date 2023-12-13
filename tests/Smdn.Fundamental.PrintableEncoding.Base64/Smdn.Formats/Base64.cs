@@ -17,8 +17,8 @@ namespace Smdn.Formats {
         new {Data = new byte[] {0xfb, 0xf0},        ExpectedString = "+/A=", ExpectedBytes = new byte[] {0x2b, 0x2f, 0x41, 0x3d}},
         new {Data = new byte[] {0xfb, 0xf0, 0x00},  ExpectedString = "+/AA", ExpectedBytes = new byte[] {0x2b, 0x2f, 0x41, 0x41}},
       }) {
-        Assert.AreEqual(test.ExpectedString, Base64.GetEncodedString(test.Data));
-        Assert.AreEqual(test.ExpectedBytes,  Base64.Encode(test.Data));
+        Assert.That(Base64.GetEncodedString(test.Data), Is.EqualTo(test.ExpectedString));
+        Assert.That(Base64.Encode(test.Data), Is.EqualTo(test.ExpectedBytes));
       }
     }
 
@@ -30,27 +30,23 @@ namespace Smdn.Formats {
         new {ExpectedString = "\xfb\xf0",     ExpectedBytes = new byte[] {0xfb, 0xf0},        Data = "+/A="},
         new {ExpectedString = "\xfb\xf0\x00", ExpectedBytes = new byte[] {0xfb, 0xf0, 0x00},  Data = "+/AA"},
       }) {
-        Assert.AreEqual(test.ExpectedString, Base64.GetDecodedString(test.Data, Encodings.Latin1));
-        Assert.AreEqual(test.ExpectedBytes,  Base64.Decode(test.Data));
+        Assert.That(Base64.GetDecodedString(test.Data, Encodings.Latin1), Is.EqualTo(test.ExpectedString));
+        Assert.That(Base64.Decode(test.Data), Is.EqualTo(test.ExpectedBytes));
       }
     }
 
     [Test]
     public void TestEncode2()
     {
-      Assert.AreEqual(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30},
-                      Base64.Encode(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34}));
-      Assert.AreEqual(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30},
-                      Base64.Encode(new byte[] {0xff, 0x62, 0x61, 0x73, 0x65, 0x36, 0x34, 0xff}, 1, 6));
+      Assert.That(Base64.Encode(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34}), Is.EqualTo(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30}));
+      Assert.That(Base64.Encode(new byte[] {0xff, 0x62, 0x61, 0x73, 0x65, 0x36, 0x34, 0xff}, 1, 6), Is.EqualTo(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30}));
     }
 
     [Test]
     public void TestDecode2()
     {
-      Assert.AreEqual(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34},
-                      Base64.Decode(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30}));
-      Assert.AreEqual(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34},
-                      Base64.Decode(new byte[] {0xff, 0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30, 0xff}, 1, 8));
+      Assert.That(Base64.Decode(new byte[] {0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30}), Is.EqualTo(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34}));
+      Assert.That(Base64.Decode(new byte[] {0xff, 0x59, 0x6d, 0x46, 0x7a, 0x5a, 0x54, 0x59, 0x30, 0xff}, 1, 8), Is.EqualTo(new byte[] {0x62, 0x61, 0x73, 0x65, 0x36, 0x34}));
     }
 
     [Test]
@@ -62,8 +58,8 @@ namespace Smdn.Formats {
         new{PlainText = "漢字abcかな123カナ", Base64Text = "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC", Encoding = Encodings.Jis},
         new{PlainText = "漢字abcかな123カナ", Base64Text = "ir+OmmFiY4KpgsgxMjODSoNp", Encoding = Encodings.ShiftJis},
       }) {
-        Assert.AreEqual(test.PlainText, Base64.GetDecodedString(test.Base64Text, test.Encoding), test.Encoding.WebName);
-        Assert.AreEqual(test.Base64Text, Base64.GetEncodedString(test.PlainText, test.Encoding), test.Encoding.WebName);
+        Assert.That(Base64.GetDecodedString(test.Base64Text, test.Encoding), Is.EqualTo(test.PlainText), test.Encoding.WebName);
+        Assert.That(Base64.GetEncodedString(test.PlainText, test.Encoding), Is.EqualTo(test.Base64Text), test.Encoding.WebName);
       }
     }
 

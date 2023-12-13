@@ -73,7 +73,7 @@ partial class TypeExtensionsTests {
     Type t,
     bool expected
   )
-    => Assert.AreEqual(expected, t.IsHidingInheritedType(nonPublic));
+    => Assert.That(t.IsHidingInheritedType(nonPublic), Is.EqualTo(expected));
 
   [TestCase(true)]
   [TestCase(false)]

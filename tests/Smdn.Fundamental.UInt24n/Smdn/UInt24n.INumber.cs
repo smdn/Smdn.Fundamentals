@@ -6,13 +6,13 @@ using NUnit.Framework;
 namespace Smdn;
 
 partial class UInt24Tests {
-  [Test] public void Zero() => Assert.AreEqual(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x00 }, isBigEndian: true), UInt24.Zero);
-  [Test] public void One() => Assert.AreEqual(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x01 }, isBigEndian: true), UInt24.One);
+  [Test] public void Zero() => Assert.That(UInt24.Zero, Is.EqualTo(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x00 }, isBigEndian: true)));
+  [Test] public void One() => Assert.That(UInt24.One, Is.EqualTo(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x01 }, isBigEndian: true)));
 }
 
 partial class UInt48Tests {
-  [Test] public void Zero() => Assert.AreEqual(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true), UInt48.Zero);
-  [Test] public void One() => Assert.AreEqual(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, isBigEndian: true), UInt48.One);
+  [Test] public void Zero() => Assert.That(UInt48.Zero, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true)));
+  [Test] public void One() => Assert.That(UInt48.One, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, isBigEndian: true)));
 }
 
 partial class UInt24nTests {
@@ -41,9 +41,9 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Abs_UInt24()
   {
-    Assert.AreEqual(UInt24.Zero, Abs(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
-    Assert.AreEqual(UInt24.One, Abs(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
-    Assert.AreEqual(UInt24.MaxValue, Abs(UInt24.MaxValue), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
+    Assert.That(Abs(UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
+    Assert.That(Abs(UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
+    Assert.That(Abs(UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
@@ -57,9 +57,9 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Abs_UInt48()
   {
-    Assert.AreEqual(UInt48.Zero, Abs(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
-    Assert.AreEqual(UInt48.One, Abs(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
-    Assert.AreEqual(UInt48.MaxValue, Abs(UInt48.MaxValue), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
+    Assert.That(Abs(UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
+    Assert.That(Abs(UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
+    Assert.That(Abs(UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
@@ -73,9 +73,9 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Sign_UInt24()
   {
-    Assert.AreEqual(UInt24.Zero, Sign(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
-    Assert.AreEqual(UInt24.One, Sign(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
-    Assert.AreEqual(UInt24.One, Sign(UInt24.MaxValue), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
+    Assert.That(Sign(UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
+    Assert.That(Sign(UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
+    Assert.That(Sign(UInt24.MaxValue), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
@@ -89,9 +89,9 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Sign_UInt48()
   {
-    Assert.AreEqual(UInt48.Zero, Sign(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
-    Assert.AreEqual(UInt48.One, Sign(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
-    Assert.AreEqual(UInt48.One, Sign(UInt48.MaxValue), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
+    Assert.That(Sign(UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
+    Assert.That(Sign(UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
+    Assert.That(Sign(UInt48.MaxValue), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
@@ -105,13 +105,13 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Min_UInt24()
   {
-    Assert.AreEqual(UInt24.Zero, Min(UInt24.Zero, UInt24.Zero), $"{typeof(UInt24).Name} min(Zero, Zero)");
-    Assert.AreEqual(UInt24.Zero, Min(UInt24.Zero, UInt24.One), $"{typeof(UInt24).Name} min(Zero, One)");
-    Assert.AreEqual(UInt24.Zero, Min(UInt24.One, UInt24.Zero), $"{typeof(UInt24).Name} min(One, Zero)");
-    Assert.AreEqual(UInt24.One, Min(UInt24.One, UInt24.One), $"{typeof(UInt24).Name} min(One, One)");
-    Assert.AreEqual(UInt24.One, Min(UInt24.One, UInt24.MaxValue), $"{typeof(UInt24).Name} min(One, MaxValue)");
-    Assert.AreEqual(UInt24.One, Min(UInt24.MaxValue, UInt24.One), $"{typeof(UInt24).Name} min(MaxValue, One)");
-    Assert.AreEqual(UInt24.MaxValue, Min(UInt24.MaxValue, UInt24.MaxValue), $"{typeof(UInt24).Name} min(MaxValue, MaxValue)");
+    Assert.That(Min(UInt24.Zero, UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} min(Zero, Zero)");
+    Assert.That(Min(UInt24.Zero, UInt24.One), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} min(Zero, One)");
+    Assert.That(Min(UInt24.One, UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} min(One, Zero)");
+    Assert.That(Min(UInt24.One, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} min(One, One)");
+    Assert.That(Min(UInt24.One, UInt24.MaxValue), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} min(One, MaxValue)");
+    Assert.That(Min(UInt24.MaxValue, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} min(MaxValue, One)");
+    Assert.That(Min(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} min(MaxValue, MaxValue)");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -125,13 +125,13 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Min_UInt48()
   {
-    Assert.AreEqual(UInt48.Zero, Min(UInt48.Zero, UInt48.Zero), $"{typeof(UInt48).Name} min(Zero, Zero)");
-    Assert.AreEqual(UInt48.Zero, Min(UInt48.Zero, UInt48.One), $"{typeof(UInt48).Name} min(Zero, One)");
-    Assert.AreEqual(UInt48.Zero, Min(UInt48.One, UInt48.Zero), $"{typeof(UInt48).Name} min(One, Zero)");
-    Assert.AreEqual(UInt48.One, Min(UInt48.One, UInt48.One), $"{typeof(UInt48).Name} min(One, One)");
-    Assert.AreEqual(UInt48.One, Min(UInt48.One, UInt48.MaxValue), $"{typeof(UInt48).Name} min(One, MaxValue)");
-    Assert.AreEqual(UInt48.One, Min(UInt48.MaxValue, UInt48.One), $"{typeof(UInt48).Name} min(MaxValue, One)");
-    Assert.AreEqual(UInt48.MaxValue, Min(UInt48.MaxValue, UInt48.MaxValue), $"{typeof(UInt48).Name} min(MaxValue, MaxValue)");
+    Assert.That(Min(UInt48.Zero, UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} min(Zero, Zero)");
+    Assert.That(Min(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} min(Zero, One)");
+    Assert.That(Min(UInt48.One, UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} min(One, Zero)");
+    Assert.That(Min(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} min(One, One)");
+    Assert.That(Min(UInt48.One, UInt48.MaxValue), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} min(One, MaxValue)");
+    Assert.That(Min(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} min(MaxValue, One)");
+    Assert.That(Min(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} min(MaxValue, MaxValue)");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -145,13 +145,13 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Max_UInt24()
   {
-    Assert.AreEqual(UInt24.Zero, Max(UInt24.Zero, UInt24.Zero), $"{typeof(UInt24).Name} max(Zero, Zero)");
-    Assert.AreEqual(UInt24.One, Max(UInt24.Zero, UInt24.One), $"{typeof(UInt24).Name} max(Zero, One)");
-    Assert.AreEqual(UInt24.One, Max(UInt24.One, UInt24.Zero), $"{typeof(UInt24).Name} max(One, Zero)");
-    Assert.AreEqual(UInt24.One, Max(UInt24.One, UInt24.One), $"{typeof(UInt24).Name} max(One, One)");
-    Assert.AreEqual(UInt24.MaxValue, Max(UInt24.One, UInt24.MaxValue), $"{typeof(UInt24).Name} max(One, MaxValue)");
-    Assert.AreEqual(UInt24.MaxValue, Max(UInt24.MaxValue, UInt24.One), $"{typeof(UInt24).Name} max(MaxValue, One)");
-    Assert.AreEqual(UInt24.MaxValue, Max(UInt24.MaxValue, UInt24.MaxValue), $"{typeof(UInt24).Name} max(MaxValue, MaxValue)");
+    Assert.That(Max(UInt24.Zero, UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} max(Zero, Zero)");
+    Assert.That(Max(UInt24.Zero, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} max(Zero, One)");
+    Assert.That(Max(UInt24.One, UInt24.Zero), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} max(One, Zero)");
+    Assert.That(Max(UInt24.One, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} max(One, One)");
+    Assert.That(Max(UInt24.One, UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} max(One, MaxValue)");
+    Assert.That(Max(UInt24.MaxValue, UInt24.One), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} max(MaxValue, One)");
+    Assert.That(Max(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} max(MaxValue, MaxValue)");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -165,13 +165,13 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Max_UInt48()
   {
-    Assert.AreEqual(UInt48.Zero, Max(UInt48.Zero, UInt48.Zero), $"{typeof(UInt48).Name} max(Zero, Zero)");
-    Assert.AreEqual(UInt48.One, Max(UInt48.Zero, UInt48.One), $"{typeof(UInt48).Name} max(Zero, One)");
-    Assert.AreEqual(UInt48.One, Max(UInt48.One, UInt48.Zero), $"{typeof(UInt48).Name} max(One, Zero)");
-    Assert.AreEqual(UInt48.One, Max(UInt48.One, UInt48.One), $"{typeof(UInt48).Name} max(One, One)");
-    Assert.AreEqual(UInt48.MaxValue, Max(UInt48.One, UInt48.MaxValue), $"{typeof(UInt48).Name} max(One, MaxValue)");
-    Assert.AreEqual(UInt48.MaxValue, Max(UInt48.MaxValue, UInt48.One), $"{typeof(UInt48).Name} max(MaxValue, One)");
-    Assert.AreEqual(UInt48.MaxValue, Max(UInt48.MaxValue, UInt48.MaxValue), $"{typeof(UInt48).Name} max(MaxValue, MaxValue)");
+    Assert.That(Max(UInt48.Zero, UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} max(Zero, Zero)");
+    Assert.That(Max(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} max(Zero, One)");
+    Assert.That(Max(UInt48.One, UInt48.Zero), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} max(One, Zero)");
+    Assert.That(Max(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} max(One, One)");
+    Assert.That(Max(UInt48.One, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} max(One, MaxValue)");
+    Assert.That(Max(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} max(MaxValue, One)");
+    Assert.That(Max(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} max(MaxValue, MaxValue)");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -187,11 +187,11 @@ partial class UInt24nTests {
   {
     Assert.Throws<ArgumentException>(() => Clamp(UInt24.One, min: UInt24.One, max: UInt24.Zero), $"{typeof(UInt24).Name} min > max");
 
-    Assert.AreEqual(UInt24.Zero, Clamp(UInt24.Zero, min: UInt24.Zero, max: UInt24.Zero), $"{typeof(UInt24).Name} clamp(Zero, Zero, Zero)");
-    Assert.AreEqual(UInt24.Zero, Clamp(UInt24.One, min: UInt24.Zero, max: UInt24.Zero), $"{typeof(UInt24).Name} clamp(One, Zero, Zero)");
-    Assert.AreEqual(UInt24.Zero, Clamp(UInt24.Zero, min: UInt24.Zero, max: UInt24.One), $"{typeof(UInt24).Name} clamp(Zero, Zero, One)");
-    Assert.AreEqual(UInt24.One, Clamp(UInt24.One, min: UInt24.Zero, max: UInt24.One), $"{typeof(UInt24).Name} clamp(Zero, Zero, One)");
-    Assert.AreEqual(UInt24.One, Clamp(UInt24.MaxValue, min: UInt24.Zero, max: UInt24.One), $"{typeof(UInt24).Name} clamp(MaxValue, Zero, One)");
+    Assert.That(Clamp(UInt24.Zero, min: UInt24.Zero, max: UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} clamp(Zero, Zero, Zero)");
+    Assert.That(Clamp(UInt24.One, min: UInt24.Zero, max: UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} clamp(One, Zero, Zero)");
+    Assert.That(Clamp(UInt24.Zero, min: UInt24.Zero, max: UInt24.One), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} clamp(Zero, Zero, One)");
+    Assert.That(Clamp(UInt24.One, min: UInt24.Zero, max: UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} clamp(Zero, Zero, One)");
+    Assert.That(Clamp(UInt24.MaxValue, min: UInt24.Zero, max: UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} clamp(MaxValue, Zero, One)");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
@@ -207,11 +207,11 @@ partial class UInt24nTests {
   {
     Assert.Throws<ArgumentException>(() => Clamp(UInt48.One, min: UInt48.One, max: UInt48.Zero), $"{typeof(UInt48).Name} min > max");
 
-    Assert.AreEqual(UInt48.Zero, Clamp(UInt48.Zero, min: UInt48.Zero, max: UInt48.Zero), $"{typeof(UInt48).Name} clamp(Zero, Zero, Zero)");
-    Assert.AreEqual(UInt48.Zero, Clamp(UInt48.One, min: UInt48.Zero, max: UInt48.Zero), $"{typeof(UInt48).Name} clamp(One, Zero, Zero)");
-    Assert.AreEqual(UInt48.Zero, Clamp(UInt48.Zero, min: UInt48.Zero, max: UInt48.One), $"{typeof(UInt48).Name} clamp(Zero, Zero, One)");
-    Assert.AreEqual(UInt48.One, Clamp(UInt48.One, min: UInt48.Zero, max: UInt48.One), $"{typeof(UInt48).Name} clamp(Zero, Zero, One)");
-    Assert.AreEqual(UInt48.One, Clamp(UInt48.MaxValue, min: UInt48.Zero, max: UInt48.One), $"{typeof(UInt48).Name} clamp(MaxValue, Zero, One)");
+    Assert.That(Clamp(UInt48.Zero, min: UInt48.Zero, max: UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} clamp(Zero, Zero, Zero)");
+    Assert.That(Clamp(UInt48.One, min: UInt48.Zero, max: UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} clamp(One, Zero, Zero)");
+    Assert.That(Clamp(UInt48.Zero, min: UInt48.Zero, max: UInt48.One), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} clamp(Zero, Zero, One)");
+    Assert.That(Clamp(UInt48.One, min: UInt48.Zero, max: UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} clamp(Zero, Zero, One)");
+    Assert.That(Clamp(UInt48.MaxValue, min: UInt48.Zero, max: UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} clamp(MaxValue, Zero, One)");
 
 #if FEATURE_GENERIC_MATH
     static TUInt24n Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
@@ -228,11 +228,11 @@ partial class UInt24nTests {
     Assert.Throws<DivideByZeroException>(() => DivRem(UInt24.Zero, UInt24.Zero), $"{typeof(UInt24).Name} DivRem(Zero, Zero)");
     Assert.Throws<DivideByZeroException>(() => DivRem(UInt24.One, UInt24.Zero), $"{typeof(UInt24).Name} DivRem(One, Zero)");
 
-    Assert.AreEqual((UInt24.Zero, UInt24.Zero), DivRem(UInt24.Zero, UInt24.One), $"{typeof(UInt24).Name} DivRem(Zero, One)");
-    Assert.AreEqual((UInt24.One, UInt24.Zero), DivRem(UInt24.One, UInt24.One), $"{typeof(UInt24).Name} DivRem(One, One)");
-    Assert.AreEqual((UInt24.Zero, UInt24.One), DivRem(UInt24.One, UInt24.MaxValue), $"{typeof(UInt24).Name} DivRem(One, MaxValue)");
-    Assert.AreEqual((UInt24.MaxValue, UInt24.Zero), DivRem(UInt24.MaxValue, UInt24.One), $"{typeof(UInt24).Name} DivRem(MaxValue, One)");
-    Assert.AreEqual((UInt24.One, UInt24.Zero), DivRem(UInt24.MaxValue, UInt24.MaxValue), $"{typeof(UInt24).Name} DivRem(MaxValue, MaxValue)");
+    Assert.That(DivRem(UInt24.Zero, UInt24.One), Is.EqualTo((UInt24.Zero, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(Zero, One)");
+    Assert.That(DivRem(UInt24.One, UInt24.One), Is.EqualTo((UInt24.One, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(One, One)");
+    Assert.That(DivRem(UInt24.One, UInt24.MaxValue), Is.EqualTo((UInt24.Zero, UInt24.One)), $"{typeof(UInt24).Name} DivRem(One, MaxValue)");
+    Assert.That(DivRem(UInt24.MaxValue, UInt24.One), Is.EqualTo((UInt24.MaxValue, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(MaxValue, One)");
+    Assert.That(DivRem(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo((UInt24.One, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(MaxValue, MaxValue)");
 
 #if FEATURE_GENERIC_MATH
     static (TUInt24n Quotient, TUInt24n Remainder) DivRem<TUInt24n>(TUInt24n left, TUInt24n right) where TUInt24n : INumber<TUInt24n>
@@ -249,11 +249,11 @@ partial class UInt24nTests {
     Assert.Throws<DivideByZeroException>(() => DivRem(UInt48.Zero, UInt48.Zero), $"{typeof(UInt48).Name} DivRem(Zero, Zero)");
     Assert.Throws<DivideByZeroException>(() => DivRem(UInt48.One, UInt48.Zero), $"{typeof(UInt48).Name} DivRem(One, Zero)");
 
-    Assert.AreEqual((UInt48.Zero, UInt48.Zero), DivRem(UInt48.Zero, UInt48.One), $"{typeof(UInt48).Name} DivRem(Zero, One)");
-    Assert.AreEqual((UInt48.One, UInt48.Zero), DivRem(UInt48.One, UInt48.One), $"{typeof(UInt48).Name} DivRem(One, One)");
-    Assert.AreEqual((UInt48.Zero, UInt48.One), DivRem(UInt48.One, UInt48.MaxValue), $"{typeof(UInt48).Name} DivRem(One, MaxValue)");
-    Assert.AreEqual((UInt48.MaxValue, UInt48.Zero), DivRem(UInt48.MaxValue, UInt48.One), $"{typeof(UInt48).Name} DivRem(MaxValue, One)");
-    Assert.AreEqual((UInt48.One, UInt48.Zero), DivRem(UInt48.MaxValue, UInt48.MaxValue), $"{typeof(UInt48).Name} DivRem(MaxValue, MaxValue)");
+    Assert.That(DivRem(UInt48.Zero, UInt48.One), Is.EqualTo((UInt48.Zero, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(Zero, One)");
+    Assert.That(DivRem(UInt48.One, UInt48.One), Is.EqualTo((UInt48.One, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(One, One)");
+    Assert.That(DivRem(UInt48.One, UInt48.MaxValue), Is.EqualTo((UInt48.Zero, UInt48.One)), $"{typeof(UInt48).Name} DivRem(One, MaxValue)");
+    Assert.That(DivRem(UInt48.MaxValue, UInt48.One), Is.EqualTo((UInt48.MaxValue, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(MaxValue, One)");
+    Assert.That(DivRem(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo((UInt48.One, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(MaxValue, MaxValue)");
 
 #if FEATURE_GENERIC_MATH
     static (TUInt24n Quotient, TUInt24n Remainder) DivRem<TUInt24n>(TUInt24n left, TUInt24n right) where TUInt24n : INumber<TUInt24n>

@@ -144,9 +144,9 @@ partial class MethodInfoExtensionsTests {
   public void IsPropertyGetMethod(MethodInfo method, PropertyAccessorAttribute attr)
   {
     if (attr is null || attr.AccessorType != AccessorType.PropertyGet)
-      Assert.IsFalse(method.IsPropertyGetMethod());
+      Assert.That(method.IsPropertyGetMethod(), Is.False);
     else
-      Assert.IsTrue(method.IsPropertyGetMethod());
+      Assert.That(method.IsPropertyGetMethod(), Is.True);
   }
 
   [Test]
@@ -157,9 +157,9 @@ partial class MethodInfoExtensionsTests {
   public void IsPropertySetMethod(MethodInfo method, PropertyAccessorAttribute attr)
   {
     if (attr is null || attr.AccessorType != AccessorType.PropertySet)
-      Assert.IsFalse(method.IsPropertySetMethod());
+      Assert.That(method.IsPropertySetMethod(), Is.False);
     else
-      Assert.IsTrue(method.IsPropertySetMethod());
+      Assert.That(method.IsPropertySetMethod(), Is.True);
   }
 
   [Test]
@@ -170,9 +170,9 @@ partial class MethodInfoExtensionsTests {
   public void IsPropertyAccessorMethod(MethodInfo method, PropertyAccessorAttribute attr)
   {
     if (attr is null)
-      Assert.IsFalse(method.IsPropertyAccessorMethod());
+      Assert.That(method.IsPropertyAccessorMethod(), Is.False);
     else
-      Assert.IsTrue(method.IsPropertyAccessorMethod());
+      Assert.That(method.IsPropertyAccessorMethod(), Is.True);
   }
 
   [Test]
@@ -183,21 +183,21 @@ partial class MethodInfoExtensionsTests {
   public void TryGetPropertyFromAccessorMethod(MethodInfo method, PropertyAccessorAttribute attr)
   {
     if (attr is null) {
-      Assert.IsFalse(method.TryGetPropertyFromAccessorMethod(out var property));
-      Assert.IsNull(property);
+      Assert.That(method.TryGetPropertyFromAccessorMethod(out var property), Is.False);
+      Assert.That(property, Is.Null);
     }
     else {
-      Assert.IsTrue(method.TryGetPropertyFromAccessorMethod(out var property));
-      Assert.IsNotNull(property);
-      Assert.AreEqual(attr.GetDeclaringProperty(method), property);
+      Assert.That(method.TryGetPropertyFromAccessorMethod(out var property), Is.True);
+      Assert.That(property, Is.Not.Null);
+      Assert.That(property, Is.EqualTo(attr.GetDeclaringProperty(method)));
     }
   }
 
   [Test]
   public void TryGetPropertyFromAccessorMethod_ArgumentNull()
   {
-    Assert.IsFalse(((MethodInfo)null!).TryGetPropertyFromAccessorMethod(out var p));
-    Assert.IsNull(p);
+    Assert.That(((MethodInfo)null!).TryGetPropertyFromAccessorMethod(out var p), Is.False);
+    Assert.That(p, Is.Null);
   }
 
   private static System.Collections.IEnumerable YieldTestCases_EventAccessors()
@@ -211,9 +211,9 @@ partial class MethodInfoExtensionsTests {
   public void IsEventAddMethod(MethodInfo method, EventAccessorAttribute attr)
   {
     if (attr is null || attr.AccessorType != AccessorType.EventAdd)
-      Assert.IsFalse(method.IsEventAddMethod());
+      Assert.That(method.IsEventAddMethod(), Is.False);
     else
-      Assert.IsTrue(method.IsEventAddMethod());
+      Assert.That(method.IsEventAddMethod(), Is.True);
   }
 
   [Test]
@@ -224,9 +224,9 @@ partial class MethodInfoExtensionsTests {
   public void IsEventRemoveMethod(MethodInfo method, EventAccessorAttribute attr)
   {
     if (attr is null || attr.AccessorType != AccessorType.EventRemove)
-      Assert.IsFalse(method.IsEventRemoveMethod());
+      Assert.That(method.IsEventRemoveMethod(), Is.False);
     else
-      Assert.IsTrue(method.IsEventRemoveMethod());
+      Assert.That(method.IsEventRemoveMethod(), Is.True);
   }
 
   [Test]
@@ -237,9 +237,9 @@ partial class MethodInfoExtensionsTests {
   public void IsEventAccessorMethod(MethodInfo method, EventAccessorAttribute attr)
   {
     if (attr is null)
-      Assert.IsFalse(method.IsEventAccessorMethod());
+      Assert.That(method.IsEventAccessorMethod(), Is.False);
     else
-      Assert.IsTrue(method.IsEventAccessorMethod());
+      Assert.That(method.IsEventAccessorMethod(), Is.True);
   }
 
   [Test]
@@ -250,20 +250,20 @@ partial class MethodInfoExtensionsTests {
   public void TryGetEventFromAccessorMethod(MethodInfo method, EventAccessorAttribute attr)
   {
     if (attr is null) {
-      Assert.IsFalse(method.TryGetEventFromAccessorMethod(out var ev));
-      Assert.IsNull(ev);
+      Assert.That(method.TryGetEventFromAccessorMethod(out var ev), Is.False);
+      Assert.That(ev, Is.Null);
     }
     else {
-      Assert.IsTrue(method.TryGetEventFromAccessorMethod(out var ev));
-      Assert.IsNotNull(ev);
-      Assert.AreEqual(attr.GetDeclaringEvent(method), ev);
+      Assert.That(method.TryGetEventFromAccessorMethod(out var ev), Is.True);
+      Assert.That(ev, Is.Not.Null);
+      Assert.That(ev, Is.EqualTo(attr.GetDeclaringEvent(method)));
     }
   }
 
   [Test]
   public void TryGetEventFromAccessorMethod_ArgumentNull()
   {
-    Assert.IsFalse(((MethodInfo)null!).TryGetEventFromAccessorMethod(out var ev));
-    Assert.IsNull(ev);
+    Assert.That(((MethodInfo)null!).TryGetEventFromAccessorMethod(out var ev), Is.False);
+    Assert.That(ev, Is.Null);
   }
 }

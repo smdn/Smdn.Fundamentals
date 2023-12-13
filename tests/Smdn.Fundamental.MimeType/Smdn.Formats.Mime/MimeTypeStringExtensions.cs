@@ -12,9 +12,9 @@ public class MimeTypeStringExtensionsTests {
   [Category("obsolete")]
   public void MimeType_TryParse_Tuple()
   {
-    Assert.IsTrue(MimeType.TryParse("text/plain", out (string type, string subType) result));
-    Assert.AreEqual("text", result.type);
-    Assert.AreEqual("plain", result.subType);
+    Assert.That(MimeType.TryParse("text/plain", out (string type, string subType) result), Is.True);
+    Assert.That(result.type, Is.EqualTo("text"));
+    Assert.That(result.subType, Is.EqualTo("plain"));
   }
 #pragma warning restore 0618
 
@@ -26,8 +26,8 @@ public class MimeTypeStringExtensionsTests {
 #pragma warning disable CA1305
     (var type, var subType) = MimeType.Parse("text/plain");
 
-    Assert.AreEqual("text", type);
-    Assert.AreEqual("plain", subType);
+    Assert.That(type, Is.EqualTo("text"));
+    Assert.That(subType, Is.EqualTo("plain"));
 
     Assert.Throws<ArgumentNullException>(() => MimeType.Parse(null!));
     Assert.Throws<ArgumentException>(() => MimeType.Parse(string.Empty));
@@ -45,8 +45,8 @@ public class MimeTypeStringExtensionsTests {
     string type = default, subType = default;
 
     Assert.DoesNotThrow(() => (type, subType) = MimeTypeStringExtensions.Split(s));
-    Assert.AreEqual(expectedType, type, nameof(expectedType));
-    Assert.AreEqual(expectedSubType, subType, nameof(expectedSubType));
+    Assert.That(type, Is.EqualTo(expectedType), nameof(expectedType));
+    Assert.That(subType, Is.EqualTo(expectedSubType), nameof(expectedSubType));
   }
 
   [TestCase("text/plain", "text", "plain")]
@@ -54,9 +54,9 @@ public class MimeTypeStringExtensionsTests {
   [TestCase("application/rdf+xml", "application", "rdf+xml")]
   public void TrySplit(string s, string expectedType, string expectedSubType)
   {
-    Assert.IsTrue(MimeTypeStringExtensions.TrySplit(s, out var result));
-    Assert.AreEqual(expectedType, result.Type, nameof(expectedType));
-    Assert.AreEqual(expectedSubType, result.SubType, nameof(expectedSubType));
+    Assert.That(MimeTypeStringExtensions.TrySplit(s, out var result), Is.True);
+    Assert.That(result.Type, Is.EqualTo(expectedType), nameof(expectedType));
+    Assert.That(result.SubType, Is.EqualTo(expectedSubType), nameof(expectedSubType));
   }
 
   [TestCase(null, typeof(ArgumentNullException))]
@@ -79,5 +79,5 @@ public class MimeTypeStringExtensionsTests {
   [TestCase("text/plain/")]
   [TestCase("text/plain/foo")]
   public void TrySplit_Invalid(string s)
-    => Assert.IsFalse(MimeTypeStringExtensions.TrySplit(s, out _));
+    => Assert.That(MimeTypeStringExtensions.TrySplit(s, out _), Is.False);
 }

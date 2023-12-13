@@ -10,9 +10,9 @@ partial class UInt24Tests {
   [Test]
   public void TestOpUnaryPlus()
   {
-    Assert.AreEqual(UInt24.Zero, +UInt24.Zero, "+0");
-    Assert.AreEqual(UInt24.One, +UInt24.One, "+1");
-    Assert.AreEqual(UInt24.MaxValue, +UInt24.MaxValue, "+Max");
+    Assert.That(+UInt24.Zero, Is.EqualTo(UInt24.Zero), "+0");
+    Assert.That(+UInt24.One, Is.EqualTo(UInt24.One), "+1");
+    Assert.That(+UInt24.MaxValue, Is.EqualTo(UInt24.MaxValue), "+Max");
   }
 }
 
@@ -20,9 +20,9 @@ partial class UInt48Tests {
   [Test]
   public void TestOpUnaryPlus()
   {
-    Assert.AreEqual(UInt48.Zero, +UInt48.Zero, "+0");
-    Assert.AreEqual(UInt48.One, +UInt48.One, "+1");
-    Assert.AreEqual(UInt48.MaxValue, +UInt48.MaxValue, "+Max");
+    Assert.That(+UInt48.Zero, Is.EqualTo(UInt48.Zero), "+0");
+    Assert.That(+UInt48.One, Is.EqualTo(UInt48.One), "+1");
+    Assert.That(+UInt48.MaxValue, Is.EqualTo(UInt48.MaxValue), "+Max");
   }
 }
 

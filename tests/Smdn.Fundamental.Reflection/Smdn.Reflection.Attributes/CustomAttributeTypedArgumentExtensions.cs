@@ -39,7 +39,7 @@ public class CustomAttributeTypedArgumentExtensionsTests {
   {
     object val = typedArg.GetTypedValue()!;
 
-    Assert.AreEqual(expectedType, val.GetType(), "type of value");
-    Assert.AreEqual(expectedValue, val, "value");
+    Assert.That(val.GetType(), Is.EqualTo(expectedType), "type of value");
+    Assert.That(val, Is.EqualTo(expectedValue), "value");
   }
 }

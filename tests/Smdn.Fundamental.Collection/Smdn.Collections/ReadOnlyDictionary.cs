@@ -11,7 +11,7 @@ namespace Smdn.Collections {
     {
       var empty = ReadOnlyDictionary<string, string>.Empty;
 
-      Assert.AreEqual(0, empty.Count);
+      Assert.That(empty.Count, Is.EqualTo(0));
     }
   }
 }

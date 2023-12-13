@@ -11,8 +11,8 @@ namespace Smdn {
     {
       var bytes = Nonce.GetRandomBytes(16);
 
-      Assert.AreEqual(16, bytes.Length);
-      Assert.AreNotEqual(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}, bytes);
+      Assert.That(bytes.Length, Is.EqualTo(16));
+      Assert.That(bytes, Is.Not.EqualTo(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}));
     }
 
     [Test]
@@ -22,7 +22,7 @@ namespace Smdn {
 
       Nonce.GetRandomBytes(bytes);
 
-      Assert.AreNotEqual(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}, bytes);
+      Assert.That(bytes, Is.Not.EqualTo(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}));
     }
   }
 }

@@ -23,6 +23,6 @@ public class XEntityReferenceTests {
       er.WriteTo(writer);
     }
 
-    Assert.AreEqual("&copy;", sb.ToString());
+    Assert.That(sb.ToString(), Is.EqualTo("&copy;"));
   }
 }

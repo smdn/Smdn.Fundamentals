@@ -56,17 +56,17 @@ namespace Smdn.Buffers {
     {
       var str = CreateSequence("abcde", singleSegment);
 
-      Assert.IsTrue(str.SequenceEqual(CreateSpan("abcde")));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan("abcdef")));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan("abcd")));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan(string.Empty)));
+      Assert.That(str.SequenceEqual(CreateSpan("abcde")), Is.True);
+      Assert.That(str.SequenceEqual(CreateSpan("abcdef")), Is.False);
+      Assert.That(str.SequenceEqual(CreateSpan("abcd")), Is.False);
+      Assert.That(str.SequenceEqual(CreateSpan(string.Empty)), Is.False);
 
-      Assert.AreEqual(str.IsSingleSegment, singleSegment);
+      Assert.That(str.IsSingleSegment, Is.EqualTo(singleSegment));
 
       str = CreateSequence(string.Empty, singleSegment);
 
-      Assert.IsTrue(str.SequenceEqual(CreateSpan(string.Empty)));
-      Assert.IsFalse(str.SequenceEqual(CreateSpan("a")));
+      Assert.That(str.SequenceEqual(CreateSpan(string.Empty)), Is.True);
+      Assert.That(str.SequenceEqual(CreateSpan("a")), Is.False);
     }
 
     [TestCase(true,  "ABCXYZ", "ABCXYZ", true)]
@@ -94,7 +94,7 @@ namespace Smdn.Buffers {
     [TestCase(false, "ac", "ab", false)]
     public void SequenceEqualIgnoreCase(bool singleSegment, string strSequence, string strSpan, bool expected)
     {
-      Assert.AreEqual(expected, CreateSequence(strSequence, singleSegment).SequenceEqualIgnoreCase(CreateSpan(strSpan)));
+      Assert.That(CreateSequence(strSequence, singleSegment).SequenceEqualIgnoreCase(CreateSpan(strSpan)), Is.EqualTo(expected));
     }
 
     [TestCase(true)]
@@ -103,14 +103,14 @@ namespace Smdn.Buffers {
     {
       var str = CreateSequence("abcde", singleSegment);
 
-      Assert.IsTrue(str.StartsWith(CreateSpan("abc")));
-      Assert.IsTrue(str.StartsWith(CreateSpan("abcde")));
-      Assert.IsFalse(str.StartsWith(CreateSpan("abd")));
-      Assert.IsFalse(str.StartsWith(CreateSpan("xbc")));
-      Assert.IsFalse(str.StartsWith(CreateSpan("abcdef")));
-      Assert.IsTrue(str.StartsWith(CreateSpan(string.Empty)));
+      Assert.That(str.StartsWith(CreateSpan("abc")), Is.True);
+      Assert.That(str.StartsWith(CreateSpan("abcde")), Is.True);
+      Assert.That(str.StartsWith(CreateSpan("abd")), Is.False);
+      Assert.That(str.StartsWith(CreateSpan("xbc")), Is.False);
+      Assert.That(str.StartsWith(CreateSpan("abcdef")), Is.False);
+      Assert.That(str.StartsWith(CreateSpan(string.Empty)), Is.True);
 
-      Assert.AreEqual(str.IsSingleSegment, singleSegment);
+      Assert.That(str.IsSingleSegment, Is.EqualTo(singleSegment));
     }
 
     [Test]
@@ -118,8 +118,8 @@ namespace Smdn.Buffers {
     {
       var str = CreateSequence(string.Empty);
 
-      Assert.IsTrue(str.StartsWith(CreateSpan(string.Empty)));
-      Assert.IsFalse(str.StartsWith(CreateSpan("a")));
+      Assert.That(str.StartsWith(CreateSpan(string.Empty)), Is.True);
+      Assert.That(str.StartsWith(CreateSpan("a")), Is.False);
     }
 
     [TestCase("", true)]
@@ -130,14 +130,14 @@ namespace Smdn.Buffers {
     [TestCase("abcABC012", false)]
     public void CreateString(string str, bool singleSegment)
     {
-      Assert.AreEqual(str, CreateSequence(str, singleSegment).CreateString());
+      Assert.That(CreateSequence(str, singleSegment).CreateString(), Is.EqualTo(str));
     }
 
     [Test]
     public void CreateString_Empty()
     {
-      Assert.IsEmpty(CreateSequence(string.Empty).CreateString());
-      Assert.IsEmpty(default(ReadOnlySequence<byte>).CreateString());
+      Assert.That(CreateSequence(string.Empty).CreateString(), Is.Empty);
+      Assert.That(default(ReadOnlySequence<byte>).CreateString(), Is.Empty);
     }
   }
 }

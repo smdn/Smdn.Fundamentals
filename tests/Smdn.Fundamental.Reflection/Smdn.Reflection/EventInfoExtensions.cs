@@ -42,7 +42,7 @@ public class EventInfoExtensionsTests {
   {
     var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(expected, ev!.IsStatic(), $"{type.Name}.{ev!.Name}");
+    Assert.That(ev!.IsStatic(), Is.EqualTo(expected), $"{type.Name}.{ev!.Name}");
   }
 
   [Test]
@@ -54,18 +54,18 @@ public class EventInfoExtensionsTests {
   {
     var e1 = GetType().GetEvent("E1", BindingFlags.Instance | BindingFlags.Public)!;
 
-    CollectionAssert.IsNotEmpty(e1.GetMethods());
-    Assert.AreEqual(2, e1.GetMethods().Count());
+    Assert.That(e1.GetMethods(), Is.Not.Empty);
+    Assert.That(e1.GetMethods().Count(), Is.EqualTo(2));
 
     var e2 = GetType().GetEvent("E2", BindingFlags.Instance | BindingFlags.Public)!;
 
-    CollectionAssert.IsNotEmpty(e2.GetMethods());
-    Assert.AreEqual(2, e2.GetMethods().Count());
+    Assert.That(e2.GetMethods(), Is.Not.Empty);
+    Assert.That(e2.GetMethods().Count(), Is.EqualTo(2));
 
     var e3 = GetType().GetEvent("E3", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!;
 
-    CollectionAssert.IsEmpty(e3.GetMethods(false));
-    CollectionAssert.IsNotEmpty(e3.GetMethods(true));
+    Assert.That(e3.GetMethods(false), Is.Empty);
+    Assert.That(e3.GetMethods(true), Is.Not.Empty);
   }
 
   [Test]
@@ -88,9 +88,9 @@ public class EventInfoExtensionsTests {
     var ev = type.GetEvent(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
     if (hasBackingField)
-      Assert.IsNotNull(ev!.GetBackingField());
+      Assert.That(ev!.GetBackingField(), Is.Not.Null);
     else
-      Assert.IsNull(ev!.GetBackingField());
+      Assert.That(ev!.GetBackingField(), Is.Null);
   }
 
   [Test]
@@ -147,7 +147,7 @@ public class EventInfoExtensionsTests {
   {
     var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(expected, ev!.IsOverride(), $"{type.Name}.{ev!.Name}");
+    Assert.That(ev!.IsOverride(), Is.EqualTo(expected), $"{type.Name}.{ev!.Name}");
   }
 
   [TestCase(typeof(CVirtual), nameof(CVirtual.EVirtualInherited), typeof(CVirtual), false)]
@@ -156,9 +156,9 @@ public class EventInfoExtensionsTests {
   {
     var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(ev!.ReflectedType, type, nameof(ev.ReflectedType));
-    Assert.AreEqual(ev!.DeclaringType, declaringType, nameof(ev.DeclaringType));
-    Assert.AreEqual(expected, ev!.IsOverride(), $"{type.Name}.{ev!.Name}");
+    Assert.That(type, Is.EqualTo(ev!.ReflectedType), nameof(ev.ReflectedType));
+    Assert.That(declaringType, Is.EqualTo(ev!.DeclaringType), nameof(ev.DeclaringType));
+    Assert.That(ev!.IsOverride(), Is.EqualTo(expected), $"{type.Name}.{ev!.Name}");
   }
 
   [Test]

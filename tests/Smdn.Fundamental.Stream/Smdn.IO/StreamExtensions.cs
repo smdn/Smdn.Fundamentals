@@ -18,11 +18,11 @@ namespace Smdn.IO {
 
       inputStream.CopyTo(outputStream, 3);
 
-      Assert.AreEqual(8, outputStream.Length);
+      Assert.That(outputStream.Length, Is.EqualTo(8));
 
       outputStream.Dispose();
 
-      Assert.AreEqual(inputData, outputStream.ToArray());
+      Assert.That(outputStream.ToArray(), Is.EqualTo(inputData));
     }
 
     [Test]
@@ -34,11 +34,11 @@ namespace Smdn.IO {
 
       inputStream.CopyTo(outputStream, 16);
 
-      Assert.AreEqual(8, outputStream.Length);
+      Assert.That(outputStream.Length, Is.EqualTo(8));
 
       outputStream.Dispose();
 
-      Assert.AreEqual(inputData, outputStream.ToArray());
+      Assert.That(outputStream.ToArray(), Is.EqualTo(inputData));
     }
 
     [Test]
@@ -53,11 +53,11 @@ namespace Smdn.IO {
 
       inputStream.CopyTo(outputStream);
 
-      Assert.AreEqual(12, outputStream.Length);
+      Assert.That(outputStream.Length, Is.EqualTo(12));
 
       outputStream.Dispose();
 
-      Assert.AreEqual(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}, outputStream.ToArray());
+      Assert.That(outputStream.ToArray(), Is.EqualTo(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}));
     }
 
     private class UnreadableMemoryStream : MemoryStream
@@ -108,11 +108,11 @@ namespace Smdn.IO {
 
       writer.Flush();
 
-      Assert.AreEqual(8, outputStream.Length);
+      Assert.That(outputStream.Length, Is.EqualTo(8));
 
       outputStream.Dispose();
 
-      Assert.AreEqual(inputData, outputStream.ToArray());
+      Assert.That(outputStream.ToArray(), Is.EqualTo(inputData));
     }
 
     [Test]
@@ -157,7 +157,7 @@ namespace Smdn.IO {
         else
           Assert.DoesNotThrow(() => ret = StreamExtensions.ReadToEnd(stream, 2, 2));
 
-        Assert.AreEqual(new byte[] {0x04, 0x05, 0x06, 0x07}, ret);
+        Assert.That(ret, Is.EqualTo(new byte[] {0x04, 0x05, 0x06, 0x07}));
       }
     }
 
@@ -193,7 +193,7 @@ namespace Smdn.IO {
 
         StreamExtensions.Write(stream, segment);
 
-        Assert.AreEqual(new byte[] {0x01, 0x02, 0x03}, stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(new byte[] {0x01, 0x02, 0x03}));
       }
     }
 
@@ -222,14 +222,14 @@ namespace Smdn.IO {
         var seg1 = new SequenceSegment(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }, 0, null);
         var sequence = new ReadOnlySequence<byte>(seg1, 0, seg1, seg1.Memory.Length);
 
-        Assert.IsTrue(sequence.IsSingleSegment);
+        Assert.That(sequence.IsSingleSegment, Is.True);
 
         if (runAsync)
           Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
         else
           Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
 
-        Assert.AreEqual(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }, stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }));
       }
     }
 
@@ -242,14 +242,14 @@ namespace Smdn.IO {
         var seg1 = new SequenceSegment(new byte[] { 0x00, 0x01 }, 0, seg2);
         var sequence = new ReadOnlySequence<byte>(seg1, 0, seg2, seg2.Memory.Length);
 
-        Assert.IsFalse(sequence.IsSingleSegment);
+        Assert.That(sequence.IsSingleSegment, Is.False);
 
         if (runAsync)
           Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
         else
           Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
 
-        Assert.AreEqual(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }, stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }));
       }
     }
 
@@ -260,14 +260,14 @@ namespace Smdn.IO {
       using (var stream = new MemoryStream()) {
         var sequence = new ReadOnlySequence<byte>();
 
-        Assert.IsTrue(sequence.IsEmpty);
+        Assert.That(sequence.IsEmpty, Is.True);
 
         if (runAsync)
           Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
         else
           Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
 
-        Assert.AreEqual(new byte[0], stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(new byte[0]));
       }
     }
 #endif // SYSTEM_BUFFERS_READONLYSEQUENCE

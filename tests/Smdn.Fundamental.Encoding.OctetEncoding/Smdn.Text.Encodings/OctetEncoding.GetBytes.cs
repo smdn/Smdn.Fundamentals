@@ -13,69 +13,69 @@ partial class OctetEncodingTests {
   [Test]
   public void GetByteCount()
   {
-    Assert.AreEqual(3, OctetEncoding.SevenBits.GetByteCount("abc"), "#1");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc"), Is.EqualTo(3), "#1");
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
-    Assert.AreEqual(1, OctetEncoding.SevenBits.GetByteCount("abc", 1, 1), "#2");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc", 1, 1), Is.EqualTo(1), "#2");
 #endif
-    Assert.AreEqual(3, OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray()), "#3");
-    Assert.AreEqual(1, OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 1), "#4");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray()), Is.EqualTo(3), "#3");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 1), Is.EqualTo(1), "#4");
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
-    Assert.AreEqual(3, OctetEncoding.SevenBits.GetByteCount("abc".AsSpan()), "#5");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc".AsSpan()), Is.EqualTo(3), "#5");
 #endif
   }
 
   [Test]
   public void GetByteCount_Empty()
   {
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount(string.Empty), "#1");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty), Is.EqualTo(0), "#1");
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount("abc", 1, 0), "#2");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc", 1, 0), Is.EqualTo(0), "#2");
 #endif
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount(string.Empty.ToCharArray()), "#3");
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 0), "#4");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty.ToCharArray()), Is.EqualTo(0), "#3");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 0), Is.EqualTo(0), "#4");
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetByteCount(string.Empty.AsSpan()), "#5");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty.AsSpan()), Is.EqualTo(0), "#5");
 #endif
   }
 
   [Test]
   public void GetBytes()
   {
-    CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, OctetEncoding.SevenBits.GetBytes("abc"), "#1");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc"), Is.EqualTo(new[] { (byte)'a', (byte)'b', (byte)'c' }).AsCollection, "#1");
 #if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
-    CollectionAssert.AreEqual(new[] { (byte)'b' }, OctetEncoding.SevenBits.GetBytes("abc", 1, 1), "#2");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 1), Is.EqualTo(new[] { (byte)'b' }).AsCollection, "#2");
 #endif
     var bytes_3 = new byte[3];
-    Assert.AreEqual(1, OctetEncoding.SevenBits.GetBytes("abc", 1, 1, bytes_3, 1), "#3");
-    CollectionAssert.AreEqual(new[] { (byte)'\0', (byte)'b', (byte)'\0' }, bytes_3, nameof(bytes_3));
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 1, bytes_3, 1), Is.EqualTo(1), "#3");
+    Assert.That(bytes_3, Is.EqualTo(new[] { (byte)'\0', (byte)'b', (byte)'\0' }).AsCollection, nameof(bytes_3));
 
-    CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray()), "#4");
-    CollectionAssert.AreEqual(new[] { (byte)'b' }, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 1), "#5");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray()), Is.EqualTo(new[] { (byte)'a', (byte)'b', (byte)'c' }).AsCollection, "#4");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 1), Is.EqualTo(new[] { (byte)'b' }).AsCollection, "#5");
 
     var bytes_6 = new byte[3];
-    Assert.AreEqual(1, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 1, bytes_6, 1), "#6");
-    CollectionAssert.AreEqual(new[] { (byte)'\0', (byte)'b', (byte)'\0' }, bytes_6, nameof(bytes_6));
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 1, bytes_6, 1), Is.EqualTo(1), "#6");
+    Assert.That(bytes_6, Is.EqualTo(new[] { (byte)'\0', (byte)'b', (byte)'\0' }).AsCollection, nameof(bytes_6));
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
     var bytes_7 = new byte[3];
-    Assert.AreEqual(3, OctetEncoding.SevenBits.GetBytes("abc".AsSpan(), bytes_7.AsSpan()), "#7");
-    CollectionAssert.AreEqual(new[] { (byte)'a', (byte)'b', (byte)'c' }, bytes_7, nameof(bytes_7));
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".AsSpan(), bytes_7.AsSpan()), Is.EqualTo(3), "#7");
+    Assert.That(bytes_7, Is.EqualTo(new[] { (byte)'a', (byte)'b', (byte)'c' }).AsCollection, nameof(bytes_7));
 #endif
   }
 
   [Test]
   public void GetBytes_Empty()
   {
-    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes(string.Empty), "#1");
+    Assert.That(OctetEncoding.SevenBits.GetBytes(string.Empty), Is.EqualTo(new byte[0]).AsCollection, "#1");
 #if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
-    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes("abc", 1, 0), "#2");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 0), Is.EqualTo(new byte[0]).AsCollection, "#2");
 #endif
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetBytes("abc", 1, 0, new byte[0], 0), "#3");
-    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(1, 0)), "#4");
-    CollectionAssert.AreEqual(new byte[0], OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0), "#5");
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0, new byte[0], 0), "#6");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 0, new byte[0], 0), Is.EqualTo(0), "#3");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(1, 0)), Is.EqualTo(new byte[0]).AsCollection, "#4");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0), Is.EqualTo(new byte[0]).AsCollection, "#5");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0, new byte[0], 0), Is.EqualTo(0), "#6");
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
-    Assert.AreEqual(0, OctetEncoding.SevenBits.GetBytes(string.Empty.AsSpan(), new byte[0].AsSpan()), "#7");
+    Assert.That(OctetEncoding.SevenBits.GetBytes(string.Empty.AsSpan(), new byte[0].AsSpan()), Is.EqualTo(0), "#7");
 #endif
   }
 
@@ -111,7 +111,7 @@ partial class OctetEncodingTests {
     var input = new string(Enumerable.Range(0x00, 0x80).Select(static i => (char)i).ToArray());
     var expected = Enumerable.Range(0x00, 0x80).Select(static i => (byte)i).ToArray();
 
-    CollectionAssert.AreEqual(expected, OctetEncoding.SevenBits.GetBytes(input));
+    Assert.That(OctetEncoding.SevenBits.GetBytes(input), Is.EqualTo(expected).AsCollection);
   }
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
@@ -123,8 +123,8 @@ partial class OctetEncodingTests {
     var buffer = new byte[expectedLength];
     var expected = Enumerable.Range(0x00, 0x80).Select(static i => (byte)i).ToArray();
 
-    Assert.AreEqual(expectedLength, OctetEncoding.SevenBits.GetBytes(input.AsSpan(), buffer.AsSpan()));
-    CollectionAssert.AreEqual(expected, buffer);
+    Assert.That(OctetEncoding.SevenBits.GetBytes(input.AsSpan(), buffer.AsSpan()), Is.EqualTo(expectedLength));
+    Assert.That(buffer, Is.EqualTo(expected).AsCollection);
   }
 #endif
 
@@ -134,7 +134,7 @@ partial class OctetEncodingTests {
     var input = new string(Enumerable.Range(0x00, 0x100).Select(static i => (char)i).ToArray());
     var expected = Enumerable.Range(0x00, 0x100).Select(static i => (byte)i).ToArray();
 
-    CollectionAssert.AreEqual(expected, OctetEncoding.EightBits.GetBytes(input));
+    Assert.That(OctetEncoding.EightBits.GetBytes(input), Is.EqualTo(expected).AsCollection);
   }
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
@@ -146,8 +146,8 @@ partial class OctetEncodingTests {
     var buffer = new byte[expectedLength];
     var expected = Enumerable.Range(0x00, 0x100).Select(static i => (byte)i).ToArray();
 
-    Assert.AreEqual(expectedLength, OctetEncoding.EightBits.GetBytes(input.AsSpan(), buffer.AsSpan()));
-    CollectionAssert.AreEqual(expected, buffer);
+    Assert.That(OctetEncoding.EightBits.GetBytes(input.AsSpan(), buffer.AsSpan()), Is.EqualTo(expectedLength));
+    Assert.That(buffer, Is.EqualTo(expected).AsCollection);
   }
 #endif
 
@@ -169,7 +169,7 @@ partial class OctetEncodingTests {
 
   [TestCaseSource(nameof(YieldTestCases_GetBytes_ValidChar_SevenBits))]
   public void GetBytes_OfString_ValidChar_SevenBits(string input, byte[] expected)
-    => CollectionAssert.AreEqual(expected, OctetEncoding.SevenBits.GetBytes(input));
+    => Assert.That(OctetEncoding.SevenBits.GetBytes(input), Is.EqualTo(expected).AsCollection);
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   [TestCaseSource(nameof(YieldTestCases_GetBytes_ValidChar_SevenBits))]
@@ -177,14 +177,14 @@ partial class OctetEncodingTests {
   {
     var buffer = new byte[expected.Length];
 
-    Assert.AreEqual(expected.Length, OctetEncoding.SevenBits.GetBytes(input.AsSpan(), buffer.AsSpan()));
-    CollectionAssert.AreEqual(expected, buffer);
+    Assert.That(OctetEncoding.SevenBits.GetBytes(input.AsSpan(), buffer.AsSpan()), Is.EqualTo(expected.Length));
+    Assert.That(buffer, Is.EqualTo(expected).AsCollection);
   }
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_GetBytes_ValidChar_EightBits))]
   public void GetBytes_OfString_ValidChar_EightBits(string input, byte[] expected)
-    => CollectionAssert.AreEqual(expected, OctetEncoding.EightBits.GetBytes(input));
+    => Assert.That(OctetEncoding.EightBits.GetBytes(input), Is.EqualTo(expected).AsCollection);
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   [TestCaseSource(nameof(YieldTestCases_GetBytes_ValidChar_EightBits))]
@@ -192,8 +192,8 @@ partial class OctetEncodingTests {
   {
     var buffer = new byte[expected.Length];
 
-    Assert.AreEqual(expected.Length, OctetEncoding.EightBits.GetBytes(input.AsSpan(), buffer.AsSpan()));
-    CollectionAssert.AreEqual(expected, buffer);
+    Assert.That(OctetEncoding.EightBits.GetBytes(input.AsSpan(), buffer.AsSpan()), Is.EqualTo(expected.Length));
+    Assert.That(buffer, Is.EqualTo(expected).AsCollection);
   }
 #endif
 
@@ -253,17 +253,17 @@ partial class OctetEncodingTests {
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
   [Test]
   public void GetByteCount_OfString_EncoderFallback_Replacement()
-    => Assert.AreEqual(
-      10,
-      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetByteCount(" aA\u0080あ😩💥?")
+    => Assert.That(
+      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetByteCount(" aA\u0080あ😩💥?"),
+      Is.EqualTo(10)
     );
 
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
   [Test]
   public void GetByteCount_OfReadOnlySpan_EncoderFallback_Replacement()
-    => Assert.AreEqual(
-      10,
-      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetByteCount(" aA\u0080あ😩💥?".AsSpan())
+    => Assert.That(
+      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetByteCount(" aA\u0080あ😩💥?".AsSpan()),
+      Is.EqualTo(10)
     );
 #endif
 
@@ -283,9 +283,9 @@ partial class OctetEncodingTests {
 
   [Test]
   public void GetBytes_OfString_EncoderFallback_Replacement()
-    => CollectionAssert.AreEqual(
-      new byte[] { (byte)' ', (byte)'a', (byte)'A', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'?' },
-      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetBytes(" aA\u0080あ😩💥?")
+    => Assert.That(
+      CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetBytes(" aA\u0080あ😩💥?"),
+      Is.EqualTo(new byte[] { (byte)' ', (byte)'a', (byte)'A', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'?' }).AsCollection
     );
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
@@ -295,10 +295,10 @@ partial class OctetEncodingTests {
     var buffer = new byte[0x10];
     var length = CreateEncoding(bits: 7, new EncoderReplacementFallback("*")).GetBytes(" aA\u0080あ😩💥?".AsSpan(), buffer.AsSpan());
 
-    Assert.AreEqual(10, length, nameof(length));
-    CollectionAssert.AreEqual(
-      new byte[] { (byte)' ', (byte)'a', (byte)'A', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'?' },
-      buffer.Take(length).ToArray()
+    Assert.That(length, Is.EqualTo(10), nameof(length));
+    Assert.That(
+      buffer.Take(length).ToArray(),
+      Is.EqualTo(new byte[] { (byte)' ', (byte)'a', (byte)'A', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'*', (byte)'?' }).AsCollection
     );
   }
 #endif

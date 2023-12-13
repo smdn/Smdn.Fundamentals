@@ -27,10 +27,10 @@ line3
       var index = 0;
 
       foreach (var line in reader.ReadLines()) {
-        Assert.AreEqual(expectedLines[index++], line);
+        Assert.That(line, Is.EqualTo(expectedLines[index++]));
       }
 
-      Assert.AreEqual(expectedLines.Length, index);
+      Assert.That(index, Is.EqualTo(expectedLines.Length));
     }
 
     [TestCase(true)]
@@ -55,7 +55,7 @@ line3
       else
         Assert.DoesNotThrow(() => actualLines = TextReaderExtensions.ReadAllLines(reader));
 
-      CollectionAssert.AreEqual(expectedLines, actualLines);
+      Assert.That(actualLines, Is.EqualTo(expectedLines).AsCollection);
     }
 
     [TestCase(true)]
@@ -70,7 +70,7 @@ line3
       else
         Assert.DoesNotThrow(() => actualLines = TextReaderExtensions.ReadAllLines(reader));
 
-      CollectionAssert.IsEmpty(actualLines);
+      Assert.That(actualLines, Is.Empty);
     }
 
     [Test]

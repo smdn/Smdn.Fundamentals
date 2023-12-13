@@ -15,14 +15,14 @@ partial class UInt24Tests {
     var one = UInt24.One;
     var max = UInt24.MaxValue;
 
-    Assert.AreEqual(UInt24.MaxValue, --zero, "--0");
-    Assert.AreEqual(UInt24.MaxValue, zero, "(--0) value");
+    Assert.That(--zero, Is.EqualTo(UInt24.MaxValue), "--0");
+    Assert.That(zero, Is.EqualTo(UInt24.MaxValue), "(--0) value");
 
-    Assert.AreEqual(UInt24.Zero, --one, "--1");
-    Assert.AreEqual(UInt24.Zero, one, "(--1) value");
+    Assert.That(--one, Is.EqualTo(UInt24.Zero), "--1");
+    Assert.That(one, Is.EqualTo(UInt24.Zero), "(--1) value");
 
-    Assert.AreEqual(MaxMinusOne(), --max, "--max");
-    Assert.AreEqual(MaxMinusOne(), max, "(--max) value");
+    Assert.That(--max, Is.EqualTo(MaxMinusOne()), "--max");
+    Assert.That(max, Is.EqualTo(MaxMinusOne()), "(--max) value");
   }
 }
 
@@ -35,14 +35,14 @@ partial class UInt48Tests {
     var one = UInt48.One;
     var max = UInt48.MaxValue;
 
-    Assert.AreEqual(UInt48.MaxValue, --zero, "--0");
-    Assert.AreEqual(UInt48.MaxValue, zero, "(--0) value");
+    Assert.That(--zero, Is.EqualTo(UInt48.MaxValue), "--0");
+    Assert.That(zero, Is.EqualTo(UInt48.MaxValue), "(--0) value");
 
-    Assert.AreEqual(UInt48.Zero, --one, "--1");
-    Assert.AreEqual(UInt48.Zero, one, "(--1) value");
+    Assert.That(--one, Is.EqualTo(UInt48.Zero), "--1");
+    Assert.That(one, Is.EqualTo(UInt48.Zero), "(--1) value");
 
-    Assert.AreEqual(MaxMinusOne(), --max, "--max");
-    Assert.AreEqual(MaxMinusOne(), max, "(--max) value");
+    Assert.That(--max, Is.EqualTo(MaxMinusOne()), "--max");
+    Assert.That(max, Is.EqualTo(MaxMinusOne()), "(--max) value");
   }
 }
 

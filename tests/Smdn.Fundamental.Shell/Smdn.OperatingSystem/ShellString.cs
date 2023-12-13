@@ -12,9 +12,9 @@ namespace Smdn.OperatingSystem {
     {
       var s1 = new ShellString("aaa");
 
-      Assert.IsFalse(s1.IsEmpty);
-      Assert.AreEqual("aaa", s1.Raw);
-      Assert.AreEqual("aaa", s1.Expanded);
+      Assert.That(s1.IsEmpty, Is.False);
+      Assert.That(s1.Raw, Is.EqualTo("aaa"));
+      Assert.That(s1.Expanded, Is.EqualTo("aaa"));
     }
 
     [Test]
@@ -23,21 +23,21 @@ namespace Smdn.OperatingSystem {
       var str = new ShellString("aaa");
       var cloned = str.Clone();
 
-      Assert.IsFalse(object.ReferenceEquals(str, cloned));
-      Assert.AreEqual(str.Raw, cloned.Raw);
+      Assert.That(object.ReferenceEquals(str, cloned), Is.False);
+      Assert.That(cloned.Raw, Is.EqualTo(str.Raw));
 
       str.Raw = "hoge";
 
-      Assert.AreNotEqual(str.Raw, cloned.Raw);
+      Assert.That(cloned.Raw, Is.Not.EqualTo(str.Raw));
     }
 
     [Test]
     public void TestIsNullOrEmpty()
     {
-      Assert.IsTrue(ShellString.IsNullOrEmpty(null));
-      Assert.IsTrue(ShellString.IsNullOrEmpty(new ShellString(null)));
-      Assert.IsTrue(ShellString.IsNullOrEmpty(new ShellString(string.Empty)));
-      Assert.IsFalse(ShellString.IsNullOrEmpty(new ShellString("a")));
+      Assert.That(ShellString.IsNullOrEmpty(null), Is.True);
+      Assert.That(ShellString.IsNullOrEmpty(new ShellString(null)), Is.True);
+      Assert.That(ShellString.IsNullOrEmpty(new ShellString(string.Empty)), Is.True);
+      Assert.That(ShellString.IsNullOrEmpty(new ShellString("a")), Is.False);
     }
 
     [Test]
@@ -46,10 +46,10 @@ namespace Smdn.OperatingSystem {
       try {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", "foo");
 
-        Assert.AreEqual(null, ShellString.Expand(null));
-        Assert.AreEqual(null, ShellString.Expand(new ShellString(null)));
-        Assert.AreEqual(string.Empty, ShellString.Expand(new ShellString(string.Empty)));
-        Assert.AreEqual("foo", ShellString.Expand(new ShellString("%Smdn.Tests.TestValue1%")));
+        Assert.That(ShellString.Expand(null), Is.EqualTo(null));
+        Assert.That(ShellString.Expand(new ShellString(null)), Is.EqualTo(null));
+        Assert.That(ShellString.Expand(new ShellString(string.Empty)), Is.EqualTo(string.Empty));
+        Assert.That(ShellString.Expand(new ShellString("%Smdn.Tests.TestValue1%")), Is.EqualTo("foo"));
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
@@ -64,8 +64,8 @@ namespace Smdn.OperatingSystem {
 
         var s2 = new ShellString("%Smdn.Tests.TestValue1%");
 
-        Assert.AreEqual("%Smdn.Tests.TestValue1%", s2.Raw);
-        Assert.AreEqual("foo", s2.Expanded);
+        Assert.That(s2.Raw, Is.EqualTo("%Smdn.Tests.TestValue1%"));
+        Assert.That(s2.Expanded, Is.EqualTo("foo"));
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
@@ -84,23 +84,23 @@ namespace Smdn.OperatingSystem {
         var str3 = new ShellString("foo");
         var str4 = new ShellString("bar");
 
-        Assert.IsTrue(str1.Equals("%Smdn.Tests.TestValue1%"));
-        Assert.IsTrue(str1.Equals(new ShellString("foo")));
-        Assert.IsTrue(str1.Equals("foo"));
+        Assert.That(str1.Equals("%Smdn.Tests.TestValue1%"), Is.True);
+        Assert.That(str1.Equals(new ShellString("foo")), Is.True);
+        Assert.That(str1.Equals("foo"), Is.True);
 
-        Assert.IsFalse(str1.Equals((ShellString)null!));
-        Assert.IsFalse(str1!.Equals((string)null!));
-        Assert.IsFalse(str1!.Equals((object)1));
+        Assert.That(str1.Equals((ShellString)null!), Is.False);
+        Assert.That(str1!.Equals((string)null!), Is.False);
+        Assert.That(str1!.Equals((object)1), Is.False);
 
-        Assert.IsTrue(str1.Equals(str1));
-        Assert.IsFalse(str1.Equals(str2));
-        Assert.IsTrue(str1.Equals(str3));
-        Assert.IsFalse(str1.Equals(str4));
+        Assert.That(str1.Equals(str1), Is.True);
+        Assert.That(str1.Equals(str2), Is.False);
+        Assert.That(str1.Equals(str3), Is.True);
+        Assert.That(str1.Equals(str4), Is.False);
 
-        Assert.IsFalse(str2.Equals(str1));
-        Assert.IsTrue(str2.Equals(str2));
-        Assert.IsFalse(str2.Equals(str3));
-        Assert.IsTrue(str2.Equals(str4));
+        Assert.That(str2.Equals(str1), Is.False);
+        Assert.That(str2.Equals(str2), Is.True);
+        Assert.That(str2.Equals(str3), Is.False);
+        Assert.That(str2.Equals(str4), Is.True);
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
@@ -117,15 +117,15 @@ namespace Smdn.OperatingSystem {
         var x = new ShellString("%Smdn.Tests.TestValue1%");
         var y = x;
 
-        Assert.IsTrue(x == y);
-        Assert.IsTrue(x == new ShellString("%Smdn.Tests.TestValue1%"));
-        Assert.IsTrue(x == new ShellString("foo"));
-        Assert.IsTrue(new ShellString("%Smdn.Tests.TestValue1%") == x);
-        Assert.IsTrue(new ShellString("foo") == x);
-        Assert.IsFalse(x == new ShellString("%Smdn.Tests.TestValue2%"));
-        Assert.IsFalse(x == new ShellString("bar"));
-        Assert.IsFalse(x == null);
-        Assert.IsFalse(null == x);
+        Assert.That(x == y, Is.True);
+        Assert.That(x == new ShellString("%Smdn.Tests.TestValue1%"), Is.True);
+        Assert.That(x == new ShellString("foo"), Is.True);
+        Assert.That(new ShellString("%Smdn.Tests.TestValue1%") == x, Is.True);
+        Assert.That(new ShellString("foo") == x, Is.True);
+        Assert.That(x == new ShellString("%Smdn.Tests.TestValue2%"), Is.False);
+        Assert.That(x == new ShellString("bar"), Is.False);
+        Assert.That(x == null, Is.False);
+        Assert.That(null == x, Is.False);
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
@@ -141,15 +141,15 @@ namespace Smdn.OperatingSystem {
         var x = new ShellString("%Smdn.Tests.TestValue1%");
         var y = x;
 
-        Assert.IsFalse(x != y);
-        Assert.IsFalse(x != new ShellString("%Smdn.Tests.TestValue1%"));
-        Assert.IsFalse(x != new ShellString("foo"));
-        Assert.IsFalse(new ShellString("%Smdn.Tests.TestValue1%") != x);
-        Assert.IsFalse(new ShellString("foo") != x);
-        Assert.IsTrue(x != new ShellString("%Smdn.Tests.TestValue2%"));
-        Assert.IsTrue(x != new ShellString("bar"));
-        Assert.IsTrue(x != null);
-        Assert.IsTrue(null != x);
+        Assert.That(x != y, Is.False);
+        Assert.That(x != new ShellString("%Smdn.Tests.TestValue1%"), Is.False);
+        Assert.That(x != new ShellString("foo"), Is.False);
+        Assert.That(new ShellString("%Smdn.Tests.TestValue1%") != x, Is.False);
+        Assert.That(new ShellString("foo") != x, Is.False);
+        Assert.That(x != new ShellString("%Smdn.Tests.TestValue2%"), Is.True);
+        Assert.That(x != new ShellString("bar"), Is.True);
+        Assert.That(x != null, Is.True);
+        Assert.That(null != x, Is.True);
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);
@@ -164,7 +164,7 @@ namespace Smdn.OperatingSystem {
 
         var str = new ShellString("%Smdn.Tests.TestValue1%");
 
-        Assert.AreEqual("%Smdn.Tests.TestValue1%", str.ToString());
+        Assert.That(str.ToString(), Is.EqualTo("%Smdn.Tests.TestValue1%"));
       }
       finally {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", null);

@@ -20,13 +20,13 @@ public class ICryptoTransformExtensionsTests {
 
     using var transform = Smdn.Formats.Base64.CreateToBase64Transform();
 
-    Assert.AreEqual(
-      expected,
-      ICryptoTransformExtensions.TransformBytes(transform, buffer.Skip(2).Take(5).ToArray())
+    Assert.That(
+      ICryptoTransformExtensions.TransformBytes(transform, buffer.Skip(2).Take(5).ToArray()),
+      Is.EqualTo(expected)
     );
-    Assert.AreEqual(
-      expected,
-      ICryptoTransformExtensions.TransformBytes(transform, buffer, 2, 5)
+    Assert.That(
+      ICryptoTransformExtensions.TransformBytes(transform, buffer, 2, 5),
+      Is.EqualTo(expected)
     );
   }
 
@@ -37,11 +37,11 @@ public class ICryptoTransformExtensionsTests {
   {
     using var transform = Smdn.Formats.Base64.CreateToBase64Transform();
 
-    Assert.AreEqual(
-      output,
+    Assert.That(
       Encoding.ASCII.GetString(
         ICryptoTransformExtensions.TransformBytes(transform, Encoding.ASCII.GetBytes(input))
       ),
+      Is.EqualTo(output),
       $"input = {input}"
     );
   }
@@ -111,11 +111,10 @@ public class ICryptoTransformExtensionsTests {
 
     hashAlgorithm.Initialize();
 
-    Assert.AreEqual(
-      hashAlgorithm.TransformBytes(bytes),
+    Assert.That(
       TransformByCryptoStream(hashAlgorithm, bytes),
-      "HashAlgorithm: {0}",
-      hashAlgorithm.GetType()
+      Is.EqualTo(hashAlgorithm.TransformBytes(bytes)),
+      $"HashAlgorithm: {hashAlgorithm.GetType()}"
     );
   }
 
@@ -148,22 +147,24 @@ public class ICryptoTransformExtensionsTests {
 
     var encrypted = symmetricAlgorithm.CreateEncryptor().TransformBytes(bytes);
 
-    Assert.AreEqual(
-      BitConverter.ToString(TransformByCryptoStream(symmetricAlgorithm, bytes, true)),
+    Assert.That(
       BitConverter.ToString(encrypted),
-      "SymmetricAlgorithm (Encrypt): {0}",
-      symmetricAlgorithm.GetType()
+      Is.EqualTo(
+        BitConverter.ToString(TransformByCryptoStream(symmetricAlgorithm, bytes, true))
+      ),
+      $"SymmetricAlgorithm (Encrypt): {symmetricAlgorithm.GetType()}"
     );
 
     symmetricAlgorithm.Clear();
 
     var decrypted = Encoding.ASCII.GetString(symmetricAlgorithm.CreateDecryptor().TransformBytes(encrypted));
 
-    Assert.AreEqual(
-      Encoding.ASCII.GetString(TransformByCryptoStream(symmetricAlgorithm, encrypted, false)),
+    Assert.That(
       decrypted,
-      "SymmetricAlgorithm (Decrypt): {0}",
-      symmetricAlgorithm.GetType()
+      Is.EqualTo(
+        Encoding.ASCII.GetString(TransformByCryptoStream(symmetricAlgorithm, encrypted, false))
+      ),
+      $"SymmetricAlgorithm (Decrypt): {symmetricAlgorithm.GetType()}"
     );
   }
 #endif
