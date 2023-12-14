@@ -40,5 +40,5 @@ partial class TypeExtensionsTests {
   [TestCase(typeof(Func<>))]
   [TestCase(typeof(LayoutKind))]
   public void IsStructLayoutDefault_InvalidType(Type type)
-    => Assert.Throws<ArgumentException>(() => type.IsStructLayoutDefault(), type.FullName);
+    => Assert.Throws<ArgumentException>(() => type.IsStructLayoutDefault(), type.FullName ?? type.ToString());
 }

@@ -353,7 +353,7 @@ namespace Smdn {
         typeof(ushort),
       }) {
 #pragma warning disable CA1305
-        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName);
+        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
 
@@ -364,7 +364,7 @@ namespace Smdn {
         typeof(ulong),
       }) {
 #pragma warning disable CA1305
-        Assert.DoesNotThrow(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName);
+        Assert.DoesNotThrow(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
     }
