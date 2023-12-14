@@ -3,10 +3,11 @@
 using System;
 
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Smdn.Test.NUnit.Assertion;
 
-public partial class Assert : global::NUnit.Framework.Assert {
+public partial class Assert : global::NUnit.Framework.Legacy.ClassicAssert {
   public static TException ThrowsOrAggregates<TException>(TestDelegate code)
     where TException : Exception
   {
@@ -16,7 +17,7 @@ public partial class Assert : global::NUnit.Framework.Assert {
     try {
       code();
 
-      Fail("expected exception {0} not thrown", typeof(TException).FullName);
+      Fail($"expected exception {typeof(TException).FullName} not thrown");
 
       return null;
     }
