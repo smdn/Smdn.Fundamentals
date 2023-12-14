@@ -4,10 +4,9 @@ SPDX-License-Identifier: MIT
 -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net45;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net462</TargetFrameworks>
     <VersionPrefix>1.0.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
-    <PackageValidationBaselineVersion>1.0.0</PackageValidationBaselineVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0030 -->
   </PropertyGroup>
@@ -23,7 +22,7 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.0,4.0.0)" Include="..\Smdn.Fundamental.ControlPicture\Smdn.Fundamental.ControlPicture.csproj" />
-    <PackageReference Include="NUnit" Version="[3.13.0,4.0.0)" />
+    <PackageReference Include="NUnit" Version="[4.0.0,5.0.0)" />
     <PackageReference Include="System.Memory" />
   </ItemGroup>
 </Project>
