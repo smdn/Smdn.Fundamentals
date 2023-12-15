@@ -15,15 +15,15 @@ namespace Smdn.Security.Cryptography {
     public void TestProperties()
     {
       using (var t = Base64.CreateFromBase64Transform()) {
-        Assert.IsTrue(t.CanReuseTransform);
+        Assert.That(t.CanReuseTransform, Is.True);
 #if NET5_0_OR_GREATER
-        Assert.IsTrue(t.CanTransformMultipleBlocks);
-        Assert.AreEqual(4, t.InputBlockSize);
+        Assert.That(t.CanTransformMultipleBlocks, Is.True);
+        Assert.That(t.InputBlockSize, Is.EqualTo(4));
 #else
-        Assert.IsFalse(t.CanTransformMultipleBlocks);
-        Assert.AreEqual(1, t.InputBlockSize);
+        Assert.That(t.CanTransformMultipleBlocks, Is.False);
+        Assert.That(t.InputBlockSize, Is.EqualTo(1));
 #endif
-        Assert.AreEqual(3, t.OutputBlockSize);
+        Assert.That(t.OutputBlockSize, Is.EqualTo(3));
       }
     }
 
@@ -93,8 +93,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
       }
     }
@@ -119,8 +119,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
       }
     }
@@ -138,8 +138,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
       }
     }
@@ -176,8 +176,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
 
         inputBuffer = Encoding.ASCII.GetBytes("=");
@@ -206,8 +206,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
       }
     }
@@ -255,8 +255,8 @@ namespace Smdn.Security.Cryptography {
 
           var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(pattern.Output.Length, transformedLength, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {pattern.Input}");
+          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
       }
     }
@@ -276,7 +276,7 @@ namespace Smdn.Security.Cryptography {
 
           var length = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.AreEqual(0, length, $"input: {pattern.Input}");
+          Assert.That(length, Is.EqualTo(0), $"input: {pattern.Input}");
         }
       }
     }
@@ -334,8 +334,8 @@ namespace Smdn.Security.Cryptography {
 
           var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
 
-          Assert.AreEqual(pattern.Output.Length, ret.Length, $"input: {pattern.Input}");
-          Assert.AreEqual(pattern.Output, Encoding.ASCII.GetString(ret), $"input: {pattern.Input}");
+          Assert.That(ret.Length, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
+          Assert.That(Encoding.ASCII.GetString(ret), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
         }
       }
     }

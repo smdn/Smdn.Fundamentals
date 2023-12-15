@@ -10,39 +10,39 @@ partial class HexadecimalTests {
   [Test]
   public void ToUpperCaseString_OfReadOnlySpan()
   {
-    Assert.AreEqual(string.Empty, Hexadecimal.ToUpperCaseString(new byte[0]));
-    Assert.AreEqual("00", Hexadecimal.ToUpperCaseString(new byte[] { 0x00 }));
-    Assert.AreEqual("FF", Hexadecimal.ToUpperCaseString(new byte[] { 0xFF }));
-    Assert.AreEqual("0123456789ABCDEF", Hexadecimal.ToUpperCaseString(new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF }));
+    Assert.That(Hexadecimal.ToUpperCaseString(new byte[0]), Is.EqualTo(string.Empty));
+    Assert.That(Hexadecimal.ToUpperCaseString(new byte[] { 0x00 }), Is.EqualTo("00"));
+    Assert.That(Hexadecimal.ToUpperCaseString(new byte[] { 0xFF }), Is.EqualTo("FF"));
+    Assert.That(Hexadecimal.ToUpperCaseString(new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF }), Is.EqualTo("0123456789ABCDEF"));
   }
 #endif
 
   [Test]
   public void ToUpperCaseString_OfArraySegment()
   {
-    Assert.AreEqual(string.Empty, Hexadecimal.ToUpperCaseString(CreateEmptyArraySegment<byte>()));
-    Assert.AreEqual("00", Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0x00 })));
-    Assert.AreEqual("FF", Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0xFF })));
-    Assert.AreEqual("0123456789ABCDEF", Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0xFF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0xFF }, 1, 8)));
+    Assert.That(Hexadecimal.ToUpperCaseString(CreateEmptyArraySegment<byte>()), Is.EqualTo(string.Empty));
+    Assert.That(Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0x00 })), Is.EqualTo("00"));
+    Assert.That(Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0xFF })), Is.EqualTo("FF"));
+    Assert.That(Hexadecimal.ToUpperCaseString(new ArraySegment<byte>(new byte[] { 0xFF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0xFF }, 1, 8)), Is.EqualTo("0123456789ABCDEF"));
   }
 
 #if SYSTEM_READONLYSPAN
   [Test]
   public void ToLowerCaseString_OfReadOnlySpan()
   {
-    Assert.AreEqual(string.Empty, Hexadecimal.ToLowerCaseString(new byte[0]));
-    Assert.AreEqual("00", Hexadecimal.ToLowerCaseString(new byte[] { 0x00 }));
-    Assert.AreEqual("ff", Hexadecimal.ToLowerCaseString(new byte[] { 0xFF }));
-    Assert.AreEqual("0123456789abcdef", Hexadecimal.ToLowerCaseString(new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF }));
+    Assert.That(Hexadecimal.ToLowerCaseString(new byte[0]), Is.EqualTo(string.Empty));
+    Assert.That(Hexadecimal.ToLowerCaseString(new byte[] { 0x00 }), Is.EqualTo("00"));
+    Assert.That(Hexadecimal.ToLowerCaseString(new byte[] { 0xFF }), Is.EqualTo("ff"));
+    Assert.That(Hexadecimal.ToLowerCaseString(new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF }), Is.EqualTo("0123456789abcdef"));
   }
 #endif
 
   [Test]
   public void ToLowerCaseString_OfArraySegment()
   {
-    Assert.AreEqual(string.Empty, Hexadecimal.ToLowerCaseString(CreateEmptyArraySegment<byte>()));
-    Assert.AreEqual("00", Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0x00 })));
-    Assert.AreEqual("ff", Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0xFF })));
-    Assert.AreEqual("0123456789abcdef", Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0xFF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0xFF }, 1, 8)));
+    Assert.That(Hexadecimal.ToLowerCaseString(CreateEmptyArraySegment<byte>()), Is.EqualTo(string.Empty));
+    Assert.That(Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0x00 })), Is.EqualTo("00"));
+    Assert.That(Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0xFF })), Is.EqualTo("ff"));
+    Assert.That(Hexadecimal.ToLowerCaseString(new ArraySegment<byte>(new byte[] { 0xFF, 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF, 0xFF }, 1, 8)), Is.EqualTo("0123456789abcdef"));
   }
 }

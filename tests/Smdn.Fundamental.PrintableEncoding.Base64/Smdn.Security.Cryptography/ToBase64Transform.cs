@@ -15,14 +15,14 @@ namespace Smdn.Security.Cryptography {
     {
       using var t = Base64.CreateToBase64Transform();
 
-      Assert.IsTrue(t.CanReuseTransform, nameof(t.CanReuseTransform));
+      Assert.That(t.CanReuseTransform, Is.True, nameof(t.CanReuseTransform));
 #if NET6_0_OR_GREATER
-      Assert.IsTrue(t.CanTransformMultipleBlocks, nameof(t.CanTransformMultipleBlocks));
+      Assert.That(t.CanTransformMultipleBlocks, Is.True, nameof(t.CanTransformMultipleBlocks));
 #else
-      Assert.IsFalse(t.CanTransformMultipleBlocks, nameof(t.CanTransformMultipleBlocks));
+      Assert.That(t.CanTransformMultipleBlocks, Is.False, nameof(t.CanTransformMultipleBlocks));
 #endif
-      Assert.AreEqual(3, t.InputBlockSize, nameof(t.InputBlockSize));
-      Assert.AreEqual(4, t.OutputBlockSize, nameof(t.OutputBlockSize));
+      Assert.That(t.InputBlockSize, Is.EqualTo(3), nameof(t.InputBlockSize));
+      Assert.That(t.OutputBlockSize, Is.EqualTo(4), nameof(t.OutputBlockSize));
     }
 
     [Test]
@@ -101,8 +101,8 @@ namespace Smdn.Security.Cryptography {
       else {
         var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-        Assert.AreEqual(outputBlocks * t.OutputBlockSize, transformedLength, $"input: {input}");
-        Assert.AreEqual(output, Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), $"input: {input}");
+        Assert.That(transformedLength, Is.EqualTo(outputBlocks * t.OutputBlockSize), $"input: {input}");
+        Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(output), $"input: {input}");
       }
     }
 
@@ -150,15 +150,15 @@ namespace Smdn.Security.Cryptography {
 
       var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
 
-      Assert.AreEqual(output.Length, ret.Length, $"input: {input}");
-      Assert.AreEqual(output, Encoding.ASCII.GetString(ret), $"input: {input}");
+      Assert.That(ret.Length, Is.EqualTo(output.Length), $"input: {input}");
+      Assert.That(Encoding.ASCII.GetString(ret), Is.EqualTo(output), $"input: {input}");
     }
 
     [Test]
     public void TestTransformFinalBlock_InputBufferEmpty()
     {
       using (var t = Base64.CreateToBase64Transform()) {
-        Assert.IsEmpty(t.TransformFinalBlock(new byte[0], 0, 0));
+        Assert.That(t.TransformFinalBlock(new byte[0], 0, 0), Is.Empty);
       }
     }
 
@@ -173,8 +173,8 @@ namespace Smdn.Security.Cryptography {
 #if NET6_0_OR_GREATER
       var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
 
-      Assert.AreEqual(output.Length, ret.Length, $"input: {input}");
-      Assert.AreEqual(output, Encoding.ASCII.GetString(ret), $"input: {input}");
+      Assert.That(ret.Length, Is.EqualTo(output.Length), $"input: {input}");
+      Assert.That(Encoding.ASCII.GetString(ret), Is.EqualTo(output), $"input: {input}");
 #else
       Assert.Throws<ArgumentOutOfRangeException>(
         () => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length),

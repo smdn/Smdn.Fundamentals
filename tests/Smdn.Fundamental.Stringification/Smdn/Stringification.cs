@@ -49,14 +49,14 @@ namespace Smdn {
     [Test]
     public void Stringify_Object()
     {
-      Assert.AreEqual("{TestObject1: MI='42', MS1=(null), MS2='', MS3='foo'}", new TestObject1().ToString());
-      Assert.AreEqual("{TestObject_Empty: }", new TestObject_Empty().ToString());
+      Assert.That(new TestObject1().ToString(), Is.EqualTo("{TestObject1: MI='42', MS1=(null), MS2='', MS3='foo'}"));
+      Assert.That(new TestObject_Empty().ToString(), Is.EqualTo("{TestObject_Empty: }"));
     }
 
     [Test]
     public void Stringify_Object_NameAndValuePairsNull()
     {
-      Assert.AreEqual("{TestObject_Null}", new TestObject_Null().ToString());
+      Assert.That(new TestObject_Null().ToString(), Is.EqualTo("{TestObject_Null}"));
     }
 
     [Test]
@@ -67,7 +67,7 @@ namespace Smdn {
         ("e2", new List<int> { 0, 1, 2 }),
       });
 
-      Assert.AreEqual("{Void: e1=['0', '1', '2'], e2=['0', '1', '2']}", str);
+      Assert.That(str, Is.EqualTo("{Void: e1=['0', '1', '2'], e2=['0', '1', '2']}"));
     }
 
     [Test]
@@ -77,7 +77,7 @@ namespace Smdn {
         ("e", new List<int>()),
       });
 
-      Assert.AreEqual("{Void: e=[]}", str);
+      Assert.That(str, Is.EqualTo("{Void: e=[]}"));
     }
 
     [Test]
@@ -89,7 +89,7 @@ namespace Smdn {
         ("p3", _KeyValuePair.Create((string)null, _KeyValuePair.Create("key", (string)null))),
       });
 
-      Assert.AreEqual("{Void: p1={'x' => '1'}, p2={'2' => 'y'}, p3={(null) => {'key' => (null)}}}", str);
+      Assert.That(str, Is.EqualTo("{Void: p1={'x' => '1'}, p2={'2' => 'y'}, p3={(null) => {'key' => (null)}}}"));
     }
 
     [Test]
@@ -108,7 +108,7 @@ namespace Smdn {
         }),
       });
 
-      Assert.AreEqual("{Void: p1=[{'x' => '1'}, {'y' => '2'}, {'z' => '3'}], p2=[{'x' => '1'}, {'y' => '2'}, {'z' => '3'}]}", str);
+      Assert.That(str, Is.EqualTo("{Void: p1=[{'x' => '1'}, {'y' => '2'}, {'z' => '3'}], p2=[{'x' => '1'}, {'y' => '2'}, {'z' => '3'}]}"));
     }
 
     [Test]
@@ -123,7 +123,7 @@ namespace Smdn {
         }),
       });
 
-      Assert.AreEqual("{Void: e=['x', (null), ''], p=[{'0' => 'x'}, {'1' => (null)}, {'2' => ''}]}", str);
+      Assert.That(str, Is.EqualTo("{Void: e=['x', (null), ''], p=[{'0' => 'x'}, {'1' => (null)}, {'2' => ''}]}"));
     }
   }
 }

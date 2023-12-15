@@ -50,10 +50,10 @@ namespace Smdn.IO.Streams.Filtering {
     {
       stream.Dispose();
 
-      Assert.IsFalse(stream.CanRead, nameof(stream.CanRead));
-      Assert.IsFalse(stream.CanWrite, nameof(stream.CanWrite));
-      Assert.IsFalse(stream.CanSeek, nameof(stream.CanSeek));
-      Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
+      Assert.That(stream.CanRead, Is.False, nameof(stream.CanRead));
+      Assert.That(stream.CanWrite, Is.False, nameof(stream.CanWrite));
+      Assert.That(stream.CanSeek, Is.False, nameof(stream.CanSeek));
+      Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
 
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
@@ -71,8 +71,8 @@ namespace Smdn.IO.Streams.Filtering {
       Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
       Assert.Throws<ObjectDisposedException>(() => stream.Seek(0, SeekOrigin.Begin), nameof(stream.Seek));
       Assert.Throws<ObjectDisposedException>(() => stream.SetLength(0L), nameof(stream.SetLength));
-      Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Length); }, nameof(stream.Length));
-      Assert.Throws<ObjectDisposedException>(() => { Assert.AreEqual(-1, stream.Position); }, nameof(stream.Length));
+      Assert.Throws<ObjectDisposedException>(() => { Assert.That(stream.Length, Is.EqualTo(-1)); }, nameof(stream.Length));
+      Assert.Throws<ObjectDisposedException>(() => { Assert.That(stream.Position, Is.EqualTo(-1)); }, nameof(stream.Length));
 
 #if SYSTEM_IO_STREAM_CLOSE
       Assert.DoesNotThrow(() => stream.Close(), nameof(stream.Close));
@@ -166,8 +166,8 @@ namespace Smdn.IO.Streams.Filtering {
       };
 
       using (var stream = new FilterStream(baseStream, filters, leaveStreamOpen: true, bufferSize: 4)) {
-        Assert.AreEqual(0L, stream.Position, nameof(stream.Position));
-        Assert.AreEqual(8L, stream.Length, nameof(stream.Length));
+        Assert.That(stream.Position, Is.EqualTo(0L), nameof(stream.Position));
+        Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
 
         var buffer = new byte[8];
         var read = readMethod switch {
@@ -178,10 +178,10 @@ namespace Smdn.IO.Streams.Filtering {
           _ => stream.Read(buffer, 0, buffer.Length),
         };
 
-        Assert.AreEqual(buffer.Length, read);
-        Assert.AreEqual(8L, stream.Position, nameof(stream.Position));
+        Assert.That(read, Is.EqualTo(buffer.Length));
+        Assert.That(stream.Position, Is.EqualTo(8L), nameof(stream.Position));
 
-        CollectionAssert.AreEqual(expected, buffer);
+        Assert.That(buffer, Is.EqualTo(expected).AsCollection);
 
         read = readMethod switch {
           ReadMethod.ReadAsync => await stream.ReadAsync(buffer, 0, buffer.Length),
@@ -191,8 +191,8 @@ namespace Smdn.IO.Streams.Filtering {
           _ => stream.Read(buffer, 0, buffer.Length),
         };
 
-        Assert.AreEqual(0, read);
-        Assert.AreEqual(8L, stream.Position, nameof(stream.Position));
+        Assert.That(read, Is.EqualTo(0));
+        Assert.That(stream.Position, Is.EqualTo(8L), nameof(stream.Position));
       }
     }
 
@@ -215,11 +215,11 @@ namespace Smdn.IO.Streams.Filtering {
       };
 
       using (var stream = new FilterStream(baseStream, filters, leaveStreamOpen: true, bufferSize: 4)) {
-        Assert.AreEqual(0L, stream.Position, nameof(stream.Position));
-        Assert.AreEqual(8L, stream.Length, nameof(stream.Length));
+        Assert.That(stream.Position, Is.EqualTo(0L), nameof(stream.Position));
+        Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
 
         for (var position = 0; position < expected.Length; position++) {
-          Assert.AreEqual(expected[position], stream.ReadByte(), $"position {position}");
+          Assert.That(stream.ReadByte(), Is.EqualTo(expected[position]), $"position {position}");
         }
       }
     }
@@ -260,11 +260,11 @@ namespace Smdn.IO.Streams.Filtering {
             _ => stream.Read(buffer, 0, lengthToRead),
           };
 
-          Assert.AreEqual(expectedLength, read);
-          Assert.AreEqual(expectedPosition, stream.Position, nameof(stream.Position));
-          CollectionAssert.AreEqual(
-            expectedSequence,
-            buffer.Skip(0).Take(expectedLength).ToArray()
+          Assert.That(read, Is.EqualTo(expectedLength));
+          Assert.That(stream.Position, Is.EqualTo(expectedPosition), nameof(stream.Position));
+          Assert.That(
+            buffer.Skip(0).Take(expectedLength).ToArray(),
+            Is.EqualTo(expectedSequence).AsCollection
           );
         }
       }
@@ -316,10 +316,9 @@ namespace Smdn.IO.Streams.Filtering {
             _ => stream.Read(buffer, offset, length),
           };
 
-          Assert.AreEqual(length, read, test + " read count");
-          CollectionAssert.AreEqual(
-            expected.Skip(offset).Take(length).ToArray(),
-            buffer.Skip(offset).Take(length).ToArray(),
+          Assert.That(read, Is.EqualTo(length), test + " read count");
+          Assert.That(
+            buffer.Skip(offset).Take(length).ToArray(), Is.EqualTo(expected.Skip(offset).Take(length).ToArray()).AsCollection,
             test
           );
         }
@@ -352,10 +351,10 @@ namespace Smdn.IO.Streams.Filtering {
           _ => stream.Read(buffer, 0, buffer.Length),
         };
 
-        Assert.AreEqual(buffer.Length, read);
-        CollectionAssert.AreEqual(
-          expected,
-          buffer
+        Assert.That(read, Is.EqualTo(buffer.Length));
+        Assert.That(
+          buffer,
+          Is.EqualTo(expected).AsCollection
         );
       }
     }
@@ -391,10 +390,10 @@ namespace Smdn.IO.Streams.Filtering {
           _ => stream.Read(buffer, 0, buffer.Length),
         };
 
-        Assert.AreEqual(buffer.Length, read);
-        CollectionAssert.AreEqual(
-          expected,
-          buffer
+        Assert.That(read, Is.EqualTo(buffer.Length));
+        Assert.That(
+          buffer,
+          Is.EqualTo(expected).AsCollection
         );
       }
     }
@@ -430,10 +429,10 @@ namespace Smdn.IO.Streams.Filtering {
           _ => stream.Read(buffer, 0, buffer.Length),
         };
 
-        Assert.AreEqual(buffer.Length, read);
-        CollectionAssert.AreEqual(
-          expected,
-          buffer
+        Assert.That(read, Is.EqualTo(buffer.Length));
+        Assert.That(
+          buffer,
+          Is.EqualTo(expected).AsCollection
         );
       }
     }
@@ -445,20 +444,20 @@ namespace Smdn.IO.Streams.Filtering {
         var stream = new FilterStream(baseStream, EmptyFilters());
 
         // in range
-        Assert.AreEqual(2L, stream.Seek(2, SeekOrigin.Begin));
-        Assert.AreEqual(2L, stream.Position);
-        Assert.AreEqual(0x02, stream.ReadByte());
+        Assert.That(stream.Seek(2, SeekOrigin.Begin), Is.EqualTo(2L));
+        Assert.That(stream.Position, Is.EqualTo(2L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(0x02));
 
         // beyond the stream length
         var newOffset = stream.Seek(10, SeekOrigin.Begin);
-        Assert.AreEqual(stream.Position, newOffset);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(newOffset, Is.EqualTo(stream.Position));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
         // before start of stream
         Assert.Throws<IOException>(() => stream.Seek(-1, SeekOrigin.Begin));
 
-        Assert.AreEqual(10L, stream.Position);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(stream.Position, Is.EqualTo(10L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
       }
     }
 
@@ -469,21 +468,21 @@ namespace Smdn.IO.Streams.Filtering {
         var stream = new FilterStream(baseStream, EmptyFilters());
 
         // in range
-        Assert.AreEqual(2L, stream.Seek(2, SeekOrigin.Current));
-        Assert.AreEqual(2L, stream.Position);
-        Assert.AreEqual(0x02, stream.ReadByte());
+        Assert.That(stream.Seek(2, SeekOrigin.Current), Is.EqualTo(2L));
+        Assert.That(stream.Position, Is.EqualTo(2L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(0x02));
 
         // beyond the stream length
         var newOffset = stream.Seek(8, SeekOrigin.Current);
-        Assert.AreEqual(stream.Position, newOffset);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(newOffset, Is.EqualTo(stream.Position));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
         // before start of stream
         stream.Position = 10L;
         Assert.Throws<IOException>(() => stream.Seek(-12, SeekOrigin.Current));
 
-        Assert.AreEqual(10L, stream.Position);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(stream.Position, Is.EqualTo(10L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
       }
     }
 
@@ -496,20 +495,20 @@ namespace Smdn.IO.Streams.Filtering {
         // in range
         stream.Position = 2;
 
-        Assert.AreEqual(2L, stream.Position);
-        Assert.AreEqual(0x02, stream.ReadByte());
+        Assert.That(stream.Position, Is.EqualTo(2L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(0x02));
 
         // beyond the stream length
         stream.Position = 10;
 
-        Assert.AreEqual(10L, stream.Position);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(stream.Position, Is.EqualTo(10L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
         // before start of stream
         Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -2);
 
-        Assert.AreEqual(10L, stream.Position);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(stream.Position, Is.EqualTo(10L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
       }
     }
 
@@ -520,20 +519,20 @@ namespace Smdn.IO.Streams.Filtering {
         var stream = new FilterStream(baseStream, EmptyFilters());
 
         // in range
-        Assert.AreEqual(2L, stream.Seek(-6, SeekOrigin.End));
-        Assert.AreEqual(2L, stream.Position);
-        Assert.AreEqual(0x02, stream.ReadByte());
+        Assert.That(stream.Seek(-6, SeekOrigin.End), Is.EqualTo(2L));
+        Assert.That(stream.Position, Is.EqualTo(2L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(0x02));
 
         // beyond the stream length
         var newOffset = stream.Seek(4, SeekOrigin.End);
-        Assert.AreEqual(stream.Position, newOffset);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(newOffset, Is.EqualTo(stream.Position));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
         // before start of stream
         Assert.Throws<IOException>(() => stream.Seek(-9, SeekOrigin.End));
 
-        Assert.AreEqual(12L, stream.Position);
-        Assert.AreEqual(-1, stream.ReadByte());
+        Assert.That(stream.Position, Is.EqualTo(12L));
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1));
       }
     }
   }

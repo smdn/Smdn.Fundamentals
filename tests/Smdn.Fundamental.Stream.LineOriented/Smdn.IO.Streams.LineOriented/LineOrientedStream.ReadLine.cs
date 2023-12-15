@@ -24,17 +24,17 @@ partial class LineOrientedStreamTests {
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsFalse(ret!.Value.IsEmpty);
-    Assert.IsTrue(ret.Value.SequenceWithNewLine.IsSingleSegment);
-    Assert.IsTrue(ret.Value.Sequence.IsSingleSegment);
-    CollectionAssert.AreEqual(
-      new byte[] { 0x40, 0x41, 0x42, 0x43, CR, LF },
-      ret.Value.SequenceWithNewLine.ToArray()
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.False);
+    Assert.That(ret.Value.SequenceWithNewLine.IsSingleSegment, Is.True);
+    Assert.That(ret.Value.Sequence.IsSingleSegment, Is.True);
+    Assert.That(
+      ret.Value.SequenceWithNewLine.ToArray(),
+      Is.EqualTo(new byte[] { 0x40, 0x41, 0x42, 0x43, CR, LF }).AsCollection
     );
-    CollectionAssert.AreEqual(
-      new byte[] { 0x40, 0x41, 0x42, 0x43 },
-      ret.Value.Sequence.ToArray()
+    Assert.That(
+      ret.Value.Sequence.ToArray(),
+      Is.EqualTo(new byte[] { 0x40, 0x41, 0x42, 0x43 }).AsCollection
     );
   }
 
@@ -53,17 +53,17 @@ partial class LineOrientedStreamTests {
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsFalse(ret!.Value.IsEmpty);
-    Assert.IsFalse(ret.Value.SequenceWithNewLine.IsSingleSegment);
-    Assert.IsFalse(ret.Value.Sequence.IsSingleSegment);
-    CollectionAssert.AreEqual(
-      new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF },
-      ret.Value.SequenceWithNewLine.ToArray()
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.False);
+    Assert.That(ret.Value.SequenceWithNewLine.IsSingleSegment, Is.False);
+    Assert.That(ret.Value.Sequence.IsSingleSegment, Is.False);
+    Assert.That(
+      ret.Value.SequenceWithNewLine.ToArray(),
+      Is.EqualTo(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF }).AsCollection
     );
-    CollectionAssert.AreEqual(
-      new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f },
-      ret.Value.Sequence.ToArray()
+    Assert.That(
+      ret.Value.Sequence.ToArray(),
+      Is.EqualTo(new byte[] { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f }).AsCollection
     );
   }
 
@@ -84,7 +84,7 @@ partial class LineOrientedStreamTests {
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNull(ret);
+    Assert.That(ret, Is.Null);
   }
 
   [Test]
@@ -99,6 +99,6 @@ partial class LineOrientedStreamTests {
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNull(ret);
+    Assert.That(ret, Is.Null);
   }
 }

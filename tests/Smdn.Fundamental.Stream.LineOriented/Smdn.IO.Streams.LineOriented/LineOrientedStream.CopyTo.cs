@@ -60,7 +60,7 @@ partial class LineOrientedStreamTests {
 
     using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
-    Assert.AreEqual(data[0], stream.ReadByte());
+    Assert.That(stream.ReadByte(), Is.EqualTo(data[0]));
 
     var targetStream = new MemoryStream();
 
@@ -69,9 +69,9 @@ partial class LineOrientedStreamTests {
     else
       stream.CopyTo(targetStream);
 
-    CollectionAssert.AreEqual(data.Skip(1).ToArray(), targetStream.ToArray());
+    Assert.That(targetStream.ToArray(), Is.EqualTo(data.Skip(1).ToArray()).AsCollection);
 
-    Assert.AreEqual(-1, stream.ReadByte());
+    Assert.That(stream.ReadByte(), Is.EqualTo(-1));
   }
 
   [Test]
@@ -95,9 +95,9 @@ partial class LineOrientedStreamTests {
     else
       stream.CopyTo(targetStream);
 
-    CollectionAssert.AreEqual(data, targetStream.ToArray());
+    Assert.That(targetStream.ToArray(), Is.EqualTo(data).AsCollection);
 
-    Assert.AreEqual(-1, stream.ReadByte());
+    Assert.That(stream.ReadByte(), Is.EqualTo(-1));
   }
 
   [Test]
@@ -145,9 +145,9 @@ partial class LineOrientedStreamTests {
     else
       stream.CopyTo(targetStream, bufferSize: bufferSize);
 
-    CollectionAssert.AreEqual(data, targetStream.ToArray());
+    Assert.That(targetStream.ToArray(), Is.EqualTo(data).AsCollection);
 
-    Assert.AreEqual(-1, stream.ReadByte());
+    Assert.That(stream.ReadByte(), Is.EqualTo(-1));
   }
 #endif
 }

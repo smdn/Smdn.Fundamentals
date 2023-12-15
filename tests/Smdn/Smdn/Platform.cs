@@ -27,20 +27,20 @@ namespace Smdn {
     public void TestEndianness()
     {
       if (BitConverter.IsLittleEndian)
-        Assert.AreEqual(Endianness.LittleEndian, Platform.Endianness);
+        Assert.That(Platform.Endianness, Is.EqualTo(Endianness.LittleEndian));
       else
-        Assert.AreNotEqual(Endianness.LittleEndian, Platform.Endianness); // XXX
+        Assert.That(Platform.Endianness, Is.Not.EqualTo(Endianness.LittleEndian)); // XXX
     }
 
     [Test]
     public void TestIsRunningOnUnix()
     {
       if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        Assert.IsTrue(Platform.IsRunningOnUnix);
+        Assert.That(Platform.IsRunningOnUnix, Is.True);
       else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        Assert.IsTrue(Platform.IsRunningOnUnix);
+        Assert.That(Platform.IsRunningOnUnix, Is.True);
       else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        Assert.IsFalse(Platform.IsRunningOnUnix);
+        Assert.That(Platform.IsRunningOnUnix, Is.False);
       else
         Assert.Ignore("unknown OSPlatform");
     }
@@ -49,11 +49,11 @@ namespace Smdn {
     public void TestIsRunningOnWindows()
     {
       if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-        Assert.IsFalse(Platform.IsRunningOnWindows);
+        Assert.That(Platform.IsRunningOnWindows, Is.False);
       else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-        Assert.IsFalse(Platform.IsRunningOnWindows);
+        Assert.That(Platform.IsRunningOnWindows, Is.False);
       else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        Assert.IsTrue(Platform.IsRunningOnWindows);
+        Assert.That(Platform.IsRunningOnWindows, Is.True);
       else
         Assert.Ignore("unknown OSPlatform");
     }
@@ -62,54 +62,54 @@ namespace Smdn {
     public void TestPathStringComparison()
     {
       if (Platform.IsRunningOnWindows)
-        Assert.IsTrue(string.Equals("C:\\path", "C:\\Path", Platform.PathStringComparison));
+        Assert.That(string.Equals("C:\\path", "C:\\Path", Platform.PathStringComparison), Is.True);
       else
-        Assert.IsFalse(string.Equals("/path", "/Path", Platform.PathStringComparison));
+        Assert.That(string.Equals("/path", "/Path", Platform.PathStringComparison), Is.False);
     }
 
     [Test]
     public void TestPathStringComparer()
     {
-      Assert.IsNotNull(Platform.PathStringComparer);
+      Assert.That(Platform.PathStringComparer, Is.Not.Null);
 
       if (Platform.IsRunningOnWindows)
-        Assert.IsTrue(Platform.PathStringComparer.Equals("C:\\path", "C:\\Path"));
+        Assert.That(Platform.PathStringComparer.Equals("C:\\path", "C:\\Path"), Is.True);
       else
-        Assert.IsFalse(Platform.PathStringComparer.Equals("/path", "/Path"));
+        Assert.That(Platform.PathStringComparer.Equals("/path", "/Path"), Is.False);
     }
 
     [Test]
     public void TestDistributionName()
     {
       // returns non-null value always
-      Assert.IsNotNull(Platform.DistributionName);
-      Assert.IsNotNull(Platform.DistributionName);
-      Assert.IsNotNull(Platform.DistributionName);
+      Assert.That(Platform.DistributionName, Is.Not.Null);
+      Assert.That(Platform.DistributionName, Is.Not.Null);
+      Assert.That(Platform.DistributionName, Is.Not.Null);
 
       var dist = Platform.DistributionName.ToLowerInvariant();
 
       if (Platform.IsRunningOnUnix)
         Assert.That(dist, Does.Not.Contain("windows"));
       else
-        StringAssert.Contains("windows", dist);
+        Assert.That(dist, Does.Contain("windows"));
     }
 
     [Test]
     public void TestKernelName()
     {
       // returns non-null value always
-      Assert.IsNotNull(Platform.KernelName);
-      Assert.IsNotNull(Platform.KernelName);
-      Assert.IsNotNull(Platform.KernelName);
+      Assert.That(Platform.KernelName, Is.Not.Null);
+      Assert.That(Platform.KernelName, Is.Not.Null);
+      Assert.That(Platform.KernelName, Is.Not.Null);
     }
 
     [Test]
     public void TestProcessorName()
     {
       // returns non-null value always
-      Assert.IsNotNull(Platform.ProcessorName);
-      Assert.IsNotNull(Platform.ProcessorName);
-      Assert.IsNotNull(Platform.ProcessorName);
+      Assert.That(Platform.ProcessorName, Is.Not.Null);
+      Assert.That(Platform.ProcessorName, Is.Not.Null);
+      Assert.That(Platform.ProcessorName, Is.Not.Null);
     }
   }
 }

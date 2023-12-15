@@ -42,17 +42,17 @@ partial class LineOrientedStreamTests {
     using var stream = CreateStream(type, new MemoryStream(), 8);
     var copyStream = new MemoryStream();
 
-    Assert.AreEqual(
-      0L,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(copyStream, 0L)
-        : stream.Read(copyStream, 0L)
+        : stream.Read(copyStream, 0L),
+      Is.EqualTo(0L)
     );
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     copyStream.Dispose();
 
-    Assert.AreEqual(new byte[0], copyStream.ToArray());
+    Assert.That(copyStream.ToArray(), Is.EqualTo(new byte[0]));
   }
 
   [Test]
@@ -64,18 +64,18 @@ partial class LineOrientedStreamTests {
     using var stream = CreateStream(type, new MemoryStream(), 8);
     var copyStream = new MemoryStream();
 
-    Assert.AreEqual(
-      0L,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(copyStream, 0L)
-        : stream.Read(copyStream, 0L)
+        : stream.Read(copyStream, 0L),
+      Is.EqualTo(0L)
     );
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     copyStream.Dispose();
 
-    Assert.AreEqual(new byte[0], copyStream.ToArray());
+    Assert.That(copyStream.ToArray(), Is.EqualTo(new byte[0]));
   }
 
   [Test]
@@ -90,10 +90,10 @@ partial class LineOrientedStreamTests {
 
     var t = stream.ReadAsync(Stream.Null, 0L, cts.Token);
 
-    Assert.IsTrue(t.IsCanceled);
+    Assert.That(t.IsCanceled, Is.True);
     Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
   }
 
   [Test]
@@ -108,18 +108,18 @@ partial class LineOrientedStreamTests {
 
     var copyStream = new MemoryStream();
 
-    Assert.AreEqual(
-      12L,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(copyStream, 12L)
-        : stream.Read(copyStream, 12L)
+        : stream.Read(copyStream, 12L),
+      Is.EqualTo(12L)
     );
 
-    Assert.AreEqual(12L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(12L), "Position");
 
     copyStream.Dispose();
 
-    Assert.AreEqual(data, copyStream.ToArray());
+    Assert.That(copyStream.ToArray(), Is.EqualTo(data));
   }
 
   [Test]
@@ -134,24 +134,24 @@ partial class LineOrientedStreamTests {
 
     var line = stream.ReadLine(true);
 
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(4).ToArray()));
 
     var copyStream = new MemoryStream();
 
-    Assert.AreEqual(
-      4L,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(copyStream, 4L)
-        : stream.Read(copyStream, 4L)
+        : stream.Read(copyStream, 4L),
+      Is.EqualTo(4L)
     );
 
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
 
     copyStream.Dispose();
 
-    Assert.AreEqual(data.Skip(4).Take(4).ToArray(), copyStream.ToArray());
+    Assert.That(copyStream.ToArray(), Is.EqualTo(data.Skip(4).Take(4).ToArray()));
   }
 
   [Test]
@@ -166,23 +166,23 @@ partial class LineOrientedStreamTests {
 
     var line = stream.ReadLine(true);
 
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(4).ToArray()));
 
     var copyStream = new MemoryStream();
 
-    Assert.AreEqual(
-      8L,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(copyStream, 10L)
-        : stream.Read(copyStream, 10L)
+        : stream.Read(copyStream, 10L),
+      Is.EqualTo(8L)
     );
 
-    Assert.AreEqual(12L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(12L), "Position");
 
     copyStream.Dispose();
 
-    Assert.AreEqual(data.Skip(4).Take(8).ToArray(), copyStream.ToArray());
+    Assert.That(copyStream.ToArray(), Is.EqualTo(data.Skip(4).Take(8).ToArray()));
   }
 }

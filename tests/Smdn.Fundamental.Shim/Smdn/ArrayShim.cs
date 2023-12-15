@@ -10,13 +10,14 @@ namespace Smdn;
 public class ArrayShimTests {
   [Test]
   public void TestShimType_Empty()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemArrayEmpty),
+    => Assert.That(
 #if SYSTEM_ARRAY_EMPTY
       typeof(System.Array)
 #else
       typeof(Smdn.ArrayShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemArrayEmpty))
     );
 
   [Test]
@@ -24,20 +25,21 @@ public class ArrayShimTests {
   {
     var empty = ShimTypeSystemArrayEmpty.Empty<int>();
 
-    Assert.IsNotNull(empty);
-    Assert.AreEqual(typeof(int[]), empty.GetType());
-    CollectionAssert.IsEmpty(empty);
+    Assert.That(empty, Is.Not.Null);
+    Assert.That(empty.GetType(), Is.EqualTo(typeof(int[])));
+    Assert.That(empty, Is.Empty);
   }
 
   [Test]
   public void TestShimType_ConvertAll()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemArrayConvertAll),
+    => Assert.That(
 #if SYSTEM_ARRAY_CONVERTALL
       typeof(System.Array)
 #else
       typeof(Smdn.ArrayShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemArrayConvertAll))
     );
 
   [Test]
@@ -46,17 +48,18 @@ public class ArrayShimTests {
     var array = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     var expected = new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
-    CollectionAssert.AreEqual(
-      expected,
-      ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i.ToString("D", null))
+    Assert.That(
+      ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i.ToString("D", null)),
+      Is.EqualTo(expected).AsCollection
     );
   }
 
   [Test]
   public void TestConvertAll_ArgumentArrayEmpty()
   {
-    Assert.IsEmpty(
-      ShimTypeSystemArrayConvertAll.ConvertAll(Enumerable.Empty<int>().ToArray(), i => i)
+    Assert.That(
+      ShimTypeSystemArrayConvertAll.ConvertAll(Enumerable.Empty<int>().ToArray(), i => i),
+      Is.Empty
     );
   }
 

@@ -13,7 +13,7 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
-      StringAssert.StartsWith("ゼロまたは正の値を指定してください", ex.Message);
+      Assert.That(ex.Message, Does.StartWith("ゼロまたは正の値を指定してください"));
     }
 
     [Test, SetUICulture("en-US")]
@@ -21,7 +21,7 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
-      StringAssert.StartsWith("must be zero or positive value", ex.Message);
+      Assert.That(ex.Message, Does.StartWith("must be zero or positive value"));
     }
 
     [Test, SetUICulture("")]
@@ -29,7 +29,7 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
-      StringAssert.StartsWith("must be zero or positive value", ex.Message);
+      Assert.That(ex.Message, Does.StartWith("must be zero or positive value"));
     }
 
     [Test, SetUICulture("")]
@@ -37,11 +37,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonZeroPositive("arg", 0);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be non-zero positive value", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(0, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be non-zero positive value"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(0));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -49,11 +49,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeZeroOrPositive("arg", -1);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be zero or positive value", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(-1, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be zero or positive value"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(-1));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -61,11 +61,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThan(2, "arg", 2);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be less than 2", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be less than 2"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -73,10 +73,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThan(null, "arg", 2);
 
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -84,11 +84,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(2, "arg", 3);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be less than or equal to 2", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(3, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be less than or equal to 2"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(3));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -96,10 +96,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeLessThanOrEqualTo(null, "arg", 2);
 
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -107,11 +107,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThan(2, "arg", 2);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be greater than 2", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be greater than 2"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -119,10 +119,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThan(null, "arg", 2);
 
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -130,11 +130,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(2, "arg", 1);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be greater than or equal to 2", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(1, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be greater than or equal to 2"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(1));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -142,10 +142,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(null, "arg", 2);
 
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -153,11 +153,11 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeInRange(0, 3, "arg", -1);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be in range 0 to 3", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(-1, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be in range 0 to 3"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(-1));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -165,10 +165,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeInRange(null, 3, "arg", 2);
 
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -176,10 +176,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeInRange(0, null, "arg", 2);
 
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.AreEqual(2, ex.ActualValue);
-      Assert.IsInstanceOf<ArgumentOutOfRangeException>(ex);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex.ActualValue, Is.EqualTo(2));
+      Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 
     [Test, SetUICulture("")]
@@ -187,10 +187,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeMultipleOf(2, "arg");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be multiple of 2", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be multiple of 2"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -198,10 +198,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentXMustBeLessThanY(0, "min", 3, "max");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("`min` must be less than `max` (min=0, max=3)", ex.Message);
-      Assert.AreEqual("min", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("`min` must be less than `max` (min=0, max=3)"));
+      Assert.That(ex.ParamName, Is.EqualTo("min"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -209,10 +209,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentXMustBeLessThanOrEqualToY(0, "min", 3, "max");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("`min` must be less than or equal to `max` (min=0, max=3)", ex.Message);
-      Assert.AreEqual("min", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("`min` must be less than or equal to `max` (min=0, max=3)"));
+      Assert.That(ex.ParamName, Is.EqualTo("min"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -220,10 +220,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyArray("arg");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be a non-empty array", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be a non-empty array"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -232,10 +232,10 @@ namespace Smdn {
       var array = new[] {0, 1, 2, 3};
       var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", array, 2, 4);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("attempt to access beyond the end of an array (length=4, offset=2, count=4)", ex.Message);
-      Assert.AreEqual("index", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("attempt to access beyond the end of an array (length=4, offset=2, count=4)"));
+      Assert.That(ex.ParamName, Is.EqualTo("index"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -243,10 +243,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfArray("index", null, 2, 4);
 
-      Assert.IsNull(ex.InnerException);
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("index", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("index"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -254,10 +254,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyCollection("arg");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be a non-empty collection", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be a non-empty collection"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -266,10 +266,10 @@ namespace Smdn {
       var collection = (IReadOnlyCollection<int>)new[] {0, 1, 2, 3};
       var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection("index", collection, 2, 4);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("attempt to access beyond the end of a collection (length=4, offset=2, count=4)", ex.Message);
-      Assert.AreEqual("index", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("attempt to access beyond the end of a collection (length=4, offset=2, count=4)"));
+      Assert.That(ex.ParamName, Is.EqualTo("index"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -277,10 +277,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection("index", (IReadOnlyList<int>)null, 2, 4);
 
-      Assert.IsNull(ex.InnerException);
-      Assert.IsNotEmpty(ex.Message);
-      Assert.AreEqual("index", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Is.Not.Empty);
+      Assert.That(ex.ParamName, Is.EqualTo("index"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -288,10 +288,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateAllItemsOfArgumentMustBeNonNull("list");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("all items in the collection must be non-null", ex.Message);
-      Assert.AreEqual("list", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("all items in the collection must be non-null"));
+      Assert.That(ex.ParamName, Is.EqualTo("list"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -299,10 +299,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustHaveLengthExact("arg", 4);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must have length exact 4", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must have length exact 4"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -310,10 +310,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustHaveLengthAtLeast("arg", 4);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must have length at least 4", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must have length at least 4"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -321,10 +321,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeNonEmptyString("arg");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("must be a non-empty string", ex.Message);
-      Assert.AreEqual("arg", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("must be a non-empty string"));
+      Assert.That(ex.ParamName, Is.EqualTo("arg"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -333,10 +333,10 @@ namespace Smdn {
       var origin = (SeekOrigin)(-1);
       var ex = ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("invalid enum value ( value=-1, type=System.IO.SeekOrigin)", ex.Message);
-      Assert.AreEqual("origin", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("invalid enum value ( value=-1, type=System.IO.SeekOrigin)"));
+      Assert.That(ex.ParamName, Is.EqualTo("origin"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -345,10 +345,10 @@ namespace Smdn {
       var origin = (SeekOrigin)(-1);
       var ex = ExceptionUtils.CreateArgumentMustBeValidEnumValue("origin", origin, "invalid seek origin");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("invalid enum value (invalid seek origin value=-1, type=System.IO.SeekOrigin)", ex.Message);
-      Assert.AreEqual("origin", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("invalid enum value (invalid seek origin value=-1, type=System.IO.SeekOrigin)"));
+      Assert.That(ex.ParamName, Is.EqualTo("origin"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -357,9 +357,9 @@ namespace Smdn {
       var comparison = StringComparison.CurrentCulture;
       var ex = ExceptionUtils.CreateNotSupportedEnumValue(comparison);
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("'CurrentCulture' (System.StringComparison) is not supported", ex.Message);
-      Assert.IsInstanceOf<NotSupportedException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("'CurrentCulture' (System.StringComparison) is not supported"));
+      Assert.That(ex, Is.InstanceOf<NotSupportedException>());
     }
 
     [Test, SetUICulture("")]
@@ -367,10 +367,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeReadableStream("baseStream");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support reading", ex.Message);
-      Assert.AreEqual("baseStream", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support reading"));
+      Assert.That(ex.ParamName, Is.EqualTo("baseStream"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -378,10 +378,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeWritableStream("baseStream");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support writing", ex.Message);
-      Assert.AreEqual("baseStream", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support writing"));
+      Assert.That(ex.ParamName, Is.EqualTo("baseStream"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -389,10 +389,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeSeekableStream("baseStream");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support seeking", ex.Message);
-      Assert.AreEqual("baseStream", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support seeking"));
+      Assert.That(ex.ParamName, Is.EqualTo("baseStream"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
 
     [Test, SetUICulture("")]
@@ -400,9 +400,9 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateNotSupportedReadingStream();
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support reading", ex.Message);
-      Assert.IsInstanceOf<NotSupportedException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support reading"));
+      Assert.That(ex, Is.InstanceOf<NotSupportedException>());
     }
 
     [Test, SetUICulture("")]
@@ -410,9 +410,9 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateNotSupportedWritingStream();
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support writing", ex.Message);
-      Assert.IsInstanceOf<NotSupportedException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support writing"));
+      Assert.That(ex, Is.InstanceOf<NotSupportedException>());
     }
 
     [Test, SetUICulture("")]
@@ -420,9 +420,9 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateNotSupportedSeekingStream();
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support seeking", ex.Message);
-      Assert.IsInstanceOf<NotSupportedException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support seeking"));
+      Assert.That(ex, Is.InstanceOf<NotSupportedException>());
     }
 
     [Test, SetUICulture("")]
@@ -430,9 +430,9 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateNotSupportedSettingStreamLength();
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("stream does not support setting length", ex.Message);
-      Assert.IsInstanceOf<NotSupportedException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("stream does not support setting length"));
+      Assert.That(ex, Is.InstanceOf<NotSupportedException>());
     }
 
     [Test, SetUICulture("")]
@@ -440,9 +440,9 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateIOAttemptToSeekBeforeStartOfStream();
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("attempted to seek before start of stream", ex.Message);
-      Assert.IsInstanceOf<IOException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("attempted to seek before start of stream"));
+      Assert.That(ex, Is.InstanceOf<IOException>());
     }
 
     [Test, SetUICulture("")]
@@ -450,10 +450,10 @@ namespace Smdn {
     {
       var ex = ExceptionUtils.CreateArgumentMustBeValidIAsyncResult("asyncResult");
 
-      Assert.IsNull(ex.InnerException);
-      StringAssert.StartsWith("invalid IAsyncResult", ex.Message);
-      Assert.AreEqual("asyncResult", ex.ParamName);
-      Assert.IsInstanceOf<ArgumentException>(ex);
+      Assert.That(ex.InnerException, Is.Null);
+      Assert.That(ex.Message, Does.StartWith("invalid IAsyncResult"));
+      Assert.That(ex.ParamName, Is.EqualTo("asyncResult"));
+      Assert.That(ex, Is.InstanceOf<ArgumentException>());
     }
   }
 }

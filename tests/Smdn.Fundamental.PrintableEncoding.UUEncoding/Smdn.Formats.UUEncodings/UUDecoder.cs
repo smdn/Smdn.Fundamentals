@@ -67,31 +67,30 @@ extra text block
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(input))) {
         var files = UUDecoder.ExtractFiles(stream).ToArray();
 
-        Assert.AreEqual(3, files.Length, "extracted file count");
+        Assert.That(files.Length, Is.EqualTo(3), "extracted file count");
 
         var file = files[0];
 
-        Assert.AreEqual("testimg.png", file.FileName, "extracted file name #1");
-        Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #1");
-        Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #1");
+        Assert.That(file.FileName, Is.EqualTo("testimg.png"), "extracted file name #1");
+        Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #1");
+        Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(testimg_png), "extracted file content #1");
 
         file.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(file.Stream));
+        Assert.Throws<ObjectDisposedException>(() => Assert.That(file.Stream, Is.Not.Null));
         Assert.DoesNotThrow(() => file.Dispose(), "dispose again #1");
 
         file = files[1];
 
-        Assert.AreEqual("testimg2.png", file.FileName, "extracted file name #2");
-        Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #2");
-        Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #2");
+        Assert.That(file.FileName, Is.EqualTo("testimg2.png"), "extracted file name #2");
+        Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #2");
+        Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(testimg_png), "extracted file content #2");
 
         file = files[2];
 
-        Assert.AreEqual("cat.txt", file.FileName, "extracted file name #3");
-        Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #3");
-        Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */,
-                        file.Stream.ReadToEnd(), "extracted file content #3");
+        Assert.That(file.FileName, Is.EqualTo("cat.txt"), "extracted file name #3");
+        Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #3");
+        Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #3");
 
         Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
       }
@@ -143,20 +142,19 @@ extra text block
 
         UUDecoder.ExtractFiles(stream, delegate(UUDecoder.FileEntry file) {
           if (fileCount == 0) {
-            Assert.AreEqual("testimg.png", file.FileName, "extracted file name #1");
-            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #1");
-            Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #1");
+            Assert.That(file.FileName, Is.EqualTo("testimg.png"), "extracted file name #1");
+            Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #1");
+            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(testimg_png), "extracted file content #1");
           }
           else if (fileCount == 1) {
-            Assert.AreEqual("testimg2.png", file.FileName, "extracted file name #2");
-            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #2");
-            Assert.AreEqual(testimg_png, file.Stream.ReadToEnd(), "extracted file content #2");
+            Assert.That(file.FileName, Is.EqualTo("testimg2.png"), "extracted file name #2");
+            Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #2");
+            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(testimg_png), "extracted file content #2");
           }
           else if (fileCount == 2) {
-            Assert.AreEqual("cat.txt", file.FileName, "extracted file name #3");
-            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #3");
-            Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */,
-                            file.Stream.ReadToEnd(), "extracted file content #3");
+            Assert.That(file.FileName, Is.EqualTo("cat.txt"), "extracted file name #3");
+            Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #3");
+            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #3");
           }
           else {
             Assert.Fail("unexpected file entry");
@@ -166,11 +164,11 @@ extra text block
 
           file.Dispose();
 
-          Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(file.Stream));
+          Assert.Throws<ObjectDisposedException>(() => Assert.That(file.Stream, Is.Not.Null));
           Assert.DoesNotThrow(() => file.Dispose(), "dispose again");
         });
 
-        Assert.AreEqual(3, fileCount, "extracted file count");
+        Assert.That(fileCount, Is.EqualTo(3), "extracted file count");
 
         Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
       }
@@ -192,9 +190,9 @@ end
 
         UUDecoder.ExtractFiles(stream, delegate(UUDecoder.FileEntry file) {
           if (fileCount == 0) {
-            Assert.AreEqual(string.Empty, file.FileName, "extracted file name #1");
-            Assert.AreEqual(Convert.ToUInt32("0644", 8), file.Permissions, "extracted file permissions #1");
-            Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */, file.Stream.ReadToEnd(), "extracted file content #1");
+            Assert.That(file.FileName, Is.EqualTo(string.Empty), "extracted file name #1");
+            Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #1");
+            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #1");
 
             Assert.Throws<InvalidOperationException>(() => file.Save());
           }
@@ -206,11 +204,11 @@ end
 
           file.Dispose();
 
-          Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(file.Stream));
+          Assert.Throws<ObjectDisposedException>(() => Assert.That(file.Stream, Is.Not.Null));
           Assert.DoesNotThrow(() => file.Dispose(), "dispose again");
         });
 
-        Assert.AreEqual(1, fileCount, "extracted file count");
+        Assert.That(fileCount, Is.EqualTo(1), "extracted file count");
 
         Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
       }

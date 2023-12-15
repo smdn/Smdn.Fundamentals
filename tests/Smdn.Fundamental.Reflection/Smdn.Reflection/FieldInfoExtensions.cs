@@ -118,9 +118,9 @@ public class FieldInfoExtensionsTests {
   public void IsPropertyBackingField(FieldInfo f, PropertyBackingFieldAttribute attr)
   {
     if (attr is null)
-      Assert.IsFalse(f.IsPropertyBackingField());
+      Assert.That(f.IsPropertyBackingField(), Is.False);
     else
-      Assert.IsTrue(f.IsPropertyBackingField());
+      Assert.That(f.IsPropertyBackingField(), Is.True);
   }
 
   [TestCase]
@@ -131,19 +131,19 @@ public class FieldInfoExtensionsTests {
   public void TryGetPropertyFromBackingField(FieldInfo f, PropertyBackingFieldAttribute attr)
   {
     if (attr is null) {
-      Assert.IsFalse(f.TryGetPropertyFromBackingField(out var property));
-      Assert.IsNull(property);
+      Assert.That(f.TryGetPropertyFromBackingField(out var property), Is.False);
+      Assert.That(property, Is.Null);
     }
     else {
-      Assert.IsTrue(f.TryGetPropertyFromBackingField(out var property));
-      Assert.IsNotNull(property);
-      Assert.AreEqual(attr.GetDeclaringProperty(f), property);
+      Assert.That(f.TryGetPropertyFromBackingField(out var property), Is.True);
+      Assert.That(property, Is.Not.Null);
+      Assert.That(property, Is.EqualTo(attr.GetDeclaringProperty(f)));
     }
   }
 
   [TestCase]
   public void TryGetPropertyFromBackingField_ArgumentNull()
-    => Assert.IsFalse(((FieldInfo)null!).TryGetPropertyFromBackingField(out _));
+    => Assert.That(((FieldInfo)null!).TryGetPropertyFromBackingField(out _), Is.False);
 
   private static System.Collections.IEnumerable YieldTestCases_EventBackingField()
   {
@@ -156,9 +156,9 @@ public class FieldInfoExtensionsTests {
   public void IsEventBackingField(FieldInfo f, EventBackingFieldAttribute attr)
   {
     if (attr is null)
-      Assert.IsFalse(f.IsEventBackingField());
+      Assert.That(f.IsEventBackingField(), Is.False);
     else
-      Assert.IsTrue(f.IsEventBackingField());
+      Assert.That(f.IsEventBackingField(), Is.True);
   }
 
   [TestCase]
@@ -169,17 +169,17 @@ public class FieldInfoExtensionsTests {
   public void TryGetEventFromBackingField(FieldInfo f, EventBackingFieldAttribute attr)
   {
     if (attr is null) {
-      Assert.IsFalse(f.TryGetEventFromBackingField(out var ev));
-      Assert.IsNull(ev);
+      Assert.That(f.TryGetEventFromBackingField(out var ev), Is.False);
+      Assert.That(ev, Is.Null);
     }
     else {
-      Assert.IsTrue(f.TryGetEventFromBackingField(out var ev));
-      Assert.IsNotNull(ev);
-      Assert.AreEqual(attr.GetDeclaringEvent(f), ev);
+      Assert.That(f.TryGetEventFromBackingField(out var ev), Is.True);
+      Assert.That(ev, Is.Not.Null);
+      Assert.That(ev, Is.EqualTo(attr.GetDeclaringEvent(f)));
     }
   }
 
   [TestCase]
   public void TryGetEventFromBackingField_ArgumentNull()
-    => Assert.IsFalse(((FieldInfo)null!).TryGetEventFromBackingField(out _));
+    => Assert.That(((FieldInfo)null!).TryGetEventFromBackingField(out _), Is.False);
 }

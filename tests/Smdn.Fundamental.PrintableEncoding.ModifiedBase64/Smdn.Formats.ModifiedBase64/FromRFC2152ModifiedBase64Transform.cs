@@ -23,12 +23,12 @@ public class FromRFC2152ModifiedBase64TransformTests {
   public void Transform(byte[] expected, string inputBase64, string inputModifiedBase64)
   {
     //CollectionAssert.AreEqual(expected, TextConvert.FromBase64StringToByteArray(inputBase64), "Base64");
-    CollectionAssert.AreEqual(
-      expected,
+    Assert.That(
       ICryptoTransformExtensions.TransformBytes(
         new FromRFC2152ModifiedBase64Transform(),
         Encoding.ASCII.GetBytes(inputModifiedBase64)
-      )
+      ),
+      Is.EqualTo(expected).AsCollection
     );
   }
 

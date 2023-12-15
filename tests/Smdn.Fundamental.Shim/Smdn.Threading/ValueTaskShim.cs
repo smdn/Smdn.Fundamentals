@@ -12,13 +12,14 @@ namespace Smdn.Threading;
 public class ValueTaskShimTests {
   [Test]
   public void ShimType_CompletedTask()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemThreadingTasksValueTaskCompletedTask),
+    => Assert.That(
 #if SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK
       typeof(System.Threading.Tasks.ValueTask)
 #else
       typeof(Smdn.Threading.ValueTaskShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemThreadingTasksValueTaskCompletedTask))
     );
 
   [Test]
@@ -26,23 +27,24 @@ public class ValueTaskShimTests {
   {
     var t = ShimTypeSystemThreadingTasksValueTaskCompletedTask.CompletedTask;
 
-    Assert.IsTrue(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
-    Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
-    Assert.IsFalse(t.IsCanceled, nameof(ValueTask.IsCanceled));
-    Assert.IsFalse(t.IsFaulted, nameof(ValueTask.IsFaulted));
+    Assert.That(t.IsCompletedSuccessfully, Is.True, nameof(ValueTask.IsCompletedSuccessfully));
+    Assert.That(t.IsCompleted, Is.True, nameof(ValueTask.IsCompleted));
+    Assert.That(t.IsCanceled, Is.False, nameof(ValueTask.IsCanceled));
+    Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
     Assert.DoesNotThrowAsync(async () => await t);
   }
 
   [Test]
   public void ShimType_FromCanceled()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemThreadingTasksValueTaskFromCanceled),
+    => Assert.That(
 #if SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED
       typeof(System.Threading.Tasks.ValueTask)
 #else
       typeof(Smdn.Threading.ValueTaskShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemThreadingTasksValueTaskFromCanceled))
     );
 
   [Test]
@@ -55,10 +57,10 @@ public class ValueTaskShimTests {
 
     var t = ShimTypeSystemThreadingTasksValueTaskFromCanceled.FromCanceled(token);
 
-    Assert.IsFalse(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
-    Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
-    Assert.IsTrue(t.IsCanceled, nameof(ValueTask.IsCanceled));
-    Assert.IsFalse(t.IsFaulted, nameof(ValueTask.IsFaulted));
+    Assert.That(t.IsCompletedSuccessfully, Is.False, nameof(ValueTask.IsCompletedSuccessfully));
+    Assert.That(t.IsCompleted, Is.True, nameof(ValueTask.IsCompleted));
+    Assert.That(t.IsCanceled, Is.True, nameof(ValueTask.IsCanceled));
+    Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
     Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
   }
@@ -73,23 +75,24 @@ public class ValueTaskShimTests {
 
     var t = ShimTypeSystemThreadingTasksValueTaskFromCanceled.FromCanceled<int>(token);
 
-    Assert.IsFalse(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
-    Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
-    Assert.IsTrue(t.IsCanceled, nameof(ValueTask.IsCanceled));
-    Assert.IsFalse(t.IsFaulted, nameof(ValueTask.IsFaulted));
+    Assert.That(t.IsCompletedSuccessfully, Is.False, nameof(ValueTask.IsCompletedSuccessfully));
+    Assert.That(t.IsCompleted, Is.True, nameof(ValueTask.IsCompleted));
+    Assert.That(t.IsCanceled, Is.True, nameof(ValueTask.IsCanceled));
+    Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
     Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
   }
 
   [Test]
   public void ShimType_FromResult()
-    => Assert.AreEqual(
-      typeof(ShimTypeSystemThreadingTasksValueTaskFromResult),
+    => Assert.That(
 #if SYSTEM_THREADING_TASKS_VALUETASK_FROMRESULT
       typeof(System.Threading.Tasks.ValueTask)
 #else
       typeof(Smdn.Threading.ValueTaskShim)
 #endif
+      ,
+      Is.EqualTo(typeof(ShimTypeSystemThreadingTasksValueTaskFromResult))
     );
 
   [Test]
@@ -98,15 +101,15 @@ public class ValueTaskShimTests {
     var expectedResult = 1;
     var t = ShimTypeSystemThreadingTasksValueTaskFromResult.FromResult(expectedResult);
 
-    Assert.IsTrue(t.IsCompletedSuccessfully, nameof(ValueTask.IsCompletedSuccessfully));
-    Assert.IsTrue(t.IsCompleted, nameof(ValueTask.IsCompleted));
-    Assert.IsFalse(t.IsCanceled, nameof(ValueTask.IsCanceled));
-    Assert.IsFalse(t.IsFaulted, nameof(ValueTask.IsFaulted));
+    Assert.That(t.IsCompletedSuccessfully, Is.True, nameof(ValueTask.IsCompletedSuccessfully));
+    Assert.That(t.IsCompleted, Is.True, nameof(ValueTask.IsCompleted));
+    Assert.That(t.IsCanceled, Is.False, nameof(ValueTask.IsCanceled));
+    Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
     int actualResult = default;
 
     Assert.DoesNotThrowAsync(async () => actualResult = await t);
-    Assert.AreEqual(actualResult, expectedResult, "result");
+    Assert.That(actualResult, Is.EqualTo(expectedResult), "result");
   }
 }
 #endif // #if SYSTEM_THREADING_TASKS_VALUETASK

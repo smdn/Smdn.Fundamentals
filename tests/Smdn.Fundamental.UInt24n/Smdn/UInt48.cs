@@ -10,24 +10,18 @@ namespace Smdn {
     [Test]
     public void TestSizeOfStructure()
     {
-      Assert.AreEqual(6, System.Runtime.InteropServices.Marshal.SizeOf(typeof(UInt48)));
+      Assert.That(System.Runtime.InteropServices.Marshal.SizeOf(typeof(UInt48)), Is.EqualTo(6));
     }
 
     [Test]
     public void TestConstruct()
     {
-      Assert.AreEqual((UInt48)0xff0000000000,
-                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: true));
-      Assert.AreEqual((UInt48)0xff0000000000,
-                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true));
-      Assert.AreEqual((UInt48)0x0000000000cc,
-                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: true));
-      Assert.AreEqual((UInt48)0x0000000000ff,
-                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: false));
-      Assert.AreEqual((UInt48)0x0000000000ff,
-                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: false));
-      Assert.AreEqual((UInt48)0xcc0000000000,
-                      new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: false));
+      Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: true), Is.EqualTo((UInt48)0xff0000000000));
+      Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true), Is.EqualTo((UInt48)0xff0000000000));
+      Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: true), Is.EqualTo((UInt48)0x0000000000cc));
+      Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: false), Is.EqualTo((UInt48)0x0000000000ff));
+      Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: false), Is.EqualTo((UInt48)0x0000000000ff));
+      Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: false), Is.EqualTo((UInt48)0xcc0000000000));
 
       Assert.Throws<ArgumentNullException>(() => new UInt48(null, 0));
       Assert.Throws<ArgumentOutOfRangeException>(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }, -1));
@@ -38,13 +32,13 @@ namespace Smdn {
     [Test]
     public void TestConstruct_ReadOnlySpan()
     {
-      Assert.AreEqual(
-        (UInt48)0x0123456789AB,
-        new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: true)
+      Assert.That(
+        new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: true),
+        Is.EqualTo((UInt48)0x0123456789AB)
       );
-      Assert.AreEqual(
-        (UInt48)0xAB8967452301,
-        new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: false)
+      Assert.That(
+        new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: false),
+        Is.EqualTo((UInt48)0xAB8967452301)
       );
 
       Assert.Throws<ArgumentException>(() => new UInt48(ReadOnlySpan<byte>.Empty));
@@ -58,46 +52,46 @@ namespace Smdn {
     [Test]
     public void Test()
     {
-      Assert.AreEqual((UInt48)(int)0x00ff00ff, (UInt48)(long)0x00ff00ff);
+      Assert.That((UInt48)(long)0x00ff00ff, Is.EqualTo((UInt48)(int)0x00ff00ff));
 
       var val = (UInt48)(long)0x123456789012;
 
-      Assert.AreEqual((long)0x123456789012, val.ToInt64());
+      Assert.That(val.ToInt64(), Is.EqualTo((long)0x123456789012));
 
       var zero = (UInt48)0x000000000000;
       var one  = (UInt48)0x000000000001;
 
-      Assert.IsTrue(zero.Equals(zero));
-      Assert.IsFalse(zero.Equals(one));
-      Assert.IsFalse(zero.Equals(null));
+      Assert.That(zero.Equals(zero), Is.True);
+      Assert.That(zero.Equals(one), Is.False);
+      Assert.That(zero.Equals(null), Is.False);
     }
 
     [Test]
     public void TestConstants()
     {
-      Assert.AreEqual(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true), UInt48.Zero, nameof(UInt48.Zero));
-      Assert.AreEqual(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, isBigEndian: true), UInt48.One, nameof(UInt48.One));
-      Assert.AreEqual(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true), UInt48.MinValue, nameof(UInt48.MinValue));
-      Assert.AreEqual(new UInt48(stackalloc byte[6] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }, isBigEndian: true), UInt48.MaxValue, nameof(UInt48.MaxValue));
+      Assert.That(UInt48.Zero, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true)), nameof(UInt48.Zero));
+      Assert.That(UInt48.One, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, isBigEndian: true)), nameof(UInt48.One));
+      Assert.That(UInt48.MinValue, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true)), nameof(UInt48.MinValue));
+      Assert.That(UInt48.MaxValue, Is.EqualTo(new UInt48(stackalloc byte[6] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }, isBigEndian: true)), nameof(UInt48.MaxValue));
     }
 
     [Test]
     public void TestEquals()
     {
-      Assert.IsTrue(UInt48.Zero.Equals(UInt48.Zero));
-      Assert.IsTrue(UInt48.Zero.Equals(0L));
-      Assert.IsTrue(UInt48.Zero.Equals(0UL));
-      Assert.IsFalse(UInt48.One.Equals(UInt48.Zero));
-      Assert.IsFalse(UInt48.One.Equals(0L));
-      Assert.IsFalse(UInt48.One.Equals(0UL));
-      Assert.IsFalse(UInt48.Zero.Equals(UInt48.MaxValue));
-      Assert.IsFalse(UInt48.Zero.Equals(long.MaxValue));
-      Assert.IsFalse(UInt48.Zero.Equals(ulong.MaxValue));
+      Assert.That(UInt48.Zero.Equals(UInt48.Zero), Is.True);
+      Assert.That(UInt48.Zero.Equals(0L), Is.True);
+      Assert.That(UInt48.Zero.Equals(0UL), Is.True);
+      Assert.That(UInt48.One.Equals(UInt48.Zero), Is.False);
+      Assert.That(UInt48.One.Equals(0L), Is.False);
+      Assert.That(UInt48.One.Equals(0UL), Is.False);
+      Assert.That(UInt48.Zero.Equals(UInt48.MaxValue), Is.False);
+      Assert.That(UInt48.Zero.Equals(long.MaxValue), Is.False);
+      Assert.That(UInt48.Zero.Equals(ulong.MaxValue), Is.False);
 
       object val;
 
-      val = UInt48.Zero; Assert.IsTrue(UInt48.Zero.Equals(val));
-      val = null; Assert.IsFalse(UInt48.Zero.Equals(val));
+      val = UInt48.Zero; Assert.That(UInt48.Zero.Equals(val), Is.True);
+      val = null; Assert.That(UInt48.Zero.Equals(val), Is.False);
     }
 
     [TestCase(0L, true)]
@@ -105,7 +99,7 @@ namespace Smdn {
     [TestCase((object)null, false)]
     [TestCase(true, false)]
     public void TestEquals_Object(object value, bool expected)
-      => Assert.AreEqual(expected, UInt48.Zero.Equals(value));
+      => Assert.That(UInt48.Zero.Equals(value), Is.EqualTo(expected));
 
     [Test]
     public void TestCompareTo()
@@ -113,7 +107,7 @@ namespace Smdn {
       var zero = (UInt48)0x000000000000;
       var one  = (UInt48)0x000000000001;
 
-      Assert.AreEqual(1, zero.CompareTo(null), "CompareTo(null)");
+      Assert.That(zero.CompareTo(null), Is.EqualTo(1), "CompareTo(null)");
 
       Assert.That(0 == zero.CompareTo(zero), "Zero.CompareTo(Zero)");
       Assert.That(0 > zero.CompareTo(one), "Zero.CompareTo(Zero)");
@@ -143,11 +137,11 @@ namespace Smdn {
         try {
           UInt48 val = (UInt48)test.Value;
 
-          Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
+          Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {test.ExpectedHex}");
+          Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -170,11 +164,11 @@ namespace Smdn {
         try {
           UInt48 val = (UInt48)test.Value;
 
-          Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
+          Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {test.ExpectedHex}");
+          Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -200,11 +194,11 @@ namespace Smdn {
         try {
           UInt48 val = (UInt48)test.Value;
 
-          Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", test.ExpectedHex);
-          Assert.AreEqual(test.ExpectedHex, val.ToString("x", null));
+          Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {test.ExpectedHex}");
+          Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -225,13 +219,13 @@ namespace Smdn {
         new {Value = (UInt48)0x000000000000,  ExpectedResult = (int)0x00000000, ExpectedHex = "0"},
         new {Value = (UInt48)0x00007fffffff,  ExpectedResult = (int)0x7fffffff, ExpectedHex = "7fffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
+        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
         try {
-          Assert.IsTrue(test.ExpectedResult == (int)test.Value);
+          Assert.That(test.ExpectedResult == (int)test.Value, Is.True);
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -240,7 +234,7 @@ namespace Smdn {
         new {Value = (UInt48)0xffffffffffff,  ExpectedHex = "ffffffffffff"},
         new {Value = UInt48.MaxValue,         ExpectedHex = "ffffffffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
+        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
         Assert.Throws<OverflowException>(() => { var i = (int)test.Value; });
       }
@@ -256,13 +250,13 @@ namespace Smdn {
         new {Value = (UInt48)0x000080000000,  ExpectedResult = (uint)0x80000000, ExpectedHex = "80000000"},
         new {Value = (UInt48)0x0000ffffffff,  ExpectedResult = (uint)0xffffffff, ExpectedHex = "ffffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
+        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
         try {
-          Assert.IsTrue(test.ExpectedResult == (uint)test.Value);
+          Assert.That(test.ExpectedResult == (uint)test.Value, Is.True);
         }
         catch (OverflowException) {
-          Assert.Fail("OverflowException thrown: value = {0}", test.ExpectedHex);
+          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
 
@@ -271,7 +265,7 @@ namespace Smdn {
         new {Value = (UInt48)0xffffffffffff,  ExpectedHex = "ffffffffffff"},
         new {Value = UInt48.MaxValue,         ExpectedHex = "ffffffffffff"},
       }) {
-        Assert.AreEqual(test.ExpectedHex, test.Value.ToString("x", null));
+        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
         Assert.Throws<OverflowException>(() => { var ui = (uint)test.Value; });
       }
@@ -291,8 +285,8 @@ namespace Smdn {
       }) {
         val = (UInt48)test.Value;
 
-        Assert.IsTrue(test.ExpectedResult == val.ToInt64(), "value = {0}", val);
-        Assert.AreEqual(test.ExpectedHex, val.ToString("x", null), "value = {0}", val);
+        Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {val}");
+        Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex), $"value = {val}");
       }
     }
 
@@ -302,8 +296,8 @@ namespace Smdn {
       long max = (long)UInt48.MaxValue;
       long min = (long)UInt48.MinValue;
 
-      Assert.IsTrue((long)0x0000ffffffffffff == max);
-      Assert.IsTrue((long)0x0000000000000000 == min);
+      Assert.That((long)0x0000ffffffffffff == max, Is.True);
+      Assert.That((long)0x0000000000000000 == min, Is.True);
     }
 
     [Test]
@@ -312,46 +306,46 @@ namespace Smdn {
       ulong max = (ulong)UInt48.MaxValue;
       ulong min = (ulong)UInt48.MinValue;
 
-      Assert.IsTrue((ulong)0x0000ffffffffffff == max);
-      Assert.IsTrue((ulong)0x0000000000000000 == min);
+      Assert.That((ulong)0x0000ffffffffffff == max, Is.True);
+      Assert.That((ulong)0x0000000000000000 == min, Is.True);
     }
 
     [Test]
     public void TestToInt64()
     {
-      Assert.IsTrue((long)0x0000ffffffffffff == UInt48.MaxValue.ToInt64());
-      Assert.IsTrue((long)0x0000000000000000 == UInt48.MinValue.ToInt64());
+      Assert.That((long)0x0000ffffffffffff == UInt48.MaxValue.ToInt64(), Is.True);
+      Assert.That((long)0x0000000000000000 == UInt48.MinValue.ToInt64(), Is.True);
 
       UInt48 val = (UInt48)0x123456789abc;
 
-      Assert.IsTrue((long)0x0000123456789abc == val.ToInt64());
+      Assert.That((long)0x0000123456789abc == val.ToInt64(), Is.True);
     }
 
     [Test]
     public void TestToUInt64()
     {
-      Assert.IsTrue((ulong)0x0000ffffffffffff == UInt48.MaxValue.ToUInt64());
-      Assert.IsTrue((ulong)0x0000000000000000 == UInt48.MinValue.ToUInt64());
+      Assert.That((ulong)0x0000ffffffffffff == UInt48.MaxValue.ToUInt64(), Is.True);
+      Assert.That((ulong)0x0000000000000000 == UInt48.MinValue.ToUInt64(), Is.True);
 
       UInt48 val = (UInt48)0x123456789abc;
 
-      Assert.IsTrue((ulong)0x0000123456789abc == val.ToUInt64());
+      Assert.That((ulong)0x0000123456789abc == val.ToUInt64(), Is.True);
     }
 
     [Test]
     public void TestIConvertible()
     {
 #pragma warning disable CA1305
-      Assert.AreEqual(true, Convert.ChangeType((UInt48)1, typeof(bool)));
-      Assert.AreEqual(false, Convert.ChangeType((UInt48)0, typeof(bool)));
-      Assert.AreEqual((byte)0xff, Convert.ChangeType((UInt48)0xff, typeof(byte)));
-      Assert.AreEqual((sbyte)0x7f, Convert.ChangeType((UInt48)0x7f, typeof(sbyte)));
-      Assert.AreEqual((short)0x7fff, Convert.ChangeType((UInt48)0x7fff, typeof(short)));
-      Assert.AreEqual((ushort)0xffff, Convert.ChangeType((UInt48)0xffff, typeof(ushort)));
-      Assert.AreEqual((int)0x7fffffff, Convert.ChangeType((UInt48)0x7fffffff, typeof(int)));
-      Assert.AreEqual((uint)0xffffffff, Convert.ChangeType((UInt48)0xffffffff, typeof(uint)));
-      Assert.AreEqual((long)0x0000ffffffffffff, Convert.ChangeType((UInt48)0x0000ffffffffffff, typeof(long)));
-      Assert.AreEqual((ulong)0x0000ffffffffffff, Convert.ChangeType((UInt48)0x0000ffffffffffff, typeof(ulong)));
+      Assert.That(Convert.ChangeType((UInt48)1, typeof(bool)), Is.EqualTo(true));
+      Assert.That(Convert.ChangeType((UInt48)0, typeof(bool)), Is.EqualTo(false));
+      Assert.That(Convert.ChangeType((UInt48)0xff, typeof(byte)), Is.EqualTo((byte)0xff));
+      Assert.That(Convert.ChangeType((UInt48)0x7f, typeof(sbyte)), Is.EqualTo((sbyte)0x7f));
+      Assert.That(Convert.ChangeType((UInt48)0x7fff, typeof(short)), Is.EqualTo((short)0x7fff));
+      Assert.That(Convert.ChangeType((UInt48)0xffff, typeof(ushort)), Is.EqualTo((ushort)0xffff));
+      Assert.That(Convert.ChangeType((UInt48)0x7fffffff, typeof(int)), Is.EqualTo((int)0x7fffffff));
+      Assert.That(Convert.ChangeType((UInt48)0xffffffff, typeof(uint)), Is.EqualTo((uint)0xffffffff));
+      Assert.That(Convert.ChangeType((UInt48)0x0000ffffffffffff, typeof(long)), Is.EqualTo((long)0x0000ffffffffffff));
+      Assert.That(Convert.ChangeType((UInt48)0x0000ffffffffffff, typeof(ulong)), Is.EqualTo((ulong)0x0000ffffffffffff));
 #pragma warning restore CA1305
 
       foreach (var t in new[] {
@@ -363,7 +357,7 @@ namespace Smdn {
         typeof(uint),
       }) {
 #pragma warning disable CA1305
-        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName);
+        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
 
@@ -372,7 +366,7 @@ namespace Smdn {
         typeof(ulong),
       }) {
 #pragma warning disable CA1305
-        Assert.DoesNotThrow(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName);
+        Assert.DoesNotThrow(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
     }
@@ -390,10 +384,10 @@ namespace Smdn {
     public void TestToString()
     {
 #pragma warning disable CA1305
-      Assert.AreEqual("0", UInt48.Zero.ToString());
-      Assert.AreEqual("0000", UInt48.Zero.ToString("D4"));
-      Assert.AreEqual("281474976710655", UInt48.MaxValue.ToString());
-      Assert.AreEqual("FFFFFFFFFFFF", UInt48.MaxValue.ToString("X"));
+      Assert.That(UInt48.Zero.ToString(), Is.EqualTo("0"));
+      Assert.That(UInt48.Zero.ToString("D4"), Is.EqualTo("0000"));
+      Assert.That(UInt48.MaxValue.ToString(), Is.EqualTo("281474976710655"));
+      Assert.That(UInt48.MaxValue.ToString("X"), Is.EqualTo("FFFFFFFFFFFF"));
 #pragma warning restore CA1305
     }
 
@@ -404,37 +398,37 @@ namespace Smdn {
       Span<char> destination = stackalloc char[12];
       int charsWritten = default;
 
-      Assert.IsTrue(UInt48.Zero.TryFormat(destination, out charsWritten, ReadOnlySpan<char>.Empty, provider: null), "#1");
-      Assert.AreEqual(1, charsWritten, $"#1 {nameof(charsWritten)}");
-      Assert.AreEqual("0", new string(destination.Slice(0, charsWritten)), $"#1 formatted string");
+      Assert.That(UInt48.Zero.TryFormat(destination, out charsWritten, ReadOnlySpan<char>.Empty, provider: null), Is.True, "#1");
+      Assert.That(charsWritten, Is.EqualTo(1), $"#1 {nameof(charsWritten)}");
+      Assert.That(new string(destination.Slice(0, charsWritten)), Is.EqualTo("0"), $"#1 formatted string");
 
-      Assert.IsTrue(UInt48.Zero.TryFormat(destination, out charsWritten, "D4", provider: null), "#2");
-      Assert.AreEqual(4, charsWritten, $"#2 {nameof(charsWritten)}");
-      Assert.AreEqual("0000", new string(destination.Slice(0, charsWritten)), $"#2 formatted string");
+      Assert.That(UInt48.Zero.TryFormat(destination, out charsWritten, "D4", provider: null), Is.True, "#2");
+      Assert.That(charsWritten, Is.EqualTo(4), $"#2 {nameof(charsWritten)}");
+      Assert.That(new string(destination.Slice(0, charsWritten)), Is.EqualTo("0000"), $"#2 formatted string");
 
-      Assert.IsTrue(UInt48.MaxValue.TryFormat(destination, out charsWritten, "X", provider: null), "#3");
-      Assert.AreEqual(12, charsWritten, $"#3 {nameof(charsWritten)}");
-      Assert.AreEqual("FFFFFFFFFFFF", new string(destination.Slice(0, charsWritten)), $"#3 formatted string");
+      Assert.That(UInt48.MaxValue.TryFormat(destination, out charsWritten, "X", provider: null), Is.True, "#3");
+      Assert.That(charsWritten, Is.EqualTo(12), $"#3 {nameof(charsWritten)}");
+      Assert.That(new string(destination.Slice(0, charsWritten)), Is.EqualTo("FFFFFFFFFFFF"), $"#3 formatted string");
     }
 
     [Test]
     public void TestTryFormat_DestinationTooShort()
     {
-      Assert.IsFalse(UInt48.Zero.TryFormat(Array.Empty<char>(), out var charsWritten, string.Empty, provider: null), "#1");
-      Assert.IsFalse(UInt48.MaxValue.TryFormat(stackalloc char[UInt48.MaxValue.ToString("D", null).Length - 1], out charsWritten, string.Empty, provider: null), "#2");
+      Assert.That(UInt48.Zero.TryFormat(Array.Empty<char>(), out var charsWritten, string.Empty, provider: null), Is.False, "#1");
+      Assert.That(UInt48.MaxValue.TryFormat(stackalloc char[UInt48.MaxValue.ToString("D", null).Length - 1], out charsWritten, string.Empty, provider: null), Is.False, "#2");
     }
 #endif
 
     [Test]
     public void TestParse_String()
     {
-      Assert.AreEqual(UInt48.Zero, UInt48.Parse("0"));
-      Assert.AreEqual((UInt48)1, UInt48.Parse("1"));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, UInt48.Parse("281474976710655"));
+      Assert.That(UInt48.Parse("0"), Is.EqualTo(UInt48.Zero));
+      Assert.That(UInt48.Parse("1"), Is.EqualTo((UInt48)1));
+      Assert.That(UInt48.Parse("281474976710655"), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.AreEqual(UInt48.Zero, UInt48.Parse("0", provider: null));
-      Assert.AreEqual((UInt48)1, UInt48.Parse("1", provider: null));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, UInt48.Parse("281474976710655", provider: null));
+      Assert.That(UInt48.Parse("0", provider: null), Is.EqualTo(UInt48.Zero));
+      Assert.That(UInt48.Parse("1", provider: null), Is.EqualTo((UInt48)1));
+      Assert.That(UInt48.Parse("281474976710655", provider: null), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
       Assert.Throws<ArgumentNullException>(() => UInt48.Parse(null!, provider: null));
       Assert.Throws<OverflowException>(() => UInt48.Parse("-1", provider: null));
@@ -445,22 +439,22 @@ namespace Smdn {
     [Test]
     public void TestParse_String_WithNumberStyles()
     {
-      Assert.AreEqual(UInt48.Zero, UInt48.Parse("0", style: NumberStyles.AllowHexSpecifier), "#0");
+      Assert.That(UInt48.Parse("0", style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt48.Zero), "#0");
 
-      Assert.AreEqual((UInt48)0x456789ABCDEF, UInt48.Parse("456789ABCDEF", style: NumberStyles.AllowHexSpecifier), "#1");
+      Assert.That(UInt48.Parse("456789ABCDEF", style: NumberStyles.AllowHexSpecifier), Is.EqualTo((UInt48)0x456789ABCDEF), "#1");
     }
 
 #if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
     [Test]
     public void TestParse_ReadOnlySpanOfChar()
     {
-      Assert.AreEqual(UInt48.Zero, UInt48.Parse("_0".AsSpan(1)));
-      Assert.AreEqual((UInt48)1, UInt48.Parse("_1".AsSpan(1)));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, UInt48.Parse("_281474976710655".AsSpan(1)));
+      Assert.That(UInt48.Parse("_0".AsSpan(1)), Is.EqualTo(UInt48.Zero));
+      Assert.That(UInt48.Parse("_1".AsSpan(1)), Is.EqualTo((UInt48)1));
+      Assert.That(UInt48.Parse("_281474976710655".AsSpan(1)), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.AreEqual(UInt48.Zero, UInt48.Parse("_0".AsSpan(1), provider: null));
-      Assert.AreEqual((UInt48)1, UInt48.Parse("_1".AsSpan(1), provider: null));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, UInt48.Parse("_281474976710655".AsSpan(1), provider: null));
+      Assert.That(UInt48.Parse("_0".AsSpan(1), provider: null), Is.EqualTo(UInt48.Zero));
+      Assert.That(UInt48.Parse("_1".AsSpan(1), provider: null), Is.EqualTo((UInt48)1));
+      Assert.That(UInt48.Parse("_281474976710655".AsSpan(1), provider: null), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
       Assert.Throws<OverflowException>(() => UInt48.Parse("_-1".AsSpan(1), provider: null));
       Assert.Throws<OverflowException>(() => UInt48.Parse("_281474976710656".AsSpan(1), provider: null));
@@ -470,88 +464,88 @@ namespace Smdn {
     [Test]
     public void TestParse_ReadOnlySpanOfChar_WithNumberStyles()
     {
-      Assert.AreEqual(UInt48.Zero, UInt48.Parse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier), "#0");
+      Assert.That(UInt48.Parse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt48.Zero), "#0");
 
-      Assert.AreEqual((UInt48)0x456789ABCDEF, UInt48.Parse("_456789ABCDEF".AsSpan(1), style: NumberStyles.AllowHexSpecifier), "#1");
+      Assert.That(UInt48.Parse("_456789ABCDEF".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo((UInt48)0x456789ABCDEF), "#1");
     }
 #endif
 
     [Test]
     public void TestTryParse_String()
     {
-      Assert.IsTrue(UInt48.TryParse("0", out var result0));
-      Assert.AreEqual(UInt48.Zero, result0);
+      Assert.That(UInt48.TryParse("0", out var result0), Is.True);
+      Assert.That(result0, Is.EqualTo(UInt48.Zero));
 
-      Assert.IsTrue(UInt48.TryParse("1", out var result1));
-      Assert.AreEqual((UInt48)1, result1);
+      Assert.That(UInt48.TryParse("1", out var result1), Is.True);
+      Assert.That(result1, Is.EqualTo((UInt48)1));
 
-      Assert.IsTrue(UInt48.TryParse("281474976710655", out var result2));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, result2);
+      Assert.That(UInt48.TryParse("281474976710655", out var result2), Is.True);
+      Assert.That(result2, Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.IsTrue(UInt48.TryParse("0", provider: null, out var result3));
-      Assert.AreEqual(UInt48.Zero, result3);
+      Assert.That(UInt48.TryParse("0", provider: null, out var result3), Is.True);
+      Assert.That(result3, Is.EqualTo(UInt48.Zero));
 
-      Assert.IsTrue(UInt48.TryParse("1", provider: null, out var result4));
-      Assert.AreEqual((UInt48)1, result4);
+      Assert.That(UInt48.TryParse("1", provider: null, out var result4), Is.True);
+      Assert.That(result4, Is.EqualTo((UInt48)1));
 
-      Assert.IsTrue(UInt48.TryParse("281474976710655", provider: null, out var result5));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, result5);
+      Assert.That(UInt48.TryParse("281474976710655", provider: null, out var result5), Is.True);
+      Assert.That(result5, Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.IsFalse(UInt48.TryParse(null, provider: null, out _));
-      Assert.IsFalse(UInt48.TryParse("-1", provider: null, out _)); // overflow
-      Assert.IsFalse(UInt48.TryParse("281474976710656", provider: null, out _)); // overflow
-      Assert.IsFalse(UInt48.TryParse("FFFFFFFFFFFF", provider: null, out _)); // invalid format
+      Assert.That(UInt48.TryParse(null, provider: null, out _), Is.False);
+      Assert.That(UInt48.TryParse("-1", provider: null, out _), Is.False); // overflow
+      Assert.That(UInt48.TryParse("281474976710656", provider: null, out _), Is.False); // overflow
+      Assert.That(UInt48.TryParse("FFFFFFFFFFFF", provider: null, out _), Is.False); // invalid format
     }
 
     [Test]
     public void TestTryParse_String_WithNumberStyles()
     {
-      Assert.IsTrue(UInt48.TryParse("0", style: NumberStyles.AllowHexSpecifier, provider: null, out var result0), "#0");
-      Assert.AreEqual(UInt48.Zero, result0, "#0");
+      Assert.That(UInt48.TryParse("0", style: NumberStyles.AllowHexSpecifier, provider: null, out var result0), Is.True, "#0");
+      Assert.That(result0, Is.EqualTo(UInt48.Zero), "#0");
 
-      Assert.IsTrue(UInt48.TryParse("456789ABCDEF", style: NumberStyles.AllowHexSpecifier, provider: null, out var result1), "#1");
-      Assert.AreEqual((UInt48)0x456789ABCDEF, result1, "#1");
+      Assert.That(UInt48.TryParse("456789ABCDEF", style: NumberStyles.AllowHexSpecifier, provider: null, out var result1), Is.True, "#1");
+      Assert.That(result1, Is.EqualTo((UInt48)0x456789ABCDEF), "#1");
 
-      Assert.IsFalse(UInt48.TryParse("X", style: NumberStyles.AllowHexSpecifier, provider: null, out _), "#2");
+      Assert.That(UInt48.TryParse("X", style: NumberStyles.AllowHexSpecifier, provider: null, out _), Is.False, "#2");
     }
 
 #if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
     [Test]
     public void TestTryParse_ReadOnlySpanOfChar()
     {
-      Assert.IsTrue(UInt48.TryParse("_0".AsSpan(1), out var result0));
-      Assert.AreEqual(UInt48.Zero, result0);
+      Assert.That(UInt48.TryParse("_0".AsSpan(1), out var result0), Is.True);
+      Assert.That(result0, Is.EqualTo(UInt48.Zero));
 
-      Assert.IsTrue(UInt48.TryParse("_1".AsSpan(1), out var result1));
-      Assert.AreEqual((UInt48)1, result1);
+      Assert.That(UInt48.TryParse("_1".AsSpan(1), out var result1), Is.True);
+      Assert.That(result1, Is.EqualTo((UInt48)1));
 
-      Assert.IsTrue(UInt48.TryParse("_281474976710655".AsSpan(1), out var result2));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, result2);
+      Assert.That(UInt48.TryParse("_281474976710655".AsSpan(1), out var result2), Is.True);
+      Assert.That(result2, Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.IsTrue(UInt48.TryParse("_0".AsSpan(1), provider: null, out var result3));
-      Assert.AreEqual(UInt48.Zero, result3);
+      Assert.That(UInt48.TryParse("_0".AsSpan(1), provider: null, out var result3), Is.True);
+      Assert.That(result3, Is.EqualTo(UInt48.Zero));
 
-      Assert.IsTrue(UInt48.TryParse("_1".AsSpan(1), provider: null, out var result4));
-      Assert.AreEqual((UInt48)1, result4);
+      Assert.That(UInt48.TryParse("_1".AsSpan(1), provider: null, out var result4), Is.True);
+      Assert.That(result4, Is.EqualTo((UInt48)1));
 
-      Assert.IsTrue(UInt48.TryParse("_281474976710655".AsSpan(1), provider: null, out var result5));
-      Assert.AreEqual((UInt48)0xFFFFFFFFFFFF, result5);
+      Assert.That(UInt48.TryParse("_281474976710655".AsSpan(1), provider: null, out var result5), Is.True);
+      Assert.That(result5, Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.IsFalse(UInt48.TryParse("_-1".AsSpan(1), provider: null, out _)); // overflow
-      Assert.IsFalse(UInt48.TryParse("_281474976710656".AsSpan(1), provider: null, out _)); // overflow
-      Assert.IsFalse(UInt48.TryParse("_FFFFFFFFFFFF".AsSpan(1), provider: null, out _)); // invalid format
+      Assert.That(UInt48.TryParse("_-1".AsSpan(1), provider: null, out _), Is.False); // overflow
+      Assert.That(UInt48.TryParse("_281474976710656".AsSpan(1), provider: null, out _), Is.False); // overflow
+      Assert.That(UInt48.TryParse("_FFFFFFFFFFFF".AsSpan(1), provider: null, out _), Is.False); // invalid format
     }
 
     [Test]
     public void TestTryParse_ReadOnlySpanOfChar_WithNumberStyles()
     {
-      Assert.IsTrue(UInt48.TryParse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out var result0), "#0");
-      Assert.AreEqual(UInt48.Zero, result0, "#0");
+      Assert.That(UInt48.TryParse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out var result0), Is.True, "#0");
+      Assert.That(result0, Is.EqualTo(UInt48.Zero), "#0");
 
-      Assert.IsTrue(UInt48.TryParse("_456789ABCDEF".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out var result1), "#1");
-      Assert.AreEqual((UInt48)0x456789ABCDEF, result1, "#1");
+      Assert.That(UInt48.TryParse("_456789ABCDEF".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out var result1), Is.True, "#1");
+      Assert.That(result1, Is.EqualTo((UInt48)0x456789ABCDEF), "#1");
 
-      Assert.IsFalse(UInt48.TryParse("_X".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out _), "#2");
+      Assert.That(UInt48.TryParse("_X".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out _), Is.False, "#2");
     }
 #endif
   }

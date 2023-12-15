@@ -34,13 +34,13 @@ namespace Smdn.Text.Encodings {
       var sequence = new ReadOnlySequence<byte>(firstSegment, 0, thirdSegment, thirdSegment.Memory.Length);
 
       for (var offset = 0; offset < expected.Length; offset++) {
-        Assert.AreEqual(
-          expected.Substring(offset),
+        Assert.That(
 #if SYSTEM_TEXT_ENCODINGEXTENSIONS
           Encoding.ASCII.GetString(sequence.Slice(offset)),
 #else
           EncodingReadOnlySequenceExtensions.GetString(Encoding.ASCII, sequence.Slice(offset)),
 #endif
+          Is.EqualTo(expected.Substring(offset)),
           $"offset {offset}"
         );
       }
@@ -56,13 +56,14 @@ namespace Smdn.Text.Encodings {
       var fourthSegment = new SequenceSegment(thirdSegment, new byte[] {0x86, 0x44} );
       var sequence = new ReadOnlySequence<byte>(firstSegment, 0, fourthSegment, fourthSegment.Memory.Length);
 
-      Assert.AreEqual(
-        expected,
+      Assert.That(
 #if SYSTEM_TEXT_ENCODINGEXTENSIONS
         Encoding.UTF8.GetString(sequence)
 #else
         EncodingReadOnlySequenceExtensions.GetString(Encoding.UTF8, sequence)
 #endif
+        ,
+        Is.EqualTo(expected)
       );
     }
   }

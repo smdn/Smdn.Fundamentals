@@ -20,7 +20,7 @@ namespace Smdn.Formats {
         1000.0m,
         "1000.0",
       }) {
-        Assert.AreEqual("1k", string.Format(provider, "{0:d}", arg), arg.GetType().ToString());
+        Assert.That(string.Format(provider, "{0:d}", arg), Is.EqualTo("1k"), arg.GetType().ToString());
       }
 
       foreach (var arg in new object[] {
@@ -28,7 +28,7 @@ namespace Smdn.Formats {
         new Guid(),
         new object(),
       }) {
-        Assert.AreNotEqual("1k", string.Format(provider, "{0:d}", arg), arg.GetType().ToString());
+        Assert.That(string.Format(provider, "{0:d}", arg), Is.Not.EqualTo("1k"), arg.GetType().ToString());
       }
     }
 
@@ -52,8 +52,8 @@ namespace Smdn.Formats {
         new {ExpectedShort = "1M",    ExpectedLong ="1 Mega",   Value = 1048576m},
         new {ExpectedShort = "1M",    ExpectedLong ="1 Mega",   Value = 1048577m},
       }) {
-        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:d}", pair.Value), "short form");
-        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:D}", pair.Value), "long form");
+        Assert.That(string.Format(provider, "{0:d}", pair.Value), Is.EqualTo(pair.ExpectedShort), "short form");
+        Assert.That(string.Format(provider, "{0:D}", pair.Value), Is.EqualTo(pair.ExpectedLong), "long form");
       }
     }
 
@@ -77,8 +77,8 @@ namespace Smdn.Formats {
         new {ExpectedShort = "1Mi",    ExpectedLong = "1 Mebi",     Value = 1048576m},
         new {ExpectedShort = "1Mi",    ExpectedLong = "1 Mebi",     Value = 1048577m},
       }) {
-        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:b}", pair.Value), "short form");
-        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:B}", pair.Value), "long form");
+        Assert.That(string.Format(provider, "{0:b}", pair.Value), Is.EqualTo(pair.ExpectedShort), "short form");
+        Assert.That(string.Format(provider, "{0:B}", pair.Value), Is.EqualTo(pair.ExpectedLong), "long form");
       }
     }
 
@@ -109,8 +109,8 @@ namespace Smdn.Formats {
         new {ExpectedShort = "1024.0MB",  ExpectedLong = "1024.0 Mega Bytes",   Value = 1073741823m},
         new {ExpectedShort = "1.0GB",     ExpectedLong = "1.0 Giga Bytes",      Value = 1073741824m},
       }) {
-        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:f}", pair.Value));
-        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:F}", pair.Value));
+        Assert.That(string.Format(provider, "{0:f}", pair.Value), Is.EqualTo(pair.ExpectedShort));
+        Assert.That(string.Format(provider, "{0:F}", pair.Value), Is.EqualTo(pair.ExpectedLong));
       }
     }
 
@@ -142,7 +142,7 @@ namespace Smdn.Formats {
           var format = $"{{0:{pair.Format}}}";
           var expected = (sign < decimal.Zero) ? "-" + pair.Expected : pair.Expected;
 
-          Assert.AreEqual(expected, string.Format(provider, format, sign * decimalValue));
+          Assert.That(string.Format(provider, format, sign * decimalValue), Is.EqualTo(expected));
         }
       }
     }
@@ -175,7 +175,7 @@ namespace Smdn.Formats {
           var format = $"{{0:{pair.Format}}}";
           var expected = (sign < decimal.Zero) ? "-" + pair.Expected : pair.Expected;
 
-          Assert.AreEqual(expected, string.Format(provider, format, sign * binaryValue));
+          Assert.That(string.Format(provider, format, sign * binaryValue), Is.EqualTo(expected));
         }
       }
     }
@@ -192,8 +192,8 @@ namespace Smdn.Formats {
         new {ExpectedShort = "1.0Gi",     ExpectedLong = "1.0 ギビ",      Value =    1073741824m},
         new {ExpectedShort = "1.0Ti",     ExpectedLong = "1.0 テビ",      Value = 1099511627776m},
       }) {
-        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:b1}", pair.Value));
-        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:B1}", pair.Value));
+        Assert.That(string.Format(provider, "{0:b1}", pair.Value), Is.EqualTo(pair.ExpectedShort));
+        Assert.That(string.Format(provider, "{0:B1}", pair.Value), Is.EqualTo(pair.ExpectedLong));
       }
 
       foreach (var pair in new[] {
@@ -203,8 +203,8 @@ namespace Smdn.Formats {
         new {ExpectedShort = "1.0G",      ExpectedLong = "1.0 ギガ",      Value =    1000000000m},
         new {ExpectedShort = "1.0T",      ExpectedLong = "1.0 テラ",      Value = 1000000000000m},
       }) {
-        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:d1}", pair.Value));
-        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:D1}", pair.Value));
+        Assert.That(string.Format(provider, "{0:d1}", pair.Value), Is.EqualTo(pair.ExpectedShort));
+        Assert.That(string.Format(provider, "{0:D1}", pair.Value), Is.EqualTo(pair.ExpectedLong));
       }
 
       foreach (var pair in new[] {
@@ -214,8 +214,8 @@ namespace Smdn.Formats {
         new {ExpectedShort = "1.0GB",     ExpectedLong = "1.0 ギガバイト",       Value =    1073741824m},
         new {ExpectedShort = "1.0TB",     ExpectedLong = "1.0 テラバイト",       Value = 1099511627776m},
       }) {
-        Assert.AreEqual(pair.ExpectedShort, string.Format(provider, "{0:f}", pair.Value));
-        Assert.AreEqual(pair.ExpectedLong,  string.Format(provider, "{0:F}", pair.Value));
+        Assert.That(string.Format(provider, "{0:f}", pair.Value), Is.EqualTo(pair.ExpectedShort));
+        Assert.That(string.Format(provider, "{0:F}", pair.Value), Is.EqualTo(pair.ExpectedLong));
       }
     }
 
@@ -226,7 +226,7 @@ namespace Smdn.Formats {
         SIPrefixNumberFormatter.InvaliantInfo,
         SIPrefixNumberFormatter.CurrentInfo,
       }) {
-        Assert.IsTrue(provider.IsReadOnly, "IsReadOnly");
+        Assert.That(provider.IsReadOnly, Is.True, "IsReadOnly");
 
         foreach (var pair in new[] {
           new {Name = "ByteUnit", Action = (Action<string>)delegate(string arg) {provider.ByteUnit = arg;}},
@@ -244,7 +244,7 @@ namespace Smdn.Formats {
     {
       var provider = new SIPrefixNumberFormatter();
 
-      Assert.IsFalse(provider.IsReadOnly, "IsReadOnly");
+      Assert.That(provider.IsReadOnly, Is.False, "IsReadOnly");
 
       provider.ByteUnitAbbreviation = "BYTE";
 
@@ -255,7 +255,7 @@ namespace Smdn.Formats {
         new {Expected = "1.0GBYTE", Value =    1073741824m},
         new {Expected = "1.0TBYTE", Value = 1099511627776m},
       }) {
-        Assert.AreEqual(pair.Expected, string.Format(provider, "{0:f}", pair.Value));
+        Assert.That(string.Format(provider, "{0:f}", pair.Value), Is.EqualTo(pair.Expected));
       }
     }
   }

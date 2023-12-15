@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace Smdn.Test.NUnit;
 
@@ -14,7 +15,7 @@ public class IOUtilsTests {
   {
     var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "test");
 
-    Assert.AreNotEqual(path, Environment.CurrentDirectory, "pre");
+    Assert.That(Environment.CurrentDirectory, Is.Not.EqualTo(path), "pre");
 
     IOUtils.UsingDirectory(
       path: path,
@@ -22,12 +23,12 @@ public class IOUtilsTests {
       action: _ => {
         IOUtils.UsingCurrentDirectory(
           path: path,
-          () => Assert.AreEqual(path, Environment.CurrentDirectory, "action")
+          () => Assert.That(Environment.CurrentDirectory, Is.EqualTo(path), "action")
         );
       }
     );
 
-    Assert.AreNotEqual(path, Environment.CurrentDirectory, "post");
+    Assert.That(Environment.CurrentDirectory, Is.Not.EqualTo(path), "post");
   }
 
   [Test]
@@ -35,7 +36,7 @@ public class IOUtilsTests {
   {
     var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "test");
 
-    Assert.AreNotEqual(path, Environment.CurrentDirectory, "pre");
+    Assert.That(Environment.CurrentDirectory, Is.Not.EqualTo(path), "pre");
 
     IOUtils.UsingDirectory(
       path: path,
@@ -44,14 +45,14 @@ public class IOUtilsTests {
         IOUtils.UsingCurrentDirectoryAsync(
           path: path,
           async () => {
-            Assert.AreEqual(path, Environment.CurrentDirectory, "action");
+            Assert.That(Environment.CurrentDirectory, Is.EqualTo(path), "action");
             await Task.Delay(0);
           }
         );
       }
     );
 
-    Assert.AreNotEqual(path, Environment.CurrentDirectory, "post");
+    Assert.That(Environment.CurrentDirectory, Is.Not.EqualTo(path), "post");
   }
 
   [Repeat(10)]
@@ -67,7 +68,7 @@ public class IOUtilsTests {
       path: path,
       ensureDirectoryCreated: ensureDirectoryCreated,
       dir => {
-        Assert.AreEqual(Path.GetFullPath(path), dir.FullName, "path");
+        Assert.That(dir.FullName, Is.EqualTo(Path.GetFullPath(path)), "path");
 
         if (ensureDirectoryCreated) {
           DirectoryAssert.Exists(dir.FullName, "action");
@@ -95,7 +96,7 @@ public class IOUtilsTests {
       path: path,
       ensureDirectoryCreated: ensureDirectoryCreated,
       async dir => {
-        Assert.AreEqual(Path.GetFullPath(path), dir.FullName, "path");
+        Assert.That(dir.FullName, Is.EqualTo(Path.GetFullPath(path)), "path");
 
         if (ensureDirectoryCreated) {
           DirectoryAssert.Exists(dir.FullName, "action");
@@ -124,7 +125,7 @@ public class IOUtilsTests {
     IOUtils.UsingFile(
       path: path,
       file => {
-        Assert.AreEqual(Path.GetFullPath(path), file.FullName, "path");
+        Assert.That(file.FullName, Is.EqualTo(Path.GetFullPath(path)), "path");
 
         FileAssert.DoesNotExist(file.FullName, "action");
 
@@ -147,7 +148,7 @@ public class IOUtilsTests {
     await IOUtils.UsingFileAsync(
       path: path,
       async file => {
-        Assert.AreEqual(Path.GetFullPath(path), file.FullName, "path");
+        Assert.That(file.FullName, Is.EqualTo(Path.GetFullPath(path)), "path");
 
         FileAssert.DoesNotExist(file.FullName, "action");
 

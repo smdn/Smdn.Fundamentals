@@ -17,11 +17,11 @@ namespace Smdn.Collections {
         Singleton.CreateList(42),
         new List<int> { 42 },
       }) {
-        Assert.AreEqual(42, list[0]);
-        Assert.AreEqual(1, list.Count);
-        Assert.AreEqual(1, list.Count());
-        Assert.IsNotEmpty(list);
-        CollectionAssert.AreEqual(new[] { 42 }, list);
+        Assert.That(list[0], Is.EqualTo(42));
+        Assert.That(list.Count, Is.EqualTo(1));
+        Assert.That(list.Count(), Is.EqualTo(1));
+        Assert.That(list, Is.Not.Empty);
+        Assert.That(list, Is.EqualTo(new[] { 42 }).AsCollection);
       }
     }
 
@@ -32,11 +32,11 @@ namespace Smdn.Collections {
         Singleton.CreateList("foo"),
         new List<string> { "foo" },
       }) {
-        Assert.AreEqual("foo", list[0]);
-        Assert.AreEqual(1, list.Count);
-        Assert.AreEqual(1, list.Count());
-        Assert.IsNotEmpty(list);
-        CollectionAssert.AreEqual(new[] { "foo" }, list);
+        Assert.That(list[0], Is.EqualTo("foo"));
+        Assert.That(list.Count, Is.EqualTo(1));
+        Assert.That(list.Count(), Is.EqualTo(1));
+        Assert.That(list, Is.Not.Empty);
+        Assert.That(list, Is.EqualTo(new[] { "foo" }).AsCollection);
       }
     }
 
@@ -47,11 +47,11 @@ namespace Smdn.Collections {
         Singleton.CreateList<string>(null),
         new List<string> { null },
       }) {
-        Assert.IsNull(list[0]);
-        Assert.AreEqual(1, list.Count);
-        Assert.AreEqual(1, list.Count());
-        Assert.IsNotEmpty(list);
-        CollectionAssert.AreEqual(new string[] { null }, list);
+        Assert.That(list[0], Is.Null);
+        Assert.That(list.Count, Is.EqualTo(1));
+        Assert.That(list.Count(), Is.EqualTo(1));
+        Assert.That(list, Is.Not.Empty);
+        Assert.That(list, Is.EqualTo(new string[] { null }).AsCollection);
       }
     }
 
@@ -62,14 +62,14 @@ namespace Smdn.Collections {
         Singleton.CreateList(42),
         new List<int> { 42 },
       }) {
-        var ex1 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list[1]));
+        var ex1 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list[1], Is.Zero));
 
-        Assert.AreEqual("index", ex1!.ParamName);
+        Assert.That(ex1!.ParamName, Is.EqualTo("index"));
         //Assert.AreEqual(1, ex1.ActualValue);
 
-        var ex2 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list[-1]));
+        var ex2 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list[-1], Is.Zero));
 
-        Assert.AreEqual("index", ex2!.ParamName);
+        Assert.That(ex2!.ParamName, Is.EqualTo("index"));
         //Assert.AreEqual(-1, ex2.ActualValue);
       }
     }
@@ -82,8 +82,8 @@ namespace Smdn.Collections {
         new {List = (IReadOnlyList<int>)new List<int> { 42 }, Test = "List<T>"},
       }) {
         Assert.IsSerializable(test.List, deserialized => {
-          Assert.AreNotSame(test.List, deserialized, test.Test);
-          CollectionAssert.AreEqual(test.List, deserialized, test.Test);
+          Assert.That(deserialized, Is.Not.SameAs(test.List), test.Test);
+          Assert.That(deserialized, Is.EqualTo(test.List).AsCollection, test.Test);
         });
       }
     }

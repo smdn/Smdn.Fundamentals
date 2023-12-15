@@ -64,12 +64,12 @@ namespace Smdn.IO.Binary {
     private void TestCloseDispose(bool close)
     {
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.IsNotNull(writer.BaseStream);
-        Assert.IsFalse(writer.LeaveBaseStreamOpen);
+        Assert.That(writer.BaseStream, Is.Not.Null);
+        Assert.That(writer.LeaveBaseStreamOpen, Is.False);
 
         var baseStream = writer.BaseStream;
 
-        Assert.IsNotNull(baseStream);
+        Assert.That(baseStream, Is.Not.Null);
 
         if (close) {
           writer.Close();
@@ -78,7 +78,7 @@ namespace Smdn.IO.Binary {
           writer.Dispose();
         }
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
+        Assert.Throws<ObjectDisposedException>(() => Assert.That(writer.BaseStream, Is.Null));
 
         Assert.Throws<ObjectDisposedException>(() => baseStream.WriteByte(0x00));
       }
@@ -96,8 +96,8 @@ namespace Smdn.IO.Binary {
         }
 
         using (var writer = new Smdn.IO.Binary.BinaryWriter(stream)) {
-          Assert.IsNotNull(writer.BaseStream);
-          Assert.IsFalse(writer.LeaveBaseStreamOpen);
+          Assert.That(writer.BaseStream, Is.Not.Null);
+          Assert.That(writer.LeaveBaseStreamOpen, Is.False);
         }
 
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
@@ -115,16 +115,16 @@ namespace Smdn.IO.Binary {
     public void TestCloseLeaveBaseStreamOpen()
     {
       using (var writer = new BinaryWriterEx(new MemoryStream())) {
-        Assert.IsNotNull(writer.BaseStream);
-        Assert.IsTrue(writer.LeaveBaseStreamOpen);
+        Assert.That(writer.BaseStream, Is.Not.Null);
+        Assert.That(writer.LeaveBaseStreamOpen, Is.True);
 
         var baseStream = writer.BaseStream;
 
-        Assert.IsNotNull(baseStream);
+        Assert.That(baseStream, Is.Not.Null);
 
         writer.Close();
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(writer.BaseStream));
+        Assert.Throws<ObjectDisposedException>(() => Assert.That(writer.BaseStream, Is.Null));
 
         try {
           baseStream.WriteByte(0x00);
@@ -139,12 +139,12 @@ namespace Smdn.IO.Binary {
     public void TestFlush()
     {
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Write((int)0);
         writer.Flush();
 
-        Assert.AreEqual(4L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(4L));
 
         writer.Close();
 
@@ -160,16 +160,16 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Write(data);
         writer.Flush();
 
-        Assert.AreEqual(4L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(4L));
 
         writer.Close();
 
-        CollectionAssert.AreEqual(data, stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(data).AsCollection);
 
         Assert.Throws<ObjectDisposedException>(() => writer.Write(data));
       }
@@ -177,16 +177,16 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Write(data, 1, 2);
         writer.Flush();
 
-        Assert.AreEqual(2L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(2L));
 
         writer.Close();
 
-        CollectionAssert.AreEqual(data.Skip(1).Take(2).ToArray(), stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(data.Skip(1).Take(2).ToArray()).AsCollection);
 
         Assert.Throws<ObjectDisposedException>(() => writer.Write(data, 1, 2));
       }
@@ -200,16 +200,16 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Write(new ArraySegment<byte>(data, 0, 4));
         writer.Flush();
 
-        Assert.AreEqual(4L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(4L));
 
         writer.Close();
 
-        CollectionAssert.AreEqual(data, stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(data).AsCollection);
 
         Assert.Throws<ObjectDisposedException>(() => writer.Write(data));
       }
@@ -217,16 +217,16 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Write(new ArraySegment<byte>(data, 1, 2));
         writer.Flush();
 
-        Assert.AreEqual(2L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(2L));
 
         writer.Close();
 
-        CollectionAssert.AreEqual(data.Skip(1).Take(2).ToArray(), stream.ToArray());
+        Assert.That(stream.ToArray(), Is.EqualTo(data.Skip(1).Take(2).ToArray()).AsCollection);
 
         Assert.Throws<ObjectDisposedException>(() => writer.Write(new ArraySegment<byte>(data, 1, 2)));
       }
@@ -238,13 +238,13 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         Assert.Throws<ArgumentException>(() => writer.Write(new ArraySegment<byte>()));
 
         writer.Flush();
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
       }
     }
 
@@ -270,7 +270,7 @@ namespace Smdn.IO.Binary {
           writer.WriteZero(len);
           writer.Flush();
 
-          Assert.AreEqual(len, writer.BaseStream.Position);
+          Assert.That(writer.BaseStream.Position, Is.EqualTo(len));
 
           writer.Close();
 
@@ -278,8 +278,8 @@ namespace Smdn.IO.Binary {
 
           arr = stream.ToArray();
 
-          Assert.AreEqual(len, arr.Length);
-          Assert.IsTrue(Array.TrueForAll(arr, allzero));
+          Assert.That(arr.Length, Is.EqualTo(len));
+          Assert.That(Array.TrueForAll(arr, allzero), Is.True);
         }
       }
     }
@@ -290,11 +290,11 @@ namespace Smdn.IO.Binary {
       var zero = new byte[0];
 
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Write(zero);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Close();
 
@@ -311,15 +311,15 @@ namespace Smdn.IO.Binary {
     public void TestWriteZeroZeroLength()
     {
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.WriteZero(0);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.WriteZero(0L);
 
-        Assert.AreEqual(0L, writer.BaseStream.Position);
+        Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
         writer.Close();
 
@@ -349,11 +349,13 @@ namespace Smdn.IO.Binary {
           writer.Close();
         }
 
-        CollectionAssert.AreEqual(
-          BitConverter.IsLittleEndian
-            ? new byte[] {0x44, 0x33, 0x22, 0x11}
-            : new byte[] {0x11, 0x22, 0x33, 0x44},
-          stream.ToArray()
+        Assert.That(
+          stream.ToArray(),
+          Is.EqualTo(
+            BitConverter.IsLittleEndian
+              ? new byte[] {0x44, 0x33, 0x22, 0x11}
+              : new byte[] {0x11, 0x22, 0x33, 0x44}
+          ).AsCollection
         );
       }
     }
@@ -380,7 +382,7 @@ namespace Smdn.IO.Binary {
 
       writer.BaseStream.Seek(0L, SeekOrigin.Begin);
 
-      Assert.AreEqual(0L, writer.BaseStream.Position);
+      Assert.That(writer.BaseStream.Position, Is.EqualTo(0L));
 
       try {
         typeof(Smdn.IO.Binary.BinaryWriter)
@@ -393,10 +395,10 @@ namespace Smdn.IO.Binary {
           !.Invoke(writer, new[] { value });
       }
       catch (MissingMethodException) {
-        Assert.Fail("invocation failed: type = {0}", value.GetType().FullName);
+        Assert.Fail($"invocation failed: type = {value.GetType().FullName}");
       }
 
-      Assert.AreEqual(expectedPosition, writer.BaseStream.Position);
+      Assert.That(writer.BaseStream.Position, Is.EqualTo(expectedPosition));
     }
 
     [TestCaseSource(nameof(YieldTestCases_Write))]
@@ -417,7 +419,7 @@ namespace Smdn.IO.Binary {
           !.Invoke(writer, new[] { value });
       });
 
-      Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
+      Assert.That(ex!.InnerException, Is.InstanceOf<ObjectDisposedException>());
     }
   }
 }

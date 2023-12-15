@@ -36,21 +36,21 @@ namespace Smdn.Formats.Mime {
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(3, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(3));
 
-        Assert.AreEqual("MIME-Version", headers[0].NameString);
-        Assert.AreEqual(" 1.0\n", headers[0].ValueString);
+        Assert.That(headers[0].NameString, Is.EqualTo("MIME-Version"));
+        Assert.That(headers[0].ValueString, Is.EqualTo(" 1.0\n"));
 
-        Assert.AreEqual("Content-Type", headers[1].NameString);
-        Assert.AreEqual("text/plain\r", headers[1].ValueString);
+        Assert.That(headers[1].NameString, Is.EqualTo("Content-Type"));
+        Assert.That(headers[1].ValueString, Is.EqualTo("text/plain\r"));
 
-        Assert.AreEqual("Subject", headers[2].NameString);
-        Assert.AreEqual(" line1\n\tline2\r \tline3\r\n", headers[2].ValueString);
+        Assert.That(headers[2].NameString, Is.EqualTo("Subject"));
+        Assert.That(headers[2].ValueString, Is.EqualTo(" line1\n\tline2\r \tline3\r\n"));
 
         var reader = new StreamReader(stream, Encoding.ASCII);
 
-        Assert.AreEqual("line1\nline2\rline3\r\n", reader.ReadToEnd());
+        Assert.That(reader.ReadToEnd(), Is.EqualTo("line1\nline2\rline3\r\n"));
       });
     }
 
@@ -104,7 +104,7 @@ namespace Smdn.Formats.Mime {
 
         var reader = new StreamReader(stream, Encoding.ASCII);
 
-        Assert.AreEqual("body", reader.ReadToEnd());
+        Assert.That(reader.ReadToEnd(), Is.EqualTo("body"));
       });
     }
 
@@ -132,8 +132,8 @@ namespace Smdn.Formats.Mime {
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: true));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(expectedParsedHeaderCount, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(expectedParsedHeaderCount));
       });
     }
 
@@ -153,21 +153,21 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(3, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(3));
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+        Assert.That(headers[0].Value, Is.EqualTo("1.0"));
 
-        Assert.AreEqual("Content-Type", headers[1].Key);
-        Assert.AreEqual("text/plain", headers[1].Value);
+        Assert.That(headers[1].Key, Is.EqualTo("Content-Type"));
+        Assert.That(headers[1].Value, Is.EqualTo("text/plain"));
 
-        Assert.AreEqual("Subject", headers[2].Key);
-        Assert.AreEqual("test", headers[2].Value);
+        Assert.That(headers[2].Key, Is.EqualTo("Subject"));
+        Assert.That(headers[2].Value, Is.EqualTo("test"));
 
         var reader = new StreamReader(stream, Encoding.ASCII);
 
-        Assert.AreEqual("line1\r\nline2\r\nline3", reader.ReadToEnd());
+        Assert.That(reader.ReadToEnd(), Is.EqualTo("line1\r\nline2\r\nline3"));
       });
     }
 
@@ -195,21 +195,21 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(3, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(3));
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual(" 1.0\r\n", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+        Assert.That(headers[0].Value, Is.EqualTo(" 1.0\r\n"));
 
-        Assert.AreEqual("Content-Type", headers[1].Key);
-        Assert.AreEqual("\ttext/plain \r", headers[1].Value);
+        Assert.That(headers[1].Key, Is.EqualTo("Content-Type"));
+        Assert.That(headers[1].Value, Is.EqualTo("\ttext/plain \r"));
 
-        Assert.AreEqual("Subject", headers[2].Key);
-        Assert.AreEqual("test\t\n", headers[2].Value);
+        Assert.That(headers[2].Key, Is.EqualTo("Subject"));
+        Assert.That(headers[2].Value, Is.EqualTo("test\t\n"));
 
         var reader = new StreamReader(stream, Encoding.ASCII);
 
-        Assert.AreEqual("line1\nline2\nline3\n", reader.ReadToEnd());
+        Assert.That(reader.ReadToEnd(), Is.EqualTo("line1\nline2\nline3\n"));
       });
     }
 
@@ -225,14 +225,14 @@ Content-Type: text/plain
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(2, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(2));
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+        Assert.That(headers[0].Value, Is.EqualTo("1.0"));
 
-        Assert.AreEqual("Content-Type", headers[1].Key);
-        Assert.AreEqual("text/plain", headers[1].Value);
+        Assert.That(headers[1].Key, Is.EqualTo("Content-Type"));
+        Assert.That(headers[1].Value, Is.EqualTo("text/plain"));
       });
     }
 
@@ -250,20 +250,20 @@ Content-Type: text/plain
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(4, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(4));
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.AreEqual("1.0", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+        Assert.That(headers[0].Value, Is.EqualTo("1.0"));
 
-        Assert.AreEqual("Content-Type", headers[1].Key);
-        Assert.AreEqual("text/plain", headers[1].Value);
+        Assert.That(headers[1].Key, Is.EqualTo("Content-Type"));
+        Assert.That(headers[1].Value, Is.EqualTo("text/plain"));
 
-        Assert.AreEqual("Subject", headers[2].Key);
-        Assert.AreEqual("test", headers[2].Value);
+        Assert.That(headers[2].Key, Is.EqualTo("Subject"));
+        Assert.That(headers[2].Value, Is.EqualTo("test"));
 
-        Assert.AreEqual("From", headers[3].Key);
-        Assert.AreEqual("from@example.com", headers[3].Value);
+        Assert.That(headers[3].Key, Is.EqualTo("From"));
+        Assert.That(headers[3].Value, Is.EqualTo("from@example.com"));
       });
     }
 
@@ -277,11 +277,11 @@ Content-Type: text/plain
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(1, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(1));
 
-        Assert.AreEqual("MIME-Version", headers[0].Key);
-        Assert.IsEmpty(headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+        Assert.That(headers[0].Value, Is.Empty);
       });
     }
 
@@ -310,11 +310,11 @@ X-Invalid-Header
         if (ignoreMalformed) {
           Assert.DoesNotThrowAsync(testAction);
 
-          Assert.IsNotNull(headers);
-          Assert.AreEqual(1, headers!.Count);
+          Assert.That(headers, Is.Not.Null);
+          Assert.That(headers!.Count, Is.EqualTo(1));
 
-          Assert.AreEqual("MIME-Version", headers[0].Key);
-          Assert.AreEqual("1.0", headers[0].Value.Trim());
+          Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+          Assert.That(headers[0].Value.Trim(), Is.EqualTo("1.0"));
         }
         else {
           Assert.ThrowsAsync<InvalidDataException>(testAction);
@@ -346,11 +346,11 @@ MIME-Version: 1.0
         if (ignoreMalformed) {
           Assert.DoesNotThrowAsync(testAction);
 
-          Assert.IsNotNull(headers);
-          Assert.AreEqual(1, headers!.Count);
+          Assert.That(headers, Is.Not.Null);
+          Assert.That(headers!.Count, Is.EqualTo(1));
 
-          Assert.AreEqual("MIME-Version", headers[0].Key);
-          Assert.AreEqual("1.0", headers[0].Value.Trim());
+          Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+          Assert.That(headers[0].Value.Trim(), Is.EqualTo("1.0"));
         }
         else {
           Assert.ThrowsAsync<InvalidDataException>(testAction);
@@ -381,11 +381,11 @@ MIME-Version: 1.0";
         if (ignoreMalformed) {
           Assert.DoesNotThrowAsync(testAction);
 
-          Assert.IsNotNull(headers);
-          Assert.AreEqual(1, headers!.Count);
+          Assert.That(headers, Is.Not.Null);
+          Assert.That(headers!.Count, Is.EqualTo(1));
 
-          Assert.AreEqual("MIME-Version", headers[0].Key);
-          Assert.AreEqual("1.0", headers[0].Value.Trim());
+          Assert.That(headers[0].Key, Is.EqualTo("MIME-Version"));
+          Assert.That(headers[0].Value.Trim(), Is.EqualTo("1.0"));
         }
         else {
           Assert.ThrowsAsync<InvalidDataException>(testAction);
@@ -407,20 +407,20 @@ MIME-Version: 1.0";
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(4, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(4));
 
-        Assert.AreEqual("Content-Type", headers[0].Key);
-        Assert.AreEqual("text/plain", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("Content-Type"));
+        Assert.That(headers[0].Value, Is.EqualTo("text/plain"));
 
-        Assert.AreEqual("From", headers[1].Key);
-        Assert.AreEqual("from@example.com", headers[1].Value);
+        Assert.That(headers[1].Key, Is.EqualTo("From"));
+        Assert.That(headers[1].Value, Is.EqualTo("from@example.com"));
 
-        Assert.AreEqual("To", headers[2].Key);
-        Assert.AreEqual("to@example.com", headers[2].Value);
+        Assert.That(headers[2].Key, Is.EqualTo("To"));
+        Assert.That(headers[2].Value, Is.EqualTo("to@example.com"));
 
-        Assert.AreEqual("Subject", headers[3].Key);
-        Assert.AreEqual("subject", headers[3].Value);
+        Assert.That(headers[3].Key, Is.EqualTo("Subject"));
+        Assert.That(headers[3].Value, Is.EqualTo("subject"));
       });
     }
 
@@ -438,11 +438,11 @@ MIME-Version: 1.0";
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(1, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(1));
 
-        Assert.AreEqual("Subject", headers[0].Key);
-        Assert.AreEqual("line1line2line3line4", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("Subject"));
+        Assert.That(headers[0].Value, Is.EqualTo("line1line2line3line4"));
       });
     }
 
@@ -460,11 +460,11 @@ MIME-Version: 1.0";
 
         Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
 
-        Assert.IsNotNull(headers);
-        Assert.AreEqual(1, headers!.Count);
+        Assert.That(headers, Is.Not.Null);
+        Assert.That(headers!.Count, Is.EqualTo(1));
 
-        Assert.AreEqual("Subject", headers[0].Key);
-        Assert.AreEqual(" \t line1\r\n line2\n\tline3\r   \tline4\r\n", headers[0].Value);
+        Assert.That(headers[0].Key, Is.EqualTo("Subject"));
+        Assert.That(headers[0].Value, Is.EqualTo(" \t line1\r\n line2\n\tline3\r   \tline4\r\n"));
       });
     }
 
@@ -474,8 +474,7 @@ MIME-Version: 1.0";
       var input = @"Fri (= Friday), 15 (th) Mar (March = 3rd month of year) 2002
  12 (hour):32 (minute):23 (second) (timezone =) +0900 (JST)";
 
-      Assert.AreEqual("Fri, 15 Mar 2002 12:32:23 +0900",
-                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo("Fri, 15 Mar 2002 12:32:23 +0900"));
     }
 
     [TestCase((string)null)]
@@ -484,7 +483,7 @@ MIME-Version: 1.0";
     [TestCase("header value")]
     public void TestRemoveHeaderWhiteSpaceAndComment_NotAffect(string input)
     {
-      Assert.AreEqual(input, MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), input);
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo(input), input);
     }
 
     [TestCase("header\rvalue")]
@@ -498,7 +497,7 @@ MIME-Version: 1.0";
     [TestCase("header\r\n\tvalue")]
     public void TestRemoveHeaderWhiteSpaceAndComment_RemoveNewline(string input)
     {
-      Assert.AreEqual("header value", MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), input);
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo("header value"), input);
     }
 
     [Test]
@@ -506,8 +505,7 @@ MIME-Version: 1.0";
     {
       var input = @"Fri, 15 Mar 2002 12:32:23 +0900 \(JST\) extratext";
 
-      Assert.AreEqual(@"Fri, 15 Mar 2002 12:32:23 +0900 \(JST\) extratext",
-                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo(@"Fri, 15 Mar 2002 12:32:23 +0900 \(JST\) extratext"));
     }
 
     [Test]
@@ -515,8 +513,7 @@ MIME-Version: 1.0";
     {
       var input = @"Fri, 15 Mar 2002 12:32:23 +0900 (JST\)) extratext";
 
-      Assert.AreEqual(@"Fri, 15 Mar 2002 12:32:23 +0900 extratext",
-                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo(@"Fri, 15 Mar 2002 12:32:23 +0900 extratext"));
     }
 
     [Test]
@@ -524,8 +521,7 @@ MIME-Version: 1.0";
     {
       var input = @"Fri, 15 Mar 2002 12:32:23 +0900 \";
 
-      Assert.AreEqual(@"Fri, 15 Mar 2002 12:32:23 +0900 \",
-                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo(@"Fri, 15 Mar 2002 12:32:23 +0900 \"));
     }
 
     [Test]
@@ -533,8 +529,7 @@ MIME-Version: 1.0";
     {
       var input = @"Fri, 15 Mar 2002 12:32:23 +0900 (JST(Japan Standard time)) extratext";
 
-      Assert.AreEqual(@"Fri, 15 Mar 2002 12:32:23 +0900 extratext",
-                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo(@"Fri, 15 Mar 2002 12:32:23 +0900 extratext"));
     }
 
     [Test]
@@ -542,8 +537,7 @@ MIME-Version: 1.0";
     {
       var input = @"Fri, 15 Mar 2002 12:32:23 +0900 (JST)) extratext";
 
-      Assert.AreEqual(@"Fri, 15 Mar 2002 12:32:23 +0900 extratext",
-                      MimeUtils.RemoveHeaderWhiteSpaceAndComment(input));
+      Assert.That(MimeUtils.RemoveHeaderWhiteSpaceAndComment(input), Is.EqualTo(@"Fri, 15 Mar 2002 12:32:23 +0900 extratext"));
     }
   }
 }

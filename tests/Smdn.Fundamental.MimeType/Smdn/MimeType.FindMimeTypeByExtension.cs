@@ -24,14 +24,14 @@ partial class MimeTypeTests {
       return;
     }
 
-    Assert.AreEqual(MimeType.TextPlain, MimeType.FindMimeTypeByExtension("hoge.txt"));
-    Assert.AreEqual(MimeType.TextPlain, MimeType.FindMimeTypeByExtension("hoge.TXT"));
-    Assert.AreEqual(MimeType.CreateTextType("html"), MimeType.FindMimeTypeByExtension("index.html"));
-    Assert.AreEqual(MimeType.CreateImageType("png"), MimeType.FindMimeTypeByExtension("image.png"));
-    Assert.AreEqual(null, MimeType.FindMimeTypeByExtension(".hoge"));
-    Assert.AreEqual(null, MimeType.FindMimeTypeByExtension("hoge"));
-    Assert.AreEqual(null, MimeType.FindMimeTypeByExtension(string.Empty));
-    Assert.AreEqual(null, MimeType.FindMimeTypeByExtension("."));
+    Assert.That(MimeType.FindMimeTypeByExtension("hoge.txt"), Is.EqualTo(MimeType.TextPlain));
+    Assert.That(MimeType.FindMimeTypeByExtension("hoge.TXT"), Is.EqualTo(MimeType.TextPlain));
+    Assert.That(MimeType.FindMimeTypeByExtension("index.html"), Is.EqualTo(MimeType.CreateTextType("html")));
+    Assert.That(MimeType.FindMimeTypeByExtension("image.png"), Is.EqualTo(MimeType.CreateImageType("png")));
+    Assert.That(MimeType.FindMimeTypeByExtension(".hoge"), Is.EqualTo(null));
+    Assert.That(MimeType.FindMimeTypeByExtension("hoge"), Is.EqualTo(null));
+    Assert.That(MimeType.FindMimeTypeByExtension(string.Empty), Is.EqualTo(null));
+    Assert.That(MimeType.FindMimeTypeByExtension("."), Is.EqualTo(null));
 
     Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension(null!));
 
@@ -53,13 +53,14 @@ partial class MimeTypeTests {
     IOUtils.UsingFile(pseudoMimeTypesFile, f => {
       File.WriteAllText(f.FullName, "application/x-foo-bar\tfoo-bar");
 
-      Assert.AreEqual(
-        new MimeType("application/x-foo-bar"),
-        MimeType.FindMimeTypeByExtension(".foo-bar", mimeTypesFile: f.FullName)
+      Assert.That(
+        MimeType.FindMimeTypeByExtension(".foo-bar", mimeTypesFile: f.FullName),
+        Is.EqualTo(new MimeType("application/x-foo-bar"))
       );
 
-      Assert.IsNull(
-        MimeType.FindMimeTypeByExtension(".hoge", mimeTypesFile: f.FullName)
+      Assert.That(
+        MimeType.FindMimeTypeByExtension(".hoge", mimeTypesFile: f.FullName),
+        Is.Null
       );
     });
   }
@@ -70,7 +71,7 @@ partial class MimeTypeTests {
     const string nonExistentFile = ".nonexistent.mime.types";
 
     Assert.DoesNotThrow(() => {
-      Assert.AreEqual(null, MimeType.FindMimeTypeByExtension(string.Empty, mimeTypesFile: nonExistentFile));
+      Assert.That(MimeType.FindMimeTypeByExtension(string.Empty, mimeTypesFile: nonExistentFile), Is.EqualTo(null));
     });
 
     if (IsRunningOnUnix)
@@ -88,20 +89,15 @@ partial class MimeTypeTests {
       return;
     }
 
-    CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("text/plain"),
-                              ".txt");
-    CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("TEXT/PLAIN"),
-                              ".txt");
-    CollectionAssert.Contains(MimeType.FindExtensionsByMimeType(MimeType.TextPlain),
-                              ".txt");
+    Assert.That(MimeType.FindExtensionsByMimeType("text/plain"), Has.Member(".txt"));
+    Assert.That(MimeType.FindExtensionsByMimeType("TEXT/PLAIN"), Has.Member(".txt"));
+    Assert.That(MimeType.FindExtensionsByMimeType(MimeType.TextPlain), Has.Member(".txt"));
 
-    CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("text/html"),
-                              ".html");
+    Assert.That(MimeType.FindExtensionsByMimeType("text/html"), Has.Member(".html"));
 
-    CollectionAssert.Contains(MimeType.FindExtensionsByMimeType("image/jpeg"),
-                              ".jpg");
+    Assert.That(MimeType.FindExtensionsByMimeType("image/jpeg"), Has.Member(".jpg"));
 
-    Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge"));
+    Assert.That(MimeType.FindExtensionsByMimeType("application/x-hogemoge"), Is.Empty);
 
     Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((string)null!));
     Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null!));
@@ -124,11 +120,10 @@ partial class MimeTypeTests {
     IOUtils.UsingFile(pseudoMimeTypesFile, f => {
       File.WriteAllText(f.FullName, "application/x-foo-bar\tfoo-bar");
 
-      CollectionAssert.Contains(
-        MimeType.FindExtensionsByMimeType("application/x-foo-bar", mimeTypesFile: f.FullName),
-        ".foo-bar"
-      );
-      Assert.IsEmpty(MimeType.FindExtensionsByMimeType("application/x-hogemoge", mimeTypesFile: f.FullName));
+      Assert.That(
+        MimeType.FindExtensionsByMimeType("application/x-foo-bar", mimeTypesFile: f.FullName), Has.Member(".foo-bar"
+));
+      Assert.That(MimeType.FindExtensionsByMimeType("application/x-hogemoge", mimeTypesFile: f.FullName), Is.Empty);
     });
   }
 

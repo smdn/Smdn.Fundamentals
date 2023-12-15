@@ -18,14 +18,14 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       for (var n = 0; n < 1000; n++) {
         var node = Node.CreateRandom();
 
-        Assert.IsTrue(regexRandomNode.IsMatch(node.ToString()), node.ToString());
+        Assert.That(regexRandomNode.IsMatch(node.ToString()), Is.True, node.ToString());
       }
     }
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
     [Test]
     public void TestConstruct_Default()
-      => Assert.AreEqual(PhysicalAddress.Parse("00-00-00-00-00-00"), new Node().ToPhysicalAddress());
+      => Assert.That(new Node().ToPhysicalAddress(), Is.EqualTo(PhysicalAddress.Parse("00-00-00-00-00-00")));
 
     [Test]
     public void TestConstruct_FromPhysicalAddress()
@@ -33,7 +33,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       var addr = PhysicalAddress.Parse("01-23-45-67-89-AB");
       var node = new Node(addr);
 
-      Assert.AreEqual(addr, node.ToPhysicalAddress());
+      Assert.That(node.ToPhysicalAddress(), Is.EqualTo(addr));
     }
 #endif
 
@@ -44,10 +44,10 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       var dest = new byte[7] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
       Assert.DoesNotThrow(() => node.WriteBytes((Span<byte>)dest), "length 7");
-      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+      Assert.That(dest, Is.Not.EquivalentTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }));
 
       Assert.DoesNotThrow(() => node.WriteBytes(((Span<byte>)dest).Slice(0, 6)), "length 6");
-      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+      Assert.That(dest, Is.Not.EquivalentTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }));
     }
 
     [Test]
@@ -56,11 +56,11 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       var node = Node.CreateRandom();
       var dest = new byte[7] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-      Assert.IsTrue(node.TryWriteBytes((Span<byte>)dest), "length 7");
-      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+      Assert.That(node.TryWriteBytes((Span<byte>)dest), Is.True, "length 7");
+      Assert.That(dest, Is.Not.EquivalentTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }));
 
-      Assert.IsTrue(node.TryWriteBytes(((Span<byte>)dest).Slice(0, 6)), "length 6");
-      CollectionAssert.AreNotEquivalent(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, dest);
+      Assert.That(node.TryWriteBytes(((Span<byte>)dest).Slice(0, 6)), Is.True, "length 6");
+      Assert.That(dest, Is.Not.EquivalentTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }));
     }
 
     [Test]
@@ -78,9 +78,9 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     {
       var node = Node.CreateRandom();
 
-      Assert.IsFalse(node.TryWriteBytes(stackalloc byte[5]), "length 5");
-      Assert.IsFalse(node.TryWriteBytes(stackalloc byte[1]), "length 1");
-      Assert.IsFalse(node.TryWriteBytes(stackalloc byte[0]), "length 0");
+      Assert.That(node.TryWriteBytes(stackalloc byte[5]), Is.False, "length 5");
+      Assert.That(node.TryWriteBytes(stackalloc byte[1]), Is.False, "length 1");
+      Assert.That(node.TryWriteBytes(stackalloc byte[0]), Is.False, "length 0");
     }
   }
 }

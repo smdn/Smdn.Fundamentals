@@ -21,13 +21,13 @@ public class ExtendStreamTests {
   [Test]
   public void Construct()
   {
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, (byte[])null, null).Length, "construct null/null");
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, new byte[0], null).Length, "construct byte[]/null");
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, null, new byte[0]).Length, "construct null/byte[]");
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, new byte[0], new byte[0]).Length, "construct byte[]/byte[]");
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, Stream.Null, null).Length, "construct Stream/null");
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, null, Stream.Null).Length, "construct null/Stream");
-    Assert.AreEqual(0L, new ExtendStream(Stream.Null, Stream.Null, Stream.Null).Length, "construct Stream/Stream");
+    Assert.That(new ExtendStream(Stream.Null, (byte[])null, null).Length, Is.EqualTo(0L), "construct null/null");
+    Assert.That(new ExtendStream(Stream.Null, new byte[0], null).Length, Is.EqualTo(0L), "construct byte[]/null");
+    Assert.That(new ExtendStream(Stream.Null, null, new byte[0]).Length, Is.EqualTo(0L), "construct null/byte[]");
+    Assert.That(new ExtendStream(Stream.Null, new byte[0], new byte[0]).Length, Is.EqualTo(0L), "construct byte[]/byte[]");
+    Assert.That(new ExtendStream(Stream.Null, Stream.Null, null).Length, Is.EqualTo(0L), "construct Stream/null");
+    Assert.That(new ExtendStream(Stream.Null, null, Stream.Null).Length, Is.EqualTo(0L), "construct null/Stream");
+    Assert.That(new ExtendStream(Stream.Null, Stream.Null, Stream.Null).Length, Is.EqualTo(0L), "construct Stream/Stream");
   }
 
   [Test]
@@ -44,7 +44,7 @@ public class ExtendStreamTests {
     var baseStream = new MemoryStream(new byte[] { 0x00, 0x01, 0x02, 0x03 });
 
     using (var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: leaveOpen)) {
-      Assert.AreEqual(leaveOpen, stream.LeaveInnerStreamOpen);
+      Assert.That(stream.LeaveInnerStreamOpen, Is.EqualTo(leaveOpen));
     }
 
     if (leaveOpen)
@@ -98,7 +98,7 @@ public class ExtendStreamTests {
 
     using var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: true);
 
-    Assert.IsTrue(stream.LeaveInnerStreamOpen);
+    Assert.That(stream.LeaveInnerStreamOpen, Is.True);
 
     Close(stream);
   }
@@ -110,7 +110,7 @@ public class ExtendStreamTests {
 
     using var stream = new ExtendStream(baseStream, Stream.Null, Stream.Null, leaveInnerStreamOpen: false);
 
-    Assert.IsFalse(stream.LeaveInnerStreamOpen);
+    Assert.That(stream.LeaveInnerStreamOpen, Is.False);
 
     Close(stream);
   }
@@ -119,13 +119,13 @@ public class ExtendStreamTests {
   {
     stream.Dispose();
 
-    Assert.IsFalse(stream.CanRead, nameof(stream.CanRead));
-    Assert.IsFalse(stream.CanWrite, nameof(stream.CanWrite));
-    Assert.IsFalse(stream.CanSeek, nameof(stream.CanSeek));
-    Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
+    Assert.That(stream.CanRead, Is.False, nameof(stream.CanRead));
+    Assert.That(stream.CanWrite, Is.False, nameof(stream.CanWrite));
+    Assert.That(stream.CanSeek, Is.False, nameof(stream.CanSeek));
+    Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
 
-    Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream), nameof(stream.InnerStream));
-    Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.LeaveInnerStreamOpen), nameof(stream.LeaveInnerStreamOpen));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.InnerStream, Is.Not.Null), nameof(stream.InnerStream));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.LeaveInnerStreamOpen, Is.Not.Zero), nameof(stream.LeaveInnerStreamOpen));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
     Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
@@ -139,8 +139,8 @@ public class ExtendStreamTests {
     Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
     Assert.Throws<ObjectDisposedException>(() => stream.Seek(0, SeekOrigin.Begin), nameof(stream.Seek));
     Assert.Throws<ObjectDisposedException>(() => stream.SetLength(0L), nameof(stream.SetLength));
-    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(-1, stream.Length), nameof(stream.Length));
-    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(-1, stream.Position), nameof(stream.Length));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Length, Is.EqualTo(-1)), nameof(stream.Length));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Position, Is.EqualTo(-1)), nameof(stream.Length));
 
 #if SYSTEM_IO_STREAM_CLOSE
     Assert.DoesNotThrow(() => stream.Close(), nameof(stream.Close));
@@ -152,10 +152,10 @@ public class ExtendStreamTests {
   {
     using var innerStream = new MemoryStream(new byte[] { 0x00, 0x00 });
 
-    Assert.AreEqual(2L, new ExtendStream(innerStream, new byte[0], new byte[0], true).Length);
-    Assert.AreEqual(4L, new ExtendStream(innerStream, new byte[] { 0x00, 0x00 }, new byte[0], true).Length);
-    Assert.AreEqual(4L, new ExtendStream(innerStream, new byte[0], new byte[] { 0x00, 0x00 }, true).Length);
-    Assert.AreEqual(6L, new ExtendStream(innerStream, new byte[] { 0x00, 0x00 }, new byte[] { 0x00, 0x00 }, true).Length);
+    Assert.That(new ExtendStream(innerStream, new byte[0], new byte[0], true).Length, Is.EqualTo(2L));
+    Assert.That(new ExtendStream(innerStream, new byte[] { 0x00, 0x00 }, new byte[0], true).Length, Is.EqualTo(4L));
+    Assert.That(new ExtendStream(innerStream, new byte[0], new byte[] { 0x00, 0x00 }, true).Length, Is.EqualTo(4L));
+    Assert.That(new ExtendStream(innerStream, new byte[] { 0x00, 0x00 }, new byte[] { 0x00, 0x00 }, true).Length, Is.EqualTo(6L));
   }
 
   [Test]
@@ -164,7 +164,7 @@ public class ExtendStreamTests {
     using var innerStream = new MemoryStream(new byte[] { 0x00, 0x00 });
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x00 }, new byte[] { 0x00, 0x00 });
 
-    Assert.IsFalse(extended.CanWrite);
+    Assert.That(extended.CanWrite, Is.False);
 
     var len = extended.Length;
     var pos = extended.Position;
@@ -177,8 +177,8 @@ public class ExtendStreamTests {
     Assert.ThrowsAsync<NotSupportedException>(async () => await extended.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0xff, 0xff }, 0, 2)));
 #endif
 
-    Assert.AreEqual(len, extended.Length);
-    Assert.AreEqual(pos, extended.Position);
+    Assert.That(extended.Length, Is.EqualTo(len));
+    Assert.That(extended.Position, Is.EqualTo(pos));
   }
 
   [Test]
@@ -187,7 +187,7 @@ public class ExtendStreamTests {
     using var innerStream = new MemoryStream(new byte[] { 0x00, 0x00 });
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x00 }, new byte[] { 0x00, 0x00 });
 
-    Assert.IsFalse(extended.CanWrite);
+    Assert.That(extended.CanWrite, Is.False);
 
     var len = extended.Length;
     var pos = extended.Position;
@@ -195,8 +195,8 @@ public class ExtendStreamTests {
     Assert.Throws<NotSupportedException>(() => extended.Flush());
     Assert.Throws<NotSupportedException>(() => extended.FlushAsync());
 
-    Assert.AreEqual(len, extended.Length);
-    Assert.AreEqual(pos, extended.Position);
+    Assert.That(extended.Length, Is.EqualTo(len));
+    Assert.That(extended.Position, Is.EqualTo(pos));
   }
 
   [TestCaseSource(
@@ -280,20 +280,14 @@ public class ExtendStreamTests {
         var expectedReadLength = Math.Min(buffer.Length, extended.Length - offset);
         var expectedPosition = Math.Min(offset + buffer.Length, extended.Length);
 
-        Assert.AreEqual(expectedReadLength, ret, "read length {0}+{1}", offset, len);
-        Assert.AreEqual(
-          expected.Skip((int)offset).Take((int)expectedReadLength).ToArray(),
-          buffer.Skip(0).Take(ret).ToArray(),
-          "read content {0}+{1}", offset, len
-        );
-        Assert.AreEqual(
-          expectedPosition,
-          extended.Position,
-          "position {0}+{1}", offset, len
-        );
+        Assert.That(ret, Is.EqualTo(expectedReadLength), $"read length {offset}+{len}");
+        Assert.That(
+          buffer.Skip(0).Take(ret).ToArray(), Is.EqualTo(expected.Skip((int)offset).Take((int)expectedReadLength).ToArray()), $"read content {offset}+{len}");
+        Assert.That(
+          extended.Position, Is.EqualTo(expectedPosition), $"position {offset}+{len}");
 
         if (ret < len)
-          Assert.AreEqual(-1, extended.ReadByte());
+          Assert.That(extended.ReadByte(), Is.EqualTo(-1));
       }
     }
   }
@@ -330,20 +324,14 @@ public class ExtendStreamTests {
         var expectedReadLength = Math.Min(buffer.Length, extended.Length - offset);
         var expectedPosition = Math.Min(offset + buffer.Length, extended.Length);
 
-        Assert.AreEqual(expectedReadLength, ret, "read length {0}+{1}", offset, len);
-        Assert.AreEqual(
-          expected.Skip((int)offset).Take((int)expectedReadLength).ToArray(),
-          buffer.Skip(0).Take(ret).ToArray(),
-          "read content {0}+{1}", offset, len
-        );
-        Assert.AreEqual(
-          expectedPosition,
-          extended.Position,
-          "position {0}+{1}", offset, len
-        );
+        Assert.That(ret, Is.EqualTo(expectedReadLength), $"read length {offset}+{len}");
+        Assert.That(
+          buffer.Skip(0).Take(ret).ToArray(), Is.EqualTo(expected.Skip((int)offset).Take((int)expectedReadLength).ToArray()), $"read content {offset}+{len}");
+        Assert.That(
+          extended.Position, Is.EqualTo(expectedPosition), $"position {offset}+{len}");
 
         if (ret < len)
-          Assert.AreEqual(-1, extended.ReadByte());
+          Assert.That(extended.ReadByte(), Is.EqualTo(-1));
       }
     }
   }
@@ -369,15 +357,15 @@ public class ExtendStreamTests {
       };
 
       if (extended.Length < len) {
-        Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
-        Assert.AreEqual(-1, extended.ReadByte());
+        Assert.That(ret, Is.EqualTo(extended.Length), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take((int)extended.Length).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(extended.Length), $"position {len}");
+        Assert.That(extended.ReadByte(), Is.EqualTo(-1));
       }
       else {
-        Assert.AreEqual(len, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(len, extended.Position, "position {0}", len);
+        Assert.That(ret, Is.EqualTo(len), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take(len).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(len), $"position {len}");
       }
     }
   }
@@ -403,15 +391,15 @@ public class ExtendStreamTests {
       };
 
       if (extended.Length < len) {
-        Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
-        Assert.AreEqual(-1, extended.ReadByte());
+        Assert.That(ret, Is.EqualTo(extended.Length), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take((int)extended.Length).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(extended.Length), $"position {len}");
+        Assert.That(extended.ReadByte(), Is.EqualTo(-1));
       }
       else {
-        Assert.AreEqual(len, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(len, extended.Position, "position {0}", len);
+        Assert.That(ret, Is.EqualTo(len), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take(len).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(len), $"position {len}");
       }
     }
   }
@@ -437,15 +425,15 @@ public class ExtendStreamTests {
       };
 
       if (extended.Length < len) {
-        Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
-        Assert.AreEqual(-1, extended.ReadByte());
+        Assert.That(ret, Is.EqualTo(extended.Length), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take((int)extended.Length).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(extended.Length), $"position {len}");
+        Assert.That(extended.ReadByte(), Is.EqualTo(-1));
       }
       else {
-        Assert.AreEqual(len, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(len, extended.Position, "position {0}", len);
+        Assert.That(ret, Is.EqualTo(len), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take(len).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(len), $"position {len}");
       }
     }
   }
@@ -471,15 +459,15 @@ public class ExtendStreamTests {
       };
 
       if (extended.Length < len) {
-        Assert.AreEqual(extended.Length, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take((int)extended.Length).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(extended.Length, extended.Position, "position {0}", len);
-        Assert.AreEqual(-1, extended.ReadByte());
+        Assert.That(ret, Is.EqualTo(extended.Length), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take((int)extended.Length).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(extended.Length), $"position {len}");
+        Assert.That(extended.ReadByte(), Is.EqualTo(-1));
       }
       else {
-        Assert.AreEqual(len, ret, "read length {0}", len);
-        Assert.AreEqual(expected.Skip(0).Take(len).ToArray(), buffer, "read content {0}", len);
-        Assert.AreEqual(len, extended.Position, "position {0}", len);
+        Assert.That(ret, Is.EqualTo(len), $"read length {len}");
+        Assert.That(buffer, Is.EqualTo(expected.Skip(0).Take(len).ToArray()), $"read content {len}");
+        Assert.That(extended.Position, Is.EqualTo(len), $"position {len}");
       }
     }
   }
@@ -490,16 +478,16 @@ public class ExtendStreamTests {
     using var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 });
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
-    Assert.AreEqual(12L, extended.Length);
-    Assert.AreEqual(0L, extended.Position);
-    Assert.IsTrue(extended.CanRead);
+    Assert.That(extended.Length, Is.EqualTo(12L));
+    Assert.That(extended.Position, Is.EqualTo(0L));
+    Assert.That(extended.CanRead, Is.True);
 
     for (var expected = 0L; expected < 12L; expected++) {
-      Assert.AreEqual(expected, extended.ReadByte(), "offset: {0}", expected);
-      Assert.AreEqual(expected + 1, extended.Position, "position {0}", expected);
+      Assert.That(extended.ReadByte(), Is.EqualTo(expected), $"offset: {expected}");
+      Assert.That(extended.Position, Is.EqualTo(expected + 1), $"position {expected}");
     }
 
-    Assert.AreEqual(-1, extended.ReadByte(), "end of stream");
+    Assert.That(extended.ReadByte(), Is.EqualTo(-1), "end of stream");
   }
 
   [Test]
@@ -515,13 +503,13 @@ public class ExtendStreamTests {
     }) {
       extended.Position = expected;
 
-      Assert.AreEqual(expected, extended.Position);
-      Assert.AreEqual(expected, extended.ReadByte());
-      Assert.AreEqual(expected + 1L, extended.Position);
+      Assert.That(extended.Position, Is.EqualTo(expected));
+      Assert.That(extended.ReadByte(), Is.EqualTo(expected));
+      Assert.That(extended.Position, Is.EqualTo(expected + 1L));
     }
 
     Assert.DoesNotThrow(() => extended.Position = 13L);
-    Assert.AreEqual(13L, extended.Position);
+    Assert.That(extended.Position, Is.EqualTo(13L));
   }
 
   [Test]
@@ -530,13 +518,13 @@ public class ExtendStreamTests {
     using var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 });
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
-    Assert.IsTrue(extended.CanSeek);
+    Assert.That(extended.CanSeek, Is.True);
 
     extended.Position = 6L;
 
     Assert.Throws<IOException>(() => extended.Seek(-7, SeekOrigin.Current));
 
-    Assert.AreEqual(6L, extended.Position);
+    Assert.That(extended.Position, Is.EqualTo(6L));
 
     var pair = new long[][] {
       // offset / position
@@ -554,14 +542,14 @@ public class ExtendStreamTests {
     };
 
     for (var index = 0; index < pair.Length; index++) {
-      Assert.AreEqual(pair[index][1], extended.Seek(pair[index][0], SeekOrigin.Current), "seeked position {0}", index);
+      Assert.That(extended.Seek(pair[index][0], SeekOrigin.Current), Is.EqualTo(pair[index][1]), $"seeked position {index}");
 
-      Assert.AreEqual(pair[index][1], extended.ReadByte(), "read value {0}", index);
+      Assert.That(extended.ReadByte(), Is.EqualTo(pair[index][1]), $"read value {index}");
     }
 
-    Assert.AreEqual(-1, extended.ReadByte());
-    Assert.AreEqual(13, extended.Seek(1, SeekOrigin.Current));
-    Assert.AreEqual(-1, extended.ReadByte());
+    Assert.That(extended.ReadByte(), Is.EqualTo(-1));
+    Assert.That(extended.Seek(1, SeekOrigin.Current), Is.EqualTo(13));
+    Assert.That(extended.ReadByte(), Is.EqualTo(-1));
   }
 
   [Test]
@@ -570,24 +558,24 @@ public class ExtendStreamTests {
     using var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 });
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
-    Assert.IsTrue(extended.CanSeek);
+    Assert.That(extended.CanSeek, Is.True);
 
     foreach (var offset in new long[] {
       0, 11, 1, 10, 2, 9, 3, 8, 4, 7, 5, 6,
     }) {
-      Assert.AreEqual(offset, extended.Seek(offset, SeekOrigin.Begin), "seeking to {0}", offset);
-      Assert.AreEqual(offset, extended.Position);
-      Assert.AreEqual(offset, extended.ReadByte());
+      Assert.That(extended.Seek(offset, SeekOrigin.Begin), Is.EqualTo(offset), $"seeking to {offset}");
+      Assert.That(extended.Position, Is.EqualTo(offset));
+      Assert.That(extended.ReadByte(), Is.EqualTo(offset));
     }
 
     extended.Position = 6L;
 
     Assert.Throws<IOException>(() => extended.Seek(-1L, SeekOrigin.Begin));
 
-    Assert.AreEqual(6L, extended.Position);
+    Assert.That(extended.Position, Is.EqualTo(6L));
 
-    Assert.AreEqual(12L, extended.Seek(12L, SeekOrigin.Begin));
-    Assert.AreEqual(-1, extended.ReadByte());
+    Assert.That(extended.Seek(12L, SeekOrigin.Begin), Is.EqualTo(12L));
+    Assert.That(extended.ReadByte(), Is.EqualTo(-1));
   }
 
   [Test]
@@ -596,23 +584,23 @@ public class ExtendStreamTests {
     using var innerStream = new MemoryStream(new byte[] { 0x04, 0x05, 0x06, 0x07 });
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
-    Assert.IsTrue(extended.CanSeek);
+    Assert.That(extended.CanSeek, Is.True);
 
     foreach (var offset in new long[] {
       0, 11, 1, 10, 2, 9, 3, 8, 4, 7, 5, 6,
     }) {
-      Assert.AreEqual(offset, extended.Seek(-extended.Length + offset, SeekOrigin.End), "seeking to {0}", offset);
-      Assert.AreEqual(offset, extended.Position);
-      Assert.AreEqual(offset, extended.ReadByte());
+      Assert.That(extended.Seek(-extended.Length + offset, SeekOrigin.End), Is.EqualTo(offset), $"seeking to {offset}");
+      Assert.That(extended.Position, Is.EqualTo(offset));
+      Assert.That(extended.ReadByte(), Is.EqualTo(offset));
     }
 
     extended.Position = 6L;
 
     Assert.Throws<IOException>(() => extended.Seek(-13L, SeekOrigin.End));
 
-    Assert.AreEqual(6L, extended.Position);
+    Assert.That(extended.Position, Is.EqualTo(6L));
 
-    Assert.AreEqual(12L, extended.Seek(0L, SeekOrigin.End));
-    Assert.AreEqual(-1, extended.ReadByte());
+    Assert.That(extended.Seek(0L, SeekOrigin.End), Is.EqualTo(12L));
+    Assert.That(extended.ReadByte(), Is.EqualTo(-1));
   }
 }

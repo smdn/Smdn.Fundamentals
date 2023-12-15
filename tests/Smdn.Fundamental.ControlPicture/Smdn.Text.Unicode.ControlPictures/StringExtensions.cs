@@ -12,13 +12,13 @@ namespace Smdn.Text.Unicode.ControlPictures {
     [Test]
     public void ToControlCharsPicturized()
     {
-      Assert.AreEqual("␠0␍␊␀␡😄", StringExtensions.ToControlCharsPicturized(" 0\r\n\0\x7F😄"));
+      Assert.That(StringExtensions.ToControlCharsPicturized(" 0\r\n\0\x7F😄"), Is.EqualTo("␠0␍␊␀␡😄"));
     }
 
     [Test]
     public void ToControlCharsPicturized_EmptyString()
     {
-      Assert.IsEmpty(StringExtensions.ToControlCharsPicturized(string.Empty));
+      Assert.That(StringExtensions.ToControlCharsPicturized(string.Empty), Is.Empty);
     }
 
     [Test]

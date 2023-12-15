@@ -28,14 +28,14 @@ namespace Smdn.Collections {
 
     private void TestSlice(IReadOnlyList<int> list)
     {
-      Assert.AreEqual(new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, list.Slice(0));
-      Assert.AreEqual(new[] { 0, 1, 2 }, list.Slice(0, 3));
-      Assert.AreEqual(new[] { 7, 8, 9 }, list.Slice(7, 3));
-      Assert.AreEqual(new[] { 2, 3, 4, 5, 6 }, list.Slice(2, 5));
-      Assert.AreEqual(new[] { 6, 7, 8, 9 }, list.Slice(6));
-      Assert.AreEqual(new int[] { }, list.Slice(0, 0));
-      Assert.AreEqual(new int[] { }, list.Slice(10));
-      Assert.AreEqual(new int[] { }, list.Slice(10, 0));
+      Assert.That(list.Slice(0), Is.EqualTo(new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }));
+      Assert.That(list.Slice(0, 3), Is.EqualTo(new[] { 0, 1, 2 }));
+      Assert.That(list.Slice(7, 3), Is.EqualTo(new[] { 7, 8, 9 }));
+      Assert.That(list.Slice(2, 5), Is.EqualTo(new[] { 2, 3, 4, 5, 6 }));
+      Assert.That(list.Slice(6), Is.EqualTo(new[] { 6, 7, 8, 9 }));
+      Assert.That(list.Slice(0, 0), Is.EqualTo(new int[] { }));
+      Assert.That(list.Slice(10), Is.EqualTo(new int[] { }));
+      Assert.That(list.Slice(10, 0), Is.EqualTo(new int[] { }));
 
       Assert.Throws<ArgumentOutOfRangeException>(() => list.Slice(-1, 1), "argument exception #1");
       Assert.Throws<ArgumentOutOfRangeException>(() => list.Slice(1, -1), "argument exception #2");
@@ -45,25 +45,25 @@ namespace Smdn.Collections {
       Assert.Throws<ArgumentException>(() => list.Slice(0, 11), "argument exception #6");
 
       // test IReadOnlyList.Count
-      Assert.AreEqual(10, list.Slice(0).Count);
-      Assert.AreEqual(3, list.Slice(0, 3).Count);
-      Assert.AreEqual(4, list.Slice(6).Count);
-      Assert.AreEqual(0, list.Slice(10).Count);
+      Assert.That(list.Slice(0).Count, Is.EqualTo(10));
+      Assert.That(list.Slice(0, 3).Count, Is.EqualTo(3));
+      Assert.That(list.Slice(6).Count, Is.EqualTo(4));
+      Assert.That(list.Slice(10).Count, Is.EqualTo(0));
 
       // test IReadOnlyList.this[]
-      Assert.AreEqual(2, list.Slice(2, 3)[0]);
-      Assert.AreEqual(3, list.Slice(2, 3)[1]);
-      Assert.AreEqual(4, list.Slice(2, 3)[2]);
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list.Slice(2, 3)[-1]));
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list.Slice(2, 3)[3]));
+      Assert.That(list.Slice(2, 3)[0], Is.EqualTo(2));
+      Assert.That(list.Slice(2, 3)[1], Is.EqualTo(3));
+      Assert.That(list.Slice(2, 3)[2], Is.EqualTo(4));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[-1], Is.EqualTo(0)));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[3], Is.EqualTo(0)));
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.IsNotNull(list.Slice(0, 0)[0]));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(0, 0)[0], Is.EqualTo(0)));
 
       // test enumerator
-      Assert.AreEqual(new[] { 0, 1, 2 }, list.Slice(0, 3).ToArray());
-      Assert.AreEqual(new[] { 7, 8, 9 }, list.Slice(7, 3).ToArray());
-      Assert.AreEqual(new int[] { }, list.Slice(0, 0).ToArray());
-      Assert.AreEqual(new int[] { }, list.Slice(10).ToArray());
+      Assert.That(list.Slice(0, 3).ToArray(), Is.EqualTo(new[] { 0, 1, 2 }));
+      Assert.That(list.Slice(7, 3).ToArray(), Is.EqualTo(new[] { 7, 8, 9 }));
+      Assert.That(list.Slice(0, 0).ToArray(), Is.EqualTo(new int[] { }));
+      Assert.That(list.Slice(10).ToArray(), Is.EqualTo(new int[] { }));
     }
 
     [Test]
@@ -74,22 +74,22 @@ namespace Smdn.Collections {
 
     private void TestIndexOf<TExpectedArgumentException> (IReadOnlyList<int> list) where TExpectedArgumentException : ArgumentException
     {
-      Assert.AreEqual(0, list.IndexOf(item: 1));
-      Assert.AreEqual(2, list.IndexOf(item: 2));
-      Assert.AreEqual(-1, list.IndexOf(item: 0));
-      Assert.AreEqual(0, list.IndexOf(item: 1, 0));
-      Assert.AreEqual(1, list.IndexOf(item: 1, 1));
-      Assert.AreEqual(3, list.IndexOf(item: 1, 2));
-      Assert.AreEqual(3, list.IndexOf(item: 1, 3));
-      Assert.AreEqual(2, list.IndexOf(item: 2, 0));
-      Assert.AreEqual(2, list.IndexOf(item: 2, 1));
-      Assert.AreEqual(2, list.IndexOf(item: 2, 2));
-      Assert.AreEqual(-1, list.IndexOf(item: 2, 3));
-      Assert.AreEqual(-1, list.IndexOf(item: 2, 0, 1));
-      Assert.AreEqual(-1, list.IndexOf(item: 2, 0, 2));
-      Assert.AreEqual(2, list.IndexOf(item: 2, 0, 3));
-      Assert.AreEqual(2, list.IndexOf(item: 2, 0, 4));
-      Assert.AreEqual(-1, list.IndexOf(item: 2, 4, 0));
+      Assert.That(list.IndexOf(item: 1), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: 2), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: 0), Is.EqualTo(-1));
+      Assert.That(list.IndexOf(item: 1, 0), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: 1, 1), Is.EqualTo(1));
+      Assert.That(list.IndexOf(item: 1, 2), Is.EqualTo(3));
+      Assert.That(list.IndexOf(item: 1, 3), Is.EqualTo(3));
+      Assert.That(list.IndexOf(item: 2, 0), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: 2, 1), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: 2, 2), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: 2, 3), Is.EqualTo(-1));
+      Assert.That(list.IndexOf(item: 2, 0, 1), Is.EqualTo(-1));
+      Assert.That(list.IndexOf(item: 2, 0, 2), Is.EqualTo(-1));
+      Assert.That(list.IndexOf(item: 2, 0, 3), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: 2, 0, 4), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: 2, 4, 0), Is.EqualTo(-1));
 
       Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, -1));
       Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, 5));
@@ -110,19 +110,19 @@ namespace Smdn.Collections {
     {
       var equalityComparer = StringComparer.OrdinalIgnoreCase;
 
-      Assert.AreEqual(0, list.IndexOf(item: "A", equalityComparer));
-      Assert.AreEqual(0, list.IndexOf(item: "a", equalityComparer));
-      Assert.AreEqual(1, list.IndexOf(item: "B", equalityComparer));
-      Assert.AreEqual(1, list.IndexOf(item: "b", equalityComparer));
-      Assert.AreEqual(2, list.IndexOf(item: "C", equalityComparer));
-      Assert.AreEqual(2, list.IndexOf(item: "c", equalityComparer));
-      Assert.AreEqual(3, list.IndexOf(item: "C", index: 3, equalityComparer));
-      Assert.AreEqual(3, list.IndexOf(item: "c", index: 3, equalityComparer));
-      Assert.AreEqual(-1, list.IndexOf(item: "X", equalityComparer));
-      Assert.AreEqual(-1, list.IndexOf(item: "x", equalityComparer));
+      Assert.That(list.IndexOf(item: "A", equalityComparer), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: "a", equalityComparer), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: "B", equalityComparer), Is.EqualTo(1));
+      Assert.That(list.IndexOf(item: "b", equalityComparer), Is.EqualTo(1));
+      Assert.That(list.IndexOf(item: "C", equalityComparer), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: "c", equalityComparer), Is.EqualTo(2));
+      Assert.That(list.IndexOf(item: "C", index: 3, equalityComparer), Is.EqualTo(3));
+      Assert.That(list.IndexOf(item: "c", index: 3, equalityComparer), Is.EqualTo(3));
+      Assert.That(list.IndexOf(item: "X", equalityComparer), Is.EqualTo(-1));
+      Assert.That(list.IndexOf(item: "x", equalityComparer), Is.EqualTo(-1));
 
-      Assert.AreEqual(1, list.IndexOf(item: "B", StringComparer.Ordinal));
-      Assert.AreEqual(-1, list.IndexOf(item: "b", StringComparer.Ordinal));
+      Assert.That(list.IndexOf(item: "B", StringComparer.Ordinal), Is.EqualTo(1));
+      Assert.That(list.IndexOf(item: "b", StringComparer.Ordinal), Is.EqualTo(-1));
     }
   }
 }

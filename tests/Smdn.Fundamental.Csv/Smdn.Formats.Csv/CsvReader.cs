@@ -34,17 +34,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(3), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "aaa", "bbb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [Test]
@@ -56,17 +55,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(3), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "aaa", "bbb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [TestCase(',')]
@@ -82,17 +80,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(3), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "aaa", "bbb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [TestCase(',')]
@@ -108,17 +105,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(4, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc", string.Empty },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(4), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "aaa", "bbb", "ccc", string.Empty }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [TestCase("\r")]
@@ -132,27 +128,25 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(3, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(3), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "aaa", "bbb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #2");
-    Assert.AreEqual(3, records.Count, "line #2");
-    CollectionAssert.AreEqual(
-      new[] { "zzz", "yyy", "xxx" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #2");
+    Assert.That(records.Count, Is.EqualTo(3), "line #2");
+    Assert.That(
+      records, Is.EqualTo(new[] { "zzz", "yyy", "xxx" }).AsCollection,
       "line #2"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   private static System.Collections.IEnumerable YieldTestCases_TestReadRecord_EmptyFields_SingleLine()
@@ -180,14 +174,14 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    CollectionAssert.AreEqual(
-      expected,
-      records
+    Assert.That(
+      records,
+      Is.EqualTo(expected).AsCollection
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [Test]
@@ -201,37 +195,34 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(1, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { string.Empty },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(1), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { string.Empty }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #2");
-    Assert.AreEqual(2, records.Count, "line #2");
-    CollectionAssert.AreEqual(
-      new[] { string.Empty, string.Empty },
-      records,
+    Assert.That(records, Is.Not.Null, "line #2");
+    Assert.That(records.Count, Is.EqualTo(2), "line #2");
+    Assert.That(
+      records, Is.EqualTo(new[] { string.Empty, string.Empty }).AsCollection,
       "line #2"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #3");
-    Assert.AreEqual(3, records.Count, "line #3");
-    CollectionAssert.AreEqual(
-      new[] { string.Empty, string.Empty, string.Empty },
-      records,
+    Assert.That(records, Is.Not.Null, "line #3");
+    Assert.That(records.Count, Is.EqualTo(3), "line #3");
+    Assert.That(
+      records, Is.EqualTo(new[] { string.Empty, string.Empty, string.Empty }).AsCollection,
       "line #3"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [Test]
@@ -243,17 +234,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(4, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "", "a", "bb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(4), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "", "a", "bb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [Test]
@@ -267,17 +257,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(5, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { "", "\"", "a", "bb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(5), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { "", "\"", "a", "bb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [TestCase("\n")]
@@ -291,17 +280,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(4, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { lineBreak, "aaa", $"b{lineBreak}bb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(4), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { lineBreak, "aaa", $"b{lineBreak}bb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [TestCase('"')]
@@ -316,17 +304,16 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecord();
 
-    Assert.IsNotNull(records, "line #1");
-    Assert.AreEqual(4, records.Count, "line #1");
-    CollectionAssert.AreEqual(
-      new[] { $"{quotator}", "aaa", $"b{quotator}bb", "ccc" },
-      records,
+    Assert.That(records, Is.Not.Null, "line #1");
+    Assert.That(records.Count, Is.EqualTo(4), "line #1");
+    Assert.That(
+      records, Is.EqualTo(new[] { $"{quotator}", "aaa", $"b{quotator}bb", "ccc" }).AsCollection,
       "line #1"
     );
 
     records = reader.ReadRecord();
 
-    Assert.IsNull(records, "end of stream");
+    Assert.That(records, Is.Null, "end of stream");
   }
 
   [TestCase("\r")]
@@ -340,24 +327,22 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecords().ToList();
 
-    Assert.IsNotNull(records);
-    Assert.AreEqual(2, records.Count);
+    Assert.That(records, Is.Not.Null);
+    Assert.That(records.Count, Is.EqualTo(2));
 
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
-      records[0],
+    Assert.That(
+      records[0], Is.EqualTo(new[] { "aaa", "bbb", "ccc" }).AsCollection,
       "records[0]"
     );
 
-    CollectionAssert.AreEqual(
-      new[] { "zzz", "yyy", "xxx" },
-      records[1],
+    Assert.That(
+      records[1], Is.EqualTo(new[] { "zzz", "yyy", "xxx" }).AsCollection,
       "records[1]"
     );
 
-    Assert.IsNull(reader.ReadRecord());
+    Assert.That(reader.ReadRecord(), Is.Null);
 
-    CollectionAssert.IsEmpty(reader.ReadRecords());
+    Assert.That(reader.ReadRecords(), Is.Empty);
   }
 
   [TestCase("\r")]
@@ -371,29 +356,26 @@ public class CsvReaderTests {
 
     var records = reader.ReadRecords().ToList();
 
-    Assert.IsNotNull(records);
-    Assert.AreEqual(3, records.Count);
+    Assert.That(records, Is.Not.Null);
+    Assert.That(records.Count, Is.EqualTo(3));
 
-    CollectionAssert.AreEqual(
-      new[] { "aaa", "bbb", "ccc" },
-      records[0],
+    Assert.That(
+      records[0], Is.EqualTo(new[] { "aaa", "bbb", "ccc" }).AsCollection,
       "records[0]"
     );
 
-    CollectionAssert.AreEqual(
-      new string[] { string.Empty },
-      records[1],
+    Assert.That(
+      records[1], Is.EqualTo(new string[] { string.Empty }).AsCollection,
       "records[1]"
     );
 
-    CollectionAssert.AreEqual(
-      new[] { "zzz", "yyy", "xxx" },
-      records[2],
+    Assert.That(
+      records[2], Is.EqualTo(new[] { "zzz", "yyy", "xxx" }).AsCollection,
       "records[2]"
     );
 
-    Assert.IsNull(reader.ReadRecord());
+    Assert.That(reader.ReadRecord(), Is.Null);
 
-    CollectionAssert.IsEmpty(reader.ReadRecords());
+    Assert.That(reader.ReadRecords(), Is.Empty);
   }
 }

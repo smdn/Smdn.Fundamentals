@@ -30,10 +30,10 @@ public class FrameworkNameUtilsTests {
   [TestCaseSource(nameof(YieldTestCases_TryGetMoniker_String))]
   public void TryGetMoniker_String(string input, bool expectedResult, string expectedOutput)
   {
-    Assert.AreEqual(expectedResult, FrameworkNameUtils.TryGetMoniker(input, out var moniker));
+    Assert.That(FrameworkNameUtils.TryGetMoniker(input, out var moniker), Is.EqualTo(expectedResult));
 
     if (expectedResult)
-      Assert.AreEqual(expectedOutput, moniker, nameof(moniker));
+      Assert.That(moniker, Is.EqualTo(expectedOutput), nameof(moniker));
   }
 
   private static System.Collections.IEnumerable YieldTestCases_TryGetMoniker_FrameworkName()
@@ -52,10 +52,10 @@ public class FrameworkNameUtilsTests {
   [TestCaseSource(nameof(YieldTestCases_TryGetMoniker_FrameworkName))]
   public void TryGetMoniker_FrameworkName(FrameworkName input, bool expectedResult, string expectedOutput)
   {
-    Assert.AreEqual(expectedResult, FrameworkNameUtils.TryGetMoniker(input, out var moniker));
+    Assert.That(FrameworkNameUtils.TryGetMoniker(input, out var moniker), Is.EqualTo(expectedResult));
 
     if (expectedResult)
-      Assert.AreEqual(expectedOutput, moniker, nameof(moniker));
+      Assert.That(moniker, Is.EqualTo(expectedOutput), nameof(moniker));
   }
 }
 #endif // SYSTEM_RUNTIME_VERSIONING_FRAMEWORKNAME

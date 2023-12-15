@@ -13,8 +13,8 @@ namespace Smdn {
       var uri = new Uri("https://localhost/path/?key=value");
       var queries = uri.GetSplittedQueries();
 
-      Assert.AreEqual(1, queries.Count);
-      Assert.AreEqual("value", queries["key"]);
+      Assert.That(queries.Count, Is.EqualTo(1));
+      Assert.That(queries["key"], Is.EqualTo("value"));
     }
 
     [Test]
@@ -23,7 +23,7 @@ namespace Smdn {
       var uri = new Uri("https://localhost/path/?");
       var queries = uri.GetSplittedQueries();
 
-      Assert.AreEqual(0, queries.Count);
+      Assert.That(queries.Count, Is.EqualTo(0));
     }
 
     [Test]
@@ -32,7 +32,7 @@ namespace Smdn {
       var uri = new Uri("https://localhost/path/");
       var queries = uri.GetSplittedQueries();
 
-      Assert.AreEqual(0, queries.Count);
+      Assert.That(queries.Count, Is.EqualTo(0));
     }
 
     [Test]

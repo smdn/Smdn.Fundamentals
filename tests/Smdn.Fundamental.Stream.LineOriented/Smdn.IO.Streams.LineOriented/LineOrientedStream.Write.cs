@@ -56,7 +56,7 @@ public partial class LineOrientedStreamTests {
     using var baseStream = new MemoryStream(capacity: 8);
     using var stream = CreateStream(type, baseStream, 8);
 
-    Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
+    Assert.That(stream.CanWrite, Is.True, nameof(stream.CanWrite));
 
     var data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
 
@@ -65,8 +65,8 @@ public partial class LineOrientedStreamTests {
     else
       stream.Write(data, 0, data.Length);
 
-    Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
-    Assert.AreEqual(4L, stream.Position, nameof(stream.Position));
+    Assert.That(stream.Length, Is.EqualTo(4L), nameof(stream.Length));
+    Assert.That(stream.Position, Is.EqualTo(4L), nameof(stream.Position));
 
     Assert.That(baseStream.ToArray().AsMemory(), Is.EqualTo(data.AsMemory()));
   }
@@ -80,14 +80,14 @@ public partial class LineOrientedStreamTests {
     using var baseStream = new MemoryStream(capacity: 8);
     using var stream = CreateStream(type, baseStream, 8);
 
-    Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
+    Assert.That(stream.CanWrite, Is.True, nameof(stream.CanWrite));
 
     ReadOnlyMemory<byte> data = new byte[] { 0x00, 0x01, 0x02, 0x03 };
 
     await stream.WriteAsync(data);
 
-    Assert.AreEqual(4L, stream.Length, nameof(stream.Length));
-    Assert.AreEqual(4L, stream.Position, nameof(stream.Position));
+    Assert.That(stream.Length, Is.EqualTo(4L), nameof(stream.Length));
+    Assert.That(stream.Position, Is.EqualTo(4L), nameof(stream.Position));
 
     Assert.That(baseStream.ToArray().AsMemory(), Is.EqualTo(data));
   }

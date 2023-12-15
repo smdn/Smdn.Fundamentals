@@ -97,7 +97,7 @@ public class PortNumberUtilsTests {
       );
     });
 
-    Assert.AreEqual(max, servicePort);
+    Assert.That(servicePort, Is.EqualTo(max));
   }
 
   [Test]
@@ -215,11 +215,11 @@ public class PortNumberUtilsTests {
   public void TryFindAvailablePort()
   {
     if (!IsGetActiveTcpListenersAvailable.Value) {
-      Assert.IsFalse(PortNumberUtils.TryFindAvailablePort(out _));
+      Assert.That(PortNumberUtils.TryFindAvailablePort(out _), Is.False);
       return;
     }
 
-    Assert.IsTrue(PortNumberUtils.TryFindAvailablePort(out var port));
+    Assert.That(PortNumberUtils.TryFindAvailablePort(out var port), Is.True);
     Assert.That(port, Is.InRange(PortNumberUtils.MinIanaDynamicPort, PortNumberUtils.MaxIanaDynamicPort));
   }
 
@@ -233,11 +233,11 @@ public class PortNumberUtilsTests {
       => !(min <= port && port <= max);
 
     if (!IsGetActiveTcpListenersAvailable.Value) {
-      Assert.IsFalse(PortNumberUtils.TryFindAvailablePort(exceptPort: ExceptPort, out _));
+      Assert.That(PortNumberUtils.TryFindAvailablePort(exceptPort: ExceptPort, out _), Is.False);
       return;
     }
 
-    Assert.IsTrue(PortNumberUtils.TryFindAvailablePort(exceptPort: ExceptPort, out var port));
+    Assert.That(PortNumberUtils.TryFindAvailablePort(exceptPort: ExceptPort, out var port), Is.True);
     Assert.That(port, Is.InRange(min, max));
   }
 }

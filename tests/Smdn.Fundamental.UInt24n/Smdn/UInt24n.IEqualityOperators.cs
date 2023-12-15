@@ -9,19 +9,19 @@ partial class UInt24Tests {
   [Test]
   public void TestOpEquality()
   {
-    Assert.IsTrue(UInt24.Zero == (UInt24)0);
-    Assert.IsFalse(UInt24.Zero == (UInt24)0x000010);
-    Assert.IsFalse(UInt24.Zero == (UInt24)0x001000);
-    Assert.IsFalse(UInt24.Zero == (UInt24)0x100000);
+    Assert.That(UInt24.Zero == (UInt24)0, Is.True);
+    Assert.That(UInt24.Zero == (UInt24)0x000010, Is.False);
+    Assert.That(UInt24.Zero == (UInt24)0x001000, Is.False);
+    Assert.That(UInt24.Zero == (UInt24)0x100000, Is.False);
   }
 
   [Test]
   public void TestOpIneqality()
   {
-    Assert.IsFalse(UInt24.Zero != (UInt24)0);
-    Assert.IsTrue(UInt24.Zero != (UInt24)0x000010);
-    Assert.IsTrue(UInt24.Zero != (UInt24)0x001000);
-    Assert.IsTrue(UInt24.Zero != (UInt24)0x100000);
+    Assert.That(UInt24.Zero != (UInt24)0, Is.False);
+    Assert.That(UInt24.Zero != (UInt24)0x000010, Is.True);
+    Assert.That(UInt24.Zero != (UInt24)0x001000, Is.True);
+    Assert.That(UInt24.Zero != (UInt24)0x100000, Is.True);
   }
 }
 
@@ -29,25 +29,25 @@ partial class UInt48Tests {
   [Test]
   public void TestOpEquality()
   {
-    Assert.IsTrue(UInt48.Zero == (UInt48)0);
-    Assert.IsFalse(UInt48.Zero == (UInt48)0x000000000010);
-    Assert.IsFalse(UInt48.Zero == (UInt48)0x000000001000);
-    Assert.IsFalse(UInt48.Zero == (UInt48)0x000000100000);
-    Assert.IsFalse(UInt48.Zero == (UInt48)0x000010000000);
-    Assert.IsFalse(UInt48.Zero == (UInt48)0x001000000000);
-    Assert.IsFalse(UInt48.Zero == (UInt48)0x100000000000);
+    Assert.That(UInt48.Zero == (UInt48)0, Is.True);
+    Assert.That(UInt48.Zero == (UInt48)0x000000000010, Is.False);
+    Assert.That(UInt48.Zero == (UInt48)0x000000001000, Is.False);
+    Assert.That(UInt48.Zero == (UInt48)0x000000100000, Is.False);
+    Assert.That(UInt48.Zero == (UInt48)0x000010000000, Is.False);
+    Assert.That(UInt48.Zero == (UInt48)0x001000000000, Is.False);
+    Assert.That(UInt48.Zero == (UInt48)0x100000000000, Is.False);
   }
 
   [Test]
   public void TestOpIneqality()
   {
-    Assert.IsFalse(UInt48.Zero != (UInt48)0);
-    Assert.IsTrue(UInt48.Zero != (UInt48)0x000000000010);
-    Assert.IsTrue(UInt48.Zero != (UInt48)0x000000001000);
-    Assert.IsTrue(UInt48.Zero != (UInt48)0x000000100000);
-    Assert.IsTrue(UInt48.Zero != (UInt48)0x000010000000);
-    Assert.IsTrue(UInt48.Zero != (UInt48)0x001000000000);
-    Assert.IsTrue(UInt48.Zero != (UInt48)0x100000000000);
+    Assert.That(UInt48.Zero != (UInt48)0, Is.False);
+    Assert.That(UInt48.Zero != (UInt48)0x000000000010, Is.True);
+    Assert.That(UInt48.Zero != (UInt48)0x000000001000, Is.True);
+    Assert.That(UInt48.Zero != (UInt48)0x000000100000, Is.True);
+    Assert.That(UInt48.Zero != (UInt48)0x000010000000, Is.True);
+    Assert.That(UInt48.Zero != (UInt48)0x001000000000, Is.True);
+    Assert.That(UInt48.Zero != (UInt48)0x100000000000, Is.True);
   }
 }
 

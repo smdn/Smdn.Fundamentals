@@ -25,9 +25,8 @@ public partial class ContentTransferEncodingTests {
   [TestCase("x-unknown", ContentTransferEncodingMethod.Unknown)]
   [TestCase("unknown", ContentTransferEncodingMethod.Unknown)]
   public void GetEncodingMethod(string name, ContentTransferEncodingMethod expected)
-    => Assert.AreEqual(
-      expected,
-      ContentTransferEncoding.GetEncodingMethod(name),
+    => Assert.That(
+      ContentTransferEncoding.GetEncodingMethod(name), Is.EqualTo(expected),
       name
     );
 

@@ -15,14 +15,14 @@ partial class UInt24Tests {
     var one = UInt24.One;
     var max = UInt24.MaxValue;
 
-    Assert.AreEqual(UInt24.One, ++zero, "++0");
-    Assert.AreEqual(UInt24.One, zero, "(++0) value");
+    Assert.That(++zero, Is.EqualTo(UInt24.One), "++0");
+    Assert.That(zero, Is.EqualTo(UInt24.One), "(++0) value");
 
-    Assert.AreEqual(Two(), ++one, "++1");
-    Assert.AreEqual(Two(), one, "(++1) value");
+    Assert.That(++one, Is.EqualTo(Two()), "++1");
+    Assert.That(one, Is.EqualTo(Two()), "(++1) value");
 
-    Assert.AreEqual(UInt24.Zero, ++max, "++max");
-    Assert.AreEqual(UInt24.Zero, max, "(++max) value");
+    Assert.That(++max, Is.EqualTo(UInt24.Zero), "++max");
+    Assert.That(max, Is.EqualTo(UInt24.Zero), "(++max) value");
   }
 }
 
@@ -35,14 +35,14 @@ partial class UInt48Tests {
     var one = UInt48.One;
     var max = UInt48.MaxValue;
 
-    Assert.AreEqual(UInt48.One, ++zero, "++0");
-    Assert.AreEqual(UInt48.One, zero, "(++0) value");
+    Assert.That(++zero, Is.EqualTo(UInt48.One), "++0");
+    Assert.That(zero, Is.EqualTo(UInt48.One), "(++0) value");
 
-    Assert.AreEqual(Two(), ++one, "++1");
-    Assert.AreEqual(Two(), one, "(++1) value");
+    Assert.That(++one, Is.EqualTo(Two()), "++1");
+    Assert.That(one, Is.EqualTo(Two()), "(++1) value");
 
-    Assert.AreEqual(UInt48.Zero, ++max, "++max");
-    Assert.AreEqual(UInt48.Zero, max, "(++max) value");
+    Assert.That(++max, Is.EqualTo(UInt48.Zero), "++max");
+    Assert.That(max, Is.EqualTo(UInt48.Zero), "(++max) value");
   }
 }
 

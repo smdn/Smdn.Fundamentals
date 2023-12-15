@@ -12,9 +12,9 @@ public class StringReplacementExtensionsTests {
   {
     var str = "abcdefghijklmnopqrstuvwxyz";
 
-    Assert.AreEqual(str, str.Remove(new string[] {}), "remove no strings");
+    Assert.That(str.Remove(new string[] {}), Is.EqualTo(str), "remove no strings");
 
-    Assert.AreEqual("defghijklpqrstuvw", str.Remove("abc", "mno", "xyz"), "remove strings");
+    Assert.That(str.Remove("abc", "mno", "xyz"), Is.EqualTo("defghijklpqrstuvw"), "remove strings");
   }
 
   [Test]
@@ -22,9 +22,9 @@ public class StringReplacementExtensionsTests {
   {
     var str = "abcdefghijklmnopqrstuvwxyz";
 
-    Assert.AreEqual(str, str.RemoveChars(new char[] {}), "remove no chars");
+    Assert.That(str.RemoveChars(new char[] {}), Is.EqualTo(str), "remove no chars");
 
-    Assert.AreEqual("bcdefgijklmnoqrstuvwxy", str.RemoveChars('a', 'h', 'p', 'z'), "remove chars");
+    Assert.That(str.RemoveChars('a', 'h', 'p', 'z'), Is.EqualTo("bcdefgijklmnoqrstuvwxy"), "remove chars");
   }
 
   [Test]
@@ -32,25 +32,25 @@ public class StringReplacementExtensionsTests {
   {
     var str = "abcdefghijklmnopqrstuvwxyz";
 
-    Assert.AreEqual("0Abcdefg7Hijklmno15Pqrstuvwxy25Z", str.Replace(new[] {'a', 'h', 'p', 'z'}, delegate(char c, string s, int i) {
+    Assert.That(str.Replace(new[] {'a', 'h', 'p', 'z'}, delegate(char c, string s, int i) {
       return string.Format(null, "{0}{1}", i, Char.ToUpperInvariant(c));
-    }), "replace chars");
+    }), Is.EqualTo("0Abcdefg7Hijklmno15Pqrstuvwxy25Z"), "replace chars");
 
-    Assert.AreEqual("0ABCdefghijkl13MNOpqrstuvw26XYZ", str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
+    Assert.That(str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
       return string.Format(null, "{0}{1}", i, matched.ToUpperInvariant());
-    }), "replace strings");
+    }), Is.EqualTo("0ABCdefghijkl13MNOpqrstuvw26XYZ"), "replace strings");
   }
 
   [Test]
   public void TestReplace_InputEmpty()
   {
-    Assert.AreEqual(string.Empty, string.Empty.Replace(new[] {'a', 'h', 'p', 'z'}, delegate(char c, string s, int i) {
+    Assert.That(string.Empty.Replace(new[] {'a', 'h', 'p', 'z'}, delegate(char c, string s, int i) {
       return string.Format(null, "{0}{1}", i, Char.ToUpperInvariant(c));
-    }), "replace chars");
+    }), Is.EqualTo(string.Empty), "replace chars");
 
-    Assert.AreEqual(string.Empty, string.Empty.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
+    Assert.That(string.Empty.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
       return string.Format(null, "{0}{1}", i, matched.ToUpperInvariant());
-    }), "replace strings");
+    }), Is.EqualTo(string.Empty), "replace strings");
   }
 
   [Test]
@@ -58,13 +58,13 @@ public class StringReplacementExtensionsTests {
   {
     var str = "abcdefghijklmnopqrstuvwxyz";
 
-    Assert.AreEqual(str, str.Replace(new char[0], delegate(char c, string s, int i) {
+    Assert.That(str.Replace(new char[0], delegate(char c, string s, int i) {
       return string.Format(null, "{0}{1}", i, Char.ToUpperInvariant(c));
-    }), "replace chars");
+    }), Is.EqualTo(str), "replace chars");
 
-    Assert.AreEqual(str, str.Replace(new string[0], delegate(string matched, string s, int i) {
+    Assert.That(str.Replace(new string[0], delegate(string matched, string s, int i) {
       return string.Format(null, "{0}{1}", i, matched.ToUpperInvariant());
-    }), "replace strings");
+    }), Is.EqualTo(str), "replace strings");
   }
 
   [Test]
@@ -72,9 +72,9 @@ public class StringReplacementExtensionsTests {
   {
     var str = "abcdefghijklmnopqrstuvwxyz";
 
-    Assert.AreEqual("defghijklpqrstuvw", str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
+    Assert.That(str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
       return null;
-    }), "replace strings");
+    }), Is.EqualTo("defghijklpqrstuvw"), "replace strings");
   }
 
   [Test]
@@ -82,8 +82,8 @@ public class StringReplacementExtensionsTests {
   {
     var str = "abcdefghijklmnopqrstuvwxyz";
 
-    Assert.AreEqual("defghijklpqrstuvw", str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
+    Assert.That(str.Replace(new[] {"abc", "mno", "xyz"}, delegate(string matched, string s, int i) {
       return string.Empty;
-    }), "replace strings");
+    }), Is.EqualTo("defghijklpqrstuvw"), "replace strings");
   }
 }

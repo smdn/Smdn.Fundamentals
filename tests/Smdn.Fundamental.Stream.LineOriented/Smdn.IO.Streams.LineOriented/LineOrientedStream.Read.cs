@@ -62,16 +62,16 @@ partial class LineOrientedStreamTests {
 
     var buffer = new byte[12];
 
-    Assert.AreEqual(
-      12L,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(buffer, 0, 12)
-        : stream.Read(buffer, 0, 12)
+        : stream.Read(buffer, 0, 12),
+      Is.EqualTo(12L)
     );
 
-    Assert.AreEqual(12L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(12L), "Position");
 
-    Assert.AreEqual(data, buffer);
+    Assert.That(buffer, Is.EqualTo(data));
   }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -86,9 +86,9 @@ partial class LineOrientedStreamTests {
 
     Memory<byte> buffer = new byte[12];
 
-    Assert.AreEqual(12L, await stream.ReadAsync(buffer));
+    Assert.That(await stream.ReadAsync(buffer), Is.EqualTo(12L));
 
-    Assert.AreEqual(12L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(12L), "Position");
 
     Assert.That(buffer, Is.EqualTo(data.AsMemory()), nameof(buffer));
   }
@@ -103,14 +103,14 @@ partial class LineOrientedStreamTests {
     using var stream = CreateStream(type, new MemoryStream(), 8);
     var buffer = new byte[1];
 
-    Assert.AreEqual(
-      0,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(buffer, 0, 0)
-        : stream.Read(buffer, 0, 0)
+        : stream.Read(buffer, 0, 0),
+      Is.EqualTo(0)
     );
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
   }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -121,8 +121,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.AreEqual(0L, await stream.ReadAsync(Memory<byte>.Empty));
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(await stream.ReadAsync(Memory<byte>.Empty), Is.EqualTo(0L));
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
   }
 #endif
 
@@ -139,10 +139,10 @@ partial class LineOrientedStreamTests {
 
     var t = stream.ReadAsync(new byte[1], 0, 1, cts.Token);
 
-    Assert.IsTrue(t.IsCanceled);
+    Assert.That(t.IsCanceled, Is.True);
     Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
   }
 
   [Test]
@@ -157,22 +157,22 @@ partial class LineOrientedStreamTests {
 
     var line = stream.ReadLine(true);
 
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(4).ToArray()));
 
     var buffer = new byte[4];
 
-    Assert.AreEqual(
-      4,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(buffer, 0, 4)
-        : stream.Read(buffer, 0, 4)
+        : stream.Read(buffer, 0, 4),
+      Is.EqualTo(4)
     );
 
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
 
-    Assert.AreEqual(data.Skip(4).Take(4).ToArray(), buffer);
+    Assert.That(buffer, Is.EqualTo(data.Skip(4).Take(4).ToArray()));
   }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -187,15 +187,15 @@ partial class LineOrientedStreamTests {
 
     var line = stream.ReadLine(true);
 
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(4).ToArray()));
 
     Memory<byte> buffer = new byte[4];
 
-    Assert.AreEqual(4, await stream.ReadAsync(buffer));
+    Assert.That(await stream.ReadAsync(buffer), Is.EqualTo(4));
 
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
 
     Assert.That(buffer, Is.EqualTo(data.AsMemory(4, 4)), nameof(buffer));
   }
@@ -213,22 +213,22 @@ partial class LineOrientedStreamTests {
 
     var line = stream.ReadLine(true);
 
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(4).ToArray()));
 
     var buffer = new byte[10];
 
-    Assert.AreEqual(
-      8,
+    Assert.That(
       runAsync
         ? await stream.ReadAsync(buffer, 0, 10)
-        : stream.Read(buffer, 0, 10)
+        : stream.Read(buffer, 0, 10),
+      Is.EqualTo(8)
     );
 
-    Assert.AreEqual(12L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(12L), "Position");
 
-    Assert.AreEqual(data.Skip(4).Take(8).ToArray(), buffer.Skip(0).Take(8).ToArray());
+    Assert.That(buffer.Skip(0).Take(8).ToArray(), Is.EqualTo(data.Skip(4).Take(8).ToArray()));
   }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -243,15 +243,15 @@ partial class LineOrientedStreamTests {
 
     var line = stream.ReadLine(true);
 
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
-    Assert.AreEqual(data.Skip(0).Take(4).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(4).ToArray()));
 
     Memory<byte> buffer = new byte[10];
 
-    Assert.AreEqual(8, await stream.ReadAsync(buffer));
+    Assert.That(await stream.ReadAsync(buffer), Is.EqualTo(8));
 
-    Assert.AreEqual(12L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(12L), "Position");
 
     Assert.That(buffer.Slice(0, 8), Is.EqualTo(data.AsMemory(4, 8)), nameof(buffer));
   }
@@ -272,11 +272,11 @@ partial class LineOrientedStreamTests {
       var val = stream.ReadByte();
 
       if (index == data.Length) {
-        Assert.AreEqual(-1, val);
+        Assert.That(val, Is.EqualTo(-1));
       }
       else {
-        Assert.AreEqual(data[index++], val, "data");
-        Assert.AreEqual(index, stream.Position, "Position");
+        Assert.That(val, Is.EqualTo(data[index++]), "data");
+        Assert.That(stream.Position, Is.EqualTo(index), "Position");
       }
 
       if (val == -1)

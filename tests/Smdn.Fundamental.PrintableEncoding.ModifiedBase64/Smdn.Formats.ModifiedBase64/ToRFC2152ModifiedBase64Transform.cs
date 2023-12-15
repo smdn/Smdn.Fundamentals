@@ -23,9 +23,9 @@ public class ToRFC2152ModifiedBase64TransformTests {
   public void Transform(byte[] input, string expectedBase64, string expectedModifiedBase64)
   {
     //CollectionAssert.AreEqual(expectedBase64, TextConvert.ToBase64String(input), "Base64");
-    CollectionAssert.AreEqual(
-      Encoding.ASCII.GetBytes(expectedModifiedBase64),
-      ICryptoTransformExtensions.TransformBytes(new ToRFC2152ModifiedBase64Transform(), input)
+    Assert.That(
+      ICryptoTransformExtensions.TransformBytes(new ToRFC2152ModifiedBase64Transform(), input),
+      Is.EqualTo(Encoding.ASCII.GetBytes(expectedModifiedBase64)).AsCollection
     );
   }
 

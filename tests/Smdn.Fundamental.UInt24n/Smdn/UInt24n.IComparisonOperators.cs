@@ -9,49 +9,49 @@ partial class UInt24Tests {
   [Test]
   public void TestOpLessThan()
   {
-    Assert.IsFalse(UInt24.Zero < (UInt24)0, "#1");
-    Assert.IsTrue(UInt24.Zero < (UInt24)1, "#2");
-    Assert.IsFalse((UInt24)1 < UInt24.Zero, "#3");
+    Assert.That(UInt24.Zero < (UInt24)0, Is.False, "#1");
+    Assert.That(UInt24.Zero < (UInt24)1, Is.True, "#2");
+    Assert.That((UInt24)1 < UInt24.Zero, Is.False, "#3");
 
-    Assert.IsFalse((UInt24)0xffffff < UInt24.MaxValue, "#4");
-    Assert.IsFalse(UInt24.MaxValue < (UInt24)0xfffffe, "#5");
-    Assert.IsTrue((UInt24)0xfffffe < UInt24.MaxValue, "#6");
+    Assert.That((UInt24)0xffffff < UInt24.MaxValue, Is.False, "#4");
+    Assert.That(UInt24.MaxValue < (UInt24)0xfffffe, Is.False, "#5");
+    Assert.That((UInt24)0xfffffe < UInt24.MaxValue, Is.True, "#6");
   }
 
   [Test]
   public void TestOpLessThanOrEqual()
   {
-    Assert.IsTrue(UInt24.Zero <= (UInt24)0, "#1");
-    Assert.IsTrue(UInt24.Zero <= (UInt24)1, "#2");
-    Assert.IsFalse((UInt24)1 <= UInt24.Zero, "#3");
+    Assert.That(UInt24.Zero <= (UInt24)0, Is.True, "#1");
+    Assert.That(UInt24.Zero <= (UInt24)1, Is.True, "#2");
+    Assert.That((UInt24)1 <= UInt24.Zero, Is.False, "#3");
 
-    Assert.IsTrue((UInt24)0xffffff <= UInt24.MaxValue, "#4");
-    Assert.IsFalse(UInt24.MaxValue <= (UInt24)0xfffffe, "#5");
-    Assert.IsTrue((UInt24)0xfffffe <= UInt24.MaxValue, "#6");
+    Assert.That((UInt24)0xffffff <= UInt24.MaxValue, Is.True, "#4");
+    Assert.That(UInt24.MaxValue <= (UInt24)0xfffffe, Is.False, "#5");
+    Assert.That((UInt24)0xfffffe <= UInt24.MaxValue, Is.True, "#6");
   }
 
   [Test]
   public void TestOpGreaterThan()
   {
-    Assert.IsFalse(UInt24.Zero > (UInt24)0, "#1");
-    Assert.IsFalse(UInt24.Zero > (UInt24)1, "#2");
-    Assert.IsTrue((UInt24)1 > UInt24.Zero, "#3");
+    Assert.That(UInt24.Zero > (UInt24)0, Is.False, "#1");
+    Assert.That(UInt24.Zero > (UInt24)1, Is.False, "#2");
+    Assert.That((UInt24)1 > UInt24.Zero, Is.True, "#3");
 
-    Assert.IsFalse((UInt24)0xffffff > UInt24.MaxValue, "#4");
-    Assert.IsTrue(UInt24.MaxValue > (UInt24)0xfffffe, "#5");
-    Assert.IsFalse((UInt24)0xfffffe > UInt24.MaxValue, "#6");
+    Assert.That((UInt24)0xffffff > UInt24.MaxValue, Is.False, "#4");
+    Assert.That(UInt24.MaxValue > (UInt24)0xfffffe, Is.True, "#5");
+    Assert.That((UInt24)0xfffffe > UInt24.MaxValue, Is.False, "#6");
   }
 
   [Test]
   public void TestOpGreaterThanOrEqual()
   {
-    Assert.IsTrue(UInt24.Zero >= (UInt24)0, "#1");
-    Assert.IsFalse(UInt24.Zero >= (UInt24)1, "#2");
-    Assert.IsTrue((UInt24)1 >= UInt24.Zero, "#3");
+    Assert.That(UInt24.Zero >= (UInt24)0, Is.True, "#1");
+    Assert.That(UInt24.Zero >= (UInt24)1, Is.False, "#2");
+    Assert.That((UInt24)1 >= UInt24.Zero, Is.True, "#3");
 
-    Assert.IsTrue((UInt24)0xffffff >= UInt24.MaxValue, "#4");
-    Assert.IsTrue(UInt24.MaxValue >= (UInt24)0xfffffe, "#5");
-    Assert.IsFalse((UInt24)0xfffffe >= UInt24.MaxValue, "#6");
+    Assert.That((UInt24)0xffffff >= UInt24.MaxValue, Is.True, "#4");
+    Assert.That(UInt24.MaxValue >= (UInt24)0xfffffe, Is.True, "#5");
+    Assert.That((UInt24)0xfffffe >= UInt24.MaxValue, Is.False, "#6");
   }
 }
 
@@ -59,49 +59,49 @@ partial class UInt48Tests {
   [Test]
   public void TestOpLessThan()
   {
-    Assert.IsFalse(UInt48.Zero < (UInt48)0, "#1");
-    Assert.IsTrue(UInt48.Zero < (UInt48)1, "#2");
-    Assert.IsFalse((UInt48)1 < UInt48.Zero, "#3");
+    Assert.That(UInt48.Zero < (UInt48)0, Is.False, "#1");
+    Assert.That(UInt48.Zero < (UInt48)1, Is.True, "#2");
+    Assert.That((UInt48)1 < UInt48.Zero, Is.False, "#3");
 
-    Assert.IsFalse((UInt48)0xffffffffffff < UInt48.MaxValue, "#4");
-    Assert.IsFalse(UInt48.MaxValue < (UInt48)0xfffffffffffe, "#5");
-    Assert.IsTrue((UInt48)0xfffffffffffe < UInt48.MaxValue, "#6");
+    Assert.That((UInt48)0xffffffffffff < UInt48.MaxValue, Is.False, "#4");
+    Assert.That(UInt48.MaxValue < (UInt48)0xfffffffffffe, Is.False, "#5");
+    Assert.That((UInt48)0xfffffffffffe < UInt48.MaxValue, Is.True, "#6");
   }
 
   [Test]
   public void TestOpLessThanOrEqual()
   {
-    Assert.IsTrue(UInt48.Zero <= (UInt48)0, "#1");
-    Assert.IsTrue(UInt48.Zero <= (UInt48)1, "#2");
-    Assert.IsFalse((UInt48)1 <= UInt48.Zero, "#3");
+    Assert.That(UInt48.Zero <= (UInt48)0, Is.True, "#1");
+    Assert.That(UInt48.Zero <= (UInt48)1, Is.True, "#2");
+    Assert.That((UInt48)1 <= UInt48.Zero, Is.False, "#3");
 
-    Assert.IsTrue((UInt48)0xffffffffffff <= UInt48.MaxValue, "#4");
-    Assert.IsFalse(UInt48.MaxValue <= (UInt48)0xfffffffffffe, "#5");
-    Assert.IsTrue((UInt48)0xfffffffffffe <= UInt48.MaxValue, "#6");
+    Assert.That((UInt48)0xffffffffffff <= UInt48.MaxValue, Is.True, "#4");
+    Assert.That(UInt48.MaxValue <= (UInt48)0xfffffffffffe, Is.False, "#5");
+    Assert.That((UInt48)0xfffffffffffe <= UInt48.MaxValue, Is.True, "#6");
   }
 
   [Test]
   public void TestOpGreaterThan()
   {
-    Assert.IsFalse(UInt48.Zero > (UInt48)0, "#1");
-    Assert.IsFalse(UInt48.Zero > (UInt48)1, "#2");
-    Assert.IsTrue((UInt48)1 > UInt48.Zero, "#3");
+    Assert.That(UInt48.Zero > (UInt48)0, Is.False, "#1");
+    Assert.That(UInt48.Zero > (UInt48)1, Is.False, "#2");
+    Assert.That((UInt48)1 > UInt48.Zero, Is.True, "#3");
 
-    Assert.IsFalse((UInt48)0xffffffffffff > UInt48.MaxValue, "#4");
-    Assert.IsTrue(UInt48.MaxValue > (UInt48)0xfffffffffffe, "#5");
-    Assert.IsFalse((UInt48)0xfffffffffffe > UInt48.MaxValue, "#6");
+    Assert.That((UInt48)0xffffffffffff > UInt48.MaxValue, Is.False, "#4");
+    Assert.That(UInt48.MaxValue > (UInt48)0xfffffffffffe, Is.True, "#5");
+    Assert.That((UInt48)0xfffffffffffe > UInt48.MaxValue, Is.False, "#6");
   }
 
   [Test]
   public void TestOpGreaterThanOrEqual()
   {
-    Assert.IsTrue(UInt48.Zero >= (UInt48)0, "#1");
-    Assert.IsFalse(UInt48.Zero >= (UInt48)1, "#2");
-    Assert.IsTrue((UInt48)1 >= UInt48.Zero, "#3");
+    Assert.That(UInt48.Zero >= (UInt48)0, Is.True, "#1");
+    Assert.That(UInt48.Zero >= (UInt48)1, Is.False, "#2");
+    Assert.That((UInt48)1 >= UInt48.Zero, Is.True, "#3");
 
-    Assert.IsTrue((UInt48)0xffffffffffff >= UInt48.MaxValue, "#4");
-    Assert.IsTrue(UInt48.MaxValue >= (UInt48)0xfffffffffffe, "#5");
-    Assert.IsFalse((UInt48)0xfffffffffffe >= UInt48.MaxValue, "#6");
+    Assert.That((UInt48)0xffffffffffff >= UInt48.MaxValue, Is.True, "#4");
+    Assert.That(UInt48.MaxValue >= (UInt48)0xfffffffffffe, Is.True, "#5");
+    Assert.That((UInt48)0xfffffffffffe >= UInt48.MaxValue, Is.False, "#6");
   }
 }
 

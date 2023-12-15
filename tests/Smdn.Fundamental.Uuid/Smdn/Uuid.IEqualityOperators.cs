@@ -12,11 +12,11 @@ partial class UuidTests {
   [Test]
   public void TestEquals()
   {
-    Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals(Uuid.RFC4122NamespaceDns));
-    Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals((Guid)Uuid.RFC4122NamespaceDns));
-    Assert.IsTrue(Uuid.RFC4122NamespaceDns.Equals((object)Uuid.RFC4122NamespaceDns));
-    Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(null));
-    Assert.IsFalse(Uuid.RFC4122NamespaceDns.Equals(1));
+    Assert.That(Uuid.RFC4122NamespaceDns.Equals(Uuid.RFC4122NamespaceDns), Is.True);
+    Assert.That(Uuid.RFC4122NamespaceDns.Equals((Guid)Uuid.RFC4122NamespaceDns), Is.True);
+    Assert.That(Uuid.RFC4122NamespaceDns.Equals((object)Uuid.RFC4122NamespaceDns), Is.True);
+    Assert.That(Uuid.RFC4122NamespaceDns.Equals(null), Is.False);
+    Assert.That(Uuid.RFC4122NamespaceDns.Equals(1), Is.False);
 
     var u0 = new Uuid("00000000-0000-0000-0000-000000000000");
     var g0 = new Guid("00000000-0000-0000-0000-000000000000");
@@ -26,23 +26,23 @@ partial class UuidTests {
     var g2 = new Guid("00000000-0000-0000-0000-000000000001");
     object o;
 
-    Assert.IsTrue(u0.Equals(u0));
-    Assert.IsTrue(u0.Equals(g0));
+    Assert.That(u0.Equals(u0), Is.True);
+    Assert.That(u0.Equals(g0), Is.True);
 
-    o = u0; Assert.IsTrue(u0.Equals(o));
-    o = g0; Assert.IsTrue(u0.Equals(o));
+    o = u0; Assert.That(u0.Equals(o), Is.True);
+    o = g0; Assert.That(u0.Equals(o), Is.True);
 
-    Assert.IsFalse(u0.Equals(u1));
-    Assert.IsFalse(u0.Equals(g1));
+    Assert.That(u0.Equals(u1), Is.False);
+    Assert.That(u0.Equals(g1), Is.False);
 
-    o = u1; Assert.IsFalse(u0.Equals(o));
-    o = g1; Assert.IsFalse(u0.Equals(o));
+    o = u1; Assert.That(u0.Equals(o), Is.False);
+    o = g1; Assert.That(u0.Equals(o), Is.False);
 
-    Assert.IsFalse(u0.Equals(u2));
-    Assert.IsFalse(u0.Equals(g2));
+    Assert.That(u0.Equals(u2), Is.False);
+    Assert.That(u0.Equals(g2), Is.False);
 
-    o = u2; Assert.IsFalse(u0.Equals(o));
-    o = g2; Assert.IsFalse(u0.Equals(o));
+    o = u2; Assert.That(u0.Equals(o), Is.False);
+    o = g2; Assert.That(u0.Equals(o), Is.False);
   }
 
   [TestCase("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000",  true)]
@@ -55,8 +55,8 @@ partial class UuidTests {
   [TestCase("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF",  true)]
   public void TestOpEquality_OpInequality(string x, string y, bool isEqual)
   {
-    Assert.AreEqual(isEqual, new Uuid(x) == new Uuid(y), "op ==");
-    Assert.AreEqual(!isEqual, new Uuid(x) != new Uuid(y), "op !=");
+    Assert.That(new Uuid(x) == new Uuid(y), Is.EqualTo(isEqual), "op ==");
+    Assert.That(new Uuid(x) != new Uuid(y), Is.EqualTo(!isEqual), "op !=");
 
 #if FEATURE_GENERIC_MATH
     Assert.AreEqual(isEqual, OpEquality(new Uuid(x), new Uuid(y)), "IEqualityOperators ==");

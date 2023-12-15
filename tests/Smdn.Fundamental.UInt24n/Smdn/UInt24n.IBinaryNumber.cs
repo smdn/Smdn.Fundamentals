@@ -9,13 +9,13 @@ partial class UInt24Tests {
   [Test]
   public void TestOpBitwiseAnd()
   {
-    Assert.AreEqual(UInt24.Zero, UInt24.Zero & UInt24.Zero, "0 & 0");
-    Assert.AreEqual(UInt24.Zero, UInt24.One & UInt24.Zero, "1 & 0");
-    Assert.AreEqual(UInt24.Zero, UInt24.Zero & UInt24.One, "0 & 1");
-    Assert.AreEqual(UInt24.One, UInt24.One & UInt24.One, "1 & 1");
-    Assert.AreEqual(UInt24.One, UInt24.One & UInt24.MaxValue, "1 & Max");
-    Assert.AreEqual(UInt24.One, UInt24.MaxValue & UInt24.One, "Max & 1");
-    Assert.AreEqual(UInt24.MaxValue, UInt24.MaxValue & UInt24.MaxValue, "Max & Max");
+    Assert.That(UInt24.Zero & UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 & 0");
+    Assert.That(UInt24.One & UInt24.Zero, Is.EqualTo(UInt24.Zero), "1 & 0");
+    Assert.That(UInt24.Zero & UInt24.One, Is.EqualTo(UInt24.Zero), "0 & 1");
+    Assert.That(UInt24.One & UInt24.One, Is.EqualTo(UInt24.One), "1 & 1");
+    Assert.That(UInt24.One & UInt24.MaxValue, Is.EqualTo(UInt24.One), "1 & Max");
+    Assert.That(UInt24.MaxValue & UInt24.One, Is.EqualTo(UInt24.One), "Max & 1");
+    Assert.That(UInt24.MaxValue & UInt24.MaxValue, Is.EqualTo(UInt24.MaxValue), "Max & Max");
   }
 }
 
@@ -23,13 +23,13 @@ partial class UInt48Tests {
   [Test]
   public void TestOpBitwiseAnd()
   {
-    Assert.AreEqual(UInt48.Zero, UInt48.Zero & UInt48.Zero, "0 & 0");
-    Assert.AreEqual(UInt48.Zero, UInt48.One & UInt48.Zero, "1 & 0");
-    Assert.AreEqual(UInt48.Zero, UInt48.Zero & UInt48.One, "0 & 1");
-    Assert.AreEqual(UInt48.One, UInt48.One & UInt48.One, "1 & 1");
-    Assert.AreEqual(UInt48.One, UInt48.One & UInt48.MaxValue, "1 & Max");
-    Assert.AreEqual(UInt48.One, UInt48.MaxValue & UInt48.One, "Max & 1");
-    Assert.AreEqual(UInt48.MaxValue, UInt48.MaxValue & UInt48.MaxValue, "Max & Max");
+    Assert.That(UInt48.Zero & UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 & 0");
+    Assert.That(UInt48.One & UInt48.Zero, Is.EqualTo(UInt48.Zero), "1 & 0");
+    Assert.That(UInt48.Zero & UInt48.One, Is.EqualTo(UInt48.Zero), "0 & 1");
+    Assert.That(UInt48.One & UInt48.One, Is.EqualTo(UInt48.One), "1 & 1");
+    Assert.That(UInt48.One & UInt48.MaxValue, Is.EqualTo(UInt48.One), "1 & Max");
+    Assert.That(UInt48.MaxValue & UInt48.One, Is.EqualTo(UInt48.One), "Max & 1");
+    Assert.That(UInt48.MaxValue & UInt48.MaxValue, Is.EqualTo(UInt48.MaxValue), "Max & Max");
   }
 }
 
@@ -64,13 +64,13 @@ partial class UInt24Tests {
   [Test]
   public void TestOpBitwiseOr()
   {
-    Assert.AreEqual(UInt24.Zero, UInt24.Zero | UInt24.Zero, "0 | 0");
-    Assert.AreEqual(UInt24.One, UInt24.One | UInt24.Zero, "1 | 0");
-    Assert.AreEqual(UInt24.One, UInt24.Zero | UInt24.One, "0 | 1");
-    Assert.AreEqual(UInt24.One, UInt24.One | UInt24.One, "1 | 1");
-    Assert.AreEqual(UInt24.MaxValue, UInt24.One | UInt24.MaxValue, "1 | Max");
-    Assert.AreEqual(UInt24.MaxValue, UInt24.MaxValue | UInt24.One, "Max | 1");
-    Assert.AreEqual(UInt24.MaxValue, UInt24.MaxValue | UInt24.MaxValue, "Max | Max");
+    Assert.That(UInt24.Zero | UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 | 0");
+    Assert.That(UInt24.One | UInt24.Zero, Is.EqualTo(UInt24.One), "1 | 0");
+    Assert.That(UInt24.Zero | UInt24.One, Is.EqualTo(UInt24.One), "0 | 1");
+    Assert.That(UInt24.One | UInt24.One, Is.EqualTo(UInt24.One), "1 | 1");
+    Assert.That(UInt24.One | UInt24.MaxValue, Is.EqualTo(UInt24.MaxValue), "1 | Max");
+    Assert.That(UInt24.MaxValue | UInt24.One, Is.EqualTo(UInt24.MaxValue), "Max | 1");
+    Assert.That(UInt24.MaxValue | UInt24.MaxValue, Is.EqualTo(UInt24.MaxValue), "Max | Max");
   }
 }
 
@@ -78,13 +78,13 @@ partial class UInt48Tests {
   [Test]
   public void TestOpBitwiseOr()
   {
-    Assert.AreEqual(UInt48.Zero, UInt48.Zero | UInt48.Zero, "0 | 0");
-    Assert.AreEqual(UInt48.One, UInt48.One | UInt48.Zero, "1 | 0");
-    Assert.AreEqual(UInt48.One, UInt48.Zero | UInt48.One, "0 | 1");
-    Assert.AreEqual(UInt48.One, UInt48.One | UInt48.One, "1 | 1");
-    Assert.AreEqual(UInt48.MaxValue, UInt48.One | UInt48.MaxValue, "1 | Max");
-    Assert.AreEqual(UInt48.MaxValue, UInt48.MaxValue | UInt48.One, "Max | 1");
-    Assert.AreEqual(UInt48.MaxValue, UInt48.MaxValue | UInt48.MaxValue, "Max | Max");
+    Assert.That(UInt48.Zero | UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 | 0");
+    Assert.That(UInt48.One | UInt48.Zero, Is.EqualTo(UInt48.One), "1 | 0");
+    Assert.That(UInt48.Zero | UInt48.One, Is.EqualTo(UInt48.One), "0 | 1");
+    Assert.That(UInt48.One | UInt48.One, Is.EqualTo(UInt48.One), "1 | 1");
+    Assert.That(UInt48.One | UInt48.MaxValue, Is.EqualTo(UInt48.MaxValue), "1 | Max");
+    Assert.That(UInt48.MaxValue | UInt48.One, Is.EqualTo(UInt48.MaxValue), "Max | 1");
+    Assert.That(UInt48.MaxValue | UInt48.MaxValue, Is.EqualTo(UInt48.MaxValue), "Max | Max");
   }
 }
 
@@ -119,13 +119,13 @@ partial class UInt24Tests {
   [Test]
   public void TestOpExclusiveOr()
   {
-    Assert.AreEqual(UInt24.Zero, UInt24.Zero ^ UInt24.Zero, "0 ^ 0");
-    Assert.AreEqual(UInt24.One, UInt24.One ^ UInt24.Zero, "1 ^ 0");
-    Assert.AreEqual(UInt24.One, UInt24.Zero ^ UInt24.One, "0 ^ 1");
-    Assert.AreEqual(UInt24.Zero, UInt24.One ^ UInt24.One, "1 ^ 1");
-    Assert.AreEqual(UInt24.MaxValue - UInt24.One, UInt24.One ^ UInt24.MaxValue, "1 ^ Max");
-    Assert.AreEqual(UInt24.MaxValue - UInt24.One, UInt24.MaxValue ^ UInt24.One, "Max ^ 1");
-    Assert.AreEqual(UInt24.Zero, UInt24.MaxValue ^ UInt24.MaxValue, "Max ^ Max");
+    Assert.That(UInt24.Zero ^ UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 ^ 0");
+    Assert.That(UInt24.One ^ UInt24.Zero, Is.EqualTo(UInt24.One), "1 ^ 0");
+    Assert.That(UInt24.Zero ^ UInt24.One, Is.EqualTo(UInt24.One), "0 ^ 1");
+    Assert.That(UInt24.One ^ UInt24.One, Is.EqualTo(UInt24.Zero), "1 ^ 1");
+    Assert.That(UInt24.One ^ UInt24.MaxValue, Is.EqualTo(UInt24.MaxValue - UInt24.One), "1 ^ Max");
+    Assert.That(UInt24.MaxValue ^ UInt24.One, Is.EqualTo(UInt24.MaxValue - UInt24.One), "Max ^ 1");
+    Assert.That(UInt24.MaxValue ^ UInt24.MaxValue, Is.EqualTo(UInt24.Zero), "Max ^ Max");
   }
 }
 
@@ -133,13 +133,13 @@ partial class UInt48Tests {
   [Test]
   public void TestOpExclusiveOr()
   {
-    Assert.AreEqual(UInt48.Zero, UInt48.Zero ^ UInt48.Zero, "0 ^ 0");
-    Assert.AreEqual(UInt48.One, UInt48.One ^ UInt48.Zero, "1 ^ 0");
-    Assert.AreEqual(UInt48.One, UInt48.Zero ^ UInt48.One, "0 ^ 1");
-    Assert.AreEqual(UInt48.Zero, UInt48.One ^ UInt48.One, "1 ^ 1");
-    Assert.AreEqual(UInt48.MaxValue - UInt48.One, UInt48.One ^ UInt48.MaxValue, "1 ^ Max");
-    Assert.AreEqual(UInt48.MaxValue - UInt48.One, UInt48.MaxValue ^ UInt48.One, "Max ^ 1");
-    Assert.AreEqual(UInt48.Zero, UInt48.MaxValue ^ UInt48.MaxValue, "Max ^ Max");
+    Assert.That(UInt48.Zero ^ UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 ^ 0");
+    Assert.That(UInt48.One ^ UInt48.Zero, Is.EqualTo(UInt48.One), "1 ^ 0");
+    Assert.That(UInt48.Zero ^ UInt48.One, Is.EqualTo(UInt48.One), "0 ^ 1");
+    Assert.That(UInt48.One ^ UInt48.One, Is.EqualTo(UInt48.Zero), "1 ^ 1");
+    Assert.That(UInt48.One ^ UInt48.MaxValue, Is.EqualTo(UInt48.MaxValue - UInt48.One), "1 ^ Max");
+    Assert.That(UInt48.MaxValue ^ UInt48.One, Is.EqualTo(UInt48.MaxValue - UInt48.One), "Max ^ 1");
+    Assert.That(UInt48.MaxValue ^ UInt48.MaxValue, Is.EqualTo(UInt48.Zero), "Max ^ Max");
   }
 }
 
@@ -174,9 +174,9 @@ partial class UInt24Tests {
   [Test]
   public void TestOpOnesComplement()
   {
-    Assert.AreEqual(UInt24.MaxValue, ~UInt24.Zero, "~0");
-    Assert.AreEqual(UInt24.MaxValue - UInt24.One, ~UInt24.One, "~1");
-    Assert.AreEqual(UInt24.Zero, ~UInt24.MaxValue, "~Max");
+    Assert.That(~UInt24.Zero, Is.EqualTo(UInt24.MaxValue), "~0");
+    Assert.That(~UInt24.One, Is.EqualTo(UInt24.MaxValue - UInt24.One), "~1");
+    Assert.That(~UInt24.MaxValue, Is.EqualTo(UInt24.Zero), "~Max");
   }
 }
 
@@ -184,9 +184,9 @@ partial class UInt48Tests {
   [Test]
   public void TestOpOnesComplement()
   {
-    Assert.AreEqual(UInt48.MaxValue, ~UInt48.Zero, "~0");
-    Assert.AreEqual(UInt48.MaxValue - UInt48.One, ~UInt48.One, "~1");
-    Assert.AreEqual(UInt48.Zero, ~UInt48.MaxValue, "~Max");
+    Assert.That(~UInt48.Zero, Is.EqualTo(UInt48.MaxValue), "~0");
+    Assert.That(~UInt48.One, Is.EqualTo(UInt48.MaxValue - UInt48.One), "~1");
+    Assert.That(~UInt48.MaxValue, Is.EqualTo(UInt48.Zero), "~Max");
   }
 }
 
@@ -213,10 +213,10 @@ partial class UInt24Tests {
   [Test]
   public void TestIsPow2()
   {
-    Assert.IsFalse(UInt24.IsPow2(UInt24.Zero), "IsPow2(0)");
-    Assert.IsTrue(UInt24.IsPow2(UInt24.One), "IsPow2(1)");
-    Assert.IsTrue(UInt24.IsPow2(UInt24.One + UInt24.One), "IsPow2(2)");
-    Assert.IsFalse(UInt24.IsPow2(UInt24.MaxValue), "IsPow2(Max)");
+    Assert.That(UInt24.IsPow2(UInt24.Zero), Is.False, "IsPow2(0)");
+    Assert.That(UInt24.IsPow2(UInt24.One), Is.True, "IsPow2(1)");
+    Assert.That(UInt24.IsPow2(UInt24.One + UInt24.One), Is.True, "IsPow2(2)");
+    Assert.That(UInt24.IsPow2(UInt24.MaxValue), Is.False, "IsPow2(Max)");
   }
 }
 
@@ -224,10 +224,10 @@ partial class UInt48Tests {
   [Test]
   public void TestIsPow2()
   {
-    Assert.IsFalse(UInt48.IsPow2(UInt48.Zero), "IsPow2(0)");
-    Assert.IsTrue(UInt48.IsPow2(UInt48.One), "IsPow2(1)");
-    Assert.IsTrue(UInt48.IsPow2(UInt48.One + UInt48.One), "IsPow2(2)");
-    Assert.IsFalse(UInt48.IsPow2(UInt48.MaxValue), "IsPow2(Max)");
+    Assert.That(UInt48.IsPow2(UInt48.Zero), Is.False, "IsPow2(0)");
+    Assert.That(UInt48.IsPow2(UInt48.One), Is.True, "IsPow2(1)");
+    Assert.That(UInt48.IsPow2(UInt48.One + UInt48.One), Is.True, "IsPow2(2)");
+    Assert.That(UInt48.IsPow2(UInt48.MaxValue), Is.False, "IsPow2(Max)");
   }
 }
 
@@ -256,10 +256,10 @@ partial class UInt24Tests {
   [Test]
   public void TestLog2()
   {
-    Assert.AreEqual(0, UInt24.Log2(UInt24.Zero), "Log2(0)");
-    Assert.AreEqual(0, UInt24.Log2(UInt24.One), "Log2(1)");
-    Assert.AreEqual(1, UInt24.Log2(UInt24.One + UInt24.One), "Log2(2)");
-    Assert.AreEqual(23, UInt24.Log2(UInt24.MaxValue), "Log2(Max)");
+    Assert.That(UInt24.Log2(UInt24.Zero), Is.EqualTo(0), "Log2(0)");
+    Assert.That(UInt24.Log2(UInt24.One), Is.EqualTo(0), "Log2(1)");
+    Assert.That(UInt24.Log2(UInt24.One + UInt24.One), Is.EqualTo(1), "Log2(2)");
+    Assert.That(UInt24.Log2(UInt24.MaxValue), Is.EqualTo(23), "Log2(Max)");
   }
 }
 
@@ -267,10 +267,10 @@ partial class UInt48Tests {
   [Test]
   public void TestLog2()
   {
-    Assert.AreEqual(0, UInt48.Log2(UInt48.Zero), "Log2(0)");
-    Assert.AreEqual(0, UInt48.Log2(UInt48.One), "Log2(1)");
-    Assert.AreEqual(1, UInt48.Log2(UInt48.One + UInt48.One), "Log2(2)");
-    Assert.AreEqual(47, UInt48.Log2(UInt48.MaxValue), "Log2(Max)");
+    Assert.That(UInt48.Log2(UInt48.Zero), Is.EqualTo(0), "Log2(0)");
+    Assert.That(UInt48.Log2(UInt48.One), Is.EqualTo(0), "Log2(1)");
+    Assert.That(UInt48.Log2(UInt48.One + UInt48.One), Is.EqualTo(1), "Log2(2)");
+    Assert.That(UInt48.Log2(UInt48.MaxValue), Is.EqualTo(47), "Log2(Max)");
   }
 }
 

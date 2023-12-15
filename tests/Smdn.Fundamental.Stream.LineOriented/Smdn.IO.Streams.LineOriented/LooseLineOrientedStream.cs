@@ -19,7 +19,7 @@ public class LooseLineOrientedStreamTests {
   {
     using var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8);
 
-    Assert.IsTrue(stream.NewLine.IsEmpty);
+    Assert.That(stream.NewLine.IsEmpty, Is.True);
   }
 
   [Test]
@@ -27,7 +27,7 @@ public class LooseLineOrientedStreamTests {
   {
     using var stream = new LooseLineOrientedStream(new MemoryStream(new byte[0]), 8);
 
-    Assert.IsFalse(stream.IsStrictNewLine);
+    Assert.That(stream.IsStrictNewLine, Is.False);
   }
 
   [Test]
@@ -51,70 +51,55 @@ public class LooseLineOrientedStreamTests {
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsFalse(ret!.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41, CR, LF },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[] { 0x40, 0x41 },
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[] { CR, LF },
-                              ret.Value.NewLine.ToArray());
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.False);
+    Assert.That(ret.Value.SequenceWithNewLine.ToArray(), Is.EqualTo(new byte[] { 0x40, 0x41, CR, LF }).AsCollection);
+    Assert.That(ret.Value.Sequence.ToArray(), Is.EqualTo(new byte[] { 0x40, 0x41 }).AsCollection);
+    Assert.That(ret.Value.NewLine.ToArray(), Is.EqualTo(new byte[] { CR, LF }).AsCollection);
 
     // CR
     ret = runAsync
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsFalse(ret!.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { 0x42, 0x43, CR },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[] { 0x42, 0x43 },
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[] { CR },
-                              ret.Value.NewLine.ToArray());
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.False);
+    Assert.That(ret.Value.SequenceWithNewLine.ToArray(), Is.EqualTo(new byte[] { 0x42, 0x43, CR }).AsCollection);
+    Assert.That(ret.Value.Sequence.ToArray(), Is.EqualTo(new byte[] { 0x42, 0x43 }).AsCollection);
+    Assert.That(ret.Value.NewLine.ToArray(), Is.EqualTo(new byte[] { CR }).AsCollection);
 
     // LF
     ret = runAsync
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsFalse(ret!.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { 0x44, 0x45, LF },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[] { 0x44, 0x45 },
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[] { LF },
-                              ret.Value.NewLine.ToArray());
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.False);
+    Assert.That(ret.Value.SequenceWithNewLine.ToArray(), Is.EqualTo(new byte[] { 0x44, 0x45, LF }).AsCollection);
+    Assert.That(ret.Value.Sequence.ToArray(), Is.EqualTo(new byte[] { 0x44, 0x45 }).AsCollection);
+    Assert.That(ret.Value.NewLine.ToArray(), Is.EqualTo(new byte[] { LF }).AsCollection);
 
     // LF (empty line)
     ret = runAsync
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsTrue(ret!.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { LF },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[0],
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[] { LF },
-                              ret.Value.NewLine.ToArray());
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.True);
+    Assert.That(ret.Value.SequenceWithNewLine.ToArray(), Is.EqualTo(new byte[] { LF }).AsCollection);
+    Assert.That(ret.Value.Sequence.ToArray(), Is.EqualTo(new byte[0]).AsCollection);
+    Assert.That(ret.Value.NewLine.ToArray(), Is.EqualTo(new byte[] { LF }).AsCollection);
 
     // <EOS>
     ret = runAsync
       ? await stream.ReadLineAsync()
       : stream.ReadLine();
 
-    Assert.IsNotNull(ret);
-    Assert.IsFalse(ret!.Value.IsEmpty);
-    CollectionAssert.AreEqual(new byte[] { 0x46, 0x47 },
-                              ret.Value.SequenceWithNewLine.ToArray());
-    CollectionAssert.AreEqual(new byte[] { 0x46, 0x47 },
-                              ret.Value.Sequence.ToArray());
-    CollectionAssert.AreEqual(new byte[0],
-                              ret.Value.NewLine.ToArray());
+    Assert.That(ret, Is.Not.Null);
+    Assert.That(ret!.Value.IsEmpty, Is.False);
+    Assert.That(ret.Value.SequenceWithNewLine.ToArray(), Is.EqualTo(new byte[] { 0x46, 0x47 }).AsCollection);
+    Assert.That(ret.Value.Sequence.ToArray(), Is.EqualTo(new byte[] { 0x46, 0x47 }).AsCollection);
+    Assert.That(ret.Value.NewLine.ToArray(), Is.EqualTo(new byte[0]).AsCollection);
   }
 
   [Test]
@@ -127,33 +112,33 @@ public class LooseLineOrientedStreamTests {
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
-    Assert.AreEqual(5, stream.Read(buffer, 0, 5));
+    Assert.That(stream.Read(buffer, 0, 5), Is.EqualTo(5));
 
-    Assert.AreEqual(data.Skip(0).Take(5).ToArray(), buffer.Skip(0).Take(5).ToArray());
-    Assert.AreEqual(5L, stream.Position, "Position");
+    Assert.That(buffer.Skip(0).Take(5).ToArray(), Is.EqualTo(data.Skip(0).Take(5).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(5L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(5).Take(1).ToArray(), line);
-    Assert.AreEqual(6L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(5).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(6L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(6).Take(2).ToArray(), line);
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(6).Take(2).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.IsNull(line);
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(line, Is.Null);
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
   }
 
   [Test]
@@ -166,33 +151,33 @@ public class LooseLineOrientedStreamTests {
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
-    Assert.AreEqual(5, stream.Read(buffer, 0, 5));
+    Assert.That(stream.Read(buffer, 0, 5), Is.EqualTo(5));
 
-    Assert.AreEqual(data.Skip(0).Take(5).ToArray(), buffer.Skip(0).Take(5).ToArray());
-    Assert.AreEqual(5L, stream.Position, "Position");
+    Assert.That(buffer.Skip(0).Take(5).ToArray(), Is.EqualTo(data.Skip(0).Take(5).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(5L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(5).Take(0).ToArray(), line);
-    Assert.AreEqual(6L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(5).Take(0).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(6L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(6).Take(2).ToArray(), line);
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(6).Take(2).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.IsNull(line);
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(line, Is.Null);
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
   }
 
   [Test]
@@ -204,56 +189,56 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(0).Take(2).ToArray(), line);
-    Assert.AreEqual(2L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(2).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(2L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(2).Take(2).ToArray(), line);
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(2).Take(2).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(4).Take(2).ToArray(), line);
-    Assert.AreEqual(6L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(4).Take(2).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(6L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(6).Take(1).ToArray(), line);
-    Assert.AreEqual(7L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(6).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(7L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(7).Take(3).ToArray(), line);
-    Assert.AreEqual(10L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(7).Take(3).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(10L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(10).Take(1).ToArray(), line);
-    Assert.AreEqual(11L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(10).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(11L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.IsNull(line);
-    Assert.AreEqual(11L, stream.Position, "Position");
+    Assert.That(line, Is.Null);
+    Assert.That(stream.Position, Is.EqualTo(11L), "Position");
   }
 
   [Test]
@@ -265,56 +250,56 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(0).Take(1).ToArray(), line);
-    Assert.AreEqual(2L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(2L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(2).Take(1).ToArray(), line);
-    Assert.AreEqual(4L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(2).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(4L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(4).Take(1).ToArray(), line);
-    Assert.AreEqual(6L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(4).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(6L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(new byte[] {}, line);
-    Assert.AreEqual(7L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(new byte[] {}));
+    Assert.That(stream.Position, Is.EqualTo(7L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(7).Take(1).ToArray(), line);
-    Assert.AreEqual(10L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(7).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(10L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(10).Take(1).ToArray(), line);
-    Assert.AreEqual(11L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(10).Take(1).ToArray()));
+    Assert.That(stream.Position, Is.EqualTo(11L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.IsNull(line);
-    Assert.AreEqual(11L, stream.Position, "Position");
+    Assert.That(line, Is.Null);
+    Assert.That(stream.Position, Is.EqualTo(11L), "Position");
   }
 
   [Test]
@@ -325,15 +310,15 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data, line);
+    Assert.That(line, Is.EqualTo(data));
 
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
   }
 
   [Test]
@@ -344,15 +329,15 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(0).Take(7).ToArray(), line);
+    Assert.That(line, Is.EqualTo(data.Skip(0).Take(7).ToArray()));
 
-    Assert.AreEqual(8L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(8L), "Position");
   }
 
   [Test]
@@ -368,49 +353,49 @@ public class LooseLineOrientedStreamTests {
     };
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip( 0).Take(7).ToArray(), line); // CRLF
-    Assert.AreEqual(9L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip( 0).Take(7).ToArray())); // CRLF
+    Assert.That(stream.Position, Is.EqualTo(9L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip( 9).Take(6).ToArray(), line); // CR
-    Assert.AreEqual(16L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip( 9).Take(6).ToArray())); // CR
+    Assert.That(stream.Position, Is.EqualTo(16L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(16).Take(7).ToArray(), line); // LF
-    Assert.AreEqual(24L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(16).Take(7).ToArray())); // LF
+    Assert.That(stream.Position, Is.EqualTo(24L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(new byte[0], line); // CR
-    Assert.AreEqual(25L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(new byte[0])); // CR
+    Assert.That(stream.Position, Is.EqualTo(25L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.AreEqual(data.Skip(25).Take(6).ToArray(), line); // CR
-    Assert.AreEqual(32L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(25).Take(6).ToArray())); // CR
+    Assert.That(stream.Position, Is.EqualTo(32L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.IsNull(line); // EOS
-    Assert.AreEqual(32L, stream.Position, "Position");
+    Assert.That(line, Is.Null); // EOS
+    Assert.That(stream.Position, Is.EqualTo(32L), "Position");
   }
 
   [Test]
@@ -426,48 +411,48 @@ public class LooseLineOrientedStreamTests {
     };
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.AreEqual(0L, stream.Position, "Position");
+    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip( 0).Take(9).ToArray(), line); // CRLF
-    Assert.AreEqual(9L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip( 0).Take(9).ToArray())); // CRLF
+    Assert.That(stream.Position, Is.EqualTo(9L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip( 9).Take(7).ToArray(), line); // CR
-    Assert.AreEqual(16L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip( 9).Take(7).ToArray())); // CR
+    Assert.That(stream.Position, Is.EqualTo(16L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(16).Take(8).ToArray(), line); // LF
-    Assert.AreEqual(24L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(16).Take(8).ToArray())); // LF
+    Assert.That(stream.Position, Is.EqualTo(24L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(24).Take(1).ToArray(), line); // CR
-    Assert.AreEqual(25L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(24).Take(1).ToArray())); // CR
+    Assert.That(stream.Position, Is.EqualTo(25L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.AreEqual(data.Skip(25).Take(7).ToArray(), line); // CR
-    Assert.AreEqual(32L, stream.Position, "Position");
+    Assert.That(line, Is.EqualTo(data.Skip(25).Take(7).ToArray())); // CR
+    Assert.That(stream.Position, Is.EqualTo(32L), "Position");
 
     line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.IsNull(line); // EOS
-    Assert.AreEqual(32L, stream.Position, "Position");
+    Assert.That(line, Is.Null); // EOS
+    Assert.That(stream.Position, Is.EqualTo(32L), "Position");
   }
 }

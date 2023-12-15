@@ -45,41 +45,35 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       try {
         var unquoted = QuotedPrintableEncoding.GetDecodedString((QuotedPrintableEncoding.GetEncodedString(text, encoding)), encoding);
 
-        Assert.AreEqual(text, unquoted, "with " + encoding.EncodingName);
+        Assert.That(unquoted, Is.EqualTo(text), "with " + encoding.EncodingName);
       }
       catch (FormatException ex) {
-        Assert.Fail("failed encoding:{0} text:{1} exception:{2}", encoding.EncodingName, text, ex);
+        Assert.Fail($"failed encoding:{encoding.EncodingName} text:{text} exception:{ex}");
       }
     }
 
     [Test]
     public void TestGetDecodedString()
     {
-      Assert.AreEqual("Now's the time for all folk to come to the aid of their country.",
-                      QuotedPrintableEncoding.GetDecodedString("Now's the time =\r\nfor all folk to come=\r\n to the aid of their country."));
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("Now's the time =\r\nfor all folk to come=\r\n to the aid of their country."), Is.EqualTo("Now's the time for all folk to come to the aid of their country."));
 
-      Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A", Encoding.UTF8),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A", Encoding.UTF8), Is.EqualTo("漢字abcかな123カナ"),
                       "utf8");
 
-      Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", Encodings.EucJP),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", Encodings.EucJP), Is.EqualTo("漢字abcかな123カナ"),
                       "eucjp");
 
-      Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", Encodings.Jis),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", Encodings.Jis), Is.EqualTo("漢字abcかな123カナ"),
                       "jis");
 
-      Assert.AreEqual("漢字abcかな123カナ",
-                      QuotedPrintableEncoding.GetDecodedString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", Encodings.ShiftJis),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", Encodings.ShiftJis), Is.EqualTo("漢字abcかな123カナ"),
                       "shift-jis");
     }
 
     [Test]
     public void TestGetDecodedStringWithSoftNewline()
     {
-      Assert.AreEqual("Now's the time for all folk to come to the aid of their country.",
-                      QuotedPrintableEncoding.GetDecodedString("Now's the=\n time =\rfor all folk to come =\r\nto the aid=\r=\n of their country."));
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("Now's the=\n time =\rfor all folk to come =\r\nto the aid=\r=\n of their country."), Is.EqualTo("Now's the time for all folk to come to the aid of their country."));
     }
 
     [TestCase(true)]

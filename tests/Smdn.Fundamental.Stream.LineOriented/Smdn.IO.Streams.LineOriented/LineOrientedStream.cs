@@ -38,13 +38,13 @@ public partial class LineOrientedStreamTests {
 
     using var stream = CreateStream(type, new MemoryStream(data), bufferSize);
 
-    Assert.IsTrue(stream.CanRead, nameof(stream.CanRead));
-    Assert.IsTrue(stream.CanWrite, nameof(stream.CanWrite));
-    Assert.IsTrue(stream.CanSeek, nameof(stream.CanSeek));
-    Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
-    Assert.AreEqual(8L, stream.Length, nameof(stream.Length));
-    Assert.AreEqual(0L, stream.Position, nameof(stream.Position));
-    Assert.AreEqual(bufferSize, stream.BufferSize, nameof(stream.BufferSize));
+    Assert.That(stream.CanRead, Is.True, nameof(stream.CanRead));
+    Assert.That(stream.CanWrite, Is.True, nameof(stream.CanWrite));
+    Assert.That(stream.CanSeek, Is.True, nameof(stream.CanSeek));
+    Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
+    Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
+    Assert.That(stream.Position, Is.EqualTo(0L), nameof(stream.Position));
+    Assert.That(stream.BufferSize, Is.EqualTo(bufferSize), nameof(stream.BufferSize));
   }
 
   [Test]
@@ -60,18 +60,18 @@ public partial class LineOrientedStreamTests {
 
     stream.Dispose();
 
-    Assert.IsFalse(stream.CanRead, nameof(stream.CanRead));
-    Assert.IsFalse(stream.CanWrite, nameof(stream.CanWrite));
-    Assert.IsFalse(stream.CanSeek, nameof(stream.CanSeek));
-    Assert.IsFalse(stream.CanTimeout, nameof(stream.CanTimeout));
+    Assert.That(stream.CanRead, Is.False, nameof(stream.CanRead));
+    Assert.That(stream.CanWrite, Is.False, nameof(stream.CanWrite));
+    Assert.That(stream.CanSeek, Is.False, nameof(stream.CanSeek));
+    Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
 
     var buffer = new byte[8];
 
-    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(0, stream.Position));
-    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.Length));
-    Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(8, stream.BufferSize));
-    Assert.Throws<ObjectDisposedException>(() => Assert.IsNotNull(stream.InnerStream));
-    Assert.Throws<ObjectDisposedException>(() => Assert.IsFalse(stream.NewLine.IsEmpty));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Position, Is.EqualTo(0)));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Length, Is.EqualTo(8)));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.BufferSize, Is.EqualTo(8)));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.InnerStream, Is.Not.Null));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.NewLine.IsEmpty, Is.False));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLine(keepEOL: true));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());

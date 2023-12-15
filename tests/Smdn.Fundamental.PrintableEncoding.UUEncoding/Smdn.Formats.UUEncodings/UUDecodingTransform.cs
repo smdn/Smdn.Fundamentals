@@ -62,8 +62,7 @@ M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U
 ) $E%3D2N0F""""
  
 ".Replace("\r\n", "\n").Replace("\n", newline);
-      Assert.AreEqual(testimg_png,
-                      ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)));
+      Assert.That(ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)), Is.EqualTo(testimg_png));
     }
 
     [TestCase("\r")]
@@ -74,8 +73,7 @@ M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U
       var uuencode = @"#0V%T
 `".Replace("\r\n", "\n").Replace("\n", newline);
 
-      Assert.AreEqual(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */,
-      ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)));
+      Assert.That(ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */));
     }
 
     [TestCase("\r")]
@@ -89,8 +87,7 @@ M^^ZYH9TJ,!H%""!`@0(``@1CMTO<9F$4!`@0($""!`X+?`!I?UJM5MS!;U````
 )`$E%3D2N0F""""
 `
 ".Replace("\r\n", "\n").Replace("\n", newline);
-      Assert.AreEqual(testimg_png,
-                      ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)));
+      Assert.That(ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)), Is.EqualTo(testimg_png));
     }
 
     [TestCaseSource(

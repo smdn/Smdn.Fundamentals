@@ -31,7 +31,7 @@ partial class EncodingUtilsTests {
       }
     );
 
-    Assert.AreEqual(Encoding.GetEncoding(expectedEncodingName), encoding);
+    Assert.That(encoding, Is.EqualTo(Encoding.GetEncoding(expectedEncodingName)));
   }
 
   [Test]
@@ -73,8 +73,7 @@ partial class EncodingUtilsTests {
   [TestCase("x-unknown", false, null)]
   public void TryGetEncoding(string name, bool expectedResult, string expectedEncodingName)
   {
-    Assert.AreEqual(
-      expectedResult,
+    Assert.That(
       EncodingUtils.TryGetEncoding(
         name,
         codePageCollationTable: new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) {
@@ -85,13 +84,15 @@ partial class EncodingUtilsTests {
           _ => null
         },
         out var encoding
-      )
+      ),
+      Is.EqualTo(expectedResult)
     );
-    Assert.AreEqual(
-      expectedEncodingName is null
+    Assert.That(
+      encoding,
+      Is.EqualTo(expectedEncodingName is null
         ? null
-        : Encoding.GetEncoding(expectedEncodingName),
-      encoding
+        : Encoding.GetEncoding(expectedEncodingName)
+      )
     );
   }
 
@@ -101,13 +102,14 @@ partial class EncodingUtilsTests {
   [TestCase("x-unknown")]
   public void TryGetEncoding_NotFound(string name)
   {
-    Assert.IsFalse(
+    Assert.That(
       EncodingUtils.TryGetEncoding(
         name,
         codePageCollationTable: null,
         selectFallbackEncoding: null,
         out _
-      )
+      ),
+      Is.False
     );
   }
 
@@ -120,8 +122,7 @@ partial class EncodingUtilsTests {
   [TestCase("x-undefined ", false, null)]
   public void TryGetEncoding_CaseGetEncodingByCodePageCollationTable(string name, bool expectedResult, string expectedEncodingName)
   {
-    Assert.AreEqual(
-      expectedResult,
+    Assert.That(
       EncodingUtils.TryGetEncoding(
         name,
         codePageCollationTable: new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase) {
@@ -129,13 +130,15 @@ partial class EncodingUtilsTests {
         },
         selectFallbackEncoding: null,
         out var encoding
-      )
+      ),
+      Is.EqualTo(expectedResult)
     );
-    Assert.AreEqual(
-      expectedEncodingName is null
+    Assert.That(
+      encoding,
+      Is.EqualTo(expectedEncodingName is null
         ? null
-        : Encoding.GetEncoding(expectedEncodingName),
-      encoding
+        : Encoding.GetEncoding(expectedEncodingName)
+      )
     );
   }
 
@@ -147,20 +150,21 @@ partial class EncodingUtilsTests {
   [TestCase("x-unknown ", false, null)]
   public void TryGetEncoding_CaseGetEncodingByName(string name, bool expectedResult, string expectedEncodingName)
   {
-    Assert.AreEqual(
-      expectedResult,
+    Assert.That(
       EncodingUtils.TryGetEncoding(
         name,
         codePageCollationTable: null,
         selectFallbackEncoding: null,
         out var encoding
-      )
+      ),
+      Is.EqualTo(expectedResult)
     );
-    Assert.AreEqual(
-      expectedEncodingName is null
+    Assert.That(
+      encoding,
+      Is.EqualTo(expectedEncodingName is null
         ? null
-        : Encoding.GetEncoding(expectedEncodingName),
-      encoding
+        : Encoding.GetEncoding(expectedEncodingName)
+      )
     );
   }
 
@@ -172,8 +176,7 @@ partial class EncodingUtilsTests {
   [TestCase("x-undefined ", false, null)]
   public void TryGetEncoding_CaseGetEncodingBySelectFallbackEncoding(string name, bool expectedResult, string expectedEncodingName)
   {
-    Assert.AreEqual(
-      expectedResult,
+    Assert.That(
       EncodingUtils.TryGetEncoding(
         name,
         codePageCollationTable: null,
@@ -182,13 +185,15 @@ partial class EncodingUtilsTests {
           _ => null
         },
         out var encoding
-      )
+      ),
+      Is.EqualTo(expectedResult)
     );
-    Assert.AreEqual(
-      expectedEncodingName is null
+    Assert.That(
+      encoding,
+      Is.EqualTo(expectedEncodingName is null
         ? null
-        : Encoding.GetEncoding(expectedEncodingName),
-      encoding
+        : Encoding.GetEncoding(expectedEncodingName)
+      )
     );
   }
 }

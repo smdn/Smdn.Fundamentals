@@ -13,7 +13,7 @@ namespace Smdn.Collections {
       IReadOnlyCollection<int> collection = new[] { 0, 1, 2, 3, 4 };
       var expected = new[] { 0, 2, 4, 6, 8 };
 
-      CollectionAssert.AreEqual(expected, collection.ConvertAll(i => i * 2));
+      Assert.That(collection.ConvertAll(i => i * 2), Is.EqualTo(expected).AsCollection);
     }
 
     [Test]
@@ -21,7 +21,7 @@ namespace Smdn.Collections {
     {
       IReadOnlyCollection<int> collection = new int[0];
 
-      Assert.IsEmpty(collection.ConvertAll(i => i * 2));
+      Assert.That(collection.ConvertAll(i => i * 2), Is.Empty);
     }
 
     [Test]

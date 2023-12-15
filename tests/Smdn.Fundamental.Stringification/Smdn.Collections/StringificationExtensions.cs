@@ -17,11 +17,11 @@ namespace Smdn.Collections {
     [Test]
     public void Stringify_KeyValuePair()
     {
-      Assert.AreEqual("{key => value}", _KeyValuePair.Create("key", "value").Stringify());
-      Assert.AreEqual("{key => 0}", _KeyValuePair.Create("key", 0).Stringify());
-      Assert.AreEqual("{0 => value}", _KeyValuePair.Create(0, "value").Stringify());
-      Assert.AreEqual("{ => }", _KeyValuePair.Create(string.Empty, string.Empty).Stringify());
-      Assert.AreEqual("{ => }", _KeyValuePair.Create((string)null, (string)null).Stringify());
+      Assert.That(_KeyValuePair.Create("key", "value").Stringify(), Is.EqualTo("{key => value}"));
+      Assert.That(_KeyValuePair.Create("key", 0).Stringify(), Is.EqualTo("{key => 0}"));
+      Assert.That(_KeyValuePair.Create(0, "value").Stringify(), Is.EqualTo("{0 => value}"));
+      Assert.That(_KeyValuePair.Create(string.Empty, string.Empty).Stringify(), Is.EqualTo("{ => }"));
+      Assert.That(_KeyValuePair.Create((string)null, (string)null).Stringify(), Is.EqualTo("{ => }"));
     }
 
     [Test]
@@ -29,7 +29,7 @@ namespace Smdn.Collections {
     {
       var pairs = new[] {_KeyValuePair.Create("key", "value")};
 
-      Assert.AreEqual("{key => value}", pairs.Stringify());
+      Assert.That(pairs.Stringify(), Is.EqualTo("{key => value}"));
     }
 
     [Test]
@@ -40,7 +40,7 @@ namespace Smdn.Collections {
         _KeyValuePair.Create("key2", "value2"),
       };
 
-      Assert.AreEqual("{key1 => value1}, {key2 => value2}", pairs.Stringify());
+      Assert.That(pairs.Stringify(), Is.EqualTo("{key1 => value1}, {key2 => value2}"));
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Smdn.Collections {
         _KeyValuePair.Create((string)null!, (string)null!),
       };
 
-      Assert.AreEqual("{key1 => }, { => value2}, { => }", pairs.Stringify());
+      Assert.That(pairs.Stringify(), Is.EqualTo("{key1 => }, { => value2}, { => }"));
     }
 
     [Test]
@@ -60,7 +60,7 @@ namespace Smdn.Collections {
     {
       var pairs = new KeyValuePair<string, string>[] { };
 
-      Assert.IsEmpty(pairs.Stringify());
+      Assert.That(pairs.Stringify(), Is.Empty);
     }
 
     [Test]
@@ -68,7 +68,7 @@ namespace Smdn.Collections {
     {
       IEnumerable<KeyValuePair<string, string>> pairs = null;
 
-      Assert.IsNull(pairs.Stringify());
+      Assert.That(pairs.Stringify(), Is.Null);
     }
   }
 }

@@ -24,28 +24,28 @@ namespace Smdn.Formats.UUEncodings {
 end";
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.AreEqual(Convert.ToUInt32("0644", 8), stream.Permissions, "Permissions");
-        Assert.AreEqual("cat.txt", stream.FileName, "FileName");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile");
+        Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "Permissions");
+        Assert.That(stream.FileName, Is.EqualTo("cat.txt"), "FileName");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile");
 
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile");
-        Assert.IsTrue(stream.CanRead, "CanRead");
-        Assert.IsFalse(stream.CanWrite, "CanWrite");
-        Assert.IsFalse(stream.CanSeek, "CanSeek");
-        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile");
+        Assert.That(stream.CanRead, Is.True, "CanRead");
+        Assert.That(stream.CanWrite, Is.False, "CanWrite");
+        Assert.That(stream.CanSeek, Is.False, "CanSeek");
+        Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-        Assert.Throws<NotSupportedException>(() => Assert.AreEqual(-1, stream.Length), "Length");
-        Assert.Throws<NotSupportedException>(() => Assert.AreEqual(-1, stream.Position), "Position");
+        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Length, Is.EqualTo(-1)), "Length");
+        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Position, Is.EqualTo(-1)), "Position");
 
         stream.Dispose();
 
-        Assert.IsFalse(stream.CanRead, "CanRead");
-        Assert.IsFalse(stream.CanWrite, "CanWrite");
-        Assert.IsFalse(stream.CanSeek, "CanSeek");
-        Assert.IsFalse(stream.CanTimeout, "CanTimeout");
+        Assert.That(stream.CanRead, Is.False, "CanRead");
+        Assert.That(stream.CanWrite, Is.False, "CanWrite");
+        Assert.That(stream.CanSeek, Is.False, "CanSeek");
+        Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-        Assert.Throws<NotSupportedException>(() => Assert.AreEqual(-1, stream.Length), "Length");
-        Assert.Throws<NotSupportedException>(() => Assert.AreEqual(-1, stream.Position), "Position");
+        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Length, Is.EqualTo(-1)), "Length");
+        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Position, Is.EqualTo(-1)), "Position");
       }
     }
 
@@ -106,9 +106,9 @@ end";
 
           Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 1), "Read");
           Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
-          Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual(Convert.ToUInt32("0644", 8), stream.Permissions), "Permissions");
-          Assert.Throws<ObjectDisposedException>(() => Assert.AreEqual("cat.txt", stream.FileName), "FileName");
-          Assert.Throws<ObjectDisposedException>(() => Assert.IsTrue(stream.EndOfFile), "EndOfFile");
+          Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8))), "Permissions");
+          Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.FileName, Is.EqualTo("cat.txt")), "FileName");
+          Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.EndOfFile, Is.True), "EndOfFile");
 
           Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte(), "baseStream.ReadByte()");
 
@@ -168,36 +168,36 @@ end
 ".Replace("\r\n", "\n").Replace("\n", newline);
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile initial");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile initial");
 
-        Assert.IsTrue(stream.SeekToNextFile(), "SeekToNextFile cat1.txt");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile cat1.txt");
-        Assert.AreEqual(Convert.ToUInt32("0001", 8), stream.Permissions, "Permissions cat1.txt");
-        Assert.AreEqual("cat1.txt", stream.FileName, "FileName cat1.txt");
-        Assert.AreEqual((byte)'C', stream.ReadByte(), "ReadByte cat1.txt");
+        Assert.That(stream.SeekToNextFile(), Is.True, "SeekToNextFile cat1.txt");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile cat1.txt");
+        Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0001", 8)), "Permissions cat1.txt");
+        Assert.That(stream.FileName, Is.EqualTo("cat1.txt"), "FileName cat1.txt");
+        Assert.That(stream.ReadByte(), Is.EqualTo((byte)'C'), "ReadByte cat1.txt");
 
-        Assert.IsTrue(stream.SeekToNextFile(), "SeekToNextFile cat2.txt");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile cat2.txt");
-        Assert.AreEqual(Convert.ToUInt32("0002", 8), stream.Permissions, "Permissions cat2.txt");
-        Assert.AreEqual("cat2.txt", stream.FileName, "FileName cat2.txt");
-        Assert.AreEqual((byte)'C', stream.ReadByte(), "ReadByte cat2.txt");
+        Assert.That(stream.SeekToNextFile(), Is.True, "SeekToNextFile cat2.txt");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile cat2.txt");
+        Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0002", 8)), "Permissions cat2.txt");
+        Assert.That(stream.FileName, Is.EqualTo("cat2.txt"), "FileName cat2.txt");
+        Assert.That(stream.ReadByte(), Is.EqualTo((byte)'C'), "ReadByte cat2.txt");
 
         var buffer = new byte[5];
 
-        Assert.AreEqual(2, stream.Read(buffer, 0, buffer.Length), "Read cat2.txt");
-        Assert.IsTrue(stream.EndOfFile, "EndOfFile cat2.txt");
+        Assert.That(stream.Read(buffer, 0, buffer.Length), Is.EqualTo(2), "Read cat2.txt");
+        Assert.That(stream.EndOfFile, Is.True, "EndOfFile cat2.txt");
 
-        Assert.IsTrue(stream.SeekToNextFile(), "SeekToNextFile cat3.txt");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile cat3.txt");
-        Assert.AreEqual(Convert.ToUInt32("0003", 8), stream.Permissions, "Permissions cat3.txt");
-        Assert.AreEqual("cat3.txt", stream.FileName, "FileName cat3.txt");
-        Assert.AreEqual((byte)'C', stream.ReadByte(), "ReadByte cat3.txt");
+        Assert.That(stream.SeekToNextFile(), Is.True, "SeekToNextFile cat3.txt");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile cat3.txt");
+        Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0003", 8)), "Permissions cat3.txt");
+        Assert.That(stream.FileName, Is.EqualTo("cat3.txt"), "FileName cat3.txt");
+        Assert.That(stream.ReadByte(), Is.EqualTo((byte)'C'), "ReadByte cat3.txt");
 
-        Assert.IsFalse(stream.SeekToNextFile(), "SeekToNextFile final");
-        Assert.IsTrue(stream.EndOfFile, "EndOfFile final");
+        Assert.That(stream.SeekToNextFile(), Is.False, "SeekToNextFile final");
+        Assert.That(stream.EndOfFile, Is.True, "EndOfFile final");
 
-        Assert.IsFalse(stream.SeekToNextFile(), "SeekToNextFile final again");
-        Assert.IsTrue(stream.EndOfFile, "EndOfFile final again");
+        Assert.That(stream.SeekToNextFile(), Is.False, "SeekToNextFile final again");
+        Assert.That(stream.EndOfFile, Is.True, "EndOfFile final again");
       }
     }
 
@@ -220,10 +220,10 @@ end
 ".Replace("\r\n", "\n").Replace("\n", newline);
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.IsFalse(stream.EndOfFile, "#1");
-        Assert.IsFalse(stream.SeekToNextFile(), "#2");
-        Assert.IsTrue(stream.EndOfFile, "#3");
-        Assert.IsFalse(stream.SeekToNextFile(), "#4");
+        Assert.That(stream.EndOfFile, Is.False, "#1");
+        Assert.That(stream.SeekToNextFile(), Is.False, "#2");
+        Assert.That(stream.EndOfFile, Is.True, "#3");
+        Assert.That(stream.SeekToNextFile(), Is.False, "#4");
       }
     }
 
@@ -271,8 +271,8 @@ end
           new {Permissions = Convert.ToUInt32("0777", 8), FileName = "4.txt"},
           new {Permissions = Convert.ToUInt32("6745", 8), FileName = "5.txt"},
         }) {
-          Assert.AreEqual(expected.Permissions, stream.Permissions, "Permissions #{0}", index);
-          Assert.AreEqual(expected.FileName, stream.FileName, "FileName #{0}", index);
+          Assert.That(stream.Permissions, Is.EqualTo(expected.Permissions), $"Permissions #{index}");
+          Assert.That(stream.FileName, Is.EqualTo(expected.FileName), $"FileName #{index}");
 
           stream.SeekToNextFile();
 
@@ -292,20 +292,20 @@ end
 end".Replace("\r\n", "\n").Replace("\n", newline);
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.AreEqual(Convert.ToUInt32("0644", 8), stream.Permissions);
-        Assert.AreEqual("cat.txt", stream.FileName);
+        Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)));
+        Assert.That(stream.FileName, Is.EqualTo("cat.txt"));
 
-        Assert.AreEqual((byte)'C', stream.ReadByte(), "C");
-        Assert.IsFalse(stream.EndOfFile, "C");
+        Assert.That(stream.ReadByte(), Is.EqualTo((byte)'C'), "C");
+        Assert.That(stream.EndOfFile, Is.False, "C");
 
-        Assert.AreEqual((byte)'a', stream.ReadByte(), "a");
-        Assert.IsFalse(stream.EndOfFile, "C");
+        Assert.That(stream.ReadByte(), Is.EqualTo((byte)'a'), "a");
+        Assert.That(stream.EndOfFile, Is.False, "C");
 
-        Assert.AreEqual((byte)'t', stream.ReadByte(), "t");
-        Assert.IsFalse(stream.EndOfFile, "C");
+        Assert.That(stream.ReadByte(), Is.EqualTo((byte)'t'), "t");
+        Assert.That(stream.EndOfFile, Is.False, "C");
 
-        Assert.AreEqual(-1, stream.ReadByte(), "end of file");
-        Assert.IsTrue(stream.EndOfFile, "end of file");
+        Assert.That(stream.ReadByte(), Is.EqualTo(-1), "end of file");
+        Assert.That(stream.EndOfFile, Is.True, "end of file");
       }
     }
 
@@ -327,32 +327,32 @@ end
       using (var stream = new UUDecodingStream(CreateStream(input))) {
         var buffer = new byte[5];
 
-        Assert.AreEqual(1, stream.Read(buffer, 0, 1), "Read #1");
-        Assert.AreEqual((byte)'C', buffer[0], "#1");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile #1");
+        Assert.That(stream.Read(buffer, 0, 1), Is.EqualTo(1), "Read #1");
+        Assert.That(buffer[0], Is.EqualTo((byte)'C'), "#1");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile #1");
 
-        Assert.AreEqual(1, stream.Read(buffer, 1, 1), "Read #2");
-        Assert.AreEqual((byte)'a', buffer[1], "#2");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile #2");
+        Assert.That(stream.Read(buffer, 1, 1), Is.EqualTo(1), "Read #2");
+        Assert.That(buffer[1], Is.EqualTo((byte)'a'), "#2");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile #2");
 
-        Assert.AreEqual(1, stream.Read(buffer, 2, 1), "Read #3");
-        Assert.AreEqual((byte)'t', buffer[2], "#3");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile #3");
+        Assert.That(stream.Read(buffer, 2, 1), Is.EqualTo(1), "Read #3");
+        Assert.That(buffer[2], Is.EqualTo((byte)'t'), "#3");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile #3");
 
-        Assert.AreEqual(2, stream.Read(buffer, 0, 2), "Read #4");
-        Assert.AreEqual((byte)'C', buffer[0], "#4-1");
-        Assert.AreEqual((byte)'a', buffer[1], "#4-2");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile #4");
+        Assert.That(stream.Read(buffer, 0, 2), Is.EqualTo(2), "Read #4");
+        Assert.That(buffer[0], Is.EqualTo((byte)'C'), "#4-1");
+        Assert.That(buffer[1], Is.EqualTo((byte)'a'), "#4-2");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile #4");
 
-        Assert.AreEqual(2, stream.Read(buffer, 0, 2), "Read #5");
-        Assert.AreEqual((byte)'t', buffer[0], "#5-1");
-        Assert.AreEqual((byte)'C', buffer[1], "#5-2");
-        Assert.IsFalse(stream.EndOfFile, "EndOfFile #5");
+        Assert.That(stream.Read(buffer, 0, 2), Is.EqualTo(2), "Read #5");
+        Assert.That(buffer[0], Is.EqualTo((byte)'t'), "#5-1");
+        Assert.That(buffer[1], Is.EqualTo((byte)'C'), "#5-2");
+        Assert.That(stream.EndOfFile, Is.False, "EndOfFile #5");
 
-        Assert.AreEqual(2, stream.Read(buffer, 0, 5), "Read #6");
-        Assert.AreEqual((byte)'a', buffer[0], "#5-1");
-        Assert.AreEqual((byte)'t', buffer[1], "#5-2");
-        Assert.IsTrue(stream.EndOfFile, "EndOfFile #5");
+        Assert.That(stream.Read(buffer, 0, 5), Is.EqualTo(2), "Read #6");
+        Assert.That(buffer[0], Is.EqualTo((byte)'a'), "#5-1");
+        Assert.That(buffer[1], Is.EqualTo((byte)'t'), "#5-2");
+        Assert.That(stream.EndOfFile, Is.True, "EndOfFile #5");
       }
     }
 

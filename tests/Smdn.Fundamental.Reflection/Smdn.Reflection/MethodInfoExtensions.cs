@@ -110,7 +110,7 @@ public partial class MethodInfoExtensionsTests {
   {
     var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-    Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
+    Assert.That(method!.IsOverride(), Is.EqualTo(isOverride), $"is override? {type}.{methodName}");
   }
 
   private class CObject : object { }
@@ -134,9 +134,9 @@ public partial class MethodInfoExtensionsTests {
       modifiers: null
     );
 
-    Assert.AreEqual(method!.ReflectedType, type, nameof(method.ReflectedType));
-    Assert.AreEqual(method!.DeclaringType, declaringType, nameof(method.DeclaringType));
-    Assert.AreEqual(isOverride, method!.IsOverride(), $"is override? {type}.{methodName}");
+    Assert.That(type, Is.EqualTo(method!.ReflectedType), nameof(method.ReflectedType));
+    Assert.That(declaringType, Is.EqualTo(method!.DeclaringType), nameof(method.DeclaringType));
+    Assert.That(method!.IsOverride(), Is.EqualTo(isOverride), $"is override? {type}.{methodName}");
   }
 
   [TestCase(typeof(CAbstract), nameof(CAbstract.P), false)]
@@ -154,7 +154,7 @@ public partial class MethodInfoExtensionsTests {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
     var getter = property!.GetGetMethod();
 
-    Assert.AreEqual(isOverride, getter!.IsOverride(), $"is override? {type}.{propertyName}");
+    Assert.That(getter!.IsOverride(), Is.EqualTo(isOverride), $"is override? {type}.{propertyName}");
   }
 
   [Test]
@@ -214,7 +214,7 @@ public partial class MethodInfoExtensionsTests {
 
   [TestCaseSource(nameof(YieldTestCases_IsDelegateSignatureMethod))]
   public void IsDelegateSignatureMethod(MethodInfo m, bool expected)
-    => Assert.AreEqual(expected, m.IsDelegateSignatureMethod(), $"Type: {m.DeclaringType}, {m}");
+    => Assert.That(m.IsDelegateSignatureMethod(), Is.EqualTo(expected), $"Type: {m.DeclaringType}, {m}");
 
   public void IsDelegateSignatureMethod_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsDelegateSignatureMethod());

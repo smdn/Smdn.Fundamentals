@@ -12,15 +12,15 @@ namespace Smdn.Text {
     {
       var seq = ByteString.CreateImmutable("abc").AsReadOnlySequence();
 
-      Assert.AreEqual(3, seq.Length);
+      Assert.That(seq.Length, Is.EqualTo(3));
 
       var start = seq.Start;
 
       seq.TryGet(ref start, out var mem);
 
-      Assert.AreEqual((byte)'a', mem.Span[0]);
-      Assert.AreEqual((byte)'b', mem.Span[1]);
-      Assert.AreEqual((byte)'c', mem.Span[2]);
+      Assert.That(mem.Span[0], Is.EqualTo((byte)'a'));
+      Assert.That(mem.Span[1], Is.EqualTo((byte)'b'));
+      Assert.That(mem.Span[2], Is.EqualTo((byte)'c'));
     }
 
     [Test]
@@ -28,13 +28,13 @@ namespace Smdn.Text {
     {
       var seq = ByteString.CreateEmpty().AsReadOnlySequence();
 
-      Assert.AreEqual(0, seq.Length);
+      Assert.That(seq.Length, Is.EqualTo(0));
 
       var start = seq.Start;
 
       seq.TryGet(ref start, out var mem);
 
-      Assert.AreEqual(0, mem.Length);
+      Assert.That(mem.Length, Is.EqualTo(0));
     }
 
     private static Span<byte> CreateSpan(string str) => ByteString.CreateImmutable(str).Segment.AsSpan();

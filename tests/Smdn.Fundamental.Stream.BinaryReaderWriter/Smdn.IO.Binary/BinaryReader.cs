@@ -63,12 +63,12 @@ namespace Smdn.IO.Binary {
     private void TestCloseDispose(bool close)
     {
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[0]))) {
-        Assert.IsNotNull(reader.BaseStream);
-        Assert.IsFalse(reader.LeaveBaseStreamOpen);
+        Assert.That(reader.BaseStream, Is.Not.Null);
+        Assert.That(reader.LeaveBaseStreamOpen, Is.False);
 
         var baseStream = reader.BaseStream;
 
-        Assert.IsNotNull(baseStream);
+        Assert.That(baseStream, Is.Not.Null);
 
         if (close) {
           reader.Close();
@@ -77,7 +77,7 @@ namespace Smdn.IO.Binary {
           reader.Dispose();
         }
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
+        Assert.Throws<ObjectDisposedException>(() => Assert.That(reader.BaseStream, Is.Null));
 
         Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte());
       }
@@ -95,8 +95,8 @@ namespace Smdn.IO.Binary {
         }
 
         using (var reader = new Smdn.IO.Binary.BinaryReader(stream)) {
-          Assert.IsNotNull(reader.BaseStream);
-          Assert.IsFalse(reader.LeaveBaseStreamOpen);
+          Assert.That(reader.BaseStream, Is.Not.Null);
+          Assert.That(reader.LeaveBaseStreamOpen, Is.False);
         }
 
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
@@ -114,16 +114,16 @@ namespace Smdn.IO.Binary {
     public void TestCloseLeaveBaseStreamOpen()
     {
       using (var reader = new BinaryReaderEx(new MemoryStream(new byte[0]))) {
-        Assert.IsNotNull(reader.BaseStream);
-        Assert.IsTrue(reader.LeaveBaseStreamOpen);
+        Assert.That(reader.BaseStream, Is.Not.Null);
+        Assert.That(reader.LeaveBaseStreamOpen, Is.True);
 
         var baseStream = reader.BaseStream;
 
-        Assert.IsNotNull(baseStream);
+        Assert.That(baseStream, Is.Not.Null);
 
         reader.Close();
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.IsNull(reader.BaseStream));
+        Assert.Throws<ObjectDisposedException>(() => Assert.That(reader.BaseStream, Is.Null));
 
         try {
           baseStream.ReadByte();
@@ -140,26 +140,26 @@ namespace Smdn.IO.Binary {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.IsFalse(reader.EndOfStream);
+        Assert.That(reader.EndOfStream, Is.False);
 
-        Assert.AreEqual(actual, reader.ReadToEnd());
-        Assert.IsTrue(reader.EndOfStream);
+        Assert.That(reader.ReadToEnd(), Is.EqualTo(actual));
+        Assert.That(reader.EndOfStream, Is.True);
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         reader.ReadInt16();
 
-        Assert.IsFalse(reader.EndOfStream);
-        Assert.AreEqual(actual.Skip(2).ToArray(), reader.ReadToEnd());
-        Assert.IsTrue(reader.EndOfStream);
+        Assert.That(reader.EndOfStream, Is.False);
+        Assert.That(reader.ReadToEnd(), Is.EqualTo(actual.Skip(2).ToArray()));
+        Assert.That(reader.EndOfStream, Is.True);
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         reader.ReadToEnd();
-        Assert.IsTrue(reader.EndOfStream);
+        Assert.That(reader.EndOfStream, Is.True);
 
-        Assert.AreEqual(new byte[] {}, reader.ReadToEnd());
-        Assert.IsTrue(reader.EndOfStream);
+        Assert.That(reader.ReadToEnd(), Is.EqualTo(new byte[] {}));
+        Assert.That(reader.EndOfStream, Is.True);
       }
     }
 
@@ -183,11 +183,11 @@ namespace Smdn.IO.Binary {
       }
 
       using (var decompressStream = new System.IO.Compression.DeflateStream(new MemoryStream(actualCompressed), System.IO.Compression.CompressionMode.Decompress)) {
-        Assert.IsFalse(decompressStream.CanSeek);
+        Assert.That(decompressStream.CanSeek, Is.False);
 
         var reader = new Smdn.IO.Binary.BinaryReader(decompressStream);
 
-        Assert.AreEqual(actual, reader.ReadToEnd());
+        Assert.That(reader.ReadToEnd(), Is.EqualTo(actual));
       }
     }
 
@@ -197,18 +197,18 @@ namespace Smdn.IO.Binary {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual, reader.ReadBytes((int)reader.BaseStream.Length));
+        Assert.That(reader.ReadBytes((int)reader.BaseStream.Length), Is.EqualTo(actual));
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual, reader.ReadBytes(reader.BaseStream.Length));
+        Assert.That(reader.ReadBytes(reader.BaseStream.Length), Is.EqualTo(actual));
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual.Skip(0).Take(3).ToArray(), reader.ReadBytes(3L));
-        Assert.AreEqual(actual.Skip(3).Take(3).ToArray(), reader.ReadBytes(3L));
-        Assert.AreEqual(actual.Skip(6).Take(2).ToArray(), reader.ReadBytes(3L));
-        Assert.AreEqual(new byte[] {}, reader.ReadBytes(3L));
+        Assert.That(reader.ReadBytes(3L), Is.EqualTo(actual.Skip(0).Take(3).ToArray()));
+        Assert.That(reader.ReadBytes(3L), Is.EqualTo(actual.Skip(3).Take(3).ToArray()));
+        Assert.That(reader.ReadBytes(3L), Is.EqualTo(actual.Skip(6).Take(2).ToArray()));
+        Assert.That(reader.ReadBytes(3L), Is.EqualTo(new byte[] {}));
       }
     }
 
@@ -218,20 +218,20 @@ namespace Smdn.IO.Binary {
       var actual = new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07};
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual, reader.ReadExactBytes((int)reader.BaseStream.Length));
+        Assert.That(reader.ReadExactBytes((int)reader.BaseStream.Length), Is.EqualTo(actual));
 
         Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes((int)1));
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual, reader.ReadExactBytes(reader.BaseStream.Length));
+        Assert.That(reader.ReadExactBytes(reader.BaseStream.Length), Is.EqualTo(actual));
 
         Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(1L));
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
-        Assert.AreEqual(actual.Skip(0).Take(3).ToArray(), reader.ReadExactBytes(3L));
-        Assert.AreEqual(actual.Skip(3).Take(3).ToArray(), reader.ReadExactBytes(3L));
+        Assert.That(reader.ReadExactBytes(3L), Is.EqualTo(actual.Skip(0).Take(3).ToArray()));
+        Assert.That(reader.ReadExactBytes(3L), Is.EqualTo(actual.Skip(3).Take(3).ToArray()));
 
         Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(3L));
       }
@@ -243,27 +243,27 @@ namespace Smdn.IO.Binary {
       var zero = new byte[0];
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
-        Assert.AreEqual(0L, reader.BaseStream.Position);
+        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
-        CollectionAssert.AreEqual(zero, reader.ReadBytes(0));
+        Assert.That(reader.ReadBytes(0), Is.EqualTo(zero).AsCollection);
 
-        Assert.AreEqual(0L, reader.BaseStream.Position);
+        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
-        CollectionAssert.AreEqual(zero, reader.ReadBytes(0L));
+        Assert.That(reader.ReadBytes(0L), Is.EqualTo(zero).AsCollection);
 
-        Assert.AreEqual(0L, reader.BaseStream.Position);
+        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
         reader.Close();
 
         try {
-          CollectionAssert.AreEqual(zero, reader.ReadBytes(0));
+          Assert.That(reader.ReadBytes(0), Is.EqualTo(zero).AsCollection);
         }
         catch (ObjectDisposedException) {
           Assert.Fail("ObjectDisposedException thrown");
         }
 
         try {
-          CollectionAssert.AreEqual(zero, reader.ReadBytes(0L));
+          Assert.That(reader.ReadBytes(0L), Is.EqualTo(zero).AsCollection);
         }
         catch (ObjectDisposedException) {
           Assert.Fail("ObjectDisposedException thrown");
@@ -277,27 +277,27 @@ namespace Smdn.IO.Binary {
       var zero = new byte[0];
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
-        Assert.AreEqual(0L, reader.BaseStream.Position);
+        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
-        CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0));
+        Assert.That(reader.ReadExactBytes(0), Is.EqualTo(zero).AsCollection);
 
-        Assert.AreEqual(0L, reader.BaseStream.Position);
+        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
-        CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0L));
+        Assert.That(reader.ReadExactBytes(0L), Is.EqualTo(zero).AsCollection);
 
-        Assert.AreEqual(0L, reader.BaseStream.Position);
+        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
         reader.Close();
 
         try {
-          CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0));
+          Assert.That(reader.ReadExactBytes(0), Is.EqualTo(zero).AsCollection);
         }
         catch (ObjectDisposedException) {
           Assert.Fail("ObjectDisposedException thrown");
         }
 
         try {
-          CollectionAssert.AreEqual(zero, reader.ReadExactBytes(0L));
+          Assert.That(reader.ReadExactBytes(0L), Is.EqualTo(zero).AsCollection);
         }
         catch (ObjectDisposedException) {
           Assert.Fail("ObjectDisposedException thrown");
@@ -309,11 +309,13 @@ namespace Smdn.IO.Binary {
     public void TestReadInt32()
     {
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0x11, 0x22, 0x33, 0x44}))) {
-        Assert.AreEqual(
-          BitConverter.IsLittleEndian
-            ? 0x44332211
-            : 0x11223344,
-          reader.ReadInt32()
+        Assert.That(
+          reader.ReadInt32(),
+          Is.EqualTo(
+            BitConverter.IsLittleEndian
+              ? 0x44332211
+              : 0x11223344
+          )
         );
       }
     }
@@ -337,16 +339,16 @@ namespace Smdn.IO.Binary {
 
       reader.BaseStream.Seek(0L, SeekOrigin.Begin);
 
-      Assert.IsFalse(reader.EndOfStream);
-      Assert.AreEqual(0L, reader.BaseStream.Position);
+      Assert.That(reader.EndOfStream, Is.False);
+      Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
 
       var ret = typeof(Smdn.IO.Binary.BinaryReader)
         .GetTypeInfo()
         .GetDeclaredMethod(methodName)
         !.Invoke(reader, null);
 
-      Assert.AreNotEqual(0, ret, "read value must be non-zero value");
-      Assert.AreEqual((long)expectedCount, reader.BaseStream.Position);
+      Assert.That(ret, Is.Not.EqualTo(0), "read value must be non-zero value");
+      Assert.That(reader.BaseStream.Position, Is.EqualTo((long)expectedCount));
     }
 
     [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadByte))]
@@ -374,7 +376,7 @@ namespace Smdn.IO.Binary {
           !.Invoke(reader, null);
       });
 
-      Assert.IsInstanceOf<ObjectDisposedException>(ex!.InnerException);
+      Assert.That(ex!.InnerException, Is.InstanceOf<ObjectDisposedException>());
     }
 
     [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadByte), 1)]
@@ -397,9 +399,9 @@ namespace Smdn.IO.Binary {
       reader.BaseStream.Seek(-(expectedCount - 1), SeekOrigin.End);
 
       if (1 < expectedCount)
-        Assert.IsFalse(reader.EndOfStream, "EndOfStream before read: {0}", methodName);
+        Assert.That(reader.EndOfStream, Is.False, $"EndOfStream before read: {methodName}");
       else
-        Assert.IsTrue(reader.EndOfStream, "EndOfStream before read: {0}", methodName);
+        Assert.That(reader.EndOfStream, Is.True, $"EndOfStream before read: {methodName}");
 
       Assert.Throws<TargetInvocationException>(() => {
         typeof(Smdn.IO.Binary.BinaryReader)
@@ -408,9 +410,9 @@ namespace Smdn.IO.Binary {
           !.Invoke(reader, null);
       });
 
-      Assert.AreEqual(reader.BaseStream.Position, reader.BaseStream.Length, "Stream.Position: {0}", methodName);
+      Assert.That(reader.BaseStream.Length, Is.EqualTo(reader.BaseStream.Position), $"Stream.Position: {methodName}");
 
-      Assert.IsTrue(reader.EndOfStream, "EndOfStream after read: {0}", methodName);
+      Assert.That(reader.EndOfStream, Is.True, $"EndOfStream after read: {methodName}");
     }
   }
 }

@@ -10,19 +10,19 @@ partial class UuidTests {
   [Test]
   public void TestToString1()
   {
-    Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString());
-    Assert.AreEqual("6ba7b810-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceDns.ToString());
-    Assert.AreEqual("6ba7b811-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceUrl.ToString());
-    Assert.AreEqual("6ba7b812-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceIsoOid.ToString());
-    Assert.AreEqual("6ba7b814-9dad-11d1-80b4-00c04fd430c8", Uuid.RFC4122NamespaceX500.ToString());
+    Assert.That(Uuid.Nil.ToString(), Is.EqualTo("00000000-0000-0000-0000-000000000000"));
+    Assert.That(Uuid.RFC4122NamespaceDns.ToString(), Is.EqualTo("6ba7b810-9dad-11d1-80b4-00c04fd430c8"));
+    Assert.That(Uuid.RFC4122NamespaceUrl.ToString(), Is.EqualTo("6ba7b811-9dad-11d1-80b4-00c04fd430c8"));
+    Assert.That(Uuid.RFC4122NamespaceIsoOid.ToString(), Is.EqualTo("6ba7b812-9dad-11d1-80b4-00c04fd430c8"));
+    Assert.That(Uuid.RFC4122NamespaceX500.ToString(), Is.EqualTo("6ba7b814-9dad-11d1-80b4-00c04fd430c8"));
 
-    Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString(null, null));
-    Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString(string.Empty, null));
-    Assert.AreEqual("00000000000000000000000000000000", Uuid.Nil.ToString("N", null));
-    Assert.AreEqual("00000000-0000-0000-0000-000000000000", Uuid.Nil.ToString("D", null));
-    Assert.AreEqual("{00000000-0000-0000-0000-000000000000}", Uuid.Nil.ToString("B", null));
-    Assert.AreEqual("(00000000-0000-0000-0000-000000000000)", Uuid.Nil.ToString("P", null));
-    Assert.AreEqual("{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}", Uuid.Nil.ToString("X", null));
+    Assert.That(Uuid.Nil.ToString(null, null), Is.EqualTo("00000000-0000-0000-0000-000000000000"));
+    Assert.That(Uuid.Nil.ToString(string.Empty, null), Is.EqualTo("00000000-0000-0000-0000-000000000000"));
+    Assert.That(Uuid.Nil.ToString("N", null), Is.EqualTo("00000000000000000000000000000000"));
+    Assert.That(Uuid.Nil.ToString("D", null), Is.EqualTo("00000000-0000-0000-0000-000000000000"));
+    Assert.That(Uuid.Nil.ToString("B", null), Is.EqualTo("{00000000-0000-0000-0000-000000000000}"));
+    Assert.That(Uuid.Nil.ToString("P", null), Is.EqualTo("(00000000-0000-0000-0000-000000000000)"));
+    Assert.That(Uuid.Nil.ToString("X", null), Is.EqualTo("{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}"));
 
     Assert.Throws<FormatException>(() => Uuid.Nil.ToString("Z", null));
   }
@@ -47,7 +47,7 @@ partial class UuidTests {
 
   [TestCaseSource(nameof(YieldTestCases_Format))]
   public void TestToString(Uuid uuid, string format, string expectedString, int discard)
-    => Assert.AreEqual(expectedString, uuid.ToString(format, formatProvider: null));
+    => Assert.That(uuid.ToString(format, formatProvider: null), Is.EqualTo(expectedString));
 
   [TestCaseSource(nameof(YieldTestCases_Format))]
   public void TestTryFormat(Uuid uuid, string format, string expectedString, int expectedCharsWritten)
@@ -57,9 +57,9 @@ partial class UuidTests {
 
     var dest = new char[0x100];
 
-    Assert.IsTrue(uuid.TryFormat(dest, out var charsWritten, format.AsSpan(), provider: null), "TryFormat");
-    Assert.AreEqual(expectedCharsWritten, charsWritten, "charsWritten");
-    Assert.AreEqual(expectedString, new string(dest, 0, charsWritten), "TryFormat result");
+    Assert.That(uuid.TryFormat(dest, out var charsWritten, format.AsSpan(), provider: null), Is.True, "TryFormat");
+    Assert.That(charsWritten, Is.EqualTo(expectedCharsWritten), "charsWritten");
+    Assert.That(new string(dest, 0, charsWritten), Is.EqualTo(expectedString), "TryFormat result");
   }
 
   [TestCase(null)]
@@ -74,9 +74,9 @@ partial class UuidTests {
     var guid = new Guid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
     var uuid = new Uuid(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8});
 
-    Assert.AreEqual(
-      guid.ToString(format, provider: null),
-      uuid.ToString(format, formatProvider: null)
+    Assert.That(
+      uuid.ToString(format, formatProvider: null),
+      Is.EqualTo(guid.ToString(format, provider: null))
     );
   }
 
@@ -96,14 +96,13 @@ partial class UuidTests {
     var destinationGuid = new char[0x100];
     var destinationUuid = new char[0x100];
 
-    Assert.AreEqual(
-      guid.TryFormat(destinationGuid, out var charsWrittenGuid, format),
-      uuid.TryFormat(destinationUuid, out var charsWrittenUuid, format, provider: null),
+    Assert.That(
+      uuid.TryFormat(destinationUuid, out var charsWrittenUuid, format, provider: null), Is.EqualTo(guid.TryFormat(destinationGuid, out var charsWrittenGuid, format)),
       "TryFormat"
     );
 
-    Assert.AreEqual(charsWrittenGuid, charsWrittenUuid, "charsWritten");
-    Assert.AreEqual(destinationGuid, destinationUuid, "destination");
+    Assert.That(charsWrittenUuid, Is.EqualTo(charsWrittenGuid), "charsWritten");
+    Assert.That(destinationUuid, Is.EqualTo(destinationGuid), "destination");
   }
 #endif
 
@@ -116,7 +115,7 @@ partial class UuidTests {
   public void TestTryFormat_DestinationTooShort(string format, int requiredLength)
   {
     for (var length = 0; length < requiredLength; length++) {
-      Assert.IsFalse(Uuid.Nil.TryFormat(new char[length], out _, format.AsSpan(), provider: null), $"format {format}, length {length}");
+      Assert.That(Uuid.Nil.TryFormat(new char[length], out _, format.AsSpan(), provider: null), Is.False, $"format {format}, length {length}");
     }
   }
 
@@ -132,5 +131,5 @@ partial class UuidTests {
   [TestCase("D2")]
   [TestCase("x")]
   public void TestTryFormat_InvalidFormat(string format)
-    => Assert.IsFalse(Uuid.Nil.TryFormat(new char[0x100], out _, format.AsSpan()));
+    => Assert.That(Uuid.Nil.TryFormat(new char[0x100], out _, format.AsSpan()), Is.False);
 }

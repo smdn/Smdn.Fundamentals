@@ -133,7 +133,7 @@ public class ParameterInfoExtensionsTests {
 
   [TestCaseSource(nameof(YieldTestCases_IsReturnParameter))]
   public void IsReturnParameter(ParameterInfo para, bool expected)
-    => Assert.AreEqual(expected, para.IsReturnParameter(), $"{para.Member} {para.Name}");
+    => Assert.That(para.IsReturnParameter(), Is.EqualTo(expected), $"{para.Member} {para.Name}");
 
   [TestCase]
   public void IsReturnParameter_ArgumentNull()
@@ -159,9 +159,9 @@ public class ParameterInfoExtensionsTests {
 #endif
 
     if (attr is null)
-      Assert.IsNull(property);
+      Assert.That(property, Is.Null);
     else
-      Assert.AreEqual(attr.GetDeclaringProperty(para), property);
+      Assert.That(property, Is.EqualTo(attr.GetDeclaringProperty(para)));
   }
 
   [TestCase]
@@ -188,9 +188,9 @@ public class ParameterInfoExtensionsTests {
 #endif
 
     if (attr is null)
-      Assert.IsNull(ev);
+      Assert.That(ev, Is.Null);
     else
-      Assert.AreEqual(attr.GetDeclaringEvent(para), ev);
+      Assert.That(ev, Is.EqualTo(attr.GetDeclaringEvent(para)));
   }
 
   [TestCase]

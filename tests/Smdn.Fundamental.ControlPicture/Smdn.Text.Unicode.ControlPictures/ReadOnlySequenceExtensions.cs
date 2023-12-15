@@ -40,8 +40,8 @@ namespace Smdn.Text.Unicode.ControlPictures {
       var sequence = CreateTestSequence();
       var dest = new char[sequence.Length + 2];
 
-      Assert.IsTrue(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, dest.AsSpan(1)));
-      Assert.AreEqual("\0␠0␍␊␀␡\0", new string(dest));
+      Assert.That(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, dest.AsSpan(1)), Is.True);
+      Assert.That(new string(dest), Is.EqualTo("\0␠0␍␊␀␡\0"));
     }
 
     [Test]
@@ -49,7 +49,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
     {
       var sequence = ReadOnlySequence<byte>.Empty;
 
-      Assert.IsTrue(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, Span<char>.Empty));
+      Assert.That(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, Span<char>.Empty), Is.True);
     }
 
     [Test]
@@ -58,7 +58,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
       var first = new ByteSequenceSegment(null, ReadOnlyMemory<byte>.Empty);
       var sequence = new ReadOnlySequence<byte>(first, 0, first, first.Memory.Length);
 
-      Assert.IsTrue(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, Span<char>.Empty));
+      Assert.That(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, Span<char>.Empty), Is.True);
     }
 
     [Test]
@@ -66,8 +66,8 @@ namespace Smdn.Text.Unicode.ControlPictures {
     {
       var sequence = CreateTestSequence();
 
-      Assert.IsFalse(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, new char[sequence.Length - 1]));
-      Assert.IsFalse(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, Span<char>.Empty));
+      Assert.That(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, new char[sequence.Length - 1]), Is.False);
+      Assert.That(ReadOnlySequenceExtensions.TryPicturizeControlChars(sequence, Span<char>.Empty), Is.False);
     }
 
     [Test]
@@ -75,7 +75,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
     {
       var sequence = CreateTestSequence();
 
-      Assert.AreEqual("␠0␍␊␀␡", ReadOnlySequenceExtensions.ToControlCharsPicturizedString(sequence));
+      Assert.That(ReadOnlySequenceExtensions.ToControlCharsPicturizedString(sequence), Is.EqualTo("␠0␍␊␀␡"));
     }
 
     [Test]
@@ -83,7 +83,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
     {
       var sequence = ReadOnlySequence<byte>.Empty;
 
-      Assert.IsEmpty(ReadOnlySequenceExtensions.ToControlCharsPicturizedString(sequence));
+      Assert.That(ReadOnlySequenceExtensions.ToControlCharsPicturizedString(sequence), Is.Empty);
     }
 
     [Test]
@@ -92,7 +92,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
       var first = new ByteSequenceSegment(null, ReadOnlyMemory<byte>.Empty);
       var sequence = new ReadOnlySequence<byte>(first, 0, first, first.Memory.Length);
 
-      Assert.IsEmpty(ReadOnlySequenceExtensions.ToControlCharsPicturizedString(sequence));
+      Assert.That(ReadOnlySequenceExtensions.ToControlCharsPicturizedString(sequence), Is.Empty);
     }
   }
 }
