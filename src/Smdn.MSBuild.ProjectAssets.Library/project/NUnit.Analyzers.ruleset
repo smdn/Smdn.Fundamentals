@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<!-- ref: https://github.com/nunit/nunit.analyzers/blob/master/documentation/index.md -->
+<RuleSet Name="NUnit.Analyzer rules for Smdn.Fundamentals" ToolsVersion="14.0">
+  <Rules AnalyzerId="DiagnosticSuppressors" RuleNamespace="NUnit.NUnitAnalyzers">
+    <Rule Id="NUnit2007" Action="Error" /> <!-- The actual value should not be a constant -->
+    <Rule Id="NUnit2050" Action="Error" /> <!-- NUnit 4 no longer supports string.Format specification -->
+  </Rules>
+</RuleSet>

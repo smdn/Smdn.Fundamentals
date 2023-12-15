@@ -1,0 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ItemGroup Label="NUnit Analyzers code analysis">
+    <PackageReference Include="NUnit.Analyzers" Version="3.10.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

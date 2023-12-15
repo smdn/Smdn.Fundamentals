@@ -18,6 +18,8 @@ SPDX-License-Identifier: MIT
   </ImportGroup>
 
   <ImportGroup Condition=" '$(IsTestProject)' == 'true' ">
+    <!-- NUnit Analyzers code analysis -->
+    <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.NUnitAnalyzers.targets" />
     <!-- LiquidTestReports -->
     <Import Project="$(MSBuildThisFileDirectory)LiquidTestReports.targets" />
     <!-- extension points for VSTest target -->

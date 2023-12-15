@@ -1,0 +1,12 @@
+<!--
+SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup Label="NUnit Analyzers code analysis">
+    <!-- set default to CodeAnalysisRuleSet here if not set -->
+    <CodeAnalysisRuleSet
+      Condition=" '$(CodeAnalysisRuleSet)' == '' "
+    >$(MSBuildThisFileDirectory)\NUnit.Analyzers.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+</Project>
