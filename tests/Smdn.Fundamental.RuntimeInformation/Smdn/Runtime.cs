@@ -329,6 +329,9 @@ public class RuntimeTests {
       return;
     }
 
+#if RUNNING_ON_GITHUB_ACTIONS
+    Assert.Ignore("ignore indeterminable test case due to running environment (GitHub Actions Windows runner)");
+#else
     var processSupportsIanaTimeZoneName = ExecutePrintRuntimeInformation(
       args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
       buildAdditionalProperties: new[] { "RuntimeConfigurationSystemGlobalizationUseNls=true" },
@@ -337,6 +340,7 @@ public class RuntimeTests {
     );
 
     Assert.That(processSupportsIanaTimeZoneName, Is.False);
+#endif
   }
 
   [TestCase("true")]
