@@ -35,7 +35,9 @@ SPDX-License-Identifier: MIT
 
     <!-- trimming defaults -->
     <!-- ref: https://learn.microsoft.com/dotnet/core/deploying/trimming/prepare-libraries-for-trimming -->
-    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <EnableTrimAnalyzer
+      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"
+    >true</EnableTrimAnalyzer>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' " Label="Properties for the test project">
