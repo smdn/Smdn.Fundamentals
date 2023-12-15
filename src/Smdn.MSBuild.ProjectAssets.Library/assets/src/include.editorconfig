@@ -24,63 +24,112 @@ dotnet_analyzer_diagnostic.category-Style.severity            = warning
 dotnet_analyzer_diagnostic.category-Usage.severity            = warning
 dotnet_analyzer_diagnostic.category-CodeQuality.severity      = warning
 
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/pattern-matching-preferences
-dotnet_diagnostic.IDE0019.severity    = warning       # Use pattern matching to avoid 'as' followed by a 'null' check
-dotnet_diagnostic.IDE0020.severity    = warning       # Use pattern matching to avoid 'is' check followed by a cast
-dotnet_diagnostic.IDE0038.severity    = warning       # Use pattern matching to avoid 'is' check followed by a cast
-dotnet_diagnostic.IDE0083.severity    = suggestion    # Use pattern matching (not operator)
+#
+# Language and unnecessary rules
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules
+#
 
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/modifier-preferences
-dotnet_diagnostic.IDE0062.severity    = warning       # Make local function static
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#using-directive-preferences
+dotnet_diagnostic.IDE0005.severity    = warning       # Remove unnecessary using directives
 
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/expression-level-preferences
-dotnet_diagnostic.IDE0010.severity    = suggestion    # Add missing cases to switch statement
-dotnet_diagnostic.IDE0018.severity    = suggestion    # Inline variable declaration
-dotnet_diagnostic.IDE0039.severity    = warning       # Use conditional expression for return
-dotnet_diagnostic.IDE0046.severity    = suggestion    # Use local function instead of lambda
-dotnet_diagnostic.IDE0056.severity    = suggestion    # Use index operator
-dotnet_diagnostic.IDE0057.severity    = suggestion    # Use range operator
-dotnet_diagnostic.IDE0070.severity    = suggestion    # Use 'System.HashCode.Combine'
-dotnet_diagnostic.IDE0072.severity    = suggestion    # Add missing cases to switch expression
-dotnet_diagnostic.IDE0090.severity    = suggestion    # Simplify new expression
-
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0160-ide0161
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#code-block-preferences
+dotnet_diagnostic.IDE0063.severity    = suggestion    # Use simple 'using' statement
 dotnet_diagnostic.IDE0160.severity    = none          # Use block-scoped namespace
 dotnet_diagnostic.IDE0161.severity    = warning       # Use file-scoped namespace
-
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/null-checking-preferences
-dotnet_diagnostic.IDE0041.severity    = warning       # Use 'is null' check
-
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008
-dotnet_diagnostic.IDE0007.severity    = suggestion    # Use `var` instead of explicit type
-dotnet_diagnostic.IDE0008.severity    = none          # Use explicit type instead of `var`
+dotnet_diagnostic.IDE0200.severity    = warning       # Remove unnecessary lambda expression
+dotnet_diagnostic.IDE0290.severity    = warning       # Use primary constructor
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/expression-bodied-members
 dotnet_diagnostic.IDE0021.severity    = none          # Use expression body for constructors
 dotnet_diagnostic.IDE0022.severity    = suggestion    # Use expression body for methods
+dotnet_diagnostic.IDE0023.severity    = suggestion    # Use expression body for operators
+dotnet_diagnostic.IDE0024.severity    = suggestion    # Use expression body for operators
+dotnet_diagnostic.IDE0025.severity    = suggestion    # Use expression body for properties
+dotnet_diagnostic.IDE0026.severity    = suggestion    # Use expression body for indexers
+dotnet_diagnostic.IDE0027.severity    = suggestion    # Use expression body for accessors
+dotnet_diagnostic.IDE0053.severity    = suggestion    # Use expression body for lambdas
+dotnet_diagnostic.IDE0061.severity    = suggestion    # Use expression body for local functions
 
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/code-block-preferences
-dotnet_diagnostic.IDE0063.severity    = suggestion    # Use simple 'using' statement
-
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0130
-dotnet_diagnostic.IDE0130.severity    = warning       # Match namespaces to folder structure
-
-# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/unnecessary-code-rules
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#expression-level-preferences
 dotnet_diagnostic.IDE0001.severity    = suggestion    # Simplify name
 dotnet_diagnostic.IDE0002.severity    = suggestion    # Simplify member access
-dotnet_diagnostic.IDE0003.severity    = suggestion    # Remove `this` or `Me` qualification
-dotnet_diagnostic.IDE0005.severity    = warning       # Remove unnecessary using directives
+dotnet_diagnostic.IDE0010.severity    = suggestion    # Add missing cases to switch statement
+dotnet_diagnostic.IDE0017.severity    = suggestion    # Use object initializers
+dotnet_diagnostic.IDE0028.severity    = suggestion    # Use collection initializers
+dotnet_diagnostic.IDE0029.severity    = suggestion    # Null check can be simplified
+dotnet_diagnostic.IDE0030.severity    = suggestion    # Null check can be simplified
+dotnet_diagnostic.IDE0033.severity    = warning       # Use explicitly provided tuple name
 dotnet_diagnostic.IDE0035.severity    = suggestion    # Remove unreachable code
+dotnet_diagnostic.IDE0041.severity    = warning       # Use 'is null' check
+dotnet_diagnostic.IDE0046.severity    = suggestion    # Use conditional expression for return
+dotnet_diagnostic.IDE0050.severity    = suggestion    # Convert anonymous type to tuple
 dotnet_diagnostic.IDE0051.severity    = warning       # Remove unused private member
 dotnet_diagnostic.IDE0052.severity    = warning       # Remove unread private member
 dotnet_diagnostic.IDE0058.severity    = suggestion    # Remove unnecessary expression value
 dotnet_diagnostic.IDE0059.severity    = warning       # Remove unnecessary value assignment
-dotnet_diagnostic.IDE0060.severity    = warning       # Remove unused parameter
-dotnet_diagnostic.IDE0079.severity    = warning       # Remove unnecessary suppression
+dotnet_diagnostic.IDE0070.severity    = suggestion    # Use 'System.HashCode.Combine'
+dotnet_diagnostic.IDE0071.severity    = warning       # Simplify interpolation
+dotnet_diagnostic.IDE0082.severity    = warning       # Convert typeof to nameof
+dotnet_diagnostic.IDE0100.severity    = suggestion    # Remove unnecessary equality operator
+dotnet_diagnostic.IDE0120.severity    = suggestion    # Simplify LINQ expression
+dotnet_diagnostic.IDE0130.severity    = warning       # Match namespaces to folder structure
+# C# style rules
+dotnet_diagnostic.IDE0018.severity    = suggestion    # Inline variable declaration
+dotnet_diagnostic.IDE0039.severity    = warning       # Use conditional expression for return
+dotnet_diagnostic.IDE0056.severity    = suggestion    # Use index operator
+dotnet_diagnostic.IDE0057.severity    = suggestion    # Use range operator
+dotnet_diagnostic.IDE0072.severity    = suggestion    # Add missing cases to switch expression
 dotnet_diagnostic.IDE0080.severity    = warning       # Remove unnecessary suppression operator
+dotnet_diagnostic.IDE0090.severity    = suggestion    # Simplify new expression
+dotnet_diagnostic.IDE0180.severity    = warning       # Use tuple to swap values
+dotnet_diagnostic.IDE0230.severity    = suggestion    # Use UTF-8 string literal
+dotnet_diagnostic.IDE0240.severity    = warning       # Nullable directive is redundant
+dotnet_diagnostic.IDE0241.severity    = warning       # Nullable directive is unnecessary
+dotnet_diagnostic.IDE0300.severity    = warning       # Use collection expression for array
+dotnet_diagnostic.IDE0301.severity    = warning       # Use collection expression for empty
+dotnet_diagnostic.IDE0302.severity    = warning       # Use collection expression for stack alloc
+dotnet_diagnostic.IDE0303.severity    = warning       # Use collection expression for Create()
+dotnet_diagnostic.IDE0304.severity    = warning       # Use collection expression for builder
+dotnet_diagnostic.IDE0305.severity    = warning       # Use collection expression for fluent
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#modifier-preferences
+dotnet_diagnostic.IDE0040.severity    = warning       # Add accessibility modifiers
+# C# style rules
+dotnet_diagnostic.IDE0062.severity    = warning       # Make local function static
+dotnet_diagnostic.IDE0250.severity    = warning       # Struct can be made 'readonly'
+dotnet_diagnostic.IDE0251.severity    = warning       # Member can be made 'readonly'
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#parameter-preferences
+dotnet_diagnostic.IDE0060.severity    = warning       # Remove unused parameter
+dotnet_diagnostic.IDE0280.severity    = warning       # Use 'nameof'
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#pattern-matching-preferences
+# C# style rules
+dotnet_diagnostic.IDE0019.severity    = warning       # Use pattern matching to avoid 'as' followed by a 'null' check
+dotnet_diagnostic.IDE0020.severity    = warning       # Use pattern matching to avoid 'is' check followed by a cast
+dotnet_diagnostic.IDE0038.severity    = warning       # Use pattern matching to avoid 'is' check followed by a cast
+dotnet_diagnostic.IDE0078.severity    = suggestion    # Use pattern matching
+dotnet_diagnostic.IDE0083.severity    = suggestion    # Use pattern matching (not operator)
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#suppression-preferences
+dotnet_diagnostic.IDE0079.severity    = warning       # Remove unnecessary suppression
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#this-and-me-preferences
+dotnet_diagnostic.IDE0003.severity    = suggestion    # Remove `this` or `Me` qualification
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#var-preferences
+dotnet_diagnostic.IDE0007.severity    = suggestion    # Use `var` instead of explicit type
+dotnet_diagnostic.IDE0008.severity    = none          # Use explicit type instead of `var`
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0055
 dotnet_diagnostic.IDE0055.severity    = silent        # Fix formatting
+
+
+
+#
+# Code quality rules
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
+#
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/design-warnings
 dotnet_diagnostic.CA1000.severity     = warning       # Identifiers should not contain underscores
@@ -132,6 +181,11 @@ dotnet_diagnostic.CA1505.severity     = warning       # Avoid unmaintainable cod
 dotnet_diagnostic.CA1506.severity     = warning       # Avoid excessive class coupling
 dotnet_diagnostic.CA1507.severity     = warning       # Use nameof in place of string
 dotnet_diagnostic.CA1508.severity     = warning       # Avoid dead conditional code
+dotnet_diagnostic.CA1510.severity     = suggestion    # Use ArgumentNullException throw helper
+dotnet_diagnostic.CA1511.severity     = suggestion    # Use ArgumentException throw helper
+dotnet_diagnostic.CA1512.severity     = suggestion    # Use ArgumentOutOfRangeException throw helper
+dotnet_diagnostic.CA1513.severity     = suggestion    # Use ObjectDisposedException throw helper
+dotnet_diagnostic.CA1514.severity     = warning       # Avoid redundant length argument
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/naming-warnings
 dotnet_diagnostic.CA1707.severity     = suggestion    # Identifiers should not contain underscores
@@ -183,6 +237,16 @@ dotnet_diagnostic.CA1855.severity     = warning       # Use Span<T>.Clear() inst
 dotnet_diagnostic.CA1858.severity     = warning       # Use StartsWith instead of IndexOf
 dotnet_diagnostic.CA1859.severity     = warning       # Use concrete types when possible for improved performance
 dotnet_diagnostic.CA1860.severity     = warning       # Avoid using 'Enumerable.Any()' extension method
+dotnet_diagnostic.CA1861.severity     = warning       # Avoid constant arrays as arguments
+dotnet_diagnostic.CA1862.severity     = warning       # Use the 'StringComparison' method overloads to perform case-insensitive string comparisons
+dotnet_diagnostic.CA1863.severity     = warning       # Use 'CompositeFormat'
+dotnet_diagnostic.CA1864.severity     = warning       # Prefer the 'IDictionary.TryAdd(TKey, TValue)' method
+dotnet_diagnostic.CA1865.severity     = warning       # Use 'string.Method(char)' instead of 'string.Method(string)' for string with single char
+dotnet_diagnostic.CA1866.severity     = warning       # Use 'string.Method(char)' instead of 'string.Method(string)' for string with single char
+dotnet_diagnostic.CA1867.severity     = warning       # Use 'string.Method(char)' instead of 'string.Method(string)' for string with single char
+dotnet_diagnostic.CA1868.severity     = warning       # Unnecessary call to 'Contains' for sets
+dotnet_diagnostic.CA1869.severity     = warning       # Cache and reuse 'JsonSerializerOptions' instances
+dotnet_diagnostic.CA1870.severity     = warning       # Use a cached 'SearchValues' instance
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
 dotnet_diagnostic.CA2000.severity     = warning       # Dispose objects before losing scope
@@ -195,6 +259,7 @@ dotnet_diagnostic.CA2016.severity     = warning       # Forward the Cancellation
 dotnet_diagnostic.CA2017.severity     = warning       # Parameter count mismatch
 dotnet_diagnostic.CA2019.severity     = warning       # ThreadStatic fields should not use inline initialization
 dotnet_diagnostic.CA2020.severity     = warning       # Prevent behavioral change caused by built-in operators of IntPtr/UIntPtr
+dotnet_diagnostic.CA2021.severity     = warning       # Don't call Enumerable.Cast<T> or Enumerable.OfType<T> with incompatible types
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/usage-warnings
 dotnet_diagnostic.CA2200.severity     = warning       # Rethrow to preserve stack details
@@ -218,3 +283,4 @@ dotnet_diagnostic.CA2251.severity     = warning       # Use String.Equals over S
 dotnet_diagnostic.CA2255.severity     = warning       # The ModuleInitializer attribute should not be used in libraries
 dotnet_diagnostic.CA2259.severity     = warning       # Ensure ThreadStatic is only used with static fields
 dotnet_diagnostic.CA2260.severity     = warning       # Implement generic math interfaces correctly
+dotnet_diagnostic.CA2261.severity     = warning       # Do not use ConfigureAwaitOptions.SuppressThrowing with Task<TResult>
