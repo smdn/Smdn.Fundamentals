@@ -262,13 +262,35 @@ public class RuntimeTests {
       throw new InvalidOperationException($"clean failed: (stdout: {stdout}, stderr: {stderr})");
 
     /*
-     * execute 'dotnet run'
+     * execute 'dotnet build'
+     */
+    var buildPrintRuntimeInformationCommandLineArgs = new List<string>() {
+      "build", // dotnet build
+      PrintRuntimeInformationProps.ProjectPath,
+      "--framework",
+      PrintRuntimeInformationProps.TargetFrameworkMoniker,
+    };
+
+    exitCode = Shell.Execute(
+      command: "dotnet",
+      arguments: buildPrintRuntimeInformationCommandLineArgs,
+      environmentVariables: null,
+      out stdout,
+      out stderr
+    );
+
+    if (exitCode != 0)
+      throw new InvalidOperationException($"build failed: (stdout: {stdout}, stderr: {stderr})");
+
+    /*
+     * execute 'dotnet run' (no build)
      */
     var runPrintRuntimeInformationCommandLineArgs = new List<string>() {
       "run", // dotnet run
       "--project",
       PrintRuntimeInformationProps.ProjectPath,
       "--nologo",
+      "--no-build",
       "--framework",
       PrintRuntimeInformationProps.TargetFrameworkMoniker,
     };
