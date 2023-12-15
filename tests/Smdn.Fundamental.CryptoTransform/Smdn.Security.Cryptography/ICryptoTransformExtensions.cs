@@ -111,8 +111,12 @@ public class ICryptoTransformExtensionsTests {
 
     hashAlgorithm.Initialize();
 
+    var transformedBytes = TransformByCryptoStream(hashAlgorithm, bytes);
+
+    hashAlgorithm.Initialize();
+
     Assert.That(
-      TransformByCryptoStream(hashAlgorithm, bytes),
+      transformedBytes,
       Is.EqualTo(hashAlgorithm.TransformBytes(bytes)),
       $"HashAlgorithm: {hashAlgorithm.GetType()}"
     );
