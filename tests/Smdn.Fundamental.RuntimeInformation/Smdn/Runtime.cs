@@ -230,10 +230,11 @@ public class RuntimeTests {
   private void SupportsIanaTimeZoneName_NonWindowsOS()
     => Assert.That(Runtime.SupportsIanaTimeZoneName, Is.True, "Mono or .NET on non-windows OS supports IANA time zone name");
 
-  private static string ExecutePrintRuntimeInformation(
+  private static TResult ExecutePrintRuntimeInformation<TResult>(
     string[] args,
-    string[] buildAdditionalProperties = null,
-    IReadOnlyDictionary<string, string> environmentVariables = null
+    string[] buildAdditionalProperties,
+    IReadOnlyDictionary<string, string> environmentVariables,
+    Func<string, TResult> getResult
   )
   {
     int exitCode;
@@ -288,9 +289,14 @@ public class RuntimeTests {
     );
 
     if (exitCode != 0)
-      throw new InvalidOperationException($"run failed: (stdout: {stdout}, stderr: {stderr})");
+      throw new InvalidOperationException($"run failed: (stdout: '{stdout}', stderr: '{stderr}')");
 
-    return stdout;
+    try {
+      return getResult(stdout);
+    }
+    catch (Exception ex) {
+      throw new InvalidOperationException($"could not get result: (stdout: '{stdout}', stderr: '{stderr}')", ex);
+    }
   }
 
   [Test]
@@ -301,11 +307,11 @@ public class RuntimeTests {
       return;
     }
 
-    var processSupportsIanaTimeZoneName = bool.Parse(
-      ExecutePrintRuntimeInformation(
-        args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
-        buildAdditionalProperties: new[] { "RuntimeConfigurationSystemGlobalizationUseNls=true" }
-      ).TrimEnd()
+    var processSupportsIanaTimeZoneName = ExecutePrintRuntimeInformation(
+      args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
+      buildAdditionalProperties: new[] { "RuntimeConfigurationSystemGlobalizationUseNls=true" },
+      environmentVariables: null,
+      getResult: result => bool.Parse(result.TrimEnd())
     );
 
     Assert.That(processSupportsIanaTimeZoneName, Is.False);
@@ -320,11 +326,11 @@ public class RuntimeTests {
       return;
     }
 
-    var processSupportsIanaTimeZoneName = bool.Parse(
-      ExecutePrintRuntimeInformation(
-        args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
-        environmentVariables: new Dictionary<string, string>() { ["DOTNET_SYSTEM_GLOBALIZATION_USENLS"] = value }
-      ).TrimEnd()
+    var processSupportsIanaTimeZoneName = ExecutePrintRuntimeInformation(
+      args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
+      buildAdditionalProperties: null,
+      environmentVariables: new Dictionary<string, string>() { ["DOTNET_SYSTEM_GLOBALIZATION_USENLS"] = value },
+      getResult: result => bool.Parse(result.TrimEnd())
     );
 
     Assert.That(processSupportsIanaTimeZoneName, Is.False);
