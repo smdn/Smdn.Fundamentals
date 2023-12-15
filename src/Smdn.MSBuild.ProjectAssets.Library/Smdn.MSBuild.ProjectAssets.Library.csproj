@@ -25,6 +25,7 @@ SPDX-License-Identifier: MIT
     <None Include="project\**" Pack="false" Visible="true" />
 
     <None Include="assets\src\include.editorconfig"       Pack="true" PackagePath="assets\src\.editorconfig" />
+    <None Include="assets\tests\include.editorconfig"     Pack="true" PackagePath="assets\tests\.editorconfig" />
     <None Include="project\*.props"                       Pack="true" PackagePath="project\" />
     <None Include="project\*.targets"                     Pack="true" PackagePath="project\" />
     <None Include="project\StyleCop.Analyzers.ruleset"    Pack="true" PackagePath="project\" />

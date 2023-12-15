@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
+# SPDX-License-Identifier: MIT
+#
+# EditorConfig is awesome: https://EditorConfig.org
+
+[*.cs]
+# ref: https://github.com/nunit/nunit.analyzers/blob/master/documentation/index.md
+dotnet_diagnostic.NUnit2007.severity = error # The actual value should not be a constant
+
+dotnet_diagnostic.NUnit2001.severity = warning # Consider using Assert.That(expr, Is.False) instead of ClassicAssert.False(expr)
+dotnet_diagnostic.NUnit2002.severity = warning # Consider using Assert.That(expr, Is.False) instead of ClassicAssert.IsFalse(expr)
+dotnet_diagnostic.NUnit2003.severity = warning # Consider using Assert.That(expr, Is.True) instead of ClassicAssert.IsTrue(expr)
+dotnet_diagnostic.NUnit2004.severity = warning # Consider using Assert.That(expr, Is.True) instead of ClassicAssert.True(expr)
+dotnet_diagnostic.NUnit2005.severity = warning # Consider using Assert.That(actual, Is.EqualTo(expected)) instead of ClassicAssert.AreEqual(expected, actual)
+dotnet_diagnostic.NUnit2006.severity = warning # Consider using Assert.That(actual, Is.Not.EqualTo(expected)) instead of ClassicAssert.AreNotEqual(expected, actual)
+dotnet_diagnostic.NUnit2015.severity = warning # Consider using Assert.That(actual, Is.SameAs(expected)) instead of ClassicAssert.AreSame(expected, actual)
+dotnet_diagnostic.NUnit2016.severity = warning # Consider using Assert.That(expr, Is.Null) instead of ClassicAssert.Null(expr)
+dotnet_diagnostic.NUnit2017.severity = warning # Consider using Assert.That(expr, Is.Null) instead of ClassicAssert.IsNull(expr)
+dotnet_diagnostic.NUnit2018.severity = warning # Consider using Assert.That(expr, Is.Not.Null) instead of ClassicAssert.NotNull(expr)
+dotnet_diagnostic.NUnit2019.severity = warning # Consider using Assert.That(expr, Is.Not.Null) instead of ClassicAssert.IsNotNull(expr)
+dotnet_diagnostic.NUnit2027.severity = warning # Consider using Assert.That(actual, Is.GreaterThan(expected)) instead of ClassicAssert.Greater(actual, expected)
+dotnet_diagnostic.NUnit2028.severity = warning # Consider using Assert.That(actual, Is.GreaterThanOrEqualTo(expected)) instead of ClassicAssert.GreaterOrEqual(actual, expected)
+dotnet_diagnostic.NUnit2029.severity = warning # Consider using Assert.That(actual, Is.LessThan(expected)) instead of ClassicAssert.Less(actual, expected)
+dotnet_diagnostic.NUnit2030.severity = warning # Consider using Assert.That(actual, Is.LessThanOrEqualTo(expected)) instead of ClassicAssert.LessOrEqual(actual, expected)
+dotnet_diagnostic.NUnit2031.severity = warning # Consider using Assert.That(actual, Is.Not.SameAs(expected)) instead of ClassicAssert.AreNotSame(expected, actual)
+dotnet_diagnostic.NUnit2032.severity = warning # Consider using Assert.That(expr, Is.Zero) instead of ClassicAssert.Zero(expr)
+dotnet_diagnostic.NUnit2033.severity = warning # Consider using Assert.That(expr, Is.Not.Zero) instead of ClassicAssert.NotZero(expr)
+dotnet_diagnostic.NUnit2034.severity = warning # Consider using Assert.That(expr, Is.NaN) instead of ClassicAssert.IsNaN(expr)
+dotnet_diagnostic.NUnit2035.severity = warning # Consider using Assert.That(collection, Is.Empty) instead of ClassicAssert.IsEmpty(collection)
+dotnet_diagnostic.NUnit2036.severity = warning # Consider using Assert.That(collection, Is.Not.Empty) instead of ClassicAssert.IsNotEmpty(collection)
+dotnet_diagnostic.NUnit2037.severity = warning # Consider using Assert.That(collection, Does.Contain(instance)) instead of ClassicAssert.Contains(instance, collection)
+dotnet_diagnostic.NUnit2038.severity = warning # Consider using Assert.That(actual, Is.InstanceOf(expected)) instead of ClassicAssert.IsInstanceOf(expected, actual)
+dotnet_diagnostic.NUnit2039.severity = warning # Consider using Assert.That(actual, Is.Not.InstanceOf(expected)) instead of ClassicAssert.IsNotInstanceOf(expected, actual)
+dotnet_diagnostic.NUnit2048.severity = warning # Consider using Assert.That(...) instead of StringAssert(...)
+dotnet_diagnostic.NUnit2049.severity = warning # Consider using Assert.That(...) instead of CollectionAssert(...)
+
+dotnet_diagnostic.NUnit2050.severity = error # NUnit 4 no longer supports string.Format specification

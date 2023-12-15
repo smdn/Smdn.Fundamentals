@@ -68,9 +68,14 @@ SPDX-License-Identifier: MIT
     <SmdnBuildAssetFiles  Update="$(MSBuildThisFileDirectory)..\assets\**">
       <Destination>%(RecursiveDir)%(Filename)%(Extension)</Destination>
     </SmdnBuildAssetFiles>
+  </ItemGroup>
 
-    <SmdnBuildAssetFiles Update="$(MSBuildThisFileDirectory)..\assets\src\include.editorconfig" Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == 'true'">
+  <ItemGroup Label="build assets for local import" Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == 'true'">
+    <SmdnBuildAssetFiles Update="$(MSBuildThisFileDirectory)..\assets\src\include.editorconfig">
       <Destination>src\.editorconfig</Destination>
+    </SmdnBuildAssetFiles>
+    <SmdnBuildAssetFiles Update="$(MSBuildThisFileDirectory)..\assets\tests\include.editorconfig">
+      <Destination>tests\.editorconfig</Destination>
     </SmdnBuildAssetFiles>
   </ItemGroup>
 
