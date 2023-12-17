@@ -121,6 +121,7 @@ SPDX-License-Identifier: MIT
     <Rule Id="SA1312"  Action="None" />             <!-- Variable names should begin with lower-case letter -->
     <Rule Id="SA1313"  Action="Warning" />          <!-- Parameter names should begin with lower-case letter -->
     <Rule Id="SA1314"  Action="Warning" />          <!-- Type parameter names should begin with T -->
+    <Rule Id="SA1316"  Action="Warning" />          <!-- Element names within a tuple type should have the correct casing -->
     <Rule Id="SX1309"  Action="None" />             <!-- Field names should begin with underscore -->
     <Rule Id="SX1309S" Action="None" />             <!-- Static field names should begin with underscore -->
   </Rules>
