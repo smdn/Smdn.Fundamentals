@@ -37,7 +37,7 @@ dotnet_diagnostic.IDE0063.severity    = suggestion    # Use simple 'using' state
 dotnet_diagnostic.IDE0160.severity    = none          # Use block-scoped namespace
 dotnet_diagnostic.IDE0161.severity    = warning       # Use file-scoped namespace
 dotnet_diagnostic.IDE0200.severity    = warning       # Remove unnecessary lambda expression
-dotnet_diagnostic.IDE0290.severity    = warning       # Use primary constructor
+dotnet_diagnostic.IDE0290.severity    = suggestion    # Use primary constructor
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/expression-bodied-members
 dotnet_diagnostic.IDE0021.severity    = none          # Use expression body for constructors
@@ -85,12 +85,12 @@ dotnet_diagnostic.IDE0180.severity    = warning       # Use tuple to swap values
 dotnet_diagnostic.IDE0230.severity    = suggestion    # Use UTF-8 string literal
 dotnet_diagnostic.IDE0240.severity    = warning       # Nullable directive is redundant
 dotnet_diagnostic.IDE0241.severity    = warning       # Nullable directive is unnecessary
-dotnet_diagnostic.IDE0300.severity    = warning       # Use collection expression for array
-dotnet_diagnostic.IDE0301.severity    = warning       # Use collection expression for empty
-dotnet_diagnostic.IDE0302.severity    = warning       # Use collection expression for stack alloc
-dotnet_diagnostic.IDE0303.severity    = warning       # Use collection expression for Create()
-dotnet_diagnostic.IDE0304.severity    = warning       # Use collection expression for builder
-dotnet_diagnostic.IDE0305.severity    = warning       # Use collection expression for fluent
+dotnet_diagnostic.IDE0300.severity    = suggestion    # Use collection expression for array
+dotnet_diagnostic.IDE0301.severity    = suggestion    # Use collection expression for empty
+dotnet_diagnostic.IDE0302.severity    = suggestion    # Use collection expression for stack alloc
+dotnet_diagnostic.IDE0303.severity    = suggestion    # Use collection expression for Create()
+dotnet_diagnostic.IDE0304.severity    = suggestion    # Use collection expression for builder
+dotnet_diagnostic.IDE0305.severity    = suggestion    # Use collection expression for fluent
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#modifier-preferences
 dotnet_diagnostic.IDE0040.severity    = warning       # Add accessibility modifiers
