@@ -123,7 +123,7 @@ public class UUDecodingStream : Stream {
     return state == State.DataLine;
   }
 
-  private static readonly ReadOnlyMemory<byte> headerLinePrefix = new[] { (byte)'b', (byte)'e', (byte)'g', (byte)'i', (byte)'n', (byte)' ' };
+  private static readonly ReadOnlyMemory<byte> HeaderLinePrefix = new[] { (byte)'b', (byte)'e', (byte)'g', (byte)'i', (byte)'n', (byte)' ' };
 
   private void InternalSeekToNextFile()
   {
@@ -146,7 +146,7 @@ public class UUDecodingStream : Stream {
 #if SYSTEM_BUFFERS_SEQUENCEREADER
       var headerReader = new SequenceReader<byte>(l.Value.Sequence);
 
-      if (headerReader.IsNext(headerLinePrefix.Span, advancePast: true)) {
+      if (headerReader.IsNext(HeaderLinePrefix.Span, advancePast: true)) {
         const byte SP = 0x20;
 
         if (!headerReader.TryReadTo(out ReadOnlySequence<byte> mode, SP, advancePastDelimiter: true))
@@ -181,10 +181,10 @@ public class UUDecodingStream : Stream {
 #else // #if !SYSTEM_BUFFERS_SEQUENCEREADER
       var line = l.Value.Sequence;
 
-      if (line.StartsWith(headerLinePrefix.Span)) {
+      if (line.StartsWith(HeaderLinePrefix.Span)) {
         const byte SP = 0x20;
 
-        var mode = line.Slice(headerLinePrefix.Span.Length);
+        var mode = line.Slice(HeaderLinePrefix.Span.Length);
         var startOfFile = mode.PositionOf(SP);
 
         if (!startOfFile.HasValue)

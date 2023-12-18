@@ -69,7 +69,7 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
     return fromBase64Transform.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset);
   }
 
-  private static readonly byte[] paddingBuffer = new byte[] { 0x3d, 0x3d }; // '=' 0x3d
+  private static readonly byte[] PaddingBuffer = new byte[] { 0x3d, 0x3d }; // '=' 0x3d
 
   public virtual byte[] TransformFinalBlock(byte[] inputBuffer, int inputOffset, int inputCount)
   {
@@ -104,7 +104,7 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
 
         try {
           Buffer.BlockCopy(inputBuffer, inputOffset, paddedInputBuffer, 0, inputCount);
-          Buffer.BlockCopy(paddingBuffer, 0, paddedInputBuffer, inputCount, paddingCount);
+          Buffer.BlockCopy(PaddingBuffer, 0, paddedInputBuffer, inputCount, paddingCount);
 
           return fromBase64Transform.TransformFinalBlock(paddedInputBuffer, 0, paddedInputBufferLength);
         }
@@ -119,13 +119,13 @@ public class FromRFC2152ModifiedBase64Transform : ICryptoTransform {
 #if SYSTEM_ARRAY_EMPTY
         return Array.Empty<byte>();
 #else
-        return emptyByteArray;
+        return EmptyByteArray;
 #endif
     }
   }
 
 #if !SYSTEM_ARRAY_EMPTY
-  private static readonly byte[] emptyByteArray = new byte[0];
+  private static readonly byte[] EmptyByteArray = new byte[0];
 #endif
 
   private int count = 0;

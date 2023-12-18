@@ -74,13 +74,13 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
 
     this.IsReadOnly = isReadOnly;
 
-    const string singleSpace = " ";
+    const string SingleSpace = " ";
 
     switch (cultureInfo.TwoLetterISOLanguageName) {
       case "ja":
         numberFormatInfo = cultureInfo.NumberFormat;
         byteUnit = "バイト";
-        valuePrefixDelimiter = singleSpace;
+        valuePrefixDelimiter = SingleSpace;
         prefixUnitDelimiter = string.Empty;
         DecimalPrefixes = new[] { string.Empty, "キロ", "メガ", "ギガ", "テラ", "ペタ", "エクサ", "ゼタ", "ヨタ" };
         BinaryPrefixes = new[] { string.Empty, "キビ", "メビ", "ギビ", "テビ", "ペビ", "エクスビ", "ゼビ", "ヨビ" };
@@ -89,8 +89,8 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
       default:
         numberFormatInfo = NumberFormatInfo.InvariantInfo;
         byteUnit = "Bytes";
-        valuePrefixDelimiter = singleSpace;
-        prefixUnitDelimiter = singleSpace;
+        valuePrefixDelimiter = SingleSpace;
+        prefixUnitDelimiter = SingleSpace;
         DecimalPrefixes = InvaliantDecimalPrefixes;
         BinaryPrefixes = InvaliantBinaryPrefixes;
         break;

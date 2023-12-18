@@ -11,7 +11,7 @@ public static partial class EncodingUtils {
   public static Encoding? GetEncoding(string name)
     => GetEncoding(name, null);
 
-  private static readonly char[] whiteSpaceChars = new[] { '-', '_', ' ' };
+  private static readonly char[] WhiteSpaceChars = new[] { '-', '_', ' ' };
 
   private static string NormalizeEncodingName(string name)
   {
@@ -20,7 +20,7 @@ public static partial class EncodingUtils {
     var lastIndex = 0;
 
     for (; ; ) {
-      var index = normalizedName.IndexOfAny(whiteSpaceChars, lastIndex);
+      var index = normalizedName.IndexOfAny(WhiteSpaceChars, lastIndex);
 
       if (index < 0) {
 #if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
@@ -54,7 +54,7 @@ public static partial class EncodingUtils {
     if (name == null)
       throw new ArgumentNullException(nameof(name));
 
-    if (!encodingCollationTable.TryGetValue(NormalizeEncodingName(name), out var encodingName))
+    if (!EncodingCollationTable.TryGetValue(NormalizeEncodingName(name), out var encodingName))
       encodingName = name;
 
     try {
@@ -78,7 +78,7 @@ public static partial class EncodingUtils {
   )
     => GetEncoding(name, selectFallbackEncoding) ?? throw new EncodingNotSupportedException(name);
 
-  private static readonly Dictionary<string, string> encodingCollationTable
+  private static readonly Dictionary<string, string> EncodingCollationTable
     = new(StringComparer.OrdinalIgnoreCase) {
       /* UTF-16 */
       { "utf16",       "utf-16" },

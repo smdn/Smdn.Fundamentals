@@ -107,15 +107,15 @@ partial struct Uuid {
     if (timestamp.Kind != DateTimeKind.Utc)
       timestamp = timestamp.ToUniversalTime();
 
-    if (timestamp < timestampEpoch)
-      throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(timestampEpoch, nameof(timestamp), timestamp);
+    if (timestamp < TimestampEpochDateTime)
+      throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(TimestampEpochDateTime, nameof(timestamp), timestamp);
 
     if (clock is < 0 or >= 0x3fff)
       throw new ArgumentOutOfRangeException(nameof(clock), clock, "must be 14-bit unsigned integer");
 
     return new Uuid(
       version: UuidVersion.Version1,
-      time: (ulong)timestamp.Subtract(timestampEpoch).Ticks,
+      time: (ulong)timestamp.Subtract(TimestampEpochDateTime).Ticks,
       clock_seq: (ushort)clock,
       node: node
     );

@@ -17,7 +17,7 @@ public static partial class ContentTransferEncoding {
   private const string ContentTransferEncodingMethodStringUUEncode = "x-uuencode";
   private const string ContentTransferEncodingMethodStringGZip64 = "x-gzip64";
 
-  private static readonly IReadOnlyDictionary<string, ContentTransferEncodingMethod> contentTransferEncodingMethods
+  private static readonly IReadOnlyDictionary<string, ContentTransferEncodingMethod> ContentTransferEncodingMethods
     = new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
       // standards
       { ContentTransferEncodingMethodStringSevenBit,        ContentTransferEncodingMethod.SevenBit },

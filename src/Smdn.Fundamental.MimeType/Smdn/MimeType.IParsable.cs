@@ -161,12 +161,12 @@ partial class MimeType
      * problematic.  For this reason, <type-name> and <subtype-name> SHOULD
      * be limited to 64 characters.'
      */
-    const int maxCharcters = 127;
+    const int MaxCharcters = 127;
 
-    if (maxCharcters < s.Length) {
+    if (MaxCharcters < s.Length) {
       return onParseError switch {
-        OnParseError.ThrowArgumentException => throw new ArgumentException($"input too long (must be up to {maxCharcters} characters)", paramName),
-        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {maxCharcters} characters)"),
+        OnParseError.ThrowArgumentException => throw new ArgumentException($"input too long (must be up to {MaxCharcters} characters)", paramName),
+        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {MaxCharcters} characters)"),
         _ => false, // OnParseError.ReturnFalse
       };
     }

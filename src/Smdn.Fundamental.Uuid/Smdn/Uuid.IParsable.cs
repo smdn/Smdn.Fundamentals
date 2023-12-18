@@ -76,24 +76,24 @@ partial struct Uuid
     if (s.Length != 36)
       return TryParseResult.FormatError;
 
-    const char delimiter = '-';
+    const char Delimiter = '-';
 
-    if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldTimeLow))
+    if (!TryGetSpanUpToNextDelimiter(ref s, Delimiter, out var fieldTimeLow))
       return TryParseResult.FormatError;
     if (!(fieldTimeLow.Length == 8 && uint.TryParse(fieldTimeLow.ToParsableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeLow)))
       return TryParseResult.FormatErrorOnTimeLow;
 
-    if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldTimeMid))
+    if (!TryGetSpanUpToNextDelimiter(ref s, Delimiter, out var fieldTimeMid))
       return TryParseResult.FormatError;
     if (!(fieldTimeMid.Length == 4 && ushort.TryParse(fieldTimeMid.ToParsableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeMid)))
       return TryParseResult.FormatErrorOnTimeMid;
 
-    if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldTimeHighAndVersion))
+    if (!TryGetSpanUpToNextDelimiter(ref s, Delimiter, out var fieldTimeHighAndVersion))
       return TryParseResult.FormatError;
     if (!(fieldTimeHighAndVersion.Length == 4 && ushort.TryParse(fieldTimeHighAndVersion.ToParsableType(), NumberStyles.HexNumber, provider: null, out var fieldValueTimeHiAndVersion)))
       return TryParseResult.FormatErrorOnTimeHiAndVersion;
 
-    if (!TryGetSpanUpToNextDelimiter(ref s, delimiter, out var fieldClockSeq))
+    if (!TryGetSpanUpToNextDelimiter(ref s, Delimiter, out var fieldClockSeq))
       return TryParseResult.FormatError;
     if (fieldClockSeq.Length != 4)
       return TryParseResult.FormatErrorOnClockSeqHiAndReserved;

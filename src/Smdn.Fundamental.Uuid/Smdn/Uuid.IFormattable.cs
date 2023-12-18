@@ -61,13 +61,13 @@ partial struct Uuid :
   {
     charsWritten = default;
 
-    const char defaultFormatChar = 'D';
+    const char DefaultFormatChar = 'D';
     char formatChar;
 
     if (format.Length == 1)
       formatChar = format[0];
     else if (format.IsEmpty)
-      formatChar = defaultFormatChar;
+      formatChar = DefaultFormatChar;
     else
       return TryFormatResult.InvalidFormat;
 

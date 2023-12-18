@@ -104,7 +104,7 @@ public static class MethodBaseExtensions {
     return false;
   }
 
-  private static readonly Dictionary<string, MethodSpecialName> specialMethodNames = new(StringComparer.Ordinal) {
+  private static readonly Dictionary<string, MethodSpecialName> SpecialMethodNames = new(StringComparer.Ordinal) {
     // comparison
     { "op_Equality", MethodSpecialName.Equality },
     { "op_Inequality", MethodSpecialName.Inequality },
@@ -148,7 +148,7 @@ public static class MethodBaseExtensions {
     if (!m.IsSpecialName)
       return MethodSpecialName.None;
 
-    if (specialMethodNames.TryGetValue(m.Name, out var methodSpecialName))
+    if (SpecialMethodNames.TryGetValue(m.Name, out var methodSpecialName))
       return methodSpecialName;
 
     if (m is ConstructorInfo)

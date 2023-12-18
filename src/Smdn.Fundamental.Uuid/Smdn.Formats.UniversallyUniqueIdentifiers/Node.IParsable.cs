@@ -43,14 +43,14 @@ partial struct Node
   {
     result = default;
 
-    const char delimiter = ':';
+    const char Delimiter = ':';
     Span<byte> node = stackalloc byte[SizeOfSelf];
 
     for (var n = 0; n < SizeOfSelf; n++) {
       ReadOnlySpan<char> span;
 
       if (n < SizeOfSelf - 1) {
-        var indexOfDelimiter = s.IndexOf(delimiter);
+        var indexOfDelimiter = s.IndexOf(Delimiter);
 
         if (indexOfDelimiter < 0)
           return false;

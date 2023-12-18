@@ -17,7 +17,7 @@ public static class PortNumberUtils {
   public const int MinIanaDynamicPort = 49152;
   public const int MaxIanaDynamicPort = 65535;
 
-  private static readonly Lazy<bool> isGetActiveTcpListenersAvailable = new(
+  private static readonly Lazy<bool> IsGetActiveTcpListenersAvailable = new(
     valueFactory: () => {
       try {
         IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners();
@@ -63,7 +63,7 @@ public static class PortNumberUtils {
     if (isPortInUseException is null)
       throw new ArgumentNullException(nameof(isPortInUseException));
 
-    if (isGetActiveTcpListenersAvailable.Value) {
+    if (IsGetActiveTcpListenersAvailable.Value) {
       if (TryFindAvailablePort(exceptPort, out var unusedPort)) {
         try {
           return createService(unusedPort);
@@ -120,7 +120,7 @@ public static class PortNumberUtils {
   {
     port = default;
 
-    if (!isGetActiveTcpListenersAvailable.Value)
+    if (!IsGetActiveTcpListenersAvailable.Value)
       return false;
 
     var activeListeners = IPGlobalProperties

@@ -7,14 +7,14 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 internal static class Nonce {
 #if !SYSTEM_SECURITY_CRYPTOGRAPHY_RANDOMNUMBERGENERATOR_FILL
-  private static readonly RandomNumberGenerator defaultRng = RandomNumberGenerator.Create();
+  private static readonly RandomNumberGenerator DefaultRng = RandomNumberGenerator.Create();
 #endif
 
   public static void Fill(Span<byte> span) =>
 #if SYSTEM_SECURITY_CRYPTOGRAPHY_RANDOMNUMBERGENERATOR_FILL
     RandomNumberGenerator.Fill(span);
 #else
-    Fill(span, defaultRng);
+    Fill(span, DefaultRng);
 #endif
 
   public static void Fill(Span<byte> span, RandomNumberGenerator rng)

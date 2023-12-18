@@ -6,6 +6,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 #if SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMATTRIBUTE || SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMGUARDATTRIBUTE
 using System.Runtime.Versioning;
+
 #endif
 #if MICROSOFT_WIN32_REGISTRY
 using Microsoft.Win32;
@@ -40,7 +41,7 @@ partial class MimeType {
     }
   }
 
-  private static readonly char[] mimeTypesFileDelimiters = new[] { '\t', ' ' };
+  private static readonly char[] MimeTypesFileDelimiters = new[] { '\t', ' ' };
 
   private static IEnumerable<KeyValuePair<string, string[]>> ReadMimeTypesFileLines(string mimeTypesFile)
   {
@@ -54,7 +55,7 @@ partial class MimeType {
 #endif
         continue;
 
-      var entry = line.Split(mimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
+      var entry = line.Split(MimeTypesFileDelimiters, StringSplitOptions.RemoveEmptyEntries);
 
       if (entry.Length <= 1)
         continue;

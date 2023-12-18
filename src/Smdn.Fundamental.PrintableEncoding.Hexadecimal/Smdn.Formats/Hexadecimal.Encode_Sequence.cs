@@ -11,28 +11,28 @@ partial class Hexadecimal {
 #if SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), UpperCaseHexOctets, out bytesEncoded);
 #else
-    => TryEncode(dataSequence, destination, upperCaseHexOctets, out bytesEncoded);
+    => TryEncode(dataSequence, destination, UpperCaseHexOctetBytes, out bytesEncoded);
 #endif
 
   public static bool TryEncodeLowerCase(ArraySegment<byte> dataSequence, ArraySegment<byte> destination, out int bytesEncoded)
 #if SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), LowerCaseHexOctets, out bytesEncoded);
 #else
-    => TryEncode(dataSequence, destination, lowerCaseHexOctets, out bytesEncoded);
+    => TryEncode(dataSequence, destination, LowerCaseHexOctetBytes, out bytesEncoded);
 #endif
 
   public static bool TryEncodeUpperCase(ArraySegment<byte> dataSequence, ArraySegment<char> destination, out int charsEncoded)
 #if SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), UpperCaseHexChars, out charsEncoded);
 #else
-    => TryEncode(dataSequence, destination, upperCaseHexChars, out charsEncoded);
+    => TryEncode(dataSequence, destination, UpperCaseHexChars, out charsEncoded);
 #endif
 
   public static bool TryEncodeLowerCase(ArraySegment<byte> dataSequence, ArraySegment<char> destination, out int charsEncoded)
 #if SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), LowerCaseHexChars, out charsEncoded);
 #else
-    => TryEncode(dataSequence, destination, lowerCaseHexChars, out charsEncoded);
+    => TryEncode(dataSequence, destination, LowerCaseHexChars, out charsEncoded);
 #endif
 
 #if SYSTEM_READONLYSPAN

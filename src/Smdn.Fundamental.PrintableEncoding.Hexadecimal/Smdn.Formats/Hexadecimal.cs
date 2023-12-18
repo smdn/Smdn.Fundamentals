@@ -14,7 +14,7 @@ public static partial class Hexadecimal {
 #else
   byte[]
 #endif
-  upperCaseHexOctets = new byte[] {
+  UpperCaseHexOctetBytes = new byte[] {
     0x30, 0x31, 0x32, 0x33,
     0x34, 0x35, 0x36, 0x37,
     0x38, 0x39, 0x41, 0x42,
@@ -27,7 +27,7 @@ public static partial class Hexadecimal {
 #else
   byte[]
 #endif
-  lowerCaseHexOctets = new byte[] {
+  LowerCaseHexOctetBytes = new byte[] {
     0x30, 0x31, 0x32, 0x33,
     0x34, 0x35, 0x36, 0x37,
     0x38, 0x39, 0x61, 0x62,
@@ -35,15 +35,15 @@ public static partial class Hexadecimal {
   };
 
 #if SYSTEM_READONLYSPAN && SYSTEM_READONLYMEMORY
-  public static ReadOnlySpan<byte> UpperCaseHexOctets => upperCaseHexOctets.Span;
-  public static ReadOnlySpan<byte> LowerCaseHexOctets => lowerCaseHexOctets.Span;
+  public static ReadOnlySpan<byte> UpperCaseHexOctets => UpperCaseHexOctetBytes.Span;
+  public static ReadOnlySpan<byte> LowerCaseHexOctets => LowerCaseHexOctetBytes.Span;
 #endif
 
 #if SYSTEM_READONLYSPAN
   public static ReadOnlySpan<char> UpperCaseHexChars => UpperCaseHexCharsInString.AsSpan();
   public static ReadOnlySpan<char> LowerCaseHexChars => LowerCaseHexCharsInString.AsSpan();
 #else
-  private static readonly char[] upperCaseHexChars = UpperCaseHexCharsInString.ToCharArray();
-  private static readonly char[] lowerCaseHexChars = LowerCaseHexCharsInString.ToCharArray();
+  private static readonly char[] UpperCaseHexChars = UpperCaseHexCharsInString.ToCharArray();
+  private static readonly char[] LowerCaseHexChars = LowerCaseHexCharsInString.ToCharArray();
 #endif
 }

@@ -30,7 +30,7 @@ public static class ExceptionUtils {
 #endif
 
 #if LOCALIZE_MESSAGE
-    private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> catalogues = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> Catalogues = new(StringComparer.Ordinal);
 
     private static string InternalGetText(string msgid)
     {
@@ -52,12 +52,12 @@ public static class ExceptionUtils {
 
       var languageName = culture.TwoLetterISOLanguageName; // XXX: zh-CHT, etc.
 
-      lock (catalogues) {
-        if (catalogues.TryGetValue(languageName, out catalog)) {
+      lock (Catalogues) {
+        if (Catalogues.TryGetValue(languageName, out catalog)) {
           return true;
         }
         else if (TryLoadCatalog(string.Concat("exceptions-", languageName, ".txt"), out catalog)) {
-          catalogues[languageName] = catalog;
+          Catalogues[languageName] = catalog;
           return true;
         }
 

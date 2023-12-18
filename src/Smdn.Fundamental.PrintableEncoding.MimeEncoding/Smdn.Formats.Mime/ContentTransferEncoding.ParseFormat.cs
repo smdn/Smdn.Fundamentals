@@ -31,7 +31,7 @@ static partial class ContentTransferEncoding {
     if (string.IsNullOrEmpty(str))
       return false;
 
-    return contentTransferEncodingMethods.TryGetValue(str, out encoding);
+    return ContentTransferEncodingMethods.TryGetValue(str, out encoding);
   }
 
   // TODO: public static bool TryParse(ReadOnlySpan<char> str, out ContentTransferEncodingMethod encoding)

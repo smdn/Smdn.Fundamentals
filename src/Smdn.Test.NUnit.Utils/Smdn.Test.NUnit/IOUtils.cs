@@ -132,12 +132,12 @@ public static class IOUtils {
 
   private static void TryIO(Action action)
   {
-    const int maxRetry = 10;
-    const int interval = 100;
+    const int MaxRetry = 10;
+    const int Interval = 100;
 
     Exception caughtException = null;
 
-    for (var retry = maxRetry; retry != 0; retry--) {
+    for (var retry = MaxRetry; retry != 0; retry--) {
       try {
         action();
         return;
@@ -149,7 +149,7 @@ public static class IOUtils {
         caughtException = ex;
       }
 
-      Thread.Sleep(interval);
+      Thread.Sleep(Interval);
     }
 
     if (caughtException is not null)

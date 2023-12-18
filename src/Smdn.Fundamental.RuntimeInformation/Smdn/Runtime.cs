@@ -23,8 +23,8 @@ public static partial class Runtime {
   public static RuntimeEnvironment RuntimeEnvironment => RuntimeEnvironmentAndName.Key;
   public static string Name => RuntimeEnvironmentAndName.Value;
 
-  private static readonly Lazy<Version?> lazyVersion = new(GetRuntimeVersion, LazyThreadSafetyMode.PublicationOnly);
-  public static Version? Version => lazyVersion.Value;
+  private static readonly Lazy<Version?> LazyVersion = new(GetRuntimeVersion, LazyThreadSafetyMode.PublicationOnly);
+  public static Version? Version => LazyVersion.Value;
 
   private static KeyValuePair<RuntimeEnvironment, string> GetRuntimeEnvironmentAndName()
   {

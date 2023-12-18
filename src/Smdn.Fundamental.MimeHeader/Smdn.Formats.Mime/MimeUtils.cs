@@ -15,7 +15,7 @@ namespace Smdn.Formats.Mime;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static partial class MimeUtils {
-  private static readonly char[] lineDelmiters = new char[] { '\r', '\n' };
+  private static readonly char[] LineDelmiters = new char[] { '\r', '\n' };
 
   public static Task<IReadOnlyList<KeyValuePair<string, string>>> ParseHeaderAsNameValuePairsAsync(
     LineOrientedStream stream,
@@ -43,7 +43,7 @@ public static partial class MimeUtils {
       return new KeyValuePair<string, string>(header.NameString, header.ValueString);
 #endif
 
-    var valueLines = header.ValueString.Split(lineDelmiters);
+    var valueLines = header.ValueString.Split(LineDelmiters);
 
     for (var i = 0; i < valueLines.Length; i++) {
       valueLines[i] = valueLines[i].Trim();
@@ -167,9 +167,9 @@ public static partial class MimeUtils {
 
       // field       =  field-name ":" [ field-body ] CRLF
       // field-name  =  1*<any CHAR, excluding CTLs, SPACE, and ":">
-      const byte nameBodyDelimiter = (byte)':';
+      const byte NameBodyDelimiter = (byte)':';
 
-      var posOfDelim = line.PositionOf(nameBodyDelimiter);
+      var posOfDelim = line.PositionOf(NameBodyDelimiter);
 
       offsetOfDelimiter = posOfDelim.HasValue ? (int)line.Slice(0, posOfDelim.Value).Length : -1;
 

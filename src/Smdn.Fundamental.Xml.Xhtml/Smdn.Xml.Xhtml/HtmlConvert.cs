@@ -75,14 +75,14 @@ public static class HtmlConvert {
     return sb.ToString();
   }
 
-  private static readonly Regex regexNumericReference = new(@"&#(?<hex>x?)(?<number>[0-9a-fA-F]{1,});", RegexOptions.Singleline |  RegexOptions.CultureInvariant | RegexOptions.Compiled);
+  private static readonly Regex RegexNumericReference = new(@"&#(?<hex>x?)(?<number>[0-9a-fA-F]{1,});", RegexOptions.Singleline |  RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
   public static string DecodeNumericCharacterReference(string s)
   {
     if (s == null)
       throw new ArgumentNullException(nameof(s));
 
-    return regexNumericReference.Replace(
+    return RegexNumericReference.Replace(
       s,
       m => ((char)Convert.ToUInt16(m.Groups["number"].Value, m.Groups["hex"].Length == 0 ? 10 : 16)).ToString()
     );

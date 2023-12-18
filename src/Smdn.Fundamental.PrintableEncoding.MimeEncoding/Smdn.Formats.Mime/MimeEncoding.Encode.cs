@@ -30,8 +30,8 @@ namespace Smdn.Formats.Mime;
 #pragma warning disable IDE0040
 static partial class MimeEncoding {
 #pragma warning restore IDE0040
-  private static readonly string mimeEncodingFoldingString = "\r\n\t";
-  private static readonly byte[] mimeEncodingPostamble = new byte[] { 0x3f, 0x3d }; // "?="
+  private static readonly string MimeEncodingFoldingString = "\r\n\t";
+  private static readonly byte[] MimeEncodingPostamble = new byte[] { 0x3f, 0x3d }; // "?="
 
   public static string Encode(
     string str,
@@ -75,7 +75,7 @@ static partial class MimeEncoding {
       doFold: true,
       foldingLimit: foldingLimit,
       foldingOffset: foldingOffset,
-      foldingString: mimeEncodingFoldingString
+      foldingString: MimeEncodingFoldingString
     );
 
   public static string Encode(
@@ -109,7 +109,7 @@ static partial class MimeEncoding {
       doFold: true,
       foldingLimit: foldingLimit,
       foldingOffset: foldingOffset,
-      foldingString: mimeEncodingFoldingString
+      foldingString: MimeEncodingFoldingString
     );
 
   public static string Encode(
@@ -187,7 +187,7 @@ static partial class MimeEncoding {
     var inputCharBuffer = str.ToCharArray();
     var inputCharOffset = 0;
     var outputBuffer = new byte[foldingLimit];
-    var ambleLength = preamble.Length + mimeEncodingPostamble.Length;
+    var ambleLength = preamble.Length + MimeEncodingPostamble.Length;
     var outputLimit = foldingLimit - (foldingOffset + ambleLength);
 
     if (outputLimit <= 0)
@@ -243,9 +243,9 @@ static partial class MimeEncoding {
       outputCount += transformed.Length;
 
       // copy postanble to buffer
-      Buffer.BlockCopy(mimeEncodingPostamble, 0, outputBuffer, outputCount, mimeEncodingPostamble.Length);
+      Buffer.BlockCopy(MimeEncodingPostamble, 0, outputBuffer, outputCount, MimeEncodingPostamble.Length);
 
-      outputCount += mimeEncodingPostamble.Length;
+      outputCount += MimeEncodingPostamble.Length;
 
       ret.Append(Encoding.ASCII.GetString(outputBuffer, 0, outputCount));
 

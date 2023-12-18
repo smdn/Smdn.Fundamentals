@@ -238,14 +238,14 @@ public static class TypeExtensions {
 
   internal static IEnumerable<Type> EnumerateTypeHierarchy(Type t, bool includeSelf)
   {
-    Type? _t = t;
+    Type? ty = t;
 
     if (includeSelf)
-      yield return _t;
+      yield return ty;
 
     for (; ; ) {
-      if ((_t = _t?.BaseType) is not null)
-        yield return _t;
+      if ((ty = ty?.BaseType) is not null)
+        yield return ty;
       else
         break;
     }

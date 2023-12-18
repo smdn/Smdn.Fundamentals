@@ -99,10 +99,10 @@ public readonly partial struct Uuid {
    *    nanosecond intervals since 00:00:00.00, 15 October 1582 (the date of
    *    Gregorian reform to the Christian calendar).
    */
-  private static readonly DateTime timestampEpoch = new(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
+  private static readonly DateTime TimestampEpochDateTime = new(1582, 10, 15, 0, 0, 0, DateTimeKind.Utc);
   internal static readonly DateTimeOffset TimeStampEpoch = new(1582, 10, 15, 0, 0, 0, TimeSpan.Zero);
 
-  public DateTime Timestamp => timestampEpoch.AddTicks(((long)(time_hi_and_version & 0x0fff) << 48) | ((long)time_mid << 32) | time_low);
+  public DateTime Timestamp => TimestampEpochDateTime.AddTicks(((long)(time_hi_and_version & 0x0fff) << 48) | ((long)time_mid << 32) | time_low);
 
   /*
    * 4.1.5. Clock Sequence

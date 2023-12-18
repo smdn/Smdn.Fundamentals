@@ -9,10 +9,10 @@ namespace Smdn.Xml.Linq.Xhtml;
 #pragma warning disable CA1711
 public class XHtmlClassAttribute : XAttribute {
 #pragma warning restore CA1711
-  private static readonly char[] classListSeparator = { ' ' };
+  private static readonly char[] ClassListSeparator = { ' ' };
 
   internal static string[] SplitClassList(string classList)
-    => classList?.Split(classListSeparator, StringSplitOptions.RemoveEmptyEntries);
+    => classList?.Split(ClassListSeparator, StringSplitOptions.RemoveEmptyEntries);
 
   public static string JoinClassList(IEnumerable<string> classList)
   {

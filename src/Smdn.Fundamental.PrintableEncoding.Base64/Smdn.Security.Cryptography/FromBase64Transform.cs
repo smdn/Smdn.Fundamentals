@@ -77,7 +77,7 @@ internal sealed class FromBase64Transform : ICryptoTransform {
         if (0x80 <= octet)
           throw new FormatException($"invalid octet: 0x{octet:X2}");
 
-        buffer[b] = fromBase64Table[octet];
+        buffer[b] = FromBase64Table[octet];
 
         if (buffer[b] == NUL)
           throw new FormatException($"invalid octet: 0x{octet:X2}");
@@ -141,7 +141,7 @@ internal sealed class FromBase64Transform : ICryptoTransform {
   private const byte PAD = 0x40;
 
 #pragma warning disable SA1137
-  private static readonly byte[] fromBase64Table = new byte[] {
+  private static readonly byte[] FromBase64Table = new byte[] {
   /*0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,*/
      NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x00
      NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL,  NUL, // 0x10

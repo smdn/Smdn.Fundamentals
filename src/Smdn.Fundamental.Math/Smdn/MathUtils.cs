@@ -79,7 +79,7 @@ public static class MathUtils {
   }
 #endif
 
-  private static readonly long[] primeNumbers = new long[] {
+  private static readonly long[] PrimeNumbers = new long[] {
     2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,
     59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127,
     131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199,
@@ -104,14 +104,14 @@ public static class MathUtils {
       return n == 2L;
     }
     else {
-      foreach (var p in primeNumbers) {
+      foreach (var p in PrimeNumbers) {
         if (n == p)
           return true;
         else if (n % p == 0L)
           return false;
       }
 
-      for (var i = primeNumbers[primeNumbers.Length - 1]; i * i <= n; i += 2L) {
+      for (var i = PrimeNumbers[PrimeNumbers.Length - 1]; i * i <= n; i += 2L) {
         if ((n % i) == 0L)
           return false;
       }
@@ -122,7 +122,7 @@ public static class MathUtils {
 
   public static long NextPrimeNumber(long n)
   {
-    foreach (var p in primeNumbers) {
+    foreach (var p in PrimeNumbers) {
       if (n < p)
         return p;
     }

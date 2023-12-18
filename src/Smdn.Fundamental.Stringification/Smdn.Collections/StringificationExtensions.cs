@@ -11,11 +11,11 @@ public static class StringificationExtensions {
 
   public static string Stringify<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> pairs)
   {
-    const string separator = ", ";
+    const string Separator = ", ";
 
     if (pairs == null)
       return null;
 
-    return string.Join(separator, pairs.Select(Stringify));
+    return string.Join(Separator, pairs.Select(Stringify));
   }
 }

@@ -36,13 +36,13 @@ internal sealed class ToBase64Transform : ICryptoTransform {
 
   private static int UncheckedTransformBlock(byte[] inputBuffer, int inputOffset, int inputCount, byte[] outputBuffer, int outputOffset)
   {
-    const byte padding = 0x3d; // '='
+    const byte Padding = 0x3d; // '='
 
     var ret = 0;
 
     var b = (inputBuffer[inputOffset] & 0xfc) >> 2;
 
-    outputBuffer[outputOffset++] = toBase64Table[b];
+    outputBuffer[outputOffset++] = ToBase64Table[b];
     ret++;
 
     b = (inputBuffer[inputOffset++] & 0x03) << 4;
@@ -51,7 +51,7 @@ internal sealed class ToBase64Transform : ICryptoTransform {
     if (0 < inputCount) {
       b |= (inputBuffer[inputOffset] & 0xf0) >> 4;
 
-      outputBuffer[outputOffset++] = toBase64Table[b];
+      outputBuffer[outputOffset++] = ToBase64Table[b];
       ret++;
 
       b = (inputBuffer[inputOffset++] & 0x0f) << 2;
@@ -60,25 +60,25 @@ internal sealed class ToBase64Transform : ICryptoTransform {
       if (0 < inputCount) {
         b |= (inputBuffer[inputOffset] & 0xc0) >> 6;
 
-        outputBuffer[outputOffset++] = toBase64Table[b];
+        outputBuffer[outputOffset++] = ToBase64Table[b];
         ret++;
 
         b = inputBuffer[inputOffset++] & 0x3f;
         // inputCount--;
 
-        outputBuffer[outputOffset++] = toBase64Table[b];
+        outputBuffer[outputOffset++] = ToBase64Table[b];
         ret++;
       }
       else {
-        outputBuffer[outputOffset++] = toBase64Table[b];
-        outputBuffer[outputOffset++] = padding;
+        outputBuffer[outputOffset++] = ToBase64Table[b];
+        outputBuffer[outputOffset++] = Padding;
         ret += 2;
       }
     }
     else {
-      outputBuffer[outputOffset++] = toBase64Table[b];
-      outputBuffer[outputOffset++] = padding;
-      outputBuffer[outputOffset++] = padding;
+      outputBuffer[outputOffset++] = ToBase64Table[b];
+      outputBuffer[outputOffset++] = Padding;
+      outputBuffer[outputOffset++] = Padding;
       ret += 3;
     }
 
@@ -105,7 +105,7 @@ internal sealed class ToBase64Transform : ICryptoTransform {
     return ret;
   }
 
-  private static readonly byte[] toBase64Table = new byte[] {
+  private static readonly byte[] ToBase64Table = new byte[] {
   /*0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,*/
     0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, 0x50, // 0x00
     0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5a, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, // 0x10

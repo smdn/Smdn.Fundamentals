@@ -25,7 +25,7 @@ partial class Hexadecimal {
       ValidateTryEncodeDestination(destination, index) &&
       TryEncode(data, destination.AsSpan(index), UpperCaseHexOctets, out bytesEncoded);
 #else
-    return TryEncode(data, destination, index, upperCaseHexOctets, out bytesEncoded);
+    return TryEncode(data, destination, index, UpperCaseHexOctetBytes, out bytesEncoded);
 #endif
   }
 
@@ -38,7 +38,7 @@ partial class Hexadecimal {
       ValidateTryEncodeDestination(destination, index) &&
       TryEncode(data, destination.AsSpan(index), LowerCaseHexOctets, out bytesEncoded);
 #else
-    return TryEncode(data, destination, index, lowerCaseHexOctets, out bytesEncoded);
+    return TryEncode(data, destination, index, LowerCaseHexOctetBytes, out bytesEncoded);
 #endif
   }
 
@@ -51,7 +51,7 @@ partial class Hexadecimal {
       ValidateTryEncodeDestination(destination, index) &&
       TryEncode(data, destination.AsSpan(index), UpperCaseHexChars, out charsEncoded);
 #else
-    return TryEncode(data, destination, index, upperCaseHexChars, out charsEncoded);
+    return TryEncode(data, destination, index, UpperCaseHexChars, out charsEncoded);
 #endif
   }
 
@@ -64,7 +64,7 @@ partial class Hexadecimal {
       ValidateTryEncodeDestination(destination, index) &&
       TryEncode(data, destination.AsSpan(index), LowerCaseHexChars, out charsEncoded);
 #else
-    return TryEncode(data, destination, index, lowerCaseHexChars, out charsEncoded);
+    return TryEncode(data, destination, index, LowerCaseHexChars, out charsEncoded);
 #endif
   }
 

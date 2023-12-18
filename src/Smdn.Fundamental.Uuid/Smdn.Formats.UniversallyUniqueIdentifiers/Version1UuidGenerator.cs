@@ -55,7 +55,7 @@ internal sealed class Version1UuidGenerator : UuidGenerator {
   /*
    * 4.1.5.  Clock Sequence
    */
-  private static readonly ushort clockSequenceMask = 0x3fff;
+  private static readonly ushort ClockSequenceMask = 0x3fff;
 
   internal abstract class ClockSequenceSource {
     public abstract ushort GetClockSequence();
@@ -116,7 +116,7 @@ internal sealed class Version1UuidGenerator : UuidGenerator {
     => new(
       version: UuidVersion.Version1,
       time: timeStampSource.GetTimeStamp(),
-      clock_seq: (ushort)(clockSequenceSource.GetClockSequence() & clockSequenceMask),
+      clock_seq: (ushort)(clockSequenceSource.GetClockSequence() & ClockSequenceMask),
       node: node
     );
 }

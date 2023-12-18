@@ -112,7 +112,7 @@ static partial class MimeEncoding {
     = @"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*";
 #pragma warning restore SA1203
 
-  private static readonly Regex mimeEncodedWordRegex = new(
+  private static readonly Regex MimeEncodedWordRegex = new(
     MimeEncodedWordPattern,
     RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
   );
@@ -143,7 +143,7 @@ static partial class MimeEncoding {
 #if SYSTEM_TEXT_REGULAREXPRESSIONS_REGEXGENERATORATTRIBUTE
       GetMimeEncodedWordRegex()
 #else
-      mimeEncodedWordRegex
+      MimeEncodedWordRegex
 #endif
       .Replace(
         str,

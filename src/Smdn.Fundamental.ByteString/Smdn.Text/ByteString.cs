@@ -58,7 +58,7 @@ public class ByteString :
 #if SYSTEM_ARRAY_EMPTY
       new ArraySegment<byte>(Array.Empty<byte>()),
 #else
-      new ArraySegment<byte>(emptyByteArray),
+      new ArraySegment<byte>(EmptyByteArray),
 #endif
 #pragma warning restore SA1114
       true
@@ -67,7 +67,7 @@ public class ByteString :
   }
 
 #if !SYSTEM_ARRAY_EMPTY
-  private static readonly byte[] emptyByteArray = new byte[0];
+  private static readonly byte[] EmptyByteArray = new byte[0];
 #endif
 
   public static ByteString CreateMutable(params byte[] @value) => new(new ArraySegment<byte>(@value), true);

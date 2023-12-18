@@ -40,7 +40,7 @@ public class PolyglotHtml5Writer : XmlWriter {
   private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
 
   private sealed class ElementContext {
-    private static readonly HashSet<string> voidElements = new(StringComparer.OrdinalIgnoreCase) {
+    private static readonly HashSet<string> VoidElements = new(StringComparer.OrdinalIgnoreCase) {
       "area",
       "base",
       "br",
@@ -64,7 +64,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     public bool IsEmpty { get; private set; } = true;
     public bool IsClosed { get; private set; } = false;
 
-    public bool IsNonVoidElement => !(voidElements.Contains(LocalName) && IsNamespaceXhtml);
+    public bool IsNonVoidElement => !(VoidElements.Contains(LocalName) && IsNamespaceXhtml);
     private bool IsNamespaceXhtml => string.IsNullOrEmpty(Namespace) || string.Equals(Namespace, W3CNamespaces.Xhtml, StringComparison.Ordinal);
 
     public ElementContext(string localName, string ns, ElementContext parentElementContext)
@@ -84,11 +84,11 @@ public class PolyglotHtml5Writer : XmlWriter {
     public void MarkAsClosed() => IsClosed = true;
   }
 
-  private static readonly XmlWriterSettings defaultSettings = new();
+  private static readonly XmlWriterSettings DefaultWriterSettings = new();
 
   private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
   {
-    settings ??= defaultSettings;
+    settings ??= DefaultWriterSettings;
 
     var s = settings.Clone();
 
@@ -130,7 +130,7 @@ public class PolyglotHtml5Writer : XmlWriter {
   private PolyglotHtml5Writer(XmlWriter baseWriter, XmlWriterSettings settings)
   {
     this.baseWriter = baseWriter ?? throw new ArgumentNullException(nameof(baseWriter));
-    this.settings = settings ?? defaultSettings.Clone();
+    this.settings = settings ?? DefaultWriterSettings.Clone();
   }
 
   protected override void Dispose(bool disposing)

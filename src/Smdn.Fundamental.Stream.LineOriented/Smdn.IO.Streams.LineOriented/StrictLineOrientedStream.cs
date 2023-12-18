@@ -7,14 +7,14 @@ namespace Smdn.IO.Streams.LineOriented;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public class StrictLineOrientedStream : LineOrientedStream {
-  private static readonly ReadOnlyMemory<byte> defaultNewLine = new[] { (byte)'\r', (byte)'\n' };
+  private static readonly ReadOnlyMemory<byte> DefaultNewLine = new[] { (byte)'\r', (byte)'\n' };
 
   public StrictLineOrientedStream(
     Stream stream,
     int bufferSize = DefaultBufferSize,
     bool leaveStreamOpen = DefaultLeaveStreamOpen
   )
-    : base(stream, defaultNewLine.Span, bufferSize, leaveStreamOpen)
+    : base(stream, DefaultNewLine.Span, bufferSize, leaveStreamOpen)
   {
   }
 

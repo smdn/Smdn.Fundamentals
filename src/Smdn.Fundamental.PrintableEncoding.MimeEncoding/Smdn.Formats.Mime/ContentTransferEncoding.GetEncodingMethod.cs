@@ -13,7 +13,7 @@ static partial class ContentTransferEncoding {
     if (encoding == null)
       throw new ArgumentNullException(nameof(encoding));
 
-    if (contentTransferEncodingMethods.TryGetValue(encoding, out var method))
+    if (ContentTransferEncodingMethods.TryGetValue(encoding, out var method))
       return method;
     else
       return ContentTransferEncodingMethod.Unknown;

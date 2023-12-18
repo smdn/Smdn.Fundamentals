@@ -34,27 +34,27 @@ public static class RFC822DateTimeFormats {
   public static DateTime ParseDateTime(string s)
     => DateAndTimeParser.ParseDateTime(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions
+      TimeZoneDefinitions
     );
 
 #if SYSTEM_READONLYSPAN
   public static DateTime ParseDateTime(ReadOnlySpan<char> s)
     => DateAndTimeParser.ParseDateTime(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions
+      TimeZoneDefinitions
     );
 #endif
 
   public static bool TryParseDateTime(string? s, out DateTime result)
     => DateAndTimeParser.TryParseDateTime(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions,
+      TimeZoneDefinitions,
       out result
     );
 
@@ -62,9 +62,9 @@ public static class RFC822DateTimeFormats {
   public static bool TryParseDateTime(ReadOnlySpan<char> s, out DateTime result)
     => DateAndTimeParser.TryParseDateTime(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions,
+      TimeZoneDefinitions,
       out result
     );
 #endif
@@ -72,27 +72,27 @@ public static class RFC822DateTimeFormats {
   public static DateTimeOffset ParseDateTimeOffset(string s)
     => DateAndTimeParser.ParseDateTimeOffset(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions
+      TimeZoneDefinitions
     );
 
 #if SYSTEM_READONLYSPAN
   public static DateTimeOffset ParseDateTimeOffset(ReadOnlySpan<char> s)
     => DateAndTimeParser.ParseDateTimeOffset(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions
+      TimeZoneDefinitions
     );
 #endif
 
   public static bool TryParseDateTimeOffset(string? s, out DateTimeOffset result)
     => DateAndTimeParser.TryParseDateTimeOffset(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions,
+      TimeZoneDefinitions,
       out result
     );
 
@@ -100,14 +100,14 @@ public static class RFC822DateTimeFormats {
   public static bool TryParseDateTimeOffset(ReadOnlySpan<char> s, out DateTimeOffset result)
     => DateAndTimeParser.TryParseDateTimeOffset(
       s,
-      formatStrings,
+      FormatStrings,
       formatsDateOnly: null,
-      timeZoneDefinitions,
+      TimeZoneDefinitions,
       out result
     );
 #endif
 
-  private static readonly IReadOnlyList<TimeZoneDefinition> timeZoneDefinitions = new TimeZoneDefinition[] {
+  private static readonly IReadOnlyList<TimeZoneDefinition> TimeZoneDefinitions = new TimeZoneDefinition[] {
     new UniversalTimeZoneDefinition(" GMT"),
     new UniversalTimeZoneDefinition(" UT"),
     new RFC5322EasternTimeZoneDefinition(" EST"),
@@ -169,7 +169,7 @@ public static class RFC822DateTimeFormats {
   // EST(-05:00)/EDT(-04:00)
   private sealed class RFC5322EasternTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
-    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+    private static readonly IReadOnlyList<string> TimeZoneIds = new[] {
       "US/Eastern",
       "Eastern Standard Time",
       "America/New_York",
@@ -177,7 +177,7 @@ public static class RFC822DateTimeFormats {
     };
 
     public RFC5322EasternTimeZoneDefinition(string prefix)
-      : base(prefix, "EST", timeZoneIds)
+      : base(prefix, "EST", TimeZoneIds)
     {
     }
 #else
@@ -196,7 +196,7 @@ public static class RFC822DateTimeFormats {
   // CST(-06:00)/CDT(-05:00)
   private sealed class RFC5322CentralTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
-    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+    private static readonly IReadOnlyList<string> TimeZoneIds = new[] {
       "US/Central",
       "Central Standard Time",
       "America/Chicago",
@@ -204,7 +204,7 @@ public static class RFC822DateTimeFormats {
     };
 
     public RFC5322CentralTimeZoneDefinition(string prefix)
-      : base(prefix, "CST", timeZoneIds)
+      : base(prefix, "CST", TimeZoneIds)
     {
     }
 #else
@@ -223,7 +223,7 @@ public static class RFC822DateTimeFormats {
   // MST(-07:00)/MDT(-06:00)
   private sealed class RFC5322MountainTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
-    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+    private static readonly IReadOnlyList<string> TimeZoneIds = new[] {
       "US/Mountain",
       "Mountain Standard Time",
       "America/Denver",
@@ -231,7 +231,7 @@ public static class RFC822DateTimeFormats {
     };
 
     public RFC5322MountainTimeZoneDefinition(string prefix)
-      : base(prefix, "MST", timeZoneIds)
+      : base(prefix, "MST", TimeZoneIds)
     {
     }
 #else
@@ -250,7 +250,7 @@ public static class RFC822DateTimeFormats {
   // PST(-08:00)/PDT(-07:00)
   private sealed class RFC5322PacificTimeZoneDefinition : RFC5322NorthAmericanTimeZoneDefinition {
 #if SYSTEM_TIMEZONEINFO_FINDSYSTEMTIMEZONEBYID
-    private static readonly IReadOnlyList<string> timeZoneIds = new[] {
+    private static readonly IReadOnlyList<string> TimeZoneIds = new[] {
       "US/Pacific",
       "Pacific Standard Time",
       "America/Los_Angeles",
@@ -258,7 +258,7 @@ public static class RFC822DateTimeFormats {
     };
 
     public RFC5322PacificTimeZoneDefinition(string prefix)
-      : base(prefix, "PST", timeZoneIds)
+      : base(prefix, "PST", TimeZoneIds)
     {
     }
 #else
@@ -338,7 +338,7 @@ public static class RFC822DateTimeFormats {
       => new(dateAndTime.DateTime, GetUtcOffset(dateAndTime.DateTime));
   }
 
-  private static readonly string[] formatStrings = new[]
+  private static readonly string[] FormatStrings = new[]
   {
     // "r", // RFC1123 "ddd, dd MMM yyyy HH':'mm':'ss 'GMT'"
     "ddd',' d MMM yyyy H':'m':'s'.'fffffff zzz",
