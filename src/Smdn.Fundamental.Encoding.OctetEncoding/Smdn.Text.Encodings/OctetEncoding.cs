@@ -62,7 +62,8 @@ public class OctetEncoding : Encoding {
   {
   }
 
-  /*public*/ private OctetEncoding(int bits, byte? encoderReplacement)
+  // public
+  private OctetEncoding(int bits, byte? encoderReplacement)
   {
     maxValue = ValidateMaxValue(bits, nameof(bits));
     this.encoderReplacement = encoderReplacement;

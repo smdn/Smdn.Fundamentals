@@ -8,8 +8,7 @@ namespace Smdn;
 partial class MimeType :
 #pragma warning restore IDE0040
   IEquatable<MimeType>,
-  IEquatable<string>
-{
+  IEquatable<string> {
   /*
    * [RFC6838] Media Type Specifications and Registration Procedures 4.2.  Naming Requirements
    * 'Both top-level type and subtype names are case-insensitive.'

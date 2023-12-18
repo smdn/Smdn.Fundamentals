@@ -51,7 +51,7 @@ internal sealed class FromBase64Transform : ICryptoTransform {
     var ret = 0;
     var paddedBlockDecoded = false;
 
-    for (; ;) {
+    for (; ; ) {
       for (; bufferOffset < 4;) {
         if (inputCount <= 0)
           return ret;

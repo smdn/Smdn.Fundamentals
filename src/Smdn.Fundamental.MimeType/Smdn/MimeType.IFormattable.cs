@@ -8,8 +8,7 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial class MimeType :
 #pragma warning restore IDE0040
-  IFormattable
-{
+  IFormattable {
   public string ToString(string? format, IFormatProvider? formatProvider)
   {
     char[]? destination = null;
