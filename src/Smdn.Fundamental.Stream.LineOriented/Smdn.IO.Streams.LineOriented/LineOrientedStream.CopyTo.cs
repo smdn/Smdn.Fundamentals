@@ -62,6 +62,7 @@ partial class LineOrientedStream {
 
   /// <param name="destination">The destination stream.</param>
   /// <param name="bufferSize">The value of this parameter does not affect to the behavior of the method.</param>
+  /// <param name="cancellationToken">The <see cref="CancellationToken" /> to monitor for cancellation requests.</param>
   public override Task CopyToAsync(
     Stream destination,
     int bufferSize,
