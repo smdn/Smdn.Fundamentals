@@ -10,3 +10,4 @@ mono_crash.*.json
 # automatically generated files from Smdn.MSBuild.ProjectAssets.*
 /.editorconfig
 /src/.editorconfig
+/tests/.editorconfig
