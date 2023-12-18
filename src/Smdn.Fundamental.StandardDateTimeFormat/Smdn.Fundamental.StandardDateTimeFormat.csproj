@@ -14,6 +14,7 @@ SPDX-License-Identifier: MIT
     >$(DefineConstants);LANG_VERSION_11_OR_GREATER</DefineConstants> <!-- required to use the 'scoped' keyword in C# 11 -->
     <LangVersion>latest</LangVersion> <!-- clarify to use the latest lang version -->
     <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0030 -->
+    <NoWarn>CS1591;$(NoWarn)</NoWarn> <!-- CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member' -->
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
