@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
     <TargetFrameworks>$(TargetFrameworks);netstandard2.1;netstandard2.0</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);netstandard1.6;netstandard1.5;netstandard1.4;netstandard1.3;netstandard1.2;netstandard1.1;netstandard1.0</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);net48;net472;net471;net47;net462;net461;net46;net452;net451;net45</TargetFrameworks>
+    <NoWarn>$(NoWarn);NETSDK1138</NoWarn> <!-- NETSDK1138: The target framework is out of support -->
   </PropertyGroup>
 
   <PropertyGroup Label="extra DefineConstants">
