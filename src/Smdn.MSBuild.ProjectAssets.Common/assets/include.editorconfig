@@ -267,7 +267,7 @@ csharp_style_var_elsewhere = true:suggestion
 
 # Add braces (IDE0011)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0011
-csharp_prefer_braces = when_multiline
+csharp_prefer_braces = when_multiline:warning
 
 # Use throw expression (IDE0016)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0016
@@ -279,11 +279,11 @@ csharp_style_inlined_variable_declaration = true:warning
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0019
 # Use pattern matching to avoid 'as' followed by a 'null' check (IDE0019)
-csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+csharp_style_pattern_matching_over_as_with_null_check = true:warning
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0020-ide0038
 # Use pattern matching to avoid 'is' check followed by a cast (IDE0020 and IDE0038)
-csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+csharp_style_pattern_matching_over_is_with_cast_check = true:warning
 
 # Use expression body for constructors (IDE0021)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0021
@@ -339,7 +339,7 @@ csharp_style_prefer_range_operator = true:suggestion
 
 # Remove unnecessary expression value (IDE0058)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0058
-csharp_style_unused_value_expression_statement_preference = discard_variable
+csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
 
 # Use expression body for local functions (IDE0061)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0061
@@ -351,11 +351,11 @@ csharp_prefer_static_local_function = true:warning
 
 # Use simple 'using' statement (IDE0063)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0063
-csharp_prefer_simple_using_statement = true:warning
+csharp_prefer_simple_using_statement = true:suggestion
 
 # 'using' directive placement (IDE0065)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0065
-csharp_using_directive_placement = outside_namespace
+csharp_using_directive_placement = outside_namespace:warning
 
 # Use switch expression (IDE0066)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0066
@@ -379,7 +379,7 @@ dotnet_style_namespace_match_folder = true:warning
 
 # Namespace declaration preferences (IDE0160 and IDE0161)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0160-ide0161
-csharp_style_namespace_declarations = file_scoped:suggestion
+csharp_style_namespace_declarations = file_scoped:warning
 
 # Simplify property pattern (IDE0170)
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0170
@@ -420,8 +420,11 @@ csharp_style_conditional_delegate_call = true:suggestion
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#using-directive-preferences
 dotnet_diagnostic.IDE0005.severity    = warning       # Remove unnecessary using directives
+# C# style rules
+dotnet_diagnostic.IDE0065.severity    = warning       # 'using' directive placement
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#code-block-preferences
+dotnet_diagnostic.IDE0011.severity    = warning       # Add braces
 dotnet_diagnostic.IDE0063.severity    = suggestion    # Use simple 'using' statement
 dotnet_diagnostic.IDE0160.severity    = none          # Use block-scoped namespace
 dotnet_diagnostic.IDE0161.severity    = warning       # Use file-scoped namespace
@@ -429,7 +432,7 @@ dotnet_diagnostic.IDE0200.severity    = warning       # Remove unnecessary lambd
 dotnet_diagnostic.IDE0290.severity    = suggestion    # Use primary constructor
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/expression-bodied-members
-dotnet_diagnostic.IDE0021.severity    = none          # Use expression body for constructors
+dotnet_diagnostic.IDE0021.severity    = warning       # Use expression body for constructors
 dotnet_diagnostic.IDE0022.severity    = suggestion    # Use expression body for methods
 dotnet_diagnostic.IDE0023.severity    = suggestion    # Use expression body for operators
 dotnet_diagnostic.IDE0024.severity    = suggestion    # Use expression body for operators
@@ -469,7 +472,7 @@ dotnet_diagnostic.IDE0056.severity    = suggestion    # Use index operator
 dotnet_diagnostic.IDE0057.severity    = suggestion    # Use range operator
 dotnet_diagnostic.IDE0072.severity    = suggestion    # Add missing cases to switch expression
 dotnet_diagnostic.IDE0080.severity    = warning       # Remove unnecessary suppression operator
-dotnet_diagnostic.IDE0090.severity    = suggestion    # Simplify new expression
+dotnet_diagnostic.IDE0090.severity    = warning       # Simplify new expression
 dotnet_diagnostic.IDE0180.severity    = warning       # Use tuple to swap values
 dotnet_diagnostic.IDE0230.severity    = suggestion    # Use UTF-8 string literal
 dotnet_diagnostic.IDE0240.severity    = warning       # Nullable directive is redundant
@@ -482,6 +485,7 @@ dotnet_diagnostic.IDE0304.severity    = suggestion    # Use collection expressio
 dotnet_diagnostic.IDE0305.severity    = suggestion    # Use collection expression for fluent
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#modifier-preferences
+dotnet_diagnostic.IDE0036.severity    = warning       # Order modifiers
 dotnet_diagnostic.IDE0040.severity    = warning       # Add accessibility modifiers
 # C# style rules
 dotnet_diagnostic.IDE0062.severity    = warning       # Make local function static
@@ -511,4 +515,4 @@ dotnet_diagnostic.IDE0007.severity    = suggestion    # Use `var` instead of exp
 dotnet_diagnostic.IDE0008.severity    = none          # Use explicit type instead of `var`
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0055
-dotnet_diagnostic.IDE0055.severity    = silent        # Fix formatting
+dotnet_diagnostic.IDE0055.severity    = warning       # Fix formatting
