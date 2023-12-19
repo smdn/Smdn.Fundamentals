@@ -53,8 +53,8 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Parse<Node>(s, provider: null), "IParsable");
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), n.ToString("X"), "IParsable");
-      Assert.AreEqual(expectedString.ToLowerInvariant(), n.ToString("x"), "IParsable");
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
     }
 
     static T Parse<T>(string s, IFormatProvider provider) where T : IParsable<T> => T.Parse(s, provider);
@@ -96,8 +96,8 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Parse<Node>(s.AsSpan(), provider: null), "IParsable");
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), n.ToString("X"), "IParsable");
-      Assert.AreEqual(expectedString.ToLowerInvariant(), n.ToString("x"), "IParsable");
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
     }
 
     static T Parse<T>(ReadOnlySpan<char> s, IFormatProvider provider) where T : ISpanParsable<T> => T.Parse(s, provider);
@@ -129,11 +129,11 @@ partial class NodeTests {
     }
 
 #if FEATURE_GENERIC_MATH
-    Assert.AreEqual(expectValid, TryParse<Node>(s, out var node2), "IParsable");
+    Assert.That(TryParse<Node>(s, out var node2), Is.EqualTo(expectValid), "IParsable");
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), node2.ToString("X"), "IParsable");
-      Assert.AreEqual(expectedString.ToLowerInvariant(), node2.ToString("x"), "IParsable");
+      Assert.That(node2.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
+      Assert.That(node2.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
     }
 
     static bool TryParse<T>(string s, out T result) where T : IParsable<T> => T.TryParse(s, provider: null, out result);
@@ -165,11 +165,11 @@ partial class NodeTests {
     }
 
 #if FEATURE_GENERIC_MATH
-    Assert.AreEqual(expectValid, TryParse<Node>(s.AsSpan(), out var node2), "IParsable");
+    Assert.That(TryParse<Node>(s.AsSpan(), out var node2), Is.EqualTo(expectValid), "IParsable");
 
     if (expectValid) {
-      Assert.AreEqual(expectedString.ToUpperInvariant(), node2.ToString("X"), "IParsable");
-      Assert.AreEqual(expectedString.ToLowerInvariant(), node2.ToString("x"), "IParsable");
+      Assert.That(node2.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
+      Assert.That(node2.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
     }
 
     static bool TryParse<T>(ReadOnlySpan<char> s, out T result) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out result);
