@@ -77,25 +77,21 @@ namespace Smdn.Security.Cryptography {
       }
 #endif
 
-    [Test]
-    public void TestTransformBlock()
+    [TestCase("A",     "QQ==")]
+    [TestCase("AS",    "QVM=")]
+    [TestCase("ASC",   "QVND")]
+    [TestCase("ASCI",  "QVNDSQ==")]
+    [TestCase("ASCII", "QVNDSUk=")]
+    public void TestTransformBlock(string output, string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "A",     Input = "QQ=="},
-        new {Output = "AS",    Input = "QVM="},
-        new {Output = "ASC",   Input = "QVND"},
-        new {Output = "ASCI",  Input = "QVNDSQ=="},
-        new {Output = "ASCII", Input = "QVNDSUk="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform()) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+        var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
-          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
-        }
+        Assert.That(transformedLength, Is.EqualTo(output.Length), $"input: {input}");
+        Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(output), $"input: {input}");
       }
     }
 
@@ -144,19 +140,15 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [Test]
-    public void TestTransformBlock_InvalidFormat()
+    [TestCase("====")]
+    [TestCase("Q===")]
+    public void TestTransformBlock_InvalidFormat(string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "xxxx",  Input = "===="},
-        new {Output = "xxxx",  Input = "Q==="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform()) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
-        }
+        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
       }
     }
 
@@ -186,98 +178,82 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [Test]
-    public void TestTransformBlock_IgnoreWhiteSpaces()
+    [TestCase("ASCII", " QVNDSUk=")]
+    [TestCase("ASCII", "QVNDSUk= ")]
+    [TestCase("ASCII", "QVND SUk=")]
+    [TestCase("ASCII", "QVN DSUk=")]
+    [TestCase("ASCII", "QVNDS Uk=")]
+    [TestCase("ASCII", "QVND\tSUk=")]
+    [TestCase("ASCII", "QVND\nSUk=")]
+    [TestCase("ASCII", "QVND\rSUk=")]
+    [TestCase("ASCII", "QVND\r\nSUk=")]
+    public void TestTransformBlock_IgnoreWhiteSpaces(string output, string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "ASCII", Input = " QVNDSUk="},
-        new {Output = "ASCII", Input = "QVNDSUk= "},
-        new {Output = "ASCII", Input = "QVND SUk="},
-        new {Output = "ASCII", Input = "QVN DSUk="},
-        new {Output = "ASCII", Input = "QVNDS Uk="},
-        new {Output = "ASCII", Input = "QVND\tSUk="},
-        new {Output = "ASCII", Input = "QVND\nSUk="},
-        new {Output = "ASCII", Input = "QVND\rSUk="},
-        new {Output = "ASCII", Input = "QVND\r\nSUk="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform(true)) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform(true)) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+        var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
-          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
-        }
+        Assert.That(transformedLength, Is.EqualTo(output.Length), $"input: {input}");
+        Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(output), $"input: {input}");
       }
     }
 
-    [Test]
-    public void TestTransformBlock_DoNotIgnoreWhiteSpaces()
+    [TestCase(" QVNDSUk=")]
+    // [TestCase("QVNDSUk= ")]
+    [TestCase("QVND SUk=")]
+    [TestCase("QVN DSUk=")]
+    [TestCase("QVNDS Uk=")]
+    [TestCase("QVND\tSUk=")]
+    [TestCase("QVND\nSUk=")]
+    [TestCase("QVND\rSUk=")]
+    [TestCase("QVND\r\nSUk=")]
+    public void TestTransformBlock_DoNotIgnoreWhiteSpaces(string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "ASCII", Input = " QVNDSUk="},
-//        new {Output = "ASCII", Input = "QVNDSUk= "},
-        new {Output = "ASCII", Input = "QVND SUk="},
-        new {Output = "ASCII", Input = "QVN DSUk="},
-        new {Output = "ASCII", Input = "QVNDS Uk="},
-        new {Output = "ASCII", Input = "QVND\tSUk="},
-        new {Output = "ASCII", Input = "QVND\nSUk="},
-        new {Output = "ASCII", Input = "QVND\rSUk="},
-        new {Output = "ASCII", Input = "QVND\r\nSUk="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform(false)) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform(false)) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {pattern.Input}");
-        }
+        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
       }
     }
 
-    [Test]
-    public void TestTransformBlock_DoNotIgnoreWhiteSpaces_IgnoresTrailingWhiteSpaces()
+    [TestCase("A",     "QQ== ")]
+    [TestCase("AS",    "QVM= ")]
+    [TestCase("ASC",   "QVND ")]
+    [TestCase("ASCI",  "QVNDSQ== ")]
+    [TestCase("ASCII", "QVNDSUk= ")]
+    [TestCase("ASCII", "QVNDSUk=\t")]
+    [TestCase("ASCII", "QVNDSUk=\r")]
+    [TestCase("ASCII", "QVNDSUk=\n")]
+    [TestCase("ASCII", "QVNDSUk=\r\n")]
+    public void TestTransformBlock_DoNotIgnoreWhiteSpaces_IgnoresTrailingWhiteSpaces(string output, string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "A",     Input = "QQ== "},
-        new {Output = "AS",    Input = "QVM= "},
-        new {Output = "ASC",   Input = "QVND "},
-        new {Output = "ASCI",  Input = "QVNDSQ== "},
-        new {Output = "ASCII", Input = "QVNDSUk= "},
-        new {Output = "ASCII", Input = "QVNDSUk=\t"},
-        new {Output = "ASCII", Input = "QVNDSUk=\r"},
-        new {Output = "ASCII", Input = "QVNDSUk=\n"},
-        new {Output = "ASCII", Input = "QVNDSUk=\r\n"},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform(false)) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform(false)) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+        var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.That(transformedLength, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
-          Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
-        }
+        Assert.That(transformedLength, Is.EqualTo(output.Length), $"input: {input}");
+        Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(output), $"input: {input}");
       }
     }
 
-    [Test]
-    public void TestTransformBlock_InputBufferShorterThanBlockSize()
+    [TestCase("")]
+    [TestCase("Q")]
+    [TestCase("QQ")]
+    [TestCase("QQ=")]
+    public void TestTransformBlock_InputBufferShorterThanBlockSize(string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "A",     Input = ""},
-        new {Output = "A",     Input = "Q"},
-        new {Output = "A",     Input = "QQ"},
-        new {Output = "A",     Input = "QQ="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[3];
+      using (var t = Base64.CreateFromBase64Transform()) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[3];
 
-          var length = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
+        var length = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-          Assert.That(length, Is.EqualTo(0), $"input: {pattern.Input}");
-        }
+        Assert.That(length, Is.EqualTo(0), $"input: {input}");
       }
     }
 
@@ -318,41 +294,33 @@ namespace Smdn.Security.Cryptography {
       );
     }
 
-    [Test]
-    public void TestTransformFinalBlock()
+    [TestCase("A",     "QQ==")]
+    [TestCase("AS",    "QVM=")]
+    [TestCase("ASC",   "QVND")]
+    [TestCase("ASCI",  "QVNDSQ==")]
+    [TestCase("ASCII", "QVNDSUk=")]
+    public void TestTransformFinalBlock(string output, string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "A",     Input = "QQ=="},
-        new {Output = "AS",    Input = "QVM="},
-        new {Output = "ASC",   Input = "QVND"},
-        new {Output = "ASCI",  Input = "QVNDSQ=="},
-        new {Output = "ASCII", Input = "QVNDSUk="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform()) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
+        var ret = t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length);
 
-          Assert.That(ret.Length, Is.EqualTo(pattern.Output.Length), $"input: {pattern.Input}");
-          Assert.That(Encoding.ASCII.GetString(ret), Is.EqualTo(pattern.Output), $"input: {pattern.Input}");
-        }
+        Assert.That(ret.Length, Is.EqualTo(output.Length), $"input: {input}");
+        Assert.That(Encoding.ASCII.GetString(ret), Is.EqualTo(output), $"input: {input}");
       }
     }
 
-    [Test]
-    public void TestTransformFinalBlock_InvalidFormat()
+    [TestCase("QVN=SQ==")]
+    [TestCase("QV==SQ==")]
+    public void TestTransformFinalBlock_InvalidFormat(string input)
     {
-      foreach (var pattern in new[] {
-        new {Output = "xxxx", Input = "QVN=SQ=="},
-        new {Output = "xxxx", Input = "QV==SQ=="},
-      }) {
-        using (var t = Base64.CreateFromBase64Transform()) {
-          var inputBuffer = Encoding.ASCII.GetBytes(pattern.Input);
-          var outputBuffer = new byte[8];
+      using (var t = Base64.CreateFromBase64Transform()) {
+        var inputBuffer = Encoding.ASCII.GetBytes(input);
+        var outputBuffer = new byte[8];
 
-          Assert.Throws<FormatException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), $"input: {pattern.Input}");
-        }
+        Assert.Throws<FormatException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), $"input: {input}");
       }
     }
 
