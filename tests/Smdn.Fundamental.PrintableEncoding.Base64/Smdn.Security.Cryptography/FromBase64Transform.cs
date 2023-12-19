@@ -234,10 +234,14 @@ namespace Smdn.Security.Cryptography {
         var inputBuffer = Encoding.ASCII.GetBytes(input);
         var outputBuffer = new byte[8];
 
+#if NET8_0_OR_GREATER
+        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
+#else
         var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
         Assert.That(transformedLength, Is.EqualTo(output.Length), $"input: {input}");
         Assert.That(Encoding.ASCII.GetString(outputBuffer, 0, transformedLength), Is.EqualTo(output), $"input: {input}");
+#endif
       }
     }
 
