@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_READONLYSPAN || SYSTEM_READONLYMEMORY
 using System;
+#endif
 
 namespace Smdn.Formats;
 

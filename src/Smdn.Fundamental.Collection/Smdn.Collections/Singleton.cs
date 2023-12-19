@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2019 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_SERIALIZABLEATTRIBUTE
 using System;
+#endif
 using System.Collections;
 using System.Collections.Generic;
 #if SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE || SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONINFO

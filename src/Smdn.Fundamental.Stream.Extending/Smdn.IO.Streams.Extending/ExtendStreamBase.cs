@@ -5,14 +5,16 @@
 #endif
 
 using System;
-#if SYSTEM_BUFFERS_ARRAYPOOL
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
 using System.Buffers;
 #endif
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES || SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
 using System.Diagnostics.CodeAnalysis;
 #endif
 using System.IO;
+#if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
 using System.Runtime.InteropServices;
+#endif
 using System.Threading;
 using System.Threading.Tasks;
 

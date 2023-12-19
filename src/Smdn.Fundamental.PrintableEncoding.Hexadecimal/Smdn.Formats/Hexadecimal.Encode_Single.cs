@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_SPAN
 using System;
+#endif
 using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats;

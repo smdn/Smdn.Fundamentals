@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_ENVIRONMENT_GETENVIRONMENTVARIABLE || SYSTEM_APPCONTEXT_GETDATA
 using System;
+#endif
 using System.Runtime.InteropServices;
 
 namespace Smdn;

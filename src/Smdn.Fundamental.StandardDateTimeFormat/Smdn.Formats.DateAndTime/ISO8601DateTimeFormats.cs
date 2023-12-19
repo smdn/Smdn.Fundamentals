@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+#if SYSTEM_GLOBALIZATION_ISOWEEK
 using System.Globalization;
+#endif
 
 namespace Smdn.Formats.DateAndTime;
 

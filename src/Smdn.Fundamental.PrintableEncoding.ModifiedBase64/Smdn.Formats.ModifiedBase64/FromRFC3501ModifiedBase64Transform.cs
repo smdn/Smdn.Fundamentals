@@ -4,7 +4,9 @@ using System;
 #if SYSTEM_BUFFERS_ARRAYPOOL
 using System.Buffers;
 #endif
+#if SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
 using System.Security.Cryptography;
+#endif
 
 using Smdn.Security.Cryptography;
 

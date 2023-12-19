@@ -4,7 +4,9 @@ using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
+#if SYSTEM_DIAGNOSTICS_PROCESS
 using Smdn.OperatingSystem;
+#endif
 
 namespace Smdn;
 

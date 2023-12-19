@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if SYSTEM_BUFFERS_ARRAYPOOL
+#if SYSTEM_TEXT_ENCODING_ENCODERFALLBACK && SYSTEM_BUFFERS_ARRAYPOOL
 using System.Buffers;
 #endif
 using System.Text;
