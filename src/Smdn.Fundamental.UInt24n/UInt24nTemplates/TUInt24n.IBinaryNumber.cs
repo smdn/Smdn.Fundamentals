@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 
 using ShimTypeSystemNumericsBitOperationsIsPow2 =
 #if SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2
