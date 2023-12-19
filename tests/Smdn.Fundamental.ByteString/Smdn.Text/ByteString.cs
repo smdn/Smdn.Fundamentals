@@ -1099,6 +1099,7 @@ namespace Smdn.Text {
       Assert.Throws<ArgumentNullException>(() => ByteString.IsTerminatedByCRLF(null));
     }
 
+#if !NET8_0_OR_GREATER
     [Test]
     public void TestBinarySerialization()
     {
@@ -1119,5 +1120,6 @@ namespace Smdn.Text {
         });
       }
     }
+#endif
   }
 }

@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !NET8_0_OR_GREATER
+
 using System;
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
 using System.Runtime.Serialization.Formatters.Binary;
@@ -126,3 +128,4 @@ public class AssertSerializationTests {
 #endif
   }
 }
+#endif

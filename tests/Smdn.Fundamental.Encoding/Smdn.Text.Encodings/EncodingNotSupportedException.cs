@@ -50,17 +50,21 @@ public class EncodingNotSupportedExceptionTests {
 
     Assert.That(ex1.EncodingName, Is.Null);
 
+#if !NET8_0_OR_GREATER
     Assert.IsSerializable(ex1, deserialized => {
       Assert.That(deserialized.EncodingName, Is.Null);
     });
+#endif
 
     var ex2 = new EncodingNotSupportedException("x-unsupported-encoding");
 
     Assert.That(ex2.EncodingName, Is.EqualTo("x-unsupported-encoding"));
 
+#if !NET8_0_OR_GREATER
     Assert.IsSerializable(ex2, deserialized => {
       Assert.That(deserialized.EncodingName, Is.EqualTo("x-unsupported-encoding"));
     });
+#endif
   }
 #endif
 }

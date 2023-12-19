@@ -74,6 +74,7 @@ namespace Smdn.Collections {
       }
     }
 
+#if !NET8_0_OR_GREATER
     [Test]
     public void TestBinarySerialization()
     {
@@ -87,5 +88,6 @@ namespace Smdn.Collections {
         });
       }
     }
+#endif
   }
 }
