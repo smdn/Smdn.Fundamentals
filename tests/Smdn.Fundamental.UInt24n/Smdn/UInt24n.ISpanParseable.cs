@@ -7,10 +7,10 @@ using NUnit.Framework;
 namespace Smdn;
 
 partial class UInt24nTests {
-  private static TUInt24n Parse<TUInt24n>(string s) where TUInt24n : ISpanParseable<TUInt24n>
+  private static TUInt24n Parse<TUInt24n>(string s) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.Parse(s, provider: null);
 
-  private static bool TryParse<TUInt24n>(string s, out TUInt24n result) where TUInt24n : ISpanParseable<TUInt24n>
+  private static bool TryParse<TUInt24n>(string s, out TUInt24n result) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.TryParse(s, provider: null, out result);
 
   [Test]
@@ -75,14 +75,14 @@ partial class UInt24nTests {
     Assert.IsFalse(TryParse<UInt48>("281474976710656", out uint48), nameof(UInt48));
   }
 
-  private static TUInt24n Parse<TUInt24n>(ReadOnlySpan<char> s) where TUInt24n : ISpanParseable<TUInt24n>
+  private static TUInt24n Parse<TUInt24n>(ReadOnlySpan<char> s) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.Parse(s, provider: null);
 
-  private static bool TryParse<TUInt24n>(ReadOnlySpan<char> s, out TUInt24n result) where TUInt24n : ISpanParseable<TUInt24n>
+  private static bool TryParse<TUInt24n>(ReadOnlySpan<char> s, out TUInt24n result) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.TryParse(s, provider: null, out result);
 
   [Test]
-  public void ISpanParseable_Parse()
+  public void ISpanParsable_Parse()
   {
     Assert.AreEqual(
       (UInt24)0x012345,
@@ -98,7 +98,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void ISpanParseable_Parse_FormatException()
+  public void ISpanParsable_Parse_FormatException()
   {
     Assert.Throws<FormatException>(() => Parse<UInt24>("ABCDEF".AsSpan()), nameof(UInt24));
 
@@ -106,7 +106,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void ISpanParseable_Parse_OverflowException()
+  public void ISpanParsable_Parse_OverflowException()
   {
     Assert.Throws<OverflowException>(() => Parse<UInt24>("-1".AsSpan()), nameof(UInt24));
     Assert.Throws<OverflowException>(() => Parse<UInt24>("16777216".AsSpan()), nameof(UInt24));
@@ -116,7 +116,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void ISpanParseable_TryParse()
+  public void ISpanParsable_TryParse()
   {
     Assert.IsTrue(TryParse<UInt24>("74565".AsSpan(), out var uint24), nameof(UInt24));
     Assert.AreEqual((UInt24)0x012345, uint24, nameof(UInt24));
@@ -126,7 +126,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void ISpanParseable_TryParse_FormatException()
+  public void ISpanParsable_TryParse_FormatException()
   {
     Assert.IsFalse(TryParse<UInt24>("ABCDEF".AsSpan(), out var uint24), nameof(UInt24));
 
@@ -134,7 +134,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void ISpanParseable_TryParse_OverflowException()
+  public void ISpanParsable_TryParse_OverflowException()
   {
     Assert.IsFalse(TryParse<UInt24>("-1".AsSpan(), out var uint24), nameof(UInt24));
     Assert.IsFalse(TryParse<UInt24>("16777216".AsSpan(), out uint24), nameof(UInt24));

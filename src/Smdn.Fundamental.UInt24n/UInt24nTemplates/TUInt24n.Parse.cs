@@ -22,7 +22,7 @@ partial struct TUInt24n {
     => (TUInt24n)TUIntWide.Parse(s, style, provider);
 
 #if FEATURE_GENERIC_MATH
-  static TUInt24n ISpanParseable<TUInt24n>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+  static TUInt24n ISpanParsable<TUInt24n>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     => Parse(s, NumberStyles.Integer, provider);
 #endif
 
@@ -83,7 +83,7 @@ partial struct TUInt24n {
   public static bool TryParse(ReadOnlySpan<char> s, out TUInt24n result)
     => TryParse(s, NumberStyles.Integer, provider: null, out result);
 
-  // ISpanParseable<TSelf>.TryParse(ReadOnlySpan<Char>, IFormatProvider, TSelf)
+  // ISpanParsable<TSelf>.TryParse(ReadOnlySpan<Char>, IFormatProvider, TSelf)
   public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TUInt24n result)
     => TryParse(s, NumberStyles.Integer, provider, out result);
 
