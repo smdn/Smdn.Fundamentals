@@ -5,12 +5,15 @@ SPDX-License-Identifier: MIT
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <TargetFrameworks>net6.0;net471;net45;netstandard2.1;netstandard2.0;netstandard1.6;netstandard1.3</TargetFrameworks>
+    <TargetFrameworks>net8.0;net6.0;net471;net45;netstandard2.1;netstandard2.0;netstandard1.6;netstandard1.3</TargetFrameworks>
     <VersionPrefix>3.1.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0030 -->
     <NoWarn>CS1591;$(NoWarn)</NoWarn> <!-- CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member' -->
+    <DefineConstants
+      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))"
+    >FEATURE_GENERIC_MATH;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
@@ -25,9 +28,6 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Condition="$([MSBuild]::VersionLessThan('$(VersionPrefix)', '4.0.0'))">
     <DefineConstants>$(DefineConstants);API_VERSION_3_X_X</DefineConstants>
   </PropertyGroup>
-
-  <!-- enable feature 'generic math' -->
-  <Import Project="..\FeatureGenericMath.props" />
 
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
