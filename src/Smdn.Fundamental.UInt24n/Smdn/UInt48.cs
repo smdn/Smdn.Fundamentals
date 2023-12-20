@@ -132,7 +132,7 @@ public partial struct UInt48 {
     return true;
   }
 
-  public static UInt48 CreateSaturating<TOther>(TOther value) where TOther : INumber<TOther>
+  public static UInt48 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
       return new((ulong)((byte)(object)value));

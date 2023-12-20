@@ -116,7 +116,7 @@ public partial struct UInt24 {
     return true;
   }
 
-  public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumber<TOther>
+  public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
       return new((uint)((byte)(object)value));
