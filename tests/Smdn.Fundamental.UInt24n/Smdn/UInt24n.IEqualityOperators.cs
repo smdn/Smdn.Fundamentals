@@ -66,7 +66,7 @@ partial class UInt24nTests {
     Assert.IsFalse(Equals(UInt48.Zero, UInt48.One), "UInt48.Zero == UInt48.One");
     Assert.IsTrue(Equals(UInt48.One, UInt48.One), "UInt48.One == UInt48.One");
 
-    static bool Equals<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool Equals<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IEqualityOperators<TUInt24n, TUInt24n, bool>
       => x == y;
   }
 
@@ -83,7 +83,7 @@ partial class UInt24nTests {
     Assert.IsTrue(NotEqual(UInt48.Zero, UInt48.One), "UInt48.Zero != UInt48.One");
     Assert.IsFalse(NotEqual(UInt48.One, UInt48.One), "UInt48.One != UInt48.One");
 
-    static bool NotEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool NotEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IEqualityOperators<TUInt24n, TUInt24n, bool>
       => x != y;
   }
 #endif
