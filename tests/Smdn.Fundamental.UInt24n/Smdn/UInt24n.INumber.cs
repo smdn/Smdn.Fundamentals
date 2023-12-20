@@ -73,15 +73,15 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Sign_UInt24()
   {
-    Assert.That(Sign(UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
-    Assert.That(Sign(UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
-    Assert.That(Sign(UInt24.MaxValue), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
+    Assert.That(Sign(UInt24.Zero), Is.EqualTo(0), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
+    Assert.That(Sign(UInt24.One), Is.EqualTo(1), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
+    Assert.That(Sign(UInt24.MaxValue), Is.EqualTo(1), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
-    static TUInt24n Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
+    static int Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
       => TUInt24n.Sign(value);
 #else
-    static UInt24 Sign(UInt24 value)
+    static int Sign(UInt24 value)
       => UInt24.Sign(value);
 #endif
   }
@@ -89,15 +89,15 @@ partial class UInt24nTests {
   [Test]
   public void INumber_Sign_UInt48()
   {
-    Assert.That(Sign(UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
-    Assert.That(Sign(UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
-    Assert.That(Sign(UInt48.MaxValue), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
+    Assert.That(Sign(UInt48.Zero), Is.EqualTo(0), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
+    Assert.That(Sign(UInt48.One), Is.EqualTo(1), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
+    Assert.That(Sign(UInt48.MaxValue), Is.EqualTo(1), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
-    static TUInt24n Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
+    static int Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
       => TUInt24n.Sign(value);
 #else
-    static UInt48 Sign(UInt48 value)
+    static int Sign(UInt48 value)
       => UInt48.Sign(value);
 #endif
   }

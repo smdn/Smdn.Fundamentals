@@ -29,7 +29,7 @@ partial struct TUInt24n {
    * INumber<TOther>.Abs/Sign
    */
   public static TUInt24n Abs(TUInt24n value) => value;
-  public static TUInt24n Sign(TUInt24n value) => value == Zero ? Zero : One;
+  public static int Sign(TUInt24n value) => value == Zero ? 0 : 1;
 
   /*
    * INumber<TOther>.Min/Max/Clamp
