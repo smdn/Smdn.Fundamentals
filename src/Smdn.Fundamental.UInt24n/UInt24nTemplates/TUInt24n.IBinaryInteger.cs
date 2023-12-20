@@ -5,6 +5,13 @@ using System;
 using System.Numerics;
 #endif
 
+using ShimTypeSystemMathDivRemReturnValueTuple2 =
+#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+  System.Math;
+#else
+  Smdn.MathShim;
+#endif
+
 using ShimTypeSystemNumericsBitOperationsPopCount =
 #if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
   System.Numerics.BitOperations;
@@ -38,6 +45,13 @@ partial struct TUInt24n
   /*
    * IBinaryInteger
    */
+  public static (TUInt24n Quotient, TUInt24n Remainder) DivRem(TUInt24n left, TUInt24n right)
+  {
+    var (quot, rem) = ShimTypeSystemMathDivRemReturnValueTuple2.DivRem(left.Widen(), right.Widen());
+
+    return (new(quot), new(rem));
+  }
+
   public static TUInt24n RotateLeft(TUInt24n value, int rotateAmount)
   {
     if (rotateAmount == 0)

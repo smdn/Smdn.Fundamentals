@@ -12,13 +12,6 @@ using ShimTypeSystemMathClamp =
   Smdn.MathShim;
 #endif
 
-using ShimTypeSystemMathDivRemReturnValueTuple2 =
-#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
-  System.Math;
-#else
-  Smdn.MathShim;
-#endif
-
 namespace Smdn;
 
 #pragma warning disable IDE0040
@@ -47,17 +40,6 @@ partial struct TUInt24n {
     => max < min
       ? throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max))
       : new(ShimTypeSystemMathClamp.Clamp(value.Widen(), min.Widen(), max.Widen()));
-
-  /*
-   * INumber<TOther>.DivRem
-   */
-  public static (TUInt24n Quotient, TUInt24n Remainder) DivRem(TUInt24n left, TUInt24n right)
-  {
-    var (quot, rem) = ShimTypeSystemMathDivRemReturnValueTuple2.DivRem(left.Widen(), right.Widen());
-
-    return (new(quot), new(rem));
-  }
-
 #if FEATURE_GENERIC_MATH
   /*
    * INumber<TOther>.Create/TryCreate

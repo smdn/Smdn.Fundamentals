@@ -97,6 +97,52 @@ partial class UInt48Tests {
     => Assert.That(UInt48.RotateRight((UInt48)value, rotateAmount), Is.EqualTo((UInt48)expected), $"RotateRight({((UInt48)value).ToBinaryString()}, {rotateAmount})");
 }
 
+partial class UInt24Tests {
+  [Test]
+  public void DivRem()
+  {
+    Assert.Throws<DivideByZeroException>(() => DivRem(UInt24.Zero, UInt24.Zero), $"{typeof(UInt24).Name} DivRem(Zero, Zero)");
+    Assert.Throws<DivideByZeroException>(() => DivRem(UInt24.One, UInt24.Zero), $"{typeof(UInt24).Name} DivRem(One, Zero)");
+
+    Assert.That(DivRem(UInt24.Zero, UInt24.One), Is.EqualTo((UInt24.Zero, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(Zero, One)");
+    Assert.That(DivRem(UInt24.One, UInt24.One), Is.EqualTo((UInt24.One, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(One, One)");
+    Assert.That(DivRem(UInt24.One, UInt24.MaxValue), Is.EqualTo((UInt24.Zero, UInt24.One)), $"{typeof(UInt24).Name} DivRem(One, MaxValue)");
+    Assert.That(DivRem(UInt24.MaxValue, UInt24.One), Is.EqualTo((UInt24.MaxValue, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(MaxValue, One)");
+    Assert.That(DivRem(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo((UInt24.One, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(MaxValue, MaxValue)");
+
+#if FEATURE_GENERIC_MATH
+    static (TUInt24n Quotient, TUInt24n Remainder) DivRem<TUInt24n>(TUInt24n left, TUInt24n right) where TUInt24n : IBinaryInteger<TUInt24n>
+      => TUInt24n.DivRem(left, right);
+#else
+    static (UInt24 Quotient, UInt24 Remainder) DivRem(UInt24 left, UInt24 right)
+      => UInt24.DivRem(left, right);
+#endif
+  }
+}
+
+partial class UInt48Tests {
+  [Test]
+  public void DivRem()
+  {
+    Assert.Throws<DivideByZeroException>(() => DivRem(UInt48.Zero, UInt48.Zero), $"{typeof(UInt48).Name} DivRem(Zero, Zero)");
+    Assert.Throws<DivideByZeroException>(() => DivRem(UInt48.One, UInt48.Zero), $"{typeof(UInt48).Name} DivRem(One, Zero)");
+
+    Assert.That(DivRem(UInt48.Zero, UInt48.One), Is.EqualTo((UInt48.Zero, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(Zero, One)");
+    Assert.That(DivRem(UInt48.One, UInt48.One), Is.EqualTo((UInt48.One, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(One, One)");
+    Assert.That(DivRem(UInt48.One, UInt48.MaxValue), Is.EqualTo((UInt48.Zero, UInt48.One)), $"{typeof(UInt48).Name} DivRem(One, MaxValue)");
+    Assert.That(DivRem(UInt48.MaxValue, UInt48.One), Is.EqualTo((UInt48.MaxValue, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(MaxValue, One)");
+    Assert.That(DivRem(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo((UInt48.One, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(MaxValue, MaxValue)");
+
+#if FEATURE_GENERIC_MATH
+    static (TUInt24n Quotient, TUInt24n Remainder) DivRem<TUInt24n>(TUInt24n left, TUInt24n right) where TUInt24n : IBinaryInteger<TUInt24n>
+      => TUInt24n.DivRem(left, right);
+#else
+    static (UInt48 Quotient, UInt48 Remainder) DivRem(UInt48 left, UInt48 right)
+      => UInt48.DivRem(left, right);
+#endif
+  }
+}
+
 #if FEATURE_GENERIC_MATH
 partial class UInt24nTests {
   static TUInt24n IBinaryInteger_RotateLeft<TUInt24n>(TUInt24n value, int rotateAmount) where TUInt24n : IBinaryInteger<TUInt24n>
