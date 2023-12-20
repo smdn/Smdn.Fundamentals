@@ -120,7 +120,7 @@ partial class UInt24nTests {
     Assert.IsFalse(GreaterThan(UInt48.Zero, UInt48.One), "UInt48.Zero > UInt48.One");
     Assert.IsFalse(GreaterThan(UInt48.One, UInt48.One), "UInt48.One > UInt48.One");
 
-    static bool GreaterThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool GreaterThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x > y;
   }
 
@@ -137,7 +137,7 @@ partial class UInt24nTests {
     Assert.IsFalse(GreaterThanOrEqual(UInt48.Zero, UInt48.One), "UInt48.Zero >= UInt48.One");
     Assert.IsTrue(GreaterThanOrEqual(UInt48.One, UInt48.One), "UInt48.One >= UInt48.One");
 
-    static bool GreaterThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool GreaterThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x >= y;
   }
 
@@ -154,7 +154,7 @@ partial class UInt24nTests {
     Assert.IsTrue(LessThan(UInt48.Zero, UInt48.One), "UInt48.Zero < UInt48.One");
     Assert.IsFalse(LessThan(UInt48.One, UInt48.One), "UInt48.One < UInt48.One");
 
-    static bool LessThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool LessThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x < y;
   }
 
@@ -171,7 +171,7 @@ partial class UInt24nTests {
     Assert.IsTrue(LessThanOrEqual(UInt48.Zero, UInt48.One), "UInt48.Zero <= UInt48.One");
     Assert.IsTrue(LessThanOrEqual(UInt48.One, UInt48.One), "UInt48.One <= UInt48.One");
 
-    static bool LessThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool LessThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x <= y;
   }
 #endif
