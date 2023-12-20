@@ -145,6 +145,50 @@ partial class UInt48Tests {
 
 #if FEATURE_GENERIC_MATH
 partial class UInt24nTests {
+  static int IBinaryInteger_GetByteCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
+    => value.GetByteCount();
+
+  [TestCase(0x000000u)]
+  [TestCase(0x000001u)]
+  [TestCase(0x100000u)]
+  [TestCase(0xFFFFFFu)]
+  public void IBinaryInteger_GetByteCount_OfUInt24(uint value)
+    => Assert.That(IBinaryInteger_GetByteCount((UInt24)value), Is.EqualTo(3), $"GetByteCount({((UInt24)value).ToBinaryString()})");
+
+  [TestCase(0x000000_000000u)]
+  [TestCase(0x000000_000001u)]
+  [TestCase(0x100000_000000u)]
+  [TestCase(0xFFFFFF_FFFFFFu)]
+  public void IBinaryInteger_GetByteCount_OfUInt48(ulong value)
+    => Assert.That(IBinaryInteger_GetByteCount((UInt48)value), Is.EqualTo(6), $"GetByteCount({((UInt48)value).ToBinaryString()})");
+
+  static int IBinaryInteger_GetShortestBitLength<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
+    => value.GetShortestBitLength();
+
+  [TestCase(0b_0000_0000_0000__0000_0000_0000u, 0)]
+  [TestCase(0b_0000_0000_0000__0000_0000_0001u, 1)]
+  [TestCase(0b_0000_0000_0000__0000_0000_0010u, 2)]
+  [TestCase(0b_0000_0000_0000__0000_0000_0011u, 2)]
+  [TestCase(0b_0100_0000_0000__0000_0000_0000u, 23)]
+  [TestCase(0b_1000_0000_0000__0000_0000_0000u, 24)]
+  [TestCase(0b_1111_1111_1111__1111_1111_1111u, 24)]
+  public void IBinaryInteger_GetShortestBitLength_OfUInt24(uint value, int expected)
+    => Assert.That(IBinaryInteger_GetShortestBitLength((UInt24)value), Is.EqualTo(expected), $"GetShortestBitLength({((UInt24)value).ToBinaryString()})");
+
+  [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL, 0)]
+  [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL, 1)]
+  [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0010uL, 2)]
+  [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0011uL, 2)]
+  [TestCase(0b_0100_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL, 47)]
+  [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL, 48)]
+  [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL, 48)]
+  public void IBinaryInteger_GetShortestBitLength_OfUInt48(ulong value, int expected)
+    => Assert.That(IBinaryInteger_GetShortestBitLength((UInt48)value), Is.EqualTo(expected), $"GetShortestBitLength({((UInt48)value).ToBinaryString()})");
+}
+#endif
+
+#if FEATURE_GENERIC_MATH
+partial class UInt24nTests {
   static TUInt24n IBinaryInteger_RotateLeft<TUInt24n>(TUInt24n value, int rotateAmount) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.RotateLeft(value, rotateAmount);
 

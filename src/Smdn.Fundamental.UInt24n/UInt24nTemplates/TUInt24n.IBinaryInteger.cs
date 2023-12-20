@@ -99,4 +99,10 @@ partial struct TUInt24n
 #endif
   public static int TrailingZeroCount(TUInt24n value)
     => ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value.Widen() | UnusedBitMask);
+
+#if FEATURE_GENERIC_MATH
+  int IBinaryInteger<TUInt24n>.GetByteCount() => SizeOfSelf;
+
+  int IBinaryInteger<TUInt24n>.GetShortestBitLength() => BitsOfSelf - LeadingZeroCount(this);
+#endif
 }
