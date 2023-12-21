@@ -533,35 +533,43 @@ partial class UInt24nTests {
   }
 #endif
 
-  [Test]
-  public void INumberBase_Abs_UInt24()
+  private static System.Collections.IEnumerable YieldTestCases_INumberBase_Abs_UInt24()
   {
-    Assert.That(Abs(UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
-    Assert.That(Abs(UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
-    Assert.That(Abs(UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
+    yield return new object?[] { UInt24.Zero, UInt24.Zero };
+    yield return new object?[] { UInt24.One, UInt24.One };
+    yield return new object?[] { UInt24.MaxValue, UInt24.MaxValue };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_INumberBase_Abs_UInt24))]
+  public void INumberBase_Abs_UInt24(UInt24 value, UInt24 expected)
+  {
+    Assert.That(UInt24.Abs(value), Is.EqualTo(expected), nameof(UInt24.Abs));
 
 #if FEATURE_GENERIC_MATH
-    static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
+    Assert.That(INumberBase_Abs(value), Is.EqualTo(expected), nameof(INumberBase_Abs));
+
+    static TUInt24n INumberBase_Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.Abs(value);
-#else
-    static UInt24 Abs(UInt24 value)
-      => UInt24.Abs(value);
 #endif
   }
 
-  [Test]
-  public void INumberBase_Abs_UInt48()
+  private static System.Collections.IEnumerable YieldTestCases_INumberBase_Abs_UInt48()
   {
-    Assert.That(Abs(UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
-    Assert.That(Abs(UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
-    Assert.That(Abs(UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
+    yield return new object?[] { UInt48.Zero, UInt48.Zero };
+    yield return new object?[] { UInt48.One, UInt48.One };
+    yield return new object?[] { UInt48.MaxValue, UInt48.MaxValue };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_INumberBase_Abs_UInt48))]
+  public void INumberBase_Abs_UInt48(UInt48 value, UInt48 expected)
+  {
+    Assert.That(UInt48.Abs(value), Is.EqualTo(expected), nameof(UInt48.Abs));
 
 #if FEATURE_GENERIC_MATH
-    static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
+    Assert.That(INumberBase_Abs(value), Is.EqualTo(expected), nameof(INumberBase_Abs));
+
+    static TUInt24n INumberBase_Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.Abs(value);
-#else
-    static UInt48 Abs(UInt48 value)
-      => UInt48.Abs(value);
 #endif
   }
 
