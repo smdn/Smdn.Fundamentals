@@ -27,7 +27,7 @@ partial class UInt24nTests {
     Assert.That(GetZero<UInt24>(), Is.EqualTo(UInt24.Zero), nameof(UInt24));
     Assert.That(GetZero<UInt48>(), Is.EqualTo(UInt48.Zero), nameof(UInt48));
 
-    static TUInt24n GetZero<TUInt24n>() where TUInt24n : INumber<TUInt24n>
+    static TUInt24n GetZero<TUInt24n>() where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.Zero;
   }
 
@@ -37,7 +37,7 @@ partial class UInt24nTests {
     Assert.That(GetOne<UInt24>(), Is.EqualTo(UInt24.One), nameof(UInt24));
     Assert.That(GetOne<UInt48>(), Is.EqualTo(UInt48.One), nameof(UInt48));
 
-    static TUInt24n GetOne<TUInt24n>() where TUInt24n : INumber<TUInt24n>
+    static TUInt24n GetOne<TUInt24n>() where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.One;
   }
 #endif
@@ -50,7 +50,7 @@ partial class UInt24nTests {
     Assert.That(Abs(UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name}.{nameof(UInt24.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
-    static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
+    static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.Abs(value);
 #else
     static UInt24 Abs(UInt24 value)
@@ -66,7 +66,7 @@ partial class UInt24nTests {
     Assert.That(Abs(UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name}.{nameof(UInt48.MaxValue)}");
 
 #if FEATURE_GENERIC_MATH
-    static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
+    static TUInt24n Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.Abs(value);
 #else
     static UInt48 Abs(UInt48 value)
