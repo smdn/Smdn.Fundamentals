@@ -86,10 +86,12 @@ public partial struct UInt48 {
   private static bool TryConvertFromTruncating<TOther>(
     TOther value,
     bool throwIfOverflow,
-    out UInt48 result
+    out UInt48 result,
+    out bool overflow
   ) where TOther : INumberBase<TOther>
   {
     result = default;
+    overflow = default;
 
     long val;
 
@@ -128,7 +130,9 @@ public partial struct UInt48 {
     else
       return false; // is not convertible
 
-    if (throwIfOverflow && val is < minValue or > maxValue)
+    overflow = val is < minValue or > maxValue;
+
+    if (overflow && throwIfOverflow)
       throw UInt24n.CreateOverflowException<UInt48>(value);
 
     result = new(unchecked((ulong)val));

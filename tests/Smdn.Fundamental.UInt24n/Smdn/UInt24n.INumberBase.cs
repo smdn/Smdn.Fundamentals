@@ -446,24 +446,24 @@ partial class UInt24nTests {
   [Test]
   public void INumber_CreateTruncating_OverflowException_UInt24()
   {
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((sbyte)-1), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((short)-1), "short -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((uint)0x1_000000), "uint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((int)-1), "int -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((int)0x1_000000), "int 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((ulong)0x1_000000), "ulong 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((long)-1), "long -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((long)0x1_000000), "long 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((nuint)0x1_000000), "nuint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((nint)(-1)), "nint -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((nint)0x1_000000), "nint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((Half)(-1)), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((float)-1), "float -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((float)0x1_000000), "float 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((double)-1), "double -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((double)0x1_000000), "double 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((decimal)-1), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateTruncating((decimal)0x1_000000), "decimal 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((sbyte)-1), Is.EqualTo(UInt24.MaxValue), "sbyte -1");
+    Assert.That(UInt24.CreateTruncating((short)-1), Is.EqualTo(UInt24.MaxValue), "short -1");
+    Assert.That(UInt24.CreateTruncating((uint)0x1_000000), Is.EqualTo(UInt24.Zero), "uint 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((int)-1), Is.EqualTo(UInt24.MaxValue), "int -1");
+    Assert.That(UInt24.CreateTruncating((int)0x1_000000), Is.EqualTo(UInt24.Zero), "int 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((ulong)0x1_000000), Is.EqualTo(UInt24.Zero), "ulong 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((long)-1), Is.EqualTo(UInt24.MaxValue), "long -1");
+    Assert.That(UInt24.CreateTruncating((long)0x1_000000), Is.EqualTo(UInt24.Zero), "long 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((nuint)0x1_000000), Is.EqualTo(UInt24.Zero), "nuint 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((nint)(-1)), Is.EqualTo(UInt24.MaxValue), "nint -1");
+    Assert.That(UInt24.CreateTruncating((nint)0x1_000000), Is.EqualTo(UInt24.Zero), "nint 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((Half)(-1)), Is.EqualTo(UInt24.MaxValue), "Half -1");
+    Assert.That(UInt24.CreateTruncating((float)-1), Is.EqualTo(UInt24.MaxValue), "float -1");
+    Assert.That(UInt24.CreateTruncating((float)0x1_000000), Is.EqualTo(UInt24.Zero), "float 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((double)-1), Is.EqualTo(UInt24.MaxValue), "double -1");
+    Assert.That(UInt24.CreateTruncating((double)0x1_000000), Is.EqualTo(UInt24.Zero), "double 0x1_000000");
+    Assert.That(UInt24.CreateTruncating((decimal)-1), Is.EqualTo(UInt24.MaxValue), "decimal -1");
+    Assert.That(UInt24.CreateTruncating((decimal)0x1_000000), Is.EqualTo(UInt24.Zero), "decimal 0x1_000000");
   }
 
   [Test]
@@ -515,23 +515,23 @@ partial class UInt24nTests {
   [Test]
   public void INumber_CreateTruncating_OverflowException_UInt48()
   {
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((sbyte)-1), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((short)-1), "short -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((int)-1), "int -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((ulong)0x1_000000_000000), "ulong 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((long)-1), "long -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((long)0x1_000000_000000), "long 0x1_000000_000000");
+    Assert.That(UInt48.CreateTruncating((sbyte)-1), Is.EqualTo(UInt48.MaxValue), "sbyte -1");
+    Assert.That(UInt48.CreateTruncating((short)-1), Is.EqualTo(UInt48.MaxValue), "short -1");
+    Assert.That(UInt48.CreateTruncating((int)-1), Is.EqualTo(UInt48.MaxValue), "int -1");
+    Assert.That(UInt48.CreateTruncating((ulong)0x1_000000_000000), Is.EqualTo(UInt48.Zero), "ulong 0x1_000000_000000");
+    Assert.That(UInt48.CreateTruncating((long)-1), Is.EqualTo(UInt48.MaxValue), "long -1");
+    Assert.That(UInt48.CreateTruncating((long)0x1_000000_000000), Is.EqualTo(UInt48.Zero), "long 0x1_000000_000000");
     if (Environment.Is64BitProcess) {
-      Assert.Throws<OverflowException>(() => UInt48.CreateTruncating(unchecked((nuint)0x1_000000_000000)), "nuint 0x1_000000_000000");
-      Assert.Throws<OverflowException>(() => UInt48.CreateTruncating(unchecked((nint)0x1_000000_000000)), "nint 0x1_000000_000000");
+      Assert.That(UInt48.CreateTruncating(unchecked((nuint)0x1_000000_000000)), Is.EqualTo(UInt48.Zero) , "nuint 0x1_000000_000000");
+      Assert.That(UInt48.CreateTruncating(unchecked((nint)0x1_000000_000000)), Is.EqualTo(UInt48.Zero) , "nint 0x1_000000_000000");
     }
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((Half)(-1)), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((float)-1), "float -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((float)0x1_000000_000000), "float 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((double)-1), "double -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((double)0x1_000000_000000), "double 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((decimal)-1), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateTruncating((decimal)0x1_000000_000000), "decimal 0x1_000000_000000");
+    Assert.That(UInt48.CreateTruncating((Half)(-1)), Is.EqualTo(UInt48.MaxValue), "Half -1");
+    Assert.That(UInt48.CreateTruncating((float)-1), Is.EqualTo(UInt48.MaxValue), "float -1");
+    Assert.That(UInt48.CreateTruncating((float)0x1_000000_000000), Is.EqualTo(UInt48.Zero), "float 0x1_000000_000000");
+    Assert.That(UInt48.CreateTruncating((double)-1), Is.EqualTo(UInt48.MaxValue), "double -1");
+    Assert.That(UInt48.CreateTruncating((double)0x1_000000_000000), Is.EqualTo(UInt48.Zero), "double 0x1_000000_000000");
+    Assert.That(UInt48.CreateTruncating((decimal)-1), Is.EqualTo(UInt48.MaxValue), "decimal -1");
+    Assert.That(UInt48.CreateTruncating((decimal)0x1_000000_000000), Is.EqualTo(UInt48.Zero), "decimal 0x1_000000_000000");
   }
 
   [Test]
