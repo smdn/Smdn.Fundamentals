@@ -566,6 +566,78 @@ partial class UInt24nTests {
   }
 
 #if FEATURE_GENERIC_MATH
+  [TestCaseSource(nameof(YieldTestCases_Max_UInt24))]
+  public void INumberBase_MaxMagnitude_UInt24(UInt24 x, UInt24 y, UInt24 expected)
+  {
+    Assert.That(INumberBase_MaxMagnitude(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MaxMagnitude<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MaxMagnitude(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Max_UInt48))]
+  public void INumberBase_MaxMagnitude_UInt48(UInt48 x, UInt48 y, UInt48 expected)
+  {
+    Assert.That(INumberBase_MaxMagnitude(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MaxMagnitude<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MaxMagnitude(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Max_UInt24))]
+  public void INumberBase_MaxMagnitudeNumber_UInt24(UInt24 x, UInt24 y, UInt24 expected)
+  {
+    Assert.That(INumberBase_MaxMagnitudeNumber(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MaxMagnitudeNumber<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MaxMagnitudeNumber(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Max_UInt48))]
+  public void INumberBase_MaxMagnitudeNumber_UInt48(UInt48 x, UInt48 y, UInt48 expected)
+  {
+    Assert.That(INumberBase_MaxMagnitudeNumber(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MaxMagnitudeNumber<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MaxMagnitudeNumber(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Min_UInt24))]
+  public void INumberBase_MinMagnitude_UInt24(UInt24 x, UInt24 y, UInt24 expected)
+  {
+    Assert.That(INumberBase_MinMagnitude(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MinMagnitude<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MinMagnitude(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Min_UInt48))]
+  public void INumberBase_MinMagnitude_UInt48(UInt48 x, UInt48 y, UInt48 expected)
+  {
+    Assert.That(INumberBase_MinMagnitude(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MinMagnitude<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MinMagnitude(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Min_UInt24))]
+  public void INumberBase_MinMagnitudeNumber_UInt24(UInt24 x, UInt24 y, UInt24 expected)
+  {
+    Assert.That(INumberBase_MinMagnitudeNumber(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MinMagnitudeNumber<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MinMagnitudeNumber(x, y);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_Min_UInt48))]
+  public void INumberBase_MinMagnitudeNumber_UInt48(UInt48 x, UInt48 y, UInt48 expected)
+  {
+    Assert.That(INumberBase_MinMagnitudeNumber(x, y), Is.EqualTo(expected));
+
+    static TUInt24n INumberBase_MinMagnitudeNumber<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumberBase<TUInt24n>
+      => TUInt24n.MinMagnitudeNumber(x, y);
+  }
+
   [Test]
   public void INumberBase_Create_Zero_UInt24()
   {

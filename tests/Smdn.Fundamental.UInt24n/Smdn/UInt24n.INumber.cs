@@ -41,83 +41,111 @@ partial class UInt24nTests {
 #endif
   }
 
-  [Test]
-  public void INumber_Min_UInt24()
+  private static System.Collections.IEnumerable YieldTestCases_Min_UInt24()
   {
-    Assert.That(Min(UInt24.Zero, UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} min(Zero, Zero)");
-    Assert.That(Min(UInt24.Zero, UInt24.One), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} min(Zero, One)");
-    Assert.That(Min(UInt24.One, UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} min(One, Zero)");
-    Assert.That(Min(UInt24.One, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} min(One, One)");
-    Assert.That(Min(UInt24.One, UInt24.MaxValue), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} min(One, MaxValue)");
-    Assert.That(Min(UInt24.MaxValue, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} min(MaxValue, One)");
-    Assert.That(Min(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} min(MaxValue, MaxValue)");
+    yield return new object?[] { UInt24.Zero, UInt24.Zero, UInt24.Zero };
+    yield return new object?[] { UInt24.Zero, UInt24.One, UInt24.Zero };
+    yield return new object?[] { UInt24.One, UInt24.Zero, UInt24.Zero };
+    yield return new object?[] { UInt24.One, UInt24.One, UInt24.One };
+    yield return new object?[] { UInt24.One, UInt24.MaxValue, UInt24.One };
+    yield return new object?[] { UInt24.MaxValue, UInt24.One, UInt24.One };
+    yield return new object?[] { UInt24.MaxValue, UInt24.MaxValue, UInt24.MaxValue };
+  }
 
-#if FEATURE_GENERIC_MATH
-    static TUInt24n Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
-      => TUInt24n.Min(x, y);
-#else
+  [TestCaseSource(nameof(YieldTestCases_Min_UInt24))]
+  public void INumber_Min_UInt24(UInt24 x, UInt24 y, UInt24 expected)
+  {
+    Assert.That(Min(x, y), Is.EqualTo(expected), nameof(Min));
+
     static UInt24 Min(UInt24 x, UInt24 y)
       => UInt24.Min(x, y);
+
+#if FEATURE_GENERIC_MATH
+    Assert.That(INumber_Min(x, y), Is.EqualTo(expected), nameof(INumber_Min));
+
+    static TUInt24n INumber_Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
+      => TUInt24n.Min(x, y);
 #endif
   }
 
-  [Test]
-  public void INumber_Min_UInt48()
+  private static System.Collections.IEnumerable YieldTestCases_Min_UInt48()
   {
-    Assert.That(Min(UInt48.Zero, UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} min(Zero, Zero)");
-    Assert.That(Min(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} min(Zero, One)");
-    Assert.That(Min(UInt48.One, UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} min(One, Zero)");
-    Assert.That(Min(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} min(One, One)");
-    Assert.That(Min(UInt48.One, UInt48.MaxValue), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} min(One, MaxValue)");
-    Assert.That(Min(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} min(MaxValue, One)");
-    Assert.That(Min(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} min(MaxValue, MaxValue)");
+    yield return new object?[] { UInt48.Zero, UInt48.Zero, UInt48.Zero };
+    yield return new object?[] { UInt48.Zero, UInt48.One, UInt48.Zero };
+    yield return new object?[] { UInt48.One, UInt48.Zero, UInt48.Zero };
+    yield return new object?[] { UInt48.One, UInt48.One, UInt48.One };
+    yield return new object?[] { UInt48.One, UInt48.MaxValue, UInt48.One };
+    yield return new object?[] { UInt48.MaxValue, UInt48.One, UInt48.One };
+    yield return new object?[] { UInt48.MaxValue, UInt48.MaxValue, UInt48.MaxValue };
+  }
 
-#if FEATURE_GENERIC_MATH
-    static TUInt24n Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
-      => TUInt24n.Min(x, y);
-#else
+  [TestCaseSource(nameof(YieldTestCases_Min_UInt48))]
+  public void INumber_Min_UInt48(UInt48 x, UInt48 y, UInt48 expected)
+  {
+    Assert.That(Min(x, y), Is.EqualTo(expected), nameof(Min));
+
     static UInt48 Min(UInt48 x, UInt48 y)
       => UInt48.Min(x, y);
+
+#if FEATURE_GENERIC_MATH
+    Assert.That(INumber_Min(x, y), Is.EqualTo(expected), nameof(INumber_Min));
+
+    static TUInt24n INumber_Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
+      => TUInt24n.Min(x, y);
 #endif
   }
 
-  [Test]
-  public void INumber_Max_UInt24()
+  private static System.Collections.IEnumerable YieldTestCases_Max_UInt24()
   {
-    Assert.That(Max(UInt24.Zero, UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name} max(Zero, Zero)");
-    Assert.That(Max(UInt24.Zero, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} max(Zero, One)");
-    Assert.That(Max(UInt24.One, UInt24.Zero), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} max(One, Zero)");
-    Assert.That(Max(UInt24.One, UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name} max(One, One)");
-    Assert.That(Max(UInt24.One, UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} max(One, MaxValue)");
-    Assert.That(Max(UInt24.MaxValue, UInt24.One), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} max(MaxValue, One)");
-    Assert.That(Max(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo(UInt24.MaxValue), $"{typeof(UInt24).Name} max(MaxValue, MaxValue)");
+    yield return new object?[] { UInt24.Zero, UInt24.Zero, UInt24.Zero };
+    yield return new object?[] { UInt24.Zero, UInt24.One, UInt24.One };
+    yield return new object?[] { UInt24.One, UInt24.Zero, UInt24.One };
+    yield return new object?[] { UInt24.One, UInt24.One, UInt24.One };
+    yield return new object?[] { UInt24.One, UInt24.MaxValue, UInt24.MaxValue };
+    yield return new object?[] { UInt24.MaxValue, UInt24.One, UInt24.MaxValue };
+    yield return new object?[] { UInt24.MaxValue, UInt24.MaxValue, UInt24.MaxValue };
+  }
 
-#if FEATURE_GENERIC_MATH
-    static TUInt24n Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
-      => TUInt24n.Max(x, y);
-#else
+  [TestCaseSource(nameof(YieldTestCases_Max_UInt24))]
+  public void INumber_Max_UInt24(UInt24 x, UInt24 y, UInt24 expected)
+  {
+    Assert.That(Max(x, y), Is.EqualTo(expected), nameof(Max));
+
     static UInt24 Max(UInt24 x, UInt24 y)
       => UInt24.Max(x, y);
+
+#if FEATURE_GENERIC_MATH
+    Assert.That(INumber_Max(x, y), Is.EqualTo(expected), nameof(INumber_Max));
+
+    static TUInt24n INumber_Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
+      => TUInt24n.Max(x, y);
 #endif
   }
 
-  [Test]
-  public void INumber_Max_UInt48()
+  private static System.Collections.IEnumerable YieldTestCases_Max_UInt48()
   {
-    Assert.That(Max(UInt48.Zero, UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name} max(Zero, Zero)");
-    Assert.That(Max(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} max(Zero, One)");
-    Assert.That(Max(UInt48.One, UInt48.Zero), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} max(One, Zero)");
-    Assert.That(Max(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name} max(One, One)");
-    Assert.That(Max(UInt48.One, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} max(One, MaxValue)");
-    Assert.That(Max(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} max(MaxValue, One)");
-    Assert.That(Max(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), $"{typeof(UInt48).Name} max(MaxValue, MaxValue)");
+    yield return new object?[] { UInt48.Zero, UInt48.Zero, UInt48.Zero };
+    yield return new object?[] { UInt48.Zero, UInt48.One, UInt48.One };
+    yield return new object?[] { UInt48.One, UInt48.Zero, UInt48.One };
+    yield return new object?[] { UInt48.One, UInt48.One, UInt48.One };
+    yield return new object?[] { UInt48.One, UInt48.MaxValue, UInt48.MaxValue };
+    yield return new object?[] { UInt48.MaxValue, UInt48.One, UInt48.MaxValue };
+    yield return new object?[] { UInt48.MaxValue, UInt48.MaxValue, UInt48.MaxValue };
+  }
 
-#if FEATURE_GENERIC_MATH
-    static TUInt24n Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
-      => TUInt24n.Max(x, y);
-#else
+  [TestCaseSource(nameof(YieldTestCases_Max_UInt48))]
+  public void INumber_Max_UInt48(UInt48 x, UInt48 y, UInt48 expected)
+  {
+    Assert.That(Max(x, y), Is.EqualTo(expected), nameof(Max));
+
     static UInt48 Max(UInt48 x, UInt48 y)
       => UInt48.Max(x, y);
+
+#if FEATURE_GENERIC_MATH
+    Assert.That(INumber_Max(x, y), Is.EqualTo(expected), nameof(INumber_Max));
+
+    static TUInt24n INumber_Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
+      => TUInt24n.Max(x, y);
 #endif
   }
 

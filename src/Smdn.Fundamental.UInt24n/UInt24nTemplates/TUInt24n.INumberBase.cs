@@ -93,8 +93,8 @@ partial struct TUInt24n {
   /*
    * INumberBase<TOther>.MinMagnitude/MinMagnitudeNumber
    */
-  static TUInt24n INumberBase<TUInt24n>.MinMagnitude(TUInt24n x, TUInt24n y) => Max(x, y);
-  static TUInt24n INumberBase<TUInt24n>.MinMagnitudeNumber(TUInt24n x, TUInt24n y) => Max(x, y);
+  static TUInt24n INumberBase<TUInt24n>.MinMagnitude(TUInt24n x, TUInt24n y) => Min(x, y);
+  static TUInt24n INumberBase<TUInt24n>.MinMagnitudeNumber(TUInt24n x, TUInt24n y) => Min(x, y);
 
   /*
    * INumberBase<TOther>.CreateChecked/CreateTruncating
