@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
+
 using NUnit.Framework;
 
 namespace Smdn;
@@ -21,8 +25,8 @@ partial class UInt24nTests {
   [Test]
   public void IMinMaxValue_MinValue()
   {
-    Assert.AreEqual(UInt24.MinValue, GetMinValue<UInt24>(), nameof(UInt24));
-    Assert.AreEqual(UInt48.MinValue, GetMinValue<UInt48>(), nameof(UInt48));
+    Assert.That(GetMinValue<UInt24>(), Is.EqualTo(UInt24.MinValue), nameof(UInt24));
+    Assert.That(GetMinValue<UInt48>(), Is.EqualTo(UInt48.MinValue), nameof(UInt48));
 
     static TUInt24n GetMinValue<TUInt24n>() where TUInt24n : IMinMaxValue<TUInt24n>
       => TUInt24n.MinValue;
@@ -31,8 +35,8 @@ partial class UInt24nTests {
   [Test]
   public void IMinMaxValue_MaxValue()
   {
-    Assert.AreEqual(UInt24.MaxValue, GetMaxValue<UInt24>(), nameof(UInt24));
-    Assert.AreEqual(UInt48.MaxValue, GetMaxValue<UInt48>(), nameof(UInt48));
+    Assert.That(GetMaxValue<UInt24>(), Is.EqualTo(UInt24.MaxValue), nameof(UInt24));
+    Assert.That(GetMaxValue<UInt48>(), Is.EqualTo(UInt48.MaxValue), nameof(UInt48));
 
     static TUInt24n GetMaxValue<TUInt24n>() where TUInt24n : IMinMaxValue<TUInt24n>
       => TUInt24n.MaxValue;

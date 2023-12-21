@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 
 using NUnit.Framework;
 
@@ -63,8 +66,8 @@ partial class UInt24nTests {
 
     static void Decrement<TUInt24n>(TUInt24n value, TUInt24n expected) where TUInt24n : IDecrementOperators<TUInt24n>
     {
-      Assert.AreEqual(expected, --value, $"{typeof(TUInt24n)} --{value}");
-      Assert.AreEqual(expected, value, "{typeof(TUInt24n)} value");
+      Assert.That(--value, Is.EqualTo(expected), $"{typeof(TUInt24n)} --{value}");
+      Assert.That(value, Is.EqualTo(expected), "{typeof(TUInt24n)} value");
     }
   }
 #endif

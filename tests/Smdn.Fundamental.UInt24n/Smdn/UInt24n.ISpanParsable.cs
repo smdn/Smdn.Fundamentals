@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #if FEATURE_GENERIC_MATH
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn;
@@ -16,15 +17,15 @@ partial class UInt24nTests {
   [Test]
   public void IParseable_Parse()
   {
-    Assert.AreEqual(
-      (UInt24)0x012345,
+    Assert.That(
       Parse<UInt24>("74565"),
+      Is.EqualTo((UInt24)0x012345),
       nameof(UInt24)
     );
 
-    Assert.AreEqual(
-      (UInt48)0x0123456789AB,
+    Assert.That(
       Parse<UInt48>("1250999896491"),
+      Is.EqualTo((UInt48)0x0123456789AB),
       nameof(UInt48)
     );
   }
@@ -50,29 +51,29 @@ partial class UInt24nTests {
   [Test]
   public void IParseable_TryParse()
   {
-    Assert.IsTrue(TryParse<UInt24>("74565", out var uint24), nameof(UInt24));
-    Assert.AreEqual((UInt24)0x012345, uint24, nameof(UInt24));
+    Assert.That(TryParse<UInt24>("74565", out var uint24), Is.True, nameof(UInt24));
+    Assert.That(uint24, Is.EqualTo((UInt24)0x012345), nameof(UInt24));
 
-    Assert.IsTrue(TryParse<UInt48>("1250999896491", out var uint48), nameof(UInt48));
-    Assert.AreEqual((UInt48)0x0123456789AB, uint48, nameof(UInt48));
+    Assert.That(TryParse<UInt48>("1250999896491", out var uint48), Is.True, nameof(UInt48));
+    Assert.That(uint48, Is.EqualTo((UInt48)0x0123456789AB), nameof(UInt48));
   }
 
   [Test]
   public void IParseable_TryParse_FormatException()
   {
-    Assert.IsFalse(TryParse<UInt24>("ABCDEF", out var uint24), nameof(UInt24));
+    Assert.That(TryParse<UInt24>("ABCDEF", out var uint24), Is.False, nameof(UInt24));
 
-    Assert.IsFalse(TryParse<UInt48>("456789ABCDEF", out var uint48), nameof(UInt48));
+    Assert.That(TryParse<UInt48>("456789ABCDEF", out var uint48), Is.False, nameof(UInt48));
   }
 
   [Test]
   public void IParseable_TryParse_OverflowException()
   {
-    Assert.IsFalse(TryParse<UInt24>("-1", out var uint24), nameof(UInt24));
-    Assert.IsFalse(TryParse<UInt24>("16777216", out uint24), nameof(UInt24));
+    Assert.That(TryParse<UInt24>("-1", out var uint24), Is.False, nameof(UInt24));
+    Assert.That(TryParse<UInt24>("16777216", out uint24), Is.False, nameof(UInt24));
 
-    Assert.IsFalse(TryParse<UInt48>("-1", out var uint48), nameof(UInt48));
-    Assert.IsFalse(TryParse<UInt48>("281474976710656", out uint48), nameof(UInt48));
+    Assert.That(TryParse<UInt48>("-1", out var uint48), Is.False, nameof(UInt48));
+    Assert.That(TryParse<UInt48>("281474976710656", out uint48), Is.False, nameof(UInt48));
   }
 
   private static TUInt24n Parse<TUInt24n>(ReadOnlySpan<char> s) where TUInt24n : ISpanParsable<TUInt24n>
@@ -84,15 +85,15 @@ partial class UInt24nTests {
   [Test]
   public void ISpanParsable_Parse()
   {
-    Assert.AreEqual(
-      (UInt24)0x012345,
+    Assert.That(
       Parse<UInt24>("74565".AsSpan()),
+      Is.EqualTo((UInt24)0x012345),
       nameof(UInt24)
     );
 
-    Assert.AreEqual(
-      (UInt48)0x0123456789AB,
+    Assert.That(
       Parse<UInt48>("1250999896491".AsSpan()),
+      Is.EqualTo((UInt48)0x0123456789AB),
       nameof(UInt48)
     );
   }
@@ -118,29 +119,29 @@ partial class UInt24nTests {
   [Test]
   public void ISpanParsable_TryParse()
   {
-    Assert.IsTrue(TryParse<UInt24>("74565".AsSpan(), out var uint24), nameof(UInt24));
-    Assert.AreEqual((UInt24)0x012345, uint24, nameof(UInt24));
+    Assert.That(TryParse<UInt24>("74565".AsSpan(), out var uint24), Is.True, nameof(UInt24));
+    Assert.That(uint24, Is.EqualTo((UInt24)0x012345), nameof(UInt24));
 
-    Assert.IsTrue(TryParse<UInt48>("1250999896491".AsSpan(), out var uint48), nameof(UInt48));
-    Assert.AreEqual((UInt48)0x0123456789AB, uint48, nameof(UInt48));
+    Assert.That(TryParse<UInt48>("1250999896491".AsSpan(), out var uint48), Is.True, nameof(UInt48));
+    Assert.That(uint48, Is.EqualTo((UInt48)0x0123456789AB), nameof(UInt48));
   }
 
   [Test]
   public void ISpanParsable_TryParse_FormatException()
   {
-    Assert.IsFalse(TryParse<UInt24>("ABCDEF".AsSpan(), out var uint24), nameof(UInt24));
+    Assert.That(TryParse<UInt24>("ABCDEF".AsSpan(), out var uint24), Is.False, nameof(UInt24));
 
-    Assert.IsFalse(TryParse<UInt48>("456789ABCDEF".AsSpan(), out var uint48), nameof(UInt48));
+    Assert.That(TryParse<UInt48>("456789ABCDEF".AsSpan(), out var uint48), Is.False, nameof(UInt48));
   }
 
   [Test]
   public void ISpanParsable_TryParse_OverflowException()
   {
-    Assert.IsFalse(TryParse<UInt24>("-1".AsSpan(), out var uint24), nameof(UInt24));
-    Assert.IsFalse(TryParse<UInt24>("16777216".AsSpan(), out uint24), nameof(UInt24));
+    Assert.That(TryParse<UInt24>("-1".AsSpan(), out var uint24), Is.False, nameof(UInt24));
+    Assert.That(TryParse<UInt24>("16777216".AsSpan(), out uint24), Is.False, nameof(UInt24));
 
-    Assert.IsFalse(TryParse<UInt48>("-1".AsSpan(), out var uint48), nameof(UInt48));
-    Assert.IsFalse(TryParse<UInt48>("281474976710656".AsSpan(), out uint48), nameof(UInt48));
+    Assert.That(TryParse<UInt48>("-1".AsSpan(), out var uint48), Is.False, nameof(UInt48));
+    Assert.That(TryParse<UInt48>("281474976710656".AsSpan(), out uint48), Is.False, nameof(UInt48));
   }
 }
 #endif

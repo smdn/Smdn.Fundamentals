@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
+
 using NUnit.Framework;
 
 namespace Smdn;
@@ -209,7 +213,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,   1, 0b_1111_1111_1111__1111_1111_1111u)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,  25, 0b_1111_1111_1111__1111_1111_1111u)]
   public void IBinaryInteger_RotateLeft_OfUInt24(uint value, int rotateAmount, uint expected)
-    => Assert.AreEqual((UInt24)expected, IBinaryInteger_RotateLeft((UInt24)value, rotateAmount), $"RotateLeft({((UInt24)value).ToBinaryString()}, {rotateAmount})");
+    => Assert.That(IBinaryInteger_RotateLeft((UInt24)value, rotateAmount), Is.EqualTo((UInt24)expected), $"RotateLeft({((UInt24)value).ToBinaryString()}, {rotateAmount})");
 
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   0, 0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   1, 0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0011uL)]
@@ -234,7 +238,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   1, 0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,  49, 0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL)]
   public void IBinaryInteger_RotateLeft_OfUInt48(ulong value, int rotateAmount, ulong expected)
-    => Assert.AreEqual((UInt48)expected, IBinaryInteger_RotateLeft((UInt48)value, rotateAmount), $"RotateLeft({((UInt48)value).ToBinaryString()}, {rotateAmount})");
+    => Assert.That(IBinaryInteger_RotateLeft((UInt48)value, rotateAmount), Is.EqualTo((UInt48)expected), $"RotateLeft({((UInt48)value).ToBinaryString()}, {rotateAmount})");
 
   static TUInt24n IBinaryInteger_RotateRight<TUInt24n>(TUInt24n value, int rotateAmount) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.RotateRight(value, rotateAmount);
@@ -256,7 +260,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,   1, 0b_1111_1111_1111__1111_1111_1111u)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,  25, 0b_1111_1111_1111__1111_1111_1111u)]
   public void IBinaryInteger_RotateRight_OfUInt24(uint value, int rotateAmount, uint expected)
-    => Assert.AreEqual((UInt24)expected, IBinaryInteger_RotateRight((UInt24)value, rotateAmount), $"RotateRight({((UInt24)value).ToBinaryString()}, {rotateAmount})");
+    => Assert.That(IBinaryInteger_RotateRight((UInt24)value, rotateAmount), Is.EqualTo((UInt24)expected), $"RotateRight({((UInt24)value).ToBinaryString()}, {rotateAmount})");
 
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   0, 0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   1, 0b_1100_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL)]
@@ -281,7 +285,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   1, 0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,  49, 0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL)]
   public void IBinaryInteger_RotateRight_OfUInt48(ulong value, int rotateAmount, ulong expected)
-    => Assert.AreEqual((UInt48)expected, IBinaryInteger_RotateRight((UInt48)value, rotateAmount), $"RotateRight({((UInt48)value).ToBinaryString()}, {rotateAmount})");
+    => Assert.That(IBinaryInteger_RotateRight((UInt48)value, rotateAmount), Is.EqualTo((UInt48)expected), $"RotateRight({((UInt48)value).ToBinaryString()}, {rotateAmount})");
 }
 #endif
 
@@ -406,7 +410,7 @@ partial class UInt24nTests {
   [TestCase(0b_1000_0000_0000__0000_0000_0000u,   0)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,   0)]
   public void IBinaryInteger_LeadingZeroCount_OfUInt24(uint value, int expected)
-    => Assert.AreEqual((UInt24)expected, IBinaryInteger_LeadingZeroCount((UInt24)value), $"LeadingZeroCount({((UInt24)value).ToBinaryString()})");
+    => Assert.That(IBinaryInteger_LeadingZeroCount((UInt24)value), Is.EqualTo((UInt24)expected), $"LeadingZeroCount({((UInt24)value).ToBinaryString()})");
 
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  48)]
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,  47)]
@@ -425,7 +429,7 @@ partial class UInt24nTests {
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,   0)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   0)]
   public void IBinaryInteger_LeadingZeroCount_OfUInt48(ulong value, int expected)
-    => Assert.AreEqual((UInt48)expected, IBinaryInteger_LeadingZeroCount((UInt48)value), $"LeadingZeroCount({((UInt48)value).ToBinaryString()})");
+    => Assert.That(IBinaryInteger_LeadingZeroCount((UInt48)value), Is.EqualTo((UInt48)expected), $"LeadingZeroCount({((UInt48)value).ToBinaryString()})");
 
   static TUInt24n IBinaryInteger_TrailingZeroCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.TrailingZeroCount(value);
@@ -441,7 +445,7 @@ partial class UInt24nTests {
   [TestCase(0b_0000_0000_0000__0000_0000_0001u,   0)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,   0)]
   public void IBinaryInteger_TrailingZeroCount_OfUInt24(uint value, int expected)
-    => Assert.AreEqual((UInt24)expected, IBinaryInteger_TrailingZeroCount((UInt24)value), $"TrailingZeroCount({((UInt24)value).ToBinaryString()})");
+    => Assert.That(IBinaryInteger_TrailingZeroCount((UInt24)value), Is.EqualTo((UInt24)expected), $"TrailingZeroCount({((UInt24)value).ToBinaryString()})");
 
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  48)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  47)]
@@ -460,7 +464,7 @@ partial class UInt24nTests {
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   0)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,   0)]
   public void IBinaryInteger_TrailingZeroCount_OfUInt48(ulong value, int expected)
-    => Assert.AreEqual((UInt48)expected, IBinaryInteger_TrailingZeroCount((UInt48)value), $"TrailingZeroCount({((UInt48)value).ToBinaryString()})");
+    => Assert.That(IBinaryInteger_TrailingZeroCount((UInt48)value), Is.EqualTo((UInt48)expected), $"TrailingZeroCount({((UInt48)value).ToBinaryString()})");
 
   static TUInt24n IBinaryInteger_PopCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.PopCount(value);
@@ -477,7 +481,7 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_0000__0000_0000_0000u,   8)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111u,  24)]
   public void IBinaryInteger_PopCount_OfUInt24(uint value, int expected)
-    => Assert.AreEqual((UInt24)expected, IBinaryInteger_PopCount((UInt24)value), $"PopCount({((UInt24)value).ToBinaryString()})");
+    => Assert.That(IBinaryInteger_PopCount((UInt24)value), Is.EqualTo((UInt24)expected), $"PopCount({((UInt24)value).ToBinaryString()})");
 
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000u,    0)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,   1)]
@@ -500,6 +504,6 @@ partial class UInt24nTests {
   [TestCase(0b_1111_1111_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,   8)]
   [TestCase(0b_1111_1111_1111__1111_1111_1111__1111_1111_1111__1111_1111_1111uL,  48)]
   public void IBinaryInteger_PopCount_OfUInt48(ulong value, int expected)
-    => Assert.AreEqual((UInt48)expected, IBinaryInteger_PopCount((UInt48)value), $"PopCount({((UInt48)value).ToBinaryString()})");
+    => Assert.That(IBinaryInteger_PopCount((UInt48)value), Is.EqualTo((UInt48)expected), $"PopCount({((UInt48)value).ToBinaryString()})");
 }
 #endif
