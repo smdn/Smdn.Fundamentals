@@ -40,6 +40,497 @@ partial class UInt24nTests {
     static TUInt24n GetOne<TUInt24n>() where TUInt24n : INumberBase<TUInt24n>
       => TUInt24n.One;
   }
+
+  [Test]
+  public void INumberBase_Radix()
+  {
+    Assert.That(GetRadix<UInt16>(), Is.EqualTo(2), nameof(UInt16));
+    Assert.That(GetRadix<UInt24>(), Is.EqualTo(2), nameof(UInt24));
+    Assert.That(GetRadix<UInt32>(), Is.EqualTo(2), nameof(UInt32));
+    Assert.That(GetRadix<UInt48>(), Is.EqualTo(2), nameof(UInt48));
+    Assert.That(GetRadix<UInt64>(), Is.EqualTo(2), nameof(UInt64));
+
+    static int GetRadix<TUInt>() where TUInt : INumberBase<TUInt>
+      => TUInt.Radix;
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsCanonical(int n)
+  {
+    Assert.That(IsCanonical((UInt16)n), Is.True, nameof(UInt16));
+    Assert.That(IsCanonical((UInt24)n), Is.True, nameof(UInt24));
+    Assert.That(IsCanonical((UInt32)n), Is.True, nameof(UInt32));
+    Assert.That(IsCanonical((UInt48)n), Is.True, nameof(UInt48));
+    Assert.That(IsCanonical((UInt64)n), Is.True, nameof(UInt64));
+
+    static bool IsCanonical<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsCanonical(number);
+  }
+
+  [Test]
+  public void INumberBase_IsCanonical_MaxValue()
+  {
+    Assert.That(IsMaxValueCanonical<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValueCanonical<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValueCanonical<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValueCanonical<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValueCanonical<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValueCanonical<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsCanonical(TUInt.MaxValue);
+  }
+
+  [TestCase(0, false)]
+  [TestCase(1, true)]
+  [TestCase(2, true)]
+  public void INumberBase_IsNormal(int n, bool isNormal)
+  {
+    Assert.That(IsNormal((UInt16)n), Is.EqualTo(isNormal), nameof(UInt16));
+    Assert.That(IsNormal((UInt24)n), Is.EqualTo(isNormal), nameof(UInt24));
+    Assert.That(IsNormal((UInt32)n), Is.EqualTo(isNormal), nameof(UInt32));
+    Assert.That(IsNormal((UInt48)n), Is.EqualTo(isNormal), nameof(UInt48));
+    Assert.That(IsNormal((UInt64)n), Is.EqualTo(isNormal), nameof(UInt64));
+
+    static bool IsNormal<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsNormal(number);
+  }
+
+  [Test]
+  public void INumberBase_IsNormal_MaxValue()
+  {
+    Assert.That(IsMaxValueNormal<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValueNormal<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValueNormal<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValueNormal<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValueNormal<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValueNormal<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsNormal(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsSubnormal(int n)
+  {
+    Assert.That(IsSubnormal((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsSubnormal((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsSubnormal((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsSubnormal((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsSubnormal((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsSubnormal<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsSubnormal(number);
+  }
+
+  [Test]
+  public void INumberBase_IsSubnormal_MaxValue()
+  {
+    Assert.That(IsMaxValueSubnormal<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueSubnormal<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueSubnormal<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueSubnormal<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueSubnormal<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueSubnormal<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsSubnormal(TUInt.MaxValue);
+  }
+
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsComplexNumber(int n)
+  {
+    Assert.That(IsComplexNumber((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsComplexNumber((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsComplexNumber((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsComplexNumber((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsComplexNumber((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsComplexNumber<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsComplexNumber(number);
+  }
+
+  [Test]
+  public void INumberBase_IsComplexNumber_MaxValue()
+  {
+    Assert.That(IsMaxValueComplexNumber<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueComplexNumber<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueComplexNumber<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueComplexNumber<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueComplexNumber<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueComplexNumber<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsComplexNumber(TUInt.MaxValue);
+  }
+
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsImaginaryNumber(int n)
+  {
+    Assert.That(IsImaginaryNumber((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsImaginaryNumber((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsImaginaryNumber((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsImaginaryNumber((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsImaginaryNumber((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsImaginaryNumber<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsImaginaryNumber(number);
+  }
+
+  [Test]
+  public void INumberBase_IsImaginaryNumber_MaxValue()
+  {
+    Assert.That(IsMaxValueImaginaryNumber<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueImaginaryNumber<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueImaginaryNumber<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueImaginaryNumber<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueImaginaryNumber<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueImaginaryNumber<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsImaginaryNumber(TUInt.MaxValue);
+  }
+
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsRealNumber(int n)
+  {
+    Assert.That(IsRealNumber((UInt16)n), Is.True, nameof(UInt16));
+    Assert.That(IsRealNumber((UInt24)n), Is.True, nameof(UInt24));
+    Assert.That(IsRealNumber((UInt32)n), Is.True, nameof(UInt32));
+    Assert.That(IsRealNumber((UInt48)n), Is.True, nameof(UInt48));
+    Assert.That(IsRealNumber((UInt64)n), Is.True, nameof(UInt64));
+
+    static bool IsRealNumber<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsRealNumber(number);
+  }
+
+  [Test]
+  public void INumberBase_IsRealNumber_MaxValue()
+  {
+    Assert.That(IsMaxValueRealNumber<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValueRealNumber<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValueRealNumber<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValueRealNumber<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValueRealNumber<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValueRealNumber<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsRealNumber(TUInt.MaxValue);
+  }
+
+  [TestCase(0, true)]
+  [TestCase(1, false)]
+  [TestCase(2, true)]
+  public void INumberBase_IsEvenInteger(int n, bool isEven)
+  {
+    Assert.That(IsEvenInteger((UInt16)n), Is.EqualTo(isEven), nameof(UInt16));
+    Assert.That(IsEvenInteger((UInt24)n), Is.EqualTo(isEven), nameof(UInt24));
+    Assert.That(IsEvenInteger((UInt32)n), Is.EqualTo(isEven), nameof(UInt32));
+    Assert.That(IsEvenInteger((UInt48)n), Is.EqualTo(isEven), nameof(UInt48));
+    Assert.That(IsEvenInteger((UInt64)n), Is.EqualTo(isEven), nameof(UInt64));
+
+    static bool IsEvenInteger<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsEvenInteger(number);
+  }
+
+  [Test]
+  public void INumberBase_IsEvenInteger_MaxValue()
+  {
+    Assert.That(IsMaxValueEvenInteger<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueEvenInteger<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueEvenInteger<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueEvenInteger<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueEvenInteger<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueEvenInteger<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsEvenInteger(TUInt.MaxValue);
+  }
+
+  [TestCase(0, false)]
+  [TestCase(1, true)]
+  [TestCase(2, false)]
+  public void INumberBase_IsOddInteger(int n, bool isOdd)
+  {
+    Assert.That(IsOddInteger((UInt16)n), Is.EqualTo(isOdd), nameof(UInt16));
+    Assert.That(IsOddInteger((UInt24)n), Is.EqualTo(isOdd), nameof(UInt24));
+    Assert.That(IsOddInteger((UInt32)n), Is.EqualTo(isOdd), nameof(UInt32));
+    Assert.That(IsOddInteger((UInt48)n), Is.EqualTo(isOdd), nameof(UInt48));
+    Assert.That(IsOddInteger((UInt64)n), Is.EqualTo(isOdd), nameof(UInt64));
+
+    static bool IsOddInteger<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsOddInteger(number);
+  }
+
+  [Test]
+  public void INumberBase_IsOddInteger_MaxValue()
+  {
+    Assert.That(IsMaxValueEvenInteger<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValueEvenInteger<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValueEvenInteger<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValueEvenInteger<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValueEvenInteger<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValueEvenInteger<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsOddInteger(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsFinite(int n)
+  {
+    Assert.That(IsFinite((UInt16)n), Is.True, nameof(UInt16));
+    Assert.That(IsFinite((UInt24)n), Is.True, nameof(UInt24));
+    Assert.That(IsFinite((UInt32)n), Is.True, nameof(UInt32));
+    Assert.That(IsFinite((UInt48)n), Is.True, nameof(UInt48));
+    Assert.That(IsFinite((UInt64)n), Is.True, nameof(UInt64));
+
+    static bool IsFinite<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsFinite(number);
+  }
+
+  [Test]
+  public void INumberBase_IsFinite_MaxValue()
+  {
+    Assert.That(IsMaxValueFinite<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValueFinite<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValueFinite<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValueFinite<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValueFinite<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValueFinite<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsFinite(TUInt.MaxValue);
+  }
+
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsInfinity(int n)
+  {
+    Assert.That(IsInfinity((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsInfinity((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsInfinity((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsInfinity((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsInfinity((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsInfinity<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsInfinity(number);
+  }
+
+  [Test]
+  public void INumberBase_IsInfinity_MaxValue()
+  {
+    Assert.That(IsMaxValueInfinity<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueInfinity<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueInfinity<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueInfinity<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueInfinity<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueInfinity<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsInfinity(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsPositiveInfinity(int n)
+  {
+    Assert.That(IsPositiveInfinity((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsPositiveInfinity((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsPositiveInfinity((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsPositiveInfinity((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsPositiveInfinity((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsPositiveInfinity<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsPositiveInfinity(number);
+  }
+
+  [Test]
+  public void INumberBase_IsPositiveInfinity_MaxValue()
+  {
+    Assert.That(IsMaxValuePositiveInfinity<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValuePositiveInfinity<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValuePositiveInfinity<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValuePositiveInfinity<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValuePositiveInfinity<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValuePositiveInfinity<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsPositiveInfinity(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsNegativeInfinity(int n)
+  {
+    Assert.That(IsNegativeInfinity((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsNegativeInfinity((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsNegativeInfinity((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsNegativeInfinity((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsNegativeInfinity((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsNegativeInfinity<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsNegativeInfinity(number);
+  }
+
+  [Test]
+  public void INumberBase_IsNegativeInfinity_MaxValue()
+  {
+    Assert.That(IsMaxValueNegativeInfinity<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueNegativeInfinity<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueNegativeInfinity<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueNegativeInfinity<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueNegativeInfinity<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueNegativeInfinity<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsNegativeInfinity(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsNaN(int n)
+  {
+    Assert.That(IsNaN((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsNaN((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsNaN((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsNaN((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsNaN((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsNaN<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsNaN(number);
+  }
+
+  [Test]
+  public void INumberBase_IsNaN_MaxValue()
+  {
+    Assert.That(IsMaxValueNaN<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueNaN<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueNaN<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueNaN<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueNaN<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueNaN<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsNaN(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsInteger(int n)
+  {
+    Assert.That(IsInteger((UInt16)n), Is.True, nameof(UInt16));
+    Assert.That(IsInteger((UInt24)n), Is.True, nameof(UInt24));
+    Assert.That(IsInteger((UInt32)n), Is.True, nameof(UInt32));
+    Assert.That(IsInteger((UInt48)n), Is.True, nameof(UInt48));
+    Assert.That(IsInteger((UInt64)n), Is.True, nameof(UInt64));
+
+    static bool IsInteger<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsInteger(number);
+  }
+
+  [Test]
+  public void INumberBase_IsInteger_MaxValue()
+  {
+    Assert.That(IsMaxValueInteger<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValueInteger<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValueInteger<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValueInteger<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValueInteger<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValueInteger<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsInteger(TUInt.MaxValue);
+  }
+
+  [TestCase(0, true)]
+  [TestCase(1, false)]
+  [TestCase(2, false)]
+  public void INumberBase_IsZero(int n, bool IsOdd)
+  {
+    Assert.That(IsZero((UInt16)n), Is.EqualTo(IsOdd), nameof(UInt16));
+    Assert.That(IsZero((UInt24)n), Is.EqualTo(IsOdd), nameof(UInt24));
+    Assert.That(IsZero((UInt32)n), Is.EqualTo(IsOdd), nameof(UInt32));
+    Assert.That(IsZero((UInt48)n), Is.EqualTo(IsOdd), nameof(UInt48));
+    Assert.That(IsZero((UInt64)n), Is.EqualTo(IsOdd), nameof(UInt64));
+
+    static bool IsZero<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsZero(number);
+  }
+
+  [Test]
+  public void INumberBase_IsZero_MaxValue()
+  {
+    Assert.That(IsMaxValueEvenInteger<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueEvenInteger<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueEvenInteger<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueEvenInteger<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueEvenInteger<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueEvenInteger<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsZero(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsPositive(int n)
+  {
+    Assert.That(IsPositive((UInt16)n), Is.True, nameof(UInt16));
+    Assert.That(IsPositive((UInt24)n), Is.True, nameof(UInt24));
+    Assert.That(IsPositive((UInt32)n), Is.True, nameof(UInt32));
+    Assert.That(IsPositive((UInt48)n), Is.True, nameof(UInt48));
+    Assert.That(IsPositive((UInt64)n), Is.True, nameof(UInt64));
+
+    static bool IsPositive<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsPositive(number);
+  }
+
+  [Test]
+  public void INumberBase_IsPositive_MaxValue()
+  {
+    Assert.That(IsMaxValuePositive<UInt16>(), Is.True, nameof(UInt16));
+    Assert.That(IsMaxValuePositive<UInt24>(), Is.True, nameof(UInt24));
+    Assert.That(IsMaxValuePositive<UInt32>(), Is.True, nameof(UInt32));
+    Assert.That(IsMaxValuePositive<UInt48>(), Is.True, nameof(UInt48));
+    Assert.That(IsMaxValuePositive<UInt64>(), Is.True, nameof(UInt64));
+
+    static bool IsMaxValuePositive<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsPositive(TUInt.MaxValue);
+  }
+
+  [TestCase(0)]
+  [TestCase(1)]
+  [TestCase(2)]
+  public void INumberBase_IsNegative(int n)
+  {
+    Assert.That(IsNegative((UInt16)n), Is.False, nameof(UInt16));
+    Assert.That(IsNegative((UInt24)n), Is.False, nameof(UInt24));
+    Assert.That(IsNegative((UInt32)n), Is.False, nameof(UInt32));
+    Assert.That(IsNegative((UInt48)n), Is.False, nameof(UInt48));
+    Assert.That(IsNegative((UInt64)n), Is.False, nameof(UInt64));
+
+    static bool IsNegative<TUInt>(TUInt number) where TUInt : INumberBase<TUInt>
+      => TUInt.IsNegative(number);
+  }
+
+  [Test]
+  public void INumberBase_IsNegative_MaxValue()
+  {
+    Assert.That(IsMaxValueNegative<UInt16>(), Is.False, nameof(UInt16));
+    Assert.That(IsMaxValueNegative<UInt24>(), Is.False, nameof(UInt24));
+    Assert.That(IsMaxValueNegative<UInt32>(), Is.False, nameof(UInt32));
+    Assert.That(IsMaxValueNegative<UInt48>(), Is.False, nameof(UInt48));
+    Assert.That(IsMaxValueNegative<UInt64>(), Is.False, nameof(UInt64));
+
+    static bool IsMaxValueNegative<TUInt>() where TUInt : INumberBase<TUInt>, IMinMaxValue<TUInt>
+      => TUInt.IsNegative(TUInt.MaxValue);
+  }
 #endif
 
   [Test]
