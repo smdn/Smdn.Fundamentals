@@ -22,7 +22,7 @@ partial class UInt48Tests {
 partial class UInt24nTests {
 #if FEATURE_GENERIC_MATH
   [Test]
-  public void INumber_Zero()
+  public void INumberBase_Zero()
   {
     Assert.That(GetZero<UInt24>(), Is.EqualTo(UInt24.Zero), nameof(UInt24));
     Assert.That(GetZero<UInt48>(), Is.EqualTo(UInt48.Zero), nameof(UInt48));
@@ -32,7 +32,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_One()
+  public void INumberBase_One()
   {
     Assert.That(GetOne<UInt24>(), Is.EqualTo(UInt24.One), nameof(UInt24));
     Assert.That(GetOne<UInt48>(), Is.EqualTo(UInt48.One), nameof(UInt48));
@@ -43,7 +43,7 @@ partial class UInt24nTests {
 #endif
 
   [Test]
-  public void INumber_Abs_UInt24()
+  public void INumberBase_Abs_UInt24()
   {
     Assert.That(Abs(UInt24.Zero), Is.EqualTo(UInt24.Zero), $"{typeof(UInt24).Name}.{nameof(UInt24.Zero)}");
     Assert.That(Abs(UInt24.One), Is.EqualTo(UInt24.One), $"{typeof(UInt24).Name}.{nameof(UInt24.One)}");
@@ -59,7 +59,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Abs_UInt48()
+  public void INumberBase_Abs_UInt48()
   {
     Assert.That(Abs(UInt48.Zero), Is.EqualTo(UInt48.Zero), $"{typeof(UInt48).Name}.{nameof(UInt48.Zero)}");
     Assert.That(Abs(UInt48.One), Is.EqualTo(UInt48.One), $"{typeof(UInt48).Name}.{nameof(UInt48.One)}");
@@ -76,7 +76,7 @@ partial class UInt24nTests {
 
 #if FEATURE_GENERIC_MATH
   [Test]
-  public void INumber_Create_Zero_UInt24()
+  public void INumberBase_Create_Zero_UInt24()
   {
     Assert.That(UInt24.Create((byte)0), Is.EqualTo(UInt24.Zero), "byte 0");
     Assert.That(UInt24.Create((sbyte)0), Is.EqualTo(UInt24.Zero), "sbyte 0");
@@ -96,7 +96,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_Zero_UInt24()
+  public void INumberBase_CreateTruncating_Zero_UInt24()
   {
     Assert.That(UInt24.CreateTruncating((byte)0), Is.EqualTo(UInt24.Zero), "byte 0");
     Assert.That(UInt24.CreateTruncating((sbyte)0), Is.EqualTo(UInt24.Zero), "sbyte 0");
@@ -116,7 +116,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_Zero_UInt24()
+  public void INumberBase_CreateSaturating_Zero_UInt24()
   {
     Assert.That(UInt24.CreateSaturating((byte)0), Is.EqualTo(UInt24.Zero), "byte 0");
     Assert.That(UInt24.CreateSaturating((sbyte)0), Is.EqualTo(UInt24.Zero), "sbyte 0");
@@ -136,7 +136,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_Zero_UInt48()
+  public void INumberBase_Create_Zero_UInt48()
   {
     Assert.That(UInt48.Create((byte)0), Is.EqualTo(UInt48.Zero), "byte 0");
     Assert.That(UInt48.Create((sbyte)0), Is.EqualTo(UInt48.Zero), "sbyte 0");
@@ -156,7 +156,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_Zero_UInt48()
+  public void INumberBase_CreateTruncating_Zero_UInt48()
   {
     Assert.That(UInt48.CreateTruncating((byte)0), Is.EqualTo(UInt48.Zero), "byte 0");
     Assert.That(UInt48.CreateTruncating((sbyte)0), Is.EqualTo(UInt48.Zero), "sbyte 0");
@@ -176,7 +176,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_Zero_UInt48()
+  public void INumberBase_CreateSaturating_Zero_UInt48()
   {
     Assert.That(UInt48.CreateSaturating((byte)0), Is.EqualTo(UInt48.Zero), "byte 0");
     Assert.That(UInt48.CreateSaturating((sbyte)0), Is.EqualTo(UInt48.Zero), "sbyte 0");
@@ -196,7 +196,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_Zero_UInt24()
+  public void TryCreate_Zero_UInt24()
   {
     Assert.That(UInt24.TryCreate((byte)0, out var r_byte), Is.True, "byte 0"); Assert.That(r_byte, Is.EqualTo(UInt24.Zero), "result byte 0");
     Assert.That(UInt24.TryCreate((sbyte)0, out var r_sbyte), Is.True, "sbyte 0"); Assert.That(r_sbyte, Is.EqualTo(UInt24.Zero), "result sbyte 0");
@@ -216,7 +216,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_Zero_UInt48()
+  public void TryCreate_Zero_UInt48()
   {
     Assert.That(UInt48.TryCreate((byte)0, out var r_byte), Is.True, "byte 0"); Assert.That(r_byte, Is.EqualTo(UInt48.Zero), "result byte 0");
     Assert.That(UInt48.TryCreate((sbyte)0, out var r_sbyte), Is.True, "sbyte 0"); Assert.That(r_sbyte, Is.EqualTo(UInt48.Zero), "result sbyte 0");
@@ -236,7 +236,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_UInt24()
+  public void INumberBase_Create_UInt24()
   {
     Assert.That(UInt24.Create((byte)0xFF), Is.EqualTo((UInt24)0xFF), "byte 0xFF");
     Assert.That(UInt24.Create((sbyte)0x7F), Is.EqualTo((UInt24)0x7F), "sbyte 0x7F");
@@ -256,7 +256,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_UInt24()
+  public void INumberBase_CreateTruncating_UInt24()
   {
     Assert.That(UInt24.CreateTruncating((byte)0xFF), Is.EqualTo((UInt24)0xFF), "byte 0xFF");
     Assert.That(UInt24.CreateTruncating((sbyte)0x7F), Is.EqualTo((UInt24)0x7F), "sbyte 0x7F");
@@ -276,7 +276,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_UInt24()
+  public void INumberBase_CreateSaturating_UInt24()
   {
     Assert.That(UInt24.CreateSaturating((byte)0xFF), Is.EqualTo((UInt24)0xFF), "byte 0xFF");
     Assert.That(UInt24.CreateSaturating((sbyte)0x7F), Is.EqualTo((UInt24)0x7F), "sbyte 0x7F");
@@ -296,7 +296,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_UInt48()
+  public void INumberBase_Create_UInt48()
   {
     Assert.That(UInt48.Create((byte)0xFF), Is.EqualTo((UInt48)0xFF), "byte 0xFF");
     Assert.That(UInt48.Create((sbyte)0x7F), Is.EqualTo((UInt48)0x7F), "sbyte 0x7F");
@@ -322,7 +322,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_UInt48()
+  public void INumberBase_CreateTruncating_UInt48()
   {
     Assert.That(UInt48.CreateTruncating((byte)0xFF), Is.EqualTo((UInt48)0xFF), "byte 0xFF");
     Assert.That(UInt48.CreateTruncating((sbyte)0x7F), Is.EqualTo((UInt48)0x7F), "sbyte 0x7F");
@@ -348,7 +348,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_UInt48()
+  public void INumberBase_CreateSaturating_UInt48()
   {
     Assert.That(UInt48.CreateSaturating((byte)0xFF), Is.EqualTo((UInt48)0xFF), "byte 0xFF");
     Assert.That(UInt48.CreateSaturating((sbyte)0x7F), Is.EqualTo((UInt48)0x7F), "sbyte 0x7F");
@@ -374,7 +374,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_UInt24()
+  public void TryCreate_UInt24()
   {
     Assert.That(UInt24.TryCreate((byte)0xFF, out var r_byte), Is.True, "byte 0xFF"); Assert.That(r_byte, Is.EqualTo((UInt24)0xFF), "result byte 0xFF");
     Assert.That(UInt24.TryCreate((sbyte)0x7F, out var r_sbyte), Is.True, "sbyte 0x7F"); Assert.That(r_sbyte, Is.EqualTo((UInt24)0x7F), "result sbyte 0x7F");
@@ -395,7 +395,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_UInt48()
+  public void TryCreate_UInt48()
   {
     Assert.That(UInt48.TryCreate((byte)0xFF, out var r_byte), Is.True, "byte 0xFF"); Assert.That(r_byte, Is.EqualTo((UInt48)0xFF), "result byte 0xFF");
     Assert.That(UInt48.TryCreate((sbyte)0x7F, out var r_sbyte), Is.True, "sbyte 0x7F"); Assert.That(r_sbyte, Is.EqualTo((UInt48)0x7F), "result sbyte 0x7F");
@@ -421,7 +421,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_OverflowException_UInt24()
+  public void INumberBase_Create_OverflowException_UInt24()
   {
     Assert.Throws<OverflowException>(() => UInt24.Create((sbyte)-1), "sbyte -1");
     Assert.Throws<OverflowException>(() => UInt24.Create((short)-1), "short -1");
@@ -444,7 +444,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_OverflowException_UInt24()
+  public void INumberBase_CreateTruncating_OverflowException_UInt24()
   {
     Assert.That(UInt24.CreateTruncating((sbyte)-1), Is.EqualTo(UInt24.MaxValue), "sbyte -1");
     Assert.That(UInt24.CreateTruncating((short)-1), Is.EqualTo(UInt24.MaxValue), "short -1");
@@ -467,7 +467,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_Overflow_UInt24()
+  public void INumberBase_CreateSaturating_Overflow_UInt24()
   {
     Assert.That(UInt24.CreateSaturating((sbyte)-1), Is.EqualTo(UInt24.MinValue), "sbyte -1");
     Assert.That(UInt24.CreateSaturating((short)-1), Is.EqualTo(UInt24.MinValue), "short -1");
@@ -491,7 +491,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_OverflowException_UInt48()
+  public void INumberBase_Create_OverflowException_UInt48()
   {
     Assert.Throws<OverflowException>(() => UInt48.Create((sbyte)-1), "sbyte -1");
     Assert.Throws<OverflowException>(() => UInt48.Create((short)-1), "short -1");
@@ -513,7 +513,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_OverflowException_UInt48()
+  public void INumberBase_CreateTruncating_OverflowException_UInt48()
   {
     Assert.That(UInt48.CreateTruncating((sbyte)-1), Is.EqualTo(UInt48.MaxValue), "sbyte -1");
     Assert.That(UInt48.CreateTruncating((short)-1), Is.EqualTo(UInt48.MaxValue), "short -1");
@@ -535,7 +535,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_Overflow_UInt48()
+  public void INumberBase_CreateSaturating_Overflow_UInt48()
   {
     Assert.That(UInt48.CreateSaturating((sbyte)-1), Is.EqualTo(UInt48.MinValue), "sbyte -1");
     Assert.That(UInt48.CreateSaturating((short)-1), Is.EqualTo(UInt48.MinValue), "short -1");
@@ -558,7 +558,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_Overflow_UInt24()
+  public void TryCreate_Overflow_UInt24()
   {
     Assert.That(UInt24.TryCreate((sbyte)-1, out var _), Is.False, "sbyte -1");
     Assert.That(UInt24.TryCreate((short)-1, out var _), Is.False, "short -1");
@@ -581,7 +581,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_Overflow_UInt48()
+  public void TryCreate_Overflow_UInt48()
   {
     Assert.That(UInt48.TryCreate((sbyte)-1, out var _), Is.False, "sbyte -1");
     Assert.That(UInt48.TryCreate((short)-1, out var _), Is.False, "short -1");
@@ -603,7 +603,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_TypeNotSupportedException_UInt24()
+  public void INumberBase_Create_TypeNotSupportedException_UInt24()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt24.Create(BigInteger.Zero), "BigInteger");
@@ -611,7 +611,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_TypeNotSupportedException_UInt24()
+  public void INumberBase_CreateTruncating_TypeNotSupportedException_UInt24()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(BigInteger.Zero), "BigInteger");
@@ -619,7 +619,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_TypeNotSupportedException_UInt24()
+  public void INumberBase_CreateSaturating_TypeNotSupportedException_UInt24()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(BigInteger.Zero), "BigInteger");
@@ -627,7 +627,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_Create_TypeNotSupportedException_UInt48()
+  public void INumberBase_Create_TypeNotSupportedException_UInt48()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt48.Create(BigInteger.Zero), "BigInteger");
@@ -635,7 +635,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateTruncating_TypeNotSupportedException_UInt48()
+  public void INumberBase_CreateTruncating_TypeNotSupportedException_UInt48()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(BigInteger.Zero), "BigInteger");
@@ -643,7 +643,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_CreateSaturating_TypeNotSupportedException_UInt48()
+  public void INumberBase_CreateSaturating_TypeNotSupportedException_UInt48()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(BigInteger.Zero), "BigInteger");
@@ -651,7 +651,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_TypeNotSupported_UInt24()
+  public void TryCreate_TypeNotSupported_UInt24()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt24.TryCreate(BigInteger.Zero, out _), "BigInteger");
@@ -659,7 +659,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumber_TryCreate_TypeNotSupported_UInt48()
+  public void TryCreate_TypeNotSupported_UInt48()
   {
     Assert.Ignore("no test case");
     //Assert.Throws<NotSupportedException>(() => UInt48.TryCreate(BigInteger.Zero, out _), "BigInteger");
