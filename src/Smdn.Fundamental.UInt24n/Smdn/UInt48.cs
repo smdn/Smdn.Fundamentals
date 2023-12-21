@@ -80,10 +80,14 @@ public partial struct UInt48 {
 #pragma warning restore IDE0060
 
 #if FEATURE_GENERIC_MATH
-  private static bool TryCreateCore<TOther>(
+  /*
+   * INumberBase<TSelf>
+   */
+  private static bool TryConvertFromTruncating<TOther>(
     TOther value,
+    bool throwIfOverflow,
     out UInt48 result
-  ) where TOther : INumber<TOther>
+  ) where TOther : INumberBase<TOther>
   {
     result = default;
 
@@ -122,10 +126,10 @@ public partial struct UInt48 {
       val = unchecked((long)((decimal)(object)value));
 #pragma warning restore IDE0045
     else
-      throw UInt24n.CreateTypeIsNotConvertibleException<UInt48, TOther>();
+      return false; // is not convertible
 
-    if (val is < minValue or > maxValue)
-      return false; // overflow
+    if (throwIfOverflow && val is < minValue or > maxValue)
+      throw UInt24n.CreateOverflowException<UInt48>(value);
 
     result = new(unchecked((ulong)val));
 
