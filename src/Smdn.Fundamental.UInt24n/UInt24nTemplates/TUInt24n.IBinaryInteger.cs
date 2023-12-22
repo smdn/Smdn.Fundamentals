@@ -105,4 +105,28 @@ partial struct TUInt24n
 
   int IBinaryInteger<TUInt24n>.GetShortestBitLength() => BitsOfSelf - LeadingZeroCount(this);
 #endif
+
+  public static bool TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out TUInt24n value)
+  {
+    value = default;
+
+    if (source.Length < SizeOfSelf)
+      return false;
+
+    value = new(source, isBigEndian: true);
+
+    return true;
+  }
+
+  public static bool TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out TUInt24n value)
+  {
+    value = default;
+
+    if (source.Length < SizeOfSelf)
+      return false;
+
+    value = new(source, isBigEndian: false);
+
+    return true;
+  }
 }

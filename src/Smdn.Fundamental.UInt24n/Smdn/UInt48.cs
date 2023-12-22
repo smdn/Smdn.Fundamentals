@@ -79,6 +79,43 @@ public partial struct UInt48 {
   short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
 #pragma warning restore IDE0060
 
+  /*
+   * IBinaryInteger<TSelf>
+   */
+  public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+  {
+    bytesWritten = default;
+
+    if (destination.Length < SizeOfSelf)
+      return false;
+
+    destination[bytesWritten++] = Byte0;
+    destination[bytesWritten++] = Byte1;
+    destination[bytesWritten++] = Byte2;
+    destination[bytesWritten++] = Byte3;
+    destination[bytesWritten++] = Byte4;
+    destination[bytesWritten++] = Byte5;
+
+    return true;
+  }
+
+  public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+  {
+    bytesWritten = default;
+
+    if (destination.Length < SizeOfSelf)
+      return false;
+
+    destination[bytesWritten++] = Byte5;
+    destination[bytesWritten++] = Byte4;
+    destination[bytesWritten++] = Byte3;
+    destination[bytesWritten++] = Byte2;
+    destination[bytesWritten++] = Byte1;
+    destination[bytesWritten++] = Byte0;
+
+    return true;
+  }
+
 #if FEATURE_GENERIC_MATH
   /*
    * INumberBase<TSelf>

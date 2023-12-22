@@ -147,6 +147,193 @@ partial class UInt48Tests {
   }
 }
 
+partial class UInt24Tests {
+  private static System.Collections.IEnumerable YieldTestCases_TryRead()
+  {
+    const bool asUnsigned = true;
+    const bool asSigned = false;
+
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00 }, asUnsigned, (UInt24)0x000000u, (UInt24)0x000000u };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00 }, asSigned,   (UInt24)0x000000u, (UInt24)0x000000u };
+    yield return new object?[] { new byte[] { 0xFF, 0x00, 0x00 }, asUnsigned, (UInt24)0xFF0000u, (UInt24)0x0000FFu };
+    yield return new object?[] { new byte[] { 0xFF, 0x00, 0x00 }, asSigned,   (UInt24)0xFF0000u, (UInt24)0x0000FFu };
+    yield return new object?[] { new byte[] { 0x00, 0xFF, 0x00 }, asUnsigned, (UInt24)0x00FF00u, (UInt24)0x00FF00u };
+    yield return new object?[] { new byte[] { 0x00, 0xFF, 0x00 }, asSigned,   (UInt24)0x00FF00u, (UInt24)0x00FF00u };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0xFF }, asUnsigned, (UInt24)0x0000FFu, (UInt24)0xFF0000u };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0xFF }, asSigned,   (UInt24)0x0000FFu, (UInt24)0xFF0000u };
+    yield return new object?[] { new byte[] { 0x01, 0x23, 0x45 }, asUnsigned, (UInt24)0x012345u, (UInt24)0x452301u };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryRead))]
+  public void TryReadBigEndian(byte[] source, bool isUnsigned, UInt24 expectedResultBigEndian, UInt24 _)
+  {
+    Assert.That(UInt24.TryReadBigEndian(source, isUnsigned, out var result), Is.True);
+    Assert.That(result, Is.EqualTo(expectedResultBigEndian));
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryRead))]
+  public void TryReadLittleEndian(byte[] source, bool isUnsigned, UInt24 _, UInt24 expectedResultLittleEndian)
+  {
+    Assert.That(UInt24.TryReadLittleEndian(source, isUnsigned, out var result), Is.True);
+    Assert.That(result, Is.EqualTo(expectedResultLittleEndian));
+  }
+
+  [Test]
+  public void TryReadBigEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2)]int length)
+  {
+    Assert.That(UInt24.TryReadBigEndian(new byte[length], isUnsigned, out _), Is.False);
+  }
+
+  [Test]
+  public void TryReadLittleEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2)]int length)
+  {
+    Assert.That(UInt24.TryReadLittleEndian(new byte[length], isUnsigned, out _), Is.False);
+  }
+}
+
+partial class UInt48Tests {
+  private static System.Collections.IEnumerable YieldTestCases_TryRead()
+  {
+    const bool asUnsigned = true;
+    const bool asSigned = false;
+
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, asUnsigned, (UInt48)0x000000_000000uL, (UInt48)0x000000_000000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, asSigned,   (UInt48)0x000000_000000uL, (UInt48)0x000000_000000uL };
+    yield return new object?[] { new byte[] { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00 }, asUnsigned, (UInt48)0xFF0000_000000uL, (UInt48)0x000000_0000FFuL };
+    yield return new object?[] { new byte[] { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00 }, asSigned,   (UInt48)0xFF0000_000000uL, (UInt48)0x000000_0000FFuL };
+    yield return new object?[] { new byte[] { 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00 }, asUnsigned, (UInt48)0x00FF00_000000uL, (UInt48)0x000000_00FF00uL };
+    yield return new object?[] { new byte[] { 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00 }, asSigned,   (UInt48)0x00FF00_000000uL, (UInt48)0x000000_00FF00uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00 }, asUnsigned, (UInt48)0x0000FF_000000uL, (UInt48)0x000000_FF0000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00 }, asSigned,   (UInt48)0x0000FF_000000uL, (UInt48)0x000000_FF0000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00 }, asUnsigned, (UInt48)0x000000_FF0000uL, (UInt48)0x0000FF_000000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00 }, asSigned,   (UInt48)0x000000_FF0000uL, (UInt48)0x0000FF_000000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00 }, asUnsigned, (UInt48)0x000000_00FF00uL, (UInt48)0x00FF00_000000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00 }, asSigned,   (UInt48)0x000000_00FF00uL, (UInt48)0x00FF00_000000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF }, asUnsigned, (UInt48)0x000000_0000FFuL, (UInt48)0xFF0000_000000uL };
+    yield return new object?[] { new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF }, asSigned,   (UInt48)0x000000_0000FFuL, (UInt48)0xFF0000_000000uL };
+    yield return new object?[] { new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, asUnsigned, (UInt48)0x012345_6789ABuL, (UInt48)0xAB8967_452301uL };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryRead))]
+  public void TryReadBigEndian(byte[] source, bool isUnsigned, UInt48 expectedResultBigEndian, UInt48 _)
+  {
+    Assert.That(UInt48.TryReadBigEndian(source, isUnsigned, out var result), Is.True);
+    Assert.That(result, Is.EqualTo(expectedResultBigEndian));
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryRead))]
+  public void TryReadLittleEndian(byte[] source, bool isUnsigned, UInt48 _, UInt48 expectedResultLittleEndian)
+  {
+    Assert.That(UInt48.TryReadLittleEndian(source, isUnsigned, out var result), Is.True);
+    Assert.That(result, Is.EqualTo(expectedResultLittleEndian));
+  }
+
+  [Test]
+  public void TryReadBigEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
+  {
+    Assert.That(UInt48.TryReadBigEndian(new byte[length], isUnsigned, out _), Is.False);
+  }
+
+  [Test]
+  public void TryReadLittleEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
+  {
+    Assert.That(UInt48.TryReadLittleEndian(new byte[length], isUnsigned, out _), Is.False);
+  }
+}
+
+partial class UInt24Tests {
+  private static System.Collections.IEnumerable YieldTestCases_TryWrite()
+  {
+    yield return new object?[] { (UInt24)0x000000u, new byte[] { 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00 } };
+    yield return new object?[] { (UInt24)0xFF0000u, new byte[] { 0xFF, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0xFF } };
+    yield return new object?[] { (UInt24)0x00FF00u, new byte[] { 0x00, 0xFF, 0x00 }, new byte[] { 0x00, 0xFF, 0x00 } };
+    yield return new object?[] { (UInt24)0x0000FFu, new byte[] { 0x00, 0x00, 0xFF }, new byte[] { 0xFF, 0x00, 0x00 } };
+    yield return new object?[] { (UInt24)0x012345u, new byte[] { 0x01, 0x23, 0x45 }, new byte[] { 0x45, 0x23, 0x01 } };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryWrite))]
+  public void TryWriteBigEndian(UInt24 value, byte[] expectedResultBigEndian, byte[] _)
+  {
+    var destination = new byte[3];
+
+    Assert.That(value.TryWriteBigEndian(destination, out var bytesWritten), Is.True);
+    Assert.That(bytesWritten, Is.EqualTo(3));
+    Assert.That(destination, Is.EqualTo(expectedResultBigEndian).AsCollection);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryWrite))]
+  public void TryWriteLittleEndian(UInt24 value, byte[] _, byte[] expectedResultLittleEndian)
+  {
+    var destination = new byte[3];
+
+    Assert.That(value.TryWriteLittleEndian(destination, out var bytesWritten), Is.True);
+    Assert.That(bytesWritten, Is.EqualTo(3));
+    Assert.That(destination, Is.EqualTo(expectedResultLittleEndian).AsCollection);
+  }
+
+  [Test]
+  public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2)]int length)
+  {
+    Assert.That(UInt24.One.TryWriteBigEndian(new byte[length], out var bytesWritten), Is.False);
+    Assert.That(bytesWritten, Is.EqualTo(0));
+  }
+
+  [Test]
+  public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2)]int length)
+  {
+    Assert.That(UInt24.One.TryWriteLittleEndian(new byte[length], out var bytesWritten), Is.False);
+    Assert.That(bytesWritten, Is.EqualTo(0));
+  }
+}
+
+partial class UInt48Tests {
+  private static System.Collections.IEnumerable YieldTestCases_TryWrite()
+  {
+    yield return new object?[] { (UInt48)0x000000_000000uL, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+    yield return new object?[] { (UInt48)0xFF0000_000000uL, new byte[] { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } };
+    yield return new object?[] { (UInt48)0x00FF00_000000uL, new byte[] { 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00 } };
+    yield return new object?[] { (UInt48)0x0000FF_000000uL, new byte[] { 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00 } };
+    yield return new object?[] { (UInt48)0x000000_FF0000uL, new byte[] { 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0xFF, 0x00, 0x00, 0x00 } };
+    yield return new object?[] { (UInt48)0x000000_00FF00uL, new byte[] { 0x00, 0x00, 0x00, 0x00, 0xFF, 0x00 }, new byte[] { 0x00, 0xFF, 0x00, 0x00, 0x00, 0x00 } };
+    yield return new object?[] { (UInt48)0x000000_0000FFuL, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF }, new byte[] { 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+    yield return new object?[] { (UInt48)0x012345_6789ABuL, new byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, new byte[] { 0xAB, 0x89, 0x67, 0x45, 0x23, 0x01 } };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryWrite))]
+  public void TryWriteBigEndian(UInt48 value, byte[] expectedResultBigEndian, byte[] _)
+  {
+    var destination = new byte[6];
+
+    Assert.That(value.TryWriteBigEndian(destination, out var bytesWritten), Is.True);
+    Assert.That(bytesWritten, Is.EqualTo(6));
+    Assert.That(destination, Is.EqualTo(expectedResultBigEndian).AsCollection);
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_TryWrite))]
+  public void TryWriteLittleEndian(UInt48 value, byte[] _, byte[] expectedResultLittleEndian)
+  {
+    var destination = new byte[6];
+
+    Assert.That(value.TryWriteLittleEndian(destination, out var bytesWritten), Is.True);
+    Assert.That(bytesWritten, Is.EqualTo(6));
+    Assert.That(destination, Is.EqualTo(expectedResultLittleEndian).AsCollection);
+  }
+
+  [Test]
+  public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)]int length)
+  {
+    Assert.That(UInt48.One.TryWriteBigEndian(new byte[length], out var bytesWritten), Is.False);
+    Assert.That(bytesWritten, Is.EqualTo(0));
+  }
+
+  [Test]
+  public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)]int length)
+  {
+    Assert.That(UInt48.One.TryWriteLittleEndian(new byte[length], out var bytesWritten), Is.False);
+    Assert.That(bytesWritten, Is.EqualTo(0));
+  }
+}
+
 #if FEATURE_GENERIC_MATH
 partial class UInt24nTests {
   static int IBinaryInteger_GetByteCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
