@@ -19,6 +19,19 @@ partial class UInt24Tests {
     Assert.That(UInt24.One / UInt24.One, Is.EqualTo(UInt24.One), "1 / 1");
     Assert.That(UInt24.MaxValue / UInt24.MaxValue, Is.EqualTo(UInt24.One), "Max / Max");
   }
+
+  [Test]
+  public void TestOpCheckedDivision()
+  {
+    Assert.That(checked(UInt24.Zero / UInt24.One), Is.EqualTo(UInt24.Zero), "0 / 1");
+    Assert.That(checked(UInt24.One / UInt24.One), Is.EqualTo(UInt24.One), "1 / 1");
+  }
+
+  [Test]
+  public void TestOpCheckedDivision_Overflow()
+  {
+    Assert.Ignore("no test cases");
+  }
 }
 
 partial class UInt48Tests {
@@ -30,6 +43,19 @@ partial class UInt48Tests {
     Assert.That(UInt48.Zero / UInt48.One, Is.EqualTo(UInt48.Zero), "0 / 1");
     Assert.That(UInt48.One / UInt48.One, Is.EqualTo(UInt48.One), "1 / 1");
     Assert.That(UInt48.MaxValue / UInt48.MaxValue, Is.EqualTo(UInt48.One), "Max / Max");
+  }
+
+  [Test]
+  public void TestOpCheckedDivision()
+  {
+    Assert.That(checked(UInt48.Zero / UInt48.One), Is.EqualTo(UInt48.Zero), "0 / 1");
+    Assert.That(checked(UInt48.One / UInt48.One), Is.EqualTo(UInt48.One), "1 / 1");
+  }
+
+  [Test]
+  public void TestOpCheckedDivision_Overflow()
+  {
+    Assert.Ignore("no test cases");
   }
 }
 
@@ -52,6 +78,25 @@ partial class UInt24nTests {
 
     static TUInt24n Devide<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IDivisionOperators<TUInt24n, TUInt24n, TUInt24n>
       => x / y;
+  }
+
+  [Test]
+  public void IDivisionOperators_OpCheckedDivision()
+  {
+    Assert.That(Devide(UInt24.Zero, UInt24.One), Is.EqualTo(UInt24.Zero), "0 / 1");
+    Assert.That(Devide(UInt24.One, UInt24.One), Is.EqualTo(UInt24.One), "1 / 1");
+
+    Assert.That(Devide(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.Zero), "0 / 1");
+    Assert.That(Devide(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), "1 / 1");
+
+    static TUInt24n Devide<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IDivisionOperators<TUInt24n, TUInt24n, TUInt24n>
+      => checked(x / y);
+  }
+
+  [Test]
+  public void IDivisionOperators_OpCheckedDivision_Overflow()
+  {
+    Assert.Ignore("no test cases");
   }
 #endif
 }

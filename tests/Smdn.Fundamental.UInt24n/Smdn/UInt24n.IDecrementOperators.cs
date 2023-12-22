@@ -27,6 +27,16 @@ partial class UInt24Tests {
     Assert.That(--max, Is.EqualTo(MaxMinusOne()), "--max");
     Assert.That(max, Is.EqualTo(MaxMinusOne()), "(--max) value");
   }
+
+  [Test]
+  public void TestOpCheckedDecrement()
+  {
+    var zero = UInt24.Zero;
+
+    checked {
+      Assert.Throws<OverflowException>(() => --zero, "--zero");
+    }
+  }
 }
 
 partial class UInt48Tests {
@@ -47,12 +57,22 @@ partial class UInt48Tests {
     Assert.That(--max, Is.EqualTo(MaxMinusOne()), "--max");
     Assert.That(max, Is.EqualTo(MaxMinusOne()), "(--max) value");
   }
+
+  [Test]
+  public void TestOpCheckedDecrement()
+  {
+    var zero = UInt48.Zero;
+
+    checked {
+      Assert.Throws<OverflowException>(() => --zero, "--zero");
+    }
+  }
 }
 
 partial class UInt24nTests {
 #if FEATURE_GENERIC_MATH
   [Test]
-  public void IDecrementOperators_OpIncrement()
+  public void IDecrementOperators_OpDecrement()
   {
     static TUInt24n MaxMinusOne<TUInt24n>() where TUInt24n : INumber<TUInt24n>, IMinMaxValue<TUInt24n> => TUInt24n.MaxValue - TUInt24n.One;
 
@@ -68,6 +88,21 @@ partial class UInt24nTests {
     {
       Assert.That(--value, Is.EqualTo(expected), $"{typeof(TUInt24n)} --{value}");
       Assert.That(value, Is.EqualTo(expected), "{typeof(TUInt24n)} value");
+    }
+  }
+
+  [Test]
+  public void IDecrementOperators_OpCheckedDecrement()
+  {
+    Decrement(UInt24.Zero);
+
+    Decrement(UInt48.Zero);
+
+    static void Decrement<TUInt24n>(TUInt24n value) where TUInt24n : IDecrementOperators<TUInt24n>
+    {
+      checked {
+        Assert.Throws<OverflowException>(() => --value);
+      }
     }
   }
 #endif

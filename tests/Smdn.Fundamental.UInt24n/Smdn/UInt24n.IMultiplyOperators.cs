@@ -17,7 +17,16 @@ partial class UInt24Tests {
     Assert.That(UInt24.Zero * UInt24.One, Is.EqualTo(UInt24.Zero), "0 * 1");
     Assert.That(UInt24.One * UInt24.Zero, Is.EqualTo(UInt24.Zero), "1 * 0");
     Assert.That(UInt24.One * UInt24.One, Is.EqualTo(UInt24.One), "1 * 1");
-    Assert.That(UInt24.MaxValue * UInt24.MaxValue, Is.EqualTo(UInt24.One), "Max * Max");
+    Assert.That(unchecked(UInt24.MaxValue * UInt24.MaxValue), Is.EqualTo(UInt24.One), "Max * Max");
+  }
+
+  [Test]
+  public void TestOpCheckedMultiply()
+  {
+    UInt24 result;
+
+    Assert.Throws<OverflowException>(() => result = checked(UInt24.MaxValue * (UInt24)2), "Max * 2");
+    Assert.Throws<OverflowException>(() => result = checked(UInt24.MaxValue * UInt24.MaxValue), "Max * Max");
   }
 }
 
@@ -29,7 +38,16 @@ partial class UInt48Tests {
     Assert.That(UInt48.Zero * UInt48.One, Is.EqualTo(UInt48.Zero), "0 * 1");
     Assert.That(UInt48.One * UInt48.Zero, Is.EqualTo(UInt48.Zero), "1 * 0");
     Assert.That(UInt48.One * UInt48.One, Is.EqualTo(UInt48.One), "1 * 1");
-    Assert.That(UInt48.MaxValue * UInt48.MaxValue, Is.EqualTo(UInt48.One), "Max * Max");
+    Assert.That(unchecked(UInt48.MaxValue * UInt48.MaxValue), Is.EqualTo(UInt48.One), "Max * Max");
+  }
+
+  [Test]
+  public void TestOpCheckedMultiply()
+  {
+    UInt48 result;
+
+    Assert.Throws<OverflowException>(() => result = checked(UInt48.MaxValue * (UInt48)2), "Max * 2");
+    Assert.Throws<OverflowException>(() => result = checked(UInt48.MaxValue * UInt48.MaxValue), "Max * Max");
   }
 }
 
@@ -52,6 +70,19 @@ partial class UInt24nTests {
 
     static TUInt24n Multiply<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IMultiplyOperators<TUInt24n, TUInt24n, TUInt24n>
       => x * y;
+  }
+
+  [Test]
+  public void IMultiplyOperators_OpCheckedMultiply()
+  {
+    Assert.Throws<OverflowException>(() => Multiply(UInt24.MaxValue, (UInt24)2), "Max * 2");
+    Assert.Throws<OverflowException>(() => Multiply(UInt24.MaxValue, UInt24.MaxValue), "Max * Max");
+
+    Assert.Throws<OverflowException>(() => Multiply(UInt48.MaxValue, (UInt48)2), "Max * 2");
+    Assert.Throws<OverflowException>(() => Multiply(UInt48.MaxValue, UInt48.MaxValue), "Max * Max");
+
+    static TUInt24n Multiply<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IMultiplyOperators<TUInt24n, TUInt24n, TUInt24n>
+      => checked(x * y);
   }
 #endif
 }

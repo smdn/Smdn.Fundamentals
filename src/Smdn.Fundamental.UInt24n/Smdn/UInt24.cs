@@ -36,8 +36,11 @@ public partial struct UInt24 {
     }
   }
 
-  private UInt24(uint value)
+  private UInt24(uint value, bool check = false)
   {
+    if (check && maxValue < value)
+      throw UInt24n.CreateOverflowException<UInt24>(value);
+
     unchecked {
       Byte0 = (byte)(value >> 16);
       Byte1 = (byte)(value >> 8);

@@ -27,6 +27,16 @@ partial class UInt24Tests {
     Assert.That(++max, Is.EqualTo(UInt24.Zero), "++max");
     Assert.That(max, Is.EqualTo(UInt24.Zero), "(++max) value");
   }
+
+  [Test]
+  public void TestOpCheckedIncrement()
+  {
+    var max = UInt24.MaxValue;
+
+    checked {
+      Assert.Throws<OverflowException>(() => ++max, "++max");
+    }
+  }
 }
 
 partial class UInt48Tests {
@@ -46,6 +56,16 @@ partial class UInt48Tests {
 
     Assert.That(++max, Is.EqualTo(UInt48.Zero), "++max");
     Assert.That(max, Is.EqualTo(UInt48.Zero), "(++max) value");
+  }
+
+  [Test]
+  public void TestOpCheckedIncrement()
+  {
+    var max = UInt48.MaxValue;
+
+    checked {
+      Assert.Throws<OverflowException>(() => ++max, "++max");
+    }
   }
 }
 
@@ -68,6 +88,21 @@ partial class UInt24nTests {
     {
       Assert.That(++value, Is.EqualTo(expected), $"{typeof(TUInt24n)} ++{value}");
       Assert.That(value, Is.EqualTo(expected), "{typeof(TUInt24n)} value");
+    }
+  }
+
+  [Test]
+  public void IIncrementOperators_OpCheckedIncrement()
+  {
+    Increment(UInt24.MaxValue);
+
+    Increment(UInt48.MaxValue);
+
+    static void Increment<TUInt24n>(TUInt24n value) where TUInt24n : IIncrementOperators<TUInt24n>
+    {
+      checked {
+        Assert.Throws<OverflowException>(() => ++value);
+      }
     }
   }
 #endif

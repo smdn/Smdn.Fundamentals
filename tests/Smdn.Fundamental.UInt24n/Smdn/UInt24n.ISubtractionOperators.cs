@@ -20,6 +20,14 @@ partial class UInt24Tests {
     Assert.That(UInt24.Zero - UInt24.MaxValue, Is.EqualTo(UInt24.One), "0 - Max");
   }
 
+  [Test]
+  public void TestOpCheckedSubtraction()
+  {
+    UInt24 result;
+
+    Assert.Throws<OverflowException>(() => result = checked(UInt24.Zero - UInt24.One), "0 - 1");
+    Assert.Throws<OverflowException>(() => result = checked(UInt24.One - UInt24.MaxValue), "1 - Max");
+  }
 }
 
 partial class UInt48Tests {
@@ -31,6 +39,15 @@ partial class UInt48Tests {
     Assert.That(UInt48.One - UInt48.Zero, Is.EqualTo(UInt48.One), "1 - 0");
     Assert.That(UInt48.One - UInt48.One, Is.EqualTo(UInt48.Zero), "1 - 1");
     Assert.That(UInt48.Zero - UInt48.MaxValue, Is.EqualTo(UInt48.One), "0 - Max");
+  }
+
+  [Test]
+  public void TestOpCheckedSubtraction()
+  {
+    UInt48 result;
+
+    Assert.Throws<OverflowException>(() => result = checked(UInt48.Zero - UInt48.One), "0 - 1");
+    Assert.Throws<OverflowException>(() => result = checked(UInt48.One - UInt48.MaxValue), "1 - Max");
   }
 }
 
@@ -53,6 +70,19 @@ partial class UInt24nTests {
 
     static TUInt24n Subtract<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : ISubtractionOperators<TUInt24n, TUInt24n, TUInt24n>
       => x - y;
+  }
+
+  [Test]
+  public void ISubtractionOperators_OpCheckedSubtraction()
+  {
+    Assert.Throws<OverflowException>(() => Subtract(UInt24.Zero, UInt24.One), "0 - 1");
+    Assert.Throws<OverflowException>(() => Subtract(UInt24.One, UInt24.MaxValue), "1 - Max");
+
+    Assert.Throws<OverflowException>(() => Subtract(UInt48.Zero, UInt48.One), "0 - 1");
+    Assert.Throws<OverflowException>(() => Subtract(UInt48.One, UInt48.MaxValue), "1 - Max");
+
+    static TUInt24n Subtract<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : ISubtractionOperators<TUInt24n, TUInt24n, TUInt24n>
+      => checked(x - y);
   }
 #endif
 }
