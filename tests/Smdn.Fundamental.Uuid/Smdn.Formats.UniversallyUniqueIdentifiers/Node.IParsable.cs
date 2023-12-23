@@ -34,6 +34,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00-00", false, null)]
   public void TestParse(string s, bool expectValid, string expectedString)
   {
+#pragma warning disable CA1305
     Node n = default;
 
     if (expectValid)
@@ -59,6 +60,7 @@ partial class NodeTests {
 
     static T Parse<T>(string s, IFormatProvider provider) where T : IParsable<T> => T.Parse(s, provider);
 #endif
+#pragma warning restore CA1305
   }
 
   [TestCase("00:00:00:00:00:00", true, "00:00:00:00:00:00")]
@@ -77,6 +79,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00-00", false, null)]
   public void TestParse_ISpanParsable(string s, bool expectValid, string expectedString)
   {
+#pragma warning disable CA1305
     Node n = default;
 
     if (expectValid)
@@ -102,6 +105,7 @@ partial class NodeTests {
 
     static T Parse<T>(ReadOnlySpan<char> s, IFormatProvider provider) where T : ISpanParsable<T> => T.Parse(s, provider);
 #endif
+#pragma warning restore CA1305
   }
 
   [TestCase("00:00:00:00:00:00", true, "00:00:00:00:00:00")]
@@ -121,6 +125,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00-00", false, null)]
   public void TestTryParse(string s, bool expectValid, string expectedString)
   {
+#pragma warning disable CA1305
     Assert.That(Node.TryParse(s, out var node), Is.EqualTo(expectValid));
 
     if (expectValid) {
@@ -138,6 +143,7 @@ partial class NodeTests {
 
     static bool TryParse<T>(string s, out T result) where T : IParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
+#pragma warning restore CA1305
   }
 
   [TestCase("00:00:00:00:00:00", true, "00:00:00:00:00:00")]
@@ -157,6 +163,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00-00", false, null)]
   public void TestTryParse_ISpanParsable(string s, bool expectValid, string expectedString)
   {
+#pragma warning disable CA1305
     Assert.That(Node.TryParse(s.AsSpan(), out var node), Is.EqualTo(expectValid));
 
     if (expectValid) {
@@ -174,5 +181,6 @@ partial class NodeTests {
 
     static bool TryParse<T>(ReadOnlySpan<char> s, out T result) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
+#pragma warning restore CA1305
   }
 }

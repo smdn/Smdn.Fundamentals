@@ -10,6 +10,7 @@ partial class NodeTests {
   [Test]
   public void TestToString()
   {
+#pragma warning disable CA1305
     var regexFormat_X = new Regex("^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$");
     var regexFormat_x = new Regex("^[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}$");
     var regexFormat_Default = regexFormat_X;
@@ -24,16 +25,19 @@ partial class NodeTests {
       Assert.That(regexFormat_X.IsMatch(node.ToString("X")), Is.True, node.ToString("X"));
       Assert.That(regexFormat_x.IsMatch(node.ToString("x")), Is.True, node.ToString("x"));
     }
+#pragma warning restore CA1305
   }
 
   [Test]
   public void TestToString_InvalidFormat()
   {
+#pragma warning disable CA1305
     var node = Node.CreateRandom();
 
     Assert.Throws<FormatException>(() => node.ToString("n"));
     Assert.Throws<FormatException>(() => node.ToString("xx"));
     Assert.Throws<FormatException>(() => node.ToString("XX"));
+#pragma warning restore CA1305
   }
 
 #if SYSTEM_ISPANFORMATTABLE
@@ -68,11 +72,13 @@ partial class NodeTests {
   [TestCase("XX")]
   public void TestTryFormat_InvalidFormat(string format)
   {
+#pragma warning disable CA1305
     var node = Node.CreateRandom();
     var destination = new char[17];
 
     Assert.That(node.TryFormat(destination, out _, format, provider: null), Is.True);
     Assert.That(node.ToString("X"), Is.EqualTo(new string(destination)));
+#pragma warning restore CA1305
   }
 #endif
 }

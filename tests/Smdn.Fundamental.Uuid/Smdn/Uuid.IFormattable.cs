@@ -131,5 +131,7 @@ partial class UuidTests {
   [TestCase("D2")]
   [TestCase("x")]
   public void TestTryFormat_InvalidFormat(string format)
+#pragma warning disable CA1305
     => Assert.That(Uuid.Nil.TryFormat(new char[0x100], out _, format.AsSpan()), Is.False);
+#pragma warning restore CA1305
 }

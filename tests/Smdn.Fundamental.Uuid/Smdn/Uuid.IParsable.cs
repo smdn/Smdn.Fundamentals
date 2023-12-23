@@ -10,6 +10,7 @@ partial class UuidTests {
   [Test]
   public void TestParse()
   {
+#pragma warning disable CA1305
     const string s = "f81d4fae-7dec-11d0-a765-00a0c91e6bf6";
 
     static void TestParsed(Uuid uuid, string testCaseLabel)
@@ -38,11 +39,13 @@ partial class UuidTests {
 
     static T ParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.Parse(s, provider: null);
 #endif
+#pragma warning restore CA1305
   }
 
   [Test]
   public void TestTryParse()
   {
+#pragma warning disable CA1305
     const string s = "f81d4fae-7dec-11d0-a765-00a0c91e6bf6";
 
     static void TestParsed(Uuid uuid, string testCaseLabel)
@@ -78,6 +81,7 @@ partial class UuidTests {
 
     static bool TryParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s, out T result) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
+#pragma warning restore CA1305
   }
 
   private static System.Collections.IEnumerable YieldTestCases_Parse_FormatException()
@@ -145,6 +149,7 @@ partial class UuidTests {
   [TestCaseSource(nameof(YieldTestCases_Parse_FormatException))]
   public void TestParse_FormatException(string uuid, string expectedExceptionMessage)
   {
+#pragma warning disable CA1305
     var exString = Assert.Throws<FormatException>(() => Uuid.Parse(uuid), "Parse<string>");
     Assert.That(exString!.Message, Does.Contain(expectedExceptionMessage), "Parse<string> exception message");
 
@@ -164,6 +169,7 @@ partial class UuidTests {
 
     static T ParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.Parse(s, provider: null);
 #endif
+#pragma warning restore CA1305
   }
 
   [TestCaseSource(nameof(YieldTestCases_Parse_FormatException))]
