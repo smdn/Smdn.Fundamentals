@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpEquality()
+  public void OpEquality()
   {
     Assert.That(UInt24.Zero == (UInt24)0, Is.True);
     Assert.That(UInt24.Zero == (UInt24)0x000010, Is.False);
@@ -20,7 +20,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpIneqality()
+  public void OpIneqality()
   {
     Assert.That(UInt24.Zero != (UInt24)0, Is.False);
     Assert.That(UInt24.Zero != (UInt24)0x000010, Is.True);
@@ -31,7 +31,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpEquality()
+  public void OpEquality()
   {
     Assert.That(UInt48.Zero == (UInt48)0, Is.True);
     Assert.That(UInt48.Zero == (UInt48)0x000000000010, Is.False);
@@ -43,7 +43,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpIneqality()
+  public void OpIneqality()
   {
     Assert.That(UInt48.Zero != (UInt48)0, Is.False);
     Assert.That(UInt48.Zero != (UInt48)0x000000000010, Is.True);

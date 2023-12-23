@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpLessThan()
+  public void OpLessThan()
   {
     Assert.That(UInt24.Zero < (UInt24)0, Is.False, "#1");
     Assert.That(UInt24.Zero < (UInt24)1, Is.True, "#2");
@@ -23,7 +23,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpLessThanOrEqual()
+  public void OpLessThanOrEqual()
   {
     Assert.That(UInt24.Zero <= (UInt24)0, Is.True, "#1");
     Assert.That(UInt24.Zero <= (UInt24)1, Is.True, "#2");
@@ -35,7 +35,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpGreaterThan()
+  public void OpGreaterThan()
   {
     Assert.That(UInt24.Zero > (UInt24)0, Is.False, "#1");
     Assert.That(UInt24.Zero > (UInt24)1, Is.False, "#2");
@@ -47,7 +47,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpGreaterThanOrEqual()
+  public void OpGreaterThanOrEqual()
   {
     Assert.That(UInt24.Zero >= (UInt24)0, Is.True, "#1");
     Assert.That(UInt24.Zero >= (UInt24)1, Is.False, "#2");
@@ -61,7 +61,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpLessThan()
+  public void OpLessThan()
   {
     Assert.That(UInt48.Zero < (UInt48)0, Is.False, "#1");
     Assert.That(UInt48.Zero < (UInt48)1, Is.True, "#2");
@@ -73,7 +73,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpLessThanOrEqual()
+  public void OpLessThanOrEqual()
   {
     Assert.That(UInt48.Zero <= (UInt48)0, Is.True, "#1");
     Assert.That(UInt48.Zero <= (UInt48)1, Is.True, "#2");
@@ -85,7 +85,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpGreaterThan()
+  public void OpGreaterThan()
   {
     Assert.That(UInt48.Zero > (UInt48)0, Is.False, "#1");
     Assert.That(UInt48.Zero > (UInt48)1, Is.False, "#2");
@@ -97,7 +97,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpGreaterThanOrEqual()
+  public void OpGreaterThanOrEqual()
   {
     Assert.That(UInt48.Zero >= (UInt48)0, Is.True, "#1");
     Assert.That(UInt48.Zero >= (UInt48)1, Is.False, "#2");

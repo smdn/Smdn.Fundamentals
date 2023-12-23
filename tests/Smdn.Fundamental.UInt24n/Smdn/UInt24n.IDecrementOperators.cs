@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpDecrement()
+  public void OpDecrement()
   {
     static UInt24 MaxMinusOne() => UInt24.MaxValue - UInt24.One;
     var zero = UInt24.Zero;
@@ -29,7 +29,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpCheckedDecrement()
+  public void OpCheckedDecrement()
   {
     var zero = UInt24.Zero;
 
@@ -41,7 +41,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpDecrement()
+  public void OpDecrement()
   {
     static UInt48 MaxMinusOne() => UInt48.MaxValue - UInt48.One;
     var zero = UInt48.Zero;
@@ -59,7 +59,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpCheckedDecrement()
+  public void OpCheckedDecrement()
   {
     var zero = UInt48.Zero;
 

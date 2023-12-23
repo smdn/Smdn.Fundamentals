@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpIncrement()
+  public void OpIncrement()
   {
     static UInt24 Two() => UInt24.One + UInt24.One;
     var zero = UInt24.Zero;
@@ -29,7 +29,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpCheckedIncrement()
+  public void OpCheckedIncrement()
   {
     var max = UInt24.MaxValue;
 
@@ -41,7 +41,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpIncrement()
+  public void OpIncrement()
   {
     static UInt48 Two() => UInt48.One + UInt48.One;
     var zero = UInt48.Zero;
@@ -59,7 +59,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpCheckedIncrement()
+  public void OpCheckedIncrement()
   {
     var max = UInt48.MaxValue;
 

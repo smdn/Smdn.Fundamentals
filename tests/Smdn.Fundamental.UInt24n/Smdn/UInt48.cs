@@ -8,13 +8,13 @@ namespace Smdn {
   [TestFixture()]
   public partial class UInt48Tests {
     [Test]
-    public void TestSizeOfStructure()
+    public void SizeOfStructure()
     {
       Assert.That(System.Runtime.InteropServices.Marshal.SizeOf(typeof(UInt48)), Is.EqualTo(6));
     }
 
     [Test]
-    public void TestConstruct()
+    public void Construct()
     {
       Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, isBigEndian: true), Is.EqualTo((UInt48)0xff0000000000));
       Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true), Is.EqualTo((UInt48)0xff0000000000));
@@ -30,7 +30,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestConstruct_ReadOnlySpan()
+    public void Construct_ReadOnlySpan()
     {
       Assert.That(
         new UInt48(stackalloc byte[] { 0x01, 0x23, 0x45, 0x67, 0x89, 0xAB }, isBigEndian: true),
@@ -50,7 +50,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void Test()
+    public void BasicUsage()
     {
       Assert.That((UInt48)(long)0x00ff00ff, Is.EqualTo((UInt48)(int)0x00ff00ff));
 
@@ -67,7 +67,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestConstants()
+    public void Constants()
     {
       Assert.That(UInt48.Zero, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true)), nameof(UInt48.Zero));
       Assert.That(UInt48.One, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, isBigEndian: true)), nameof(UInt48.One));
@@ -76,7 +76,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestEquals()
+    public void Equals()
     {
       Assert.That(UInt48.Zero.Equals(UInt48.Zero), Is.True);
       Assert.That(UInt48.Zero.Equals(0L), Is.True);
@@ -98,11 +98,11 @@ namespace Smdn {
     [TestCase(0uL, true)]
     [TestCase((object)null, false)]
     [TestCase(true, false)]
-    public void TestEquals_Object(object value, bool expected)
+    public void Equals_Object(object value, bool expected)
       => Assert.That(UInt48.Zero.Equals(value), Is.EqualTo(expected));
 
     [Test]
-    public void TestCompareTo()
+    public void CompareTo()
     {
       var zero = (UInt48)0x000000000000;
       var one  = (UInt48)0x000000000001;
@@ -122,7 +122,7 @@ namespace Smdn {
     [TestCase(0.0)]
     [TestCase((byte)0)]
     [TestCase("0")]
-    public void TestCompareTo_NotComparable(object value)
+    public void CompareTo_NotComparable(object value)
       => Assert.Throws<ArgumentException>(() => UInt48.Zero.CompareTo(value));
 
     [TestCase((int)0x00000000, (long)0x0000000000000000, "0")]
@@ -130,7 +130,7 @@ namespace Smdn {
     [TestCase(Int32.MaxValue,  (long)0x000000007fffffff, "7fffffff")]
     [TestCase((int)-1,         (long)0x0000ffffffffffff, "ffffffffffff")]
     [TestCase(Int32.MinValue,  (long)0x0000ffff80000000, "ffff80000000")]
-    public void TestOpExplicitFromInt32(int value, long expectedResult, string expectedHex)
+    public void OpExplicitFromInt32(int value, long expectedResult, string expectedHex)
     {
       UInt48 val = unchecked((UInt48)value);
 
@@ -140,7 +140,7 @@ namespace Smdn {
 
     [TestCase((int)-1)]
     [TestCase(Int32.MinValue)]
-    public void TestOpExplicitCheckedFromInt32(int value)
+    public void OpExplicitCheckedFromInt32(int value)
     {
       Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)value); });
     }
@@ -151,7 +151,7 @@ namespace Smdn {
     [TestCase((long)0x0001000000000000, (long)0x0000000000000000, "0")]
     [TestCase(Int64.MaxValue,           (long)0x0000ffffffffffff, "ffffffffffff")]
     [TestCase(Int64.MinValue,           (long)0x0000000000000000, "0")]
-    public void TestOpExplicitFromInt64(long value, long expectedResult, string expectedHex)
+    public void OpExplicitFromInt64(long value, long expectedResult, string expectedHex)
     {
       UInt48 val = unchecked((UInt48)value);
 
@@ -163,7 +163,7 @@ namespace Smdn {
     [TestCase((long)0x0001000000000000)]
     [TestCase(Int64.MaxValue)]
     [TestCase(Int64.MinValue)]
-    public void TestOpExplicitCheckedFromInt64(long value)
+    public void OpExplicitCheckedFromInt64(long value)
     {
       Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)value); });
     }
@@ -175,7 +175,7 @@ namespace Smdn {
     [TestCase((ulong)0x0001000000000000, (long)0x0000000000000000, "0")]
     [TestCase((ulong)0xffffffffffffffff, (long)0x0000ffffffffffff, "ffffffffffff")]
     [TestCase(UInt64.MaxValue,           (long)0x0000ffffffffffff, "ffffffffffff")]
-    public void TestOpExplicitFromUInt64(ulong value, long expectedResult, string expectedHex)
+    public void OpExplicitFromUInt64(ulong value, long expectedResult, string expectedHex)
     {
       UInt48 val = unchecked((UInt48)value);
 
@@ -186,12 +186,12 @@ namespace Smdn {
     [TestCase((ulong)0x0001000000000000)]
     [TestCase((ulong)0xffffffffffffffff)]
     [TestCase(UInt64.MaxValue)]
-    public void TestOpExplicitCheckedFromUInt64(ulong value)
+    public void OpExplicitCheckedFromUInt64(ulong value)
     {
       Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)value); });
     }
 
-    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitToInt32()
+    private static System.Collections.IEnumerable YieldTestCases_OpExplicitToInt32()
     {
       yield return new object?[] { UInt48.MinValue,        (int)0x00000000, "0" };
       yield return new object?[] { (UInt48)0x000000000000, (int)0x00000000, "0" };
@@ -201,28 +201,28 @@ namespace Smdn {
       yield return new object?[] { UInt48.MaxValue,        unchecked((int)(uint)0xffffffff), "ffffffffffff" };
     }
 
-    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitToInt32))]
-    public void TestOpExplicitToInt32(UInt48 value, int expectedResult, string expectedHex)
+    [TestCaseSource(nameof(YieldTestCases_OpExplicitToInt32))]
+    public void OpExplicitToInt32(UInt48 value, int expectedResult, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
       Assert.That(unchecked((int)value), Is.EqualTo(expectedResult));
     }
 
-    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitCheckedToInt32()
+    private static System.Collections.IEnumerable YieldTestCases_OpExplicitCheckedToInt32()
     {
       yield return new object?[] { (UInt48)0x000080000000, "80000000" };
       yield return new object?[] { (UInt48)0xffffffffffff, "ffffffffffff" };
       yield return new object?[] { UInt48.MaxValue,        "ffffffffffff" };
     }
 
-    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitCheckedToInt32))]
-    public void TestOpExplicitCheckedToInt32(UInt48 value, string expectedHex)
+    [TestCaseSource(nameof(YieldTestCases_OpExplicitCheckedToInt32))]
+    public void OpExplicitCheckedToInt32(UInt48 value, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
       Assert.Throws<OverflowException>(() => { var i = checked((int)value); });
     }
 
-    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitToUInt32()
+    private static System.Collections.IEnumerable YieldTestCases_OpExplicitToUInt32()
     {
       yield return new object?[] { UInt48.MinValue,        (uint)0x00000000, "0" };
       yield return new object?[] { (UInt48)0x000000000000, (uint)0x00000000, "0" };
@@ -234,22 +234,22 @@ namespace Smdn {
       yield return new object?[] { UInt48.MaxValue,        (uint)0xffffffff, "ffffffffffff" };
     }
 
-    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitToUInt32))]
-    public void TestOpExplicitToUInt32(UInt48 value, uint expectedResult, string expectedHex)
+    [TestCaseSource(nameof(YieldTestCases_OpExplicitToUInt32))]
+    public void OpExplicitToUInt32(UInt48 value, uint expectedResult, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
       Assert.That(unchecked((uint)value), Is.EqualTo(expectedResult));
     }
 
-    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitCheckedToUInt32()
+    private static System.Collections.IEnumerable YieldTestCases_OpExplicitCheckedToUInt32()
     {
       yield return new object?[] { (UInt48)0x000100000000, "100000000" };
       yield return new object?[] { (UInt48)0xffffffffffff, "ffffffffffff" };
       yield return new object?[] { UInt48.MaxValue,        "ffffffffffff" };
     }
 
-    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitCheckedToUInt32))]
-    public void TestOpExplicitCheckedToUInt32(UInt48 value, string expectedHex)
+    [TestCaseSource(nameof(YieldTestCases_OpExplicitCheckedToUInt32))]
+    public void OpExplicitCheckedToUInt32(UInt48 value, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
       Assert.Throws<OverflowException>(() => { var ui = checked((uint)value); });
@@ -260,7 +260,7 @@ namespace Smdn {
     [TestCase((uint)0xffffffff,  (long)0x00000000ffffffff, "ffffffff")]
     [TestCase(UInt32.MinValue,   (long)0x0000000000000000, "0")]
     [TestCase(UInt32.MaxValue,   (long)0x00000000ffffffff, "ffffffff")]
-    public void TestOpExplicitFromUInt32(uint value, long expectedResult, string expectedHex)
+    public void OpExplicitFromUInt32(uint value, long expectedResult, string expectedHex)
     {
       var val = (UInt48)value;
 
@@ -269,7 +269,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestOpExplicitToInt64()
+    public void OpExplicitToInt64()
     {
       long max = (long)UInt48.MaxValue;
       long min = (long)UInt48.MinValue;
@@ -279,7 +279,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestOpExplicitToUInt64()
+    public void OpExplicitToUInt64()
     {
       ulong max = (ulong)UInt48.MaxValue;
       ulong min = (ulong)UInt48.MinValue;
@@ -289,7 +289,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestToInt64()
+    public void ToInt64()
     {
       Assert.That((long)0x0000ffffffffffff == UInt48.MaxValue.ToInt64(), Is.True);
       Assert.That((long)0x0000000000000000 == UInt48.MinValue.ToInt64(), Is.True);
@@ -300,7 +300,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestToUInt64()
+    public void ToUInt64()
     {
       Assert.That((ulong)0x0000ffffffffffff == UInt48.MaxValue.ToUInt64(), Is.True);
       Assert.That((ulong)0x0000000000000000 == UInt48.MinValue.ToUInt64(), Is.True);
@@ -311,7 +311,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestIConvertible()
+    public void IConvertible()
     {
 #pragma warning disable CA1305
       Assert.That(Convert.ChangeType((UInt48)1, typeof(bool)), Is.EqualTo(true));
@@ -350,7 +350,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestIConvertible_ToDateTime()
+    public void IConvertible_ToDateTime()
     {
 #pragma warning disable CA1305
       Assert.Throws<InvalidCastException>(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)));
@@ -359,7 +359,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestToString()
+    public void ToString()
     {
 #pragma warning disable CA1305
       Assert.That(UInt48.Zero.ToString(), Is.EqualTo("0"));
@@ -371,7 +371,7 @@ namespace Smdn {
 
 #if SYSTEM_ISPANFORMATTABLE
     [Test]
-    public void TestTryFormat()
+    public void TryFormat()
     {
       Span<char> destination = stackalloc char[12];
       int charsWritten = default;
@@ -390,7 +390,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestTryFormat_DestinationTooShort()
+    public void TryFormat_DestinationTooShort()
     {
       Assert.That(UInt48.Zero.TryFormat(Array.Empty<char>(), out var charsWritten, string.Empty, provider: null), Is.False, "#1");
       Assert.That(UInt48.MaxValue.TryFormat(stackalloc char[UInt48.MaxValue.ToString("D", null).Length - 1], out charsWritten, string.Empty, provider: null), Is.False, "#2");
@@ -398,7 +398,7 @@ namespace Smdn {
 #endif
 
     [Test]
-    public void TestParse_String()
+    public void Parse_String()
     {
       Assert.That(UInt48.Parse("0"), Is.EqualTo(UInt48.Zero));
       Assert.That(UInt48.Parse("1"), Is.EqualTo((UInt48)1));
@@ -415,7 +415,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestParse_String_WithNumberStyles()
+    public void Parse_String_WithNumberStyles()
     {
       Assert.That(UInt48.Parse("0", style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt48.Zero), "#0");
 
@@ -424,7 +424,7 @@ namespace Smdn {
 
 #if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
     [Test]
-    public void TestParse_ReadOnlySpanOfChar()
+    public void Parse_ReadOnlySpanOfChar()
     {
       Assert.That(UInt48.Parse("_0".AsSpan(1)), Is.EqualTo(UInt48.Zero));
       Assert.That(UInt48.Parse("_1".AsSpan(1)), Is.EqualTo((UInt48)1));
@@ -440,7 +440,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestParse_ReadOnlySpanOfChar_WithNumberStyles()
+    public void Parse_ReadOnlySpanOfChar_WithNumberStyles()
     {
       Assert.That(UInt48.Parse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt48.Zero), "#0");
 
@@ -449,7 +449,7 @@ namespace Smdn {
 #endif
 
     [Test]
-    public void TestTryParse_String()
+    public void TryParse_String()
     {
       Assert.That(UInt48.TryParse("0", out var result0), Is.True);
       Assert.That(result0, Is.EqualTo(UInt48.Zero));
@@ -476,7 +476,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestTryParse_String_WithNumberStyles()
+    public void TryParse_String_WithNumberStyles()
     {
       Assert.That(UInt48.TryParse("0", style: NumberStyles.AllowHexSpecifier, provider: null, out var result0), Is.True, "#0");
       Assert.That(result0, Is.EqualTo(UInt48.Zero), "#0");
@@ -489,7 +489,7 @@ namespace Smdn {
 
 #if SYSTEM_INT32_TRYPARSE_READONLYSPAN_OF_CHAR
     [Test]
-    public void TestTryParse_ReadOnlySpanOfChar()
+    public void TryParse_ReadOnlySpanOfChar()
     {
       Assert.That(UInt48.TryParse("_0".AsSpan(1), out var result0), Is.True);
       Assert.That(result0, Is.EqualTo(UInt48.Zero));
@@ -515,7 +515,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestTryParse_ReadOnlySpanOfChar_WithNumberStyles()
+    public void TryParse_ReadOnlySpanOfChar_WithNumberStyles()
     {
       Assert.That(UInt48.TryParse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier, provider: null, out var result0), Is.True, "#0");
       Assert.That(result0, Is.EqualTo(UInt48.Zero), "#0");

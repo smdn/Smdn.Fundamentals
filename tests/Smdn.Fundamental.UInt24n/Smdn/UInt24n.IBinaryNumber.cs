@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpBitwiseAnd()
+  public void OpBitwiseAnd()
   {
     Assert.That(UInt24.Zero & UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 & 0");
     Assert.That(UInt24.One & UInt24.Zero, Is.EqualTo(UInt24.Zero), "1 & 0");
@@ -25,7 +25,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpBitwiseAnd()
+  public void OpBitwiseAnd()
   {
     Assert.That(UInt48.Zero & UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 & 0");
     Assert.That(UInt48.One & UInt48.Zero, Is.EqualTo(UInt48.Zero), "1 & 0");
@@ -66,7 +66,7 @@ partial class UInt24nTests {
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpBitwiseOr()
+  public void OpBitwiseOr()
   {
     Assert.That(UInt24.Zero | UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 | 0");
     Assert.That(UInt24.One | UInt24.Zero, Is.EqualTo(UInt24.One), "1 | 0");
@@ -80,7 +80,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpBitwiseOr()
+  public void OpBitwiseOr()
   {
     Assert.That(UInt48.Zero | UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 | 0");
     Assert.That(UInt48.One | UInt48.Zero, Is.EqualTo(UInt48.One), "1 | 0");
@@ -121,7 +121,7 @@ partial class UInt24nTests {
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpExclusiveOr()
+  public void OpExclusiveOr()
   {
     Assert.That(UInt24.Zero ^ UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 ^ 0");
     Assert.That(UInt24.One ^ UInt24.Zero, Is.EqualTo(UInt24.One), "1 ^ 0");
@@ -135,7 +135,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpExclusiveOr()
+  public void OpExclusiveOr()
   {
     Assert.That(UInt48.Zero ^ UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 ^ 0");
     Assert.That(UInt48.One ^ UInt48.Zero, Is.EqualTo(UInt48.One), "1 ^ 0");
@@ -176,7 +176,7 @@ partial class UInt24nTests {
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpOnesComplement()
+  public void OpOnesComplement()
   {
     Assert.That(~UInt24.Zero, Is.EqualTo(UInt24.MaxValue), "~0");
     Assert.That(~UInt24.One, Is.EqualTo(UInt24.MaxValue - UInt24.One), "~1");
@@ -186,7 +186,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpOnesComplement()
+  public void OpOnesComplement()
   {
     Assert.That(~UInt48.Zero, Is.EqualTo(UInt48.MaxValue), "~0");
     Assert.That(~UInt48.One, Is.EqualTo(UInt48.MaxValue - UInt48.One), "~1");
@@ -215,7 +215,7 @@ partial class UInt24nTests {
 
 partial class UInt24Tests {
   [Test]
-  public void TestIsPow2()
+  public void IsPow2()
   {
     Assert.That(UInt24.IsPow2(UInt24.Zero), Is.False, "IsPow2(0)");
     Assert.That(UInt24.IsPow2(UInt24.One), Is.True, "IsPow2(1)");
@@ -226,7 +226,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestIsPow2()
+  public void IsPow2()
   {
     Assert.That(UInt48.IsPow2(UInt48.Zero), Is.False, "IsPow2(0)");
     Assert.That(UInt48.IsPow2(UInt48.One), Is.True, "IsPow2(1)");
@@ -258,7 +258,7 @@ partial class UInt24nTests {
 
 partial class UInt24Tests {
   [Test]
-  public void TestLog2()
+  public void Log2()
   {
     Assert.That(UInt24.Log2(UInt24.Zero), Is.EqualTo(0), "Log2(0)");
     Assert.That(UInt24.Log2(UInt24.One), Is.EqualTo(0), "Log2(1)");
@@ -269,7 +269,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestLog2()
+  public void Log2()
   {
     Assert.That(UInt48.Log2(UInt48.Zero), Is.EqualTo(0), "Log2(0)");
     Assert.That(UInt48.Log2(UInt48.One), Is.EqualTo(0), "Log2(1)");

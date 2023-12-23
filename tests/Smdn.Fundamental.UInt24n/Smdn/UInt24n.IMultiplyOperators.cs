@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpMultiply()
+  public void OpMultiply()
   {
     Assert.That(UInt24.Zero * UInt24.Zero, Is.EqualTo(UInt24.Zero), "0 * 0");
     Assert.That(UInt24.Zero * UInt24.One, Is.EqualTo(UInt24.Zero), "0 * 1");
@@ -21,7 +21,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpCheckedMultiply()
+  public void OpCheckedMultiply()
   {
     UInt24 result;
 
@@ -32,7 +32,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpMultiply()
+  public void OpMultiply()
   {
     Assert.That(UInt48.Zero * UInt48.Zero, Is.EqualTo(UInt48.Zero), "0 * 0");
     Assert.That(UInt48.Zero * UInt48.One, Is.EqualTo(UInt48.Zero), "0 * 1");
@@ -42,7 +42,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpCheckedMultiply()
+  public void OpCheckedMultiply()
   {
     UInt48 result;
 

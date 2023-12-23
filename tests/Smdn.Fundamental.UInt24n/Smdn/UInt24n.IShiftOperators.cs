@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpLeftShift()
+  public void OpLeftShift()
   {
     Assert.That(UInt24.Zero << 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 << 0");
     Assert.That(UInt24.Zero << 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 << 1");
@@ -39,7 +39,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpRightShift()
+  public void OpRightShift()
   {
     Assert.That(UInt24.Zero >> 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >> 0");
     Assert.That(UInt24.Zero >> 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >> 1");
@@ -67,7 +67,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpUnsignedRightShift()
+  public void OpUnsignedRightShift()
   {
     Assert.That(UInt24.Zero >>> 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >>> 0");
     Assert.That(UInt24.Zero >>> 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >>> 1");
@@ -97,7 +97,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpLeftShift()
+  public void OpLeftShift()
   {
     Assert.That(UInt48.Zero << 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 << 0");
     Assert.That(UInt48.Zero << 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 << 1");
@@ -125,7 +125,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpRightShift()
+  public void OpRightShift()
   {
     Assert.That(UInt48.Zero >> 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >> 0");
     Assert.That(UInt48.Zero >> 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >> 1");
@@ -154,7 +154,7 @@ partial class UInt48Tests {
 
 
   [Test]
-  public void TestOpUnsignedRightShift()
+  public void OpUnsignedRightShift()
   {
     Assert.That(UInt48.Zero >>> 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >>> 0");
     Assert.That(UInt48.Zero >>> 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >>> 1");

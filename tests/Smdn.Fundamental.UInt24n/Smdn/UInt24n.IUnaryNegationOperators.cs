@@ -11,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpUnaryNegation()
+  public void OpUnaryNegation()
   {
     Assert.That(-UInt24.Zero, Is.EqualTo(UInt24.Zero), "-0");
     Assert.That(-UInt24.One, Is.EqualTo(UInt24.MaxValue), "-1");
@@ -19,7 +19,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpCheckedUnaryNegation()
+  public void OpCheckedUnaryNegation()
   {
     UInt24 result;
 
@@ -30,7 +30,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpUnaryNegation()
+  public void OpUnaryNegation()
   {
     Assert.That(-UInt48.Zero, Is.EqualTo(UInt48.Zero), "-0");
     Assert.That(-UInt48.One, Is.EqualTo(UInt48.MaxValue), "-1");
@@ -38,7 +38,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpCheckedUnaryNegation()
+  public void OpCheckedUnaryNegation()
   {
     UInt48 result;
 
