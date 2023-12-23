@@ -123,204 +123,146 @@ namespace Smdn {
     public void TestCompareTo_NotComparable(object value)
       => Assert.Throws<ArgumentException>(() => UInt24.Zero.CompareTo(value));
 
-    [Test]
-    public void TestOpExplicitFromInt16()
+    [TestCase((short)0x000000, 0x00000000, "0")]
+    [TestCase((short)0x007fff, 0x00007fff, "7fff")]
+    [TestCase(Int16.MaxValue,  0x00007fff, "7fff")]
+    [TestCase((short)-1,       0x00ffffff, "ffffff")]
+    [TestCase(Int16.MinValue,  0x00ff8000, "ff8000")]
+    public void TestOpExplicitFromInt16(short value, int expectedResult, string expectedHex)
     {
-      foreach (var test in new[] {
-        new {Value = (short)0x000000, ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (short)0x007fff, ExpectedResult = 0x00007fff, ExpectedHex = "7fff"},
-        new {Value = Int16.MaxValue,  ExpectedResult = 0x00007fff, ExpectedHex = "7fff"},
-        new {Value = (short)-1,       ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-        new {Value = Int16.MinValue,  ExpectedResult = 0x00ff8000, ExpectedHex = "ff8000"},
-      }) {
+      UInt24 val = unchecked((UInt24)value);
 
-        try {
-          UInt24 val = unchecked((UInt24)test.Value);
-
-          Assert.That(val.ToInt32(), Is.EqualTo(test.ExpectedResult), $"value = {test.ExpectedHex}");
-          Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-        }
-        catch (OverflowException) {
-          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
-        }
-      }
+      Assert.That(val.ToInt32(), Is.EqualTo(expectedResult), $"value = {expectedHex}");
+      Assert.That(val.ToString("x", null), Is.EqualTo(expectedHex));
     }
 
-    [Test]
-    public void TestOpExplicitCheckedFromInt16()
+    [TestCase((short)-1)]
+    [TestCase(Int16.MinValue)]
+    public void TestOpExplicitCheckedFromInt16(short value)
     {
-      foreach (var test in new[] {
-        new {Value = (short)-1},
-        new {Value = Int16.MinValue},
-      }) {
-        Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)test.Value); });
-      }
+      Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)value); });
     }
 
-    [Test]
-    public void TestOpExplicitFromInt32()
+    [TestCase((int)0x00000000, 0x00000000, "0")]
+    [TestCase((int)0x00ffffff, 0x00ffffff, "ffffff")]
+    [TestCase((int)-1        , 0x00ffffff, "ffffff")]
+    [TestCase((int)0x01000000, 0x00000000, "0")]
+    [TestCase(Int32.MaxValue,  0x00ffffff, "ffffff")]
+    [TestCase(Int32.MinValue,  0x00000000, "0")]
+    public void TestOpExplicitFromInt32(int value, int expectedResult, string expectedHex)
     {
-      foreach (var test in new[] {
-        new {Value = (int)0x00000000, ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (int)0x00ffffff, ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-        new {Value = (int)-1        , ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-        new {Value = (int)0x01000000, ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = Int32.MaxValue,  ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-        new {Value = Int32.MinValue,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
-      }) {
+      UInt24 val = unchecked((UInt24)value);
 
-        try {
-          UInt24 val = unchecked((UInt24)test.Value);
-
-          Assert.That(val.ToInt32(), Is.EqualTo(test.ExpectedResult), $"value = {test.ExpectedHex}");
-          Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-        }
-        catch (OverflowException) {
-          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
-        }
-      }
+      Assert.That(val.ToInt32(), Is.EqualTo(expectedResult), $"value = {expectedHex}");
+      Assert.That(val.ToString("x", null), Is.EqualTo(expectedHex));
     }
 
-    [Test]
-    public void TestOpExplicitCheckedFromInt32()
+    [TestCase((int)-1)]
+    [TestCase((int)0x01000000)]
+    [TestCase(Int32.MaxValue)]
+    [TestCase(Int32.MinValue)]
+    public void TestOpExplicitCheckedFromInt32(int value)
     {
-      foreach (var test in new[] {
-        new {Value = (int)-1},
-        new {Value = (int)0x01000000},
-        new {Value = Int32.MaxValue},
-        new {Value = Int32.MinValue},
-      }) {
-        Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)test.Value); });
-      }
+      Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)value); });
     }
 
-    [Test]
-    public void TestOpExplicitFromUInt32()
+    [TestCase((uint)0x00000000, 0x00000000, "0")]
+    [TestCase((uint)0x00ffffff, 0x00ffffff, "ffffff")]
+    [TestCase(UInt32.MinValue,  0x00000000, "0")]
+    [TestCase((uint)0x01000000, 0x00000000, "0")]
+    [TestCase((uint)0xffffffff, 0x00ffffff, "ffffff")]
+    [TestCase(UInt32.MaxValue,  0x00ffffff, "ffffff")]
+    public void TestOpExplicitFromUInt32(uint value, int expectedResult, string expectedHex)
     {
-      foreach (var test in new[] {
-        new {Value = (uint)0x00000000,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (uint)0x00ffffff,  ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-        new {Value = UInt32.MinValue,   ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (uint)0x01000000,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (uint)0xffffffff,  ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-        new {Value = UInt32.MaxValue,   ExpectedResult = 0x00ffffff, ExpectedHex = "ffffff"},
-      }) {
+      UInt24 val = unchecked((UInt24)value);
 
-        try {
-          UInt24 val = unchecked((UInt24)test.Value);
-
-          Assert.That(val.ToInt32(), Is.EqualTo(test.ExpectedResult), $"value = {test.ExpectedHex}");
-          Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-        }
-        catch (OverflowException) {
-          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
-        }
-      }
+      Assert.That(val.ToInt32(), Is.EqualTo(expectedResult), $"value = {expectedHex}");
+      Assert.That(val.ToString("x", null), Is.EqualTo(expectedHex));
     }
 
-    [Test]
-    public void TestOpExplicitCheckedFromUInt32()
+    [TestCase((uint)0x01000000)]
+    [TestCase((uint)0xffffffff)]
+    [TestCase(UInt32.MaxValue)]
+    public void TestOpExplicitCheckedFromUInt32(uint value)
     {
-      foreach (var test in new[] {
-        new {Value = (uint)0x01000000},
-        new {Value = (uint)0xffffffff},
-        new {Value = UInt32.MaxValue},
-      }) {
-        Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)test.Value); });
-      }
+      Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)value); });
     }
 
-    [Test]
-    public void TestOpExplicitToInt16()
+    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitToInt16()
     {
-      foreach (var test in new[] {
-        new {Value = UInt24.MinValue,   ExpectedResult = (short)0x0000, ExpectedHex = "0"},
-        new {Value = (UInt24)0x000000,  ExpectedResult = (short)0x0000, ExpectedHex = "0"},
-        new {Value = (UInt24)0x007fff,  ExpectedResult = (short)0x7fff, ExpectedHex = "7fff"},
-        new {Value = (UInt24)0x008000,  ExpectedResult = unchecked((short)(ushort)0x8000), ExpectedHex = "8000"},
-        new {Value = (UInt24)0xffffff,  ExpectedResult = unchecked((short)(ushort)0xffff), ExpectedHex = "ffffff"},
-        new {Value = UInt24.MaxValue,   ExpectedResult = unchecked((short)(ushort)0xffff), ExpectedHex = "ffffff"},
-      }) {
-        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-
-        try {
-          Assert.That(unchecked((short)test.Value), Is.EqualTo(test.ExpectedResult));
-        }
-        catch (OverflowException) {
-          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
-        }
-      }
+      yield return new object?[] { UInt24.MinValue,  (short)0x0000, "0" };
+      yield return new object?[] { (UInt24)0x000000, (short)0x0000, "0" };
+      yield return new object?[] { (UInt24)0x007fff, (short)0x7fff, "7fff" };
+      yield return new object?[] { (UInt24)0x008000, unchecked((short)(ushort)0x8000), "8000" };
+      yield return new object?[] { (UInt24)0xffffff, unchecked((short)(ushort)0xffff), "ffffff" };
+      yield return new object?[] { UInt24.MaxValue,  unchecked((short)(ushort)0xffff), "ffffff" };
     }
 
-    [Test]
-    public void TestOpExplicitCheckedToInt16()
+    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitToInt16))]
+    public void TestOpExplicitToInt16(UInt24 value, short expectedResult, string epxectedHex)
     {
-      foreach (var test in new[] {
-        new {Value = (UInt24)0x008000,  ExpectedHex = "8000"},
-        new {Value = (UInt24)0xffffff,  ExpectedHex = "ffffff"},
-        new {Value = UInt24.MaxValue,   ExpectedHex = "ffffff"},
-      }) {
-        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-
-        Assert.Throws<OverflowException>(() => { var s = checked((short)test.Value); });
-      }
+      Assert.That(value.ToString("x", null), Is.EqualTo(epxectedHex));
+      Assert.That(unchecked((short)value), Is.EqualTo(expectedResult));
     }
 
-    [Test]
-    public void TestOpExplicitToUInt16()
+    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitCheckedToInt16()
     {
-      foreach (var test in new[] {
-        new {Value = UInt24.MinValue,   ExpectedResult = (ushort)0x0000, ExpectedHex = "0"},
-        new {Value = (UInt24)0x000000,  ExpectedResult = (ushort)0x0000, ExpectedHex = "0"},
-        new {Value = (UInt24)0x007fff,  ExpectedResult = (ushort)0x7fff, ExpectedHex = "7fff"},
-        new {Value = (UInt24)0x008000,  ExpectedResult = (ushort)0x8000, ExpectedHex = "8000"},
-        new {Value = (UInt24)0x00ffff,  ExpectedResult = (ushort)0xffff, ExpectedHex = "ffff"},
-        new {Value = (UInt24)0x010000,  ExpectedResult = (ushort)0x0000, ExpectedHex = "10000"},
-        new {Value = (UInt24)0xffffff,  ExpectedResult = (ushort)0xffff, ExpectedHex = "ffffff"},
-        new {Value = UInt24.MaxValue,   ExpectedResult = (ushort)0xffff, ExpectedHex = "ffffff"},
-      }) {
-        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-
-        try {
-          Assert.That(unchecked((ushort)test.Value), Is.EqualTo(test.ExpectedResult));
-        }
-        catch (OverflowException) {
-          Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
-        }
-      }
+      yield return new object?[] { (UInt24)0x008000, "8000" };
+      yield return new object?[] { (UInt24)0xffffff, "ffffff" };
+      yield return new object?[] { UInt24.MaxValue,  "ffffff" };
     }
 
-    [Test]
-    public void TestOpExplicitCheckedToUInt16()
+    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitCheckedToInt16))]
+    public void TestOpExplicitCheckedToInt16(UInt24 value, string expectedHex)
     {
-      foreach (var test in new[] {
-        new {Value = (UInt24)0x010000,  ExpectedHex = "10000"},
-        new {Value = (UInt24)0xffffff,  ExpectedHex = "ffffff"},
-        new {Value = UInt24.MaxValue,   ExpectedHex = "ffffff"},
-      }) {
-        Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
-
-        Assert.Throws<OverflowException>(() => { var us = checked((ushort)test.Value); });
-      }
+      Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
+      Assert.Throws<OverflowException>(() => { var s = checked((short)value); });
     }
 
-    [Test]
-    public void TestOpExplicitFromUInt16()
+    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitToUInt16()
     {
-      UInt24 val;
+      yield return new object?[] { UInt24.MinValue,  (ushort)0x0000, "0" };
+      yield return new object?[] { (UInt24)0x000000, (ushort)0x0000, "0" };
+      yield return new object?[] { (UInt24)0x007fff, (ushort)0x7fff, "7fff" };
+      yield return new object?[] { (UInt24)0x008000, (ushort)0x8000, "8000" };
+      yield return new object?[] { (UInt24)0x00ffff, (ushort)0xffff, "ffff" };
+      yield return new object?[] { (UInt24)0x010000, (ushort)0x0000, "10000" };
+      yield return new object?[] { (UInt24)0xffffff, (ushort)0xffff, "ffffff" };
+      yield return new object?[] { UInt24.MaxValue,  (ushort)0xffff, "ffffff" };
+    }
 
-      foreach (var test in new[] {
-        new {Value = (ushort)0,       ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (ushort)0x0000,  ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = (ushort)0xffff,  ExpectedResult = 0x0000ffff, ExpectedHex = "ffff"},
-        new {Value = UInt16.MinValue, ExpectedResult = 0x00000000, ExpectedHex = "0"},
-        new {Value = UInt16.MaxValue, ExpectedResult = 0x0000ffff, ExpectedHex = "ffff"},
-      }) {
-        val = (UInt24)test.Value;
+    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitToUInt16))]
+    public void TestOpExplicitToUInt16(UInt24 value, ushort expectedResult, string expectedHex)
+    {
+      Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
+      Assert.That(unchecked((ushort)value), Is.EqualTo(expectedResult));
+    }
 
-        Assert.That(val.ToInt32(), Is.EqualTo(test.ExpectedResult), $"value = {val}");
-        Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex), $"value = {val}");
-      }
+    private static System.Collections.IEnumerable YieldTestCases_TestOpExplicitCheckedToUInt16()
+    {
+      yield return new object?[] { (UInt24)0x010000, "10000" };
+      yield return new object?[] { (UInt24)0xffffff, "ffffff" };
+      yield return new object?[] { UInt24.MaxValue,  "ffffff" };
+    }
+
+    [TestCaseSource(nameof(YieldTestCases_TestOpExplicitCheckedToUInt16))]
+    public void TestOpExplicitCheckedToUInt16(UInt24 value, string expectedHex)
+    {
+      Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
+      Assert.Throws<OverflowException>(() => { var us = checked((ushort)value); });
+    }
+
+    [TestCase((ushort)0,       0x00000000, "0")]
+    [TestCase((ushort)0x0000,  0x00000000, "0")]
+    [TestCase((ushort)0xffff,  0x0000ffff, "ffff")]
+    [TestCase(UInt16.MinValue, 0x00000000, "0")]
+    [TestCase(UInt16.MaxValue, 0x0000ffff, "ffff")]
+    public void TestOpExplicitFromUInt16(ushort value, int expectedResult, string expectedHex)
+    {
+      var val = (UInt24)value;
+
+      Assert.That(val.ToInt32(), Is.EqualTo(expectedResult), $"value = {val}");
+      Assert.That(val.ToString("x", null), Is.EqualTo(expectedHex), $"value = {val}");
     }
 
     [Test]
