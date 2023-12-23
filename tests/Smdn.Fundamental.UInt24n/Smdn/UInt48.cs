@@ -88,7 +88,7 @@ namespace Smdn {
       Assert.That(UInt48.Zero.Equals(long.MaxValue), Is.False);
       Assert.That(UInt48.Zero.Equals(ulong.MaxValue), Is.False);
 
-      object val;
+      object? val;
 
       val = UInt48.Zero; Assert.That(UInt48.Zero.Equals(val), Is.True);
       val = null; Assert.That(UInt48.Zero.Equals(val), Is.False);
@@ -96,9 +96,9 @@ namespace Smdn {
 
     [TestCase(0L, true)]
     [TestCase(0uL, true)]
-    [TestCase((object)null, false)]
+    [TestCase((object?)null, false)]
     [TestCase(true, false)]
-    public void Equals_Object(object value, bool expected)
+    public void Equals_Object(object? value, bool expected)
       => Assert.That(UInt48.Zero.Equals(value), Is.EqualTo(expected));
 
     [Test]

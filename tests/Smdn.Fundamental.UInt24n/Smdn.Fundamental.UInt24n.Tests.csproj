@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
     <TargetFrameworks Condition=" '$(EnableTargetFrameworkDotNet)' == 'true' ">net8.0;net6.0</TargetFrameworks>
     <TargetFrameworks Condition=" '$(EnableTargetFrameworkNetFx)' == 'true' ">$(TargetFrameworks);net48;net462</TargetFrameworks>
     <RootNamespace>Smdn</RootNamespace>
+    <Nullable>enable</Nullable>
     <DefineConstants
       Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))"
     >FEATURE_GENERIC_MATH;$(DefineConstants)</DefineConstants>

@@ -11,7 +11,7 @@ partial class UInt24nTests {
   private static TUInt24n Parse<TUInt24n>(string s) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.Parse(s, provider: null);
 
-  private static bool TryParse<TUInt24n>(string s, out TUInt24n result) where TUInt24n : ISpanParsable<TUInt24n>
+  private static bool TryParse<TUInt24n>(string s, out TUInt24n result) where TUInt24n : struct, ISpanParsable<TUInt24n>
     => TUInt24n.TryParse(s, provider: null, out result);
 
   [Test]
@@ -79,7 +79,7 @@ partial class UInt24nTests {
   private static TUInt24n Parse<TUInt24n>(ReadOnlySpan<char> s) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.Parse(s, provider: null);
 
-  private static bool TryParse<TUInt24n>(ReadOnlySpan<char> s, out TUInt24n result) where TUInt24n : ISpanParsable<TUInt24n>
+  private static bool TryParse<TUInt24n>(ReadOnlySpan<char> s, out TUInt24n result) where TUInt24n : struct, ISpanParsable<TUInt24n>
     => TUInt24n.TryParse(s, provider: null, out result);
 
   [Test]
