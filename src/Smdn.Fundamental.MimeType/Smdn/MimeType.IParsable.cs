@@ -14,7 +14,7 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial class MimeType
 #pragma warning restore IDE0040
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_ISPANPARSABLE
   :
   ISpanParsable<MimeType>
 #endif
