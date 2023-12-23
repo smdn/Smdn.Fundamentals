@@ -19,17 +19,17 @@ partial struct TUInt24n {
 
   // INumber<TSelf>.Parse(String, NumberStyles, IFormatProvider)
   public static TUInt24n Parse(string s, NumberStyles style, IFormatProvider? provider = null)
-    => (TUInt24n)TUIntWide.Parse(s, style, provider);
+    => new(TUIntWide.Parse(s, style, provider), check: true);
 
 #if FEATURE_GENERIC_MATH
-  static TUInt24n ISpanParseable<TUInt24n>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
+  static TUInt24n ISpanParsable<TUInt24n>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     => Parse(s, NumberStyles.Integer, provider);
 #endif
 
 #if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
   // INumber<TSelf>.Parse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider)
   public static TUInt24n Parse(ReadOnlySpan<char> s, NumberStyles style = NumberStyles.Integer, IFormatProvider? provider = null)
-    => (TUInt24n)TUIntWide.Parse(s, style, provider);
+    => new(TUIntWide.Parse(s, style, provider), check: true);
 #endif
 
   public static bool TryParse(
@@ -74,7 +74,7 @@ partial struct TUInt24n {
     if (maxValue < resultUIntWide)
       return false; // overflow
 
-    result = new(resultUIntWide);
+    result = new(resultUIntWide, check: false);
 
     return true;
   }
@@ -83,7 +83,7 @@ partial struct TUInt24n {
   public static bool TryParse(ReadOnlySpan<char> s, out TUInt24n result)
     => TryParse(s, NumberStyles.Integer, provider: null, out result);
 
-  // ISpanParseable<TSelf>.TryParse(ReadOnlySpan<Char>, IFormatProvider, TSelf)
+  // ISpanParsable<TSelf>.TryParse(ReadOnlySpan<Char>, IFormatProvider, TSelf)
   public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out TUInt24n result)
     => TryParse(s, NumberStyles.Integer, provider, out result);
 
@@ -98,7 +98,7 @@ partial struct TUInt24n {
     if (maxValue < resultUIntWide)
       return false; // overflow
 
-    result = new(resultUIntWide);
+    result = new(resultUIntWide, check: false);
 
     return true;
   }

@@ -1,6 +1,16 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
+
+using ShimTypeSystemMathDivRemReturnValueTuple2 =
+#if SYSTEM_MATH_DIVREM_RETURN_VALUETUPLE_2
+  System.Math;
+#else
+  Smdn.MathShim;
+#endif
 
 using ShimTypeSystemNumericsBitOperationsPopCount =
 #if SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT
@@ -35,6 +45,13 @@ partial struct TUInt24n
   /*
    * IBinaryInteger
    */
+  public static (TUInt24n Quotient, TUInt24n Remainder) DivRem(TUInt24n left, TUInt24n right)
+  {
+    var (quot, rem) = ShimTypeSystemMathDivRemReturnValueTuple2.DivRem(left.Widen(), right.Widen());
+
+    return (new(quot, check: false), new(rem, check: false));
+  }
+
   public static TUInt24n RotateLeft(TUInt24n value, int rotateAmount)
   {
     if (rotateAmount == 0)
@@ -46,7 +63,7 @@ partial struct TUInt24n
 
     var val = value.Widen();
 
-    return new((val << rotateAmount) | (val >> (BitsOfSelf - rotateAmount)));
+    return new((val << rotateAmount) | (val >> (BitsOfSelf - rotateAmount)), check: false);
   }
 
   public static TUInt24n RotateRight(TUInt24n value, int rotateAmount)
@@ -60,11 +77,11 @@ partial struct TUInt24n
 
     var val = value.Widen();
 
-    return new((val >> rotateAmount) | (val << (BitsOfSelf - rotateAmount)));
+    return new((val >> rotateAmount) | (val << (BitsOfSelf - rotateAmount)), check: false);
   }
 
 #if FEATURE_GENERIC_MATH
-  static TUInt24n IBinaryInteger<TUInt24n>.LeadingZeroCount(TUInt24n value) => new((TUIntWide)LeadingZeroCount(value));
+  static TUInt24n IBinaryInteger<TUInt24n>.LeadingZeroCount(TUInt24n value) => new((TUIntWide)LeadingZeroCount(value), check: false);
 #endif
   public static int LeadingZeroCount(TUInt24n value)
     => ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value.Widen()) - (bitCountOfTUIntWide - BitsOfSelf);
@@ -72,14 +89,44 @@ partial struct TUInt24n
   private const int bitCountOfTUIntWide = sizeof(TUIntWide) * 8;
 
 #if FEATURE_GENERIC_MATH
-  static TUInt24n IBinaryInteger<TUInt24n>.PopCount(TUInt24n value) => new((TUIntWide)PopCount(value));
+  static TUInt24n IBinaryInteger<TUInt24n>.PopCount(TUInt24n value) => new((TUIntWide)PopCount(value), check: false);
 #endif
   public static int PopCount(TUInt24n value)
     => ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value.Widen());
 
 #if FEATURE_GENERIC_MATH
-  static TUInt24n IBinaryInteger<TUInt24n>.TrailingZeroCount(TUInt24n value) => new((TUIntWide)TrailingZeroCount(value));
+  static TUInt24n IBinaryInteger<TUInt24n>.TrailingZeroCount(TUInt24n value) => new((TUIntWide)TrailingZeroCount(value), check: false);
 #endif
   public static int TrailingZeroCount(TUInt24n value)
     => ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value.Widen() | UnusedBitMask);
+
+#if FEATURE_GENERIC_MATH
+  int IBinaryInteger<TUInt24n>.GetByteCount() => SizeOfSelf;
+
+  int IBinaryInteger<TUInt24n>.GetShortestBitLength() => BitsOfSelf - LeadingZeroCount(this);
+#endif
+
+  public static bool TryReadBigEndian(ReadOnlySpan<byte> source, bool isUnsigned, out TUInt24n value)
+  {
+    value = default;
+
+    if (source.Length < SizeOfSelf)
+      return false;
+
+    value = new(source, isBigEndian: true);
+
+    return true;
+  }
+
+  public static bool TryReadLittleEndian(ReadOnlySpan<byte> source, bool isUnsigned, out TUInt24n value)
+  {
+    value = default;
+
+    if (source.Length < SizeOfSelf)
+      return false;
+
+    value = new(source, isBigEndian: false);
+
+    return true;
+  }
 }

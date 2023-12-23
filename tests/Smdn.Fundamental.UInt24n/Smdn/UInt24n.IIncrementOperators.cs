@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 
 using NUnit.Framework;
 
@@ -8,7 +11,7 @@ namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpIncrement()
+  public void OpIncrement()
   {
     static UInt24 Two() => UInt24.One + UInt24.One;
     var zero = UInt24.Zero;
@@ -24,11 +27,21 @@ partial class UInt24Tests {
     Assert.That(++max, Is.EqualTo(UInt24.Zero), "++max");
     Assert.That(max, Is.EqualTo(UInt24.Zero), "(++max) value");
   }
+
+  [Test]
+  public void OpCheckedIncrement()
+  {
+    var max = UInt24.MaxValue;
+
+    checked {
+      Assert.Throws<OverflowException>(() => ++max, "++max");
+    }
+  }
 }
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpIncrement()
+  public void OpIncrement()
   {
     static UInt48 Two() => UInt48.One + UInt48.One;
     var zero = UInt48.Zero;
@@ -43,6 +56,16 @@ partial class UInt48Tests {
 
     Assert.That(++max, Is.EqualTo(UInt48.Zero), "++max");
     Assert.That(max, Is.EqualTo(UInt48.Zero), "(++max) value");
+  }
+
+  [Test]
+  public void OpCheckedIncrement()
+  {
+    var max = UInt48.MaxValue;
+
+    checked {
+      Assert.Throws<OverflowException>(() => ++max, "++max");
+    }
   }
 }
 
@@ -63,8 +86,23 @@ partial class UInt24nTests {
 
     static void Increment<TUInt24n>(TUInt24n value, TUInt24n expected) where TUInt24n : IIncrementOperators<TUInt24n>
     {
-      Assert.AreEqual(expected, ++value, $"{typeof(TUInt24n)} ++{value}");
-      Assert.AreEqual(expected, value, "{typeof(TUInt24n)} value");
+      Assert.That(++value, Is.EqualTo(expected), $"{typeof(TUInt24n)} ++{value}");
+      Assert.That(value, Is.EqualTo(expected), "{typeof(TUInt24n)} value");
+    }
+  }
+
+  [Test]
+  public void IIncrementOperators_OpCheckedIncrement()
+  {
+    Increment(UInt24.MaxValue);
+
+    Increment(UInt48.MaxValue);
+
+    static void Increment<TUInt24n>(TUInt24n value) where TUInt24n : IIncrementOperators<TUInt24n>
+    {
+      checked {
+        Assert.Throws<OverflowException>(() => ++value);
+      }
     }
   }
 #endif

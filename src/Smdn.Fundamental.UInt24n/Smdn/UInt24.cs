@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -33,8 +36,11 @@ public partial struct UInt24 {
     }
   }
 
-  private UInt24(uint value)
+  private UInt24(uint value, bool check)
   {
+    if (check && maxValue < value)
+      throw UInt24n.CreateOverflowException<UInt24>(value);
+
     unchecked {
       Byte0 = (byte)(value >> 16);
       Byte1 = (byte)(value >> 8);
@@ -43,30 +49,67 @@ public partial struct UInt24 {
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  internal UInt32 Widen()
+  internal readonly UInt32 Widen()
     => (UInt32)(Byte0 << 16) |
        (UInt32)(Byte1 << 8) |
        (UInt32)Byte2;
 
-  public override int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
+  public override readonly int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
 
   /*
    * IConvertible
    */
 #pragma warning disable IDE0060
-  byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt32());
-  sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt32());
-  ulong IConvertible.ToUInt64(IFormatProvider provider) => (ulong)ToUInt32();
-  long IConvertible.ToInt64(IFormatProvider provider) => (long)ToInt32();
+  readonly byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt32());
+  readonly sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt32());
+  readonly ulong IConvertible.ToUInt64(IFormatProvider provider) => (ulong)ToUInt32();
+  readonly long IConvertible.ToInt64(IFormatProvider provider) => (long)ToInt32();
 #pragma warning restore IDE0060
 
+  /*
+   * IBinaryInteger<TSelf>
+   */
+  public readonly bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+  {
+    bytesWritten = default;
+
+    if (destination.Length < SizeOfSelf)
+      return false;
+
+    destination[bytesWritten++] = Byte0;
+    destination[bytesWritten++] = Byte1;
+    destination[bytesWritten++] = Byte2;
+
+    return true;
+  }
+
+  public readonly bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+  {
+    bytesWritten = default;
+
+    if (destination.Length < SizeOfSelf)
+      return false;
+
+    destination[bytesWritten++] = Byte2;
+    destination[bytesWritten++] = Byte1;
+    destination[bytesWritten++] = Byte0;
+
+    return true;
+  }
+
 #if FEATURE_GENERIC_MATH
-  private static bool TryCreateCore<TOther>(
+  /*
+   * INumberBase<TSelf>
+   */
+  private static bool TryConvertFromTruncating<TOther>(
     TOther value,
-    out UInt24 result
-  ) where TOther : INumber<TOther>
+    bool throwIfOverflow,
+    out UInt24 result,
+    out bool overflow
+  ) where TOther : INumberBase<TOther>
   {
     result = default;
+    overflow = default;
 
     int val;
 
@@ -103,109 +146,114 @@ public partial struct UInt24 {
       val = unchecked((int)((decimal)(object)value));
 #pragma warning restore IDE0045
     else
-      throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();
+      return false; // is not convertible
 
-    if (val is < minValue or > maxValue)
-      return false; // overflow
+    overflow = val is < minValue or > maxValue;
 
-    result = new(unchecked((uint)val));
+    if (overflow && throwIfOverflow)
+      throw UInt24n.CreateOverflowException<UInt24>(value);
+
+    result = new(unchecked((uint)val), check: false);
 
     return true;
   }
 
-  public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumber<TOther>
+#pragma warning disable CA1502 // TODO: refactor
+  public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
-      return new((uint)((byte)(object)value));
+      return new((uint)((byte)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(sbyte)) {
       var val = (sbyte)(object)value;
 
-      return val < minValue ? MinValue : new((uint)val);
+      return val < minValue ? MinValue : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(char)) {
-      return new((uint)((char)(object)value));
+      return new((uint)((char)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(ushort)) {
-      return new((uint)((ushort)(object)value));
+      return new((uint)((ushort)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(short)) {
       var val = (short)(object)value;
 
-      return val < 0 ? Zero : new((uint)val);
+      return val < 0 ? Zero : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(uint)) {
       var val = (uint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new(val);
+        : new(val, check: false);
     }
     else if (typeof(TOther) == typeof(int)) {
       var val = (int)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(ulong)) {
       var val = (ulong)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(long)) {
       var val = (long)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(nuint)) {
       var val = (nuint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(nint)) {
       var val = (nint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(Half)) {
       var val = (float)((Half)(object)value);
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(float)) {
       var val = (float)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(double)) {
       var val = (double)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(decimal)) {
       var val = (decimal)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
 
     throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();
   }
+#pragma warning restore CA1502
+
 #endif
 }

@@ -10,6 +10,7 @@ partial struct TUInt24n {
   /*
    * IShiftOperators
    */
-  public static TUInt24n operator <<(TUInt24n value, int shiftAmount) => new(value.Widen() << UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf));
-  public static TUInt24n operator >>(TUInt24n value, int shiftAmount) => new(value.Widen() >> UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf));
+  public static TUInt24n operator <<(TUInt24n value, int shiftAmount) => new(value.Widen() << UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf), check: false);
+  public static TUInt24n operator >>(TUInt24n value, int shiftAmount) => new(value.Widen() >> UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf), check: false);
+  public static TUInt24n operator >>>(TUInt24n value, int shiftAmount) => new(value.Widen() >>> UInt24n.RegularizeShiftAmount(shiftAmount, BitsOfSelf), check: false);
 }

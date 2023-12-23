@@ -14,15 +14,15 @@ partial struct TUInt24n {
   private const TIntWide minValue = (TIntWide)0;
   private const TUIntWide UnusedBitMask = ~unchecked((TUIntWide)maxValue);
 
-  public static readonly TUInt24n MaxValue = new(maxValue);
-  public static readonly TUInt24n MinValue = new(minValue);
-  public static readonly TUInt24n Zero     = new(0);
-  public static readonly TUInt24n One      = new(1);
+  public static readonly TUInt24n MaxValue = new(maxValue, check: false);
+  public static readonly TUInt24n MinValue = new(minValue, check: false);
+  public static readonly TUInt24n Zero     = new(0, check: false);
+  public static readonly TUInt24n One      = new(1, check: false);
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public TIntWide ToTIntWide() => unchecked((TIntWide)Widen());
+  public readonly TIntWide ToTIntWide() => unchecked((TIntWide)Widen());
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   [CLSCompliant(false)]
-  public TUIntWide ToTUIntWide() => Widen();
+  public readonly TUIntWide ToTUIntWide() => Widen();
 }

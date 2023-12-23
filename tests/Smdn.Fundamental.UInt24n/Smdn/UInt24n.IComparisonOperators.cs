@@ -1,13 +1,17 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if FEATURE_GENERIC_MATH
+using System.Numerics;
+#endif
+
 using NUnit.Framework;
 
 namespace Smdn;
 
 partial class UInt24Tests {
   [Test]
-  public void TestOpLessThan()
+  public void OpLessThan()
   {
     Assert.That(UInt24.Zero < (UInt24)0, Is.False, "#1");
     Assert.That(UInt24.Zero < (UInt24)1, Is.True, "#2");
@@ -19,7 +23,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpLessThanOrEqual()
+  public void OpLessThanOrEqual()
   {
     Assert.That(UInt24.Zero <= (UInt24)0, Is.True, "#1");
     Assert.That(UInt24.Zero <= (UInt24)1, Is.True, "#2");
@@ -31,7 +35,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpGreaterThan()
+  public void OpGreaterThan()
   {
     Assert.That(UInt24.Zero > (UInt24)0, Is.False, "#1");
     Assert.That(UInt24.Zero > (UInt24)1, Is.False, "#2");
@@ -43,7 +47,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TestOpGreaterThanOrEqual()
+  public void OpGreaterThanOrEqual()
   {
     Assert.That(UInt24.Zero >= (UInt24)0, Is.True, "#1");
     Assert.That(UInt24.Zero >= (UInt24)1, Is.False, "#2");
@@ -57,7 +61,7 @@ partial class UInt24Tests {
 
 partial class UInt48Tests {
   [Test]
-  public void TestOpLessThan()
+  public void OpLessThan()
   {
     Assert.That(UInt48.Zero < (UInt48)0, Is.False, "#1");
     Assert.That(UInt48.Zero < (UInt48)1, Is.True, "#2");
@@ -69,7 +73,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpLessThanOrEqual()
+  public void OpLessThanOrEqual()
   {
     Assert.That(UInt48.Zero <= (UInt48)0, Is.True, "#1");
     Assert.That(UInt48.Zero <= (UInt48)1, Is.True, "#2");
@@ -81,7 +85,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpGreaterThan()
+  public void OpGreaterThan()
   {
     Assert.That(UInt48.Zero > (UInt48)0, Is.False, "#1");
     Assert.That(UInt48.Zero > (UInt48)1, Is.False, "#2");
@@ -93,7 +97,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TestOpGreaterThanOrEqual()
+  public void OpGreaterThanOrEqual()
   {
     Assert.That(UInt48.Zero >= (UInt48)0, Is.True, "#1");
     Assert.That(UInt48.Zero >= (UInt48)1, Is.False, "#2");
@@ -110,68 +114,68 @@ partial class UInt24nTests {
   [Test]
   public void IComparisonOperators_GreaterThan()
   {
-    Assert.IsFalse(GreaterThan(UInt24.Zero, UInt24.Zero), "UInt24.Zero > UInt24.Zero");
-    Assert.IsTrue(GreaterThan(UInt24.One, UInt24.Zero), "UInt24.One > UInt24.Zero");
-    Assert.IsFalse(GreaterThan(UInt24.Zero, UInt24.One), "UInt24.Zero > UInt24.One");
-    Assert.IsFalse(GreaterThan(UInt24.One, UInt24.One), "UInt24.One > UInt24.One");
+    Assert.That(GreaterThan(UInt24.Zero, UInt24.Zero), Is.False, "UInt24.Zero > UInt24.Zero");
+    Assert.That(GreaterThan(UInt24.One, UInt24.Zero), Is.True, "UInt24.One > UInt24.Zero");
+    Assert.That(GreaterThan(UInt24.Zero, UInt24.One), Is.False, "UInt24.Zero > UInt24.One");
+    Assert.That(GreaterThan(UInt24.One, UInt24.One), Is.False, "UInt24.One > UInt24.One");
 
-    Assert.IsFalse(GreaterThan(UInt48.Zero, UInt48.Zero), "UInt48.Zero > UInt48.Zero");
-    Assert.IsTrue(GreaterThan(UInt48.One, UInt48.Zero), "UInt48.One > UInt48.Zero");
-    Assert.IsFalse(GreaterThan(UInt48.Zero, UInt48.One), "UInt48.Zero > UInt48.One");
-    Assert.IsFalse(GreaterThan(UInt48.One, UInt48.One), "UInt48.One > UInt48.One");
+    Assert.That(GreaterThan(UInt48.Zero, UInt48.Zero), Is.False, "UInt48.Zero > UInt48.Zero");
+    Assert.That(GreaterThan(UInt48.One, UInt48.Zero), Is.True, "UInt48.One > UInt48.Zero");
+    Assert.That(GreaterThan(UInt48.Zero, UInt48.One), Is.False, "UInt48.Zero > UInt48.One");
+    Assert.That(GreaterThan(UInt48.One, UInt48.One), Is.False, "UInt48.One > UInt48.One");
 
-    static bool GreaterThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool GreaterThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x > y;
   }
 
   [Test]
   public void IComparisonOperators_GreaterThanOrEqual()
   {
-    Assert.IsTrue(GreaterThanOrEqual(UInt24.Zero, UInt24.Zero), "UInt24.Zero >= UInt24.Zero");
-    Assert.IsTrue(GreaterThanOrEqual(UInt24.One, UInt24.Zero), "UInt24.One >= UInt24.Zero");
-    Assert.IsFalse(GreaterThanOrEqual(UInt24.Zero, UInt24.One), "UInt24.Zero >= UInt24.One");
-    Assert.IsTrue(GreaterThanOrEqual(UInt24.One, UInt24.One), "UInt24.One >= UInt24.One");
+    Assert.That(GreaterThanOrEqual(UInt24.Zero, UInt24.Zero), Is.True, "UInt24.Zero >= UInt24.Zero");
+    Assert.That(GreaterThanOrEqual(UInt24.One, UInt24.Zero), Is.True, "UInt24.One >= UInt24.Zero");
+    Assert.That(GreaterThanOrEqual(UInt24.Zero, UInt24.One), Is.False, "UInt24.Zero >= UInt24.One");
+    Assert.That(GreaterThanOrEqual(UInt24.One, UInt24.One), Is.True, "UInt24.One >= UInt24.One");
 
-    Assert.IsTrue(GreaterThanOrEqual(UInt48.Zero, UInt48.Zero), "UInt48.Zero >= UInt48.Zero");
-    Assert.IsTrue(GreaterThanOrEqual(UInt48.One, UInt48.Zero), "UInt48.One >= UInt48.Zero");
-    Assert.IsFalse(GreaterThanOrEqual(UInt48.Zero, UInt48.One), "UInt48.Zero >= UInt48.One");
-    Assert.IsTrue(GreaterThanOrEqual(UInt48.One, UInt48.One), "UInt48.One >= UInt48.One");
+    Assert.That(GreaterThanOrEqual(UInt48.Zero, UInt48.Zero), Is.True, "UInt48.Zero >= UInt48.Zero");
+    Assert.That(GreaterThanOrEqual(UInt48.One, UInt48.Zero), Is.True, "UInt48.One >= UInt48.Zero");
+    Assert.That(GreaterThanOrEqual(UInt48.Zero, UInt48.One), Is.False, "UInt48.Zero >= UInt48.One");
+    Assert.That(GreaterThanOrEqual(UInt48.One, UInt48.One), Is.True, "UInt48.One >= UInt48.One");
 
-    static bool GreaterThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool GreaterThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x >= y;
   }
 
   [Test]
   public void IComparisonOperators_LessThan()
   {
-    Assert.IsFalse(LessThan(UInt24.Zero, UInt24.Zero), "UInt24.Zero < UInt24.Zero");
-    Assert.IsFalse(LessThan(UInt24.One, UInt24.Zero), "UInt24.One < UInt24.Zero");
-    Assert.IsTrue(LessThan(UInt24.Zero, UInt24.One), "UInt24.Zero < UInt24.One");
-    Assert.IsFalse(LessThan(UInt24.One, UInt24.One), "UInt24.One < UInt24.One");
+    Assert.That(LessThan(UInt24.Zero, UInt24.Zero), Is.False, "UInt24.Zero < UInt24.Zero");
+    Assert.That(LessThan(UInt24.One, UInt24.Zero), Is.False, "UInt24.One < UInt24.Zero");
+    Assert.That(LessThan(UInt24.Zero, UInt24.One), Is.True, "UInt24.Zero < UInt24.One");
+    Assert.That(LessThan(UInt24.One, UInt24.One), Is.False, "UInt24.One < UInt24.One");
 
-    Assert.IsFalse(LessThan(UInt48.Zero, UInt48.Zero), "UInt48.Zero < UInt48.Zero");
-    Assert.IsFalse(LessThan(UInt48.One, UInt48.Zero), "UInt48.One < UInt48.Zero");
-    Assert.IsTrue(LessThan(UInt48.Zero, UInt48.One), "UInt48.Zero < UInt48.One");
-    Assert.IsFalse(LessThan(UInt48.One, UInt48.One), "UInt48.One < UInt48.One");
+    Assert.That(LessThan(UInt48.Zero, UInt48.Zero), Is.False, "UInt48.Zero < UInt48.Zero");
+    Assert.That(LessThan(UInt48.One, UInt48.Zero), Is.False, "UInt48.One < UInt48.Zero");
+    Assert.That(LessThan(UInt48.Zero, UInt48.One), Is.True, "UInt48.Zero < UInt48.One");
+    Assert.That(LessThan(UInt48.One, UInt48.One), Is.False, "UInt48.One < UInt48.One");
 
-    static bool LessThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool LessThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x < y;
   }
 
   [Test]
   public void IComparisonOperators_LessThanOrEqual()
   {
-    Assert.IsTrue(LessThanOrEqual(UInt24.Zero, UInt24.Zero), "UInt24.Zero <= UInt24.Zero");
-    Assert.IsFalse(LessThanOrEqual(UInt24.One, UInt24.Zero), "UInt24.One <= UInt24.Zero");
-    Assert.IsTrue(LessThanOrEqual(UInt24.Zero, UInt24.One), "UInt24.Zero <= UInt24.One");
-    Assert.IsTrue(LessThanOrEqual(UInt24.One, UInt24.One), "UInt24.One <= UInt24.One");
+    Assert.That(LessThanOrEqual(UInt24.Zero, UInt24.Zero), Is.True, "UInt24.Zero <= UInt24.Zero");
+    Assert.That(LessThanOrEqual(UInt24.One, UInt24.Zero), Is.False, "UInt24.One <= UInt24.Zero");
+    Assert.That(LessThanOrEqual(UInt24.Zero, UInt24.One), Is.True, "UInt24.Zero <= UInt24.One");
+    Assert.That(LessThanOrEqual(UInt24.One, UInt24.One), Is.True, "UInt24.One <= UInt24.One");
 
-    Assert.IsTrue(LessThanOrEqual(UInt48.Zero, UInt48.Zero), "UInt48.Zero <= UInt48.Zero");
-    Assert.IsFalse(LessThanOrEqual(UInt48.One, UInt48.Zero), "UInt48.One <= UInt48.Zero");
-    Assert.IsTrue(LessThanOrEqual(UInt48.Zero, UInt48.One), "UInt48.Zero <= UInt48.One");
-    Assert.IsTrue(LessThanOrEqual(UInt48.One, UInt48.One), "UInt48.One <= UInt48.One");
+    Assert.That(LessThanOrEqual(UInt48.Zero, UInt48.Zero), Is.True, "UInt48.Zero <= UInt48.Zero");
+    Assert.That(LessThanOrEqual(UInt48.One, UInt48.Zero), Is.False, "UInt48.One <= UInt48.Zero");
+    Assert.That(LessThanOrEqual(UInt48.Zero, UInt48.One), Is.True, "UInt48.Zero <= UInt48.One");
+    Assert.That(LessThanOrEqual(UInt48.One, UInt48.One), Is.True, "UInt48.One <= UInt48.One");
 
-    static bool LessThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n>
+    static bool LessThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x <= y;
   }
 #endif
