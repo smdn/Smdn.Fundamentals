@@ -397,6 +397,7 @@ namespace Smdn {
     [Test]
     public void Parse_String()
     {
+#pragma warning disable CA1305
       Assert.That(UInt24.Parse("0"), Is.EqualTo(UInt24.Zero));
       Assert.That(UInt24.Parse("1"), Is.EqualTo((UInt24)1));
       Assert.That(UInt24.Parse("16777215"), Is.EqualTo((UInt24)0xFFFFFF));
@@ -409,20 +410,24 @@ namespace Smdn {
       Assert.Throws<OverflowException>(() => UInt24.Parse("-1", provider: null));
       Assert.Throws<OverflowException>(() => UInt24.Parse("16777216", provider: null));
       Assert.Throws<FormatException>(() => UInt24.Parse("FFFFFF", provider: null));
+#pragma warning restore CA1305
     }
 
     [Test]
     public void Parse_String_WithNumberStyles()
     {
+#pragma warning disable CA1305
       Assert.That(UInt24.Parse("0", style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt24.Zero), "#0");
 
       Assert.That(UInt24.Parse("ABCDEF", style: NumberStyles.AllowHexSpecifier), Is.EqualTo((UInt24)0xABCDEF), "#1");
+#pragma warning restore CA1305
     }
 
 #if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
     [Test]
     public void Parse_ReadOnlySpanOfChar()
     {
+#pragma warning disable CA1305
       Assert.That(UInt24.Parse("_0".AsSpan(1)), Is.EqualTo(UInt24.Zero));
       Assert.That(UInt24.Parse("_1".AsSpan(1)), Is.EqualTo((UInt24)1));
       Assert.That(UInt24.Parse("_16777215".AsSpan(1)), Is.EqualTo((UInt24)0xFFFFFF));
@@ -434,14 +439,17 @@ namespace Smdn {
       Assert.Throws<OverflowException>(() => UInt24.Parse("_-1".AsSpan(1), provider: null));
       Assert.Throws<OverflowException>(() => UInt24.Parse("_16777216".AsSpan(1), provider: null));
       Assert.Throws<FormatException>(() => UInt24.Parse("_FFFFFF".AsSpan(1), provider: null));
+#pragma warning restore CA1305
     }
 
     [Test]
     public void Parse_ReadOnlySpanOfChar_WithNumberStyles()
     {
+#pragma warning disable CA1305
       Assert.That(UInt24.Parse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt24.Zero), "#0");
 
       Assert.That(UInt24.Parse("_ABCDEF".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo((UInt24)0xABCDEF), "#1");
+#pragma warning restore CA1305
     }
 #endif
 

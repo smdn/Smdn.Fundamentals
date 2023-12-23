@@ -400,6 +400,7 @@ namespace Smdn {
     [Test]
     public void Parse_String()
     {
+#pragma warning disable CA1305
       Assert.That(UInt48.Parse("0"), Is.EqualTo(UInt48.Zero));
       Assert.That(UInt48.Parse("1"), Is.EqualTo((UInt48)1));
       Assert.That(UInt48.Parse("281474976710655"), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
@@ -412,20 +413,24 @@ namespace Smdn {
       Assert.Throws<OverflowException>(() => UInt48.Parse("-1", provider: null));
       Assert.Throws<OverflowException>(() => UInt48.Parse("281474976710656", provider: null));
       Assert.Throws<FormatException>(() => UInt48.Parse("FFFFFFFFFFFF", provider: null));
+#pragma warning restore CA1305
     }
 
     [Test]
     public void Parse_String_WithNumberStyles()
     {
+#pragma warning disable CA1305
       Assert.That(UInt48.Parse("0", style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt48.Zero), "#0");
 
       Assert.That(UInt48.Parse("456789ABCDEF", style: NumberStyles.AllowHexSpecifier), Is.EqualTo((UInt48)0x456789ABCDEF), "#1");
+#pragma warning restore CA1305
     }
 
 #if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
     [Test]
     public void Parse_ReadOnlySpanOfChar()
     {
+#pragma warning disable CA1305
       Assert.That(UInt48.Parse("_0".AsSpan(1)), Is.EqualTo(UInt48.Zero));
       Assert.That(UInt48.Parse("_1".AsSpan(1)), Is.EqualTo((UInt48)1));
       Assert.That(UInt48.Parse("_281474976710655".AsSpan(1)), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
@@ -437,14 +442,18 @@ namespace Smdn {
       Assert.Throws<OverflowException>(() => UInt48.Parse("_-1".AsSpan(1), provider: null));
       Assert.Throws<OverflowException>(() => UInt48.Parse("_281474976710656".AsSpan(1), provider: null));
       Assert.Throws<FormatException>(() => UInt48.Parse("_FFFFFFFFFFFF".AsSpan(1), provider: null));
+#pragma warning restore CA1305
+
     }
 
     [Test]
     public void Parse_ReadOnlySpanOfChar_WithNumberStyles()
     {
+#pragma warning disable CA1305
       Assert.That(UInt48.Parse("_0".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo(UInt48.Zero), "#0");
 
       Assert.That(UInt48.Parse("_456789ABCDEF".AsSpan(1), style: NumberStyles.AllowHexSpecifier), Is.EqualTo((UInt48)0x456789ABCDEF), "#1");
+#pragma warning restore CA1305
     }
 #endif
 
