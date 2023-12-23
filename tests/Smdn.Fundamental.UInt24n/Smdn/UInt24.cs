@@ -356,7 +356,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void ToString()
+    public new void ToString()
     {
 #pragma warning disable CA1305
       Assert.That(UInt24.Zero.ToString(), Is.EqualTo("0"));
