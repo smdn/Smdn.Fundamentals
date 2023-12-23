@@ -23,6 +23,12 @@ on:
         type: string
         default: ''
 
+      dotnet_sdk_version:
+        description: "The minimum .NET SDK version which is used to publish the release target."
+        required: false
+        type: string
+        default: '6.0.200'
+
       dry_run:
         description: "If true, performs a trial run."
         required: false
@@ -52,6 +58,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check .NET SDK version
+      id: dotnet-sdk-version
+      shell: pwsh
+      run: |
+        $installed_version = [System.Version]::Parse($(dotnet --version))
+        $required_version  = [System.Version]::Parse('${{ inputs.dotnet_sdk_version }}')
+
+        if ( $required_version -gt $installed_version ) {
+          # required SDK version is not installed
+          "::notice::.NET SDK version: installed ${installed_version}, required ${required_version}"
+
+          "install-dotnet-sdk-version=${required_version}" >> $Env:GITHUB_OUTPUT
+        }
+
+    - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}
+      if: ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version != '' }}
+      uses: actions/setup-dotnet@v4.0.0
+      with:
+        dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}'
+
     - name: Checkout repository
       # note: checkout repository firstly due to working directory will be cleaned up on checkout
       uses: actions/checkout@v3.5.2
