@@ -80,7 +80,7 @@ jobs:
 
     - name: Checkout repository
       # note: checkout repository firstly due to working directory will be cleaned up on checkout
-      uses: actions/checkout@v3.5.2
+      uses: actions/checkout@v4.1.1
       with:
         token: ${{ secrets.token_repo }}
         persist-credentials: true

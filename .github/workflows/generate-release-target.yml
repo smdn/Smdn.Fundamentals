@@ -109,7 +109,7 @@ jobs:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}'
 
     - name: Checkout repository
-      uses: actions/checkout@v3.5.2
+      uses: actions/checkout@v4.1.1
       with:
         # TODO: attempt treeless clone '--filter=tree:0'
         # ref: https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
