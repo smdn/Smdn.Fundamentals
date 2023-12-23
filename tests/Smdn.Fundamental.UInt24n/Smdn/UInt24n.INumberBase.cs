@@ -649,6 +649,7 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_Create_Zero_UInt24()
   {
+#pragma warning disable CS0618
     Assert.That(UInt24.Create((byte)0), Is.EqualTo(UInt24.Zero), "byte 0");
     Assert.That(UInt24.Create((sbyte)0), Is.EqualTo(UInt24.Zero), "sbyte 0");
     Assert.That(UInt24.Create((char)0), Is.EqualTo(UInt24.Zero), "char 0");
@@ -664,6 +665,7 @@ partial class UInt24nTests {
     Assert.That(UInt24.Create((float)0), Is.EqualTo(UInt24.Zero), "float 0");
     Assert.That(UInt24.Create((double)0), Is.EqualTo(UInt24.Zero), "double 0");
     Assert.That(UInt24.Create((decimal)0), Is.EqualTo(UInt24.Zero), "decimal 0");
+#pragma warning restore CS0618
   }
 
   [Test]
@@ -709,6 +711,7 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_Create_Zero_UInt48()
   {
+#pragma warning disable CS0618
     Assert.That(UInt48.Create((byte)0), Is.EqualTo(UInt48.Zero), "byte 0");
     Assert.That(UInt48.Create((sbyte)0), Is.EqualTo(UInt48.Zero), "sbyte 0");
     Assert.That(UInt48.Create((char)0), Is.EqualTo(UInt48.Zero), "char 0");
@@ -724,6 +727,7 @@ partial class UInt24nTests {
     Assert.That(UInt48.Create((float)0), Is.EqualTo(UInt48.Zero), "float 0");
     Assert.That(UInt48.Create((double)0), Is.EqualTo(UInt48.Zero), "double 0");
     Assert.That(UInt48.Create((decimal)0), Is.EqualTo(UInt48.Zero), "decimal 0");
+#pragma warning restore CS0618
   }
 
   [Test]
@@ -769,6 +773,7 @@ partial class UInt24nTests {
   [Test]
   public void TryCreate_Zero_UInt24()
   {
+#pragma warning disable CS0618
     Assert.That(UInt24.TryCreate((byte)0, out var r_byte), Is.True, "byte 0"); Assert.That(r_byte, Is.EqualTo(UInt24.Zero), "result byte 0");
     Assert.That(UInt24.TryCreate((sbyte)0, out var r_sbyte), Is.True, "sbyte 0"); Assert.That(r_sbyte, Is.EqualTo(UInt24.Zero), "result sbyte 0");
     Assert.That(UInt24.TryCreate((char)0, out var r_char), Is.True, "char 0"); Assert.That(r_char, Is.EqualTo(UInt24.Zero), "result char 0");
@@ -784,11 +789,13 @@ partial class UInt24nTests {
     Assert.That(UInt24.TryCreate((float)0, out var r_float), Is.True, "float 0"); Assert.That(r_float, Is.EqualTo(UInt24.Zero), "result float 0");
     Assert.That(UInt24.TryCreate((double)0, out var r_double), Is.True, "double 0"); Assert.That(r_double, Is.EqualTo(UInt24.Zero), "result double 0");
     Assert.That(UInt24.TryCreate((decimal)0, out var r_decimal), Is.True, "decimal 0"); Assert.That(r_decimal, Is.EqualTo(UInt24.Zero), "result decimal 0");
+#pragma warning restore CS0618
   }
 
   [Test]
   public void TryCreate_Zero_UInt48()
   {
+#pragma warning disable CS0618
     Assert.That(UInt48.TryCreate((byte)0, out var r_byte), Is.True, "byte 0"); Assert.That(r_byte, Is.EqualTo(UInt48.Zero), "result byte 0");
     Assert.That(UInt48.TryCreate((sbyte)0, out var r_sbyte), Is.True, "sbyte 0"); Assert.That(r_sbyte, Is.EqualTo(UInt48.Zero), "result sbyte 0");
     Assert.That(UInt48.TryCreate((char)0, out var r_char), Is.True, "char 0"); Assert.That(r_char, Is.EqualTo(UInt48.Zero), "result char 0");
@@ -804,11 +811,13 @@ partial class UInt24nTests {
     Assert.That(UInt48.TryCreate((float)0, out var r_float), Is.True, "float 0"); Assert.That(r_float, Is.EqualTo(UInt48.Zero), "result float 0");
     Assert.That(UInt48.TryCreate((double)0, out var r_double), Is.True, "double 0"); Assert.That(r_double, Is.EqualTo(UInt48.Zero), "result double 0");
     Assert.That(UInt48.TryCreate((decimal)0, out var r_decimal), Is.True, "decimal 0"); Assert.That(r_decimal, Is.EqualTo(UInt48.Zero), "result decimal 0");
+#pragma warning restore CS0618
   }
 
   [Test]
   public void INumberBase_Create_UInt24()
   {
+#pragma warning disable CS0618
     Assert.That(UInt24.Create((byte)0xFF), Is.EqualTo((UInt24)0xFF), "byte 0xFF");
     Assert.That(UInt24.Create((sbyte)0x7F), Is.EqualTo((UInt24)0x7F), "sbyte 0x7F");
     Assert.That(UInt24.Create((char)0xFFFF), Is.EqualTo((UInt24)0xFFFF), "char 0xFFFF");
@@ -824,6 +833,7 @@ partial class UInt24nTests {
     Assert.That(UInt24.Create((float)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "float 0xFFFFFF");
     Assert.That(UInt24.Create((double)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "double 0xFFFFFF");
     Assert.That(UInt24.Create((decimal)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "decimal 0xFFFFFF");
+#pragma warning restore CS0618
   }
 
   [Test]
@@ -869,6 +879,7 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_Create_UInt48()
   {
+#pragma warning disable CS0618
     Assert.That(UInt48.Create((byte)0xFF), Is.EqualTo((UInt48)0xFF), "byte 0xFF");
     Assert.That(UInt48.Create((sbyte)0x7F), Is.EqualTo((UInt48)0x7F), "sbyte 0x7F");
     Assert.That(UInt48.Create((char)0xFFFF), Is.EqualTo((UInt48)0xFFFF), "char 0xFFFF");
@@ -890,6 +901,7 @@ partial class UInt24nTests {
     Assert.That(UInt48.Create((float)2.8147496E+014), Is.EqualTo((UInt48)0xFFFF_FF000000), "float 2.8147496E+014");
     Assert.That(UInt48.Create((double)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "double 0xFFFF_FFFFFFFF");
     Assert.That(UInt48.Create((decimal)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "decimal 0xFFFF_FFFFFFFF");
+#pragma warning restore CS0618
   }
 
   [Test]
@@ -947,6 +959,7 @@ partial class UInt24nTests {
   [Test]
   public void TryCreate_UInt24()
   {
+#pragma warning disable CS0618
     Assert.That(UInt24.TryCreate((byte)0xFF, out var r_byte), Is.True, "byte 0xFF"); Assert.That(r_byte, Is.EqualTo((UInt24)0xFF), "result byte 0xFF");
     Assert.That(UInt24.TryCreate((sbyte)0x7F, out var r_sbyte), Is.True, "sbyte 0x7F"); Assert.That(r_sbyte, Is.EqualTo((UInt24)0x7F), "result sbyte 0x7F");
     Assert.That(UInt24.TryCreate((char)0xFFFF, out var r_char), Is.True, "char 0xFFFF"); Assert.That(r_char, Is.EqualTo((UInt24)0xFFFF), "result char 0xFFFF");
@@ -962,12 +975,13 @@ partial class UInt24nTests {
     Assert.That(UInt24.TryCreate((float)0xFFFFFF, out var r_float), Is.True, "float 0xFFFFFF"); Assert.That(r_float, Is.EqualTo((UInt24)0xFFFFFF), "result float 0xFFFFFF");
     Assert.That(UInt24.TryCreate((double)0xFFFFFF, out var r_double), Is.True, "double 0xFFFFFF"); Assert.That(r_double, Is.EqualTo((UInt24)0xFFFFFF), "result double 0xFFFFFF");
     Assert.That(UInt24.TryCreate((decimal)0xFFFFFF, out var r_decimal), Is.True, "decimal 0xFFFFFF"); Assert.That(r_decimal, Is.EqualTo((UInt24)0xFFFFFF), "result decimal 0xFFFFFF");
-
+#pragma warning restore CS0618
   }
 
   [Test]
   public void TryCreate_UInt48()
   {
+#pragma warning disable CS0618
     Assert.That(UInt48.TryCreate((byte)0xFF, out var r_byte), Is.True, "byte 0xFF"); Assert.That(r_byte, Is.EqualTo((UInt48)0xFF), "result byte 0xFF");
     Assert.That(UInt48.TryCreate((sbyte)0x7F, out var r_sbyte), Is.True, "sbyte 0x7F"); Assert.That(r_sbyte, Is.EqualTo((UInt48)0x7F), "result sbyte 0x7F");
     Assert.That(UInt48.TryCreate((char)0xFFFF, out var r_char), Is.True, "char 0xFFFF"); Assert.That(r_char, Is.EqualTo((UInt48)0xFFFF), "result char 0xFFFF");
@@ -989,11 +1003,13 @@ partial class UInt24nTests {
     Assert.That(UInt48.TryCreate((float)2.8147496E+014, out var r_float), Is.True, "float 2.8147496E+014"); Assert.That(r_float, Is.EqualTo((UInt48)0xFFFF_FF000000), "result float 2.8147496E+014");
     Assert.That(UInt48.TryCreate((double)0xFFFF_FFFFFFFF, out var r_double), Is.True, "double 0xFFFF_FFFFFFFF"); Assert.That(r_double, Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "result double 0xFFFF_FFFFFFFF");
     Assert.That(UInt48.TryCreate((decimal)0xFFFF_FFFFFFFF, out var r_decimal), Is.True, "decimal 0xFFFF_FFFFFFFF"); Assert.That(r_decimal, Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "result decimal 0xFFFF_FFFFFFFF");
+#pragma warning restore CS0618
   }
 
   [Test]
   public void INumberBase_Create_OverflowException_UInt24()
   {
+#pragma warning disable CS0618
     Assert.Throws<OverflowException>(() => UInt24.Create((sbyte)-1), "sbyte -1");
     Assert.Throws<OverflowException>(() => UInt24.Create((short)-1), "short -1");
     Assert.Throws<OverflowException>(() => UInt24.Create((uint)0x1_000000), "uint 0x1_000000");
@@ -1012,6 +1028,7 @@ partial class UInt24nTests {
     Assert.Throws<OverflowException>(() => UInt24.Create((double)0x1_000000), "double 0x1_000000");
     Assert.Throws<OverflowException>(() => UInt24.Create((decimal)-1), "decimal -1");
     Assert.Throws<OverflowException>(() => UInt24.Create((decimal)0x1_000000), "decimal 0x1_000000");
+#pragma warning restore CS0618
   }
 
   [Test]
@@ -1064,6 +1081,7 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_Create_OverflowException_UInt48()
   {
+#pragma warning disable CS0618
     Assert.Throws<OverflowException>(() => UInt48.Create((sbyte)-1), "sbyte -1");
     Assert.Throws<OverflowException>(() => UInt48.Create((short)-1), "short -1");
     Assert.Throws<OverflowException>(() => UInt48.Create((int)-1), "int -1");
@@ -1081,6 +1099,7 @@ partial class UInt24nTests {
     Assert.Throws<OverflowException>(() => UInt48.Create((double)0x1_000000_000000), "double 0x1_000000_000000");
     Assert.Throws<OverflowException>(() => UInt48.Create((decimal)-1), "decimal -1");
     Assert.Throws<OverflowException>(() => UInt48.Create((decimal)0x1_000000_000000), "decimal 0x1_000000_000000");
+#pragma warning restore CS0618
   }
 
   [Test]
@@ -1131,6 +1150,7 @@ partial class UInt24nTests {
   [Test]
   public void TryCreate_Overflow_UInt24()
   {
+#pragma warning disable CS0618
     Assert.That(UInt24.TryCreate((sbyte)-1, out var _), Is.False, "sbyte -1");
     Assert.That(UInt24.TryCreate((short)-1, out var _), Is.False, "short -1");
     Assert.That(UInt24.TryCreate((uint)0x1_000000, out var _), Is.False, "uint 0x1_000000");
@@ -1149,11 +1169,13 @@ partial class UInt24nTests {
     Assert.That(UInt24.TryCreate((double)0x1_000000, out var _), Is.False, "double 0x1_000000");
     Assert.That(UInt24.TryCreate((decimal)-1, out var _), Is.False, "decimal -1");
     Assert.That(UInt24.TryCreate((decimal)0x1_000000, out var _), Is.False, "decimal 0x1_000000");
+#pragma warning restore CS0618
   }
 
   [Test]
   public void TryCreate_Overflow_UInt48()
   {
+#pragma warning disable CS0618
     Assert.That(UInt48.TryCreate((sbyte)-1, out var _), Is.False, "sbyte -1");
     Assert.That(UInt48.TryCreate((short)-1, out var _), Is.False, "short -1");
     Assert.That(UInt48.TryCreate((int)-1, out var _), Is.False, "int -1");
@@ -1171,6 +1193,7 @@ partial class UInt24nTests {
     Assert.That(UInt48.TryCreate((double)0x1_000000_000000, out var _), Is.False, "double 0x1_000000_000000");
     Assert.That(UInt48.TryCreate((decimal)-1, out var _), Is.False, "decimal -1");
     Assert.That(UInt48.TryCreate((decimal)0x1_000000_000000, out var _), Is.False, "decimal 0x1_000000_000000");
+#pragma warning restore CS0618
   }
 
   [Test]
