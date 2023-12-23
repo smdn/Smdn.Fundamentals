@@ -30,5 +30,5 @@ partial struct TUInt24n {
   public static TUInt24n Clamp(TUInt24n value, TUInt24n min, TUInt24n max)
     => max < min
       ? throw ExceptionUtils.CreateArgumentXMustBeLessThanY(min, nameof(min), max, nameof(max))
-      : new(ShimTypeSystemMathClamp.Clamp(value.Widen(), min.Widen(), max.Widen()));
+      : new(ShimTypeSystemMathClamp.Clamp(value.Widen(), min.Widen(), max.Widen()), check: false);
 }

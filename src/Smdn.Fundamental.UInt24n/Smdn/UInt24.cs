@@ -36,7 +36,7 @@ public partial struct UInt24 {
     }
   }
 
-  private UInt24(uint value, bool check = false)
+  private UInt24(uint value, bool check)
   {
     if (check && maxValue < value)
       throw UInt24n.CreateOverflowException<UInt24>(value);
@@ -153,7 +153,7 @@ public partial struct UInt24 {
     if (overflow && throwIfOverflow)
       throw UInt24n.CreateOverflowException<UInt24>(value);
 
-    result = new(unchecked((uint)val));
+    result = new(unchecked((uint)val), check: false);
 
     return true;
   }
@@ -161,93 +161,93 @@ public partial struct UInt24 {
   public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
-      return new((uint)((byte)(object)value));
+      return new((uint)((byte)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(sbyte)) {
       var val = (sbyte)(object)value;
 
-      return val < minValue ? MinValue : new((uint)val);
+      return val < minValue ? MinValue : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(char)) {
-      return new((uint)((char)(object)value));
+      return new((uint)((char)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(ushort)) {
-      return new((uint)((ushort)(object)value));
+      return new((uint)((ushort)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(short)) {
       var val = (short)(object)value;
 
-      return val < 0 ? Zero : new((uint)val);
+      return val < 0 ? Zero : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(uint)) {
       var val = (uint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new(val);
+        : new(val, check: false);
     }
     else if (typeof(TOther) == typeof(int)) {
       var val = (int)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(ulong)) {
       var val = (ulong)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(long)) {
       var val = (long)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(nuint)) {
       var val = (nuint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(nint)) {
       var val = (nint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(Half)) {
       var val = (float)((Half)(object)value);
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(float)) {
       var val = (float)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(double)) {
       var val = (double)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
     else if (typeof(TOther) == typeof(decimal)) {
       var val = (decimal)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((uint)val);
+        : new((uint)val, check: false);
     }
 
     throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();

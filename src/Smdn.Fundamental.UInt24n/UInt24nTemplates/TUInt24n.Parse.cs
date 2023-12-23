@@ -74,7 +74,7 @@ partial struct TUInt24n {
     if (maxValue < resultUIntWide)
       return false; // overflow
 
-    result = new(resultUIntWide);
+    result = new(resultUIntWide, check: false);
 
     return true;
   }
@@ -98,7 +98,7 @@ partial struct TUInt24n {
     if (maxValue < resultUIntWide)
       return false; // overflow
 
-    result = new(resultUIntWide);
+    result = new(resultUIntWide, check: false);
 
     return true;
   }

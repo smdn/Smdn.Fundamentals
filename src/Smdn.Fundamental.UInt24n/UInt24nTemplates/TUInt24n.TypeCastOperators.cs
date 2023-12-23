@@ -32,7 +32,7 @@ partial struct TUInt24n {
    */
 
   [CLSCompliant(false)]
-  public static explicit operator TUInt24n(TUIntNarrow val) => new((TUIntWide)val);
+  public static explicit operator TUInt24n(TUIntNarrow val) => new((TUIntWide)val, check: false);
 
   public static explicit operator TUInt24n(TIntNarrow val) => new(unchecked((TUIntWide)val), check: false);
 

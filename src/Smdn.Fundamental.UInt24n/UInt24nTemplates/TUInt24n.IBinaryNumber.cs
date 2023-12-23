@@ -35,6 +35,6 @@ partial struct TUInt24n
 
   public static int Log2(TUInt24n value) => ShimTypeSystemNumericsBitOperationsLog2.Log2(value.Widen());
 #if FEATURE_GENERIC_MATH
-  static TUInt24n IBinaryNumber<TUInt24n>.Log2(TUInt24n value) => new((TUIntWide)Log2(value));
+  static TUInt24n IBinaryNumber<TUInt24n>.Log2(TUInt24n value) => new((TUIntWide)Log2(value), check: false);
 #endif
 }

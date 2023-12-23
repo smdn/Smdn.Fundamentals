@@ -26,10 +26,10 @@ partial struct TUInt24n {
   public static TUInt24n operator checked /(TUInt24n left, TUInt24n right) => new(checked(left.Widen() / right.Widen()), check: true);
 
   // IModulusOperators
-  public static TUInt24n operator %(TUInt24n left, TUInt24n right) => new(unchecked(left.Widen() % right.Widen()));
+  public static TUInt24n operator %(TUInt24n left, TUInt24n right) => new(unchecked(left.Widen() % right.Widen()), check: false);
 
   // IUnaryPlusOperators
-  public static TUInt24n operator +(TUInt24n value) => new(+value.Widen());
+  public static TUInt24n operator +(TUInt24n value) => new(+value.Widen(), check: false);
 
   // IUnaryNegationOperators
   public static TUInt24n operator -(TUInt24n value) => new(unchecked(0 - value.Widen()), check: false);

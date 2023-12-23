@@ -45,7 +45,7 @@ public partial struct UInt48 {
     }
   }
 
-  private UInt48(ulong value, bool check = false)
+  private UInt48(ulong value, bool check)
   {
     if (check && maxValue < value)
       throw UInt24n.CreateOverflowException<UInt48>(value);
@@ -175,7 +175,7 @@ public partial struct UInt48 {
     if (overflow && throwIfOverflow)
       throw UInt24n.CreateOverflowException<UInt48>(value);
 
-    result = new(unchecked((ulong)val));
+    result = new(unchecked((ulong)val), check: false);
 
     return true;
   }
@@ -183,87 +183,87 @@ public partial struct UInt48 {
   public static UInt48 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
-      return new((ulong)((byte)(object)value));
+      return new((ulong)((byte)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(sbyte)) {
       var val = (sbyte)(object)value;
 
-      return val < minValue ? MinValue : new((ulong)val);
+      return val < minValue ? MinValue : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(char)) {
-      return new((ulong)((char)(object)value));
+      return new((ulong)((char)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(ushort)) {
-      return new((ulong)((ushort)(object)value));
+      return new((ulong)((ushort)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(short)) {
       var val = (short)(object)value;
 
-      return val < minValue ? MinValue : new((ulong)val);
+      return val < minValue ? MinValue : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(uint)) {
-      return new((ulong)((uint)(object)value));
+      return new((ulong)((uint)(object)value), check: false);
     }
     else if (typeof(TOther) == typeof(int)) {
       var val = (int)(object)value;
 
-      return val < minValue ? MinValue : new((ulong)val);
+      return val < minValue ? MinValue : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(ulong)) {
       var val = (ulong)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new(val);
+        : new(val, check: false);
     }
     else if (typeof(TOther) == typeof(long)) {
       var val = (long)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(nuint)) {
       var val = (nuint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(nint)) {
       var val = (nint)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(Half)) {
       var val = (float)((Half)(object)value);
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(float)) {
       var val = (double)((float)(object)value);
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(double)) {
       var val = (double)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
     else if (typeof(TOther) == typeof(decimal)) {
       var val = (decimal)(object)value;
 
       return val < minValue ? MinValue
         : val > maxValue ? MaxValue
-        : new((ulong)val);
+        : new((ulong)val, check: false);
     }
 
     throw UInt24n.CreateTypeIsNotConvertibleException<UInt48, TOther>();
