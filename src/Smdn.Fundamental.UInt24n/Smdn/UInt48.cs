@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if GENERIC_MATH_INTERFACES
 using System.Numerics;
 #endif
 using System.Runtime.CompilerServices;
@@ -119,7 +119,7 @@ public partial struct UInt48 {
     return true;
   }
 
-#if FEATURE_GENERIC_MATH
+#if GENERIC_MATH_INTERFACES
   /*
    * INumberBase<TSelf>
    */

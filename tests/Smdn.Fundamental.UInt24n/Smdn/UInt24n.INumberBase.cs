@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
 using System.Numerics;
 #endif
 
@@ -20,7 +20,7 @@ partial class UInt48Tests {
 }
 
 partial class UInt24nTests {
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
   [Test]
   public void INumberBase_Zero()
   {
@@ -545,7 +545,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt24.Abs(value), Is.EqualTo(expected), nameof(UInt24.Abs));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
     Assert.That(INumberBase_Abs(value), Is.EqualTo(expected), nameof(INumberBase_Abs));
 
     static TUInt24n INumberBase_Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
@@ -565,7 +565,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt48.Abs(value), Is.EqualTo(expected), nameof(UInt48.Abs));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
     Assert.That(INumberBase_Abs(value), Is.EqualTo(expected), nameof(INumberBase_Abs));
 
     static TUInt24n INumberBase_Abs<TUInt24n>(TUInt24n value) where TUInt24n : INumberBase<TUInt24n>
@@ -573,7 +573,7 @@ partial class UInt24nTests {
 #endif
   }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
   [TestCaseSource(nameof(YieldTestCases_Max_UInt24))]
   public void INumberBase_MaxMagnitude_UInt24(UInt24 x, UInt24 y, UInt24 expected)
   {

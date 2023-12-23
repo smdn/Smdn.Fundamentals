@@ -6,12 +6,10 @@ namespace Smdn;
 
 #pragma warning disable IDE0040
 partial struct TUInt24n :
-#if !FEATURE_GENERIC_MATH
   IComparable<TUInt24n>,
-  IComparable,
-#endif
   IComparable<TUIntWide>,
-  IComparable<TIntWide>
+  IComparable<TIntWide>,
+  IComparable
 {
 #pragma warning restore IDE0040
   public int CompareTo(TUInt24n other) => Widen().CompareTo(other.Widen());

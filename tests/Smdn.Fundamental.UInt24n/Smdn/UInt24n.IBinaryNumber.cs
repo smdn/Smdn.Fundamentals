@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBITWISEOPERATORS || SYSTEM_NUMERICS_IBINARYNUMBER
 using System.Numerics;
 #endif
 
@@ -37,7 +37,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBITWISEOPERATORS
 partial class UInt24nTests {
   [Test]
   public void IBitwiseOperators_BitwiseAnd()
@@ -92,7 +92,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBITWISEOPERATORS
 partial class UInt24nTests {
   [Test]
   public void IBitwiseOperators_BitwiseOr()
@@ -147,7 +147,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBITWISEOPERATORS
 partial class UInt24nTests {
   [Test]
   public void IBitwiseOperators_ExclusiveOr()
@@ -194,7 +194,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBITWISEOPERATORS
 partial class UInt24nTests {
   [Test]
   public void IBitwiseOperators_OnesComplement()
@@ -235,7 +235,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYNUMBER
 partial class UInt24nTests {
   [Test]
   public void IBinaryNumber_IsPow2()
@@ -278,7 +278,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYNUMBER
 partial class UInt24nTests {
   [Test]
   public void IBinaryNumber_Log2()

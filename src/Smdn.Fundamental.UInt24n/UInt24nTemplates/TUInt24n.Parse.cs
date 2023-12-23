@@ -21,7 +21,7 @@ partial struct TUInt24n {
   public static TUInt24n Parse(string s, NumberStyles style, IFormatProvider? provider = null)
     => new(TUIntWide.Parse(s, style, provider), check: true);
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_ISPANPARSABLE
   static TUInt24n ISpanParsable<TUInt24n>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
     => Parse(s, NumberStyles.Integer, provider);
 #endif

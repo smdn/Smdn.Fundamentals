@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
 using System.Numerics;
 #endif
 
@@ -21,7 +21,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt24.Sign(value), Is.EqualTo(expected), nameof(UInt24.Sign));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Sign(value), Is.EqualTo(expected), nameof(INumber_Sign));
 
     static int INumber_Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
@@ -41,7 +41,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt48.Sign(value), Is.EqualTo(expected), nameof(UInt48.Sign));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Sign(value), Is.EqualTo(expected), nameof(INumber_Sign));
 
     static int INumber_Sign<TUInt24n>(TUInt24n value) where TUInt24n : INumber<TUInt24n>
@@ -65,7 +65,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt24.Min(x, y), Is.EqualTo(expected), nameof(UInt24.Min));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Min(x, y), Is.EqualTo(expected), nameof(INumber_Min));
 
     static TUInt24n INumber_Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -89,7 +89,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt48.Min(x, y), Is.EqualTo(expected), nameof(UInt48.Min));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Min(x, y), Is.EqualTo(expected), nameof(INumber_Min));
 
     static TUInt24n INumber_Min<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -113,7 +113,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt24.Max(x, y), Is.EqualTo(expected), nameof(UInt24.Max));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Max(x, y), Is.EqualTo(expected), nameof(INumber_Max));
 
     static TUInt24n INumber_Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -137,7 +137,7 @@ partial class UInt24nTests {
   {
     Assert.That(UInt48.Max(x, y), Is.EqualTo(expected), nameof(UInt48.Max));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Max(x, y), Is.EqualTo(expected), nameof(INumber_Max));
 
     static TUInt24n INumber_Max<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : INumber<TUInt24n>
@@ -163,7 +163,7 @@ partial class UInt24nTests {
 
     Assert.That(UInt24.Clamp(value, min, max), Is.EqualTo(expected), nameof(UInt24.Clamp));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Clamp(value, min, max), Is.EqualTo(expected), nameof(INumber_Clamp));
 
     static TUInt24n INumber_Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
@@ -189,7 +189,7 @@ partial class UInt24nTests {
 
     Assert.That(UInt48.Clamp(value, min, max), Is.EqualTo(expected), nameof(UInt48.Clamp));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.That(INumber_Clamp(value, min, max), Is.EqualTo(expected), nameof(INumber_Clamp));
 
     static TUInt24n INumber_Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
@@ -212,7 +212,7 @@ partial class UInt24nTests {
 
     Assert.Throws<ArgumentException>(() => UInt24.Clamp(value, min, max), nameof(UInt24.Clamp));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.Throws<ArgumentException>(() => INumber_Clamp(value, min, max), nameof(INumber_Clamp));
 
     static TUInt24n INumber_Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
@@ -235,7 +235,7 @@ partial class UInt24nTests {
 
     Assert.Throws<ArgumentException>(() => UInt48.Clamp(value, min, max), nameof(UInt48.Clamp));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBER
     Assert.Throws<ArgumentException>(() => INumber_Clamp(value, min, max), nameof(INumber_Clamp));
 
     static TUInt24n INumber_Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>

@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IMULTIPLICATIVEIDENTITY
 using System;
 using System.Collections.Generic;
 using System.Numerics;

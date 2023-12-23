@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_ISHIFTOPERATORS
 using System.Numerics;
 #endif
 
@@ -182,7 +182,7 @@ partial class UInt48Tests {
   }
 }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_ISHIFTOPERATORS
 partial class UInt24nTests {
   [Test]
   public void IShiftOperators_OpLeftShift()

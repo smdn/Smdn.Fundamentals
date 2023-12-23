@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_ISPANPARSABLE
 using System;
 
 using NUnit.Framework;

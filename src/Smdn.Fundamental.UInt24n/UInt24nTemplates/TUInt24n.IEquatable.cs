@@ -6,9 +6,7 @@ namespace Smdn;
 
 #pragma warning disable IDE0040
 partial struct TUInt24n :
-#if !FEATURE_GENERIC_MATH
   IEquatable<TUInt24n>,
-#endif
   IEquatable<TUIntWide>,
   IEquatable<TIntWide>
 {

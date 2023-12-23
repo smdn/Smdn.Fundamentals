@@ -1,9 +1,6 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
-using System.Numerics;
-#endif
 
 using ShimTypeSystemMathClamp =
 #if SYSTEM_MATH_CLAMP

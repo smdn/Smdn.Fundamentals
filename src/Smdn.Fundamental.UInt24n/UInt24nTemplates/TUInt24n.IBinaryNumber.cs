@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYNUMBER
 using System.Numerics;
 #endif
 
@@ -23,7 +23,7 @@ namespace Smdn;
 
 #pragma warning disable IDE0040
 partial struct TUInt24n
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYNUMBER
   : IBinaryNumber<TUInt24n>
 #endif
 {
@@ -34,7 +34,7 @@ partial struct TUInt24n
   public static bool IsPow2(TUInt24n value) => ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(value.Widen());
 
   public static int Log2(TUInt24n value) => ShimTypeSystemNumericsBitOperationsLog2.Log2(value.Widen());
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYNUMBER
   static TUInt24n IBinaryNumber<TUInt24n>.Log2(TUInt24n value) => new((TUIntWide)Log2(value), check: false);
 #endif
 }

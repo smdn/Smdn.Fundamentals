@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IMODULUSOPERATORS
 using System.Numerics;
 #endif
 
@@ -38,7 +38,7 @@ partial class UInt48Tests {
 }
 
 partial class UInt24nTests {
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IMODULUSOPERATORS
   [Test]
   public void IModulusOperators_OpMultiply()
   {

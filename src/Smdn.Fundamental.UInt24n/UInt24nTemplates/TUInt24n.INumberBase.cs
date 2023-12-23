@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2023 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
 using System.Numerics;
 #endif
 
@@ -24,7 +24,7 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial struct TUInt24n {
 #pragma warning restore IDE0040
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
   /*
    * INumberBase<TOther>.Zero/One
    */
@@ -83,7 +83,7 @@ partial struct TUInt24n {
    */
   public static TUInt24n Abs(TUInt24n value) => value;
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_INUMBERBASE
   /*
    * INumberBase<TOther>.MaxMagnitude/MaxMagnitudeNumber
    */

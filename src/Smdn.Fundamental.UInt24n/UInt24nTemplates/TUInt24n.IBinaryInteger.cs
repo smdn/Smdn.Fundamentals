@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYINTEGER
 using System.Numerics;
 #endif
 
@@ -37,7 +37,7 @@ namespace Smdn;
 
 #pragma warning disable IDE0040
 partial struct TUInt24n
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYINTEGER
   : IBinaryInteger<TUInt24n>
 #endif
 {
@@ -80,7 +80,7 @@ partial struct TUInt24n
     return new((val >> rotateAmount) | (val << (BitsOfSelf - rotateAmount)), check: false);
   }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYINTEGER
   static TUInt24n IBinaryInteger<TUInt24n>.LeadingZeroCount(TUInt24n value) => new((TUIntWide)LeadingZeroCount(value), check: false);
 #endif
   public static int LeadingZeroCount(TUInt24n value)
@@ -88,19 +88,19 @@ partial struct TUInt24n
 
   private const int bitCountOfTUIntWide = sizeof(TUIntWide) * 8;
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYINTEGER
   static TUInt24n IBinaryInteger<TUInt24n>.PopCount(TUInt24n value) => new((TUIntWide)PopCount(value), check: false);
 #endif
   public static int PopCount(TUInt24n value)
     => ShimTypeSystemNumericsBitOperationsPopCount.PopCount(value.Widen());
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYINTEGER
   static TUInt24n IBinaryInteger<TUInt24n>.TrailingZeroCount(TUInt24n value) => new((TUIntWide)TrailingZeroCount(value), check: false);
 #endif
   public static int TrailingZeroCount(TUInt24n value)
     => ShimTypeSystemNumericsBitOperationsTrailingZeroCount.TrailingZeroCount(value.Widen() | UnusedBitMask);
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IBINARYINTEGER
   int IBinaryInteger<TUInt24n>.GetByteCount() => SizeOfSelf;
 
   int IBinaryInteger<TUInt24n>.GetShortestBitLength() => BitsOfSelf - LeadingZeroCount(this);

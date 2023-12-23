@@ -1,17 +1,12 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_NUMERICS_IUNSIGNEDNUMBER
 using System;
-#if FEATURE_GENERIC_MATH
 using System.Numerics;
-#endif
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
-partial struct TUInt24n
-#if FEATURE_GENERIC_MATH
-  : IUnsignedNumber<TUInt24n>
-#endif
+partial struct TUInt24n : IUnsignedNumber<TUInt24n>
 {
-#pragma warning restore IDE0040
 }
+#endif
