@@ -51,7 +51,7 @@ partial class MimeTypeTests {
     Assert.That(result, Is.EqualTo(expected));
   }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void IParsable_Parse(string s, MimeType expected)
   {
@@ -60,7 +60,9 @@ partial class MimeTypeTests {
     static TSelf Parse<TSelf>(string s) where TSelf : IParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
+#endif
 
+#if SYSTEM_ISPANPARSABLE
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void ISpanParsable_Parse(string s, MimeType expected)
   {
@@ -69,7 +71,9 @@ partial class MimeTypeTests {
     static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
+#endif
 
+#if SYSTEM_IPARSABLE
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void IParsable_TryParse(string s, MimeType expected)
   {
@@ -79,7 +83,9 @@ partial class MimeTypeTests {
     static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParsable<TSelf>
       => TSelf.TryParse(s, provider: null, out result);
   }
+#endif
 
+#if SYSTEM_ISPANPARSABLE
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void ISpanParsable_TryParse(string s, MimeType expected)
   {
@@ -117,7 +123,7 @@ partial class MimeTypeTests {
     Assert.That(MimeType.TryParse(s.AsSpan(), provider: null, out _), Is.False);
   }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void IParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
   {
@@ -126,7 +132,9 @@ partial class MimeTypeTests {
     static TSelf Parse<TSelf>(string s) where TSelf : IParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
+#endif
 
+#if SYSTEM_ISPANPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void ISpanParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
   {
@@ -138,7 +146,9 @@ partial class MimeTypeTests {
     static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParsable<TSelf>
       => TSelf.Parse(s, provider: null);
   }
+#endif
 
+#if SYSTEM_IPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void IParsable_TryParse_InvalidFormat(string s, Type discard)
   {
@@ -150,7 +160,9 @@ partial class MimeTypeTests {
     static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParsable<TSelf>
       => TSelf.TryParse(s, provider: null, out result);
   }
+#endif
 
+#if SYSTEM_ISPANPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void ISpanParsable_TryParse_InvalidFormat(string s, Type discard)
   {
