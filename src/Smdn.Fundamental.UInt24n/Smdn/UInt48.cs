@@ -61,7 +61,7 @@ public partial struct UInt48 {
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  internal UInt64 Widen()
+  internal readonly UInt64 Widen()
     => (UInt64)((UInt64)Byte0 << 40) |
        (UInt64)((UInt64)Byte1 << 32) |
        (UInt64)((UInt64)Byte2 << 24) |
@@ -69,23 +69,23 @@ public partial struct UInt48 {
        (UInt64)((UInt64)Byte4 << 8) |
        (UInt64)Byte5;
 
-  public override int GetHashCode()
+  public override readonly int GetHashCode()
     => ((Byte3 << 24) | (Byte2 << 16) | (Byte1 << 8) | Byte0) ^ ((Byte5 << 8) | Byte4);
 
   /*
    * IConvertible
    */
 #pragma warning disable IDE0060
-  byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt64());
-  sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt64());
-  ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt64());
-  short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
+  readonly byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt64());
+  readonly sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt64());
+  readonly ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt64());
+  readonly short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
 #pragma warning restore IDE0060
 
   /*
    * IBinaryInteger<TSelf>
    */
-  public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+  public readonly bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
   {
     bytesWritten = default;
 
@@ -102,7 +102,7 @@ public partial struct UInt48 {
     return true;
   }
 
-  public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+  public readonly bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
   {
     bytesWritten = default;
 

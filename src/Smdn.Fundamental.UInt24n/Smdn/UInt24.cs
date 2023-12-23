@@ -49,27 +49,27 @@ public partial struct UInt24 {
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  internal UInt32 Widen()
+  internal readonly UInt32 Widen()
     => (UInt32)(Byte0 << 16) |
        (UInt32)(Byte1 << 8) |
        (UInt32)Byte2;
 
-  public override int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
+  public override readonly int GetHashCode() => (Byte2 << 16) | (Byte1 << 8) | Byte0;
 
   /*
    * IConvertible
    */
 #pragma warning disable IDE0060
-  byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt32());
-  sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt32());
-  ulong IConvertible.ToUInt64(IFormatProvider provider) => (ulong)ToUInt32();
-  long IConvertible.ToInt64(IFormatProvider provider) => (long)ToInt32();
+  readonly byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt32());
+  readonly sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt32());
+  readonly ulong IConvertible.ToUInt64(IFormatProvider provider) => (ulong)ToUInt32();
+  readonly long IConvertible.ToInt64(IFormatProvider provider) => (long)ToInt32();
 #pragma warning restore IDE0060
 
   /*
    * IBinaryInteger<TSelf>
    */
-  public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+  public readonly bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
   {
     bytesWritten = default;
 
@@ -83,7 +83,7 @@ public partial struct UInt24 {
     return true;
   }
 
-  public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+  public readonly bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
   {
     bytesWritten = default;
 

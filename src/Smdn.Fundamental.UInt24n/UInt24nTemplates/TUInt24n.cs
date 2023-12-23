@@ -20,9 +20,9 @@ partial struct TUInt24n {
   public static readonly TUInt24n One      = new(1, check: false);
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  public TIntWide ToTIntWide() => unchecked((TIntWide)Widen());
+  public readonly TIntWide ToTIntWide() => unchecked((TIntWide)Widen());
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   [CLSCompliant(false)]
-  public TUIntWide ToTUIntWide() => Widen();
+  public readonly TUIntWide ToTUIntWide() => Widen();
 }
