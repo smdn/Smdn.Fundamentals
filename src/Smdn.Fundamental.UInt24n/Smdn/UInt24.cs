@@ -158,6 +158,7 @@ public partial struct UInt24 {
     return true;
   }
 
+#pragma warning disable CA1502 // TODO: refactor
   public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
@@ -252,5 +253,7 @@ public partial struct UInt24 {
 
     throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();
   }
+#pragma warning restore CA1502
+
 #endif
 }
