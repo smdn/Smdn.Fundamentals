@@ -19,7 +19,7 @@ partial struct TUInt24n {
 
   // INumber<TSelf>.Parse(String, NumberStyles, IFormatProvider)
   public static TUInt24n Parse(string s, NumberStyles style, IFormatProvider? provider = null)
-    => (TUInt24n)TUIntWide.Parse(s, style, provider);
+    => new(TUIntWide.Parse(s, style, provider), check: true);
 
 #if FEATURE_GENERIC_MATH
   static TUInt24n ISpanParsable<TUInt24n>.Parse(ReadOnlySpan<char> s, IFormatProvider? provider)
@@ -29,7 +29,7 @@ partial struct TUInt24n {
 #if SYSTEM_INT32_PARSE_READONLYSPAN_OF_CHAR
   // INumber<TSelf>.Parse(ReadOnlySpan<Char>, NumberStyles, IFormatProvider)
   public static TUInt24n Parse(ReadOnlySpan<char> s, NumberStyles style = NumberStyles.Integer, IFormatProvider? provider = null)
-    => (TUInt24n)TUIntWide.Parse(s, style, provider);
+    => new(TUIntWide.Parse(s, style, provider), check: true);
 #endif
 
   public static bool TryParse(

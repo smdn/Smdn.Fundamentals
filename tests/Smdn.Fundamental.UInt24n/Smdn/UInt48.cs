@@ -132,24 +132,30 @@ namespace Smdn {
         new {Value = (int)0x00000000, ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
         new {Value = (int)0x7fffffff, ExpectedResult = (long)0x000000007fffffff, ExpectedHex = "7fffffff"},
         new {Value = Int32.MaxValue,  ExpectedResult = (long)0x000000007fffffff, ExpectedHex = "7fffffff"},
+        new {Value = (int)-1,         ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
+        new {Value = Int32.MinValue,  ExpectedResult = (long)0x0000ffff80000000, ExpectedHex = "ffff80000000"},
       }) {
 
         try {
-          UInt48 val = (UInt48)test.Value;
+          UInt48 val = unchecked((UInt48)test.Value);
 
-          Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {test.ExpectedHex}");
+          Assert.That(val.ToInt64(), Is.EqualTo(test.ExpectedResult), $"value = {test.ExpectedHex}");
           Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
         }
         catch (OverflowException) {
           Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
+    }
 
+    [Test]
+    public void TestOpExplicitCheckedFromInt32()
+    {
       foreach (var test in new[] {
         new {Value = (int)-1},
         new {Value = Int32.MinValue},
       }) {
-        Assert.Throws<OverflowException>(() => { UInt48 val = (UInt48)test.Value; });
+        Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)test.Value); });
       }
     }
 
@@ -159,26 +165,34 @@ namespace Smdn {
       foreach (var test in new[] {
         new {Value = (long)0x0000000000000000, ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
         new {Value = (long)0x0000ffffffffffff, ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
+        new {Value = (long)-1,                 ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
+        new {Value = (long)0x0001000000000000, ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
+        new {Value = Int64.MaxValue,           ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
+        new {Value = Int64.MinValue,           ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
       }) {
 
         try {
-          UInt48 val = (UInt48)test.Value;
+          UInt48 val = unchecked((UInt48)test.Value);
 
-          Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {test.ExpectedHex}");
+          Assert.That(val.ToInt64(), Is.EqualTo(test.ExpectedResult), $"value = {test.ExpectedHex}");
           Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
         }
         catch (OverflowException) {
           Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
+    }
 
+    [Test]
+    public void TestOpExplicitCheckedFromInt64()
+    {
       foreach (var test in new[] {
         new {Value = (long)-1},
         new {Value = (long)0x0001000000000000},
         new {Value = Int64.MaxValue},
         new {Value = Int64.MinValue},
       }) {
-        Assert.Throws<OverflowException>(() => { UInt48 val = (UInt48)test.Value; });
+        Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)test.Value); });
       }
     }
 
@@ -189,25 +203,31 @@ namespace Smdn {
         new {Value = (ulong)0x0000000000000000,   ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
         new {Value = (ulong)0x0000ffffffffffff,   ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
         new {Value = UInt64.MinValue,             ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
+        new {Value = (ulong)0x0001000000000000,   ExpectedResult = (long)0x0000000000000000, ExpectedHex = "0"},
+        new {Value = (ulong)0xffffffffffffffff,   ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
+        new {Value = UInt64.MaxValue,             ExpectedResult = (long)0x0000ffffffffffff, ExpectedHex = "ffffffffffff"},
       }) {
-
         try {
-          UInt48 val = (UInt48)test.Value;
+          UInt48 val = unchecked((UInt48)test.Value);
 
-          Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {test.ExpectedHex}");
+          Assert.That(val.ToInt64(), Is.EqualTo(test.ExpectedResult), $"value = {test.ExpectedHex}");
           Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex));
         }
         catch (OverflowException) {
           Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
+    }
 
+    [Test]
+    public void TestOpExplicitCheckedFromUInt64()
+    {
       foreach (var test in new[] {
         new {Value = (ulong)0x0001000000000000},
         new {Value = (ulong)0xffffffffffffffff},
         new {Value = UInt64.MaxValue},
       }) {
-        Assert.Throws<OverflowException>(() => { UInt48 val = (UInt48)test.Value; });
+        Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)test.Value); });
       }
     }
 
@@ -218,17 +238,24 @@ namespace Smdn {
         new {Value = UInt48.MinValue,         ExpectedResult = (int)0x00000000, ExpectedHex = "0"},
         new {Value = (UInt48)0x000000000000,  ExpectedResult = (int)0x00000000, ExpectedHex = "0"},
         new {Value = (UInt48)0x00007fffffff,  ExpectedResult = (int)0x7fffffff, ExpectedHex = "7fffffff"},
+        new {Value = (UInt48)0x000080000000,  ExpectedResult = unchecked((int)(uint)0x80000000), ExpectedHex = "80000000"},
+        new {Value = (UInt48)0xffffffffffff,  ExpectedResult = unchecked((int)(uint)0xffffffff), ExpectedHex = "ffffffffffff"},
+        new {Value = UInt48.MaxValue,         ExpectedResult = unchecked((int)(uint)0xffffffff), ExpectedHex = "ffffffffffff"},
       }) {
         Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
         try {
-          Assert.That(test.ExpectedResult == (int)test.Value, Is.True);
+          Assert.That(unchecked((int)test.Value), Is.EqualTo(test.ExpectedResult));
         }
         catch (OverflowException) {
           Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
+    }
 
+    [Test]
+    public void TestOpExplicitCheckedToInt32()
+    {
       foreach (var test in new[] {
         new {Value = (UInt48)0x000080000000,  ExpectedHex = "80000000"},
         new {Value = (UInt48)0xffffffffffff,  ExpectedHex = "ffffffffffff"},
@@ -236,7 +263,7 @@ namespace Smdn {
       }) {
         Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
-        Assert.Throws<OverflowException>(() => { var i = (int)test.Value; });
+        Assert.Throws<OverflowException>(() => { var i = checked((int)test.Value); });
       }
     }
 
@@ -249,17 +276,24 @@ namespace Smdn {
         new {Value = (UInt48)0x00007fffffff,  ExpectedResult = (uint)0x7fffffff, ExpectedHex = "7fffffff"},
         new {Value = (UInt48)0x000080000000,  ExpectedResult = (uint)0x80000000, ExpectedHex = "80000000"},
         new {Value = (UInt48)0x0000ffffffff,  ExpectedResult = (uint)0xffffffff, ExpectedHex = "ffffffff"},
+        new {Value = (UInt48)0x000100000000,  ExpectedResult = (uint)0x00000000, ExpectedHex = "100000000"},
+        new {Value = (UInt48)0xffffffffffff,  ExpectedResult = (uint)0xffffffff, ExpectedHex = "ffffffffffff"},
+        new {Value = UInt48.MaxValue,         ExpectedResult = (uint)0xffffffff, ExpectedHex = "ffffffffffff"},
       }) {
         Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
         try {
-          Assert.That(test.ExpectedResult == (uint)test.Value, Is.True);
+          Assert.That(unchecked((uint)test.Value), Is.EqualTo(test.ExpectedResult));
         }
         catch (OverflowException) {
           Assert.Fail($"OverflowException thrown: value = {test.ExpectedHex}");
         }
       }
+    }
 
+    [Test]
+    public void TestOpExplicitCheckedToUInt32()
+    {
       foreach (var test in new[] {
         new {Value = (UInt48)0x000100000000,  ExpectedHex = "100000000"},
         new {Value = (UInt48)0xffffffffffff,  ExpectedHex = "ffffffffffff"},
@@ -267,7 +301,7 @@ namespace Smdn {
       }) {
         Assert.That(test.Value.ToString("x", null), Is.EqualTo(test.ExpectedHex));
 
-        Assert.Throws<OverflowException>(() => { var ui = (uint)test.Value; });
+        Assert.Throws<OverflowException>(() => { var ui = checked((uint)test.Value); });
       }
     }
 
@@ -285,7 +319,7 @@ namespace Smdn {
       }) {
         val = (UInt48)test.Value;
 
-        Assert.That(test.ExpectedResult == val.ToInt64(), Is.True, $"value = {val}");
+        Assert.That(val.ToInt64(), Is.EqualTo(test.ExpectedResult), $"value = {val}");
         Assert.That(val.ToString("x", null), Is.EqualTo(test.ExpectedHex), $"value = {val}");
       }
     }
