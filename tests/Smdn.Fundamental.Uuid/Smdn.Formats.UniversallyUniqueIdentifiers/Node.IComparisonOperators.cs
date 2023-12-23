@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_ICOMPARISONOPERATORS
 using System.Numerics;
 #endif
 using NUnit.Framework;
@@ -28,7 +28,7 @@ partial class NodeTests {
     Assert.That(Node.Parse(x) < Node.Parse(y), Is.EqualTo(lessThan), "op <");
     Assert.That(Node.Parse(x) <= Node.Parse(y), Is.EqualTo(lessThanOrEqual), "op <=");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_ICOMPARISONOPERATORS
     Assert.That(OpLessThan(Node.Parse(x), Node.Parse(y)), Is.EqualTo(lessThan), "IComparisonOperators <");
     Assert.That(OpLessThanOrEqual(Node.Parse(x), Node.Parse(y)), Is.EqualTo(lessThanOrEqual), "IComparisonOperators <=");
 
@@ -56,7 +56,7 @@ partial class NodeTests {
     Assert.That(Node.Parse(x) > Node.Parse(y), Is.EqualTo(greaterThan), "op >");
     Assert.That(Node.Parse(x) >= Node.Parse(y), Is.EqualTo(greaterThanOrEqual), "op >=");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_ICOMPARISONOPERATORS
     Assert.That(OpGreaterThan(Node.Parse(x), Node.Parse(y)), Is.EqualTo(greaterThan), "IComparisonOperators >");
     Assert.That(OpGreaterThanOrEqual(Node.Parse(x), Node.Parse(y)), Is.EqualTo(greaterThanOrEqual), "IComparisonOperators >=");
 

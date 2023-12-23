@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IEQUALITYOPERATORS
 using System.Numerics;
 #endif
 using NUnit.Framework;
@@ -58,7 +58,7 @@ partial class UuidTests {
     Assert.That(new Uuid(x) == new Uuid(y), Is.EqualTo(isEqual), "op ==");
     Assert.That(new Uuid(x) != new Uuid(y), Is.EqualTo(!isEqual), "op !=");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IEQUALITYOPERATORS
     Assert.That(OpEquality(new Uuid(x), new Uuid(y)), Is.EqualTo(isEqual), "IEqualityOperators ==");
     Assert.That(OpInequality(new Uuid(x), new Uuid(y)), Is.EqualTo(!isEqual), "IEqualityOperators !=");
 

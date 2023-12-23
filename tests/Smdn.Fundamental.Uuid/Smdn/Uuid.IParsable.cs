@@ -27,11 +27,15 @@ partial class UuidTests {
     TestParsed(Uuid.Parse(s), "Parse<string>");
     TestParsed(Uuid.Parse(s.AsSpan()), "Parse<ReadOnlySpan<char>>");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     TestParsed(ParseString<Uuid>(s), "IParsable.Parse<string>");
-    TestParsed(ParseReadOnlySpanOfChar<Uuid>(s.AsSpan()), "ISpanParsable.Parse<ReadOnlySpan<char>>");
 
     static T ParseString<T>(string s) where T : IParsable<T> => T.Parse(s, provider: null);
+#endif
+
+#if SYSTEM_ISPANPARSABLE
+    TestParsed(ParseReadOnlySpanOfChar<Uuid>(s.AsSpan()), "ISpanParsable.Parse<ReadOnlySpan<char>>");
+
     static T ParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.Parse(s, provider: null);
 #endif
   }
@@ -59,14 +63,19 @@ partial class UuidTests {
     TestParsed(uuid0, "TryParse<string>");
     TestParsed(uuid1, "TryParse<ReadOnlySpan<char>>");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     Assert.That(TryParseString<Uuid>(s, out var uuid2), Is.True, "IParsable.TryParse<string>");
-    Assert.That(TryParseReadOnlySpanOfChar<Uuid>(s.AsSpan(), out var uuid3), Is.True, "ISpanParsable.TryParse<ReadOnlySpan<char>>");
 
     TestParsed(uuid2, "IParsable.TryParse<string>");
-    TestParsed(uuid3, "ISpanParsable.TryParse<ReadOnlySpan<char>>");
 
     static bool TryParseString<T>(string s, out T result) where T : IParsable<T> => T.TryParse(s, provider: null, out result);
+#endif
+
+#if SYSTEM_ISPANPARSABLE
+    Assert.That(TryParseReadOnlySpanOfChar<Uuid>(s.AsSpan(), out var uuid3), Is.True, "ISpanParsable.TryParse<ReadOnlySpan<char>>");
+
+    TestParsed(uuid3, "ISpanParsable.TryParse<ReadOnlySpan<char>>");
+
     static bool TryParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s, out T result) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
   }
@@ -142,14 +151,17 @@ partial class UuidTests {
     var exReadOnlySpanOfChar = Assert.Throws<FormatException>(() => Uuid.Parse(uuid.AsSpan()), "Parse<ReadOnlySpan<char>>");
     Assert.That(exReadOnlySpanOfChar!.Message, Does.Contain(expectedExceptionMessage), "Parse<<ReadOnlySpan<char>> exception message");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     var exStringGM = Assert.Throws<FormatException>(() => ParseString<Uuid>(uuid), "IParsable.Parse<string>");
     Assert.That(exStringGM.Message, Does.Contain(expectedExceptionMessage), "IParsable.Parse<string> exception message");
 
+    static T ParseString<T>(string s) where T : IParsable<T> => T.Parse(s, provider: null);
+#endif
+
+#if SYSTEM_ISPANPARSABLE
     var exReadOnlySpanOfCharGM = Assert.Throws<FormatException>(() => ParseReadOnlySpanOfChar<Uuid>(uuid.AsSpan()), "IParsable.Parse<ReadOnlySpan<char>>");
     Assert.That(exReadOnlySpanOfCharGM.Message, Does.Contain(expectedExceptionMessage), "IParsable.Parse<<ReadOnlySpan<char>> exception message");
 
-    static T ParseString<T>(string s) where T : IParsable<T> => T.Parse(s, provider: null);
     static T ParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.Parse(s, provider: null);
 #endif
   }
@@ -160,11 +172,15 @@ partial class UuidTests {
     Assert.That(Uuid.TryParse(uuid, provider: null, out _), Is.False, "TryParse<string>");
     Assert.That(Uuid.TryParse(uuid.AsSpan(), provider: null, out _), Is.False, "TryParse<ReadOnlySpan<char>>");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     Assert.That(TryParseString<Uuid>(uuid), Is.False, "IParsable.TryParse<string>");
-    Assert.That(TryParseReadOnlySpanOfChar<Uuid>(uuid.AsSpan()), Is.False, "IParsable.TryParse<ReadOnlySpan<char>>");
 
     static bool TryParseString<T>(string s) where T : IParsable<T> => T.TryParse(s, provider: null, out var _);
+#endif
+
+#if SYSTEM_ISPANPARSABLE
+    Assert.That(TryParseReadOnlySpanOfChar<Uuid>(uuid.AsSpan()), Is.False, "IParsable.TryParse<ReadOnlySpan<char>>");
+
     static bool TryParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out var _);
 #endif
   }

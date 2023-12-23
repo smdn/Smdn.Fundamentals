@@ -10,7 +10,7 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial struct Uuid
 #pragma warning restore IDE0040
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE && SYSTEM_ISPANPARSABLE
   :
   IParsable<Uuid>,
   ISpanParsable<Uuid>

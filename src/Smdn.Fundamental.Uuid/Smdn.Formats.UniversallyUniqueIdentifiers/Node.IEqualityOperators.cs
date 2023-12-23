@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IEQUALITYOPERATORS
 using System.Numerics;
 #endif
 
@@ -10,12 +10,10 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 #pragma warning disable IDE0040
 partial struct Node :
 #pragma warning restore IDE0040
-#if FEATURE_GENERIC_MATH
-  IEqualityOperators<Node, Node, bool>
-#else
-  IEquatable<Node>
+#if SYSTEM_NUMERICS_IEQUALITYOPERATORS
+  IEqualityOperators<Node, Node, bool>,
 #endif
-{
+  IEquatable<Node> {
   public static bool operator ==(Node x, Node y) => x.Equals(y);
   public static bool operator !=(Node x, Node y) => !x.Equals(y);
 

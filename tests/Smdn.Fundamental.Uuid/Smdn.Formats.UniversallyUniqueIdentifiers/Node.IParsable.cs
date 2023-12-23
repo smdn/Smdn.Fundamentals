@@ -11,7 +11,7 @@ partial class NodeTests {
   {
     Assert.Throws<ArgumentNullException>(() => Node.Parse((string)null!, provider: null));
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     Assert.Throws<ArgumentNullException>(() => Parse<Node>(null, provider: null), "IParsable");
 
     static T Parse<T>(string s, IFormatProvider provider) where T : IParsable<T> => T.Parse(s, provider);
@@ -46,7 +46,7 @@ partial class NodeTests {
       Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     if (expectValid)
       Assert.DoesNotThrow(() => n = Parse<Node>(s, provider: null), "IParsable");
     else
@@ -89,7 +89,7 @@ partial class NodeTests {
       Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     if (expectValid)
       Assert.DoesNotThrow(() => n = Parse<Node>(s.AsSpan(), provider: null), "IParsable");
     else
@@ -128,7 +128,7 @@ partial class NodeTests {
       Assert.That(node.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     Assert.That(TryParse<Node>(s, out var node2), Is.EqualTo(expectValid), "IParsable");
 
     if (expectValid) {
@@ -164,7 +164,7 @@ partial class NodeTests {
       Assert.That(node.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
     }
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE
     Assert.That(TryParse<Node>(s.AsSpan(), out var node2), Is.EqualTo(expectValid), "IParsable");
 
     if (expectValid) {

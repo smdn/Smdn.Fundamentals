@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IEQUALITYOPERATORS
 using System.Numerics;
 #endif
 using NUnit.Framework;
@@ -28,7 +28,7 @@ partial class NodeTests {
     Assert.That(Node.Parse(x) == Node.Parse(y), Is.EqualTo(isEqual), "op ==");
     Assert.That(Node.Parse(x) != Node.Parse(y), Is.EqualTo(!isEqual), "op !=");
 
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_NUMERICS_IEQUALITYOPERATORS
     Assert.That(OpEquality(Node.Parse(x), Node.Parse(y)), Is.EqualTo(isEqual), "IEqualityOperators ==");
     Assert.That(OpInequality(Node.Parse(x), Node.Parse(y)), Is.EqualTo(!isEqual), "IEqualityOperators !=");
 

@@ -10,7 +10,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 #pragma warning disable IDE0040
 partial struct Node
 #pragma warning restore IDE0040
-#if FEATURE_GENERIC_MATH
+#if SYSTEM_IPARSABLE && SYSTEM_ISPANPARSABLE
   :
   IParsable<Node>,
   ISpanParsable<Node>
