@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
       <!-- .NET Standard -->
       <_APIListTargetFramework Include="netstandard2.1;netstandard2.0;netstandard1.6;netstandard1.5;netstandard1.4;netstandard1.3;netstandard1.2;netstandard1.1;netstandard1.0" />
       <!-- .NET Framework -->
-      <_APIListTargetFramework Include="net48;net472;net471;net47;net462;net461;net46;net452;net451;net45" />
+      <_APIListTargetFramework Include="net481;net48;net472;net471;net47;net462;net461;net46;net452;net451;net45" />
 
       <_APIListTarget Include="@(_APIListTargetFramework)">
         <OutputFilePath>$(APIListOutputBaseDirectory)$(AssemblyName)\%(_APIListTargetFramework.Identity).symbols.apilist.cs</OutputFilePath>
