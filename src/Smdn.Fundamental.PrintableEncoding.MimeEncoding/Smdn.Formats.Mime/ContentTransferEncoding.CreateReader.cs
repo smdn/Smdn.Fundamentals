@@ -15,10 +15,10 @@ namespace Smdn.Formats.Mime;
 static partial class ContentTransferEncoding {
 #pragma warning restore IDE0040
   public static Stream CreateDecodingStream(Stream stream, string encoding)
-    => CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), false);
+    => CreateDecodingStream(stream, ParseOrThrowNotSupportedException(encoding), false);
 
   public static Stream CreateDecodingStream(Stream stream, string encoding, bool leaveStreamOpen)
-    => CreateDecodingStream(stream, GetEncodingMethodThrowException(encoding), leaveStreamOpen);
+    => CreateDecodingStream(stream, ParseOrThrowNotSupportedException(encoding), leaveStreamOpen);
 
   public static Stream CreateDecodingStream(Stream stream, ContentTransferEncodingMethod encoding)
     => CreateDecodingStream(stream, encoding, false);
@@ -47,7 +47,7 @@ static partial class ContentTransferEncoding {
   public static StreamReader CreateTextReader(Stream stream, string encoding, string charset, bool leaveStreamOpen)
     => CreateTextReader(
       stream,
-      GetEncodingMethodThrowException(encoding),
+      ParseOrThrowNotSupportedException(encoding),
       charset is null
         ?
 #if SYSTEM_TEXT_ENCODING_LATIN1
@@ -84,7 +84,7 @@ static partial class ContentTransferEncoding {
   public static BinaryReader CreateBinaryReader(Stream stream, string encoding, bool leaveStreamOpen)
     => CreateBinaryReader(
       stream,
-      GetEncodingMethodThrowException(encoding),
+      ParseOrThrowNotSupportedException(encoding),
       null,
       leaveStreamOpen
     );

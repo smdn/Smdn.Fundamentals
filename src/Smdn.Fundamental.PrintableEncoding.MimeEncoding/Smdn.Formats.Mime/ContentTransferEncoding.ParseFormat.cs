@@ -34,6 +34,11 @@ static partial class ContentTransferEncoding {
     return ContentTransferEncodingMethods.TryGetValue(str, out encoding);
   }
 
+  private static ContentTransferEncodingMethod ParseOrThrowNotSupportedException(string str)
+    => TryParse(str, out var encoding)
+      ? encoding
+      : throw new NotSupportedException($"unsupported content transfer encoding: '{str}'");
+
   // TODO: public static bool TryParse(ReadOnlySpan<char> str, out ContentTransferEncodingMethod encoding)
 
   public static bool TryFormat(
