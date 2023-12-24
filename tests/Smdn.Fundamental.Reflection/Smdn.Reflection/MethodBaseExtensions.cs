@@ -266,28 +266,38 @@ public class MethodBaseExtensionsTests {
       // unary operators
       [ExpectedMethodSpecialName(MethodSpecialName.UnaryPlus)] public static C operator +(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.UnaryNegation)] public static C operator -(C c) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedUnaryNegation)] public static C operator checked -(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.LogicalNot)] public static C operator !(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.OnesComplement)] public static C operator ~(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.True)] public static bool operator true(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.False)] public static bool operator false(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Increment)] public static C operator ++(C c) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedIncrement)] public static C operator checked ++(C c) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Decrement)] public static C operator --(C c) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedDecrement)] public static C operator checked --(C c) => throw new NotImplementedException();
 
       // binary operators
       [ExpectedMethodSpecialName(MethodSpecialName.Addition)] public static C operator +(C x, C y) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedAddition)] public static C operator checked +(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Subtraction)] public static C operator -(C x, C y) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedSubtraction)] public static C operator checked -(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Multiply)] public static C operator *(C x, C y) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedMultiply)] public static C operator checked *(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Division)] public static C operator /(C x, C y) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedDivision)] public static C operator checked /(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Modulus)] public static C operator %(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.BitwiseAnd)] public static C operator &(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.BitwiseOr)] public static C operator |(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.ExclusiveOr)] public static C operator ^(C x, C y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.RightShift)] public static C operator >>(C x, int y) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.UnsignedRightShift)] public static C operator >>>(C x, int y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.LeftShift)] public static C operator <<(C x, int y) => throw new NotImplementedException();
 
       // type cast
       [ExpectedMethodSpecialName(MethodSpecialName.Explicit)] public static explicit operator C(V v) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedExplicit)] public static explicit operator checked C(V v) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Explicit)] public static explicit operator V(C c) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedExplicit)] public static explicit operator checked V(C c) => throw new NotImplementedException();
 
       [ExpectedMethodSpecialName(MethodSpecialName.Implicit)] public static implicit operator C(W w) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.Implicit)] public static implicit operator W(C c) => throw new NotImplementedException();

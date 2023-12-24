@@ -43,4 +43,17 @@ public enum MethodSpecialName {
   // type cast
   Explicit,
   Implicit,
+
+  // unsigned right shift (C#11)
+  UnsignedRightShift,
+
+  // checked (C#11)
+  CheckedUnaryNegation,
+  CheckedIncrement,
+  CheckedDecrement,
+  CheckedAddition,
+  CheckedSubtraction,
+  CheckedMultiply,
+  CheckedDivision,
+  CheckedExplicit,
 }

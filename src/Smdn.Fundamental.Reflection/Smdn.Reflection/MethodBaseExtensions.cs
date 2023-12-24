@@ -116,27 +116,36 @@ public static class MethodBaseExtensions {
     // unary
     { "op_UnaryPlus", MethodSpecialName.UnaryPlus },
     { "op_UnaryNegation", MethodSpecialName.UnaryNegation },
+    { "op_CheckedUnaryNegation", MethodSpecialName.CheckedUnaryNegation },
     { "op_LogicalNot", MethodSpecialName.LogicalNot },
     { "op_OnesComplement", MethodSpecialName.OnesComplement },
     { "op_True", MethodSpecialName.True },
     { "op_False", MethodSpecialName.False },
     { "op_Increment", MethodSpecialName.Increment },
+    { "op_CheckedIncrement", MethodSpecialName.CheckedIncrement },
     { "op_Decrement", MethodSpecialName.Decrement },
+    { "op_CheckedDecrement", MethodSpecialName.CheckedDecrement },
 
     // binary
     { "op_Addition", MethodSpecialName.Addition },
+    { "op_CheckedAddition", MethodSpecialName.CheckedAddition },
     { "op_Subtraction", MethodSpecialName.Subtraction },
+    { "op_CheckedSubtraction", MethodSpecialName.CheckedSubtraction },
     { "op_Multiply", MethodSpecialName.Multiply },
+    { "op_CheckedMultiply", MethodSpecialName.CheckedMultiply },
     { "op_Division", MethodSpecialName.Division },
+    { "op_CheckedDivision", MethodSpecialName.CheckedDivision },
     { "op_Modulus", MethodSpecialName.Modulus },
     { "op_BitwiseAnd", MethodSpecialName.BitwiseAnd },
     { "op_BitwiseOr", MethodSpecialName.BitwiseOr },
     { "op_ExclusiveOr", MethodSpecialName.ExclusiveOr },
     { "op_RightShift", MethodSpecialName.RightShift },
+    { "op_UnsignedRightShift", MethodSpecialName.UnsignedRightShift },
     { "op_LeftShift", MethodSpecialName.LeftShift },
 
     // type cast
     { "op_Explicit", MethodSpecialName.Explicit },
+    { "op_CheckedExplicit", MethodSpecialName.CheckedExplicit },
     { "op_Implicit", MethodSpecialName.Implicit },
   };
 
