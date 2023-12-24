@@ -33,6 +33,7 @@ public static class UriQuery {
       : ToDictionary(ret, comparer);
   }
 
+#pragma warning disable CA1859
   private static IDictionary<string, string> ToDictionary(
     IReadOnlyDictionary<string, string> dic,
     IEqualityComparer<string> comparer
@@ -50,4 +51,5 @@ public static class UriQuery {
     return ret;
 #endif
   }
+#pragma warning restore CA1859
 }

@@ -17,8 +17,10 @@ public static partial class ContentTransferEncoding {
   private const string ContentTransferEncodingMethodStringUUEncode = "x-uuencode";
   private const string ContentTransferEncodingMethodStringGZip64 = "x-gzip64";
 
+#pragma warning disable CA1859
   private static readonly IReadOnlyDictionary<string, ContentTransferEncodingMethod> ContentTransferEncodingMethods
     = new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
+#pragma warning restore CA1859
       // standards
       { ContentTransferEncodingMethodStringSevenBit,        ContentTransferEncodingMethod.SevenBit },
       { ContentTransferEncodingMethodStringEightBit,        ContentTransferEncodingMethod.EightBit },

@@ -15,6 +15,7 @@ namespace Smdn.Test.NUnit.Assertion;
 partial class Assert {
 #pragma warning restore IDE0040
 #if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
+#pragma warning disable CA1859
   private static IFormatter CreateDefaultSerializationFormatter()
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
     // TODO: use JsonSerializer instead
@@ -22,8 +23,10 @@ partial class Assert {
     => new BinaryFormatter();
 #else
     => null;
+#pragma warning restore CA1859
 #endif
 
+#pragma warning disable CA1859
   private static IFormatter CreateDefaultDeserializationFormatter()
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY && SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
     => new BinaryFormatter() {
@@ -32,6 +35,7 @@ partial class Assert {
 #else
     => null;
 #endif
+#pragma warning restore CA1859
 #endif // SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
 
   public static void IsSerializable<TSerializable>(

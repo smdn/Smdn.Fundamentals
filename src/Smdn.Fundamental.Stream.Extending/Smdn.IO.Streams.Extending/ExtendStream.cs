@@ -93,8 +93,8 @@ public class ExtendStream : ExtendStreamBase {
       appendStream.Position = position;
   }
 
-  private static Exception CreateAccessToNullPrependDataException()
-    => new InvalidOperationException("prepend data is not set");
+  private static InvalidOperationException CreateAccessToNullPrependDataException()
+    => new("prepend data is not set");
 
   protected override int ReadPrependedData(byte[] buffer, int offset, int count)
     => prependStream is null
@@ -113,8 +113,8 @@ public class ExtendStream : ExtendStreamBase {
       : prependStream.ReadAsync(buffer, cancellationToken);
 #endif
 
-  private static Exception CreateAccessToNullAppendDataException()
-    => new InvalidOperationException("append data is not set");
+  private static InvalidOperationException CreateAccessToNullAppendDataException()
+    => new("append data is not set");
 
   protected override int ReadAppendedData(byte[] buffer, int offset, int count)
     => appendStream is null

@@ -112,8 +112,8 @@ internal static class DateAndTimeParser {
       : throw CreateInvalidInputException();
   }
 
-  private static Exception CreateInvalidInputException()
-    => new FormatException("The input string was not recognized as a valid DateTime/DateTimeOffset");
+  private static FormatException CreateInvalidInputException()
+    => new("The input string was not recognized as a valid DateTime/DateTimeOffset");
 
 #if SYSTEM_READONLYSPAN
   internal static bool TryParseDateTime(

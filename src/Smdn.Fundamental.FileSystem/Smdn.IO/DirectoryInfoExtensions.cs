@@ -26,6 +26,7 @@ public static class DirectoryInfoExtensions {
   public static IEnumerable<FileSystemInfo> GetFileSystemInfos(this DirectoryInfo directory, SearchOption searchOption, Predicate<FileSystemInfo> searchPattern)
     => FindFileSystemEntries(directory ?? throw new ArgumentNullException(nameof(directory)), searchOption, searchPattern);
 
+#pragma warning disable CA1859
   private static IEnumerable<TFileSystemInfo> FindFileSystemEntries<TFileSystemInfo>(this DirectoryInfo directory, SearchOption searchOption, Predicate<TFileSystemInfo> searchPattern)
     where TFileSystemInfo : FileSystemInfo
   {
@@ -44,5 +45,6 @@ public static class DirectoryInfoExtensions {
 
     return matched;
   }
+#pragma warning restore CA1859
 }
 #endif

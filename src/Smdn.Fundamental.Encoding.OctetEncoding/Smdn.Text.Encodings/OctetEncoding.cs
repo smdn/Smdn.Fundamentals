@@ -16,6 +16,7 @@ public class OctetEncoding : Encoding {
   // for string which contains 8-bit characters
   public static readonly Encoding EightBits = Create(8);
 
+#pragma warning disable CA1859
   private static Encoding Create(int bit)
   {
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
@@ -31,6 +32,7 @@ public class OctetEncoding : Encoding {
     return new OctetEncoding(bit, encoderReplacement: null /* throw exception */);
 #endif
   }
+#pragma warning restore CA1859
 
   private static char ValidateMaxValue(int bits, string nameOfBitsParameter)
   {

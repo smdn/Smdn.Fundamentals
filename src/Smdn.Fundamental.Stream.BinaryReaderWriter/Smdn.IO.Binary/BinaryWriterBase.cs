@@ -105,8 +105,10 @@ public abstract class BinaryWriterBase : IDisposable {
 
   public void Write(ArraySegment<byte> @value)
   {
+#pragma warning disable CA2208
     if (@value.Array == null)
-      throw new ArgumentException("value.Array is null", nameof(value));
+      throw new ArgumentException(message: "value.Array is null", paramName: nameof(value));
+#pragma warning restore CA2208
 
     if (@value.Count == 0)
       return;

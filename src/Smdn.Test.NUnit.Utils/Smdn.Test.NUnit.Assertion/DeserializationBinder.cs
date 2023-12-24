@@ -10,6 +10,8 @@ using System.Runtime.Serialization;
 namespace Smdn.Test.NUnit.Assertion;
 
 internal sealed class DeserializationBinder : SerializationBinder {
+  private static readonly string[] TypeArgumentListSplitter = { "]," };
+
   private static Type GetTypeFromLoadedAssemblies(string typeName)
   {
     var typeFullName = typeName;
@@ -43,7 +45,7 @@ internal sealed class DeserializationBinder : SerializationBinder {
 
     var typeArguments = typeArgumentList
       .Substring(1, typeArgumentList.Length - 2) // remove outermost square brackets: "[[T1], [T2], [T3]]" -> "[T1], [T2], [T3]"
-      .Split(new[] { "]," }, StringSplitOptions.None) // split type arguments: "[T1], [T2], [T3]" -> {"[T1", "[T2", "[T3]"}
+      .Split(TypeArgumentListSplitter, StringSplitOptions.None) // split type arguments: "[T1], [T2], [T3]" -> {"[T1", "[T2", "[T3]"}
       .Select(ta => ta.TrimStart('[').TrimEnd(']')) // trim square brackets: {"[T1", "[T2", "[T3]"} -> {"T1", "T2", "T3"}
       .Select(GetTypeFromLoadedAssemblies) // get types from type names
       .ToArray();
