@@ -216,6 +216,7 @@ public partial class MethodInfoExtensionsTests {
   public void IsDelegateSignatureMethod(MethodInfo m, bool expected)
     => Assert.That(m.IsDelegateSignatureMethod(), Is.EqualTo(expected), $"Type: {m.DeclaringType}, {m}");
 
+  [Test]
   public void IsDelegateSignatureMethod_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsDelegateSignatureMethod());
 
