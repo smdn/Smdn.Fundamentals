@@ -185,4 +185,11 @@ public static class MethodInfoExtensions {
 
     return true;
   }
+
+  public static bool IsReadOnly(this MethodInfo m)
+    => m is null
+      ? throw new ArgumentNullException(nameof(m))
+      : m.GetCustomAttributesData().Any(
+          static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal)
+        );
 }

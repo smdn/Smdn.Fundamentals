@@ -180,4 +180,30 @@ Public Custom Event E As EventHandler
   End RaiseEvent
 End Event
 #endif
+
+  // ref: https://learn.microsoft.com/ja-jp/dotnet/csharp/language-reference/proposals/csharp-8.0/readonly-instance-members
+  struct SReadOnlyEvent {
+    public event Action<EventArgs> E {
+      add => throw new NotImplementedException();
+      remove => throw new NotImplementedException();
+    }
+
+    public readonly event Action<EventArgs> EReadOnly {
+      add => throw new NotImplementedException();
+      remove => throw new NotImplementedException();
+    }
+  }
+
+  [TestCase(typeof(SReadOnlyEvent), nameof(SReadOnlyEvent.E), false)]
+  [TestCase(typeof(SReadOnlyEvent), nameof(SReadOnlyEvent.EReadOnly), true)]
+  public void IsReadOnly(Type type, string eventName, bool expected)
+  {
+    var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.That(ev!.IsReadOnly(), Is.EqualTo(expected), $"{type.Name}.{ev!.Name}");
+  }
+
+  [Test]
+  public void IsReadOnly_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).IsReadOnly());
 }

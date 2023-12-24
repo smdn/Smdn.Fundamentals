@@ -121,4 +121,9 @@ public static class EventInfoExtensions {
         : ev.RemoveMethod is null
           ? ev.AddMethod.IsOverride()
           : ev.AddMethod.IsOverride() && ev.RemoveMethod.IsOverride();
+
+  public static bool IsReadOnly(this EventInfo ev)
+    => ev is null
+      ? throw new ArgumentNullException(nameof(ev))
+      : (ev.AddMethod?.IsReadOnly() ?? ev.RemoveMethod?.IsReadOnly() ?? false);
 }

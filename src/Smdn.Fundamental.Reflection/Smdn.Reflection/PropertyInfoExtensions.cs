@@ -103,4 +103,11 @@ public static class PropertyInfoExtensions {
         : property.SetMethod is null
           ? property.GetMethod.IsOverride()
           : property.GetMethod.IsOverride() && property.SetMethod.IsOverride();
+
+  public static bool IsAccessorReadOnly(this PropertyInfo property)
+    => property is null
+      ? throw new ArgumentNullException(nameof(property))
+      : property.GetMethod is null
+        ? false
+        : property.GetMethod.IsReadOnly();
 }

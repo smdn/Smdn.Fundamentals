@@ -218,4 +218,24 @@ public partial class MethodInfoExtensionsTests {
 
   public void IsDelegateSignatureMethod_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsDelegateSignatureMethod());
+
+  // ref: https://learn.microsoft.com/ja-jp/dotnet/csharp/language-reference/proposals/csharp-8.0/readonly-instance-members
+  struct SReadOnlyMethod {
+    public readonly int MReadOnly() => throw new NotImplementedException();
+    public static void MStatic() => throw new NotImplementedException();
+  }
+
+  [TestCase(typeof(SReadOnlyMethod), nameof(SReadOnlyMethod.MReadOnly), true)]
+  [TestCase(typeof(SReadOnlyMethod), nameof(SReadOnlyMethod.MStatic), false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.M), false)]
+  public void IsReadOnly_Method(Type type, string methodName, bool expected)
+  {
+    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.That(method!.IsReadOnly(), Is.EqualTo(expected), $"is readonly? {type}.{methodName}");
+  }
+
+  [Test]
+  public void IsReadOnly_Method_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsReadOnly());
 }

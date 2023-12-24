@@ -184,4 +184,40 @@ public class PropertyInfoExtensionsTests {
   [Test]
   public void IsOverride_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsOverride());
+
+  // ref: https://learn.microsoft.com/ja-jp/dotnet/csharp/language-reference/proposals/csharp-8.0/readonly-instance-members
+  struct SReadOnlyProperty {
+    public int PGetSet {
+      get => throw new NotImplementedException();
+      set => throw new NotImplementedException();
+    }
+
+    public int PGetOnly {
+      get => throw new NotImplementedException();
+    }
+
+    public readonly int PGetOnly_ReadOnlyGetMethod {
+      get => throw new NotImplementedException();
+    }
+
+    public int PGetSet_ReadOnlyGetMethod {
+      readonly get => throw new NotImplementedException();
+      set => throw new NotImplementedException();
+    }
+  }
+
+  [TestCase(typeof(SReadOnlyProperty), nameof(SReadOnlyProperty.PGetSet), false)]
+  [TestCase(typeof(SReadOnlyProperty), nameof(SReadOnlyProperty.PGetOnly), false)]
+  [TestCase(typeof(SReadOnlyProperty), nameof(SReadOnlyProperty.PGetOnly_ReadOnlyGetMethod), true)]
+  [TestCase(typeof(SReadOnlyProperty), nameof(SReadOnlyProperty.PGetSet_ReadOnlyGetMethod), true)]
+  public void IsAccessorReadOnly(Type type, string propertyName, bool expected)
+  {
+    var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+
+    Assert.That(property!.IsAccessorReadOnly(), Is.EqualTo(expected), $"{type.Name}.{property!.Name}");
+  }
+
+  [Test]
+  public void IsAccessorReadOnly_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsAccessorReadOnly());
 }
