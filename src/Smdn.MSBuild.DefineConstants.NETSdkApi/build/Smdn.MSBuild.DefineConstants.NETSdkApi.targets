@@ -905,7 +905,6 @@ SPDX-License-Identifier: MIT
     <!--
       Applies to: NET8_0_OR_GREATER
     -->
-    <!--
     <PropertyGroup>
       <_TargetFrameworkCondition>NET8_0_OR_GREATER</_TargetFrameworkCondition>
     </PropertyGroup>
@@ -918,7 +917,6 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.IsPrivilegedProcess"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="IPNetwork"/>
     </ItemGroup>
-    -->
 
     <!--
       generate symbols
