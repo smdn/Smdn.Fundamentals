@@ -107,7 +107,5 @@ public static class PropertyInfoExtensions {
   public static bool IsAccessorReadOnly(this PropertyInfo property)
     => property is null
       ? throw new ArgumentNullException(nameof(property))
-      : property.GetMethod is null
-        ? false
-        : property.GetMethod.IsReadOnly();
+      : property.GetMethod?.IsReadOnly() ?? false;
 }
