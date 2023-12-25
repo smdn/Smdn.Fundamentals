@@ -4,7 +4,7 @@ SPDX-License-Identifier: MIT
 -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net6.0;netcoreapp3.1;net45;netstandard2.1;netstandard2.0;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net8.0;net6.0;net45;netstandard2.1;netstandard2.0;netstandard1.6</TargetFrameworks>
     <VersionPrefix>3.0.4</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
@@ -27,7 +27,7 @@ SPDX-License-Identifier: MIT
 
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
-    <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard')) or $(TargetFramework.StartsWith('netcoreapp'))" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard'))" />
     <PackageReference Include="System.Memory" />
     <PackageReference Include="System.ValueTuple" />
   </ItemGroup>
