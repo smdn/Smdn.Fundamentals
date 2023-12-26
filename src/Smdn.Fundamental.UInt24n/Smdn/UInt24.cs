@@ -159,99 +159,134 @@ public partial struct UInt24 {
   }
 
 #pragma warning disable CA1502 // TODO: refactor
-  public static UInt24 CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
+  /*
+   * INumberBase<TOther>.TryConvertFromSaturating
+   */
+  public static bool TryConvertFromSaturating<TOther>(TOther value, out UInt24 result) where TOther : INumberBase<TOther>
   {
     if (typeof(TOther) == typeof(byte)) {
-      return new((uint)((byte)(object)value), check: false);
+      result = new((uint)((byte)(object)value), check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(sbyte)) {
       var val = (sbyte)(object)value;
 
-      return val < minValue ? MinValue : new((uint)val, check: false);
+      result = val < minValue ? MinValue : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(char)) {
-      return new((uint)((char)(object)value), check: false);
+      result = new((uint)((char)(object)value), check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(ushort)) {
-      return new((uint)((ushort)(object)value), check: false);
+      result = new((uint)((ushort)(object)value), check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(short)) {
       var val = (short)(object)value;
 
-      return val < 0 ? Zero : new((uint)val, check: false);
+      result = val < 0 ? Zero : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(uint)) {
       var val = (uint)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new(val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(int)) {
       var val = (int)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(ulong)) {
       var val = (ulong)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(long)) {
       var val = (long)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(nuint)) {
       var val = (nuint)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(nint)) {
       var val = (nint)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(Half)) {
       var val = (float)((Half)(object)value);
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(float)) {
       var val = (float)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(double)) {
       var val = (double)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
     else if (typeof(TOther) == typeof(decimal)) {
       var val = (decimal)(object)value;
 
-      return val < minValue ? MinValue
+      result = val < minValue ? MinValue
         : val > maxValue ? MaxValue
         : new((uint)val, check: false);
+
+      return true;
     }
 
-    throw UInt24n.CreateTypeIsNotConvertibleException<UInt24, TOther>();
+    result = default;
+
+    return false;
   }
 #pragma warning restore CA1502
 

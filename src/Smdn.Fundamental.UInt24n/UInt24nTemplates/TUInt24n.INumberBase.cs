@@ -97,11 +97,19 @@ partial struct TUInt24n {
   static TUInt24n INumberBase<TUInt24n>.MinMagnitudeNumber(TUInt24n x, TUInt24n y) => Min(x, y);
 
   /*
-   * INumberBase<TOther>.CreateChecked/CreateTruncating
+   * INumberBase<TOther>.CreateChecked/CreateSaturating/CreateTruncating
    */
   public static TUInt24n CreateChecked<TOther>(TOther value) where TOther : INumberBase<TOther>
   {
     if (!TryConvertFromTruncating(value, throwIfOverflow: true, out var result, out _))
+      throw UInt24n.CreateTypeIsNotConvertibleException<TUInt24n, TOther>();
+
+    return result;
+  }
+
+  public static TUInt24n CreateSaturating<TOther>(TOther value) where TOther : INumberBase<TOther>
+  {
+    if (!TryConvertFromSaturating(value, out var result))
       throw UInt24n.CreateTypeIsNotConvertibleException<TUInt24n, TOther>();
 
     return result;
@@ -116,13 +124,10 @@ partial struct TUInt24n {
   }
 
   /*
-   * INumberBase<TOther>.TryConvertFromChecked/TryConvertFromSaturating/TryConvertFromTruncating
+   * INumberBase<TOther>.TryConvertFromChecked/TryConvertFromTruncating
    */
   static bool INumberBase<TUInt24n>.TryConvertFromChecked<TOther>(TOther value, out TUInt24n result)
     => TryConvertFromTruncating(value, throwIfOverflow: true, out result, out _);
-
-  static bool INumberBase<TUInt24n>.TryConvertFromSaturating<TOther>(TOther value, out TUInt24n result)
-    => throw new NotImplementedException();
 
   static bool INumberBase<TUInt24n>.TryConvertFromTruncating<TOther>(TOther value, out TUInt24n result)
     => TryConvertFromTruncating(value, throwIfOverflow: false, out result, out _);
@@ -143,7 +148,7 @@ partial struct TUInt24n {
   public static TUInt24n Create<TOther>(TOther value) where TOther : INumberBase<TOther>
     => CreateChecked(value);
 
-  [Obsolete($"Use {nameof(TryConvertFromTruncating)}")]
+  [Obsolete($"Use {nameof(TryConvertFromTruncating)} or {nameof(TryConvertFromChecked)}")]
   public static bool TryCreate<TOther>(TOther value, out TUInt24n result) where TOther : INumberBase<TOther>
     => TryConvertFromTruncating(value, throwIfOverflow: false, out result, out var overflow) && !overflow;
 #endif
