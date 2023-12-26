@@ -1362,17 +1362,15 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException_UInt24()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(BigInteger.Zero), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(Complex.Zero), "Complex");
+    Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(BigInteger.Zero), "BigInteger");
+    Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(Complex.Zero), "Complex");
   }
 
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException_UInt24()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(BigInteger.Zero), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(Complex.Zero), "Complex");
+    Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(BigInteger.Zero), "BigInteger");
+    Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(Complex.Zero), "Complex");
   }
 
   [Test]
@@ -1385,33 +1383,33 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException_UInt48()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(BigInteger.Zero), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(Complex.Zero), "Complex");
+    Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(BigInteger.Zero), "BigInteger");
+    Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(Complex.Zero), "Complex");
   }
 
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException_UInt48()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(BigInteger.Zero), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(Complex.Zero), "Complex");
+    Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(BigInteger.Zero), "BigInteger");
+    Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(Complex.Zero), "Complex");
   }
 
   [Test]
   public void TryCreate_TypeNotSupported_UInt24()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt24.TryCreate(BigInteger.Zero, out _), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt24.TryCreate(Complex.Zero, out _), "Complex");
+#pragma warning disable CS0618
+    Assert.That(UInt24.TryCreate(BigInteger.Zero, out _), Is.False, "BigInteger");
+    Assert.That(UInt24.TryCreate(Complex.Zero, out _), Is.False, "Complex");
+#pragma warning restore CS0618
   }
 
   [Test]
   public void TryCreate_TypeNotSupported_UInt48()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt48.TryCreate(BigInteger.Zero, out _), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt48.TryCreate(Complex.Zero, out _), "Complex");
+#pragma warning disable CS0618
+    Assert.That(UInt48.TryCreate(BigInteger.Zero, out _), Is.False, "BigInteger");
+    Assert.That(UInt48.TryCreate(Complex.Zero, out _), Is.False, "Complex");
+#pragma warning restore CS0618
   }
 
   [Test]
