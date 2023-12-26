@@ -647,25 +647,23 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_Zero_UInt24()
+  public void INumberBase_CreateChecked_Zero_UInt24()
   {
-#pragma warning disable CS0618
-    Assert.That(UInt24.Create((byte)0), Is.EqualTo(UInt24.Zero), "byte 0");
-    Assert.That(UInt24.Create((sbyte)0), Is.EqualTo(UInt24.Zero), "sbyte 0");
-    Assert.That(UInt24.Create((char)0), Is.EqualTo(UInt24.Zero), "char 0");
-    Assert.That(UInt24.Create((ushort)0), Is.EqualTo(UInt24.Zero), "ushort 0");
-    Assert.That(UInt24.Create((short)0), Is.EqualTo(UInt24.Zero), "short 0");
-    Assert.That(UInt24.Create((uint)0), Is.EqualTo(UInt24.Zero), "uint 0");
-    Assert.That(UInt24.Create((int)0), Is.EqualTo(UInt24.Zero), "int 0");
-    Assert.That(UInt24.Create((ulong)0), Is.EqualTo(UInt24.Zero), "ulong 0");
-    Assert.That(UInt24.Create((long)0), Is.EqualTo(UInt24.Zero), "long 0");
-    Assert.That(UInt24.Create((nuint)0), Is.EqualTo(UInt24.Zero), "nuint 0");
-    Assert.That(UInt24.Create((nint)0), Is.EqualTo(UInt24.Zero), "nint 0");
-    Assert.That(UInt24.Create((Half)0), Is.EqualTo(UInt24.Zero), "Half 0");
-    Assert.That(UInt24.Create((float)0), Is.EqualTo(UInt24.Zero), "float 0");
-    Assert.That(UInt24.Create((double)0), Is.EqualTo(UInt24.Zero), "double 0");
-    Assert.That(UInt24.Create((decimal)0), Is.EqualTo(UInt24.Zero), "decimal 0");
-#pragma warning restore CS0618
+    Assert.That(UInt24.CreateChecked((byte)0), Is.EqualTo(UInt24.Zero), "byte 0");
+    Assert.That(UInt24.CreateChecked((sbyte)0), Is.EqualTo(UInt24.Zero), "sbyte 0");
+    Assert.That(UInt24.CreateChecked((char)0), Is.EqualTo(UInt24.Zero), "char 0");
+    Assert.That(UInt24.CreateChecked((ushort)0), Is.EqualTo(UInt24.Zero), "ushort 0");
+    Assert.That(UInt24.CreateChecked((short)0), Is.EqualTo(UInt24.Zero), "short 0");
+    Assert.That(UInt24.CreateChecked((uint)0), Is.EqualTo(UInt24.Zero), "uint 0");
+    Assert.That(UInt24.CreateChecked((int)0), Is.EqualTo(UInt24.Zero), "int 0");
+    Assert.That(UInt24.CreateChecked((ulong)0), Is.EqualTo(UInt24.Zero), "ulong 0");
+    Assert.That(UInt24.CreateChecked((long)0), Is.EqualTo(UInt24.Zero), "long 0");
+    Assert.That(UInt24.CreateChecked((nuint)0), Is.EqualTo(UInt24.Zero), "nuint 0");
+    Assert.That(UInt24.CreateChecked((nint)0), Is.EqualTo(UInt24.Zero), "nint 0");
+    Assert.That(UInt24.CreateChecked((Half)0), Is.EqualTo(UInt24.Zero), "Half 0");
+    Assert.That(UInt24.CreateChecked((float)0), Is.EqualTo(UInt24.Zero), "float 0");
+    Assert.That(UInt24.CreateChecked((double)0), Is.EqualTo(UInt24.Zero), "double 0");
+    Assert.That(UInt24.CreateChecked((decimal)0), Is.EqualTo(UInt24.Zero), "decimal 0");
   }
 
   [Test]
@@ -709,25 +707,23 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_Zero_UInt48()
+  public void INumberBase_CreateChecked_Zero_UInt48()
   {
-#pragma warning disable CS0618
-    Assert.That(UInt48.Create((byte)0), Is.EqualTo(UInt48.Zero), "byte 0");
-    Assert.That(UInt48.Create((sbyte)0), Is.EqualTo(UInt48.Zero), "sbyte 0");
-    Assert.That(UInt48.Create((char)0), Is.EqualTo(UInt48.Zero), "char 0");
-    Assert.That(UInt48.Create((ushort)0), Is.EqualTo(UInt48.Zero), "ushort 0");
-    Assert.That(UInt48.Create((short)0), Is.EqualTo(UInt48.Zero), "short 0");
-    Assert.That(UInt48.Create((uint)0), Is.EqualTo(UInt48.Zero), "uint 0");
-    Assert.That(UInt48.Create((int)0), Is.EqualTo(UInt48.Zero), "int 0");
-    Assert.That(UInt48.Create((ulong)0), Is.EqualTo(UInt48.Zero), "ulong 0");
-    Assert.That(UInt48.Create((long)0), Is.EqualTo(UInt48.Zero), "long 0");
-    Assert.That(UInt48.Create((nuint)0), Is.EqualTo(UInt48.Zero), "nuint 0");
-    Assert.That(UInt48.Create((nint)0), Is.EqualTo(UInt48.Zero), "nint 0");
-    Assert.That(UInt48.Create((Half)0), Is.EqualTo(UInt48.Zero), "Half 0");
-    Assert.That(UInt48.Create((float)0), Is.EqualTo(UInt48.Zero), "float 0");
-    Assert.That(UInt48.Create((double)0), Is.EqualTo(UInt48.Zero), "double 0");
-    Assert.That(UInt48.Create((decimal)0), Is.EqualTo(UInt48.Zero), "decimal 0");
-#pragma warning restore CS0618
+    Assert.That(UInt48.CreateChecked((byte)0), Is.EqualTo(UInt48.Zero), "byte 0");
+    Assert.That(UInt48.CreateChecked((sbyte)0), Is.EqualTo(UInt48.Zero), "sbyte 0");
+    Assert.That(UInt48.CreateChecked((char)0), Is.EqualTo(UInt48.Zero), "char 0");
+    Assert.That(UInt48.CreateChecked((ushort)0), Is.EqualTo(UInt48.Zero), "ushort 0");
+    Assert.That(UInt48.CreateChecked((short)0), Is.EqualTo(UInt48.Zero), "short 0");
+    Assert.That(UInt48.CreateChecked((uint)0), Is.EqualTo(UInt48.Zero), "uint 0");
+    Assert.That(UInt48.CreateChecked((int)0), Is.EqualTo(UInt48.Zero), "int 0");
+    Assert.That(UInt48.CreateChecked((ulong)0), Is.EqualTo(UInt48.Zero), "ulong 0");
+    Assert.That(UInt48.CreateChecked((long)0), Is.EqualTo(UInt48.Zero), "long 0");
+    Assert.That(UInt48.CreateChecked((nuint)0), Is.EqualTo(UInt48.Zero), "nuint 0");
+    Assert.That(UInt48.CreateChecked((nint)0), Is.EqualTo(UInt48.Zero), "nint 0");
+    Assert.That(UInt48.CreateChecked((Half)0), Is.EqualTo(UInt48.Zero), "Half 0");
+    Assert.That(UInt48.CreateChecked((float)0), Is.EqualTo(UInt48.Zero), "float 0");
+    Assert.That(UInt48.CreateChecked((double)0), Is.EqualTo(UInt48.Zero), "double 0");
+    Assert.That(UInt48.CreateChecked((decimal)0), Is.EqualTo(UInt48.Zero), "decimal 0");
   }
 
   [Test]
@@ -850,26 +846,23 @@ partial class UInt24nTests {
     Assert.That(UInt48.TryConvertFromSaturating((decimal)0, out var r_decimal), Is.True, "decimal 0"); Assert.That(r_decimal, Is.EqualTo(UInt48.Zero), "result decimal 0");
   }
 
-  [Test]
-  public void INumberBase_Create_UInt24()
+  public void INumberBase_CreateChecked_UInt24()
   {
-#pragma warning disable CS0618
-    Assert.That(UInt24.Create((byte)0xFF), Is.EqualTo((UInt24)0xFF), "byte 0xFF");
-    Assert.That(UInt24.Create((sbyte)0x7F), Is.EqualTo((UInt24)0x7F), "sbyte 0x7F");
-    Assert.That(UInt24.Create((char)0xFFFF), Is.EqualTo((UInt24)0xFFFF), "char 0xFFFF");
-    Assert.That(UInt24.Create((ushort)0xFFFF), Is.EqualTo((UInt24)0xFFFF), "ushort 0xFFFF");
-    Assert.That(UInt24.Create((short)0x7FFF), Is.EqualTo((UInt24)0x7FFF), "short 0x7FFF");
-    Assert.That(UInt24.Create((uint)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "uint 0xFFFFFF");
-    Assert.That(UInt24.Create((int)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "int 0xFFFFFF");
-    Assert.That(UInt24.Create((ulong)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "ulong 0xFFFFFF");
-    Assert.That(UInt24.Create((long)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "long 0xFFFFFF");
-    Assert.That(UInt24.Create((nuint)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "nuint 0xFFFFFF");
-    Assert.That(UInt24.Create((nint)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "nint 0xFFFFFF");
-    Assert.That(UInt24.Create((Half)0xFFE0), Is.EqualTo((UInt24)0xFFE0), "Half 0xFFE0");
-    Assert.That(UInt24.Create((float)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "float 0xFFFFFF");
-    Assert.That(UInt24.Create((double)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "double 0xFFFFFF");
-    Assert.That(UInt24.Create((decimal)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "decimal 0xFFFFFF");
-#pragma warning restore CS0618
+    Assert.That(UInt24.CreateChecked((byte)0xFF), Is.EqualTo((UInt24)0xFF), "byte 0xFF");
+    Assert.That(UInt24.CreateChecked((sbyte)0x7F), Is.EqualTo((UInt24)0x7F), "sbyte 0x7F");
+    Assert.That(UInt24.CreateChecked((char)0xFFFF), Is.EqualTo((UInt24)0xFFFF), "char 0xFFFF");
+    Assert.That(UInt24.CreateChecked((ushort)0xFFFF), Is.EqualTo((UInt24)0xFFFF), "ushort 0xFFFF");
+    Assert.That(UInt24.CreateChecked((short)0x7FFF), Is.EqualTo((UInt24)0x7FFF), "short 0x7FFF");
+    Assert.That(UInt24.CreateChecked((uint)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "uint 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((int)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "int 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((ulong)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "ulong 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((long)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "long 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((nuint)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "nuint 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((nint)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "nint 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((Half)0xFFE0), Is.EqualTo((UInt24)0xFFE0), "Half 0xFFE0");
+    Assert.That(UInt24.CreateChecked((float)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "float 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((double)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "double 0xFFFFFF");
+    Assert.That(UInt24.CreateChecked((decimal)0xFFFFFF), Is.EqualTo((UInt24)0xFFFFFF), "decimal 0xFFFFFF");
   }
 
   [Test]
@@ -913,31 +906,29 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_UInt48()
+  public void INumberBase_CreateChecked_UInt48()
   {
-#pragma warning disable CS0618
-    Assert.That(UInt48.Create((byte)0xFF), Is.EqualTo((UInt48)0xFF), "byte 0xFF");
-    Assert.That(UInt48.Create((sbyte)0x7F), Is.EqualTo((UInt48)0x7F), "sbyte 0x7F");
-    Assert.That(UInt48.Create((char)0xFFFF), Is.EqualTo((UInt48)0xFFFF), "char 0xFFFF");
-    Assert.That(UInt48.Create((ushort)0xFFFF), Is.EqualTo((UInt48)0xFFFF), "ushort 0xFFFF");
-    Assert.That(UInt48.Create((short)0x7FFF), Is.EqualTo((UInt48)0x7FFF), "short 0x7FFF");
-    Assert.That(UInt48.Create((uint)0xFFFFFFFF), Is.EqualTo((UInt48)0xFFFFFFFF), "uint 0xFFFFFFFF");
-    Assert.That(UInt48.Create((int)0x7FFFFFFF), Is.EqualTo((UInt48)0x7FFFFFFF), "int 0x7FFFFFFF");
-    Assert.That(UInt48.Create((ulong)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "ulong 0xFFFF_FFFFFFFF");
-    Assert.That(UInt48.Create((long)0x7FFF_FFFFFFFF), Is.EqualTo((UInt48)0x7FFF_FFFFFFFF), "long 0x7FFF_FFFFFFFF");
+    Assert.That(UInt48.CreateChecked((byte)0xFF), Is.EqualTo((UInt48)0xFF), "byte 0xFF");
+    Assert.That(UInt48.CreateChecked((sbyte)0x7F), Is.EqualTo((UInt48)0x7F), "sbyte 0x7F");
+    Assert.That(UInt48.CreateChecked((char)0xFFFF), Is.EqualTo((UInt48)0xFFFF), "char 0xFFFF");
+    Assert.That(UInt48.CreateChecked((ushort)0xFFFF), Is.EqualTo((UInt48)0xFFFF), "ushort 0xFFFF");
+    Assert.That(UInt48.CreateChecked((short)0x7FFF), Is.EqualTo((UInt48)0x7FFF), "short 0x7FFF");
+    Assert.That(UInt48.CreateChecked((uint)0xFFFFFFFF), Is.EqualTo((UInt48)0xFFFFFFFF), "uint 0xFFFFFFFF");
+    Assert.That(UInt48.CreateChecked((int)0x7FFFFFFF), Is.EqualTo((UInt48)0x7FFFFFFF), "int 0x7FFFFFFF");
+    Assert.That(UInt48.CreateChecked((ulong)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "ulong 0xFFFF_FFFFFFFF");
+    Assert.That(UInt48.CreateChecked((long)0x7FFF_FFFFFFFF), Is.EqualTo((UInt48)0x7FFF_FFFFFFFF), "long 0x7FFF_FFFFFFFF");
     if (Environment.Is64BitProcess) {
-      Assert.That(UInt48.Create(unchecked((nuint)0xFFFF_FFFFFFFF)), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "nuint 0xFFFF_FFFFFFFF");
-      Assert.That(UInt48.Create(unchecked((nint)0x7FFF_FFFFFFFF)), Is.EqualTo((UInt48)0x7FFF_FFFFFFFF), "nint 0x7FFF_FFFFFFFF");
+      Assert.That(UInt48.CreateChecked(unchecked((nuint)0xFFFF_FFFFFFFF)), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "nuint 0xFFFF_FFFFFFFF");
+      Assert.That(UInt48.CreateChecked(unchecked((nint)0x7FFF_FFFFFFFF)), Is.EqualTo((UInt48)0x7FFF_FFFFFFFF), "nint 0x7FFF_FFFFFFFF");
     }
     else {
-      Assert.That(UInt48.Create((nuint)0xFFFFFFFF), Is.EqualTo((UInt48)0xFFFFFFFF), "nuint 0xFFFFFFFF");
-      Assert.That(UInt48.Create((nint)0x7FFFFFFF), Is.EqualTo((UInt48)0x7FFFFFFF), "nint 0x7FFFFFFF");
+      Assert.That(UInt48.CreateChecked((nuint)0xFFFFFFFF), Is.EqualTo((UInt48)0xFFFFFFFF), "nuint 0xFFFFFFFF");
+      Assert.That(UInt48.CreateChecked((nint)0x7FFFFFFF), Is.EqualTo((UInt48)0x7FFFFFFF), "nint 0x7FFFFFFF");
     }
-    Assert.That(UInt48.Create((Half)0xFFE0), Is.EqualTo((UInt48)0xFFE0), "Half 0xFFE0");
-    Assert.That(UInt48.Create((float)2.8147496E+014), Is.EqualTo((UInt48)0xFFFF_FF000000), "float 2.8147496E+014");
-    Assert.That(UInt48.Create((double)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "double 0xFFFF_FFFFFFFF");
-    Assert.That(UInt48.Create((decimal)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "decimal 0xFFFF_FFFFFFFF");
-#pragma warning restore CS0618
+    Assert.That(UInt48.CreateChecked((Half)0xFFE0), Is.EqualTo((UInt48)0xFFE0), "Half 0xFFE0");
+    Assert.That(UInt48.CreateChecked((float)2.8147496E+014), Is.EqualTo((UInt48)0xFFFF_FF000000), "float 2.8147496E+014");
+    Assert.That(UInt48.CreateChecked((double)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "double 0xFFFF_FFFFFFFF");
+    Assert.That(UInt48.CreateChecked((decimal)0xFFFF_FFFFFFFF), Is.EqualTo((UInt48)0xFFFF_FFFFFFFF), "decimal 0xFFFF_FFFFFFFF");
   }
 
   [Test]
@@ -1085,28 +1076,26 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_OverflowException_UInt24()
+  public void INumberBase_CreateChecked_OverflowException_UInt24()
   {
-#pragma warning disable CS0618
-    Assert.Throws<OverflowException>(() => UInt24.Create((sbyte)-1), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((short)-1), "short -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((uint)0x1_000000), "uint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((int)-1), "int -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((int)0x1_000000), "int 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((ulong)0x1_000000), "ulong 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((long)-1), "long -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((long)0x1_000000), "long 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((nuint)0x1_000000), "nuint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((nint)(-1)), "nint -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((nint)0x1_000000), "nint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((Half)(-1)), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((float)-1), "float -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((float)0x1_000000), "float 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((double)-1), "double -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((double)0x1_000000), "double 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.Create((decimal)-1), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt24.Create((decimal)0x1_000000), "decimal 0x1_000000");
-#pragma warning restore CS0618
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((sbyte)-1), "sbyte -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((short)-1), "short -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((uint)0x1_000000), "uint 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((int)-1), "int -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((int)0x1_000000), "int 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((ulong)0x1_000000), "ulong 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((long)-1), "long -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((long)0x1_000000), "long 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((nuint)0x1_000000), "nuint 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((nint)(-1)), "nint -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((nint)0x1_000000), "nint 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((Half)(-1)), "Half -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((float)-1), "float -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((float)0x1_000000), "float 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((double)-1), "double -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((double)0x1_000000), "double 0x1_000000");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((decimal)-1), "decimal -1");
+    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((decimal)0x1_000000), "decimal 0x1_000000");
   }
 
   [Test]
@@ -1157,27 +1146,25 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_OverflowException_UInt48()
+  public void INumberBase_CreateChecked_OverflowException_UInt48()
   {
-#pragma warning disable CS0618
-    Assert.Throws<OverflowException>(() => UInt48.Create((sbyte)-1), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((short)-1), "short -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((int)-1), "int -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((ulong)0x1_000000_000000), "ulong 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.Create((long)-1), "long -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((long)0x1_000000_000000), "long 0x1_000000_000000");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((sbyte)-1), "sbyte -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((short)-1), "short -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((int)-1), "int -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((ulong)0x1_000000_000000), "ulong 0x1_000000_000000");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((long)-1), "long -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((long)0x1_000000_000000), "long 0x1_000000_000000");
     if (Environment.Is64BitProcess) {
-      Assert.Throws<OverflowException>(() => UInt48.Create(unchecked((nuint)0x1_000000_000000)), "nuint 0x1_000000_000000");
-      Assert.Throws<OverflowException>(() => UInt48.Create(unchecked((nint)0x1_000000_000000)), "nint 0x1_000000_000000");
+      Assert.Throws<OverflowException>(() => UInt48.CreateChecked(unchecked((nuint)0x1_000000_000000)), "nuint 0x1_000000_000000");
+      Assert.Throws<OverflowException>(() => UInt48.CreateChecked(unchecked((nint)0x1_000000_000000)), "nint 0x1_000000_000000");
     }
-    Assert.Throws<OverflowException>(() => UInt48.Create((Half)(-1)), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((float)-1), "float -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((float)0x1_000000_000000), "float 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.Create((double)-1), "double -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((double)0x1_000000_000000), "double 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.Create((decimal)-1), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt48.Create((decimal)0x1_000000_000000), "decimal 0x1_000000_000000");
-#pragma warning restore CS0618
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((Half)(-1)), "Half -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((float)-1), "float -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((float)0x1_000000_000000), "float 0x1_000000_000000");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((double)-1), "double -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((double)0x1_000000_000000), "double 0x1_000000_000000");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((decimal)-1), "decimal -1");
+    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((decimal)0x1_000000_000000), "decimal 0x1_000000_000000");
   }
 
   [Test]
@@ -1366,11 +1353,10 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_TypeNotSupportedException_UInt24()
+  public void INumberBase_CreateChecked_TypeNotSupportedException_UInt24()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt24.Create(BigInteger.Zero), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt24.Create(Complex.Zero), "Complex");
+    Assert.Throws<NotSupportedException>(() => UInt24.CreateChecked(BigInteger.Zero), "BigInteger");
+    Assert.Throws<NotSupportedException>(() => UInt24.CreateChecked(Complex.Zero), "Complex");
   }
 
   [Test]
@@ -1390,11 +1376,10 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void INumberBase_Create_TypeNotSupportedException_UInt48()
+  public void INumberBase_CreateChecked_TypeNotSupportedException_UInt48()
   {
-    Assert.Ignore("no test case");
-    //Assert.Throws<NotSupportedException>(() => UInt48.Create(BigInteger.Zero), "BigInteger");
-    //Assert.Throws<NotSupportedException>(() => UInt48.Create(Complex.Zero), "Complex");
+    Assert.Throws<NotSupportedException>(() => UInt48.CreateChecked(BigInteger.Zero), "BigInteger");
+    Assert.Throws<NotSupportedException>(() => UInt48.CreateChecked(Complex.Zero), "Complex");
   }
 
   [Test]
