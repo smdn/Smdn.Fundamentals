@@ -126,7 +126,7 @@ partial struct TUInt24n {
   /*
    * INumberBase<TOther>.TryConvertFromChecked/TryConvertFromTruncating
    */
-  static bool INumberBase<TUInt24n>.TryConvertFromChecked<TOther>(TOther value, out TUInt24n result)
+  public static bool TryConvertFromChecked<TOther>(TOther value, out TUInt24n result) where TOther : INumberBase<TOther>
     => TryConvertFromTruncating(value, throwIfOverflow: true, out result, out _);
 
   static bool INumberBase<TUInt24n>.TryConvertFromTruncating<TOther>(TOther value, out TUInt24n result)
