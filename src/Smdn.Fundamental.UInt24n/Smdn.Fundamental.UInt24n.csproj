@@ -13,6 +13,8 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
+    <Description>Provides 24-bit and 48-bit unsigned integer types, `UInt24` and `UInt48`. These types are compatible with the generic math functionality since they implement the IUnsignedNumber&lt;TSelf&gt; and other generic math interfaces.
+    </Description>
     <CopyrightYear>2021</CopyrightYear>
   </PropertyGroup>
 
