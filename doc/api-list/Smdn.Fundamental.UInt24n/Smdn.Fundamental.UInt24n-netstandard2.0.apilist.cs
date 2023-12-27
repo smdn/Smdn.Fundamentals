@@ -1,7 +1,7 @@
-// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-3.1.0)
+// Smdn.Fundamental.UInt24n.dll (Smdn.Fundamental.UInt24n-4.0.0)
 //   Name: Smdn.Fundamental.UInt24n
-//   AssemblyVersion: 3.1.0.0
-//   InformationalVersion: 3.1.0+d0bc2ff12d7b860e40c08a17db9b68fff731fb10
+//   AssemblyVersion: 4.0.0.0
+//   InformationalVersion: 4.0.0+67b803a21469d1c9d14f260a6414b9e666a8e282
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 //   Referenced assemblies:
@@ -17,7 +17,7 @@ using Smdn;
 namespace Smdn {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
-  public struct UInt24 :
+  public readonly struct UInt24 :
     IComparable,
     IComparable<UInt24>,
     IComparable<int>,
@@ -97,13 +97,6 @@ namespace Smdn {
     public static UInt24 operator + (UInt24 @value) {}
     public static UInt24 operator >>> (UInt24 @value, int shiftAmount) {}
 
-    [FieldOffset(0)]
-    public byte Byte0;
-    [FieldOffset(1)]
-    public byte Byte1;
-    [FieldOffset(2)]
-    public byte Byte2;
-
     public UInt24(ReadOnlySpan<byte> @value, bool isBigEndian = false) {}
     public UInt24(byte[] @value, bool isBigEndian = false) {}
     public UInt24(byte[] @value, int startIndex, bool isBigEndian = false) {}
@@ -116,37 +109,37 @@ namespace Smdn {
     public bool Equals(int other) {}
     public bool Equals(uint other) {}
     public override bool Equals(object obj) {}
-    public override readonly int GetHashCode() {}
+    public override int GetHashCode() {}
     TypeCode IConvertible.GetTypeCode() {}
     bool IConvertible.ToBoolean(IFormatProvider provider) {}
-    readonly byte IConvertible.ToByte(IFormatProvider provider) {}
+    byte IConvertible.ToByte(IFormatProvider provider) {}
     char IConvertible.ToChar(IFormatProvider provider) {}
     DateTime IConvertible.ToDateTime(IFormatProvider provider) {}
     decimal IConvertible.ToDecimal(IFormatProvider provider) {}
     double IConvertible.ToDouble(IFormatProvider provider) {}
     short IConvertible.ToInt16(IFormatProvider provider) {}
     int IConvertible.ToInt32(IFormatProvider provider) {}
-    readonly long IConvertible.ToInt64(IFormatProvider provider) {}
-    readonly sbyte IConvertible.ToSByte(IFormatProvider provider) {}
+    long IConvertible.ToInt64(IFormatProvider provider) {}
+    sbyte IConvertible.ToSByte(IFormatProvider provider) {}
     float IConvertible.ToSingle(IFormatProvider provider) {}
     string IConvertible.ToString(IFormatProvider provider) {}
     object IConvertible.ToType(Type conversionType, IFormatProvider provider) {}
     ushort IConvertible.ToUInt16(IFormatProvider provider) {}
     uint IConvertible.ToUInt32(IFormatProvider provider) {}
-    readonly ulong IConvertible.ToUInt64(IFormatProvider provider) {}
-    public readonly int ToInt32() {}
+    ulong IConvertible.ToUInt64(IFormatProvider provider) {}
+    public int ToInt32() {}
     public override string ToString() {}
     public string ToString(IFormatProvider formatProvider) {}
     public string ToString(string format) {}
     public string ToString(string format, IFormatProvider formatProvider) {}
-    public readonly uint ToUInt32() {}
-    public readonly bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten) {}
-    public readonly bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) {}
+    public uint ToUInt32() {}
+    public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten) {}
+    public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   [StructLayout(LayoutKind.Explicit, Pack = 1)]
-  public struct UInt48 :
+  public readonly struct UInt48 :
     IComparable,
     IComparable<UInt48>,
     IComparable<long>,
@@ -226,19 +219,6 @@ namespace Smdn {
     public static UInt48 operator + (UInt48 @value) {}
     public static UInt48 operator >>> (UInt48 @value, int shiftAmount) {}
 
-    [FieldOffset(0)]
-    public byte Byte0;
-    [FieldOffset(1)]
-    public byte Byte1;
-    [FieldOffset(2)]
-    public byte Byte2;
-    [FieldOffset(3)]
-    public byte Byte3;
-    [FieldOffset(4)]
-    public byte Byte4;
-    [FieldOffset(5)]
-    public byte Byte5;
-
     public UInt48(ReadOnlySpan<byte> @value, bool isBigEndian = false) {}
     public UInt48(byte[] @value, bool isBigEndian = false) {}
     public UInt48(byte[] @value, int startIndex, bool isBigEndian = false) {}
@@ -251,32 +231,32 @@ namespace Smdn {
     public bool Equals(long other) {}
     public bool Equals(ulong other) {}
     public override bool Equals(object obj) {}
-    public override readonly int GetHashCode() {}
+    public override int GetHashCode() {}
     TypeCode IConvertible.GetTypeCode() {}
     bool IConvertible.ToBoolean(IFormatProvider provider) {}
-    readonly byte IConvertible.ToByte(IFormatProvider provider) {}
+    byte IConvertible.ToByte(IFormatProvider provider) {}
     char IConvertible.ToChar(IFormatProvider provider) {}
     DateTime IConvertible.ToDateTime(IFormatProvider provider) {}
     decimal IConvertible.ToDecimal(IFormatProvider provider) {}
     double IConvertible.ToDouble(IFormatProvider provider) {}
-    readonly short IConvertible.ToInt16(IFormatProvider provider) {}
+    short IConvertible.ToInt16(IFormatProvider provider) {}
     int IConvertible.ToInt32(IFormatProvider provider) {}
     long IConvertible.ToInt64(IFormatProvider provider) {}
-    readonly sbyte IConvertible.ToSByte(IFormatProvider provider) {}
+    sbyte IConvertible.ToSByte(IFormatProvider provider) {}
     float IConvertible.ToSingle(IFormatProvider provider) {}
     string IConvertible.ToString(IFormatProvider provider) {}
     object IConvertible.ToType(Type conversionType, IFormatProvider provider) {}
-    readonly ushort IConvertible.ToUInt16(IFormatProvider provider) {}
+    ushort IConvertible.ToUInt16(IFormatProvider provider) {}
     uint IConvertible.ToUInt32(IFormatProvider provider) {}
     ulong IConvertible.ToUInt64(IFormatProvider provider) {}
-    public readonly long ToInt64() {}
+    public long ToInt64() {}
     public override string ToString() {}
     public string ToString(IFormatProvider formatProvider) {}
     public string ToString(string format) {}
     public string ToString(string format, IFormatProvider formatProvider) {}
-    public readonly ulong ToUInt64() {}
-    public readonly bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten) {}
-    public readonly bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) {}
+    public ulong ToUInt64() {}
+    public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten) {}
+    public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten) {}
   }
 }
 // API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.3.2.0.
