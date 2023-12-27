@@ -3,6 +3,7 @@
 #if SYSTEM_NUMERICS_INUMBERBASE
 using System;
 using System.Numerics;
+using System.Reflection;
 
 using NUnit.Framework;
 
@@ -50,6 +51,36 @@ partial class UInt48Tests {
     Assert.That(UInt48.CreateSaturating((double)0), Is.EqualTo(UInt48.Zero), "double 0");
     Assert.That(UInt48.CreateSaturating((decimal)0), Is.EqualTo(UInt48.Zero), "decimal 0");
   }
+}
+
+partial class UInt24nTests {
+  [TestCase(typeof(byte))]
+  [TestCase(typeof(sbyte))]
+  [TestCase(typeof(char))]
+  [TestCase(typeof(ushort))]
+  [TestCase(typeof(short))]
+  [TestCase(typeof(uint))]
+  [TestCase(typeof(int))]
+  [TestCase(typeof(ulong))]
+  [TestCase(typeof(long))]
+  [TestCase(typeof(nuint))]
+  [TestCase(typeof(nint))]
+  [TestCase(typeof(Half))]
+  [TestCase(typeof(float))]
+  [TestCase(typeof(double))]
+  [TestCase(typeof(decimal))]
+  public void INumberBase_CreateSaturating_Zero(Type typeOfOther)
+  {
+    var genericMethod = typeof(UInt24nTests).GetMethod(nameof(UInt24n_CreateSaturating), BindingFlags.Static | BindingFlags.NonPublic)!;
+    var methodUInt24 = genericMethod.MakeGenericMethod(typeof(UInt24), typeOfOther);
+    var methodUInt48 = genericMethod.MakeGenericMethod(typeof(UInt48), typeOfOther);
+
+    Assert.That(methodUInt24.Invoke(null, null), Is.EqualTo(UInt24.Zero));
+    Assert.That(methodUInt48.Invoke(null, null), Is.EqualTo(UInt48.Zero));
+  }
+
+  static TUInt24n UInt24n_CreateSaturating<TUInt24n, TOther>() where TUInt24n : INumberBase<TUInt24n> where TOther : INumberBase<TOther>
+    => TUInt24n.CreateSaturating(TOther.Zero);
 }
 
 partial class UInt24Tests {
@@ -312,6 +343,21 @@ partial class UInt48Tests {
   {
     Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(BigInteger.Zero), "BigInteger");
     Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(Complex.Zero), "Complex");
+  }
+}
+
+partial class UInt24nTests {
+  [Test]
+  public void INumberBase_CreateSaturating_TypeNotSupportedException()
+  {
+    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt24, Complex>());
+    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt48, Complex>());
+
+    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt24, BigInteger>());
+    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt48, BigInteger>());
+
+    static TUInt24n CreateSaturating<TUInt24n, TOther>() where TUInt24n : INumberBase<TUInt24n> where TOther : INumberBase<TOther>
+      => TUInt24n.CreateSaturating(TOther.Zero);
   }
 }
 
