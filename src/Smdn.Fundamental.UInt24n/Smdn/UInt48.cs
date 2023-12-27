@@ -11,16 +11,16 @@ namespace Smdn;
 
 [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 [StructLayout(LayoutKind.Explicit, Pack = 1)]
-public partial struct UInt48 {
+public readonly partial struct UInt48 {
   private const int SizeOfSelf = 6;
 
   // big endian
-  [FieldOffset(0)] public byte Byte0; // 0x 0000ff00 00000000
-  [FieldOffset(1)] public byte Byte1; // 0x 000000ff 00000000
-  [FieldOffset(2)] public byte Byte2; // 0x 00000000 ff000000
-  [FieldOffset(3)] public byte Byte3; // 0x 00000000 00ff0000
-  [FieldOffset(4)] public byte Byte4; // 0x 00000000 0000ff00
-  [FieldOffset(5)] public byte Byte5; // 0x 00000000 000000ff
+  [FieldOffset(0)] private readonly byte byte0; // 0x 0000ff00 00000000
+  [FieldOffset(1)] private readonly byte byte1; // 0x 000000ff 00000000
+  [FieldOffset(2)] private readonly byte byte2; // 0x 00000000 ff000000
+  [FieldOffset(3)] private readonly byte byte3; // 0x 00000000 00ff0000
+  [FieldOffset(4)] private readonly byte byte4; // 0x 00000000 0000ff00
+  [FieldOffset(5)] private readonly byte byte5; // 0x 00000000 000000ff
 
   public UInt48(ReadOnlySpan<byte> value, bool isBigEndian = false)
   {
@@ -28,20 +28,20 @@ public partial struct UInt48 {
       throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(value), SizeOfSelf);
 
     if (isBigEndian) {
-      Byte0 = value[0];
-      Byte1 = value[1];
-      Byte2 = value[2];
-      Byte3 = value[3];
-      Byte4 = value[4];
-      Byte5 = value[5];
+      byte0 = value[0];
+      byte1 = value[1];
+      byte2 = value[2];
+      byte3 = value[3];
+      byte4 = value[4];
+      byte5 = value[5];
     }
     else {
-      Byte0 = value[5];
-      Byte1 = value[4];
-      Byte2 = value[3];
-      Byte3 = value[2];
-      Byte4 = value[1];
-      Byte5 = value[0];
+      byte0 = value[5];
+      byte1 = value[4];
+      byte2 = value[3];
+      byte3 = value[2];
+      byte4 = value[1];
+      byte5 = value[0];
     }
   }
 
@@ -51,70 +51,70 @@ public partial struct UInt48 {
       throw UInt24n.CreateOverflowException<UInt48>(value);
 
     unchecked {
-      Byte0 = (byte)(value >> 40);
-      Byte1 = (byte)(value >> 32);
-      Byte2 = (byte)(value >> 24);
-      Byte3 = (byte)(value >> 16);
-      Byte4 = (byte)(value >> 8);
-      Byte5 = (byte)value;
+      byte0 = (byte)(value >> 40);
+      byte1 = (byte)(value >> 32);
+      byte2 = (byte)(value >> 24);
+      byte3 = (byte)(value >> 16);
+      byte4 = (byte)(value >> 8);
+      byte5 = (byte)value;
     }
   }
 
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
-  internal readonly UInt64 Widen()
-    => (UInt64)((UInt64)Byte0 << 40) |
-       (UInt64)((UInt64)Byte1 << 32) |
-       (UInt64)((UInt64)Byte2 << 24) |
-       (UInt64)((UInt64)Byte3 << 16) |
-       (UInt64)((UInt64)Byte4 << 8) |
-       (UInt64)Byte5;
+  internal UInt64 Widen()
+    => (UInt64)((UInt64)byte0 << 40) |
+       (UInt64)((UInt64)byte1 << 32) |
+       (UInt64)((UInt64)byte2 << 24) |
+       (UInt64)((UInt64)byte3 << 16) |
+       (UInt64)((UInt64)byte4 << 8) |
+       (UInt64)byte5;
 
-  public override readonly int GetHashCode()
-    => ((Byte3 << 24) | (Byte2 << 16) | (Byte1 << 8) | Byte0) ^ ((Byte5 << 8) | Byte4);
+  public override int GetHashCode()
+    => ((byte3 << 24) | (byte2 << 16) | (byte1 << 8) | byte0) ^ ((byte5 << 8) | byte4);
 
   /*
    * IConvertible
    */
 #pragma warning disable IDE0060
-  readonly byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt64());
-  readonly sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt64());
-  readonly ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt64());
-  readonly short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
+  byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt64());
+  sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt64());
+  ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt64());
+  short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
 #pragma warning restore IDE0060
 
   /*
    * IBinaryInteger<TSelf>
    */
-  public readonly bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
+  public bool TryWriteBigEndian(Span<byte> destination, out int bytesWritten)
   {
     bytesWritten = default;
 
     if (destination.Length < SizeOfSelf)
       return false;
 
-    destination[bytesWritten++] = Byte0;
-    destination[bytesWritten++] = Byte1;
-    destination[bytesWritten++] = Byte2;
-    destination[bytesWritten++] = Byte3;
-    destination[bytesWritten++] = Byte4;
-    destination[bytesWritten++] = Byte5;
+    destination[bytesWritten++] = byte0;
+    destination[bytesWritten++] = byte1;
+    destination[bytesWritten++] = byte2;
+    destination[bytesWritten++] = byte3;
+    destination[bytesWritten++] = byte4;
+    destination[bytesWritten++] = byte5;
 
     return true;
   }
 
-  public readonly bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
+  public bool TryWriteLittleEndian(Span<byte> destination, out int bytesWritten)
   {
     bytesWritten = default;
 
     if (destination.Length < SizeOfSelf)
       return false;
 
-    destination[bytesWritten++] = Byte5;
-    destination[bytesWritten++] = Byte4;
-    destination[bytesWritten++] = Byte3;
-    destination[bytesWritten++] = Byte2;
-    destination[bytesWritten++] = Byte1;
-    destination[bytesWritten++] = Byte0;
+    destination[bytesWritten++] = byte5;
+    destination[bytesWritten++] = byte4;
+    destination[bytesWritten++] = byte3;
+    destination[bytesWritten++] = byte2;
+    destination[bytesWritten++] = byte1;
+    destination[bytesWritten++] = byte0;
 
     return true;
   }
