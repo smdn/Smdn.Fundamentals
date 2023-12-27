@@ -144,6 +144,9 @@ partial struct TUInt24n {
   static bool INumberBase<TUInt24n>.TryConvertToTruncating<TOther>(TUInt24n value, out TOther result)
     => throw new NotImplementedException();
 
+  /*
+   * INumberBase<TOther> preview member implementations
+   */
   [Obsolete($"Use {nameof(CreateChecked)}")]
   public static TUInt24n Create<TOther>(TOther value) where TOther : INumberBase<TOther>
     => CreateChecked(value);
