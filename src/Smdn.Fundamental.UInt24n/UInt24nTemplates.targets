@@ -107,12 +107,14 @@ SPDX-License-Identifier: MIT
       File="%(_UInt24.OutputFilePath)"
       Lines="%(_UInt24.ExpandedContent)"
       Overwrite="true"
+      WriteOnlyWhenDifferent="true"
       Condition="'@(_UInt24)' != ''"
     />
     <WriteLinesToFile
       File="%(_UInt48.OutputFilePath)"
       Lines="%(_UInt48.ExpandedContent)"
       Overwrite="true"
+      WriteOnlyWhenDifferent="true"
       Condition="'@(_UInt48)' != ''"
     />
 
