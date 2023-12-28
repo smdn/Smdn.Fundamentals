@@ -16,7 +16,9 @@ partial class MimeType
     Span<char> destination,
     out int charsWritten,
     ReadOnlySpan<char> format,
+#pragma warning disable IDE0060
     IFormatProvider? provider
+#pragma warning restore IDE0060
   )
   {
     charsWritten = default;
