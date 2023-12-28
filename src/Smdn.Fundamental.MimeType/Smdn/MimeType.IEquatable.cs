@@ -18,29 +18,13 @@ partial class MimeType :
   /*
    * TypeEquals(MimeType)
    */
-  [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
-  public bool TypeEquals(MimeType? mimeType)
-    => TypeEquals(mimeType, StringComparison.Ordinal);
-
-  [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead.")]
-  public bool TypeEqualsIgnoreCase(MimeType? mimeType)
-    => TypeEquals(mimeType, StringComparison.OrdinalIgnoreCase);
-
-  public bool TypeEquals(MimeType? mimeType, StringComparison comparisonType /* = DefaultComparisonType */)
+  public bool TypeEquals(MimeType? mimeType, StringComparison comparisonType = DefaultComparisonType)
     => mimeType is not null && TypeEquals(mimeType.Type.AsSpan(), comparisonType);
 
   /*
    * TypeEquals(string)
    */
-  [Obsolete("Use `TypeEquals(string, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
-  public bool TypeEquals(string? type)
-    => TypeEquals(type, StringComparison.Ordinal);
-
-  [Obsolete("Use `TypeEquals(string, StringComparison)` instead.")]
-  public bool TypeEqualsIgnoreCase(string? type)
-    => TypeEquals(type, StringComparison.OrdinalIgnoreCase);
-
-  public bool TypeEquals(string? type, StringComparison comparisonType /* = DefaultComparisonType */)
+  public bool TypeEquals(string? type, StringComparison comparisonType = DefaultComparisonType)
     => type is not null && TypeEquals(type.AsSpan(), comparisonType);
 
   /*
@@ -52,29 +36,13 @@ partial class MimeType :
   /*
    * SubTypeEquals(MimeType)
    */
-  [Obsolete("Use `SubTypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
-  public bool SubTypeEquals(MimeType? mimeType)
-    => SubTypeEquals(mimeType, StringComparison.Ordinal);
-
-  [Obsolete("Use `SubTypeEquals(MimeType, StringComparison)` instead.")]
-  public bool SubTypeEqualsIgnoreCase(MimeType? mimeType)
-    => SubTypeEquals(mimeType, StringComparison.OrdinalIgnoreCase);
-
-  public bool SubTypeEquals(MimeType? mimeType, StringComparison comparisonType /* = DefaultComparisonType */)
+  public bool SubTypeEquals(MimeType? mimeType, StringComparison comparisonType = DefaultComparisonType)
     => mimeType is not null && SubTypeEquals(mimeType.SubType.AsSpan(), comparisonType);
 
   /*
    * SubTypeEquals(string)
    */
-  [Obsolete("Use `SubTypeEquals(string, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
-  public bool SubTypeEquals(string? subType)
-    => SubTypeEquals(subType, StringComparison.Ordinal);
-
-  [Obsolete("Use `SubTypeEquals(string, StringComparison)` instead.")]
-  public bool SubTypeEqualsIgnoreCase(string? subType)
-    => SubTypeEquals(subType, StringComparison.OrdinalIgnoreCase);
-
-  public bool SubTypeEquals(string? subType, StringComparison comparisonType /* = DefaultComparisonType */)
+  public bool SubTypeEquals(string? subType, StringComparison comparisonType = DefaultComparisonType)
     => subType is not null && SubTypeEquals(subType.AsSpan(), comparisonType);
 
   /*
@@ -88,37 +56,27 @@ partial class MimeType :
    */
   public override bool Equals(object? obj)
     => obj switch {
-      MimeType mimeType => Equals(mimeType, StringComparison.Ordinal /* FUTURE: DefaultComparisonType */),
-      string str => Equals(str, StringComparison.Ordinal /* FUTURE: DefaultComparisonType */),
+      MimeType mimeType => Equals(mimeType, DefaultComparisonType),
+      string str => Equals(str, DefaultComparisonType),
       _ => false,
     };
 
   /*
    * Equals(MimeType)
    */
-  [Obsolete("Use `Equals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
   public bool Equals(MimeType? other)
-    => Equals(other, StringComparison.Ordinal);
+    => other is not null && Equals(other, DefaultComparisonType);
 
-  [Obsolete("Use `Equals(MimeType, StringComparison)` instead.")]
-  public bool EqualsIgnoreCase(MimeType? other)
-    => Equals(other, StringComparison.OrdinalIgnoreCase);
-
-  public bool Equals(MimeType? other, StringComparison comparisonType /* = DefaultComparisonType */)
+  public bool Equals(MimeType? other, StringComparison comparisonType)
     => other is not null && TypeEquals(other, comparisonType) && SubTypeEquals(other, comparisonType);
 
   /*
    * Equals(string)
    */
-  [Obsolete("Use `Equals(string, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
   public bool Equals(string? other)
-    => Equals(other, StringComparison.Ordinal);
+    => other is not null && Equals(other, DefaultComparisonType);
 
-  [Obsolete("Use `Equals(string, StringComparison)` instead.")]
-  public bool EqualsIgnoreCase(string? other)
-    => Equals(other, StringComparison.OrdinalIgnoreCase);
-
-  public bool Equals(string? other, StringComparison comparisonType /* = DefaultComparisonType */)
+  public bool Equals(string? other, StringComparison comparisonType)
     => other is not null && Equals(other.AsSpan(), comparisonType);
 
   /*
