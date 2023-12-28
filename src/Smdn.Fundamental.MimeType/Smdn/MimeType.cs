@@ -68,17 +68,8 @@ public partial class MimeType {
   {
   }
 
-  public MimeType(
-#pragma warning disable SA1114
-#if API_VERSION_3_X_X
-#pragma warning disable SA1316
-#endif
-    // TODO: fix tuple element name casing
-    (string type, string subType) mimeType
-#pragma warning restore SA1316
-#pragma warning restore SA1114
-  )
-    : this(mimeType.type, mimeType.subType)
+  public MimeType((string Type, string SubType) mimeType)
+    : this(mimeType.Type, mimeType.SubType)
   {
   }
 

@@ -21,11 +21,6 @@ SPDX-License-Identifier: MIT
     <PackageTags>MIME;MIME-type;media-type;content-type;RFC2046;RFC2077;RFC6838;RFC8081</PackageTags>
   </PropertyGroup>
 
-  <!-- suppress warning of tuple element naming to maintain API compatibility if version is less than 4.0.0 -->
-  <PropertyGroup Condition="$([MSBuild]::VersionLessThan('$(VersionPrefix)', '4.0.0'))">
-    <DefineConstants>$(DefineConstants);API_VERSION_3_X_X</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <PackageReference Include="System.Memory" />
