@@ -1,13 +1,9 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#define OBSOLETE_MEMBER
-
 using System;
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
 #endif
-
-using Smdn.Formats.Mime;
 
 namespace Smdn;
 
@@ -19,17 +15,6 @@ partial class MimeType
   ISpanParsable<MimeType>
 #endif
 {
-#if OBSOLETE_MEMBER
-  [Obsolete($"The method will be deprecated in the future release. Use Smdn.Formats.Mime.{nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.TrySplit)}() instead.")]
-  public static bool TryParse(
-    string? s,
-#pragma warning disable SA1316
-    out (string type, string subType) result
-#pragma warning restore SA1316
-  )
-    => MimeTypeStringExtensions.TrySplit(s, out result);
-#endif
-
   public static bool TryParse(
     string? s,
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
@@ -92,14 +77,6 @@ partial class MimeType
 
     return true;
   }
-
-#if OBSOLETE_MEMBER
-  [Obsolete($"The return type of this method will be changed to MimeType in the future release. Use Smdn.Formats.Mime.{nameof(MimeTypeStringExtensions)}.{nameof(MimeTypeStringExtensions.Split)}() instead.")]
-#pragma warning disable SA1316
-  public static (string type, string subType) Parse(string s)
-    => MimeTypeStringExtensions.Split(s);
-#pragma warning restore SA1316
-#endif
 
   // IParsable<TSelf>.Parse
   public static MimeType Parse(string s, IFormatProvider? provider = null)

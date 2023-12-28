@@ -7,36 +7,6 @@ namespace Smdn.Formats.Mime;
 
 [TestFixture()]
 public class MimeTypeStringExtensionsTests {
-#pragma warning disable 0618
-  [Test]
-  [Category("obsolete")]
-  public void MimeType_TryParse_Tuple()
-  {
-    Assert.That(MimeType.TryParse("text/plain", out (string type, string subType) result), Is.True);
-    Assert.That(result.type, Is.EqualTo("text"));
-    Assert.That(result.subType, Is.EqualTo("plain"));
-  }
-#pragma warning restore 0618
-
-#pragma warning disable 0618
-  [Test]
-  [Category("obsolete")]
-  public void MimeType_Parse_Tuple()
-  {
-#pragma warning disable CA1305
-    (var type, var subType) = MimeType.Parse("text/plain");
-
-    Assert.That(type, Is.EqualTo("text"));
-    Assert.That(subType, Is.EqualTo("plain"));
-
-    Assert.Throws<ArgumentNullException>(() => MimeType.Parse(null!));
-    Assert.Throws<ArgumentException>(() => MimeType.Parse(string.Empty));
-    Assert.Throws<ArgumentException>(() => MimeType.Parse("text/"));
-    Assert.Throws<ArgumentException>(() => MimeType.Parse("/plain"));
-#pragma warning restore CA1305
-  }
-#pragma warning restore 0618
-
   [TestCase("text/plain", "text", "plain")]
   [TestCase("message/rfc822", "message", "rfc822")]
   [TestCase("application/rdf+xml", "application", "rdf+xml")]
