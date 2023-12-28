@@ -2,12 +2,13 @@
 //   Name: Smdn.Fundamental.MimeType
 //   AssemblyVersion: 3.2.0.0
 //   InformationalVersion: 3.2.0+7d669250561607ce9ee58383739596c1727ae861
-//   TargetFramework: .NETStandard,Version=v2.1
+//   TargetFramework: .NETCoreApp,Version=v8.0
 //   Configuration: Release
 //   Referenced assemblies:
-//     Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     Microsoft.Win32.Registry, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
-//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;
@@ -20,7 +21,10 @@ namespace Smdn {
   public class MimeType :
     IEquatable<MimeType>,
     IEquatable<string>,
-    IFormattable
+    ISpanFormattable,
+    ISpanParsable<MimeType>,
+    IUtf8SpanFormattable,
+    IUtf8SpanParsable<MimeType>
   {
     public static readonly MimeType ApplicationOctetStream; // = "application/octet-stream"
     public static readonly MimeType ApplicationXWwwFormUrlEncoded; // = "application/x-www-form-urlencoded"
@@ -52,8 +56,10 @@ namespace Smdn {
     public static MimeType? FindMimeTypeByExtension(string extensionOrPath, string mimeTypesFile) {}
     [Obsolete("The return type of this method will be changed to MimeType in the future release. Use Smdn.Formats.Mime.MimeTypeStringExtensions.Split() instead.")]
     public static (string type, string subType) Parse(string s) {}
+    public static MimeType Parse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider = null) {}
     public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
     public static MimeType Parse(string s, IFormatProvider? provider = null) {}
+    public static bool TryParse(ReadOnlySpan<byte> utf8Text, IFormatProvider? provider, [NotNullWhen(true)] out MimeType? result) {}
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out MimeType result) {}
     public static bool TryParse(string? s, IFormatProvider? provider, [NotNullWhen(true)] out MimeType result) {}
     public static bool TryParse(string? s, [NotNullWhen(true)] out MimeType? result) {}
@@ -116,6 +122,7 @@ namespace Smdn {
     public bool SubTypeEqualsIgnoreCase(string? subType) {}
     public override string ToString() {}
     public string ToString(string? format, IFormatProvider? formatProvider) {}
+    public bool TryFormat(Span<byte> utf8Destination, out int bytesWritten, ReadOnlySpan<char> format, IFormatProvider? provider) {}
     public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) {}
     [Obsolete("Use `TypeEquals(MimeType, StringComparison)` instead. This method will be changed to perform case-insensitive comparison in the future release.")]
     public bool TypeEquals(MimeType? mimeType) {}
