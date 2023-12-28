@@ -18,34 +18,17 @@ partial class MimeType
     ReadOnlySpan<char> format,
     IFormatProvider? provider
   )
-    => TryFormatCore(
-      destination,
-      out charsWritten,
-      format,
-      provider,
-      throwIfError: false
-    );
-
-  private bool TryFormatCore(
-    Span<char> destination,
-    out int charsWritten,
-    ReadOnlySpan<char> format,
-#pragma warning disable IDE0060
-    IFormatProvider? provider,
-#pragma warning restore IDE0060
-    bool throwIfError
-  )
   {
     charsWritten = default;
 
     var requiredLength = Type.Length + 1 + SubType.Length;
 
     if (destination.Length < requiredLength)
-      return throwIfError ? throw ExceptionUtils.CreateArgumentMustHaveLengthAtLeast(nameof(destination), requiredLength) : false;
+      return false;
 
     // format string can be only '' currently
     if (!format.IsEmpty)
-      return throwIfError ? throw new FormatException("unsupported format string: " + format.ToString()) : false;
+      throw new FormatException("unsupported format string: " + format.ToString());
 
     Type.AsSpan().CopyTo(destination);
 

@@ -17,12 +17,11 @@ partial class MimeType :
     try {
       destination = ArrayPool<char>.Shared.Rent(length);
 
-      TryFormatCore(
+      _ = TryFormat(
         destination,
         out var charsWritten,
         (format ?? string.Empty).AsSpan(),
-        formatProvider,
-        throwIfError: true
+        formatProvider
       );
 
       return new(destination, 0, charsWritten);

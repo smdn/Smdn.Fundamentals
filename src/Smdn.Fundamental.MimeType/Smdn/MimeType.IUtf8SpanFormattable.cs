@@ -26,7 +26,7 @@ partial class MimeType : IUtf8SpanFormattable {
 
     // format string can be only '' currently
     if (!format.IsEmpty)
-      return false;
+      throw new FormatException("unsupported format string: " + format.ToString());
 
     bytesWritten = 0;
 
