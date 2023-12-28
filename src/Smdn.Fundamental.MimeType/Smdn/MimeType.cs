@@ -40,17 +40,16 @@ public sealed partial class MimeType {
   public static readonly MimeType MessageExternalBody         = new(TopLevelTypeMessage, "external-body"); // [RFC2046]
   public static readonly MimeType MessageRfc822               = new(TopLevelTypeMessage, "rfc822"); // [RFC2046]
 
-  // TODO: rename param `subtype` to `subType`
-  public static MimeType CreateTextType(string subtype) => new(TopLevelTypeText, subtype);
-  public static MimeType CreateImageType(string subtype) => new(TopLevelTypeImage, subtype);
-  public static MimeType CreateAudioType(string subtype) => new(TopLevelTypeAudio, subtype);
-  public static MimeType CreateVideoType(string subtype) => new(TopLevelTypeVideo, subtype);
-  public static MimeType CreateApplicationType(string subtype) => new(TopLevelTypeApplication, subtype);
-  public static MimeType CreateMultipartType(string subtype) => new(TopLevelTypeMultipart, subtype);
+  public static MimeType CreateTextType(string subType) => new(TopLevelTypeText, subType);
+  public static MimeType CreateImageType(string subType) => new(TopLevelTypeImage, subType);
+  public static MimeType CreateAudioType(string subType) => new(TopLevelTypeAudio, subType);
+  public static MimeType CreateVideoType(string subType) => new(TopLevelTypeVideo, subType);
+  public static MimeType CreateApplicationType(string subType) => new(TopLevelTypeApplication, subType);
+  public static MimeType CreateMultipartType(string subType) => new(TopLevelTypeMultipart, subType);
   // [RFC2077] The Model Primary Content Type for Multipurpose Internet Mail Extensions
-  public static MimeType CreateModelType(string subtype) => new(TopLevelTypeModel, subtype);
+  public static MimeType CreateModelType(string subType) => new(TopLevelTypeModel, subType);
   // [RFC8081] The "font" Top-Level Media Type
-  public static MimeType CreateFontType(string subtype) => new(TopLevelTypeFont, subtype);
+  public static MimeType CreateFontType(string subType) => new(TopLevelTypeFont, subType);
 
   /*
    * instance members
