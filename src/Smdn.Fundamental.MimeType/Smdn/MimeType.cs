@@ -12,7 +12,7 @@ namespace Smdn;
  * ref: https://www.iana.org/assignments/media-types/media-types.xhtml
  */
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-public partial class MimeType {
+public sealed partial class MimeType {
   private const string TopLevelTypeApplication = "application";
   private const string TopLevelTypeAudio = "audio";
   private const string TopLevelTypeImage = "image";
