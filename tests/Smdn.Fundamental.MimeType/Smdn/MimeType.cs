@@ -163,8 +163,6 @@ public partial class MimeTypeTests {
   [TestCase("text", "Ｐlain", typeof(ArgumentException))]
   public void Constructor_ReadOnlySpanOfChar_ReadOnlySpanOfChar_ArgumentException(string type, string subtype, Type expectedExceptionType)
   {
-    var mimeType = (type, subtype);
-
     Assert.Throws(expectedExceptionType, () => new MimeType(type.AsSpan(), subtype.AsSpan()));
   }
 
