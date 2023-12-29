@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+#define SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+#endif
+
 using System;
 using NUnit.Framework;
 
@@ -171,6 +176,55 @@ public partial class MimeTypeTests {
     Assert.That(MimeType.TextPlain.ToString(), Is.EqualTo("text/plain"));
     Assert.That(MimeType.ApplicationOctetStream.ToString(), Is.EqualTo("application/octet-stream"));
     Assert.That(MimeType.CreateTextType("html").ToString(), Is.EqualTo("text/html"));
+  }
+
+  [TestCase("text/plain", "text/plain")]
+  [TestCase("Text/Plain", "text/plain")]
+  [TestCase("TEXT/PLAIN", "text/plain")]
+  public void Test_GetHashCode(string mimeType, string expected)
+  {
+    var mime = new MimeType(mimeType);
+
+    Assert.That(mime.GetHashCode(), Is.EqualTo(StringComparer.OrdinalIgnoreCase.GetHashCode(expected)));
+  }
+
+  [TestCase("text/plain", StringComparison.Ordinal)]
+  [TestCase("text/plain", StringComparison.OrdinalIgnoreCase)]
+#if SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+  [TestCase("text/plain", StringComparison.InvariantCulture)]
+#endif
+#if SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+  [TestCase("text/plain", StringComparison.InvariantCultureIgnoreCase)]
+#endif
+  [TestCase("TEXT/PLAIN", StringComparison.Ordinal)]
+  [TestCase("TEXT/PLAIN", StringComparison.OrdinalIgnoreCase)]
+  public void GetHashCode_ComparisonType(string mimeType, StringComparison comparisonType)
+  {
+    var mime = new MimeType(mimeType);
+
+    Assert.That(mime.GetHashCode(comparisonType), Is.EqualTo(GetHashCode(mimeType, comparisonType)));
+
+    static int GetHashCode(string str, StringComparison comparisonType)
+#if SYSTEM_STRING_GETHASHCODE_STRINGCOMPARISON
+      => str.GetHashCode(comparisonType);
+#else
+      => GetStringComparerFromComparison(comparisonType).GetHashCode(str);
+
+    static StringComparer GetStringComparerFromComparison(StringComparison comparisonType)
+      => comparisonType switch {
+        StringComparison.CurrentCulture => StringComparer.CurrentCulture,
+        StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
+#if SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+        StringComparison.InvariantCulture => StringComparer.InvariantCulture,
+#endif
+#if SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+        StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
+#endif
+        StringComparison.Ordinal => StringComparer.Ordinal,
+        StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,
+        _ => throw new ArgumentException(message: $"unknown comparison type '{comparisonType}'", paramName: nameof(comparisonType)),
+      };
+#endif
   }
 
   [Test]

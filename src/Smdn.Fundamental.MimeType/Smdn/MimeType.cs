@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+#define SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+#define SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+#endif
+
 using System;
 
 using Smdn.Formats.Mime;
@@ -121,9 +126,31 @@ public sealed partial class MimeType {
   }
 
   public override int GetHashCode()
-#pragma warning disable CA1307
-    => ToString().GetHashCode(); // TODO: use System.HashCode
-#pragma warning restore CA1307
+    => GetHashCode(DefaultComparisonType);
+
+  public int GetHashCode(StringComparison comparisonType)
+#if SYSTEM_STRING_GETHASHCODE_READONLYSPAN_OF_CHAR
+    => string.GetHashCode(value.Span, comparisonType);
+#elif SYSTEM_STRING_GETHASHCODE_STRINGCOMPARISON
+    => ToString().GetHashCode(comparisonType);
+#else
+    => GetStringComparerFromComparison(comparisonType).GetHashCode(ToString());
+
+  private static StringComparer GetStringComparerFromComparison(StringComparison comparisonType)
+    => comparisonType switch {
+      StringComparison.CurrentCulture => StringComparer.CurrentCulture,
+      StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
+#if SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+      StringComparison.InvariantCulture => StringComparer.InvariantCulture,
+#endif
+#if SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+      StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
+#endif
+      StringComparison.Ordinal => StringComparer.Ordinal,
+      StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,
+      _ => throw new ArgumentException(message: $"unknown comparison type '{comparisonType}'", paramName: nameof(comparisonType)),
+    };
+#endif
 
   public static explicit operator string?(MimeType? mimeType)
     => mimeType?.ToString();
