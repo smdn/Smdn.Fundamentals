@@ -122,10 +122,9 @@ partial class MimeType : IUtf8SpanParsable<MimeType> {
       };
     }
 
-    Span<char> type = stackalloc char[utf8Type.Length];
-    Span<char> subType = stackalloc char[utf8SubType.Length];
+    Span<char> value = stackalloc char[utf8Type.Length + 1 + utf8SubType.Length];
 
-    if (OperationStatus.Done != Ascii.ToUtf16(utf8Type, type, out _)) {
+    if (OperationStatus.Done != Ascii.ToUtf16(utf8Type, value.Slice(0, indexOfDelimiter), out _)) {
       return onParseError switch {
         OnParseError.ThrowArgumentException => throw new NotImplementedException(),
         OnParseError.ThrowFormatException => throw new FormatException("invalid format (type is not valid ASCII sequence)"),
@@ -133,7 +132,9 @@ partial class MimeType : IUtf8SpanParsable<MimeType> {
       };
     }
 
-    if (OperationStatus.Done != Ascii.ToUtf16(utf8SubType, subType, out _)) {
+    value[indexOfDelimiter] = DelimiterChar;
+
+    if (OperationStatus.Done != Ascii.ToUtf16(utf8SubType, value.Slice(indexOfDelimiter + 1), out _)) {
       return onParseError switch {
         OnParseError.ThrowArgumentException => throw new NotImplementedException(),
         OnParseError.ThrowFormatException => throw new FormatException("invalid format (sub type is not valid ASCII sequence)"),
@@ -141,10 +142,7 @@ partial class MimeType : IUtf8SpanParsable<MimeType> {
       };
     }
 
-    result = new(
-      type: new string(type),
-      subType: new string(subType)
-    );
+    result = new(value, indexOfDelimiter);
 
     return true;
   }
