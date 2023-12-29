@@ -39,7 +39,11 @@ partial class MimeType
 #endif
     out MimeType? result
   )
-    => TryParse(s, provider: null, out result);
+  {
+    result = null;
+
+    return s is not null && TryParse(s.AsSpan(), provider: null, out result);
+  }
 
   // IParsable<TSelf>.TryParse
   public static bool TryParse(
@@ -53,24 +57,7 @@ partial class MimeType
   {
     result = null!;
 
-    if (s is null)
-      return false;
-
-    if (
-      !TryParse(
-        s.AsSpan(),
-        nameof(s),
-        onParseError: OnParseError.ReturnFalse,
-        provider: provider,
-        out var ret
-      )
-    ) {
-      return false;
-    }
-
-    result = new(ret);
-
-    return true;
+    return s is not null && TryParse(s.AsSpan(), provider: provider, out result);
   }
 
   // ISpanParsable<TSelf>.TryParse
@@ -97,17 +84,7 @@ partial class MimeType
 
   // IParsable<TSelf>.Parse
   public static MimeType Parse(string s, IFormatProvider? provider = null)
-  {
-    TryParse(
-      s: (s ?? throw new ArgumentNullException(nameof(s))).AsSpan(),
-      paramName: nameof(s),
-      onParseError: OnParseError.ThrowFormatException,
-      provider: provider,
-      out var result
-    );
-
-    return new(result.Type, result.SubType);
-  }
+    => Parse((s ?? throw new ArgumentNullException(nameof(s))).AsSpan(), provider: provider);
 
   // ISpanParsable<TSelf>.Parse
   public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
