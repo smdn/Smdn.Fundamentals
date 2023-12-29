@@ -23,6 +23,7 @@ public partial class MimeTypeTests {
   [TestCase("plain", "text/plain", null)]
   [TestCase(null, null, typeof(ArgumentNullException))]
   [TestCase("", null, typeof(ArgumentException))]
+  [TestCase("Ｐlain", null, typeof(ArgumentException))]
   public void CreateTextType(string subType, string expectedMimeType, Type expectedExceptionType)
     => TestCreate(() => MimeType.CreateTextType(subType), expectedMimeType, expectedExceptionType);
 

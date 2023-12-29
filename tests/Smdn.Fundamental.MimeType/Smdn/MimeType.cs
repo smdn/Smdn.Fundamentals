@@ -126,6 +126,7 @@ public partial class MimeTypeTests {
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", typeof(ArgumentException))] // 128chars (64chars '/' 63chars)
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", typeof(ArgumentException))] // 128chars (63chars '/' 64chars)
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", typeof(ArgumentException))] // 129chars (64chars '/' 64chars)
+  [TestCase("Ｔext/Ｐlain", typeof(ArgumentException))]
   public void Constructor_String_ArgumentException(string mimeType, Type expectedExceptionType)
     => Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
 
@@ -135,6 +136,8 @@ public partial class MimeTypeTests {
   [TestCase("", "", typeof(ArgumentException))]
   [TestCase("text", "", typeof(ArgumentException))]
   [TestCase("", "plain", typeof(ArgumentException))]
+  [TestCase("Ｔext", "plain", typeof(ArgumentException))]
+  [TestCase("text", "Ｐlain", typeof(ArgumentException))]
   public void Constructor_String_String_ArgumentException(string type, string subtype, Type expectedExceptionType)
     => Assert.Throws(expectedExceptionType, () => new MimeType(type, subtype));
 
@@ -144,6 +147,8 @@ public partial class MimeTypeTests {
   [TestCase("", "", typeof(ArgumentException))]
   [TestCase("text", "", typeof(ArgumentException))]
   [TestCase("", "plain", typeof(ArgumentException))]
+  [TestCase("Ｔext", "plain", typeof(ArgumentException))]
+  [TestCase("text", "Ｐlain", typeof(ArgumentException))]
   public void Constructor_ValueTuple2_ArgumentException(string type, string subtype, Type expectedExceptionType)
   {
     var mimeType = (type, subtype);
@@ -154,6 +159,8 @@ public partial class MimeTypeTests {
   [TestCase("", "", typeof(ArgumentException))]
   [TestCase("text", "", typeof(ArgumentException))]
   [TestCase("", "plain", typeof(ArgumentException))]
+  [TestCase("Ｔext", "plain", typeof(ArgumentException))]
+  [TestCase("text", "Ｐlain", typeof(ArgumentException))]
   public void Constructor_ReadOnlySpanOfChar_ReadOnlySpanOfChar_ArgumentException(string type, string subtype, Type expectedExceptionType)
   {
     var mimeType = (type, subtype);

@@ -100,6 +100,9 @@ public sealed partial class MimeType {
     if (subType.IsEmpty)
       throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(subType));
 
+    _ = ValidateName(type, nameof(type), OnParseError.ThrowArgumentException);
+    _ = ValidateName(subType, nameof(subType), OnParseError.ThrowArgumentException);
+
     var val = new char[type.Length + 1 + subType.Length];
     var valueSpan = val.AsSpan();
 

@@ -4,6 +4,10 @@ using System;
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
 #endif
+using System.Text;
+#if !SYSTEM_TEXT_ASCII
+using System.Threading;
+#endif
 
 namespace Smdn;
 
@@ -15,6 +19,19 @@ partial class MimeType
   ISpanParsable<MimeType>
 #endif
 {
+#if !SYSTEM_TEXT_ASCII
+  private const int AsciiCodePage = 20127;
+
+  private static readonly Lazy<Encoding> LazyDecoderExceptionFallbackAsciiEncoding = new(
+    valueFactory: static () => Encoding.GetEncoding(
+      codepage: AsciiCodePage,
+      encoderFallback: EncoderFallback.ExceptionFallback,
+      decoderFallback: DecoderFallback.ExceptionFallback
+    ),
+    mode: LazyThreadSafetyMode.PublicationOnly
+  );
+#endif
+
   public static bool TryParse(
     string? s,
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
@@ -185,7 +202,70 @@ partial class MimeType
       };
     }
 
+    if (!ValidateName(type, nameof(type), onParseError))
+      return false;
+
+    if (!ValidateName(subtype, nameof(subtype), onParseError))
+      return false;
+
     result = (type.ToString(), subtype.ToString());
+
+    return true;
+  }
+
+  /// <summary>
+  /// Validates 'type' and 'sub type'.
+  /// </summary>
+  /// <remarks>
+  /// At this time, verify only that the name is a valid ASCII sequence or not.
+  /// </remarks>
+  /// <param name="name">The string that represents the 'type' or 'sub type' of MIME type.</param>
+  /// <param name="paramName">The parameter name for the <paramref name="name"/>.</param>
+  /// <param name="onParseError">The <see cref="OnParseError"/> value that defines the action to be taken in case of an error.</param>
+  /// <returns><see langword="true"/> if the name is valid ASCII sequence, <see langword="false"/> if invalid.</returns>
+  private static bool ValidateName(
+    ReadOnlySpan<char> name,
+    string paramName,
+    OnParseError onParseError
+  )
+  {
+    /*
+     * [RFC6838] Media Type Specifications and Registration Procedures 4.2.  Naming Requirements
+     * 'Also note that while this syntax allows names of up to
+     * 127 characters, implementation limits may make such long names
+     * problematic.  For this reason, <type-name> and <subtype-name> SHOULD
+     * be limited to 64 characters.'
+     */
+    const int MaxCharcters = 64;
+
+    if (MaxCharcters <= name.Length) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException(message: $"too long name (acceptable up to {MaxCharcters - 1} but was {name.Length})", paramName: paramName),
+        OnParseError.ThrowFormatException => throw new FormatException($"too long name (expected up to {MaxCharcters} but was {name.Length})"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
+
+    bool isValidAsciiSequence;
+
+#if SYSTEM_TEXT_ASCII
+    isValidAsciiSequence = Ascii.IsValid(name);
+#else
+    try {
+      isValidAsciiSequence = name.Length == LazyDecoderExceptionFallbackAsciiEncoding.Value.GetByteCount(name);
+    }
+    catch (EncoderFallbackException) {
+      isValidAsciiSequence = false;
+    }
+#endif
+
+    if (!isValidAsciiSequence) {
+      return onParseError switch {
+        OnParseError.ThrowArgumentException => throw new ArgumentException(message: "invalid format (contains invalid ASCII sequence)", paramName: paramName),
+        OnParseError.ThrowFormatException => throw new FormatException("invalid format (contains invalid ASCII sequence)"),
+        _ => false, // OnParseError.ReturnFalse
+      };
+    }
 
     return true;
   }

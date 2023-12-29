@@ -27,6 +27,8 @@ partial class MimeTypeTests {
     yield return new object[] { new string('x', 63) + "/" + new string('x', 64), typeof(FormatException) };
     yield return new object[] { new string('x', 64) + "/" + new string('x', 63), typeof(FormatException) };
     yield return new object[] { new string('x', 64) + "/" + new string('x', 64), typeof(FormatException) };
+    yield return new object[] { "Ｔext/plain", typeof(FormatException) };
+    yield return new object[] { "text/Ｐlain", typeof(FormatException) };
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
