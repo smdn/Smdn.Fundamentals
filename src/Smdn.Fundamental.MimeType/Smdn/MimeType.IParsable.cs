@@ -5,9 +5,6 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 #endif
 using System.Text;
-#if !SYSTEM_TEXT_ASCII
-using System.Threading;
-#endif
 
 namespace Smdn;
 
@@ -22,14 +19,20 @@ partial class MimeType
 #if !SYSTEM_TEXT_ASCII
   private const int AsciiCodePage = 20127;
 
-  private static readonly Lazy<Encoding> LazyDecoderExceptionFallbackAsciiEncoding = new(
-    valueFactory: static () => Encoding.GetEncoding(
-      codepage: AsciiCodePage,
-      encoderFallback: EncoderFallback.ExceptionFallback,
-      decoderFallback: DecoderFallback.ExceptionFallback
-    ),
-    mode: LazyThreadSafetyMode.PublicationOnly
-  );
+  private static Encoding? decoderExceptionFallbackAsciiEncoding;
+
+  // XXX: can not use Lazy<T>
+  private static Encoding DecoderExceptionFallbackAsciiEncoding {
+    get {
+      decoderExceptionFallbackAsciiEncoding ??= Encoding.GetEncoding(
+        codepage: AsciiCodePage,
+        encoderFallback: EncoderFallback.ExceptionFallback,
+        decoderFallback: DecoderFallback.ExceptionFallback
+      );
+
+      return decoderExceptionFallbackAsciiEncoding;
+    }
+  }
 #endif
 
   public static bool TryParse(
@@ -227,7 +230,7 @@ partial class MimeType
     isValidAsciiSequence = Ascii.IsValid(name);
 #else
     try {
-      isValidAsciiSequence = name.Length == LazyDecoderExceptionFallbackAsciiEncoding.Value.GetByteCount(name);
+      isValidAsciiSequence = name.Length == DecoderExceptionFallbackAsciiEncoding.GetByteCount(name);
     }
     catch (EncoderFallbackException) {
       isValidAsciiSequence = false;
