@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
-#define SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
-#endif
-
 using System;
 
 using Smdn.Formats.Mime;
@@ -154,10 +149,10 @@ public sealed partial class MimeType {
     => comparisonType switch {
       StringComparison.CurrentCulture => StringComparer.CurrentCulture,
       StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
-#if SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+#if SYSTEM_STRINGCOMPARISON_INVARIANTCULTURE && SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
       StringComparison.InvariantCulture => StringComparer.InvariantCulture,
 #endif
-#if SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+#if SYSTEM_STRINGCOMPARISON_INVARIANTCULTUREIGNORECASE && SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
       StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
 #endif
       StringComparison.Ordinal => StringComparer.Ordinal,

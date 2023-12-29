@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
-#define SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
-#endif
-
 using System;
 using NUnit.Framework;
 
@@ -192,10 +187,10 @@ public partial class MimeTypeTests {
 
   [TestCase("text/plain", StringComparison.Ordinal)]
   [TestCase("text/plain", StringComparison.OrdinalIgnoreCase)]
-#if SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+#if SYSTEM_STRINGCOMPARISON_INVARIANTCULTURE
   [TestCase("text/plain", StringComparison.InvariantCulture)]
 #endif
-#if SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+#if SYSTEM_STRINGCOMPARISON_INVARIANTCULTUREIGNORECASE
   [TestCase("text/plain", StringComparison.InvariantCultureIgnoreCase)]
 #endif
   [TestCase("TEXT/PLAIN", StringComparison.Ordinal)]
@@ -216,11 +211,11 @@ public partial class MimeTypeTests {
       => comparisonType switch {
         StringComparison.CurrentCulture => StringComparer.CurrentCulture,
         StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
-#if SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
-        StringComparison.InvariantCulture => StringComparer.InvariantCulture,
+#if SYSTEM_STRINGCOMPARISON_INVARIANTCULTURE && SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
+      StringComparison.InvariantCulture => StringComparer.InvariantCulture,
 #endif
-#if SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
-        StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
+#if SYSTEM_STRINGCOMPARISON_INVARIANTCULTUREIGNORECASE && SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
+      StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
 #endif
         StringComparison.Ordinal => StringComparer.Ordinal,
         StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,
