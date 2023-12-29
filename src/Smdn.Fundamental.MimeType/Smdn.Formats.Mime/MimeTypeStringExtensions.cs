@@ -15,13 +15,20 @@ public static class MimeTypeStringExtensions {
     if (mimeType is null)
       return false;
 
-    return MimeType.TryParse(
+    var ret = MimeType.TryParse(
       s: mimeType.AsSpan(),
       paramName: nameof(mimeType),
       onParseError: MimeType.OnParseError.ReturnFalse,
       provider: null,
-      out result
+      out var indexOfDelimiter
     );
+
+    if (!ret)
+      return false;
+
+    result = (mimeType.Substring(0, indexOfDelimiter), mimeType.Substring(indexOfDelimiter + 1));
+
+    return true;
   }
 
   public static (string Type, string SubType) Split(string? mimeType)
@@ -40,9 +47,9 @@ public static class MimeTypeStringExtensions {
       paramName: paramName,
       onParseError: MimeType.OnParseError.ThrowArgumentException,
       provider: null,
-      out var result
+      out var indexOfDelimiter
     );
 
-    return result;
+    return (mimeType.Substring(0, indexOfDelimiter), mimeType.Substring(indexOfDelimiter + 1));
   }
 }

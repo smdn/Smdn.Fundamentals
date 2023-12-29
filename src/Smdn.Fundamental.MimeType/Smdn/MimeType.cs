@@ -117,6 +117,17 @@ public sealed partial class MimeType {
     value = val;
   }
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="MimeType"/> class.
+  /// </summary>
+  /// <param name="value">The <see cref="ReadOnlySpan{Char}"/> that represents a MIME type string. This value must be valid ASCII sequence.</param>
+  /// <param name="indexOfDelimiter">The index of the delimiter that splits the type and subtype.</param>
+  private MimeType(ReadOnlySpan<char> value, int indexOfDelimiter)
+  {
+    this.value = value.ToArray(); // create copy
+    this.indexOfDelimiter = indexOfDelimiter;
+  }
+
   public void Deconstruct(out string type, out string subType)
   {
 #if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR

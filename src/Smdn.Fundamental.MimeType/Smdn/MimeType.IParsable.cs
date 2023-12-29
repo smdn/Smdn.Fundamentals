@@ -71,13 +71,13 @@ partial class MimeType
         nameof(s),
         onParseError: OnParseError.ReturnFalse,
         provider: provider,
-        out var ret
+        out var indexOfDelimiter
       )
     ) {
       return false;
     }
 
-    result = new(ret);
+    result = new(s, indexOfDelimiter);
 
     return true;
   }
@@ -89,15 +89,15 @@ partial class MimeType
   // ISpanParsable<TSelf>.Parse
   public static MimeType Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
   {
-    TryParse(
+    _ = TryParse(
       s: s,
       paramName: nameof(s),
       onParseError: OnParseError.ThrowFormatException,
       provider: provider,
-      out var result
+      out var indexOfDelimiter
     );
 
-    return new(result.Type, result.SubType);
+    return new(s, indexOfDelimiter);
   }
 
   internal enum OnParseError {
@@ -112,11 +112,11 @@ partial class MimeType
     OnParseError onParseError,
 #pragma warning disable IDE0060
     IFormatProvider? provider,
-#pragma warning restore IDE0060
-    out (string Type, string SubType) result
+#pragma warning restore IDE0060,
+    out int indexOfDelimiter
   )
   {
-    result = default;
+    indexOfDelimiter = default;
 
     if (s.IsEmpty) {
       return onParseError switch {
@@ -142,7 +142,7 @@ partial class MimeType
       };
     }
 
-    var indexOfDelimiter = s.IndexOf(DelimiterChar);
+    indexOfDelimiter = s.IndexOf(DelimiterChar);
 
     if (indexOfDelimiter < 0) {
       return onParseError switch {
@@ -184,8 +184,6 @@ partial class MimeType
 
     if (!ValidateName(subtype, nameof(subtype), onParseError))
       return false;
-
-    result = (type.ToString(), subtype.ToString());
 
     return true;
   }
