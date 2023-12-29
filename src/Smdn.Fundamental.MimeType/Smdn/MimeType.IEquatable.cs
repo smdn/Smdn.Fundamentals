@@ -19,7 +19,7 @@ partial class MimeType :
    * TypeEquals(MimeType)
    */
   public bool TypeEquals(MimeType? mimeType, StringComparison comparisonType = DefaultComparisonType)
-    => mimeType is not null && TypeEquals(mimeType.Type.AsSpan(), comparisonType);
+    => mimeType is not null && TypeEquals(mimeType.TypeSpan, comparisonType);
 
   /*
    * TypeEquals(string)
@@ -31,13 +31,13 @@ partial class MimeType :
    * TypeEquals(ReadOnlySpan<char>)
    */
   public bool TypeEquals(ReadOnlySpan<char> type, StringComparison comparisonType = DefaultComparisonType)
-    => Type.AsSpan().Equals(type, comparisonType);
+    => TypeSpan.Equals(type, comparisonType);
 
   /*
    * SubTypeEquals(MimeType)
    */
   public bool SubTypeEquals(MimeType? mimeType, StringComparison comparisonType = DefaultComparisonType)
-    => mimeType is not null && SubTypeEquals(mimeType.SubType.AsSpan(), comparisonType);
+    => mimeType is not null && SubTypeEquals(mimeType.SubTypeSpan, comparisonType);
 
   /*
    * SubTypeEquals(string)
@@ -49,7 +49,7 @@ partial class MimeType :
    * SubTypeEquals(ReadOnlySpan<char>)
    */
   public bool SubTypeEquals(ReadOnlySpan<char> subType, StringComparison comparisonType = DefaultComparisonType)
-    => SubType.AsSpan().Equals(subType, comparisonType);
+    => SubTypeSpan.Equals(subType, comparisonType);
 
   /*
    * Equals(object)
@@ -83,5 +83,5 @@ partial class MimeType :
    * Equals(ReadOnlySpan<char>)
    */
   public bool Equals(ReadOnlySpan<char> other, StringComparison comparisonType = DefaultComparisonType)
-    => ToString().AsSpan().Equals(other, comparisonType); // TODO: reduce allocation (ToString)
+    => value.Span.Equals(other, comparisonType);
 }

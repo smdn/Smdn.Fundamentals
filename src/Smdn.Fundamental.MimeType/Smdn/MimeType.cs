@@ -54,8 +54,14 @@ public sealed partial class MimeType {
   /*
    * instance members
    */
-  public string Type { get; }
-  public string SubType { get; }
+  public ReadOnlyMemory<char> TypeMemory => value.Slice(0, indexOfDelimiter);
+  public ReadOnlyMemory<char> SubTypeMemory => value.Slice(indexOfDelimiter + 1);
+
+  public ReadOnlySpan<char> TypeSpan => value.Slice(0, indexOfDelimiter).Span;
+  public ReadOnlySpan<char> SubTypeSpan => value.Slice(indexOfDelimiter + 1).Span;
+
+  private readonly int indexOfDelimiter;
+  private readonly ReadOnlyMemory<char> value;
 
   public MimeType(string mimeType)
     : this(
@@ -73,24 +79,43 @@ public sealed partial class MimeType {
   }
 
   public MimeType(string type, string subType)
+    : this(
+      (type ?? throw new ArgumentNullException(nameof(type))).AsSpan(),
+      (subType ?? throw new ArgumentNullException(nameof(subType))).AsSpan()
+    )
   {
-    if (type == null)
-      throw new ArgumentNullException(nameof(type));
-    if (type.Length == 0)
+  }
+
+  public MimeType(ReadOnlySpan<char> type, ReadOnlySpan<char> subType)
+  {
+    if (type.IsEmpty)
       throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(type));
-    if (subType == null)
-      throw new ArgumentNullException(nameof(subType));
-    if (subType.Length == 0)
+    if (subType.IsEmpty)
       throw ExceptionUtils.CreateArgumentMustBeNonEmptyString(nameof(subType));
 
-    Type = type;
-    SubType = subType;
+    var val = new char[type.Length + 1 + subType.Length];
+    var valueSpan = val.AsSpan();
+
+    type.CopyTo(valueSpan);
+
+    indexOfDelimiter = type.Length;
+
+    valueSpan[indexOfDelimiter] = '/';
+
+    subType.CopyTo(valueSpan.Slice(indexOfDelimiter + 1));
+
+    value = val;
   }
 
   public void Deconstruct(out string type, out string subType)
   {
-    type = Type;
-    subType = SubType;
+#if SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR
+    type = new string(TypeSpan);
+    subType = new string(SubTypeSpan);
+#else
+    type = TypeSpan.ToString();
+    subType = SubTypeSpan.ToString();
+#endif
   }
 
   public override int GetHashCode()

@@ -3,6 +3,8 @@
 using System;
 using NUnit.Framework;
 
+using BufferIs = Smdn.Test.NUnit.Constraints.Buffers.Is;
+
 namespace Smdn;
 
 [TestFixture()]
@@ -27,6 +29,7 @@ public partial class MimeTypeTests {
     );
 
   [TestCase("text/plain", "text", "plain")]
+  [TestCase("TEXT/PLAIN", "TEXT", "PLAIN")]
   [TestCase("message/rfc822", "message", "rfc822")]
   [TestCase("application/rdf+xml", "application", "rdf+xml")]
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 63chars '/' 63chars
@@ -34,12 +37,17 @@ public partial class MimeTypeTests {
   {
     var mime = new MimeType(mimeType);
 
-    Assert.That(mime.Type, Is.EqualTo(expectedType));
-    Assert.That(mime.SubType, Is.EqualTo(expectedSubType));
+    Assert.That(mime.TypeSpan.ToString(), Is.EqualTo(expectedType));
+    Assert.That(mime.SubTypeSpan.ToString(), Is.EqualTo(expectedSubType));
+
+    Assert.That(mime.TypeMemory, BufferIs.EqualTo(expectedType.AsMemory()));
+    Assert.That(mime.SubTypeMemory, BufferIs.EqualTo(expectedSubType.AsMemory()));
+
     Assert.That(mime.ToString(), Is.EqualTo(mimeType));
   }
 
   [TestCase("text", "plain")]
+  [TestCase("TEXT", "PLAIN")]
   [TestCase("message", "rfc822")]
   [TestCase("application", "rdf+xml")]
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 63chars/63chars
@@ -50,12 +58,17 @@ public partial class MimeTypeTests {
   {
     var mime = new MimeType(type, subtype);
 
-    Assert.That(mime.Type, Is.EqualTo(type));
-    Assert.That(mime.SubType, Is.EqualTo(subtype));
+    Assert.That(mime.TypeSpan.ToString(), Is.EqualTo(type));
+    Assert.That(mime.SubTypeSpan.ToString(), Is.EqualTo(subtype));
+
+    Assert.That(mime.TypeMemory, BufferIs.EqualTo(type.AsMemory()));
+    Assert.That(mime.SubTypeMemory, BufferIs.EqualTo(subtype.AsMemory()));
+
     Assert.That(mime.ToString(), Is.EqualTo($"{type}/{subtype}"));
   }
 
   [TestCase("text", "plain")]
+  [TestCase("TEXT", "PLAIN")]
   [TestCase("message", "rfc822")]
   [TestCase("application", "rdf+xml")]
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 63chars/63chars
@@ -67,8 +80,33 @@ public partial class MimeTypeTests {
     var m = (type, subtype);
     var mime = new MimeType(m);
 
-    Assert.That(mime.Type, Is.EqualTo(type));
-    Assert.That(mime.SubType, Is.EqualTo(subtype));
+    Assert.That(mime.TypeSpan.ToString(), Is.EqualTo(type));
+    Assert.That(mime.SubTypeSpan.ToString(), Is.EqualTo(subtype));
+
+    Assert.That(mime.TypeMemory, BufferIs.EqualTo(type.AsMemory()));
+    Assert.That(mime.SubTypeMemory, BufferIs.EqualTo(subtype.AsMemory()));
+
+    Assert.That(mime.ToString(), Is.EqualTo($"{type}/{subtype}"));
+  }
+
+  [TestCase("text", "plain")]
+  [TestCase("TEXT", "PLAIN")]
+  [TestCase("message", "rfc822")]
+  [TestCase("application", "rdf+xml")]
+  [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 63chars/63chars
+  [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 64chars/63chars
+  [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 63chars/64chars
+  [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")] // 64chars/64chars
+  public void Constructor_ReadOnlySpanOfChar_ReadOnlySpanOfChar(string type, string subtype)
+  {
+    var mime = new MimeType(type.AsSpan(), subtype.AsSpan());
+
+    Assert.That(mime.TypeSpan.ToString(), Is.EqualTo(type));
+    Assert.That(mime.SubTypeSpan.ToString(), Is.EqualTo(subtype));
+
+    Assert.That(mime.TypeMemory, BufferIs.EqualTo(type.AsMemory()));
+    Assert.That(mime.SubTypeMemory, BufferIs.EqualTo(subtype.AsMemory()));
+
     Assert.That(mime.ToString(), Is.EqualTo($"{type}/{subtype}"));
   }
 
@@ -106,6 +144,16 @@ public partial class MimeTypeTests {
     var mimeType = (type, subtype);
 
     Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
+  }
+
+  [TestCase("", "", typeof(ArgumentException))]
+  [TestCase("text", "", typeof(ArgumentException))]
+  [TestCase("", "plain", typeof(ArgumentException))]
+  public void Constructor_ReadOnlySpanOfChar_ReadOnlySpanOfChar_ArgumentException(string type, string subtype, Type expectedExceptionType)
+  {
+    var mimeType = (type, subtype);
+
+    Assert.Throws(expectedExceptionType, () => new MimeType(type.AsSpan(), subtype.AsSpan()));
   }
 
   [Test]

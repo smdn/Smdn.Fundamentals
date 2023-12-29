@@ -19,34 +19,14 @@ partial class MimeType : IUtf8SpanFormattable {
   {
     bytesWritten = default;
 
-    var requiredLength = Type.Length + 1 + SubType.Length;
-
-    if (utf8Destination.Length < requiredLength)
+    if (utf8Destination.Length < value.Length)
       return false;
 
     // format string can be only '' currently
     if (!format.IsEmpty)
       throw new FormatException("unsupported format string: " + format.ToString());
 
-    bytesWritten = 0;
-
-    if (OperationStatus.Done != Ascii.FromUtf16(Type.AsSpan(), utf8Destination, out var bytesWrittenForType))
-      return false;
-
-    bytesWritten += bytesWrittenForType;
-    utf8Destination = utf8Destination.Slice(bytesWrittenForType);
-
-    utf8Destination[0] = (byte)'/';
-
-    bytesWritten += 1;
-    utf8Destination = utf8Destination.Slice(1);
-
-    if (OperationStatus.Done != Ascii.FromUtf16(SubType.AsSpan(), utf8Destination, out var bytesWrittenForSubType))
-      return false;
-
-    bytesWritten += bytesWrittenForSubType;
-
-    return true;
+    return OperationStatus.Done == Ascii.FromUtf16(value.Span, utf8Destination, out bytesWritten);
   }
 }
 #endif

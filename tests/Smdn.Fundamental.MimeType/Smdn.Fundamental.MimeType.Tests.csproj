@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Smdn.Test.NUnit.Constraints" />
     <PackageReference Include="Smdn.Test.NUnit.Utils" />
   </ItemGroup>
 </Project>

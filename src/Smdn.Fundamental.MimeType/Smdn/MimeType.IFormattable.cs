@@ -12,10 +12,9 @@ partial class MimeType :
   public string ToString(string? format, IFormatProvider? formatProvider)
   {
     char[]? destination = null;
-    var length = Type.Length + 1 + SubType.Length;
 
     try {
-      destination = ArrayPool<char>.Shared.Rent(length);
+      destination = ArrayPool<char>.Shared.Rent(value.Length);
 
       _ = TryFormat(
         destination,

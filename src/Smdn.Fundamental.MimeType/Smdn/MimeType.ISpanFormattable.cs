@@ -23,24 +23,16 @@ partial class MimeType
   {
     charsWritten = default;
 
-    var requiredLength = Type.Length + 1 + SubType.Length;
-
-    if (destination.Length < requiredLength)
+    if (destination.Length < value.Length)
       return false;
 
     // format string can be only '' currently
     if (!format.IsEmpty)
       throw new FormatException("unsupported format string: " + format.ToString());
 
-    Type.AsSpan().CopyTo(destination);
+    value.Span.CopyTo(destination);
 
-    destination = destination.Slice(Type.Length);
-
-    destination[0] = '/';
-
-    SubType.AsSpan().CopyTo(destination.Slice(1));
-
-    charsWritten = requiredLength;
+    charsWritten = value.Length;
 
     return true;
   }
