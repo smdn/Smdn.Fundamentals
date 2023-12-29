@@ -230,7 +230,14 @@ partial class MimeType
     isValidAsciiSequence = Ascii.IsValid(name);
 #else
     try {
-      isValidAsciiSequence = name.Length == DecoderExceptionFallbackAsciiEncoding.GetByteCount(name);
+      var lengthOfName =
+#if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
+        DecoderExceptionFallbackAsciiEncoding.GetByteCount(name);
+#else
+        DecoderExceptionFallbackAsciiEncoding.GetByteCount(name.ToArray());
+#endif
+
+      isValidAsciiSequence = name.Length == lengthOfName;
     }
     catch (EncoderFallbackException) {
       isValidAsciiSequence = false;
