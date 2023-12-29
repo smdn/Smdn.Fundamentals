@@ -84,7 +84,7 @@ partial class MimeType : IUtf8SpanParsable<MimeType> {
       };
     }
 
-    const byte Delimiter = (byte)'/';
+    const byte Delimiter = (byte)DelimiterChar;
     var indexOfDelimiter = utf8Text.IndexOf(Delimiter);
 
     if (indexOfDelimiter < 0) {

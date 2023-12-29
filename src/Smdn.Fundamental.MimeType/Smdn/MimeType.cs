@@ -23,6 +23,8 @@ public sealed partial class MimeType {
   private const string TopLevelTypeModel = "model"; // [RFC2077] The Model Primary Content Type for Multipurpose Internet Mail Extensions
   private const string TopLevelTypeFont = "font"; // [RFC8081] The "font" Top-Level Media Type
 
+  private const char DelimiterChar = '/';
+
   /*
    * class members
    */
@@ -100,7 +102,7 @@ public sealed partial class MimeType {
 
     indexOfDelimiter = type.Length;
 
-    valueSpan[indexOfDelimiter] = '/';
+    valueSpan[indexOfDelimiter] = DelimiterChar;
 
     subType.CopyTo(valueSpan.Slice(indexOfDelimiter + 1));
 

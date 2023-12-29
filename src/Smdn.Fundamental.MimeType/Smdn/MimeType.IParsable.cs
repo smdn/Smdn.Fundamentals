@@ -148,7 +148,7 @@ partial class MimeType
       };
     }
 
-    var indexOfDelimiter = s.IndexOf('/');
+    var indexOfDelimiter = s.IndexOf(DelimiterChar);
 
     if (indexOfDelimiter < 0) {
       return onParseError switch {
@@ -161,7 +161,7 @@ partial class MimeType
     var type = s.Slice(0, indexOfDelimiter);
     var subtype = s.Slice(indexOfDelimiter + 1);
 
-    if (0 <= subtype.IndexOf('/')) {
+    if (0 <= subtype.IndexOf(DelimiterChar)) {
       return onParseError switch {
         OnParseError.ThrowArgumentException => throw new ArgumentException("invalid format (extra delimiter)", paramName),
         OnParseError.ThrowFormatException => throw new FormatException("invalid format (extra delimiter)"),
