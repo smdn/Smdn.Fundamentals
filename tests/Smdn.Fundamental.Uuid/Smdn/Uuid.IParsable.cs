@@ -71,7 +71,7 @@ partial class UuidTests {
 
     TestParsed(uuid2, "IParsable.TryParse<string>");
 
-    static bool TryParseString<T>(string s, out T result) where T : IParsable<T> => T.TryParse(s, provider: null, out result);
+    static bool TryParseString<T>(string s, out T result) where T : struct, IParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
 
 #if SYSTEM_ISPANPARSABLE
@@ -79,7 +79,7 @@ partial class UuidTests {
 
     TestParsed(uuid3, "ISpanParsable.TryParse<ReadOnlySpan<char>>");
 
-    static bool TryParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s, out T result) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out result);
+    static bool TryParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s, out T result) where T : struct, ISpanParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
 #pragma warning restore CA1305
   }

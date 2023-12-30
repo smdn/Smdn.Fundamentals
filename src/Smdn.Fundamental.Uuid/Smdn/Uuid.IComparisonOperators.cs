@@ -24,7 +24,7 @@ partial struct Uuid :
   public static bool operator >(Uuid x, Uuid y) => x.CompareTo(y) > 0;
   public static bool operator >=(Uuid x, Uuid y) => x.CompareTo(y) >= 0;
 
-  public int CompareTo(object obj)
+  public int CompareTo(object? obj)
     => obj switch {
       null => 1,
       Uuid uuid => CompareTo(uuid),

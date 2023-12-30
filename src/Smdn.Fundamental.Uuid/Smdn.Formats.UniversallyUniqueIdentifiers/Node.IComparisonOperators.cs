@@ -23,7 +23,7 @@ partial struct Node :
   public static bool operator >(Node x, Node y) => y < x;
   public static bool operator >=(Node x, Node y) => y <= x;
 
-  public int CompareTo(object obj)
+  public int CompareTo(object? obj)
     => obj switch {
       Node node => CompareTo(node),
       null => 1,

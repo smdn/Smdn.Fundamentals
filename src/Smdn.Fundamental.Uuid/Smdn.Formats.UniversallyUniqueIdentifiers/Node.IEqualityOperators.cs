@@ -17,7 +17,7 @@ partial struct Node :
   public static bool operator ==(Node x, Node y) => x.Equals(y);
   public static bool operator !=(Node x, Node y) => !x.Equals(y);
 
-  public override bool Equals(object obj)
+  public override bool Equals(object? obj)
     => obj switch {
       Node node => Equals(node),
       _ => false,

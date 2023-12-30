@@ -12,9 +12,9 @@ partial class NodeTests {
     Assert.Throws<ArgumentNullException>(() => Node.Parse((string)null!, provider: null));
 
 #if SYSTEM_IPARSABLE
-    Assert.Throws<ArgumentNullException>(() => Parse<Node>(null, provider: null), "IParsable");
+    Assert.Throws<ArgumentNullException>(() => Parse<Node>(null!, provider: null), "IParsable");
 
-    static T Parse<T>(string s, IFormatProvider provider) where T : IParsable<T> => T.Parse(s, provider);
+    static T Parse<T>(string s, IFormatProvider? provider) where T : IParsable<T> => T.Parse(s, provider);
 #endif
   }
 
@@ -32,7 +32,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00:0X", false, null)]
   [TestCase("00-00-00-00-00-00", false, null)]
   [TestCase("00:00:00:00:00-00", false, null)]
-  public void TestParse(string s, bool expectValid, string expectedString)
+  public void TestParse(string s, bool expectValid, string? expectedString)
   {
 #pragma warning disable CA1305
     Node n = default;
@@ -43,8 +43,8 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Node.Parse(s, provider: null));
 
     if (expectValid) {
-      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
-      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()));
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()));
     }
 
 #if SYSTEM_IPARSABLE
@@ -54,11 +54,11 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Parse<Node>(s, provider: null), "IParsable");
 
     if (expectValid) {
-      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
-      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()), "IParsable");
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()), "IParsable");
     }
 
-    static T Parse<T>(string s, IFormatProvider provider) where T : IParsable<T> => T.Parse(s, provider);
+    static T Parse<T>(string s, IFormatProvider? provider) where T : IParsable<T> => T.Parse(s, provider);
 #endif
 #pragma warning restore CA1305
   }
@@ -77,7 +77,7 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00:0X", false, null)]
   [TestCase("00-00-00-00-00-00", false, null)]
   [TestCase("00:00:00:00:00-00", false, null)]
-  public void TestParse_ISpanParsable(string s, bool expectValid, string expectedString)
+  public void TestParse_ISpanParsable(string s, bool expectValid, string? expectedString)
   {
 #pragma warning disable CA1305
     Node n = default;
@@ -88,8 +88,8 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Node.Parse(s.AsSpan(), provider: null));
 
     if (expectValid) {
-      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
-      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()));
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()));
     }
 
 #if SYSTEM_IPARSABLE
@@ -99,11 +99,11 @@ partial class NodeTests {
       Assert.Throws<FormatException>(() => n = Parse<Node>(s.AsSpan(), provider: null), "IParsable");
 
     if (expectValid) {
-      Assert.That(n.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
-      Assert.That(n.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
+      Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()), "IParsable");
+      Assert.That(n.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()), "IParsable");
     }
 
-    static T Parse<T>(ReadOnlySpan<char> s, IFormatProvider provider) where T : ISpanParsable<T> => T.Parse(s, provider);
+    static T Parse<T>(ReadOnlySpan<char> s, IFormatProvider? provider) where T : ISpanParsable<T> => T.Parse(s, provider);
 #endif
 #pragma warning restore CA1305
   }
@@ -123,25 +123,25 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00:0X", false, null)]
   [TestCase("00-00-00-00-00-00", false, null)]
   [TestCase("00:00:00:00:00-00", false, null)]
-  public void TestTryParse(string s, bool expectValid, string expectedString)
+  public void TestTryParse(string? s, bool expectValid, string? expectedString)
   {
 #pragma warning disable CA1305
     Assert.That(Node.TryParse(s, out var node), Is.EqualTo(expectValid));
 
     if (expectValid) {
-      Assert.That(node.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
-      Assert.That(node.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
+      Assert.That(node.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()));
+      Assert.That(node.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()));
     }
 
 #if SYSTEM_IPARSABLE
-    Assert.That(TryParse<Node>(s, out var node2), Is.EqualTo(expectValid), "IParsable");
+    Assert.That(TryParse<Node>(s!, out var node2), Is.EqualTo(expectValid), "IParsable");
 
     if (expectValid) {
-      Assert.That(node2.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
-      Assert.That(node2.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
+      Assert.That(node2.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()), "IParsable");
+      Assert.That(node2.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()), "IParsable");
     }
 
-    static bool TryParse<T>(string s, out T result) where T : IParsable<T> => T.TryParse(s, provider: null, out result);
+    static bool TryParse<T>(string s, out T result) where T : struct, IParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
 #pragma warning restore CA1305
   }
@@ -161,25 +161,25 @@ partial class NodeTests {
   [TestCase("00:00:00:00:00:0X", false, null)]
   [TestCase("00-00-00-00-00-00", false, null)]
   [TestCase("00:00:00:00:00-00", false, null)]
-  public void TestTryParse_ISpanParsable(string s, bool expectValid, string expectedString)
+  public void TestTryParse_ISpanParsable(string? s, bool expectValid, string? expectedString)
   {
 #pragma warning disable CA1305
     Assert.That(Node.TryParse(s.AsSpan(), out var node), Is.EqualTo(expectValid));
 
     if (expectValid) {
-      Assert.That(node.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()));
-      Assert.That(node.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()));
+      Assert.That(node.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()));
+      Assert.That(node.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()));
     }
 
 #if SYSTEM_IPARSABLE
     Assert.That(TryParse<Node>(s.AsSpan(), out var node2), Is.EqualTo(expectValid), "IParsable");
 
     if (expectValid) {
-      Assert.That(node2.ToString("X"), Is.EqualTo(expectedString.ToUpperInvariant()), "IParsable");
-      Assert.That(node2.ToString("x"), Is.EqualTo(expectedString.ToLowerInvariant()), "IParsable");
+      Assert.That(node2.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()), "IParsable");
+      Assert.That(node2.ToString("x"), Is.EqualTo(expectedString!.ToLowerInvariant()), "IParsable");
     }
 
-    static bool TryParse<T>(ReadOnlySpan<char> s, out T result) where T : ISpanParsable<T> => T.TryParse(s, provider: null, out result);
+    static bool TryParse<T>(ReadOnlySpan<char> s, out T result) where T : struct, ISpanParsable<T> => T.TryParse(s, provider: null, out result);
 #endif
 #pragma warning restore CA1305
   }

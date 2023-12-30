@@ -142,10 +142,10 @@ namespace Smdn {
     [Test]
     public void TestCreateTimeBased3_NodeNull_PhysicalAddress()
     {
-      PhysicalAddress node = null;
+      PhysicalAddress? node = null;
 
       Assert.Throws<ArgumentNullException>(() => {
-        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
+        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node!);
       });
     }
 
@@ -170,10 +170,10 @@ namespace Smdn {
     [Test]
     public void TestCreateTimeBased3_NodeNull_Bytes()
     {
-      byte[] node = null;
+      byte[]? node = null;
 
       Assert.Throws<ArgumentNullException>(() => {
-        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
+        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node!);
       });
     }
 
@@ -188,28 +188,28 @@ namespace Smdn {
     [Test]
     public void TestCreateNameBased_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null, UuidVersion.NameBasedMD5Hash), "#1");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null, UuidVersion.NameBasedSHA1Hash), "#2");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#3");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#4");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#5");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#6");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null!, UuidVersion.NameBasedMD5Hash), "#1");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null!, UuidVersion.NameBasedSHA1Hash), "#2");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#3");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#4");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#5");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#6");
     }
 
     [Test]
     public void TestCreateNameBasedMD5_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null), "#1");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null, Uuid.Namespace.RFC4122Url), "#2");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null, Uuid.Namespace.RFC4122Url), "#3");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null!), "#1");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null!, Uuid.Namespace.RFC4122Url), "#2");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null!, Uuid.Namespace.RFC4122Url), "#3");
     }
 
     [Test]
     public void TestCreateNameBasedSHA1_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null), "#1");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null, Uuid.Namespace.RFC4122Url), "#2");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null, Uuid.Namespace.RFC4122Url), "#3");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null!), "#1");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null!, Uuid.Namespace.RFC4122Url), "#2");
+      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null!, Uuid.Namespace.RFC4122Url), "#3");
     }
 
     [TestCase("www.widgets.com", Uuid.Namespace.RFC4122Dns, "3d813cbb-47fb-32ba-91df-831e1593ac29")]
@@ -313,7 +313,7 @@ namespace Smdn {
 
       Assert.That(buffer, Is.EqualTo(new[] {0xcc, 0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc}).AsCollection);
 
-      Assert.Throws<ArgumentNullException>(() => Uuid.RFC4122NamespaceDns.GetBytes(null, 0));
+      Assert.Throws<ArgumentNullException>(() => Uuid.RFC4122NamespaceDns.GetBytes(null!, 0));
       Assert.Throws<ArgumentOutOfRangeException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], -1));
       Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0));
       Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1));

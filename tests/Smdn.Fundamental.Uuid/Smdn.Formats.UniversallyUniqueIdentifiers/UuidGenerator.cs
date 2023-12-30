@@ -16,17 +16,17 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       static ulong ZeroTimeStampSource() => 0ul;
       static ushort ZeroClockSource() => (ushort)0u;
 
-      Func<ulong> nullTimeStampSource = null;
-      Func<ushort> nullClockSource = null;
+      Func<ulong>? nullTimeStampSource = null;
+      Func<ushort>? nullClockSource = null;
 
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource, nullClockSource));
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource, ZeroClockSource));
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(ZeroTimeStampSource, nullClockSource));
+      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource!, nullClockSource!));
+      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource!, ZeroClockSource));
+      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(ZeroTimeStampSource, nullClockSource!));
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
-      PhysicalAddress nullNode = null;
+      PhysicalAddress? nullNode = null;
 
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(DateTimeOffset.Now, 0, nullNode));
+      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(DateTimeOffset.Now, 0, nullNode!));
 #endif
     }
 

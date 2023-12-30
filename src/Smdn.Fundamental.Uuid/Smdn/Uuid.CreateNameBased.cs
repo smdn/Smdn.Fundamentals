@@ -38,26 +38,23 @@ partial struct Uuid {
   {
     /*
      * 4.3. Algorithm for Creating a Name-Based UUID
+     *
+     *   o  Allocate a UUID to use as a "name space ID" for all UUIDs
+     *       generated from names in that name space; see Appendix C for some
+     *       pre-defined values.
+     *
+     *    o  Choose either MD5 [4] or SHA-1 [8] as the hash algorithm; If
+     *       backward compatibility is not an issue, SHA-1 is preferred.
      */
-    HashAlgorithm hashAlgorithm = null;
+    HashAlgorithm hashAlgorithm = version switch {
+#pragma warning disable CA2000, CA5350, CA5351
+      UuidVersion.NameBasedMD5Hash => MD5.Create(),
+      UuidVersion.NameBasedSHA1Hash => SHA1.Create(),
+#pragma warning restore CA2000, CA5350, CA5351
+      _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5"),
+    };
 
     try {
-      /*
-       *   o  Allocate a UUID to use as a "name space ID" for all UUIDs
-       *       generated from names in that name space; see Appendix C for some
-       *       pre-defined values.
-       *
-       *    o  Choose either MD5 [4] or SHA-1 [8] as the hash algorithm; If
-       *       backward compatibility is not an issue, SHA-1 is preferred.
-       */
-      hashAlgorithm = version switch {
-#pragma warning disable CA2000, CA5350, CA5351
-        UuidVersion.NameBasedMD5Hash => MD5.Create(),
-        UuidVersion.NameBasedSHA1Hash => SHA1.Create(),
-#pragma warning restore CA2000, CA5350, CA5351
-        _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(version), version, "must be 3 or 5"),
-      };
-
       /*
        *    o  Convert the name to a canonical sequence of octets (as defined by
        *       the standards or conventions of its name space); put the name
@@ -65,7 +62,7 @@ partial struct Uuid {
        *
        *    o  Compute the hash of the name space ID concatenated with the name.
        */
-      byte[] buffer = null;
+      byte[]? buffer = null;
       byte[] hash;
 
       try {
@@ -122,7 +119,6 @@ partial struct Uuid {
 #else
       hashAlgorithm.Dispose();
 #endif
-      hashAlgorithm = null;
     }
   }
 }

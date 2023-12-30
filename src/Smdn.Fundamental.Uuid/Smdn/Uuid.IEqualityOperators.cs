@@ -21,7 +21,7 @@ partial struct Uuid :
   public static bool operator ==(Uuid x, Uuid y) => x.fields_high == y.fields_high && x.fields_low == y.fields_low;
   public static bool operator !=(Uuid x, Uuid y) => x.fields_high != y.fields_high || x.fields_low != y.fields_low;
 
-  public override bool Equals(object obj)
+  public override bool Equals(object? obj)
     => obj switch {
       Uuid uuid => Equals(uuid),
       Guid guid => Equals(guid),
