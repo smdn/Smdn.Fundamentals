@@ -10,13 +10,14 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 #pragma warning disable IDE0040
 partial struct Node :
 #pragma warning restore IDE0040
+#pragma warning disable IDE0055
 #if SYSTEM_NUMERICS_ICOMPARISONOPERATORS
-  IComparisonOperators<Node, Node, bool>
-#else
+  IComparisonOperators<Node, Node, bool>,
+#endif
   IComparable<Node>,
   IComparable
-#endif
 {
+#pragma warning restore IDE0055
   public static bool operator <(Node x, Node y) => x.CompareTo(y) < 0;
   public static bool operator <=(Node x, Node y) => x.CompareTo(y) <= 0;
   public static bool operator >(Node x, Node y) => y < x;

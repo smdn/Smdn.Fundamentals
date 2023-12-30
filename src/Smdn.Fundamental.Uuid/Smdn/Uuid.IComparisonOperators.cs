@@ -10,16 +10,15 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial struct Uuid :
 #pragma warning restore IDE0040
-#pragma warning disable format
+#pragma warning disable IDE0055
 #if SYSTEM_NUMERICS_ICOMPARISONOPERATORS
   IComparisonOperators<Uuid, Uuid, bool>,
-#else
+#endif
   IComparable<Uuid>,
   IComparable,
-#endif
   IComparable<Guid>
 {
-#pragma warning restore format
+#pragma warning restore IDE0055
   public static bool operator <(Uuid x, Uuid y) => x.CompareTo(y) < 0;
   public static bool operator <=(Uuid x, Uuid y) => x.CompareTo(y) <= 0;
   public static bool operator >(Uuid x, Uuid y) => x.CompareTo(y) > 0;
