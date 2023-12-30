@@ -16,19 +16,19 @@ partial class MimeTypeTests {
 
   private static System.Collections.IEnumerable YieldParseInvalidFormatTestCases()
   {
-    yield return new object[] { null, typeof(ArgumentNullException) };
-    yield return new object[] { string.Empty, typeof(ArgumentException) };
-    yield return new object[] { "text", typeof(FormatException) };
-    yield return new object[] { "text/", typeof(FormatException) };
-    yield return new object[] { "/", typeof(FormatException) };
-    yield return new object[] { "/plain", typeof(FormatException) };
-    yield return new object[] { "text/plain/", typeof(FormatException) };
-    yield return new object[] { "text/plain/foo", typeof(FormatException) };
-    yield return new object[] { new string('x', 63) + "/" + new string('x', 64), typeof(FormatException) };
-    yield return new object[] { new string('x', 64) + "/" + new string('x', 63), typeof(FormatException) };
-    yield return new object[] { new string('x', 64) + "/" + new string('x', 64), typeof(FormatException) };
-    yield return new object[] { "Ｔext/plain", typeof(FormatException) };
-    yield return new object[] { "text/Ｐlain", typeof(FormatException) };
+    yield return new object?[] { null, typeof(ArgumentNullException) };
+    yield return new object?[] { string.Empty, typeof(ArgumentException) };
+    yield return new object?[] { "text", typeof(FormatException) };
+    yield return new object?[] { "text/", typeof(FormatException) };
+    yield return new object?[] { "/", typeof(FormatException) };
+    yield return new object?[] { "/plain", typeof(FormatException) };
+    yield return new object?[] { "text/plain/", typeof(FormatException) };
+    yield return new object?[] { "text/plain/foo", typeof(FormatException) };
+    yield return new object?[] { new string('x', 63) + "/" + new string('x', 64), typeof(FormatException) };
+    yield return new object?[] { new string('x', 64) + "/" + new string('x', 63), typeof(FormatException) };
+    yield return new object?[] { new string('x', 64) + "/" + new string('x', 64), typeof(FormatException) };
+    yield return new object?[] { "Ｔext/plain", typeof(FormatException) };
+    yield return new object?[] { "text/Ｐlain", typeof(FormatException) };
   }
 
   [TestCaseSource(nameof(YieldParseValidTestCases))]
@@ -100,36 +100,40 @@ partial class MimeTypeTests {
 #endif
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void Parse_InvalidFormat(string s, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => MimeType.Parse(s, provider: null));
+  public void Parse_InvalidFormat(string? s, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => MimeType.Parse(s!, provider: null));
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void Parse_ReadOnlySpanOfChar_InvalidFormat(string s, Type expectedExceptionType)
+  public void Parse_ReadOnlySpanOfChar_InvalidFormat(string? s, Type expectedExceptionType)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
     Assert.Throws(expectedExceptionType, () => MimeType.Parse(s.AsSpan(), provider: null));
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void TryParse_InvalidFormat(string s, Type discard)
+  public void TryParse_InvalidFormat(string? s, Type discard)
     => Assert.That(MimeType.TryParse(s, provider: null, out _), Is.False);
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void TryParse_ReadOnlySpanOfChar_InvalidFormat(string s, Type discard)
+  public void TryParse_ReadOnlySpanOfChar_InvalidFormat(string? s, Type discard)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
     Assert.That(MimeType.TryParse(s.AsSpan(), provider: null, out _), Is.False);
   }
 
 #if SYSTEM_IPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void IParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
+  public void IParsable_Parse_InvalidFormat(string? s, Type expectedExceptionType)
   {
-    Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s));
+    Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s!));
 
     static TSelf Parse<TSelf>(string s) where TSelf : IParsable<TSelf>
       => TSelf.Parse(s, provider: null);
@@ -138,10 +142,12 @@ partial class MimeTypeTests {
 
 #if SYSTEM_ISPANPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void ISpanParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
+  public void ISpanParsable_Parse_InvalidFormat(string? s, Type expectedExceptionType)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
     Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s.AsSpan()));
 
@@ -152,29 +158,33 @@ partial class MimeTypeTests {
 
 #if SYSTEM_IPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void IParsable_TryParse_InvalidFormat(string s, Type discard)
+  public void IParsable_TryParse_InvalidFormat(string? s, Type discard)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
-    Assert.That(TryParse<MimeType>(s, out _), Is.False);
+    Assert.That(TryParse<MimeType>(s!), Is.False);
 
-    static bool TryParse<TSelf>(string s, out TSelf result) where TSelf : IParsable<TSelf>
-      => TSelf.TryParse(s, provider: null, out result);
+    static bool TryParse<TSelf>(string s) where TSelf : class, IParsable<TSelf>
+      => TSelf.TryParse(s, provider: null, out _);
   }
 #endif
 
 #if SYSTEM_ISPANPARSABLE
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void ISpanParsable_TryParse_InvalidFormat(string s, Type discard)
+  public void ISpanParsable_TryParse_InvalidFormat(string? s, Type discard)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
-    Assert.That(TryParse<MimeType>(s.AsSpan(), out _), Is.False);
+    Assert.That(TryParse<MimeType>(s.AsSpan()), Is.False);
 
-    static bool TryParse<TSelf>(ReadOnlySpan<char> s, out TSelf result) where TSelf : ISpanParsable<TSelf>
-      => TSelf.TryParse(s, provider: null, out result);
+    static bool TryParse<TSelf>(ReadOnlySpan<char> s) where TSelf : class, ISpanParsable<TSelf>
+      => TSelf.TryParse(s, provider: null, out _);
   }
 #endif
 }

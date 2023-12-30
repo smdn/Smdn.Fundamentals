@@ -12,7 +12,7 @@ public class MimeTypeStringExtensionsTests {
   [TestCase("application/rdf+xml", "application", "rdf+xml")]
   public void Split(string s, string expectedType, string expectedSubType)
   {
-    string type = default, subType = default;
+    string? type = default, subType = default;
 
     Assert.DoesNotThrow(() => (type, subType) = MimeTypeStringExtensions.Split(s));
     Assert.That(type, Is.EqualTo(expectedType), nameof(expectedType));
@@ -37,8 +37,8 @@ public class MimeTypeStringExtensionsTests {
   [TestCase("/plain", typeof(ArgumentException))]
   [TestCase("text/plain/", typeof(ArgumentException))]
   [TestCase("text/plain/foo", typeof(ArgumentException))]
-  public void Split_Invalid(string s, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => MimeTypeStringExtensions.Split(s));
+  public void Split_Invalid(string? s, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => MimeTypeStringExtensions.Split(s!));
 
   [TestCase(null)]
   [TestCase("")]
@@ -48,6 +48,6 @@ public class MimeTypeStringExtensionsTests {
   [TestCase("/plain")]
   [TestCase("text/plain/")]
   [TestCase("text/plain/foo")]
-  public void TrySplit_Invalid(string s)
+  public void TrySplit_Invalid(string? s)
     => Assert.That(MimeTypeStringExtensions.TrySplit(s, out _), Is.False);
 }

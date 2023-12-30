@@ -16,7 +16,7 @@ partial class MimeTypeTests {
     [Values(
       null,
       ""
-    )] string format
+    )] string? format
   )
     => Assert.That(new MimeType(mimeType).ToString(format: format, formatProvider: null), Is.EqualTo(mimeType));
 

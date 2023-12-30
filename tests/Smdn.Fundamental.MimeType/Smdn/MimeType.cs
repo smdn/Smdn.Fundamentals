@@ -119,8 +119,8 @@ public partial class MimeTypeTests {
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", typeof(ArgumentException))] // 128chars (63chars '/' 64chars)
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", typeof(ArgumentException))] // 129chars (64chars '/' 64chars)
   [TestCase("Ｔext/Ｐlain", typeof(ArgumentException))]
-  public void Constructor_String_ArgumentException(string mimeType, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
+  public void Constructor_String_ArgumentException(string? mimeType, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => new MimeType(mimeType!));
 
   [TestCase(null, null, typeof(ArgumentNullException))]
   [TestCase("text", null, typeof(ArgumentNullException))]
@@ -130,8 +130,8 @@ public partial class MimeTypeTests {
   [TestCase("", "plain", typeof(ArgumentException))]
   [TestCase("Ｔext", "plain", typeof(ArgumentException))]
   [TestCase("text", "Ｐlain", typeof(ArgumentException))]
-  public void Constructor_String_String_ArgumentException(string type, string subtype, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => new MimeType(type, subtype));
+  public void Constructor_String_String_ArgumentException(string? type, string? subtype, Type expectedExceptionType)
+    => Assert.Throws(expectedExceptionType, () => new MimeType(type!, subtype!));
 
   [TestCase(null, null, typeof(ArgumentNullException))]
   [TestCase("text", null, typeof(ArgumentNullException))]
@@ -141,9 +141,9 @@ public partial class MimeTypeTests {
   [TestCase("", "plain", typeof(ArgumentException))]
   [TestCase("Ｔext", "plain", typeof(ArgumentException))]
   [TestCase("text", "Ｐlain", typeof(ArgumentException))]
-  public void Constructor_ValueTuple2_ArgumentException(string type, string subtype, Type expectedExceptionType)
+  public void Constructor_ValueTuple2_ArgumentException(string? type, string? subtype, Type expectedExceptionType)
   {
-    var mimeType = (type, subtype);
+    var mimeType = (type!, subtype!);
 
     Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
   }
@@ -227,10 +227,10 @@ public partial class MimeTypeTests {
   [Test]
   public void ExplicitToStringCoversion()
   {
-    Assert.That((string)MimeType.TextPlain, Is.EqualTo("text/plain"));
-    Assert.That((string)MimeType.ApplicationOctetStream, Is.EqualTo("application/octet-stream"));
-    Assert.That((string)MimeType.CreateTextType("html"), Is.EqualTo("text/html"));
+    Assert.That((string?)MimeType.TextPlain, Is.EqualTo("text/plain"));
+    Assert.That((string?)MimeType.ApplicationOctetStream, Is.EqualTo("application/octet-stream"));
+    Assert.That((string?)MimeType.CreateTextType("html"), Is.EqualTo("text/html"));
 
-    Assert.That((string)((MimeType)null), Is.Null);
+    Assert.That((string?)((MimeType)null!), Is.Null);
   }
 }

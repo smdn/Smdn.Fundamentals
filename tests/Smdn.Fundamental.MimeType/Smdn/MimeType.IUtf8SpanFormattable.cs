@@ -18,7 +18,7 @@ partial class MimeTypeTests {
     [Values(
       null,
       ""
-    )] string format
+    )] string? format
   )
   {
     Span<byte> utf8Destination = stackalloc byte[mimeType.Length];

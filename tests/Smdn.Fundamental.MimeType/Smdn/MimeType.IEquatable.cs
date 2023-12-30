@@ -111,7 +111,7 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "TEXT", true)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
-  public void TypeEquals_OfString_DefaultComparison(string typeX, string subtypeX, string typeY, bool expected)
+  public void TypeEquals_OfString_DefaultComparison(string typeX, string subtypeX, string? typeY, bool expected)
     => Assert.That(new MimeType(typeX, subtypeX).TypeEquals(typeY), Is.EqualTo(expected));
 
   [TestCase("text", "plain", "text", StringComparison.Ordinal, true)]
@@ -125,7 +125,7 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "TEXT", true)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
-  public void TypeEquals_OfReadOnlySpanOfChar_DefaultComparison(string typeX, string subtypeX, string typeY, bool expected)
+  public void TypeEquals_OfReadOnlySpanOfChar_DefaultComparison(string typeX, string subtypeX, string? typeY, bool expected)
     => Assert.That(new MimeType(typeX, subtypeX).TypeEquals(typeY.AsSpan()), Is.EqualTo(expected));
 
   [TestCase("text", "plain", "text", StringComparison.Ordinal, true)]
@@ -158,7 +158,7 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "PLAIN", true)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
-  public void SubTypeEquals_OfString_DefaultComparison(string typeX, string subtypeX, string subtypeY, bool expected)
+  public void SubTypeEquals_OfString_DefaultComparison(string typeX, string subtypeX, string? subtypeY, bool expected)
     => Assert.That(new MimeType(typeX, subtypeX).SubTypeEquals(subtypeY), Is.EqualTo(expected));
 
   [TestCase("text", "plain", "plain", StringComparison.Ordinal, true)]
@@ -172,7 +172,7 @@ partial class MimeTypeTests {
   [TestCase("text", "plain", "PLAIN", true)]
   [TestCase("text", "plain", "", false)]
   [TestCase("text", "plain", null, false)]
-  public void SubTypeEquals_OfReadOnlySpanOfChar_DefaultComparison(string typeX, string subtypeX, string subtypeY, bool expected)
+  public void SubTypeEquals_OfReadOnlySpanOfChar_DefaultComparison(string typeX, string subtypeX, string? subtypeY, bool expected)
     => Assert.That(new MimeType(typeX, subtypeX).SubTypeEquals(subtypeY.AsSpan()), Is.EqualTo(expected));
 
   [TestCase("text", "plain", "plain", StringComparison.Ordinal, true)]

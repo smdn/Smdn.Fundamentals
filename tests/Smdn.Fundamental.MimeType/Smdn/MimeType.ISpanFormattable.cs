@@ -16,7 +16,7 @@ partial class MimeTypeTests {
     [Values(
       null,
       ""
-    )] string format
+    )] string? format
   )
   {
     Span<char> destination = stackalloc char[mimeType.Length];

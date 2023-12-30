@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #if SYSTEM_IUTF8SPANPARSABLE
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using NUnit.Framework;
 
@@ -29,17 +30,20 @@ partial class MimeTypeTests {
     Assert.That(result1, Is.EqualTo(expected));
 
     Assert.That(TryParse<MimeType>(utf8Text, out var result2), Is.True);
+    Assert.That(result2, Is.Not.Null);
     Assert.That(result2, Is.EqualTo(expected));
 
-    static bool TryParse<TSelf>(ReadOnlySpan<byte> utf8Text, out TSelf result) where TSelf : IUtf8SpanParsable<TSelf>
+    static bool TryParse<TSelf>(ReadOnlySpan<byte> utf8Text, [NotNullWhen(true)] out TSelf? result) where TSelf : class, IUtf8SpanParsable<TSelf>
       => TSelf.TryParse(utf8Text, provider: null, out result);
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
-  public void IUtf8SpanParsable_Parse_InvalidFormat(string s, Type expectedExceptionType)
+  public void IUtf8SpanParsable_Parse_InvalidFormat(string? s, Type expectedExceptionType)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
     Assert.Throws(expectedExceptionType, () => MimeType.Parse(Encoding.UTF8.GetBytes(s).AsSpan(), provider: null));
     Assert.Throws(expectedExceptionType, () => Parse<MimeType>(Encoding.UTF8.GetBytes(s).AsSpan()));
@@ -51,14 +55,16 @@ partial class MimeTypeTests {
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void IUtf8SpanParsable_TryParse_InvalidFormat(string s, Type discard)
   {
-    if (s is null)
+    if (s is null) {
       Assert.Pass();
+      return;
+    }
 
     Assert.That(MimeType.TryParse(Encoding.UTF8.GetBytes(s).AsSpan(), provider: null, out _), Is.False);
-    Assert.That(TryParse<MimeType>(Encoding.UTF8.GetBytes(s).AsSpan(), out _), Is.False);
+    Assert.That(TryParse<MimeType>(Encoding.UTF8.GetBytes(s).AsSpan()), Is.False);
 
-    static bool TryParse<TSelf>(ReadOnlySpan<byte> utf8Text, out TSelf result) where TSelf : IUtf8SpanParsable<TSelf>
-      => TSelf.TryParse(utf8Text, provider: null, out result);
+    static bool TryParse<TSelf>(ReadOnlySpan<byte> utf8Text) where TSelf : IUtf8SpanParsable<TSelf>
+      => TSelf.TryParse(utf8Text, provider: null, out _);
   }
 }
 #endif
