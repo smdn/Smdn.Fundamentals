@@ -403,7 +403,19 @@ public readonly partial struct Uuid {
   public static explicit operator Uuid(Guid @value) => new(@value);
 
   public Guid ToGuid()
-    => new(ToString(null, null));
+    => new(
+      a: unchecked((int)time_low),
+      b: unchecked((short)time_mid),
+      c: unchecked((short)time_hi_and_version),
+      d: clock_seq_hi_and_reserved,
+      e: clock_seq_low,
+      f: node.N0,
+      g: node.N1,
+      h: node.N2,
+      i: node.N3,
+      j: node.N4,
+      k: node.N5
+    );
 
   public void GetBytes(byte[] buffer, int startIndex)
     => GetBytes(buffer, startIndex, asBigEndian: !BitConverter.IsLittleEndian);
