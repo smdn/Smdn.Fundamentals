@@ -227,9 +227,15 @@ public partial class MimeTypeTests {
   [Test]
   public void ExplicitToStringCoversion()
   {
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    Assert.That((string)MimeType.TextPlain, Is.EqualTo("text/plain"));
+    Assert.That((string)MimeType.ApplicationOctetStream, Is.EqualTo("application/octet-stream"));
+    Assert.That((string)MimeType.CreateTextType("html"), Is.EqualTo("text/html"));
+#else
     Assert.That((string?)MimeType.TextPlain, Is.EqualTo("text/plain"));
     Assert.That((string?)MimeType.ApplicationOctetStream, Is.EqualTo("application/octet-stream"));
     Assert.That((string?)MimeType.CreateTextType("html"), Is.EqualTo("text/html"));
+#endif
 
     Assert.That((string?)((MimeType)null!), Is.Null);
   }

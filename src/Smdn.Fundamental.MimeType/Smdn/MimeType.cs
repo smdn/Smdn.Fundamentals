@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 
 using Smdn.Formats.Mime;
 
@@ -161,6 +164,9 @@ public sealed partial class MimeType {
     };
 #endif
 
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+  [return: NotNullIfNotNull(nameof(mimeType))]
+#endif
   public static explicit operator string?(MimeType? mimeType)
     => mimeType?.ToString();
 
