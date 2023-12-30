@@ -2,19 +2,19 @@
 //   Name: Smdn.Fundamental.Uuid
 //   AssemblyVersion: 3.2.0.0
 //   InformationalVersion: 3.2.0+7357848de1363dbe011b04607e6d6f97dd2b4e57
-//   TargetFramework: .NETStandard,Version=v2.0
+//   TargetFramework: .NETCoreApp,Version=v8.0
 //   Configuration: Release
 //   Referenced assemblies:
-//     Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 //     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
-//     Smdn.Fundamental.Shim, Version=3.1.4.0, Culture=neutral
-//     System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
-//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
-//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Net.NetworkInformation, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Security.Cryptography, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;
 using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Security.Cryptography;
 using Smdn;
 using Smdn.Formats.UniversallyUniqueIdentifiers;
@@ -40,9 +40,11 @@ namespace Smdn {
     IComparable,
     IComparable<Guid>,
     IComparable<Uuid>,
+    IComparisonOperators<Uuid, Uuid, bool>,
     IEquatable<Guid>,
     IEquatable<Uuid>,
-    IFormattable
+    ISpanFormattable,
+    ISpanParsable<Uuid>
   {
     public enum Namespace : int {
       RFC4122Dns = 1806153744,
@@ -175,8 +177,10 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
   public readonly struct Node :
     IComparable,
     IComparable<Node>,
+    IComparisonOperators<Node, Node, bool>,
     IEquatable<Node>,
-    IFormattable
+    ISpanFormattable,
+    ISpanParsable<Node>
   {
     public static Node CreateRandom() {}
     public static Node Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
@@ -202,6 +206,7 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public PhysicalAddress ToPhysicalAddress() {}
     public override string ToString() {}
     public string ToString(string? format, IFormatProvider? formatProvider = null) {}
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format, IFormatProvider? provider) {}
     public bool TryWriteBytes(Span<byte> destination) {}
     public void WriteBytes(Span<byte> destination) {}
   }
