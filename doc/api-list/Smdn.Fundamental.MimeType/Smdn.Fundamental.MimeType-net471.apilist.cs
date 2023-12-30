@@ -1,7 +1,7 @@
-// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-4.0.0)
+// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-4.0.1)
 //   Name: Smdn.Fundamental.MimeType
-//   AssemblyVersion: 4.0.0.0
-//   InformationalVersion: 4.0.0+60fc1fe7b4b6300b74b353f8d665525b503427ed
+//   AssemblyVersion: 4.0.1.0
+//   InformationalVersion: 4.0.1+3675184afb36291ccc35de4ad300197aca5f85db
 //   TargetFramework: .NETFramework,Version=v4.7.1
 //   Configuration: Release
 //   Referenced assemblies:

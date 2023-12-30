@@ -1,7 +1,7 @@
-// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-4.0.0)
+// Smdn.Fundamental.MimeType.dll (Smdn.Fundamental.MimeType-4.0.1)
 //   Name: Smdn.Fundamental.MimeType
-//   AssemblyVersion: 4.0.0.0
-//   InformationalVersion: 4.0.0+60fc1fe7b4b6300b74b353f8d665525b503427ed
+//   AssemblyVersion: 4.0.1.0
+//   InformationalVersion: 4.0.1+3675184afb36291ccc35de4ad300197aca5f85db
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 //   Referenced assemblies:
@@ -55,7 +55,7 @@ namespace Smdn {
     public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out MimeType result) {}
     public static bool TryParse(string? s, IFormatProvider? provider, [NotNullWhen(true)] out MimeType result) {}
     public static bool TryParse(string? s, [NotNullWhen(true)] out MimeType? result) {}
-    public static explicit operator string?(MimeType? mimeType) {}
+    [return: NotNullIfNotNull("mimeType")] public static explicit operator string?(MimeType? mimeType) {}
 
     public MimeType((string Type, string SubType) mimeType) {}
     public MimeType(ReadOnlySpan<char> type, ReadOnlySpan<char> subType) {}
