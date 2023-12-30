@@ -1,7 +1,7 @@
-// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.1.1)
+// Smdn.Fundamental.Uuid.dll (Smdn.Fundamental.Uuid-3.2.0)
 //   Name: Smdn.Fundamental.Uuid
-//   AssemblyVersion: 3.1.1.0
-//   InformationalVersion: 3.1.1+b57b4cba29f01d9537ede2ca39db9abb783b20da
+//   AssemblyVersion: 3.2.0.0
+//   InformationalVersion: 3.2.0+7357848de1363dbe011b04607e6d6f97dd2b4e57
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 //   Referenced assemblies:
@@ -16,6 +16,7 @@
 //     System.Security.Cryptography.Primitives, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Text.Encoding, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+#nullable enable annotations
 
 using System;
 using System.Security.Cryptography;
@@ -88,11 +89,11 @@ namespace Smdn {
     public static Uuid CreateNameBasedSHA1(string name, Uuid.Namespace ns) {}
     public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node) {}
     public static Uuid CreateTimeBased(byte[] node) {}
-    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
-    public static Uuid Parse(string s, IFormatProvider provider = null) {}
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Uuid result) {}
+    public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
+    public static Uuid Parse(string s, IFormatProvider? provider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Uuid result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Uuid result) {}
-    public static bool TryParse(string s, IFormatProvider provider, out Uuid result) {}
+    public static bool TryParse(string? s, IFormatProvider? provider, out Uuid result) {}
     public static bool operator == (Uuid x, Uuid y) {}
     public static explicit operator Guid(Uuid @value) {}
     public static explicit operator Uuid(Guid @value) {}
@@ -127,10 +128,10 @@ namespace Smdn {
 
     public int CompareTo(Guid other) {}
     public int CompareTo(Uuid other) {}
-    public int CompareTo(object obj) {}
+    public int CompareTo(object? obj) {}
     public bool Equals(Guid other) {}
     public bool Equals(Uuid other) {}
-    public override bool Equals(object obj) {}
+    public override bool Equals(object? obj) {}
     public void GetBytes(byte[] buffer, int startIndex) {}
     public void GetBytes(byte[] buffer, int startIndex, bool asBigEndian) {}
     public override int GetHashCode() {}
@@ -139,8 +140,8 @@ namespace Smdn {
     public Guid ToGuid() {}
     public override string ToString() {}
     public string ToString(string format) {}
-    public string ToString(string format, IFormatProvider formatProvider) {}
-    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider provider = null) {}
+    public string ToString(string? format, IFormatProvider? formatProvider) {}
+    public bool TryFormat(Span<char> destination, out int charsWritten, ReadOnlySpan<char> format = default, IFormatProvider? provider = null) {}
     public bool TryWriteBytes(Span<byte> destination, bool asBigEndian) {}
     public void WriteBytes(Span<byte> destination, bool asBigEndian) {}
   }
@@ -174,12 +175,12 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     IFormattable
   {
     public static Node CreateRandom() {}
-    public static Node Parse(ReadOnlySpan<char> s, IFormatProvider provider = null) {}
-    public static Node Parse(string s, IFormatProvider provider = null) {}
-    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider provider, out Node result) {}
+    public static Node Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null) {}
+    public static Node Parse(string s, IFormatProvider? provider = null) {}
+    public static bool TryParse(ReadOnlySpan<char> s, IFormatProvider? provider, out Node result) {}
     public static bool TryParse(ReadOnlySpan<char> s, out Node result) {}
-    public static bool TryParse(string s, IFormatProvider provider, out Node result) {}
-    public static bool TryParse(string s, out Node result) {}
+    public static bool TryParse(string? s, IFormatProvider? provider, out Node result) {}
+    public static bool TryParse(string? s, out Node result) {}
     public static bool operator == (Node x, Node y) {}
     public static bool operator > (Node x, Node y) {}
     public static bool operator >= (Node x, Node y) {}
@@ -188,15 +189,15 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     public static bool operator <= (Node x, Node y) {}
 
     public int CompareTo(Node other) {}
-    public int CompareTo(object obj) {}
+    public int CompareTo(object? obj) {}
     public bool Equals(Node other) {}
-    public override bool Equals(object obj) {}
+    public override bool Equals(object? obj) {}
     public override int GetHashCode() {}
     public override string ToString() {}
-    public string ToString(string format, IFormatProvider formatProvider = null) {}
+    public string ToString(string? format, IFormatProvider? formatProvider = null) {}
     public bool TryWriteBytes(Span<byte> destination) {}
     public void WriteBytes(Span<byte> destination) {}
   }
 }
-// API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.2.0.0.
+// API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.3.2.0.
 // Smdn.Reflection.ReverseGenerating.ListApi.Core v1.2.0.0 (https://github.com/smdn/Smdn.Reflection.ReverseGenerating)
