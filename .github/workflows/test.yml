@@ -68,6 +68,24 @@ on:
         type: string
         default: ''
 
+      dotnet_test_options_verbosity_level:
+        description: "The argument to be set to the `--verbosity <LEVEL>` option of the `dotnet test` command. <LEVEL> := q[uiet], m[inimal], n[ormal], d[etailed], diag[nostic]"
+        required: false
+        type: string
+        default: ''
+
+      dotnet_test_options_framework:
+        description: "The argument to be set to the `--framework <FRAMEWORK>` option of the `dotnet test` command."
+        required: false
+        type: string
+        default: ''
+
+      dotnet_test_options_filter_expression:
+        description: "The argument to be set to the `--filter <EXPRESSION>` option of the `dotnet test` command."
+        required: false
+        type: string
+        default: ''
+
       verbose:
         description: "If true, enables verbose output."
         required: false
@@ -313,12 +331,27 @@ jobs:
     - name: Build test project ${{ matrix.project.Name }}
       shell: pwsh
       run: |
-        dotnet build `
-          --nologo `
-          --no-restore `
-          -consoleLoggerParameters:NoSummary `
-          ${{ inputs.extra_options_common }} `
-          ${{ matrix.project.PathToTestProject }}
+        # build the options for `dotnet build`
+        $dotnet_build_options = @(
+          '--nologo',
+          '--no-restore',
+          '-consoleLoggerParameters:NoSummary'
+        )
+
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.dotnet_test_options_framework }}' ) ) {
+          $dotnet_build_options += @(
+            '--framework', '${{ inputs.dotnet_test_options_framework }}'
+          )
+        }
+
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.extra_options_common }}' ) ) {
+          $dotnet_build_options += @( '${{ inputs.extra_options_common }}' )
+        }
+
+        $dotnet_build_options += @( '${{ matrix.project.PathToTestProject }}' )
+
+        "dotnet build ${dotnet_build_options}"
+        dotnet build @dotnet_build_options
 
     - name: Determine test timeout values
       id: test-timeouts
@@ -353,10 +386,36 @@ jobs:
         # workaround for the vstest issue (https://github.com/microsoft/vstest/issues/4014)
         cd $([System.IO.Path]::GetDirectoryName('${{ matrix.project.PathToTestProject }}'))
 
-        dotnet test `
-          --nologo `
-          --no-restore `
-          --no-build `
-          --verbosity quiet `
-          --blame-hang-timeout '${{ steps.test-timeouts.outputs.timeout_hang }}' `
-          ${{ inputs.extra_options_common }}
+        $option_verbosity_level = '${{ inputs.dotnet_test_options_verbosity_level }}'
+
+        if ([string]::IsNullOrEmpty($option_verbosity_level)) {
+          $option_verbosity_level = 'quiet' # default verbosity level
+        }
+
+        # build the options for `dotnet test`
+        $dotnet_test_options = @(
+          '--nologo',
+          '--no-restore',
+          '--no-build',
+          '--verbosity', $option_verbosity_level,
+          '--blame-hang-timeout', '${{ steps.test-timeouts.outputs.timeout_hang }}'
+        )
+
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.dotnet_test_options_framework }}' ) ) {
+          $dotnet_test_options += @(
+            '--framework', '${{ inputs.dotnet_test_options_framework }}'
+          )
+        }
+
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.dotnet_test_options_filter_expression }}' ) ) {
+          $dotnet_test_options += @(
+            '--filter', '${{ inputs.dotnet_test_options_filter_expression }}'
+          )
+        }
+
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.extra_options_common }}' ) ) {
+          $dotnet_test_options += @( '${{ inputs.extra_options_common }}' )
+        }
+
+        "dotnet test ${dotnet_test_options}"
+        dotnet test @dotnet_test_options
