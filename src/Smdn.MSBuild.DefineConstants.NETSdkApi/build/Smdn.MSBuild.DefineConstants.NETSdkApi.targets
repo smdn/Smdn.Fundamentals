@@ -709,6 +709,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="RequiresUnreferencedCodeAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="MemberNotNullAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="MemberNotNullWhenAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="UnconditionalSuppressMessageAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetCultureInfo(name,predefinedOnly)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CopyToAsync(Stream,CancellationToken)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CopyToAsync(Stream,TransportContext,CancellationToken)"/>
