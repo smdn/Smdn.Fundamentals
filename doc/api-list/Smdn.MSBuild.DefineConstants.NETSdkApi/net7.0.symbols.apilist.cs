@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.2
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.3
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.2
+//   InformationalVersion: 1.4.3
 
 // List of symbols defined on target framework 'net7.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -213,9 +213,14 @@
 #define SYSTEM_DIAGNOSTICS_PROCESS_WAITFOREXITASYNC // System.Diagnostics.Process.WaitForExitAsync (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_UNREACHABLEEXCEPTION // System.Diagnostics.UnreachableException (NET7_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_CONSTANTEXPECTEDATTRIBUTE // System.Diagnostics.CodeAnalysis.ConstantExpectedAttribute (NET7_0_OR_GREATER)
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_DYNAMICALLYACCESSEDMEMBERSATTRIBUTE // System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute (NET5_0_OR_GREATER)
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_DYNAMICALLYACCESSEDMEMBERTYPES // System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes (NET5_0_OR_GREATER)
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_DYNAMICDEPENDENCYATTRIBUTE // System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLATTRIBUTE // System.Diagnostics.CodeAnalysis.MemberNotNullAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE // System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute (NET5_0_OR_GREATER)
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_REQUIRESUNREFERENCEDCODEATTRIBUTE // System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_STRINGSYNTAXATTRIBUTE // System.Diagnostics.CodeAnalysis.StringSyntaxAttribute (NET7_0_OR_GREATER)
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_UNCONDITIONALSUPPRESSMESSAGEATTRIBUTE // System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_GLOBALIZATION_CULTUREINFO_CULTURETYPES // System.Globalization.CultureInfo.CultureTypes (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_GLOBALIZATION_CULTUREINFO_GETCONSOLEFALLBACKUICULTURE // System.Globalization.CultureInfo.GetConsoleFallbackUICulture (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_GLOBALIZATION_CULTUREINFO_GETCULTUREINFO // System.Globalization.CultureInfo.GetCultureInfo (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
