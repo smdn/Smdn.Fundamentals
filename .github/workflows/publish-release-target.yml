@@ -542,6 +542,8 @@ jobs:
         # write release notes file
         if (-not $dry_run) {
           Out-File -FilePath $release_notes_output_path -Encoding utf8 -InputObject $release_notes_body.ToString()
+
+          "release notes file written: '${release_notes_output_path}', $($([System.IO.FileInfo] $release_notes_output_path).Length) bytes"
         }
 
         "## :page_with_curl: Release notes" >> $Env:GITHUB_STEP_SUMMARY
@@ -571,6 +573,8 @@ jobs:
 
         $release_notes_file = '${{ steps.release-notes-file.outputs.path }}'
         $release_title = '${{ steps.release-info.outputs.package_id }} version ${{ steps.release-info.outputs.package_version }}'
+
+        "release notes file: '${release_notes_file}', $($([System.IO.FileInfo] $release_notes_file).Length) bytes"
 
         $release_create_options = @(
           '--repo', '${{ github.repository }}',
