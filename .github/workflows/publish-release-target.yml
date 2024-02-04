@@ -588,7 +588,7 @@ jobs:
           $release_url = '(dry-run)'
         }
         else {
-          $release_url = gh release create $release_create_options
+          $release_url = $(gh release create $release_create_options)
         }
 
         "# :sparkles: Released" >> $Env:GITHUB_STEP_SUMMARY
