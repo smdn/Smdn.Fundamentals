@@ -580,11 +580,17 @@ jobs:
           '--repo', '${{ github.repository }}',
           '--title', $release_title,
           '--target', '${{ steps.release-info.outputs.package_branch }}',
-          '--notes-file', $release_notes_file,
-          ('${{ steps.release-info.outputs.release_prerelease }}' -ieq 'True' ? '--prerelease' : ''),
-          ('${{ steps.release-info.outputs.release_draft }}' -ieq 'True' ? '--draft' : ''),
-          '${{ steps.release-info.outputs.release_tag }}'
+          '--notes-file', $release_notes_file
         )
+
+        if ( '${{ steps.release-info.outputs.release_prerelease }}' -ieq 'True' ) {
+          $release_create_options += '--prerelease'
+        }
+        if ( '${{ steps.release-info.outputs.release_draft }}' -ieq 'True' ) {
+          $release_create_options += '--draft'
+        }
+
+        $release_create_options += '${{ steps.release-info.outputs.release_tag }}'
 
         "gh release create ${release_create_options}"
 
