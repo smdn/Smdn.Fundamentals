@@ -67,6 +67,20 @@ public class CExplicitlyImplementedStaticInterfaceMembers : IStaticMembers {
   static void IStaticMembers.MStaticVirtual() => throw new NotImplementedException();
 }
 
+public interface IExplicitlyImplementedStaticInterfaceMembers : IStaticMembers {
+  static void M() => throw new NotImplementedException();
+
+  static void IStaticMembers.MStaticAbstract() => throw new NotImplementedException();
+  static void IStaticMembers.MStaticVirtual() => throw new NotImplementedException();
+}
+
+public interface IExplicitlyImplementedStaticInterfaceMembers<TSelf> : IStaticMembers where TSelf : IExplicitlyImplementedStaticInterfaceMembers<TSelf> {
+  static void M() => throw new NotImplementedException();
+
+  static void IStaticMembers.MStaticAbstract() => throw new NotImplementedException();
+  static void IStaticMembers.MStaticVirtual() => throw new NotImplementedException();
+}
+
 public interface IStaticMembersPublic {
   static abstract void M();
 }

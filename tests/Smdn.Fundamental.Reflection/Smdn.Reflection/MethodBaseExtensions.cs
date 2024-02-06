@@ -144,6 +144,48 @@ public class MethodBaseExtensionsTests {
     typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
     nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual)
   )]
+  [TestCase(
+    typeof(System.Numerics.INumberBase<>),
+    "System.IUtf8SpanFormattable.TryFormat",
+    true,
+    typeof(System.IUtf8SpanFormattable),
+    nameof(System.IUtf8SpanFormattable.TryFormat)
+  )]
+  [TestCase(
+    typeof(int),
+    "System.Numerics.IBinaryInteger<System.Int32>.GetByteCount",
+    true,
+    typeof(System.Numerics.IBinaryInteger<int>),
+    nameof(System.Numerics.IBinaryInteger<int>.GetByteCount)
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    true,
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract)
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    true,
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual)
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers<>),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    true,
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract)
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers<>),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    true,
+    typeof(MethodBaseExtensionsTestTypes.IStaticMembers),
+    nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual)
+  )]
 #endif
   public void TryFindExplicitInterfaceMethod(Type type, string methodName, bool expectedResult, Type expectedInterface, string expectedMethodName)
   {
@@ -196,6 +238,46 @@ public class MethodBaseExtensionsTests {
     typeof(MethodBaseExtensionsTestTypes.CExplicitlyImplementedStaticInterfaceMembers),
     "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
     true
+  )]
+  [TestCase(
+    typeof(System.Numerics.INumberBase<>),
+    "System.IUtf8SpanFormattable.TryFormat",
+    true
+  )]
+  [TestCase(
+    typeof(int),
+    "System.Numerics.IBinaryInteger<System.Int32>.GetByteCount",
+    true
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    true
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    true
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers),
+    nameof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers.M),
+    false
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers<>),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticAbstract),
+    true
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers<>),
+    "MethodBaseExtensionsTestTypes." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers) + "." + nameof(MethodBaseExtensionsTestTypes.IStaticMembers.MStaticVirtual),
+    true
+  )]
+  [TestCase(
+    typeof(MethodBaseExtensionsTestTypes.IExplicitlyImplementedStaticInterfaceMembers<>),
+    "M",
+    false
   )]
 #endif
   public void IsExplicitlyImplemented(Type type, string methodName, bool expected)

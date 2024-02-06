@@ -62,6 +62,16 @@ public static class MethodBaseExtensions {
     bool throwException
   )
   {
+    static IEnumerable<Type> GetInterfaces(Type t, bool findOnlyPublicInterfaces)
+    {
+      foreach (var iface in t.GetInterfaces()) {
+        if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
+          continue;
+
+        yield return iface;
+      }
+    }
+
     explicitInterfaceMethod = default;
 
     if (m is not MethodInfo im)
@@ -77,10 +87,37 @@ public static class MethodBaseExtensions {
         : false;
     }
 
-    foreach (var iface in im.DeclaringType.GetInterfaces()) {
-      if (findOnlyPublicInterfaces && !(iface.IsPublic || iface.IsNestedPublic || iface.IsNestedFamily || iface.IsNestedFamORAssem))
-        continue;
+    if (im.DeclaringType.IsInterface) {
+      // when 'm' is
+      // - a method of an interface, and
+      // - a method that explicitly implements a method of another interface implemented by the interface
+      // e.g. m = System.Numerics.INumberBase`1.System.IUtf8SpanFormattable.TryFormat
+      var indexOfTypeAndMemberDelimiter = m.Name.LastIndexOf('.');
 
+      if (indexOfTypeAndMemberDelimiter < 0)
+        return false;
+
+      var interfaceTypeNameOfExplicitImplementation = m.Name.AsSpan(0, indexOfTypeAndMemberDelimiter);
+      var interfaceMethodNameOfExplicitImplementation = m.Name.AsSpan(indexOfTypeAndMemberDelimiter + 1);
+
+      foreach (var iface in GetInterfaces(im.DeclaringType, findOnlyPublicInterfaces)) {
+        if (!interfaceTypeNameOfExplicitImplementation.Equals(iface.FullName, StringComparison.Ordinal))
+          continue;
+
+        foreach (var ifaceMethod in iface.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+          if (!interfaceMethodNameOfExplicitImplementation.Equals(ifaceMethod.Name, StringComparison.Ordinal))
+            continue;
+
+          explicitInterfaceMethod = ifaceMethod;
+
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    foreach (var iface in GetInterfaces(im.DeclaringType, findOnlyPublicInterfaces)) {
       InterfaceMapping interfaceMap = default;
 
       try {
