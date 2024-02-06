@@ -85,10 +85,19 @@ public static class MethodInfoExtensions {
     }
 
     var properties = accessor.DeclaringType.GetProperties(GetBindingFlagsForAccessorOwner(accessor));
+
+#if false
+    // In the reflection-only context, this will always be false,
+    // since a comparison of System.RuntimeType and System.Reflection.TypeLoading.RoType will
+    // always be false.
     var isSetAccessor = accessor.ReturnType == typeof(void);
 
-    property = (!isSetAccessor && expectGet) ? properties.FirstOrDefault(prop => accessor == prop.GetMethod) : null;
-    property ??= (isSetAccessor && expectSet) ? properties.FirstOrDefault(prop => accessor == prop.SetMethod) : null;
+    expectGet &= !isSetAccessor;
+    expectSet &= isSetAccessor;
+#endif
+
+    property = expectGet ? properties.FirstOrDefault(prop => accessor == prop.GetMethod) : null;
+    property ??= expectSet ? properties.FirstOrDefault(prop => accessor == prop.SetMethod) : null;
 
     return property is not null;
   }
