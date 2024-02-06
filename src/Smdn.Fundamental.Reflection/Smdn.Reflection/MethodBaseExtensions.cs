@@ -36,8 +36,10 @@ public static class MethodBaseExtensions {
     out MethodInfo? explicitInterfaceMethod,
     bool findOnlyPublicInterfaces = false
   )
+#pragma warning disable CA1062 // XXX: why allow null?
     => TryFindExplicitInterfaceMethod(
       m, // allow null
+#pragma warning restore CA1062
       out explicitInterfaceMethod,
       findOnlyPublicInterfaces,
       throwException: false
