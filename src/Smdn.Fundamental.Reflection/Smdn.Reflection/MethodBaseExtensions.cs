@@ -103,11 +103,11 @@ public static class MethodBaseExtensions {
       var interfaceMethodNameOfExplicitImplementation = m.Name.AsSpan(indexOfTypeAndMemberDelimiter + 1);
 
       foreach (var iface in GetInterfaces(im.DeclaringType, findOnlyPublicInterfaces)) {
-        if (!interfaceTypeNameOfExplicitImplementation.Equals(iface.FullName, StringComparison.Ordinal))
+        if (!interfaceTypeNameOfExplicitImplementation.Equals(iface.FullName.AsSpan(), StringComparison.Ordinal))
           continue;
 
         foreach (var ifaceMethod in iface.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
-          if (!interfaceMethodNameOfExplicitImplementation.Equals(ifaceMethod.Name, StringComparison.Ordinal))
+          if (!interfaceMethodNameOfExplicitImplementation.Equals(ifaceMethod.Name.AsSpan(), StringComparison.Ordinal))
             continue;
 
           explicitInterfaceMethod = ifaceMethod;

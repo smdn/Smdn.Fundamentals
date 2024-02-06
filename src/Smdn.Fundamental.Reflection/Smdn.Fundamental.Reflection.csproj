@@ -24,4 +24,8 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Label="package properties">
     <PackageTags>reflection;extensions</PackageTags>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" />
+  </ItemGroup>
 </Project>
