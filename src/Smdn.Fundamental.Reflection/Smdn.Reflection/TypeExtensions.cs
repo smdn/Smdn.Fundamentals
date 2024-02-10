@@ -6,6 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
+using Smdn.Reflection.Attributes;
+
 namespace Smdn.Reflection;
 
 public static class TypeExtensions {
@@ -77,9 +79,7 @@ public static class TypeExtensions {
   public static bool IsReadOnlyValueType(this Type t)
     =>
       ROCType.IsValueType(t ?? throw new ArgumentNullException(nameof(t))) &&
-      t.GetCustomAttributesData().Any(
-        static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal)
-      );
+      t.HasIsReadOnlyAttribute();
 
   public static bool IsByRefLikeValueType(this Type t)
     =>

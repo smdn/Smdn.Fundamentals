@@ -8,6 +8,8 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+using Smdn.Reflection.Attributes;
+
 namespace Smdn.Reflection;
 
 public static class MethodInfoExtensions {
@@ -198,7 +200,5 @@ public static class MethodInfoExtensions {
   public static bool IsReadOnly(this MethodInfo m)
     => m is null
       ? throw new ArgumentNullException(nameof(m))
-      : m.GetCustomAttributesData().Any(
-          static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal)
-        );
+      : m.HasIsReadOnlyAttribute();
 }
