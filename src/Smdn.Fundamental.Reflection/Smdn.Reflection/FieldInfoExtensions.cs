@@ -4,6 +4,7 @@ using System;
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
 #endif
+using System.Linq;
 using System.Reflection;
 
 using Smdn.Reflection.Attributes;
@@ -98,4 +99,11 @@ public static class FieldInfoExtensions {
 
     return false;
   }
+
+  public static bool IsReadOnly(this FieldInfo f)
+    => f is null
+      ? throw new ArgumentNullException(nameof(f))
+      : f.GetCustomAttributesData().Any(
+          static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsReadOnlyAttribute", StringComparison.Ordinal)
+        );
 }

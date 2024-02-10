@@ -182,4 +182,41 @@ public class FieldInfoExtensionsTests {
   [TestCase]
   public void TryGetEventFromBackingField_ArgumentNull()
     => Assert.That(((FieldInfo)null!).TryGetEventFromBackingField(out _), Is.False);
+
+  private struct NonRefFieldsReadOnlyModifier {
+    public readonly int ReadOnly;
+  }
+
+#if NET7_0_OR_GREATER
+  private ref struct RefFieldsReadOnlyModifier {
+    public ref int Ref;
+    public ref readonly int RefReadOnly;
+  }
+
+  private readonly ref struct RefReadOnlyFieldsReadOnlyModifier {
+    public readonly ref int ReadOnlyRef;
+    public readonly ref readonly int ReadOnlyRefReadOnly;
+  }
+#endif
+
+  [TestCase(typeof(NonRefFieldsReadOnlyModifier), nameof(NonRefFieldsReadOnlyModifier.ReadOnly), false)]
+#if NET7_0_OR_GREATER
+  [TestCase(typeof(RefFieldsReadOnlyModifier), nameof(RefFieldsReadOnlyModifier.Ref), false)]
+  [TestCase(typeof(RefFieldsReadOnlyModifier), nameof(RefFieldsReadOnlyModifier.RefReadOnly), true)]
+  [TestCase(typeof(RefReadOnlyFieldsReadOnlyModifier), nameof(RefReadOnlyFieldsReadOnlyModifier.ReadOnlyRef), false)]
+  [TestCase(typeof(RefReadOnlyFieldsReadOnlyModifier), nameof(RefReadOnlyFieldsReadOnlyModifier.ReadOnlyRefReadOnly), true)]
+#endif
+  public void IsReadOnly(Type t, string fieldName, bool expected)
+  {
+    var f = t.GetField(
+      fieldName,
+      BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly
+    )!;
+
+    Assert.That(f.IsReadOnly(), Is.EqualTo(expected));
+  }
+
+  [TestCase]
+  public void IsReadOnly_ArgumentNull()
+    => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsReadOnly());
 }
