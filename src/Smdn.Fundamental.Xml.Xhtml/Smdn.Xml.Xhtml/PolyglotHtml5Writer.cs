@@ -1,7 +1,16 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#nullable enable
+
+#if !SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#pragma warning disable CS8602
+#endif
+
 using System;
 using System.Collections.Generic;
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -9,9 +18,9 @@ using System.Xml;
 namespace Smdn.Xml.Xhtml;
 
 public class PolyglotHtml5Writer : XmlWriter {
-  public override XmlWriterSettings Settings => settings;
+  public override XmlWriterSettings? Settings => settings;
   public override WriteState WriteState => baseWriter.WriteState;
-  public override string XmlLang => baseWriter.XmlLang;
+  public override string? XmlLang => baseWriter.XmlLang;
   public override XmlSpace XmlSpace => baseWriter.XmlSpace;
   protected virtual XmlWriter BaseWriter => baseWriter;
 
@@ -36,7 +45,12 @@ public class PolyglotHtml5Writer : XmlWriter {
 
   protected ExtendedWriteState ExtendedState { get; private set; } = ExtendedWriteState.Start;
 
-  private ElementContext currentElementContext = null;
+#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+  [MemberNotNullWhen(true, nameof(currentElementContext))]
+#endif
+  protected bool IsWriteStateElementContent => ExtendedState == ExtendedWriteState.ElementContent;
+
+  private ElementContext? currentElementContext = null;
   private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
 
   private sealed class ElementContext {
@@ -59,7 +73,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     };
 
     public string LocalName { get; }
-    public string Namespace { get; }
+    public string? Namespace { get; }
     public bool IsMixedContent { get; private set; }
     public bool IsEmpty { get; private set; } = true;
     public bool IsClosed { get; private set; } = false;
@@ -67,7 +81,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     public bool IsNonVoidElement => !(VoidElements.Contains(LocalName) && IsNamespaceXhtml);
     private bool IsNamespaceXhtml => string.IsNullOrEmpty(Namespace) || string.Equals(Namespace, W3CNamespaces.Xhtml, StringComparison.Ordinal);
 
-    public ElementContext(string localName, string ns, ElementContext parentElementContext)
+    public ElementContext(string localName, string? ns, ElementContext? parentElementContext)
     {
       LocalName = localName;
       Namespace = ns;
@@ -86,7 +100,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
   private static readonly XmlWriterSettings DefaultWriterSettings = new();
 
-  private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings settings)
+  private static XmlWriterSettings ToNonIndentingSettings(XmlWriterSettings? settings)
   {
     settings ??= DefaultWriterSettings;
 
@@ -107,27 +121,27 @@ public class PolyglotHtml5Writer : XmlWriter {
   }
 #endif
 
-  public PolyglotHtml5Writer(string outputFileName, XmlWriterSettings settings = null)
+  public PolyglotHtml5Writer(string outputFileName, XmlWriterSettings? settings = null)
     : this(Create(outputFileName, ToNonIndentingSettings(settings)), settings)
   {
   }
 
-  public PolyglotHtml5Writer(StringBuilder output, XmlWriterSettings settings = null)
+  public PolyglotHtml5Writer(StringBuilder output, XmlWriterSettings? settings = null)
     : this(Create(output, ToNonIndentingSettings(settings)), settings)
   {
   }
 
-  public PolyglotHtml5Writer(Stream output, XmlWriterSettings settings = null)
+  public PolyglotHtml5Writer(Stream output, XmlWriterSettings? settings = null)
     : this(Create(output, ToNonIndentingSettings(settings)), settings)
   {
   }
 
-  public PolyglotHtml5Writer(TextWriter output, XmlWriterSettings settings = null)
+  public PolyglotHtml5Writer(TextWriter output, XmlWriterSettings? settings = null)
     : this(Create(output, ToNonIndentingSettings(settings)), settings)
   {
   }
 
-  private PolyglotHtml5Writer(XmlWriter baseWriter, XmlWriterSettings settings)
+  private PolyglotHtml5Writer(XmlWriter baseWriter, XmlWriterSettings? settings)
   {
     this.baseWriter = baseWriter ?? throw new ArgumentNullException(nameof(baseWriter));
     this.settings = settings ?? DefaultWriterSettings.Clone();
@@ -150,7 +164,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     }
   }
 
-  public override void WriteDocType(string name, string pubid, string sysid, string subset)
+  public override void WriteDocType(string name, string? pubid, string? sysid, string? subset)
   {
     if (string.IsNullOrEmpty(pubid) && string.IsNullOrEmpty(sysid) && string.IsNullOrEmpty(subset))
       baseWriter.WriteRaw("<!DOCTYPE " + name + ">");
@@ -160,7 +174,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.Prolog;
   }
 
-  public override void WriteStartElement(string prefix, string localName, string ns)
+  public override void WriteStartElement(string? prefix, string localName, string? ns)
   {
     switch (ExtendedState) {
       case ExtendedWriteState.ElementOpening:
@@ -174,7 +188,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     baseWriter.WriteStartElement(prefix, localName, ns);
 
     // is nested element start?
-    if (currentElementContext != null && !currentElementContext.IsClosed) {
+    if (currentElementContext is not null && !currentElementContext.IsClosed) {
       currentElementContext.MarkAsNonEmpty(); // has child elements
 
       elementContextStack.Push(currentElementContext);
@@ -187,7 +201,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
   public override void WriteEndElement()
   {
-    if (currentElementContext.IsNonVoidElement)
+    if (currentElementContext is not null && currentElementContext.IsNonVoidElement)
       // prepend empty text node to avoid emitting self closing tags <.../>
       baseWriter.WriteString(string.Empty);
 
@@ -195,7 +209,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     ExtendedState = ExtendedWriteState.ElementOpened;
 
-    if (currentElementContext.IsEmpty)
+    if (currentElementContext is not null && currentElementContext.IsEmpty)
       CloseCurrentElement();
   }
 
@@ -212,7 +226,8 @@ public class PolyglotHtml5Writer : XmlWriter {
 
   private void CloseCurrentElement()
   {
-    currentElementContext.MarkAsClosed();
+    if (currentElementContext is not null)
+      currentElementContext.MarkAsClosed();
 
     ExtendedState = ExtendedWriteState.ElementClosed;
 
@@ -236,7 +251,7 @@ public class PolyglotHtml5Writer : XmlWriter {
       return;
     if (XmlSpace == XmlSpace.Preserve)
       return;
-    if (currentElementContext != null) {
+    if (currentElementContext is not null) {
       if (currentElementContext.IsMixedContent)
         return;
       if (ExtendedState == ExtendedWriteState.ElementClosing &&
@@ -271,7 +286,7 @@ public class PolyglotHtml5Writer : XmlWriter {
    */
   public override void Flush() => baseWriter.Flush();
 
-  public override string LookupPrefix(string ns) => baseWriter.LookupPrefix(ns);
+  public override string? LookupPrefix(string ns) => baseWriter.LookupPrefix(ns);
 
   public override void WriteStartDocument()
   {
@@ -294,7 +309,7 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.DocumentEnd;
   }
 
-  public override void WriteStartAttribute(string prefix, string localName, string ns)
+  public override void WriteStartAttribute(string? prefix, string localName, string? ns)
   {
     if (settings.Indent && settings.NewLineOnAttributes)
       throw new NotSupportedException("NewLineOnAttributes is not supported");
@@ -312,15 +327,15 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.AttributeEnd;
   }
 
-  public override void WriteProcessingInstruction(string name, string text)
+  public override void WriteProcessingInstruction(string name, string? text)
   {
     baseWriter.WriteProcessingInstruction(name, text);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent)
+    if (IsWriteStateElementContent)
       currentElementContext.MarkAsNonEmpty();
   }
 
-  public override void WriteComment(string text)
+  public override void WriteComment(string? text)
   {
     switch (ExtendedState) {
       case ExtendedWriteState.ElementOpening:
@@ -336,7 +351,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     if (ExtendedState == ExtendedWriteState.DocumentStart)
       ExtendedState = ExtendedWriteState.Prolog;
-    else if (ExtendedState == ExtendedWriteState.ElementContent)
+    else if (IsWriteStateElementContent)
       currentElementContext.MarkAsNonEmpty();
   }
 
@@ -346,19 +361,19 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteBase64(buffer, index, count);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
   }
 
-  public override void WriteCData(string text)
+  public override void WriteCData(string? text)
   {
     SetWritingContentState();
 
     baseWriter.WriteCData(text);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
@@ -370,7 +385,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteCharEntity(ch);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
@@ -382,7 +397,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteChars(buffer, index, count);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
@@ -394,7 +409,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteEntityRef(name);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
@@ -406,7 +421,7 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteRaw(buffer, index, count);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
@@ -418,19 +433,19 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteRaw(data);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
   }
 
-  public override void WriteString(string text)
+  public override void WriteString(string? text)
   {
     SetWritingContentState();
 
     baseWriter.WriteString(text);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
@@ -442,19 +457,19 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent) {
+    if (IsWriteStateElementContent) {
       currentElementContext.MarkAsMixedContent();
       currentElementContext.MarkAsNonEmpty();
     }
   }
 
-  public override void WriteWhitespace(string ws)
+  public override void WriteWhitespace(string? ws)
   {
     SetWritingContentState();
 
     baseWriter.WriteWhitespace(ws);
 
-    if (ExtendedState == ExtendedWriteState.ElementContent)
+    if (IsWriteStateElementContent)
       currentElementContext.MarkAsMixedContent();
   }
 
