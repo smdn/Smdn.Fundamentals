@@ -14,10 +14,10 @@ public class ExtensionsTests {
   [TestCase("y", "https://example.com/", false, null)]
   [TestCase(null, null, false, null)]
   public void TryGetAttribute(
-    string localName,
-    string namespaceName,
+    string? localName,
+    string? namespaceName,
     bool expectedResult,
-    string expectedAttributeValue
+    string? expectedAttributeValue
   )
   {
     var doc = XDocument.Load(new StringReader(@"<?xml version=""1.0"" encoding=""utf-8""?>
@@ -27,14 +27,17 @@ public class ExtensionsTests {
   xmlns:ns=""https://example.com/""
 />
 "));
-    var e = doc.Root;
+    var e = doc.Root!;
     var attrName = localName is null
       ? null
       : namespaceName is null
         ? (XName)localName
         : (XNamespace)namespaceName + localName;
 
-    var actualResult = e.TryGetAttribute(attrName, out var attr);
+    var actualResult = e.TryGetAttribute(
+      attrName!, // allow null
+      out var attr
+    );
 
     Assert.That(actualResult, Is.EqualTo(expectedResult), "return value");
 

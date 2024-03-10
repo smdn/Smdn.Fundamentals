@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -8,16 +11,16 @@ using System.Xml.Linq;
 namespace Smdn.Xml.Linq;
 
 public static class Extensions {
-  public static string GetAttributeValue(this XElement element, XName attributeName)
+  public static string? GetAttributeValue(this XElement element, XName attributeName)
     => element?.Attribute(attributeName)?.Value;
 
   public static TValue GetAttributeValue<TValue>(
     this XElement element,
     XName attributeName,
 #if SYSTEM_CONVERTER
-    Converter<string, TValue> converter
+    Converter<string?, TValue> converter
 #else
-    Func<string, TValue> converter
+    Func<string?, TValue> converter
 #endif
   )
   {
@@ -30,7 +33,14 @@ public static class Extensions {
   public static bool HasAttribute(this XElement element, XName name)
     => element?.Attribute(name) != null;
 
-  public static bool HasAttribute(this XElement element, XName name, out string value)
+  public static bool HasAttribute(
+    this XElement element,
+    XName name,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out string? value
+  )
   {
     var attr = element?.Attribute(name);
 
@@ -48,11 +58,22 @@ public static class Extensions {
     => HasAttribute(element, attributeName, out var attributeValue) &&
        string.Equals(attributeValue, @value, StringComparison.Ordinal);
 
+#if !NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+#pragma warning disable CS8604
+#endif
   public static bool HasAttributeWithValue(this XElement element, XName attributeName, Predicate<string> predicate)
     => HasAttribute(element, attributeName, out var attributeValue) &&
        (predicate?.Invoke(attributeValue) ?? false);
+#pragma warning restore CS8604
 
-  public static bool TryGetAttribute(this XElement element, XName attributeName, out XAttribute attribute)
+  public static bool TryGetAttribute(
+    this XElement element,
+    XName attributeName,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out XAttribute? attribute
+  )
   {
     if (element is null)
       throw new ArgumentNullException(nameof(element));
@@ -67,8 +88,12 @@ public static class Extensions {
     if (container is null)
       throw new ArgumentNullException(nameof(container));
 
-    return string.Concat(container.DescendantNodes()
-                                  .Where(n => n.NodeType == XmlNodeType.Text)
-                                  .Select(n => (n as XText).Value));
+    return string.Concat(
+      container
+        .DescendantNodes()
+        .Where(static n => n.NodeType == XmlNodeType.Text)
+        .Cast<XText>()
+        .Select(static t => t.Value)
+    );
   }
 }
