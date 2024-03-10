@@ -17,6 +17,11 @@ namespace Smdn.Xml.Linq;
 
 [TestFixture()]
 public class XEntityReferenceTests {
+  [TestCase(null)]
+  [TestCase("")]
+  public void Ctor_InvalidName(string? name)
+    => Assert.Throws<ArgumentException>(() => new XEntityReference(name!));
+
   [Test]
   public void TestWriteTo()
   {

@@ -16,7 +16,11 @@ namespace Smdn.Xml.Linq;
 
 public class XEntityReference : XText {
   public XEntityReference(string name)
-    : base(name)
+    : base(
+      string.IsNullOrEmpty(name)
+        ? throw new ArgumentException(message: "name cannot be null or empty", nameof(name))
+        : name
+    )
   {
   }
 
