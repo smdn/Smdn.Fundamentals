@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using NUnit.Framework;
@@ -95,6 +96,24 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public async Task TestDisposeAsync_CloseOutput()
+    {
+      var doc = new XDocument(new XElement("html"));
+
+      using (var output = new MemoryStream()) {
+        var settings = new XmlWriterSettings();
+
+        settings.CloseOutput = true;
+
+        await using (var writer = new PolyglotHtml5Writer(output, settings)) {
+          doc.Save(writer);
+        }
+
+        Assert.Throws<ObjectDisposedException>(() => output.ReadByte());
+      }
+    }
+
+    [Test]
     public void TestDispose_DoNotCloseOutput()
     {
       var doc = new XDocument(new XElement("html"));
@@ -105,6 +124,24 @@ namespace Smdn.Xml.Xhtml {
         settings.CloseOutput = false;
 
         using (var writer = new PolyglotHtml5Writer(output, settings)) {
+          doc.Save(writer);
+        }
+
+        Assert.DoesNotThrow(() => output.ReadByte());
+      }
+    }
+
+    [Test]
+    public async Task TestDisposeAsync_DoNotCloseOutput()
+    {
+      var doc = new XDocument(new XElement("html"));
+
+      using (var output = new MemoryStream()) {
+        var settings = new XmlWriterSettings();
+
+        settings.CloseOutput = false;
+
+        await using (var writer = new PolyglotHtml5Writer(output, settings)) {
           doc.Save(writer);
         }
 
