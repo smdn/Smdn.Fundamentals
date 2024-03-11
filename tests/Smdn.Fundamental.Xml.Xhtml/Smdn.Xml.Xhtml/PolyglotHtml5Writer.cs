@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2017 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET5_0_OR_GREATER
-#define SYSTEM_XML_XMLWRITER_DISPOSEASYNC
-#endif
-
 using System;
 using System.IO;
 using System.Text;
