@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2017 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#nullable enable
+
 using System;
 using System.IO;
 using System.Text;
@@ -8,9 +10,14 @@ using System.Xml;
 using System.Xml.Linq;
 using NUnit.Framework;
 
+using Smdn.Xml.Linq;
+
 namespace Smdn.Xml.Xhtml {
   [TestFixture]
   public class PolyglotHtml5WriterTests {
+    private static readonly string[] VoldElementNames = new[] { "area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr" };
+    private static readonly string[] SelfClosingElementNames = new[] { "div", "span", "script", "html", "body", "head" };
+
     [Test]
     public void TestConstructor_SettingsNull()
     {
@@ -153,20 +160,34 @@ namespace Smdn.Xml.Xhtml {
     }
 #endif
 
-    private static string ToString(XDocument doc, NewLineHandling newLineHandling, string newLineChars = null)
+    private static string ToString(XDocument doc, NewLineHandling newLineHandling, string? newLineChars = null)
     {
       var settings = new XmlWriterSettings();
 
+      settings.Async = false;
       settings.NewLineHandling = newLineHandling;
       settings.NewLineChars = newLineChars ?? "\n";
 
       return ToString(doc, settings);
     }
 
-    private static string ToString(XDocument doc, XmlWriterSettings settings = null)
+    private static Task<string> ToStringAsync(XDocument doc, NewLineHandling newLineHandling, string? newLineChars = null)
+    {
+      var settings = new XmlWriterSettings();
+
+      settings.Async = true;
+      settings.NewLineHandling = newLineHandling;
+      settings.NewLineChars = newLineChars ?? "\n";
+
+      return ToStringAsync(doc, settings);
+    }
+
+    private static string ToString(XDocument doc, XmlWriterSettings? settings = null)
     {
       if (settings == null) {
         settings = new XmlWriterSettings();
+
+        settings.Async = false;
         settings.NewLineChars = "\n";
         settings.ConformanceLevel = ConformanceLevel.Document;
         settings.Indent = true;
@@ -174,11 +195,43 @@ namespace Smdn.Xml.Xhtml {
         settings.NewLineOnAttributes = false;
       }
 
-
       var output = new StringBuilder();
 
       using (var writer = new PolyglotHtml5Writer(output, settings)) {
         doc.Save(writer);
+      }
+
+      return output.ToString();
+    }
+
+    private static async Task<string> ToStringAsync(XDocument doc, XmlWriterSettings? settings = null)
+    {
+      if (settings == null) {
+        settings = new XmlWriterSettings();
+
+        settings.Async = true;
+        settings.NewLineChars = "\n";
+        settings.ConformanceLevel = ConformanceLevel.Document;
+        settings.Indent = true;
+        settings.IndentChars = " ";
+        settings.NewLineOnAttributes = false;
+      }
+
+      var output = new StringBuilder();
+
+#if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+      await
+#endif
+      using (var writer = new PolyglotHtml5Writer(output, settings)) {
+#if SYSTEM_XML_LINQ_XNODE_WRITETOASYNC
+        await doc.SaveAsync(writer, default).ConfigureAwait(false);
+#else
+        doc.Save(writer);
+
+        Assert.Ignore("XNode.WriteToAsync is not supported on this framework");
+
+        await Task.FromResult(0);
+#endif
       }
 
       return output.ToString();
@@ -204,7 +257,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWrite_Html5Document()
+    public async Task TestWrite_Html5Document([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XDocumentType("html", null!, null!, null!),
@@ -263,46 +316,65 @@ namespace Smdn.Xml.Xhtml {
  </body>
 </html>";
 
-      Assert.That(ToString(doc), Is.EqualTo(expected.Replace("\r\n", "\n")));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo(expected.Replace("\r\n", "\n"))
+      );
     }
 
     [Test]
-    public void TestWriteProlog_AlwaysOmitXmlDeclaration()
+    public async Task TestWriteProlog_AlwaysOmitXmlDeclaration([Values(true, false)] bool asAsync)
     {
-      var doc = new XDocument(new XElement("html"));
+      var doc = new XDocument(
+        new XDeclaration("1.0", "utf-8", "yes"),
+        new XElement("html")
+      );
 
       var settings = new XmlWriterSettings();
 
+      settings.Async = asAsync;
       settings.Indent = false;
       settings.OmitXmlDeclaration = false;
 
-      Assert.That(ToString(doc, settings), Is.EqualTo("<html></html>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+        Is.EqualTo("<html></html>")
+      );
 
       settings.OmitXmlDeclaration = true;
 
-      Assert.That(ToString(doc, settings), Is.EqualTo("<html></html>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+        Is.EqualTo("<html></html>")
+      );
     }
 
     [Test]
-    public void TestWriteDocType_XDocument_NullId()
+    public async Task TestWriteDocType_XDocument_NullId([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XDocumentType("html", null!, null!, null!),
         new XElement("html")
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<!DOCTYPE html>\n<html></html>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<!DOCTYPE html>\n<html></html>")
+      );
     }
 
     [Test]
-    public void TestWriteDocType_XDocument_EmptyId()
+    public async Task TestWriteDocType_XDocument_EmptyId([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XDocumentType("html", string.Empty, string.Empty, string.Empty),
         new XElement("html")
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<!DOCTYPE html>\n<html></html>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<!DOCTYPE html>\n<html></html>")
+      );
     }
 
     [Test]
@@ -320,10 +392,11 @@ namespace Smdn.Xml.Xhtml {
       Assert.That(ToString(doc), Is.EqualTo("<!DOCTYPE html>\n<html></html>"));
     }
 
-    [TestCase(NewLineHandling.None)]
-    [TestCase(NewLineHandling.Entitize)]
-    [TestCase(NewLineHandling.Replace)]
-    public void TestWriteAttribute_ValueEscaped(NewLineHandling newLineHandling)
+    [Test]
+    public async Task TestWriteAttribute_ValueEscaped(
+      [Values(true, false)] bool asAsync,
+      [Values(NewLineHandling.None, NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
+    )
     {
       var doc = new XDocument(
         new XElement(
@@ -333,11 +406,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, newLineHandling), Is.EqualTo("<meta name=\"description\" content=\"&lt;&gt;&amp;&quot;\'\" />"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, newLineHandling).ConfigureAwait(false) : ToString(doc, newLineHandling),
+        Is.EqualTo("<meta name=\"description\" content=\"&lt;&gt;&amp;&quot;\'\" />")
+      );
     }
 
     [Test]
-    public void TestWriteAttribute_NewLineHandling_None()
+    public async Task TestWriteAttribute_NewLineHandling_None([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -347,12 +423,17 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, NewLineHandling.None), Is.EqualTo("<meta name=\"description\" content=\"\r\n\t\" />"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, NewLineHandling.None).ConfigureAwait(false) : ToString(doc, NewLineHandling.None),
+        Is.EqualTo("<meta name=\"description\" content=\"\r\n\t\" />")
+      );
     }
 
-    [TestCase(NewLineHandling.Entitize)]
-    [TestCase(NewLineHandling.Replace)]
-    public void TestWriteAttribute_NewLineHandling_EntitizeAndReplace(NewLineHandling newLineHandling)
+    [Test]
+    public async Task TestWriteAttribute_NewLineHandling_EntitizeAndReplace(
+      [Values(true, false)] bool asAsync,
+      [Values(NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
+    )
     {
       var doc = new XDocument(
         new XElement(
@@ -362,13 +443,17 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, newLineHandling), Is.EqualTo("<meta name=\"description\" content=\"&#xD;&#xA;&#x9;\" />"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, newLineHandling).ConfigureAwait(false) : ToString(doc, newLineHandling),
+        Is.EqualTo("<meta name=\"description\" content=\"&#xD;&#xA;&#x9;\" />")
+      );
     }
 
-    [TestCase(NewLineHandling.None)]
-    [TestCase(NewLineHandling.Entitize)]
-    [TestCase(NewLineHandling.Replace)]
-    public void TestWriteTextNode_TextEscaped(NewLineHandling newLineHandling)
+    [Test]
+    public async Task TestWriteTextNode_TextEscaped(
+      [Values(true, false)] bool asAsync,
+      [Values(NewLineHandling.None, NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
+    )
     {
       var doc = new XDocument(
         new XElement(
@@ -377,11 +462,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, newLineHandling), Is.EqualTo("<div>&lt;&gt;&amp;\"\'</div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, newLineHandling).ConfigureAwait(false) : ToString(doc, newLineHandling),
+        Is.EqualTo("<div>&lt;&gt;&amp;\"\'</div>")
+      );
     }
 
     [Test]
-    public void TestWriteTextNode_NewLineHandling_None()
+    public async Task TestWriteTextNode_NewLineHandling_None([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -390,11 +478,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, NewLineHandling.None), Is.EqualTo("<div>\r\n\t</div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, NewLineHandling.None).ConfigureAwait(false) : ToString(doc, NewLineHandling.None),
+        Is.EqualTo("<div>\r\n\t</div>")
+      );
     }
 
     [Test]
-    public void TestWriteTextNode_NewLineHandling_Entitize()
+    public async Task TestWriteTextNode_NewLineHandling_Entitize([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -403,11 +494,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, NewLineHandling.Entitize), Is.EqualTo("<div>&#xD;\n</div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, NewLineHandling.Entitize).ConfigureAwait(false) : ToString(doc, NewLineHandling.Entitize),
+        Is.EqualTo("<div>&#xD;\n</div>")
+      );
     }
 
     [Test]
-    public void TestWriteTextNode_NewLineHandling_Replace()
+    public async Task TestWriteTextNode_NewLineHandling_Replace([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -416,12 +510,22 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, NewLineHandling.Replace, "\n"), Is.EqualTo("<div>\n-\n-\n</div>"));
-      Assert.That(ToString(doc, NewLineHandling.Replace, "\r\n"), Is.EqualTo("<div>\r\n-\r\n-\r\n</div>"));
+      Assert.That(
+        asAsync
+          ? await ToStringAsync(doc, NewLineHandling.Replace, "\n").ConfigureAwait(false)
+          : ToString(doc, NewLineHandling.Replace, "\n"),
+        Is.EqualTo("<div>\n-\n-\n</div>")
+      );
+      Assert.That(
+        asAsync
+          ? await ToStringAsync(doc, NewLineHandling.Replace, "\r\n").ConfigureAwait(false)
+          : ToString(doc, NewLineHandling.Replace, "\r\n"),
+        Is.EqualTo("<div>\r\n-\r\n-\r\n</div>")
+      );
     }
 
     [Test]
-    public void TestWriteIndent()
+    public async Task TestWriteIndent([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -441,14 +545,18 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<div>\n <p>text</p>\n <p>text</p>\n <p>text</p>\n</div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<div>\n <p>text</p>\n <p>text</p>\n <p>text</p>\n</div>")
+      );
     }
 
     [Test]
-    public void TestIndent_NoIndent()
+    public async Task TestIndent_NoIndent([Values(true, false)] bool asAsync)
     {
       var settings = new XmlWriterSettings();
 
+      settings.Async = asAsync;
       settings.Indent = false;
       settings.IndentChars = "\t";
       settings.NewLineChars = "\r\n";
@@ -475,11 +583,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc, settings), Is.EqualTo("<div><p>text</p><p>text</p><p translate=\"no\">text</p></div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+        Is.EqualTo("<div><p>text</p><p>text</p><p translate=\"no\">text</p></div>")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_XmlSpace_Default()
+    public async Task TestWriteIndent_XmlSpace_Default([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -495,11 +606,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<div>\n <p xml:space=\"default\">\n  <span>text</span>\n </p>\n</div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<div>\n <p xml:space=\"default\">\n  <span>text</span>\n </p>\n</div>")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_XmlSpace_Preserve()
+    public async Task TestWriteIndent_XmlSpace_Preserve([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -515,16 +629,22 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<div>\n <p xml:space=\"preserve\"><span>text</span></p>\n</div>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<div>\n <p xml:space=\"preserve\"><span>text</span></p>\n</div>")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_AvoidIndentingEmptyElement_XDocument()
+    public async Task TestWriteIndent_AvoidIndentingEmptyElement_XDocument([Values(true, false)] bool asAsync)
     {
       var content = "<body><p></p></body>";
       var doc = XDocument.Load(new StringReader(content));
 
-      Assert.That(ToString(doc), Is.EqualTo("<body>\n <p></p>\n</body>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<body>\n <p></p>\n</body>")
+      );
     }
 
     [Test]
@@ -545,7 +665,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteIndent_AttributeNode_NewLineOnAttributes()
+    public void TestWriteIndent_AttributeNode_NewLineOnAttributes([Values(true, false)] bool asAsync)
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
 
@@ -561,19 +681,22 @@ namespace Smdn.Xml.Xhtml {
 
       var settings = new XmlWriterSettings();
 
+      settings.Async = asAsync;
       settings.Indent = true;
       settings.IndentChars = " ";
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = true;
 
-      Assert.Throws<NotSupportedException>(() => {
-        Assert.That(ToString(doc, settings), Is.EqualTo("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>"));
-
+      Assert.ThrowsAsync<NotSupportedException>(async () => {
+        Assert.That(
+          asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+          Is.EqualTo("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>")
+        );
       });
     }
 
     [Test]
-    public void TestWriteIndent_AttributeNode_NoIndent()
+    public async Task TestWriteIndent_AttributeNode_NoIndent([Values(true, false)] bool asAsync)
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
 
@@ -589,16 +712,20 @@ namespace Smdn.Xml.Xhtml {
 
       var settings = new XmlWriterSettings();
 
+      settings.Async = asAsync;
       settings.Indent = false;
       settings.IndentChars = " ";
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = true;
 
-      Assert.That(ToString(doc, settings), Is.EqualTo("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\"><head></head></html>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+        Is.EqualTo("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\"><head></head></html>")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_AttributeNode_NoNewLineOnAttributes()
+    public async Task TestWriteIndent_AttributeNode_NoNewLineOnAttributes([Values(true, false)] bool asAsync)
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
 
@@ -614,16 +741,20 @@ namespace Smdn.Xml.Xhtml {
 
       var settings = new XmlWriterSettings();
 
+      settings.Async = asAsync;
       settings.Indent = true;
       settings.IndentChars = " ";
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = false;
 
-      Assert.That(ToString(doc, settings), Is.EqualTo("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\">\n <head></head>\n</html>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+        Is.EqualTo("<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ja\" lang=\"ja\">\n <head></head>\n</html>")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_CommentNode()
+    public async Task TestWriteIndent_CommentNode([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -640,11 +771,14 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line6")
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div>\n <!--line2-->\n <!--line3-->\n <div>\n  <!--line4-->\n </div>\n <!--line5-->\n</div>\n<!--line6-->"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<!--line1-->\n<div>\n <!--line2-->\n <!--line3-->\n <div>\n  <!--line4-->\n </div>\n <!--line5-->\n</div>\n<!--line6-->")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_CommentNode_AfterElementWithAttribute()
+    public async Task TestWriteIndent_CommentNode_AfterElementWithAttribute([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -656,11 +790,14 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line3")
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div id=\"body\">\n <!--line2-->\n</div>\n<!--line3-->"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<!--line1-->\n<div id=\"body\">\n <!--line2-->\n</div>\n<!--line3-->")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_CommentNode_MixedContent()
+    public async Task TestWriteIndent_CommentNode_MixedContent([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -672,11 +809,14 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line3")
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div>text<!--line2--></div>\n<!--line3-->"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<!--line1-->\n<div>text<!--line2--></div>\n<!--line3-->")
+      );
     }
 
     [Test]
-    public void TestWriteIndent_CommentNode_XmlSpace_Preserve()
+    public async Task TestWriteIndent_CommentNode_XmlSpace_Preserve([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -688,11 +828,14 @@ namespace Smdn.Xml.Xhtml {
         new XComment("line3")
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<!--line1-->\n<div xml:space=\"preserve\"><!--line2--></div>\n<!--line3-->"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<!--line1-->\n<div xml:space=\"preserve\"><!--line2--></div>\n<!--line3-->")
+      );
     }
 
     [Test]
-    public void TestWriteNonIndentingElements_MixedContent_TextOnly()
+    public async Task TestWriteNonIndentingElements_MixedContent_TextOnly([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -704,11 +847,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre> text </pre>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <pre> text </pre>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteNonIndentingElements_MixedContent1()
+    public async Task TestWriteNonIndentingElements_MixedContent1([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -722,11 +868,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre>text <span>span</span> text</pre>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <pre>text <span>span</span> text</pre>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteNonIndentingElements_MixedContent2()
+    public async Task TestWriteNonIndentingElements_MixedContent2([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -739,11 +888,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre>text<span>span</span></pre>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <pre>text<span>span</span></pre>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteNonIndentingElements_NonMixedContent()
+    public async Task TestWriteNonIndentingElements_NonMixedContent([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -755,11 +907,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <pre><span>span</span></pre>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <pre><span>span</span></pre>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteNonIndentingElements_NonMixedContent_WithXhtmlNamespace()
+    public async Task TestWriteNonIndentingElements_NonMixedContent_WithXhtmlNamespace([Values(true, false)] bool asAsync)
     {
       var ns = (XNamespace)W3CNamespaces.Xhtml;
 
@@ -773,11 +928,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <pre><span>span</span></pre>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <pre><span>span</span></pre>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_NonMixedContent()
+    public async Task TestWriteIndentingElements_NonMixedContent([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -789,11 +947,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>\n  <span>span</span>\n </p>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <p>\n  <span>span</span>\n </p>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_NonMixedContent_WithXhtmlNamespace()
+    public async Task TestWriteIndentingElements_NonMixedContent_WithXhtmlNamespace([Values(true, false)] bool asAsync)
     {
       var ns = (XNamespace)W3CNamespaces.Xhtml;
 
@@ -807,11 +968,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <p>\n  <span>span</span>\n </p>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <p>\n  <span>span</span>\n </p>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_EmptyElement_WithNoAttribute()
+    public async Task TestWriteIndentingElements_EmptyElement_WithNoAttribute([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -822,11 +986,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<head>\n <script></script>\n</head>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<head>\n <script></script>\n</head>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_EmptyElement_WithAttribute()
+    public async Task TestWriteIndentingElements_EmptyElement_WithAttribute([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -838,11 +1005,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<head>\n <script async=\"async\"></script>\n</head>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<head>\n <script async=\"async\"></script>\n</head>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_MixedContent_TextOnly()
+    public async Task TestWriteIndentingElements_MixedContent_TextOnly([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -854,11 +1024,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>text</p>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <p>text</p>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_MixedContent1()
+    public async Task TestWriteIndentingElements_MixedContent1([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -872,11 +1045,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>text <span>span</span> text</p>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <p>text <span>span</span> text</p>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_MixedContent2()
+    public async Task TestWriteIndentingElements_MixedContent2([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -889,11 +1065,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>text<span>span</span></p>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <p>text<span>span</span></p>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_MixedContent3()
+    public async Task TestWriteIndentingElements_MixedContent3([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -906,11 +1085,14 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<p>\n <p>\n  <span>span</span>text</p>\n</p>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <p>\n  <span>span</span>text</p>\n</p>")
+      );
     }
 
     [Test]
-    public void TestWriteIndentingElements_MixedContent4()
+    public async Task TestWriteIndentingElements_MixedContent4([Values(true, false)] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -929,25 +1111,23 @@ namespace Smdn.Xml.Xhtml {
         )
       );
 
-      Assert.That(ToString(doc), Is.EqualTo("<ul>\n <li>1<ul><li>2</li></ul></li>\n</ul>"));
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<ul>\n <li>1<ul><li>2</li></ul></li>\n</ul>")
+      );
     }
 
-    [TestCase("area")]
-    [TestCase("base")]
-    [TestCase("br")]
-    [TestCase("col")]
-    [TestCase("embed")]
-    [TestCase("hr")]
-    [TestCase("img")]
-    [TestCase("input")]
-    [TestCase("keygen")]
-    [TestCase("link")]
-    [TestCase("meta")]
-    [TestCase("param")]
-    [TestCase("source")]
-    [TestCase("track")]
-    [TestCase("wbr")]
-    public void TestWriteVoidElements(string voidElement)
+    private static System.Collections.IEnumerable YieldTestCases_TestWriteVoidElements()
+    {
+      foreach (var asAsync in new[] { false, true }) {
+        foreach (var voidElement in VoldElementNames) {
+          yield return new object?[] { asAsync, voidElement };
+        }
+      }
+    }
+
+    [TestCaseSource(nameof(YieldTestCases_TestWriteVoidElements))]
+    public async Task TestWriteVoidElements(bool asAsync, string voidElement)
     {
       var doc = new XDocument(
         new XElement(
@@ -967,27 +1147,22 @@ namespace Smdn.Xml.Xhtml {
       var e = voidElement;
 
       Assert.That(
-        ToString(doc),
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
         Is.EqualTo($"<p>\n <{e} />\n <{e} />\n <{e} />\n</p>")
       );
     }
 
-    [TestCase("area")]
-    [TestCase("base")]
-    [TestCase("br")]
-    [TestCase("col")]
-    [TestCase("embed")]
-    [TestCase("hr")]
-    [TestCase("img")]
-    [TestCase("input")]
-    [TestCase("keygen")]
-    [TestCase("link")]
-    [TestCase("meta")]
-    [TestCase("param")]
-    [TestCase("source")]
-    [TestCase("track")]
-    [TestCase("wbr")]
-    public void TestWriteVoidElements_WithXhtmlNamespace(string voidElement)
+    private static System.Collections.IEnumerable YieldTestCases_TestWriteVoidElements_WithXhtmlNamespace()
+    {
+      foreach (var asAsync in new[] { false, true }) {
+        foreach (var voidElement in VoldElementNames) {
+          yield return new object?[] { asAsync, voidElement };
+        }
+      }
+    }
+
+    [TestCaseSource(nameof(YieldTestCases_TestWriteVoidElements_WithXhtmlNamespace))]
+    public async Task TestWriteVoidElements_WithXhtmlNamespace(bool asAsync, string voidElement)
     {
       var ns = (XNamespace)W3CNamespaces.Xhtml;
 
@@ -1009,27 +1184,22 @@ namespace Smdn.Xml.Xhtml {
       var e = voidElement;
 
       Assert.That(
-        ToString(doc),
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
         Is.EqualTo($"<p xmlns=\"http://www.w3.org/1999/xhtml\">\n <{e} />\n <{e} />\n <{e} />\n</p>")
       );
     }
 
-    [TestCase("area")]
-    [TestCase("base")]
-    [TestCase("br")]
-    [TestCase("col")]
-    [TestCase("embed")]
-    [TestCase("hr")]
-    [TestCase("img")]
-    [TestCase("input")]
-    [TestCase("keygen")]
-    [TestCase("link")]
-    [TestCase("meta")]
-    [TestCase("param")]
-    [TestCase("source")]
-    [TestCase("track")]
-    [TestCase("wbr")]
-    public void TestWriteVoidElements_WithAttribute(string voidElement)
+    private static System.Collections.IEnumerable YieldTestCases_TestWriteVoidElements_WithAttribute()
+    {
+      foreach (var asAsync in new[] { false, true }) {
+        foreach (var voidElement in VoldElementNames) {
+          yield return new object?[] { asAsync, voidElement };
+        }
+      }
+    }
+
+    [TestCaseSource(nameof(YieldTestCases_TestWriteVoidElements_WithAttribute))]
+    public async Task TestWriteVoidElements_WithAttribute(bool asAsync, string voidElement)
     {
       var doc = new XDocument(
         new XElement(
@@ -1054,18 +1224,22 @@ namespace Smdn.Xml.Xhtml {
       var e = voidElement;
 
       Assert.That(
-        ToString(doc),
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
         Is.EqualTo($"<p>\n <{e} id=\"v1\" />\n <{e} />\n <{e} id=\"v3\" />\n <{e} />\n</p>")
       );
     }
 
-    [TestCase("div")]
-    [TestCase("span")]
-    [TestCase("script")]
-    [TestCase("html")]
-    [TestCase("body")]
-    [TestCase("head")]
-    public void TestWriteSelfClosingElements(string selfClosingElement)
+    private static System.Collections.IEnumerable YieldTestCases_TestWriteSelfClosingElements()
+    {
+      foreach (var asAsync in new[] { false, true }) {
+        foreach (var selfClosingElement in SelfClosingElementNames) {
+          yield return new object?[] { asAsync, selfClosingElement };
+        }
+      }
+    }
+
+    [TestCaseSource(nameof(YieldTestCases_TestWriteSelfClosingElements))]
+    public async Task TestWriteSelfClosingElements(bool asAsync, string selfClosingElement)
     {
       var doc = new XDocument(
         new XElement(
@@ -1085,9 +1259,173 @@ namespace Smdn.Xml.Xhtml {
       var e = selfClosingElement;
 
       Assert.That(
-        ToString(doc),
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
         Is.EqualTo($"<p>\n <{e}></{e}>\n <{e}></{e}>\n <{e}></{e}>\n</p>")
       );
+    }
+
+    [Test]
+    public async Task TestWriteIndent_CDataNode([Values(true, false)] bool asAsync)
+    {
+      var doc = new XDocument(
+        new XElement(
+          "p",
+          new XElement(
+            "p",
+            new XElement("span", "span"),
+            new XCData("cdata")
+          )
+        )
+      );
+
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<p>\n <p>\n  <span>span</span><![CDATA[cdata]]></p>\n</p>")
+      );
+    }
+
+    [Test]
+    public async Task TestWriteIndent_EntityReferenceNode([Values(true, false)] bool asAsync)
+    {
+      var fragment = new XElement(
+        "p",
+        new XElement(
+          "p",
+          new XElement("span", "span"),
+          new XEntityReference("copy")
+        )
+      );
+
+      var settings = new XmlWriterSettings() {
+        Async = asAsync,
+        ConformanceLevel = ConformanceLevel.Fragment,
+        NewLineChars = "\n",
+        Indent = true,
+        IndentChars = " ",
+      };
+      var sb = new StringBuilder();
+
+      if (asAsync) {
+#if SYSTEM_XML_LINQ_XNODE_WRITETOASYNC
+        await using var writer = new PolyglotHtml5Writer(new StringWriter(sb), settings);
+
+        await fragment.WriteToAsync(writer, default).ConfigureAwait(false);
+#else
+        Assert.Ignore("WriteToAsync is not supported on this framework");
+
+        await Task.FromResult(0);
+#endif
+      }
+      else {
+        using var writer = new PolyglotHtml5Writer(new StringWriter(sb), settings);
+
+        fragment.WriteTo(writer);
+      }
+
+      Assert.That(sb.ToString(), Is.EqualTo("<p>\n <p>\n  <span>span</span>&copy;</p>\n</p>"));
+    }
+
+    [Test]
+    public async Task TestWrite_ProcessingInstruction([Values(true, false)] bool asAsync)
+    {
+      var doc = new XDocument(
+        new XProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"style.xsl\""),
+        new XDocumentType("html", string.Empty, string.Empty, string.Empty),
+        new XElement("html")
+      );
+
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("<?xml-stylesheet type=\"text/xsl\" href=\"style.xsl\"?><!DOCTYPE html>\n<html></html>")
+      );
+    }
+
+    [Test]
+    public async Task TestWrite_Whitespace([Values(true, false)] bool asAsync)
+    {
+      var doc = new XDocument(
+        new XText("\n"),
+        new XDocumentType("html", null!, null!, null!),
+        new XText(" "),
+        new XElement("html")
+      );
+
+      Assert.That(
+        asAsync ? await ToStringAsync(doc).ConfigureAwait(false) : ToString(doc),
+        Is.EqualTo("\n<!DOCTYPE html> \n<html></html>")
+      );
+    }
+
+    [Test]
+    public void TestWriteCharEntity([Values(true, false)] bool asAsync)
+    {
+      var writer = new PolyglotHtml5Writer(
+        new StringWriter(new StringBuilder()),
+        new XmlWriterSettings() {
+          Async = asAsync,
+          ConformanceLevel = ConformanceLevel.Fragment,
+        }
+      );
+
+      if (asAsync)
+        Assert.DoesNotThrowAsync(async () => await writer.WriteCharEntityAsync('\uD23E').ConfigureAwait(false));
+      else
+        Assert.DoesNotThrow(() => writer.WriteCharEntity('\uD23E'));
+    }
+
+    [Test]
+    public void TestWriteSurrogateCharEntity([Values(true, false)] bool asAsync)
+    {
+      var writer = new PolyglotHtml5Writer(
+        new StringWriter(new StringBuilder()),
+        new XmlWriterSettings() {
+          Async = asAsync,
+          ConformanceLevel = ConformanceLevel.Fragment,
+        }
+      );
+
+      if (asAsync)
+        Assert.DoesNotThrowAsync(async () => await writer.WriteSurrogateCharEntityAsync('\uDF41', '\uD920').ConfigureAwait(false));
+      else
+        Assert.DoesNotThrow(() => writer.WriteSurrogateCharEntity('\uDF41', '\uD920'));
+    }
+
+    [Test]
+    public void TestWriteBase64([Values(true, false)] bool asAsync)
+    {
+      var writer = new PolyglotHtml5Writer(
+        new StringWriter(new StringBuilder()),
+        new XmlWriterSettings() {
+          Async = asAsync,
+          ConformanceLevel = ConformanceLevel.Fragment,
+        }
+      );
+
+      var buffer = new byte[1];
+
+      if (asAsync)
+        Assert.DoesNotThrowAsync(async () => await writer.WriteBase64Async(buffer, 0, buffer.Length).ConfigureAwait(false));
+      else
+        Assert.DoesNotThrow(() => writer.WriteBase64(buffer, 0, buffer.Length));
+    }
+
+    [Test]
+    public void TestWriteChars([Values(true, false)] bool asAsync)
+    {
+      var writer = new PolyglotHtml5Writer(
+        new StringWriter(new StringBuilder()),
+        new XmlWriterSettings() {
+          Async = asAsync,
+          ConformanceLevel = ConformanceLevel.Fragment,
+        }
+      );
+
+      var buffer = "chars".ToCharArray();
+
+      if (asAsync)
+        Assert.DoesNotThrowAsync(async () => await writer.WriteCharsAsync(buffer, 0, buffer.Length).ConfigureAwait(false));
+      else
+        Assert.DoesNotThrow(() => writer.WriteChars(buffer, 0, buffer.Length));
     }
   }
 }

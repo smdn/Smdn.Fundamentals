@@ -2,17 +2,14 @@
 // SPDX-License-Identifier: MIT
 #nullable enable
 
-#if !SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
-#pragma warning disable CS8602
-#endif
-
 using System;
 using System.Collections.Generic;
-#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
 #endif
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 
 namespace Smdn.Xml.Xhtml;
@@ -44,11 +41,6 @@ public class PolyglotHtml5Writer : XmlWriter {
   }
 
   protected ExtendedWriteState ExtendedState { get; private set; } = ExtendedWriteState.Start;
-
-#if SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE
-  [MemberNotNullWhen(true, nameof(currentElementContext))]
-#endif
-  protected bool IsWriteStateElementContent => ExtendedState == ExtendedWriteState.ElementContent;
 
   private ElementContext? currentElementContext = null;
   private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
@@ -174,7 +166,17 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.Prolog;
   }
 
-  public override void WriteStartElement(string? prefix, string localName, string? ns)
+  public override async Task WriteDocTypeAsync(string name, string? pubid, string? sysid, string? subset)
+  {
+    if (string.IsNullOrEmpty(pubid) && string.IsNullOrEmpty(sysid) && string.IsNullOrEmpty(subset))
+      await baseWriter.WriteRawAsync("<!DOCTYPE " + name + ">").ConfigureAwait(false);
+    else
+      await baseWriter.WriteDocTypeAsync(name, pubid, sysid, subset).ConfigureAwait(false);
+
+    ExtendedState = ExtendedWriteState.Prolog;
+  }
+
+  private void PreWriteStartElement()
   {
     switch (ExtendedState) {
       case ExtendedWriteState.ElementOpening:
@@ -182,11 +184,10 @@ public class PolyglotHtml5Writer : XmlWriter {
         ExtendedState = ExtendedWriteState.ElementContent;
         break;
     }
+  }
 
-    WriteIndent();
-
-    baseWriter.WriteStartElement(prefix, localName, ns);
-
+  private void PostWriteStartElement(string localName, string? ns)
+  {
     // is nested element start?
     if (currentElementContext is not null && !currentElementContext.IsClosed) {
       currentElementContext.MarkAsNonEmpty(); // has child elements
@@ -197,6 +198,28 @@ public class PolyglotHtml5Writer : XmlWriter {
     currentElementContext = new ElementContext(localName, ns, currentElementContext);
 
     ExtendedState = ExtendedWriteState.ElementOpening;
+  }
+
+  public override void WriteStartElement(string? prefix, string localName, string? ns)
+  {
+    PreWriteStartElement();
+
+    WriteIndent();
+
+    baseWriter.WriteStartElement(prefix, localName, ns);
+
+    PostWriteStartElement(localName, ns);
+  }
+
+  public override async Task WriteStartElementAsync(string? prefix, string localName, string? ns)
+  {
+    PreWriteStartElement();
+
+    await WriteIndentAsync().ConfigureAwait(false);
+
+    await baseWriter.WriteStartElementAsync(prefix, localName, ns).ConfigureAwait(false);
+
+    PostWriteStartElement(localName, ns);
   }
 
   public override void WriteEndElement()
@@ -213,11 +236,36 @@ public class PolyglotHtml5Writer : XmlWriter {
       CloseCurrentElement();
   }
 
+  public override async Task WriteEndElementAsync()
+  {
+    if (currentElementContext is not null && currentElementContext.IsNonVoidElement)
+      // prepend empty text node to avoid emitting self closing tags <.../>
+      await baseWriter.WriteStringAsync(string.Empty).ConfigureAwait(false);
+
+    await baseWriter.WriteEndElementAsync().ConfigureAwait(false);
+
+    ExtendedState = ExtendedWriteState.ElementOpened;
+
+    if (currentElementContext is not null && currentElementContext.IsEmpty)
+      CloseCurrentElement();
+  }
+
   public override void WriteFullEndElement()
   {
     ExtendedState = ExtendedWriteState.ElementClosing;
 
     WriteIndent();
+
+    baseWriter.WriteFullEndElement();
+
+    CloseCurrentElement();
+  }
+
+  public override async Task WriteFullEndElementAsync()
+  {
+    ExtendedState = ExtendedWriteState.ElementClosing;
+
+    await WriteIndentAsync().ConfigureAwait(false);
 
     baseWriter.WriteFullEndElement();
 
@@ -243,21 +291,30 @@ public class PolyglotHtml5Writer : XmlWriter {
 
   private readonly List<string> indentStrings = new(4);
 
-  protected virtual void WriteIndent()
+  private bool PreWriteIndent(
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out string? indentString
+  )
   {
+    indentString = default;
+
     if (!settings.Indent)
-      return;
+      return false;
     if (ExtendedState is ExtendedWriteState.Start or ExtendedWriteState.DocumentStart)
-      return;
+      return false;
     if (XmlSpace == XmlSpace.Preserve)
-      return;
+      return false;
     if (currentElementContext is not null) {
       if (currentElementContext.IsMixedContent)
-        return;
-      if (ExtendedState == ExtendedWriteState.ElementClosing &&
-          currentElementContext.IsEmpty &&
-          currentElementContext.IsNonVoidElement) {
-        return;
+        return false;
+      if (
+        ExtendedState == ExtendedWriteState.ElementClosing &&
+        currentElementContext.IsEmpty &&
+        currentElementContext.IsNonVoidElement
+      ) {
+        return false;
       }
     }
 
@@ -269,16 +326,36 @@ public class PolyglotHtml5Writer : XmlWriter {
     // create indent string (NewLineChars + IndentChars * IndentLevel)
     if (indentStrings.Count <= indentLevel) {
       for (var level = indentStrings.Count; level <= indentLevel; level++) {
-        var indentString = settings.NewLineChars;
+        var nextIndentString = settings.NewLineChars;
 
         for (var l = 0; l < level; l++)
-          indentString += settings.IndentChars;
+          nextIndentString += settings.IndentChars;
 
-        indentStrings.Add(indentString);
+        indentStrings.Add(nextIndentString);
       }
     }
 
-    baseWriter.WriteRaw(indentStrings[indentLevel]);
+    indentString = indentStrings[indentLevel];
+
+    return true;
+  }
+
+  protected virtual void WriteIndent()
+  {
+    if (PreWriteIndent(out var indentString))
+      baseWriter.WriteRaw(indentString);
+  }
+
+  protected virtual Task WriteIndentAsync()
+  {
+    if (PreWriteIndent(out var indentString))
+      return baseWriter.WriteRawAsync(indentString);
+    else
+#if SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK
+      return Task.CompletedTask;
+#else
+      return Task.FromResult(0);
+#endif
   }
 
   /*
@@ -295,6 +372,13 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.DocumentStart;
   }
 
+  public override async Task WriteStartDocumentAsync()
+  {
+    await baseWriter.WriteStartDocumentAsync().ConfigureAwait(false);
+
+    ExtendedState = ExtendedWriteState.DocumentStart;
+  }
+
   public override void WriteStartDocument(bool standalone)
   {
     baseWriter.WriteStartDocument(standalone);
@@ -302,9 +386,23 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.DocumentStart;
   }
 
+  public override async Task WriteStartDocumentAsync(bool standalone)
+  {
+    await baseWriter.WriteStartDocumentAsync(standalone).ConfigureAwait(false);
+
+    ExtendedState = ExtendedWriteState.DocumentStart;
+  }
+
   public override void WriteEndDocument()
   {
     baseWriter.WriteEndDocument();
+
+    ExtendedState = ExtendedWriteState.DocumentEnd;
+  }
+
+  public override async Task WriteEndDocumentAsync()
+  {
+    await baseWriter.WriteEndDocumentAsync().ConfigureAwait(false);
 
     ExtendedState = ExtendedWriteState.DocumentEnd;
   }
@@ -320,6 +418,17 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.AttributeStart;
   }
 
+  protected override Task WriteStartAttributeAsync(string? prefix, string localName, string? ns)
+  {
+    WriteStartAttribute(prefix, localName, ns); // cannot call baseWriter.WriteStartAttributeAsync
+
+#if SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK
+    return Task.CompletedTask;
+#else
+    return Task.FromResult(0);
+#endif
+  }
+
   public override void WriteEndAttribute()
   {
     baseWriter.WriteEndAttribute();
@@ -327,15 +436,32 @@ public class PolyglotHtml5Writer : XmlWriter {
     ExtendedState = ExtendedWriteState.AttributeEnd;
   }
 
+  protected override Task WriteEndAttributeAsync()
+  {
+    WriteEndAttribute(); // cannot call baseWriter.WriteEndAttributeAsync
+
+#if SYSTEM_THREADING_TASKS_TASK_COMPLETEDTASK
+    return Task.CompletedTask;
+#else
+    return Task.FromResult(0);
+#endif
+  }
+
   public override void WriteProcessingInstruction(string name, string? text)
   {
     baseWriter.WriteProcessingInstruction(name, text);
 
-    if (IsWriteStateElementContent)
-      currentElementContext.MarkAsNonEmpty();
+    SetWrittenContentState(markAsMixedContent: false);
   }
 
-  public override void WriteComment(string? text)
+  public override async Task WriteProcessingInstructionAsync(string name, string? text)
+  {
+    await baseWriter.WriteProcessingInstructionAsync(name, text).ConfigureAwait(false);
+
+    SetWrittenContentState(markAsMixedContent: false);
+  }
+
+  private void PreWriteComment()
   {
     switch (ExtendedState) {
       case ExtendedWriteState.ElementOpening:
@@ -344,15 +470,36 @@ public class PolyglotHtml5Writer : XmlWriter {
         ExtendedState = ExtendedWriteState.ElementContent;
         break;
     }
+  }
+
+  private void PostWriteComment()
+  {
+    if (ExtendedState == ExtendedWriteState.DocumentStart)
+      ExtendedState = ExtendedWriteState.Prolog;
+    else
+      SetWrittenContentState(markAsMixedContent: false);
+  }
+
+  public override void WriteComment(string? text)
+  {
+    PreWriteComment();
 
     WriteIndent();
 
     baseWriter.WriteComment(text);
 
-    if (ExtendedState == ExtendedWriteState.DocumentStart)
-      ExtendedState = ExtendedWriteState.Prolog;
-    else if (IsWriteStateElementContent)
-      currentElementContext.MarkAsNonEmpty();
+    PostWriteComment();
+  }
+
+  public override async Task WriteCommentAsync(string? text)
+  {
+    PreWriteComment();
+
+    await WriteIndentAsync().ConfigureAwait(false);
+
+    await baseWriter.WriteCommentAsync(text).ConfigureAwait(false);
+
+    PostWriteComment();
   }
 
   public override void WriteBase64(byte[] buffer, int index, int count)
@@ -361,10 +508,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteBase64(buffer, index, count);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteBase64Async(byte[] buffer, int index, int count)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteBase64Async(buffer, index, count).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteCData(string? text)
@@ -373,10 +526,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteCData(text);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteCDataAsync(string? text)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteCDataAsync(text).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteCharEntity(char ch)
@@ -385,10 +544,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteCharEntity(ch);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteCharEntityAsync(char ch)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteCharEntityAsync(ch).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteChars(char[] buffer, int index, int count)
@@ -397,10 +562,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteChars(buffer, index, count);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteCharsAsync(char[] buffer, int index, int count)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteCharsAsync(buffer, index, count).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteEntityRef(string name)
@@ -409,10 +580,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteEntityRef(name);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteEntityRefAsync(string name)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteEntityRefAsync(name).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteRaw(char[] buffer, int index, int count)
@@ -421,10 +598,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteRaw(buffer, index, count);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteRawAsync(char[] buffer, int index, int count)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteRawAsync(buffer, index, count).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteRaw(string data)
@@ -433,10 +616,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteRaw(data);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteRawAsync(string data)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteRawAsync(data).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteString(string? text)
@@ -445,10 +634,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteString(text);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteStringAsync(string? text)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteStringAsync(text).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteSurrogateCharEntity(char lowChar, char highChar)
@@ -457,10 +652,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteSurrogateCharEntity(lowChar, highChar);
 
-    if (IsWriteStateElementContent) {
-      currentElementContext.MarkAsMixedContent();
-      currentElementContext.MarkAsNonEmpty();
-    }
+    SetWrittenContentState();
+  }
+
+  public override async Task WriteSurrogateCharEntityAsync(char lowChar, char highChar)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteSurrogateCharEntityAsync(lowChar, highChar).ConfigureAwait(false);
+
+    SetWrittenContentState();
   }
 
   public override void WriteWhitespace(string? ws)
@@ -469,8 +670,16 @@ public class PolyglotHtml5Writer : XmlWriter {
 
     baseWriter.WriteWhitespace(ws);
 
-    if (IsWriteStateElementContent)
-      currentElementContext.MarkAsMixedContent();
+    SetWrittenContentState(markAsNonEmpty: false);
+  }
+
+  public override async Task WriteWhitespaceAsync(string? ws)
+  {
+    SetWritingContentState();
+
+    await baseWriter.WriteWhitespaceAsync(ws).ConfigureAwait(false);
+
+    SetWrittenContentState(markAsNonEmpty: false);
   }
 
   private void SetWritingContentState()
@@ -486,5 +695,22 @@ public class PolyglotHtml5Writer : XmlWriter {
         ExtendedState = ExtendedWriteState.AttributeValue;
         break;
     }
+  }
+
+  private void SetWrittenContentState(bool markAsMixedContent = true, bool markAsNonEmpty = true)
+  {
+    if (ExtendedState != ExtendedWriteState.ElementContent)
+      return;
+
+#if DEBUG
+    if (currentElementContext is null)
+      throw new InvalidOperationException("invalid state");
+#endif
+
+    if (markAsMixedContent)
+      currentElementContext!.MarkAsMixedContent();
+
+    if (markAsNonEmpty)
+      currentElementContext!.MarkAsNonEmpty();
   }
 }
