@@ -1,5 +1,9 @@
 // SPDX-FileCopyrightText: 2017 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET5_0_OR_GREATER
+#define SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+#endif
+
 using System;
 using System.IO;
 using System.Text;
@@ -95,6 +99,7 @@ namespace Smdn.Xml.Xhtml {
       }
     }
 
+#if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
     [Test]
     public async Task TestDisposeAsync_CloseOutput()
     {
@@ -112,6 +117,7 @@ namespace Smdn.Xml.Xhtml {
         Assert.Throws<ObjectDisposedException>(() => output.ReadByte());
       }
     }
+#endif
 
     [Test]
     public void TestDispose_DoNotCloseOutput()
@@ -131,6 +137,7 @@ namespace Smdn.Xml.Xhtml {
       }
     }
 
+#if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
     [Test]
     public async Task TestDisposeAsync_DoNotCloseOutput()
     {
@@ -148,6 +155,7 @@ namespace Smdn.Xml.Xhtml {
         Assert.DoesNotThrow(() => output.ReadByte());
       }
     }
+#endif
 
     private static string ToString(XDocument doc, NewLineHandling newLineHandling, string newLineChars = null)
     {
