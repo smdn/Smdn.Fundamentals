@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.4
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.5
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.4
+//   InformationalVersion: 1.4.5
 
 // List of symbols defined on target framework 'net6.0'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -423,3 +423,4 @@
 #define SYSTEM_XML_XMLDOCUMENT_VALIDATE // System.Xml.XmlDocument.Validate (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_XML_XMLDOCUMENT_XMLRESOLVER // System.Xml.XmlDocument.XmlResolver (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_XML_XMLRESOLVER // System.Xml.XmlResolver (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
+#define SYSTEM_XML_LINQ_XNODE_WRITETOASYNC // System.Xml.Linq.XNode.WriteToAsync (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
