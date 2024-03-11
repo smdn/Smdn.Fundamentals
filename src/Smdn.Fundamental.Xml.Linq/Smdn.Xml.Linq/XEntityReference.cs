@@ -1,9 +1,5 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
-#define SYSTEM_XML_LINQ_XNODE_WRITETOASYNC
-#endif
-
 using System;
 #if SYSTEM_XML_LINQ_XNODE_WRITETOASYNC
 using System.Threading;
