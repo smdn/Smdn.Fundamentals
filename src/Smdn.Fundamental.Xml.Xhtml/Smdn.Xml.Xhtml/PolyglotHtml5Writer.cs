@@ -14,14 +14,21 @@ using System.Xml;
 
 namespace Smdn.Xml.Xhtml;
 
-public class PolyglotHtml5Writer : XmlWriter {
+#pragma warning disable SA1001
+public class PolyglotHtml5Writer :
+  XmlWriter
+#if SYSTEM_IASYNCDISPOSABLE
+  , IAsyncDisposable
+#endif
+#pragma warning restore SA1001
+{
   public override XmlWriterSettings? Settings => settings;
-  public override WriteState WriteState => baseWriter.WriteState;
-  public override string? XmlLang => baseWriter.XmlLang;
-  public override XmlSpace XmlSpace => baseWriter.XmlSpace;
-  protected virtual XmlWriter BaseWriter => baseWriter;
+  public override WriteState WriteState => baseWriter is null ? WriteState.Closed : baseWriter.WriteState;
+  public override string? XmlLang => BaseWriter.XmlLang;
+  public override XmlSpace XmlSpace => BaseWriter.XmlSpace;
+  protected virtual XmlWriter BaseWriter => baseWriter ?? throw new ObjectDisposedException(GetType().FullName);
 
-  private readonly XmlWriter baseWriter;
+  private XmlWriter baseWriter;
   private readonly XmlWriterSettings settings;
 
   protected enum ExtendedWriteState {
@@ -144,10 +151,12 @@ public class PolyglotHtml5Writer : XmlWriter {
     try {
       if (disposing)
 #if SYSTEM_IO_STREAM_CLOSE
-        baseWriter.Close();
+        baseWriter?.Close();
 #else
-        baseWriter.Dispose();
+        baseWriter?.Dispose();
 #endif
+
+      baseWriter = null!;
     }
     finally {
       base.Dispose(disposing);
@@ -155,6 +164,38 @@ public class PolyglotHtml5Writer : XmlWriter {
       ExtendedState = ExtendedWriteState.Closed;
     }
   }
+
+#if SYSTEM_IASYNCDISPOSABLE && !SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+  public virtual async ValueTask DisposeAsync()
+  {
+    await DisposeAsyncCore().ConfigureAwait(false);
+
+    Dispose(false);
+
+    GC.SuppressFinalize(this);
+  }
+
+  protected virtual
+#if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+  async
+#endif
+  ValueTask DisposeAsyncCore()
+  {
+    if (baseWriter is not null) {
+#if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+      await baseWriter.DisposeAsync().ConfigureAwait(false);
+#else
+      baseWriter.Dispose();
+#endif
+    }
+
+    baseWriter = null!;
+
+#if !SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+    return default;
+#endif
+  }
+#endif
 
   public override void WriteDocType(string name, string? pubid, string? sysid, string? subset)
   {
