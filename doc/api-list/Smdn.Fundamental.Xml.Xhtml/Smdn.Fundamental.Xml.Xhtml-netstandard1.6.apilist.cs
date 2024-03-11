@@ -1,13 +1,14 @@
-// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.0.1)
+// Smdn.Fundamental.Xml.Xhtml.dll (Smdn.Fundamental.Xml.Xhtml-3.1.0)
 //   Name: Smdn.Fundamental.Xml.Xhtml
-//   AssemblyVersion: 3.0.1.0
-//   InformationalVersion: 3.0.1+c848761b03aeddaf02bfeb277f3f5672e904cf60
+//   AssemblyVersion: 3.1.0.0
+//   InformationalVersion: 3.1.0+b5413ee3943c96bf97583eb7971556b337be4f02
 //   TargetFramework: .NETStandard,Version=v1.6
 //   Configuration: Release
 //   Referenced assemblies:
-//     Smdn.Fundamental.Shim, Version=3.1.2.0, Culture=neutral
-//     Smdn.Fundamental.Xml.Linq, Version=3.0.0.0, Culture=neutral
+//     Smdn.Fundamental.Shim, Version=3.1.4.0, Culture=neutral
+//     Smdn.Fundamental.Xml.Linq, Version=3.1.0.0, Culture=neutral
 //     System.Collections, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Diagnostics.Debug, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.IO, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.IO.FileSystem, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Linq, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
@@ -16,6 +17,7 @@
 //     System.Runtime.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Runtime.InteropServices, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Threading.Tasks, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Xml.ReaderWriter, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Xml.XDocument, Version=4.0.10.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
@@ -23,6 +25,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using Smdn.Xml.Xhtml;
@@ -242,29 +245,52 @@ namespace Smdn.Xml.Xhtml {
 
     protected override void Dispose(bool disposing) {}
     public override void Flush() {}
+    public override Task FlushAsync() {}
     public override string LookupPrefix(string ns) {}
     public override void WriteBase64(byte[] buffer, int index, int count) {}
+    public override async Task WriteBase64Async(byte[] buffer, int index, int count) {}
     public override void WriteCData(string text) {}
+    public override async Task WriteCDataAsync(string text) {}
     public override void WriteCharEntity(char ch) {}
+    public override async Task WriteCharEntityAsync(char ch) {}
     public override void WriteChars(char[] buffer, int index, int count) {}
+    public override async Task WriteCharsAsync(char[] buffer, int index, int count) {}
     public override void WriteComment(string text) {}
+    public override async Task WriteCommentAsync(string text) {}
     public override void WriteDocType(string name, string pubid, string sysid, string subset) {}
+    public override async Task WriteDocTypeAsync(string name, string pubid, string sysid, string subset) {}
     public override void WriteEndAttribute() {}
+    protected override Task WriteEndAttributeAsync() {}
     public override void WriteEndDocument() {}
+    public override async Task WriteEndDocumentAsync() {}
     public override void WriteEndElement() {}
+    public override async Task WriteEndElementAsync() {}
     public override void WriteEntityRef(string name) {}
+    public override async Task WriteEntityRefAsync(string name) {}
     public override void WriteFullEndElement() {}
+    public override async Task WriteFullEndElementAsync() {}
     protected virtual void WriteIndent() {}
+    protected virtual Task WriteIndentAsync() {}
     public override void WriteProcessingInstruction(string name, string text) {}
+    public override async Task WriteProcessingInstructionAsync(string name, string text) {}
     public override void WriteRaw(char[] buffer, int index, int count) {}
     public override void WriteRaw(string data) {}
+    public override async Task WriteRawAsync(char[] buffer, int index, int count) {}
+    public override async Task WriteRawAsync(string data) {}
     public override void WriteStartAttribute(string prefix, string localName, string ns) {}
+    protected override Task WriteStartAttributeAsync(string prefix, string localName, string ns) {}
     public override void WriteStartDocument() {}
     public override void WriteStartDocument(bool standalone) {}
+    public override async Task WriteStartDocumentAsync() {}
+    public override async Task WriteStartDocumentAsync(bool standalone) {}
     public override void WriteStartElement(string prefix, string localName, string ns) {}
+    public override async Task WriteStartElementAsync(string prefix, string localName, string ns) {}
     public override void WriteString(string text) {}
+    public override async Task WriteStringAsync(string text) {}
     public override void WriteSurrogateCharEntity(char lowChar, char highChar) {}
+    public override async Task WriteSurrogateCharEntityAsync(char lowChar, char highChar) {}
     public override void WriteWhitespace(string ws) {}
+    public override async Task WriteWhitespaceAsync(string ws) {}
   }
 
   public static class W3CNamespaces {
@@ -275,5 +301,5 @@ namespace Smdn.Xml.Xhtml {
     public const string Xhtml = "http://www.w3.org/1999/xhtml";
   }
 }
-// API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.1.7.0.
-// Smdn.Reflection.ReverseGenerating.ListApi.Core v1.2.0.0 (https://github.com/smdn/Smdn.Reflection.ReverseGenerating)
+// API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.4.0.0.
+// Smdn.Reflection.ReverseGenerating.ListApi.Core v1.3.0.0 (https://github.com/smdn/Smdn.Reflection.ReverseGenerating)
