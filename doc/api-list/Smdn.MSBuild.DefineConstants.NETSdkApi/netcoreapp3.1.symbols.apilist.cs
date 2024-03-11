@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.5
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.6
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.5
+//   InformationalVersion: 1.4.6
 
 // List of symbols defined on target framework 'netcoreapp3.1'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)

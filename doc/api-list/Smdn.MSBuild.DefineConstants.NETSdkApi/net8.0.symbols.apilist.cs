@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.5
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.6
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.5
+//   InformationalVersion: 1.4.6
 
 // List of symbols defined on target framework 'net8.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -537,4 +537,5 @@
 #define SYSTEM_XML_XMLDOCUMENT_VALIDATE // System.Xml.XmlDocument.Validate (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_XML_XMLDOCUMENT_XMLRESOLVER // System.Xml.XmlDocument.XmlResolver (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_XML_XMLRESOLVER // System.Xml.XmlResolver (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
+#define SYSTEM_XML_XMLWRITER_DISPOSEASYNC // System.Xml.XmlWriter.DisposeAsync (NET5_0_OR_GREATER)
 #define SYSTEM_XML_LINQ_XNODE_WRITETOASYNC // System.Xml.Linq.XNode.WriteToAsync (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
