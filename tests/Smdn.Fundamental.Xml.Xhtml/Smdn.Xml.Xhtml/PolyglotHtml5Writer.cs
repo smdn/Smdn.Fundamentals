@@ -85,6 +85,52 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
+    public void TestFlush()
+    {
+      using var output = new MemoryStream();
+      using var writer = new PolyglotHtml5Writer(
+        output,
+        new XmlWriterSettings() {
+          CloseOutput = false,
+        }
+      );
+
+      Assert.That(output.Length, Is.Zero);
+
+      writer.WriteDocType("html", null, null, null);
+      writer.Flush();
+
+      Assert.That(output.Length, Is.Not.Zero);
+    }
+
+    [Test]
+    public async Task TestFlushAsync()
+    {
+#if SYSTEM_IO_STREAM_DISPOSEASYNC
+      await
+#endif
+      using var output = new MemoryStream();
+
+#if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+      await
+#endif
+      using var writer = new PolyglotHtml5Writer(
+        output,
+        new XmlWriterSettings() {
+          Async = true,
+          CloseOutput = false,
+        }
+      );
+
+      Assert.That(output.Length, Is.Zero);
+
+      await writer.WriteDocTypeAsync("html", null, null, null).ConfigureAwait(false);
+      await writer.FlushAsync().ConfigureAwait(false);
+
+      Assert.That(output.Length, Is.Not.Zero);
+    }
+
+    [Test]
     public void TestDispose_CloseOutput()
     {
       var doc = new XDocument(new XElement("html"));

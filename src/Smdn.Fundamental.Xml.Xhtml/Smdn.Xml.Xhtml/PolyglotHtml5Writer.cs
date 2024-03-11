@@ -362,6 +362,7 @@ public class PolyglotHtml5Writer : XmlWriter {
    * call through to the base writer
    */
   public override void Flush() => baseWriter.Flush();
+  public override Task FlushAsync() => baseWriter.FlushAsync();
 
   public override string? LookupPrefix(string ns) => baseWriter.LookupPrefix(ns);
 
