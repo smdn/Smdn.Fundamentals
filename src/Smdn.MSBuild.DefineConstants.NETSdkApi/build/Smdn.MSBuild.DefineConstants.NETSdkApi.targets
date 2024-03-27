@@ -797,6 +797,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ValidateBufferArguments"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ValidateCopyToArguments"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZLibStream"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.TryGetNonEnumeratedCount"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddresses(hostNameOrAddress,family)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddressesAsync(hostNameOrAddress,cancellationToken)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddressesAsync(hostNameOrAddress,family,cancellationToken)"/>
