@@ -721,6 +721,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.SerializeToStreamAsync(Stream,TransportContext,CancellationToken)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Mail" Include="MailAddress.TryCreate"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.NetworkInformation" Include="PhysicalAddress.TryParse"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="TcpClient.ConnectAsync(CancellationToken)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="IsExternalInit"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="ModuleInitializerAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.ExceptionServices" Include="ExceptionDispatchInfo.SetCurrentStackTrace"/>
