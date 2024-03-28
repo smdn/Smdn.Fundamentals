@@ -966,6 +966,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA3_384"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA3_512"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Ascii"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="CancellationTokenSource.CancelAsync"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="ITimer"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ConfigureAwaitOptions"/>
     </ItemGroup>
