@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.7
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.8
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.7
+//   InformationalVersion: 1.4.8
 
 // List of symbols defined on target framework 'net8.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -194,8 +194,11 @@
 #define SYSTEM_BUFFERS_SPANACTION // System.Buffers.SpanAction (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY // System.Collections.Frozen.FrozenDictionary (NET8_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_FROZEN_FROZENSET // System.Collections.Frozen.FrozenSet (NET8_0_OR_GREATER)
+#define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_ADDRANGE // System.Collections.Generic.CollectionExtensions.AddRange (NET8_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_ASREADONLY // System.Collections.Generic.CollectionExtensions.AsReadOnly (NET7_0_OR_GREATER)
+#define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_COPYTO // System.Collections.Generic.CollectionExtensions.CopyTo (NET8_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_GETVALUEORDEFAULT // System.Collections.Generic.CollectionExtensions.GetValueOrDefault (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
+#define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_INSERTRANGE // System.Collections.Generic.CollectionExtensions.InsertRange (NET8_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_REMOVE // System.Collections.Generic.CollectionExtensions.Remove (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_GENERIC_COLLECTIONEXTENSIONS_TRYADD // System.Collections.Generic.CollectionExtensions.TryAdd (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_COLLECTIONS_GENERIC_DICTIONARY_CTOR_IENUMERABLE_OF_KEYVALUEPAIR_OF_TKEY_TVALUE // System.Collections.Generic.Dictionary.ctor(IEnumerable<KeyValuePair<TKey,TValue>>) (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -333,6 +336,11 @@
 #define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_HOST_PORT_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(host,port,CancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_REMOTEEP_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(remoteEP,CancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_SOCKETS_SOCKET_DISCONNECTASYNC_REUSESOCKET_CANCELLATIONTOKEN // System.Net.Sockets.Socket.DisconnectAsync(reuseSocket,cancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_TCPCLIENT_CONNECTASYNC_CANCELLATIONTOKEN // System.Net.Sockets.TcpClient.ConnectAsync(CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_TCPCLIENT_CONNECTASYNC_IPENDPOINT // System.Net.Sockets.TcpClient.ConnectAsync(IPEndPoint) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_UDPCLIENT_RECEIVEASYNC_CANCELLATIONTOKEN // System.Net.Sockets.UdpClient.ReceiveAsync(CancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_UDPCLIENT_SEND_READONLYMEMORY_OF_BYTE // System.Net.Sockets.UdpClient.Send(ReadOnlyMemory<Byte>) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_UDPCLIENT_SENDASYNC_READONLYMEMORY_OF_BYTE // System.Net.Sockets.UdpClient.SendAsync(ReadOnlyMemory<Byte>) (NET6_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_CRC32C // System.Numerics.BitOperations.Crc32C (NET8_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2 // System.Numerics.BitOperations.IsPow2 (NET6_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT // System.Numerics.BitOperations.LeadingZeroCount (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
