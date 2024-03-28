@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.7
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.8
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.7
+//   InformationalVersion: 1.4.8
 
 // List of symbols defined on target framework 'net5.0'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -241,6 +241,7 @@
 #define SYSTEM_NET_MAIL_MAILADDRESS_TRYCREATE // System.Net.Mail.MailAddress.TryCreate (NET5_0_OR_GREATER)
 #define SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS // System.Net.NetworkInformation.PhysicalAddress (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS_TRYPARSE // System.Net.NetworkInformation.PhysicalAddress.TryParse (NET5_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_TCPCLIENT_CONNECTASYNC_CANCELLATIONTOKEN // System.Net.Sockets.TcpClient.ConnectAsync(CancellationToken) (NET5_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT // System.Numerics.BitOperations.LeadingZeroCount (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_LOG2 // System.Numerics.BitOperations.Log2 (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_POPCOUNT // System.Numerics.BitOperations.PopCount (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)

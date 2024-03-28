@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.7
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.8
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.7
+//   InformationalVersion: 1.4.8
 
 // List of symbols defined on target framework 'net6.0'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -290,6 +290,11 @@
 #define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_HOST_PORT_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(host,port,CancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_SOCKETS_SOCKET_CONNECTASYNC_REMOTEEP_CANCELLATIONTOKEN // System.Net.Sockets.Socket.ConnectAsync(remoteEP,CancellationToken) (NET6_0_OR_GREATER)
 #define SYSTEM_NET_SOCKETS_SOCKET_DISCONNECTASYNC_REUSESOCKET_CANCELLATIONTOKEN // System.Net.Sockets.Socket.DisconnectAsync(reuseSocket,cancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_TCPCLIENT_CONNECTASYNC_CANCELLATIONTOKEN // System.Net.Sockets.TcpClient.ConnectAsync(CancellationToken) (NET5_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_TCPCLIENT_CONNECTASYNC_IPENDPOINT // System.Net.Sockets.TcpClient.ConnectAsync(IPEndPoint) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_UDPCLIENT_RECEIVEASYNC_CANCELLATIONTOKEN // System.Net.Sockets.UdpClient.ReceiveAsync(CancellationToken) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_UDPCLIENT_SEND_READONLYMEMORY_OF_BYTE // System.Net.Sockets.UdpClient.Send(ReadOnlyMemory<Byte>) (NET6_0_OR_GREATER)
+#define SYSTEM_NET_SOCKETS_UDPCLIENT_SENDASYNC_READONLYMEMORY_OF_BYTE // System.Net.Sockets.UdpClient.SendAsync(ReadOnlyMemory<Byte>) (NET6_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_ISPOW2 // System.Numerics.BitOperations.IsPow2 (NET6_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_LEADINGZEROCOUNT // System.Numerics.BitOperations.LeadingZeroCount (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NUMERICS_BITOPERATIONS_LOG2 // System.Numerics.BitOperations.Log2 (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
