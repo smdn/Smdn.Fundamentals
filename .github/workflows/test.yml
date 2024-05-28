@@ -218,6 +218,15 @@ jobs:
         '</code></pre>'                 >> $Env:GITHUB_STEP_SUMMARY
         '</details>'                    >> $Env:GITHUB_STEP_SUMMARY
 
+        '<details>'                               >> $Env:GITHUB_STEP_SUMMARY
+        '<summary>RuntimeInformation</summary>'   >> $Env:GITHUB_STEP_SUMMARY
+        ''                                        >> $Env:GITHUB_STEP_SUMMARY
+        '- `RuntimeInformation.OSArchitecture`: '       + [System.Runtime.InteropServices.RuntimeInformation]::OSArchitecture       >> $Env:GITHUB_STEP_SUMMARY
+        '- `RuntimeInformation.OSDescription`: '        + [System.Runtime.InteropServices.RuntimeInformation]::OSDescription        >> $Env:GITHUB_STEP_SUMMARY
+        '- `RuntimeInformation.ProcessArchitecture`: '  + [System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture  >> $Env:GITHUB_STEP_SUMMARY
+        '- `RuntimeInformation.RuntimeIdentifier`: '    + [System.Runtime.InteropServices.RuntimeInformation]::RuntimeIdentifier    >> $Env:GITHUB_STEP_SUMMARY
+        '</details>'                              >> $Env:GITHUB_STEP_SUMMARY
+
   run-tests:
     name: Test ${{ matrix.project.Name }} on ${{ matrix.os }}
     needs: [setup]
