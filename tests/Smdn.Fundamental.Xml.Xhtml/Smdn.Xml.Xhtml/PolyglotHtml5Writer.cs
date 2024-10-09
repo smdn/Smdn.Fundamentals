@@ -303,7 +303,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWrite_Html5Document([Values(true, false)] bool asAsync)
+    public async Task TestWrite_Html5Document([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XDocumentType("html", null!, null!, null!),
@@ -369,7 +369,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteProlog_AlwaysOmitXmlDeclaration([Values(true, false)] bool asAsync)
+    public async Task TestWriteProlog_AlwaysOmitXmlDeclaration([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XDeclaration("1.0", "utf-8", "yes"),
@@ -396,7 +396,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteDocType_XDocument_NullId([Values(true, false)] bool asAsync)
+    public async Task TestWriteDocType_XDocument_NullId([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XDocumentType("html", null!, null!, null!),
@@ -410,7 +410,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteDocType_XDocument_EmptyId([Values(true, false)] bool asAsync)
+    public async Task TestWriteDocType_XDocument_EmptyId([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XDocumentType("html", string.Empty, string.Empty, string.Empty),
@@ -440,7 +440,7 @@ namespace Smdn.Xml.Xhtml {
 
     [Test]
     public async Task TestWriteAttribute_ValueEscaped(
-      [Values(true, false)] bool asAsync,
+      [Values] bool asAsync,
       [Values(NewLineHandling.None, NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
     )
     {
@@ -459,7 +459,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteAttribute_NewLineHandling_None([Values(true, false)] bool asAsync)
+    public async Task TestWriteAttribute_NewLineHandling_None([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -477,7 +477,7 @@ namespace Smdn.Xml.Xhtml {
 
     [Test]
     public async Task TestWriteAttribute_NewLineHandling_EntitizeAndReplace(
-      [Values(true, false)] bool asAsync,
+      [Values] bool asAsync,
       [Values(NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
     )
     {
@@ -497,8 +497,8 @@ namespace Smdn.Xml.Xhtml {
 
     [Test]
     public async Task TestWriteTextNode_TextEscaped(
-      [Values(true, false)] bool asAsync,
-      [Values(NewLineHandling.None, NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
+      [Values] bool asAsync,
+      [Values] NewLineHandling newLineHandling
     )
     {
       var doc = new XDocument(
@@ -515,7 +515,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteTextNode_NewLineHandling_None([Values(true, false)] bool asAsync)
+    public async Task TestWriteTextNode_NewLineHandling_None([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -531,7 +531,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteTextNode_NewLineHandling_Entitize([Values(true, false)] bool asAsync)
+    public async Task TestWriteTextNode_NewLineHandling_Entitize([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -547,7 +547,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteTextNode_NewLineHandling_Replace([Values(true, false)] bool asAsync)
+    public async Task TestWriteTextNode_NewLineHandling_Replace([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -571,7 +571,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -598,7 +598,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestIndent_NoIndent([Values(true, false)] bool asAsync)
+    public async Task TestIndent_NoIndent([Values] bool asAsync)
     {
       var settings = new XmlWriterSettings();
 
@@ -636,7 +636,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_XmlSpace_Default([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_XmlSpace_Default([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -659,7 +659,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_XmlSpace_Preserve([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_XmlSpace_Preserve([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -682,7 +682,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_AvoidIndentingEmptyElement_XDocument([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_AvoidIndentingEmptyElement_XDocument([Values] bool asAsync)
     {
       var content = "<body><p></p></body>";
       var doc = XDocument.Load(new StringReader(content));
@@ -711,7 +711,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteIndent_AttributeNode_NewLineOnAttributes([Values(true, false)] bool asAsync)
+    public void TestWriteIndent_AttributeNode_NewLineOnAttributes([Values] bool asAsync)
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
 
@@ -742,7 +742,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_AttributeNode_NoIndent([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_AttributeNode_NoIndent([Values] bool asAsync)
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
 
@@ -771,7 +771,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_AttributeNode_NoNewLineOnAttributes([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_AttributeNode_NoNewLineOnAttributes([Values] bool asAsync)
     {
       var nsXhtml = (XNamespace)"http://www.w3.org/1999/xhtml";
 
@@ -800,7 +800,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_CommentNode([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_CommentNode([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -824,7 +824,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_CommentNode_AfterElementWithAttribute([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_CommentNode_AfterElementWithAttribute([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -843,7 +843,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_CommentNode_MixedContent([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_CommentNode_MixedContent([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -862,7 +862,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_CommentNode_XmlSpace_Preserve([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_CommentNode_XmlSpace_Preserve([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XComment("line1"),
@@ -881,7 +881,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteNonIndentingElements_MixedContent_TextOnly([Values(true, false)] bool asAsync)
+    public async Task TestWriteNonIndentingElements_MixedContent_TextOnly([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -900,7 +900,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteNonIndentingElements_MixedContent1([Values(true, false)] bool asAsync)
+    public async Task TestWriteNonIndentingElements_MixedContent1([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -921,7 +921,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteNonIndentingElements_MixedContent2([Values(true, false)] bool asAsync)
+    public async Task TestWriteNonIndentingElements_MixedContent2([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -941,7 +941,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteNonIndentingElements_NonMixedContent([Values(true, false)] bool asAsync)
+    public async Task TestWriteNonIndentingElements_NonMixedContent([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -960,7 +960,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteNonIndentingElements_NonMixedContent_WithXhtmlNamespace([Values(true, false)] bool asAsync)
+    public async Task TestWriteNonIndentingElements_NonMixedContent_WithXhtmlNamespace([Values] bool asAsync)
     {
       var ns = (XNamespace)W3CNamespaces.Xhtml;
 
@@ -981,7 +981,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_NonMixedContent([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_NonMixedContent([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1000,7 +1000,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_NonMixedContent_WithXhtmlNamespace([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_NonMixedContent_WithXhtmlNamespace([Values] bool asAsync)
     {
       var ns = (XNamespace)W3CNamespaces.Xhtml;
 
@@ -1021,7 +1021,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_EmptyElement_WithNoAttribute([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_EmptyElement_WithNoAttribute([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1039,7 +1039,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_EmptyElement_WithAttribute([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_EmptyElement_WithAttribute([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1058,7 +1058,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_MixedContent_TextOnly([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_MixedContent_TextOnly([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1077,7 +1077,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_MixedContent1([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_MixedContent1([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1098,7 +1098,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_MixedContent2([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_MixedContent2([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1118,7 +1118,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_MixedContent3([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_MixedContent3([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1138,7 +1138,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndentingElements_MixedContent4([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndentingElements_MixedContent4([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1311,7 +1311,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_CDataNode([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_CDataNode([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XElement(
@@ -1331,7 +1331,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWriteIndent_EntityReferenceNode([Values(true, false)] bool asAsync)
+    public async Task TestWriteIndent_EntityReferenceNode([Values] bool asAsync)
     {
       var fragment = new XElement(
         "p",
@@ -1372,7 +1372,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWrite_ProcessingInstruction([Values(true, false)] bool asAsync)
+    public async Task TestWrite_ProcessingInstruction([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XProcessingInstruction("xml-stylesheet", "type=\"text/xsl\" href=\"style.xsl\""),
@@ -1387,7 +1387,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public async Task TestWrite_Whitespace([Values(true, false)] bool asAsync)
+    public async Task TestWrite_Whitespace([Values] bool asAsync)
     {
       var doc = new XDocument(
         new XText("\n"),
@@ -1403,7 +1403,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteCharEntity([Values(true, false)] bool asAsync)
+    public void TestWriteCharEntity([Values] bool asAsync)
     {
       var writer = new PolyglotHtml5Writer(
         new StringWriter(new StringBuilder()),
@@ -1420,7 +1420,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteSurrogateCharEntity([Values(true, false)] bool asAsync)
+    public void TestWriteSurrogateCharEntity([Values] bool asAsync)
     {
       var writer = new PolyglotHtml5Writer(
         new StringWriter(new StringBuilder()),
@@ -1437,7 +1437,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteBase64([Values(true, false)] bool asAsync)
+    public void TestWriteBase64([Values] bool asAsync)
     {
       var writer = new PolyglotHtml5Writer(
         new StringWriter(new StringBuilder()),
@@ -1456,7 +1456,7 @@ namespace Smdn.Xml.Xhtml {
     }
 
     [Test]
-    public void TestWriteChars([Values(true, false)] bool asAsync)
+    public void TestWriteChars([Values] bool asAsync)
     {
       var writer = new PolyglotHtml5Writer(
         new StringWriter(new StringBuilder()),
