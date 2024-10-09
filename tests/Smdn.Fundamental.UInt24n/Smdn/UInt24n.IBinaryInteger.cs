@@ -179,13 +179,13 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TryReadBigEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2)]int length)
+  public void TryReadBigEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2)]int length)
   {
     Assert.That(UInt24.TryReadBigEndian(new byte[length], isUnsigned, out _), Is.False);
   }
 
   [Test]
-  public void TryReadLittleEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2)]int length)
+  public void TryReadLittleEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2)]int length)
   {
     Assert.That(UInt24.TryReadLittleEndian(new byte[length], isUnsigned, out _), Is.False);
   }
@@ -229,13 +229,13 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TryReadBigEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
+  public void TryReadBigEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
   {
     Assert.That(UInt48.TryReadBigEndian(new byte[length], isUnsigned, out _), Is.False);
   }
 
   [Test]
-  public void TryReadLittleEndian_SourceTooShort([Values(true, false)]bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
+  public void TryReadLittleEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
   {
     Assert.That(UInt48.TryReadLittleEndian(new byte[length], isUnsigned, out _), Is.False);
   }
