@@ -49,8 +49,8 @@ public partial class LineOrientedStreamTests {
 
   [Test]
   public async Task Write(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(true, false)] bool runAsync
+    [Values] StreamType type,
+    [Values] bool runAsync
   )
   {
     using var baseStream = new MemoryStream(capacity: 8);
@@ -74,7 +74,7 @@ public partial class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
   [Test]
   public async Task WriteAsync_ToReadOnlyMemory(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values] StreamType type
   )
   {
     using var baseStream = new MemoryStream(capacity: 8);

@@ -11,9 +11,9 @@ namespace Smdn.IO.Streams.LineOriented;
 partial class LineOrientedStreamTests {
   [Test]
   public async Task ReadLine_SingleSegment(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(6, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF};
@@ -40,9 +40,9 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public async Task ReadLine_MultipleSegment(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x4f, CR, LF};
@@ -69,9 +69,9 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public async Task ReadLineAsync_EndOfStream(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43};
@@ -89,8 +89,8 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public async Task ReadLineAsync_EndOfStream_NothingBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(true, false)] bool runAsync
+    [Values] StreamType type,
+    [Values] bool runAsync
   )
   {
     using var stream = CreateStream(type, Stream.Null, 8);

@@ -30,7 +30,7 @@ public partial class LineOrientedStreamTests {
 
   [Test]
   public void Construct_FromMemoryStream(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(1, 2, 3, 4, 8)] int bufferSize
   )
   {
@@ -49,8 +49,8 @@ public partial class LineOrientedStreamTests {
 
   [Test]
   public void Close(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
-    [Values(true, false)] bool leaveStreamOpen
+    [Values] StreamType type,
+    [Values] bool leaveStreamOpen
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};

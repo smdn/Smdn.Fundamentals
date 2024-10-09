@@ -33,7 +33,7 @@ public class LooseLineOrientedStreamTests {
   [Test]
   public async Task ReadLine(
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {
@@ -105,7 +105,7 @@ public class LooseLineOrientedStreamTests {
   [Test]
   public async Task ReadAndReadLine_KeepEOL(
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
@@ -144,7 +144,7 @@ public class LooseLineOrientedStreamTests {
   [Test]
   public async Task ReadAndReadLine_DiscardEOL(
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
@@ -183,7 +183,7 @@ public class LooseLineOrientedStreamTests {
   [Test]
   public async Task ReadLine_KeepEOL(
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
@@ -244,7 +244,7 @@ public class LooseLineOrientedStreamTests {
   [Test]
   public async Task ReadLine_DiscardEOL(
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
@@ -304,7 +304,7 @@ public class LooseLineOrientedStreamTests {
 
   [Test]
   public async Task ReadLine_BufferEndsWithEOL_KeepEOL(
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
@@ -323,7 +323,7 @@ public class LooseLineOrientedStreamTests {
 
   [Test]
   public async Task ReadLine_BufferEndsWithEOL_DiscardEOL(
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
@@ -342,7 +342,7 @@ public class LooseLineOrientedStreamTests {
 
   [Test]
   public async Task ReadLine_EOLSplittedBetweenBuffer_DiscardEOL(
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {
@@ -400,7 +400,7 @@ public class LooseLineOrientedStreamTests {
 
   [Test]
   public async Task ReadLine_EOLSplittedBetweenBuffer_KeepEOL(
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {

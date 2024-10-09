@@ -48,9 +48,9 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public async Task CopyTo(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {
@@ -76,9 +76,9 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public async Task CopyTo_NothingBuffered(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(1, 2, 3, 4, 8)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {
@@ -102,7 +102,7 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public void CopyTo_ArgumentNull_Destination(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values] StreamType type
   )
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
@@ -113,7 +113,7 @@ partial class LineOrientedStreamTests {
 
   [Test]
   public void CopyToAsync_ArgumentNull_Destination(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type
+    [Values] StreamType type
   )
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
@@ -126,9 +126,9 @@ partial class LineOrientedStreamTests {
 #if SYSTEM_IO_STREAM_COPYTO_VIRTUAL
   [Test]
   public async Task CopyTo_BufferSizeDoesNotAffectToBehaviour(
-    [Values(StreamType.Strict, StreamType.Loose)] StreamType type,
+    [Values] StreamType type,
     [Values(1, 1024, int.MaxValue)] int bufferSize,
-    [Values(true, false)] bool runAsync
+    [Values] bool runAsync
   )
   {
     var data = new byte[] {
