@@ -181,13 +181,12 @@ public class PolyglotHtml5Writer :
 #endif
   ValueTask DisposeAsyncCore()
   {
-    if (baseWriter is not null) {
 #if SYSTEM_XML_XMLWRITER_DISPOSEASYNC
+    if (baseWriter is not null)
       await baseWriter.DisposeAsync().ConfigureAwait(false);
 #else
-      baseWriter.Dispose();
+    baseWriter?.Dispose();
 #endif
-    }
 
     baseWriter = null!;
 
@@ -315,8 +314,7 @@ public class PolyglotHtml5Writer :
 
   private void CloseCurrentElement()
   {
-    if (currentElementContext is not null)
-      currentElementContext.MarkAsClosed();
+    currentElementContext?.MarkAsClosed();
 
     ExtendedState = ExtendedWriteState.ElementClosed;
 
