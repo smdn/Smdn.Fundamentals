@@ -23,6 +23,12 @@ on:
         type: string
         default: ''
 
+      workflow_runs_on:
+        description: "The OS label which run the workflow on. (ex: ubuntu-latest, ubuntu-22.04, ubuntu-20.04)"
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
       dotnet_sdk_version:
         description: "The minimum .NET SDK version which is used to publish the release target."
         required: false
@@ -55,7 +61,7 @@ env:
 
 jobs:
   publish-release-target:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.workflow_runs_on }}
 
     steps:
     - name: Check .NET SDK version
