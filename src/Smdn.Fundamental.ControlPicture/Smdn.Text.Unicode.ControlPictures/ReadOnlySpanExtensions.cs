@@ -1,8 +1,16 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if SYSTEM_STRING_CREATE &&  SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE && SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL
+#define STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#endif
 
 using System;
+#if STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+#else
 using System.Buffers;
+#endif
 using System.Text.Unicode;
 
 namespace Smdn.Text.Unicode.ControlPictures;
@@ -54,6 +62,25 @@ public static class ReadOnlySpanExtensions {
     if (span.IsEmpty)
       return string.Empty;
 
+#if STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+    // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
+    unsafe {
+      ref var refInput = ref MemoryMarshal.GetReference(span);
+      var ptrInput = (IntPtr)Unsafe.AsPointer(ref refInput);
+
+      return string.Create(
+        span.Length,
+        (Pointer: ptrInput, span.Length),
+        static (destination, input) => _ = TryPicturizeControlChars(
+          span: new ReadOnlySpan<byte>(
+            pointer: input.Pointer.ToPointer(),
+            length: input.Length
+          ),
+          destination: destination
+        )
+      );
+    }
+#else
     char[] buffer = null;
 
     try {
@@ -76,6 +103,7 @@ public static class ReadOnlySpanExtensions {
       if (buffer is not null)
         ArrayPool<char>.Shared.Return(buffer);
     }
+#endif
   }
 
   public static string ToControlCharsPicturizedString(this ReadOnlySpan<char> span)
@@ -83,6 +111,25 @@ public static class ReadOnlySpanExtensions {
     if (span.IsEmpty)
       return string.Empty;
 
+#if STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+    // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
+    unsafe {
+      ref var refInput = ref MemoryMarshal.GetReference(span);
+      var ptrInput = (IntPtr)Unsafe.AsPointer(ref refInput);
+
+      return string.Create(
+        span.Length,
+        (Pointer: ptrInput, span.Length),
+        static (destination, input) => _ = TryPicturizeControlChars(
+          span: new ReadOnlySpan<char>(
+            pointer: input.Pointer.ToPointer(),
+            length: input.Length
+          ),
+          destination: destination
+        )
+      );
+    }
+#else
     char[] buffer = null;
 
     try {
@@ -105,5 +152,6 @@ public static class ReadOnlySpanExtensions {
       if (buffer is not null)
         ArrayPool<char>.Shared.Return(buffer);
     }
+#endif
   }
 }
