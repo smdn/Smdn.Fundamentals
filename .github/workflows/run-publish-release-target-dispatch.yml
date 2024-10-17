@@ -23,10 +23,11 @@ on:
 
 jobs:
   run-publish-release-target:
-    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release-target.yml@workflows/release-target-v1.8.2
+    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release-target.yml@087caf3b4ea1f7a095ddf3291dba8553819a9e0e
     with:
       pr_number_request_for_release: ${{ fromJson(github.event.inputs.pr_number_request_for_release) }}
       pr_label_request_for_release:  'release-target'
+      workflow_runs_on:              'ubuntu-24.04'
       dotnet_sdk_version:            '8.0.100'
       dry_run:                       ${{ fromJson(github.event.inputs.dry_run) }}
     secrets:
