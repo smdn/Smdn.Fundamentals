@@ -4,15 +4,20 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <Target Name="GetRepositoryProperties">
-    <CallTarget Targets="GetRepositoryProperties_OSUnixLike_Git" Condition="$([MSBuild]::IsOSUnixLike()) and ('$(RepositoryType)' == 'git')"/>
+    <CallTarget Targets="GetRepositoryProperties_Git" Condition="'$(RepositoryType)' == 'git'"/>
     <CallTarget Targets="GetRepositoryProperties_VersionOrRepositoryTypeNotSupported"/>
   </Target>
 
-  <Target Name="GetRepositoryProperties_OSUnixLike_Git">
-    <Exec Command="git branch --show-current" Condition="'$(RepositoryBranch)' == ''" ConsoleToMSBuild="true" EchoOff="true" StandardOutputImportance="Low">
+  <Target Name="GetRepositoryProperties_Git">
+    <PropertyGroup Condition="'$(GitCommandLineInterfacePath)' == ''">
+      <GitCommandLineInterfacePath Condition="$([MSBuild]::IsOSUnixLike())">git</GitCommandLineInterfacePath>
+      <GitCommandLineInterfacePath Condition="'$(GitCommandLineInterfacePath)' == ''">git</GitCommandLineInterfacePath>
+    </PropertyGroup>
+
+    <Exec Command="$(GitCommandLineInterfacePath) branch --show-current" Condition="'$(RepositoryBranch)' == ''" ConsoleToMSBuild="true" EchoOff="true" StandardOutputImportance="Low">
       <Output TaskParameter="ConsoleOutput" PropertyName="RepositoryBranch" />
     </Exec>
-    <Exec Command="git rev-parse HEAD" Condition="'$(RepositoryCommit)' == ''" ConsoleToMSBuild="true" EchoOff="true" StandardOutputImportance="Low">
+    <Exec Command="$(GitCommandLineInterfacePath) rev-parse HEAD" Condition="'$(RepositoryCommit)' == ''" ConsoleToMSBuild="true" EchoOff="true" StandardOutputImportance="Low">
       <Output TaskParameter="ConsoleOutput" PropertyName="RepositoryCommit" />
     </Exec>
   </Target>
