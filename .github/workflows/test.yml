@@ -68,6 +68,12 @@ on:
         type: string
         default: ''
 
+      dotnet_build_options_enable_concurrent_build:
+        description: "If false, disables concurrent project build."
+        required: false
+        type: boolean
+        default: true
+
       dotnet_test_options_verbosity_level:
         description: "The argument to be set to the `--verbosity <LEVEL>` option of the `dotnet test` command. <LEVEL> := q[uiet], m[inimal], n[ormal], d[etailed], diag[nostic]"
         required: false
@@ -346,6 +352,13 @@ jobs:
           '--no-restore',
           '-consoleLoggerParameters:NoSummary'
         )
+
+        if ( '${{ inputs.dotnet_build_options_enable_concurrent_build }}' -ine 'true' ) {
+          # set '-maxCpuCount:1' to disable concurrent build
+          # used as the workaround for 'error MSB4018: The "GenerateDepsFile" task failed unexpectedly'
+          # ref: https://github.com/dotnet/sdk/issues/2902
+          $dotnet_build_options += @('-maxCpuCount:1')
+        }
 
         if ( ! [string]::IsNullOrEmpty( '${{ inputs.dotnet_test_options_framework }}' ) ) {
           $dotnet_build_options += @(
