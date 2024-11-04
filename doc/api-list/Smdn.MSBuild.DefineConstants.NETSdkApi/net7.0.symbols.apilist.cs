@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.4.8
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.5.0
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.4.8
+//   InformationalVersion: 1.5.0
 
 // List of symbols defined on target framework 'net7.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -282,10 +282,26 @@
 #define SYSTEM_IO_COMPRESSION_ZIPARCHIVEENTRY_CRC32 // System.IO.Compression.ZipArchiveEntry.Crc32 (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_IO_COMPRESSION_ZIPARCHIVEENTRY_EXTERNALATTRIBUTES // System.IO.Compression.ZipArchiveEntry.ExternalAttributes (NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_IO_COMPRESSION_ZLIBSTREAM // System.IO.Compression.ZLibStream (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_CHUNK // System.Linq.Enumerable.Chunk (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_DISTINCTBY // System.Linq.Enumerable.DistinctBy (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_ELEMENTAT_INDEX // System.Linq.Enumerable.ElementAt(Index) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_ELEMENTATORDEFAULT_INDEX // System.Linq.Enumerable.ElementAtOrDefault(Index) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_EXCEPTBY // System.Linq.Enumerable.ExceptBy (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_FIRSTORDEFAULT_SOURCE_DEFAULTVALUE // System.Linq.Enumerable.FirstOrDefault(source,defaultValue) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_FIRSTORDEFAULT_SOURCE_PREDICATE_DEFAULTVALUE // System.Linq.Enumerable.FirstOrDefault(source,predicate,defaultValue) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_INTERSECTBY // System.Linq.Enumerable.IntersectBy (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_LASTORDEFAULT_SOURCE_DEFAULTVALUE // System.Linq.Enumerable.LastOrDefault(source,defaultValue) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_LASTORDEFAULT_SOURCE_PREDICATE_DEFAULTVALUE // System.Linq.Enumerable.LastOrDefault(source,predicate,defaultValue) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_MAXBY // System.Linq.Enumerable.MaxBy (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_MINBY // System.Linq.Enumerable.MinBy (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ORDER // System.Linq.Enumerable.Order (NET7_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ORDERDESCENDING // System.Linq.Enumerable.OrderDescending (NET7_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_SINGLEORDEFAULT_SOURCE_DEFAULTVALUE // System.Linq.Enumerable.SingleOrDefault(source,defaultValue) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_SINGLEORDEFAULT_SOURCE_PREDICATE_DEFAULTVALUE // System.Linq.Enumerable.SingleOrDefault(source,predicate,defaultValue) (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_TAKE_RANGE // System.Linq.Enumerable.Take(Range) (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_TOHASHSET // System.Linq.Enumerable.ToHashSet (NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_TRYGETNONENUMERATEDCOUNT // System.Linq.Enumerable.TryGetNonEnumeratedCount (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_UNIONBY // System.Linq.Enumerable.UnionBy (NET6_0_OR_GREATER)
 #define SYSTEM_NET_DNS // System.Net.Dns (NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NET_DNS_GETHOSTADDRESSES_HOSTNAMEORADDRESS // System.Net.Dns.GetHostAddresses(hostNameOrAddress) (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_NET_DNS_GETHOSTADDRESSES_HOSTNAMEORADDRESS_FAMILY // System.Net.Dns.GetHostAddresses(hostNameOrAddress,family) (NET6_0_OR_GREATER)
