@@ -10,6 +10,7 @@ SPDX-License-Identifier: MIT
   <Import Project="$(PackageBuildTargetsFile)" />
 
   <PropertyGroup Label="TargetFrameworks">
+    <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '9.0.0'))">$(TargetFrameworks);net9.0</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);net8.0;net7.0;net6.0;net5.0</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);netcoreapp3.1</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);netstandard2.1;netstandard2.0</TargetFrameworks>

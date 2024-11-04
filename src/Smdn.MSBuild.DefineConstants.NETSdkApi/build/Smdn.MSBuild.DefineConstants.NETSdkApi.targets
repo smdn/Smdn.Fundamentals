@@ -996,6 +996,23 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <!--
+      Applies to: NET9_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET9_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileFullPath)" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.AggregateBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.CountBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Index"/>
+    </ItemGroup>
+
+    <!--
       generate symbols
     -->
     <ItemGroup>
