@@ -19,27 +19,17 @@ on:
         required: true
         type: string
 
-#      release_prerelease:
-#        description: "The boolean value that indicates whether the release should be published as a prerelease or not."
-#        required: false
-#        type: boolean
-#        default: false
-#
-#      release_draft:
-#        description: "The boolean value that indicates whether the release should be published as a draft or not."
-#        required: false
-#        type: boolean
-#        default: false
-
       release_prerelease:
-        type: string
+        description: "The boolean value that indicates whether the release should be published as a prerelease or not."
         required: false
-        default: null
+        type: boolean
+        default: false
 
       release_draft:
-        type: string
+        description: "The boolean value that indicates whether the release should be published as a draft or not."
         required: false
-        default: null
+        type: boolean
+        default: false
 
       package_id:
         description: "The ID of the released package."
