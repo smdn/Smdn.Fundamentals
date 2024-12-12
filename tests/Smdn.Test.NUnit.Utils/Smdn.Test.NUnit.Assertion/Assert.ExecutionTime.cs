@@ -4,9 +4,8 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-#if RUNNING_ON_GITHUB_ACTIONS
 using System.Runtime.InteropServices;
-#endif
+
 using NUnit.Framework;
 
 namespace Smdn.Test.NUnit.Assertion;
@@ -29,20 +28,30 @@ public class AssertExecutionTimeTests {
     Assert.ElapsesInRangeAsync(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(100), static () => Task.Delay(10));
   }
 
-  private static void CheckRunningEnvironment()
+  private static bool SatisfiesRunningEnvironmentPrerequisites()
   {
-#if RUNNING_ON_GITHUB_ACTIONS
-    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-      Assert.Ignore("ignore unstable test case due to running environment (macos)");
-#endif
+    if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")))
+      return true;
+
+    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
+      Assert.Ignore("ignore unstable test case due to running environment (GitHub Actions MacOS runner)");
+      return false;
+    }
+
+    return true;
   }
 
-  private static void CheckPrerequisites()
+  private static bool SatisfiesPrerequisites()
   {
-    CheckRunningEnvironment();
+    if (!SatisfiesRunningEnvironmentPrerequisites())
+      return false;
 
-    if (!Stopwatch.IsHighResolution)
+    if (!Stopwatch.IsHighResolution) {
       Assert.Ignore("ignore unstable test case due to lack of the time resolution");
+      return false;
+    }
+
+    return true;
   }
 
   [Test]
@@ -51,7 +60,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Elapses(
       expected: TimeSpan.FromMilliseconds(20),
@@ -65,7 +75,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.Elapses(
@@ -81,7 +92,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.ElapsesAsync(
       expected: TimeSpan.FromMilliseconds(20),
@@ -95,7 +107,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.ElapsesAsync(
@@ -111,7 +124,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.NotElapse(
       expected: TimeSpan.FromMilliseconds(20),
@@ -125,7 +139,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.NotElapse(
@@ -141,7 +156,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 1, max: 10, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.NotElapseAsync(
       expected: TimeSpan.FromMilliseconds(20),
@@ -155,7 +171,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.NotElapseAsync(
@@ -171,7 +188,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 20, max: 30, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.ElapsesInRange(
       expectedMin: TimeSpan.FromMilliseconds(10),
@@ -186,7 +204,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 0, max: 10, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.ElapsesInRange(
@@ -203,7 +222,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.ElapsesInRange(
@@ -220,7 +240,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 20, max: 30, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.ElapsesInRangeAsync(
       expectedMin: TimeSpan.FromMilliseconds(10),
@@ -235,7 +256,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 0, max: 10, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.ElapsesInRangeAsync(
@@ -252,7 +274,8 @@ public class AssertExecutionTimeTests {
     [Random(min: 30, max: 40, count: 10)] int milliseconds
   )
   {
-    CheckPrerequisites();
+    if (!SatisfiesPrerequisites())
+      return;
 
     Assert.Throws<AssertionException>(() =>
       Assert.ElapsesInRangeAsync(
