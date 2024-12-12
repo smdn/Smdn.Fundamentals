@@ -1,6 +1,10 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
+#if !NET8_0_OR_GREATER
+#define ENABLE_SERIALIZATION // SYSLIB0011 (https://aka.ms/binaryformatter)
+#endif
+
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
 
 using System;
 using System.Linq;

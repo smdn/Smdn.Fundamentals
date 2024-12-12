@@ -1,6 +1,11 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if !NET8_0_OR_GREATER
+#define ENABLE_SERIALIZATION // SYSLIB0011 (https://aka.ms/binaryformatter)
+#endif
+
 using System;
+#if ENABLE_SERIALIZATION
 using System.IO;
 #if SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE || SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
 using System.Runtime.Serialization;
@@ -8,13 +13,14 @@ using System.Runtime.Serialization;
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
+#endif // ENABLE_SERIALIZATION
 
 namespace Smdn.Test.NUnit.Assertion;
 
 #pragma warning disable IDE0040
 partial class Assert {
 #pragma warning restore IDE0040
-#if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
 #pragma warning disable CA1859
   private static IFormatter CreateDefaultSerializationFormatter()
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
@@ -28,7 +34,7 @@ partial class Assert {
 
 #pragma warning disable CA1859
   private static IFormatter CreateDefaultDeserializationFormatter()
-#if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY && SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY && SYSTEM_RUNTIME_SERIALIZATION_SERIALIZATIONBINDER
     => new BinaryFormatter() {
       Binder = new DeserializationBinder(),
     };
@@ -47,14 +53,14 @@ partial class Assert {
 #endif
     => IsSerializableCore(
       obj,
-#if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
       CreateDefaultSerializationFormatter(),
       CreateDefaultDeserializationFormatter(),
 #endif
       testDeserializedObject
     );
 
-#if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
   public static void IsSerializable<TSerializable>(
     TSerializable obj,
     IFormatter serializationFormatter,
@@ -74,7 +80,7 @@ partial class Assert {
 
   private static void IsSerializableCore<TSerializable>(
     TSerializable obj,
-#if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
     IFormatter serializationFormatter,
     IFormatter deserializationFormatter,
 #endif
@@ -84,7 +90,7 @@ partial class Assert {
     where TSerializable : ISerializable
 #endif
   {
-#if SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
+#if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
     if (serializationFormatter is null || deserializationFormatter is null)
       return; // do nothing
 
