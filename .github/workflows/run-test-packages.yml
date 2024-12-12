@@ -15,9 +15,15 @@ on:
         type: string
 
       os:
-        description: "The OS label which run the test on. (ex: ubuntu-22.04, ubuntu-20.04, windows-latest, macos-latest)"
+        description: "The OS label which run the test on. (ubuntu-24.04, ubuntu-22.04, windows-latest, macos-latest, etc.)"
         required: false
         type: string
+
+      dotnet_sdk_version:
+        description: "The minimum .NET SDK version which is used to run tests."
+        required: false
+        type: string
+        default: '8.0.100'
 
       verbose:
         description: "If true, enables verbose output."
@@ -76,15 +82,15 @@ jobs:
     uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test-v1.3.2
     needs: prerequisites
     with:
-      project:              ${{ github.event.inputs.project }}
-      os:                   ${{ needs.prerequisites.outputs.os }}
-      extra_options_common: '/p:TestReleasedPackage=true'
-      verbose:              ${{ fromJSON(needs.prerequisites.outputs.verbose) }}
-      path_proj_install_project_assets: "eng/InstallProjectAssets.proj"
-      dotnet_sdk_version:   '8.0.100'
-      timeout_minutes_test_job:   10
-      timeout_hang:               "[ {'OS':'windows','Timeout':'6min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
-      timeout_vstest_connection:  "[ {'OS':'windows','Timeout':360}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"
+      project:                                ${{ github.event.inputs.project }}
+      os:                                     ${{ needs.prerequisites.outputs.os }}
+      extra_options_common:                   '/p:TestReleasedPackage=true'
+      verbose:                                ${{ fromJSON(needs.prerequisites.outputs.verbose) }}
+      path_proj_install_project_assets:       "eng/InstallProjectAssets.proj"
+      dotnet_sdk_version:                     ${{ github.event.inputs.dotnet_sdk_version }}
+      timeout_minutes_test_job:               10
+      timeout_hang:                           "[ {'OS':'windows','Timeout':'6min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
+      timeout_vstest_connection:              "[ {'OS':'windows','Timeout':360}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"
       dotnet_test_options_verbosity_level:    ${{ github.event.inputs.dotnet_test_options_verbosity_level }}
       dotnet_test_options_framework:          ${{ github.event.inputs.dotnet_test_options_framework }}
       dotnet_test_options_filter_expression:  ${{ github.event.inputs.dotnet_test_options_filter_expression }}
