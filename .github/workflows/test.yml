@@ -24,7 +24,7 @@ on:
         description: "The minimum .NET SDK version which is used to run tests."
         required: false
         type: string
-        default: '6.0.200'
+        default: '8.0.100'
 
       path_prefix_tests:
         description: "The common prefix of the path to test projects' root directory based on the repository root."
