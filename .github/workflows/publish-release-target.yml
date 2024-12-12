@@ -61,7 +61,7 @@ env:
 
 jobs:
   publish-release-target:
-    name: Publish release target (\#${{ inputs.pr_number_request_for_release }})
+    name: Publish release target (#${{ inputs.pr_number_request_for_release }})
     runs-on: ${{ inputs.workflow_runs_on }}
     outputs:
       release_tag:                  ${{ steps.release-info.outputs.release_tag }}
