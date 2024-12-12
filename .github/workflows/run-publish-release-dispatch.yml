@@ -9,12 +9,6 @@ permissions:
 on:
   workflow_dispatch:
     inputs:
-      workflow_runs_on:
-        description: "The OS label which run the workflow on. (ex: ubuntu-latest, ubuntu-24.04)"
-        required: false
-        type: string
-        default: "ubuntu-latest"
-
       release_tag:
         description: "The name of the tag for the release to be created."
         required: true
@@ -85,7 +79,7 @@ jobs:
     name: Publish release for '${{ github.event.inputs.release_tag }}'
     uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release.yml@c530a596cbf70721b7ab90206188ed39f8bbbe40
     with:
-      workflow_runs_on:             ${{ github.event.inputs.workflow_runs_on }}
+      workflow_runs_on:             'ubuntu-latest'
       release_tag:                  ${{ github.event.inputs.release_tag }}
       release_note_url:             ${{ github.event.inputs.release_note_url }}
       release_prerelease:           ${{ fromJSON( github.event.inputs.release_prerelease == '' && 'false' || github.event.inputs.release_prerelease ) }}
