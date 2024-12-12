@@ -61,7 +61,18 @@ env:
 
 jobs:
   publish-release-target:
+    name: Publish release target (\#${{ inputs.pr_number_request_for_release }})
     runs-on: ${{ inputs.workflow_runs_on }}
+    outputs:
+      release_tag:                  ${{ steps.release-info.outputs.release_tag }}
+      release_note_url:             ${{ steps.release-info.outputs.release_note_url }}
+      release_prerelease:           ${{ steps.release-info.outputs.release_prerelease }}
+      release_draft:                ${{ steps.release-info.outputs.release_draft }}
+      package_id:                   ${{ steps.release-info.outputs.package_id }}
+      package_version:              ${{ steps.release-info.outputs.package_version }}
+      package_branch:               ${{ steps.release-info.outputs.package_branch }}
+      package_prevver_tag:          ${{ steps.release-info.outputs.package_prevver_tag }}
+      package_available_nuget_org:  ${{ steps.push-nuget-org.outputs.pushed }}
 
     steps:
     - name: Check .NET SDK version
@@ -369,247 +380,6 @@ jobs:
           git push origin $tag_name
         }
 
-    - name: Create release notes file for ${{ steps.release-info.outputs.release_tag }}
-      id: release-notes-file
-      env:
-        GH_TOKEN: ${{ secrets.token_repo }}
-      shell: pwsh
-      run: |
-        $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
-
-        # note: the maximum size of the release body seems to be 125,000 characters (textarea#release_body@data-input-max-length="125000")
-        $release_notes_body_max_length = 125000
-        $release_notes_body = New-Object System.Text.StringBuilder -ArgumentList 10240
-        $release_notes_output_path = [System.IO.Path]::GetFullPath('releasenotes.md')
-
-        if ( '${{ steps.push-nuget-org.outputs.pushed }}' -ieq 'true' -Or $dry_run ) {
-          [void]$release_notes_body.AppendLine('# Released package')
-          [void]$release_notes_body.AppendFormat(
-            '- NuGet [{0} version {1}](https://www.nuget.org/packages/{0}/{1})',
-            '${{ steps.release-info.outputs.package_id }}',
-            '${{ steps.release-info.outputs.package_version }}'
-          ).AppendLine()
-          [void]$release_notes_body.AppendLine()
-        }
-
-        #
-        # Downloads release note files from gist and attempts to append them to release notes.
-        # If the body exceeds the maximum length when appended, will cancel appending.
-        #
-        [void]$release_notes_body.AppendLine('# Release notes')
-        [void]$release_notes_body.AppendLine('The [full release notes](${{ steps.release-info.outputs.release_note_url }}) are available at gist.')
-        [void]$release_notes_body.AppendLine()
-
-        $release_note_sections = @(
-          [PSCustomObject]@{
-            FileNameSuffix = '.changelog.md'
-            Title = 'Change log'
-            Header = $([String]::Join(
-              "`n",
-              @(
-                '<details>'
-                '<summary>Change log in this release:</summary>'
-                '<div>'
-                ''
-              )
-            ))
-            Footer = $([String]::Join(
-              "`n",
-              @(
-                ''
-                '</div>'
-                '</details>'
-              )
-            ))
-          }
-          [PSCustomObject]@{
-            FileNameSuffix = '.api-changes.diff'
-            Title = 'API changes'
-            Header = $([String]::Join(
-              "`n",
-              @(
-                '<details>'
-                '<summary>API changes in this release:</summary>'
-                '<div>'
-                ''
-                '```diff'
-              )
-            ))
-            Footer = $([String]::Join(
-              "`n",
-              @(
-                '```'
-                ''
-                '</div>'
-                '</details>'
-              )
-            ))
-          }
-          [PSCustomObject]@{
-            FileNameSuffix = '.full-changes.diff'
-            Title = 'Full changes'
-            Header = $([String]::Join(
-              "`n",
-              @(
-                '<details>'
-                '<summary>Full changes in this release:</summary>'
-                '<div>'
-                ''
-                '```diff'
-              )
-            ))
-            Footer = $([String]::Join(
-              "`n",
-              @(
-                '```'
-                ''
-                '</div>'
-                '</details>'
-              )
-            ))
-          }
-        )
-
-        # list release note files from gist
-        $release_note_files = gh gist view `
-          '${{ steps.release-info.outputs.release_note_url }}' `
-          --files
-
-        # download release note files
-        foreach ( $section in $release_note_sections ) {
-          $release_note_file = $release_note_files |
-            where { $_.StartsWith('releasenote.') -And $_.EndsWith($section.FileNameSuffix) } |
-            select -First 1
-
-          if ( ! $release_note_file ) {
-            continue
-          }
-
-          $release_note_content = gh gist view `
-            '${{ steps.release-info.outputs.release_note_url }}' `
-            --raw `
-            --filename $release_note_file
-
-          $section
-            | Add-Member `
-            -MemberType NoteProperty `
-            -Name 'Content' `
-            -Value $release_note_content
-        }
-
-        # construct release note section
-        foreach ( $section in $release_note_sections ) {
-          if ( [string]::IsNullOrEmpty( $section.Content ) ) {
-            continue
-          }
-
-          $section_body = New-Object System.Text.StringBuilder -ArgumentList 10240
-
-          [void]$section_body.AppendLine("## $($section.Title)")
-          [void]$section_body.AppendLine($section.Header)
-          [void]$section_body.AppendLine($section.Content -join "`n")
-          [void]$section_body.AppendLine($section.Footer)
-          [void]$section_body.AppendLine()
-
-          # attempt to append constructed section
-          if ( $release_notes_body_max_length -lt $release_notes_body.Length + $section_body.Length ) {
-            break;
-          }
-
-          [void]$release_notes_body.Append($section_body.ToString())
-        }
-
-        # append release notes content for a release
-        # ref: https://docs.github.com/ja/rest/releases/releases#generate-release-notes-content-for-a-release
-        $release_api_generate_notes_options = @(
-          '--method', 'POST',
-          '-H', 'Accept: application/vnd.github+json',
-          '/repos/${{ github.repository }}/releases/generate-notes',
-          '-f', 'tag_name=${{ steps.release-info.outputs.release_tag }}',
-          '-f', 'target_commitish=${{ steps.release-info.outputs.package_branch }}'
-        )
-
-        $package_prevver_tag = '${{ steps.release-info.outputs.package_prevver_tag }}'
-
-        if ( $package_prevver_tag ) {
-          $release_api_generate_notes_options += @(
-            '-f', 'previous_tag_name=${{ steps.release-info.outputs.package_prevver_tag }}'
-          )
-        }
-
-        "gh api ${release_api_generate_notes_options}"
-
-        $generated_release_notes = $(gh api $release_api_generate_notes_options) `
-          | ConvertFrom-Json
-
-        [void]$release_notes_body.AppendLine("## Notes")
-        [void]$release_notes_body.AppendLine($generated_release_notes.body)
-
-        # write release notes file
-        if (-not $dry_run) {
-          Out-File -FilePath $release_notes_output_path -Encoding utf8 -InputObject $release_notes_body.ToString()
-
-          "release notes file written: '${release_notes_output_path}', $($([System.IO.FileInfo] $release_notes_output_path).Length) bytes"
-        }
-
-        "## :page_with_curl: Release notes" >> $Env:GITHUB_STEP_SUMMARY
-        "Created release notes file (total $($release_notes_body.Length) characters)." >> $Env:GITHUB_STEP_SUMMARY
-        ''      >> $Env:GITHUB_STEP_SUMMARY
-        '-----' >> $Env:GITHUB_STEP_SUMMARY
-        ''      >> $Env:GITHUB_STEP_SUMMARY
-        [System.Text.RegularExpressions.Regex]::Replace(
-          $release_notes_body.ToString(),
-          '^#',
-          '###',
-          [System.Text.RegularExpressions.RegexOptions]::MultiLine
-        ) >> $Env:GITHUB_STEP_SUMMARY
-        ''      >> $Env:GITHUB_STEP_SUMMARY
-        '-----' >> $Env:GITHUB_STEP_SUMMARY
-        ''      >> $Env:GITHUB_STEP_SUMMARY
-
-        # set outputs
-        "path=${release_notes_output_path}" >> $Env:GITHUB_OUTPUT
-
-    - name: Create release notes for ${{ steps.release-info.outputs.release_tag }}
-      env:
-        GH_TOKEN: ${{ secrets.token_repo }}
-      shell: pwsh
-      run: |
-        $dry_run = '${{ inputs.dry_run }}' -ieq 'true'
-
-        $release_notes_file = '${{ steps.release-notes-file.outputs.path }}'
-        $release_title = '${{ steps.release-info.outputs.package_id }} version ${{ steps.release-info.outputs.package_version }}'
-
-        "release notes file: '${release_notes_file}', $($([System.IO.FileInfo] $release_notes_file).Length) bytes"
-
-        $release_create_options = @(
-          '--repo', '${{ github.repository }}',
-          '--title', $release_title,
-          '--target', '${{ steps.release-info.outputs.package_branch }}',
-          '--notes-file', $release_notes_file
-        )
-
-        if ( '${{ steps.release-info.outputs.release_prerelease }}' -ieq 'True' ) {
-          $release_create_options += '--prerelease'
-        }
-        if ( '${{ steps.release-info.outputs.release_draft }}' -ieq 'True' ) {
-          $release_create_options += '--draft'
-        }
-
-        $release_create_options += '${{ steps.release-info.outputs.release_tag }}'
-
-        "gh release create ${release_create_options}"
-
-        if ( $dry_run ) {
-          $release_url = '(dry-run)'
-        }
-        else {
-          $release_url = $(gh release create $release_create_options)
-        }
-
-        "# :sparkles: Released" >> $Env:GITHUB_STEP_SUMMARY
-        "Created release: [${release_title}](${release_url})" >> $Env:GITHUB_STEP_SUMMARY
-
     - name: Delete release target tag ${{ steps.release-info.outputs.package_target_tag }}
       if: ${{ !inputs.dry_run }}
       run: git push origin --delete '${{ steps.release-info.outputs.package_target_tag }}' || true
@@ -617,3 +387,23 @@ jobs:
     - name: Close release working branch ${{ steps.release-info.outputs.release_working_branch }}
       if: ${{ !inputs.dry_run }}
       run: git push origin --delete '${{ steps.release-info.outputs.release_working_branch }}' || true
+
+  publish-release:
+    name: Publish release for '${{ needs.publish-release-target.outputs.release_tag }}'
+    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release.yml@c530a596cbf70721b7ab90206188ed39f8bbbe40
+    needs: publish-release-target
+    with:
+      workflow_runs_on:             ${{ inputs.workflow_runs_on }}
+      release_tag:                  ${{ needs.publish-release-target.outputs.release_tag }}
+      release_note_url:             ${{ needs.publish-release-target.outputs.release_note_url }}
+      release_prerelease:           ${{ fromJSON(needs.publish-release-target.outputs.release_prerelease) }}
+      release_draft:                ${{ fromJSON(needs.publish-release-target.outputs.release_draft) }}
+      package_id:                   ${{ needs.publish-release-target.outputs.package_id }}
+      package_version:              ${{ needs.publish-release-target.outputs.package_version }}
+      package_branch:               ${{ needs.publish-release-target.outputs.package_branch }}
+      package_prevver_tag:          ${{ needs.publish-release-target.outputs.package_prevver_tag }}
+      package_available_nuget_org:  ${{ fromJSON(needs.publish-release-target.outputs.package_available_nuget_org) }}
+      dry_run:                      ${{ fromJSON(inputs.dry_run) }}
+    secrets:
+      token_gist:                   ${{ secrets.token_repo }}
+      token_new_release:            ${{ secrets.token_repo }}
