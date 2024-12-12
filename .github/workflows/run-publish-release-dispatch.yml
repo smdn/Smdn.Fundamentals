@@ -56,7 +56,7 @@ on:
         description: "The boolean value that indicates whether the released package has been pushed to NuGet.org or not."
         required: false
         type: boolean
-        default: false
+        default: true
 
       dry_run:
         description: "If true, performs a trial run."
