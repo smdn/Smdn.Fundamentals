@@ -75,7 +75,7 @@ jobs:
       package_available_nuget_org:  ${{ steps.push-nuget-org.outputs.pushed }}
 
     steps:
-    - name: Check .NET SDK version
+    - name: Check .NET SDK ${{ inputs.dotnet_sdk_version }} is installed
       id: dotnet-sdk-version
       shell: pwsh
       run: |
