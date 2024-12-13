@@ -396,14 +396,14 @@ jobs:
       workflow_runs_on:             ${{ inputs.workflow_runs_on }}
       release_tag:                  ${{ needs.publish-release-target.outputs.release_tag }}
       release_note_url:             ${{ needs.publish-release-target.outputs.release_note_url }}
-      release_prerelease:           ${{ fromJSON( needs.publish-release-target.outputs.release_prerelease == '' && 'false' || needs.publish-release-target.outputs.release_prerelease ) }}
-      release_draft:                ${{ fromJSON( needs.publish-release-target.outputs.release_draft == '' && 'false' || needs.publish-release-target.outputs.release_draft ) }}
+      release_prerelease:           ${{ needs.publish-release-target.outputs.release_prerelease == 'true' || needs.publish-release-target.outputs.release_prerelease == 'True' }}
+      release_draft:                ${{ needs.publish-release-target.outputs.release_draft == 'true' || needs.publish-release-target.outputs.release_draft == 'True' }}
       package_id:                   ${{ needs.publish-release-target.outputs.package_id }}
       package_version:              ${{ needs.publish-release-target.outputs.package_version }}
       package_branch:               ${{ needs.publish-release-target.outputs.package_branch }}
       package_prevver_tag:          ${{ needs.publish-release-target.outputs.package_prevver_tag }}
-      package_available_nuget_org:  ${{ fromJSON( needs.publish-release-target.outputs.package_available_nuget_org == '' && 'false' || needs.publish-release-target.outputs.package_available_nuget_org ) }}
-      dry_run:                      ${{ fromJSON(inputs.dry_run) }}
+      package_available_nuget_org:  ${{ needs.publish-release-target.outputs.package_available_nuget_org == 'true' || needs.publish-release-target.outputs.package_available_nuget_org == 'True' }}
+      dry_run:                      ${{ inputs.dry_run }}
     secrets:
       token_gist:                   ${{ secrets.token_repo }}
       token_new_release:            ${{ secrets.token_repo }}
