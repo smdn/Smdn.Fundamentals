@@ -66,3 +66,7 @@ Some of `Smdn.Fundamental.*` are based on former `Smdn.dll`.
 `Smdn.dll` is now provided as a kind of meta package and will be deprecated in the future.
 
 The list of APIs and the list of assemblies to be transferred are listed in [these files](doc/api-list/).
+
+# Notice
+## License
+This project is licensed under the terms of the [MIT License](./LICENSE.txt).
