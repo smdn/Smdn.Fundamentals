@@ -24,7 +24,7 @@ on:
         default: ''
 
       workflow_runs_on:
-        description: "The OS label which run the workflow on. (ex: ubuntu-latest, ubuntu-22.04, ubuntu-20.04)"
+        description: "The OS label which run the workflow on. (ubuntu-latest, ubuntu-24.04, ubuntu-22.04, etc.)"
         required: false
         type: string
         default: "ubuntu-latest"
