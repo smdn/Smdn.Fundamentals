@@ -240,6 +240,24 @@ public class RuntimeTests {
     int exitCode;
     string stdout, stderr;
 
+    static IReadOnlyDictionary<string, string> GetEnvironmentVariablesForDotnetCommand(
+      IReadOnlyDictionary<string, string> additionalEnvironmentVariables
+    )
+    {
+      var environmentVariables = new Dictionary<string, string>() {
+        ["MSBUILDTERMINALLOGGER"] = "off", // make sure to disable terminal logger
+        ["NO_COLOR"] = "NO_COLOR", // disable emitting ANSI color escape codes
+      };
+
+      if (additionalEnvironmentVariables is not null) {
+        foreach (var pair in additionalEnvironmentVariables) {
+          environmentVariables[pair.Key] = pair.Value;
+        }
+      }
+
+      return environmentVariables;
+    }
+
     /*
      * execute 'dotnet clean'
      */
@@ -253,7 +271,7 @@ public class RuntimeTests {
     exitCode = Shell.Execute(
       command: "dotnet",
       arguments: cleanPrintRuntimeInformationCommandLineArgs,
-      environmentVariables: null,
+      environmentVariables: GetEnvironmentVariablesForDotnetCommand(null),
       out stdout,
       out stderr
     );
@@ -271,10 +289,14 @@ public class RuntimeTests {
       PrintRuntimeInformationProps.TargetFrameworkMoniker,
     };
 
+    buildPrintRuntimeInformationCommandLineArgs.AddRange(
+      (buildAdditionalProperties ?? Enumerable.Empty<string>()).Select(static p => "--property:" + p)
+    );
+
     exitCode = Shell.Execute(
       command: "dotnet",
       arguments: buildPrintRuntimeInformationCommandLineArgs,
-      environmentVariables: null,
+      environmentVariables: GetEnvironmentVariablesForDotnetCommand(null),
       out stdout,
       out stderr
     );
@@ -293,19 +315,15 @@ public class RuntimeTests {
       "--no-build",
       "--framework",
       PrintRuntimeInformationProps.TargetFrameworkMoniker,
+      "--",
     };
 
-    runPrintRuntimeInformationCommandLineArgs.AddRange(
-      (buildAdditionalProperties ?? Enumerable.Empty<string>()).Select(static p => "--property:" + p)
-    );
-
-    runPrintRuntimeInformationCommandLineArgs.Add("--");
     runPrintRuntimeInformationCommandLineArgs.AddRange(args);
 
     exitCode = Shell.Execute(
       command: "dotnet",
       arguments: runPrintRuntimeInformationCommandLineArgs,
-      environmentVariables: environmentVariables,
+      environmentVariables: GetEnvironmentVariablesForDotnetCommand(environmentVariables),
       out stdout,
       out stderr
     );
@@ -329,9 +347,11 @@ public class RuntimeTests {
       return;
     }
 
-#if RUNNING_ON_GITHUB_ACTIONS
-    Assert.Ignore("ignore indeterminable test case due to running environment (GitHub Actions Windows runner)");
-#else
+    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"))) {
+      Assert.Ignore("disables unstable test case due to running environment (GitHub Actions Windows runner)");
+      return;
+    }
+
     var processSupportsIanaTimeZoneName = ExecutePrintRuntimeInformation(
       args: new[] { nameof(Runtime.SupportsIanaTimeZoneName) },
       buildAdditionalProperties: new[] { "RuntimeConfigurationSystemGlobalizationUseNls=true" },
@@ -340,7 +360,6 @@ public class RuntimeTests {
     );
 
     Assert.That(processSupportsIanaTimeZoneName, Is.False);
-#endif
   }
 
   [TestCase("true")]
@@ -349,6 +368,11 @@ public class RuntimeTests {
   {
     if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
       Assert.Ignore("This test case is intended only for Windows.");
+      return;
+    }
+
+    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"))) {
+      Assert.Ignore("disables unstable test case due to running environment (GitHub Actions Windows runner)");
       return;
     }
 
