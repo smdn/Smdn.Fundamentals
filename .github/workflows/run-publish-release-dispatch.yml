@@ -67,7 +67,7 @@ on:
 jobs:
   run-publish-release:
     name: Publish release for '${{ github.event.inputs.release_tag }}'
-    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release.yml@c530a596cbf70721b7ab90206188ed39f8bbbe40
+    uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release.yml@workflows/release-target-v1.10.0
     with:
       workflow_runs_on:             'ubuntu-latest'
       release_tag:                  ${{ github.event.inputs.release_tag }}
