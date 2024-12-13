@@ -66,20 +66,20 @@ on:
 
 jobs:
   run-publish-release:
-    name: Publish release for '${{ github.event.inputs.release_tag }}'
+    name: Publish release for '${{ inputs.release_tag }}'
     uses: smdn/Smdn.Fundamentals/.github/workflows/publish-release.yml@workflows/release-target-v1.10.0
     with:
       workflow_runs_on:             'ubuntu-latest'
-      release_tag:                  ${{ github.event.inputs.release_tag }}
-      release_note_url:             ${{ github.event.inputs.release_note_url }}
-      release_prerelease:           ${{ fromJSON( github.event.inputs.release_prerelease == '' && 'false' || github.event.inputs.release_prerelease ) }}
-      release_draft:                ${{ fromJSON( github.event.inputs.release_draft == '' && 'false' || github.event.inputs.release_draft ) }}
-      package_id:                   ${{ github.event.inputs.package_id }}
-      package_version:              ${{ github.event.inputs.package_version }}
-      package_branch:               ${{ github.event.inputs.package_branch }}
-      package_prevver_tag:          ${{ github.event.inputs.package_prevver_tag }}
-      package_available_nuget_org:  ${{ fromJSON( github.event.inputs.package_available_nuget_org == '' && 'false' || github.event.inputs.package_available_nuget_org ) }}
-      dry_run:                      ${{ fromJSON(github.event.inputs.dry_run) }}
+      release_tag:                  ${{ inputs.release_tag }}
+      release_note_url:             ${{ inputs.release_note_url }}
+      release_prerelease:           ${{ inputs.release_prerelease }}
+      release_draft:                ${{ inputs.release_draft }}
+      package_id:                   ${{ inputs.package_id }}
+      package_version:              ${{ inputs.package_version }}
+      package_branch:               ${{ inputs.package_branch }}
+      package_prevver_tag:          ${{ inputs.package_prevver_tag }}
+      package_available_nuget_org:  ${{ inputs.package_available_nuget_org }}
+      dry_run:                      ${{ inputs.dry_run }}
     secrets:
       token_gist:                   ${{ secrets.PUBLISH_NEW_RELEASE }}
       token_new_release:            ${{ secrets.PUBLISH_NEW_RELEASE }}
