@@ -347,8 +347,9 @@ public class RuntimeTests {
       return;
     }
 
-    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"))) {
-      Assert.Ignore("disables unstable test case due to running environment (GitHub Actions Windows runner)");
+    if (Runtime.IsRunningOnNetFx && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"))) {
+      // test fails with following error: "The active test run was aborted. Reason: Test host process crashed"
+      Assert.Ignore("disables unstable test case due to running environment (GitHub Actions Windows runner + .NET Framework)");
       return;
     }
 
@@ -371,8 +372,9 @@ public class RuntimeTests {
       return;
     }
 
-    if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"))) {
-      Assert.Ignore("disables unstable test case due to running environment (GitHub Actions Windows runner)");
+    if (Runtime.IsRunningOnNetFx && !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"))) {
+      // test fails with following error: "The active test run was aborted. Reason: Test host process crashed"
+      Assert.Ignore("disables unstable test case due to running environment (GitHub Actions Windows runner + .NET Framework)");
       return;
     }
 
