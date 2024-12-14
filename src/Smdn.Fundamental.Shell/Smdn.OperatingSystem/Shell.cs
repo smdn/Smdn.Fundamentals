@@ -59,8 +59,9 @@ public static class Shell {
       command: command,
       arguments: null,
       environmentVariables: null,
-      out stdout,
-      out _
+      configureProcessStartInfo: null,
+      stdout: out stdout,
+      stderr: out _
     );
 
   public static int Execute(string command, out string stdout, out string stderr)
@@ -68,8 +69,9 @@ public static class Shell {
       command: command,
       arguments: null,
       environmentVariables: null,
-      out stdout,
-      out stderr
+      configureProcessStartInfo: null,
+      stdout: out stdout,
+      stderr: out stderr
     );
 
 #nullable enable
@@ -77,6 +79,23 @@ public static class Shell {
     string command,
     IEnumerable<string>? arguments,
     IReadOnlyDictionary<string, string>? environmentVariables,
+    out string stdout,
+    out string stderr
+  )
+    => Execute(
+      command: command,
+      arguments: arguments,
+      environmentVariables: environmentVariables,
+      configureProcessStartInfo: null,
+      stdout: out stdout,
+      stderr: out stderr
+    );
+
+  public static int Execute(
+    string command,
+    IEnumerable<string>? arguments,
+    IReadOnlyDictionary<string, string>? environmentVariables,
+    Action<ProcessStartInfo>? configureProcessStartInfo,
     out string stdout,
     out string stderr
   )
@@ -92,6 +111,8 @@ public static class Shell {
 
     psi.RedirectStandardOutput = true;
     psi.RedirectStandardError = true;
+
+    configureProcessStartInfo?.Invoke(psi);
 
     using var process = Process.Start(psi);
 
