@@ -15,6 +15,15 @@ public class AssertExecutionTimeTests {
   [SetUp]
   public void SetUp()
   {
+    try {
+      if (!SatisfiesPrerequisites())
+        return;
+    }
+    catch (IgnoreException) {
+      // expected exception
+      return;
+    }
+
     /*
      * warm up
      */
