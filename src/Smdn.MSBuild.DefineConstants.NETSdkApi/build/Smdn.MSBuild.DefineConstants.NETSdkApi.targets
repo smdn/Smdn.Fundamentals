@@ -744,6 +744,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="EncodingExtensions"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.RegularExpressions" Include="RegexParseError"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.RegularExpressions" Include="RegexParseException"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="TaskCompletionSource"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.CompletedTask"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromCanceled"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromResult"/>
