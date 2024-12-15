@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.5.0
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.5.1
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.5.0
+//   InformationalVersion: 1.5.1
 
 // List of symbols defined on target framework 'net5.0'
 #define NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES // System.Diagnostics.CodeAnalysis (NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
@@ -352,6 +352,7 @@
 #define SYSTEM_THREADING_TASKS_TASK_FROMCANCELED // System.Threading.Tasks.Task.FromCanceled (NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_THREADING_TASKS_TASK_FROMEXCEPTION // System.Threading.Tasks.Task.FromException (NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_THREADING_TASKS_TASK_FROMRESULT // System.Threading.Tasks.Task.FromResult (NETFRAMEWORK || NETSTANDARD1_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER)
+#define SYSTEM_THREADING_TASKS_TASKCOMPLETIONSOURCE // System.Threading.Tasks.TaskCompletionSource (NET5_0_OR_GREATER)
 #define SYSTEM_THREADING_TASKS_VALUETASK // System.Threading.Tasks.ValueTask (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_THREADING_TASKS_VALUETASK_COMPLETEDTASK // System.Threading.Tasks.ValueTask.CompletedTask (NET5_0_OR_GREATER)
 #define SYSTEM_THREADING_TASKS_VALUETASK_FROMCANCELED // System.Threading.Tasks.ValueTask.FromCanceled (NET5_0_OR_GREATER)
