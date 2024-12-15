@@ -108,6 +108,9 @@ List of APIs exposed by assembly `$(AssemblyName)-$(InformationalVersion)` ($(La
             if (moniker.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
               return new { Moniker = moniker, Identifier = ".NETStandard", Version = moniker.Substring("netstandard".Length) };
 
+            if (moniker.StartsWith("net10.", StringComparison.OrdinalIgnoreCase))
+              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = moniker.Substring("net".Length) };
+
             if (
               moniker.StartsWith("net4", StringComparison.OrdinalIgnoreCase) ||
               moniker.StartsWith("net3", StringComparison.OrdinalIgnoreCase) ||
