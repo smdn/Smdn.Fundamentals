@@ -441,7 +441,7 @@ namespace Smdn.Xml.Xhtml {
     [Test]
     public async Task TestWriteAttribute_ValueEscaped(
       [Values] bool asAsync,
-      [Values(NewLineHandling.None, NewLineHandling.Entitize, NewLineHandling.Replace)] NewLineHandling newLineHandling
+      [Values] NewLineHandling newLineHandling
     )
     {
       var doc = new XDocument(
