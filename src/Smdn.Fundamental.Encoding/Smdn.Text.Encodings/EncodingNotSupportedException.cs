@@ -58,12 +58,18 @@ public class EncodingNotSupportedException : NotSupportedException {
   }
 
 #if SYSTEM_EXCEPTION_CTOR_SERIALIZATIONINFO
+#if NET8_0_OR_GREATER
+  [Obsolete("SYSLIB0051: Legacy serialization support APIs are obsolete")]
+#endif
   protected EncodingNotSupportedException(SerializationInfo info, StreamingContext context)
     : base(info, context)
   {
     EncodingName = info.GetString("EncodingName")!;
   }
 
+#if NET8_0_OR_GREATER
+  [Obsolete("SYSLIB0051: Legacy serialization support APIs are obsolete")]
+#endif
   public override void GetObjectData(SerializationInfo info, StreamingContext context)
   {
     base.GetObjectData(info, context);
