@@ -122,7 +122,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4.1.1
+      uses: actions/checkout@v4.2.2
       with:
         token: ${{ secrets.token_repo }}
         fetch-depth: 1
@@ -269,7 +269,7 @@ jobs:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}'
 
     - name: Checkout repository
-      uses: actions/checkout@v4.1.1
+      uses: actions/checkout@v4.2.2
       with:
         token: ${{ secrets.token_repo }}
         fetch-depth: 1
