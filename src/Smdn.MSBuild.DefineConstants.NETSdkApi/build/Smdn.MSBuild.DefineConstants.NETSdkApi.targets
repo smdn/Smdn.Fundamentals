@@ -863,6 +863,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApiGroup TargetFrameworkCondition="$(_TargetFrameworkCondition)" Include="GENERIC_MATH_INTERFACES" TargetApiFullName="System.Numerics" />
 
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentException.ThrowIfNullOrEmpty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentNullException.ThrowIfNull(VoidPtr,String)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int128"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IParsable"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanParsable"/>
@@ -954,6 +955,16 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentException.ThrowIfNullOrWhiteSpace"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfGreaterThan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfLessThan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfLessThanOrEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNegative"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNegativeOrZero"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNotEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfZero"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.IsPrivilegedProcess"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IUtf8SpanFormattable"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IUtf8SpanParsable"/>
