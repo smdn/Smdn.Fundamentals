@@ -289,7 +289,7 @@ jobs:
 
     - name: Download package ${{ steps.release-info.outputs.artifact_name_nupkg }}
       if: ${{ !inputs.dry_run && steps.release-info.outputs.artifact_name_nupkg != '' }}
-      uses: dawidd6/action-download-artifact@v9
+      uses: dawidd6/action-download-artifact@v10
       with:
         github_token: ${{ secrets.token_repo }}
         workflow: generate-release-target.yml
