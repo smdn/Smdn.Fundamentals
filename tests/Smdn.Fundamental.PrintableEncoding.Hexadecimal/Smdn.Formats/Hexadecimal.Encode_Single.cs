@@ -8,7 +8,7 @@ namespace Smdn.Formats;
 partial class HexadecimalTests {
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeUpperCase_OfData_ToByteSpan_DestinatioTooShort()
+  public void TryEncodeUpperCase_OfData_ToByteSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x00, new byte[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x00, new byte[1], out _), Is.False);
@@ -27,7 +27,7 @@ partial class HexadecimalTests {
 
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeLowerCase_OfData_ToByteSpan_DestinatioTooShort()
+  public void TryEncodeLowerCase_OfData_ToByteSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x00, new byte[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x00, new byte[1], out _), Is.False);
@@ -46,7 +46,7 @@ partial class HexadecimalTests {
 
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeUpperCase_OfData_ToCharSpan_DestinatioTooShort()
+  public void TryEncodeUpperCase_OfData_ToCharSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x00, new char[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x00, new char[1], out _), Is.False);
@@ -65,7 +65,7 @@ partial class HexadecimalTests {
 
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeLowerCase_OfData_ToCharSpan_DestinatioTooShort()
+  public void TryEncodeLowerCase_OfData_ToCharSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x00, new char[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x00, new char[1], out _), Is.False);

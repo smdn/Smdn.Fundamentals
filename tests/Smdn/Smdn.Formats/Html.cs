@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:disable apos
 #pragma warning disable CS0618 // [Obsolete]
 
 using System;

@@ -46,6 +46,7 @@ public static class Platform {
 
 #if SYSTEM_DIAGNOSTICS_PROCESS
         try {
+          // cSpell:ignore srvom
           if (IsRunningOnUnix)
             kernelName = Shell.Execute("uname -srvom").Trim();
         }

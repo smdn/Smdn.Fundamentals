@@ -40,7 +40,7 @@ partial class MimeTypeTests {
 
   [TestCase("D")]
   [TestCase("X")]
-  [TestCase("unsupported fromat")]
+  [TestCase("unsupported format")]
   public void ISpanFormattable_TryFormat_UnsupportedFormatString(string format)
     => Assert.Throws<FormatException>(
       () => new MimeType("text/plain").TryFormat(stackalloc char[10], out _, format: format.AsSpan(), provider: null)

@@ -97,8 +97,9 @@ public static class ISO8601DateTimeFormats {
 
   internal static readonly string[] DateAndTimeFormatStrings = new string[] {
     "o",
-    // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffzzz", // is coverd by format string 'o'
-    // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", // is coverd by format string 'o'
+    // cSpell:disable
+    // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffzzz", // is covered by format string 'o'
+    // "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffff", // is covered by format string 'o'
     "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffffzzz",
     "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'ffffff",
     "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffzzz",
@@ -137,6 +138,7 @@ public static class ISO8601DateTimeFormats {
     "yyyy'-'MM'-'dd' 'HH':'mm",
     "yyyy'-'MM'-'dd' 'HHzzz",
     "yyyy'-'MM'-'dd' 'HH",
+    // cSpell:enable
   };
 
   internal static readonly string[] DateOnlyFormatStrings = new string[] {

@@ -11,13 +11,18 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
   /*
    * class members
    */
-  private static readonly string[] InvaliantDecimalAbbreviations = new[] { string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y" };
-  private static readonly string[] InvaliantBinaryAbbreviations = new[] { string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi" };
-  private static readonly string[] InvaliantDecimalPrefixes = new[] { string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta" };
-  private static readonly string[] InvaliantBinaryPrefixes = new[] { string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi" };
+  // cSpell:disable
+  private static readonly string[] InvariantDecimalAbbreviations = new[] { string.Empty, "k", "M", "G", "T", "P", "E", "Z", "Y" };
+  private static readonly string[] InvariantBinaryAbbreviations = new[] { string.Empty, "ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi" };
+  private static readonly string[] InvariantDecimalPrefixes = new[] { string.Empty, "Kilo", "Mega", "Giga", "Tera", "Peta", "Exa", "Zetta", "Yotta" };
+  private static readonly string[] InvariantBinaryPrefixes = new[] { string.Empty, "Kibi", "Mebi", "Gibi", "Tebi", "Pebi", "Exbi", "Zebi", "Yobi" };
+  // cSpell:enable
 
   public static SIPrefixNumberFormatter CurrentInfo => new(CultureInfo.CurrentCulture, true);
-  public static SIPrefixNumberFormatter InvaliantInfo { get; } = new(CultureInfo.InvariantCulture, true);
+
+  // cSpell:disable
+  public static SIPrefixNumberFormatter InvaliantInfo { get; } = new(CultureInfo.InvariantCulture, true); // TODO: rename InvariantInfo
+  // cSpell:enable
 
   /*
    * instance members
@@ -91,8 +96,8 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
         byteUnit = "Bytes";
         valuePrefixDelimiter = SingleSpace;
         prefixUnitDelimiter = SingleSpace;
-        DecimalPrefixes = InvaliantDecimalPrefixes;
-        BinaryPrefixes = InvaliantBinaryPrefixes;
+        DecimalPrefixes = InvariantDecimalPrefixes;
+        BinaryPrefixes = InvariantBinaryPrefixes;
         break;
     }
   }
@@ -126,13 +131,13 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
 
     switch (format[0]) {
       /* binary format */
-      case 'b': unit = 1024.0m; prefixes = InvaliantBinaryAbbreviations; abbreviate = true; break;
+      case 'b': unit = 1024.0m; prefixes = InvariantBinaryAbbreviations; abbreviate = true; break;
       case 'B': unit = 1024.0m; prefixes = BinaryPrefixes; break;
       /* decimal format */
-      case 'd': unit = 1000.0m; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
+      case 'd': unit = 1000.0m; prefixes = InvariantDecimalAbbreviations; abbreviate = true; break;
       case 'D': unit = 1000.0m; prefixes = DecimalPrefixes; break;
       /* file size format */
-      case 'f': unit = 1024.0m; fileSizeFormat = true; prefixes = InvaliantDecimalAbbreviations; abbreviate = true; break;
+      case 'f': unit = 1024.0m; fileSizeFormat = true; prefixes = InvariantDecimalAbbreviations; abbreviate = true; break;
       case 'F': unit = 1024.0m; fileSizeFormat = true; prefixes = DecimalPrefixes; break;
 
       default:

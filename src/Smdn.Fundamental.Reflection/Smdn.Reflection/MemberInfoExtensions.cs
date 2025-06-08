@@ -128,7 +128,7 @@ public static class MemberInfoExtensions {
     /*
      * test nested types
      */
-    var sameNameNestedTypesInHerarchy = declaringType.BaseType is null
+    var sameNameNestedTypesInHierarchy = declaringType.BaseType is null
       ? Enumerable.Empty<MemberInfo>()
       : TypeExtensions.EnumerateNestedTypeInFlattenHierarchy(
           declaringType.BaseType,
@@ -137,7 +137,7 @@ public static class MemberInfoExtensions {
           static t => !t.IsNestedPrivate // cannot hide private nested types
         );
 
-    if (sameNameNestedTypesInHerarchy.Any())
+    if (sameNameNestedTypesInHierarchy.Any())
       return true;
 
     /*

@@ -125,7 +125,7 @@ partial class LineOrientedStreamTests {
 
 #if SYSTEM_IO_STREAM_COPYTO_VIRTUAL
   [Test]
-  public async Task CopyTo_BufferSizeDoesNotAffectToBehaviour(
+  public async Task CopyTo_BufferSizeDoesNotAffectToBehavior(
     [Values] StreamType type,
     [Values(1, 1024, int.MaxValue)] int bufferSize,
     [Values] bool runAsync

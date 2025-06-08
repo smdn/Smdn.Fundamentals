@@ -8,7 +8,7 @@ namespace Smdn.Formats;
 partial class HexadecimalTests {
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinatioTooShort()
+  public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new byte[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new byte[1], out _), Is.False);
@@ -18,7 +18,7 @@ partial class HexadecimalTests {
 #endif
 
   [Test]
-  public void TryEncodeUpperCase_OfArraySegmentDataSequence_ToByteArraySegment_DestinatioTooShort()
+  public void TryEncodeUpperCase_OfArraySegmentDataSequence_ToByteArraySegment_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[0]), out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[1]), out _), Is.False);
@@ -28,7 +28,7 @@ partial class HexadecimalTests {
 
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToCharSpan_DestinatioTooShort()
+  public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToCharSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new char[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeUpperCase(new byte[] { 0x00 }, new char[1], out _), Is.False);
@@ -38,7 +38,7 @@ partial class HexadecimalTests {
 #endif
 
   [Test]
-  public void TryEncodeUpperCase_OfArraySegmentDataSequence_ToCharArraySegment_DestinatioTooShort()
+  public void TryEncodeUpperCase_OfArraySegmentDataSequence_ToCharArraySegment_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[0]), out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeUpperCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[1]), out _), Is.False);
@@ -48,7 +48,7 @@ partial class HexadecimalTests {
 
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinatioTooShort()
+  public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new byte[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new byte[1], out _), Is.False);
@@ -58,7 +58,7 @@ partial class HexadecimalTests {
 #endif
 
   [Test]
-  public void TryEncodeLowerCase_OfArraySegmentDataSequence_ToByteArraySegment_DestinatioTooShort()
+  public void TryEncodeLowerCase_OfArraySegmentDataSequence_ToByteArraySegment_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[0]), out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<byte>(new byte[1]), out _), Is.False);
@@ -68,7 +68,7 @@ partial class HexadecimalTests {
 
 #if SYSTEM_SPAN
   [Test]
-  public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_ToCharSpan_DestinatioTooShort()
+  public void TryEncodeLowerCase_OfReadOnlySpanDataSequence_ToCharSpan_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new char[0], out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeLowerCase(new byte[] { 0x00 }, new char[1], out _), Is.False);
@@ -78,7 +78,7 @@ partial class HexadecimalTests {
 #endif
 
   [Test]
-  public void TryEncodeLowerCase_OfArraySegmentDataSequence_ToCharArraySegment_DestinatioTooShort()
+  public void TryEncodeLowerCase_OfArraySegmentDataSequence_ToCharArraySegment_DestinationTooShort()
   {
     Assert.That(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[0]), out _), Is.False);
     Assert.That(Hexadecimal.TryEncodeLowerCase(new ArraySegment<byte>(new byte[] { 0x00 }), new ArraySegment<char>(new char[1]), out _), Is.False);

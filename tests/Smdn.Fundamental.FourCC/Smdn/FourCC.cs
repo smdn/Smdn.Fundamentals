@@ -29,7 +29,7 @@ namespace Smdn {
     }
 
     [Test]
-    public void TestConstructFromByteSequece()
+    public void TestConstructFromByteSequence()
     {
       Assert.That((new FourCC(0x52, 0x49, 0x46, 0x46)).ToString(), Is.EqualTo("RIFF"));
       Assert.That((new FourCC(0x69, 0x73, 0x6f, 0x6d)).ToString(), Is.EqualTo("isom"));

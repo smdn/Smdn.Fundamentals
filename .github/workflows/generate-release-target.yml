@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
+# cSpell:words pullrequest,releasenote,unreleasable
 
 name: Generate release target (reusable workflow)
 run-name: Generate release target for ${{ inputs.release_target_tag_name }}
@@ -650,7 +651,7 @@ jobs:
           [void]$pr_body_appendix.AppendLine($(Get-Content -Path $pr_body_content.FileName) -join "`n")
           [void]$pr_body_appendix.AppendLine('```')
 
-          "::debug::pr_body.legnth: $($pr_body.Length) pr_body_appendix.length: $($pr_body_appendix.Length)"
+          "::debug::pr_body.length: $($pr_body.Length) pr_body_appendix.length: $($pr_body_appendix.Length)"
 
           if ($pr_body_max_chars -lt ($pr_body.Length + $pr_body_appendix.Length)) {
             "::warning::The length of the PR body exceeds the maximum character count. (Title: $($pr_body_content.Title))"

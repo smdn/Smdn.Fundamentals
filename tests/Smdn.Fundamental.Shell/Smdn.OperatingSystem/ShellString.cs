@@ -133,7 +133,7 @@ namespace Smdn.OperatingSystem {
     }
 
     [Test]
-    public void TestOperatorInquality()
+    public void TestOperatorInequality()
     {
       try {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", "foo");

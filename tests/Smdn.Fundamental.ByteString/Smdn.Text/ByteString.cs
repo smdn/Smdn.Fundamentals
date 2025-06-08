@@ -875,7 +875,7 @@ namespace Smdn.Text {
     }
 
     [Test]
-    public void TestOperatorInquality()
+    public void TestOperatorInequality()
     {
       var x = ByteString.CreateImmutable("abc");
       var y = x;

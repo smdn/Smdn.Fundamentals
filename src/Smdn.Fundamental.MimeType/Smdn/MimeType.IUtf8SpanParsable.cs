@@ -74,12 +74,12 @@ partial class MimeType : IUtf8SpanParsable<MimeType> {
      * problematic.  For this reason, <type-name> and <subtype-name> SHOULD
      * be limited to 64 characters.'
      */
-    const int MaxCharcters = 127;
+    const int MaxCharacters = 127;
 
-    if (MaxCharcters < utf8Text.Length) {
+    if (MaxCharacters < utf8Text.Length) {
       return onParseError switch {
         OnParseError.ThrowArgumentException => throw new NotImplementedException(),
-        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {MaxCharcters} characters)"),
+        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {MaxCharacters} characters)"),
         _ => false, // OnParseError.ReturnFalse
       };
     }

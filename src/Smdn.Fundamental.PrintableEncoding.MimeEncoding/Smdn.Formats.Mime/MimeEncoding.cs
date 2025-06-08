@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:ignore especials
 namespace Smdn.Formats.Mime;
 
 /*

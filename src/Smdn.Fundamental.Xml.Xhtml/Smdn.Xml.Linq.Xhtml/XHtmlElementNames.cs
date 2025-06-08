@@ -8,6 +8,7 @@ namespace Smdn.Xml.Linq.Xhtml;
 // W3C Recommendation, 14 December 2017
 // https://www.w3.org/TR/html52/
 public static class XHtmlElementNames {
+  // cSpell:disable
   // 4.1 The root element
   public static readonly XName Html = XHtmlNamespaces.Html.GetName("html");
 
@@ -148,4 +149,5 @@ public static class XHtmlElementNames {
   public static readonly XName NoScript = XHtmlNamespaces.Html.GetName("noscript");
   public static readonly XName Template = XHtmlNamespaces.Html.GetName("template");
   public static readonly XName Canvas = XHtmlNamespaces.Html.GetName("canvas");
+  // cSpell:enable
 }

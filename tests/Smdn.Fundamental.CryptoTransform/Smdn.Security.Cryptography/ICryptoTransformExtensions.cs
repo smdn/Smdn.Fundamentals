@@ -89,7 +89,7 @@ public class ICryptoTransformExtensionsTests {
   }
 
 #if NETFRAMEWORK || NETCOREAPP2_0_OR_GREATER || NET5_O_OR_GREATER
-  private static IEnumerable YieldTestCases_TranformBytes_WithHashAlgorithm()
+  private static IEnumerable YieldTestCases_TransformBytes_WithHashAlgorithm()
   {
 #pragma warning disable CA5350, CA5351 // uses a weak/broken cryptographic algorithm
     yield return new object[] { new HMACMD5() };
@@ -104,8 +104,8 @@ public class ICryptoTransformExtensionsTests {
 #pragma warning restore CA5350, CA5351
   }
 
-  [TestCaseSource(nameof(YieldTestCases_TranformBytes_WithHashAlgorithm))]
-  public void TranformBytes_WithHashAlgorithm(HashAlgorithm hashAlgorithm)
+  [TestCaseSource(nameof(YieldTestCases_TransformBytes_WithHashAlgorithm))]
+  public void TransformBytes_WithHashAlgorithm(HashAlgorithm hashAlgorithm)
   {
     var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
 
@@ -122,7 +122,7 @@ public class ICryptoTransformExtensionsTests {
     );
   }
 
-  private static IEnumerable YieldTestCases_TranformBytes_WithSymmetricAlgorithm()
+  private static IEnumerable YieldTestCases_TransformBytes_WithSymmetricAlgorithm()
   {
 #pragma warning disable CA5350, CA5351 // uses a weak/broken cryptographic algorithm
 #pragma warning disable SYSLIB0022
@@ -134,8 +134,8 @@ public class ICryptoTransformExtensionsTests {
 #pragma warning restore CA5350, CA5351
   }
 
-  [TestCaseSource(nameof(YieldTestCases_TranformBytes_WithSymmetricAlgorithm))]
-  public void TranformBytes_WithSymmetricAlgorithm(SymmetricAlgorithm symmetricAlgorithm)
+  [TestCaseSource(nameof(YieldTestCases_TransformBytes_WithSymmetricAlgorithm))]
+  public void TransformBytes_WithSymmetricAlgorithm(SymmetricAlgorithm symmetricAlgorithm)
   {
     var bytes = Encoding.ASCII.GetBytes("The quick brown fox jumps over the lazy dog");
     var rng = RandomNumberGenerator.Create();

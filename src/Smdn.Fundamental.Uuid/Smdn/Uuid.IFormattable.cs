@@ -27,7 +27,7 @@ partial struct Uuid :
     if (ret == TryFormatResult.InvalidFormat)
       throw new FormatException($"invalid format: {format}");
     if (ret == TryFormatResult.Failed)
-      throw new InvalidOperationException("failed"); // this must not be occured
+      throw new InvalidOperationException("failed"); // this must not be occurred
 
     var formatted = destination.Slice(0, charsWritten);
 

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2017 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:words stylesheet
 #nullable enable
 
 using System;
@@ -15,7 +16,7 @@ using Smdn.Xml.Linq;
 namespace Smdn.Xml.Xhtml {
   [TestFixture]
   public class PolyglotHtml5WriterTests {
-    private static readonly string[] VoldElementNames = new[] { "area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr" };
+    private static readonly string[] VoidElementNames = new[] { "area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr" };
     private static readonly string[] SelfClosingElementNames = new[] { "div", "span", "script", "html", "body", "head" };
 
     [Test]
@@ -1166,7 +1167,7 @@ namespace Smdn.Xml.Xhtml {
     private static System.Collections.IEnumerable YieldTestCases_TestWriteVoidElements()
     {
       foreach (var asAsync in new[] { false, true }) {
-        foreach (var voidElement in VoldElementNames) {
+        foreach (var voidElement in VoidElementNames) {
           yield return new object?[] { asAsync, voidElement };
         }
       }
@@ -1201,7 +1202,7 @@ namespace Smdn.Xml.Xhtml {
     private static System.Collections.IEnumerable YieldTestCases_TestWriteVoidElements_WithXhtmlNamespace()
     {
       foreach (var asAsync in new[] { false, true }) {
-        foreach (var voidElement in VoldElementNames) {
+        foreach (var voidElement in VoidElementNames) {
           yield return new object?[] { asAsync, voidElement };
         }
       }
@@ -1238,7 +1239,7 @@ namespace Smdn.Xml.Xhtml {
     private static System.Collections.IEnumerable YieldTestCases_TestWriteVoidElements_WithAttribute()
     {
       foreach (var asAsync in new[] { false, true }) {
-        foreach (var voidElement in VoldElementNames) {
+        foreach (var voidElement in VoidElementNames) {
           yield return new object?[] { asAsync, voidElement };
         }
       }

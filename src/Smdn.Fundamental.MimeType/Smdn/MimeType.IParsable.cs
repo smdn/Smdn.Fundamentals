@@ -135,12 +135,12 @@ partial class MimeType
      * problematic.  For this reason, <type-name> and <subtype-name> SHOULD
      * be limited to 64 characters.'
      */
-    const int MaxCharcters = 127;
+    const int MaxCharacters = 127;
 
-    if (MaxCharcters < s.Length) {
+    if (MaxCharacters < s.Length) {
       return onParseError switch {
-        OnParseError.ThrowArgumentException => throw new ArgumentException($"input too long (must be up to {MaxCharcters} characters)", paramName),
-        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {MaxCharcters} characters)"),
+        OnParseError.ThrowArgumentException => throw new ArgumentException($"input too long (must be up to {MaxCharacters} characters)", paramName),
+        OnParseError.ThrowFormatException => throw new FormatException($"input too long (must be up to {MaxCharacters} characters)"),
         _ => false, // OnParseError.ReturnFalse
       };
     }
@@ -214,12 +214,12 @@ partial class MimeType
      * problematic.  For this reason, <type-name> and <subtype-name> SHOULD
      * be limited to 64 characters.'
      */
-    const int MaxCharcters = 64;
+    const int MaxCharacters = 64;
 
-    if (MaxCharcters <= name.Length) {
+    if (MaxCharacters <= name.Length) {
       return onParseError switch {
-        OnParseError.ThrowArgumentException => throw new ArgumentException(message: $"too long name (acceptable up to {MaxCharcters - 1} but was {name.Length})", paramName: paramName),
-        OnParseError.ThrowFormatException => throw new FormatException($"too long name (expected up to {MaxCharcters} but was {name.Length})"),
+        OnParseError.ThrowArgumentException => throw new ArgumentException(message: $"too long name (acceptable up to {MaxCharacters - 1} but was {name.Length})", paramName: paramName),
+        OnParseError.ThrowFormatException => throw new FormatException($"too long name (expected up to {MaxCharacters} but was {name.Length})"),
         _ => false, // OnParseError.ReturnFalse
       };
     }

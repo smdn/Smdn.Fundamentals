@@ -110,7 +110,7 @@ public static class ExceptionUtils {
 #pragma warning restore IDE0057
 #endif
 
-            // dequote
+            // de-quote
 #if SYSTEM_STRING_STARTSWITH_CHAR
             if (msgid.StartsWith('"') && msgid.EndsWith('"')) {
 #else

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:ignore sysid,pubid
 #nullable enable
 
 using System;
@@ -53,6 +54,7 @@ public class PolyglotHtml5Writer :
   private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
 
   private sealed class ElementContext {
+    // cSpell:disable
     private static readonly HashSet<string> VoidElements = new(StringComparer.OrdinalIgnoreCase) {
       "area",
       "base",
@@ -70,6 +72,7 @@ public class PolyglotHtml5Writer :
       "track",
       "wbr",
     };
+    // cSpell:enable
 
     public string LocalName { get; }
     public string? Namespace { get; }

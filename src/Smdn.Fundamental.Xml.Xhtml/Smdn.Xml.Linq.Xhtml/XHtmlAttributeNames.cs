@@ -8,6 +8,7 @@ namespace Smdn.Xml.Linq.Xhtml;
 // W3C Recommendation, 14 December 2017
 // https://www.w3.org/TR/html52/
 public static class XHtmlAttributeNames {
+  // cSpell:disable
   // 3.2.5 Global attributes
   public static readonly XName AccessKey = "accesskey";
   public static readonly XName Class = "class";
@@ -33,4 +34,5 @@ public static class XHtmlAttributeNames {
   public static readonly XName Target = "target";
   public static readonly XName Media = "media";
   public static readonly XName Download = "download";
+  // cSpell:restore
 }

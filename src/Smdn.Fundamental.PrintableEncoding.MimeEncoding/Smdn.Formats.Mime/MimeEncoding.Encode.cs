@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:ignore especials
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -156,14 +157,14 @@ static partial class MimeEncoding {
     }
 
 #pragma warning disable CA2000
-    (char encodingChar, ICryptoTransform tsform) = encoding switch {
+    (char encodingChar, ICryptoTransform t) = encoding switch {
       MimeEncodingMethod.Base64 => ('b', Base64.CreateToBase64Transform()),
       MimeEncodingMethod.QuotedPrintable => ('q', new ToQuotedPrintableTransform(ToQuotedPrintableTransformMode.MimeEncoding)),
       _ => throw ExceptionUtils.CreateArgumentMustBeValidEnumValue(nameof(encoding), encoding),
     };
 #pragma warning restore CA2000
 
-    using var transform = tsform;
+    using var transform = t;
 
     var preambleText = string.Concat(
       "=?",
@@ -242,7 +243,7 @@ static partial class MimeEncoding {
 
       outputCount += transformed.Length;
 
-      // copy postanble to buffer
+      // copy postamble to buffer
       Buffer.BlockCopy(MimeEncodingPostamble, 0, outputBuffer, outputCount, MimeEncodingPostamble.Length);
 
       outputCount += MimeEncodingPostamble.Length;

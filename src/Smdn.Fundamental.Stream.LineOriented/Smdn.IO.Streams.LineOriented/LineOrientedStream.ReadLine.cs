@@ -100,7 +100,7 @@ partial class LineOrientedStream {
       bufRemain -= offsetAdvanced;
       bufOffset += offsetAdvanced;
 
-      // fill buffer if not have been reached to any line terminater or have been reached to CR (to test CRLF sequence)
+      // fill buffer if not have been reached to any line terminator or have been reached to CR (to test CRLF sequence)
       if (
         bufRemain == 0 &&
         (lineTerminator == LineTerminator.None || lineTerminator == LineTerminator.CR)
@@ -167,7 +167,7 @@ partial class LineOrientedStream {
       bufRemain -= offsetAdvanced;
       bufOffset += offsetAdvanced;
 
-      // fill buffer if not have been reached to any line terminater or have been reached to CR (to test CRLF sequence)
+      // fill buffer if not have been reached to any line terminator or have been reached to CR (to test CRLF sequence)
       if (
         bufRemain == 0 &&
         (lineTerminator == LineTerminator.None || lineTerminator == LineTerminator.CR)
@@ -205,7 +205,7 @@ partial class LineOrientedStream {
     int bufOffsetReadStart
   )
   {
-    // read ahead to test CRLF sequece
+    // read ahead to test CRLF sequence
     if (lineTerminator == LineTerminator.CR && buffer[bufOffset] == LF) {
       // line terminator is sequence of CRLF
       lineTerminator = LineTerminator.CRLF;

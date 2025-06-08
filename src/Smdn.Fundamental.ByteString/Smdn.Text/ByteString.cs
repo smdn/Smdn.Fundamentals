@@ -698,18 +698,18 @@ public class ByteString :
   // TODO: mutable/immutable
   public unsafe ByteString ToUpper()
   {
-    var uppercased = new byte[segment.Count];
+    var upperCased = new byte[segment.Count];
 
     fixed (byte* str0 = segment.Array) {
       var str = str0 + segment.Offset;
       var len = segment.Count;
 
       for (var index = 0; index < len; index++) {
-        uppercased[index] = ToUpperCaseAsciiTableArray[str[index]];
+        upperCased[index] = ToUpperCaseAsciiTableArray[str[index]];
       }
     }
 
-    return new ByteString(new ArraySegment<byte>(uppercased), isMutable);
+    return new ByteString(new ArraySegment<byte>(upperCased), isMutable);
   }
 
   // TODO: mutable/immutable

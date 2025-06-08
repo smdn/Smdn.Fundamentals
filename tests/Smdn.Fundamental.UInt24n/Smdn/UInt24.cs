@@ -199,9 +199,9 @@ namespace Smdn {
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitToInt16))]
-    public void OpExplicitToInt16(UInt24 value, short expectedResult, string epxectedHex)
+    public void OpExplicitToInt16(UInt24 value, short expectedResult, string expectedHex)
     {
-      Assert.That(value.ToString("x", null), Is.EqualTo(epxectedHex));
+      Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
       Assert.That(unchecked((short)value), Is.EqualTo(expectedResult));
     }
 

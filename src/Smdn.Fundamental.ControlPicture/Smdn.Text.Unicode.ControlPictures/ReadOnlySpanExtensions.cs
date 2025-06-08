@@ -1,11 +1,11 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 #if SYSTEM_STRING_CREATE &&  SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE && SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL
-#define STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#define SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
 #endif
 
 using System;
-#if STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#if SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 #else
@@ -62,7 +62,7 @@ public static class ReadOnlySpanExtensions {
     if (span.IsEmpty)
       return string.Empty;
 
-#if STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#if SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
     // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
     unsafe {
       ref var refInput = ref MemoryMarshal.GetReference(span);
@@ -111,7 +111,7 @@ public static class ReadOnlySpanExtensions {
     if (span.IsEmpty)
       return string.Empty;
 
-#if STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#if SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
     // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
     unsafe {
       ref var refInput = ref MemoryMarshal.GetReference(span);

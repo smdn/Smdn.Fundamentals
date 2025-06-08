@@ -78,6 +78,7 @@ public static partial class EncodingUtils {
   )
     => GetEncoding(name, selectFallbackEncoding) ?? throw new EncodingNotSupportedException(name);
 
+  // cSpell:disable
   private static readonly Dictionary<string, string> EncodingCollationTable
     = new(StringComparer.OrdinalIgnoreCase) {
       /* UTF-16 */
@@ -97,4 +98,5 @@ public static partial class EncodingUtils {
       // {"utf16be",     "utf-16"},
       // {"utf16le",     "utf-16"},
     };
+  // cSpell:enable
 }

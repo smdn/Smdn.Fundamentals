@@ -179,17 +179,17 @@ public class RuntimeTests {
 
     switch (Runtime.RuntimeEnvironment) {
       case RuntimeEnvironment.Mono:
-        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), "Mono verion string");
+        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), "Mono version string");
         break;
 
       case RuntimeEnvironment.NetFx:
-        Assert.That(version.Major, Is.LessThan(5), ".NET Framework major verion must be less than 5");
-        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), ".NET Framework verion string");
+        Assert.That(version.Major, Is.LessThan(5), ".NET Framework major version must be less than 5");
+        Assert.That(Runtime.VersionString, Does.Contain(version.ToString()), ".NET Framework version string");
         break;
 
       case RuntimeEnvironment.NetCore:
         if (!Runtime.Name.Contains(".NET Core"))
-          Assert.That(version.Major, Is.GreaterThanOrEqualTo(5), ".NET major verion must be greater than or equal to 5");
+          Assert.That(version.Major, Is.GreaterThanOrEqualTo(5), ".NET major version must be greater than or equal to 5");
 #if SYSTEM_ENVIRONMENT_VERSION
         Assert.That(version, Is.EqualTo(Environment.Version), "CoreCLR version must be equal to Environment.Version");
 #endif

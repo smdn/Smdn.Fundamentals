@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:disable especials,ABNF
 using System;
 using System.Security.Cryptography;
 using System.Text;

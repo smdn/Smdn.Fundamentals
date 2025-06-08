@@ -13,7 +13,7 @@ namespace Smdn;
 #pragma warning disable IDE0040
 partial struct TUInt24n {
 #pragma warning restore IDE0040
-  // IParseable<TSelf>.Parse(String, IFormatProvider)
+  // IParsable<TSelf>.Parse(String, IFormatProvider)
   public static TUInt24n Parse(string s, IFormatProvider? provider = null)
     => Parse(s, NumberStyles.Integer, provider);
 
@@ -42,7 +42,7 @@ partial struct TUInt24n {
   )
     => TryParse(s, NumberStyles.Integer, provider: null, out result);
 
-  // IParseable<TSelf>.TryParse(String, IFormatProvider, TSelf)
+  // IParsable<TSelf>.TryParse(String, IFormatProvider, TSelf)
   public static bool TryParse(
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
     [NotNullWhen(true)] string? s,

@@ -20,7 +20,7 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void OpIneqality()
+  public void OpInequality()
   {
     Assert.That(UInt24.Zero != (UInt24)0, Is.False);
     Assert.That(UInt24.Zero != (UInt24)0x000010, Is.True);
@@ -43,7 +43,7 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void OpIneqality()
+  public void OpInequality()
   {
     Assert.That(UInt48.Zero != (UInt48)0, Is.False);
     Assert.That(UInt48.Zero != (UInt48)0x000000000010, Is.True);

@@ -163,7 +163,7 @@ public static class PathUtils {
 
     for (var index = 0; ; index++) {
       var now = DateTime.Now;
-      var newpath = Path.Combine(
+      var newPath = Path.Combine(
         directory,
         string.Format(
           System.Globalization.CultureInfo.InvariantCulture,
@@ -182,14 +182,14 @@ public static class PathUtils {
       );
 
       try {
-        if (File.Exists(newpath))
+        if (File.Exists(newPath))
           // file exists, retry
           continue;
 
         // rename
-        File.Move(file, newpath);
+        File.Move(file, newPath);
 
-        return newpath;
+        return newPath;
       }
       catch (IOException) {
         // file exists, retry

@@ -97,7 +97,7 @@ namespace Smdn {
       }
     }
 
-    private class Sequencial : Random {
+    private class Sequential : Random {
       public override int Next(int maxValue)
       {
         return maxValue - 1;
@@ -114,7 +114,7 @@ namespace Smdn {
     {
       var array = new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-      Assert.That(ArrayExtensions.Shuffle(array, new Sequencial()), Is.EqualTo(array));
+      Assert.That(ArrayExtensions.Shuffle(array, new Sequential()), Is.EqualTo(array));
     }
 
     [Test]

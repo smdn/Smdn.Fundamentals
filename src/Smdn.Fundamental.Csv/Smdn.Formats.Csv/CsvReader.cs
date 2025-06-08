@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:ignore quotator
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -99,7 +100,7 @@ public class CsvReader : StreamReader {
 
     return firstChar == Quotator
       ? ReadQuotedField(out isDelimited)
-      : ReadUnquoatedField(firstChar, out isDelimited);
+      : ReadUnquotedField(firstChar, out isDelimited);
   }
 
   private string ReadQuotedField(out bool isDelimited)
@@ -150,7 +151,7 @@ public class CsvReader : StreamReader {
     return field.ToString();
   }
 
-  private string ReadUnquoatedField(char first, out bool isDelimited)
+  private string ReadUnquotedField(char first, out bool isDelimited)
   {
     isDelimited = false;
 

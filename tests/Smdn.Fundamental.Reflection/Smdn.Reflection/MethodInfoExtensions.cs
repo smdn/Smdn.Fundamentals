@@ -124,7 +124,7 @@ public partial class MethodInfoExtensionsTests {
   [TestCase(typeof(System.IO.MemoryStream), nameof(System.IO.MemoryStream.Close), typeof(System.IO.Stream), false)] // = Stream.Close
   [TestCase(typeof(System.IO.Stream), nameof(System.IO.Stream.Dispose), typeof(System.IO.Stream), false)]
   [TestCase(typeof(System.IO.MemoryStream), nameof(System.IO.MemoryStream.Dispose), typeof(System.IO.Stream), false)] // = Stream.Dispose
-  public void IsOverride_Method_IgnoreRelectedType(Type type, string methodName, Type declaringType, bool isOverride)
+  public void IsOverride_Method_IgnoreReflectedType(Type type, string methodName, Type declaringType, bool isOverride)
   {
     var method = type.GetMethod(
       name: methodName,

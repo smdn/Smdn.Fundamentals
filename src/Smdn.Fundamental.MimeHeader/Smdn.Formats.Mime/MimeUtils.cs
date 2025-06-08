@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:ignore LWSP,ctext,ccontent,CFWS,VCHAR
 using System;
 using System.Buffers;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Smdn.Formats.Mime;
 
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public static partial class MimeUtils {
-  private static readonly char[] LineDelmiters = new char[] { '\r', '\n' };
+  private static readonly char[] LineDelimiters = new char[] { '\r', '\n' };
 
   public static Task<IReadOnlyList<KeyValuePair<string, string>>> ParseHeaderAsNameValuePairsAsync(
     LineOrientedStream stream,
@@ -43,7 +44,7 @@ public static partial class MimeUtils {
       return new KeyValuePair<string, string>(header.NameString, header.ValueString);
 #endif
 
-    var valueLines = header.ValueString.Split(LineDelmiters);
+    var valueLines = header.ValueString.Split(LineDelimiters);
 
     for (var i = 0; i < valueLines.Length; i++) {
       valueLines[i] = valueLines[i].Trim();

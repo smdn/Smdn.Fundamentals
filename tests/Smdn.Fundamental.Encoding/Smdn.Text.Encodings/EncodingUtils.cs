@@ -95,13 +95,13 @@ public partial class EncodingUtilsTests {
 
   [Test]
   public void TestGetEncodingUnsupported()
-    => Assert.That(EncodingUtils.GetEncoding("x-unkwnown-encoding"), Is.Null);
+    => Assert.That(EncodingUtils.GetEncoding("x-unknown-encoding"), Is.Null);
 
   [Test]
   public void TestGetEncodingSelectFallback()
   {
-    var ret = EncodingUtils.GetEncoding("x-unkwnown-encoding", name => {
-      Assert.That(name, Is.EqualTo("x-unkwnown-encoding"), "callback arg");
+    var ret = EncodingUtils.GetEncoding("x-unknown-encoding", name => {
+      Assert.That(name, Is.EqualTo("x-unknown-encoding"), "callback arg");
 
       return Encoding.UTF8;
     });
@@ -113,8 +113,8 @@ public partial class EncodingUtilsTests {
   [Test]
   public void TestGetEncodingSelectFallbackReturnNull()
   {
-    var ret = EncodingUtils.GetEncoding("x-unkwnown-encoding", name => {
-      Assert.That(name, Is.EqualTo("x-unkwnown-encoding"), "callback arg");
+    var ret = EncodingUtils.GetEncoding("x-unknown-encoding", name => {
+      Assert.That(name, Is.EqualTo("x-unknown-encoding"), "callback arg");
 
       return null;
     });
@@ -126,10 +126,10 @@ public partial class EncodingUtilsTests {
   public void TestGetEncodingThrowException()
   {
     var ex = Assert.Throws<EncodingNotSupportedException>(
-      () => EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding")
+      () => EncodingUtils.GetEncodingThrowException("x-unknown-encoding")
     );
 
-    Assert.That(ex!.EncodingName, Is.EqualTo("x-unkwnown-encoding"));
+    Assert.That(ex!.EncodingName, Is.EqualTo("x-unknown-encoding"));
     Assert.That(ex.Message, Is.Not.Null);
     Assert.That(ex.InnerException, Is.Null);
   }
@@ -137,8 +137,8 @@ public partial class EncodingUtilsTests {
   [Test]
   public void TestGetEncodingThrowExceptionSelectFallback()
   {
-    var ret = EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", name => {
-      Assert.That(name, Is.EqualTo("x-unkwnown-encoding"));
+    var ret = EncodingUtils.GetEncodingThrowException("x-unknown-encoding", name => {
+      Assert.That(name, Is.EqualTo("x-unknown-encoding"));
       return Encoding.UTF8;
     });
 
@@ -152,14 +152,14 @@ public partial class EncodingUtilsTests {
     string encodingName = null;
 
     var ex = Assert.Throws<EncodingNotSupportedException>(
-      () => EncodingUtils.GetEncodingThrowException("x-unkwnown-encoding", name => {
+      () => EncodingUtils.GetEncodingThrowException("x-unknown-encoding", name => {
         encodingName = name;
         return null;
       })
     );
 
-    Assert.That(encodingName, Is.EqualTo("x-unkwnown-encoding"));
-    Assert.That(ex!.EncodingName, Is.EqualTo("x-unkwnown-encoding"));
+    Assert.That(encodingName, Is.EqualTo("x-unknown-encoding"));
+    Assert.That(ex!.EncodingName, Is.EqualTo("x-unknown-encoding"));
     Assert.That(ex.Message, Is.Not.Null);
     Assert.That(ex.InnerException, Is.Null);
   }

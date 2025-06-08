@@ -151,9 +151,9 @@ public static class ConsoleUtils {
         continue;
       }
 
-      var keyinfo = Console.ReadKey(true);
+      var keyInfo = Console.ReadKey(true);
 
-      switch (keyinfo.Key) {
+      switch (keyInfo.Key) {
         case ConsoleKey.Enter:
           Console.WriteLine();
           return password.ToString();
@@ -164,7 +164,7 @@ public static class ConsoleUtils {
           break;
 
         default:
-          password.Append(keyinfo.KeyChar);
+          password.Append(keyInfo.KeyChar);
           break;
       }
     }

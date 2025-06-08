@@ -172,7 +172,7 @@ public class PropertyInfoExtensionsTests {
   [TestCase(typeof(System.IO.StreamWriter), nameof(System.IO.StreamWriter.NewLine), typeof(System.IO.TextWriter), false)] // = TextWriter.NewLine
   [TestCase(typeof(CBase), nameof(CBase.PVirtualInherited), typeof(CBase), false)]
   [TestCase(typeof(CEx), nameof(CEx.PVirtualInherited), typeof(CBase), false)] // = CBase.PVirtualInherited
-  public void IsOverride_IgnoreRelectedType(Type type, string propertyName, Type declaringType, bool expected)
+  public void IsOverride_IgnoreReflectedType(Type type, string propertyName, Type declaringType, bool expected)
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 

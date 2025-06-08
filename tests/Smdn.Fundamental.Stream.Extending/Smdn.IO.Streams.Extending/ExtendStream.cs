@@ -74,7 +74,7 @@ public class ExtendStreamTests {
 
   [TestCase(true)]
   [TestCase(false)]
-  public void Construct_LeaveAppependStreamOpen(bool leaveOpen)
+  public void Construct_LeaveAppendStreamOpen(bool leaveOpen)
   {
     var prependStream = new MemoryStream(new byte[] { 0x00, 0x01 });
     var baseStream = new MemoryStream(new byte[] { 0x02, 0x03 });
@@ -542,7 +542,7 @@ public class ExtendStreamTests {
     };
 
     for (var index = 0; index < pair.Length; index++) {
-      Assert.That(extended.Seek(pair[index][0], SeekOrigin.Current), Is.EqualTo(pair[index][1]), $"seeked position {index}");
+      Assert.That(extended.Seek(pair[index][0], SeekOrigin.Current), Is.EqualTo(pair[index][1]), $"sought position {index}");
 
       Assert.That(extended.ReadByte(), Is.EqualTo(pair[index][1]), $"read value {index}");
     }

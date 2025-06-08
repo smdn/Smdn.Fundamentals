@@ -45,8 +45,8 @@ public static class FileManager {
       }
     }
     else if (Platform.IsRunningOnUnix) {
-      if (FindNautilus(out var filemanager)) {
-        psi = new ProcessStartInfo(filemanager);
+      if (FindNautilus(out var fileManager)) {
+        psi = new ProcessStartInfo(fileManager);
         psi.UseShellExecute = false;
 
         if (path != null) {
@@ -67,7 +67,6 @@ public static class FileManager {
       }
       /*
       else {
-        // Konquerer or else
       }
       */
     }

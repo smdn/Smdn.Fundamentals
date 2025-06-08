@@ -152,7 +152,7 @@ public class EventInfoExtensionsTests {
 
   [TestCase(typeof(CVirtual), nameof(CVirtual.EVirtualInherited), typeof(CVirtual), false)]
   [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.EVirtualInherited), typeof(CVirtual), false)] // = CVirtual.EVirtualInherited
-  public void IsOverride_IgnoreRelectedType(Type type, string eventName, Type declaringType, bool expected)
+  public void IsOverride_IgnoreReflectedType(Type type, string eventName, Type declaringType, bool expected)
   {
     var ev = type.GetEvent(eventName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 

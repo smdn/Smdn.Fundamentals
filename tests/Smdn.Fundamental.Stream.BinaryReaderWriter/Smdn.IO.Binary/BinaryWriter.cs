@@ -251,7 +251,7 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestWriteZero()
     {
-      Predicate<byte> allzero = delegate(byte b) {
+      Predicate<byte> allZero = delegate(byte b) {
         return b == 0x00;
       };
 
@@ -279,7 +279,7 @@ namespace Smdn.IO.Binary {
           arr = stream.ToArray();
 
           Assert.That(arr.Length, Is.EqualTo(len));
-          Assert.That(Array.TrueForAll(arr, allzero), Is.True);
+          Assert.That(Array.TrueForAll(arr, allZero), Is.True);
         }
       }
     }

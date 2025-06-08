@@ -15,7 +15,7 @@ partial class UInt24nTests {
     => TUInt24n.TryParse(s, provider: null, out result);
 
   [Test]
-  public void IParseable_Parse()
+  public void IParsable_Parse()
   {
     Assert.That(
       Parse<UInt24>("74565"),
@@ -31,7 +31,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void IParseable_Parse_FormatException()
+  public void IParsable_Parse_FormatException()
   {
     Assert.Throws<FormatException>(() => Parse<UInt24>("ABCDEF"), nameof(UInt24));
 
@@ -39,7 +39,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void IParseable_Parse_OverflowException()
+  public void IParsable_Parse_OverflowException()
   {
     Assert.Throws<OverflowException>(() => Parse<UInt24>("-1"), nameof(UInt24));
     Assert.Throws<OverflowException>(() => Parse<UInt24>("16777216"), nameof(UInt24));
@@ -49,7 +49,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void IParseable_TryParse()
+  public void IParsable_TryParse()
   {
     Assert.That(TryParse<UInt24>("74565", out var uint24), Is.True, nameof(UInt24));
     Assert.That(uint24, Is.EqualTo((UInt24)0x012345), nameof(UInt24));
@@ -59,7 +59,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void IParseable_TryParse_FormatException()
+  public void IParsable_TryParse_FormatException()
   {
     Assert.That(TryParse<UInt24>("ABCDEF", out var uint24), Is.False, nameof(UInt24));
 
@@ -67,7 +67,7 @@ partial class UInt24nTests {
   }
 
   [Test]
-  public void IParseable_TryParse_OverflowException()
+  public void IParsable_TryParse_OverflowException()
   {
     Assert.That(TryParse<UInt24>("-1", out var uint24), Is.False, nameof(UInt24));
     Assert.That(TryParse<UInt24>("16777216", out uint24), Is.False, nameof(UInt24));

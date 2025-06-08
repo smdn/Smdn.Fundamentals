@@ -33,7 +33,7 @@ public static class CustomAttributeTypedArgumentExtensions {
 
       // return the value as it is without conversion to enum since
       // the type may have been loaded in a reflection-only context and
-      // the value may not be able to convert to the acutual enum type
+      // the value may not be able to convert to the actual enum type
       return typedArg.Value;
     }
   }

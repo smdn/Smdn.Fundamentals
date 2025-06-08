@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:words dequoted
 using System;
 using System.Buffers;
 using System.Collections.Generic;

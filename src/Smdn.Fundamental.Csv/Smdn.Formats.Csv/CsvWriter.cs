@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cSpell:ignore quotator
 using System;
 using System.Collections.Generic;
 using System.IO;

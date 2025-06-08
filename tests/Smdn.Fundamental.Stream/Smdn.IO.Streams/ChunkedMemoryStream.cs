@@ -816,7 +816,7 @@ namespace Smdn.IO.Streams {
 
         for (var index = 0; index < pair.Length; index++) {
           try {
-            Assert.That(stream.Seek(pair[index][0], SeekOrigin.Current), Is.EqualTo(pair[index][1]), $"seeked position {index}");
+            Assert.That(stream.Seek(pair[index][0], SeekOrigin.Current), Is.EqualTo(pair[index][1]), $"sought position {index}");
           }
           catch (IOException) {
             Assert.Fail($"IOException thrown while seeking ({index})");
