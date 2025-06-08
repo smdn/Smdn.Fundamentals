@@ -1,0 +1,29 @@
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project InitialTargets="ReplaceSmdnPackageReferencesToProjectReferences">
+  <!-- Replace PackageReference to ProjectReference of the local project -->
+  <Target
+    Name="ReplaceSmdnPackageReferencesToProjectReferences"
+    Condition=" '$(UseLocalProjectInsteadOfPublishedPackage)' == 'true' "
+  >
+    <ItemGroup>
+      <_SmdnReference
+        Include="@(PackageReference)"
+        Condition="
+          $([System.String]::new('%(Identity)').StartsWith('Smdn.'))
+        "
+        ProjectPath="$(MSBuildThisFileDirectory)..\src\%(Identity)\%(Identity).csproj"
+      />
+    </ItemGroup>
+
+    <ItemGroup>
+      <!-- Remove package references to Smdn.* -->
+      <PackageReference Remove="@(_SmdnReference)" />
+
+      <!-- Include project reference to Smdn.* -->
+      <ProjectReference Include="%(_SmdnReference.ProjectPath)" />
+    </ItemGroup>
+  </Target>
+</Project>
