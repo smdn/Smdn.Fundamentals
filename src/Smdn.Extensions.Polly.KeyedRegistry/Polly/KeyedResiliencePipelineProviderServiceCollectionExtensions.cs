@@ -63,6 +63,49 @@ public static class KeyedResiliencePipelineProviderServiceCollectionExtensions {
 #pragma warning disable IDE0055
   public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
     this IServiceCollection services,
+    TServiceKey serviceKey,
+    TPipelineKey pipelineKey,
+    Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair,
+    Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configure
+  )
+    where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey>
+    where TPipelineKey : notnull
+#pragma warning restore IDE0055
+    => AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
+      services: services ?? throw new ArgumentNullException(nameof(services)),
+      resiliencePipelineKeyPair: (createResiliencePipelineKeyPair ?? throw new ArgumentNullException(nameof(createResiliencePipelineKeyPair)))
+        .Invoke(serviceKey, pipelineKey),
+      createResiliencePipelineKeyPair: createResiliencePipelineKeyPair,
+      configureRegistryOptions: null,
+      configurePipeline: configure
+    );
+
+  [CLSCompliant(false)] // ResiliencePipelineBuilder is not CLS compliant
+#pragma warning disable IDE0055
+  public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
+    this IServiceCollection services,
+    TServiceKey serviceKey,
+    TPipelineKey pipelineKey,
+    Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair,
+    Action<ResiliencePipelineRegistryOptions<TResiliencePipelineKeyPair>>? configureRegistryOptions,
+    Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configurePipeline
+  )
+    where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey>
+    where TPipelineKey : notnull
+#pragma warning restore IDE0055
+    => AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
+      services: services ?? throw new ArgumentNullException(nameof(services)),
+      resiliencePipelineKeyPair: (createResiliencePipelineKeyPair ?? throw new ArgumentNullException(nameof(createResiliencePipelineKeyPair)))
+        .Invoke(serviceKey, pipelineKey),
+      createResiliencePipelineKeyPair: createResiliencePipelineKeyPair,
+      configureRegistryOptions: configureRegistryOptions,
+      configurePipeline: configurePipeline
+    );
+
+  [CLSCompliant(false)] // ResiliencePipelineBuilder is not CLS compliant
+#pragma warning disable IDE0055
+  public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
+    this IServiceCollection services,
     TResiliencePipelineKeyPair resiliencePipelineKeyPair,
     Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair,
     Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configure

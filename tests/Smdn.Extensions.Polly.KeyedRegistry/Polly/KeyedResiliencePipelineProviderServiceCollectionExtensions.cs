@@ -56,6 +56,65 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
   }
 
   [Test]
+  public void AddResiliencePipeline_WithDiscreteServiceAndPipelineKey(
+    [Values] bool withConfigureRegistryOptions
+  )
+  {
+    var services = new ServiceCollection();
+
+    const string ServiceKey = nameof(ServiceKey);
+    const int PipelineKey = 1;
+
+    ResiliencePipelineKeyPair? addedKey = default;
+    IServiceProvider? addedServiceProvider = default;
+
+    static ResiliencePipelineKeyPair CreateResiliencePipelineKeyPair(string serviceKey, int pipelineKey)
+      => new(serviceKey, pipelineKey);
+
+    if (withConfigureRegistryOptions) {
+      services.AddResiliencePipeline(
+        serviceKey: ServiceKey,
+        pipelineKey: PipelineKey,
+        createResiliencePipelineKeyPair: CreateResiliencePipelineKeyPair,
+        configureRegistryOptions: null,
+        configurePipeline: (builder, context) => {
+          addedKey = context.PipelineKey;
+          addedServiceProvider = context.ServiceProvider;
+        }
+      );
+    }
+    else {
+      services.AddResiliencePipeline(
+        serviceKey: ServiceKey,
+        pipelineKey: PipelineKey,
+        createResiliencePipelineKeyPair: CreateResiliencePipelineKeyPair,
+        configure: (builder, context) => {
+          addedKey = context.PipelineKey;
+          addedServiceProvider = context.ServiceProvider;
+        }
+      );
+    }
+
+    var provider = services.BuildServiceProvider();
+    var pipelineProvider = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey);
+
+    Assert.That(
+      pipelineProvider,
+      Is.TypeOf<KeyedResiliencePipelineProvider<ResiliencePipelineKeyPair, string, int>>()
+    );
+    Assert.That(
+      pipelineProvider.GetPipeline(key: PipelineKey),
+      Is.Not.Null
+    );
+
+    Assert.That(addedKey, Is.Not.Null);
+    Assert.That(addedKey.Value.ServiceKey, Is.EqualTo(ServiceKey));
+    Assert.That(addedKey.Value.PipelineKey, Is.EqualTo(PipelineKey));
+
+    Assert.That(addedServiceProvider, Is.Not.Null);
+  }
+
+  [Test]
   public void AddResiliencePipeline_CreateResiliencePipelineKeyPair()
   {
     var services = new ServiceCollection();
