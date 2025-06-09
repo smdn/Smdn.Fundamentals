@@ -1,7 +1,7 @@
-// Smdn.Extensions.Polly.KeyedRegistry.dll (Smdn.Extensions.Polly.KeyedRegistry-1.0.0)
+// Smdn.Extensions.Polly.KeyedRegistry.dll (Smdn.Extensions.Polly.KeyedRegistry-1.1.0)
 //   Name: Smdn.Extensions.Polly.KeyedRegistry
-//   AssemblyVersion: 1.0.0.0
-//   InformationalVersion: 1.0.0+0810e5eee5bcc4bd62ef8d4f8c31539a3583a942
+//   AssemblyVersion: 1.1.0.0
+//   InformationalVersion: 1.1.0+eb9d40b54434eddcd353ae4ebaf93e0ec0cf76dd
 //   TargetFramework: .NETStandard,Version=v2.1
 //   Configuration: Release
 //   Referenced assemblies:
@@ -22,6 +22,8 @@ namespace Polly {
     public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(this IServiceCollection services, TResiliencePipelineKeyPair resiliencePipelineKeyPair, Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configure) where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey> where TPipelineKey : notnull {}
     public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(this IServiceCollection services, TResiliencePipelineKeyPair resiliencePipelineKeyPair, Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair, Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configure) where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey> where TPipelineKey : notnull {}
     public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(this IServiceCollection services, TResiliencePipelineKeyPair resiliencePipelineKeyPair, Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair, Action<ResiliencePipelineRegistryOptions<TResiliencePipelineKeyPair>>? configureRegistryOptions, Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configurePipeline) where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey> where TPipelineKey : notnull {}
+    public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(this IServiceCollection services, TServiceKey serviceKey, TPipelineKey pipelineKey, Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair, Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configure) where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey> where TPipelineKey : notnull {}
+    public static IServiceCollection AddResiliencePipeline<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(this IServiceCollection services, TServiceKey serviceKey, TPipelineKey pipelineKey, Func<TServiceKey, TPipelineKey, TResiliencePipelineKeyPair> createResiliencePipelineKeyPair, Action<ResiliencePipelineRegistryOptions<TResiliencePipelineKeyPair>>? configureRegistryOptions, Action<ResiliencePipelineBuilder, AddResiliencePipelineContext<TResiliencePipelineKeyPair>> configurePipeline) where TResiliencePipelineKeyPair : notnull, IResiliencePipelineKeyPair<TServiceKey, TPipelineKey> where TPipelineKey : notnull {}
   }
 }
 
