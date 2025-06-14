@@ -47,8 +47,15 @@ public static class KeyedResiliencePipelineProviderServiceProviderExtensions {
         var typeOfPipelineKey = ifaceResiliencePipelineKeyPair.GetGenericArguments()[1];
 
         if (typeOfPipelineKey != typeof(TPipelineKey)) {
+          var isGenericTypeParameter =
+#if SYSTEM_TYPE_ISGENERICTYPEPARAMETER
+            typeOfPipelineKey.IsGenericTypeParameter;
+#else
+            typeOfPipelineKey.IsGenericParameter && typeOfPipelineKey.DeclaringMethod is null;
+#endif
+
           throw new InvalidOperationException(
-            message: typeOfPipelineKey.IsGenericTypeParameter
+            message: isGenericTypeParameter
               ? $"{nameof(TPipelineKey)} must be an constructed type. ({nameof(typeOfKeyPair)}={typeOfKeyPair})"
               : $"The type of {nameof(TPipelineKey)} does not match. (expected {typeof(TPipelineKey)} but was {typeOfPipelineKey})"
           );
