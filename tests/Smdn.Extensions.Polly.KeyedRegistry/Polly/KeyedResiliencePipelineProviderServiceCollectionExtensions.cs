@@ -37,6 +37,13 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     );
 
     var provider = services.BuildServiceProvider();
+
+    Assert.That(
+      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      Throws.InvalidOperationException,
+      "The keyless services must not be registered."
+    );
+
     var pipelineProvider = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey);
 
     Assert.That(
@@ -96,6 +103,13 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     }
 
     var provider = services.BuildServiceProvider();
+
+    Assert.That(
+      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      Throws.InvalidOperationException,
+      "The keyless services must not be registered."
+    );
+
     var pipelineProvider = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey);
 
     Assert.That(
@@ -142,6 +156,13 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     );
 
     var provider = services.BuildServiceProvider();
+
+    Assert.That(
+      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      Throws.InvalidOperationException,
+      "The keyless services must not be registered."
+    );
+
     var pipelineProvider = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey);
 
     Assert.That(
@@ -184,6 +205,13 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     );
 
     var provider = services.BuildServiceProvider();
+
+    Assert.That(
+      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      Throws.InvalidOperationException,
+      "The keyless services must not be registered."
+    );
+
     var pipelineProvider = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey);
 
     Assert.That(pipelineProvider.GetPipeline(key: PipelineKey1), Is.Not.Null);
@@ -211,6 +239,13 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     );
 
     var provider = services.BuildServiceProvider();
+
+    Assert.That(
+      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      Throws.InvalidOperationException,
+      "The keyless services must not be registered."
+    );
+
     var pipelineProvider1 = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey1);
     var pipelineProvider2 = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey2);
 
@@ -220,6 +255,32 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     Assert.That(pipelineProvider2.GetPipeline(key: PipelineKey2), Is.Not.Null);
     Assert.That(() => pipelineProvider2.GetPipeline(key: PipelineKey1), Throws.TypeOf<KeyNotFoundException>());
   }
+
+  [Test]
+  public void AddResiliencePipeline_NullServiceKey()
+  {
+    var services = new ServiceCollection();
+
+    const string? ServiceKey = null;
+    const int PipelineKey = 0;
+
+    services.AddResiliencePipeline<ResiliencePipelineKeyPair, string, int>(
+      serviceKey: ServiceKey!,
+      pipelineKey: PipelineKey,
+      createResiliencePipelineKeyPair: (s, p) => new(s, p),
+      configure: (builder, context) => { }
+    );
+
+    var provider = services.BuildServiceProvider();
+
+    Assert.That(
+      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      Throws.Nothing,
+      "The keyless services must be registered."
+    );
+
+    var pipelineProvider = provider.GetRequiredKeyedService<ResiliencePipelineProvider<int>>(serviceKey: ServiceKey);
+
+    Assert.That(pipelineProvider.GetPipeline(key: PipelineKey), Is.Not.Null);
+  }
 }
-
-
