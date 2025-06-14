@@ -164,20 +164,74 @@ public static class KeyedResiliencePipelineProviderServiceCollectionExtensions {
     );
 
     // Add KeyedResiliencePipelineProvider<..., TPipelineKey> as a keyed ResiliencePipelineProvider<TPipelineKey>
-    //   PollyServiceCollectionExtensions.AddResiliencePipelineRegistry does not register
-    //   the ResiliencePipelineProvider/Registry<TKey> alongside a service key.
-    //   That means that the GetKeyedService<ResiliencePipelineProvider<TKey>> never works.
-    //   Here, enables that requirements by registering additional ResiliencePipelineProvider that works
-    //   with TPipelineKey as a keyed service.
+    //
+    // PollyServiceCollectionExtensions.AddResiliencePipelineRegistry does not register
+    // the ResiliencePipelineProvider/Registry<TKey> alongside a service key.
+    // That means that the GetKeyedService<ResiliencePipelineProvider<TKey>> never works.
+    // Here, enables that requirements by registering additional ResiliencePipelineProvider that works
+    // with TPipelineKey as a keyed service.
+    // At this point, register the composite information, including not only the service key but also
+    // the type information, as a new 'service key.'
+    object? serviceKey = resiliencePipelineKeyPair.ServiceKey;
+    var isGenericTypeDefKeyPairType = typeof(TResiliencePipelineKeyPair).IsGenericType && typeof(TResiliencePipelineKeyPair).IsGenericTypeDefinition;
+
+    var serviceKeyWithTypeArguments = serviceKey is null || isGenericTypeDefKeyPairType
+      // TServiceKey can not be determined at the time of GetKeyedService() is called since the serviceKey for this service is null
+      ? (serviceKey, typeof(TResiliencePipelineKeyPair), null, typeof(TPipelineKey))
+      : (serviceKey, typeof(TResiliencePipelineKeyPair), typeof(TServiceKey), typeof(TPipelineKey));
+
     services.TryAddKeyedSingleton<ResiliencePipelineProvider<TPipelineKey>>(
-      serviceKey: resiliencePipelineKeyPair.ServiceKey,
+      serviceKey: serviceKey,
       implementationFactory: (serviceProvider, serviceKey)
-        => new KeyedResiliencePipelineProvider<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
-          serviceKey: serviceKey is null ? default! : (TServiceKey)serviceKey,
-          baseProvider: serviceProvider.GetRequiredService<ResiliencePipelineProvider<TResiliencePipelineKeyPair>>(),
-          createResiliencePipelineKeyPair: createResiliencePipelineKeyPair
+        => serviceProvider.GetRequiredKeyedService<ResiliencePipelineProvider<TPipelineKey>>(
+          serviceKey: serviceKeyWithTypeArguments
         )
     );
+
+    // In cases where two ResiliencePipelineProviders are constructed with different types
+    // of TResiliencePipelineKeyPair but the same ServiceKey value, it will not be possible
+    // to distinguish between them.
+    // In order to handle this situation, register the KeyedResiliencePipelineProvider in
+    // addition using the combination of TResiliencePipelineKeyPair and ServiceKey as the key.
+#pragma warning disable SA1141 // use tuple syntax
+    services.TryAddKeyedSingleton<ResiliencePipelineProvider<TPipelineKey>>(
+      serviceKey: serviceKeyWithTypeArguments,
+      implementationFactory: (serviceProvider, serviceKey) => {
+        TServiceKey deconstructedServiceKey = serviceKey is ValueTuple<object?, Type, Type, Type> serviceKeyTuple
+          ? serviceKeyTuple.Item1 is null ? default! : (TServiceKey)serviceKeyTuple.Item1
+          : default!;
+
+        return new KeyedResiliencePipelineProvider<TResiliencePipelineKeyPair, TServiceKey, TPipelineKey>(
+          serviceKey: deconstructedServiceKey,
+          baseProvider: serviceProvider.GetRequiredService<ResiliencePipelineProvider<TResiliencePipelineKeyPair>>(),
+          createResiliencePipelineKeyPair: createResiliencePipelineKeyPair
+        );
+      }
+    );
+#pragma warning restore SA1141
+
+    if (typeof(TResiliencePipelineKeyPair).IsGenericType) {
+      // this additional service resolves XxxKeyPair<> to XxxKeyPair<TServiceKey>
+#pragma warning disable SA1141 // use tuple syntax
+      services.TryAddKeyedSingleton<ResiliencePipelineProvider<TPipelineKey>>(
+        serviceKey: serviceKeyWithTypeArguments with {
+          // use the type definition of TResiliencePipelineKeyPair as the key element for TResiliencePipelineKeyPair
+          // (e.g., XxxKeyPair<TServiceKey> to XxxKeyPair<>)
+          Item2 = typeof(TResiliencePipelineKeyPair).GetGenericTypeDefinition(),
+        },
+        implementationFactory: static (serviceProvider, serviceKey)
+          => serviceProvider.GetRequiredKeyedService<ResiliencePipelineProvider<TPipelineKey>>(
+            serviceKey: (
+              (ValueTuple<object?, Type, Type, Type>)(serviceKey ?? throw new ArgumentNullException(nameof(serviceKey)))
+            ) with {
+              // replace the key element from type definition to constructed type to get the service
+              // (e.g., XxxKeyPair<> to XxxKeyPair<TServiceKey>)
+              Item2 = typeof(TResiliencePipelineKeyPair),
+            }
+          )
+      );
+#pragma warning restore SA1141
+    }
 
     return services;
   }
