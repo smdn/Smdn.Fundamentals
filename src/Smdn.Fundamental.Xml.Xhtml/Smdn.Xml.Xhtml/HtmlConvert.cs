@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace Smdn.Xml.Xhtml;
 
-public static class HtmlConvert {
+public static partial class HtmlConvert {
   public static string EscapeHtml(ReadOnlySpan<char> s)
     => EscapeXhtml(s, asXhtml: false);
 
@@ -76,7 +76,22 @@ public static class HtmlConvert {
     return sb.ToString();
   }
 
-  private static readonly Regex RegexNumericReference = new(@"&#(?<hex>x?)(?<number>[0-9a-fA-F]{1,});", RegexOptions.Singleline |  RegexOptions.CultureInvariant | RegexOptions.Compiled);
+  private const string RegexNumericReferencePattern = @"&#(?<hex>x?)(?<number>[0-9a-fA-F]{1,});";
+
+#if SYSTEM_TEXT_REGULAREXPRESSIONS_GENERATEDREGEXATTRIBUTE
+  private static Regex RegexNumericReference => GetRegexNumericReference();
+
+  [GeneratedRegex(
+    pattern: RegexNumericReferencePattern,
+    options: RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
+  )]
+  private static partial Regex GetRegexNumericReference(); // TODO: use C# 13 partial property
+#else
+  private static Regex RegexNumericReference { get; } = new(
+    pattern: RegexNumericReferencePattern,
+    options: RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
+  );
+#endif
 
   public static string DecodeNumericCharacterReference(string s)
   {
