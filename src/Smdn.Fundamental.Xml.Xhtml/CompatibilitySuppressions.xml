@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/en-us/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:Smdn.Xml.Xhtml.PolyglotHtml5Writer.ExtendedWriteState</Target>
+    <Left>lib/net5.0/Smdn.Fundamental.Xml.Xhtml.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.Xml.Xhtml.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+</Suppressions>
