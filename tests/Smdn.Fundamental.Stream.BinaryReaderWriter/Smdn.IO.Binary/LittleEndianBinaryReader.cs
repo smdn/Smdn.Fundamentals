@@ -23,7 +23,7 @@ namespace Smdn.IO.Binary {
       Assert.That(reader.ReadUInt32(), Is.EqualTo((uint)0x80000000));
       Assert.That(reader.ReadByte(), Is.EqualTo((byte)0x80));
       Assert.That(reader.ReadUInt16(), Is.EqualTo((ushort)0x8000));
-      Assert.That(reader.ReadByte(), Is.EqualTo((byte)0x00));
+      Assert.That(reader.ReadByte(), Is.Zero);
       Assert.That(reader.ReadUInt48(), Is.EqualTo((UInt48)0x800000000000));
       Assert.That(reader.ReadUInt24(), Is.EqualTo((UInt24)0x800000));
 
@@ -46,7 +46,7 @@ namespace Smdn.IO.Binary {
       Assert.That(reader.ReadInt32(), Is.EqualTo(int.MinValue));
       Assert.That(reader.ReadSByte(), Is.EqualTo(sbyte.MinValue));
       Assert.That(reader.ReadInt16(), Is.EqualTo(short.MinValue));
-      Assert.That(reader.ReadSByte(), Is.EqualTo((sbyte)0));
+      Assert.That(reader.ReadSByte(), Is.Zero);
       Assert.That(reader.ReadUInt48(), Is.EqualTo((UInt48)0x800000000000));
       Assert.That(reader.ReadUInt24(), Is.EqualTo((UInt24)0x800000));
 

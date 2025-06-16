@@ -23,7 +23,7 @@ namespace Smdn {
       var uri = new Uri("https://localhost/path/?");
       var queries = uri.GetSplittedQueries();
 
-      Assert.That(queries.Count, Is.EqualTo(0));
+      Assert.That(queries.Count, Is.Zero);
     }
 
     [Test]
@@ -32,7 +32,7 @@ namespace Smdn {
       var uri = new Uri("https://localhost/path/");
       var queries = uri.GetSplittedQueries();
 
-      Assert.That(queries.Count, Is.EqualTo(0));
+      Assert.That(queries.Count, Is.Zero);
     }
 
     [Test]

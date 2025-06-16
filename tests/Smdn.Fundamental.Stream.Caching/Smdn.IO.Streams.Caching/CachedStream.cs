@@ -107,8 +107,8 @@ namespace Smdn.IO.Streams.Caching {
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          Assert.That(stream.Position, Is.EqualTo(0L));
-          Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+          Assert.That(stream.Position,Is.Zero);
+          Assert.That(stream.ReadByte(), Is.Zero);
           Assert.That(stream.Position, Is.EqualTo(1L));
 
           Assert.That(stream.ReadByte(), Is.EqualTo(0x01));
@@ -127,7 +127,7 @@ namespace Smdn.IO.Streams.Caching {
 
           stream.Position = 0L;
 
-          Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+          Assert.That(stream.ReadByte(), Is.Zero);
           Assert.That(stream.Position, Is.EqualTo(1L));
 
           stream.Position = stream.Length;
@@ -170,7 +170,7 @@ namespace Smdn.IO.Streams.Caching {
           Assert.That(stream.Position, Is.EqualTo(17L));
           Assert.That(buffer.Skip(0).Take(5).ToArray(), Is.EqualTo(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}));
 
-          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(0));
+          Assert.That(stream.Read(buffer, 0, 6), Is.Zero);
           Assert.That(stream.Position, Is.EqualTo(17L));
 
           stream.Position = 16L;
@@ -180,7 +180,7 @@ namespace Smdn.IO.Streams.Caching {
 
           stream.Position = stream.Length;
 
-          Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(0));
+          Assert.That(stream.Read(buffer, 0, 6), Is.Zero);
           Assert.That(stream.Position, Is.EqualTo(17L));
         }
       }

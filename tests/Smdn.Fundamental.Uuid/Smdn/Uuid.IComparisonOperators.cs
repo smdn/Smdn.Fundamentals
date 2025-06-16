@@ -13,11 +13,11 @@ partial class UuidTests {
   [Test]
   public void TestCompareTo()
   {
-    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns), Is.EqualTo(0));
-    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo((Guid)Uuid.RFC4122NamespaceDns), Is.EqualTo(0));
-    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo((object)Uuid.RFC4122NamespaceDns), Is.EqualTo(0));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Uuid.RFC4122NamespaceDns), Is.Zero);
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo((Guid)Uuid.RFC4122NamespaceDns), Is.Zero);
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo((object)Uuid.RFC4122NamespaceDns), Is.Zero);
     Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(null), Is.EqualTo(1));
-    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty), Is.Not.EqualTo(0));
+    Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty), Is.Not.Zero);
 
     Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.CompareTo(1));
 

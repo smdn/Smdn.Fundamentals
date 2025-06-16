@@ -27,14 +27,14 @@ partial class OctetEncodingTests {
   [Test]
   public void GetByteCount_Empty()
   {
-    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty), Is.EqualTo(0), "#1");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty), Is.Zero, "#1");
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
-    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc", 1, 0), Is.EqualTo(0), "#2");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc", 1, 0), Is.Zero, "#2");
 #endif
-    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty.ToCharArray()), Is.EqualTo(0), "#3");
-    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 0), Is.EqualTo(0), "#4");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty.ToCharArray()), Is.Zero, "#3");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount("abc".ToCharArray(), 1, 0), Is.Zero, "#4");
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
-    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty.AsSpan()), Is.EqualTo(0), "#5");
+    Assert.That(OctetEncoding.SevenBits.GetByteCount(string.Empty.AsSpan()), Is.Zero, "#5");
 #endif
   }
 
@@ -70,12 +70,12 @@ partial class OctetEncodingTests {
 #if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
     Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 0), Is.EqualTo(new byte[0]).AsCollection, "#2");
 #endif
-    Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 0, new byte[0], 0), Is.EqualTo(0), "#3");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc", 1, 0, new byte[0], 0), Is.Zero, "#3");
     Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(1, 0)), Is.EqualTo(new byte[0]).AsCollection, "#4");
     Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0), Is.EqualTo(new byte[0]).AsCollection, "#5");
-    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0, new byte[0], 0), Is.EqualTo(0), "#6");
+    Assert.That(OctetEncoding.SevenBits.GetBytes("abc".ToCharArray(), 1, 0, new byte[0], 0), Is.Zero, "#6");
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
-    Assert.That(OctetEncoding.SevenBits.GetBytes(string.Empty.AsSpan(), new byte[0].AsSpan()), Is.EqualTo(0), "#7");
+    Assert.That(OctetEncoding.SevenBits.GetBytes(string.Empty.AsSpan(), new byte[0].AsSpan()), Is.Zero, "#7");
 #endif
   }
 

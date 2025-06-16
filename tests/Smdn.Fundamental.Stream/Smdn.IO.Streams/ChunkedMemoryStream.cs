@@ -18,8 +18,8 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.CanRead, Is.True, "can read");
         Assert.That(stream.CanWrite, Is.True, "can write");
         Assert.That(stream.CanSeek, Is.True, "can seek");
-        Assert.That(stream.Length, Is.EqualTo(0L));
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Length,Is.Zero);
+        Assert.That(stream.Position,Is.Zero);
         Assert.That(stream.ChunkSize, Is.EqualTo(8));
       }
     }
@@ -62,11 +62,11 @@ namespace Smdn.IO.Streams {
         Assert.That(size, Is.EqualTo(4));
         return new TestChunk(size, allocated);
       })) {
-        Assert.That(allocated.Count, Is.EqualTo(0), "first chunk");
+        Assert.That(allocated.Count, Is.Zero, "first chunk");
 
         stream.Dispose();
 
-        Assert.That(allocated.Count, Is.EqualTo(0), "closed");
+        Assert.That(allocated.Count, Is.Zero, "closed");
       }
     }
 
@@ -79,7 +79,7 @@ namespace Smdn.IO.Streams {
         Assert.That(size, Is.EqualTo(4));
         return new TestChunk(size, allocated);
       })) {
-        Assert.That(allocated.Count, Is.EqualTo(0), "first chunk");
+        Assert.That(allocated.Count, Is.Zero, "first chunk");
 
         var writer = new System.IO.BinaryWriter(stream);
 
@@ -127,7 +127,7 @@ namespace Smdn.IO.Streams {
 
         WriteLog("set length 0");
         stream.SetLength(0L);
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Length,Is.Zero);
         Assert.That(allocated.Count, Is.EqualTo(1), "shorten by SetLength 4");
 
         WriteLog("set length 12");
@@ -137,11 +137,11 @@ namespace Smdn.IO.Streams {
 
         WriteLog("set length 0");
         stream.SetLength(0L);
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Length,Is.Zero);
         Assert.That(allocated.Count, Is.EqualTo(1), "shorten by SetLength 5");
       }
 
-      Assert.That(allocated.Count, Is.EqualTo(0), "closed");
+      Assert.That(allocated.Count, Is.Zero, "closed");
     }
 
     [Test]
@@ -253,7 +253,7 @@ namespace Smdn.IO.Streams {
         for (var len = 0L; len < 12L; len++) {
           stream.SetLength(len);
           Assert.That(stream.Length, Is.EqualTo(len));
-          Assert.That(stream.Position, Is.EqualTo(0L));
+          Assert.That(stream.Position,Is.Zero);
         }
 
         stream.Position = stream.Length;
@@ -284,7 +284,7 @@ namespace Smdn.IO.Streams {
         stream.SetLength(13L);
         Assert.That(stream.Length, Is.EqualTo(13L));
         Assert.That(stream.Position, Is.EqualTo(3L));
-        Assert.That(stream.ReadByte(), Is.EqualTo(0));
+        Assert.That(stream.ReadByte(), Is.Zero);
         Assert.That(stream.Position, Is.EqualTo(4L));
       }
     }
@@ -293,23 +293,23 @@ namespace Smdn.IO.Streams {
     public void TestSetLengthEmptyStream()
     {
       using (var stream = new ChunkedMemoryStream(4)) {
-        Assert.That(stream.Length, Is.EqualTo(0L));
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Length,Is.Zero);
+        Assert.That(stream.Position,Is.Zero);
 
         stream.SetLength(2L);
 
         Assert.That(stream.Length, Is.EqualTo(2L));
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
       }
 
       using (var stream = new ChunkedMemoryStream(4)) {
-        Assert.That(stream.Length, Is.EqualTo(0L));
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Length,Is.Zero);
+        Assert.That(stream.Position,Is.Zero);
 
         stream.SetLength(6L);
 
         Assert.That(stream.Length, Is.EqualTo(6L));
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
       }
     }
 
@@ -329,8 +329,8 @@ namespace Smdn.IO.Streams {
           stream.WriteByte((byte)i);
         }
 
-        Assert.That(stream.Seek(0x00, SeekOrigin.Begin), Is.EqualTo(0x00));
-        Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+        Assert.That(stream.Seek(0x00, SeekOrigin.Begin), Is.Zero);
+        Assert.That(stream.ReadByte(), Is.Zero);
 
         Assert.That(stream.Seek(0x18, SeekOrigin.Begin), Is.EqualTo(0x18));
         Assert.That(stream.ReadByte(), Is.EqualTo(0x18));
@@ -352,8 +352,8 @@ namespace Smdn.IO.Streams {
           stream.WriteByte((byte)i);
         }
 
-        Assert.That(stream.Seek(-0x20, SeekOrigin.Current), Is.EqualTo(0x00));
-        Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+        Assert.That(stream.Seek(-0x20, SeekOrigin.Current), Is.Zero);
+        Assert.That(stream.ReadByte(), Is.Zero);
 
         Assert.That(stream.Seek(+0x17, SeekOrigin.Current), Is.EqualTo(0x18));
         Assert.That(stream.ReadByte(), Is.EqualTo(0x18));
@@ -375,8 +375,8 @@ namespace Smdn.IO.Streams {
           stream.WriteByte((byte)i);
         }
 
-        Assert.That(stream.Seek(-0x20, SeekOrigin.End), Is.EqualTo(0x00));
-        Assert.That(stream.ReadByte(), Is.EqualTo(0x00));
+        Assert.That(stream.Seek(-0x20, SeekOrigin.End), Is.Zero);
+        Assert.That(stream.ReadByte(), Is.Zero);
 
         Assert.That(stream.Seek(-0x08, SeekOrigin.End), Is.EqualTo(0x18));
         Assert.That(stream.ReadByte(), Is.EqualTo(0x18));
@@ -394,11 +394,11 @@ namespace Smdn.IO.Streams {
     public void TestSeekInternalStateNotChanged1()
     {
       using (var stream = new ChunkedMemoryStream()) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
-        Assert.That(stream.Seek(0L, SeekOrigin.Begin), Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Seek(0L, SeekOrigin.Begin),Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
 
@@ -411,13 +411,13 @@ namespace Smdn.IO.Streams {
     public void TestSeekInternalStateNotChanged2()
     {
       using (var stream = new ChunkedMemoryStream()) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Position = 0L;
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
 
@@ -434,9 +434,9 @@ namespace Smdn.IO.Streams {
           stream.WriteByte((byte)i);
         }
 
-        Assert.That(stream.Seek(0L, SeekOrigin.Begin), Is.EqualTo(0L));
+        Assert.That(stream.Seek(0L, SeekOrigin.Begin),Is.Zero);
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
         Assert.That(stream.Length, Is.EqualTo(32L));
 
         for (var i = 0; i < 32; i++) {
@@ -457,7 +457,7 @@ namespace Smdn.IO.Streams {
           stream.WriteByte((byte)i);
         }
 
-        Assert.That(stream.Seek(0, SeekOrigin.Begin), Is.EqualTo(0L));
+        Assert.That(stream.Seek(0, SeekOrigin.Begin),Is.Zero);
 
         var buffer = new byte[16];
 
@@ -497,16 +497,16 @@ namespace Smdn.IO.Streams {
 
         var buffer = new byte[4];
 
-        Assert.That(stream.Seek(0, SeekOrigin.Begin), Is.EqualTo(0L));
+        Assert.That(stream.Seek(0, SeekOrigin.Begin),Is.Zero);
 
-        Assert.That(stream.Read(buffer, 0, 0), Is.EqualTo(0));
+        Assert.That(stream.Read(buffer, 0, 0), Is.Zero);
         Assert.That(buffer, Is.EqualTo(new byte[4]));
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
 
         Assert.That(stream.Seek(8, SeekOrigin.Begin), Is.EqualTo(8L));
 
-        Assert.That(stream.Read(buffer, 0, 0), Is.EqualTo(0));
+        Assert.That(stream.Read(buffer, 0, 0), Is.Zero);
         Assert.That(buffer, Is.EqualTo(new byte[4]));
 
         Assert.That(stream.Position, Is.EqualTo(8L));
@@ -517,13 +517,13 @@ namespace Smdn.IO.Streams {
     public void TestReadByteFromEmptyStream()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
       }
     }
 
@@ -531,27 +531,27 @@ namespace Smdn.IO.Streams {
     public void TestReadFromEmptyStream()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         var buffer = new byte[4];
 
-        Assert.That(stream.Read(buffer, 0, 4), Is.EqualTo(0));
+        Assert.That(stream.Read(buffer, 0, 4), Is.Zero);
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
       }
 
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         var buffer = new byte[12];
 
-        Assert.That(stream.Read(buffer, 0, 12), Is.EqualTo(0));
+        Assert.That(stream.Read(buffer, 0, 12), Is.Zero);
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
       }
     }
 
@@ -593,8 +593,8 @@ namespace Smdn.IO.Streams {
     public void TestWriteByte()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         for (var i = 0; i < 32; i++) {
           Assert.That(stream.Position, Is.EqualTo((long)i));
@@ -616,8 +616,8 @@ namespace Smdn.IO.Streams {
     public void TestWrite()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Write(new byte[] {0x00}, 0, 1);
         Assert.That(stream.Position, Is.EqualTo(1L));
@@ -654,8 +654,8 @@ namespace Smdn.IO.Streams {
     public void TestWriteOverwrite()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L), "position0");
-        Assert.That(stream.Length, Is.EqualTo(0L), "length0");
+        Assert.That(stream.Position,Is.Zero, "position0");
+        Assert.That(stream.Length,Is.Zero, "length0");
 
         stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
         Assert.That(stream.Position, Is.EqualTo(4L), "position1");
@@ -665,8 +665,8 @@ namespace Smdn.IO.Streams {
           0x00, 0x01, 0x02, 0x03,
         }));
 
-        Assert.That(stream.Seek(-4L, SeekOrigin.Current), Is.EqualTo(0L));
-        Assert.That(stream.Position, Is.EqualTo(0L), "position2");
+        Assert.That(stream.Seek(-4L, SeekOrigin.Current),Is.Zero);
+        Assert.That(stream.Position,Is.Zero, "position2");
         Assert.That(stream.Length, Is.EqualTo(4L), "length2");
 
         stream.Write(new byte[] {0x04, 0x05, 0x06, 0x07, 0x08, 0x09}, 0, 6);
@@ -677,8 +677,8 @@ namespace Smdn.IO.Streams {
           0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
         }));
 
-        Assert.That(stream.Seek(0L, SeekOrigin.Begin), Is.EqualTo(0L));
-        Assert.That(stream.Position, Is.EqualTo(0L), "position4");
+        Assert.That(stream.Seek(0L, SeekOrigin.Begin),Is.Zero);
+        Assert.That(stream.Position,Is.Zero, "position4");
         Assert.That(stream.Length, Is.EqualTo(6L), "length4");
 
         stream.Write(new byte[] {0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11}, 0, 8);
@@ -735,18 +735,18 @@ namespace Smdn.IO.Streams {
     public void TestWriteZeroBytesToEmptyStream()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Write(new byte[0], 0, 0);
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Write(new byte[8], 0, 0);
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
       }
     }
 
@@ -837,8 +837,8 @@ namespace Smdn.IO.Streams {
     public void TestToArray()
     {
       using (var stream = new ChunkedMemoryStream(8)) {
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         Assert.That(stream.ToArray(), Is.EqualTo(new byte[0]));
 
@@ -881,8 +881,8 @@ namespace Smdn.IO.Streams {
 
         stream.SetLength(0L);
 
-        Assert.That(stream.Position, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(stream.Position,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         Assert.That(stream.ToArray(), Is.EqualTo(new byte[0]));
       }

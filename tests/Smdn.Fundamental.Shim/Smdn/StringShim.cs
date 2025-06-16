@@ -7,6 +7,7 @@ namespace Smdn;
 
 [TestFixture()]
 public class StringShimTests {
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_StartsWith_Char()
     => Assert.That(
@@ -18,6 +19,7 @@ public class StringShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemStringStartsWithChar))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void TestStartsWith()
@@ -46,6 +48,7 @@ public class StringShimTests {
                     "same as StartsWith(string) #4");
   }
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_EndsWith_Char()
     => Assert.That(
@@ -57,6 +60,7 @@ public class StringShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemStringEndsWithChar))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void TestEndsWith()

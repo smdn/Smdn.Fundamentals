@@ -166,7 +166,7 @@ namespace Smdn.IO.Streams.Filtering {
       };
 
       using (var stream = new FilterStream(baseStream, filters, leaveStreamOpen: true, bufferSize: 4)) {
-        Assert.That(stream.Position, Is.EqualTo(0L), nameof(stream.Position));
+        Assert.That(stream.Position,Is.Zero, nameof(stream.Position));
         Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
 
         var buffer = new byte[8];
@@ -191,7 +191,7 @@ namespace Smdn.IO.Streams.Filtering {
           _ => stream.Read(buffer, 0, buffer.Length),
         };
 
-        Assert.That(read, Is.EqualTo(0));
+        Assert.That(read, Is.Zero);
         Assert.That(stream.Position, Is.EqualTo(8L), nameof(stream.Position));
       }
     }
@@ -215,7 +215,7 @@ namespace Smdn.IO.Streams.Filtering {
       };
 
       using (var stream = new FilterStream(baseStream, filters, leaveStreamOpen: true, bufferSize: 4)) {
-        Assert.That(stream.Position, Is.EqualTo(0L), nameof(stream.Position));
+        Assert.That(stream.Position,Is.Zero, nameof(stream.Position));
         Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
 
         for (var position = 0; position < expected.Length; position++) {

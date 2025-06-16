@@ -28,7 +28,7 @@ namespace Smdn {
     [Test]
     public void TestLcm()
     {
-      Assert.That(MathUtils.Lcm(3, 0), Is.EqualTo(0));
+      Assert.That(MathUtils.Lcm(3, 0), Is.Zero);
       Assert.That(MathUtils.Lcm(12, 18), Is.EqualTo(36));
       Assert.That(MathUtils.Lcm(17, 11), Is.EqualTo(187));
     }

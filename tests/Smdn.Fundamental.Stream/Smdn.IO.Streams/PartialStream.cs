@@ -79,7 +79,7 @@ namespace Smdn.IO.Streams {
 
       var stream = new PartialStream(inner, 4, 4, false, true, false);
 
-      Assert.That(inner.Position, Is.EqualTo(0));
+      Assert.That(inner.Position, Is.Zero);
       Assert.That(stream.Position, Is.EqualTo(-4));
     }
 
@@ -92,7 +92,7 @@ namespace Smdn.IO.Streams {
 
       Assert.That(inner.Position, Is.EqualTo(2));
       Assert.That(nestOuter.Position, Is.EqualTo(1));
-      Assert.That(nestInner.Position, Is.EqualTo(0));
+      Assert.That(nestInner.Position, Is.Zero);
 
       Assert.That(nestInner.InnerStream, Is.InstanceOf<PartialStream>());
 
@@ -116,7 +116,7 @@ namespace Smdn.IO.Streams {
 
       Assert.That(inner.Position, Is.EqualTo(2));
       Assert.That(nestOuter.Position, Is.EqualTo(1));
-      Assert.That(nestInner.Position, Is.EqualTo(0));
+      Assert.That(nestInner.Position, Is.Zero);
 
       Assert.That(nestInner.InnerStream, Is.Not.InstanceOf<PartialStream>());
 
@@ -199,7 +199,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(2));
 
       Assert.That(stream.Length, Is.EqualTo(4));
-      Assert.That(stream.Position, Is.EqualTo(0));
+      Assert.That(stream.Position, Is.Zero);
 
       var buffer = new byte[3];
 
@@ -243,7 +243,7 @@ namespace Smdn.IO.Streams {
 #endif
           _ => stream.Read(buffer, 0, 3),
         },
-        Is.EqualTo(0)
+        Is.Zero
       );
       Assert.That(stream.ReadByte(), Is.EqualTo(-1));
     }
@@ -260,7 +260,7 @@ namespace Smdn.IO.Streams {
       var stream = new PartialStream(inner, inner.Length, 8);
 
       Assert.That(stream.Length, Is.EqualTo(8));
-      Assert.That(stream.Position, Is.EqualTo(0));
+      Assert.That(stream.Position, Is.Zero);
 
       var buffer = new byte[2];
 
@@ -272,9 +272,9 @@ namespace Smdn.IO.Streams {
 #endif
           _ => stream.Read(buffer, 0, 2),
         },
-        Is.EqualTo(0)
+        Is.Zero
       );
-      Assert.That(stream.Position, Is.EqualTo(0));
+      Assert.That(stream.Position, Is.Zero);
     }
 
     [Test] public Task TestRead_LengthNotSpecified() => TestRead_LengthNotSpecified(ReadMethod.Read);
@@ -292,7 +292,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(2));
 
       Assert.That(stream.Length, Is.EqualTo(6));
-      Assert.That(stream.Position, Is.EqualTo(0));
+      Assert.That(stream.Position, Is.Zero);
 
       var buffer = new byte[3];
 
@@ -339,7 +339,7 @@ namespace Smdn.IO.Streams {
 #endif
           _ => stream.Read(buffer, 0, 3),
         },
-        Is.EqualTo(0)
+        Is.Zero
       );
       Assert.That(stream.ReadByte(), Is.EqualTo(-1));
     }
@@ -441,7 +441,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.InnerStream.Position, Is.EqualTo(2));
 
         Assert.That(stream.Length, Is.EqualTo(4));
-        Assert.That(stream.Position, Is.EqualTo(0));
+        Assert.That(stream.Position, Is.Zero);
 
         switch (writeMethod) {
           case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x02, 0x03}, 0, 2); break;
@@ -502,7 +502,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.InnerStream.Position, Is.EqualTo(2));
 
         Assert.That(stream.Length, Is.EqualTo(6));
-        Assert.That(stream.Position, Is.EqualTo(0));
+        Assert.That(stream.Position, Is.Zero);
 
         switch (writeMethod) {
           case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x02, 0x03, 0x04}, 0, 3); break;

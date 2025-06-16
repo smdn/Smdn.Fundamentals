@@ -260,8 +260,8 @@ partial class UInt24Tests {
   [Test]
   public void Log2()
   {
-    Assert.That(UInt24.Log2(UInt24.Zero), Is.EqualTo(0), "Log2(0)");
-    Assert.That(UInt24.Log2(UInt24.One), Is.EqualTo(0), "Log2(1)");
+    Assert.That(UInt24.Log2(UInt24.Zero), Is.Zero, "Log2(0)");
+    Assert.That(UInt24.Log2(UInt24.One), Is.Zero, "Log2(1)");
     Assert.That(UInt24.Log2(UInt24.One + UInt24.One), Is.EqualTo(1), "Log2(2)");
     Assert.That(UInt24.Log2(UInt24.MaxValue), Is.EqualTo(23), "Log2(Max)");
   }
@@ -271,8 +271,8 @@ partial class UInt48Tests {
   [Test]
   public void Log2()
   {
-    Assert.That(UInt48.Log2(UInt48.Zero), Is.EqualTo(0), "Log2(0)");
-    Assert.That(UInt48.Log2(UInt48.One), Is.EqualTo(0), "Log2(1)");
+    Assert.That(UInt48.Log2(UInt48.Zero), Is.Zero, "Log2(0)");
+    Assert.That(UInt48.Log2(UInt48.One), Is.Zero, "Log2(1)");
     Assert.That(UInt48.Log2(UInt48.One + UInt48.One), Is.EqualTo(1), "Log2(2)");
     Assert.That(UInt48.Log2(UInt48.MaxValue), Is.EqualTo(47), "Log2(Max)");
   }

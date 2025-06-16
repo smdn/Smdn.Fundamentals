@@ -188,7 +188,7 @@ namespace Smdn.Text {
 
       Assert.That(e.IsEmpty, Is.True);
       Assert.That(e.IsMutable, Is.True);
-      Assert.That(e.Length, Is.EqualTo(0));
+      Assert.That(e.Length, Is.Zero);
 
       Assert.That(Object.ReferenceEquals(e, ByteString.CreateEmpty()), Is.False);
     }
@@ -235,11 +235,11 @@ namespace Smdn.Text {
 
         Assert.Throws<IndexOutOfRangeException>(() => { b = str[-1]; });
 
-        Assert.That(b, Is.EqualTo(0x00));
+        Assert.That(b, Is.Zero);
 
         Assert.Throws<IndexOutOfRangeException>(() => { b = str[-4]; });
 
-        Assert.That(b, Is.EqualTo(0x00));
+        Assert.That(b, Is.Zero);
       }
     }
 
@@ -300,8 +300,8 @@ namespace Smdn.Text {
 
       var substr = ByteString.CreateImmutable("ab");
 
-      Assert.That(str.IndexOf(substr), Is.EqualTo(0));
-      Assert.That(str.IndexOf(substr, 0), Is.EqualTo(0));
+      Assert.That(str.IndexOf(substr), Is.Zero);
+      Assert.That(str.IndexOf(substr, 0), Is.Zero);
       Assert.That(str.IndexOf(substr, 1), Is.EqualTo(2));
       Assert.That(str.IndexOf(substr, 2), Is.EqualTo(2));
       Assert.That(str.IndexOf(substr, 3), Is.EqualTo(5));
@@ -314,12 +314,12 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("abcDEF");
 
-      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("ABC")), Is.EqualTo(0));
-      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("Abc")), Is.EqualTo(0));
-      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("abC")), Is.EqualTo(0));
-      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("abc")), Is.EqualTo(0));
-      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)), Is.EqualTo(0));
-      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0xff, 0x41, 0x42, 0x43, 0xff}, 1, 3)), Is.EqualTo(0));
+      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("ABC")), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("Abc")), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("abC")), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("abc")), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0xff, 0x41, 0x42, 0x43, 0xff}, 1, 3)), Is.Zero);
 
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("cde")), Is.EqualTo(2));
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("CDE")), Is.EqualTo(2));
@@ -340,8 +340,8 @@ namespace Smdn.Text {
       Assert.That(str.IndexOf("abd"), Is.EqualTo(2));
       Assert.That(str.IndexOf("abe"), Is.EqualTo(-1));
 
-      Assert.That(str.IndexOf("ab"), Is.EqualTo(0));
-      Assert.That(str.IndexOf("ab", 0), Is.EqualTo(0));
+      Assert.That(str.IndexOf("ab"), Is.Zero);
+      Assert.That(str.IndexOf("ab", 0), Is.Zero);
       Assert.That(str.IndexOf("ab", 1), Is.EqualTo(2));
       Assert.That(str.IndexOf("ab", 2), Is.EqualTo(2));
       Assert.That(str.IndexOf("ab", 3), Is.EqualTo(5));
@@ -362,8 +362,8 @@ namespace Smdn.Text {
       Assert.That(str.IndexOfNot(0x61, 3), Is.EqualTo(3));
       Assert.That(str.IndexOfNot('a', 5), Is.EqualTo(5));
       Assert.That(str.IndexOfNot(0x61, 5), Is.EqualTo(5));
-      Assert.That(str.IndexOfNot('b'), Is.EqualTo(0));
-      Assert.That(str.IndexOfNot(0x62), Is.EqualTo(0));
+      Assert.That(str.IndexOfNot('b'), Is.Zero);
+      Assert.That(str.IndexOfNot(0x62), Is.Zero);
       Assert.That(str.IndexOfNot('b', 3), Is.EqualTo(-1));
       Assert.That(str.IndexOfNot(0x62, 3), Is.EqualTo(-1));
       Assert.That(str.IndexOfNot('b', 5), Is.EqualTo(-1));
@@ -553,7 +553,7 @@ namespace Smdn.Text {
       Assert.That(substr, Is.EqualTo(ByteString.CreateImmutable("bcd")));
       Assert.That(substr.IsMutable, Is.EqualTo(str.IsMutable));
       Assert.That(substr.IsMutable, Is.True);
-      Assert.That(substr.Segment.Offset, Is.EqualTo(0));
+      Assert.That(substr.Segment.Offset, Is.Zero);
       Assert.That(substr.Segment.Count, Is.EqualTo(3));
       Assert.That(substr.Segment.Array, Is.Not.SameAs(str.Segment.Array));
     }
@@ -579,7 +579,7 @@ namespace Smdn.Text {
 
       Assert.That(seg.Array, Is.SameAs(str.Segment.Array));
       Assert.That(seg.Offset, Is.EqualTo(1 + 5));
-      Assert.That(seg.Count, Is.EqualTo(0));
+      Assert.That(seg.Count, Is.Zero);
 
       seg = str.GetSubSegment(0);
 
@@ -713,7 +713,7 @@ namespace Smdn.Text {
     [Test]
     public void TestToUInt32()
     {
-      Assert.That((ByteString.CreateImmutable("0")).ToUInt64(), Is.EqualTo(0U));
+      Assert.That((ByteString.CreateImmutable("0")).ToUInt64(), Is.Zero);
       Assert.That((ByteString.CreateImmutable("1234567890")).ToUInt32(), Is.EqualTo(1234567890U));
     }
 
@@ -734,7 +734,7 @@ namespace Smdn.Text {
     [Test]
     public void TestToUInt64()
     {
-      Assert.That((ByteString.CreateImmutable("0")).ToUInt64(), Is.EqualTo(0UL));
+      Assert.That((ByteString.CreateImmutable("0")).ToUInt64(), Is.Zero);
       Assert.That((ByteString.CreateImmutable("1234567890")).ToUInt64(), Is.EqualTo(1234567890UL));
     }
 

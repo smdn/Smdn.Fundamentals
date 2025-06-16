@@ -48,16 +48,16 @@ namespace Smdn.Collections {
       Assert.That(list.Slice(0).Count, Is.EqualTo(10));
       Assert.That(list.Slice(0, 3).Count, Is.EqualTo(3));
       Assert.That(list.Slice(6).Count, Is.EqualTo(4));
-      Assert.That(list.Slice(10).Count, Is.EqualTo(0));
+      Assert.That(list.Slice(10).Count, Is.Zero);
 
       // test IReadOnlyList.this[]
       Assert.That(list.Slice(2, 3)[0], Is.EqualTo(2));
       Assert.That(list.Slice(2, 3)[1], Is.EqualTo(3));
       Assert.That(list.Slice(2, 3)[2], Is.EqualTo(4));
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[-1], Is.EqualTo(0)));
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[3], Is.EqualTo(0)));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[-1], Is.Zero));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[3], Is.Zero));
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(0, 0)[0], Is.EqualTo(0)));
+      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(0, 0)[0], Is.Zero));
 
       // test enumerator
       Assert.That(list.Slice(0, 3).ToArray(), Is.EqualTo(new[] { 0, 1, 2 }));
@@ -74,10 +74,10 @@ namespace Smdn.Collections {
 
     private void TestIndexOf<TExpectedArgumentException> (IReadOnlyList<int> list) where TExpectedArgumentException : ArgumentException
     {
-      Assert.That(list.IndexOf(item: 1), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: 1), Is.Zero);
       Assert.That(list.IndexOf(item: 2), Is.EqualTo(2));
       Assert.That(list.IndexOf(item: 0), Is.EqualTo(-1));
-      Assert.That(list.IndexOf(item: 1, 0), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: 1, 0), Is.Zero);
       Assert.That(list.IndexOf(item: 1, 1), Is.EqualTo(1));
       Assert.That(list.IndexOf(item: 1, 2), Is.EqualTo(3));
       Assert.That(list.IndexOf(item: 1, 3), Is.EqualTo(3));
@@ -110,8 +110,8 @@ namespace Smdn.Collections {
     {
       var equalityComparer = StringComparer.OrdinalIgnoreCase;
 
-      Assert.That(list.IndexOf(item: "A", equalityComparer), Is.EqualTo(0));
-      Assert.That(list.IndexOf(item: "a", equalityComparer), Is.EqualTo(0));
+      Assert.That(list.IndexOf(item: "A", equalityComparer), Is.Zero);
+      Assert.That(list.IndexOf(item: "a", equalityComparer), Is.Zero);
       Assert.That(list.IndexOf(item: "B", equalityComparer), Is.EqualTo(1));
       Assert.That(list.IndexOf(item: "b", equalityComparer), Is.EqualTo(1));
       Assert.That(list.IndexOf(item: "C", equalityComparer), Is.EqualTo(2));

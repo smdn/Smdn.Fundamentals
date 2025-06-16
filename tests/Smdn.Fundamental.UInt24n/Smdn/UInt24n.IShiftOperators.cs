@@ -13,8 +13,10 @@ partial class UInt24Tests {
   [Test]
   public void OpLeftShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(UInt24.Zero << 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 << 0");
     Assert.That(UInt24.Zero << 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 << 1");
+#pragma warning restore NUnit4002
 
     Assert.That(UInt24.One << 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), "1 << 0");
     Assert.That(UInt24.One << 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0010u), "1 << 1");
@@ -41,13 +43,17 @@ partial class UInt24Tests {
   [Test]
   public void OpRightShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(UInt24.Zero >> 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >> 0");
     Assert.That(UInt24.Zero >> 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >> 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(UInt24.One >> 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), "1 >> 0");
     Assert.That(UInt24.One >> 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "1 >> 1");
     Assert.That(UInt24.One >> 23, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "1 >> 23");
     Assert.That(UInt24.One >> 24, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), "1 >> 24");
+#pragma warning restore NUnit4002
 
     Assert.That(UInt24.MaxValue >> 0, Is.EqualTo((UInt24)0b_1111_1111_1111_1111_1111_1111u), "Max >> 0");
 
@@ -69,13 +75,17 @@ partial class UInt24Tests {
   [Test]
   public void OpUnsignedRightShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(UInt24.Zero >>> 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >>> 0");
     Assert.That(UInt24.Zero >>> 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 >>> 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(UInt24.One >>> 0, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), "1 >>> 0");
     Assert.That(UInt24.One >>> 1, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "1 >>> 1");
     Assert.That(UInt24.One >>> 23, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "1 >>> 23");
     Assert.That(UInt24.One >>> 24, Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), "1 >>> 24");
+#pragma warning restore NUnit4002
 
     Assert.That(UInt24.MaxValue >>> 0, Is.EqualTo((UInt24)0b_1111_1111_1111_1111_1111_1111u), "Max >>> 0");
 
@@ -99,13 +109,17 @@ partial class UInt48Tests {
   [Test]
   public void OpLeftShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(UInt48.Zero << 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 << 0");
     Assert.That(UInt48.Zero << 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 << 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(UInt48.One << 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 << 0");
     Assert.That(UInt48.One << 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0010uL), "1 << 1");
     Assert.That(UInt48.One << 47, Is.EqualTo((UInt48)0b_1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "1 << 47");
     Assert.That(UInt48.One << 48, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 << 48");
+#pragma warning restore NUnit4002
 
     Assert.That(UInt48.MaxValue << 0, Is.EqualTo((UInt48)0b_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111uL), "Max << 0");
 
@@ -127,13 +141,17 @@ partial class UInt48Tests {
   [Test]
   public void OpRightShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(UInt48.Zero >> 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >> 0");
     Assert.That(UInt48.Zero >> 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >> 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(UInt48.One >> 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 >> 0");
     Assert.That(UInt48.One >> 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "1 >> 1");
     Assert.That(UInt48.One >> 47, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "1 >> 47");
     Assert.That(UInt48.One >> 48, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 >> 48");
+#pragma warning restore NUnit4002
 
     Assert.That(UInt48.MaxValue >> 0, Is.EqualTo((UInt48)0b_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111uL), "Max >> 0");
 
@@ -156,13 +174,17 @@ partial class UInt48Tests {
   [Test]
   public void OpUnsignedRightShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(UInt48.Zero >>> 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >>> 0");
     Assert.That(UInt48.Zero >>> 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 >>> 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(UInt48.One >>> 0, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 >>> 0");
     Assert.That(UInt48.One >>> 1, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "1 >>> 1");
     Assert.That(UInt48.One >>> 47, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "1 >>> 47");
     Assert.That(UInt48.One >>> 48, Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 >>> 48");
+#pragma warning restore NUnit4002
 
     Assert.That(UInt48.MaxValue >>> 0, Is.EqualTo((UInt48)0b_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111uL), "Max >>> 0");
 
@@ -187,8 +209,10 @@ partial class UInt24nTests {
   [Test]
   public void IShiftOperators_OpLeftShift()
   {
+#pragma warning disable NUnit4002
     Assert.That(ShiftLeft(UInt24.Zero, 0), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 << 0");
     Assert.That(ShiftLeft(UInt24.Zero, 1), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), "0 << 1");
+#pragma warning restore NUnit4002
 
     Assert.That(ShiftLeft(UInt24.One, 0), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), "1 << 0");
     Assert.That(ShiftLeft(UInt24.One, 1), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0010u), "1 << 1");
@@ -211,8 +235,10 @@ partial class UInt24nTests {
     Assert.That(ShiftLeft(UInt24.MaxValue, -48), Is.EqualTo((UInt24)0b_1111_1111_1111_1111_1111_1111u), "Max << (-48 = 0)");
     Assert.That(ShiftLeft(UInt24.MaxValue, -49), Is.EqualTo((UInt24)0b_1000_0000_0000_0000_0000_0000u), "Max << (-49 = 23)");
 
+#pragma warning disable NUnit4002
     Assert.That(ShiftLeft(UInt48.Zero, 0), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 << 0");
     Assert.That(ShiftLeft(UInt48.Zero, 1), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "0 << 1");
+#pragma warning restore NUnit4002
 
     Assert.That(ShiftLeft(UInt48.One, 0), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), "1 << 0");
     Assert.That(ShiftLeft(UInt48.One, 1), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0010uL), "1 << 1");
@@ -245,13 +271,17 @@ partial class UInt24nTests {
   {
     var op = performUnsignedRightShift ? ">>>" : ">>";
 
+#pragma warning disable NUnit4002
     Assert.That(ShiftRight(UInt24.Zero, 0, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), $"0 {op} 0");
     Assert.That(ShiftRight(UInt24.Zero, 1, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), $"0 {op} 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(ShiftRight(UInt24.One, 0, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), $"1 {op} 0");
     Assert.That(ShiftRight(UInt24.One, 1, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), $"1 {op} 1");
     Assert.That(ShiftRight(UInt24.One, 23, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0000u), $"1 {op} 23");
     Assert.That(ShiftRight(UInt24.One, 24, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), $"1 {op} 24");
+#pragma warning restore NUnit4002
 
     Assert.That(ShiftRight(UInt24.MaxValue, 0, performUnsignedRightShift), Is.EqualTo((UInt24)0b_1111_1111_1111_1111_1111_1111u), $"Max {op} 0");
 
@@ -269,13 +299,17 @@ partial class UInt24nTests {
     Assert.That(ShiftRight(UInt24.MaxValue, -48, performUnsignedRightShift), Is.EqualTo((UInt24)0b_1111_1111_1111_1111_1111_1111u), $"Max {op} (-48 = 0)");
     Assert.That(ShiftRight(UInt24.MaxValue, -49, performUnsignedRightShift), Is.EqualTo((UInt24)0b_0000_0000_0000_0000_0000_0001u), $"Max {op} (-49 = 23)");
 
+#pragma warning disable NUnit4002
     Assert.That(ShiftRight(UInt48.Zero, 0, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), $"0 {op} 0");
     Assert.That(ShiftRight(UInt48.Zero, 1, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), $"0 {op} 1");
+#pragma warning restore NUnit4002
 
+#pragma warning disable NUnit4002
     Assert.That(ShiftRight(UInt48.One, 0, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), $"1 {op} 0");
     Assert.That(ShiftRight(UInt48.One, 1, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), $"1 {op} 1");
     Assert.That(ShiftRight(UInt48.One, 47, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), $"1 {op} 47");
     Assert.That(ShiftRight(UInt48.One, 48, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), $"1 {op} 48");
+#pragma warning restore NUnit4002
 
     Assert.That(ShiftRight(UInt48.MaxValue, 0, performUnsignedRightShift), Is.EqualTo((UInt48)0b_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111uL), $"Max {op} 0");
 

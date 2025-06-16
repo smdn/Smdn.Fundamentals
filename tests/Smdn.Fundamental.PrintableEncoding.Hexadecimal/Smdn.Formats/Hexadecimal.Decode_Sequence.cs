@@ -127,13 +127,13 @@ partial class HexadecimalTests {
   public void TryDecode_OfCharArraySegmentSequence_Empty()
   {
     Assert.That(Hexadecimal.TryDecode(CreateEmptyArraySegment<char>(), CreateEmptyArraySegment<byte>(), out var decodedLength0), Is.True, nameof(Hexadecimal.TryDecode));
-    Assert.That(decodedLength0, Is.EqualTo(0), nameof(decodedLength0));
+    Assert.That(decodedLength0, Is.Zero, nameof(decodedLength0));
 
     Assert.That(Hexadecimal.TryDecodeUpperCase(CreateEmptyArraySegment<char>(), CreateEmptyArraySegment<byte>(), out var decodedLength1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.That(decodedLength1, Is.EqualTo(0), nameof(decodedLength1));
+    Assert.That(decodedLength1, Is.Zero, nameof(decodedLength1));
 
     Assert.That(Hexadecimal.TryDecodeLowerCase(CreateEmptyArraySegment<char>(), CreateEmptyArraySegment<byte>(), out var decodedLength2), Is.True, nameof(Hexadecimal.TryDecodeLowerCase));
-    Assert.That(decodedLength2, Is.EqualTo(0), nameof(decodedLength1));
+    Assert.That(decodedLength2, Is.Zero, nameof(decodedLength1));
   }
 
 #if SYSTEM_READONLYSPAN
@@ -141,13 +141,13 @@ partial class HexadecimalTests {
   public void TryDecode_OfReadOnlyCharSpanSequence_Empty()
   {
     Assert.That(Hexadecimal.TryDecode(string.Empty.AsSpan(), Span<byte>.Empty, out var decodedLength0), Is.True, nameof(Hexadecimal.TryDecode));
-    Assert.That(decodedLength0, Is.EqualTo(0), nameof(decodedLength0));
+    Assert.That(decodedLength0, Is.Zero, nameof(decodedLength0));
 
     Assert.That(Hexadecimal.TryDecodeUpperCase(string.Empty.AsSpan(), Span<byte>.Empty, out var decodedLength1), Is.True, nameof(Hexadecimal.TryDecodeUpperCase));
-    Assert.That(decodedLength1, Is.EqualTo(0), nameof(decodedLength1));
+    Assert.That(decodedLength1, Is.Zero, nameof(decodedLength1));
 
     Assert.That(Hexadecimal.TryDecodeLowerCase(string.Empty.AsSpan(), Span<byte>.Empty, out var decodedLength2), Is.True, nameof(Hexadecimal.TryDecodeLowerCase));
-    Assert.That(decodedLength2, Is.EqualTo(0), nameof(decodedLength1));
+    Assert.That(decodedLength2, Is.Zero, nameof(decodedLength1));
   }
 #endif
 

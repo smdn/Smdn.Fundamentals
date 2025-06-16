@@ -43,7 +43,7 @@ public partial class LineOrientedStreamTests {
     Assert.That(stream.CanSeek, Is.True, nameof(stream.CanSeek));
     Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
     Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
-    Assert.That(stream.Position, Is.EqualTo(0L), nameof(stream.Position));
+    Assert.That(stream.Position,Is.Zero, nameof(stream.Position));
     Assert.That(stream.BufferSize, Is.EqualTo(bufferSize), nameof(stream.BufferSize));
   }
 
@@ -67,7 +67,7 @@ public partial class LineOrientedStreamTests {
 
     var buffer = new byte[8];
 
-    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Position, Is.EqualTo(0)));
+    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Position, Is.Zero));
     Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Length, Is.EqualTo(8)));
     Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.BufferSize, Is.EqualTo(8)));
     Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.InnerStream, Is.Not.Null));

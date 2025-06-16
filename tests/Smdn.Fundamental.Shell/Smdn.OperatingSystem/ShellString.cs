@@ -46,8 +46,8 @@ namespace Smdn.OperatingSystem {
       try {
         Environment.SetEnvironmentVariable("Smdn.Tests.TestValue1", "foo");
 
-        Assert.That(ShellString.Expand(null), Is.EqualTo(null));
-        Assert.That(ShellString.Expand(new ShellString(null)), Is.EqualTo(null));
+        Assert.That(ShellString.Expand(null), Is.Null);
+        Assert.That(ShellString.Expand(new ShellString(null)), Is.Null);
         Assert.That(ShellString.Expand(new ShellString(string.Empty)), Is.EqualTo(string.Empty));
         Assert.That(ShellString.Expand(new ShellString("%Smdn.Tests.TestValue1%")), Is.EqualTo("foo"));
       }

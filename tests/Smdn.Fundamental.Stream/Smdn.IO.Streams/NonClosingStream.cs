@@ -94,13 +94,13 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream()) {
         var stream = new NonClosingStream(baseStream, writable: false);
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         Assert.Throws<NotSupportedException>(() => stream.SetLength(8L));
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(stream.Length, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(stream.Length,Is.Zero);
 
         stream.Dispose();
 
@@ -268,29 +268,29 @@ namespace Smdn.IO.Streams {
       using (var baseStream = new MemoryStream()) {
         var stream = new NonClosingStream(baseStream, writable: false);
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(baseStream.Position, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(baseStream.Position,Is.Zero);
 
         Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] { 1 }, 0, 1));
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(baseStream.Position, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(baseStream.Position,Is.Zero);
 
         Assert.Throws<NotSupportedException>(() => stream.WriteByte(2));
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(baseStream.Position, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(baseStream.Position,Is.Zero);
 
         Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(new byte[] { 1 }, 0, 1));
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(baseStream.Position, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(baseStream.Position,Is.Zero);
 
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
         Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()));
 
-        Assert.That(baseStream.Length, Is.EqualTo(0L));
-        Assert.That(baseStream.Position, Is.EqualTo(0L));
+        Assert.That(baseStream.Length,Is.Zero);
+        Assert.That(baseStream.Position,Is.Zero);
 #endif
 
 #if SYSTEM_IO_STREAM_BEGINWRITE

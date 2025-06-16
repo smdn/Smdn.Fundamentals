@@ -61,10 +61,10 @@ partial class NodeTests {
   public void TestTryFormat_DestinationTooShort([Values(0, 1, 16)] int length)
   {
     Assert.That(Node.CreateRandom().TryFormat(new char[length], out var charsWritten1, "X", provider: null), Is.False, "format X");
-    Assert.That(charsWritten1, Is.EqualTo(0), "format X");
+    Assert.That(charsWritten1, Is.Zero, "format X");
 
     Assert.That(Node.CreateRandom().TryFormat(new char[length], out var charsWritten2, "x", provider: null), Is.False, "format x");
-    Assert.That(charsWritten2, Is.EqualTo(0), "format x");
+    Assert.That(charsWritten2, Is.Zero, "format x");
   }
 
   [TestCase("n")]

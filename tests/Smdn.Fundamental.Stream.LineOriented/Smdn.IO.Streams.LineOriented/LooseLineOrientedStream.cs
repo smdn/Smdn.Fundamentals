@@ -112,7 +112,7 @@ public class LooseLineOrientedStreamTests {
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     Assert.That(stream.Read(buffer, 0, 5), Is.EqualTo(5));
 
@@ -151,7 +151,7 @@ public class LooseLineOrientedStreamTests {
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     Assert.That(stream.Read(buffer, 0, 5), Is.EqualTo(5));
 
@@ -189,7 +189,7 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
@@ -250,7 +250,7 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
@@ -310,7 +310,7 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
@@ -329,7 +329,7 @@ public class LooseLineOrientedStreamTests {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, CR};
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
@@ -353,7 +353,7 @@ public class LooseLineOrientedStreamTests {
     };
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
@@ -411,7 +411,7 @@ public class LooseLineOrientedStreamTests {
     };
     using var stream = new LooseLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()

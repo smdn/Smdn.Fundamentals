@@ -55,10 +55,10 @@ partial class OctetEncodingTests {
   [Test]
   public void GetCharCount_Empty()
   {
-    Assert.That(OctetEncoding.SevenBits.GetCharCount(new byte[0]), Is.EqualTo(0), "#1");
-    Assert.That(OctetEncoding.SevenBits.GetCharCount(new byte[1], 1, 0), Is.EqualTo(0), "#2");
+    Assert.That(OctetEncoding.SevenBits.GetCharCount(new byte[0]), Is.Zero, "#1");
+    Assert.That(OctetEncoding.SevenBits.GetCharCount(new byte[1], 1, 0), Is.Zero, "#2");
 #if SYSTEM_TEXT_ENCODING_GETCHARCOUNT_READONLYSPAN_OF_BYTE
-    Assert.That(OctetEncoding.SevenBits.GetCharCount(new byte[0].AsSpan()), Is.EqualTo(0), "#3");
+    Assert.That(OctetEncoding.SevenBits.GetCharCount(new byte[0].AsSpan()), Is.Zero, "#3");
 #endif
   }
 
@@ -67,9 +67,9 @@ partial class OctetEncodingTests {
   {
     Assert.That(OctetEncoding.SevenBits.GetChars(new byte[0]), Is.EqualTo(new byte[0]).AsCollection, "#1");
     Assert.That(OctetEncoding.SevenBits.GetChars(new byte[1], 1, 0), Is.EqualTo(new byte[0]).AsCollection, "#2");
-    Assert.That(OctetEncoding.SevenBits.GetChars(new byte[1], 1, 0, new char[0], 0), Is.EqualTo(0), "#3");
+    Assert.That(OctetEncoding.SevenBits.GetChars(new byte[1], 1, 0, new char[0], 0), Is.Zero, "#3");
 #if SYSTEM_TEXT_ENCODING_GETCHARS_READONLYSPAN_OF_BYTE
-    Assert.That(OctetEncoding.SevenBits.GetChars(new byte[0].AsSpan(), new char[0].AsSpan()), Is.EqualTo(0), "#4");
+    Assert.That(OctetEncoding.SevenBits.GetChars(new byte[0].AsSpan(), new char[0].AsSpan()), Is.Zero, "#4");
 #endif
   }
 

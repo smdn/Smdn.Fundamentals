@@ -21,13 +21,13 @@ public class ExtendStreamTests {
   [Test]
   public void Construct()
   {
-    Assert.That(new ExtendStream(Stream.Null, (byte[])null, null).Length, Is.EqualTo(0L), "construct null/null");
-    Assert.That(new ExtendStream(Stream.Null, new byte[0], null).Length, Is.EqualTo(0L), "construct byte[]/null");
-    Assert.That(new ExtendStream(Stream.Null, null, new byte[0]).Length, Is.EqualTo(0L), "construct null/byte[]");
-    Assert.That(new ExtendStream(Stream.Null, new byte[0], new byte[0]).Length, Is.EqualTo(0L), "construct byte[]/byte[]");
-    Assert.That(new ExtendStream(Stream.Null, Stream.Null, null).Length, Is.EqualTo(0L), "construct Stream/null");
-    Assert.That(new ExtendStream(Stream.Null, null, Stream.Null).Length, Is.EqualTo(0L), "construct null/Stream");
-    Assert.That(new ExtendStream(Stream.Null, Stream.Null, Stream.Null).Length, Is.EqualTo(0L), "construct Stream/Stream");
+    Assert.That(new ExtendStream(Stream.Null, (byte[])null, null).Length,Is.Zero, "construct null/null");
+    Assert.That(new ExtendStream(Stream.Null, new byte[0], null).Length,Is.Zero, "construct byte[]/null");
+    Assert.That(new ExtendStream(Stream.Null, null, new byte[0]).Length,Is.Zero, "construct null/byte[]");
+    Assert.That(new ExtendStream(Stream.Null, new byte[0], new byte[0]).Length,Is.Zero, "construct byte[]/byte[]");
+    Assert.That(new ExtendStream(Stream.Null, Stream.Null, null).Length,Is.Zero, "construct Stream/null");
+    Assert.That(new ExtendStream(Stream.Null, null, Stream.Null).Length,Is.Zero, "construct null/Stream");
+    Assert.That(new ExtendStream(Stream.Null, Stream.Null, Stream.Null).Length,Is.Zero, "construct Stream/Stream");
   }
 
   [Test]
@@ -479,7 +479,7 @@ public class ExtendStreamTests {
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
     Assert.That(extended.Length, Is.EqualTo(12L));
-    Assert.That(extended.Position, Is.EqualTo(0L));
+    Assert.That(extended.Position,Is.Zero);
     Assert.That(extended.CanRead, Is.True);
 
     for (var expected = 0L; expected < 12L; expected++) {

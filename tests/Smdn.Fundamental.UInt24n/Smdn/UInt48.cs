@@ -314,8 +314,8 @@ namespace Smdn {
     public void IConvertible()
     {
 #pragma warning disable CA1305
-      Assert.That(Convert.ChangeType((UInt48)1, typeof(bool)), Is.EqualTo(true));
-      Assert.That(Convert.ChangeType((UInt48)0, typeof(bool)), Is.EqualTo(false));
+      Assert.That(Convert.ChangeType((UInt48)1, typeof(bool)), Is.True);
+      Assert.That(Convert.ChangeType((UInt48)0, typeof(bool)), Is.False);
       Assert.That(Convert.ChangeType((UInt48)0xff, typeof(byte)), Is.EqualTo((byte)0xff));
       Assert.That(Convert.ChangeType((UInt48)0x7f, typeof(sbyte)), Is.EqualTo((sbyte)0x7f));
       Assert.That(Convert.ChangeType((UInt48)0x7fff, typeof(short)), Is.EqualTo((short)0x7fff));

@@ -28,13 +28,13 @@ namespace Smdn.Text {
     {
       var seq = ByteString.CreateEmpty().AsReadOnlySequence();
 
-      Assert.That(seq.Length, Is.EqualTo(0));
+      Assert.That(seq.Length, Is.Zero);
 
       var start = seq.Start;
 
       seq.TryGet(ref start, out var mem);
 
-      Assert.That(mem.Length, Is.EqualTo(0));
+      Assert.That(mem.Length, Is.Zero);
     }
 
     private static Span<byte> CreateSpan(string str) => ByteString.CreateImmutable(str).Segment.AsSpan();

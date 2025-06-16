@@ -8,6 +8,7 @@ namespace Smdn;
 
 [TestFixture()]
 public class ArrayShimTests {
+#pragma warning disable NUnit2007
   [Test]
   public void TestShimType_Empty()
     => Assert.That(
@@ -19,6 +20,7 @@ public class ArrayShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemArrayEmpty))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void TestEmpty()
@@ -30,6 +32,7 @@ public class ArrayShimTests {
     Assert.That(empty, Is.Empty);
   }
 
+#pragma warning disable NUnit2007
   [Test]
   public void TestShimType_ConvertAll()
     => Assert.That(
@@ -41,6 +44,7 @@ public class ArrayShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemArrayConvertAll))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void TestConvertAll()

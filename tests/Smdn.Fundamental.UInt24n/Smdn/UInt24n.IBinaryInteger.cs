@@ -275,14 +275,14 @@ partial class UInt24Tests {
   public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2)]int length)
   {
     Assert.That(UInt24.One.TryWriteBigEndian(new byte[length], out var bytesWritten), Is.False);
-    Assert.That(bytesWritten, Is.EqualTo(0));
+    Assert.That(bytesWritten, Is.Zero);
   }
 
   [Test]
   public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2)]int length)
   {
     Assert.That(UInt24.One.TryWriteLittleEndian(new byte[length], out var bytesWritten), Is.False);
-    Assert.That(bytesWritten, Is.EqualTo(0));
+    Assert.That(bytesWritten, Is.Zero);
   }
 }
 
@@ -323,14 +323,14 @@ partial class UInt48Tests {
   public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)]int length)
   {
     Assert.That(UInt48.One.TryWriteBigEndian(new byte[length], out var bytesWritten), Is.False);
-    Assert.That(bytesWritten, Is.EqualTo(0));
+    Assert.That(bytesWritten, Is.Zero);
   }
 
   [Test]
   public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)]int length)
   {
     Assert.That(UInt48.One.TryWriteLittleEndian(new byte[length], out var bytesWritten), Is.False);
-    Assert.That(bytesWritten, Is.EqualTo(0));
+    Assert.That(bytesWritten, Is.Zero);
   }
 }
 

@@ -7,6 +7,7 @@ namespace Smdn;
 
 [TestFixture()]
 public class MathShimTests {
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_Clamp()
     => Assert.That(
@@ -18,6 +19,7 @@ public class MathShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemMathClamp))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0, 0, 0, 0)]
   [TestCase(0, 0, 1, 0)]
@@ -77,6 +79,7 @@ public class MathShimTests {
     Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((decimal)value, (decimal)min, (decimal)max), $"Clamp<decimal>(value: {value}, min: {min}, max: {max})");
   }
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_DivRem()
     => Assert.That(
@@ -88,6 +91,7 @@ public class MathShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemMathDivRem))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0, 1, 0, 0)]
   [TestCase(1, 1, 1, 0)]
@@ -111,6 +115,7 @@ public class MathShimTests {
     Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRem.DivRem((long)left, (long)right, out _), $"DivRem<long>({left}, {right})");
   }
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_ReturnValueTuple2()
     => Assert.That(
@@ -122,6 +127,7 @@ public class MathShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemMathDivRemReturnValueTuple2))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0, 1, 0, 0)]
   [TestCase(1, 1, 1, 0)]

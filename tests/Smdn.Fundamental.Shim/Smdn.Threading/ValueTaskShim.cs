@@ -10,6 +10,7 @@ namespace Smdn.Threading;
 
 [TestFixture()]
 public class ValueTaskShimTests {
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_CompletedTask()
     => Assert.That(
@@ -21,6 +22,7 @@ public class ValueTaskShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemThreadingTasksValueTaskCompletedTask))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void CompletedTask()
@@ -35,6 +37,7 @@ public class ValueTaskShimTests {
     Assert.DoesNotThrowAsync(async () => await t);
   }
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_FromCanceled()
     => Assert.That(
@@ -46,6 +49,7 @@ public class ValueTaskShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemThreadingTasksValueTaskFromCanceled))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void FromCanceled()
@@ -83,6 +87,7 @@ public class ValueTaskShimTests {
     Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
   }
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_FromResult()
     => Assert.That(
@@ -94,6 +99,7 @@ public class ValueTaskShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemThreadingTasksValueTaskFromResult))
     );
+#pragma warning restore NUnit2007
 
   [Test]
   public void FromResult()

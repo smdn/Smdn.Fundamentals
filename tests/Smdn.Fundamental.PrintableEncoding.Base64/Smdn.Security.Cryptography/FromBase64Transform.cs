@@ -257,7 +257,7 @@ namespace Smdn.Security.Cryptography {
 
         var length = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
-        Assert.That(length, Is.EqualTo(0), $"input: {input}");
+        Assert.That(length, Is.Zero, $"input: {input}");
       }
     }
 

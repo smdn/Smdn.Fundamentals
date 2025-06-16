@@ -243,15 +243,15 @@ namespace Smdn.IO.Binary {
       var zero = new byte[0];
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
-        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+        Assert.That(reader.BaseStream.Position,Is.Zero);
 
         Assert.That(reader.ReadBytes(0), Is.EqualTo(zero).AsCollection);
 
-        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+        Assert.That(reader.BaseStream.Position,Is.Zero);
 
         Assert.That(reader.ReadBytes(0L), Is.EqualTo(zero).AsCollection);
 
-        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+        Assert.That(reader.BaseStream.Position,Is.Zero);
 
         reader.Close();
 
@@ -277,15 +277,15 @@ namespace Smdn.IO.Binary {
       var zero = new byte[0];
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(new byte[] {0xff}))) {
-        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+        Assert.That(reader.BaseStream.Position,Is.Zero);
 
         Assert.That(reader.ReadExactBytes(0), Is.EqualTo(zero).AsCollection);
 
-        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+        Assert.That(reader.BaseStream.Position,Is.Zero);
 
         Assert.That(reader.ReadExactBytes(0L), Is.EqualTo(zero).AsCollection);
 
-        Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+        Assert.That(reader.BaseStream.Position,Is.Zero);
 
         reader.Close();
 
@@ -340,14 +340,14 @@ namespace Smdn.IO.Binary {
       reader.BaseStream.Seek(0L, SeekOrigin.Begin);
 
       Assert.That(reader.EndOfStream, Is.False);
-      Assert.That(reader.BaseStream.Position, Is.EqualTo(0L));
+      Assert.That(reader.BaseStream.Position,Is.Zero);
 
       var ret = typeof(Smdn.IO.Binary.BinaryReader)
         .GetTypeInfo()
         .GetDeclaredMethod(methodName)
         !.Invoke(reader, null);
 
-      Assert.That(ret, Is.Not.EqualTo(0), "read value must be non-zero value");
+      Assert.That(ret, Is.Not.Zero, "read value must be non-zero value");
       Assert.That(reader.BaseStream.Position, Is.EqualTo((long)expectedCount));
     }
 

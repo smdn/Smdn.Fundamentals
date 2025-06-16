@@ -40,7 +40,7 @@ namespace Smdn {
       Assert.That(ex.InnerException, Is.Null);
       Assert.That(ex.Message, Does.StartWith("must be non-zero positive value"));
       Assert.That(ex.ParamName, Is.EqualTo("arg"));
-      Assert.That(ex.ActualValue, Is.EqualTo(0));
+      Assert.That(ex.ActualValue, Is.Zero);
       Assert.That(ex, Is.InstanceOf<ArgumentOutOfRangeException>());
     }
 

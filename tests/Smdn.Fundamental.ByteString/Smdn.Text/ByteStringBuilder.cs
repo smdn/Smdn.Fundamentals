@@ -12,7 +12,7 @@ namespace Smdn.Text {
     {
       var b = new ByteStringBuilder(16);
 
-      Assert.That(b.Length, Is.EqualTo(0));
+      Assert.That(b.Length, Is.Zero);
       Assert.That(b.Capacity, Is.EqualTo(16));
       Assert.That(b.ToByteString(false).IsEmpty, Is.True);
     }

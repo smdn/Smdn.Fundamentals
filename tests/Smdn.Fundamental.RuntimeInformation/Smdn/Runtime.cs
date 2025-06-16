@@ -174,7 +174,7 @@ public class RuntimeTests {
 
     var version = Runtime.Version!;
 
-    Assert.That(version.Major, Is.Not.EqualTo(0), nameof(version.Major));
+    Assert.That(version.Major, Is.Not.Zero, nameof(version.Major));
     Assert.That(version.Minor, Is.Not.EqualTo(-1), nameof(version.Minor));
 
     switch (Runtime.RuntimeEnvironment) {

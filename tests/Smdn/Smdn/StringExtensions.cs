@@ -9,13 +9,13 @@ namespace Smdn {
     [Test]
     public void TestCount()
     {
-      Assert.That("abcdefg".Count("abcdefgh"), Is.EqualTo(0));
+      Assert.That("abcdefg".Count("abcdefgh"), Is.Zero);
       Assert.That("abcdefg".Count("abcdefg"), Is.EqualTo(1));
       Assert.That("abcdefg".Count("abcdef"), Is.EqualTo(1));
 
       Assert.That("xxyyxyyxx".Count("xx"), Is.EqualTo(2));
       Assert.That("xxyyxyyxx".Count("xy"), Is.EqualTo(2));
-      Assert.That("xxyyxyyxx".Count("xxx"), Is.EqualTo(0));
+      Assert.That("xxyyxyyxx".Count("xxx"), Is.Zero);
 
       Assert.That("xxyyxyyxx".Count('x'), Is.EqualTo(5));
       Assert.That("xxyyxyyxx".Count('y'), Is.EqualTo(4));
@@ -58,7 +58,7 @@ namespace Smdn {
     public void TestIndexOfNot()
     {
       Assert.That("aabbcc".IndexOfNot('a'), Is.EqualTo(2));
-      Assert.That("aabbcc".IndexOfNot('b'), Is.EqualTo(0));
+      Assert.That("aabbcc".IndexOfNot('b'), Is.Zero);
       Assert.That("cccccc".IndexOfNot('c'), Is.EqualTo(-1));
 
       Assert.That("aabb".IndexOfNot('a', 0), Is.EqualTo(2));

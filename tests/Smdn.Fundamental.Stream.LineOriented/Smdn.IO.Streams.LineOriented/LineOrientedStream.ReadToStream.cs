@@ -46,9 +46,9 @@ partial class LineOrientedStreamTests {
       runAsync
         ? await stream.ReadAsync(copyStream, 0L)
         : stream.Read(copyStream, 0L),
-      Is.EqualTo(0L)
+     Is.Zero
     );
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     copyStream.Dispose();
 
@@ -68,10 +68,10 @@ partial class LineOrientedStreamTests {
       runAsync
         ? await stream.ReadAsync(copyStream, 0L)
         : stream.Read(copyStream, 0L),
-      Is.EqualTo(0L)
+     Is.Zero
     );
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
 
     copyStream.Dispose();
 
@@ -93,7 +93,7 @@ partial class LineOrientedStreamTests {
     Assert.That(t.IsCanceled, Is.True);
     Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
-    Assert.That(stream.Position, Is.EqualTo(0L), "Position");
+    Assert.That(stream.Position,Is.Zero, "Position");
   }
 
   [Test]

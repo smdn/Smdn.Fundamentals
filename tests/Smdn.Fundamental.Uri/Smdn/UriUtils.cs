@@ -104,11 +104,11 @@ namespace Smdn {
 
       splitted = UriUtils.SplitQueryParameters(string.Empty);
 
-      Assert.That(splitted.Count, Is.EqualTo(0), "#1 count");
+      Assert.That(splitted.Count, Is.Zero, "#1 count");
 
       splitted = UriUtils.SplitQueryParameters("?");
 
-      Assert.That(splitted.Count, Is.EqualTo(0), "#2 count");
+      Assert.That(splitted.Count, Is.Zero, "#2 count");
     }
 
     [Test]

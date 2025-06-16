@@ -7,6 +7,7 @@ namespace Smdn;
 
 [TestFixture()]
 public class BitOperationsShimTests {
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_IsPow2()
     => Assert.That(
@@ -18,6 +19,7 @@ public class BitOperationsShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsIsPow2))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, false)]
   [TestCase(0b_00000000_00000000_00000000_00000001u,  true)]
@@ -163,6 +165,7 @@ public class BitOperationsShimTests {
   public void IsPow2_Int64(ulong value, bool expected)
     => Assert.That(ShimTypeSystemNumericsBitOperationsIsPow2.IsPow2(unchecked((long)value)), Is.EqualTo(expected), $"IsPow2<long>({value:X16})");
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_Log2()
     => Assert.That(
@@ -174,6 +177,7 @@ public class BitOperationsShimTests {
       ,
       Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsLog2))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0b_00000000_00000000_00000000_00000000u,  0)]
   [TestCase(0b_00000000_00000000_00000000_00000001u,  0)]
@@ -289,6 +293,7 @@ ShimTypeSystemNumericsBitOperationsLog2.Log2(value), Is.EqualTo(expected),
       $"Log2<UInt64>({value:X16})"
     );
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_PopCount()
     => Assert.That(
@@ -300,6 +305,7 @@ ShimTypeSystemNumericsBitOperationsLog2.Log2(value), Is.EqualTo(expected),
       ,
       Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsPopCount))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0b_00000000_00000000_00000000_00000000u,  0)]
   [TestCase(0b_00000000_00000000_00000000_00000001u,  1)]
@@ -597,6 +603,7 @@ ShimTypeSystemNumericsBitOperationsLog2.Log2(value), Is.EqualTo(expected),
       $"PopCount<ulong>({value:X16})"
     );
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_LeadingZeroCount()
     => Assert.That(
@@ -608,6 +615,7 @@ ShimTypeSystemNumericsBitOperationsLog2.Log2(value), Is.EqualTo(expected),
       ,
       Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsLeadingZeroCount))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, 32)]
   [TestCase(0b_00000000_00000000_00000000_00000001u, 31)]
@@ -723,6 +731,7 @@ ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value), Is.
       $"LeadingZeroCount<UInt64>({value:X16})"
     );
 
+#pragma warning disable NUnit2007
   [Test]
   public void ShimType_TrailingZeroCount()
     => Assert.That(
@@ -734,6 +743,7 @@ ShimTypeSystemNumericsBitOperationsLeadingZeroCount.LeadingZeroCount(value), Is.
       ,
       Is.EqualTo(typeof(ShimTypeSystemNumericsBitOperationsTrailingZeroCount))
     );
+#pragma warning restore NUnit2007
 
   [TestCase(0b_00000000_00000000_00000000_00000000u, 32)]
   [TestCase(0b_00000000_00000000_00000000_00000001u,  0)]
