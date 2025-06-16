@@ -108,19 +108,22 @@ static partial class MimeEncoding {
    *       encoded-word := "=?" charset ["*" language] "?" encoding "?"
    *                       encoded-text "?="
    */
-#pragma warning disable SA1203
-  private const string MimeEncodedWordPattern
+  private const string RegexMimeEncodedWordPattern
     = @"\s*=\?(?<charset>[^?*]+)(?<language>\*[^?]+)?\?(?<encoding>[^?]+)\?(?<text>[^\?\s]+)\?=\s*";
-#pragma warning restore SA1203
 
-  private static readonly Regex MimeEncodedWordRegex = new(
-    MimeEncodedWordPattern,
-    RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
+#if SYSTEM_TEXT_REGULAREXPRESSIONS_GENERATEDREGEXATTRIBUTE
+  private static Regex RegexMimeEncodedWord => GetRegexMimeEncodedWord();
+
+  [GeneratedRegex(
+    pattern: RegexMimeEncodedWordPattern,
+    options: RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
+  )]
+  private static partial Regex GetRegexMimeEncodedWord(); // TODO: use C# 13 partial property
+#else
+  private static Regex RegexMimeEncodedWord { get; } = new(
+    pattern: RegexMimeEncodedWordPattern,
+    options: RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.Compiled
   );
-
-#if SYSTEM_TEXT_REGULAREXPRESSIONS_REGEXGENERATORATTRIBUTE
-  [RegexGenerator(MimeEncodedWordPattern, RegexOptions.Singleline | RegexOptions.CultureInvariant)]
-  private static partial Regex GetMimeEncodedWordRegex();
 #endif
 
   public static string Decode(
@@ -140,12 +143,7 @@ static partial class MimeEncoding {
     Encoding? lastCharset = null;
     var lastEncoding = MimeEncodingMethod.None;
 
-    var ret =
-#if SYSTEM_TEXT_REGULAREXPRESSIONS_REGEXGENERATORATTRIBUTE
-      GetMimeEncodedWordRegex()
-#else
-      MimeEncodedWordRegex
-#endif
+    var ret = RegexMimeEncodedWord
       .Replace(
         str,
         m => {
