@@ -107,4 +107,117 @@ public class ICustomAttributeProviderExtensionsTests {
 
     Assert.Throws<ArgumentException>(() => provider.GetCustomAttributeDataList());
   }
+
+  [Test]
+  public void HasCompilerGeneratedAttribute_ArgumentNull()
+    => Assert.That(
+      () => ((ICustomAttributeProvider)null!).HasCompilerGeneratedAttribute(),
+      Throws.ArgumentNullException
+    );
+
+  private class HasCompilerGeneratedAttributeTestCases {
+    public int P0 { get; set; }
+    public int P1 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public event EventHandler E0;
+    public event EventHandler E1 {
+      add => throw new NotImplementedException();
+      remove => throw new NotImplementedException();
+    }
+
+    public record R {
+      public void M() => throw new NotImplementedException();
+    }
+  }
+
+  private static System.Collections.IEnumerable YieldTestCases_HasCompilerGeneratedAttribute()
+  {
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetProperty(nameof(HasCompilerGeneratedAttributeTestCases.P0)),
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetProperty(nameof(HasCompilerGeneratedAttributeTestCases.P0))!.GetMethod,
+      true,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetProperty(nameof(HasCompilerGeneratedAttributeTestCases.P0))!.SetMethod,
+      true,
+    };
+
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetProperty(nameof(HasCompilerGeneratedAttributeTestCases.P1)),
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetProperty(nameof(HasCompilerGeneratedAttributeTestCases.P1))!.GetMethod,
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetProperty(nameof(HasCompilerGeneratedAttributeTestCases.P1))!.SetMethod,
+      false,
+    };
+
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetEvent(nameof(HasCompilerGeneratedAttributeTestCases.E0)),
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetEvent(nameof(HasCompilerGeneratedAttributeTestCases.E0))!.AddMethod,
+      true,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetEvent(nameof(HasCompilerGeneratedAttributeTestCases.E0))!.RemoveMethod,
+      true,
+    };
+
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetEvent(nameof(HasCompilerGeneratedAttributeTestCases.E1)),
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetEvent(nameof(HasCompilerGeneratedAttributeTestCases.E1))!.AddMethod,
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).GetEvent(nameof(HasCompilerGeneratedAttributeTestCases.E1))!.RemoveMethod,
+      false,
+    };
+
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases.R),
+      false,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases.R).GetMethod(nameof(Equals), BindingFlags.Instance | BindingFlags.Public, null, [typeof(object)], null),
+      true,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases.R).GetMethod(nameof(ToString), BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null),
+      true,
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases.R).GetMethod(nameof(HasCompilerGeneratedAttributeTestCases.R.M), BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null),
+      false,
+    };
+
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).Assembly,
+      false, // does not throw
+    };
+    yield return new object[] {
+      typeof(HasCompilerGeneratedAttributeTestCases).Module,
+      false, // does not throw
+    };
+  }
+
+  [TestCaseSource(nameof(YieldTestCases_HasCompilerGeneratedAttribute))]
+  public void HasCompilerGeneratedAttribute(
+    ICustomAttributeProvider attributeProvider,
+    bool expected
+  )
+    => Assert.That(
+      attributeProvider.HasCompilerGeneratedAttribute(),
+      Is.EqualTo(expected)
+    );
 }
