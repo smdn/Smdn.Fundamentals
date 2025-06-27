@@ -88,6 +88,93 @@ public static class TypeExtensions {
         static d => string.Equals(d.AttributeType.FullName, "System.Runtime.CompilerServices.IsByRefLikeAttribute", StringComparison.Ordinal)
       );
 
+  public static bool IsRecord(this Type t)
+  {
+    if (t is null)
+      throw new ArgumentNullException(nameof(t));
+
+    if (ROCType.IsEnum(t))
+      return false; // enums cannot be record types
+    if (t.IsInterface)
+      return false; // interfaces cannot be record types
+    if (IsDelegate(t))
+      return false; // delegates cannot be record types
+
+    // Records (C# reference) - Value equality
+    // ref: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record#value-equality
+    // "* An override of Object.Equals(Object). It's an error if the override is declared explicitly."
+    // "* Overrides of operators == and !=. It's an error if the operators are declared explicitly."
+    // "* If the record type is derived from a base record type Base, Equals(Base? other). It's an error if the override is declared explicitly."
+    var areEqualityMethodsCompilerGenerated = true;
+
+    // Type.GetMethod(string, BindingFlags, params Type[]) may throw following exception:
+    //   System.ArgumentException : Type must be a type provided by the MetadataLoadContext. (Parameter 'types')
+    // To avoid this, get the type of System.Object from the same context with `t` instead of using `typeof(object)`.
+    var typeOfObject = GetTypeOfObject(t);
+
+    areEqualityMethodsCompilerGenerated &= t
+      .GetMethod(
+        name: nameof(Equals),
+        bindingAttr: BindingFlags.Instance | BindingFlags.Public,
+        binder: null,
+        types: [typeOfObject /* instead of typeof(object) */],
+        modifiers: null
+      )
+      ?.HasCompilerGeneratedAttribute() ?? false;
+
+    areEqualityMethodsCompilerGenerated &= t
+      .GetMethod(
+        name: "op_Equality",
+        bindingAttr: BindingFlags.Static | BindingFlags.Public,
+        binder: null,
+        types: [t, t],
+        modifiers: null
+      )
+      ?.HasCompilerGeneratedAttribute() ?? false;
+
+    areEqualityMethodsCompilerGenerated &= t
+      .GetMethod(
+        name: "op_Inequality",
+        bindingAttr: BindingFlags.Static | BindingFlags.Public,
+        binder: null,
+        types: [t, t],
+        modifiers: null
+      )
+      ?.HasCompilerGeneratedAttribute() ?? false;
+
+    if (t.BaseType is Type baseType && IsRecord(baseType)) {
+      areEqualityMethodsCompilerGenerated &= t
+        .GetMethod(
+          name: nameof(Equals),
+          bindingAttr: BindingFlags.Instance | BindingFlags.Public,
+          binder: null,
+          types: [baseType],
+          modifiers: null
+        )
+        ?.HasCompilerGeneratedAttribute() ?? false;
+    }
+
+    return areEqualityMethodsCompilerGenerated;
+
+    static Type GetTypeOfObject(Type? t)
+    {
+      for (; ; ) {
+        if (t is null)
+          throw new InvalidOperationException($"Could not get {typeof(Type)} of {typeof(object)}.");
+
+        if (ROCType.Equals(t, typeof(object)))
+          return t;
+
+#if DEBUG
+        if (t.IsInterface)
+          throw new InvalidOperationException($"Can not get {typeof(Type)} of {typeof(object)} from interface types.");
+#endif
+
+        t = t.BaseType;
+      }
+    }
+  }
+
   /// <returns>Returns <see cref="MethodInfo"/> which represents the signature of the delegate if <paramref name="t"/> is a <see cref="Delegate"/>, otherwise <see langword="null"/>.</returns>
   public static MethodInfo? GetDelegateSignatureMethod(this Type t)
     => IsDelegate(t ?? throw new ArgumentNullException(nameof(t))) ? t.GetMethod("Invoke") : null;
