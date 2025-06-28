@@ -11,9 +11,9 @@ SPDX-License-Identifier: MIT
     <NoStdLib>true</NoStdLib>
     <!-- disable build -->
     <NoBuild>true</NoBuild>
-    <!-- supress generating .deps.json -->
+    <!-- suppress generating .deps.json -->
     <GenerateDependencyFile>false</GenerateDependencyFile>
-    <!-- supress generating .AssemblyInfo.cs -->
+    <!-- suppress generating .AssemblyInfo.cs -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 </Project>
