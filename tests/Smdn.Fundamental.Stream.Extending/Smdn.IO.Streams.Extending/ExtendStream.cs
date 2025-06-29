@@ -127,7 +127,7 @@ public class ExtendStreamTests {
     Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.InnerStream, Is.Not.Null), nameof(stream.InnerStream));
     Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.LeaveInnerStreamOpen, Is.Not.Zero), nameof(stream.LeaveInnerStreamOpen));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
-    Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
+    Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
     Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
     Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Write));
@@ -212,7 +212,7 @@ public class ExtendStreamTests {
   {
     using var stream = new ExtendStream(Stream.Null, Stream.Null, Stream.Null);
 
-    Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+    Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
   }
 
   [TestCaseSource(

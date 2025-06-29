@@ -172,10 +172,10 @@ namespace Smdn.IO.Streams {
 
         stream.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 6));
+        Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(buffer, 0, 6));
         Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 6));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-        Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(buffer.AsMemory(0, 6)));
+        Assert.ThrowsAsync<ObjectDisposedException>(async () => _ = await stream.ReadAsync(buffer.AsMemory(0, 6)));
 #endif
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
@@ -194,7 +194,7 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new NonClosingStream(new MemoryStream(new byte[8]));
 
-      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
     }
 
     [TestCaseSource(

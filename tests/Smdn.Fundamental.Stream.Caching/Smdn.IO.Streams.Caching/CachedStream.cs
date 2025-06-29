@@ -199,7 +199,7 @@ namespace Smdn.IO.Streams.Caching {
     {
       using var stream = CreateCachedStream(new MemoryStream(8), 4, true);
 
-      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
     }
 
 #if false

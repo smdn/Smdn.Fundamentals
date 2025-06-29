@@ -568,7 +568,7 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new ChunkedMemoryStream(8);
 
-      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
     }
 
 #if false

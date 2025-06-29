@@ -160,13 +160,13 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.CanSeek, Is.False, "CanSeek");
       Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-      Assert.Throws<ObjectDisposedException>(() =>stream.ReadByte());
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0));
+      Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+      Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty));
+      Assert.ThrowsAsync<ObjectDisposedException>(async () => _ = await stream.ReadAsync(Memory<byte>.Empty));
 #endif
-      Assert.Throws<ObjectDisposedException>(() =>stream.WriteByte(0x00));
+      Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
@@ -378,7 +378,7 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
 
-      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
     }
 
     [TestCaseSource(

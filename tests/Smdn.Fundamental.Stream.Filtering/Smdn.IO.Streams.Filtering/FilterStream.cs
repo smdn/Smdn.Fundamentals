@@ -56,10 +56,10 @@ namespace Smdn.IO.Streams.Filtering {
       Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
 
       Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), nameof(stream.ReadByte));
-      Assert.Throws<ObjectDisposedException>(() => stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
+      Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Read));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.ReadAsync));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.ReadAsync(Memory<byte>.Empty), nameof(stream.ReadAsync));
+      Assert.ThrowsAsync<ObjectDisposedException>(async () => _ = await stream.ReadAsync(Memory<byte>.Empty), nameof(stream.ReadAsync));
 #endif
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00), nameof(stream.WriteByte));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Write));
@@ -111,7 +111,7 @@ namespace Smdn.IO.Streams.Filtering {
     {
       using var stream = new FilterStream(Stream.Null, EmptyFilters());
 
-      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
     }
 
     [TestCaseSource(

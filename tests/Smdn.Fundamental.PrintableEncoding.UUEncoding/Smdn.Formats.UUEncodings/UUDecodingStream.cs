@@ -99,12 +99,12 @@ end";
         using (var stream = new UUDecodingStream(baseStream)) {
           var buffer = new byte[3];
 
-          Assert.DoesNotThrow(() => stream.Read(buffer, 0, 1), "Read");
+          Assert.DoesNotThrow(() => _ = stream.Read(buffer, 0, 1), "Read");
           Assert.DoesNotThrow(() => stream.ReadByte(), "ReadByte");
 
           stream.Dispose();
 
-          Assert.Throws<ObjectDisposedException>(() => stream.Read(buffer, 0, 1), "Read");
+          Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(buffer, 0, 1), "Read");
           Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
           Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8))), "Permissions");
           Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.FileName, Is.EqualTo("cat.txt")), "FileName");
@@ -373,7 +373,7 @@ end
 end";
       using var stream = new UUDecodingStream(CreateStream(input));
 
-      Assert.Throws(expectedExceptionType, () => stream.Read(buffer, offset, count));
+      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
     }
 
 #if false
