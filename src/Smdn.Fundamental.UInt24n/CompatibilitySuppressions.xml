@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
+<Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.UInt24.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)</Target>
+    <Left>lib/net6.0/Smdn.Fundamental.UInt24n.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.UInt24n.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0002</DiagnosticId>
+    <Target>M:Smdn.UInt48.TryFormat(System.Span{System.Char},System.Int32@,System.ReadOnlySpan{System.Char},System.IFormatProvider)</Target>
+    <Left>lib/net6.0/Smdn.Fundamental.UInt24n.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.UInt24n.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:Smdn.UInt24</Target>
+    <Left>lib/net6.0/Smdn.Fundamental.UInt24n.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.UInt24n.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>CP0008</DiagnosticId>
+    <Target>T:Smdn.UInt48</Target>
+    <Left>lib/net6.0/Smdn.Fundamental.UInt24n.dll</Left>
+    <Right>lib/netstandard2.1/Smdn.Fundamental.UInt24n.dll</Right>
+    <IsBaselineSuppression>true</IsBaselineSuppression>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>PKV006</DiagnosticId>
+    <Target>.NETStandard,Version=v1.6</Target>
+  </Suppression>
+</Suppressions>

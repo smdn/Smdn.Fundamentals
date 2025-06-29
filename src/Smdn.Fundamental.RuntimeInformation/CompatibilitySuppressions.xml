@@ -3,13 +3,17 @@
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
     <DiagnosticId>CP0008</DiagnosticId>
-    <Target>T:Smdn.Xml.Xhtml.PolyglotHtml5Writer.ExtendedWriteState</Target>
-    <Left>lib/net5.0/Smdn.Fundamental.Xml.Xhtml.dll</Left>
-    <Right>lib/netstandard2.1/Smdn.Fundamental.Xml.Xhtml.dll</Right>
+    <Target>T:Smdn.RuntimeEnvironment</Target>
+    <Left>lib/net6.0/Smdn.Fundamental.RuntimeInformation.dll</Left>
+    <Right>lib/netstandard2.0/Smdn.Fundamental.RuntimeInformation.dll</Right>
     <IsBaselineSuppression>true</IsBaselineSuppression>
   </Suppression>
   <Suppression>
     <DiagnosticId>PKV006</DiagnosticId>
-    <Target>.NETStandard,Version=v1.6</Target>
+    <Target>.NETStandard,Version=v1.1</Target>
+  </Suppression>
+  <Suppression>
+    <DiagnosticId>PKV006</DiagnosticId>
+    <Target>.NETStandard,Version=v1.5</Target>
   </Suppression>
 </Suppressions>

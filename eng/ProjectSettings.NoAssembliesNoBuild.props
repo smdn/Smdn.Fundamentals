@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <Import Project="$(MSBuildThisFileDirectory)ProjectSettings.NoAssemblies.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <!-- requires no stdlib -->
     <NoStdLib>true</NoStdLib>
     <!-- disable build -->

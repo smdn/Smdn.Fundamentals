@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://learn.microsoft.com/dotnet/fundamentals/package-validation/diagnostic-ids -->
 <Suppressions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Suppression>
-    <DiagnosticId>CP0002</DiagnosticId>
-    <Target>M:Smdn.Xml.Linq.Extensions.GetAttributeValue``1(System.Xml.Linq.XElement,System.Xml.Linq.XName,System.Func{System.String,``0})</Target>
-    <Left>lib/netstandard1.6/Smdn.Fundamental.Xml.Linq.dll</Left>
-    <Right>lib/netstandard2.0/Smdn.Fundamental.Xml.Linq.dll</Right>
+    <DiagnosticId>PKV006</DiagnosticId>
+    <Target>.NETStandard,Version=v1.6</Target>
   </Suppression>
 </Suppressions>

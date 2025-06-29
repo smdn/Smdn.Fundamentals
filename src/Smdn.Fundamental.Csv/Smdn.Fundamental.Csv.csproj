@@ -4,11 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.1;netstandard1.6</TargetFrameworks>
+    <TargetFrameworks>net45;netstandard2.1;netstandard2.0</TargetFrameworks>
     <VersionPrefix>3.1.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
-    <AllowUnsafeBlocks Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))">true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard2.0'))">true</AllowUnsafeBlocks>
     <RootNamespace/> <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0130 -->
     <NoWarn>CS1591;$(NoWarn)</NoWarn> <!-- CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member' -->
   </PropertyGroup>
@@ -22,7 +22,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard1')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard2.0'))" />
     <PackageReference Include="System.Memory" />
   </ItemGroup>
 </Project>

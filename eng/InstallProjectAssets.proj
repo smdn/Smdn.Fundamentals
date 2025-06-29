@@ -12,7 +12,7 @@ SPDX-License-Identifier: MIT
   <!-- ref: https://learn.microsoft.com/en-us/nuget/consume-packages/packagedownload-functionality -->
   <PropertyGroup>
     <NoBuild>true</NoBuild>
-    <TargetFramework>netstandard1.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AutomaticallyUseReferenceAssemblyPackages>false</AutomaticallyUseReferenceAssemblyPackages>
   </PropertyGroup>
 
