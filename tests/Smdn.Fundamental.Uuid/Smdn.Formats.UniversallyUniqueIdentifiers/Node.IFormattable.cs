@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Text.RegularExpressions;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Globalization;
+
 using NUnit.Framework;
 
 namespace Smdn {

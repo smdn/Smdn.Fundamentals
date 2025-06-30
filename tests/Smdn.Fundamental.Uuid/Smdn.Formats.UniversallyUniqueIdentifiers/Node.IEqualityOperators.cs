@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 #if SYSTEM_NUMERICS_IEQUALITYOPERATORS
 using System.Numerics;
+
 #endif
 using NUnit.Framework;
 

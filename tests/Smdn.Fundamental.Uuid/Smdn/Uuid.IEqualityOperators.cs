@@ -3,6 +3,7 @@
 using System;
 #if SYSTEM_NUMERICS_IEQUALITYOPERATORS
 using System.Numerics;
+
 #endif
 using NUnit.Framework;
 

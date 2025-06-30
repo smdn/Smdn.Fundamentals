@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 #if SYSTEM_NUMERICS_IUNARYPLUSOPERATORS
 using System.Numerics;
 #endif

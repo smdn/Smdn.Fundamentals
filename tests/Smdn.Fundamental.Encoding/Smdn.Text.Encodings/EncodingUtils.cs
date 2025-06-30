@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Text;
+
 using NUnit.Framework;
+
 using EncodingProvider = Smdn.Test.NUnit.Encodings;
 
 namespace Smdn.Text.Encodings;

@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 using BufferIs = Smdn.Test.NUnit.Constraints.Buffers.Is;
@@ -212,10 +213,10 @@ public partial class MimeTypeTests {
         StringComparison.CurrentCulture => StringComparer.CurrentCulture,
         StringComparison.CurrentCultureIgnoreCase => StringComparer.CurrentCultureIgnoreCase,
 #if SYSTEM_STRINGCOMPARISON_INVARIANTCULTURE && SYSTEM_STRINGCOMPARER_INVARIANTCULTURE
-      StringComparison.InvariantCulture => StringComparer.InvariantCulture,
+        StringComparison.InvariantCulture => StringComparer.InvariantCulture,
 #endif
 #if SYSTEM_STRINGCOMPARISON_INVARIANTCULTUREIGNORECASE && SYSTEM_STRINGCOMPARER_INVARIANTCULTUREIGNORECASE
-      StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
+        StringComparison.InvariantCultureIgnoreCase => StringComparer.InvariantCultureIgnoreCase,
 #endif
         StringComparison.Ordinal => StringComparer.Ordinal,
         StringComparison.OrdinalIgnoreCase => StringComparer.OrdinalIgnoreCase,

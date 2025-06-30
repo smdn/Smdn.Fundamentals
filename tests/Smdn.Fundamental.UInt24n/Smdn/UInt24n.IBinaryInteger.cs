@@ -191,13 +191,13 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TryReadBigEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2)]int length)
+  public void TryReadBigEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2)] int length)
   {
     Assert.That(UInt24.TryReadBigEndian(new byte[length], isUnsigned, out _), Is.False);
   }
 
   [Test]
-  public void TryReadLittleEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2)]int length)
+  public void TryReadLittleEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2)] int length)
   {
     Assert.That(UInt24.TryReadLittleEndian(new byte[length], isUnsigned, out _), Is.False);
   }
@@ -243,13 +243,13 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TryReadBigEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
+  public void TryReadBigEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)] int length)
   {
     Assert.That(UInt48.TryReadBigEndian(new byte[length], isUnsigned, out _), Is.False);
   }
 
   [Test]
-  public void TryReadLittleEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)]int length)
+  public void TryReadLittleEndian_SourceTooShort([Values] bool isUnsigned, [Values(0, 1, 2, 3, 4, 5)] int length)
   {
     Assert.That(UInt48.TryReadLittleEndian(new byte[length], isUnsigned, out _), Is.False);
   }
@@ -288,14 +288,14 @@ partial class UInt24Tests {
   }
 
   [Test]
-  public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2)]int length)
+  public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2)] int length)
   {
     Assert.That(UInt24.One.TryWriteBigEndian(new byte[length], out var bytesWritten), Is.False);
     Assert.That(bytesWritten, Is.Zero);
   }
 
   [Test]
-  public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2)]int length)
+  public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2)] int length)
   {
     Assert.That(UInt24.One.TryWriteLittleEndian(new byte[length], out var bytesWritten), Is.False);
     Assert.That(bytesWritten, Is.Zero);
@@ -338,14 +338,14 @@ partial class UInt48Tests {
   }
 
   [Test]
-  public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)]int length)
+  public void TryWriteBigEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)] int length)
   {
     Assert.That(UInt48.One.TryWriteBigEndian(new byte[length], out var bytesWritten), Is.False);
     Assert.That(bytesWritten, Is.Zero);
   }
 
   [Test]
-  public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)]int length)
+  public void TryWriteLittleEndian_SourceTooShort([Values(0, 1, 2, 3, 4, 5)] int length)
   {
     Assert.That(UInt48.One.TryWriteLittleEndian(new byte[length], out var bytesWritten), Is.False);
     Assert.That(bytesWritten, Is.Zero);

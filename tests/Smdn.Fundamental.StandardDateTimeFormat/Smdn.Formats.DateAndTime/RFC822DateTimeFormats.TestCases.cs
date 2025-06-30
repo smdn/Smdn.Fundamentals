@@ -258,7 +258,7 @@ partial class RFC822DateTimeFormatsTests {
     yield return (TestCaseLevel.Essential,    "Thu, 01 May 2022 23:17:14.0123456 +0000"); // day of week / mismatch
     yield return (TestCaseLevel.Complemental, "Nul, 01 May 2022 23:17:14.0123456 +0000"); // day of week / invalid
     yield return (TestCaseLevel.Complemental, "Su, 01 May 2022 23:17:14.0123456 +0000"); // day of week / invalid
-    foreach (var (level, dayOfWeek) in new [] {
+    foreach (var (level, dayOfWeek) in new[] {
       (TestCaseLevel.Essential, "Sun, "),
       (TestCaseLevel.Complemental, string.Empty),
     }) {

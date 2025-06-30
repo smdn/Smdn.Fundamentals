@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using NUnit.Framework;
-
 using System.Text;
+
+using NUnit.Framework;
 
 namespace Smdn.Text.Encodings;
 
