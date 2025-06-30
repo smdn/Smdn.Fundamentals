@@ -58,7 +58,7 @@ on:
         description: "The minimum .NET SDK version which is used to generate the release target."
         required: false
         type: string
-        default: '6.0.200'
+        default: '8.0.100'
 
       dry_run:
         description: "If true, performs a trial run."
