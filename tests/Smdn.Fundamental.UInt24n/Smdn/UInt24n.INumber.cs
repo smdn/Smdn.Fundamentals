@@ -8,7 +8,10 @@ using System.Numerics;
 using NUnit.Framework;
 
 namespace Smdn;
+
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   private static System.Collections.IEnumerable YieldTestCases_INumber_Sign_UInt24()
   {
     yield return new object?[] { UInt24.Zero, 0 };

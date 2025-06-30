@@ -5,7 +5,9 @@ using System.Collections;
 
 namespace Smdn.Formats.DateAndTime;
 
+#pragma warning disable IDE0040
 partial class W3CDateTimeFormatsTests {
+#pragma warning restore IDE0040
   private static IEnumerable YieldTestCases_Parse_InvalidFormat_Comprehensive()
   {
     foreach (var (_, input) in ISO8601DateTimeFormatsTests.YieldTestCases_Parse_InvalidFormat_All(iso8601: false)) {

@@ -9,7 +9,9 @@ using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_Zero()
   {
@@ -31,7 +33,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_Zero()
   {
@@ -53,7 +57,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   [TestCase(typeof(byte))]
   [TestCase(typeof(sbyte))]
   [TestCase(typeof(char))]
@@ -83,7 +89,9 @@ partial class UInt24nTests {
     => TUInt24n.CreateChecked(TOther.Zero);
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked_Zero()
   {
@@ -105,7 +113,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked_Zero()
   {
@@ -127,7 +137,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked()
   {
@@ -149,7 +161,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked()
   {
@@ -177,7 +191,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked()
   {
@@ -199,7 +215,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked()
   {
@@ -227,7 +245,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_OverflowException()
   {
@@ -252,7 +272,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_OverflowException()
   {
@@ -276,7 +298,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked_Overflow()
   {
@@ -301,7 +325,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked_Overflow()
   {
@@ -325,7 +351,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_TypeNotSupportedException()
   {
@@ -334,7 +362,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_TypeNotSupportedException()
   {
@@ -343,7 +373,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateChecked_TypeNotSupportedException()
   {
@@ -358,7 +390,9 @@ partial class UInt24nTests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked_TypeNotSupported()
   {
@@ -367,7 +401,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromChecked_TypeNotSupported()
   {

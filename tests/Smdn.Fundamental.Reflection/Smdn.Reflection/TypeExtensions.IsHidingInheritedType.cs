@@ -6,7 +6,9 @@ using NUnit.Framework;
 
 namespace Smdn.Reflection;
 
+#pragma warning disable IDE0040
 partial class TypeExtensionsTests {
+#pragma warning restore IDE0040
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
   public class HidingInheritedTypeAttribute : Attribute
   {

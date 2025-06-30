@@ -9,7 +9,9 @@ using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   [Test]
   public void IMultiplicativeIdentity_MultiplicativeIdentity()
   {

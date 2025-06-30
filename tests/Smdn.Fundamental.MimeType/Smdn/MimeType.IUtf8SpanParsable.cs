@@ -4,11 +4,14 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+
 using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class MimeTypeTests {
+#pragma warning restore IDE0040
   [TestCaseSource(nameof(YieldParseValidTestCases))]
   public void IUtf8SpanParsable_Parse(string s, MimeType expected)
   {

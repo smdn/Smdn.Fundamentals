@@ -9,8 +9,9 @@ using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-[TestFixture]
-public partial class LineOrientedStreamTests {
+#pragma warning disable IDE0040
+partial class LineOrientedStreamTests {
+#pragma warning restore IDE0040
   [TestCaseSource(
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidWriteBufferArguments)

@@ -3,12 +3,16 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 using NUnit.Framework;
+
 using Smdn.Test.NUnit;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class MimeTypeTests {
+#pragma warning restore IDE0040
   public static bool IsRunningOnWindows =>
     RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 

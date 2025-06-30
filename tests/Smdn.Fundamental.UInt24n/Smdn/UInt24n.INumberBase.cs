@@ -9,17 +9,23 @@ using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test] public void Zero() => Assert.That(UInt24.Zero, Is.EqualTo(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x00 }, isBigEndian: true)));
   [Test] public void One() => Assert.That(UInt24.One, Is.EqualTo(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x01 }, isBigEndian: true)));
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test] public void Zero() => Assert.That(UInt48.Zero, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true)));
   [Test] public void One() => Assert.That(UInt48.One, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x01 }, isBigEndian: true)));
 }
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
 #if SYSTEM_NUMERICS_INUMBERBASE
   [Test]
   public void INumberBase_Zero()

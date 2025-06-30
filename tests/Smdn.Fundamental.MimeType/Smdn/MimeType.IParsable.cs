@@ -1,11 +1,14 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class MimeTypeTests {
+#pragma warning restore IDE0040
   private static System.Collections.IEnumerable YieldParseValidTestCases()
   {
     yield return new object[] { "text/plain", MimeType.TextPlain };

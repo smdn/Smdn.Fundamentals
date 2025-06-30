@@ -10,17 +10,23 @@ using NUnit.Framework;
 namespace Smdn;
 
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test] public void MinValue() => Assert.That(UInt24.MinValue, Is.EqualTo(new UInt24(stackalloc byte[3] { 0x00, 0x00, 0x00 }, isBigEndian: true)));
   [Test] public void MaxValue() => Assert.That(UInt24.MaxValue, Is.EqualTo(new UInt24(stackalloc byte[3] { 0xFF, 0xFF, 0xFF }, isBigEndian: true)));
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test] public void MinValue() => Assert.That(UInt48.MinValue, Is.EqualTo(new UInt48(stackalloc byte[6] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: true)));
   [Test] public void MaxValue() => Assert.That(UInt48.MaxValue, Is.EqualTo(new UInt48(stackalloc byte[6] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF }, isBigEndian: true)));
 }
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
 #if SYSTEM_NUMERICS_IMINMAXVALUE
   [Test]
   public void IMinMaxValue_MinValue()

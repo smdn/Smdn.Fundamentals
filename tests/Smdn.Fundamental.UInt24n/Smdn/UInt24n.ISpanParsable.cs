@@ -7,7 +7,9 @@ using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   private static TUInt24n Parse<TUInt24n>(string s) where TUInt24n : ISpanParsable<TUInt24n>
     => TUInt24n.Parse(s, provider: null);
 

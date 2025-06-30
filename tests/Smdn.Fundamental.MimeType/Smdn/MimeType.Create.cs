@@ -1,12 +1,14 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn;
 
-[TestFixture()]
-public partial class MimeTypeTests {
+#pragma warning disable IDE0040
+partial class MimeTypeTests {
+#pragma warning restore IDE0040
   private static void TestCreate(Func<MimeType> create, string? expectedMimeType, Type? expectedExceptionType)
   {
     if (expectedExceptionType is null) {

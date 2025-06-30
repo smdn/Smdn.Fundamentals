@@ -9,7 +9,9 @@ using NUnit.Framework;
 
 namespace Smdn.Text.Encodings;
 
+#pragma warning disable IDE0040
 partial class OctetEncodingTests {
+#pragma warning restore IDE0040
   [Test]
   public void GetByteCount()
   {

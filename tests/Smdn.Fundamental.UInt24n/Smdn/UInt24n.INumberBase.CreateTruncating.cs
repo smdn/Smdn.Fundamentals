@@ -9,7 +9,9 @@ using NUnit.Framework;
 
 namespace Smdn;
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_Zero()
   {
@@ -31,7 +33,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_Zero()
   {
@@ -53,7 +57,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   [TestCase(typeof(byte))]
   [TestCase(typeof(sbyte))]
   [TestCase(typeof(char))]
@@ -83,7 +89,9 @@ partial class UInt24nTests {
     => TUInt24n.CreateTruncating(TOther.Zero);
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating_Zero()
   {
@@ -105,7 +113,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating_Zero()
   {
@@ -127,7 +137,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating()
   {
@@ -149,7 +161,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating()
   {
@@ -177,7 +191,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating()
   {
@@ -199,7 +215,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating()
   {
@@ -227,7 +245,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_OverflowException()
   {
@@ -252,7 +272,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_OverflowException()
   {
@@ -276,7 +298,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating_Overflow()
   {
@@ -302,7 +326,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating_Overflow()
   {
@@ -326,7 +352,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException()
   {
@@ -335,7 +363,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException()
   {
@@ -344,7 +374,9 @@ partial class UInt48Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24nTests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException()
   {
@@ -359,7 +391,9 @@ partial class UInt24nTests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt24Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating_TypeNotSupported()
   {
@@ -368,7 +402,9 @@ partial class UInt24Tests {
   }
 }
 
+#pragma warning disable IDE0040
 partial class UInt48Tests {
+#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromTruncating_TypeNotSupported()
   {

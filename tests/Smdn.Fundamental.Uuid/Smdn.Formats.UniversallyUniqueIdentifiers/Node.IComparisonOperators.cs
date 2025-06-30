@@ -8,7 +8,9 @@ using NUnit.Framework;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
+#pragma warning disable IDE0040
 partial class NodeTests {
+#pragma warning restore IDE0040
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", false,  true)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01",  true,  true)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00",  true,  true)]

@@ -6,7 +6,9 @@ using System.Collections.Generic;
 
 namespace Smdn.Formats.DateAndTime;
 
+#pragma warning disable IDE0040
 partial class RFC822DateTimeFormatsTests {
+#pragma warning restore IDE0040
   private enum TestCaseLevel {
     Essential,
     Complemental,

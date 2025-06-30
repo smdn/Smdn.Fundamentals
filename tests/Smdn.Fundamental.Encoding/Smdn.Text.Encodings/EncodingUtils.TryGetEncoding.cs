@@ -7,7 +7,9 @@ using NUnit.Framework;
 
 namespace Smdn.Text.Encodings;
 
+#pragma warning disable IDE0040
 partial class EncodingUtilsTests {
+#pragma warning restore IDE0040
   [TestCase("x-foo", "UTF-8")]
   [TestCase("X-FOO", "UTF-8")]
   [TestCase(" x-foo", "UTF-8")]
