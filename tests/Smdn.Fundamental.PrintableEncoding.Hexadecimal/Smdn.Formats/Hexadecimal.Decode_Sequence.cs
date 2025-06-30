@@ -1,13 +1,16 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
 namespace Smdn.Formats;
 
+#pragma warning disable IDE0040
 partial class HexadecimalTests {
+#pragma warning restore IDE0040
   private static ArraySegment<char> ToArraySegment(string input)
     => new(input.ToCharArray());
 

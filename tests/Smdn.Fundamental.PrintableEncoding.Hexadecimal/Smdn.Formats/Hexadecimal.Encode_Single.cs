@@ -1,11 +1,14 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats;
 
+#pragma warning disable IDE0040
 partial class HexadecimalTests {
+#pragma warning restore IDE0040
 #if SYSTEM_SPAN
   [Test]
   public void TryEncodeUpperCase_OfData_ToByteSpan_DestinationTooShort()
@@ -90,19 +93,19 @@ partial class HexadecimalTests {
 
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x01, dest.AsSpan(0), out var bytesEncoded), Is.True, $"#0 {nameof(Hexadecimal.TryEncodeUpperCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#0 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x30, 0x31, 0x00, 0x00}, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
+    Assert.That(new byte[] { 0x30, 0x31, 0x00, 0x00 }, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x23, dest.AsSpan(1), out bytesEncoded), Is.True, $"#1 {nameof(Hexadecimal.TryEncodeUpperCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#1 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x32, 0x33, 0x00}, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
+    Assert.That(new byte[] { 0x00, 0x32, 0x33, 0x00 }, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeUpperCase(0xAB, dest.AsSpan(2), out bytesEncoded), Is.True, $"#2 {nameof(Hexadecimal.TryEncodeUpperCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#2 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x00, 0x41, 0x42}, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
+    Assert.That(new byte[] { 0x00, 0x00, 0x41, 0x42 }, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
   }
 #endif
 
@@ -111,21 +114,21 @@ partial class HexadecimalTests {
   {
     var dest = new byte[4];
 
-    Assert.That(Hexadecimal.TryEncodeUpperCase(0x01, dest, 0 , out var bytesEncoded), Is.True, $"#0 {nameof(Hexadecimal.TryEncodeUpperCase)}");
+    Assert.That(Hexadecimal.TryEncodeUpperCase(0x01, dest, 0, out var bytesEncoded), Is.True, $"#0 {nameof(Hexadecimal.TryEncodeUpperCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#0 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x30, 0x31, 0x00, 0x00}, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
+    Assert.That(new byte[] { 0x30, 0x31, 0x00, 0x00 }, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeUpperCase(0x23, dest, 1, out bytesEncoded), Is.True, $"#1 {nameof(Hexadecimal.TryEncodeUpperCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#1 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x32, 0x33, 0x00}, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
+    Assert.That(new byte[] { 0x00, 0x32, 0x33, 0x00 }, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeUpperCase(0xAB, dest, 2, out bytesEncoded), Is.True, $"#2 {nameof(Hexadecimal.TryEncodeUpperCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#2 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x00, 0x41, 0x42}, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
+    Assert.That(new byte[] { 0x00, 0x00, 0x41, 0x42 }, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
   }
 
 #if SYSTEM_SPAN
@@ -136,19 +139,19 @@ partial class HexadecimalTests {
 
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x01, dest.AsSpan(0), out var bytesEncoded), Is.True, $"#0 {nameof(Hexadecimal.TryEncodeLowerCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#0 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x30, 0x31, 0x00, 0x00}, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
+    Assert.That(new byte[] { 0x30, 0x31, 0x00, 0x00 }, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x23, dest.AsSpan(1), out bytesEncoded), Is.True, $"#1 {nameof(Hexadecimal.TryEncodeLowerCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#1 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x32, 0x33, 0x00}, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
+    Assert.That(new byte[] { 0x00, 0x32, 0x33, 0x00 }, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeLowerCase(0xAB, dest.AsSpan(2), out bytesEncoded), Is.True, $"#2 {nameof(Hexadecimal.TryEncodeLowerCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#2 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x00, 0x61, 0x62}, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
+    Assert.That(new byte[] { 0x00, 0x00, 0x61, 0x62 }, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
   }
 #endif
 
@@ -159,19 +162,19 @@ partial class HexadecimalTests {
 
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x01, dest, 0, out var bytesEncoded), Is.True, $"#0 {nameof(Hexadecimal.TryEncodeLowerCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#0 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x30, 0x31, 0x00, 0x00}, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
+    Assert.That(new byte[] { 0x30, 0x31, 0x00, 0x00 }, Is.EqualTo(dest).AsCollection, $"#0 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeLowerCase(0x23, dest, 1, out bytesEncoded), Is.True, $"#1 {nameof(Hexadecimal.TryEncodeLowerCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#1 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x32, 0x33, 0x00}, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
+    Assert.That(new byte[] { 0x00, 0x32, 0x33, 0x00 }, Is.EqualTo(dest).AsCollection, $"#1 {dest}");
 
     Array.Clear(dest, 0, dest.Length);
 
     Assert.That(Hexadecimal.TryEncodeLowerCase(0xAB, dest, 2, out bytesEncoded), Is.True, $"#2 {nameof(Hexadecimal.TryEncodeLowerCase)}");
     Assert.That(bytesEncoded, Is.EqualTo(2), $"#2 {nameof(bytesEncoded)}");
-    Assert.That(new byte[] {0x00, 0x00, 0x61, 0x62}, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
+    Assert.That(new byte[] { 0x00, 0x00, 0x61, 0x62 }, Is.EqualTo(dest).AsCollection, $"#2 {dest}");
   }
 
 #if SYSTEM_SPAN

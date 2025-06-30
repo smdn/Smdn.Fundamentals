@@ -1,11 +1,14 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats;
 
+#pragma warning disable IDE0040
 partial class HexadecimalTests {
+#pragma warning restore IDE0040
 #if SYSTEM_SPAN
   [Test]
   public void TryEncodeUpperCase_OfReadOnlySpanDataSequence_ToByteSpan_DestinationTooShort()
