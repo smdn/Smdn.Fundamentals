@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
+#cSpell:ignore apikey,commitish,pwsh,prevver,releasenote,releasenotes
 
 name: Publish release (reusable workflow)
 run-name: Publish release for '${{ inputs.release_tag }}'

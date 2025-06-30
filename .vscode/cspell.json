@@ -11,11 +11,13 @@
   "language": "en",
   // words - list of words to be always considered correct
   "words": [
+    "apilist",
     "cloneable",
     "entitize",
     "hypot",
     "LINQ",
     "memberwise",
+    "MSBuild",
     "picturized",
     "postamble",
     "smdn",
@@ -25,17 +27,19 @@
     "assm",
     "assem",
     "iface",
-    "resx",
     "netcoreapp",
     "netframework",
     "netfx",
     "netstandard",
+    "nologo",
+    "resx",
   ],
   "ignoreRegExpList": [
     "SYSTEM_[A-Z][A-Z0-9_]+",
     "NETFRAMEWORK[0-9][A-Z0-9_]+",
     "NETCOREAPP[0-9]_[0-9]_[A-Z0-9_]+",
     "NETSTANDARD[0-9]_[0-9]_[A-Z0-9_]+",
+    "NETSDK[0-9]+",
   ],
   // flagWords - list of words to be always considered incorrect
   // This is useful for offensive words and common spelling errors.

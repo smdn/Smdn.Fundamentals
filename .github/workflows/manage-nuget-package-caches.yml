@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
+# cSpell:ignore pwsh
 
 name: Manage NuGet package caches
 
@@ -7,9 +8,11 @@ on:
   workflow_dispatch:
 
 env:
+  # cSpell:disable
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
+  # cSpell:enable
 
 jobs:
   manage-nuget-package-caches:

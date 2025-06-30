@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: "2022 smdn <smdn@smdn.jp>"
-# cSpell:words pullrequest,releasenote,unreleasable
+# cSpell:ignore prevver,pwsh
+# cSpell:words pullrequest,releasenote,unreleasable,unmatch
 
 name: Generate release target (reusable workflow)
 run-name: Generate release target for ${{ inputs.release_target_tag_name }}
@@ -79,9 +80,11 @@ on:
         required: true
 
 env:
+  # cSpell:disable
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
+  # cSpell:enable
 
 jobs:
   generate-release-target:
@@ -286,6 +289,7 @@ jobs:
     - name: Restore dependencies of ${{ steps.package-info.outputs.package_id }}
       shell: pwsh
       run: |
+        # cSpell:disable-next-line
         # workaround for error on `dotnet restore`; The process cannot access the file '/home/runner/.nuget/NuGet/nugetorgadd.trk'
         # remove when https://github.com/NuGet/Home/issues/11607 is fixed
         # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
