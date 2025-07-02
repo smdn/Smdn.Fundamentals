@@ -14,12 +14,13 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
-    <Description>A package of MSBuild asset files common to the various projects.</Description>
+    <Description>Provides MSBuild project SDK that includes configurations commonly used by the various .NET projects.</Description>
     <CopyrightYear>2022</CopyrightYear>
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
     <PackageTags>MSBuild;MSBuildSDK;project-assets;build-assets</PackageTags>
+    <GenerateNupkgReadmeFileDependsOnTargets>$(GenerateNupkgReadmeFileDependsOnTargets);GenerateReadmeFileContent</GenerateNupkgReadmeFileDependsOnTargets>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,4 +38,24 @@ SPDX-License-Identifier: MIT
     <None Include="Sdk\Sdk.props"                          Pack="true" PackagePath="Sdk\" />
     <None Include="Sdk\Sdk.targets"                        Pack="true" PackagePath="Sdk\" />
   </ItemGroup>
+
+  <Target Name="GenerateReadmeFileContent">
+    <PropertyGroup>
+      <PackageReadmeFileContent><![CDATA[# $(PackageId) $(PackageVersion)
+$(Description)
+
+This package can be used as an [MSBuild project SDK](https://learn.microsoft.com/visualstudio/msbuild/how-to-use-project-sdk) and includes the following files:
+
+- MSBuild files (`.props` and `.targets`)
+  - Default configuration (items and properties) for .NET projects
+  - Default configuration for code analyzers
+  - Tools and MSBuild tasks for building and packaging
+- Other asset files
+  - Default .editorconfig (including analyzer rule settings)
+  - Icon images used in nupkg files, etc.
+
+See [GitHub repository]($(RepositoryUrl)/tree/$(RepositoryBranch)/src/$(PackageId)/) for detail.
+]]></PackageReadmeFileContent>
+    </PropertyGroup>
+  </Target>
 </Project>
