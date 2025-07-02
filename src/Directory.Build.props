@@ -3,14 +3,27 @@ SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
-  <PropertyGroup Label="project assets">
-    <SmdnBuildAssetRootDirectory>$(MSBuildThisFileDirectory)..\</SmdnBuildAssetRootDirectory>
+  <PropertyGroup>
     <!-- <_SmdnProjectAssets_ImportFromLocal Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == ''">true</_SmdnProjectAssets_ImportFromLocal> -->
   </PropertyGroup>
 
-  <ImportGroup Label="project assets">
-    <Import Project="$(MSBuildThisFileDirectory)ProjectAssets.props" />
+  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from local" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' == 'true' ">
+    <Import Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.ProjectAssets.Common\Sdk\Sdk.props" />
+    <Import Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.ProjectAssets.Library\Sdk\Sdk.props" />
   </ImportGroup>
+  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from package" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
+    <Import Project="$(MSBuildThisFileDirectory)ProjectAssets.props" />
+    <!--
+    <Import Project="Sdk.props" Sdk="Smdn.MSBuild.ProjectAssets.Common" />
+    <Import Project="Sdk.props" Sdk="Smdn.MSBuild.ProjectAssets.Library" />
+    -->
+  </ImportGroup>
+
+  <PropertyGroup Label="Configurations for Smdn.MSBuild.ProjectAssets.*">
+    <SmdnBuildAssetRootDirectory>$(MSBuildThisFileDirectory)..\</SmdnBuildAssetRootDirectory>
+    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\doc\api-list\</APIListOutputBaseDirectory>
+    <!-- <APIListPackageVersion>1.6.0</APIListPackageVersion> -->
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference
@@ -23,11 +36,6 @@ SPDX-License-Identifier: MIT
   <!--
   <Import Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.DefineConstants.NETSdkApi\build\Smdn.MSBuild.DefineConstants.NETSdkApi.targets" />
   -->
-
-  <PropertyGroup Label="API list generator configurations">
-    <APIListOutputBaseDirectory>$(MSBuildThisFileDirectory)..\doc\api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion>1.6.0</APIListPackageVersion>
-  </PropertyGroup>
 
   <PropertyGroup Label="package properties">
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
