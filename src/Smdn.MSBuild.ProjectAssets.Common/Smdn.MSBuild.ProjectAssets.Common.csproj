@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
     <VersionPrefix>1.4.1</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageType>Dependency;MSBuildSdk</PackageType>
     <NoWarn>NU5110;NU5111;$(NoWarn)</NoWarn>
   </PropertyGroup>
 
@@ -18,12 +19,13 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
-    <PackageTags>MSBuild;project-assets;build-assets</PackageTags>
+    <PackageTags>MSBuild;MSBuildSDK;project-assets;build-assets</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="assets\**" Pack="false" Visible="true" />
     <None Include="project\**" Pack="false" Visible="true" />
+    <None Include="Sdk\**" Pack="false" Visible="true" />
 
     <None Include="assets\include.editorconfig"            Pack="true" PackagePath="assets\.editorconfig" />
     <None Include="project\Project.props"                  Pack="true" PackagePath="project\" />
@@ -32,5 +34,7 @@ SPDX-License-Identifier: MIT
     <None Include="project\images\package-icon.png"        Pack="true" PackagePath="project\images\package-icon.png" />
     <None Include="project\scripts\*.ps1"                  Pack="true" PackagePath="project\scripts\" />
     <None Include="project\scripts\**\*.psm1"              Pack="true" PackagePath="project\scripts\" />
+    <None Include="Sdk\Sdk.props"                          Pack="true" PackagePath="Sdk\" />
+    <None Include="Sdk\Sdk.targets"                        Pack="true" PackagePath="Sdk\" />
   </ItemGroup>
 </Project>

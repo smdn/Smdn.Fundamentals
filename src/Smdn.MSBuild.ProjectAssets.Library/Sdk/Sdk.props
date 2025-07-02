@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import
+    Project="$(CustomBeforeSmdnMSBuildProjectAssetsLibraryProps)"
+    Condition=" '$(CustomBeforeSmdnMSBuildProjectAssetsLibraryProps)' != '' And Exists('$(CustomBeforeSmdnMSBuildProjectAssetsLibraryProps)') "
+  />
+
+  <Import Project="$(MSBuildThisFileDirectory)..\project\Project.props"/>
+
+  <Import
+    Project="$(CustomAfterSmdnMSBuildProjectAssetsLibraryProps)"
+    Condition=" '$(CustomAfterSmdnMSBuildProjectAssetsLibraryProps)' != '' And Exists('$(CustomAfterSmdnMSBuildProjectAssetsLibraryProps)') "
+  />
+</Project>

@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
     <VersionPrefix>1.7.5</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageType>Dependency;MSBuildSdk</PackageType>
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
@@ -17,12 +18,13 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <PropertyGroup Label="package properties">
-    <PackageTags>MSBuild;project-assets;build-assets</PackageTags>
+    <PackageTags>MSBuild;MSBuildSDK;project-assets;build-assets</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="assets\**" Pack="false" Visible="true" />
     <None Include="project\**" Pack="false" Visible="true" />
+    <None Include="Sdk\**" Pack="false" Visible="true" />
 
     <None Include="assets\src\include.editorconfig"       Pack="true" PackagePath="assets\src\.editorconfig" />
     <None Include="assets\tests\include.editorconfig"     Pack="true" PackagePath="assets\tests\.editorconfig" />
@@ -32,5 +34,7 @@ SPDX-License-Identifier: MIT
     <None Include="project\StyleCop.Analyzers.ruleset"    Pack="true" PackagePath="project\" />
     <None Include="project\stylecop.json"                 Pack="true" PackagePath="project\" />
     <None Include="project\TestReport.template.liquid.md" Pack="true" PackagePath="project\" />
+    <None Include="Sdk\Sdk.props"                         Pack="true" PackagePath="Sdk\" />
+    <None Include="Sdk\Sdk.targets"                       Pack="true" PackagePath="Sdk\" />
   </ItemGroup>
 </Project>

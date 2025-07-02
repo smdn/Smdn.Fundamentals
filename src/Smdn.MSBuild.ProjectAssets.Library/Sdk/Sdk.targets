@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import
+    Project="$(CustomBeforeSmdnMSBuildProjectAssetsLibraryTargets)"
+    Condition=" '$(CustomBeforeSmdnMSBuildProjectAssetsLibraryTargets)' != '' And Exists('$(CustomBeforeSmdnMSBuildProjectAssetsLibraryTargets)') "
+  />
+
+  <Import Project="$(MSBuildThisFileDirectory)..\project\Project.targets"/>
+
+  <Import
+    Project="$(CustomAfterSmdnMSBuildProjectAssetsLibraryTargets)"
+    Condition=" '$(CustomAfterSmdnMSBuildProjectAssetsLibraryTargets)' != '' And Exists('$(CustomAfterSmdnMSBuildProjectAssetsLibraryTargets)') "
+  />
+</Project>
