@@ -20,7 +20,7 @@ indent_brace_style = K&R
 charset = utf-8-bom
 end_of_line = crlf
 
-[*.{csproj,vbproj,proj,props,targets,ruleset}]
+[*.{csproj,vbproj,proj,slnx,props,targets,ruleset}]
 charset = utf-8-bom
 indent_size = 2
 end_of_line = crlf
