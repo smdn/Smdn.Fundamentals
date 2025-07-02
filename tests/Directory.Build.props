@@ -7,9 +7,13 @@ SPDX-License-Identifier: MIT
     <!-- <_SmdnProjectAssets_ImportFromLocal Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == ''">true</_SmdnProjectAssets_ImportFromLocal> -->
   </PropertyGroup>
 
-  <!-- This is required to restore Smdn.MSBuild.ProjectAssets.* when test projects are attempted to built directly. (ex: on CI) -->
-  <ImportGroup Label="project assets">
-    <Import Project="$(MSBuildThisFileDirectory)..\src\ProjectAssets.props" />
+  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from local" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' == 'true' ">
+    <Import Project="$(MSBuildThisFileDirectory)..\src\Smdn.MSBuild.ProjectAssets.Common\Sdk\Sdk.props" />
+    <Import Project="$(MSBuildThisFileDirectory)..\src\Smdn.MSBuild.ProjectAssets.Library\Sdk\Sdk.props" />
+  </ImportGroup>
+  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from package" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
+    <Import Project="Sdk.props" Sdk="Smdn.MSBuild.ProjectAssets.Common" />
+    <Import Project="Sdk.props" Sdk="Smdn.MSBuild.ProjectAssets.Library" />
   </ImportGroup>
 
   <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">

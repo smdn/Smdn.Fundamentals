@@ -10,10 +10,7 @@ SPDX-License-Identifier: MIT
     <Import Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.ProjectAssets.Library\Sdk\Sdk.targets" />
   </ImportGroup>
   <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from package" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
-    <Import Project="$(SmdnProjectAssets_TargetsImports)" />
-    <!--
     <Import Project="Sdk.targets" Sdk="Smdn.MSBuild.ProjectAssets.Common" />
     <Import Project="Sdk.targets" Sdk="Smdn.MSBuild.ProjectAssets.Library" />
-    -->
   </ImportGroup>
 </Project>
