@@ -25,6 +25,12 @@ charset = utf-8-bom
 indent_size = 2
 end_of_line = crlf
 
+[global.json]
+charset = utf-8
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+
 [*.sh]
 end_of_line = lf
 indent_size = 2
