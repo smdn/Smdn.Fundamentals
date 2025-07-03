@@ -44,7 +44,7 @@ SPDX-License-Identifier: MIT
     </SmdnBuildAssetFiles>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(IsTestProject)' != 'true' " Label="Items for the library project">
+  <ItemGroup Label="Items for the library project">
     <!-- enables the compiler to reference the properties for project name and root namespace to make IDE0130 work -->
     <!-- ref: https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0130 -->
     <CompilerVisibleProperty Include="RootNamespace" />
