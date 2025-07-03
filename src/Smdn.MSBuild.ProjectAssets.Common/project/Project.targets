@@ -3,18 +3,23 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
+  <!-- import .targets file for the all projects -->
   <ImportGroup>
     <Import Project="$(MSBuildThisFileDirectory)targets\GetRepositoryProperties.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.GenerateCLSCompliant.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\Assets.Deploy.targets" />
+    <Import Project="$(MSBuildThisFileDirectory)targets\ProjectOrPackageReference.targets" />
+  </ImportGroup>
+
+  <!-- import .targets file for the projects except test projects -->
+  <ImportGroup Condition=" '$(IsTestProject)' != 'true' ">
     <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.GenerateMetadata.Repository.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\AssemblyAttributes.SetDefaults.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)targets\Assets.Deploy.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\GetNuGetPackageLatestVersion.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\GenerateNuspecDifference.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\NewRelease.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.WarnPackConfiguration.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.GenerateRepositoryProperties.targets" />
     <Import Project="$(MSBuildThisFileDirectory)targets\Nupkg.SetDefaults.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)targets\ProjectOrPackageReference.targets" />
   </ImportGroup>
 </Project>
