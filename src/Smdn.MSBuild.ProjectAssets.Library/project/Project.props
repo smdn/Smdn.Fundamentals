@@ -6,10 +6,6 @@ SPDX-License-Identifier: MIT
   <!-- Consider the project file named with '*.Tests.*proj' a test project -->
   <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
     <IsTestProject Condition=" '$(IsTestProject)' == '' ">true</IsTestProject>
-
-    <!-- determines the test target project name from the test project name (Smdn.*.Tests -> Smdn.*) -->
-    <_SmdnTestProjectFileNameSuffix>.Tests$(MSBuildProjectExtension)</_SmdnTestProjectFileNameSuffix>
-    <SmdnTestTargetProjectName>$(MSBuildProjectFile.Replace('$(_SmdnTestProjectFileNameSuffix)', ''))</SmdnTestTargetProjectName>
   </PropertyGroup>
 
   <!-- import project properties -->

@@ -20,5 +20,89 @@ SPDX-License-Identifier: MIT
     <AnalysisModeSecurity>Recommended</AnalysisModeSecurity>
     <AnalysisModeStyle>Recommended</AnalysisModeStyle>
     <AnalysisModeUsage>None</AnalysisModeUsage>
+
+    <!--
+      The property `SmdnTestTargetProjectXxx` resolves the path to the test target project
+      based on properties for current test project such as the name.
+
+      For example, from the test project path `tests\Smdn.Example.Tests\Smdn.Example.Tests.csproj`,
+      attempts to resolve the test target project `src\Smdn.Example.Tests\Smdn.Example.csproj`.
+    -->
+
+    <!--
+      SmdnTestTargetProjectName:
+        The name of the test target project.
+        If a value has already been set, that value will be used.
+        Otherwise, the default value will be used.
+
+      Default value:
+        Determines from the test project file name.
+        (e.g., `Smdn.Example.Tests.*proj` -> `Smdn.Example`)
+    -->
+    <SmdnTestTargetProjectName
+      Condition=" $(SmdnTestTargetProjectName) == '' and $(MSBuildProjectFile.EndsWith('.Tests$(MSBuildProjectExtension)'))"
+    >$(MSBuildProjectFile.Replace('.Tests$(MSBuildProjectExtension)', ''))</SmdnTestTargetProjectName>
+
+    <!--
+      SmdnTestTargetProjectFile:
+        The file name of the test target project, including file extension.
+        If a value has already been set, that value will be used.
+        Otherwise, the default value will be used.
+
+      Default value:
+        Determines from the value of `SmdnTestTargetProjectName` and `MSBuildProjectExtension`.
+        (e.g., `Smdn.Example` -> `Smdn.Example.*proj`)
+    -->
+    <SmdnTestTargetProjectFile
+      Condition=" $(SmdnTestTargetProjectFile) == '' and $(SmdnTestTargetProjectName) != '' "
+    >$(SmdnTestTargetProjectName)$(MSBuildProjectExtension)</SmdnTestTargetProjectFile>
+
+    <!--
+      SmdnTestTargetProjectDirectory:
+        The absolute path to the directory of the test target project.
+        If a value has already been set, that value will be used.
+        Otherwise, the default value will be used.
+
+      Default value:
+        Determines from the value of `MSBuildProjectDirectory` and `SmdnTestTargetProjectName`.
+        It is assumed that the default directory structure is used.
+        (e.g., `tests\Smdn.Example.Tests\..\..\src\Smdn.Example\`)
+    -->
+    <SmdnTestTargetProjectDirectory
+      Condition=" $(SmdnTestTargetProjectDirectory) == '' and $(SmdnTestTargetProjectName) != '' "
+    >$([System.IO.Path]::GetFullPath(
+      $([System.IO.Path]::Join(
+        '$(MSBuildProjectDirectory)',
+        '..\..\src\$(SmdnTestTargetProjectName)\'
+      ))
+    ))</SmdnTestTargetProjectDirectory>
+
+    <!--
+      SmdnTestTargetProjectFullPath:
+        The absolute path to the test target project.
+        If a value has already been set, that value will be used.
+        Otherwise, the default value will be used.
+
+      Default value:
+        Determines from the value of `SmdnTestTargetProjectDirectory` and `SmdnTestTargetProjectFile`
+        (e.g., `tests\Smdn.Example.Tests\Smdn.Example.Tests.csproj` -> `tests\Smdn.Example.Tests\..\..\src\Smdn.Example\Smdn.Example.csproj`)
+    -->
+    <SmdnTestTargetProjectFullPath
+      Condition=" $(SmdnTestTargetProjectFullPath) == '' and $(SmdnTestTargetProjectDirectory) != '' and $(SmdnTestTargetProjectFile) != '' "
+    >$([System.IO.Path]::GetFullPath(
+      $([System.IO.Path]::Join(
+        '$(SmdnTestTargetProjectDirectory)',
+        '$(SmdnTestTargetProjectFile)'
+      ))
+    ))</SmdnTestTargetProjectFullPath>
+
+    <!--
+      If the test target project does not exist (the path cannot be resolved),
+      set the values of each property to empty.
+    -->
+    <SmdnTestTargetProjectName        Condition="!Exists('$(SmdnTestTargetProjectFullPath)')" />
+    <SmdnTestTargetProjectFile        Condition="!Exists('$(SmdnTestTargetProjectFullPath)')" />
+    <SmdnTestTargetProjectDirectory   Condition="!Exists('$(SmdnTestTargetProjectFullPath)')" />
+    <SmdnTestTargetProjectFullPath    Condition="!Exists('$(SmdnTestTargetProjectFullPath)')" />
   </PropertyGroup>
 </Project>
