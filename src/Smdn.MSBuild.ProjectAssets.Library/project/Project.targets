@@ -3,6 +3,11 @@ SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
+  <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'" Label="Overwrite C#-only properties">
+    <!-- empty the root namespace so that the namespace is determined only by the directory name, for code style rule IDE0130 -->
+    <RootNamespace/>
+  </PropertyGroup>
+
   <!-- GitHub Actions' GITHUB_STEP_SUMMARY -->
   <Import Project="$(MSBuildThisFileDirectory)GitHubActionsStepSummary.targets" />
 
