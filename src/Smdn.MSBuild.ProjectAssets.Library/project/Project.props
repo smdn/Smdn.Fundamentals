@@ -24,6 +24,7 @@ SPDX-License-Identifier: MIT
 
   <PropertyGroup Condition="'$(MSBuildProjectExtension)' == '.csproj'" Label="C#-only properties">
     <!-- build defaults -->
+    <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
