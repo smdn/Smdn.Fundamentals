@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup Condition=" '$(IsTestProject)' == 'true' " Label="Properties for the test project">
+    <IsPackable>false</IsPackable>
+
+    <!-- code analysis defaults -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisModeDesign>None</AnalysisModeDesign>
+    <AnalysisModeDocumentation>None</AnalysisModeDocumentation>
+    <AnalysisModeGlobalization>Recommended</AnalysisModeGlobalization>
+    <AnalysisModeInteroperability>Recommended</AnalysisModeInteroperability>
+    <AnalysisModeMaintainability>Recommended</AnalysisModeMaintainability>
+    <AnalysisModeNaming>None</AnalysisModeNaming>
+    <AnalysisModePerformance>None</AnalysisModePerformance>
+    <AnalysisModeSingleFile>None</AnalysisModeSingleFile>
+    <AnalysisModeReliability>Recommended</AnalysisModeReliability>
+    <AnalysisModeSecurity>Recommended</AnalysisModeSecurity>
+    <AnalysisModeStyle>Recommended</AnalysisModeStyle>
+    <AnalysisModeUsage>None</AnalysisModeUsage>
+  </PropertyGroup>
+</Project>

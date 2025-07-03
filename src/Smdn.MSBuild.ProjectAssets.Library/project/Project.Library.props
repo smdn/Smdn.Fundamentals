@@ -1,0 +1,38 @@
+<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup Condition=" '$(IsTestProject)' != 'true' " Label="Properties for the library project">
+    <!-- assembly defaults -->
+    <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
+
+    <!-- project defaults -->
+    <!-- enables generating documentation file; also intended to suppressing the following warning: -->
+    <!-- CSC : warning EnableGenerateDocumentationFile: Set MSBuild property 'GenerateDocumentationFile' to 'true' in project file to enable IDE0005 (Remove unnecessary usings/imports) on build (https://github.com/dotnet/roslyn/issues/41640) -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <!-- code analysis defaults -->
+    <!-- ref: https://learn.microsoft.com/en-us/dotnet/core/project-sdk/msbuild-props#code-analysis-properties -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <!-- source link defaults -->
+    <!-- ref: https://github.com/dotnet/sourcelink -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <DebugType>embedded</DebugType>
+
+    <!-- package defaults -->
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <GeneratePackageReadmeFile>true</GeneratePackageReadmeFile>
+    <Authors>smdn</Authors>
+
+    <!-- trimming defaults -->
+    <!-- ref: https://learn.microsoft.com/dotnet/core/deploying/trimming/prepare-libraries-for-trimming -->
+    <EnableTrimAnalyzer
+      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"
+    >true</EnableTrimAnalyzer>
+  </PropertyGroup>
+</Project>
