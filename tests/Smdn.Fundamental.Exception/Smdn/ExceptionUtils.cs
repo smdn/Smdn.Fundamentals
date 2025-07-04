@@ -275,7 +275,7 @@ namespace Smdn {
     [Test, SetUICulture("")]
     public void TestCreateArgumentAttemptToAccessBeyondEndOfCollection_CollectionNull()
     {
-      var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection("index", (IReadOnlyList<int>)null, 2, 4);
+      var ex = ExceptionUtils.CreateArgumentAttemptToAccessBeyondEndOfCollection("index", (IReadOnlyList<int>)null!, 2, 4);
 
       Assert.That(ex.InnerException, Is.Null);
       Assert.That(ex.Message, Is.Not.Empty);

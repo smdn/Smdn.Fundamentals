@@ -10,7 +10,7 @@ namespace Smdn.Text.Encodings {
   [TestFixture]
   public class EncodingReadOnlySequenceExtensionsTests {
     private class SequenceSegment : ReadOnlySequenceSegment<byte> {
-      public SequenceSegment(SequenceSegment prev, byte[] data)
+      public SequenceSegment(SequenceSegment? prev, byte[] data)
       {
         Memory = data;
 

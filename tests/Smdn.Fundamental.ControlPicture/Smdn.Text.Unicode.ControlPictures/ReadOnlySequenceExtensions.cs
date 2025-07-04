@@ -11,7 +11,7 @@ namespace Smdn.Text.Unicode.ControlPictures {
   [TestFixture]
   public class ReadOnlySequenceExtensionsTests {
     private class ByteSequenceSegment : ReadOnlySequenceSegment<byte> {
-      public ByteSequenceSegment(ByteSequenceSegment prev, ReadOnlyMemory<byte> memory)
+      public ByteSequenceSegment(ByteSequenceSegment? prev, ReadOnlyMemory<byte> memory)
       {
         Memory = memory;
 

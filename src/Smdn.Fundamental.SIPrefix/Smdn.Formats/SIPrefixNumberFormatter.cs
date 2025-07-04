@@ -112,9 +112,9 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
     if (arg is decimal decimalValue) {
       val = decimalValue;
     }
-    else if (arg is IConvertible) {
+    else if (arg is IConvertible convertible) {
       try {
-        val = (arg as IConvertible).ToDecimal(formatProvider);
+        val = convertible.ToDecimal(formatProvider);
       }
       catch (FormatException) {
         return FormatDefault(format, arg, formatProvider);
@@ -215,8 +215,8 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
 
   private static string FormatDefault(string format, object arg, IFormatProvider formatProvider)
   {
-    if (arg is IFormattable)
-      return (arg as IFormattable).ToString(format, formatProvider);
+    if (arg is IFormattable formattable)
+      return formattable.ToString(format, formatProvider);
     else if (arg != null)
       return arg.ToString();
     else

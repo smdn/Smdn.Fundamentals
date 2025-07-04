@@ -6,6 +6,5 @@ SPDX-License-Identifier: MIT
   <PropertyGroup>
     <TargetFrameworks Condition=" '$(EnableTargetFrameworkDotNet80)' == 'true' ">net8.0;$(TargetFrameworks)</TargetFrameworks>
     <TargetFrameworks Condition=" '$(EnableTargetFrameworkNetFx)' == 'true' ">$(TargetFrameworks);net48;net462</TargetFrameworks>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 </Project>

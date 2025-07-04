@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net461;net45;netstandard2.1;netstandard2.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
     <VersionPrefix>3.2.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>

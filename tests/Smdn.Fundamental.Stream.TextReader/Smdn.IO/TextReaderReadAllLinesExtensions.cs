@@ -24,14 +24,14 @@ line3
       };
 
       var reader = new StringReader(text);
-      IReadOnlyList<string> actualLines = null;
+      IReadOnlyList<string>? actualLines = null;
 
       if (runAsync)
         Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
       else
         Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      Assert.That(actualLines, Is.EqualTo(expectedLines).AsCollection);
+      Assert.That(actualLines!, Is.EqualTo(expectedLines).AsCollection);
     }
 
     [TestCase(true)]
@@ -49,14 +49,14 @@ line3
       };
 
       var reader = new StringReader(text);
-      IReadOnlyList<string> actualLines = null;
+      IReadOnlyList<string>? actualLines = null;
 
       if (runAsync)
         Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
       else
         Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      Assert.That(actualLines, Is.EqualTo(expectedLines).AsCollection);
+      Assert.That(actualLines!, Is.EqualTo(expectedLines).AsCollection);
     }
 
     [TestCase(true)]
@@ -64,20 +64,20 @@ line3
     public void ReadAllLines_NullStream(bool runAsync)
     {
       var reader = new StreamReader(Stream.Null);
-      IReadOnlyList<string> actualLines = null;
+      IReadOnlyList<string>? actualLines = null;
 
       if (runAsync)
         Assert.DoesNotThrowAsync(async () => actualLines = await reader.ReadAllLinesAsync());
       else
         Assert.DoesNotThrow(() => actualLines = reader.ReadAllLines());
 
-      Assert.That(actualLines, Is.Empty);
+      Assert.That(actualLines!, Is.Empty);
     }
 
     [Test]
     public void ReadAllLines_ReaderNull()
     {
-      StreamReader reader = null;
+      StreamReader reader = null!;
 
       Assert.Throws<ArgumentNullException>(() => reader.ReadAllLines());
       Assert.Throws<ArgumentNullException>(() => reader.ReadAllLinesAsync());

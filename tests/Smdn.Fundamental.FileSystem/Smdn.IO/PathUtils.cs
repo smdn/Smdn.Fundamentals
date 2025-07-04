@@ -20,10 +20,8 @@ namespace Smdn.IO {
         Assert.That(string.Equals("/path", "/Path", PathUtils.DefaultPathStringComparison), Is.False);
 
 #if SYSTEM_STRINGCOMPARER_FROMCOMPARISON
-      StringComparer comparer = null;
-
       Assert.DoesNotThrow(() => {
-        comparer = StringComparer.FromComparison(
+        _ = StringComparer.FromComparison(
           PathUtils.DefaultPathStringComparison
         );
       });

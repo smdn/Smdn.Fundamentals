@@ -76,10 +76,10 @@ public readonly partial struct UInt48 {
    * IConvertible
    */
 #pragma warning disable IDE0060
-  byte IConvertible.ToByte(IFormatProvider provider) => checked((byte)ToUInt64());
-  sbyte IConvertible.ToSByte(IFormatProvider provider) => checked((sbyte)ToInt64());
-  ushort IConvertible.ToUInt16(IFormatProvider provider) => checked((ushort)ToUInt64());
-  short IConvertible.ToInt16(IFormatProvider provider) => checked((short)ToInt64());
+  byte IConvertible.ToByte(IFormatProvider? provider) => checked((byte)ToUInt64());
+  sbyte IConvertible.ToSByte(IFormatProvider? provider) => checked((sbyte)ToInt64());
+  ushort IConvertible.ToUInt16(IFormatProvider? provider) => checked((ushort)ToUInt64());
+  short IConvertible.ToInt16(IFormatProvider? provider) => checked((short)ToInt64());
 #pragma warning restore IDE0060
 
   /*

@@ -11,8 +11,8 @@ namespace Smdn.Text.RegularExpressions {
     [Test]
     public void TestIsMatch_ArgumentNull()
     {
-      Regex r = null;
-      Match m = null;
+      Regex r = null!;
+      Match m = null!;
 
       Assert.Throws<ArgumentNullException>(() => r.IsMatch("input", out m));
 

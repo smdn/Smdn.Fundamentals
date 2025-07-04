@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
     <VersionPrefix>4.1.0</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>4.0.0</PackageValidationBaselineVersion>
+    <Nullable>warnings</Nullable>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <EnableTrimAnalyzer>false</EnableTrimAnalyzer>
     <NoWarn>CS1591;$(NoWarn)</NoWarn> <!-- CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member' -->

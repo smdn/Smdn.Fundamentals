@@ -9,6 +9,7 @@ SPDX-License-Identifier: MIT
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <AllowUnsafeBlocks Condition="$(TargetFramework.StartsWith('net4')) or $(TargetFramework.StartsWith('netstandard2.0'))">true</AllowUnsafeBlocks>
+    <Nullable>warnings</Nullable>
     <NoWarn>CS1591;$(NoWarn)</NoWarn> <!-- CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member' -->
   </PropertyGroup>
 
