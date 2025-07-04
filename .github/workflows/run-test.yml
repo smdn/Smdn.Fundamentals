@@ -49,6 +49,7 @@ on:
         type: string
 
       dotnet_test_options_verbosity_level:
+        # cSpell:disable-next-line
         description: "The argument to be set to the `--verbosity <LEVEL>` option of the `dotnet test` command. <LEVEL> := q[uiet], m[inimal], n[ormal], d[etailed], diag[nostic]"
         required: false
         type: string

@@ -31,6 +31,7 @@ on:
         default: false
 
       dotnet_test_options_verbosity_level:
+        # cSpell:disable-next-line
         description: "The argument to be set to the `--verbosity <LEVEL>` option of the `dotnet test` command. <LEVEL> := q[uiet], m[inimal], n[ormal], d[etailed], diag[nostic]"
         required: false
         type: string
@@ -46,9 +47,18 @@ on:
         type: string
 
 jobs:
+  await-package-publishing:
+    name: Wait for publishing of released package
+    if: ${{ github.event_name == 'release' }}
+    uses: smdn/Smdn.Fundamentals/.github/workflows/nuget-await-package-publishing.yml@workflows/nuget/v1.0.0
+    with:
+      release_tag: ${{ github.event.release.tag_name }}
+
   run-test:
     name: Run tests with released packages
     uses: smdn/Smdn.Fundamentals/.github/workflows/test.yml@workflows/test/v1.4.2
+    needs: await-package-publishing
+    if: ${{ always() && !failure() && !cancelled() }} # run tests even if await-package-publishing is skipped
     with:
       project:                                ${{ inputs.project }}
       os:                                     ${{ inputs.os == '' && 'ubuntu-24.04, ubuntu-22.04, windows-latest, macos-latest' || inputs.os }}
