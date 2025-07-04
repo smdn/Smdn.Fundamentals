@@ -1,6 +1,6 @@
 {
   "msbuild-sdks": {
-    "Smdn.MSBuild.ProjectAssets.Common": "1.5.0",
-    "Smdn.MSBuild.ProjectAssets.Library": "1.8.0"
+    "Smdn.MSBuild.ProjectAssets.Common": "1.6.0",
+    "Smdn.MSBuild.ProjectAssets.Library": "1.9.0"
   }
 }
