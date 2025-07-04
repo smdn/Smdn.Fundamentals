@@ -52,6 +52,7 @@
     "**/bin",
     "**/obj",
     ".git",
+    "doc/api-list/",
   ],
   "enabledLanguageIds": [
     "csharp",
