@@ -195,8 +195,15 @@ public class CsvReader : StreamReader {
         var field = ReadField(out var isDelimited, out var isEndOfLine);
 
         if (field is null /*end of stream*/ || isEndOfLine) {
-          if (isPrefFieldEndsWithDelimiter)
-            record.Add(string.Empty); // append empty field (record must be allocated already at this time)
+          // TODO: fix here
+          if (isPrefFieldEndsWithDelimiter) {
+#if DEBUG
+            if (record is null)
+              throw new InvalidOperationException("unexpected null state");
+#endif
+
+            record!.Add(string.Empty); // append empty field (record must be allocated already at this time)
+          }
 
           return isEndOfLine
             ? record ?? EmptyLineRecord

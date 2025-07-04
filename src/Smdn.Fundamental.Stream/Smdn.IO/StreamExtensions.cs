@@ -144,7 +144,8 @@ public static class StreamExtensions {
     if (stream == null)
       throw new ArgumentNullException(nameof(stream));
 
-    stream.Write(segment.Array, segment.Offset, segment.Count);
+    // TODO: allow empty segment or throw exception
+    stream.Write(segment.Array!, segment.Offset, segment.Count);
   }
 
 #if SYSTEM_BUFFERS_READONLYSEQUENCE
