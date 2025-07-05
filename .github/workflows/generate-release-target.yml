@@ -312,7 +312,10 @@ jobs:
         $use_project_assets_sdk = '${{ inputs.use_project_assets_sdk }}' -ieq 'true'
 
         # build the options for `dotnet build`
-        $dotnet_build_options = @( '--nologo' )
+        $dotnet_build_options = @(
+          '--configuration Release',
+          '--nologo'
+        )
 
         if ( $use_project_assets_sdk ) {
           $dotnet_build_options += @( '--no-restore' )
@@ -323,7 +326,6 @@ jobs:
         }
 
         $dotnet_build_options += @(
-          '--configuration Release',
           '-consoleLoggerParameters:NoSummary',
           '/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}',
           '${{ steps.package-info.outputs.package_source_dir }}'
