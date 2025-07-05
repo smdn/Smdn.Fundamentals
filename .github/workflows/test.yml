@@ -46,7 +46,7 @@ on:
         default: "eng/InstallProjectAssets.proj"
 
       use_project_assets_sdk:
-        description: "If true, enables processing that uses project assets importing as MSBuild SDK."
+        description: "If true, enables processing that uses project assets importing as MSBuild Project SDK."
         required: false
         type: boolean
         default: true
