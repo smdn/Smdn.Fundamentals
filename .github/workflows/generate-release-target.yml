@@ -318,11 +318,15 @@ jobs:
         )
 
         if ( $use_project_assets_sdk ) {
-          $dotnet_build_options += @( '--no-restore' )
+          # note: do not specify --no-restore option here since the dependencies
+          # in MSBuild project SDK (Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks, etc.)
+          # have to be restored
+          #$dotnet_build_options += @( '--no-restore' )
         }
         else {
           # note: do not specify --no-restore option here since the dependencies
           # in build assets (Smdn.MSBuild.ProjectAssets.*) have to be restored
+          #$dotnet_build_options += @( '--no-restore' )
         }
 
         $dotnet_build_options += @(
