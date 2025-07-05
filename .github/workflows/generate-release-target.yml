@@ -60,6 +60,12 @@ on:
         type: string
         default: '8.0.100'
 
+      use_project_assets_sdk:
+        description: "If true, enables processing that uses project assets importing as MSBuild Project SDK."
+        required: false
+        type: boolean
+        default: true
+
       dry_run:
         description: "If true, performs a trial run."
         required: false
@@ -303,14 +309,35 @@ jobs:
     - name: Build ${{ steps.package-info.outputs.package_id }}
       shell: pwsh
       run: |
-        # note: do not specify --no-restore option here since dependencies in build assets (Smdn.MSBuild.ProjectAssets.*) have to be restored
-        dotnet build `
-          --nologo `
-          --configuration Release `
-          -consoleLoggerParameters:NoSummary `
-          /p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }} `
-          ${{ steps.package-info.outputs.package_source_dir }} `
-        | Tee-Object -Variable build_log
+        $use_project_assets_sdk = '${{ inputs.use_project_assets_sdk }}' -ieq 'true'
+
+        # build the options for `dotnet build`
+        $dotnet_build_options = @(
+          '--configuration', 'Release',
+          '--nologo'
+        )
+
+        if ( $use_project_assets_sdk ) {
+          # note: do not specify --no-restore option here since the dependencies
+          # in MSBuild project SDK (Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks, etc.)
+          # have to be restored
+          #$dotnet_build_options += @( '--no-restore' )
+        }
+        else {
+          # note: do not specify --no-restore option here since the dependencies
+          # in build assets (Smdn.MSBuild.ProjectAssets.*) have to be restored
+          #$dotnet_build_options += @( '--no-restore' )
+        }
+
+        $dotnet_build_options += @(
+          '-consoleLoggerParameters:NoSummary',
+          '/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}',
+          '${{ steps.package-info.outputs.package_source_dir }}'
+        )
+
+        # then build
+        "dotnet build ${dotnet_build_options}"
+        dotnet build @dotnet_build_options | Tee-Object -Variable build_log
 
         # select errors: 'path/to/file(line,col): error XX9999:'
         $build_errors = $build_log | Select-String -Pattern '\: error (?<error>[a-zA-Z0-9]+)\:' -AllMatches
