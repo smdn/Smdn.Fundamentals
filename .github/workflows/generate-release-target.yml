@@ -365,12 +365,18 @@ jobs:
       id: pack
       shell: pwsh
       run: |
-        dotnet pack `
-          --nologo `
-          --configuration Release `
-          --no-build `
-          /p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }} `
-          ${{ steps.package-info.outputs.package_source_dir }}
+        # build the options for `dotnet pack`
+        $dotnet_pack_options = @(
+          '--configuration', 'Release',
+          '--nologo',
+          '--no-build',
+          '/p:RepositoryBranch=${{ steps.package-info.outputs.package_branch }}',
+          '${{ steps.package-info.outputs.package_source_dir }}'
+        )
+
+        # then pack
+        "dotnet pack ${dotnet_pack_options}"
+        dotnet pack @dotnet_pack_options
 
         $file_nupkg  = '${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nupkg'
         $file_nuspec = '${{ steps.package-info.outputs.package_id }}.${{ steps.package-info.outputs.package_version }}.nuspec'
