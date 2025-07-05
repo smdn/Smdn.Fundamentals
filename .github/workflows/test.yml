@@ -316,11 +316,12 @@ jobs:
     - name: Restore dependencies of ${{ matrix.project.Name }}
       shell: pwsh
       run: |
+        # TODO: remove disabled workarounds
         # cSpell:disable-next-line
         # workaround for error on `dotnet restore`; The process cannot access the file '/home/runner/.nuget/NuGet/nugetorgadd.trk'
         # remove when https://github.com/NuGet/Home/issues/11607 is fixed
         # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
-        dotnet nuget list source
+        # dotnet nuget list source
 
         $path_to_proj_install_assets = [System.IO.Path]::Join(
           '${{ github.workspace }}',
