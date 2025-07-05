@@ -1,0 +1,15 @@
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0</TargetFrameworks>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>unreleased</VersionSuffix>
+  </PropertyGroup>
+
+  <PropertyGroup Label="assembly attributes">
+    <CopyrightYear>2025</CopyrightYear>
+  </PropertyGroup>
+</Project>
