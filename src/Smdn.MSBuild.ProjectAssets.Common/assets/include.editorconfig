@@ -63,7 +63,7 @@ dotnet_style_qualification_for_event      = false:suggestion
 # Language keywords vs BCL types preferences
 dotnet_style_predefined_type_for_locals_parameters_members  = true:suggestion
 dotnet_style_predefined_type_for_member_access              = true:suggestion
-# Parentheses preferences
+# Parentheses preferences (IDE0047 and IDE0048)
 dotnet_style_parentheses_in_arithmetic_binary_operators   = always_for_clarity:warning
 dotnet_style_parentheses_in_relational_binary_operators   = always_for_clarity:warning
 dotnet_style_parentheses_in_other_binary_operators        = always_for_clarity:suggestion
@@ -419,6 +419,16 @@ csharp_style_prefer_primary_constructors = true:suggestion
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide1005
 csharp_style_conditional_delegate_call = true:suggestion
 
+# dotnet_style_allow_multiple_blank_lines_experimental = false # IDE2000: Allow multiple blank lines
+# csharp_style_allow_embedded_statements_on_same_line_experimental = false # IDE2001: Embedded statements must be on their own line
+# csharp_style_allow_blank_lines_between_consecutive_braces_experimental = false # IDE2002: Consecutive braces must not have blank line between them
+# dotnet_style_allow_statement_immediately_after_block_experimental = false # IDE2003: Blank line required between block and subsequent statement
+# csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental = false # IDE2004: Blank line not allowed after constructor initializer colon
+# csharp_style_allow_blank_line_after_token_in_conditional_expression_experimental = false # IDE2005: Allow blank line after token in arrow expression clause
+# csharp_style_allow_blank_line_after_token_in_arrow_expression_clause_experimental = false # IDE2006: Allow blank line after token in object initializer
+
+
+
 #
 # Language and unnecessary rules
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules
@@ -436,6 +446,7 @@ dotnet_diagnostic.IDE0160.severity    = none          # Use block-scoped namespa
 dotnet_diagnostic.IDE0161.severity    = warning       # Use file-scoped namespace
 dotnet_diagnostic.IDE0200.severity    = warning       # Remove unnecessary lambda expression
 dotnet_diagnostic.IDE0290.severity    = suggestion    # Use primary constructor
+dotnet_diagnostic.IDE0330.severity    = warning       # Prefer 'System.Threading.Lock'
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/expression-bodied-members
 dotnet_diagnostic.IDE0021.severity    = warning       # Use expression body for constructors
@@ -497,6 +508,20 @@ dotnet_diagnostic.IDE0040.severity    = warning       # Add accessibility modifi
 dotnet_diagnostic.IDE0062.severity    = warning       # Make local function static
 dotnet_diagnostic.IDE0250.severity    = warning       # Struct can be made 'readonly'
 dotnet_diagnostic.IDE0251.severity    = warning       # Member can be made 'readonly'
+dotnet_diagnostic.IDE0320.severity    = warning       # Make anonymous function static
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#new-line-preferences
+# dotnet_diagnostic.IDE2000.severity    = warning       # Allow multiple blank lines
+# dotnet_diagnostic.IDE2001.severity    = warning       # Allow embedded statements on same line
+# dotnet_diagnostic.IDE2002.severity    = warning       # Allow blank lines between consecutive braces
+# dotnet_diagnostic.IDE2003.severity    = warning       # Allow statement immediately after block
+# dotnet_diagnostic.IDE2004.severity    = warning       # Allow blank line after colon in constructor initializer
+# dotnet_diagnostic.IDE2005.severity    = warning       # Allow blank line after token in conditional expression
+# dotnet_diagnostic.IDE2006.severity    = warning       # Allow blank line after token in arrow expression
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#null-checking-preferences
+# C# style rules
+dotnet_diagnostic.IDE1005.severity    = suggestion    # Use conditional delegate call
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/language-rules#parameter-preferences
 dotnet_diagnostic.IDE0060.severity    = warning       # Remove unused parameter
@@ -522,3 +547,9 @@ dotnet_diagnostic.IDE0008.severity    = none          # Use explicit type instea
 
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0055
 dotnet_diagnostic.IDE0055.severity    = warning       # Fix formatting
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0340
+dotnet_diagnostic.IDE0340.severity    = warning       # Use unbound generic type
+
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0350
+dotnet_diagnostic.IDE0350.severity    = suggestion    # Use implicitly typed lambda
