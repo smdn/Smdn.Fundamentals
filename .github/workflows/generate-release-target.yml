@@ -313,7 +313,7 @@ jobs:
 
         # build the options for `dotnet build`
         $dotnet_build_options = @(
-          '--configuration Release',
+          '--configuration', 'Release',
           '--nologo'
         )
 
