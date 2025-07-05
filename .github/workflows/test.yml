@@ -412,8 +412,9 @@ jobs:
       env:
         VSTEST_CONNECTION_TIMEOUT: ${{ steps.test-timeouts.outputs.timeout_vstest_connection }}
       run: |
+        # TODO: remove disabled workarounds
         # workaround for the vstest issue (https://github.com/microsoft/vstest/issues/4014)
-        cd $([System.IO.Path]::GetDirectoryName('${{ matrix.project.PathToTestProject }}'))
+        # cd $([System.IO.Path]::GetDirectoryName('${{ matrix.project.PathToTestProject }}'))
 
         $option_verbosity_level = '${{ inputs.dotnet_test_options_verbosity_level }}'
 
@@ -445,6 +446,8 @@ jobs:
         if ( ! [string]::IsNullOrEmpty( '${{ inputs.extra_options_common }}' ) ) {
           $dotnet_test_options += @( '${{ inputs.extra_options_common }}' )
         }
+
+        $dotnet_test_options += @( '${{ matrix.project.PathToTestProject }}' )
 
         "dotnet test ${dotnet_test_options}"
         dotnet test @dotnet_test_options
