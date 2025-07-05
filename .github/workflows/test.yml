@@ -45,6 +45,12 @@ on:
         type: string
         default: "eng/InstallProjectAssets.proj"
 
+      use_project_assets_sdk:
+        description: "If true, enables processing that uses project assets importing as MSBuild SDK."
+        required: false
+        type: boolean
+        default: true
+
       timeout_minutes_test_job:
         description: "The timeout minutes for each test jobs."
         required: false
@@ -316,6 +322,8 @@ jobs:
     - name: Restore dependencies of ${{ matrix.project.Name }}
       shell: pwsh
       run: |
+        $use_project_assets_sdk = '${{ inputs.use_project_assets_sdk }}' -ieq 'true'
+
         # TODO: remove disabled workarounds
         # cSpell:disable-next-line
         # workaround for error on `dotnet restore`; The process cannot access the file '/home/runner/.nuget/NuGet/nugetorgadd.trk'
@@ -323,32 +331,42 @@ jobs:
         # ref: https://github.com/EventStore/EventStore-Client-Dotnet/pull/201
         # dotnet nuget list source
 
-        $path_to_proj_install_assets = [System.IO.Path]::Join(
-          '${{ github.workspace }}',
-          '${{ inputs.path_proj_install_project_assets }}'
+        if ( !$use_project_assets_sdk ) {
+          $path_to_proj_install_assets = [System.IO.Path]::Join(
+            '${{ github.workspace }}',
+            '${{ inputs.path_proj_install_project_assets }}'
+          )
+
+          # install project assets and/or dependencies first
+          if (Test-Path -Path $path_to_proj_install_assets -PathType Leaf) {
+            dotnet restore `
+              --nologo `
+              ${{ inputs.extra_options_common }} `
+              $path_to_proj_install_assets
+          }
+          else {
+            # note: restore the test target project first due to dependencies such as build assets (Smdn.MSBuild.ProjectAssets.*) have to be installed and restored
+            dotnet restore `
+              --nologo `
+              --no-dependencies `
+              ${{ inputs.extra_options_common }} `
+              ${{ matrix.project.PathToTestTargetProject }}
+          }
+        }
+
+        # build the options for `dotnet restore`
+        $dotnet_restore_options = @(
+          '--nologo'
         )
 
-        # install project assets and/or dependencies first
-        if (Test-Path -Path $path_to_proj_install_assets -PathType Leaf) {
-          dotnet restore `
-            --nologo `
-            ${{ inputs.extra_options_common }} `
-            $path_to_proj_install_assets
-        }
-        else {
-          # note: restore the test target project first due to dependencies such as build assets (Smdn.MSBuild.ProjectAssets.*) have to be installed and restored
-          dotnet restore `
-            --nologo `
-            --no-dependencies `
-            ${{ inputs.extra_options_common }} `
-            ${{ matrix.project.PathToTestTargetProject }}
+        if ( ! [string]::IsNullOrEmpty( '${{ inputs.extra_options_common }}' ) ) {
+          $dotnet_restore_options += @( '${{ inputs.extra_options_common }}' )
         }
 
-        # then restore the test project and its dependencies
-        dotnet restore `
-          --nologo `
-          ${{ inputs.extra_options_common }} `
-          ${{ matrix.project.PathToTestProject }}
+        $dotnet_restore_options += @( '${{ matrix.project.PathToTestProject }}' )
+
+        "dotnet restore ${dotnet_restore_options}"
+        dotnet restore @dotnet_restore_options
 
     - name: Build test project ${{ matrix.project.Name }}
       shell: pwsh
