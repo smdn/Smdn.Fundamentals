@@ -415,5 +415,13 @@ namespace Smdn {
 
       Assert.That(Uuid.Nil, Is.EqualTo(uuid));
     }
+
+    [Test]
+    public void TestFromGuid()
+    {
+      var uuid = Uuid.FromGuid(Guid.Empty);
+
+      Assert.That(Uuid.Nil, Is.EqualTo(uuid));
+    }
   }
 }

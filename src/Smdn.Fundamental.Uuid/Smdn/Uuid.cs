@@ -401,8 +401,6 @@ public readonly partial struct Uuid {
 
   public static explicit operator Guid(Uuid @value) => @value.ToGuid();
 
-  public static explicit operator Uuid(Guid @value) => new(@value);
-
   public Guid ToGuid()
     => new(
       a: unchecked((int)time_low),
@@ -417,6 +415,10 @@ public readonly partial struct Uuid {
       j: node.N4,
       k: node.N5
     );
+
+  public static explicit operator Uuid(Guid @value) => new(@value);
+
+  public static Uuid FromGuid(Guid @value) => new(@value);
 
   public void GetBytes(byte[] buffer, int startIndex)
     => GetBytes(buffer, startIndex, asBigEndian: !BitConverter.IsLittleEndian);
