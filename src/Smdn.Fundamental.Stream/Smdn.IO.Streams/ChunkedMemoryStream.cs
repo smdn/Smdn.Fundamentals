@@ -11,6 +11,7 @@ public sealed class ChunkedMemoryStream : Stream {
 
   public delegate Chunk Allocator(int chunkSize);
 
+#pragma warning disable CA1034
 #pragma warning disable CA1063 // TODO: Implement IDisposable correctly
   public abstract class Chunk : IDisposable {
     public abstract void Dispose();
@@ -21,6 +22,7 @@ public sealed class ChunkedMemoryStream : Stream {
 #pragma warning restore SA1401, CA1051, CA2213
   }
 #pragma warning restore CA1063
+#pragma warning restore CA1034
 
   private sealed class DefaultChunk : Chunk {
     public static DefaultChunk Allocate(int chunkSize) => new(chunkSize);

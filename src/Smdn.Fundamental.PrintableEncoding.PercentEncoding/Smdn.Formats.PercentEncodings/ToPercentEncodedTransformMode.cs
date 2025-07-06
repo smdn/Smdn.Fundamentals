@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable CA2217
+
 using System;
 
 namespace Smdn.Formats.PercentEncodings;

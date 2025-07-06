@@ -204,6 +204,7 @@ public class PartialStream :
     stream.Flush();
   }
 
+#pragma warning disable CA1024
   protected long GetRemainderLength()
   {
     if (length.HasValue)
@@ -211,6 +212,7 @@ public class PartialStream :
     else
       return long.MaxValue;
   }
+#pragma warning restore CA1024
 
   public override int ReadByte()
   {

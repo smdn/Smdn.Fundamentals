@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#pragma warning disable CA1027
+#pragma warning disable CA1027, CA1028
 
 namespace Smdn;
 

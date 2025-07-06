@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2019 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable CA1815
+
 using System.Buffers;
 
 using Smdn.Buffers;

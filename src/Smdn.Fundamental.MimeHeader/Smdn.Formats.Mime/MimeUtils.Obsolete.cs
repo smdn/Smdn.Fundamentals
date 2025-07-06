@@ -1,5 +1,7 @@
 // SPDX-FileCopyrightText: 2008 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#pragma warning disable CA1034
+
 using System;
 using System.Collections.Generic;
 using System.IO;
