@@ -2,12 +2,10 @@
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
-<Project Sdk="Microsoft.NET.Sdk">
-  <!-- target 'Compile' is required to generate API list -->
+<Project Sdk="Microsoft.Build.NoTargets">
   <Import Project="$(MSBuildThisFileDirectory)..\..\eng\ProjectSettings.NoAssemblies.props" />
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
     <VersionPrefix>1.5.2</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <DevelopmentDependency>true</DevelopmentDependency>

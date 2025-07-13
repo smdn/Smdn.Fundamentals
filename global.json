@@ -1,5 +1,6 @@
 {
   "msbuild-sdks": {
+    "Microsoft.Build.NoTargets": "3.7.56",
     "Smdn.MSBuild.ProjectAssets.Common": "1.6.1",
     "Smdn.MSBuild.ProjectAssets.Library": "1.9.1"
   }

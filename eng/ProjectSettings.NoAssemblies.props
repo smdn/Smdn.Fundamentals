@@ -4,6 +4,8 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <PropertyGroup>
+    <!-- TargetFramework cannot be empty -->
+    <TargetFramework>netstandard2.0</TargetFramework>
     <!-- exclude build output assembly from packing -->
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <!-- suppress warning NU5128 (ref: https://docs.microsoft.com/en-us/nuget/reference/errors-and-warnings/nu5128#scenario-2) -->
