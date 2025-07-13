@@ -10,7 +10,8 @@ SPDX-License-Identifier: MIT
     <VersionSuffix></VersionSuffix>
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageType>Dependency;MSBuildSdk</PackageType>
-    <NoWarn>NU5110;NU5111;$(NoWarn)</NoWarn>
+    <NoWarn>NU5110;$(NoWarn)</NoWarn> <!-- An .ps1 file was detected in a folder other than tools folder. -->
+    <NoWarn>NU5111;$(NoWarn)</NoWarn> <!-- An unrecognized .ps1 file was detected being packaged. -->
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
