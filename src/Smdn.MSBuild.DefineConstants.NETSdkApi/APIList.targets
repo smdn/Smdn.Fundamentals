@@ -47,22 +47,40 @@ SPDX-License-Identifier: MIT
     </ItemGroup>
 
     <PropertyGroup>
-      <_APIListOutputContent><![CDATA[
-// $(AssemblyName)-$(AssemblyVersion)
+      <_APIListOutputContent><![CDATA[// $(AssemblyName)-$(AssemblyVersion)
 //   Name: $(AssemblyName)
 //   InformationalVersion: $(InformationalVersion)
 
 // List of symbols defined on target framework '$(TargetFramework)'
 @(_APIListSymbolDefinitionLine, '%0A')
-      ]]></_APIListOutputContent>
+]]></_APIListOutputContent>
     </PropertyGroup>
 
     <Message Text="$(TargetFramework) -> $(APIListOutputFilePath)" Importance="high" />
 
-    <WriteLinesToFile
-      File="$(APIListOutputFilePath)"
-      Lines="$(_APIListOutputContent.Replace('%0D%0A', '%0A'))"
-      Overwrite="true"
+    <!--
+      With WriteLinesToFile, environment-dependent newline characters are written,
+      so use System.IO.File.WriteAllText to write strings instead.
+    -->
+    <System_IO_File_WriteAllText
+      Path="$(APIListOutputFilePath)"
+      Content="$(_APIListOutputContent.Replace('%0D%0A', '%0A'))"
     />
   </Target>
+
+  <UsingTask
+    TaskName="System_IO_File_WriteAllText"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+  >
+    <ParameterGroup>
+      <Path ParameterType="System.String" Required="true" />
+      <Content ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+System.IO.File.WriteAllText(Path, Content, System.Text.Encoding.Default /* no bom */);
+]]></Code>
+    </Task>
+  </UsingTask>
 </Project>
