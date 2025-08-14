@@ -8,7 +8,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     groups:
-      actions:
+      github-actions-workflows:
         patterns:
           - "actions/*"
       smdn-fundamentals-workflows:
