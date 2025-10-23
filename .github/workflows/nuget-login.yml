@@ -24,10 +24,9 @@ jobs:
     - name: Login to nuget.org
       id: login-nuget-org
       uses: NuGet/login@v1
-      env:
-        NUGET_USER: ${{ secrets.username_nuget_org }}
       with:
-        user: ${{ env.NUGET_USER }}
+        # user: ${{ secrets.username_nuget_org }}
+        user: smdn
 
     - name: Publish to nuget.org
       id: push-nuget-org
