@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: "2025 smdn <smdn@smdn.jp>"
+#cSpell:ignore apikey,dawidd6,pwsh,prevver,shipit,unshallow
+
+name: NuGet Login
+
+permissions:
+  id-token: write # required for GitHub OIDC / NuGet.org Trusted Publishing
+
+on:
+  workflow_call:
+    secrets:
+      username_nuget_org:
+        description: 'The username which is used to push a package to nuget.org.'
+        required: true
+
+jobs:
+  nuget-login:
+    runs-on: ubuntu-latest
+    steps:
+
+    # NuGet.org Trusted Publishing
+    # ref: https://devblogs.microsoft.com/dotnet/enhanced-security-is-here-with-the-new-trust-publishing-on-nuget-org/
+    - name: Login to nuget.org
+      id: login-nuget-org
+      uses: NuGet/login@v1
+      env:
+        NUGET_USER: ${{ secrets.username_nuget_org }}
+      with:
+        user: ${{ env.NUGET_USER }}
+
+    - name: Publish to nuget.org
+      id: push-nuget-org
+      env:
+        NUGET_SOURCE: 'https://api.nuget.org/v3/index.json'
+      run: |
+        dotnet nuget push \
+          --api-key ${{ steps.login-nuget-org.outputs.NUGET_API_KEY }} \
+          --source $NUGET_SOURCE \
+          nonexistent.nupkg
