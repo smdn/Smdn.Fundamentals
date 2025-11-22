@@ -188,6 +188,7 @@ public class FieldInfoExtensionsTests {
   }
 
 #if NET7_0_OR_GREATER
+#pragma warning disable CS9265
   private ref struct RefFieldsReadOnlyModifier {
     public ref int Ref;
     public ref readonly int RefReadOnly;
@@ -197,6 +198,7 @@ public class FieldInfoExtensionsTests {
     public readonly ref int ReadOnlyRef;
     public readonly ref readonly int ReadOnlyRefReadOnly;
   }
+#pragma warning restore CS9265
 #endif
 
   [TestCase(typeof(NonRefFieldsReadOnlyModifier), nameof(NonRefFieldsReadOnlyModifier.ReadOnly), false)]
