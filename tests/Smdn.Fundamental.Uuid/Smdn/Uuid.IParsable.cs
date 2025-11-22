@@ -153,21 +153,21 @@ partial class UuidTests {
   {
 #pragma warning disable CA1305
     var exString = Assert.Throws<FormatException>(() => Uuid.Parse(uuid), "Parse<string>");
-    Assert.That(exString!.Message, Does.Contain(expectedExceptionMessage), "Parse<string> exception message");
+    Assert.That(exString!.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "Parse<string> exception message");
 
     var exReadOnlySpanOfChar = Assert.Throws<FormatException>(() => Uuid.Parse(uuid.AsSpan()), "Parse<ReadOnlySpan<char>>");
-    Assert.That(exReadOnlySpanOfChar!.Message, Does.Contain(expectedExceptionMessage), "Parse<<ReadOnlySpan<char>> exception message");
+    Assert.That(exReadOnlySpanOfChar!.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "Parse<<ReadOnlySpan<char>> exception message");
 
 #if SYSTEM_IPARSABLE
     var exStringGM = Assert.Throws<FormatException>(() => ParseString<Uuid>(uuid), "IParsable.Parse<string>");
-    Assert.That(exStringGM.Message, Does.Contain(expectedExceptionMessage), "IParsable.Parse<string> exception message");
+    Assert.That(exStringGM.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "IParsable.Parse<string> exception message");
 
     static T ParseString<T>(string s) where T : IParsable<T> => T.Parse(s, provider: null);
 #endif
 
 #if SYSTEM_ISPANPARSABLE
     var exReadOnlySpanOfCharGM = Assert.Throws<FormatException>(() => ParseReadOnlySpanOfChar<Uuid>(uuid.AsSpan()), "IParsable.Parse<ReadOnlySpan<char>>");
-    Assert.That(exReadOnlySpanOfCharGM.Message, Does.Contain(expectedExceptionMessage), "IParsable.Parse<<ReadOnlySpan<char>> exception message");
+    Assert.That(exReadOnlySpanOfCharGM.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "IParsable.Parse<<ReadOnlySpan<char>> exception message");
 
     static T ParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.Parse(s, provider: null);
 #endif

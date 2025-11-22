@@ -34,14 +34,23 @@ partial struct Uuid
   public static Uuid Parse(ReadOnlySpan<char> s, IFormatProvider? provider = null)
     => TryParseCore(s, provider, out var result) switch {
       TryParseResult.Success => result,
-      TryParseResult.FormatErrorOnTimeLow => throw new FormatException($"invalid time_low value: {s.ToString()}"),
-      TryParseResult.FormatErrorOnTimeMid => throw new FormatException($"invalid time_mid value: {s.ToString()}"),
-      TryParseResult.FormatErrorOnTimeHiAndVersion => throw new FormatException($"invalid time_hi_and_version value: {s.ToString()}"),
-      TryParseResult.FormatErrorOnClockSeqHiAndReserved => throw new FormatException($"invalid clock_seq_hi_and_reserved value: {s.ToString()}"),
-      TryParseResult.FormatErrorOnClockSeqLow => throw new FormatException($"invalid clock_seq_low value: {s.ToString()}"),
-      TryParseResult.FormatErrorOnNode => throw new FormatException($"invalid node value: {s.ToString()}"),
-      _ /* TryParseResult.FormatError */ => throw new FormatException($"invalid UUID: {s.ToString()}"),
+      TryParseResult.FormatErrorOnTimeLow => throw CreateFormatException("invalid time_low value: ", s),
+      TryParseResult.FormatErrorOnTimeMid => throw CreateFormatException("invalid time_mid value: ", s),
+      TryParseResult.FormatErrorOnTimeHiAndVersion => throw CreateFormatException("invalid time_hi_and_version value: ", s),
+      TryParseResult.FormatErrorOnClockSeqHiAndReserved => throw CreateFormatException("invalid clock_seq_hi_and_reserved value: ", s),
+      TryParseResult.FormatErrorOnClockSeqLow => throw CreateFormatException("invalid clock_seq_low value: ", s),
+      TryParseResult.FormatErrorOnNode => throw CreateFormatException("invalid node value: ", s),
+      _ /* TryParseResult.FormatError */ => throw CreateFormatException("invalid UUID: ", s),
     };
+
+  private static FormatException CreateFormatException(string message, ReadOnlySpan<char> s)
+    => new(
+#if SYSTEM_STRING_CONCAT_READONLYSPAN_OF_CHAR
+      string.Concat(message.AsSpan(), s)
+#else
+      string.Concat(message, s.ToString())
+#endif
+    );
 
   public static bool TryParse(ReadOnlySpan<char> s, out Uuid result)
     => TryParseCore(s, provider: null, out result) == TryParseResult.Success;
