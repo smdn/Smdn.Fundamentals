@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using NUnit.Framework;
 using Smdn.OperatingSystem;
 
@@ -247,6 +248,7 @@ public class RuntimeTests {
       var environmentVariables = new Dictionary<string, string>() {
         ["MSBUILDTERMINALLOGGER"] = "off", // make sure to disable terminal logger
         ["NO_COLOR"] = "NO_COLOR", // disable emitting ANSI color escape codes
+        ["DOTNET_CLI_UI_LANGUAGE"] = "en", // force to use English for stdout/stderr messages to avoid character corruption
       };
 
       if (additionalEnvironmentVariables is not null) {
