@@ -94,13 +94,13 @@ jobs:
 
     - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}
       if: ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version != '' }}
-      uses: actions/setup-dotnet@v5.0.0
+      uses: actions/setup-dotnet@v5.0.1
       with:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}'
 
     - name: Checkout repository
       # note: checkout repository firstly due to working directory will be cleaned up on checkout
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v6.0.0
       with:
         token: ${{ secrets.token_repo }}
         persist-credentials: true
