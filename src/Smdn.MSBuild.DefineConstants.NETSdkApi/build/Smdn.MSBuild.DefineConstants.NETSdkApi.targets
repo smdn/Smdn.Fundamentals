@@ -1054,6 +1054,7 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CompareOptions.NumericOrdering"/>
     </ItemGroup>
 
     <!--
