@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <Target Name="GenerateAPIList" AfterTargets="Compile">
     <ItemGroup>
       <!-- .NET -->
-      <_APIListTargetFramework Include="net8.0;net7.0;net6.0;net5.0" />
+      <_APIListTargetFramework Include="net10.0;net9.0;net8.0;net7.0;net6.0;net5.0" />
       <!-- .NET Core -->
       <_APIListTargetFramework Include="netcoreapp3.1;netcoreapp3.0;netcoreapp2.1;netcoreapp2.0;netcoreapp1.1;netcoreapp1.0" />
       <!-- .NET Standard -->

@@ -51,6 +51,8 @@ SPDX-License-Identifier: MIT
     <!-- ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks -->
     <ItemGroup>
       <_CompatibleFrameworkVersionConstant Include="NET" />
+      <_CompatibleFrameworkVersionConstant Include="NET10_0_OR_GREATER" />
+      <_CompatibleFrameworkVersionConstant Include="NET9_0_OR_GREATER" />
       <_CompatibleFrameworkVersionConstant Include="NET8_0_OR_GREATER" />
       <_CompatibleFrameworkVersionConstant Include="NET7_0_OR_GREATER" />
       <_CompatibleFrameworkVersionConstant Include="NET6_0_OR_GREATER" />
