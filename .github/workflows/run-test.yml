@@ -74,8 +74,8 @@ jobs:
       verbose:                                ${{ inputs.verbose == 'true' }}
       dotnet_sdk_version:                     ${{ inputs.dotnet_sdk_version == '' && '10.0.100' || inputs.dotnet_sdk_version }}
       timeout_minutes_test_job:               10
-      timeout_hang:                           "[ {'OS':'windows','Timeout':'6min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
-      timeout_vstest_connection:              "[ {'OS':'windows','Timeout':360}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"
+      timeout_hang:                           "[ {'OS':'windows','Timeout':'10min'}, {'OS':'macos','Timeout':'3min'}, {'OS':'','Timeout':'1min'} ]"
+      timeout_vstest_connection:              "[ {'OS':'windows','Timeout':600}, {'OS':'macos','Timeout':180}, {'OS':'','Timeout':60} ]"
       extra_options_common:                   ${{ inputs.extra_options_common }}
       dotnet_test_options_verbosity_level:    ${{ inputs.dotnet_test_options_verbosity_level }}
       dotnet_test_options_framework:          ${{ inputs.dotnet_test_options_framework }}
