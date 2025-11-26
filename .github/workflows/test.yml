@@ -132,7 +132,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v6.0.0
       with:
         token: ${{ secrets.token_repo }}
         fetch-depth: 1
@@ -274,12 +274,12 @@ jobs:
 
     - name: Install .NET SDK ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}
       if: ${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version != '' }}
-      uses: actions/setup-dotnet@v5.0.0
+      uses: actions/setup-dotnet@v5.0.1
       with:
         dotnet-version: '${{ steps.dotnet-sdk-version.outputs.install-dotnet-sdk-version }}'
 
     - name: Checkout repository
-      uses: actions/checkout@v5.0.0
+      uses: actions/checkout@v6.0.0
       with:
         token: ${{ secrets.token_repo }}
         fetch-depth: 1
