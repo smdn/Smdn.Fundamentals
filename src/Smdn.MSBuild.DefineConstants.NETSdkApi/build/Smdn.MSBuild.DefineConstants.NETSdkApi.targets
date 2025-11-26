@@ -3,11 +3,17 @@ SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
+  <PropertyGroup>
+    <!-- default configurations -->
+    <EnableAddingNETSdkApiDefineConstants Condition=" '$(EnableAddingNETSdkApiDefineConstants)' == '' ">true</EnableAddingNETSdkApiDefineConstants>
+  </PropertyGroup>
+
   <!-- *_OR_GREATER are defined in AddImplicitDefineConstants of Microsoft.NET.Sdk.BeforeCommon.targets -->
   <Target
     Name="AddNETSdkApiDefineConstants"
     DependsOnTargets="AddImplicitDefineConstants"
     BeforeTargets="CoreCompile"
+    Condition="'$(EnableAddingNETSdkApiDefineConstants)' == 'true'"
   >
     <CallTarget Targets="ListNETSdkAvailableApiName">
       <Output TaskParameter="TargetOutputs" ItemName="_NETSdkAvailableApiSymbol" />
