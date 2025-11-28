@@ -522,7 +522,9 @@ jobs:
           $dotnet_test_options += @( '${{ inputs.extra_options_common }}' )
         }
 
-        $dotnet_test_options += @( '${{ matrix.project.PathToTestProject }}' )
+        if ('${{ needs.setup.outputs.test-runner }}' -ine 'Microsoft.Testing.Platform') {
+          $dotnet_test_options += @( '${{ matrix.project.PathToTestProject }}' )
+        }
 
         "dotnet test ${dotnet_test_options}"
         dotnet test @dotnet_test_options
