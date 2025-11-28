@@ -455,9 +455,9 @@ jobs:
         if ('${{ needs.setup.outputs.test-runner }}' -ieq 'Microsoft.Testing.Platform') {
           # output for the case of Microsoft.Testing.Platform
           $timeout = $timeout_hang
-          $timeout = $timeout.Replace('seconds','s').Replace('secs','s')
-          $timeout = $timeout.Replace('minutes','m').Replace('mins','m')
-          $timeout = $timeout.Replace('hours','h').Replace('hrs','h')
+          $timeout = $timeout.Replace('seconds','s').Replace('second','s').Replace('secs','s').Replace('sec','s')
+          $timeout = $timeout.Replace('minutes','m').Replace('minute','m').Replace('mins','m').Replace('min','m')
+          $timeout = $timeout.Replace('hours','h').Replace('hour','h').Replace('hrs','h')
 
           "timeout=${timeout}" >> $Env:GITHUB_OUTPUT
         }
