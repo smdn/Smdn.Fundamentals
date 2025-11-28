@@ -44,8 +44,6 @@ SPDX-License-Identifier: MIT
       <PackageReadmeFileContent><![CDATA[# $(PackageId) $(PackageVersion)
 $(Description)
 
-**Note that the package [Smdn.MSBuild.ProjectAssets.Common](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common) must also be imported in order to use this package.**
-
 This package can be used as an [MSBuild project SDK](https://learn.microsoft.com/visualstudio/msbuild/how-to-use-project-sdk) and includes the following files:
 
 - MSBuild files (`.props` and `.targets`)
@@ -56,6 +54,12 @@ This package can be used as an [MSBuild project SDK](https://learn.microsoft.com
   - Default .editorconfig (including analyzer rule settings)
 
 See [GitHub repository]($(RepositoryUrl)/tree/$(RepositoryBranch)/src/$(PackageId)/) for detail.
+
+**Note that the package [Smdn.MSBuild.ProjectAssets.Common](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common) must also be imported in order to use this package.**
+
+Starting with version 1.11.0, `Smdn.MSBuild.ProjectAssets.Common` will be implicitly imported when you import this package as a MSBuild project SDK.
+
+If you use older versions, or import props/targets files individually, you must explicitly import `Smdn.MSBuild.ProjectAssets.Common` as well.
 ]]></PackageReadmeFileContent>
     </PropertyGroup>
   </Target>
