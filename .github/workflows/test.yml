@@ -486,7 +486,7 @@ jobs:
         $dotnet_test_options = @(
           '--no-restore',
           '--no-build',
-          '--verbosity', $option_verbosity_level,
+          '--verbosity', $option_verbosity_level
         )
 
         if ('${{ needs.setup.outputs.test-runner }}' -ieq 'Microsoft.Testing.Platform') {
