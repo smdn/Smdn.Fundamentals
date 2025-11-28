@@ -494,7 +494,7 @@ jobs:
           $dotnet_test_options += @(
             '--no-ansi',
             '--timeout', '${{ steps.test-timeouts.outputs.timeout }}',
-            '--outout', 'Normal',
+            '--output', 'Normal',
             '--project', '${{ matrix.project.PathToTestProject }}'
           )
         }
