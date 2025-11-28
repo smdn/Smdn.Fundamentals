@@ -4,6 +4,18 @@ SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.Common props">
+    <Import
+      Condition="'$(_SmdnProjectAssets_ImportFromLocal)' == 'true'"
+      Project="$(MSBuildThisFileDirectory)..\..\Smdn.MSBuild.ProjectAssets.Common\Sdk\Sdk.props"
+    />
+    <Import
+      Condition="'$(_SmdnProjectAssets_ImportFromLocal)' != 'true'"
+      Project="Sdk.props"
+      Sdk="Smdn.MSBuild.ProjectAssets.Common"
+    />
+  </ImportGroup>
+
   <Import
     Project="$(CustomBeforeSmdnMSBuildProjectAssetsLibraryProps)"
     Condition=" '$(CustomBeforeSmdnMSBuildProjectAssetsLibraryProps)' != '' And Exists('$(CustomBeforeSmdnMSBuildProjectAssetsLibraryProps)') "
