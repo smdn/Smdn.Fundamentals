@@ -25,7 +25,7 @@ on:
         description: "The minimum .NET SDK version which is used to run tests."
         required: false
         type: string
-        default: '8.0.100'
+        default: '10.0.100'
 
       path_prefix_tests:
         description: "The common prefix of the path to test projects' root directory based on the repository root."
@@ -127,6 +127,7 @@ jobs:
     outputs:
       runs-ons: ${{ steps.runs-on-os-list.outputs.runs-ons }}
       test-projects: ${{ steps.test-projects.outputs.projects }}
+      test-runner: ${{ steps.test-configurations.outputs.runner }}
     env:
       RUNS_ON_OS_LIST_DEFAULT: "['ubuntu-latest', 'windows-latest', 'macos-latest']"
 
@@ -212,6 +213,35 @@ jobs:
         $output_json
 
         "projects=${output_json}" >> $Env:GITHUB_OUTPUT
+
+    - name: Determine test configurations
+      id: test-configurations
+      shell: pwsh
+      run: |
+        # find the path to 'global.json' from the output of `dotnet --info`
+        if ((& dotnet --info | Out-String) -match '(?m)^\s*global\.json file:\s*\n\s*(?<path>.+global\.json)$') {
+          $path_to_global_json = $Matches['path'].Trim()
+
+          if ($path_to_global_json -ieq 'Not found') {
+            $path_to_global_json = $null
+          }
+        }
+        else {
+          $path_to_global_json = $null
+        }
+
+        # get the test runner name specified in 'global.json'
+        if (
+          ![string]::IsNullOrEmpty($path_to_global_json) -and
+          (Test-Path -LiteralPath $path_to_global_json -PathType Leaf)
+        ) {
+          $test_runner = jq -c -r ".test.runner" $path_to_global_json
+
+          "runner=${test_runner}" >> $Env:GITHUB_OUTPUT
+        }
+        else {
+          "runner=" >> $Env:GITHUB_OUTPUT
+        }
 
   env-info:
     name: Environment information of ${{ matrix.os }}
@@ -422,8 +452,20 @@ jobs:
         $timeout_vstest_connection ??= 90
 
         # set output
-        "timeout_hang=${timeout_hang}" >> $Env:GITHUB_OUTPUT
-        "timeout_vstest_connection=${timeout_vstest_connection}" >> $Env:GITHUB_OUTPUT
+        if ('${{ needs.setup.outputs.test-runner }}' -ieq 'Microsoft.Testing.Platform') {
+          # output for the case of Microsoft.Testing.Platform
+          $timeout = $timeout_hang
+          $timeout = $timeout.Replace('seconds','s').Replace('secs','s')
+          $timeout = $timeout.Replace('minutes','m').Replace('mins','m')
+          $timeout = $timeout.Replace('hours','h').Replace('hrs','h')
+
+          "timeout=${timeout}" >> $Env:GITHUB_OUTPUT
+        }
+        else {
+          # If the runner is not MTP, assume that the VSTest will be used
+          "timeout_hang=${timeout_hang}" >> $Env:GITHUB_OUTPUT
+          "timeout_vstest_connection=${timeout_vstest_connection}" >> $Env:GITHUB_OUTPUT
+        }
 
     - name: Test ${{ matrix.project.Name }}
       shell: pwsh
@@ -442,12 +484,27 @@ jobs:
 
         # build the options for `dotnet test`
         $dotnet_test_options = @(
-          '--nologo',
           '--no-restore',
           '--no-build',
           '--verbosity', $option_verbosity_level,
-          '--blame-hang-timeout', '${{ steps.test-timeouts.outputs.timeout_hang }}'
         )
+
+        if ('${{ needs.setup.outputs.test-runner }}' -ieq 'Microsoft.Testing.Platform') {
+          # options for Microsoft.Testing.Platform
+          $dotnet_test_options += @(
+            '--no-ansi',
+            '--timeout', '${{ steps.test-timeouts.outputs.timeout }}',
+            '--outout', 'Normal',
+            '--project', '${{ matrix.project.PathToTestProject }}'
+          )
+        }
+        else {
+          # If the runner is not MTP, assume that the VSTest will be used
+          $dotnet_test_options += @(
+            '--nologo',
+            '--blame-hang-timeout', '${{ steps.test-timeouts.outputs.timeout_hang }}'
+          )
+        }
 
         if ( ! [string]::IsNullOrEmpty( '${{ inputs.dotnet_test_options_framework }}' ) ) {
           $dotnet_test_options += @(
