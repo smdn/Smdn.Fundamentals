@@ -1,0 +1,17 @@
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.Library props">
+    <Import
+      Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' == 'true' "
+      Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.ProjectAssets.Library\Sdk\Sdk.props"
+    />
+    <Import
+      Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' "
+      Project="Sdk.props"
+      Sdk="Smdn.MSBuild.ProjectAssets.Library"
+    />
+  </ImportGroup>
+</Project>

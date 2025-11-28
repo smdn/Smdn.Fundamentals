@@ -12,12 +12,5 @@ SPDX-License-Identifier: MIT
     <PackageReference Update="Smdn.Test.NUnit.Utils" Version="4.1.0" />
   </ItemGroup>
 
-  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from local" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' == 'true' ">
-    <Import Project="$(MSBuildThisFileDirectory)..\src\Smdn.MSBuild.ProjectAssets.Common\Sdk\Sdk.targets" />
-    <Import Project="$(MSBuildThisFileDirectory)..\src\Smdn.MSBuild.ProjectAssets.Library\Sdk\Sdk.targets" />
-  </ImportGroup>
-  <ImportGroup Label="Import Smdn.MSBuild.ProjectAssets.* from package" Condition=" '$(_SmdnProjectAssets_ImportFromLocal)' != 'true' ">
-    <Import Project="Sdk.targets" Sdk="Smdn.MSBuild.ProjectAssets.Common" />
-    <Import Project="Sdk.targets" Sdk="Smdn.MSBuild.ProjectAssets.Library" />
-  </ImportGroup>
+  <Import Project="$(MSBuildThisFileDirectory)..\src\ProjectAssets.Library.targets" />
 </Project>
