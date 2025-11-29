@@ -87,7 +87,6 @@ on:
 
 env:
   # cSpell:disable
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
   # cSpell:enable
