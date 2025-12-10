@@ -25,8 +25,16 @@ SPDX-License-Identifier: MIT
   <ImportGroup Condition=" '$(IsTestProject)' == 'true' ">
     <!-- NUnit Analyzers code analysis -->
     <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.NUnitAnalyzers.targets" />
-    <!-- LiquidTestReports -->
-    <Import Project="$(MSBuildThisFileDirectory)LiquidTestReports.targets" />
+    <!-- LiquidTestReports (VSTestLogger) -->
+    <Import
+      Condition=" '$(EnableNUnitRunner)' != 'true' "
+      Project="$(MSBuildThisFileDirectory)LiquidTestReports.targets"
+    />
+    <!-- LiquidTestReports (Microsoft.Testing.Platform) -->
+    <Import
+      Condition=" '$(EnableNUnitRunner)' == 'true' "
+      Project="$(MSBuildThisFileDirectory)LiquidTestReports.MTP.targets"
+    />
     <!-- extension points for VSTest target -->
     <Import Project="$(MSBuildThisFileDirectory)VSTestExtensionPoints.targets" Condition=" '$(IsVSTestTargetOverridden)' == '' " />
   </ImportGroup>

@@ -1,0 +1,63 @@
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<!-- cspell:ignore liquidtr -->
+<Project>
+  <PropertyGroup>
+    <!-- Smdn.Extensions.Mtp.LiquidTestReports requires >= netstandard2.0 -->
+    <SmdnExtensionsMtpLiquidTestReportsAvailable>true</SmdnExtensionsMtpLiquidTestReportsAvailable>
+    <SmdnExtensionsMtpLiquidTestReportsAvailable
+      Condition="
+        '$(TargetFramework)' == 'net46' or
+        $(TargetFramework.StartsWith('net45')) or
+        $(TargetFramework.StartsWith('netcoreapp1')) or
+        $(TargetFramework.StartsWith('netstandard1'))
+      "
+    >false</SmdnExtensionsMtpLiquidTestReportsAvailable>
+
+    <!-- disable if Smdn.Extensions.Mtp.LiquidTestReports is not available -->
+    <EnableLiquidTestReports
+      Condition=" '$(SmdnExtensionsMtpLiquidTestReportsAvailable)' != 'true' "
+    >false</EnableLiquidTestReports>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(EnableLiquidTestReports)' == 'true' ">
+    <PackageReference Update="Microsoft.Testing.Platform" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="2.0.2" />
+    <PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.0.2" />
+    <PackageReference
+      Include="Smdn.Extensions.Mtp.LiquidTestReports"
+      Version="$(SmdnExtensionsMtpLiquidTestReportsPackageReferenceVersion)"
+    />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(EnableLiquidTestReports)' == 'true' " Label="Configurations for Smdn.Extensions.Mtp.LiquidTestReports">
+    <TestingPlatformCommandLineArguments
+      Condition="!($(TestingPlatformCommandLineArguments.Contains(' --report-trx')) or $(TestingPlatformCommandLineArguments.Contains('--report-trx ')))"
+    >$(TestingPlatformCommandLineArguments) --report-trx</TestingPlatformCommandLineArguments>
+
+    <TestingPlatformCommandLineArguments
+      Condition="!($(TestingPlatformCommandLineArguments.Contains(' --report-trx-filename')) or $(TestingPlatformCommandLineArguments.Contains('--report-trx-filename ')))"
+    >$(TestingPlatformCommandLineArguments) --report-trx-filename TestResult.trx</TestingPlatformCommandLineArguments>
+
+    <TestingPlatformCommandLineArguments
+    >$(TestingPlatformCommandLineArguments) --liquidtr-template $(LiquidTestReportsTemplateFile)</TestingPlatformCommandLineArguments>
+
+    <TestingPlatformCommandLineArguments
+      Condition=" '$(EnableLiquidTestReportsGitHubStepSummary)' == 'true' "
+    >$(TestingPlatformCommandLineArguments) --liquidtr-github-step-summary</TestingPlatformCommandLineArguments>
+
+    <TestingPlatformCommandLineArguments
+      Condition=" '$(LiquidTestReportsOmitPassedTestResults)' != '' "
+    >$(TestingPlatformCommandLineArguments) --liquidtr-parameter OmitPassedTestResults=$(LiquidTestReportsOmitPassedTestResults)</TestingPlatformCommandLineArguments>
+
+    <TestingPlatformCommandLineArguments
+      Condition=" '$(LiquidTestReportsEmitTestMessages)' != '' "
+    >$(TestingPlatformCommandLineArguments) --liquidtr-parameter EmitTestMessages=$(LiquidTestReportsEmitTestMessages)</TestingPlatformCommandLineArguments>
+
+    <TestingPlatformCommandLineArguments
+      Condition=" '$(LiquidTestReportsEmitTestCaseResultMessages)' != '' "
+    >$(TestingPlatformCommandLineArguments) --liquidtr-parameter EmitTestCaseResultMessages=$(LiquidTestReportsEmitTestCaseResultMessages)</TestingPlatformCommandLineArguments>
+  </PropertyGroup>
+</Project>
