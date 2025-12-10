@@ -21,6 +21,12 @@ SPDX-License-Identifier: MIT
     <AnalysisModeStyle>Recommended</AnalysisModeStyle>
     <AnalysisModeUsage>None</AnalysisModeUsage>
 
+    <!-- enables Microsoft.Testing.Platform test runner for NUnit, by default -->
+    <_UseMtpTestRunner Condition=" '$(EnableNUnitRunner)' == '' ">true</_UseMtpTestRunner>
+
+    <OutputType Condition=" '$(_UseMtpTestRunner)' == 'true' ">Exe</OutputType>
+    <EnableNUnitRunner Condition=" '$(_UseMtpTestRunner)' == 'true' ">true</EnableNUnitRunner>
+
     <!--
       The property `SmdnTestTargetProjectXxx` resolves the path to the test target project
       based on properties for current test project such as the name.
