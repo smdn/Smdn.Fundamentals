@@ -23,3 +23,15 @@ updates:
       - dependency-name: "actions/checkout"
         update-types:
           ["version-update:semver-minor", "version-update:semver-patch"]
+  - package-ecosystem: "nuget"
+    directory: "/"
+    groups:
+      smdn-msbuild-projectassets:
+        patterns:
+          - "Smdn.MSBuild.ProjectAssets.Common"
+          - "Smdn.MSBuild.ProjectAssets.Library"
+      nunit:
+        patterns:
+          - "NUnit*"
+    schedule:
+      interval: "monthly"
