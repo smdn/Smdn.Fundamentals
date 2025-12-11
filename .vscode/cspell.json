@@ -22,6 +22,7 @@
     "postamble",
     "smdn",
     "SYSLIB",
+    "trimmable",
   ],
   "ignoreWords": [
     "assm",
