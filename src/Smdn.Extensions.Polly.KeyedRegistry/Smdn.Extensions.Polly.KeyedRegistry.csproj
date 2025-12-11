@@ -27,7 +27,7 @@ This enables multiple `ResiliencePipelineProvider`s targeting the same type to b
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Polly.Extensions" Version="8.0.0" />
+    <PackageReference Include="Polly.Extensions" Version="8.6.5" />
   </ItemGroup>
 
   <Target Name="GenerateReadmeFileContent">
