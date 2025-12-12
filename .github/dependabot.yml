@@ -7,24 +7,27 @@ version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
-    groups:
-      github-actions-workflows:
-        patterns:
-          - "actions/*"
-      smdn-fundamentals-workflows:
-        patterns:
-          - "smdn/Smdn.Fundamentals/*"
     schedule:
       interval: "weekly"
       day: "wednesday"
       time: "03:12"
       timezone: "Asia/Tokyo"
+    groups:
+      GitHub-Actions-Workflows:
+        patterns:
+          - "actions/*"
+      Smdn-Fundamentals-Workflows:
+        patterns:
+          - "smdn/Smdn.Fundamentals/*"
     ignore:
       - dependency-name: "actions/checkout"
         update-types:
-          ["version-update:semver-minor", "version-update:semver-patch"]
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
   - package-ecosystem: "nuget"
     directory: "/"
+    schedule:
+      interval: "monthly"
     groups:
       Smdn-MSBuild-ProjectAssets:
         patterns:
@@ -33,8 +36,6 @@ updates:
       NUnit:
         patterns:
           - "NUnit*"
-    schedule:
-      interval: "monthly"
     ignore:
       # For "Smdn.*", only major updates should be reported.
       - dependency-name: "Smdn.*"
