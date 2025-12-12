@@ -26,12 +26,34 @@ updates:
   - package-ecosystem: "nuget"
     directory: "/"
     groups:
-      smdn-msbuild-projectassets:
+      Smdn-MSBuild-ProjectAssets:
         patterns:
           - "Smdn.MSBuild.ProjectAssets.Common"
           - "Smdn.MSBuild.ProjectAssets.Library"
-      nunit:
+      NUnit:
         patterns:
           - "NUnit*"
     schedule:
       interval: "monthly"
+    ignore:
+      # For "Smdn.*", only major updates should be reported.
+      - dependency-name: "Smdn.*"
+        update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
+      # For NUnit packages, only major updates should be reported.
+      - dependency-name: "NUnit*"
+        update-types: # major updates only
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
+      # For Microsoft's extension packages, manually update them, so ignore all of them.
+      - dependency-name: "Microsoft.Extensions.*"
+        update-types: # ignore all updates
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
+      # For other packages, only major updates should be reported.
+      - dependency-name: "*"
+        update-types: # major updates only
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
