@@ -4,7 +4,11 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <Target Name="GetRepositoryProperties">
-    <CallTarget Targets="GetRepositoryProperties_Git" Condition="'$(RepositoryType)' == 'git'"/>
+    <!-- If $(RepositoryType) is not explicitly specified, it is assumed to be 'git'. -->
+    <CallTarget
+      Targets="GetRepositoryProperties_Git"
+      Condition=" '$(RepositoryType)' == 'git' or '$(RepositoryType)' == '' "
+    />
     <CallTarget Targets="GetRepositoryProperties_VersionOrRepositoryTypeNotSupported"/>
   </Target>
 
@@ -15,10 +19,23 @@ SPDX-License-Identifier: MIT
       <GitCommandLineInterfacePath Condition="'$(GitCommandLineInterfacePath)' == ''">git</GitCommandLineInterfacePath>
     </PropertyGroup>
 
-    <Exec Command="$(GitCommandLineInterfacePath) branch --show-current" Condition="'$(RepositoryBranch)' == ''" ConsoleToMSBuild="true" EchoOff="true" StandardOutputImportance="Low">
+    <Exec
+      Command="$(GitCommandLineInterfacePath) branch --show-current"
+      Condition=" '$(GitCommandLineInterfacePath)' != '' and '$(RepositoryBranch)' == '' "
+      ConsoleToMSBuild="true"
+      EchoOff="true"
+      StandardOutputImportance="Low"
+    >
       <Output TaskParameter="ConsoleOutput" PropertyName="RepositoryBranch" />
     </Exec>
-    <Exec Command="$(GitCommandLineInterfacePath) rev-parse HEAD" Condition="'$(RepositoryCommit)' == ''" ConsoleToMSBuild="true" EchoOff="true" StandardOutputImportance="Low">
+
+    <Exec
+      Command="$(GitCommandLineInterfacePath) rev-parse HEAD"
+      Condition=" '$(GitCommandLineInterfacePath)' != '' and '$(RepositoryCommit)' == '' "
+      ConsoleToMSBuild="true"
+      EchoOff="true"
+      StandardOutputImportance="Low"
+    >
       <Output TaskParameter="ConsoleOutput" PropertyName="RepositoryCommit" />
     </Exec>
   </Target>
