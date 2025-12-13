@@ -130,18 +130,21 @@ SPDX-License-Identifier: MIT
 {%-   assign messages_error         = run.messages | where: "level", "Error" -%}
 {%-   assign messages_warning       = run.messages | where: "level", "Warning" -%}
 {%-   assign messages_informational = run.messages | where: "level", "Informational" -%}
+{%-   assign messages_error_size         = messages_error | size -%}
+{%-   assign messages_warning_size       = messages_warning | size -%}
+{%-   assign messages_informational_size = messages_informational | size -%}
   <dl>
-{%-   if messages_error.size != 0 -%}
+{%-   if 0 < messages_error_size -%}
     <dt>❌ Errors</dt>
     <dd><pre><code>{%- for msg in messages_error -%}[{{ msg.level }}]{{ msg.message | escape }}
 {%-     endfor -%}</code></pre></dd>
 {%-   endif -%}
-{%-   if messages_warning.size != 0 -%}
+{%-   if 0 < messages_warning_size -%}
     <dt>⚠️ Warnings</dt>
     <dd><pre><code>{%- for msg in messages_warning -%}[{{ msg.level }}]{{ msg.message | escape }}
 {%-     endfor -%}</code></pre></dd>
 {%-   endif -%}
-{%-   if messages_informational.size != 0 -%}
+{%-   if 0 < messages_informational_size -%}
     <dt>❕ Informational messages</dt>
     <dd><pre><code>{%- for msg in messages_informational -%}[{{ msg.level }}]{{ msg.message | escape }}
 {%-     endfor -%}</code></pre></dd>
