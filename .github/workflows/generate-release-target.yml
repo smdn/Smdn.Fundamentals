@@ -398,6 +398,14 @@ jobs:
           exit 1
         }
 
+    - name: Upload ${{ steps.pack.outputs.artifact_name_nupkg }}
+      if: ${{ steps.package-info.outputs.package_can_release == 'True' }}
+      uses: actions/upload-artifact@v5.0.0
+      with:
+        name: ${{ steps.pack.outputs.artifact_name_nupkg }}
+        path: ${{ steps.pack.outputs.path_nupkg }}
+        retention-days: 1
+
     - name: Generate .nuspec diff
       id: nuspec-diff
       continue-on-error: true
@@ -424,14 +432,6 @@ jobs:
         # set outputs
         "path_nuspec_diff=${path_nuspec_diff}" >> $Env:GITHUB_OUTPUT
         "path_nuspec_diff_except_files=${path_nuspec_diff_except_files}" >> $Env:GITHUB_OUTPUT
-
-    - name: Upload ${{ steps.pack.outputs.artifact_name_nupkg }}
-      if: ${{ steps.package-info.outputs.package_can_release == 'True' }}
-      uses: actions/upload-artifact@v5.0.0
-      with:
-        name: ${{ steps.pack.outputs.artifact_name_nupkg }}
-        path: ${{ steps.pack.outputs.path_nupkg }}
-        retention-days: 1
 
     - name: Create release working branch for ${{ steps.package-info.outputs.package_id_with_version }}
       run: |
