@@ -98,31 +98,24 @@ List of APIs exposed by assembly `$(AssemblyName)-$(InformationalVersion)` ($(La
     <Task>
       <Using Namespace="System" />
       <Using Namespace="System.Linq" />
+      <Using Namespace="System.Text.RegularExpressions" />
       <Code Type="Fragment" Language="cs"><![CDATA[
         LatestFramework = Frameworks
           ?.Select(static item => item.ItemSpec)
           ?.Select(static moniker => {
             if (moniker.StartsWith("netcoreapp", StringComparison.OrdinalIgnoreCase))
-              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = moniker.Substring("netcoreapp".Length) };
+              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = new Version(moniker.Substring("netcoreapp".Length)) };
 
             if (moniker.StartsWith("netstandard", StringComparison.OrdinalIgnoreCase))
-              return new { Moniker = moniker, Identifier = ".NETStandard", Version = moniker.Substring("netstandard".Length) };
+              return new { Moniker = moniker, Identifier = ".NETStandard", Version = new Version(moniker.Substring("netstandard".Length)) };
 
-            if (moniker.StartsWith("net10.", StringComparison.OrdinalIgnoreCase))
-              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = moniker.Substring("net".Length) };
+            if (Regex.IsMatch(moniker, @"^net[0-9]+\.[0-9]", RegexOptions.IgnoreCase))
+              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = new Version(moniker.Substring("net".Length)) };
 
-            if (
-              moniker.StartsWith("net4", StringComparison.OrdinalIgnoreCase) ||
-              moniker.StartsWith("net3", StringComparison.OrdinalIgnoreCase) ||
-              moniker.StartsWith("net2", StringComparison.OrdinalIgnoreCase) ||
-              moniker.StartsWith("net1", StringComparison.OrdinalIgnoreCase)
-            )
-              return new { Moniker = moniker, Identifier = ".NETFramework", Version = moniker.Substring("net".Length).PadRight(3, '0') };
+            if (Regex.IsMatch(moniker, @"^net[1-4][0-9][0-9]?", RegexOptions.IgnoreCase))
+              return new { Moniker = moniker, Identifier = ".NETFramework", Version = new Version(string.Join(".", moniker.Substring("net".Length).ToCharArray())) };
 
-            if (moniker.StartsWith("net", StringComparison.OrdinalIgnoreCase))
-              return new { Moniker = moniker, Identifier = ".NETCoreApp", Version = moniker.Substring("net".Length) };
-
-            return new { Moniker = moniker, Identifier = "unknown", Version = moniker };
+            return new { Moniker = moniker, Identifier = "unknown", Version = (Version)null };
           })
           ?.OrderBy(static f => f.Identifier switch {
             ".NETCoreApp" => 0,
