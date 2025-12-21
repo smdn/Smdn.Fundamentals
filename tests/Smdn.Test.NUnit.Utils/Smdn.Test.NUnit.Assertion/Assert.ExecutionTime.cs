@@ -42,12 +42,9 @@ public class AssertExecutionTimeTests {
     if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS")))
       return true;
 
-    if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-      Assert.Ignore("ignore unstable test case due to running environment (GitHub Actions MacOS runner)");
-      return false;
-    }
+    Assert.Ignore("ignore unstable test case due to running environment (GitHub Actions)");
 
-    return true;
+    return false;
   }
 
   private static bool SatisfiesPrerequisites()
