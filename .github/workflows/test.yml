@@ -100,6 +100,12 @@ on:
         type: string
         default: ''
 
+      dotnet_test_options_output_verbosity_level:
+        description: "The argument to be set to the `--output <VERBOSITY_LEVEL>` option of the `dotnet test` command."
+        required: false
+        type: string
+        default: ''
+
       verbose:
         description: "If true, enables verbose output."
         required: false
@@ -470,6 +476,12 @@ jobs:
           $option_verbosity_level = 'quiet' # default verbosity level
         }
 
+        $option_output_verbosity_level = '${{ inputs.dotnet_test_options_output_verbosity_level }}'
+
+        if ([string]::IsNullOrEmpty($option_output_verbosity_level)) {
+          $option_output_verbosity_level = 'Normal' # default output verbosity level
+        }
+
         # build the options for `dotnet test`
         $dotnet_test_options = @(
           '--no-restore',
@@ -483,7 +495,7 @@ jobs:
             '--no-ansi',
             '--no-progress',
             '--timeout', '${{ steps.test-timeouts.outputs.timeout }}',
-            '--output', 'Normal',
+            '--output', $option_output_verbosity_level,
             '--project', '${{ matrix.project.PathToTestProject }}'
           )
         }
