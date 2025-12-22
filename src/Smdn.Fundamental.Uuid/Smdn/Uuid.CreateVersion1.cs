@@ -7,8 +7,6 @@ using System.Net.NetworkInformation;
 
 using Smdn.Formats.UniversallyUniqueIdentifiers;
 
-using TypeOfNode = Smdn.Formats.UniversallyUniqueIdentifiers.Node;
-
 namespace Smdn;
 
 #pragma warning disable IDE0040
@@ -28,6 +26,8 @@ partial struct Uuid {
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
   private static Node GetNode()
   {
+    const int SizeOfNode = Smdn.Formats.UniversallyUniqueIdentifiers.Node.SizeOfSelf;
+
     var nic = Array.Find(
       NetworkInterface.GetAllNetworkInterfaces(),
       static networkInterface => networkInterface.NetworkInterfaceType != NetworkInterfaceType.Loopback
@@ -35,14 +35,14 @@ partial struct Uuid {
 
     var physicalAddress = nic.GetPhysicalAddress().GetAddressBytes().AsSpan();
 
-    if (TypeOfNode.SizeOfSelf < physicalAddress.Length)
-      physicalAddress = physicalAddress.Slice(0, TypeOfNode.SizeOfSelf);
+    if (SizeOfNode < physicalAddress.Length)
+      physicalAddress = physicalAddress.Slice(0, SizeOfNode);
 
-    Span<byte> node = stackalloc byte[TypeOfNode.SizeOfSelf];
+    Span<byte> node = stackalloc byte[SizeOfNode];
 
     physicalAddress.CopyTo(node);
 
-    return new Node(node);
+    return new(node);
   }
 
   public static Uuid CreateTimeBased()
@@ -63,14 +63,14 @@ partial struct Uuid {
     => CreateTimeBasedCore(
       GetTimestamp(),
       GetClock(),
-      new TypeOfNode(node)
+      new(node)
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, PhysicalAddress node)
     => CreateTimeBasedCore(
       timestamp,
       clock,
-      new TypeOfNode(node)
+      new(node)
     );
 #endif
 
@@ -78,14 +78,14 @@ partial struct Uuid {
     => CreateTimeBasedCore(
       GetTimestamp(),
       GetClock(),
-      new TypeOfNode(node)
+      new(node)
     );
 
   public static Uuid CreateTimeBased(DateTime timestamp, int clock, byte[] node)
     => CreateTimeBasedCore(
       timestamp,
       clock,
-      new TypeOfNode(node)
+      new(node)
     );
 
   private static Uuid CreateTimeBasedCore(DateTime timestamp, int clock, Node node)
