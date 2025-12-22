@@ -1,11 +1,15 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if SYSTEM_STRING_CREATE &&  SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE && SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL
+#if NET10_0_OR_GREATER
+#define SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
+#if SYSTEM_STRING_CREATE && SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE && SYSTEM_RUNTIME_INTEROPSERVICES_MEMORYMARSHAL
 #define SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#endif
 #endif
 
 using System;
-#if SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#if SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
+#elif SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 #else
@@ -62,7 +66,16 @@ public static class ReadOnlySpanExtensions {
     if (span.IsEmpty)
       return string.Empty;
 
-#if SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#if SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
+    return string.Create(
+      span.Length,
+      span,
+      static (destination, input) => _ = TryPicturizeControlChars(
+        span: input,
+        destination: destination
+      )
+    );
+#elif SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
     // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
     unsafe {
       ref var refInput = ref MemoryMarshal.GetReference(span);
@@ -111,7 +124,16 @@ public static class ReadOnlySpanExtensions {
     if (span.IsEmpty)
       return string.Empty;
 
-#if SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
+#if SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
+    return string.Create(
+      span.Length,
+      span,
+      static (destination, input) => _ = TryPicturizeControlChars(
+        span: input,
+        destination: destination
+      )
+    );
+#elif SYSTEM_STRING_CREATE_WITH_STATE_OF_READONLYSPAN
     // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
     unsafe {
       ref var refInput = ref MemoryMarshal.GetReference(span);
