@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if SYSTEM_READONLYSPAN && SYSTEM_READONLYMEMORY
+#if SYSTEM_READONLYSPAN && SYSTEM_READONLYMEMORY && !NET10_0_OR_GREATER
 using System.Buffers;
 #endif
 
@@ -32,8 +32,7 @@ partial class Hexadecimal {
     if (dataSequence.Length == 0)
       return string.Empty;
 
-#if false && SYSTEM_STRING_CREATE
-    // XXX: string.Create does not accept ReadOnlySpan<T>, dotnet/runtime#30175
+#if NET10_0_OR_GREATER
     return string.Create(
       dataSequence.Length * 2,
       dataSequence,
@@ -85,8 +84,7 @@ partial class Hexadecimal {
     if (dataSequence.Length == 0)
       return string.Empty;
 
-#if false && SYSTEM_STRING_CREATE
-    // XXX: string.Create does not accept ReadOnlySpan<T>, dotnet/runtime#30175
+#if NET10_0_OR_GREATER
     return string.Create(
       dataSequence.Length * 2,
       dataSequence,
