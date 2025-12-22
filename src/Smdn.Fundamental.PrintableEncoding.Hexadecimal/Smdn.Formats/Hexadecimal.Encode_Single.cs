@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET10_0_OR_GREATER
+#define SYSTEM_CONVERT_TRYTOHEXSTRING
+#define SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
+#endif
+
 #if SYSTEM_SPAN
 using System;
 #endif
@@ -46,8 +51,18 @@ partial class Hexadecimal {
 
   public static bool TryEncodeUpperCase(byte data, char[] destination, int index, out int charsEncoded)
   {
-#if SYSTEM_SPAN
-    charsEncoded = 0;
+#if SYSTEM_CONVERT_TRYTOHEXSTRING
+    charsEncoded = default;
+
+    return
+      ValidateTryEncodeDestination(destination, index) &&
+      Convert.TryToHexString(
+        source: [data],
+        destination: destination.AsSpan(index),
+        charsWritten: out charsEncoded
+      );
+#elif SYSTEM_SPAN
+    charsEncoded = default;
 
     return
       ValidateTryEncodeDestination(destination, index) &&
@@ -59,8 +74,18 @@ partial class Hexadecimal {
 
   public static bool TryEncodeLowerCase(byte data, char[] destination, int index, out int charsEncoded)
   {
-#if SYSTEM_SPAN
-    charsEncoded = 0;
+#if SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
+    charsEncoded = default;
+
+    return
+      ValidateTryEncodeDestination(destination, index) &&
+      Convert.TryToHexStringLower(
+        source: [data],
+        destination: destination.AsSpan(index),
+        charsWritten: out charsEncoded
+      );
+#elif SYSTEM_SPAN
+    charsEncoded = default;
 
     return
       ValidateTryEncodeDestination(destination, index) &&
@@ -78,10 +103,18 @@ partial class Hexadecimal {
     => TryEncode(data, destination, LowerCaseHexOctets, out bytesEncoded);
 
   public static bool TryEncodeUpperCase(byte data, Span<char> destination, out int charsEncoded)
+#if SYSTEM_CONVERT_TRYTOHEXSTRING
+    => Convert.TryToHexString(source: [data], destination: destination, charsWritten: out charsEncoded);
+#else
     => TryEncode(data, destination, UpperCaseHexChars, out charsEncoded);
+#endif
 
   public static bool TryEncodeLowerCase(byte data, Span<char> destination, out int charsEncoded)
+#if SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
+    => Convert.TryToHexStringLower(source: [data], destination: destination, charsWritten: out charsEncoded);
+#else
     => TryEncode(data, destination, LowerCaseHexChars, out charsEncoded);
+#endif
 #endif
 
 #if SYSTEM_SPAN

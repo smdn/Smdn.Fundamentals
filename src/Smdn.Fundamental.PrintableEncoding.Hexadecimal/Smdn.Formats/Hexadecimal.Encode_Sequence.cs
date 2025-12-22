@@ -1,5 +1,10 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+#if NET10_0_OR_GREATER
+#define SYSTEM_CONVERT_TRYTOHEXSTRING
+#define SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
+#endif
+
 using System;
 
 namespace Smdn.Formats;
@@ -22,14 +27,18 @@ partial class Hexadecimal {
 #endif
 
   public static bool TryEncodeUpperCase(ArraySegment<byte> dataSequence, ArraySegment<char> destination, out int charsEncoded)
-#if SYSTEM_READONLYSPAN
+#if SYSTEM_CONVERT_TRYTOHEXSTRING
+    => Convert.TryToHexString(source: dataSequence, destination: destination, charsWritten: out charsEncoded);
+#elif SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), UpperCaseHexChars, out charsEncoded);
 #else
     => TryEncode(dataSequence, destination, UpperCaseHexChars, out charsEncoded);
 #endif
 
   public static bool TryEncodeLowerCase(ArraySegment<byte> dataSequence, ArraySegment<char> destination, out int charsEncoded)
-#if SYSTEM_READONLYSPAN
+#if SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
+    => Convert.TryToHexStringLower(source: dataSequence, destination: destination, charsWritten: out charsEncoded);
+#elif SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), LowerCaseHexChars, out charsEncoded);
 #else
     => TryEncode(dataSequence, destination, LowerCaseHexChars, out charsEncoded);
@@ -43,10 +52,18 @@ partial class Hexadecimal {
     => TryEncode(dataSequence, destination, LowerCaseHexOctets, out bytesEncoded);
 
   public static bool TryEncodeUpperCase(ReadOnlySpan<byte> dataSequence, Span<char> destination, out int charsEncoded)
+#if SYSTEM_CONVERT_TRYTOHEXSTRING
+    => Convert.TryToHexString(source: dataSequence, destination: destination, charsWritten: out charsEncoded);
+#else
     => TryEncode(dataSequence, destination, UpperCaseHexChars, out charsEncoded);
+#endif
 
   public static bool TryEncodeLowerCase(ReadOnlySpan<byte> dataSequence, Span<char> destination, out int charsEncoded)
+#if SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
+    => Convert.TryToHexStringLower(source: dataSequence, destination: destination, charsWritten: out charsEncoded);
+#else
     => TryEncode(dataSequence, destination, LowerCaseHexChars, out charsEncoded);
+#endif
 
   internal static bool TryEncode<T>(ReadOnlySpan<byte> dataSequence, Span<T> destination, ReadOnlySpan<T> hex, out int lengthEncoded)
   {
