@@ -33,7 +33,7 @@ public static class ReadOnlySequenceExtensions {
       static (span, seq) => seq.TryPicturizeControlChars(span)
     );
 #else
-    char[] buffer = null;
+    char[]? buffer = null;
 
     try {
       var length = (int)Math.Min(int.MaxValue, sequence.Length);

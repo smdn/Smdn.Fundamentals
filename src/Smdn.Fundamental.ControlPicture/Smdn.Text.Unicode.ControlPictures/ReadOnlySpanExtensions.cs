@@ -94,7 +94,7 @@ public static class ReadOnlySpanExtensions {
       );
     }
 #else
-    char[] buffer = null;
+    char[]? buffer = null;
 
     try {
       buffer = ArrayPool<char>.Shared.Rent(span.Length);
@@ -152,7 +152,7 @@ public static class ReadOnlySpanExtensions {
       );
     }
 #else
-    char[] buffer = null;
+    char[]? buffer = null;
 
     try {
       buffer = ArrayPool<char>.Shared.Rent(span.Length);
