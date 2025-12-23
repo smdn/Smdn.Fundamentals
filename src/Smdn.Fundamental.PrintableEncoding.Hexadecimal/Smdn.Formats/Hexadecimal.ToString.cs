@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-#if SYSTEM_READONLYSPAN && SYSTEM_READONLYMEMORY && !NET10_0_OR_GREATER
+#if SYSTEM_READONLYSPAN && SYSTEM_READONLYMEMORY && !SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
 using System.Buffers;
 #endif
 
@@ -32,7 +32,7 @@ partial class Hexadecimal {
     if (dataSequence.Length == 0)
       return string.Empty;
 
-#if NET10_0_OR_GREATER
+#if SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
     return string.Create(
       dataSequence.Length * 2,
       dataSequence,
@@ -84,7 +84,7 @@ partial class Hexadecimal {
     if (dataSequence.Length == 0)
       return string.Empty;
 
-#if NET10_0_OR_GREATER
+#if SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT
     return string.Create(
       dataSequence.Length * 2,
       dataSequence,

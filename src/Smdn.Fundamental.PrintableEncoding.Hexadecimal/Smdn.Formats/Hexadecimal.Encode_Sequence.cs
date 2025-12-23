@@ -1,10 +1,5 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-#if NET10_0_OR_GREATER
-#define SYSTEM_CONVERT_TRYTOHEXSTRING
-#define SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER
-#endif
-
 using System;
 
 namespace Smdn.Formats;
