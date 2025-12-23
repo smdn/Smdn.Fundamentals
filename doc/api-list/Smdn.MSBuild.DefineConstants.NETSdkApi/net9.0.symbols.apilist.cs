@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.0
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.1
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.6.0
+//   InformationalVersion: 1.6.1
 
 // List of symbols defined on target framework 'net9.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -133,6 +133,7 @@
 #define SYSTEM_STRING_COPYTO_SPAN_OF_CHAR // System.String.CopyTo(Span<char>) (NET6_0_OR_GREATER)
 #define SYSTEM_STRING_CREATE // System.String.Create (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_STRING_CREATE_IFORMATPROVIDER // System.String.Create(IFormatProvider) (NET6_0_OR_GREATER)
+#define SYSTEM_STRING_CREATE_OF_TSTATE_ALLOWS_REF_STRUCT // System.String.Create<TState> allows ref struct (NET9_0_OR_GREATER)
 #define SYSTEM_STRING_CTOR_READONLYSPAN_OF_CHAR // System.String.ctor(ReadOnlySpan<Char>) (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_STRING_ENDSWITH_CHAR // System.String.EndsWith(char) (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_STRING_GETHASHCODE_READONLYSPAN_OF_CHAR // System.String.GetHashCode(ReadOnlySpan<Char>) (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
