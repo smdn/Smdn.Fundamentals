@@ -3,12 +3,20 @@
 #if SYSTEM_READONLYSPAN || SYSTEM_READONLYMEMORY
 using System;
 #endif
+#if SYSTEM_CONVERT_FROMHEXSTRING_SOURCE_DESTINATION
+using System.Buffers; // SearchValues<T>
+#endif
 
 namespace Smdn.Formats;
 
 public static partial class Hexadecimal {
   private const string UpperCaseHexCharsInString = "0123456789ABCDEF";
   private const string LowerCaseHexCharsInString = "0123456789abcdef";
+
+#if SYSTEM_CONVERT_FROMHEXSTRING_SOURCE_DESTINATION
+  internal static readonly SearchValues<char> UpperCaseHexCharSearchValues = SearchValues.Create(UpperCaseHexCharsInString.AsSpan());
+  internal static readonly SearchValues<char> LowerCaseHexCharSearchValues = SearchValues.Create(LowerCaseHexCharsInString.AsSpan());
+#endif
 
   private static readonly
 #if SYSTEM_READONLYMEMORY

@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_CONVERT_FROMHEXSTRING_SOURCE_DESTINATION
+using System.Buffers; // OperationStatus
+#endif
 
 namespace Smdn.Formats;
 
@@ -55,6 +58,16 @@ partial class Hexadecimal {
     if (destination.Length < length)
       return false; // destination too short
 
+#if SYSTEM_CONVERT_FROMHEXSTRING_SOURCE_DESTINATION
+    if (allowUpperCase && !allowLowerCase && dataSequence.ContainsAnyExcept(UpperCaseHexCharSearchValues))
+      return false;
+    if (!allowUpperCase && allowLowerCase && dataSequence.ContainsAnyExcept(LowerCaseHexCharSearchValues))
+      return false;
+
+    var status = Convert.FromHexString(dataSequence, destination, out _, out decodedLength);
+
+    return status == OperationStatus.Done;
+#else
     for (var i = 0; i < length; i++) {
       if (!TryDecode(dataSequence, allowUpperCase, allowLowerCase, out byte decodedData))
         return false;
@@ -66,6 +79,7 @@ partial class Hexadecimal {
     }
 
     return true;
+#endif
   }
 #else
   internal static bool TryDecode(ArraySegment<char> dataSequence, ArraySegment<byte> destination, bool allowUpperCase, bool allowLowerCase, out int decodedLength)
