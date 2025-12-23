@@ -1028,6 +1028,7 @@ SPDX-License-Identifier: MIT
     </MSBuild>
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create&lt;TState&gt; allows ref struct"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.FromHexString(source,destination)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.ToHexStringLower"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryToHexString"/>
