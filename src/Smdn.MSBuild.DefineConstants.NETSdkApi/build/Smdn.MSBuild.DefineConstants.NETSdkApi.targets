@@ -1062,8 +1062,6 @@ SPDX-License-Identifier: MIT
 
     <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.FromHexString(utf8Source,destination)"/>
-      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryToHexString(source,utf8Destination)"/>
-      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryToHexStringLower(source,utf8Destination)"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="EventHandler&lt;TSender,TEventArgs&gt;"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.GetHexString"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.GetString"/>
