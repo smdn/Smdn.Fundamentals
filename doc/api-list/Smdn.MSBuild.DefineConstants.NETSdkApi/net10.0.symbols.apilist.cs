@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.1
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.2
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.6.1
+//   InformationalVersion: 1.6.2
 
 // List of symbols defined on target framework 'net10.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -48,9 +48,7 @@
 #define SYSTEM_CONVERT_TRYFROMBASE64STRING // System.Convert.TryFromBase64String (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_CONVERT_TRYTOBASE64CHARS // System.Convert.TryToBase64Chars (NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_CONVERT_TRYTOHEXSTRING // System.Convert.TryToHexString (NET9_0_OR_GREATER)
-#define SYSTEM_CONVERT_TRYTOHEXSTRING_SOURCE_UTF8DESTINATION // System.Convert.TryToHexString(source,utf8Destination) (NET10_0_OR_GREATER)
 #define SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER // System.Convert.TryToHexStringLower (NET9_0_OR_GREATER)
-#define SYSTEM_CONVERT_TRYTOHEXSTRINGLOWER_SOURCE_UTF8DESTINATION // System.Convert.TryToHexStringLower(source,utf8Destination) (NET10_0_OR_GREATER)
 #define SYSTEM_CONVERTER // System.Converter (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_DATEONLY // System.DateOnly (NET6_0_OR_GREATER)
 #define SYSTEM_DATETIME_TOLONGDATESTRING // System.DateTime.ToLongDateString (NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
