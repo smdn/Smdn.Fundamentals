@@ -2,8 +2,8 @@
 # SPDX-FileCopyrightText: "2025 smdn <smdn@smdn.jp>"
 # cSpell:ignore pwsh
 
-name: Wait for NuGet package publishing (reusable workflow)
-run-name: Wait for NuGet package publishing for ${{ inputs.release_tag }}
+name: _DEPRECATED_ Wait for NuGet package publishing (reusable workflow)
+run-name: _DEPRECATED_ Wait for NuGet package publishing for ${{ inputs.release_tag }}
 
 permissions: {}
 
@@ -40,114 +40,12 @@ on:
         default: "https://api.nuget.org/v3/index.json"
 
 jobs:
-  await-package-publishing:
-    runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJson(inputs.timeout_minutes) }}
+  notice-deprecated:
+    runs-on: ubuntu-slim
+
     steps:
-    - name: Determine the released package info
-      id: released-package-info
-      shell: pwsh
-      run: |
-        $release_tag = '${{ inputs.release_tag }}'
-
-        #
-        # determine package ID and version
-        #
-        $pattern_release_tag = '^{0}{1}\-{2}$' -f
-          '${{ inputs.release_tag_prefix }}',
-          '(?<id>[A-Za-z0-9\.]+)',
-          '(?<version>[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?([\-\+][0-9a-zA-Z\.]+)?)'
-
-        if ("$release_tag" -match "$pattern_release_tag") {
-          # split package info and version from tag name
-          $package_id = $Matches['id']
-          $package_version = $Matches['version']
-
-          # notice determined info
-          "::notice::package_id=${package_id}"
-          "::notice::package_version=${package_version}"
-
-          # set outputs
-          "package_id=${package_id}"              >> $Env:GITHUB_OUTPUT
-          "package_version=${package_version}"    >> $Env:GITHUB_OUTPUT
-        }
-        else {
-          "::error::The release tag name format mismatch: $release_tag"
+      - name: Use the workflow from 'smdn/workflows-dotnet' instead.
+        shell: pwsh
+        run: |
+          "::error::This workflow has been deprecated. Use 'smdn/workflows-dotnet/.github/workflows/nuget-await-package-publishing.yml' instead."
           exit 1
-        }
-
-    - name: Wait until the package is published
-      shell: pwsh
-      run: |
-        # cSpell:disable-next-line
-        # ref: smdn/Smdn.Fundamentals/src/Smdn.MSBuild.ProjectAssets.Common/project/scripts/psmodules/NuGet.ServiceIndex/NuGet.ServiceIndex.psm1
-        function Get-NuGetResourceBaseAddress {
-          [OutputType([string])]
-          Param(
-            [Parameter(Mandatory = $true)][string]$resource_type,
-            [Parameter(Mandatory = $true)][string]$source_path
-          )
-
-          $get_service_index_response = Invoke-WebRequest `
-            -Method 'Get' `
-            -SkipHttpErrorCheck `
-            -URI $source_path
-
-          if ($get_service_index_response.StatusCode -ne 200) {
-            $get_service_index_response | Write-Error
-            throw "Failed to GET resource base address for ${resource_type} (StatusCode: $($get_service_index_response.StatusCode))"
-          }
-
-          $service_index = $get_service_index_response.Content | ConvertFrom-Json
-
-          return $service_index.resources | `
-            Where-Object '@type' -eq $resource_type | `
-            Select-Object -ExpandProperty '@id'
-        }
-
-        # based on smdn/Smdn.Fundamentals/src/Smdn.MSBuild.ProjectAssets.Common/project/scripts/QueryNuGetPackageReleased.ps1
-        function Get-NuGetPackageManifestStatus {
-          # [OutputType([Microsoft.PowerShell.Commands.BasicHtmlWebResponseObject])]
-          Param(
-            [Parameter(Mandatory = $true)][string]$package_source,
-            [Parameter(Mandatory = $true)][string]$package_id,
-            [Parameter(Mandatory = $true)][string]$package_version
-          )
-
-          $nuget_service_package_base_address = Get-NuGetResourceBaseAddress 'PackageBaseAddress/3.0.0' $package_source
-
-          $package_id_lowercase = $package_id.ToLowerInvariant()
-
-          return Invoke-WebRequest `
-            -Method 'Head' `
-            -URI "${nuget_service_package_base_address}${package_id_lowercase}/${package_version}/${package_id_lowercase}.nuspec" `
-            -SkipHttpErrorCheck `
-            -TimeoutSec 20 `
-            -ErrorAction Stop
-        }
-
-        $package_source = '${{ inputs.package_source }}'
-        $package_id = '${{ steps.released-package-info.outputs.package_id }}'
-        $package_version = '${{ steps.released-package-info.outputs.package_version }}'
-
-        while ($true) {
-          try {
-            $resp = Get-NuGetPackageManifestStatus `
-              $package_source `
-              $package_id `
-              $package_version
-
-            if ($resp.StatusCode -eq 200) {
-              "::notice::📦 Package ${package_id}/${package_version} is now available in ${package_source}."
-              break
-            }
-            else {
-              "::warning::⚠️ $($resp.StatusCode) $($resp.StatusDescription) ${package_id}/${package_version}"
-            }
-          }
-          catch {
-            "::error::🚨 Unexpected error: $($_.Exception)"
-          }
-
-          Start-Sleep -Seconds ${{ inputs.update_interval_seconds }}
-        }
