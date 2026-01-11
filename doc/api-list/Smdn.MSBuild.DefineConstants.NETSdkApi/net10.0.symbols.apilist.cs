@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.2
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.3
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.6.2
+//   InformationalVersion: 1.6.3
 
 // List of symbols defined on target framework 'net10.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -462,9 +462,14 @@
 #define SYSTEM_REFLECTION_NULLABILITYINFOCONTEXT // System.Reflection.NullabilityInfoContext (NET6_0_OR_GREATER)
 #define SYSTEM_REFLECTION_NULLABILITYSTATE // System.Reflection.NullabilityState (NET6_0_OR_GREATER)
 #define SYSTEM_REFLECTION_PROPERTYINFO_GETMODIFIEDPROPERTYTYPE // System.Reflection.PropertyInfo.GetModifiedPropertyType (NET8_0_OR_GREATER)
+#define SYSTEM_RUNTIME_COMPILERSERVICES_COLLECTIONBUILDERATTRIBUTE // System.Runtime.CompilerServices.CollectionBuilderAttribute (NET8_0_OR_GREATER)
+#define SYSTEM_RUNTIME_COMPILERSERVICES_COMPILERFEATUREREQUIREDATTRIBUTE // System.Runtime.CompilerServices.CompilerFeatureRequiredAttribute (NET7_0_OR_GREATER)
 #define SYSTEM_RUNTIME_COMPILERSERVICES_ISEXTERNALINIT // System.Runtime.CompilerServices.IsExternalInit (NET5_0_OR_GREATER)
 #define SYSTEM_RUNTIME_COMPILERSERVICES_MODULEINITIALIZERATTRIBUTE // System.Runtime.CompilerServices.ModuleInitializerAttribute (NET5_0_OR_GREATER)
+#define SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE // System.Runtime.CompilerServices.RequiredMemberAttribute (NET7_0_OR_GREATER)
 #define SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFE // System.Runtime.CompilerServices.Unsafe (NET461_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER)
+#define SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFEACCESSORATTRIBUTE // System.Runtime.CompilerServices.UnsafeAccessorAttribute (NET8_0_OR_GREATER)
+#define SYSTEM_RUNTIME_COMPILERSERVICES_UNSAFEACCESSORTYPEATTRIBUTE // System.Runtime.CompilerServices.UnsafeAccessorTypeAttribute (NET10_0_OR_GREATER)
 #define SYSTEM_RUNTIME_EXCEPTIONSERVICES_EXCEPTIONDISPATCHINFO_SETCURRENTSTACKTRACE // System.Runtime.ExceptionServices.ExceptionDispatchInfo.SetCurrentStackTrace (NET5_0_OR_GREATER)
 #define SYSTEM_RUNTIME_INTEROPSERVICES_DLLIMPORTRESOLVER // System.Runtime.InteropServices.DllImportResolver (NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER)
 #define SYSTEM_RUNTIME_INTEROPSERVICES_LIBRARYIMPORTATTRIBUTE // System.Runtime.InteropServices.LibraryImportAttribute (NET7_0_OR_GREATER)
