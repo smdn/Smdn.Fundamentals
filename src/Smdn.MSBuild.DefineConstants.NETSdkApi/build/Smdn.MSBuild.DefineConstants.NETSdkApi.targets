@@ -926,6 +926,8 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IUnaryNegationOperators" />
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IUnaryPlusOperators" />
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IUnsignedNumber" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="CompilerFeatureRequiredAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="RequiredMemberAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="LibraryImportAttribute"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="StringMarshalling"/>
       <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKeyPem" />
