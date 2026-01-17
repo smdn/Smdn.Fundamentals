@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 // cSpell:ignore uuencode,uuencode,uuencoded
 using System;
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+using System.Collections.Frozen;
+#endif
 using System.Collections.Generic;
 
 namespace Smdn.Formats.Mime;
@@ -18,24 +21,34 @@ public static partial class ContentTransferEncoding {
   private const string ContentTransferEncodingMethodStringUUEncode = "x-uuencode";
   private const string ContentTransferEncodingMethodStringGZip64 = "x-gzip64";
 
-#pragma warning disable CA1859
-  private static readonly IReadOnlyDictionary<string, ContentTransferEncodingMethod> ContentTransferEncodingMethods
-    = new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
-#pragma warning restore CA1859
-      // standards
-      { ContentTransferEncodingMethodStringSevenBit,        ContentTransferEncodingMethod.SevenBit },
-      { ContentTransferEncodingMethodStringEightBit,        ContentTransferEncodingMethod.EightBit },
-      { ContentTransferEncodingMethodStringBinary,          ContentTransferEncodingMethod.Binary },
-      { ContentTransferEncodingMethodStringBase64,          ContentTransferEncodingMethod.Base64 },
-      { ContentTransferEncodingMethodStringQuotedPrintable, ContentTransferEncodingMethod.QuotedPrintable },
+#pragma warning disable IDE0090
+  private static readonly
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+  FrozenDictionary<string, ContentTransferEncodingMethod>
+#else
+  Dictionary<string, ContentTransferEncodingMethod>
+#endif
+  ContentTransferEncodingMethods = new Dictionary<string, ContentTransferEncodingMethod>(StringComparer.OrdinalIgnoreCase) {
+#pragma warning restore IDE0090
+    // standards
+    { ContentTransferEncodingMethodStringSevenBit,        ContentTransferEncodingMethod.SevenBit },
+    { ContentTransferEncodingMethodStringEightBit,        ContentTransferEncodingMethod.EightBit },
+    { ContentTransferEncodingMethodStringBinary,          ContentTransferEncodingMethod.Binary },
+    { ContentTransferEncodingMethodStringBase64,          ContentTransferEncodingMethod.Base64 },
+    { ContentTransferEncodingMethodStringQuotedPrintable, ContentTransferEncodingMethod.QuotedPrintable },
 
-      // non-standards
-      { ContentTransferEncodingMethodStringUUEncode,        ContentTransferEncodingMethod.UUEncode },
-      { "x-uuencoded",                                      ContentTransferEncodingMethod.UUEncode },
-      { "x-uu",                                             ContentTransferEncodingMethod.UUEncode },
-      { "x-uue",                                            ContentTransferEncodingMethod.UUEncode },
-      { "uuencode",                                         ContentTransferEncodingMethod.UUEncode },
-      { ContentTransferEncodingMethodStringGZip64,          ContentTransferEncodingMethod.GZip64 },
-      { "gzip64",                                           ContentTransferEncodingMethod.GZip64 },
-    };
+    // non-standards
+    { ContentTransferEncodingMethodStringUUEncode,        ContentTransferEncodingMethod.UUEncode },
+    { "x-uuencoded",                                      ContentTransferEncodingMethod.UUEncode },
+    { "x-uu",                                             ContentTransferEncodingMethod.UUEncode },
+    { "x-uue",                                            ContentTransferEncodingMethod.UUEncode },
+    { "uuencode",                                         ContentTransferEncodingMethod.UUEncode },
+    { ContentTransferEncodingMethodStringGZip64,          ContentTransferEncodingMethod.GZip64 },
+    { "gzip64",                                           ContentTransferEncodingMethod.GZip64 },
+  }
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+  .ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+#else
+  ;
+#endif
 }

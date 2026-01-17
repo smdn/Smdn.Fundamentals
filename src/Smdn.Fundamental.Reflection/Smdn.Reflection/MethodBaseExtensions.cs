@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+using System.Collections.Frozen;
+#endif
 using System.Collections.Generic;
 using System.Reflection;
 
@@ -143,7 +146,15 @@ public static class MethodBaseExtensions {
     return false;
   }
 
-  private static readonly Dictionary<string, MethodSpecialName> SpecialMethodNames = new(StringComparer.Ordinal) {
+#pragma warning disable IDE0090
+  private static readonly
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+  FrozenDictionary<string, MethodSpecialName>
+#else
+  Dictionary<string, MethodSpecialName>
+#endif
+  SpecialMethodNames = new Dictionary<string, MethodSpecialName>(StringComparer.Ordinal) {
+#pragma warning restore IDE0090
     // comparison
     { "op_Equality", MethodSpecialName.Equality },
     { "op_Inequality", MethodSpecialName.Inequality },
@@ -203,7 +214,12 @@ public static class MethodBaseExtensions {
     { "op_LeftShiftAssignment", MethodSpecialName.LeftShiftAssignment },
     { "op_RightShiftAssignment", MethodSpecialName.RightShiftAssignment },
     { "op_UnsignedRightShiftAssignment", MethodSpecialName.UnsignedRightShiftAssignment },
-  };
+  }
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+  .ToFrozenDictionary(StringComparer.Ordinal);
+#else
+  ;
+#endif
 
   public static MethodSpecialName GetNameType(this MethodBase m)
   {

@@ -3,7 +3,13 @@
 #define LOCALIZE_MESSAGE
 
 using System;
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+using System.Collections.Frozen;
+#endif
 using System.Collections.Generic;
+#if !SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY && SYSTEM_COLLECTIONS_OBJECTMODEL_READONLYDICTIONARY_EMPTY
+using System.Collections.ObjectModel;
+#endif
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -30,7 +36,7 @@ public static class ExceptionUtils {
 #endif
 
 #if LOCALIZE_MESSAGE
-    private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> Catalogues = new(StringComparer.Ordinal);
+    private static readonly Dictionary<string, IReadOnlyDictionary<string, string>> Catalogues = new(StringComparer.Ordinal); // TODO: use FrozenDictionary<string, string>
 
     private static string InternalGetText(string msgid)
     {
@@ -67,17 +73,27 @@ public static class ExceptionUtils {
 
     private static bool TryLoadCatalog(string resourceName, out IReadOnlyDictionary<string, string> catalog)
     {
-      var catalogForLoad = new Dictionary<string, string>(StringComparer.Ordinal);
+      static IReadOnlyDictionary<string, string> CreateEmptyCatalog()
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+        => FrozenDictionary<string, string>.Empty;
+#elif SYSTEM_COLLECTIONS_OBJECTMODEL_READONLYDICTIONARY_EMPTY
+        => ReadOnlyDictionary<string, string>.Empty;
+#else
+        => new Dictionary<string, string>(StringComparer.Ordinal);
+#endif
 
-      catalog = catalogForLoad; // empty catalog as default
+      var catalogForLoad = new Dictionary<string, string>(StringComparer.Ordinal);
 
       try {
         var executingAssembly = typeof(ExceptionUtils).GetTypeInfo().Assembly;
 
         using var stream = executingAssembly.GetManifestResourceStream(resourceName);
 
-        if (stream is null)
+        if (stream is null) {
+          catalog = CreateEmptyCatalog();
+
           return true; // resource stream not found, return empty catalog
+        }
 
         using var reader = new StreamReader(stream, Encoding.UTF8);
 
@@ -154,11 +170,19 @@ public static class ExceptionUtils {
           }
         } // for
 
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+        catalog = catalogForLoad.ToFrozenDictionary(StringComparer.Ordinal);
+#else
+        catalog = catalogForLoad;
+#endif
+
         return true;
       }
 #pragma warning disable CA1031
       catch {
         // ignore exceptions, return empty catalog (parser error, etc.)
+        catalog = CreateEmptyCatalog();
+
         return true;
       }
 #pragma warning restore CA1031

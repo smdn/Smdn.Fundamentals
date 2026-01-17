@@ -1,6 +1,9 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+using System.Collections.Frozen;
+#endif
 using System.Collections.Generic;
 using System.Text;
 
@@ -78,25 +81,37 @@ public static partial class EncodingUtils {
   )
     => GetEncoding(name, selectFallbackEncoding) ?? throw new EncodingNotSupportedException(name);
 
-  // cSpell:disable
-  private static readonly Dictionary<string, string> EncodingCollationTable
-    = new(StringComparer.OrdinalIgnoreCase) {
-      /* UTF-16 */
-      { "utf16",       "utf-16" },
-      /* UTF-8 */
-      { "utf8",        "utf-8" },
-      /* Shift_JIS */
-      { "shiftjis",    "shift_jis" },     // shift_jis
-      { "xsjis",       "shift_jis" },     // x-sjis
-      /* EUC-JP */
-      { "eucjp",       "euc-jp" },        // euc-jp
-      { "xeucjp",      "euc-jp" },        // x-euc-jp
-      /* ISO-2022-JP */
-      { "iso2022jp",   "iso-2022-jp" },   // iso-2022-jp
+#pragma warning disable IDE0090
+  private static readonly
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+  FrozenDictionary<string, string>
+#else
+  Dictionary<string, string>
+#endif
+  EncodingCollationTable = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
+#pragma warning restore IDE0090
+    // cSpell:disable
+    /* UTF-16 */
+    { "utf16",       "utf-16" },
+    /* UTF-8 */
+    { "utf8",        "utf-8" },
+    /* Shift_JIS */
+    { "shiftjis",    "shift_jis" },     // shift_jis
+    { "xsjis",       "shift_jis" },     // x-sjis
+    /* EUC-JP */
+    { "eucjp",       "euc-jp" },        // euc-jp
+    { "xeucjp",      "euc-jp" },        // x-euc-jp
+    /* ISO-2022-JP */
+    { "iso2022jp",   "iso-2022-jp" },   // iso-2022-jp
 
-      // TODO
-      // {"utf16be",     "utf-16"},
-      // {"utf16le",     "utf-16"},
-    };
-  // cSpell:enable
+    // TODO
+    // {"utf16be",     "utf-16"},
+    // {"utf16le",     "utf-16"},
+    // cSpell:enable
+  }
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY
+  .ToFrozenDictionary(StringComparer.OrdinalIgnoreCase);
+#else
+  ;
+#endif
 }
