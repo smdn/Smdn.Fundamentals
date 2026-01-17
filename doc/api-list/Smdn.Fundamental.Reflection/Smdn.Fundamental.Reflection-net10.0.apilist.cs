@@ -2,19 +2,24 @@
 //   Name: Smdn.Fundamental.Reflection
 //   AssemblyVersion: 3.8.0.0
 //   InformationalVersion: 3.8.0+2d806cd6c16472e5eb06285f0d7c26cd69fb45fa
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
+//   Metadata: IsAotCompatible=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=2d806cd6c16472e5eb06285f0d7c26cd69fb45fa
 //   Referenced assemblies:
-//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
-//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Collections.Immutable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Linq, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Smdn.Reflection;
 
@@ -96,8 +101,8 @@ namespace Smdn.Reflection {
     public static bool IsEventBackingField(this FieldInfo f) {}
     public static bool IsPropertyBackingField(this FieldInfo f) {}
     public static bool IsReadOnly(this FieldInfo f) {}
-    public static bool TryGetEventFromBackingField(this FieldInfo backingField, out EventInfo? ev) {}
-    public static bool TryGetPropertyFromBackingField(this FieldInfo backingField, out PropertyInfo? property) {}
+    public static bool TryGetEventFromBackingField(this FieldInfo backingField, [NotNullWhen(true)] out EventInfo? ev) {}
+    public static bool TryGetPropertyFromBackingField(this FieldInfo backingField, [NotNullWhen(true)] out PropertyInfo? property) {}
   }
 
   public static class MemberInfoExtensions {
@@ -126,8 +131,8 @@ namespace Smdn.Reflection {
     public static bool IsPropertyGetMethod(this MethodInfo m) {}
     public static bool IsPropertySetMethod(this MethodInfo m) {}
     public static bool IsReadOnly(this MethodInfo m) {}
-    public static bool TryGetEventFromAccessorMethod(this MethodInfo? accessor, out EventInfo? ev) {}
-    public static bool TryGetPropertyFromAccessorMethod(this MethodInfo? accessor, out PropertyInfo? property) {}
+    public static bool TryGetEventFromAccessorMethod(this MethodInfo? accessor, [NotNullWhen(true)] out EventInfo? ev) {}
+    public static bool TryGetPropertyFromAccessorMethod(this MethodInfo? accessor, [NotNullWhen(true)] out PropertyInfo? property) {}
   }
 
   public static class ParameterInfoExtensions {
