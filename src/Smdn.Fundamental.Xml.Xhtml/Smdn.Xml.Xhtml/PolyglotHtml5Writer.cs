@@ -4,6 +4,9 @@
 #nullable enable
 
 using System;
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENSET
+using System.Collections.Frozen;
+#endif
 using System.Collections.Generic;
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
@@ -54,8 +57,16 @@ public class PolyglotHtml5Writer :
   private readonly Stack<ElementContext> elementContextStack = new(4 /*nest level*/);
 
   private sealed class ElementContext {
-    // cSpell:disable
-    private static readonly HashSet<string> VoidElements = new(StringComparer.OrdinalIgnoreCase) {
+#pragma warning disable IDE0090
+    private static readonly
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENSET
+    FrozenSet<string>
+#else
+    HashSet<string>
+#endif
+    VoidElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+#pragma warning restore IDE0090
+      // cSpell:disable
       "area",
       "base",
       "br",
@@ -71,8 +82,13 @@ public class PolyglotHtml5Writer :
       "source",
       "track",
       "wbr",
-    };
-    // cSpell:enable
+      // cSpell:enable
+    }
+#if SYSTEM_COLLECTIONS_FROZEN_FROZENSET
+    .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
+#else
+    ;
+#endif
 
     public string LocalName { get; }
     public string? Namespace { get; }
