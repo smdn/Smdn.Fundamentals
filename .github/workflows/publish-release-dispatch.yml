@@ -67,7 +67,7 @@ on:
 jobs:
   run-publish-release:
     name: Publish release for '${{ inputs.release_tag }}'
-    uses: smdn/workflows-dotnet/.github/workflows/publish-release.yml@release-target/v1.13.1
+    uses: smdn/workflows-dotnet/.github/workflows/publish-release.yml@release-target/v1.14.1
     with:
       workflow_runs_on:             'ubuntu-latest'
       release_tag:                  ${{ inputs.release_tag }}
