@@ -34,5 +34,12 @@ SPDX-License-Identifier: MIT
     <IsTrimmable
       Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net6.0'))"
     >true</IsTrimmable>
+
+    <!-- AOT defaults -->
+    <!-- https://learn.microsoft.com/dotnet/core/deploying/native-aot -->
+    <IsAotCompatible
+      Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net8.0'))"
+    >true</IsAotCompatible>
+    <VerifyReferenceAotCompatibility>true</VerifyReferenceAotCompatibility>
   </PropertyGroup>
 </Project>
