@@ -401,23 +401,28 @@ public class MethodBaseExtensionsTests {
     }
   }
 
-  [TestCase(typeof(SpecialMethods.C))]
-  [TestCase(typeof(SpecialMethods.P))]
-  public void GetNameType(Type type)
+  private static System.Collections.IEnumerable YieldTestCases_GetNameType()
   {
-    foreach (var member in type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
-      if (member is MethodBase method) {
+    foreach (var type in new[] { typeof(SpecialMethods.C), typeof(SpecialMethods.P) }) {
+      foreach (var member in type.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+        if (member is not MethodBase method)
+          continue;
+
         var attr = method.GetCustomAttribute<ExpectedMethodSpecialNameAttribute>();
 
         if (attr == null)
           continue;
 
-        var expected = method!.GetCustomAttribute<ExpectedMethodSpecialNameAttribute>()!.Expected;
+        var expected = method.GetCustomAttribute<ExpectedMethodSpecialNameAttribute>()!.Expected;
 
-        Assert.That(method.GetNameType(), Is.EqualTo(expected), $"{type.FullName} : {method.Name}");
+        yield return new object[] { method, expected };
       }
     }
   }
+
+  [TestCaseSource(nameof(YieldTestCases_GetNameType))]
+  public void GetNameType(MethodBase method, MethodSpecialName expected)
+    => Assert.That(method.GetNameType(), Is.EqualTo(expected), $"{method.DeclaringType!.FullName} : {method.Name}");
 
   [Test]
   public void GetNameType_ArgumentNull()
