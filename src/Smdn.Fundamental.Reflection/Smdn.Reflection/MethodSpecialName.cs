@@ -56,4 +56,21 @@ public enum MethodSpecialName {
   CheckedMultiply,
   CheckedDivision,
   CheckedExplicit,
+
+  // instance increment and decrement operators (C#14)
+  IncrementAssignment,
+  DecrementAssignment,
+
+  // compound assignment (C#14)
+  AdditionAssignment,
+  SubtractionAssignment,
+  MultiplicationAssignment,
+  DivisionAssignment,
+  ModulusAssignment,
+  BitwiseAndAssignment,
+  BitwiseOrAssignment,
+  ExclusiveOrAssignment,
+  LeftShiftAssignment,
+  RightShiftAssignment,
+  UnsignedRightShiftAssignment,
 }

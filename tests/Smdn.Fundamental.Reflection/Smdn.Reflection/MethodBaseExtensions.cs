@@ -375,6 +375,25 @@ public class MethodBaseExtensionsTests {
       [ExpectedMethodSpecialName(MethodSpecialName.UnsignedRightShift)] public static C operator >>>(C x, int y) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.LeftShift)] public static C operator <<(C x, int y) => throw new NotImplementedException();
 
+#if SYSTEM_RUNTIME_COMPILERSERVICES_COMPILERFEATUREREQUIREDATTRIBUTE
+      // instance increment and decrement operators (C#14)
+      [ExpectedMethodSpecialName(MethodSpecialName.IncrementAssignment)] public void operator ++() => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.DecrementAssignment)] public void operator --() => throw new NotImplementedException();
+
+      // compound assignment operators (C#14)
+      [ExpectedMethodSpecialName(MethodSpecialName.AdditionAssignment)] public void operator +=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.SubtractionAssignment)] public void operator -=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.MultiplicationAssignment)] public void operator *=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.DivisionAssignment)] public void operator /=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.ModulusAssignment)] public void operator %=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.BitwiseAndAssignment)] public void operator &=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.BitwiseOrAssignment)] public void operator |=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.ExclusiveOrAssignment)] public void operator ^=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.LeftShiftAssignment)] public void operator <<=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.RightShiftAssignment)] public void operator >>=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.UnsignedRightShiftAssignment)] public void operator >>>=(C operand) => throw new NotImplementedException();
+#endif
+
       // type cast
       [ExpectedMethodSpecialName(MethodSpecialName.Explicit)] public static explicit operator C(V v) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.CheckedExplicit)] public static explicit operator checked C(V v) => throw new NotImplementedException();

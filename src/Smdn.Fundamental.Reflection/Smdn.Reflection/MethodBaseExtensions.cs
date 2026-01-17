@@ -186,6 +186,23 @@ public static class MethodBaseExtensions {
     { "op_Explicit", MethodSpecialName.Explicit },
     { "op_CheckedExplicit", MethodSpecialName.CheckedExplicit },
     { "op_Implicit", MethodSpecialName.Implicit },
+
+    // instance increment and decrement operators (C#14)
+    { "op_IncrementAssignment", MethodSpecialName.IncrementAssignment },
+    { "op_DecrementAssignment", MethodSpecialName.DecrementAssignment },
+
+    // compound assignment (C#14)
+    { "op_AdditionAssignment", MethodSpecialName.AdditionAssignment },
+    { "op_SubtractionAssignment", MethodSpecialName.SubtractionAssignment },
+    { "op_MultiplicationAssignment", MethodSpecialName.MultiplicationAssignment },
+    { "op_DivisionAssignment", MethodSpecialName.DivisionAssignment },
+    { "op_ModulusAssignment", MethodSpecialName.ModulusAssignment },
+    { "op_BitwiseAndAssignment", MethodSpecialName.BitwiseAndAssignment },
+    { "op_BitwiseOrAssignment", MethodSpecialName.BitwiseOrAssignment },
+    { "op_ExclusiveOrAssignment", MethodSpecialName.ExclusiveOrAssignment },
+    { "op_LeftShiftAssignment", MethodSpecialName.LeftShiftAssignment },
+    { "op_RightShiftAssignment", MethodSpecialName.RightShiftAssignment },
+    { "op_UnsignedRightShiftAssignment", MethodSpecialName.UnsignedRightShiftAssignment },
   };
 
   public static MethodSpecialName GetNameType(this MethodBase m)
