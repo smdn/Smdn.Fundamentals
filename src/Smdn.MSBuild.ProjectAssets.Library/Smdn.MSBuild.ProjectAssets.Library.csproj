@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
   <Import Project="$(MSBuildThisFileDirectory)..\..\eng\ProjectSettings.NoAssemblies.props" />
 
   <PropertyGroup>
-    <VersionPrefix>1.12.4</VersionPrefix>
+    <VersionPrefix>1.12.5</VersionPrefix>
     <VersionSuffix></VersionSuffix>
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageType>Dependency;MSBuildSdk</PackageType>
