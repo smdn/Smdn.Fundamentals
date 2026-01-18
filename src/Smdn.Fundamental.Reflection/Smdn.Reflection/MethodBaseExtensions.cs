@@ -146,6 +146,15 @@ public static class MethodBaseExtensions {
     return false;
   }
 
+  /// <seealso href="https://learn.microsoft.com/dotnet/csharp/language-reference/language-specification/classes#153106-method-names-reserved-for-operators">
+  /// C# standard specification, 15 Classes, 15.3.10.6 Method names reserved for operators
+  /// </seealso>
+  /// <seealso href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-11.0/checked-user-defined-operators#names-in-metadata">
+  /// Feature specifications, Checked user-defined operators, Names in metadata
+  /// </seealso>
+  /// <seealso href="https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-11.0/unsigned-right-shift-operator#metadata-name">
+  /// Feature specifications, Unsigned right shift operator, Metadata name
+  /// </seealso>
 #pragma warning disable IDE0090
   private static readonly
 #if SYSTEM_COLLECTIONS_FROZEN_FROZENDICTIONARY

@@ -45,9 +45,11 @@ public enum MethodSpecialName {
   Implicit,
 
   // unsigned right shift (C#11)
+  // ref: https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-11.0/unsigned-right-shift-operator
   UnsignedRightShift,
 
   // checked (C#11)
+  // ref: https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-11.0/checked-user-defined-operators
   CheckedUnaryNegation,
   CheckedIncrement,
   CheckedDecrement,
@@ -58,10 +60,12 @@ public enum MethodSpecialName {
   CheckedExplicit,
 
   // instance increment and decrement operators (C#14)
+  // ref: https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-14.0/user-defined-compound-assignment#increment-operators
   IncrementAssignment,
   DecrementAssignment,
 
   // compound assignment (C#14)
+  // ref: https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-14.0/user-defined-compound-assignment#compound-assignment-operators
   AdditionAssignment,
   SubtractionAssignment,
   MultiplicationAssignment,
@@ -75,6 +79,8 @@ public enum MethodSpecialName {
   UnsignedRightShiftAssignment,
 
   // checked assignment operators (C#14)
+  // ref: https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-14.0/user-defined-compound-assignment#increment-operators
+  // ref: https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-14.0/user-defined-compound-assignment#compound-assignment-operators
   CheckedIncrementAssignment,
   CheckedDecrementAssignment,
   CheckedAdditionAssignment,
