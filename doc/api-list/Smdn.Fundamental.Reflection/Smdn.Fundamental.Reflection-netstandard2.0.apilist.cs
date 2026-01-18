@@ -1,12 +1,12 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.8.0)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.9.0)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.8.0.0
-//   InformationalVersion: 3.8.0+2d806cd6c16472e5eb06285f0d7c26cd69fb45fa
+//   AssemblyVersion: 3.9.0.0
+//   InformationalVersion: 3.9.0+d9ff8d5efe84b2e55818007ec7a46a34a71e1e5a
 //   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
-//   Metadata: RepositoryCommit=2d806cd6c16472e5eb06285f0d7c26cd69fb45fa
+//   Metadata: RepositoryCommit=d9ff8d5efe84b2e55818007ec7a46a34a71e1e5a
 //   Referenced assemblies:
 //     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 //     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
@@ -36,12 +36,18 @@ namespace Smdn.Reflection {
     BitwiseOr = 22,
     BitwiseOrAssignment = 45,
     CheckedAddition = 32,
+    CheckedAdditionAssignment = 52,
     CheckedDecrement = 31,
+    CheckedDecrementAssignment = 51,
     CheckedDivision = 35,
+    CheckedDivisionAssignment = 55,
     CheckedExplicit = 36,
     CheckedIncrement = 30,
+    CheckedIncrementAssignment = 50,
+    CheckedMultiplicationAssignment = 54,
     CheckedMultiply = 34,
     CheckedSubtraction = 33,
+    CheckedSubtractionAssignment = 53,
     CheckedUnaryNegation = 29,
     Constructor = 1,
     Decrement = 15,
