@@ -378,13 +378,19 @@ public class MethodBaseExtensionsTests {
 #if SYSTEM_RUNTIME_COMPILERSERVICES_COMPILERFEATUREREQUIREDATTRIBUTE
       // instance increment and decrement operators (C#14)
       [ExpectedMethodSpecialName(MethodSpecialName.IncrementAssignment)] public void operator ++() => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedIncrementAssignment)] public void operator checked ++() => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.DecrementAssignment)] public void operator --() => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedDecrementAssignment)] public void operator checked --() => throw new NotImplementedException();
 
       // compound assignment operators (C#14)
       [ExpectedMethodSpecialName(MethodSpecialName.AdditionAssignment)] public void operator +=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedAdditionAssignment)] public void operator checked +=(C operand) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.SubtractionAssignment)] public void operator -=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedSubtractionAssignment)] public void operator checked -=(C operand) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.MultiplicationAssignment)] public void operator *=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedMultiplicationAssignment)] public void operator checked *=(C operand) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.DivisionAssignment)] public void operator /=(C operand) => throw new NotImplementedException();
+      [ExpectedMethodSpecialName(MethodSpecialName.CheckedDivisionAssignment)] public void operator checked /=(C operand) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.ModulusAssignment)] public void operator %=(C operand) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.BitwiseAndAssignment)] public void operator &=(C operand) => throw new NotImplementedException();
       [ExpectedMethodSpecialName(MethodSpecialName.BitwiseOrAssignment)] public void operator |=(C operand) => throw new NotImplementedException();

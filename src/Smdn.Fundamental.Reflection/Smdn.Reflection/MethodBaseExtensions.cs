@@ -200,13 +200,19 @@ public static class MethodBaseExtensions {
 
     // instance increment and decrement operators (C#14)
     { "op_IncrementAssignment", MethodSpecialName.IncrementAssignment },
+    { "op_CheckedIncrementAssignment", MethodSpecialName.CheckedIncrementAssignment },
     { "op_DecrementAssignment", MethodSpecialName.DecrementAssignment },
+    { "op_CheckedDecrementAssignment", MethodSpecialName.CheckedDecrementAssignment },
 
     // compound assignment (C#14)
     { "op_AdditionAssignment", MethodSpecialName.AdditionAssignment },
+    { "op_CheckedAdditionAssignment", MethodSpecialName.CheckedAdditionAssignment },
     { "op_SubtractionAssignment", MethodSpecialName.SubtractionAssignment },
+    { "op_CheckedSubtractionAssignment", MethodSpecialName.CheckedSubtractionAssignment },
     { "op_MultiplicationAssignment", MethodSpecialName.MultiplicationAssignment },
+    { "op_CheckedMultiplicationAssignment", MethodSpecialName.CheckedMultiplicationAssignment },
     { "op_DivisionAssignment", MethodSpecialName.DivisionAssignment },
+    { "op_CheckedDivisionAssignment", MethodSpecialName.CheckedDivisionAssignment },
     { "op_ModulusAssignment", MethodSpecialName.ModulusAssignment },
     { "op_BitwiseAndAssignment", MethodSpecialName.BitwiseAndAssignment },
     { "op_BitwiseOrAssignment", MethodSpecialName.BitwiseOrAssignment },

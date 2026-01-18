@@ -73,4 +73,12 @@ public enum MethodSpecialName {
   LeftShiftAssignment,
   RightShiftAssignment,
   UnsignedRightShiftAssignment,
+
+  // checked assignment operators (C#14)
+  CheckedIncrementAssignment,
+  CheckedDecrementAssignment,
+  CheckedAdditionAssignment,
+  CheckedSubtractionAssignment,
+  CheckedMultiplicationAssignment,
+  CheckedDivisionAssignment,
 }
