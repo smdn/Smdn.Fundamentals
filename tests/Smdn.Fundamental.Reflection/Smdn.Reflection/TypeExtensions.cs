@@ -120,6 +120,11 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(int*), new[] { "System" })]
   [TestCase(typeof(int[]), new[] { "System" })]
   [TestCase(typeof(int?), new[] { "System" })]
+  [TestCase(typeof(ValueTuple), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<>), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<int>), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<System.IO.Stream>), new[] { "System", "System.IO" })]
+  [TestCase(typeof(ValueTuple<,>), new[] { "System" })]
   [TestCase(typeof((int, int)), new[] { "System" })]
   [TestCase(typeof((int, System.IO.Stream)), new[] { "System", "System.IO" })]
   [TestCase(typeof(Action), new[] { "System" })]
@@ -128,6 +133,7 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(List<int?>), new[] { "System", "System.Collections.Generic" })]
   [TestCase(typeof(List<int[]>), new[] { "System", "System.Collections.Generic" })]
   [TestCase(typeof(List<KeyValuePair<int, int>>), new[] { "System", "System.Collections.Generic" })]
+  [TestCase(typeof(List<Func<System.IO.Stream, System.Reflection.Assembly>>), new[] { "System", "System.Collections.Generic", "System.IO", "System.Reflection" })]
   public void GetNamespaces(Type type, string[] expected)
     => Assert.That(
       type.GetNamespaces(),
@@ -135,12 +141,46 @@ public partial class TypeExtensionsTests {
     );
 
   [TestCase(typeof(int), new string[] { })]
+  [TestCase(typeof(int*), new string[] { })]
   [TestCase(typeof(int[]), new string[] { })]
+  [TestCase(typeof(int?), new string[] { })]
+  [TestCase(typeof(ValueTuple), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<>), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<int>), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<System.IO.Stream>), new[] { "System", "System.IO" })]
+  [TestCase(typeof(ValueTuple<,>), new[] { "System" })]
+  [TestCase(typeof((int, int)), new[] { "System" })]
+  [TestCase(typeof((int[], int?)), new[] { "System" })]
+  [TestCase(typeof((int, System.IO.Stream)), new[] { "System", "System.IO" })]
   [TestCase(typeof(List<>), new[] { "System.Collections.Generic" })]
   [TestCase(typeof(List<int>), new[] { "System.Collections.Generic" })]
-  public void GetNamespacesWithPrimitiveType(Type type, string[] expected)
+  [TestCase(typeof(List<IEnumerable<int>>), new[] { "System.Collections.Generic" })]
+  public void GetNamespaces_WithPrimitiveType(Type type, string[] expected)
     => Assert.That(
-      type.GetNamespaces(t => t == typeof(int)),
+      type.GetNamespaces(static t => t == typeof(int)),
+      Is.EquivalentTo(expected)
+    );
+
+  [TestCase(typeof(int), new string[] { })]
+  [TestCase(typeof(int*), new string[] { })]
+  [TestCase(typeof(int[]), new string[] { })]
+  [TestCase(typeof(int?), new string[] { })]
+  [TestCase(typeof(ValueTuple), new[] { "System" })]
+  [TestCase(typeof(ValueTuple<>), new string[] { })]
+  [TestCase(typeof(ValueTuple<int>), new string[] { })]
+  [TestCase(typeof(ValueTuple<System.IO.Stream>), new[] { "System.IO" })]
+  [TestCase(typeof(ValueTuple<,>), new string[] { })]
+  [TestCase(typeof((int, int)), new string[] { })]
+  [TestCase(typeof((int[], int?)), new string[] { })]
+  [TestCase(typeof((int, System.IO.Stream)), new[] { "System.IO" })]
+  [TestCase(typeof(List<>), new[] { "System.Collections.Generic" })]
+  [TestCase(typeof(List<int>), new[] { "System.Collections.Generic" })]
+  [TestCase(typeof(List<ValueTuple<int>>), new[] { "System.Collections.Generic" })]
+  [TestCase(typeof(List<(int, int)>), new[] { "System.Collections.Generic" })]
+  [TestCase(typeof(List<(int, System.IO.Stream)>), new[] { "System.Collections.Generic", "System.IO" })]
+  public void GetNamespaces_WithPrimitiveType_GenericTypes(Type type, string[] expected)
+    => Assert.That(
+      type.GetNamespaces(static t => t == typeof(int) || (t.FullName ?? string.Empty).StartsWith("System.ValueTuple`", StringComparison.Ordinal)),
       Is.EquivalentTo(expected)
     );
 

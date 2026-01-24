@@ -224,14 +224,14 @@ public static class TypeExtensions {
       isLanguagePrimitive ?? throw new ArgumentNullException(nameof(isLanguagePrimitive))
     ).Distinct();
 
-  private static IEnumerable<string> GetAllNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive)
+  private static IEnumerable<string> GetAllNamespaces(Type t, Func<Type, bool> isLanguagePrimitive)
   {
     var elementType = t.IsArray || t.IsByRef || t.IsPointer
       ? t.GetElementType()
       : ROCType.GetUnderlyingTypeOfNullable(t);
 
     if (elementType is not null) {
-      foreach (var ns in GetNamespaces(elementType, isLanguagePrimitive))
+      foreach (var ns in GetAllNamespaces(elementType, isLanguagePrimitive))
         yield return ns;
 
       yield break;
@@ -241,16 +241,14 @@ public static class TypeExtensions {
       yield break;
 
     if (t.IsConstructedGenericType || (t.IsGenericType && t.ContainsGenericParameters)) {
-      if (t.Namespace is not null)
-        yield return t.Namespace;
-
-      foreach (var ns in t.GetGenericArguments().SelectMany(type => GetNamespaces(type, isLanguagePrimitive)))
+      foreach (var ns in t.GetGenericArguments().SelectMany(type => GetAllNamespaces(type, isLanguagePrimitive)))
         yield return ns;
-
-      yield break;
     }
 
-    if (!isLanguagePrimitive(t) && t.Namespace is not null)
+    if (isLanguagePrimitive(t))
+      yield break;
+
+    if (t.Namespace is not null)
       yield return t.Namespace;
   }
 
