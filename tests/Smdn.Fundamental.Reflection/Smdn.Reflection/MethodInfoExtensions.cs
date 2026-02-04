@@ -17,47 +17,47 @@ public partial class MethodInfoExtensionsTests {
 
     public abstract void MAbstract();
     public virtual void MVirtual() => throw new NotImplementedException();
+    public virtual void MVirtual<T>() => throw new NotImplementedException();
 
     public abstract int PAbstract { get; }
     public virtual int PVirtual => throw new NotImplementedException();
-
-    public virtual void MVirtual<T>() => throw new NotImplementedException();
   }
 
   class COverride : CAbstract {
     public override void MAbstract() => throw new NotImplementedException();
     public override void MVirtual() => throw new NotImplementedException();
+    public override void MVirtual<T>() => throw new NotImplementedException();
 
     public override int PAbstract => throw new NotImplementedException();
     public override int PVirtual => throw new NotImplementedException();
-
-    public override void MVirtual<T>() => throw new NotImplementedException();
   }
 
   class CSealed : COverride {
     public sealed override void MAbstract() => throw new NotImplementedException();
     public sealed override void MVirtual() => throw new NotSupportedException();
+    public sealed override void MVirtual<T>() => throw new NotImplementedException();
 
     public sealed override int PAbstract => throw new NotImplementedException();
     public sealed override int PVirtual => throw new NotImplementedException();
-
-    public sealed override void MVirtual<T>() => throw new NotImplementedException();
   }
 
   class CVirtual {
     public virtual void MVirtual() => throw new NotImplementedException();
+    public virtual void MVirtual<T>() => throw new NotImplementedException();
 
     public virtual int PVirtual => throw new NotImplementedException();
   }
 
   abstract class CNew : CVirtual {
     public new void MVirtual() => throw new NotImplementedException();
+    public new void MVirtual<T>() => throw new NotImplementedException();
 
     public new int PVirtual => throw new NotImplementedException();
   }
 
   abstract class CNewVirtual : CVirtual {
     public new virtual void MVirtual() => throw new NotImplementedException();
+    public new void MVirtual<T>() => throw new NotImplementedException();
 
     public new virtual int PVirtual => throw new NotImplementedException();
   }
@@ -91,32 +91,44 @@ public partial class MethodInfoExtensionsTests {
   }
 #endif
 
-  [TestCase(typeof(CAbstract), nameof(CAbstract.M), false)]
-  [TestCase(typeof(CAbstract), nameof(CAbstract.MAbstract), false)]
-  [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), false)]
-  [TestCase(typeof(COverride), nameof(COverride.MAbstract), true)]
-  [TestCase(typeof(COverride), nameof(COverride.MVirtual), true)]
-  [TestCase(typeof(CSealed), nameof(CSealed.MAbstract), true)]
-  [TestCase(typeof(CSealed), nameof(CSealed.MVirtual), true)]
-  [TestCase(typeof(CVirtual), nameof(CVirtual.MVirtual), false)]
-  [TestCase(typeof(CNew), nameof(CNew.MVirtual), false)]
-  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.MVirtual), false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.M), 0, false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.MAbstract), 0, false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), 0, false)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), 1, false)]
+  [TestCase(typeof(COverride), nameof(COverride.MAbstract), 0, true)]
+  [TestCase(typeof(COverride), nameof(COverride.MVirtual), 0, true)]
+  [TestCase(typeof(COverride), nameof(COverride.MVirtual), 1, true)]
+  [TestCase(typeof(CSealed), nameof(CSealed.MAbstract), 0, true)]
+  [TestCase(typeof(CSealed), nameof(CSealed.MVirtual), 0, true)]
+  [TestCase(typeof(CSealed), nameof(CSealed.MVirtual), 1, true)]
+  [TestCase(typeof(CVirtual), nameof(CVirtual.MVirtual), 0, false)]
+  [TestCase(typeof(CVirtual), nameof(CVirtual.MVirtual), 1, false)]
+  [TestCase(typeof(CNew), nameof(CNew.MVirtual), 0, false)]
+  [TestCase(typeof(CNew), nameof(CNew.MVirtual), 1, false)]
+  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.MVirtual), 0, false)]
+  [TestCase(typeof(CNewVirtual), nameof(CNewVirtual.MVirtual), 1, false)]
 #if NET7_0_OR_GREATER
-  [TestCase(typeof(IStaticAbstract), nameof(IStaticAbstract.MStaticAbstract), false)]
-  [TestCase(typeof(IStaticVirtual), nameof(IStaticVirtual.MStaticVirtual), false)]
-  [TestCase(typeof(CImplementationOfIStaticAbstract), nameof(CImplementationOfIStaticAbstract.MStaticAbstract), false)]
-  //[TestCase(typeof(CImplementationOfIStaticVirtual), $"Smdn.Reflection.{nameof(MethodInfoExtensionsTests)}.{nameof(IStaticVirtual)}.{nameof(IStaticVirtual.MStaticVirtual)}", false)]
-  [TestCase(typeof(CImplementationOfIStaticVirtual), nameof(CImplementationOfIStaticVirtual.MStaticVirtualToBeReimplemented), false)]
-  [TestCase(typeof(IStaticNew), nameof(IStaticNew.MStaticAbstract), false)]
-  [TestCase(typeof(IStaticNew), nameof(IStaticNew.MStaticVirtual), false)]
-  [TestCase(typeof(CImplementationOfIStaticNew), nameof(CImplementationOfIStaticNew.MStaticAbstract), false)]
-  [TestCase(typeof(CImplementationOfIStaticNew), nameof(CImplementationOfIStaticNew.MStaticVirtual), false)]
+  [TestCase(typeof(IStaticAbstract), nameof(IStaticAbstract.MStaticAbstract), 0, false)]
+  [TestCase(typeof(IStaticVirtual), nameof(IStaticVirtual.MStaticVirtual), 0, false)]
+  [TestCase(typeof(CImplementationOfIStaticAbstract), nameof(CImplementationOfIStaticAbstract.MStaticAbstract), 0, false)]
+  //[TestCase(typeof(CImplementationOfIStaticVirtual), $"Smdn.Reflection.{nameof(MethodInfoExtensionsTests)}.{nameof(IStaticVirtual)}.{nameof(IStaticVirtual.MStaticVirtual)}", 0, false)]
+  [TestCase(typeof(CImplementationOfIStaticVirtual), nameof(CImplementationOfIStaticVirtual.MStaticVirtualToBeReimplemented), 0, false)]
+  [TestCase(typeof(IStaticNew), nameof(IStaticNew.MStaticAbstract), 0, false)]
+  [TestCase(typeof(IStaticNew), nameof(IStaticNew.MStaticVirtual), 0, false)]
+  [TestCase(typeof(CImplementationOfIStaticNew), nameof(CImplementationOfIStaticNew.MStaticAbstract), 0, false)]
+  [TestCase(typeof(CImplementationOfIStaticNew), nameof(CImplementationOfIStaticNew.MStaticVirtual), 0, false)]
 #endif
-  public void IsOverride_Method(Type type, string methodName, bool isOverride)
+  public void IsOverride_Method(Type type, string methodName, int genericParameterCount, bool isOverride)
   {
-    var method = type.GetMethod(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+    var method = type
+      .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly)
+      .First(
+        m =>
+          string.Equals(m.Name, methodName, StringComparison.Ordinal) &&
+          m.GetGenericArguments().Length == genericParameterCount
+      );
 
-    Assert.That(method!.IsOverride(), Is.EqualTo(isOverride), $"is override? {type}.{methodName}");
+    Assert.That(method.IsOverride(), Is.EqualTo(isOverride), $"is override? {type}.{methodName}");
   }
 
   private class CObject : object { }
