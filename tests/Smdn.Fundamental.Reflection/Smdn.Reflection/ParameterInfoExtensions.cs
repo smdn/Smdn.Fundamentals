@@ -300,4 +300,59 @@ public class ParameterInfoExtensionsTests {
         .Property(nameof(ArgumentNullException.ParamName))
         .EqualTo("param")
     );
+
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MOneParam), false)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MTwoParam), false)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MParamsArrayOfInt), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MOneParamAndParamsArrayOfInt), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MTwoParamAndParamsArrayOfInt), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MStaticParamsArrayOfInt), true)]
+#if NET8_0_OR_GREATER
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MParamsReadOnlySpanOfChar), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MOneParamAndParamsReadOnlySpanOfChar), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MTwoParamAndParamsReadOnlySpanOfChar), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MStaticParamsReadOnlySpanOfChar), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MParamsIReadOnlyListOfString), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MOneParamAndParamsIReadOnlyListOfString), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MTwoParamAndParamsIReadOnlyListOfString), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MStaticParamsIReadOnlyListOfString), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MParamsNonGenericArrayList), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MOneParamAndParamsNonGenericArrayList), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MTwoParamAndParamsNonGenericArrayList), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MStaticParamsNonGenericArrayList), true)]
+#endif
+  public void CanTakeArbitraryLengthOfArgs(Type type, string methodName, bool canTakeArbitraryLengthOfArgs)
+  {
+    var method = type.GetMethod(methodName);
+    var parameters = method!.GetParameters();
+
+    Assert.That(
+      parameters.Last().CanTakeArbitraryLengthOfArgs(),
+      Is.EqualTo(canTakeArbitraryLengthOfArgs)
+    );
+
+    for (var i = 0; i < parameters.Length - 1; i++) {
+      Assert.That(
+        parameters[i].CanTakeArbitraryLengthOfArgs(),
+        Is.False,
+        $"param #{i}"
+      );
+    }
+
+    Assert.That(
+      method.ReturnParameter.CanTakeArbitraryLengthOfArgs(),
+      Is.False
+    );
+  }
+
+  [TestCase]
+  public void CanTakeArbitraryLengthOfArgs_ArgumentNull()
+    => Assert.That(
+      () => ((ParameterInfo)null!).CanTakeArbitraryLengthOfArgs(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("param")
+    );
 }

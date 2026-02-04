@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+using System.Linq;
 using System.Reflection;
 
 using Smdn.Reflection.Attributes;
@@ -79,5 +80,17 @@ public static class ParameterInfoExtensions {
       return true;
 
     return false;
+  }
+
+  public static bool CanTakeArbitraryLengthOfArgs(this ParameterInfo param)
+  {
+    if (param is null)
+      throw new ArgumentNullException(nameof(param));
+
+    return param.GetCustomAttributesData().Any(
+      static d =>
+        string.Equals("System.ParamArrayAttribute", d.AttributeType.FullName, StringComparison.Ordinal) ||
+        string.Equals("System.Runtime.CompilerServices.ParamCollectionAttribute", d.AttributeType.FullName, StringComparison.Ordinal)
+    );
   }
 }
