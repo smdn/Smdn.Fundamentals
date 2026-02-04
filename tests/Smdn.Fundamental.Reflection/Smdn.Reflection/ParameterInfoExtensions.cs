@@ -199,6 +199,43 @@ public class ParameterInfoExtensionsTests {
   public void GetDeclaringEvent_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((ParameterInfo)null!).GetDeclaringEvent());
 
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MInt), false)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MString), false)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MIEnumerableOfT), false)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MIEnumerableOfString), false)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MExtensionForInt), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MExtensionForString), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MExtensionForIEnumerableOfT), true)]
+  [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MExtensionForIEnumerableOfString), true)]
+  public void IsExtensionMethodFirstParameter(Type type, string methodName, bool isExtensionMethodFirstParameter)
+  {
+    var method = type.GetMethod(methodName);
+
+    Assert.That(
+      method!.GetParameters()[0].IsExtensionMethodFirstParameter(),
+      Is.EqualTo(isExtensionMethodFirstParameter)
+    );
+    Assert.That(
+      method.GetParameters()[1].IsExtensionMethodFirstParameter(),
+      Is.False
+    );
+    Assert.That(
+      method.ReturnParameter.IsExtensionMethodFirstParameter(),
+      Is.False
+    );
+  }
+
+  [TestCase]
+  public void IsExtensionMethodFirstParameter_ArgumentNull()
+    => Assert.That(
+      () => ((ParameterInfo)null!).IsExtensionMethodFirstParameter(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("param")
+    );
+
   class ParameterModifiers {
     public void None(int x) => throw new NotImplementedException();
     public void In(in int x) => throw new NotImplementedException();

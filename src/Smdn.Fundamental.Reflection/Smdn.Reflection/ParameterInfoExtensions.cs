@@ -60,6 +60,14 @@ public static class ParameterInfoExtensions {
     return ev;
   }
 
+  public static bool IsExtensionMethodFirstParameter(this ParameterInfo param)
+  {
+    if (param is null)
+      throw new ArgumentNullException(nameof(param));
+
+    return param.Position == 0 && param.Member.HasExtensionAttribute();
+  }
+
   public static bool IsRefReadOnly(this ParameterInfo param)
   {
     if (param is null)
