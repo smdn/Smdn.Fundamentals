@@ -26,6 +26,52 @@ public static class MethodInfoExtensions {
       ? throw new ArgumentNullException(nameof(m))
       : (m.Attributes & MethodAttributesIsOverrideMask) == MethodAttributesIsOverride;
 
+  /// <summary>
+  /// Gets the <see cref="MethodInfo"/> for the method on the immediate base class that the current method overrides.
+  /// </summary>
+  /// <param name="m">
+  /// The <see cref="MethodInfo"/> of the method to find the overridden base definition for.
+  /// </param>
+  /// <returns>
+  /// The <see cref="MethodInfo"/> of the overridden method on the immediate base class if it exists;
+  /// otherwise, <see langword="null"/>.
+  /// This method returns <see langword="null"/> if the method is not an override (e.g., it is a new slot or the root virtual definition).
+  /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// Thrown when <paramref name="m"/> is <see langword="null"/>.
+  /// </exception>
+  /// <remarks>
+  /// Unlike <see cref="MethodInfo.GetBaseDefinition"/>, which jumps to the root of the inheritance chain,
+  /// this method only moves one level up. It correctly handles generic methods by verifying generic parameter counts
+  /// and ensures that methods hidden by the 'new' keyword are not incorrectly identified as overridden.
+  /// </remarks>
+  public static MethodInfo? GetImmediateOverriddenMethod(this MethodInfo m)
+  {
+    if (m is null)
+      throw new ArgumentNullException(nameof(m));
+
+    if (m.DeclaringType?.BaseType is not { } baseType)
+      return null; // has no base type
+
+    if (m.IsHidingInheritedMember(nonPublic: true))
+      return null; // not override
+
+    if (m.GetBaseDefinition() is not { } baseMethodDefinition)
+      return null; // is base definition
+
+    var genericArgumentCount = m.GetGenericArguments().Length;
+
+    return baseType
+      .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+      .FirstOrDefault(
+        baseMethod =>
+          m.IsGenericMethod == baseMethod.IsGenericMethod &&
+          genericArgumentCount == baseMethod.GetGenericArguments().Length && // 0 if non-generic method
+          baseMethodDefinition == baseMethod.GetBaseDefinition() &&
+          string.Equals(m.Name, baseMethod.Name, StringComparison.Ordinal)
+      );
+  }
+
   [MethodImpl(MethodImplOptions.AggressiveInlining)]
   private static BindingFlags GetBindingFlagsForAccessorOwner(MethodInfo accessor)
     => (accessor.IsStatic ? BindingFlags.Static : BindingFlags.Instance) | BindingFlags.Public | BindingFlags.NonPublic;

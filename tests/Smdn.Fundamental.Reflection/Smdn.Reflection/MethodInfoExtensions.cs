@@ -20,6 +20,8 @@ public partial class MethodInfoExtensionsTests {
 
     public abstract int PAbstract { get; }
     public virtual int PVirtual => throw new NotImplementedException();
+
+    public virtual void MVirtual<T>() => throw new NotImplementedException();
   }
 
   class COverride : CAbstract {
@@ -28,6 +30,8 @@ public partial class MethodInfoExtensionsTests {
 
     public override int PAbstract => throw new NotImplementedException();
     public override int PVirtual => throw new NotImplementedException();
+
+    public override void MVirtual<T>() => throw new NotImplementedException();
   }
 
   class CSealed : COverride {
@@ -36,6 +40,8 @@ public partial class MethodInfoExtensionsTests {
 
     public sealed override int PAbstract => throw new NotImplementedException();
     public sealed override int PVirtual => throw new NotImplementedException();
+
+    public sealed override void MVirtual<T>() => throw new NotImplementedException();
   }
 
   class CVirtual {
@@ -160,6 +166,122 @@ public partial class MethodInfoExtensionsTests {
   [Test]
   public void IsOverride_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverride());
+
+  // cspell:ignore reoverride
+  class CReoverride : COverride {
+    public override void MAbstract() => throw new NotImplementedException();
+    public override void MVirtual() => throw new NotSupportedException();
+    public override void MVirtual<T>() => throw new NotImplementedException();
+  }
+
+  class CInheritWithoutOverride : COverride {
+  }
+
+  class COverrideBaseOfBase : CInheritWithoutOverride {
+    public override void MAbstract() => throw new NotImplementedException();
+    public override void MVirtual() => throw new NotSupportedException();
+    public override void MVirtual<T>() => throw new NotImplementedException();
+  }
+
+  class CVirtualOverloads {
+    public virtual void M(int x) => throw new NotImplementedException();
+    public virtual void M<T>(int x) => throw new NotImplementedException();
+  }
+
+  class COverrideOverloads : CVirtualOverloads {
+    public override void M(int x) => throw new NotImplementedException();
+    public override void M<T>(int x) => throw new NotImplementedException();
+  }
+
+  interface IGetImmediateOverriddenMethod {
+    void M();
+  }
+
+  class CExplicitInterfaceImplementation : IGetImmediateOverriddenMethod {
+    void IGetImmediateOverriddenMethod.M() => throw new NotImplementedException();
+  }
+
+  class CGenericBase<T> {
+    public virtual void M(T arg) => throw new NotImplementedException();
+  }
+
+  class CDerivedGenericDefinition<T> : CGenericBase<T> {
+    public override void M(T arg) => throw new NotImplementedException();
+  }
+
+  class CDerivedConstructedGeneric : CGenericBase<int> {
+    public override void M(int arg) => throw new NotImplementedException();
+  }
+
+#nullable enable
+  [TestCase(typeof(CAbstract), nameof(CAbstract.M), 0, null)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.MAbstract), 0, null)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), 0, null)]
+  [TestCase(typeof(CAbstract), nameof(CAbstract.MVirtual), 1, null)]
+  [TestCase(typeof(COverride), nameof(COverride.MAbstract), 0, typeof(CAbstract))]
+  [TestCase(typeof(COverride), nameof(COverride.MVirtual), 0, typeof(CAbstract))]
+  [TestCase(typeof(COverride), nameof(COverride.MVirtual), 1, typeof(CAbstract))]
+  [TestCase(typeof(CSealed), nameof(CSealed.MAbstract), 0, typeof(COverride))]
+  [TestCase(typeof(CSealed), nameof(CSealed.MVirtual), 0, typeof(COverride))]
+  [TestCase(typeof(CSealed), nameof(CSealed.MVirtual), 1, typeof(COverride))]
+  [TestCase(typeof(CNew), nameof(CSealed.MVirtual), 0, null)]
+  [TestCase(typeof(CReoverride), nameof(CReoverride.MAbstract), 0, typeof(COverride))]
+  [TestCase(typeof(CReoverride), nameof(CReoverride.MVirtual), 0, typeof(COverride))]
+  [TestCase(typeof(CReoverride), nameof(CReoverride.MVirtual), 1, typeof(COverride))]
+  [TestCase(typeof(COverrideBaseOfBase), nameof(COverrideBaseOfBase.MAbstract), 0, typeof(COverride))]
+  [TestCase(typeof(COverrideBaseOfBase), nameof(COverrideBaseOfBase.MVirtual), 0, typeof(COverride))]
+  [TestCase(typeof(COverrideBaseOfBase), nameof(COverrideBaseOfBase.MVirtual), 1, typeof(COverride))]
+  [TestCase(typeof(COverrideOverloads), nameof(COverrideOverloads.M), 0, typeof(CVirtualOverloads))]
+  [TestCase(typeof(COverrideOverloads), nameof(COverrideOverloads.M), 1, typeof(CVirtualOverloads))]
+  [TestCase(typeof(CExplicitInterfaceImplementation), $"Smdn.Reflection.MethodInfoExtensionsTests.{nameof(IGetImmediateOverriddenMethod)}.{nameof(IGetImmediateOverriddenMethod.M)}", 0, null)]
+  [TestCase(typeof(CDerivedGenericDefinition<>), nameof(CDerivedGenericDefinition<>.M), 0, typeof(CGenericBase<>))]
+  [TestCase(typeof(CDerivedConstructedGeneric), nameof(CDerivedConstructedGeneric.M), 0, typeof(CGenericBase<int>))]
+  public void GetImmediateOverriddenMethod(Type type, string methodName, int genericParameterCount, Type? expectedBaseType)
+  {
+    var method = type
+      .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly )
+      .Where(m => methodName.Equals(m.Name, StringComparison.Ordinal))
+      .First(
+        m => genericParameterCount == 0
+          ? !m.IsGenericMethod
+          : m.IsGenericMethod && m.GetGenericArguments().Length == genericParameterCount
+      );
+
+    var overriddenMethod = method.GetImmediateOverriddenMethod();
+
+    if (expectedBaseType is null) {
+      Assert.That(overriddenMethod, Is.Null);
+    }
+    else {
+      Assert.That(overriddenMethod, Is.Not.Null);
+      if (expectedBaseType.IsGenericTypeDefinition)
+        Assert.That(overriddenMethod.DeclaringType?.ToString(), Is.EqualTo(expectedBaseType.ToString())); // ???
+      else
+        Assert.That(overriddenMethod.DeclaringType, Is.EqualTo(expectedBaseType));
+      Assert.That(overriddenMethod.Name, Is.EqualTo(methodName));
+      Assert.That(overriddenMethod.GetParameters().Length, Is.EqualTo(method.GetParameters().Length));
+
+      if (method.IsGenericMethod) {
+        Assert.That(overriddenMethod.IsGenericMethod, Is.True);
+        Assert.That(overriddenMethod.GetGenericArguments().Count, Is.EqualTo(genericParameterCount));
+      }
+      else {
+        Assert.That(overriddenMethod.IsGenericMethod, Is.False);
+      }
+    }
+  }
+#nullable restore
+
+  [Test]
+  public void GetImmediateOverriddenMethod_ArgumentNull()
+    => Assert.That(
+      () => ((MethodInfo)null!).GetImmediateOverriddenMethod(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("m")
+    );
 
   class CDelegateSignatureMethod {
     public void M() => throw null;
