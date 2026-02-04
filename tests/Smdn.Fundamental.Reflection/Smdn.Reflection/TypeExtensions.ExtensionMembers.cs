@@ -248,12 +248,17 @@ partial class TypeExtensionsTests {
         extensionParameter.ParameterType.GetGenericTypeDefinition(),
         Is.EqualTo(expectedTypeOfParameter)
       );
-      Assert.That(extensionParameter.Name, Is.EqualTo(expectedNameOfParameter));
     }
     else {
       Assert.That(extensionParameter.ParameterType, Is.EqualTo(expectedTypeOfParameter));
-      Assert.That(extensionParameter.Name, Is.EqualTo(expectedNameOfParameter));
     }
+
+    Assert.That(
+      extensionParameter.Name, // on Mono, this may result in an empty string rather than null
+      expectedNameOfParameter is null
+        ? Is.Null.Or.Empty
+        : Is.EqualTo(expectedNameOfParameter)
+    );
   }
 
   [TestCase(typeof(TypeExtensionsExtensionMembersTestTypes.EnclosingClassForEmptyExtensionMembersWithParameterName))]
@@ -440,7 +445,13 @@ partial class TypeExtensionsTests {
         : param.ParameterType,
       Is.EqualTo(expectedTypeOfParameter)
     );
-    Assert.That(param.Name, Is.EqualTo(expectedNameOfParameter));
+
+    Assert.That(
+      param.Name, // on Mono, this may result in an empty string rather than null
+      expectedNameOfParameter is null
+        ? Is.Null.Or.Empty
+        : Is.EqualTo(expectedNameOfParameter)
+    );
   }
 
   [TestCase(typeof(TypeExtensionsExtensionMembersTestTypes.EnclosingClassForEmptyExtensionMembersWithParameterName))]
