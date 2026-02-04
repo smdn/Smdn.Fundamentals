@@ -35,7 +35,7 @@ jobs:
 
     - name: Setup NuGet cache
       # ref: https://github.com/actions/cache/blob/master/examples.md#c---nuget
-      uses: actions/cache@v5.0.2
+      uses: actions/cache@v5.0.3
       with:
         path: ${{ steps.set-nuget-packages.outputs.path-to-nuget-packages }}
         key: test-NuGetPackages-${{ runner.os }}
