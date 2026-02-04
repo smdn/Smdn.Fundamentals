@@ -20,6 +20,16 @@ public static class ICustomAttributeProviderExtensions {
       _ => throw new ArgumentException($"unsupported type of {nameof(ICustomAttributeProvider)}", nameof(attributeProvider)),
     };
 
+  internal static bool HasAsyncStateMachineAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider ?? throw new ArgumentNullException(nameof(attributeProvider)))
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.AsyncStateMachineAttribute",
+          StringComparison.Ordinal
+        )
+      );
+
   public static bool HasCompilerGeneratedAttribute(this ICustomAttributeProvider attributeProvider)
     => GetCustomAttributeDataList(attributeProvider ?? throw new ArgumentNullException(nameof(attributeProvider)))
       .Any(static d =>

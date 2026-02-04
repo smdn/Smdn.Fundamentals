@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -373,4 +374,67 @@ public partial class MethodInfoExtensionsTests {
   [Test]
   public void IsReadOnly_Method_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsReadOnly());
+
+  class CAsyncStateMachine {
+    public virtual void M() => throw new NotImplementedException();
+    public virtual Task MTask() => Task.Delay(0);
+    public virtual Task<int> MTaskOfInt() => Task.FromResult(0);
+    public async void MAsyncVoid() { await Task.Delay(0); }
+    public async Task MAsyncTask() { await Task.Delay(0); }
+    public async Task<int> MAsyncTaskOfInt() { await Task.Delay(0); return 0; }
+
+    public virtual ValueTask MValueTask() => new ValueTask();
+    public virtual ValueTask<int> MValueTaskOfInt() => new ValueTask<int>();
+    public async ValueTask MAsyncValueTask() { await Task.Delay(0); }
+    public async ValueTask<int> MAsyncValueTaskOfInt() { await Task.Delay(0); return 0; }
+  }
+
+  class CAsyncStateMachineOverride : CAsyncStateMachine {
+    public override async void M() { await Task.Delay(0); }
+    public override async Task MTask() { await Task.Delay(0); }
+    public override async Task<int> MTaskOfInt() { await Task.Delay(0); return 0; }
+
+    public override async ValueTask MValueTask() { await Task.Delay(0); }
+    public override async ValueTask<int> MValueTaskOfInt() { await Task.Delay(0); return 0; }
+  }
+
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.M), false)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MTask), false)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MTaskOfInt), false)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MAsyncVoid), true)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MAsyncTask), true)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MAsyncTaskOfInt), true)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MValueTask), false)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MValueTaskOfInt), false)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MAsyncValueTask), true)]
+  [TestCase(typeof(CAsyncStateMachine), nameof(CAsyncStateMachine.MAsyncValueTaskOfInt), true)]
+  [TestCase(typeof(CAsyncStateMachineOverride), nameof(CAsyncStateMachineOverride.M), true)]
+  [TestCase(typeof(CAsyncStateMachineOverride), nameof(CAsyncStateMachineOverride.MTask), true)]
+  [TestCase(typeof(CAsyncStateMachineOverride), nameof(CAsyncStateMachineOverride.MTaskOfInt), true)]
+  [TestCase(typeof(CAsyncStateMachineOverride), nameof(CAsyncStateMachineOverride.MValueTask), true)]
+  [TestCase(typeof(CAsyncStateMachineOverride), nameof(CAsyncStateMachineOverride.MValueTaskOfInt), true)]
+  public void IsAsyncStateMachine(Type type, string methodName, bool isAsyncStateMachine)
+  {
+    var method = type.GetMethod(
+      methodName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly
+    );
+
+    Assert.That(
+      method!.IsAsyncStateMachine(),
+      Is.EqualTo(isAsyncStateMachine),
+      $"{type}.{methodName}"
+    );
+  }
+
+  [Test]
+  public void IsAsyncStateMachine_ArgumentNull()
+    => Assert.That(
+      () => ((MethodInfo)null!).IsAsyncStateMachine(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("m")
+    );
 }

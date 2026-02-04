@@ -300,4 +300,9 @@ public static class MethodInfoExtensions {
       m ?? throw new ArgumentNullException(nameof(m)),
       out extensionParameter
     );
+
+  public static bool IsAsyncStateMachine(this MethodInfo m)
+    => m is null
+      ? throw new ArgumentNullException(nameof(m))
+      : m.HasAsyncStateMachineAttribute();
 }
