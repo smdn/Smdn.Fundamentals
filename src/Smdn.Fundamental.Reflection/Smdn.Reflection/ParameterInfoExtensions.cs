@@ -3,6 +3,8 @@
 using System;
 using System.Reflection;
 
+using Smdn.Reflection.Attributes;
+
 namespace Smdn.Reflection;
 
 public static class ParameterInfoExtensions {
@@ -56,5 +58,18 @@ public static class ParameterInfoExtensions {
     );
 
     return ev;
+  }
+
+  public static bool IsRefReadOnly(this ParameterInfo param)
+  {
+    if (param is null)
+      throw new ArgumentNullException(nameof(param));
+
+    if (param.IsIn && param.HasRequiresLocationAttribute())
+      return true;
+    if (param.IsReturnParameter() && param.HasIsReadOnlyAttribute())
+      return true;
+
+    return false;
   }
 }

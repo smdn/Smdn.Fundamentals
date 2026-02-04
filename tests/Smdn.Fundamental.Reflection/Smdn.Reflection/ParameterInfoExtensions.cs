@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+// cspell:ignore retval
 #pragma warning disable IDE0051, CS0067, CS8597
 
 using System;
@@ -197,4 +198,69 @@ public class ParameterInfoExtensionsTests {
   [TestCase]
   public void GetDeclaringEvent_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((ParameterInfo)null!).GetDeclaringEvent());
+
+  class ParameterModifiers {
+    public void None(int x) => throw new NotImplementedException();
+    public void In(in int x) => throw new NotImplementedException();
+    public void Out(out int x) => throw new NotImplementedException();
+    public void Ref(ref int x) => throw new NotImplementedException();
+    public void RefReadOnly(ref readonly ReadOnlySpan<int> x) => throw new NotImplementedException();
+    public int RefVal() => throw new NotImplementedException();
+    public ref int RefRetval() => throw new NotImplementedException();
+    public ref readonly int RefReadOnlyRetval() => throw new NotImplementedException();
+    public ref ReadOnlySpan<int> RefOfRefStructRetval() => throw new NotImplementedException();
+    public ref readonly ReadOnlySpan<int> RefReadOnlyOfRefStructRetval() => throw new NotImplementedException();
+
+    public void Scoped(scoped ReadOnlySpan<int> x) => throw new NotImplementedException();
+    public void ScopedIn(scoped in int x) => throw new NotImplementedException();
+    public void ScopedOut(scoped out int x) => throw new NotImplementedException();
+    public void ScopedOutOfRefStruct(scoped out ReadOnlySpan<int> x) => throw new NotImplementedException();
+    public void ScopedRef(scoped ref int x) => throw new NotImplementedException();
+    public void ScopedRefReadOnly(scoped ref readonly ReadOnlySpan<int> x) => throw new NotImplementedException();
+
+    public void ParamsArray(params int[] x) => throw new NotImplementedException();
+    public void ParamsRefStruct(params ReadOnlySpan<int> x) => throw new NotImplementedException();
+    public void ParamsScopedRefStruct(params scoped ReadOnlySpan<int> x) => throw new NotImplementedException();
+  }
+
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.None), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.In), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.Out), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.Ref), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefReadOnly), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefVal), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefRetval), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefReadOnlyRetval), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefOfRefStructRetval), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefReadOnlyOfRefStructRetval), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.Scoped), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedIn), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedOut), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedOutOfRefStruct), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedRef), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedRefReadOnly), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ParamsArray), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ParamsRefStruct), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ParamsScopedRefStruct), false)]
+  public void IsRefReadOnly(Type type, string methodName, bool isRefReadOnly)
+  {
+    var method = type.GetMethod(methodName);
+    var parameter = method!.GetParameters().FirstOrDefault() ?? method.ReturnParameter;
+
+    Assert.That(
+      parameter.IsRefReadOnly(),
+      Is.EqualTo(isRefReadOnly)
+    );
+  }
+
+  [TestCase]
+  public void IsRefReadOnly_ArgumentNull()
+    => Assert.That(
+      () => ((ParameterInfo)null!).IsRefReadOnly(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("param")
+    );
 }

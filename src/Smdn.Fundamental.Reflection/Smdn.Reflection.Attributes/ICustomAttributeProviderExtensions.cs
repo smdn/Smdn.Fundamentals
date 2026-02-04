@@ -59,4 +59,14 @@ public static class ICustomAttributeProviderExtensions {
           StringComparison.Ordinal
         )
       );
+
+  internal static bool HasRequiresLocationAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider)
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.RequiresLocationAttribute",
+          StringComparison.Ordinal
+        )
+      );
 }
