@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Smdn.Reflection;
 
 [TestFixture()]
-public class PropertyInfoExtensionsTests {
+public partial class PropertyInfoExtensionsTests {
   class C {
     public int P0 { get; init; }
     public int P1 { get; set; }

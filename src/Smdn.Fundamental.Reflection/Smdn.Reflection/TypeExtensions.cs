@@ -10,7 +10,7 @@ using Smdn.Reflection.Attributes;
 
 namespace Smdn.Reflection;
 
-public static class TypeExtensions {
+public static partial class TypeExtensions {
   /// <summary>The utility functions which supports types from reflection-only context.</summary>
   private static class ROCType {
     public static bool Equals(Type type, Type t)

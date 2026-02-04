@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 // cSpell:ignore modreq
 using System;
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+using System.Diagnostics.CodeAnalysis;
+#endif
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -109,4 +112,56 @@ public static class PropertyInfoExtensions {
     => property is null
       ? throw new ArgumentNullException(nameof(property))
       : property.GetMethod?.IsReadOnly() ?? false;
+
+  /// <summary>
+  /// Attempts to get the <see cref="Type"/> represents the marker type corresponding to the
+  /// extension member when <paramref name="property"/> is an extension property.
+  /// </summary>
+  /// <param name="property">The <see cref="PropertyInfo"/> that represents the extension property.</param>
+  /// <param name="extensionMarkerType">
+  /// The <see cref="Type"/> that represents the retrieved marker type
+  /// corresponding to <paramref name="property"/>.
+  /// </param>
+  /// <returns>
+  /// <see langword="true"/> if the marker type corresponding to <paramref name="property"/> was found,
+  /// otherwise <see langword="false"/>.
+  /// </returns>
+  /// <exception cref="ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  public static bool TryGetExtensionMarkerType(
+    this PropertyInfo property,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out Type? extensionMarkerType
+  )
+    => ExtensionMembersUtils.TryGetExtensionMarkerType(
+      property ?? throw new ArgumentNullException(nameof(property)),
+      out extensionMarkerType
+    );
+
+  /// <summary>
+  /// Attempts to get the <see cref="ParameterInfo"/> represents the extension parameter corresponding to the
+  /// extension member when <paramref name="property"/> is an extension property.
+  /// </summary>
+  /// <param name="property">The <see cref="PropertyInfo"/> that represents the extension property.</param>
+  /// <param name="extensionParameter">
+  /// The <see cref="ParameterInfo"/> that represents the retrieved extension parameter
+  /// corresponding to <paramref name="property"/>.
+  /// </param>
+  /// <returns>
+  /// <see langword="true"/> if the extension parameter corresponding to <paramref name="property"/> was found,
+  /// otherwise <see langword="false"/>.
+  /// </returns>
+  /// <exception cref="ArgumentNullException"><paramref name="property"/> is <see langword="null"/>.</exception>
+  public static bool TryGetExtensionParameter(
+    this PropertyInfo property,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out ParameterInfo? extensionParameter
+  )
+    => ExtensionMembersUtils.TryGetExtensionParameter(
+      property ?? throw new ArgumentNullException(nameof(property)),
+      out extensionParameter
+    );
 }

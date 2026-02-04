@@ -202,4 +202,56 @@ public static class MethodInfoExtensions {
     => m is null
       ? throw new ArgumentNullException(nameof(m))
       : m.HasIsReadOnlyAttribute();
+
+  /// <summary>
+  /// Attempts to get the <see cref="Type"/> represents the marker type corresponding to the
+  /// extension member when <paramref name="m"/> is an extension method.
+  /// </summary>
+  /// <param name="m">The <see cref="MethodInfo"/> that represents the extension method.</param>
+  /// <param name="extensionMarkerType">
+  /// The <see cref="Type"/> that represents the retrieved marker type
+  /// corresponding to <paramref name="m"/>.
+  /// </param>
+  /// <returns>
+  /// <see langword="true"/> if the marker type corresponding to <paramref name="m"/> was found,
+  /// otherwise <see langword="false"/>.
+  /// </returns>
+  /// <exception cref="ArgumentNullException"><paramref name="m"/> is <see langword="null"/>.</exception>
+  public static bool TryGetExtensionMarkerType(
+    this MethodInfo m,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out Type? extensionMarkerType
+  )
+    => ExtensionMembersUtils.TryGetExtensionMarkerType(
+      m ?? throw new ArgumentNullException(nameof(m)),
+      out extensionMarkerType
+    );
+
+  /// <summary>
+  /// Attempts to get the <see cref="ParameterInfo"/> represents the extension parameter corresponding to the
+  /// extension member when <paramref name="m"/> is an extension method.
+  /// </summary>
+  /// <param name="m">The <see cref="MethodInfo"/> that represents the extension method.</param>
+  /// <param name="extensionParameter">
+  /// The <see cref="ParameterInfo"/> that represents the retrieved extension parameter
+  /// corresponding to <paramref name="m"/>.
+  /// </param>
+  /// <returns>
+  /// <see langword="true"/> if the extension parameter corresponding to <paramref name="m"/> was found,
+  /// otherwise <see langword="false"/>.
+  /// </returns>
+  /// <exception cref="ArgumentNullException"><paramref name="m"/> is <see langword="null"/>.</exception>
+  public static bool TryGetExtensionParameter(
+    this MethodInfo m,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out ParameterInfo? extensionParameter
+  )
+    => ExtensionMembersUtils.TryGetExtensionParameter(
+      m ?? throw new ArgumentNullException(nameof(m)),
+      out extensionParameter
+    );
 }

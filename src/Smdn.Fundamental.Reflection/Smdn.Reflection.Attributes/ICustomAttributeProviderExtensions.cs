@@ -30,6 +30,26 @@ public static class ICustomAttributeProviderExtensions {
         )
       );
 
+  internal static bool HasExtensionAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider)
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.ExtensionAttribute",
+          StringComparison.Ordinal
+        )
+      );
+
+  internal static bool HasExtensionMarkerAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider)
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.ExtensionMarkerAttribute",
+          StringComparison.Ordinal
+        )
+      );
+
   internal static bool HasIsReadOnlyAttribute(this ICustomAttributeProvider attributeProvider)
     => GetCustomAttributeDataList(attributeProvider)
       .Any(static d =>
