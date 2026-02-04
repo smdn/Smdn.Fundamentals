@@ -82,6 +82,14 @@ public static class ParameterInfoExtensions {
     return false;
   }
 
+  public static bool IsScopedRef(this ParameterInfo param)
+  {
+    if (param is null)
+      throw new ArgumentNullException(nameof(param));
+
+    return param.HasScopedRefAttribute();
+  }
+
   public static bool CanTakeArbitraryLengthOfArgs(this ParameterInfo param)
   {
     if (param is null)

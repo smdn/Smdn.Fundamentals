@@ -60,6 +60,16 @@ public static class ICustomAttributeProviderExtensions {
         )
       );
 
+  internal static bool HasScopedRefAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider)
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.ScopedRefAttribute",
+          StringComparison.Ordinal
+        )
+      );
+
   internal static bool HasRequiresLocationAttribute(this ICustomAttributeProvider attributeProvider)
     => GetCustomAttributeDataList(attributeProvider)
       .Any(static d =>

@@ -301,6 +301,47 @@ public class ParameterInfoExtensionsTests {
         .EqualTo("param")
     );
 
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.None), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.In), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.Out), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.Ref), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefReadOnly), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefVal), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefRetval), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefReadOnlyRetval), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefOfRefStructRetval), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.RefReadOnlyOfRefStructRetval), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.Scoped), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedIn), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedOut), false)] // `out` is implicitly `scoped out`
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedOutOfRefStruct), false)] // `out` is implicitly `scoped out`
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedRef), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ScopedRefReadOnly), true)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ParamsArray), false)]
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ParamsRefStruct), true)] // params <ref-type> is `scoped` by default
+  [TestCase(typeof(ParameterModifiers), nameof(ParameterModifiers.ParamsScopedRefStruct), true)]
+  public void IsScopedRef(Type type, string methodName, bool isScopedRef)
+  {
+    var method = type.GetMethod(methodName);
+    var parameter = method!.GetParameters().FirstOrDefault() ?? method.ReturnParameter;
+
+    Assert.That(
+      parameter.IsScopedRef(),
+      Is.EqualTo(isScopedRef)
+    );
+  }
+
+  [TestCase]
+  public void IsScopedRef_ArgumentNull()
+    => Assert.That(
+      () => ((ParameterInfo)null!).IsScopedRef(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("param")
+    );
+
   [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MOneParam), false)]
   [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MTwoParam), false)]
   [TestCase(typeof(ParameterInfoExtensionsTestTypes.CParams), nameof(ParameterInfoExtensionsTestTypes.CParams.MParamsArrayOfInt), true)]
