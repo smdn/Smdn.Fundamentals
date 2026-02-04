@@ -131,6 +131,12 @@ public class FieldInfoExtensionsTests {
   }
 #endif
 
+  unsafe struct SFixedSizeBuffers {
+    public int Int;
+    public fixed int Fixed4Int[4];
+    public fixed byte Fixed1Byte[1];
+  }
+
   private static IEnumerable<FieldInfo> GetTestTargetFields()
   {
     foreach (var type in new[] {
@@ -303,4 +309,80 @@ public class FieldInfoExtensionsTests {
         .Property(nameof(ArgumentNullException.ParamName))
         .EqualTo("f")
     );
+
+  [TestCase(typeof(C), nameof(C.F0), false)]
+  [TestCase(typeof(S), nameof(S.F), false)]
+  [TestCase(typeof(S), nameof(S.FStatic), false)]
+  [TestCase(typeof(S), nameof(S.FConst), false)]
+  [TestCase(typeof(S), nameof(S.FReadOnly), false)]
+  [TestCase(typeof(S), nameof(S.FStaticReadOnly), false)]
+  [TestCase(typeof(SFixedSizeBuffers), nameof(SFixedSizeBuffers.Int), false)]
+  [TestCase(typeof(SFixedSizeBuffers), nameof(SFixedSizeBuffers.Fixed4Int), true)]
+  [TestCase(typeof(SFixedSizeBuffers), nameof(SFixedSizeBuffers.Fixed1Byte), true)]
+  public void IsFixedBuffer(Type type, string fieldName, bool isFixedBuffer)
+  {
+    var field = type.GetField(
+      fieldName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+    );
+
+    Assert.That(
+      field!.IsFixedBuffer(),
+      Is.EqualTo(isFixedBuffer),
+      $"{type.Name}.{field!.Name}"
+    );
+  }
+
+  [Test]
+  public void IsFixedBuffer_ArgumentNull()
+    => Assert.That(
+      () => ((FieldInfo)null!).IsFixedBuffer(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("f")
+    );
+
+#nullable enable
+  [TestCase(typeof(C), nameof(C.F0), false, null, 0)]
+  [TestCase(typeof(S), nameof(S.F), false, null, 0)]
+  [TestCase(typeof(S), nameof(S.FStatic), false, null, 0)]
+  [TestCase(typeof(S), nameof(S.FConst), false, null, 0)]
+  [TestCase(typeof(S), nameof(S.FReadOnly), false, null, 0)]
+  [TestCase(typeof(S), nameof(S.FStaticReadOnly), false, null, 0)]
+  [TestCase(typeof(SFixedSizeBuffers), nameof(SFixedSizeBuffers.Int), false, null, 0)]
+  [TestCase(typeof(SFixedSizeBuffers), nameof(SFixedSizeBuffers.Fixed4Int), true, typeof(int), 4)]
+  [TestCase(typeof(SFixedSizeBuffers), nameof(SFixedSizeBuffers.Fixed1Byte), true, typeof(byte), 1)]
+  public void IsFixedBuffer(Type type, string fieldName, bool isFixedBuffer, Type? expectedElementType, int expectedLength)
+  {
+    var field = type.GetField(
+      fieldName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+    );
+
+    Assert.That(
+      field!.TryGetFixedBufferElementTypeAndLength(out var elementType, out var length),
+      Is.EqualTo(isFixedBuffer),
+      $"{type.Name}.{field!.Name}"
+    );
+
+    if (isFixedBuffer) {
+      Assert.That(elementType, Is.Not.Null, $"{type.Name}.{field!.Name}");
+      Assert.That(elementType, Is.EqualTo(expectedElementType), $"{type.Name}.{field!.Name}");
+      Assert.That(length, Is.EqualTo(expectedLength), $"{type.Name}.{field!.Name}");
+    }
+  }
+
+  [Test]
+  public void TryGetFixedBufferElementTypeAndLength_ArgumentNull()
+    => Assert.That(
+      () => ((FieldInfo)null!).TryGetFixedBufferElementTypeAndLength(out _, out _),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("f")
+    );
+#nullable restore
 }

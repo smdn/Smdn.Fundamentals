@@ -4,6 +4,7 @@ using System;
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
 using System.Diagnostics.CodeAnalysis;
 #endif
+using System.Linq;
 using System.Reflection;
 
 using Smdn.Reflection.Attributes;
@@ -123,5 +124,96 @@ public static class FieldInfoExtensions {
       return false;
 
     return f.HasRequiredMemberAttribute();
+  }
+
+  public static bool IsFixedBuffer(this FieldInfo f)
+    => TryGetFixedBufferElementTypeAndLengthCore(
+      field: f ?? throw new ArgumentNullException(nameof(f)),
+      getConstructorArgs: false,
+      out _,
+      out _
+    );
+
+  public static bool TryGetFixedBufferElementTypeAndLength(
+    this FieldInfo f,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out Type? elementType,
+    out int length
+  )
+    => TryGetFixedBufferElementTypeAndLengthCore(
+      field: f ?? throw new ArgumentNullException(nameof(f)),
+      getConstructorArgs: true,
+      elementType: out elementType,
+      length: out length
+    );
+
+  private static bool TryGetFixedBufferElementTypeAndLengthCore(
+    FieldInfo field,
+    bool getConstructorArgs,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
+    [NotNullWhen(true)]
+#endif
+    out Type? elementType,
+    out int length
+  )
+  {
+    elementType = default;
+    length = default;
+
+    if (field.IsStatic)
+      return false;
+    if (field.IsInitOnly)
+      return false;
+    if (field.IsLiteral)
+      return false;
+
+    var attrFixedBuffer = field
+      .GetCustomAttributesData()
+      .FirstOrDefault(
+        static d => string.Equals(
+          typeof(System.Runtime.CompilerServices.FixedBufferAttribute).FullName,
+          d.AttributeType.FullName,
+          StringComparison.Ordinal
+        )
+      );
+
+    var hasFixedBufferAttribute = attrFixedBuffer is not null;
+
+    if (hasFixedBufferAttribute && getConstructorArgs) {
+#if SYSTEM_INDEX
+      if (attrFixedBuffer!.ConstructorArguments is [var argElementType, var argLength]) {
+#else
+      if (attrFixedBuffer!.ConstructorArguments.Count == 2) {
+        var argElementType = attrFixedBuffer.ConstructorArguments[0];
+        var argLength = attrFixedBuffer.ConstructorArguments[1];
+#endif
+        if (
+          string.Equals(typeof(Type).FullName, argElementType.ArgumentType.FullName, StringComparison.Ordinal) &&
+          argElementType.Value is Type argElementTypeValue
+        ) {
+          elementType = argElementTypeValue;
+        }
+        else {
+          hasFixedBufferAttribute = false; // has an unexpected arg
+        }
+
+        if (
+          string.Equals(typeof(int).FullName, argLength.ArgumentType.FullName, StringComparison.Ordinal) &&
+          argLength.Value is int argLengthValue
+        ) {
+          length = argLengthValue;
+        }
+        else {
+          hasFixedBufferAttribute = false; // has an unexpected arg
+        }
+      }
+      else {
+        hasFixedBufferAttribute = false; // has unexpected args
+      }
+    }
+
+    return hasFixedBufferAttribute;
   }
 }
