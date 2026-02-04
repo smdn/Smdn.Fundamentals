@@ -39,8 +39,10 @@ As an example, the symbol `SYSTEM_ENUM_PARSE_OF_TENUM` corresponding to `System.
 
   <ItemGroup>
     <None Pack="false" Include="build\**" Visible="true" />
+    <None Pack="false" Include="buildTransitive\**" Visible="true" />
 
     <None Pack="true"  Include="build\$(AssemblyName).targets" PackagePath="build\" />
+    <None Pack="true"  Include="buildTransitive\$(AssemblyName).targets" PackagePath="buildTransitive\" />
   </ItemGroup>
 
   <Import Project="build\$(AssemblyName).targets" />
