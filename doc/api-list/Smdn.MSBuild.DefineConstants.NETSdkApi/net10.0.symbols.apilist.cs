@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.6.3
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.7.0
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.6.3
+//   InformationalVersion: 1.7.0
 
 // List of symbols defined on target framework 'net10.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
