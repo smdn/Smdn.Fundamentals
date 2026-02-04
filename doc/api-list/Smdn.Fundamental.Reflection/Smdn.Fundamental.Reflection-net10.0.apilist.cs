@@ -1,14 +1,13 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.9.1)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.10.0)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.9.1.0
-//   InformationalVersion: 3.9.1+3b727c0b578dc23d7a0901ea3541b039f8bf3f05
+//   AssemblyVersion: 3.10.0.0
+//   InformationalVersion: 3.10.0+0c4f7eca96a3065716196aecf88ea084671726e6
 //   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
-//   Metadata: IsTrimmable=True
 //   Metadata: IsAotCompatible=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
-//   Metadata: RepositoryCommit=3b727c0b578dc23d7a0901ea3541b039f8bf3f05
+//   Metadata: RepositoryCommit=0c4f7eca96a3065716196aecf88ea084671726e6
 //   Referenced assemblies:
 //     System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Collections.Immutable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
@@ -105,9 +104,12 @@ namespace Smdn.Reflection {
 
   public static class FieldInfoExtensions {
     public static bool IsEventBackingField(this FieldInfo f) {}
+    public static bool IsFixedBuffer(this FieldInfo f) {}
     public static bool IsPropertyBackingField(this FieldInfo f) {}
     public static bool IsReadOnly(this FieldInfo f) {}
+    public static bool IsRequired(this FieldInfo f) {}
     public static bool TryGetEventFromBackingField(this FieldInfo backingField, [NotNullWhen(true)] out EventInfo? ev) {}
+    public static bool TryGetFixedBufferElementTypeAndLength(this FieldInfo f, [NotNullWhen(true)] out Type? elementType, out int length) {}
     public static bool TryGetPropertyFromBackingField(this FieldInfo backingField, [NotNullWhen(true)] out PropertyInfo? property) {}
   }
 
@@ -126,6 +128,8 @@ namespace Smdn.Reflection {
   }
 
   public static class MethodInfoExtensions {
+    public static MethodInfo? GetImmediateOverriddenMethod(this MethodInfo m) {}
+    public static bool IsAsyncStateMachine(this MethodInfo m) {}
     public static bool IsDelegateSignatureMethod(this MethodInfo m) {}
     public static bool IsEventAccessorMethod(this MethodInfo m) {}
     public static bool IsEventAddMethod(this MethodInfo m) {}
@@ -138,33 +142,75 @@ namespace Smdn.Reflection {
     public static bool IsPropertySetMethod(this MethodInfo m) {}
     public static bool IsReadOnly(this MethodInfo m) {}
     public static bool TryGetEventFromAccessorMethod(this MethodInfo? accessor, [NotNullWhen(true)] out EventInfo? ev) {}
+    public static bool TryGetExtensionMarkerType(this MethodInfo m, [NotNullWhen(true)] out Type? extensionMarkerType) {}
+    public static bool TryGetExtensionParameter(this MethodInfo m, [NotNullWhen(true)] out ParameterInfo? extensionParameter) {}
     public static bool TryGetPropertyFromAccessorMethod(this MethodInfo? accessor, [NotNullWhen(true)] out PropertyInfo? property) {}
   }
 
   public static class ParameterInfoExtensions {
+    public static bool CanTakeArbitraryLengthOfArgs(this ParameterInfo param) {}
     public static EventInfo? GetDeclaringEvent(this ParameterInfo param) {}
     public static PropertyInfo? GetDeclaringProperty(this ParameterInfo param) {}
+    public static bool IsExtensionMethodFirstParameter(this ParameterInfo param) {}
+    public static bool IsRefReadOnly(this ParameterInfo param) {}
     public static bool IsReturnParameter(this ParameterInfo param) {}
+    public static bool IsScopedRef(this ParameterInfo param) {}
   }
 
   public static class PropertyInfoExtensions {
     public static FieldInfo? GetBackingField(this PropertyInfo property) {}
     public static bool IsAccessorReadOnly(this PropertyInfo property) {}
     public static bool IsOverride(this PropertyInfo property) {}
+    public static bool IsRequired(this PropertyInfo property) {}
     public static bool IsSetMethodInitOnly(this PropertyInfo property) {}
     public static bool IsStatic(this PropertyInfo property) {}
+    public static bool TryGetExtensionMarkerType(this PropertyInfo property, [NotNullWhen(true)] out Type? extensionMarkerType) {}
+    public static bool TryGetExtensionParameter(this PropertyInfo property, [NotNullWhen(true)] out ParameterInfo? extensionParameter) {}
   }
 
   public static class TypeExtensions {
+    public sealed class <G>$6B6159A298CA62A8C577E514BE40E3DD {
+      public static class <M>$7CDC5A43786EC8158CD79D3A9001ECC1 {
+        [CompilerGenerated]
+        public static void <Extension>$(Type t) {}
+      }
+
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public IEnumerable<Type> EnumerateExtensionGroupingTypes() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public IEnumerable<(Type ExtensionMarkerType, ParameterInfo? ExtensionParameter)> EnumerateExtensionMarkerTypeAndParameterPairs() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public IEnumerable<(MethodInfo ImplementationMethod, MethodInfo ExtensionMember)> EnumerateExtensionMemberAndImplementationPairs() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public ParameterInfo? GetExtensionParameter() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public bool HasExtensionMembers() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public bool IsExtensionEnclosingClass() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public bool IsExtensionGroupingType() {}
+      [ExtensionMarker("<M>$7CDC5A43786EC8158CD79D3A9001ECC1")]
+      public bool IsExtensionMarkerType() {}
+    }
+
+    public static IEnumerable<Type> EnumerateExtensionGroupingTypes(this Type t) {}
+    public static IEnumerable<(Type ExtensionMarkerType, ParameterInfo? ExtensionParameter)> EnumerateExtensionMarkerTypeAndParameterPairs(this Type t) {}
+    public static IEnumerable<(MethodInfo ImplementationMethod, MethodInfo ExtensionMember)> EnumerateExtensionMemberAndImplementationPairs(this Type t) {}
     public static MethodInfo? GetDelegateSignatureMethod(this Type t) {}
     public static IEnumerable<Type> GetExplicitBaseTypeAndInterfaces(this Type t) {}
+    public static ParameterInfo? GetExtensionParameter(this Type t) {}
     public static string GetGenericTypeName(this Type t) {}
     public static IEnumerable<string> GetNamespaces(this Type t) {}
     public static IEnumerable<string> GetNamespaces(this Type t, Func<Type, bool> isLanguagePrimitive) {}
+    public static bool HasExtensionMembers(this Type t) {}
     public static bool IsByRefLikeValueType(this Type t) {}
     public static bool IsConcreteDelegate(this Type t) {}
     public static bool IsDelegate(this Type t) {}
     public static bool IsEnumFlags(this Type t) {}
+    public static bool IsExtensionEnclosingClass(this Type t) {}
+    public static bool IsExtensionGroupingType(this Type t) {}
+    public static bool IsExtensionMarkerType(this Type t) {}
+    public static bool IsFixedBufferFieldType(this Type t) {}
     public static bool IsHidingInheritedType(this Type t, bool nonPublic) {}
     public static bool IsReadOnlyValueType(this Type t) {}
     public static bool IsRecord(this Type t) {}
