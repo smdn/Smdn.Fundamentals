@@ -79,4 +79,14 @@ public static class ICustomAttributeProviderExtensions {
           StringComparison.Ordinal
         )
       );
+
+  internal static bool HasRequiredMemberAttribute(this ICustomAttributeProvider attributeProvider)
+    => GetCustomAttributeDataList(attributeProvider)
+      .Any(static d =>
+        string.Equals(
+          d.AttributeType.FullName,
+          "System.Runtime.CompilerServices.RequiredMemberAttribute",
+          StringComparison.Ordinal
+        )
+      );
 }

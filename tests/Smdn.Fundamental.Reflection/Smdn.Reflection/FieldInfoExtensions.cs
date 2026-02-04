@@ -73,6 +73,14 @@ public class FieldInfoExtensionsTests {
     public int F0;
     public static int FS0;
 
+    public readonly int FReadOnly = 1;
+    public const int FConst = 1;
+    public static readonly int FStaticReadOnly = 1;
+
+#if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
+    public required int FRequired;
+#endif
+
     [field: PropertyBackingField(nameof(P0))] private int P0 { get; set; }
     public int P1 { get => 0; set => throw null; }
     public int P2 { get => 0; }
@@ -93,6 +101,35 @@ public class FieldInfoExtensionsTests {
     [field: EventBackingField(nameof(ES1))] private static event EventHandler ES1;
     public static event EventHandler ES2 { add => throw null; remove => throw null; }
   }
+
+  struct S(int f) {
+    public int F = f;
+    public static int FStatic;
+
+    public const int FConst = 1;
+    public readonly int FReadOnly = 1;
+    public static readonly int FStaticReadOnly = 1;
+
+#if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
+    public required int FRequired;
+#endif
+  }
+
+#if NET
+  ref struct SRef {
+#pragma warning disable CS9265
+    public ref int FRef;
+    public ref readonly int FRefReadOnly;
+#pragma warning restore CS9265
+  }
+
+  readonly ref struct SReadOnlyRef {
+#pragma warning disable CS9265
+    public readonly ref int FReadOnlyRef;
+    public readonly ref readonly int FReadOnlyRefReadOnly;
+#pragma warning restore CS9265
+  }
+#endif
 
   private static IEnumerable<FieldInfo> GetTestTargetFields()
   {
@@ -221,4 +258,49 @@ public class FieldInfoExtensionsTests {
   [TestCase]
   public void IsReadOnly_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsReadOnly());
+
+#if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
+  [TestCase(typeof(C), nameof(C.FRequired), true)]
+  [TestCase(typeof(S), nameof(S.FRequired), true)]
+#endif
+  [TestCase(typeof(C), nameof(C.F0), false)]
+  [TestCase(typeof(C), nameof(C.FS0), false)]
+  [TestCase(typeof(C), nameof(C.FReadOnly), false)]
+  [TestCase(typeof(C), nameof(C.FConst), false)]
+  [TestCase(typeof(C), nameof(C.FStaticReadOnly), false)]
+  [TestCase(typeof(S), nameof(S.F), false)]
+  [TestCase(typeof(S), nameof(S.FStatic), false)]
+  [TestCase(typeof(S), nameof(S.FConst), false)]
+  [TestCase(typeof(S), nameof(S.FReadOnly), false)]
+  [TestCase(typeof(S), nameof(S.FStaticReadOnly), false)]
+#if NET
+  [TestCase(typeof(SRef), nameof(SRef.FRef), false)]
+  [TestCase(typeof(SRef), nameof(SRef.FRefReadOnly), false)]
+  [TestCase(typeof(SReadOnlyRef), nameof(SReadOnlyRef.FReadOnlyRef), false)]
+  [TestCase(typeof(SReadOnlyRef), nameof(SReadOnlyRef.FReadOnlyRefReadOnly), false)]
+#endif
+  public void IsRequired(Type type, string fieldName, bool isRequired)
+  {
+    var field = type.GetField(
+      fieldName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+    );
+
+    Assert.That(
+      field!.IsRequired(),
+      Is.EqualTo(isRequired),
+      $"{type.Name}.{field!.Name}"
+    );
+  }
+
+  [Test]
+  public void IsRequired_ArgumentNull()
+    => Assert.That(
+      () => ((FieldInfo)null!).IsRequired(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("f")
+    );
 }

@@ -113,6 +113,26 @@ public static class PropertyInfoExtensions {
       ? throw new ArgumentNullException(nameof(property))
       : property.GetMethod?.IsReadOnly() ?? false;
 
+  /// <seealso href="https://learn.microsoft.com/dotnet/csharp/language-reference/proposals/csharp-11.0/required-members">
+  /// Feature specifications - Required Members
+  /// </seealso>
+  public static bool IsRequired(this PropertyInfo property)
+  {
+    if (property is null)
+      throw new ArgumentNullException(nameof(property));
+
+    if (property.SetMethod is not { } setMethod)
+      return false; // read-only property
+
+    // following modifiers cannot be combined with `required`
+    if (setMethod.IsStatic) // `static`
+      return false;
+    if (property.PropertyType.IsByRef) // `ref` and `ref readonly`
+      return false;
+
+    return property.HasRequiredMemberAttribute();
+  }
+
   /// <summary>
   /// Attempts to get the <see cref="Type"/> represents the marker type corresponding to the
   /// extension member when <paramref name="property"/> is an extension property.

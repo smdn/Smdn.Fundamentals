@@ -19,6 +19,11 @@ public partial class PropertyInfoExtensionsTests {
     public static int SP0 { get; } = 0;
     public static int SP1 { set { } }
     public static int SP2 { get; set; }
+
+#if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
+    public required int PRequiredSet { get; set; }
+    public required int PRequiredInitOnly { get; init; }
+#endif
   }
 
   public abstract class CBase {
@@ -58,6 +63,16 @@ public partial class PropertyInfoExtensionsTests {
 
     public static int SP0 { get; set; }
     public static int SP1 { get => 0; }
+
+#if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
+    public required int PRequiredSet { get; set; }
+    public required int PRequiredInitOnly { get; init; }
+#endif
+  }
+
+  ref struct SRef {
+    public ref int PRef => throw new NotImplementedException();
+    public ref readonly int PRefReadOnly => throw new NotImplementedException();
   }
 
   readonly struct ROS {
@@ -220,4 +235,45 @@ public partial class PropertyInfoExtensionsTests {
   [Test]
   public void IsAccessorReadOnly_ArgumentNull()
     => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsAccessorReadOnly());
+
+#if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
+  [TestCase(typeof(C), nameof(C.PRequiredSet), true)]
+  [TestCase(typeof(C), nameof(C.PRequiredInitOnly), true)]
+  [TestCase(typeof(S), nameof(S.PRequiredSet), true)]
+  [TestCase(typeof(S), nameof(S.PRequiredInitOnly), true)]
+#endif
+  [TestCase(typeof(C), nameof(C.P0), false)]
+  [TestCase(typeof(C), nameof(C.P1), false)]
+  [TestCase(typeof(C), nameof(C.SP0), false)]
+  [TestCase(typeof(C), nameof(C.SP1), false)]
+  [TestCase(typeof(S), nameof(S.P0), false)]
+  [TestCase(typeof(S), nameof(S.P1), false)]
+  [TestCase(typeof(S), nameof(S.SP0), false)]
+  [TestCase(typeof(S), nameof(S.SP1), false)]
+  [TestCase(typeof(SRef), nameof(SRef.PRef), false)]
+  [TestCase(typeof(SRef), nameof(SRef.PRefReadOnly), false)]
+  public void IsRequired(Type type, string propertyName, bool isRequired)
+  {
+    var property = type.GetProperty(
+      propertyName,
+      BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+    );
+
+    Assert.That(
+      property!.IsRequired(),
+      Is.EqualTo(isRequired),
+      $"{type.Name}.{property!.Name}"
+    );
+  }
+
+  [Test]
+  public void IsRequired_ArgumentNull()
+    => Assert.That(
+      () => ((PropertyInfo)null!).IsRequired(),
+      Throws
+        .ArgumentNullException
+        .With
+        .Property(nameof(ArgumentNullException.ParamName))
+        .EqualTo("property")
+    );
 }
