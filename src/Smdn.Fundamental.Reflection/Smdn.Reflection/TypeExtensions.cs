@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 using Smdn.Reflection.Attributes;
@@ -356,5 +357,27 @@ public static partial class TypeExtensions {
       nestedTypes = nestedTypes.Where(predicate);
 
     return nestedTypes;
+  }
+
+  public static bool IsFixedBufferFieldType(this Type t)
+  {
+    if (t is null)
+      throw new ArgumentNullException(nameof(t));
+    if (t.DeclaringType is not { } declaringType)
+      return false; // fixed buffer type must be declared in the unsafe struct type
+    if (!t.IsValueType)
+      return false; // fixed buffer type must be a struct
+    if (!t.HasCompilerGeneratedAttribute())
+      return false; // fixed buffer type must have CompilerGeneratedAttribute
+    if (!t.GetCustomAttributesData().Any(
+      static d => string.Equals(typeof(UnsafeValueTypeAttribute).FullName, d.AttributeType.FullName, StringComparison.Ordinal)
+    )) {
+      return false; // fixed buffer type must have UnsafeValueTypeAttribute
+    }
+
+    // whether any field exists whose type is the buffer fixed type tested above
+    return declaringType
+      .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly)
+      .Any(field => string.Equals(field.FieldType.Name, t.Name, StringComparison.Ordinal));
   }
 }
