@@ -6,7 +6,6 @@ SPDX-License-Identifier: MIT
   <PropertyGroup Label="API list generator">
     <!-- default configurations -->
     <APIListOutputBaseDirectory Condition=" '$(APIListOutputBaseDirectory)' == '' ">api-list\</APIListOutputBaseDirectory>
-    <APIListPackageVersion Condition=" '$(APIListPackageVersion)' == '' ">1.7.1</APIListPackageVersion>
     <APIListLoadIntoReflectionOnlyContext Condition=" '$(APIListLoadIntoReflectionOnlyContext)' == '' ">false</APIListLoadIntoReflectionOnlyContext>
 
     <_APIListDoGenerate>$(APIListEnableGenerating)</_APIListDoGenerate>
@@ -24,11 +23,41 @@ SPDX-License-Identifier: MIT
     >false</ExcludeRestorePackageImports>
   </PropertyGroup>
 
+  <PropertyGroup Label="API list generator version" Condition=" '$(_APIListDoGenerate)' == 'true' ">
+    <!--
+      the default version used when $(APIListPackageVersion) is not specified,
+      or when comparing against $(APIListMinPackageVersion).
+    -->
+    <_APIListDefaultPackageVersion>1.7.1</_APIListDefaultPackageVersion>
+
+    <!--
+      if $(APIListMinPackageVersion) is specified, select the newer version compared to the
+      version specified by $(_APIListDefaultPackageVersion)
+    -->
+    <_APIListTargetPackageVersion
+      Condition="
+        '$(APIListMinPackageVersion)' != '' and
+        $([System.Version]::Parse('$(APIListMinPackageVersion)')) &gt; $([System.Version]::Parse('$(_APIListDefaultPackageVersion)'))
+      "
+    >$(APIListMinPackageVersion)</_APIListTargetPackageVersion>
+    <_APIListTargetPackageVersion
+      Condition="'$(_APIListTargetPackageVersion)' == ''"
+    >$(_APIListDefaultPackageVersion)</_APIListTargetPackageVersion>
+
+    <!--
+      if $(APIListPackageVersion) is specified, select that version
+      regardless of the specified value above
+    -->
+    <_APIListTargetPackageVersion
+      Condition="'$(APIListPackageVersion)' != ''"
+    >$(APIListPackageVersion)</_APIListTargetPackageVersion>
+  </PropertyGroup>
+
   <ItemGroup Label="API list generator">
     <PackageReference
       Condition=" '$(_APIListDoGenerate)' == 'true' "
       Update="Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks"
-      Version="[$(APIListPackageVersion)]"
+      Version="[$(_APIListTargetPackageVersion)]"
     />
     <PackageReference
       Condition=" '$(_APIListDoGenerate)' != 'true' "
