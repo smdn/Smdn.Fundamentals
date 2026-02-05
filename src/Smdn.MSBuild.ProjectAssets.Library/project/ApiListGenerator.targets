@@ -28,7 +28,7 @@ SPDX-License-Identifier: MIT
       the default version used when $(APIListPackageVersion) is not specified,
       or when comparing against $(APIListMinPackageVersion).
     -->
-    <_APIListDefaultPackageVersion>1.7.1</_APIListDefaultPackageVersion>
+    <_APIListDefaultPackageVersion>1.8.0</_APIListDefaultPackageVersion>
 
     <!--
       if $(APIListMinPackageVersion) is specified, select the newer version compared to the
