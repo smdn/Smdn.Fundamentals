@@ -1,0 +1,126 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="AppDomain"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.GetCustomAttributes"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.GetSatelliteAssembly"/>
+      <_NETSdkAvailableApi Namespace="System" Include="DateTime.ToLongDateString"/>
+      <_NETSdkAvailableApi Namespace="System" Include="DateTime.ToLongTimeString"/>
+      <_NETSdkAvailableApi Namespace="System" Include="DateTime.ToShortDateString"/>
+      <_NETSdkAvailableApi Namespace="System" Include="DateTime.ToShortTimeString"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.CurrentDirectory"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.Version"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Exception.ctor(SerializationInfo)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ICloneable"/>
+      <_NETSdkAvailableApi Namespace="System" Include="OperatingSystem"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetConstructors"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetEvents"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetFields"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetInterfaces"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetMethods"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetNestedTypes"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetProperties"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.InvokeMember"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.IsSubclassOf"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.IsAssignableFrom"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparer.Create"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparer.InvariantCulture"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparer.InvariantCultureIgnoreCase"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparison.InvariantCulture"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparison.InvariantCultureIgnoreCase"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Uri.UriSchemeFile"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Uri.UriSchemeHttp"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Uri.UriSchemeHttps"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Uri.UriSchemeMailto"/>
+      <_NETSdkAvailableApi Namespace="System" Include="SystemException"/>
+      <_NETSdkAvailableApi Namespace="System.ComponentModel" Include="ISynchronizeInvoke"/>
+      <_NETSdkAvailableApi Namespace="System.Diagnostics" Include="Process"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.BeginRead"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.BeginWrite"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.EndRead"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.EndWrite"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.Close"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="StreamWriter.ctor(path,append)"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="IReflect"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="MemberInfo.GetCustomAttributes"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="MemberInfo.IsDefined"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="MemberInfo.ReflectedType"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization.Formatter.Binary" Include="%2A"/> <!-- '*'/entire namespace -->
+      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization" Include="IFormatter"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization" Include="SerializationBinder"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="FromBase64Transform"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="FromBase64TransformMode"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="HashAlgorithm.Clear"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="ToBase64Transform"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.Create(rngName)"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetNonZeroBytes"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.Default"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.BodyName"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.HeaderName"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="WaitHandle.WaitOne(timeout,exitContext)"/>
+      <_NETSdkAvailableApi Namespace="System.Xml" Include="XmlDocument.GetElementById"/>
+      <_NETSdkAvailableApi Namespace="System.Xml" Include="XmlDocument.Load(filename)"/>
+      <_NETSdkAvailableApi Namespace="System.Xml" Include="XmlDocument.Save(filename)"/>
+      <_NETSdkAvailableApi Namespace="System.Xml" Include="XmlDocument.XmlResolver"/>
+      <_NETSdkAvailableApi Namespace="System.Xml" Include="XmlResolver"/>
+
+      <!-- NET11_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Math.DivRem"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Array.Copy(Int64Length)"/>
+
+      <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Array.ConvertAll"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.ReflectionOnly"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Base64FormattingOptions"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Converter"/>
+      <_NETSdkAvailableApi Namespace="System" Include="GenericUriParser"/>
+      <_NETSdkAvailableApi Namespace="System" Include="GenericUriParserOptions"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetGenericArguments"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetGenericParameterConstraints"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.ReflectionOnlyGetType"/>
+      <_NETSdkAvailableApi Namespace="System" Include="UriParser"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.CultureTypes"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.GetConsoleFallbackUICulture"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.GetCultureInfo"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.GetCultureInfoByIetfLanguageTag"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.GetCultures"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.IetfLanguageTag"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.InstalledUICulture"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.LCID"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.ThreeLetterISOLanguageName"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CultureInfo.ThreeLetterWindowsLanguageName"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.Synchronized"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostAddresses(hostNameOrAddress)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostEntry(address)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostEntry(hostNameOrAddress)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Mail" Include="%2A"/> <!-- '*'/entire namespace -->
+      <_NETSdkAvailableApi Namespace="System.Net.NetworkInformation" Include="PhysicalAddress"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Authentication" Include="SslProtocols.Default"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="WaitHandle.SignalAndWait"/>
+      <_NETSdkAvailableApi Namespace="System.Xml" Include="XmlDocument.Validate"/>
+
+      <!-- NET35_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="TimeZoneNotFoundException"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="HashSet.CreateSetComparer"/>
+
+      <!-- NET40_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.GetCustomAttributesData"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.Is64BitProcess"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.Is64BitOperatingSystem"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetEnumNames"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetEnumValues"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetEnumUnderlyingType"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.IsEquivalentTo"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="SortedSet.CreateSetComparer"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="MemberInfo.GetCustomAttributesData"/>
+    </ItemGroup>
+  </Target>
+</Project>

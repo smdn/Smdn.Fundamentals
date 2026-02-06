@@ -1,0 +1,32 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Create&lt;TState&gt; allows ref struct"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Convert.FromHexString(source,destination)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Convert.ToHexStringLower"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Convert.TryToHexString"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Convert.TryToHexStringLower"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.CpuUsage"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Guid.CreateVersion7"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Guid.Variant"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Guid.Version"/>
+      <_NETSdkAvailableApi Namespace="System" Include="TimeSpan.From(Int32)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="TimeSpan.From(Int64)"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="IAlternateEqualityComparer"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="OrderedDictionary"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.ObjectModel" Include="ReadOnlySet"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.AggregateBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.CountBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Index"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="Lock"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.WhenEach"/>
+    </ItemGroup>
+  </Target>
+</Project>

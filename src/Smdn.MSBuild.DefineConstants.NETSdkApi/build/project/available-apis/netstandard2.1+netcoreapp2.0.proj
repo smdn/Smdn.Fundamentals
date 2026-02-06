@@ -1,0 +1,44 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="ArraySegment.Slice"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArraySegment.Empty"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Enum.Parse&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi Namespace="System" Include="MathF"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.EndsWith(char)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.GetHashCode(StringComparison)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Join(char)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Replace(string,string,bool,CultureInfo)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Replace(string,string,StringComparison)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Split(char)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Split(string)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.StartsWith(char)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparer.FromComparison"/>
+      <_NETSdkAvailableApi Namespace="System" Include="TimeSpan.Devide"/>
+      <_NETSdkAvailableApi Namespace="System" Include="TimeSpan.Multiply"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="CollectionExtensions.GetValueOrDefault"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="CollectionExtensions.Remove"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="CollectionExtensions.TryAdd"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Dictionary.ctor(IEnumerable&lt;KeyValuePair&lt;TKey,TValue&gt;&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Dictionary.Remove(TKey,out TValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Dictionary.TryAdd"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="KeyValuePair.Create"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Queue.TryDequeue"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Queue.TryPeek"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Stack.TryPeek"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Stack.TryPop"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Path.GetRelativePath"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.GetByteCount(string,int,int)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.GetBytes(string,int,int)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.AppendJoin"/>
+      <_NETSdkAvailableApi Namespace="System.Xml.Linq" Include="XNode.WriteToAsync"/>
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,28 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="Convert.FromHexString(utf8Source,destination)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="EventHandler&lt;TSender,TEventArgs&gt;"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.GetHexString"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.GetString"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="AsyncEnumerable"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.InfiniteSequence"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.LeftJoin"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Reverse"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.RightJoin"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Sequence"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Shuffle"/>
+      <_NETSdkAvailableApi Namespace="System.Memory" Include="MemoryExtensions.Replace"/>
+      <_NETSdkAvailableApi Namespace="System.Memory" Include="MemoryExtensions.ReplaceAny"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="CompareOptions.NumericOrdering"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.CompilerServices" Include="UnsafeAccessorTypeAttribute"/>
+    </ItemGroup>
+  </Target>
+</Project>

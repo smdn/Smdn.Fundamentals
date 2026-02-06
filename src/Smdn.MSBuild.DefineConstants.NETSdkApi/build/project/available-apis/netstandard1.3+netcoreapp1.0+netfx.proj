@@ -1,0 +1,44 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.GetEnvironmentVariable"/>
+      <_NETSdkAvailableApi Namespace="System" Include="SerializableAttribute"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Directory"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="DirectoryInfo"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="File"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="FileInfo"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="FileSystemInfo"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="BindingFlags"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization" Include="ISerializable"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.Serialization" Include="SerializationInfo"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.CodePage"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.EncodingName"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.GetEncoding(codepage)"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="Thread.ManagedThreadId"/>
+      <_NETSdkAvailableApi Namespace="Microsoft.Win32" Include="Registry"/>
+      <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System.IO" Include="SearchOption"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.DecoderFallback"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.EncoderFallback"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="ThreadPool"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Authentication" Include="SslProtocols"/>
+      <!-- NET35_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System.TimeZoneInfo" Include="FindSystemTimeZoneById"/>
+      <!-- NET40_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System.Runtime.Versioning" Include="FrameworkName"/>
+      <!-- NET45_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Authentication" Include="SslProtocols.Tls11"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Authentication" Include="SslProtocols.Tls12"/>
+    </ItemGroup>
+  </Target>
+</Project>

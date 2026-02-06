@@ -1,0 +1,26 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <!-- ref: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis -->
+      <_NETSdkAvailableApi Include="NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES" TargetApiFullName="System.Diagnostics.CodeAnalysis" />
+
+      <_NETSdkAvailableApi Namespace="System" Include="Index"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Range"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="ArrayBufferWriter"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="ReadOnlySequence.FirstSpan"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="SequenceReader"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="ISOWeek"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.DisposeAsync"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKey" />
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportPkcs8PrivateKey" />
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportSubjectPublicKeyInfo" />
+    </ItemGroup>
+  </Target>
+</Project>

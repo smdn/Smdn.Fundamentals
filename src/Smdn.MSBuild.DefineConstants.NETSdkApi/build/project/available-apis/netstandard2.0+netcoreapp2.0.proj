@@ -1,0 +1,14 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.Default_UTF8"/> <!-- Encoding.Default but except NETFRAMEWORK -->
+    </ItemGroup>
+  </Target>
+</Project>

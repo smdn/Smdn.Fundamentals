@@ -1,0 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.GetTypes"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.GetExportedTypes"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Assembly.GetReferencedAssemblies"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="ICustomAttributeProvider"/>
+    </ItemGroup>
+  </Target>
+</Project>

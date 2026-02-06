@@ -1,0 +1,95 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentNullException.ThrowIfNull"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Char.IsAscii"/>
+      <_NETSdkAvailableApi Namespace="System" Include="DateOnly"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Enum.Parse(ReadOnlySpan&lt;char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Enum.TryParse(ReadOnlySpan&lt;char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.ProcessPath"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ISpanFormattable"/>
+      <_NETSdkAvailableApi Namespace="System" Include="HashCode.AddBytes"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Math.DivRem_return:ValueTuple`2"/>
+      <_NETSdkAvailableApi Namespace="System" Include="MemoryExtensions.EnumerateLines"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.Shared"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.NextInt64"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.NextSingle"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.CopyTo(Span&lt;char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Create(IFormatProvider)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.TryCopyTo(Span&lt;char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparer.IsWellKnownCultureAwareComparer"/>
+      <_NETSdkAvailableApi Namespace="System" Include="StringComparer.IsWellKnownOrdinalComparer"/>
+      <_NETSdkAvailableApi Namespace="System" Include="TimeOnly"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Uri.UriSchemeSsh"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Uri.UriSchemeTelnet"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="List.EnsureCapacity"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="PriorityQueue"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Queue.EnsureCapacity"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="Stack.EnsureCapacity"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Directory.CreateSymbolicLink"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Directory.ResolveLinkTarget"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="File.CreateSymbolicLink"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="File.ResolveLinkTarget"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="FileStreamOptions"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="FileSystemInfo.LinkTarget"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="FileSystemInfo.ResolveLinkTarget"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="RandomAccess"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ValidateBufferArguments"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ValidateCopyToArguments"/>
+      <_NETSdkAvailableApi Namespace="System.IO.Compression" Include="ZLibStream"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Chunk"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.DistinctBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.ElementAt(Index)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.ElementAtOrDefault(Index)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.ExceptBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.FirstOrDefault(source,defaultValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.FirstOrDefault(source,predicate,defaultValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.IntersectBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.LastOrDefault(source,defaultValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.LastOrDefault(source,predicate,defaultValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.MaxBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.MinBy"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.SingleOrDefault(source,defaultValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.SingleOrDefault(source,predicate,defaultValue)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Take(Range)"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.TryGetNonEnumeratedCount"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.UnionBy"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostAddresses(hostNameOrAddress,family)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostAddressesAsync(hostNameOrAddress,cancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostAddressesAsync(hostNameOrAddress,family,cancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostEntry(hostNameOrAddress,family)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostEntryAsync(hostNameOrAddress,cancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="Dns.GetHostEntryAsync(hostNameOrAddress,family,cancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="Socket.AcceptAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(remoteEP,CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(address,port,CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(addresses,port,CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(host,port,CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="Socket.DisconnectAsync(reuseSocket,cancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="TcpClient.ConnectAsync(IPEndPoint)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="UdpClient.Send(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="UdpClient.SendAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System.Net.Sockets" Include="UdpClient.ReceiveAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.IsPow2"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="Vector.As"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="NullabilityInfo"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="NullabilityInfoContext"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="NullabilityState"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.InteropServices" Include="NativeMemory"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="SpanLineEnumerator"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.Append(AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.Append(IFormatProvider,AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.AppendLine(AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.AppendLine(IFormatProvider,AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="PeriodicTimer"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.WaitAsync"/>
+    </ItemGroup>
+  </Target>
+</Project>

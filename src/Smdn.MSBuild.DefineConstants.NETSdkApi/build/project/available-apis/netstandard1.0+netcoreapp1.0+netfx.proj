@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="String.IndexOf(string,StringComparison)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetGenericTypeDefinition"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.MakeGenericType"/>
+      <!-- NET40_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Enum.TryParse&lt;TEnum&gt;"/>
+      <!-- NET45_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.CurrentManagedThreadId"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="Vector"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="CustomAttributeExtensions"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.FromResult"/>
+    </ItemGroup>
+  </Target>
+</Project>

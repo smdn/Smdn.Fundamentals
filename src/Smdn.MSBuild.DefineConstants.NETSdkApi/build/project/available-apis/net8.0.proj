@@ -1,0 +1,66 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentException.ThrowIfNullOrWhiteSpace"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfEqual"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfGreaterThan"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfLessThan"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfLessThanOrEqual"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNegative"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNegativeOrZero"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNotEqual"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfZero"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Environment.IsPrivilegedProcess"/>
+      <_NETSdkAvailableApi Namespace="System" Include="IUtf8SpanFormattable"/>
+      <_NETSdkAvailableApi Namespace="System" Include="IUtf8SpanParsable"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.GetItems"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Random.Shuffle"/>
+      <_NETSdkAvailableApi Namespace="System" Include="TimeProvider"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="ArrayBufferWriter.ResetWrittenCount"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="SearchValues"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Frozen" Include="FrozenDictionary"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Frozen" Include="FrozenSet"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="CollectionExtensions.AddRange"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="CollectionExtensions.CopyTo"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="CollectionExtensions.InsertRange"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="EqualityComparer.Create(Func,Func)"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="EqualityComparer.Create(Func, Func)"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.Generic" Include="List.Slice"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.ObjectModel" Include="ReadOnlyCollection.Empty"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.ObjectModel" Include="ReadOnlyDictionary.Empty"/>
+      <_NETSdkAvailableApi Namespace="System.Collections.ObjectModel" Include="ReadOnlyObservableCollection.Empty"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="NumberStyles.AllowBinarySpecifier"/>
+      <_NETSdkAvailableApi Namespace="System.Globalization" Include="NumberStyles.BinaryNumber"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="TextWriter.FlushAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Net" Include="IPNetwork"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.Crc32C"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="IFloatingPointIeee754.Lerp"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="ITrigonometricFunctions.DegreesToRadians"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="ITrigonometricFunctions.RadiansToDegrees"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="ConstructorInvoker"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="MethodInvoker"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="PropertyInfo.GetModifiedPropertyType"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.CompilerServices" Include="CollectionBuilderAttribute"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.CompilerServices" Include="UnsafeAccessorAttribute"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetHexString"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetItems"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetString"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.Shuffle"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="SHA3_256"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="SHA3_384"/>
+      <_NETSdkAvailableApi Namespace="System.Security.Cryptography" Include="SHA3_512"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Ascii"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="CancellationTokenSource.CancelAsync"/>
+      <_NETSdkAvailableApi Namespace="System.Threading" Include="ITimer"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="ConfigureAwaitOptions"/>
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,24 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="Array.Empty"/>
+      <_NETSdkAvailableApi Namespace="System" Include="AppContext"/>
+      <_NETSdkAvailableApi Namespace="System" Include="FormattableString"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="MemoryStream.TryGetBuffer"/>
+      <_NETSdkAvailableApi Namespace="System.Reflection" Include="MethodInfoExtensions.GetBaseDefinition"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.RegisterProvider"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Encoding.ctor(EncoderFallback,DecoderFallback)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="EncodingProvider"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.CompletedTask"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.FromCanceled"/>
+      <_NETSdkAvailableApi Namespace="System.Threading.Tasks" Include="Task.FromException"/>
+    </ItemGroup>
+  </Target>
+</Project>

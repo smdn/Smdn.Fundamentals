@@ -1,0 +1,25 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="Memory"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ReadOnlyMemory"/>
+      <_NETSdkAvailableApi Namespace="System" Include="ReadOnlySpan"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Span"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="ArrayPool"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="IBufferWriter"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="IMemoryOwner"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="MemoryPool"/>
+      <_NETSdkAvailableApi Namespace="System.Buffers" Include="ReadOnlySequence"/>
+      <_NETSdkAvailableApi Namespace="System.IO.Compression" Include="ZipArchive"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.InteropServices" Include="MemoryMarshal"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.InteropServices" Include="RuntimeInformation"/>
+    </ItemGroup>
+  </Target>
+</Project>

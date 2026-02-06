@@ -1,0 +1,16 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi Namespace="System" Include="Activator.CreateInstance(assemblyName,typeName)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Activator.CreateInstanceFrom(assemblyFile,typeName)"/>
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,18 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="HashCode"/>
+      <_NETSdkAvailableApi Namespace="System" Include="IAsyncDisposable"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.CompilerServices" Include="Unsafe"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="CodePagesEncodingProvider"/>
+      <_NETSdkAvailableApi Namespace="System.Text.Unicode" Include="%2A"/> <!-- '*'/entire namespace -->
+    </ItemGroup>
+  </Target>
+</Project>

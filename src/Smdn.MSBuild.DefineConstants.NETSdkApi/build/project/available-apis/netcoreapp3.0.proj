@@ -1,0 +1,31 @@
+<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="MemoryExtensions.EnumerateRunes"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.Concat(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="String.GetHashCode(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.MakeGenericSignatureType"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Path.EndsInDirectorySeparator"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Path.TrimEndingDirectorySeparator"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="TextWriter.WriteLineAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.LeadingZeroCount"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.Log2"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.PopCount"/>
+      <_NETSdkAvailableApi Namespace="System.Numerics" Include="BitOperations.TrailingZeroCount"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.InteropServices" Include="DllImportResolver"/>
+      <_NETSdkAvailableApi Namespace="System.Runtime.InteropServices" Include="NativeLibrary"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="Rune"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="SpanRuneEnumerator"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder+ChunkEnumerator"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.Append(ReadOnlyMemory&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System.Text" Include="StringBuilder.GetChunks"/>
+    </ItemGroup>
+  </Target>
+</Project>
