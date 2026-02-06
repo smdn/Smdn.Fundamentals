@@ -1,0 +1,41 @@
+﻿<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)ListNETSdkAvailableApiName.targets" />
+
+  <!-- *_OR_GREATER are defined in AddImplicitDefineConstants of Microsoft.NET.Sdk.BeforeCommon.targets -->
+  <Target
+    Name="AddNETSdkApiDefineConstants"
+    DependsOnTargets="AddImplicitDefineConstants"
+    BeforeTargets="CoreCompile"
+    Condition="'$(EnableAddingNETSdkApiDefineConstants)' == 'true'"
+  >
+    <CallTarget Targets="ListNETSdkAvailableApiName">
+      <Output TaskParameter="TargetOutputs" ItemName="_NETSdkAvailableApiSymbol" />
+    </CallTarget>
+
+    <!-- <Message Text="@(_NETSdkAvailableApiSymbol, ', ')" Importance="high" /> -->
+
+    <PropertyGroup>
+      <DefineConstants>$(DefineConstants);@(_NETSdkAvailableApiSymbol, ';')</DefineConstants>
+    </PropertyGroup>
+  </Target>
+
+  <!-- call targets defined by $(AddNETSdkApiDefineConstantsBeforeTargets) which are needed to run before AddNETSdkApiDefineConstants -->
+  <Target
+    Name="_BeforeAddNETSdkApiDefineConstants"
+    DependsOnTargets="$(AddNETSdkApiDefineConstantsBeforeTargets)"
+    BeforeTargets="AddNETSdkApiDefineConstants"
+    Condition="'$(AddNETSdkApiDefineConstantsBeforeTargets)' != ''"
+  />
+
+  <!-- call targets defined by $(AddNETSdkApiDefineConstantsAfterTargets) which are needed to run after AddNETSdkApiDefineConstants -->
+  <Target
+    Name="_AfterAddNETSdkApiDefineConstants"
+    DependsOnTargets="$(AddNETSdkApiDefineConstantsAfterTargets)"
+    AfterTargets="AddNETSdkApiDefineConstants"
+    Condition="'$(AddNETSdkApiDefineConstantsAfterTargets)' != ''"
+  />
+</Project>

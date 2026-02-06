@@ -1,0 +1,22 @@
+﻿<!--
+SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <UsingTask
+    TaskName="WriteAllTextToFile"
+    TaskFactory="RoslynCodeTaskFactory"
+    AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll"
+  >
+    <ParameterGroup>
+      <Path ParameterType="System.String" Required="true" />
+      <Content ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Code Type="Fragment" Language="cs"><![CDATA[
+System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
+System.IO.File.WriteAllText(Path, Content, System.Text.Encoding.Default /* no bom */);
+]]></Code>
+    </Task>
+  </UsingTask>
+</Project>

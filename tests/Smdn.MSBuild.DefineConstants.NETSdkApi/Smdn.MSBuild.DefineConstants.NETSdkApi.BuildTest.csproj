@@ -4,10 +4,10 @@ SPDX-License-Identifier: MIT
 -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <PackageBuildTargetsFile>$(MSBuildThisFileDirectory)\..\..\src\Smdn.MSBuild.DefineConstants.NETSdkApi\build\Smdn.MSBuild.DefineConstants.NETSdkApi.targets</PackageBuildTargetsFile>
+    <PackageBuildTargetsDirectory>$(MSBuildThisFileDirectory)\..\..\src\Smdn.MSBuild.DefineConstants.NETSdkApi\build\</PackageBuildTargetsDirectory>
   </PropertyGroup>
 
-  <Import Project="$(PackageBuildTargetsFile)" />
+  <Import Project="$(PackageBuildTargetsDirectory)Smdn.MSBuild.DefineConstants.NETSdkApi.targets" />
 
   <PropertyGroup Label="TargetFrameworks">
     <TargetFrameworks Condition="$([MSBuild]::VersionGreaterThanOrEquals('$(NETCoreSdkVersion)', '10.0.0'))">$(TargetFrameworks);net10.0</TargetFrameworks>
@@ -37,6 +37,10 @@ SPDX-License-Identifier: MIT
   </ItemGroup>
 
   <Target Name="RunTests_PackageBuildTargets" BeforeTargets="DispatchToInnerBuilds">
-    <MSBuild Projects="tests\PackageBuildTargetsTests.proj" Properties="PackageBuildTargetsFile=$(PackageBuildTargetsFile)" Targets="RunTests" />
+    <MSBuild
+      Projects="tests\PackageBuildTargetsTests.proj"
+      Properties="PackageBuildTargetsDirectory=$(PackageBuildTargetsDirectory)"
+      Targets="RunTests"
+    />
   </Target>
 </Project>

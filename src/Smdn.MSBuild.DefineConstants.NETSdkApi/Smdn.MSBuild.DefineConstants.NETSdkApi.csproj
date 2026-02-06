@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -42,10 +42,12 @@ As an example, the symbol `SYSTEM_ENUM_PARSE_OF_TENUM` corresponding to `System.
     <None Pack="false" Include="buildTransitive\**" Visible="true" />
 
     <None Pack="true"  Include="build\$(AssemblyName).targets" PackagePath="build\" />
+    <None Pack="true"  Include="build\project\*.targets" PackagePath="build\project\" />
     <None Pack="true"  Include="buildTransitive\$(AssemblyName).targets" PackagePath="buildTransitive\" />
   </ItemGroup>
 
-  <Import Project="build\$(AssemblyName).targets" />
-  <Import Project="ReadmeFile.targets" />
-  <Import Project="APIList.targets" />
+  <Import Project="build\project\ListNETSdkAvailableApiName.targets" />
+  <Import Project="GenerateAPIList.targets" />
+  <Import Project="GeneratePackageReadmeFileContentPostamble.targets" />
+  <Import Project="WriteAllTextToFile.targets" />
 </Project>

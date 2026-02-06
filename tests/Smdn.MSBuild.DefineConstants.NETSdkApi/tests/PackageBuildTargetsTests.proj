@@ -41,7 +41,7 @@ SPDX-License-Identifier: MIT
   </Target>
 
   <Target Name="RunTestCase_TestSetOverlapsWith">
-    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet)" Projects="$(PackageBuildTargetsFile)" Targets="TestSetOverlapsWith" >
+    <MSBuild Properties="Set=$(Set);OtherSet=$(OtherSet)" Projects="$(PackageBuildTargetsDirectory)project\TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
       <Output TaskParameter="TargetOutputs" PropertyName="ResultTestSetOverlapsWith" />
     </MSBuild>
     <Error

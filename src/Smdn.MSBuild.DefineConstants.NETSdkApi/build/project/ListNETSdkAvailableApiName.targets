@@ -1,0 +1,1078 @@
+﻿<!--
+SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <!--
+    _NETSdkAvailableApi
+      description:
+        This item defines the target for generating symbols for the API and the framework version in which the API is supported.
+        Symbols will be generated based on the attribute values of Namespace and Include.
+        example:
+          @Namespace="System", @Include="Array.Empty" -> "SYSTEM_ARRAY_EMPTY"
+          @Namespace="System", @Include="Enum.IsDefined&lt;TEnum&gt;" -> "SYSTEM_ENUM_ISDEFINED_OF_TENUM"
+          @Namespace="System.Text.Unicode", @Include="%2A" -> "SYSTEM_TEXT_UNICODE"
+      attributes:
+        TargetFrameworkCondition:
+          description:
+            The target framework version where the API support have been available.
+            ref: list of preprocessor symbols for .NET target frameworks: https://docs.microsoft.com/ja-jp/dotnet/standard/frameworks
+          example:
+            "NETFRAMEWORK"
+            "NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NET5_0_OR_GREATER"
+        Namespace:
+          description: The namespace of the API.
+          example: "System", "System.Buffers"
+        Include:
+          description:
+            The name of type or member of the API.
+            The character '*' represents the entire namespace.
+          example:
+            "IAsyncDisposable"
+            "Array.Empty"
+            "Exception.ctor(SerializationInfo)"
+            "CryptoStream.ctor(leaveOpen)"
+            "Enum.IsDefined&lt;TEnum&gt;"
+            "Int32.Parse(ReadOnlySpan&lt;Char&gt;)"
+            "%2A" (entire namespace)
+
+    _NETSdkAvailableApiGroup
+      description:
+        This item defines the target for generating symbols for the API group and the framework version in which the API is supported.
+        Symbols will be generated from the attribute value of Include.
+      attributes:
+        TargetFrameworkCondition:
+          description:
+            Same as _NETSdkAvailableApi.
+        Include:
+          description:
+            The name of the API group.
+          example:
+            "GENERIC_MATH_INTERFACES"
+  -->
+  <Target
+    Name="ListNETSdkAvailableApiName"
+    Returns="@(NETSdkAvailableApiSymbol)"
+  >
+    <!--
+      Applies to: NETFRAMEWORK
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default_ANSI"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD1_0_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD1_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.IndexOf(string,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetGenericTypeDefinition"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.MakeGenericType"/>
+      <!-- NET40_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.TryParse&lt;TEnum&gt;"/>
+      <!-- NET45_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.CurrentManagedThreadId"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="Vector"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="CustomAttributeExtensions"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.FromResult"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET45_OR_GREATER || NETSTANDARD1_1_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET45_OR_GREATER;NETSTANDARD1_1_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Memory"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ReadOnlyMemory"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ReadOnlySpan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Span"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ArrayPool"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="IBufferWriter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="IMemoryOwner"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="MemoryPool"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ReadOnlySequence"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZipArchive"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="MemoryMarshal"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="RuntimeInformation"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD1_3_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.GetEnvironmentVariable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="SerializableAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Directory"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="DirectoryInfo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="File"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="FileInfo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="FileSystemInfo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="BindingFlags"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization" Include="ISerializable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization" Include="SerializationInfo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.CodePage"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.EncodingName"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetEncoding(codepage)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="Thread.ManagedThreadId"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="Microsoft.Win32" Include="Registry"/>
+      <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="SearchOption"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.DecoderFallback"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.EncoderFallback"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="ThreadPool"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols"/>
+      <!-- NET35_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.TimeZoneInfo" Include="FindSystemTimeZoneById"/>
+      <!-- NET40_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Versioning" Include="FrameworkName"/>
+      <!-- NET45_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols.Tls11"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols.Tls12"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET46_OR_GREATER || NETSTANDARD1_3_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET46_OR_GREATER;NETSTANDARD1_3_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="AppContext"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="FormattableString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="MemoryStream.TryGetBuffer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MethodInfoExtensions.GetBaseDefinition"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.RegisterProvider"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.ctor(EncoderFallback,DecoderFallback)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="EncodingProvider"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.CompletedTask"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.FromCanceled"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.FromException"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD1_5_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetExportedTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetReferencedAssemblies"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="ICustomAttributeProvider"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET461_OR_GREATER || NETSTANDARD1_5_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET461_OR_GREATER;NETSTANDARD1_5_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Loader" Include="%2A"/> <!-- '*'/entire namespace -->
+    </ItemGroup>
+
+    <!--
+      Applies to: NET461_OR_GREATER || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET461_OR_GREATER;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="HashCode"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IAsyncDisposable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="Unsafe"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="CodePagesEncodingProvider"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.Unicode" Include="%2A"/> <!-- '*'/entire namespace -->
+    </ItemGroup>
+
+    <!--
+      Applies to: NETFRAMEWORK || NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK;NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="AppDomain"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetCustomAttributes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetSatelliteAssembly"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.ToLongDateString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.ToLongTimeString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.ToShortDateString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.ToShortTimeString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.CurrentDirectory"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.Version"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Exception.ctor(SerializationInfo)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ICloneable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="OperatingSystem"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetConstructors"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetEvents"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetFields"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetInterfaces"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetMethods"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetNestedTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetProperties"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.InvokeMember"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsSubclassOf"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsAssignableFrom"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.Create"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.InvariantCulture"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.InvariantCultureIgnoreCase"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparison.InvariantCulture"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparison.InvariantCultureIgnoreCase"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeFile"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeHttp"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeHttps"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeMailto"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="SystemException"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.ComponentModel" Include="ISynchronizeInvoke"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics" Include="Process"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.BeginRead"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.BeginWrite"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.EndRead"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.EndWrite"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Close"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="StreamWriter.ctor(path,append)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="IReflect"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MemberInfo.GetCustomAttributes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MemberInfo.IsDefined"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MemberInfo.ReflectedType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization.Formatter.Binary" Include="%2A"/> <!-- '*'/entire namespace -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization" Include="IFormatter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Serialization" Include="SerializationBinder"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="FromBase64Transform"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="FromBase64TransformMode"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="HashAlgorithm.Clear"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="ToBase64Transform"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.Create(rngName)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetNonZeroBytes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.BodyName"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.HeaderName"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="WaitHandle.WaitOne(timeout,exitContext)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlDocument.GetElementById"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlDocument.Load(filename)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlDocument.Save(filename)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlDocument.XmlResolver"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlResolver"/>
+
+      <!-- NET11_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.DivRem"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.Copy(Int64Length)"/>
+
+      <!-- NET20_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Array.ConvertAll"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.ReflectionOnly"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Base64FormattingOptions"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Converter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="GenericUriParser"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="GenericUriParserOptions"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetGenericArguments"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetGenericParameterConstraints"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.ReflectionOnlyGetType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="UriParser"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.CultureTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetConsoleFallbackUICulture"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetCultureInfo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetCultureInfoByIetfLanguageTag"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetCultures"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.IetfLanguageTag"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.InstalledUICulture"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.LCID"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.ThreeLetterISOLanguageName"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.ThreeLetterWindowsLanguageName"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Synchronized"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddresses(hostNameOrAddress)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostEntry(address)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostEntry(hostNameOrAddress)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Mail" Include="%2A"/> <!-- '*'/entire namespace -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.NetworkInformation" Include="PhysicalAddress"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols.Default"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="WaitHandle.SignalAndWait"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlDocument.Validate"/>
+
+      <!-- NET35_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeZoneNotFoundException"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="HashSet.CreateSetComparer"/>
+
+      <!-- NET40_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetCustomAttributesData"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.Is64BitProcess"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.Is64BitOperatingSystem"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetEnumNames"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetEnumValues"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.GetEnumUnderlyingType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsEquivalentTo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="SortedSet.CreateSetComparer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MemberInfo.GetCustomAttributesData"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET47_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET47_OR_GREATER;NETSTANDARD1_6_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="AppContext.GetData"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET472_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET472_OR_GREATER;NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="HashSet.TryGetValue"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="SortedSet.TryGetValue"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZipArchiveEntry.ExternalAttributes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.ToHashSet"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="CryptoStream.ctor(leaveOpen)"/>
+    </ItemGroup>
+
+    <!-- NET48_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET48_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Authentication" Include="SslProtocols.Tls13"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETSTANDARD2_0_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_0_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Default_UTF8"/> <!-- Encoding.Default but except NETFRAMEWORK -->
+    </ItemGroup>
+
+    <!--
+      Applies to: NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArraySegment.Slice"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArraySegment.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.Parse&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="MathF"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.EndsWith(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.GetHashCode(StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Join(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Replace(string,string,bool,CultureInfo)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Replace(string,string,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Split(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Split(string)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.StartsWith(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.FromComparison"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeSpan.Devide"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeSpan.Multiply"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.GetValueOrDefault"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.Remove"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.TryAdd"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Dictionary.ctor(IEnumerable&lt;KeyValuePair&lt;TKey,TValue&gt;&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Dictionary.Remove(TKey,out TValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Dictionary.TryAdd"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="KeyValuePair.Create"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Queue.TryDequeue"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Queue.TryPeek"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Stack.TryPeek"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Stack.TryPop"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.GetRelativePath"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetByteCount(string,int,int)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetBytes(string,int,int)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.AppendJoin"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml.Linq" Include="XNode.WriteToAsync"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Assembly.GetForwardedTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryFromBase64Chars"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryFromBase64String"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryToBase64Chars"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.TryFormat"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTime.TryParseExact(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTimeOffset.TryFormat"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTimeOffset.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateTimeOffset.TryParseExact(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Double.Parse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Double.TryFormat"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Double.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int32.Parse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int32.TryFormat"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int32.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.Parse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Obsolete: Int32.Parse(ROS<char>), Double.Parse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="INumber.TryParse(ReadOnlySpan&lt;Char&gt;)"/> <!-- Obsolete: Int32.TryParse(ROS<char>), Double.TryParse(ROS<char>), etc. -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.Clamp"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.NextBytes(Span&lt;byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.ctor(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(char)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(char,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Contains(string,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.IndexOf(char,StringComparison)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.Create(CultureInfo,CompareOptions) "/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.MakeGenericMethodParameter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsGenericMethodParameter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsGenericTypeParameter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SpanAction"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Dictionary.TrimExcess"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Dictionary.EnsureCapacity"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="HashSet.EnsureCapacity"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.Join"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.TryJoin"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.CopyTo_virtual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Read(Span&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ReadAsync(Memory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.Write(ReadOnlySpan&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.WriteAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZipArchiveEntry.Crc32"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MemberInfo.HasSameMetadataDefinitionAs"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MethodBase.IsConstructedGenericMethod"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="MemoryMarshal.CreateReadOnlySpan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.Fill"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetBytes(Span&lt;byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetNonZeroBytes(Span&lt;byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Preamble"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetByteCount(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetBytes(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetCharCount(ReadOnlySpan&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetChars(ReadOnlySpan&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.GetString(ReadOnlySpan&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Preamble"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.CopyTo(Span&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Insert(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="ThreadPool.QueueUserWorkItem&lt;TState&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETCOREAPP2_1_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETCOREAPP2_1_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="SocketsHttpHandler"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETSTANDARD2_1_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- ref: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis -->
+      <_NETSdkAvailableApiGroup TargetFrameworkCondition="$(_TargetFrameworkCondition)" Include="NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES" TargetApiFullName="System.Diagnostics.CodeAnalysis" />
+
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Index"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Range"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ArrayBufferWriter"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ReadOnlySequence.FirstSpan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="ISOWeek"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.DisposeAsync"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKey" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportPkcs8PrivateKey" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportSubjectPublicKeyInfo" />
+    </ItemGroup>
+
+    <!--
+      Applies to: NETFRAMEWORK || NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETFRAMEWORK;NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- NET10_OR_GREATER -->
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Activator.CreateInstance(assemblyName,typeName)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Activator.CreateInstanceFrom(assemblyFile,typeName)"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NETCOREAPP3_0_OR_GREATER || NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NETCOREAPP3_0_OR_GREATER;NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="MemoryExtensions.EnumerateRunes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Concat(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.GetHashCode(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.MakeGenericSignatureType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.EndsInDirectorySeparator"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Path.TrimEndingDirectorySeparator"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="TextWriter.WriteLineAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.LeadingZeroCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.Log2"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.PopCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.TrailingZeroCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="DllImportResolver"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="NativeLibrary"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Rune"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="SpanRuneEnumerator"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder+ChunkEnumerator"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(ReadOnlyMemory&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.GetChunks"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET5_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET5_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.ToHexString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.FromHexString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.IsDefined&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetName&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetNames&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetValues&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.ProcessId"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="OperatingSystem.IsOSPlatform"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringSplitOptions.TrimEntries"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Type.IsAssignableTo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ReadOnlySequence.GetOffset"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.UnreadSequence"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.AdvanceToEnd"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.TryPeek(offset)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.TryReadTo(out ReadOnlySpan&lt;T&gt;,ReadOnlySpan&lt;T&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="IReadOnlySet"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics" Include="Process.WaitForExitAsync"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="DynamicDependencyAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="DynamicallyAccessedMembersAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="DynamicallyAccessedMemberTypes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="RequiresUnreferencedCodeAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="MemberNotNullAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="MemberNotNullWhenAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="UnconditionalSuppressMessageAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CultureInfo.GetCultureInfo(name,predefinedOnly)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CopyToAsync(Stream,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CopyToAsync(Stream,TransportContext,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.CreateContentReadStreamAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.ReadAsByteArrayAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.ReadAsStreamAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.ReadAsStringAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Http" Include="HttpContent.SerializeToStreamAsync(Stream,TransportContext,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Mail" Include="MailAddress.TryCreate"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.NetworkInformation" Include="PhysicalAddress.TryParse"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="TcpClient.ConnectAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="IsExternalInit"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="ModuleInitializerAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.ExceptionServices" Include="ExceptionDispatchInfo.SetCurrentStackTrace"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="RuntimeInformation.RuntimeIdentifier"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Versioning" Include="TargetPlatformAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Versioning" Include="SupportedOSPlatformAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Versioning" Include="SupportedOSPlatformGuardAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Versioning" Include="UnsupportedOSPlatformAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.Versioning" Include="UnsupportedOSPlatformGuardAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA1.HashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA1.TryHashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA256.HashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA256.TryHashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA384.HashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA384.TryHashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA512.HashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA512.TryHashData" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.CreateTranscodingStream"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Encoding.Latin1"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="EncodingExtensions"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.RegularExpressions" Include="RegexParseError"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.RegularExpressions" Include="RegexParseException"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="TaskCompletionSource"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.CompletedTask"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromCanceled"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ValueTask.FromResult"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Xml" Include="XmlWriter.DisposeAsync"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET6_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET6_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentNullException.ThrowIfNull"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Char.IsAscii"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="DateOnly"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.Parse(ReadOnlySpan&lt;char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.TryParse(ReadOnlySpan&lt;char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.ProcessPath"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanFormattable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="HashCode.AddBytes"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Math.DivRem_return:ValueTuple`2"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="MemoryExtensions.EnumerateLines"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.Shared"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.NextInt64"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.NextSingle"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.CopyTo(Span&lt;char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create(IFormatProvider)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.TryCopyTo(Span&lt;char&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.IsWellKnownCultureAwareComparer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="StringComparer.IsWellKnownOrdinalComparer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeOnly"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeSsh"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Uri.UriSchemeTelnet"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="List.EnsureCapacity"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="PriorityQueue"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Queue.EnsureCapacity"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="Stack.EnsureCapacity"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Directory.CreateSymbolicLink"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Directory.ResolveLinkTarget"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="File.CreateSymbolicLink"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="File.ResolveLinkTarget"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="FileStreamOptions"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="FileSystemInfo.LinkTarget"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="FileSystemInfo.ResolveLinkTarget"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="RandomAccess"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ValidateBufferArguments"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="Stream.ValidateCopyToArguments"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZLibStream"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Chunk"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.DistinctBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.ElementAt(Index)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.ElementAtOrDefault(Index)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.ExceptBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.FirstOrDefault(source,defaultValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.FirstOrDefault(source,predicate,defaultValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.IntersectBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.LastOrDefault(source,defaultValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.LastOrDefault(source,predicate,defaultValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.MaxBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.MinBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.SingleOrDefault(source,defaultValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.SingleOrDefault(source,predicate,defaultValue)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Take(Range)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.TryGetNonEnumeratedCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.UnionBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddresses(hostNameOrAddress,family)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddressesAsync(hostNameOrAddress,cancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostAddressesAsync(hostNameOrAddress,family,cancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostEntry(hostNameOrAddress,family)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostEntryAsync(hostNameOrAddress,cancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="Dns.GetHostEntryAsync(hostNameOrAddress,family,cancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="Socket.AcceptAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(remoteEP,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(address,port,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(addresses,port,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="Socket.ConnectAsync(host,port,CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="Socket.DisconnectAsync(reuseSocket,cancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="TcpClient.ConnectAsync(IPEndPoint)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="UdpClient.Send(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="UdpClient.SendAsync(ReadOnlyMemory&lt;Byte&gt;)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net.Sockets" Include="UdpClient.ReceiveAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.IsPow2"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="Vector.As"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="NullabilityInfo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="NullabilityInfoContext"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="NullabilityState"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="NativeMemory"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="SpanLineEnumerator"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.Append(IFormatProvider,AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.AppendLine(AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="StringBuilder.AppendLine(IFormatProvider,AppendInterpolatedStringHandler)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="PeriodicTimer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.WaitAsync"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET7_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET7_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <!-- ref: https://devblogs.microsoft.com/dotnet/preview-features-in-net-6-generic-math/ -->
+      <_NETSdkAvailableApiGroup TargetFrameworkCondition="$(_TargetFrameworkCondition)" Include="GENERIC_MATH_INTERFACES" TargetApiFullName="System.Numerics" />
+
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentException.ThrowIfNullOrEmpty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentNullException.ThrowIfNull(VoidPtr,String)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Int128"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IParsable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ISpanParsable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetValuesAsUnderlyingType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Enum.GetValuesAsUnderlyingType&lt;TEnum&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeSpan.Microseconds"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeSpan.Nanoseconds"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="UInt128"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SequenceReader.TryReadExact"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.AsReadOnly"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics" Include="UnreachableException"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="StringSyntaxAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Diagnostics.CodeAnalysis" Include="ConstantExpectedAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZipArchive.Comment"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO.Compression" Include="ZipArchiveEntry.Comment"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="File.GetUnixFileMode"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="File.ReadLinesAsync"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="File.SetUnixFileMode"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="FileSystemInfo.UnixFileMode"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="TextReader.ReadLineAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="TextReader.ReadToEndAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="UnixFileMode"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Order"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.OrderDescending"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IAdditionOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IAdditiveIdentity" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IBinaryFloatingPointIeee754" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IBinaryInteger" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IBinaryNumber" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IBitwiseOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IComparisonOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IDecrementOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IDivisionOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IEqualityOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IExponentialFunctions" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IFloatingPoint" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IFloatingPointConstants" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IFloatingPointIeee754" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IHyperbolicFunctions" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IIncrementOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="ILogarithmicFunctions" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IMinMaxValue" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IModulusOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IMultiplicativeIdentity" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IMultiplyOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="INumber" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="INumberBase" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IPowerFunctions" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IRootFunctions" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IShiftOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="ISignedNumber" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="ISubtractionOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="ITrigonometricFunctions" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IUnaryNegationOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IUnaryPlusOperators" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IUnsignedNumber" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="CompilerFeatureRequiredAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="RequiredMemberAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="LibraryImportAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.InteropServices" Include="StringMarshalling"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportEncryptedPkcs8PrivateKeyPem" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportPkcs8PrivateKeyPem" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="AsymmetricAlgorithm.ExportSubjectPublicKeyInfoPem" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA1.HashData(Stream)" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA1.HashDataAsync" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA1.HashSizeInBits" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA1.HashSizeInBytes" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA256.HashData(Stream)" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA256.HashDataAsync" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA256.HashSizeInBits" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA256.HashSizeInBytes" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA384.HashData(Stream)" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA384.HashDataAsync" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA384.HashSizeInBits" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA384.HashSizeInBytes" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA512.HashData(Stream)" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA512.HashDataAsync" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA512.HashSizeInBits" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA512.HashSizeInBytes" />
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.RegularExpressions" Include="GeneratedRegexAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text.RegularExpressions" Include="ValueMatch"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET8_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET8_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentException.ThrowIfNullOrWhiteSpace"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfGreaterThan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfLessThan"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfLessThanOrEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNegative"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNegativeOrZero"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfNotEqual"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="ArgumentOutOfRangeException.ThrowIfZero"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.IsPrivilegedProcess"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IUtf8SpanFormattable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="IUtf8SpanParsable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.GetItems"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.Shuffle"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeProvider"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="ArrayBufferWriter.ResetWrittenCount"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Buffers" Include="SearchValues"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Frozen" Include="FrozenDictionary"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Frozen" Include="FrozenSet"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.AddRange"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.CopyTo"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="CollectionExtensions.InsertRange"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="EqualityComparer.Create(Func,Func)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="EqualityComparer.Create(Func, Func)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="List.Slice"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.ObjectModel" Include="ReadOnlyCollection.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.ObjectModel" Include="ReadOnlyDictionary.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.ObjectModel" Include="ReadOnlyObservableCollection.Empty"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="NumberStyles.AllowBinarySpecifier"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="NumberStyles.BinaryNumber"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.IO" Include="TextWriter.FlushAsync(CancellationToken)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Net" Include="IPNetwork"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="BitOperations.Crc32C"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="IFloatingPointIeee754.Lerp"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="ITrigonometricFunctions.DegreesToRadians"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Numerics" Include="ITrigonometricFunctions.RadiansToDegrees"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="ConstructorInvoker"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="MethodInvoker"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Reflection" Include="PropertyInfo.GetModifiedPropertyType"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="CollectionBuilderAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="UnsafeAccessorAttribute"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetHexString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetItems"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.GetString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="RandomNumberGenerator.Shuffle"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA3_256"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA3_384"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Security.Cryptography" Include="SHA3_512"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Text" Include="Ascii"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="CancellationTokenSource.CancelAsync"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="ITimer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="ConfigureAwaitOptions"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET9_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET9_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="String.Create&lt;TState&gt; allows ref struct"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.FromHexString(source,destination)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.ToHexStringLower"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryToHexString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.TryToHexStringLower"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Environment.CpuUsage"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Guid.CreateVersion7"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Guid.Variant"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Guid.Version"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeSpan.From(Int32)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="TimeSpan.From(Int64)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="IAlternateEqualityComparer"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.Generic" Include="OrderedDictionary"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Collections.ObjectModel" Include="ReadOnlySet"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.AggregateBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.CountBy"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Index"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading" Include="Lock"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Threading.Tasks" Include="Task.WhenEach"/>
+    </ItemGroup>
+
+    <!--
+      Applies to: NET10_0_OR_GREATER
+    -->
+    <PropertyGroup>
+      <_TargetFrameworkCondition>NET10_0_OR_GREATER</_TargetFrameworkCondition>
+    </PropertyGroup>
+
+    <MSBuild Properties="Set=$(DefineConstants);OtherSet=$(_TargetFrameworkCondition)" Projects="$(MSBuildThisFileDirectory)TestSetOverlapsWith.targets" Targets="TestSetOverlapsWith" >
+      <Output TaskParameter="TargetOutputs" PropertyName="_IsTargetFrameworkConditionMatched" />
+    </MSBuild>
+
+    <ItemGroup Condition="'$(_IsTargetFrameworkConditionMatched)' == 'true'">
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Convert.FromHexString(utf8Source,destination)"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="EventHandler&lt;TSender,TEventArgs&gt;"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.GetHexString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System" Include="Random.GetString"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="AsyncEnumerable"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.InfiniteSequence"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.LeftJoin"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Reverse"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.RightJoin"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Sequence"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Linq" Include="Enumerable.Shuffle"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Memory" Include="MemoryExtensions.Replace"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Memory" Include="MemoryExtensions.ReplaceAny"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Globalization" Include="CompareOptions.NumericOrdering"/>
+      <_NETSdkAvailableApi TargetFrameworkCondition="$(_TargetFrameworkCondition)" Namespace="System.Runtime.CompilerServices" Include="UnsafeAccessorTypeAttribute"/>
+    </ItemGroup>
+
+    <!--
+      generate symbols
+    -->
+    <ItemGroup>
+      <_NETSdkAvailableApiSymbol Include="@(_NETSdkAvailableApi)">
+        <TargetApiFullName Condition="'%(Identity)' == '*'">%(Namespace)</TargetApiFullName>
+        <TargetApiFullName Condition="'%(Identity)' != '*'">%(Namespace).%(Identity)</TargetApiFullName>
+        <Constant>$(
+          [System.Text.RegularExpressions.Regex]::Replace(
+            $(
+              [System.String]::new('%(_NETSdkAvailableApiSymbol.TargetApiFullName)')
+                .Replace('&lt;', '_OF_')
+                .Replace('&gt;', '')
+                .Replace(')', '')
+            ),
+            '[\.\,\(\+\:\`\s]',
+            '_'
+          )
+          .ToUpperInvariant()
+        )</Constant>
+      </_NETSdkAvailableApiSymbol>
+    </ItemGroup>
+
+    <ItemGroup>
+      <NETSdkAvailableApiSymbol
+        Condition="0 &lt; @(_NETSdkAvailableApiSymbol->Count())"
+        Include="@(_NETSdkAvailableApiSymbol->Metadata('Constant'))"
+        TargetApiFullName="%(_NETSdkAvailableApiSymbol.TargetApiFullName)"
+      />
+      <NETSdkAvailableApiSymbol Include="@(_NETSdkAvailableApiGroup)" />
+    </ItemGroup>
+  </Target>
+</Project>
