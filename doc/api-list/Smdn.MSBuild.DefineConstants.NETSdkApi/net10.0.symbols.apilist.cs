@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.7.0
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.8.0
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.7.0
+//   InformationalVersion: 1.8.0
 
 // List of symbols defined on target framework 'net10.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -338,6 +338,7 @@
 #define SYSTEM_IO_COMPRESSION_ZLIBSTREAM // System.IO.Compression.ZLibStream (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ASYNCENUMERABLE // System.Linq.AsyncEnumerable (NET10_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_AGGREGATEBY // System.Linq.Enumerable.AggregateBy (NET9_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_APPEND // System.Linq.Enumerable.Append (NET5_0_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET471_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_CHUNK // System.Linq.Enumerable.Chunk (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_COUNTBY // System.Linq.Enumerable.CountBy (NET9_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_DISTINCTBY // System.Linq.Enumerable.DistinctBy (NET6_0_OR_GREATER)
@@ -356,6 +357,7 @@
 #define SYSTEM_LINQ_ENUMERABLE_MINBY // System.Linq.Enumerable.MinBy (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ORDER // System.Linq.Enumerable.Order (NET7_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ORDERDESCENDING // System.Linq.Enumerable.OrderDescending (NET7_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_PREPEND // System.Linq.Enumerable.Prepend (NET5_0_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET471_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_REVERSE // System.Linq.Enumerable.Reverse (NET10_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_RIGHTJOIN // System.Linq.Enumerable.RightJoin (NET10_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_SEQUENCE // System.Linq.Enumerable.Sequence (NET10_0_OR_GREATER)
