@@ -1,0 +1,17 @@
+﻿<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <PropertyGroup>
+    <!-- default configurations -->
+    <EnableImportingNETSdkApiDefineConstantsProps
+      Condition=" '$(EnableImportingNETSdkApiDefineConstantsProps)' == '' "
+    >true</EnableImportingNETSdkApiDefineConstantsProps>
+  </PropertyGroup>
+
+  <Import
+    Project="$(MSBuildThisFileDirectory)project\define-constants\DefineConstants.NETSdkApi.props"
+    Condition="'$(EnableImportingNETSdkApiDefineConstantsProps)' == 'true'"
+  />
+</Project>

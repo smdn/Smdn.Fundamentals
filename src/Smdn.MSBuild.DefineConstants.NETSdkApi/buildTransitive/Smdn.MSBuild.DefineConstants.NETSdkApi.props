@@ -1,0 +1,7 @@
+﻿<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)..\build\$(MSBuildThisFile)" />
+</Project>

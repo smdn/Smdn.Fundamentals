@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
     <!-- default configurations -->
     <EnableAddingNETSdkApiDefineConstants
       Condition=" '$(EnableAddingNETSdkApiDefineConstants)' == '' "
-    >true</EnableAddingNETSdkApiDefineConstants>
+    >false</EnableAddingNETSdkApiDefineConstants>
   </PropertyGroup>
 
   <Import
