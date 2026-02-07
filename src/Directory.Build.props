@@ -34,6 +34,9 @@ SPDX-License-Identifier: MIT
     />
   </ItemGroup>
   <!--
-  <Import Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.DefineConstants.NETSdkApi\build\Smdn.MSBuild.DefineConstants.NETSdkApi.targets" />
+  <Import
+    Condition="'$(MSBuildProjectName)' != 'Smdn.MSBuild.DefineConstants.NETSdkApi'"
+    Project="$(MSBuildThisFileDirectory)Smdn.MSBuild.DefineConstants.NETSdkApi\buildTransitive\Smdn.MSBuild.DefineConstants.NETSdkApi.props"
+  />
   -->
 </Project>
