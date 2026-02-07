@@ -43,7 +43,7 @@ As an example, the symbol `SYSTEM_ENUM_PARSE_OF_TENUM` corresponding to `System.
     <None Pack="true"  Include="build\$(AssemblyName).targets" PackagePath="build\" />
     <None Pack="true"  Include="build\project\*.targets" PackagePath="build\project\" />
     <None Pack="true"  Include="build\project\available-apis\*.proj" PackagePath="build\project\available-apis\" />
-    <None Pack="true"  Include="build\project\define-constants\DefineConstants.*.props" PackagePath="build\project\available-apis\" />
+    <None Pack="true"  Include="build\project\define-constants\DefineConstants.*.props" PackagePath="build\project\define-constants\" />
     <None Pack="true"  Include="buildTransitive\$(AssemblyName).props" PackagePath="buildTransitive\" />
     <None Pack="true"  Include="buildTransitive\$(AssemblyName).targets" PackagePath="buildTransitive\" />
   </ItemGroup>
