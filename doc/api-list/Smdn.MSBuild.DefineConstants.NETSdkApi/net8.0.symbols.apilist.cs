@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.7.0
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.8.0
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.7.0
+//   InformationalVersion: 1.8.0
 
 // List of symbols defined on target framework 'net8.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -317,6 +317,7 @@
 #define SYSTEM_IO_COMPRESSION_ZIPARCHIVEENTRY_CRC32 // System.IO.Compression.ZipArchiveEntry.Crc32 (NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER)
 #define SYSTEM_IO_COMPRESSION_ZIPARCHIVEENTRY_EXTERNALATTRIBUTES // System.IO.Compression.ZipArchiveEntry.ExternalAttributes (NET5_0_OR_GREATER || NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_0_OR_GREATER || NET472_OR_GREATER)
 #define SYSTEM_IO_COMPRESSION_ZLIBSTREAM // System.IO.Compression.ZLibStream (NET6_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_APPEND // System.Linq.Enumerable.Append (NET5_0_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET471_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_CHUNK // System.Linq.Enumerable.Chunk (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_DISTINCTBY // System.Linq.Enumerable.DistinctBy (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ELEMENTAT_INDEX // System.Linq.Enumerable.ElementAt(Index) (NET6_0_OR_GREATER)
@@ -331,6 +332,7 @@
 #define SYSTEM_LINQ_ENUMERABLE_MINBY // System.Linq.Enumerable.MinBy (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ORDER // System.Linq.Enumerable.Order (NET7_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_ORDERDESCENDING // System.Linq.Enumerable.OrderDescending (NET7_0_OR_GREATER)
+#define SYSTEM_LINQ_ENUMERABLE_PREPEND // System.Linq.Enumerable.Prepend (NET5_0_OR_GREATER || NETSTANDARD1_6_OR_GREATER || NETCOREAPP1_0_OR_GREATER || NET471_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_SINGLEORDEFAULT_SOURCE_DEFAULTVALUE // System.Linq.Enumerable.SingleOrDefault(source,defaultValue) (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_SINGLEORDEFAULT_SOURCE_PREDICATE_DEFAULTVALUE // System.Linq.Enumerable.SingleOrDefault(source,predicate,defaultValue) (NET6_0_OR_GREATER)
 #define SYSTEM_LINQ_ENUMERABLE_TAKE_RANGE // System.Linq.Enumerable.Take(Range) (NET6_0_OR_GREATER)
