@@ -58,7 +58,7 @@ static partial class TypeExtensions {
     if (m.IsGenericMethod)
 #endif
       return false;
-    if (m.ReturnType != typeof(void))
+    if (!ROCType.Equals(m.ReturnType, typeof(void)))
       return false;
 
     // the extension marker method has a name "<Extension>$"
