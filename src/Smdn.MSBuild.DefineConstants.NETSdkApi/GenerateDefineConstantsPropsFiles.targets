@@ -123,7 +123,7 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <PropertyGroup>
-    <!-- $([MSBuild]::Escape($(DefineConstants))) -->
+    <!-- $([MSBuild]::Escape($(DefineConstants.Replace('TRACE;', '').Replace('DEBUG;', '').Replace('RELEASE;', '')))) -->
     @(_DefineConstantsPropertyLines, '%0A    ')
   </PropertyGroup>
 </Project>
