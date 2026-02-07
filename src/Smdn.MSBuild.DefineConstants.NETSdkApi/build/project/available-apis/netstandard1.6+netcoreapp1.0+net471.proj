@@ -1,0 +1,15 @@
+﻿<!--
+SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Project>
+  <Target
+    Name="_ExportNETSdkAvailableApi"
+    Returns="@(_NETSdkAvailableApi)"
+  >
+    <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Append"/>
+      <_NETSdkAvailableApi Namespace="System.Linq" Include="Enumerable.Prepend"/>
+    </ItemGroup>
+  </Target>
+</Project>
