@@ -23,6 +23,6 @@ public class StringExtensionsTests {
   [Test]
   public void ToControlCharsPicturized_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => StringExtensions.ToControlCharsPicturized(null));
+    Assert.Throws<ArgumentNullException>(() => StringExtensions.ToControlCharsPicturized(null!));
   }
 }
