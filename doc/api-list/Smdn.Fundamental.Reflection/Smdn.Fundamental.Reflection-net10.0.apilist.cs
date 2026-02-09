@@ -1,13 +1,13 @@
-// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.10.0)
+// Smdn.Fundamental.Reflection.dll (Smdn.Fundamental.Reflection-3.10.1)
 //   Name: Smdn.Fundamental.Reflection
-//   AssemblyVersion: 3.10.0.0
-//   InformationalVersion: 3.10.0+0c4f7eca96a3065716196aecf88ea084671726e6
+//   AssemblyVersion: 3.10.1.0
+//   InformationalVersion: 3.10.1+11c74f2e4607a646ae76d3ecd47491212f7254f3
 //   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
 //   Metadata: IsAotCompatible=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
-//   Metadata: RepositoryCommit=0c4f7eca96a3065716196aecf88ea084671726e6
+//   Metadata: RepositoryCommit=11c74f2e4607a646ae76d3ecd47491212f7254f3
 //   Referenced assemblies:
 //     System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     System.Collections.Immutable, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
