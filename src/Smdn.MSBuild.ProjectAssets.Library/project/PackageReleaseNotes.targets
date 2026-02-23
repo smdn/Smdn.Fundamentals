@@ -6,11 +6,16 @@ SPDX-License-Identifier: MIT
   <Target
     Name="GenerateNupkgReleaseNote"
     BeforeTargets="GenerateNuspec"
+    DependsOnTargets="SmdnWorkflowsDotNet_DefineProperties"
     Condition=" '$(PackageReleaseNotes)' == '' "
   >
     <PropertyGroup Condition="$(RepositoryUrl.StartsWith('https://github.com/'))">
-      <RepositoryReleaseTag>releases/$(PackageId)-$(PackageVersion)</RepositoryReleaseTag>
-      <PackageReleaseNotes>$([MSBuild]::EnsureTrailingSlash('$(RepositoryUrl)'))releases/tag/$(RepositoryReleaseTag.Replace('/', '%252F').Replace('+', '%252B').Replace('+', '%252B'))</PackageReleaseNotes>
+      <_ReleaseTagUrlEscaped>$(SmdnWorkflowsDotNetExpectedReleaseTag.Replace('/', '%252F').Replace('+', '%252B'))</_ReleaseTagUrlEscaped>
+
+      <PackageReleaseNotes
+        Condition=" '$(PackageReleaseNotes)' == ''"
+      ><![CDATA[See the release notes for [$(PackageId) version $(PackageVersion)]($([MSBuild]::EnsureTrailingSlash('$(RepositoryUrl)'))releases/tag/$(_ReleaseTagUrlEscaped)) on GitHub Releases.]]>
+      </PackageReleaseNotes>
     </PropertyGroup>
   </Target>
 </Project>
