@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -65,7 +65,7 @@ List of APIs exposed by assembly `$(AssemblyName)-$(InformationalVersion)` ($(La
   <Target
     Name="GenerateNupkgReadmeFile"
     BeforeTargets="GenerateNuspec"
-    DependsOnTargets="$(GenerateNupkgReadmeFileDependsOnTargets)"
+    DependsOnTargets="SmdnWorkflowsDotNet_DefineProperties;$(GenerateNupkgReadmeFileDependsOnTargets)"
   >
     <PropertyGroup>
       <_PackageReadmeFileFinalContent
