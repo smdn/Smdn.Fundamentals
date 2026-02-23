@@ -11,13 +11,8 @@ SPDX-License-Identifier: MIT
   -->
   <Target
     Name="NewRelease"
-    DependsOnTargets="GetRepositoryProperties"
+    DependsOnTargets="SmdnWorkflowsDotNet_DefineProperties"
   >
-    <PropertyGroup>
-      <_PackageIdWithVersion>$(PackageId)-$(PackageVersion)</_PackageIdWithVersion>
-      <_ReleaseTargetTagName>new-release/$(RepositoryBranch)/$(_PackageIdWithVersion)</_ReleaseTargetTagName>
-    </PropertyGroup>
-
     <!-- Rebuild and Pack to verify that the package can be created -->
     <!-- Packing by the MSBuild task seems problematic, so use the dotnet command instead. -->
     <Exec
@@ -46,7 +41,7 @@ SPDX-License-Identifier: MIT
     </Exec>
 
     <Error
-      Text="'$(_PackageIdWithVersion)' has already been released. Make sure the package version is updated."
+      Text="'$(SmdnWorkflowsDotNetPackageIdWithVersion)' has already been released. Make sure the package version is updated."
       Condition=" '$(_QueryNuGetPackageReleasedExitCode)' == '0' "
       File="$(MSBuildProjectFullPath)"
     />
@@ -59,9 +54,9 @@ SPDX-License-Identifier: MIT
 
     <!-- create release tag -->
     <Exec
-      Command="git tag --message=&quot;new release target tag for $(_PackageIdWithVersion)&quot; $(_ReleaseTargetTagName) $(RepositoryCommit)"
+      Command="git tag --message=&quot;new release target tag for $(SmdnWorkflowsDotNetPackageIdWithVersion)&quot; $(SmdnWorkflowsDotNetReleaseTargetTag) $(RepositoryCommit)"
       EchoOff="false"
     />
-    <Message Text="created release target tag '$(_ReleaseTargetTagName)'" Importance="high" />
+    <Message Text="created release target tag '$(SmdnWorkflowsDotNetReleaseTargetTag)'" Importance="high" />
   </Target>
 </Project>
