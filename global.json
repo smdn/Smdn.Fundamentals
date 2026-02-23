@@ -6,8 +6,8 @@
   },
   "msbuild-sdks": {
     "Microsoft.Build.NoTargets": "3.7.134",
-    "Smdn.MSBuild.ProjectAssets.Common": "1.6.2",
-    "Smdn.MSBuild.ProjectAssets.Library": "1.13.0"
+    "Smdn.MSBuild.ProjectAssets.Common": "1.7.0",
+    "Smdn.MSBuild.ProjectAssets.Library": "1.14.0"
   },
   "test": {
     "runner": "Microsoft.Testing.Platform"
