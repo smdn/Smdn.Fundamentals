@@ -120,6 +120,9 @@ function Get-NuGetLatestPackageVersion {
   if ($package_versions.Count -le 0) {
     return $null
   }
+  elseif ($package_versions.Count -eq 1) {
+    return $package_versions
+  }
 
   $ordered_versions = Get-OrderedSemanticVersions $package_versions -Descending
 
