@@ -1,0 +1,59 @@
+<!--
+SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
+SPDX-License-Identifier: MIT
+-->
+<Solution>
+  <Folder Name="/Smdn.Core.Miscellaneous/">
+    <Project Path="Smdn.Extensions.Polly.KeyedRegistry/Smdn.Extensions.Polly.KeyedRegistry.csproj" />
+    <Project Path="Smdn.Fundamental.Buffer/Smdn.Fundamental.Buffer.csproj" />
+    <Project Path="Smdn.Fundamental.ByteString/Smdn.Fundamental.ByteString.csproj" />
+    <Project Path="Smdn.Fundamental.Collection/Smdn.Fundamental.Collection.csproj" />
+    <Project Path="Smdn.Fundamental.ControlPicture/Smdn.Fundamental.ControlPicture.csproj" />
+    <Project Path="Smdn.Fundamental.CryptoTransform/Smdn.Fundamental.CryptoTransform.csproj" />
+    <Project Path="Smdn.Fundamental.Csv/Smdn.Fundamental.Csv.csproj" />
+    <Project Path="Smdn.Fundamental.Encoding.Buffer/Smdn.Fundamental.Encoding.Buffer.csproj" />
+    <Project Path="Smdn.Fundamental.Encoding.OctetEncoding/Smdn.Fundamental.Encoding.OctetEncoding.csproj" />
+    <Project Path="Smdn.Fundamental.Encoding/Smdn.Fundamental.Encoding.csproj" />
+    <Project Path="Smdn.Fundamental.Exception/Smdn.Fundamental.Exception.csproj" />
+    <Project Path="Smdn.Fundamental.FileSystem/Smdn.Fundamental.FileSystem.csproj" />
+    <Project Path="Smdn.Fundamental.FourCC/Smdn.Fundamental.FourCC.csproj" />
+    <Project Path="Smdn.Fundamental.Math/Smdn.Fundamental.Math.csproj" />
+    <Project Path="Smdn.Fundamental.MimeHeader/Smdn.Fundamental.MimeHeader.csproj" />
+    <Project Path="Smdn.Fundamental.MimeType/Smdn.Fundamental.MimeType.csproj" />
+    <Project Path="Smdn.Fundamental.ParamArray/Smdn.Fundamental.ParamArray.csproj" />
+    <Project Path="Smdn.Fundamental.PortNumber/Smdn.Fundamental.PortNumber.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.Base64/Smdn.Fundamental.PrintableEncoding.Base64.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.Hexadecimal/Smdn.Fundamental.PrintableEncoding.Hexadecimal.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.MimeEncoding/Smdn.Fundamental.PrintableEncoding.MimeEncoding.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.ModifiedBase64/Smdn.Fundamental.PrintableEncoding.ModifiedBase64.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.PercentEncoding/Smdn.Fundamental.PrintableEncoding.PercentEncoding.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.QuotedPrintable/Smdn.Fundamental.PrintableEncoding.QuotedPrintable.csproj" />
+    <Project Path="Smdn.Fundamental.PrintableEncoding.UUEncoding/Smdn.Fundamental.PrintableEncoding.UUEncoding.csproj" />
+    <Project Path="Smdn.Fundamental.Reflection/Smdn.Fundamental.Reflection.csproj" />
+    <Project Path="Smdn.Fundamental.RegularExpression/Smdn.Fundamental.RegularExpression.csproj" />
+    <Project Path="Smdn.Fundamental.RuntimeInformation/Smdn.Fundamental.RuntimeInformation.csproj" />
+    <Project Path="Smdn.Fundamental.Shell/Smdn.Fundamental.Shell.csproj" />
+    <Project Path="Smdn.Fundamental.Shim/Smdn.Fundamental.Shim.csproj" />
+    <Project Path="Smdn.Fundamental.SIPrefix/Smdn.Fundamental.SIPrefix.csproj" />
+    <Project Path="Smdn.Fundamental.StandardDateTimeFormat/Smdn.Fundamental.StandardDateTimeFormat.csproj" />
+    <Project Path="Smdn.Fundamental.Stream.BinaryReaderWriter/Smdn.Fundamental.Stream.BinaryReaderWriter.csproj" />
+    <Project Path="Smdn.Fundamental.Stream.Caching/Smdn.Fundamental.Stream.Caching.csproj" />
+    <Project Path="Smdn.Fundamental.Stream.Extending/Smdn.Fundamental.Stream.Extending.csproj" />
+    <Project Path="Smdn.Fundamental.Stream.Filtering/Smdn.Fundamental.Stream.Filtering.csproj" />
+    <Project Path="Smdn.Fundamental.Stream.LineOriented/Smdn.Fundamental.Stream.LineOriented.csproj" />
+    <Project Path="Smdn.Fundamental.Stream.TextReader/Smdn.Fundamental.Stream.TextReader.csproj" />
+    <Project Path="Smdn.Fundamental.Stream/Smdn.Fundamental.Stream.csproj" />
+    <Project Path="Smdn.Fundamental.String.Replacement/Smdn.Fundamental.String.Replacement.csproj" />
+    <Project Path="Smdn.Fundamental.Stringification/Smdn.Fundamental.Stringification.csproj" />
+    <Project Path="Smdn.Fundamental.UInt24n/Smdn.Fundamental.UInt24n.csproj" />
+    <Project Path="Smdn.Fundamental.Uri/Smdn.Fundamental.Uri.csproj" />
+    <Project Path="Smdn.Fundamental.Uuid/Smdn.Fundamental.Uuid.csproj" />
+    <Project Path="Smdn.Fundamental.Xml.Linq/Smdn.Fundamental.Xml.Linq.csproj" />
+    <Project Path="Smdn.Fundamental.Xml.Xhtml/Smdn.Fundamental.Xml.Xhtml.csproj" />
+    <Project Path="Smdn.MSBuild.DefineConstants.NETSdkApi/Smdn.MSBuild.DefineConstants.NETSdkApi.csproj" />
+    <Project Path="Smdn.MSBuild.ProjectAssets.Common/Smdn.MSBuild.ProjectAssets.Common.csproj" />
+    <Project Path="Smdn.MSBuild.ProjectAssets.Library/Smdn.MSBuild.ProjectAssets.Library.csproj" />
+    <Project Path="Smdn.Test.NUnit.Constraints/Smdn.Test.NUnit.Constraints.csproj" />
+    <Project Path="Smdn.Test.NUnit.Utils/Smdn.Test.NUnit.Utils.csproj" />
+  </Folder>
+</Solution>
