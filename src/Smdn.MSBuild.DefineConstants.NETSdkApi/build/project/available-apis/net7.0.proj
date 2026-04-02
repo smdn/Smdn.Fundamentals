@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2026 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -32,6 +32,10 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi Namespace="System.IO" Include="File.ReadLinesAsync"/>
       <_NETSdkAvailableApi Namespace="System.IO" Include="File.SetUnixFileMode"/>
       <_NETSdkAvailableApi Namespace="System.IO" Include="FileSystemInfo.UnixFileMode"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ReadAtLeast"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ReadAtLeastAsync"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ReadExactly"/>
+      <_NETSdkAvailableApi Namespace="System.IO" Include="Stream.ReadExactlyAsync"/>
       <_NETSdkAvailableApi Namespace="System.IO" Include="TextReader.ReadLineAsync(CancellationToken)"/>
       <_NETSdkAvailableApi Namespace="System.IO" Include="TextReader.ReadToEndAsync(CancellationToken)"/>
       <_NETSdkAvailableApi Namespace="System.IO" Include="UnixFileMode"/>
