@@ -61,7 +61,7 @@ jobs:
         exit 1
 
   run-generate-release-target:
-    uses: smdn/workflows-dotnet/.github/workflows/generate-release-target.yml@release-target/v1.14.1
+    uses: smdn/workflows-dotnet/.github/workflows/generate-release-target.yml@4e01f53bb8360d54b5f65e8e16f51dc9d96fabf8
     needs: determine-release-target
     if: startsWith(needs.determine-release-target.outputs.tag_name, 'new-release/')
     with:
