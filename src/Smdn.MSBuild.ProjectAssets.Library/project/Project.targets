@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -25,11 +25,6 @@ SPDX-License-Identifier: MIT
   <ImportGroup Condition=" '$(IsTestProject)' == 'true' ">
     <!-- NUnit Analyzers code analysis -->
     <Import Project="$(MSBuildThisFileDirectory)CodeAnalysis.NUnitAnalyzers.targets" />
-    <!-- LiquidTestReports (VSTestLogger) -->
-    <Import
-      Condition=" '$(EnableNUnitRunner)' != 'true' "
-      Project="$(MSBuildThisFileDirectory)LiquidTestReports.targets"
-    />
     <!-- LiquidTestReports (Microsoft.Testing.Platform) -->
     <Import
       Condition=" '$(EnableNUnitRunner)' == 'true' "

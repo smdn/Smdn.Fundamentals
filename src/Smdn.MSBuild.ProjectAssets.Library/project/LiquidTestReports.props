@@ -11,15 +11,6 @@ SPDX-License-Identifier: MIT
     <LiquidTestReportsEmitTestMessages Condition=" '$(LiquidTestReportsEmitTestMessages)' == '' " >true</LiquidTestReportsEmitTestMessages> <!-- whether to let LiquidTestReports output test messages or not -->
     <LiquidTestReportsEmitTestCaseResultMessages Condition=" '$(LiquidTestReportsEmitTestCaseResultMessages)' == '' ">true</LiquidTestReportsEmitTestCaseResultMessages> <!-- whether to let LiquidTestReports output test messages or not -->
 
-    <!-- LiquidTestReports.Custom for VSTestLogger -->
-    <LiquidTestReportsCustomPackageReferenceVersion
-      Condition=" '$(LiquidTestReportsCustomPackageReferenceVersion)' == '' "
-    >1.0.9</LiquidTestReportsCustomPackageReferenceVersion>
-
-    <DotLiquidPackageReferenceVersion
-      Condition=" '$(DotLiquidPackageReferenceVersion)' == '' "
-    >2.3.197</DotLiquidPackageReferenceVersion>
-
     <!-- Smdn.Extensions.Mtp.LiquidTestReports for Microsoft.Testing.Platform -->
     <SmdnExtensionsMtpLiquidTestReportsPackageReferenceVersion
       Condition=" '$(SmdnExtensionsMtpLiquidTestReportsPackageReferenceVersion)' == '' "
