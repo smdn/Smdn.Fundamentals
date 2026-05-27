@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -23,9 +23,6 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(EnableLiquidTestReports)' == 'true' ">
-    <PackageReference Update="Microsoft.Testing.Platform" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="2.0.2" />
-    <PackageReference Include="Microsoft.Testing.Extensions.VSTestBridge" Version="2.0.2" />
     <PackageReference
       Include="Smdn.Extensions.Mtp.LiquidTestReports"
       Version="$(SmdnExtensionsMtpLiquidTestReportsPackageReferenceVersion)"
