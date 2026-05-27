@@ -276,7 +276,7 @@ public partial class MethodInfoExtensionsTests {
 
       if (method.IsGenericMethod) {
         Assert.That(overriddenMethod.IsGenericMethod, Is.True);
-        Assert.That(overriddenMethod.GetGenericArguments().Count, Is.EqualTo(genericParameterCount));
+        Assert.That(overriddenMethod.GetGenericArguments().Length, Is.EqualTo(genericParameterCount));
       }
       else {
         Assert.That(overriddenMethod.IsGenericMethod, Is.False);

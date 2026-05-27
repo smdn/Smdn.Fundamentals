@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 using Smdn.IO.Streams.LineOriented;
@@ -299,7 +301,7 @@ X-Invalid-Header
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        var testAction = new AsyncTestDelegate(async () => {
+        var testAction = new Func<Task>(async () => {
           headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(
             stream,
             keepWhitespaces: keepWhitespaces,
@@ -335,7 +337,7 @@ MIME-Version: 1.0
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        var testAction = new AsyncTestDelegate(async () => {
+        var testAction = new Func<Task>(async () => {
           headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(
             stream,
             keepWhitespaces: keepWhitespaces,
@@ -370,7 +372,7 @@ MIME-Version: 1.0";
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        var testAction = new AsyncTestDelegate(async () => {
+        var testAction = new Func<Task>(async () => {
           headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(
             stream,
             keepWhitespaces: keepWhitespaces,
