@@ -1,9 +1,11 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Project>
   <PropertyGroup Condition=" '$(IsTestProject)' != 'true' " Label="Properties for the library project">
+    <DebugType>embedded</DebugType>
+
     <!-- assembly defaults -->
     <AssemblyCLSCompliant>true</AssemblyCLSCompliant>
 
@@ -20,13 +22,13 @@ SPDX-License-Identifier: MIT
 
     <!-- source link defaults -->
     <!-- ref: https://github.com/dotnet/sourcelink -->
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <DebugType>embedded</DebugType>
+    <ContinuousIntegrationBuild Condition=" '$(GITHUB_ACTIONS)' == 'true' ">true</ContinuousIntegrationBuild>
 
     <!-- package defaults -->
     <EnablePackageValidation>true</EnablePackageValidation>
     <GeneratePackageReadmeFile>true</GeneratePackageReadmeFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <Authors>smdn</Authors>
 
     <!-- trimming defaults -->
