@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.CryptoTransform
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+91b81fcb8a6de49c916953bbe9d1ca4f6f617cb6
-//   TargetFramework: .NETStandard,Version=v2.1
+//   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
@@ -10,7 +10,7 @@
 //   Referenced assemblies:
 //     Smdn.Fundamental.Encoding.OctetEncoding, Version=3.1.0.0, Culture=neutral
 //     Smdn.Fundamental.Exception, Version=3.1.0.0, Culture=neutral
-//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System.Security.Cryptography;
