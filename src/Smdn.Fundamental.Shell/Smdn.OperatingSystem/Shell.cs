@@ -114,7 +114,8 @@ public static class Shell {
 
     configureProcessStartInfo?.Invoke(psi);
 
-    using var process = Process.Start(psi);
+    using var process = Process.Start(psi)
+      ?? throw new InvalidOperationException($"process not started: {command} {args}");
 
     stdout = process.StandardOutput.ReadToEnd();
     stderr = process.StandardError.ReadToEnd();
