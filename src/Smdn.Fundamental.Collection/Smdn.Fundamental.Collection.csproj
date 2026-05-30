@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -20,7 +20,7 @@ SPDX-License-Identifier: MIT
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectOrPackageReference ReferencePackageVersion="[3.0.3,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
+    <ProjectOrPackageReference ReferencePackageVersion="[3.1.0,4.0.0)" Include="..\Smdn.Fundamental.Exception\Smdn.Fundamental.Exception.csproj" />
     <ProjectOrPackageReference ReferencePackageVersion="[3.1.4,4.0.0)" Include="..\Smdn.Fundamental.Shim\Smdn.Fundamental.Shim.csproj" Condition="$(TargetFramework.StartsWith('net45'))" />
     <PackageReference Include="System.Runtime.Serialization.Formatters" />
   </ItemGroup>
