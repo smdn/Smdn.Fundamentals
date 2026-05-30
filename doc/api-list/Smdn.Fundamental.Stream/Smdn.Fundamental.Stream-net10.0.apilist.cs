@@ -1,18 +1,21 @@
-// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.0.4)
+// Smdn.Fundamental.Stream.dll (Smdn.Fundamental.Stream-3.1.0)
 //   Name: Smdn.Fundamental.Stream
-//   AssemblyVersion: 3.0.4.0
-//   InformationalVersion: 3.0.4+50cd3a5ddb6026e07a1bf790427b237a96c07bb8
-//   TargetFramework: .NETStandard,Version=v1.0
+//   AssemblyVersion: 3.1.0.0
+//   InformationalVersion: 3.1.0+be97624d8e1d0a344a8deba949e46e656edba9cb
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
+//   Metadata: IsAotCompatible=True
+//   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
+//   Metadata: RepositoryBranch=main
+//   Metadata: RepositoryCommit=be97624d8e1d0a344a8deba949e46e656edba9cb
 //   Referenced assemblies:
-//     Smdn.Fundamental.Exception, Version=3.0.3.0, Culture=neutral
-//     System.Diagnostics.Debug, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
-//     System.IO, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
-//     System.Runtime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
-//     System.Runtime.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
-//     System.Threading.Tasks, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     Smdn.Fundamental.Exception, Version=3.1.0.0, Culture=neutral
+//     System.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
+using System.Buffers;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,12 +24,13 @@ using Smdn.IO.Streams;
 namespace Smdn.IO {
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
   public static class StreamExtensions {
-    public static void Close(this Stream stream) {}
     public static void CopyTo(this Stream stream, BinaryWriter writer, int bufferSize = 10240) {}
     public static Task CopyToAsync(this Stream stream, BinaryWriter writer, int bufferSize = 10240, CancellationToken cancellationToken = default) {}
     public static byte[] ReadToEnd(this Stream stream, int readBufferSize = 4096, int initialCapacity = 4096) {}
     public static Task<byte[]> ReadToEndAsync(this Stream stream, int readBufferSize = 4096, int initialCapacity = 4096, CancellationToken cancellationToken = default) {}
     public static void Write(this Stream stream, ArraySegment<byte> segment) {}
+    public static void Write(this Stream stream, ReadOnlySequence<byte> sequence) {}
+    public static Task WriteAsync(this Stream stream, ReadOnlySequence<byte> sequence, CancellationToken cancellationToken = default) {}
   }
 }
 
@@ -58,7 +62,7 @@ namespace Smdn.IO.Streams {
     public override long Length { get; }
     public override long Position { get; set; }
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     public override void Flush() {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public override int ReadByte() {}
@@ -82,18 +86,23 @@ namespace Smdn.IO.Streams {
     public override long Length { get; }
     public override long Position { get; set; }
 
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     public override void Flush() {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 
   [TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
-  public class PartialStream : Stream {
+  public class PartialStream :
+    Stream,
+    ICloneable
+  {
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length) {}
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long length, bool seekToBegin) {}
     public static PartialStream CreateNonNested(Stream innerOrPartialStream, long offset, long length) {}
@@ -118,17 +127,20 @@ namespace Smdn.IO.Streams {
     public override long Position { get; set; }
 
     public PartialStream Clone() {}
-    protected override void Dispose(bool disposing) {}
+    public override void Close() {}
     public override void Flush() {}
     protected long GetRemainderLength() {}
     public override int Read(byte[] buffer, int offset, int count) {}
     public override Task<int> ReadAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken) {}
+    public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) {}
     public override int ReadByte() {}
     public override long Seek(long offset, SeekOrigin origin) {}
     public override void SetLength(long @value) {}
+    object ICloneable.Clone() {}
     public override void Write(byte[] buffer, int offset, int count) {}
     public override Task WriteAsync(byte[] buffer, int offset, int count, CancellationToken cancellationToken = default) {}
+    public override ValueTask WriteAsync(ReadOnlyMemory<byte> buffer, CancellationToken cancellationToken = default) {}
   }
 }
-// API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.2.1.0.
-// Smdn.Reflection.ReverseGenerating.ListApi.Core v1.2.0.0 (https://github.com/smdn/Smdn.Reflection.ReverseGenerating)
+// API list generated by Smdn.Reflection.ReverseGenerating.ListApi.MSBuild.Tasks v1.8.1.0.
+// Smdn.Reflection.ReverseGenerating.ListApi.Core v1.6.1.0 (https://github.com/smdn/Smdn.Reflection.ReverseGenerating)
