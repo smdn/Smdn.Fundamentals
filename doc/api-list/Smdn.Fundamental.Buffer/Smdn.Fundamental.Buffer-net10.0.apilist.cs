@@ -2,14 +2,17 @@
 //   Name: Smdn.Fundamental.Buffer
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+be97624d8e1d0a344a8deba949e46e656edba9cb
-//   TargetFramework: .NETStandard,Version=v2.1
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
+//   Metadata: IsAotCompatible=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=be97624d8e1d0a344a8deba949e46e656edba9cb
 //   Referenced assemblies:
 //     Smdn.Fundamental.Exception, Version=3.1.0.0, Culture=neutral
-//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;
