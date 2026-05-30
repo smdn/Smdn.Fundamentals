@@ -2,14 +2,20 @@
 //   Name: Smdn.Fundamental.Shell
 //   AssemblyVersion: 3.2.0.0
 //   InformationalVersion: 3.2.0+298f2a49b9f5faf9ed47e317831897dd50f1713c
-//   TargetFramework: .NETStandard,Version=v2.1
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
+//   Metadata: IsAotCompatible=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=298f2a49b9f5faf9ed47e317831897dd50f1713c
 //   Referenced assemblies:
 //     Smdn.Fundamental.Exception, Version=3.1.0.0, Culture=neutral
-//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Collections.Specialized, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.ComponentModel.Primitives, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Diagnostics.Process, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 
 using System;
 using System.Collections.Generic;
