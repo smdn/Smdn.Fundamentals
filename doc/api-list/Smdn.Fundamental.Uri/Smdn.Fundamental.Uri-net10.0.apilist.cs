@@ -2,16 +2,17 @@
 //   Name: Smdn.Fundamental.Uri
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+ff643339f18e5c8c70bae4f117f022ce6c90637a
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
+//   Metadata: IsAotCompatible=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=ff643339f18e5c8c70bae4f117f022ce6c90637a
 //   Referenced assemblies:
 //     Smdn.Fundamental.Collection, Version=3.1.0.0, Culture=neutral
-//     Smdn.Fundamental.Shim, Version=3.1.4.0, Culture=neutral
-//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Collections, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 #nullable enable annotations
 
 using System;

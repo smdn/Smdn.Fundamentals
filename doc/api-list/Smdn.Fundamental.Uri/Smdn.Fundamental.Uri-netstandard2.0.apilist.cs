@@ -2,7 +2,7 @@
 //   Name: Smdn.Fundamental.Uri
 //   AssemblyVersion: 3.1.0.0
 //   InformationalVersion: 3.1.0+ff643339f18e5c8c70bae4f117f022ce6c90637a
-//   TargetFramework: .NETFramework,Version=v4.5
+//   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
@@ -10,8 +10,7 @@
 //   Referenced assemblies:
 //     Smdn.Fundamental.Collection, Version=3.1.0.0, Culture=neutral
 //     Smdn.Fundamental.Shim, Version=3.1.4.0, Culture=neutral
-//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System;
