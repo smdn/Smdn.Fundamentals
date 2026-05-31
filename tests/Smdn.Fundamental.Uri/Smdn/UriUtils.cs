@@ -32,19 +32,19 @@ namespace Smdn {
       }), Is.EqualTo("name1=value1&name2=value2&name3=value3"), "#3");
 
       Assert.That(UriUtils.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", (string)null),
+        KeyValuePair.Create("name1", (string)null!),
       }), Is.EqualTo("name1"), "#4");
 
       Assert.That(UriUtils.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", (string)null),
-        KeyValuePair.Create("name2", (string)null),
+        KeyValuePair.Create("name1", (string)null!),
+        KeyValuePair.Create("name2", (string)null!),
       }), Is.EqualTo("name1&name2"), "#5");
     }
 
     [Test]
     public void JoinQueryParameters_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => UriUtils.JoinQueryParameters(null));
+      Assert.Throws<ArgumentNullException>(() => UriUtils.JoinQueryParameters(null!));
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Smdn {
     [Test]
     public void SplitQueryParameters_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => UriUtils.SplitQueryParameters(null));
+      Assert.Throws<ArgumentNullException>(() => UriUtils.SplitQueryParameters(null!));
     }
 
     [Test]

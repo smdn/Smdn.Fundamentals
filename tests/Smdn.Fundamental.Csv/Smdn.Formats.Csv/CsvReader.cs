@@ -152,7 +152,7 @@ public class CsvReaderTests {
 
   private static System.Collections.IEnumerable YieldTestCases_TestReadRecord_EmptyFields_SingleLine()
   {
-    yield return new object[] { "", null };
+    yield return new object?[] { "", null };
     yield return new object[] { "\r\n", new string[] { string.Empty } };
 
     foreach (var lineBreak in new[] { string.Empty, "\r\n" } ) {
@@ -168,17 +168,23 @@ public class CsvReaderTests {
   }
 
   [TestCaseSource(nameof(YieldTestCases_TestReadRecord_EmptyFields_SingleLine))]
-  public void TestReadRecord_EmptyFields_SingleLine(string input, string[] expected)
+  public void TestReadRecord_EmptyFields_SingleLine(string input, string?[] expected)
   {
     ///System.Console.WriteLine($"input: \"{input}\"");
     using var reader = CreateReader(input);
 
     var records = reader.ReadRecord();
 
-    Assert.That(
-      records,
-      Is.EqualTo(expected).AsCollection
-    );
+    if (expected is null) {
+      Assert.That(records, Is.Null);
+    }
+    else {
+      Assert.That(records, Is.Not.Null);
+      Assert.That(
+        records,
+        Is.EqualTo(expected).AsCollection
+      );
+    }
 
     records = reader.ReadRecord();
 

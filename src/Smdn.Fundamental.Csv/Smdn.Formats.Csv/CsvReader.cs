@@ -62,7 +62,7 @@ public class CsvReader : StreamReader {
   private const char CR = '\r';
   private const char LF = '\n';
 
-  private string ReadField(out bool isDelimited, out bool isEndOfLine)
+  private string? ReadField(out bool isDelimited, out bool isEndOfLine)
   {
     isDelimited = false;
     isEndOfLine = false;
@@ -184,9 +184,9 @@ public class CsvReader : StreamReader {
 
   private static readonly IReadOnlyList<string> EmptyLineRecord = new string[] { string.Empty };
 
-  public IReadOnlyList<string> ReadRecord()
+  public IReadOnlyList<string>? ReadRecord()
   {
-    List<string> record = null;
+    List<string>? record = null;
 
     try {
       var isPrefFieldEndsWithDelimiter = false;
@@ -217,7 +217,7 @@ public class CsvReader : StreamReader {
       }
     }
     catch (InvalidDataException ex) {
-      throw new InvalidDataException($"format exception after '{string.Join(", ", record)}'", ex);
+      throw new InvalidDataException($"format exception after '{(record is null ? string.Empty : string.Join(", ", record))}'", ex);
     }
   }
 

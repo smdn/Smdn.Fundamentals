@@ -137,10 +137,7 @@ public class CsvWriter : StreamWriter {
     var c = new List<string>();
 
     foreach (var column in columns) {
-      if (column == null)
-        c.Add(string.Empty);
-      else
-        c.Add(column.ToString());
+      c.Add(column?.ToString() ?? string.Empty);
     }
 
     WriteLine(c.ToArray());

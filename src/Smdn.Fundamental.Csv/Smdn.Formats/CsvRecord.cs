@@ -16,8 +16,8 @@ public static class CsvRecord {
   // http://www.ietf.org/rfc/rfc4180.txt
   // Common Format and MIME Type for Comma-Separated Values (CSV) Files
   [Obsolete("use Split instead")]
-  public static IEnumerable<string> ToSplittedNullable(string csv)
-    => csv == null ? null : Split(csv.AsSpan());
+  public static IEnumerable<string>? ToSplittedNullable(string? csv)
+    => csv is null ? null : Split(csv.AsSpan());
 
   [Obsolete("use Split instead")]
   public static IEnumerable<string> ToSplitted(string csv)
@@ -82,7 +82,7 @@ public static class CsvRecord {
 
     static string ToString(ReadOnlySpan<char> sequence, bool containsDQuote)
     {
-      char[] buffer = null;
+      char[]? buffer = null;
 
       try {
         // escape "" -> "
@@ -114,17 +114,17 @@ public static class CsvRecord {
     }
   }
 
-  public static string ToJoinedNullable(params string[] csv)
+  public static string? ToJoinedNullable(params string[]? csv)
   {
-    if (csv == null)
+    if (csv is null)
       return null;
     else
       return ToJoined(csv);
   }
 
-  public static string ToJoinedNullable(IEnumerable<string> csv)
+  public static string? ToJoinedNullable(IEnumerable<string>? csv)
   {
-    if (csv == null)
+    if (csv is null)
       return null;
     else
       return ToJoined(csv);
@@ -137,7 +137,6 @@ public static class CsvRecord {
   {
     static bool ShouldEscape(string value)
       =>
-        value is not null &&
 #if SYSTEM_STRING_CONTAINS_CHAR
         value.Contains('"', StringComparison.Ordinal);
 #else
@@ -164,7 +163,14 @@ public static class CsvRecord {
 
     return string.Join(
       ",",
-      csv.Select(static s => ShouldEscape(s) ? Escape(s) : s)
+      csv.Select(
+        static s =>
+          s is null
+            ? string.Empty
+            : ShouldEscape(s)
+              ? Escape(s)
+              : s
+      )
     );
   }
 }

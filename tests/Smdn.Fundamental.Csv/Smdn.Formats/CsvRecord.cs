@@ -13,27 +13,25 @@ namespace Smdn.Formats {
     {
       Assert.That(CsvRecord.ToJoined("a", "b", "c"), Is.EqualTo("a,b,c"));
       Assert.That(CsvRecord.ToJoined((IEnumerable<string>)(new[] { "a", "b", "c" })), Is.EqualTo("a,b,c"));
-      Assert.That(CsvRecord.ToJoined(null, null), Is.EqualTo(","), "element null");
+      Assert.That(CsvRecord.ToJoined(null!, null!), Is.EqualTo(","), "element null");
       Assert.That(CsvRecord.ToJoined("abc", "d\"e\"f", "g'h'i"), Is.EqualTo("abc,\"d\"\"e\"\"f\",g'h'i"));
 
       Assert.That(CsvRecord.ToJoined(Enumerable.Empty<string>().ToArray()), Is.EqualTo(string.Empty), "argument empty");
 
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((string[])null), "argument null");
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((IEnumerable<string>)null), "argument null");
+      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined(csv: null!), "argument null");
+      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((IEnumerable<string>)null!), "argument null");
     }
 
-#pragma warning disable CS0618 // [Obsolete]
     [Test]
     public void TestToJoinedNullable()
     {
       Assert.That(CsvRecord.ToJoinedNullable("a", "b", "c"), Is.EqualTo("a,b,c"));
       Assert.That(CsvRecord.ToJoinedNullable((IEnumerable<string>)(new[] { "a", "b", "c" })), Is.EqualTo("a,b,c"));
-      Assert.That(CsvRecord.ToJoinedNullable(null, null), Is.EqualTo(","), "element null");
+      Assert.That(CsvRecord.ToJoinedNullable(null!, null!), Is.EqualTo(","), "element null");
 
-      Assert.That(CsvRecord.ToJoinedNullable((string[])null), Is.Null, "argument null");
-      Assert.That(CsvRecord.ToJoinedNullable((IEnumerable<string>)null), Is.Null, "argument null");
+      Assert.That(CsvRecord.ToJoinedNullable(csv: null), Is.Null, "argument null");
+      Assert.That(CsvRecord.ToJoinedNullable((IEnumerable<string>?)null), Is.Null, "argument null");
     }
-#pragma warning restore CS0618
 
     [Test]
     public void TestSplit()
@@ -52,7 +50,7 @@ namespace Smdn.Formats {
 
       Assert.That(CsvRecord.Split(string.Empty), Is.EqualTo(Enumerable.Empty<string>()).AsCollection, "argument empty");
 
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.Split((string)null), "argument null");
+      Assert.Throws<ArgumentNullException>(() => CsvRecord.Split(csv: null!), "argument null");
     }
 
     [Test]
@@ -69,7 +67,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestToSplittedNullable()
     {
-      Assert.That(CsvRecord.ToSplittedNullable(null), Is.Null, "argument null");
+      Assert.That(CsvRecord.ToSplittedNullable(csv: null), Is.Null, "argument null");
     }
 #pragma warning restore CS0618 // [Obsolete]
   }

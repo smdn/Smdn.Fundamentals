@@ -38,7 +38,7 @@ namespace Smdn {
     [Test]
     public void GetSplittedQueries_ArgumentNull()
     {
-      Uri uri = null;
+      Uri uri = null!;
 
       Assert.Throws<ArgumentNullException>(() => uri.GetSplittedQueries());
     }
