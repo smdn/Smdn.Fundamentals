@@ -2,13 +2,16 @@
 //   Name: Smdn.Fundamental.Csv
 //   AssemblyVersion: 3.2.0.0
 //   InformationalVersion: 3.2.0+ff643339f18e5c8c70bae4f117f022ce6c90637a
-//   TargetFramework: .NETStandard,Version=v2.1
+//   TargetFramework: .NETStandard,Version=v2.0
 //   Configuration: Release
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=ff643339f18e5c8c70bae4f117f022ce6c90637a
 //   Referenced assemblies:
-//     netstandard, Version=2.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     Smdn.Fundamental.Shim, Version=3.1.4.0, Culture=neutral
+//     System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
 #nullable enable annotations
 
 using System;
