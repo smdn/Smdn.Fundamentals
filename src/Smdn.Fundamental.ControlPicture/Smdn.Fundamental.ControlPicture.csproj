@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
@@ -9,7 +9,8 @@ SPDX-License-Identifier: MIT
     <VersionSuffix></VersionSuffix>
     <PackageValidationBaselineVersion>3.0.0</PackageValidationBaselineVersion>
     <NoWarn>CS1591;$(NoWarn)</NoWarn> <!-- CS1591: Missing XML comment for publicly visible type or member 'Type_or_Member' -->
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- In frameworks that do not support `allows ref struct`, unsafe code is required -->
+    <AllowUnsafeBlocks Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))">true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Label="assembly attributes">
