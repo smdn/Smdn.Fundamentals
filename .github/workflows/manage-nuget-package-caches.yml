@@ -4,6 +4,8 @@
 
 name: Manage NuGet package caches
 
+permissions: {}
+
 on:
   workflow_dispatch:
 
