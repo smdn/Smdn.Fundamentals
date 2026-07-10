@@ -62,7 +62,7 @@ jobs:
     with:
       release_tag: ${{ github.event.release.tag_name }}
 
-  run-test:
+  run-tests-package-dotnet:
     name: Run tests with released packages
     uses: smdn/workflows-dotnet/.github/workflows/test.yml@9ec9f2dc7d5b039bbc9e22aae98cb00c84d806df # test/v1.10.4
     permissions:
