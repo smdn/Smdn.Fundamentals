@@ -26,6 +26,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi Namespace="System.Diagnostics" Include="UnreachableException"/>
       <_NETSdkAvailableApi Namespace="System.Diagnostics.CodeAnalysis" Include="StringSyntaxAttribute"/>
       <_NETSdkAvailableApi Namespace="System.Diagnostics.CodeAnalysis" Include="ConstantExpectedAttribute"/>
+      <_NETSdkAvailableApi Namespace="System.Diagnostics.CodeAnalysis" Include="RequiresDynamicCodeAttribute"/>
       <_NETSdkAvailableApi Namespace="System.IO.Compression" Include="ZipArchive.Comment"/>
       <_NETSdkAvailableApi Namespace="System.IO.Compression" Include="ZipArchiveEntry.Comment"/>
       <_NETSdkAvailableApi Namespace="System.IO" Include="File.GetUnixFileMode"/>
