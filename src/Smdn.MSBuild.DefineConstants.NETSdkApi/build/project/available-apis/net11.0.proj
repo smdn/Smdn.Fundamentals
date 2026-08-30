@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
     Returns="@(_NETSdkAvailableApi)"
   >
     <ItemGroup>
+      <_NETSdkAvailableApi Namespace="System" Include="Type.GetNullableUnderlyingType"/>
     </ItemGroup>
   </Target>
 </Project>
