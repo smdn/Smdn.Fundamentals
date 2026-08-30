@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 -->
 <Project>
   <ImportGroup Condition="'$(TargetFramework)'!=''">
+    <Import Condition="'$(TargetFramework)'=='net11.0'" Project="$(MSBuildThisFileDirectory)DefineConstants.NETSdkApi.net11.0.props"/>
     <Import Condition="'$(TargetFramework)'=='net10.0'" Project="$(MSBuildThisFileDirectory)DefineConstants.NETSdkApi.net10.0.props"/>
     <Import Condition="'$(TargetFramework)'=='net9.0'" Project="$(MSBuildThisFileDirectory)DefineConstants.NETSdkApi.net9.0.props"/>
     <Import Condition="'$(TargetFramework)'=='net8.0'" Project="$(MSBuildThisFileDirectory)DefineConstants.NETSdkApi.net8.0.props"/>

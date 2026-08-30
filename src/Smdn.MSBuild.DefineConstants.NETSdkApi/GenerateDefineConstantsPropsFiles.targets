@@ -14,6 +14,9 @@ SPDX-License-Identifier: MIT
     </PropertyGroup>
 
     <ItemGroup>
+      <!-- .NET Preview -->
+      <_DefineConstantsPropsTargetFramework Include="net11.0" />
+
       <!-- .NET GA -->
       <_DefineConstantsPropsTargetFramework Include="net10.0;net9.0;net8.0" />
 

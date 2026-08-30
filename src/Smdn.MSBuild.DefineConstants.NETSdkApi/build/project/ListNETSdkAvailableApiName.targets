@@ -82,6 +82,7 @@ SPDX-License-Identifier: MIT
       <_AvailableApiListFile Include="$(MSBuildThisFileDirectory)available-apis\net8.0.proj"  TargetFrameworkCondition="NET8_0_OR_GREATER"/>
       <_AvailableApiListFile Include="$(MSBuildThisFileDirectory)available-apis\net9.0.proj"  TargetFrameworkCondition="NET9_0_OR_GREATER"/>
       <_AvailableApiListFile Include="$(MSBuildThisFileDirectory)available-apis\net10.0.proj" TargetFrameworkCondition="NET10_0_OR_GREATER"/>
+      <_AvailableApiListFile Include="$(MSBuildThisFileDirectory)available-apis\net11.0.proj" TargetFrameworkCondition="NET11_0"/> <!-- .NET 11 Preview -->
     </ItemGroup>
 
     <!-- import available API lists -->
