@@ -1,6 +1,6 @@
-// Smdn.MSBuild.DefineConstants.NETSdkApi-1.8.2
+// Smdn.MSBuild.DefineConstants.NETSdkApi-1.8.3
 //   Name: Smdn.MSBuild.DefineConstants.NETSdkApi
-//   InformationalVersion: 1.8.2
+//   InformationalVersion: 1.8.3
 
 // List of symbols defined on target framework 'net8.0'
 #define GENERIC_MATH_INTERFACES // System.Numerics (NET7_0_OR_GREATER)
@@ -252,6 +252,7 @@
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_DYNAMICDEPENDENCYATTRIBUTE // System.Diagnostics.CodeAnalysis.DynamicDependencyAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLATTRIBUTE // System.Diagnostics.CodeAnalysis.MemberNotNullAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_MEMBERNOTNULLWHENATTRIBUTE // System.Diagnostics.CodeAnalysis.MemberNotNullWhenAttribute (NET5_0_OR_GREATER)
+#define SYSTEM_DIAGNOSTICS_CODEANALYSIS_REQUIRESDYNAMICCODEATTRIBUTE // System.Diagnostics.CodeAnalysis.RequiresDynamicCodeAttribute (NET7_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_REQUIRESUNREFERENCEDCODEATTRIBUTE // System.Diagnostics.CodeAnalysis.RequiresUnreferencedCodeAttribute (NET5_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_STRINGSYNTAXATTRIBUTE // System.Diagnostics.CodeAnalysis.StringSyntaxAttribute (NET7_0_OR_GREATER)
 #define SYSTEM_DIAGNOSTICS_CODEANALYSIS_UNCONDITIONALSUPPRESSMESSAGEATTRIBUTE // System.Diagnostics.CodeAnalysis.UnconditionalSuppressMessageAttribute (NET5_0_OR_GREATER)
