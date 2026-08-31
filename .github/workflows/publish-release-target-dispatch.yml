@@ -23,7 +23,7 @@ on:
 
 jobs:
   run-publish-release-target:
-    uses: smdn/workflows-dotnet/.github/workflows/publish-release-target.yml@408cc00717d889f4c48648918e6ed61e6431b684
+    uses: smdn/workflows-dotnet/.github/workflows/publish-release-target.yml@03a45a8b63c9fceaadffa115f8f6cd9ed61f5164 # release-target/v1.17.1-unreleased
     with:
       pr_number_request_for_release: ${{ fromJson(inputs.pr_number_request_for_release) }}
       pr_label_request_for_release:  'release-target'
