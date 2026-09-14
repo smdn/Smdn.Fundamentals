@@ -36,7 +36,7 @@ SPDX-License-Identifier: MIT
 
     <TestingPlatformCommandLineArguments
       Condition="!($(TestingPlatformCommandLineArguments.Contains(' --report-trx-filename')) or $(TestingPlatformCommandLineArguments.Contains('--report-trx-filename ')))"
-    >$(TestingPlatformCommandLineArguments) --report-trx-filename TestResult.trx</TestingPlatformCommandLineArguments>
+    >$(TestingPlatformCommandLineArguments) --report-trx-filename $(AssemblyName)-$(TargetFramework).trx</TestingPlatformCommandLineArguments>
 
     <TestingPlatformCommandLineArguments
     >$(TestingPlatformCommandLineArguments) --liquidtr-template $(LiquidTestReportsTemplateFile)</TestingPlatformCommandLineArguments>
