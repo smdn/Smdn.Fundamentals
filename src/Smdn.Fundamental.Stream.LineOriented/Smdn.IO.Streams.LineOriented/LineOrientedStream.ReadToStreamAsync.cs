@@ -109,13 +109,17 @@ partial class LineOrientedStream {
 
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadToStreamFromBufferAsync)} first");
+
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     var read = 0L;
 
     for (; ; ) {
       var r =
-        await stream!.ReadAsync(
+        await s.ReadAsync(
 #pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
           buffer.AsMemory(),
@@ -157,6 +161,10 @@ partial class LineOrientedStream {
 
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadToStreamFromBufferAsync)} first");
+
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     var read = 0L;
@@ -166,7 +174,7 @@ partial class LineOrientedStream {
         break;
 
       var bytesToReadFromUnderlyingStream = (int)Math.Min(bytesToRead, buffer.Length);
-      var r = await stream!.ReadAsync(
+      var r = await s.ReadAsync(
 #pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
         buffer.AsMemory(0, bytesToReadFromUnderlyingStream),

@@ -126,17 +126,21 @@ public partial class LineOrientedStream : Stream {
   {
 #if DEBUG
     ThrowIfDisposed();
+
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     bufOffset = 0;
 
     bufRemain =
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      await stream!.ReadAsync(
+      await s.ReadAsync(
         buffer.AsMemory(),
 #else
 #pragma warning disable CA1835
-      await stream!.ReadAsync(
+      await s.ReadAsync(
         buffer,
         0,
         buffer.Length,

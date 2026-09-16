@@ -263,6 +263,10 @@ partial class LineOrientedStream {
 
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadFromBuffer)} first");
+
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     var read = bytesAlreadyReadIntoDestination;
@@ -272,7 +276,7 @@ partial class LineOrientedStream {
         break;
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      var r = await stream!.ReadAsync(
+      var r = await s.ReadAsync(
         destination,
         cancellationToken
       ).ConfigureAwait(false);
