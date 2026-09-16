@@ -672,7 +672,7 @@ public class ByteString :
 
   public ByteString[] Split(byte delimiter) => GetSplittedSubstrings(delimiter).ToArray();
 
-  public unsafe ByteString[] Split(char delimiter) => GetSplittedSubstrings(delimiter).ToArray();
+  public ByteString[] Split(char delimiter) => GetSplittedSubstrings(delimiter).ToArray();
 
   public IEnumerable<ByteString> GetSplittedSubstrings(byte delimiter) => GetSplittedSubstrings((char)delimiter);
 

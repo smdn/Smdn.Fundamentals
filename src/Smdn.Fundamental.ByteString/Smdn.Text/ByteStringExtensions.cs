@@ -22,6 +22,6 @@ public static class ByteStringExtensions {
     => Smdn.Buffers.ReadOnlySequenceExtensions.StartsWith(sequence, value);
 
   [Obsolete("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead", error: true)]
-  public static unsafe byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
+  public static byte[] ToArrayUpperCase(this ReadOnlySequence<byte> sequence)
     => throw new NotSupportedException("use Smdn.Buffers.ReadOnlySequenceExtensions.SequenceEqualIgnoreCase instead");
 }
