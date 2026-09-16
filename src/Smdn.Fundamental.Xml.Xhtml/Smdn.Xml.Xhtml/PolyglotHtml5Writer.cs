@@ -761,15 +761,17 @@ public class PolyglotHtml5Writer :
     if (ExtendedState != ExtendedWriteState.ElementContent)
       return;
 
+    var ctx = currentElementContext
 #if DEBUG
-    if (currentElementContext is null)
-      throw new InvalidOperationException("invalid state");
+      ?? throw new InvalidOperationException("invalid state");
+#else
+      !;
 #endif
 
     if (markAsMixedContent)
-      currentElementContext!.MarkAsMixedContent();
+      ctx.MarkAsMixedContent();
 
     if (markAsNonEmpty)
-      currentElementContext!.MarkAsNonEmpty();
+      ctx.MarkAsNonEmpty();
   }
 }

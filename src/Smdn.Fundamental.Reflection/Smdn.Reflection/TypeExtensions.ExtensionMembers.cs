@@ -294,9 +294,6 @@ static partial class TypeExtensions {
             yield return (
               nestedType,
               extensionParameter
-#if !NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
-              !
-#endif
             );
           }
         }

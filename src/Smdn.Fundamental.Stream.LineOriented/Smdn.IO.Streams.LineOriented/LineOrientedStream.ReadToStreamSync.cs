@@ -88,12 +88,16 @@ partial class LineOrientedStream {
 
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadToStreamFromBufferAsync)} first");
+
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     var read = 0L;
 
     for (; ; ) {
-      var r = stream!.Read(
+      var r = s.Read(
 #pragma warning disable SA1114
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
         buffer.AsSpan()
@@ -132,6 +136,10 @@ partial class LineOrientedStream {
 
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadToStreamFromBufferAsync)} first");
+
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     var read = 0L;
@@ -141,7 +149,7 @@ partial class LineOrientedStream {
         break;
 
       var bytesToReadFromUnderlyingStream = (int)Math.Min(bytesToRead, buffer.Length);
-      var r = stream!.Read(
+      var r = s.Read(
 #pragma warning disable SA1114
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
         buffer.AsSpan(0, bytesToReadFromUnderlyingStream)

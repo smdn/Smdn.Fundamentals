@@ -205,6 +205,9 @@ partial class LineOrientedStream {
 
     if (0 < bufRemain)
       throw new InvalidOperationException($"call {nameof(ReadFromBuffer)} first");
+    var s = stream;
+#else
+    var s = stream!;
 #endif
 
     var read = bytesAlreadyReadIntoDestination;
@@ -222,9 +225,9 @@ partial class LineOrientedStream {
 
       var r =
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
-        stream!.Read(destination);
+        s.Read(destination);
 #else
-        stream.Read(destination.Array, destination.Offset, destination.Count);
+        s.Read(destination.Array, destination.Offset, destination.Count);
 #endif
 
       if (r <= 0)
