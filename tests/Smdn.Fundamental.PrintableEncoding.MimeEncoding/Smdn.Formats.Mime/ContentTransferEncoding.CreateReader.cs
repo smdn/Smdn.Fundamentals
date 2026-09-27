@@ -64,7 +64,7 @@ partial class ContentTransferEncodingTests {
     var reader = ContentTransferEncoding.CreateTextReader(
       stream,
       cte,
-      Encodings.Jis
+      Encodings.Jis ?? throw new InvalidOperationException("Could not get Encoding for JIS")
     );
 
     Assert.That(reader.CurrentEncoding, Is.EqualTo(Encodings.Jis));
@@ -88,7 +88,7 @@ partial class ContentTransferEncodingTests {
     var reader1 = ContentTransferEncoding.CreateTextReader(
       stream,
       cte,
-      Encodings.Jis,
+      Encodings.Jis ?? throw new InvalidOperationException("Could not get Encoding for JIS"),
       true
     );
 
@@ -119,7 +119,7 @@ partial class ContentTransferEncodingTests {
       () => ContentTransferEncoding.CreateTextReader(
         stream,
         ContentTransferEncodingMethod.Binary,
-        Encodings.Jis,
+        Encodings.Jis ?? throw new InvalidOperationException("Could not get Encoding for JIS"),
         leaveStreamOpen
       )
     );
@@ -134,11 +134,10 @@ partial class ContentTransferEncodingTests {
   public void CreateBinaryReader(ContentTransferEncodingMethod cte, string content)
   {
     using var stream = new MemoryStream(Encoding.ASCII.GetBytes(content));
-
     var reader = ContentTransferEncoding.CreateBinaryReader(
       stream,
       cte,
-      Encodings.Jis
+      Encodings.Jis ?? throw new InvalidOperationException("Could not get Encoding for JIS")
     );
 
     Assert.That(
@@ -166,7 +165,7 @@ partial class ContentTransferEncodingTests {
     var reader1 = ContentTransferEncoding.CreateBinaryReader(
       stream,
       cte,
-      Encodings.Jis,
+      Encodings.Jis ?? throw new InvalidOperationException("Could not get Encoding for JIS"),
       true
     );
 

@@ -4,7 +4,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.IO;
+
 using NUnit.Framework;
 
 namespace Smdn.IO {
@@ -35,7 +37,7 @@ line3
 
     [TestCase(true)]
     [TestCase(false)]
-    public void TestReadAllLines(bool runAsync)
+    public async ValueTask TestReadAllLines(bool runAsync)
     {
       var text = @"line1
 line2
@@ -48,29 +50,27 @@ line3
       };
 
       var reader = new StringReader(text);
-      IReadOnlyList<string> actualLines = null;
 
-      if (runAsync)
-        Assert.DoesNotThrowAsync(async () => actualLines = await TextReaderExtensions.ReadAllLinesAsync(reader));
-      else
-        Assert.DoesNotThrow(() => actualLines = TextReaderExtensions.ReadAllLines(reader));
-
-      Assert.That(actualLines, Is.EqualTo(expectedLines).AsCollection);
+      Assert.That(
+        runAsync
+          ? await TextReaderExtensions.ReadAllLinesAsync(reader)
+          : TextReaderExtensions.ReadAllLines(reader),
+        Is.EqualTo(expectedLines).AsCollection
+      );
     }
 
     [TestCase(true)]
     [TestCase(false)]
-    public void TestReadAllLines_Empty(bool runAsync)
+    public async ValueTask TestReadAllLines_Empty(bool runAsync)
     {
       var reader = new StreamReader(Stream.Null);
-      IReadOnlyList<string> actualLines = null;
 
-      if (runAsync)
-        Assert.DoesNotThrowAsync(async () => actualLines = await TextReaderExtensions.ReadAllLinesAsync(reader));
-      else
-        Assert.DoesNotThrow(() => actualLines = TextReaderExtensions.ReadAllLines(reader));
-
-      Assert.That(actualLines, Is.Empty);
+      Assert.That(
+        runAsync
+          ? await TextReaderExtensions.ReadAllLinesAsync(reader)
+          : TextReaderExtensions.ReadAllLines(reader),
+        Is.Empty
+      );
     }
 
     [Test]

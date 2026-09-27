@@ -36,7 +36,7 @@ namespace Smdn.Formats.Mime {
       WithStream(input, stream => {
         IReadOnlyList<RawHeaderField> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(3));
@@ -102,7 +102,7 @@ namespace Smdn.Formats.Mime {
     public void TestParseHeaderAsync_ReadToEndOfHeaderPart(string input)
     {
       WithStream(input, stream => {
-        Assert.DoesNotThrowAsync(async () => await MimeUtils.ParseHeaderAsync(stream));
+        Assert.That(async () => await MimeUtils.ParseHeaderAsync(stream), Throws.Nothing);
 
         var reader = new StreamReader(stream, Encoding.ASCII);
 
@@ -118,7 +118,10 @@ namespace Smdn.Formats.Mime {
     public void TestParseHeaderAsync_ThrowIfMalformed(string input)
     {
       WithStream(input, stream => {
-        Assert.ThrowsAsync<InvalidDataException>(async () => await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: false));
+        Assert.That(
+          async () => await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: false),
+          Throws.TypeOf<InvalidDataException>()
+        );
       });
     }
 
@@ -132,7 +135,7 @@ namespace Smdn.Formats.Mime {
       WithStream(input, stream => {
         IReadOnlyList<RawHeaderField> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: true));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsync(stream, ignoreMalformed: true), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(expectedParsedHeaderCount));
@@ -153,7 +156,7 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(3));
@@ -195,7 +198,7 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(3));
@@ -225,7 +228,7 @@ Content-Type: text/plain
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(2));
@@ -250,7 +253,7 @@ Content-Type: text/plain
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(4));
@@ -277,7 +280,7 @@ Content-Type: text/plain
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(1));
@@ -310,7 +313,7 @@ X-Invalid-Header
         });
 
         if (ignoreMalformed) {
-          Assert.DoesNotThrowAsync(testAction);
+          Assert.That(testAction, Throws.Nothing);
 
           Assert.That(headers, Is.Not.Null);
           Assert.That(headers!.Count, Is.EqualTo(1));
@@ -319,7 +322,7 @@ X-Invalid-Header
           Assert.That(headers[0].Value.Trim(), Is.EqualTo("1.0"));
         }
         else {
-          Assert.ThrowsAsync<InvalidDataException>(testAction);
+          Assert.That(testAction, Throws.TypeOf<InvalidDataException>());
         }
       });
     }
@@ -346,7 +349,7 @@ MIME-Version: 1.0
         });
 
         if (ignoreMalformed) {
-          Assert.DoesNotThrowAsync(testAction);
+          Assert.That(testAction, Throws.Nothing);
 
           Assert.That(headers, Is.Not.Null);
           Assert.That(headers!.Count, Is.EqualTo(1));
@@ -355,7 +358,7 @@ MIME-Version: 1.0
           Assert.That(headers[0].Value.Trim(), Is.EqualTo("1.0"));
         }
         else {
-          Assert.ThrowsAsync<InvalidDataException>(testAction);
+          Assert.That(testAction, Throws.TypeOf<InvalidDataException>());
         }
       });
     }
@@ -381,7 +384,7 @@ MIME-Version: 1.0";
         });
 
         if (ignoreMalformed) {
-          Assert.DoesNotThrowAsync(testAction);
+          Assert.That(testAction, Throws.Nothing);
 
           Assert.That(headers, Is.Not.Null);
           Assert.That(headers!.Count, Is.EqualTo(1));
@@ -390,7 +393,7 @@ MIME-Version: 1.0";
           Assert.That(headers[0].Value.Trim(), Is.EqualTo("1.0"));
         }
         else {
-          Assert.ThrowsAsync<InvalidDataException>(testAction);
+          Assert.That(testAction, Throws.TypeOf<InvalidDataException>());
         }
       });
     }
@@ -407,7 +410,7 @@ MIME-Version: 1.0";
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(4));
@@ -438,7 +441,7 @@ MIME-Version: 1.0";
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(1));
@@ -460,7 +463,7 @@ MIME-Version: 1.0";
       WithStream(input, stream => {
         IReadOnlyList<KeyValuePair<string, string>> headers = null;
 
-        Assert.DoesNotThrowAsync(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true));
+        Assert.That(async () => headers = await MimeUtils.ParseHeaderAsNameValuePairsAsync(stream, keepWhitespaces: true), Throws.Nothing);
 
         Assert.That(headers, Is.Not.Null);
         Assert.That(headers!.Count, Is.EqualTo(1));

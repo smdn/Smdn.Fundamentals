@@ -83,7 +83,10 @@ public partial class LineOrientedStreamTests {
     Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(Span<byte>.Empty));
 #endif
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-    Assert.ThrowsAsync<ObjectDisposedException>(async () => _ = await stream.ReadAsync(Memory<byte>.Empty));
+    Assert.That(
+      async () => _ = await stream.ReadAsync(Memory<byte>.Empty),
+      Throws.TypeOf<ObjectDisposedException>()
+    );
 #endif
     Assert.Throws<ObjectDisposedException>(() => stream.Read(Stream.Null, 8));
     Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Stream.Null, 8));
@@ -96,7 +99,10 @@ public partial class LineOrientedStreamTests {
     Assert.Throws<ObjectDisposedException>(() => stream.Write(Span<byte>.Empty));
 #endif
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-    Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(Memory<byte>.Empty));
+    Assert.That(
+      async () => await stream.WriteAsync(Memory<byte>.Empty),
+      Throws.TypeOf<ObjectDisposedException>()
+    );
 #endif
     Assert.Throws<ObjectDisposedException>(() => stream.CopyTo(Stream.Null));
     Assert.Throws<ObjectDisposedException>(() => stream.CopyTo(Stream.Null, bufferSize: 1024));

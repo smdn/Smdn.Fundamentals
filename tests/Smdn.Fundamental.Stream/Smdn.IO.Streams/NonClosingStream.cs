@@ -175,7 +175,7 @@ namespace Smdn.IO.Streams {
         Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(buffer, 0, 6));
         Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 6));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-        Assert.ThrowsAsync<ObjectDisposedException>(async () => _ = await stream.ReadAsync(buffer.AsMemory(0, 6)));
+        Assert.That(async () => _ = await stream.ReadAsync(buffer.AsMemory(0, 6)), Throws.TypeOf<ObjectDisposedException>());
 #endif
         Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
       }
@@ -231,11 +231,11 @@ namespace Smdn.IO.Streams {
 
         Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 0, 0}).AsCollection);
 
-        Assert.DoesNotThrowAsync(async () => await stream.WriteAsync(new byte[] { 3 }, 0, 1));
+        Assert.That(async () => await stream.WriteAsync(new byte[] { 3 }, 0, 1), Throws.Nothing);
         Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 3, 0}).AsCollection);
 
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-        Assert.DoesNotThrowAsync(async () => await stream.WriteAsync(new byte[] { 4 }.AsMemory()));
+        Assert.That(async () => await stream.WriteAsync(new byte[] { 4 }.AsMemory()), Throws.Nothing);
         Assert.That(buffer, Is.EqualTo(new byte[] {1, 2, 3, 4}).AsCollection);
 #endif
 
@@ -256,7 +256,7 @@ namespace Smdn.IO.Streams {
         Assert.Throws<ObjectDisposedException>(() => stream.Write(new byte[] {0, 1, 2, 3}, 0, 4));
         Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(new byte[] {0, 1, 2, 3}, 0, 4));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-        Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync((new byte[] {0, 1, 2, 3}).AsMemory()));
+        Assert.That(async () => await stream.WriteAsync((new byte[] {0, 1, 2, 3}).AsMemory()), Throws.TypeOf<ObjectDisposedException>());
 #endif
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(4));
       }
@@ -281,13 +281,13 @@ namespace Smdn.IO.Streams {
         Assert.That(baseStream.Length,Is.Zero);
         Assert.That(baseStream.Position,Is.Zero);
 
-        Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(new byte[] { 1 }, 0, 1));
+        Assert.That(async () => await stream.WriteAsync(new byte[] { 1 }, 0, 1), Throws.TypeOf<NotSupportedException>());
 
         Assert.That(baseStream.Length,Is.Zero);
         Assert.That(baseStream.Position,Is.Zero);
 
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-        Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()));
+        Assert.That(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()), Throws.TypeOf<NotSupportedException>());
 
         Assert.That(baseStream.Length,Is.Zero);
         Assert.That(baseStream.Position,Is.Zero);
@@ -298,16 +298,16 @@ namespace Smdn.IO.Streams {
 #endif
         Assert.Throws<NotSupportedException>(() => stream.WriteAsync(new byte[] { 1 }, 0, 1));
 
-        Assert.DoesNotThrow(stream.Flush);
-        Assert.DoesNotThrowAsync(async () => await stream.FlushAsync());
+        Assert.That(stream.Flush, Throws.Nothing);
+        Assert.That(async () => await stream.FlushAsync(), Throws.Nothing);
 
         stream.Dispose();
 
         Assert.Throws<ObjectDisposedException>(() => stream.Write(new byte[] { 1 }, 0, 1));
         Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(2));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-        Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(new byte[] { 1 }, 0, 1));
-        Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()));
+        Assert.That(() => stream.WriteAsync(new byte[] { 1 }, 0, 1), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(async () => await stream.WriteAsync(new byte[] { 1 }.AsMemory()), Throws.TypeOf<ObjectDisposedException>());
 #endif
       }
     }

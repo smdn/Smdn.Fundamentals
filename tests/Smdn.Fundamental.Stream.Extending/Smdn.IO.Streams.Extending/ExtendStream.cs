@@ -133,7 +133,11 @@ public class ExtendStreamTests {
     Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.Write));
     Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), nameof(stream.WriteAsync));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-    Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty), nameof(stream.WriteAsync));
+    Assert.That(
+      async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty),
+      Throws.TypeOf<ObjectDisposedException>(),
+      nameof(stream.WriteAsync)
+    );
 #endif
     Assert.Throws<ObjectDisposedException>(() => stream.Flush(), nameof(stream.Flush));
     Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync(), nameof(stream.FlushAsync));
@@ -174,7 +178,10 @@ public class ExtendStreamTests {
     Assert.Throws<NotSupportedException>(() => extended.Write(new byte[] { 0xff, 0xff }, 0, 2));
     Assert.Throws<NotSupportedException>(() => extended.WriteAsync(new byte[] { 0xff, 0xff }, 0, 2));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-    Assert.ThrowsAsync<NotSupportedException>(async () => await extended.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0xff, 0xff }, 0, 2)));
+    Assert.That(
+      async () => await extended.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0xff, 0xff }, 0, 2)),
+      Throws.TypeOf<NotSupportedException>()
+    );
 #endif
 
     Assert.That(extended.Length, Is.EqualTo(len));

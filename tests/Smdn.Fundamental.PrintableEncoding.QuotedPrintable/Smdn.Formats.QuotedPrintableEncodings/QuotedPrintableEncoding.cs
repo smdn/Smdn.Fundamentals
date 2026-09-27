@@ -60,13 +60,13 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
       Assert.That(QuotedPrintableEncoding.GetDecodedString("=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A", Encoding.UTF8), Is.EqualTo("漢字abcかな123カナ"),
                       "utf8");
 
-      Assert.That(QuotedPrintableEncoding.GetDecodedString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", Encodings.EucJP), Is.EqualTo("漢字abcかな123カナ"),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=B4=C1=BB=FAabc=A4=AB=A4=CA123=A5=AB=A5=CA", Encodings.EucJP!), Is.EqualTo("漢字abcかな123カナ"),
                       "eucjp");
 
-      Assert.That(QuotedPrintableEncoding.GetDecodedString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", Encodings.Jis), Is.EqualTo("漢字abcかな123カナ"),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=1B$B4A;z=1B(Babc=1B$B$+$J=1B(B123=1B$B%+%J=1B(B", Encodings.Jis!), Is.EqualTo("漢字abcかな123カナ"),
                       "jis");
 
-      Assert.That(QuotedPrintableEncoding.GetDecodedString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", Encodings.ShiftJis), Is.EqualTo("漢字abcかな123カナ"),
+      Assert.That(QuotedPrintableEncoding.GetDecodedString("=8A=BF=8E=9Aabc=82=A9=82=C8123=83J=83i", Encodings.ShiftJis!), Is.EqualTo("漢字abcかな123カナ"),
                       "shift-jis");
     }
 

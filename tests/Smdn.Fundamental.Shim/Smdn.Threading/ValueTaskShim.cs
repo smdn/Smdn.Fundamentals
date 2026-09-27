@@ -34,7 +34,7 @@ public class ValueTaskShimTests {
     Assert.That(t.IsCanceled, Is.False, nameof(ValueTask.IsCanceled));
     Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
-    Assert.DoesNotThrowAsync(async () => await t);
+    Assert.That(async () => await t, Throws.Nothing);
   }
 
 #pragma warning disable NUnit2007
@@ -66,7 +66,8 @@ public class ValueTaskShimTests {
     Assert.That(t.IsCanceled, Is.True, nameof(ValueTask.IsCanceled));
     Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
-    Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
+    Assert.That(async () => await t, Throws.TypeOf<TaskCanceledException>());
+
   }
 
   [Test]
@@ -84,7 +85,7 @@ public class ValueTaskShimTests {
     Assert.That(t.IsCanceled, Is.True, nameof(ValueTask.IsCanceled));
     Assert.That(t.IsFaulted, Is.False, nameof(ValueTask.IsFaulted));
 
-    Assert.ThrowsAsync<TaskCanceledException>(async () => await t);
+    Assert.That(async () => await t, Throws.TypeOf<TaskCanceledException>());
   }
 
 #pragma warning disable NUnit2007
@@ -114,7 +115,7 @@ public class ValueTaskShimTests {
 
     int actualResult = default;
 
-    Assert.DoesNotThrowAsync(async () => actualResult = await t);
+    Assert.That(async () => actualResult = await t, Throws.Nothing);
     Assert.That(actualResult, Is.EqualTo(expectedResult), "result");
   }
 }

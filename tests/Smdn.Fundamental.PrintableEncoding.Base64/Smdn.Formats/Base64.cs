@@ -25,12 +25,14 @@ namespace Smdn.Formats {
     [Test]
     public void TestDecode1()
     {
+      var latin1 = Encodings.Latin1 ?? throw new InvalidOperationException("Could not get Encodings.Latin1");
+
       foreach (var test in new[] {
         new {ExpectedString = "\xfb",         ExpectedBytes = new byte[] {0xfb},              Data = "+w=="},
         new {ExpectedString = "\xfb\xf0",     ExpectedBytes = new byte[] {0xfb, 0xf0},        Data = "+/A="},
         new {ExpectedString = "\xfb\xf0\x00", ExpectedBytes = new byte[] {0xfb, 0xf0, 0x00},  Data = "+/AA"},
       }) {
-        Assert.That(Base64.GetDecodedString(test.Data, Encodings.Latin1), Is.EqualTo(test.ExpectedString));
+        Assert.That(Base64.GetDecodedString(test.Data, latin1), Is.EqualTo(test.ExpectedString));
         Assert.That(Base64.Decode(test.Data), Is.EqualTo(test.ExpectedBytes));
       }
     }
@@ -53,10 +55,10 @@ namespace Smdn.Formats {
     public void TestEncodeDecodeWithSpecificEncoding()
     {
       foreach (var test in new[] {
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "5ryi5a2XYWJj44GL44GqMTIz44Kr44OK", Encoding = (Encoding)Encoding.UTF8},
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "tMG7+mFiY6SrpMoxMjOlq6XK", Encoding = Encodings.EucJP},
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC", Encoding = Encodings.Jis},
-        new{PlainText = "漢字abcかな123カナ", Base64Text = "ir+OmmFiY4KpgsgxMjODSoNp", Encoding = Encodings.ShiftJis},
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "5ryi5a2XYWJj44GL44GqMTIz44Kr44OK", Encoding = Encoding.UTF8 },
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "tMG7+mFiY6SrpMoxMjOlq6XK", Encoding = Encodings.EucJP ?? throw new InvalidOperationException("Could not get Encoding for EUC-JP") },
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "GyRCNEE7ehsoQmFiYxskQiQrJEobKEIxMjMbJEIlKyVKGyhC", Encoding = Encodings.Jis ?? throw new InvalidOperationException("Could not get Encoding for Shift_JIS") },
+        new{PlainText = "漢字abcかな123カナ", Base64Text = "ir+OmmFiY4KpgsgxMjODSoNp", Encoding = Encodings.ShiftJis ?? throw new InvalidOperationException("Could not get Encoding for JIS") },
       }) {
         Assert.That(Base64.GetDecodedString(test.Base64Text, test.Encoding), Is.EqualTo(test.PlainText), test.Encoding.WebName);
         Assert.That(Base64.GetEncodedString(test.PlainText, test.Encoding), Is.EqualTo(test.Base64Text), test.Encoding.WebName);

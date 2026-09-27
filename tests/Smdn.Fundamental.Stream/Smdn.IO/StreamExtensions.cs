@@ -102,9 +102,9 @@ namespace Smdn.IO {
       var writer = new System.IO.BinaryWriter(outputStream);
 
       if (runAsync)
-        Assert.DoesNotThrowAsync(async () => await StreamExtensions.CopyToAsync(inputStream, writer, 3));
+        Assert.That(async () => await StreamExtensions.CopyToAsync(inputStream, writer, 3), Throws.Nothing);
       else
-        Assert.DoesNotThrow(() => StreamExtensions.CopyTo(inputStream, writer, 3));
+        Assert.That(() => StreamExtensions.CopyTo(inputStream, writer, 3), Throws.Nothing);
 
       writer.Flush();
 
@@ -153,9 +153,9 @@ namespace Smdn.IO {
         byte[] ret = null;
 
         if (runAsync)
-          Assert.DoesNotThrowAsync(async () => ret = await StreamExtensions.ReadToEndAsync(stream, 2, 2));
+          Assert.That(async () => ret = await StreamExtensions.ReadToEndAsync(stream, 2, 2), Throws.Nothing);
         else
-          Assert.DoesNotThrow(() => ret = StreamExtensions.ReadToEnd(stream, 2, 2));
+          Assert.That(() => ret = StreamExtensions.ReadToEnd(stream, 2, 2), Throws.Nothing);
 
         Assert.That(ret, Is.EqualTo(new byte[] {0x04, 0x05, 0x06, 0x07}));
       }
@@ -225,9 +225,9 @@ namespace Smdn.IO {
         Assert.That(sequence.IsSingleSegment, Is.True);
 
         if (runAsync)
-          Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
+          Assert.That(async () => await StreamExtensions.WriteAsync(stream, sequence), Throws.Nothing);
         else
-          Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
+          Assert.That(() => StreamExtensions.Write(stream, sequence), Throws.Nothing);
 
         Assert.That(stream.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }));
       }
@@ -245,9 +245,9 @@ namespace Smdn.IO {
         Assert.That(sequence.IsSingleSegment, Is.False);
 
         if (runAsync)
-          Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
+          Assert.That(async () => await StreamExtensions.WriteAsync(stream, sequence), Throws.Nothing);
         else
-          Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
+          Assert.That(() => StreamExtensions.Write(stream, sequence), Throws.Nothing);
 
         Assert.That(stream.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04 }));
       }
@@ -263,9 +263,9 @@ namespace Smdn.IO {
         Assert.That(sequence.IsEmpty, Is.True);
 
         if (runAsync)
-          Assert.DoesNotThrowAsync(async () => await StreamExtensions.WriteAsync(stream, sequence));
+          Assert.That(async () => await StreamExtensions.WriteAsync(stream, sequence), Throws.Nothing);
         else
-          Assert.DoesNotThrow(() => StreamExtensions.Write(stream, sequence));
+          Assert.That(() => StreamExtensions.Write(stream, sequence), Throws.Nothing);
 
         Assert.That(stream.ToArray(), Is.EqualTo(new byte[0]));
       }

@@ -734,12 +734,15 @@ namespace Smdn.Xml.Xhtml {
       settings.NewLineChars = "\n";
       settings.NewLineOnAttributes = true;
 
-      Assert.ThrowsAsync<NotSupportedException>(async () => {
-        Assert.That(
-          asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
-          Is.EqualTo("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>")
-        );
-      });
+      Assert.That(
+        async () => {
+          Assert.That(
+            asAsync ? await ToStringAsync(doc, settings).ConfigureAwait(false) : ToString(doc, settings),
+            Is.EqualTo("<html\n xmlns=\"http://www.w3.org/1999/xhtml\"\n xml:lang=\"ja\"\n lang=\"ja\">\n <head></head></html>")
+          );
+        },
+        Throws.TypeOf<NotSupportedException>()
+      );
     }
 
     [Test]
@@ -1415,9 +1418,9 @@ namespace Smdn.Xml.Xhtml {
       );
 
       if (asAsync)
-        Assert.DoesNotThrowAsync(async () => await writer.WriteCharEntityAsync('\uD23E').ConfigureAwait(false));
+        Assert.That(async () => await writer.WriteCharEntityAsync('\uD23E').ConfigureAwait(false), Throws.Nothing);
       else
-        Assert.DoesNotThrow(() => writer.WriteCharEntity('\uD23E'));
+        Assert.That(() => writer.WriteCharEntity('\uD23E'), Throws.Nothing);
     }
 
     [Test]
@@ -1432,9 +1435,9 @@ namespace Smdn.Xml.Xhtml {
       );
 
       if (asAsync)
-        Assert.DoesNotThrowAsync(async () => await writer.WriteSurrogateCharEntityAsync('\uDF41', '\uD920').ConfigureAwait(false));
+        Assert.That(async () => await writer.WriteSurrogateCharEntityAsync('\uDF41', '\uD920').ConfigureAwait(false), Throws.Nothing);
       else
-        Assert.DoesNotThrow(() => writer.WriteSurrogateCharEntity('\uDF41', '\uD920'));
+        Assert.That(() => writer.WriteSurrogateCharEntity('\uDF41', '\uD920'), Throws.Nothing);
     }
 
     [Test]
@@ -1451,9 +1454,9 @@ namespace Smdn.Xml.Xhtml {
       var buffer = new byte[1];
 
       if (asAsync)
-        Assert.DoesNotThrowAsync(async () => await writer.WriteBase64Async(buffer, 0, buffer.Length).ConfigureAwait(false));
+        Assert.That(async () => await writer.WriteBase64Async(buffer, 0, buffer.Length).ConfigureAwait(false), Throws.Nothing);
       else
-        Assert.DoesNotThrow(() => writer.WriteBase64(buffer, 0, buffer.Length));
+        Assert.That(() => writer.WriteBase64(buffer, 0, buffer.Length), Throws.Nothing);
     }
 
     [Test]
@@ -1470,9 +1473,9 @@ namespace Smdn.Xml.Xhtml {
       var buffer = "chars".ToCharArray();
 
       if (asAsync)
-        Assert.DoesNotThrowAsync(async () => await writer.WriteCharsAsync(buffer, 0, buffer.Length).ConfigureAwait(false));
+        Assert.That(async () => await writer.WriteCharsAsync(buffer, 0, buffer.Length).ConfigureAwait(false), Throws.Nothing);
       else
-        Assert.DoesNotThrow(() => writer.WriteChars(buffer, 0, buffer.Length));
+        Assert.That(() => writer.WriteChars(buffer, 0, buffer.Length), Throws.Nothing);
     }
   }
 }

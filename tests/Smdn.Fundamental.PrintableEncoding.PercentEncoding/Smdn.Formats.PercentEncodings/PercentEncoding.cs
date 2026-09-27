@@ -119,8 +119,8 @@ namespace Smdn.Formats.PercentEncodings {
         ToPercentEncodedTransformMode.Rfc5092Uri,
         ToPercentEncodedTransformMode.Rfc5092Path,
       }) {
-        Assert.That(PercentEncoding.GetEncodedString("日本語", mode, Encodings.ShiftJis), Is.EqualTo("%93%FA%96%7B%8C%EA"), $"mode: {mode}");
-        Assert.That(PercentEncoding.GetEncodedString("日本語", mode, Encodings.EucJP), Is.EqualTo("%C6%FC%CB%DC%B8%EC"), $"mode: {mode}");
+        Assert.That(PercentEncoding.GetEncodedString("日本語", mode, Encodings.ShiftJis ?? throw new InvalidOperationException("Could not get Encoding for Shift_JIS")), Is.EqualTo("%93%FA%96%7B%8C%EA"), $"mode: {mode}");
+        Assert.That(PercentEncoding.GetEncodedString("日本語", mode, Encodings.EucJP ?? throw new InvalidOperationException("Could not get Encoding for EUC-JP")), Is.EqualTo("%C6%FC%CB%DC%B8%EC"), $"mode: {mode}");
       }
     }
 
@@ -145,8 +145,8 @@ namespace Smdn.Formats.PercentEncodings {
     public void TestGetDecodedString()
     {
       Assert.That(PercentEncoding.GetDecodedString("012abcABC-._~%21%22%23%24%e6%97%a5%e6%9c%ac%e8%aa%9e", Encoding.UTF8), Is.EqualTo("012abcABC-._~!\"#$日本語"));
-      Assert.That(PercentEncoding.GetDecodedString("%93%fa%96%7B%8C%EA", Encodings.ShiftJis), Is.EqualTo("日本語"));
-      Assert.That(PercentEncoding.GetDecodedString("%c6%Fc%cb%Dc%b8%eC", Encodings.EucJP), Is.EqualTo("日本語"));
+      Assert.That(PercentEncoding.GetDecodedString("%93%fa%96%7B%8C%EA", Encodings.ShiftJis ?? throw new InvalidOperationException("Could not get Encoding for Shift_JIS")), Is.EqualTo("日本語"));
+      Assert.That(PercentEncoding.GetDecodedString("%c6%Fc%cb%Dc%b8%eC", Encodings.EucJP ?? throw new InvalidOperationException("Could not get Encoding for EUC-JP")), Is.EqualTo("日本語"));
     }
 
     [Test]

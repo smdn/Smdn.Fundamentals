@@ -58,7 +58,10 @@ namespace Smdn.IO.Streams {
       Assert.Throws<NotSupportedException>(() => stream.WriteAsync(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
       Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x00));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-      Assert.ThrowsAsync<NotSupportedException>(async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty));
+      Assert.That(
+        async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty),
+        Throws.TypeOf<NotSupportedException>()
+      );
 #endif
 
       var len = stream.Length;
@@ -164,13 +167,19 @@ namespace Smdn.IO.Streams {
       Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0));
       Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
-      Assert.ThrowsAsync<ObjectDisposedException>(async () => _ = await stream.ReadAsync(Memory<byte>.Empty));
+      Assert.That(
+        async () => _ = await stream.ReadAsync(Memory<byte>.Empty),
+        Throws.TypeOf<ObjectDisposedException>()
+      );
 #endif
       Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
       Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0));
       Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-      Assert.ThrowsAsync<ObjectDisposedException>(async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty));
+      Assert.That(
+        async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty),
+        Throws.TypeOf<ObjectDisposedException>()
+      );
 #endif
 
       stream.Dispose();
@@ -457,15 +466,18 @@ namespace Smdn.IO.Streams {
 
         Assert.That(stream.Position, Is.EqualTo(3));
 
-        Assert.ThrowsAsync<IOException>(async () => {
-          switch (writeMethod) {
-            case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x05, 0x06}, 0, 2); break;
+        Assert.That(
+          async () => {
+            switch (writeMethod) {
+              case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x05, 0x06}, 0, 2); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-            case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x05, 0x06})); break;
+              case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x05, 0x06})); break;
 #endif
-            default: stream.Write(new byte[] {0x05, 0x06}, 0, 2); break;
-          }
-        });
+              default: stream.Write(new byte[] {0x05, 0x06}, 0, 2); break;
+            }
+          },
+          Throws.TypeOf<IOException>()
+        );
 
         Assert.That(stream.Position, Is.EqualTo(3));
 
@@ -519,15 +531,18 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.EqualTo(4));
 
         // cannot expand MemoryStream
-        Assert.ThrowsAsync<NotSupportedException>(async () => {
-          switch (writeMethod) {
-            case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
+        Assert.That(
+          async () => {
+            switch (writeMethod) {
+              case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-            case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x06, 0x07, 0x08})); break;
+              case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x06, 0x07, 0x08})); break;
 #endif
-            default: stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
-          }
-        });
+              default: stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
+            }
+          },
+          Throws.TypeOf<NotSupportedException>()
+        );
 
         Assert.That(stream.Position, Is.EqualTo(4));
 
