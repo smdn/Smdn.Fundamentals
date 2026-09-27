@@ -20,7 +20,13 @@ partial class Assert {
     return sw.Elapsed;
   }
 
-  private static async Task<TimeSpan> MeasureExecutionTimeAsync(Func<Task> code)
+  private static async
+#if SYSTEM_THREADING_TASKS_VALUETASK
+  ValueTask<TimeSpan>
+#else
+  Task<TimeSpan>
+#endif
+  MeasureExecutionTimeAsync(Func<Task> code)
   {
     var sw = Stopwatch.StartNew();
 
