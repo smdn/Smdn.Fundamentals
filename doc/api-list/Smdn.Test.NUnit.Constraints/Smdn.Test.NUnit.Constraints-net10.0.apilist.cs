@@ -2,17 +2,17 @@
 //   Name: Smdn.Test.NUnit.Constraints
 //   AssemblyVersion: 4.2.0.0
 //   InformationalVersion: 4.2.0+1ef5372b7c5f9e1efdd96c16d08456e02bff5d06
-//   TargetFramework: .NETFramework,Version=v4.6.2
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=1ef5372b7c5f9e1efdd96c16d08456e02bff5d06
 //   Referenced assemblies:
 //     Smdn.Fundamental.ControlPicture, Version=3.0.0.0, Culture=neutral
-//     System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
-//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-//     System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
-//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Linq, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Memory, Version=10.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     nunit.framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
 #nullable enable annotations
 
