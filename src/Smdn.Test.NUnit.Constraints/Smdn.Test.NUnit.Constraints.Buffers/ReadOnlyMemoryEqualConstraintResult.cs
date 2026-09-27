@@ -46,7 +46,7 @@ public class ReadOnlyMemoryEqualConstraintResult<T> :
 
   private static string ToJoinedString(ReadOnlyMemory<T> memory)
   {
-    T[] buffer = null;
+    T[]? buffer = null;
 
     try {
       buffer = ArrayPool<T>.Shared.Rent(memory.Length);
