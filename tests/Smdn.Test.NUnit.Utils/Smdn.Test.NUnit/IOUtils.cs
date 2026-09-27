@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 
@@ -32,25 +33,25 @@ public class IOUtilsTests {
   }
 
   [Test]
-  public void UsingCurrentDirectoryAsync()
+  public async Task UsingCurrentDirectoryAsync()
   {
     var path = Path.Combine(TestContext.CurrentContext.WorkDirectory, "test");
 
     Assert.That(Environment.CurrentDirectory, Is.Not.EqualTo(path), "pre");
 
-    IOUtils.UsingDirectory(
+    await IOUtils.UsingDirectoryAsync(
       path: path,
       ensureDirectoryCreated: true,
-      action: _ => {
-        IOUtils.UsingCurrentDirectoryAsync(
+      action: async _ => {
+        await IOUtils.UsingCurrentDirectoryAsync(
           path: path,
           async () => {
             Assert.That(Environment.CurrentDirectory, Is.EqualTo(path), "action");
             await Task.Delay(0);
           }
-        );
+        ).ConfigureAwait(false);
       }
-    );
+    ).ConfigureAwait(false);
 
     Assert.That(Environment.CurrentDirectory, Is.Not.EqualTo(path), "post");
   }
@@ -108,7 +109,7 @@ public class IOUtilsTests {
 
         await Task.Delay(0);
       }
-    );
+    ).ConfigureAwait(false);
 
     DirectoryAssert.DoesNotExist(path, "post");
   }
@@ -156,7 +157,7 @@ public class IOUtilsTests {
 
         await Task.Delay(0);
       }
-    );
+    ).ConfigureAwait(false);
 
     FileAssert.DoesNotExist(path, "post");
   }

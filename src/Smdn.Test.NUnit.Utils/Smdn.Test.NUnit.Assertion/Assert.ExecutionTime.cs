@@ -20,35 +20,42 @@ partial class Assert {
     return sw.Elapsed;
   }
 
-  private static TimeSpan MeasureExecutionTime(AsyncTestDelegate code)
+  private static async Task<TimeSpan> MeasureExecutionTimeAsync(AsyncTestDelegate code)
   {
-    static async Task<TimeSpan> MeasureCore(AsyncTestDelegate c)
-    {
-      var sw = Stopwatch.StartNew();
+    var sw = Stopwatch.StartNew();
 
-      await c().ConfigureAwait(false);
+    await code().ConfigureAwait(false);
 
-      return sw.Elapsed;
-    }
-
-    return MeasureCore(code).GetAwaiter().GetResult(); // XXX
+    return sw.Elapsed;
   }
 
   public static void Elapses(TimeSpan expected, TestDelegate code, string message = null)
     => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
 
   public static void ElapsesAsync(TimeSpan expected, AsyncTestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
+    => That(
+      async () => await MeasureExecutionTimeAsync(code ?? throw new ArgumentNullException(nameof(code))).ConfigureAwait(false),
+      Is.GreaterThanOrEqualTo(expected),
+      message ?? "elapses"
+    );
 
   public static void NotElapse(TimeSpan expected, TestDelegate code, string message = null)
     => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
 
   public static void NotElapseAsync(TimeSpan expected, AsyncTestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
+    => That(
+      async () => await MeasureExecutionTimeAsync(code ?? throw new ArgumentNullException(nameof(code))).ConfigureAwait(false),
+      Is.LessThanOrEqualTo(expected),
+      message ?? "not elapse"
+    );
 
   public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, TestDelegate code, string message = null)
     => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
 
   public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, AsyncTestDelegate code, string message = null)
-    => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
+    => That(
+      async () => await MeasureExecutionTimeAsync(code ?? throw new ArgumentNullException(nameof(code))).ConfigureAwait(false),
+      Is.InRange(expectedMin, expectedMax),
+      message ?? "elapses in range"
+    );
 }
