@@ -2,22 +2,22 @@
 //   Name: Smdn.Test.NUnit.Utils
 //   AssemblyVersion: 5.0.0.0
 //   InformationalVersion: 5.0.0+34752c83c416101b818cb6d906f9a612519ebd59
-//   TargetFramework: .NETFramework,Version=v4.6.2
+//   TargetFramework: .NETCoreApp,Version=v10.0
 //   Configuration: Release
+//   Metadata: IsTrimmable=True
 //   Metadata: RepositoryUrl=https://github.com/smdn/Smdn.Fundamentals
 //   Metadata: RepositoryBranch=main
 //   Metadata: RepositoryCommit=34752c83c416101b818cb6d906f9a612519ebd59
 //   Referenced assemblies:
-//     System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-//     System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
-//     mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+//     System.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Text.Encoding.CodePages, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
+//     System.Threading.Thread, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a
 //     nunit.framework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
 //     nunit.framework.legacy, Version=5.0.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb
 #nullable enable annotations
 
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework.Legacy;
@@ -26,7 +26,7 @@ namespace Smdn.Test.NUnit {
   public static class Encodings {
     public static Encoding? EucJP { get; }
     public static Encoding? Jis { get; }
-    public static Encoding? Latin1 { get; }
+    public static Encoding Latin1 { get; }
     public static Encoding? ShiftJis { get; }
   }
 
@@ -49,7 +49,6 @@ namespace Smdn.Test.NUnit.Assertion {
     public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, Action code, string? message = null) {}
     public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, Func<Task> code, string? message = null) {}
     public static void IsSerializable<TSerializable>(TSerializable obj, Action<TSerializable>? testDeserializedObject = null) {}
-    public static void IsSerializable<TSerializable>(TSerializable obj, IFormatter serializationFormatter, IFormatter deserializationFormatter, Action<TSerializable>? testDeserializedObject = null) {}
     public static void NotElapse(TimeSpan expected, Action code, string? message = null) {}
     public static void NotElapseAsync(TimeSpan expected, Func<Task> code, string? message = null) {}
 
