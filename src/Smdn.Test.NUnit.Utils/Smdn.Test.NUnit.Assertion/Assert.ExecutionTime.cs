@@ -29,30 +29,30 @@ partial class Assert {
     return sw.Elapsed;
   }
 
-  public static void Elapses(TimeSpan expected, Action code, string message = null)
+  public static void Elapses(TimeSpan expected, Action code, string? message = null)
     => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.GreaterThanOrEqualTo(expected), message ?? "elapses");
 
-  public static void ElapsesAsync(TimeSpan expected, Func<Task> code, string message = null)
+  public static void ElapsesAsync(TimeSpan expected, Func<Task> code, string? message = null)
     => That(
       async () => await MeasureExecutionTimeAsync(code ?? throw new ArgumentNullException(nameof(code))).ConfigureAwait(false),
       Is.GreaterThanOrEqualTo(expected),
       message ?? "elapses"
     );
 
-  public static void NotElapse(TimeSpan expected, Action code, string message = null)
+  public static void NotElapse(TimeSpan expected, Action code, string? message = null)
     => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.LessThanOrEqualTo(expected), message ?? "not elapse");
 
-  public static void NotElapseAsync(TimeSpan expected, Func<Task> code, string message = null)
+  public static void NotElapseAsync(TimeSpan expected, Func<Task> code, string? message = null)
     => That(
       async () => await MeasureExecutionTimeAsync(code ?? throw new ArgumentNullException(nameof(code))).ConfigureAwait(false),
       Is.LessThanOrEqualTo(expected),
       message ?? "not elapse"
     );
 
-  public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, Action code, string message = null)
+  public static void ElapsesInRange(TimeSpan expectedMin, TimeSpan expectedMax, Action code, string? message = null)
     => That(MeasureExecutionTime(code ?? throw new ArgumentNullException(nameof(code))), Is.InRange(expectedMin, expectedMax), message ?? "elapses in range");
 
-  public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, Func<Task> code, string message = null)
+  public static void ElapsesInRangeAsync(TimeSpan expectedMin, TimeSpan expectedMax, Func<Task> code, string? message = null)
     => That(
       async () => await MeasureExecutionTimeAsync(code ?? throw new ArgumentNullException(nameof(code))).ConfigureAwait(false),
       Is.InRange(expectedMin, expectedMax),

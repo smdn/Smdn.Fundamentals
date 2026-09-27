@@ -135,7 +135,7 @@ public static class IOUtils {
     const int MaxRetry = 10;
     const int Interval = 100;
 
-    Exception caughtException = null;
+    Exception? caughtException = null;
 
     for (var retry = MaxRetry; retry != 0; retry--) {
       try {

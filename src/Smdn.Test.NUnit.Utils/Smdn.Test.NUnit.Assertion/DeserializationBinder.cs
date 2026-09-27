@@ -19,7 +19,7 @@ internal sealed class DeserializationBinder : SerializationBinder {
   private static Type GetTypeFromLoadedAssemblies(string typeName)
   {
     var typeFullName = typeName;
-    string openGenericTypeFullName = null;
+    string? openGenericTypeFullName = null;
 
     var indexOfTypeArguments = typeName.IndexOf("[[", StringComparison.Ordinal);
 

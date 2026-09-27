@@ -46,7 +46,7 @@ partial class Assert {
 
   public static void IsSerializable<TSerializable>(
     TSerializable obj,
-    Action<TSerializable> testDeserializedObject = null
+    Action<TSerializable>? testDeserializedObject = null
   )
 #if false && SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
     where TSerializable : ISerializable
@@ -65,7 +65,7 @@ partial class Assert {
     TSerializable obj,
     IFormatter serializationFormatter,
     IFormatter deserializationFormatter,
-    Action<TSerializable> testDeserializedObject = null
+    Action<TSerializable>? testDeserializedObject = null
   )
 #if false && SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
     where TSerializable : ISerializable
@@ -84,7 +84,7 @@ partial class Assert {
     IFormatter serializationFormatter,
     IFormatter deserializationFormatter,
 #endif
-    Action<TSerializable> testDeserializedObject
+    Action<TSerializable>? testDeserializedObject
   )
 #if false && SYSTEM_RUNTIME_SERIALIZATION_ISERIALIZABLE
     where TSerializable : ISerializable
