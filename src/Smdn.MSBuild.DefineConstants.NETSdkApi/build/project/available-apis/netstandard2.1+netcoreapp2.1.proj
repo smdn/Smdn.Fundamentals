@@ -21,6 +21,7 @@ SPDX-License-Identifier: MIT
       <_NETSdkAvailableApi Namespace="System" Include="Double.Parse(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApi Namespace="System" Include="Double.TryFormat"/>
       <_NETSdkAvailableApi Namespace="System" Include="Double.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
+      <_NETSdkAvailableApi Namespace="System" Include="HashCode.Combine"/>
       <_NETSdkAvailableApi Namespace="System" Include="Int32.Parse(ReadOnlySpan&lt;Char&gt;)"/>
       <_NETSdkAvailableApi Namespace="System" Include="Int32.TryFormat"/>
       <_NETSdkAvailableApi Namespace="System" Include="Int32.TryParse(ReadOnlySpan&lt;Char&gt;)"/>
