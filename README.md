@@ -54,9 +54,6 @@ This repository contains a set of .NET libraries which provides fundamental func
 |[Smdn.Fundamental.Xml.Linq](src/Smdn.Fundamental.Xml.Linq/)|[![NuGet Smdn.Fundamental.Xml.Linq](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Linq.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Linq/)|
 |[Smdn.Fundamental.Xml.Xhtml](src/Smdn.Fundamental.Xml.Xhtml/)|[![NuGet Smdn.Fundamental.Xml.Xhtml](https://img.shields.io/nuget/v/Smdn.Fundamental.Xml.Xhtml.svg)](https://www.nuget.org/packages/Smdn.Fundamental.Xml.Xhtml/)|
 |[Smdn](src/Smdn/)|[![NuGet Smdn.dll](https://img.shields.io/nuget/v/Smdn.svg)](https://www.nuget.org/packages/Smdn/)|
-|[Smdn.MSBuild.ProjectAssets.Common](src/Smdn.MSBuild.ProjectAssets.Common/)|[![NuGet Smdn.MSBuild.ProjectAssets.Common](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Common.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common/)|
-|[Smdn.MSBuild.ProjectAssets.Library](src/Smdn.MSBuild.ProjectAssets.Library/)|[![NuGet Smdn.MSBuild.ProjectAssets.Library](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/)|
-|[Smdn.MSBuild.DefineConstants.NETSdkApi](src/Smdn.MSBuild.DefineConstants.NETSdkApi/)|[![NuGet Smdn.MSBuild.DefineConstants.NETSdkApi](https://img.shields.io/nuget/v/Smdn.MSBuild.DefineConstants.NETSdkApi.svg)](https://www.nuget.org/packages/Smdn.MSBuild.DefineConstants.NETSdkApi/)|
 |[Smdn.Test.NUnit.Constraints](src/Smdn.Test.NUnit.Constraints/)|[![NuGet Smdn.Test.NUnit.Constraints](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Constraints.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Constraints/)|
 |[Smdn.Test.NUnit.Utils](src/Smdn.Test.NUnit.Utils/)|[![NuGet Smdn.Test.NUnit.Utils](https://img.shields.io/nuget/v/Smdn.Test.NUnit.Utils.svg)](https://www.nuget.org/packages/Smdn.Test.NUnit.Utils/)|
 
@@ -66,6 +63,17 @@ Some of `Smdn.Fundamental.*` are based on former `Smdn.dll`.
 `Smdn.dll` is now provided as a kind of meta package and will be deprecated in the future.
 
 The list of APIs and the list of assemblies to be transferred are listed in [these files](doc/api-list/).
+
+## Extracted Projects (Build Assets & MSBuild SDKs)
+The following MSBuild SDKs and build assets previously maintained in this repository have been extracted to a dedicated repository: **[`smdn/Smdn.Fundamentals.BuildAssets`](https://github.com/smdn/Smdn.Fundamentals.BuildAssets)**. For details regarding the extraction process and associated changes, please refer to [smdn/Smdn.Fundamentals#368](https://github.com/smdn/Smdn.Fundamentals/pull/368).
+
+For further details, source code, or issue tracking regarding these packages, please visit the new repository.
+
+| Package | NuGet |
+| :--- | :--- |
+| [Smdn.MSBuild.ProjectAssets.Common](https://github.com/smdn/Smdn.Fundamentals.BuildAssets/tree/main/src/Smdn.MSBuild.ProjectAssets.Common/) | [![NuGet Smdn.MSBuild.ProjectAssets.Common](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Common.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Common/) |
+| [Smdn.MSBuild.ProjectAssets.Library](https://github.com/smdn/Smdn.Fundamentals.BuildAssets/tree/main/src/Smdn.MSBuild.ProjectAssets.Library/) | [![NuGet Smdn.MSBuild.ProjectAssets.Library](https://img.shields.io/nuget/v/Smdn.MSBuild.ProjectAssets.Library.svg)](https://www.nuget.org/packages/Smdn.MSBuild.ProjectAssets.Library/) |
+| [Smdn.MSBuild.DefineConstants.NETSdkApi](https://github.com/smdn/Smdn.Fundamentals.BuildAssets/tree/main/src/Smdn.MSBuild.DefineConstants.NETSdkApi) | [![NuGet Smdn.MSBuild.DefineConstants.NETSdkApi](https://img.shields.io/nuget/v/Smdn.MSBuild.DefineConstants.NETSdkApi.svg)](https://www.nuget.org/packages/Smdn.MSBuild.DefineConstants.NETSdkApi/) |
 
 # Notice
 ## License
