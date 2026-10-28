@@ -1,5 +1,11 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
+
+// Since the implementation of the `Equals` method and the equality and inequality
+// operators is automatically generated, suppress warning CA1815 caused by the
+// absence of implementation in this file.
+#pragma warning disable CA1815 // CA1815: Override equals and operator equals on value types
+
 using System;
 #if GENERIC_MATH_INTERFACES
 using System.Numerics;
