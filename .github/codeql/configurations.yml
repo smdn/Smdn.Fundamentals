@@ -3,10 +3,3 @@
 
 # ref: https://docs.github.com/ja/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-a-custom-configuration-file
 name: "CodeQL configurations"
-
-# Warning: The "paths"/"paths-ignore" fields of the config only have effect for JavaScript, Python, and Ruby
-# paths:
-#   - src
-# paths-ignore:
-#   - src/Smdn.Core.Miscellaneous
-#   - src/Smdn.MSBuild.*
