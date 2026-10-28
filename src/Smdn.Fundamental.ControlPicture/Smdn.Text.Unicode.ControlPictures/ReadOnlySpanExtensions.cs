@@ -76,14 +76,14 @@ public static class ReadOnlySpanExtensions {
     // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
     unsafe {
       ref var refInput = ref MemoryMarshal.GetReference(span);
-      var ptrInput = (IntPtr)Unsafe.AsPointer(ref refInput);
+      var ptrInput = (nint)Unsafe.AsPointer(ref refInput);
 
       return string.Create(
         span.Length,
         (Pointer: ptrInput, span.Length),
         static (destination, input) => _ = TryPicturizeControlChars(
           span: new ReadOnlySpan<byte>(
-            pointer: input.Pointer.ToPointer(),
+            pointer: (void*)input.Pointer,
             length: input.Length
           ),
           destination: destination
@@ -134,14 +134,14 @@ public static class ReadOnlySpanExtensions {
     // ref: https://github.com/dotnet/runtime/issues/30175#issuecomment-1343179127
     unsafe {
       ref var refInput = ref MemoryMarshal.GetReference(span);
-      var ptrInput = (IntPtr)Unsafe.AsPointer(ref refInput);
+      var ptrInput = (nint)Unsafe.AsPointer(ref refInput);
 
       return string.Create(
         span.Length,
         (Pointer: ptrInput, span.Length),
         static (destination, input) => _ = TryPicturizeControlChars(
           span: new ReadOnlySpan<char>(
-            pointer: input.Pointer.ToPointer(),
+            pointer: (void*)input.Pointer,
             length: input.Length
           ),
           destination: destination
