@@ -148,10 +148,7 @@ static partial class MimeEncoding {
           // charset
           var charsetString = m.Groups["charset"].Value;
 
-          lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding);
-
-          if (lastCharset == null)
-            throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
+          lastCharset = EncodingUtils.GetEncoding(charsetString, selectFallbackEncoding) ?? throw new EncodingNotSupportedException(charsetString, $"'{charsetString}' is an unsupported or invalid charset");
 
           // encoding
           var encodingString = m.Groups["encoding"].Value;
