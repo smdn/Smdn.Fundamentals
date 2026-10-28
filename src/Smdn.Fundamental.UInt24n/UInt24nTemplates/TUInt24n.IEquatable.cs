@@ -4,13 +4,11 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n :
   IEquatable<TUInt24n>,
   IEquatable<TUIntWide>,
   IEquatable<TIntWide>
 {
-#pragma warning restore IDE0040
   public bool Equals(TUInt24n other) => this.Widen() == other.Widen();
 
   [CLSCompliant(false)]

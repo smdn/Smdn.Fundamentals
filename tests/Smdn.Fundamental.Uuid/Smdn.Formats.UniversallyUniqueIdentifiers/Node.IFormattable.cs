@@ -7,9 +7,7 @@ using NUnit.Framework;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
-#pragma warning disable IDE0040
 partial class NodeTests {
-#pragma warning restore IDE0040
   [Test]
   public void TestToString()
   {

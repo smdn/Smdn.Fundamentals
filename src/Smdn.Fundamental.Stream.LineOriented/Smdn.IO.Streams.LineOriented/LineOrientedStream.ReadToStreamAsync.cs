@@ -7,9 +7,7 @@ using System.Threading.Tasks;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStream {
-#pragma warning restore IDE0040
   public Task<long> ReadAsync(
     Stream targetStream,
     long length,

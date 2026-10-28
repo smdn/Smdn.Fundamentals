@@ -5,9 +5,7 @@ using System.Text;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid {
-#pragma warning restore IDE0040
   public static Uuid CreateNameBasedSHA1(Uri url)
     => CreateNameBasedSHA1((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url);
 

@@ -6,9 +6,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeTypeTests {
-#pragma warning restore IDE0040
   private static void TestCreate(Func<MimeType> create, string? expectedMimeType, Type? expectedExceptionType)
   {
     if (expectedExceptionType is null) {

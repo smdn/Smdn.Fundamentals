@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
-#pragma warning disable IDE0040
 partial struct Node :
-#pragma warning restore IDE0040
   IFormattable
 #if SYSTEM_ISPANFORMATTABLE
 #pragma warning disable SA1001

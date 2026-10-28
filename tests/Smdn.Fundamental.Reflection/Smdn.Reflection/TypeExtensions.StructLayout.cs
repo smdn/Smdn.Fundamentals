@@ -6,9 +6,7 @@ using NUnit.Framework;
 
 namespace Smdn.Reflection;
 
-#pragma warning disable IDE0040
 partial class TypeExtensionsTests {
-#pragma warning restore IDE0040
   [TestCase(typeof(TypeExtensionsStructLayoutTestTypes.S0), true)]
   [TestCase(typeof(TypeExtensionsStructLayoutTestTypes.S1), true)]
   [TestCase(typeof(TypeExtensionsStructLayoutTestTypes.S2), true)]

@@ -10,9 +10,7 @@ using Smdn.Test.NUnit;
 
 namespace Smdn.Formats.Mime;
 
-#pragma warning disable IDE0040
 partial class ContentTransferEncodingTests {
-#pragma warning restore IDE0040
   [TestCase(ContentTransferEncodingMethod.SevenBit)]
   [TestCase(ContentTransferEncodingMethod.EightBit)]
   [TestCase(ContentTransferEncodingMethod.Binary)]

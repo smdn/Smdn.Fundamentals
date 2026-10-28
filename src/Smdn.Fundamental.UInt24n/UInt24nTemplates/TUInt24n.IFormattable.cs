@@ -6,9 +6,7 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n : IFormattable {
-#pragma warning restore IDE0040
   // IFormattable
   public string ToString(string? format, IFormatProvider? formatProvider)
     => Widen().ToString(format, formatProvider);

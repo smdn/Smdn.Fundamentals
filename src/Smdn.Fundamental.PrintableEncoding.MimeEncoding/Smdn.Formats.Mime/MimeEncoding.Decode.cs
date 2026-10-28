@@ -30,9 +30,7 @@ namespace Smdn.Formats.Mime;
  *               ; (but see "Use of encoded-words in message
  *               ; headers", section 5)
  */
-#pragma warning disable IDE0040
 static partial class MimeEncoding {
-#pragma warning restore IDE0040
   public static string Decode(string str)
     => Decode(
       str: str,

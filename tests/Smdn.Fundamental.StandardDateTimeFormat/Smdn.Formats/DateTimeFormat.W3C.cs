@@ -8,9 +8,7 @@ using Smdn.Formats.DateAndTime;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class DateTimeFormatTests {
-#pragma warning restore IDE0040
   [Test]
   public void ToW3CDateTimeString_DateTime_DateTimeKindUtc()
   {

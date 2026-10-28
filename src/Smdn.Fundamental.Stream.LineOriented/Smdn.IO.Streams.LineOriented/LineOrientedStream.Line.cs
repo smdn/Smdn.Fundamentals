@@ -8,9 +8,7 @@ using System.Buffers;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStream {
-#pragma warning restore IDE0040
   public readonly struct Line {
     public ReadOnlySequence<byte> SequenceWithNewLine { get; }
     public SequencePosition PositionOfNewLine { get; }

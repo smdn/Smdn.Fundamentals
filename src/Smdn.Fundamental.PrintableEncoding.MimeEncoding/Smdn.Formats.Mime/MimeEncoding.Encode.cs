@@ -28,9 +28,7 @@ namespace Smdn.Formats.Mime;
  *               ; (but see "Use of encoded-words in message
  *               ; headers", section 5)
  */
-#pragma warning disable IDE0040
 static partial class MimeEncoding {
-#pragma warning restore IDE0040
   private static readonly string MimeEncodingFoldingString = "\r\n\t";
   private static readonly byte[] MimeEncodingPostamble = new byte[] { 0x3f, 0x3d }; // "?="
 

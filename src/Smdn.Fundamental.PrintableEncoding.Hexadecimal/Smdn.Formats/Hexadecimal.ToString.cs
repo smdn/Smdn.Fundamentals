@@ -7,9 +7,7 @@ using System.Buffers;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class Hexadecimal {
-#pragma warning restore IDE0040
   public static string ToUpperCaseString(ArraySegment<byte> dataSequence)
   {
     if (dataSequence.Count == 0)

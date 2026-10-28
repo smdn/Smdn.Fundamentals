@@ -10,9 +10,7 @@ using Smdn.Reflection.Attributes;
 
 namespace Smdn.Reflection;
 
-#pragma warning disable IDE0040
 static partial class TypeExtensions {
-#pragma warning restore IDE0040
   private const BindingFlags BindingFlagsForExtensionMembers =
     BindingFlags.Static |
     BindingFlags.Instance |

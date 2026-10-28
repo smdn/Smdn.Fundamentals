@@ -11,9 +11,7 @@ using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.Mime;
 
-#pragma warning disable IDE0040
 static partial class ContentTransferEncoding {
-#pragma warning restore IDE0040
   public static Stream CreateDecodingStream(Stream stream, string encoding)
     => CreateDecodingStream(stream, ParseOrThrowNotSupportedException(encoding), false);
 

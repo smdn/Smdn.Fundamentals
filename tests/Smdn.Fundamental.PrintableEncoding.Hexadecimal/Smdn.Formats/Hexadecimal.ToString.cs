@@ -6,9 +6,7 @@ using NUnit.Framework;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class HexadecimalTests {
-#pragma warning restore IDE0040
 #if SYSTEM_READONLYSPAN
   [Test]
   public void ToUpperCaseString_OfReadOnlySpan()

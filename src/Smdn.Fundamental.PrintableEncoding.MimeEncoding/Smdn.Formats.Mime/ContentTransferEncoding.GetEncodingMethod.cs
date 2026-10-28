@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn.Formats.Mime;
 
-#pragma warning disable IDE0040
 static partial class ContentTransferEncoding {
-#pragma warning restore IDE0040
   [Obsolete($"Use {nameof(TryParse)}() instead.")]
   public static ContentTransferEncodingMethod GetEncodingMethod(string encoding)
   {

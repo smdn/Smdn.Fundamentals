@@ -7,9 +7,7 @@ using System.Buffers; // OperationStatus
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class Hexadecimal {
-#pragma warning restore IDE0040
   public static bool TryDecodeUpperCase(ArraySegment<char> upperCaseDataSequence, ArraySegment<byte> destination, out int decodedLength)
 #if SYSTEM_READONLYSPAN
     => TryDecode(upperCaseDataSequence.AsSpan(), destination.AsSpan(), allowUpperCase: true, allowLowerCase: false, out decodedLength);

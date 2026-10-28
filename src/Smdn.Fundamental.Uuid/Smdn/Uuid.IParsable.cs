@@ -5,9 +5,7 @@ using System.Globalization;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid
-#pragma warning restore IDE0040
 #if SYSTEM_IPARSABLE && SYSTEM_ISPANPARSABLE
   :
   IParsable<Uuid>,

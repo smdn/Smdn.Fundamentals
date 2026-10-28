@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n : IConvertible {
-#pragma warning restore IDE0040
   TUIntNarrow IConvertible.ToTUIntNarrow(IFormatProvider provider) => checked((TUIntNarrow)Widen());
   TIntNarrow IConvertible.ToTIntNarrow(IFormatProvider provider) => checked((TIntNarrow)Widen());
 

@@ -21,13 +21,11 @@ using ShimTypeSystemNumericsBitOperationsLog2 =
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n
 #if SYSTEM_NUMERICS_IBINARYNUMBER
   : IBinaryNumber<TUInt24n>
 #endif
 {
-#pragma warning restore IDE0040
   /*
    * IBinaryNumber
    */

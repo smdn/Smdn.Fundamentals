@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n {
-#pragma warning restore IDE0040
   /*
    * widening type castings (UInt24n <-> UInt32n)
    */

@@ -9,9 +9,7 @@ using NUnit.Framework;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStreamTests {
-#pragma warning restore IDE0040
   [TestCaseSource(
     typeof(StreamTestCaseSource),
     nameof(StreamTestCaseSource.YieldTestCases_InvalidCopyToArguments)

@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class Hexadecimal {
-#pragma warning restore IDE0040
   public static bool TryEncodeUpperCase(ArraySegment<byte> dataSequence, ArraySegment<byte> destination, out int bytesEncoded)
 #if SYSTEM_READONLYSPAN
     => TryEncode(dataSequence.AsSpan(), destination.AsSpan(), UpperCaseHexOctets, out bytesEncoded);

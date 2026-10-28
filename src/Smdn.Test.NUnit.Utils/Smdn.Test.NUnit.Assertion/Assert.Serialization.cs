@@ -17,9 +17,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Smdn.Test.NUnit.Assertion;
 
-#pragma warning disable IDE0040
 partial class Assert {
-#pragma warning restore IDE0040
 #if ENABLE_SERIALIZATION && SYSTEM_RUNTIME_SERIALIZATION_IFORMATTER
 #pragma warning disable CA1859
   private static IFormatter CreateDefaultSerializationFormatter()

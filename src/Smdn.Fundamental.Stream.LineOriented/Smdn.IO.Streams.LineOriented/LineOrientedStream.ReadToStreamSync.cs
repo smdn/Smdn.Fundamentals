@@ -5,9 +5,7 @@ using System.IO;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStream {
-#pragma warning restore IDE0040
   private static void ValidateReadToStreamArguments(Stream targetStream, long length)
   {
     if (targetStream is null)

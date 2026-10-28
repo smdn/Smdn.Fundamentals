@@ -9,9 +9,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_Zero()
   {
@@ -33,9 +31,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_Zero()
   {
@@ -57,9 +53,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [TestCase(typeof(byte))]
   [TestCase(typeof(sbyte))]
   [TestCase(typeof(char))]
@@ -89,9 +83,7 @@ partial class UInt24nTests {
     => TUInt24n.CreateSaturating(TOther.Zero);
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating_Zero()
   {
@@ -113,9 +105,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating_Zero()
   {
@@ -137,9 +127,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating()
   {
@@ -161,9 +149,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating()
   {
@@ -191,9 +177,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating()
   {
@@ -215,9 +199,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating()
   {
@@ -245,9 +227,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_Overflow()
   {
@@ -273,9 +253,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_Overflow()
   {
@@ -300,9 +278,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating_Overflow()
   {
@@ -328,9 +304,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating_Overflow()
   {
@@ -354,9 +328,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException()
   {
@@ -365,9 +337,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException()
   {
@@ -376,9 +346,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException()
   {
@@ -393,9 +361,7 @@ partial class UInt24nTests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating_TypeNotSupported()
   {
@@ -404,9 +370,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void INumberBase_TryConvertFromSaturating_TypeNotSupported()
   {

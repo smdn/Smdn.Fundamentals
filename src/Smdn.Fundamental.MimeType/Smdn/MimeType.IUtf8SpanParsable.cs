@@ -10,9 +10,7 @@ using System.Text;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeType : IUtf8SpanParsable<MimeType> {
-#pragma warning restore IDE0040
   // IUtf8SpanParsable<TSelf>.Parse
   public static MimeType Parse(
     ReadOnlySpan<byte> utf8Text,

@@ -5,9 +5,7 @@ using System.Buffers;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStream {
-#pragma warning restore IDE0040
   private sealed class LineSequenceSegment : ReadOnlySequenceSegment<byte> {
     public LineSequenceSegment(LineSequenceSegment? prev, ReadOnlyMemory<byte> memory)
     {

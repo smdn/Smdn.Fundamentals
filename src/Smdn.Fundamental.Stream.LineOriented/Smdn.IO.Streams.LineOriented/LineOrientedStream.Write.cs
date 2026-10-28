@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStream {
   public override void SetLength(long @value)
   {
@@ -33,7 +32,6 @@ partial class LineOrientedStream {
     return stream.FlushAsync(cancellationToken);
   }
 
-#pragma warning restore IDE0040
   public override void Write(byte[] buffer, int offset, int count)
   {
     ThrowIfDisposed();

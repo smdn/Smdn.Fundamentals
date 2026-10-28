@@ -10,9 +10,7 @@ using NUnit.Framework;
 
 namespace Smdn.Reflection;
 
-#pragma warning disable IDE0040
 partial class MethodInfoExtensionsTests {
-#pragma warning restore IDE0040
   public enum AccessorType {
     PropertyGet,
     PropertySet,

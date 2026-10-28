@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid :
-#pragma warning restore IDE0040
   IFormattable
 #if SYSTEM_ISPANFORMATTABLE
 #pragma warning disable SA1001

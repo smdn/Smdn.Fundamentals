@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: MIT
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeType {
-#pragma warning restore IDE0040
   public bool IsApplicationOctetStream => Equals(ApplicationOctetStream, DefaultComparisonType);
   public bool IsApplicationXWwwFormUrlEncoded => Equals(ApplicationXWwwFormUrlEncoded, DefaultComparisonType);
 

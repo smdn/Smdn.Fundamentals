@@ -21,9 +21,7 @@ using ShimTypeSystemMathDivRemReturnValueTuple2 =
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n {
-#pragma warning restore IDE0040
 #if SYSTEM_NUMERICS_INUMBERBASE
   /*
    * INumberBase<TOther>.Zero/One

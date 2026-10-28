@@ -6,9 +6,7 @@ using NUnit.Framework;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class HexadecimalTests {
-#pragma warning restore IDE0040
   [Test]
   public void TryDecode_OfDataArraySegment_DataTooShort()
   {

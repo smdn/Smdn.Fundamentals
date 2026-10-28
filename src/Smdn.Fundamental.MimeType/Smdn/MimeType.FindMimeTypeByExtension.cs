@@ -13,9 +13,7 @@ using Microsoft.Win32;
 #endif
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeType {
-#pragma warning restore IDE0040
   private const string DefaultMimeTypesFile = "/etc/mime.types";
 
 #if SYSTEM_RUNTIME_VERSIONING_SUPPORTEDOSPLATFORMGUARDATTRIBUTE

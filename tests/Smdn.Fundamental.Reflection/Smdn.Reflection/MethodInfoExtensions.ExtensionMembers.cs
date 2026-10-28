@@ -13,9 +13,7 @@ using MethodInfoExtensionsExtensionMembersTestTypes;
 
 namespace Smdn.Reflection;
 
-#pragma warning disable IDE0040
 partial class MethodInfoExtensionsTests {
-#pragma warning restore IDE0040
   private static IEnumerable<Type> EnumerateNestedTypes(Type t)
   {
     foreach (var nestedType in t.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic)) {

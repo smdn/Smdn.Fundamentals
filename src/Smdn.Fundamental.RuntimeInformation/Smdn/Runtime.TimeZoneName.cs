@@ -7,9 +7,7 @@ using System.Runtime.InteropServices;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class Runtime {
-#pragma warning restore IDE0040
   // ref: https://learn.microsoft.com/ja-jp/dotnet/core/extensions/globalization-icu
   public static bool SupportsIanaTimeZoneName {
     get {

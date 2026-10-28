@@ -6,9 +6,7 @@ using System.Numerics;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n : IMinMaxValue<TUInt24n> {
-#pragma warning restore IDE0040
   static TUInt24n IMinMaxValue<TUInt24n>.MinValue => MinValue;
   static TUInt24n IMinMaxValue<TUInt24n>.MaxValue => MaxValue;
 }

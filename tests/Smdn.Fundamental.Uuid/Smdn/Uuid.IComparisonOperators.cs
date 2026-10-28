@@ -9,9 +9,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class UuidTests {
-#pragma warning restore IDE0040
   [Test]
   public void TestCompareTo()
   {

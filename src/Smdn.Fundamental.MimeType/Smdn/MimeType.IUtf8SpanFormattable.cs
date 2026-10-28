@@ -7,9 +7,7 @@ using System.Text;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeType : IUtf8SpanFormattable {
-#pragma warning restore IDE0040
   public bool TryFormat(
     Span<byte> utf8Destination,
     out int bytesWritten,

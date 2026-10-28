@@ -8,9 +8,7 @@ using System.Numerics;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
-#pragma warning disable IDE0040
 partial struct Node :
-#pragma warning restore IDE0040
 #if SYSTEM_NUMERICS_IEQUALITYOPERATORS
   IEqualityOperators<Node, Node, bool>,
 #endif

@@ -9,9 +9,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [TestCase(0b_1000_0000_0000__0000_0000_0001u,   0, 0b_1000_0000_0000__0000_0000_0001u)]
   [TestCase(0b_1000_0000_0000__0000_0000_0001u,   1, 0b_0000_0000_0000__0000_0000_0011u)]
   [TestCase(0b_1000_0000_0000__0000_0000_0001u,  11, 0b_0000_0000_0000__1100_0000_0000u)]
@@ -51,9 +49,7 @@ partial class UInt24Tests {
     => Assert.That(UInt24.RotateRight((UInt24)value, rotateAmount), Is.EqualTo((UInt24)expected), $"RotateRight({((UInt24)value).ToBinaryString()}, {rotateAmount})");
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   0, 0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,   1, 0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0011uL)]
   [TestCase(0b_1000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,  11, 0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__1100_0000_0000uL)]
@@ -105,9 +101,7 @@ partial class UInt48Tests {
     => Assert.That(UInt48.RotateRight((UInt48)value, rotateAmount), Is.EqualTo((UInt48)expected), $"RotateRight({((UInt48)value).ToBinaryString()}, {rotateAmount})");
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
 
   [Test]
   public void DivRem()
@@ -131,9 +125,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void DivRem()
   {
@@ -156,9 +148,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
 
   private static System.Collections.IEnumerable YieldTestCases_TryRead()
   {
@@ -203,9 +193,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   private static System.Collections.IEnumerable YieldTestCases_TryRead()
   {
     const bool asUnsigned = true;
@@ -255,9 +243,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   private static System.Collections.IEnumerable YieldTestCases_TryWrite()
   {
     yield return new object?[] { (UInt24)0x000000u, new byte[] { 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00 } };
@@ -302,9 +288,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   private static System.Collections.IEnumerable YieldTestCases_TryWrite()
   {
     yield return new object?[] { (UInt48)0x000000_000000uL, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
@@ -353,9 +337,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBINARYINTEGER
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   static int IBinaryInteger_GetByteCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => value.GetByteCount();
 
@@ -399,9 +381,7 @@ partial class UInt24nTests {
 #endif
 
 #if SYSTEM_NUMERICS_IBINARYINTEGER
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   static TUInt24n IBinaryInteger_RotateLeft<TUInt24n>(TUInt24n value, int rotateAmount) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.RotateLeft(value, rotateAmount);
 
@@ -498,9 +478,7 @@ partial class UInt24nTests {
 }
 #endif
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [TestCase(0b_0000_0000_0000__0000_0000_0000u,  24)]
   [TestCase(0b_0000_0000_0000__0000_0000_0001u,  23)]
   [TestCase(0b_0000_0000_0000__0000_0000_0010u,  22)]
@@ -542,9 +520,7 @@ partial class UInt24Tests {
     => Assert.That(UInt24.PopCount((UInt24)value), Is.EqualTo(expected), $"PopCount({((UInt24)value).ToBinaryString()})");
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0000uL,  48)]
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0001uL,  47)]
   [TestCase(0b_0000_0000_0000__0000_0000_0000__0000_0000_0000__0000_0000_0010uL,  46)]
@@ -608,9 +584,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBINARYINTEGER
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   static TUInt24n IBinaryInteger_LeadingZeroCount<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryInteger<TUInt24n>
     => TUInt24n.LeadingZeroCount(value);
 

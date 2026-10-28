@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n {
-#pragma warning restore IDE0040
   public TUInt24n(byte[] value, bool isBigEndian = false)
     : this(UInt24n.ValidateAndGetSpan(value, 0, nameof(value), SizeOfSelf), isBigEndian)
   {

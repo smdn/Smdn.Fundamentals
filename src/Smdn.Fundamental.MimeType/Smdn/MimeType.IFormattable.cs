@@ -5,9 +5,7 @@ using System.Buffers;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeType :
-#pragma warning restore IDE0040
   IFormattable {
   public string ToString(string? format, IFormatProvider? formatProvider)
   {

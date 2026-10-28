@@ -7,9 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class Hexadecimal {
-#pragma warning restore IDE0040
 #if SYSTEM_SPAN
   private static bool ValidateTryEncodeDestination(byte[] destination, int index)
     => !(destination is null || index < 0 || destination.Length - 2 < index);

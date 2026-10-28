@@ -4,14 +4,12 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n :
   IComparable<TUInt24n>,
   IComparable<TUIntWide>,
   IComparable<TIntWide>,
   IComparable
 {
-#pragma warning restore IDE0040
   public int CompareTo(TUInt24n other) => Widen().CompareTo(other.Widen());
 
   [CLSCompliant(false)]

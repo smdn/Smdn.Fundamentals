@@ -8,9 +8,7 @@ using NUnit.Framework;
 
 namespace Smdn.Test.NUnit.Assertion;
 
-#pragma warning disable IDE0040
 partial class Assert {
-#pragma warning restore IDE0040
   private static TimeSpan MeasureExecutionTime(Action code)
   {
     var sw = Stopwatch.StartNew();

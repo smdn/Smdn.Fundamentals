@@ -7,9 +7,7 @@ using System.Numerics;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid :
-#pragma warning restore IDE0040
 #pragma warning disable format
 #if SYSTEM_NUMERICS_IEQUALITYOPERATORS
   IEqualityOperators<Uuid, Uuid, bool>,

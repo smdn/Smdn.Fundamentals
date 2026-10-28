@@ -8,9 +8,7 @@ using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class HexadecimalTests {
-#pragma warning restore IDE0040
   private static ArraySegment<char> ToArraySegment(string input)
     => new(input.ToCharArray());
 

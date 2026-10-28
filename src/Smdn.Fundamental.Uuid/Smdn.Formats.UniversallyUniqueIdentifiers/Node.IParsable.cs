@@ -5,9 +5,7 @@ using System.Globalization;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
-#pragma warning disable IDE0040
 partial struct Node
-#pragma warning restore IDE0040
 #if SYSTEM_IPARSABLE && SYSTEM_ISPANPARSABLE
   :
   IParsable<Node>,

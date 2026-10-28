@@ -6,9 +6,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeTypeTests {
-#pragma warning restore IDE0040
   private static System.Collections.IEnumerable YieldParseValidTestCases()
   {
     yield return new object[] { "text/plain", MimeType.TextPlain };

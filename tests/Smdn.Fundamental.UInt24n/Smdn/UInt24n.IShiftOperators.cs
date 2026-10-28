@@ -8,9 +8,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpLeftShift()
   {
@@ -106,9 +104,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpLeftShift()
   {
@@ -208,9 +204,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_ISHIFTOPERATORS
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IShiftOperators_OpLeftShift()
   {

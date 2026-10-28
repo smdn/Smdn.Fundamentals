@@ -5,9 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class Runtime {
-#pragma warning restore IDE0040
   [Obsolete("use Smdn.Platform.IsRunningOnWindows")]
   public static bool IsRunningOnWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 

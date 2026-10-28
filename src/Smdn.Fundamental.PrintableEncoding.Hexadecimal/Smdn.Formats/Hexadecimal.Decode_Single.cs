@@ -5,9 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class Hexadecimal {
-#pragma warning restore IDE0040
   public static bool TryDecodeUpperCase(ArraySegment<byte> upperCaseData, out byte decodedData)
 #if SYSTEM_READONLYSPAN
     => TryDecode(upperCaseData.AsSpan(), allowUpperCase: true, allowLowerCase: false, out decodedData);

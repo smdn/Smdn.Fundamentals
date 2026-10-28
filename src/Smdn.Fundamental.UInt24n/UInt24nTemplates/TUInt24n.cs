@@ -5,10 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n {
-#pragma warning restore IDE0040
-
   private const int BitsOfSelf = 8 * SizeOfSelf;
   private const TIntWide maxValue = ((TIntWide)1 << BitsOfSelf) - 1;
   private const TIntWide minValue = (TIntWide)0;

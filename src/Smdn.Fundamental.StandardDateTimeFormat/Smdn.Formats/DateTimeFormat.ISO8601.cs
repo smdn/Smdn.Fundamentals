@@ -6,9 +6,7 @@ using Smdn.Formats.DateAndTime;
 
 namespace Smdn.Formats;
 
-#pragma warning disable IDE0040
 partial class DateTimeFormat {
-#pragma warning restore IDE0040
   public static string ToISO8601DateTimeString(DateTime dateTime)
     => ISO8601DateTimeFormats.ToString(dateTime);
 

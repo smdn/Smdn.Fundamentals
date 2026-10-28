@@ -8,9 +8,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpBitwiseAnd()
   {
@@ -24,9 +22,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpBitwiseAnd()
   {
@@ -41,9 +37,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBITWISEOPERATORS
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IBitwiseOperators_BitwiseAnd()
   {
@@ -69,9 +63,7 @@ partial class UInt24nTests {
 }
 #endif
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpBitwiseOr()
   {
@@ -85,9 +77,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpBitwiseOr()
   {
@@ -102,9 +92,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBITWISEOPERATORS
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IBitwiseOperators_BitwiseOr()
   {
@@ -130,9 +118,7 @@ partial class UInt24nTests {
 }
 #endif
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpExclusiveOr()
   {
@@ -146,9 +132,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpExclusiveOr()
   {
@@ -163,9 +147,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBITWISEOPERATORS
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IBitwiseOperators_ExclusiveOr()
   {
@@ -191,9 +173,7 @@ partial class UInt24nTests {
 }
 #endif
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpOnesComplement()
   {
@@ -203,9 +183,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpOnesComplement()
   {
@@ -216,9 +194,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBITWISEOPERATORS
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IBitwiseOperators_OnesComplement()
   {
@@ -236,9 +212,7 @@ partial class UInt24nTests {
 }
 #endif
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void IsPow2()
   {
@@ -249,9 +223,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void IsPow2()
   {
@@ -263,9 +235,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBINARYNUMBER
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IBinaryNumber_IsPow2()
   {
@@ -285,9 +255,7 @@ partial class UInt24nTests {
 }
 #endif
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void Log2()
   {
@@ -298,9 +266,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void Log2()
   {
@@ -312,9 +278,7 @@ partial class UInt48Tests {
 }
 
 #if SYSTEM_NUMERICS_IBINARYNUMBER
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
   [Test]
   public void IBinaryNumber_Log2()
   {

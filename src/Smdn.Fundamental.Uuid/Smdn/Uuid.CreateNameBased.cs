@@ -7,9 +7,7 @@ using System.Text;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid {
-#pragma warning restore IDE0040
   public static Uuid CreateNameBased(Uri url, UuidVersion version)
     => CreateNameBased((url ?? throw new ArgumentNullException(nameof(url))).ToString(), Namespace.RFC4122Url, version);
 

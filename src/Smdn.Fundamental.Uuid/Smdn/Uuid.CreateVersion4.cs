@@ -7,10 +7,7 @@ using Smdn.Formats.UniversallyUniqueIdentifiers;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid {
-#pragma warning restore IDE0040
-
   public static Uuid CreateFromRandomNumber()
   {
     Span<byte> randomNumber = stackalloc byte[SizeOfSelf];

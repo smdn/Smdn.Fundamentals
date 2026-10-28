@@ -9,9 +9,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class UInt24Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpAddition()
   {
@@ -31,9 +29,7 @@ partial class UInt24Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt48Tests {
-#pragma warning restore IDE0040
   [Test]
   public void OpAddition()
   {
@@ -53,9 +49,7 @@ partial class UInt48Tests {
   }
 }
 
-#pragma warning disable IDE0040
 partial class UInt24nTests {
-#pragma warning restore IDE0040
 #if SYSTEM_NUMERICS_IADDITIONOPERATORS
   [Test]
   public void IAdditionOperators_OpAddition()

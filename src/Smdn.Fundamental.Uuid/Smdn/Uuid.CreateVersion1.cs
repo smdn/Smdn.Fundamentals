@@ -9,9 +9,7 @@ using Smdn.Formats.UniversallyUniqueIdentifiers;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct Uuid {
-#pragma warning restore IDE0040
   private static int GetClock()
   {
     Span<byte> bytes = stackalloc byte[2];

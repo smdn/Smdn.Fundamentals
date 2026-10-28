@@ -9,9 +9,7 @@ using System.Threading.Tasks;
 
 namespace Smdn.IO.Streams.LineOriented;
 
-#pragma warning disable IDE0040
 partial class LineOrientedStream {
-#pragma warning restore IDE0040
   public override int ReadByte()
   {
     ThrowIfDisposed();

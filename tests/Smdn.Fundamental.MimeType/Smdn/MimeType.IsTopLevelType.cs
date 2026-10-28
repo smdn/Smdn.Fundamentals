@@ -4,9 +4,7 @@ using NUnit.Framework;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeTypeTests {
-#pragma warning restore IDE0040
   [TestCase("application/example", true)]
   [TestCase("APPLICATION/example", true)]
   [TestCase("application/octet-stream", true)]

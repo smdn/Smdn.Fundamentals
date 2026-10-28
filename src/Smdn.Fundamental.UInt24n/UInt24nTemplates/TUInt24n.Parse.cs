@@ -10,9 +10,7 @@ using System.Globalization;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial struct TUInt24n {
-#pragma warning restore IDE0040
   // IParsable<TSelf>.Parse(String, IFormatProvider)
   public static TUInt24n Parse(string s, IFormatProvider? provider = null)
     => Parse(s, NumberStyles.Integer, provider);

@@ -10,9 +10,7 @@ using System.Text;
 
 namespace Smdn.Text.Encodings;
 
-#pragma warning disable IDE0040
 partial class EncodingUtils {
-#pragma warning restore IDE0040
   public static Encoding GetEncoding(
     string name,
     IReadOnlyDictionary<string, int>? codePageCollationTable,

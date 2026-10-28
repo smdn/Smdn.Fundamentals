@@ -4,9 +4,7 @@ using System;
 
 namespace Smdn;
 
-#pragma warning disable IDE0040
 partial class MimeType :
-#pragma warning restore IDE0040
   IEquatable<MimeType>,
   IEquatable<string> {
   /*
