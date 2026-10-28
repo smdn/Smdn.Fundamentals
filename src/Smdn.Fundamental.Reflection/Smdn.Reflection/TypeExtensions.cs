@@ -270,11 +270,12 @@ public static partial class TypeExtensions {
 
   private struct DefaultLayoutStruct { }
   private static readonly StructLayoutAttribute DefaultStructLayoutAttribute =
-    typeof(DefaultLayoutStruct).StructLayoutAttribute
+    typeof(DefaultLayoutStruct)
 #if NET8_0_OR_GREATER
-    ! // TODO: in case of null
+      .StructLayoutAttribute!; // TODO: in case of null
+#else
+      .StructLayoutAttribute;
 #endif
-    ;
 
   /// <remarks>The value of <see ref="StructLayoutAttribute.Size"/> is not considered.</remarks>
   public static bool IsStructLayoutDefault(this Type t)

@@ -413,9 +413,10 @@ static partial class TypeExtensions {
           if (ExtensionMembersUtils.TryGetExtensionMarkerTypeName(member, out var extensionGroupingTypeName)) {
             yield return (
               member,
+#if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
               extensionGroupingTypeName
-#if !NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
-              !
+#else
+              extensionGroupingTypeName!
 #endif
             );
           }
