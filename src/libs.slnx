@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
 -->
 <Solution>
-  <Folder Name="/Smdn.Core.Miscellaneous/">
+  <Folder Name="/">
     <Project Path="Smdn.Extensions.Polly.KeyedRegistry/Smdn.Extensions.Polly.KeyedRegistry.csproj" />
     <Project Path="Smdn.Fundamental.Buffer/Smdn.Fundamental.Buffer.csproj" />
     <Project Path="Smdn.Fundamental.ByteString/Smdn.Fundamental.ByteString.csproj" />

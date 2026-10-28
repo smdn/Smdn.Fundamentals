@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <!--
 SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 SPDX-License-Identifier: MIT
@@ -37,7 +37,7 @@ SPDX-License-Identifier: MIT
     <IntermediateOutputPath>..\build\obj\Release\net\</IntermediateOutputPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
@@ -45,7 +45,7 @@ SPDX-License-Identifier: MIT
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="..\Common\CommonAssemblyInfo-netfx.cs" />
+    <Compile Include="..\..\Common\CommonAssemblyInfo-netfx.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Smdn\ConsoleUtils.cs" />
     <Compile Include="Smdn.IO\CachedWebFile.cs" />
@@ -75,7 +75,7 @@ SPDX-License-Identifier: MIT
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <ProjectReference Include="..\..\Smdn\src\Smdn.csproj">
+    <ProjectReference Include="..\..\Smdn\Smdn.csproj">
       <Project>{B9068594-64C2-4976-AF65-D7FA9BBE0522}</Project>
       <Name>Smdn</Name>
     </ProjectReference>
