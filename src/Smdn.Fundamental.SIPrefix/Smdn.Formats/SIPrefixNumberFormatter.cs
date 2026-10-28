@@ -38,12 +38,10 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
     set { ThrowIfReadOnly(); byteUnit = value; }
   }
 
-  private string byteUnitAbbreviation = "B";
-
   public string ByteUnitAbbreviation {
-    get => byteUnitAbbreviation;
-    set { ThrowIfReadOnly(); byteUnitAbbreviation = value; }
-  }
+    get;
+    set { ThrowIfReadOnly(); field = value; }
+  } = "B";
 
   private string[] DecimalPrefixes { get; }
   private string[] BinaryPrefixes { get; }
@@ -184,7 +182,7 @@ public class SIPrefixNumberFormatter : IFormatProvider, ICustomFormatter {
         )
       );
 
-      unitString = abbreviate ? byteUnitAbbreviation : byteUnit;
+      unitString = abbreviate ? ByteUnitAbbreviation : byteUnit;
     }
     else {
       ret.Append(
