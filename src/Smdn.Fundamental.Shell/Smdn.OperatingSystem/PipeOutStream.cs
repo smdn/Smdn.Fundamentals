@@ -33,13 +33,13 @@ public class PipeOutStream : Stream {
 
   /// <remarks>in milliseconds.</remarks>
   public int WaitForExitTimeout {
-    get => waitForExitTimeout;
+    get;
     private set {
       if (value < -1)
         throw ExceptionUtils.CreateArgumentMustBeGreaterThanOrEqualTo(-1, nameof(WaitForExitTimeout), value);
-      waitForExitTimeout = value;
+      field = value;
     }
-  }
+  } = 1000;
 
   public PipeOutStream(ProcessStartInfo startInfo)
     : this(startInfo, null, null)
@@ -65,7 +65,7 @@ public class PipeOutStream : Stream {
         process.StandardInput.BaseStream.Flush();
         process.StandardInput.Close();
 
-        if (!process.WaitForExit(waitForExitTimeout))
+        if (!process.WaitForExit(WaitForExitTimeout))
           process.Kill();
       }
 
@@ -173,6 +173,5 @@ public class PipeOutStream : Stream {
   private Process process = null;
   private DataReceivedEventHandler onOutputDataReceived;
   private DataReceivedEventHandler onErrorDataReceived;
-  private int waitForExitTimeout = 1000;
 }
 #endif
