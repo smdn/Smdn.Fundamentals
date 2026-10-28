@@ -290,13 +290,11 @@ internal static class DateAndTimeParser {
 
     // attempt to parse as date and time format
     var success = DateTimeOffset.TryParseExact(
-#pragma warning disable SA1114
 #if SYSTEM_DATETIMEOFFSET_TRYPARSEEXACT_READONLYSPAN_OF_CHAR
       s,
 #else
       s.ToString(),
 #endif
-#pragma warning restore SA1114
       formatsDateAndTime,
       CultureInfo.InvariantCulture.DateTimeFormat,
       timeZoneStyles | WhiteSpaceStyles,
@@ -311,13 +309,11 @@ internal static class DateAndTimeParser {
 
     // attempt to parse as date only format
     return DateTimeOffset.TryParseExact(
-#pragma warning disable SA1114
 #if SYSTEM_DATETIMEOFFSET_TRYPARSEEXACT_READONLYSPAN_OF_CHAR
       s,
 #else
       s.ToString(),
 #endif
-#pragma warning restore SA1114
       formatsDateOnly,
       CultureInfo.InvariantCulture.DateTimeFormat,
       DateTimeStyles.AssumeUniversal | WhiteSpaceStyles,

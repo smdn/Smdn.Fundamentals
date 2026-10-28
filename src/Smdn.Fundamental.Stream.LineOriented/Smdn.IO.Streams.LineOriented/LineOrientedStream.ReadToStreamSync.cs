@@ -98,23 +98,19 @@ partial class LineOrientedStream {
 
     for (; ; ) {
       var r = s.Read(
-#pragma warning disable SA1114
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
         buffer.AsSpan()
 #else
         buffer, 0, buffer.Length
 #endif
-#pragma warning restore SA1114
       );
 
       destination.Write(
-#pragma warning disable SA1114
 #if SYSTEM_IO_STREAM_WRITE_READONLYSPAN_OF_BYTE
         buffer.AsSpan(0, r)
 #else
         buffer, 0, r
 #endif
-#pragma warning restore SA1114
       );
 
       read += r;
@@ -150,26 +146,22 @@ partial class LineOrientedStream {
 
       var bytesToReadFromUnderlyingStream = (int)Math.Min(bytesToRead, buffer.Length);
       var r = s.Read(
-#pragma warning disable SA1114
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
         buffer.AsSpan(0, bytesToReadFromUnderlyingStream)
 #else
         buffer, 0, bytesToReadFromUnderlyingStream
 #endif
-#pragma warning restore SA1114
       );
 
       if (r <= 0)
         break;
 
       destination.Write(
-#pragma warning disable SA1114
 #if SYSTEM_IO_STREAM_WRITE_READONLYSPAN_OF_BYTE
         buffer.AsSpan(0, r)
 #else
         buffer, 0, r
 #endif
-#pragma warning restore CA1835
       );
 
       bytesToRead -= r;

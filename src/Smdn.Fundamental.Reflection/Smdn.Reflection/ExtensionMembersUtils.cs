@@ -46,7 +46,6 @@ internal static class ExtensionMembersUtils {
     if (!TryGetExtensionMarkerType(member, out var extensionMarkerType))
       return false;
 
-#pragma warning disable SA1114
     _ = TypeExtensions.IsExtensionMarkerTypeUnchecked(
 #if NULL_STATE_STATIC_ANALYSIS_ATTRIBUTES
       extensionMarkerType,
@@ -55,7 +54,6 @@ internal static class ExtensionMembersUtils {
 #endif
       out extensionParameter
     );
-#pragma warning restore SA1114
 
     return extensionParameter is not null;
   }

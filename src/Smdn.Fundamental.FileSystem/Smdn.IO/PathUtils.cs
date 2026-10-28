@@ -217,7 +217,6 @@ public static class PathUtils {
       basePath = ConstructFileSchemeUri(basePath);
       path = ConstructFileSchemeUri(path);
 
-#pragma warning disable SA1114
       static string ConstructFileSchemeUri(string path)
         => path = string.Concat(
 #if SYSTEM_URI_URISCHEMEFILE
@@ -229,7 +228,6 @@ public static class PathUtils {
 #endif
           path.Replace(":", "%3A")
         );
-#pragma warning restore SA1114
     }
 
     var uriBase = new Uri(basePath);

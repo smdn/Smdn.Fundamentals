@@ -304,7 +304,6 @@ public static class RFC822DateTimeFormats {
     private TimeSpan GetUtcOffset(DateTime dateAndTime)
     {
       if (timeZoneInfo is null) {
-#pragma warning disable SA1114
 #if SYSTEM_TIMEZONENOTFOUNDEXCEPTION
         throw new TimeZoneNotFoundException(
 #else
@@ -312,7 +311,6 @@ public static class RFC822DateTimeFormats {
 #endif
           $"could not find TimeZoneInfo for the time zone '{timeZoneName}'"
         );
-#pragma warning restore SA1114
       }
 
       return timeZoneInfo.GetUtcOffset(dateAndTime);

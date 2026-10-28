@@ -246,13 +246,11 @@ partial class LineOrientedStream {
     return new(
       sequenceWithNewLine: lineSequence,
       positionOfNewLine: lineSequence.GetPosition(
-#pragma warning disable SA1114
 #if SYSTEM_BUFFERS_READONLYSEQUENCE_GETOFFSET
         lineSequence.GetOffset(lineSequence.End) - lengthOfLineTerminator
 #else
         lineSequence.Length - lengthOfLineTerminator
 #endif
-#pragma warning restore SA1114
       )
     );
   }

@@ -57,7 +57,6 @@ public static class UriUtils {
       return Smdn.Collections.ReadOnlyDictionary<string, string>.Empty;
 
     var ret = new Dictionary<string, string>(comparer);
-#pragma warning disable SA1114
     var splitted = queryParameters.Split(
 #if SYSTEM_STRING_SPLIT_CHAR
       ParameterSplitterChar,
@@ -66,7 +65,6 @@ public static class UriUtils {
 #endif
       StringSplitOptions.RemoveEmptyEntries
     );
-#pragma warning restore SA1114
 
     foreach (var nameAndValue in splitted) {
       var pos =

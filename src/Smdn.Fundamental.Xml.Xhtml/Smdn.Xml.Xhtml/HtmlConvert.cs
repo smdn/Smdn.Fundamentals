@@ -54,7 +54,6 @@ public static partial class HtmlConvert {
 
     var sb = new StringBuilder(s.Length);
 
-#pragma warning disable SA1114
     sb.Append(
 #if SYSTEM_TEXT_STRINGBUILDER_APPEND_READONLYSPAN_OF_CHAR
       s
@@ -62,7 +61,6 @@ public static partial class HtmlConvert {
       StringShim.Construct(s)
 #endif
     );
-#pragma warning restore SA1114
 
     sb.Replace("&lt;", "<");
     sb.Replace("&gt;", ">");

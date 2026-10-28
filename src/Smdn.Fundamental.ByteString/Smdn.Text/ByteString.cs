@@ -54,13 +54,11 @@ public class ByteString :
   public static ByteString CreateEmpty()
   {
     return new ByteString(
-#pragma warning disable SA1114
 #if SYSTEM_ARRAY_EMPTY
       new ArraySegment<byte>(Array.Empty<byte>()),
 #else
       new ArraySegment<byte>(EmptyByteArray),
 #endif
-#pragma warning restore SA1114
       true
     );
     // return new ByteString(new ArraySegment<byte>(), true); // XXX: NullReferenceException at ArraySegment.GetHashCode

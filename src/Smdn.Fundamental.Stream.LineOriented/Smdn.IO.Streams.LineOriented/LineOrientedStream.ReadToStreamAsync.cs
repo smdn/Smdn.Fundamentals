@@ -83,14 +83,14 @@ partial class LineOrientedStream {
       : bufRemain;
 
     await destination.WriteAsync(
-#pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       buffer.AsMemory(bufOffset, bytesToReadFromBuffer),
 #else
-      buffer, bufOffset, bytesToReadFromBuffer,
+      buffer,
+      bufOffset,
+      bytesToReadFromBuffer,
 #endif
       cancellationToken
-#pragma warning restore SA1114, SA1117
     ).ConfigureAwait(false);
 
     bufRemain -= bytesToReadFromBuffer;
@@ -120,25 +120,25 @@ partial class LineOrientedStream {
     for (; ; ) {
       var r =
         await s.ReadAsync(
-#pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
           buffer.AsMemory(),
 #else
-          buffer, 0, buffer.Length,
+          buffer,
+          0,
+          buffer.Length,
 #endif
           cancellationToken
-#pragma warning restore SA1114, SA1117
         ).ConfigureAwait(false);
 
       await destination.WriteAsync(
-#pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
         buffer.AsMemory(0, r),
 #else
-        buffer, 0, r,
+        buffer,
+        0,
+        r,
 #endif
         cancellationToken
-#pragma warning restore SA1114, SA1117
       ).ConfigureAwait(false);
 
       read += r;
@@ -175,28 +175,28 @@ partial class LineOrientedStream {
 
       var bytesToReadFromUnderlyingStream = (int)Math.Min(bytesToRead, buffer.Length);
       var r = await s.ReadAsync(
-#pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
         buffer.AsMemory(0, bytesToReadFromUnderlyingStream),
 #else
-        buffer, 0, bytesToReadFromUnderlyingStream,
+        buffer,
+        0,
+        bytesToReadFromUnderlyingStream,
 #endif
         cancellationToken
-#pragma warning restore SA1114, SA1117
       ).ConfigureAwait(false);
 
       if (r <= 0)
         break;
 
       await destination.WriteAsync(
-#pragma warning disable SA1114, SA1117
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
         buffer.AsMemory(0, r),
 #else
-        buffer, 0, r,
+        buffer,
+        0,
+        r,
 #endif
         cancellationToken
-#pragma warning restore SA1114, SA1117
       ).ConfigureAwait(false);
 
       bytesToRead -= r;
