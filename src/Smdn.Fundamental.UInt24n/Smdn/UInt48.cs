@@ -194,7 +194,9 @@ public readonly partial struct UInt48 {
     else if (typeof(TOther) == typeof(sbyte)) {
       var val = (sbyte)(object)value;
 
-      result = val < minValue ? MinValue : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : new((ulong)val, check: false);
 
       return true;
     }
@@ -211,7 +213,9 @@ public readonly partial struct UInt48 {
     else if (typeof(TOther) == typeof(short)) {
       var val = (short)(object)value;
 
-      result = val < minValue ? MinValue : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : new((ulong)val, check: false);
 
       return true;
     }
@@ -223,79 +227,97 @@ public readonly partial struct UInt48 {
     else if (typeof(TOther) == typeof(int)) {
       var val = (int)(object)value;
 
-      result = val < minValue ? MinValue : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(ulong)) {
       var val = (ulong)(object)value;
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new(val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new(val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(long)) {
       var val = (long)(object)value;
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(nuint)) {
       var val = (nuint)(object)value;
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(nint)) {
       var val = (nint)(object)value;
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(Half)) {
       var val = (float)((Half)(object)value);
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(float)) {
       var val = (double)((float)(object)value);
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(double)) {
       var val = (double)(object)value;
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }
     else if (typeof(TOther) == typeof(decimal)) {
       var val = (decimal)(object)value;
 
-      result = val < minValue ? MinValue
-        : val > maxValue ? MaxValue
-        : new((ulong)val, check: false);
+      result = val < minValue
+        ? MinValue
+        : val > maxValue
+          ? MaxValue
+          : new((ulong)val, check: false);
 
       return true;
     }

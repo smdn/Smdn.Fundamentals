@@ -49,11 +49,10 @@ static partial class ContentTransferEncoding {
       stream,
       ParseOrThrowNotSupportedException(encoding),
       charset is null
-        ?
 #if SYSTEM_TEXT_ENCODING_LATIN1
-          Encoding.Latin1
+        ? Encoding.Latin1
 #else
-          Encoding.GetEncoding("ISO-8859-1")
+        ? Encoding.GetEncoding("ISO-8859-1")
 #endif
         : EncodingUtils.GetEncodingThrowException(charset),
       leaveStreamOpen
