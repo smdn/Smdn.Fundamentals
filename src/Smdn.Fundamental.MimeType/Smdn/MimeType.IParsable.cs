@@ -17,18 +17,16 @@ partial class MimeType
 #if !SYSTEM_TEXT_ASCII
   private const int AsciiCodePage = 20127;
 
-  private static Encoding? decoderExceptionFallbackAsciiEncoding;
-
   // XXX: can not use Lazy<T>
   private static Encoding DecoderExceptionFallbackAsciiEncoding {
     get {
-      decoderExceptionFallbackAsciiEncoding ??= Encoding.GetEncoding(
+      field ??= Encoding.GetEncoding(
         codepage: AsciiCodePage,
         encoderFallback: EncoderFallback.ExceptionFallback,
         decoderFallback: DecoderFallback.ExceptionFallback
       );
 
-      return decoderExceptionFallbackAsciiEncoding;
+      return field;
     }
   }
 #endif
