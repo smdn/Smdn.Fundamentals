@@ -36,19 +36,17 @@ public static class Platform {
   [Obsolete("use Smdn.IO.PathUtils.DefaultPathStringComparer instead")]
   public static StringComparer PathStringComparer => Smdn.IO.PathUtils.DefaultPathStringComparer;
 
-  private static string kernelName = null;
-
   public static string KernelName {
     get {
 #pragma warning disable IDE0074
-      if (kernelName == null) {
-        kernelName = $"{RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture}"; // default
+      if (field is null) {
+        field = $"{RuntimeInformation.OSDescription} {RuntimeInformation.ProcessArchitecture}"; // default
 
 #if SYSTEM_DIAGNOSTICS_PROCESS
         try {
           // cSpell:ignore srvom
           if (IsRunningOnUnix)
-            kernelName = Shell.Execute("uname -srvom").Trim();
+            field = Shell.Execute("uname -srvom").Trim();
         }
 #pragma warning disable CA1031
         catch {
@@ -59,22 +57,20 @@ public static class Platform {
       }
 #pragma warning restore IDE0074
 
-      return kernelName;
+      return field;
     }
   }
-
-  private static string distributionName = null;
 
   public static string DistributionName {
     get {
 #pragma warning disable IDE0074
-      if (distributionName == null) {
-        distributionName = RuntimeInformation.OSDescription; // default
+      if (field is null) {
+        field = RuntimeInformation.OSDescription; // default
 
 #if SYSTEM_DIAGNOSTICS_PROCESS
         try {
           if (IsRunningOnUnix)
-            distributionName = Shell.Execute("lsb_release -ds").Trim();
+            field = Shell.Execute("lsb_release -ds").Trim();
         }
 #pragma warning disable CA1031
         catch {
@@ -85,16 +81,14 @@ public static class Platform {
       }
 #pragma warning restore IDE0074
 
-      return distributionName;
+      return field;
     }
   }
 
-  private static string processorName = null;
-
   public static string ProcessorName {
     get {
-      if (processorName == null) {
-        processorName = RuntimeInformation.OSArchitecture.ToString(); // default
+      if (field is null) {
+        field = RuntimeInformation.OSArchitecture.ToString(); // default
 
         try {
           if (IsRunningOnUnix) {
@@ -107,7 +101,7 @@ public static class Platform {
                   line.IndexOf(':');
 #endif
 
-                processorName = line.Substring(indexOfDelimiter + 1).Trim();
+                field = line.Substring(indexOfDelimiter + 1).Trim();
                 break;
               }
             }
@@ -123,7 +117,7 @@ public static class Platform {
 #pragma warning restore CA1031
       }
 
-      return processorName;
+      return field;
     }
   }
 }
