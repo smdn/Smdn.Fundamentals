@@ -18,8 +18,14 @@ partial struct Uuid :
   IEquatable<Guid>
 {
 #pragma warning restore format
+
+#pragma warning disable SA1315
+  // In `IEqualityOperators`, the parameter names are `left` and `right`,
+  // but since this has already been released as part of the public API,
+  // the current names must be kept.
   public static bool operator ==(Uuid x, Uuid y) => x.fields_high == y.fields_high && x.fields_low == y.fields_low;
   public static bool operator !=(Uuid x, Uuid y) => x.fields_high != y.fields_high || x.fields_low != y.fields_low;
+#pragma warning restore SA1315
 
   public override bool Equals(object? obj)
     => obj switch {

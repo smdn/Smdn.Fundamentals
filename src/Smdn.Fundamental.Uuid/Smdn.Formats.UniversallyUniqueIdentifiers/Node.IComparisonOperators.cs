@@ -19,10 +19,16 @@ partial struct Node :
   IComparable
 {
 #pragma warning restore IDE0055
+
+#pragma warning disable SA1315
+  // In `IComparisonOperators`, the parameter names are `left` and `right`,
+  // but since this has already been released as part of the public API,
+  // the current names must be kept.
   public static bool operator <(Node x, Node y) => x.CompareTo(y) < 0;
   public static bool operator <=(Node x, Node y) => x.CompareTo(y) <= 0;
   public static bool operator >(Node x, Node y) => y < x;
   public static bool operator >=(Node x, Node y) => y <= x;
+#pragma warning restore SA1315
 
   public int CompareTo(object? obj)
     => obj switch {

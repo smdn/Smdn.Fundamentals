@@ -15,8 +15,13 @@ partial struct Node :
   IEqualityOperators<Node, Node, bool>,
 #endif
   IEquatable<Node> {
+#pragma warning disable SA1315
+  // In `IEqualityOperators`, the parameter names are `left` and `right`,
+  // but since this has already been released as part of the public API,
+  // the current names must be kept.
   public static bool operator ==(Node x, Node y) => x.Equals(y);
   public static bool operator !=(Node x, Node y) => !x.Equals(y);
+#pragma warning restore SA1315
 
   public override bool Equals(object? obj)
     => obj switch {
