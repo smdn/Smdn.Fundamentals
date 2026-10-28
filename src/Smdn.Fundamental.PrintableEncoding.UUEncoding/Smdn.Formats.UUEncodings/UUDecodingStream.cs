@@ -50,8 +50,10 @@ public class UUDecodingStream : Stream {
       if (state == State.Initial)
         InternalSeekToNextFile();
 
-      return fileName;
+      return field;
     }
+
+    private set;
   }
 
   [CLSCompliant(false)]
@@ -104,10 +106,8 @@ public class UUDecodingStream : Stream {
       stream = null;
     }
 
-    if (transform != null) {
-      transform.Dispose();
-      transform = null;
-    }
+    transform?.Dispose();
+    transform = null;
 
 #if SYSTEM_IO_STREAM_CLOSE
     base.Close();
@@ -130,7 +130,7 @@ public class UUDecodingStream : Stream {
     ThrowObjectDisposedExceptionIf(IsClosed);
 
     permissions = 0u;
-    fileName = null;
+    FileName = null;
 
     if (state == State.EndOfStream)
       return;
@@ -170,7 +170,7 @@ public class UUDecodingStream : Stream {
           permissions |= p;
         }
 
-        fileName =
+        FileName =
 #if SYSTEM_BUFFERS_SEQUENCEREADER_UNREADSEQUENCE
           headerReader.UnreadSequence
 #else
@@ -209,7 +209,7 @@ public class UUDecodingStream : Stream {
           permissions |= p;
         }
 
-        fileName = file.CreateString().Trim();
+        FileName = file.CreateString().Trim();
 #endif
 
         state = State.DataLine;
@@ -362,7 +362,6 @@ public class UUDecodingStream : Stream {
   private LineOrientedStream? stream;
   private State state = State.Initial;
   private uint permissions;
-  private string? fileName;
   private UUDecodingTransform? transform;
   private byte[]? decodedDataLine;
   private int dataLineOffset;
