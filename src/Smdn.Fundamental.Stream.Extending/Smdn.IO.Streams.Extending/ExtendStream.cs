@@ -83,14 +83,12 @@ public class ExtendStream : ExtendStreamBase {
 
   protected override void SetPrependedDataPosition(long position)
   {
-    if (prependStream is not null)
-      prependStream.Position = position;
+    prependStream?.Position = position;
   }
 
   protected override void SetAppendedDataPosition(long position)
   {
-    if (appendStream is not null)
-      appendStream.Position = position;
+    appendStream?.Position = position;
   }
 
   private static InvalidOperationException CreateAccessToNullPrependDataException()

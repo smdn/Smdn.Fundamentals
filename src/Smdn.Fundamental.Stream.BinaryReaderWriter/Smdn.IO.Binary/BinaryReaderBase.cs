@@ -10,7 +10,7 @@ namespace Smdn.IO.Binary;
 [System.Runtime.CompilerServices.TypeForwardedFrom("Smdn, Version=3.0.0.0, Culture=neutral, PublicKeyToken=null")]
 public abstract class BinaryReaderBase : IDisposable {
   public bool LeaveBaseStreamOpen {
-    get { CheckDisposed(); return leaveBaseStreamOpen; }
+    get { CheckDisposed(); return field; }
   }
 
   public virtual bool EndOfStream {
@@ -45,7 +45,7 @@ public abstract class BinaryReaderBase : IDisposable {
       throw ExceptionUtils.CreateArgumentMustBeReadableStream(nameof(baseStream));
 
     this.stream = baseStream;
-    this.leaveBaseStreamOpen = leaveBaseStreamOpen;
+    LeaveBaseStreamOpen = leaveBaseStreamOpen;
   }
 
   public virtual void Close() => Dispose();
@@ -232,5 +232,4 @@ public abstract class BinaryReaderBase : IDisposable {
 #pragma warning disable CA2213
   private Stream stream;
 #pragma warning restore CA2213
-  private readonly bool leaveBaseStreamOpen;
 }

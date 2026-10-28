@@ -339,10 +339,8 @@ public sealed class ChunkedMemoryStream : Stream {
   protected override void Dispose(bool disposing)
 #endif
   {
-    if (chain != null) {
-      chain.Dispose();
-      chain = null;
-    }
+    chain?.Dispose();
+    chain = null;
 
 #if SYSTEM_IO_STREAM_CLOSE
     base.Close();
