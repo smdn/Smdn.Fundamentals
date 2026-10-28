@@ -33,10 +33,8 @@ public sealed class PersistentCachedStream : CachedStreamBase {
   protected override void Dispose(bool disposing)
 #endif
   {
-    if (cachedBlocks != null) {
-      cachedBlocks.Clear();
-      cachedBlocks = null;
-    }
+    cachedBlocks?.Clear();
+    cachedBlocks = null;
 
 #if SYSTEM_IO_STREAM_CLOSE
     base.Close();
