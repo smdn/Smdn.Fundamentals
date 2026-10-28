@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 #pragma warning disable IDE0005
+#pragma warning disable SA1121 // Use built-in type alias
 
 /*
  * Smdn.ArrayShim / System.Array
