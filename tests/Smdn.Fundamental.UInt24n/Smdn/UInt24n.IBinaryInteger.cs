@@ -116,8 +116,10 @@ partial class UInt24Tests {
     Assert.That(DivRem(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo((UInt24.One, UInt24.Zero)), $"{nameof(UInt24)} DivRem(MaxValue, MaxValue)");
 
 #if SYSTEM_NUMERICS_IBINARYINTEGER
+#pragma warning disable CS8321
     static (TUInt24n Quotient, TUInt24n Remainder) DivRem<TUInt24n>(TUInt24n left, TUInt24n right) where TUInt24n : IBinaryInteger<TUInt24n>
       => TUInt24n.DivRem(left, right);
+#pragma warning restore CS8321
 #else
     static (UInt24 Quotient, UInt24 Remainder) DivRem(UInt24 left, UInt24 right)
       => UInt24.DivRem(left, right);
@@ -139,8 +141,10 @@ partial class UInt48Tests {
     Assert.That(DivRem(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo((UInt48.One, UInt48.Zero)), $"{nameof(UInt48)} DivRem(MaxValue, MaxValue)");
 
 #if SYSTEM_NUMERICS_IBINARYINTEGER
+#pragma warning disable CS8321
     static (TUInt24n Quotient, TUInt24n Remainder) DivRem<TUInt24n>(TUInt24n left, TUInt24n right) where TUInt24n : IBinaryInteger<TUInt24n>
       => TUInt24n.DivRem(left, right);
+#pragma warning restore CS8321
 #else
     static (UInt48 Quotient, UInt48 Remainder) DivRem(UInt48 left, UInt48 right)
       => UInt48.DivRem(left, right);

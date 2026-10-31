@@ -68,8 +68,10 @@ partial class UInt24nTests {
     Assert.That(Subtract(UInt48.One, UInt48.One), Is.EqualTo(UInt48.Zero), "1 - 1");
     Assert.That(Subtract(UInt48.Zero, UInt48.MaxValue), Is.EqualTo(UInt48.One), "0 - Max");
 
+#pragma warning disable CS8321
     static TUInt24n Subtract<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : ISubtractionOperators<TUInt24n, TUInt24n, TUInt24n>
       => x - y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -81,8 +83,10 @@ partial class UInt24nTests {
     Assert.That(() => Subtract(UInt48.Zero, UInt48.One), Throws.TypeOf<OverflowException>(), "0 - 1");
     Assert.That(() => Subtract(UInt48.One, UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "1 - Max");
 
+#pragma warning disable CS8321
     static TUInt24n Subtract<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : ISubtractionOperators<TUInt24n, TUInt24n, TUInt24n>
       => checked(x - y);
+#pragma warning restore CS8321
   }
 #endif
 }

@@ -41,8 +41,10 @@ partial class UInt24nTests {
     Assert.That(UnaryPlus(UInt48.One), Is.EqualTo(UInt48.One), "+1");
     Assert.That(UnaryPlus(UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), "+Max");
 
+#pragma warning disable CS8321
     static TUInt24n UnaryPlus<TUInt24n>(TUInt24n value) where TUInt24n : IUnaryPlusOperators<TUInt24n, TUInt24n>
       => +value;
+#pragma warning restore CS8321
   }
 #endif
 }

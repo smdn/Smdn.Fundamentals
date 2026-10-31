@@ -57,8 +57,10 @@ partial class UInt24nTests {
     Assert.That(BitwiseAnd(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.One), "UInt48 Max & 1");
     Assert.That(BitwiseAnd(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), "UInt48 Max & Max");
 
+#pragma warning disable CS8321
     static TUInt24n BitwiseAnd<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IBitwiseOperators<TUInt24n, TUInt24n, TUInt24n>
       => x & y;
+#pragma warning restore CS8321
   }
 }
 #endif
@@ -112,8 +114,10 @@ partial class UInt24nTests {
     Assert.That(BitwiseOr(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.MaxValue), "UInt48 Max | 1");
     Assert.That(BitwiseOr(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.MaxValue), "UInt48 Max | Max");
 
+#pragma warning disable CS8321
     static TUInt24n BitwiseOr<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IBitwiseOperators<TUInt24n, TUInt24n, TUInt24n>
       => x | y;
+#pragma warning restore CS8321
   }
 }
 #endif
@@ -167,8 +171,10 @@ partial class UInt24nTests {
     Assert.That(ExclusiveOr(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.MaxValue - UInt48.One), "UInt48 Max ^ 1");
     Assert.That(ExclusiveOr(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.Zero), "UInt48 Max ^ Max");
 
+#pragma warning disable CS8321
     static TUInt24n ExclusiveOr<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IBitwiseOperators<TUInt24n, TUInt24n, TUInt24n>
       => x ^ y;
+#pragma warning restore CS8321
   }
 }
 #endif
@@ -206,8 +212,10 @@ partial class UInt24nTests {
     Assert.That(OnesComplement(UInt48.One), Is.EqualTo(UInt48.MaxValue - UInt48.One), "UInt48 ~1");
     Assert.That(OnesComplement(UInt48.MaxValue), Is.EqualTo(UInt48.Zero), "UInt48 ~Max");
 
+#pragma warning disable CS8321
     static TUInt24n OnesComplement<TUInt24n>(TUInt24n value) where TUInt24n : IBitwiseOperators<TUInt24n, TUInt24n, TUInt24n>
       => ~value;
+#pragma warning restore CS8321
   }
 }
 #endif
@@ -249,8 +257,10 @@ partial class UInt24nTests {
     Assert.That(IsPow2(UInt48.One + UInt48.One), Is.True, "UInt48 IsPow2(2)");
     Assert.That(IsPow2(UInt48.MaxValue), Is.False, "UInt48 IsPow2(Max)");
 
+#pragma warning disable CS8321
     static bool IsPow2<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryNumber<TUInt24n>
       => TUInt24n.IsPow2(value);
+#pragma warning restore CS8321
   }
 }
 #endif
@@ -292,8 +302,10 @@ partial class UInt24nTests {
     Assert.That(Log2(UInt48.One + UInt48.One), Is.EqualTo(UInt48.One), "UInt48 Log2(2)");
     Assert.That(Log2(UInt48.MaxValue), Is.EqualTo((UInt48)47), "UInt48 Log2(Max)");
 
+#pragma warning disable CS8321
     static TUInt24n Log2<TUInt24n>(TUInt24n value) where TUInt24n : IBinaryNumber<TUInt24n>
       => TUInt24n.Log2(value);
+#pragma warning restore CS8321
   }
 }
 #endif

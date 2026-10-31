@@ -69,8 +69,10 @@ partial class UInt24nTests {
     Assert.That(Equals(UInt48.Zero, UInt48.One), Is.False, "UInt48.Zero == UInt48.One");
     Assert.That(Equals(UInt48.One, UInt48.One), Is.True, "UInt48.One == UInt48.One");
 
+#pragma warning disable CS8321
     static bool Equals<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IEqualityOperators<TUInt24n, TUInt24n, bool>
       => x == y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -86,8 +88,10 @@ partial class UInt24nTests {
     Assert.That(NotEqual(UInt48.Zero, UInt48.One), Is.True, "UInt48.Zero != UInt48.One");
     Assert.That(NotEqual(UInt48.One, UInt48.One), Is.False, "UInt48.One != UInt48.One");
 
+#pragma warning disable CS8321
     static bool NotEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IEqualityOperators<TUInt24n, TUInt24n, bool>
       => x != y;
+#pragma warning restore CS8321
   }
 #endif
 }

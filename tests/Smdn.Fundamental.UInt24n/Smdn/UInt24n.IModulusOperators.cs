@@ -58,8 +58,10 @@ partial class UInt24nTests {
     Assert.That(Modulo(UInt48.MaxValue, UInt48.One), Is.EqualTo(UInt48.Zero), "Max % 1");
     Assert.That(Modulo(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.Zero), "Max % Max");
 
+#pragma warning disable CS8321
     static TUInt24n Modulo<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IModulusOperators<TUInt24n, TUInt24n, TUInt24n>
       => x % y;
+#pragma warning restore CS8321
   }
 #endif
 }

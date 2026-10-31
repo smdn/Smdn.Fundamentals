@@ -98,12 +98,14 @@ partial class UInt24nTests {
 
     Increment(UInt48.MaxValue);
 
+#pragma warning disable CS8321
     static void Increment<TUInt24n>(TUInt24n value) where TUInt24n : IIncrementOperators<TUInt24n>
     {
       checked {
         Assert.That(() => ++value, Throws.TypeOf<OverflowException>());
       }
     }
+#pragma warning restore CS8321
   }
 #endif
 }

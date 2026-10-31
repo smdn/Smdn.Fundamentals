@@ -60,8 +60,10 @@ partial class UInt24nTests {
     Assert.That(UnaryNegation(UInt48.One), Is.EqualTo(UInt48.MaxValue), "-1");
     Assert.That(UnaryNegation(UInt48.MaxValue), Is.EqualTo(UInt48.One), "-Max");
 
+#pragma warning disable CS8321
     static TUInt24n UnaryNegation<TUInt24n>(TUInt24n value) where TUInt24n : IUnaryNegationOperators<TUInt24n, TUInt24n>
       => -value;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -73,8 +75,10 @@ partial class UInt24nTests {
     Assert.That(() => CheckedUnaryNegation(UInt48.One), Throws.TypeOf<OverflowException>(), "-1");
     Assert.That(() => CheckedUnaryNegation(UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "-Max");
 
+#pragma warning disable CS8321
     static TUInt24n CheckedUnaryNegation<TUInt24n>(TUInt24n value) where TUInt24n : IUnaryNegationOperators<TUInt24n, TUInt24n>
       => checked(-value);
+#pragma warning restore CS8321
   }
 #endif
 }

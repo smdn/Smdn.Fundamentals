@@ -98,12 +98,14 @@ partial class UInt24nTests {
 
     Decrement(UInt48.Zero);
 
+#pragma warning disable CS8321
     static void Decrement<TUInt24n>(TUInt24n value) where TUInt24n : IDecrementOperators<TUInt24n>
     {
       checked {
         Assert.That(() => --value, Throws.TypeOf<OverflowException>());
       }
     }
+#pragma warning restore CS8321
   }
 #endif
 }

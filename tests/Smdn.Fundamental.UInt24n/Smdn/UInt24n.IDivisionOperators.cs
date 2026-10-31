@@ -76,8 +76,10 @@ partial class UInt24nTests {
     Assert.That(Divide(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), "1 / 1");
     Assert.That(Divide(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.One), "Max / Max");
 
+#pragma warning disable CS8321
     static TUInt24n Divide<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IDivisionOperators<TUInt24n, TUInt24n, TUInt24n>
       => x / y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -89,8 +91,10 @@ partial class UInt24nTests {
     Assert.That(Divide(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.Zero), "0 / 1");
     Assert.That(Divide(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), "1 / 1");
 
+#pragma warning disable CS8321
     static TUInt24n Divide<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IDivisionOperators<TUInt24n, TUInt24n, TUInt24n>
       => checked(x / y);
+#pragma warning restore CS8321
   }
 
   [Test]

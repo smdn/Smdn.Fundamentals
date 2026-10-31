@@ -68,8 +68,10 @@ partial class UInt24nTests {
     Assert.That(Multiply(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), "1 * 1");
     Assert.That(Multiply(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.One), "Max * Max");
 
+#pragma warning disable CS8321
     static TUInt24n Multiply<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IMultiplyOperators<TUInt24n, TUInt24n, TUInt24n>
       => x * y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -81,8 +83,10 @@ partial class UInt24nTests {
     Assert.That(() => Multiply(UInt48.MaxValue, (UInt48)2), Throws.TypeOf<OverflowException>(), "Max * 2");
     Assert.That(() => Multiply(UInt48.MaxValue, UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "Max * Max");
 
+#pragma warning disable CS8321
     static TUInt24n Multiply<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IMultiplyOperators<TUInt24n, TUInt24n, TUInt24n>
       => checked(x * y);
+#pragma warning restore CS8321
   }
 #endif
 }

@@ -260,8 +260,10 @@ partial class UInt24nTests {
     Assert.That(ShiftLeft(UInt48.MaxValue, -96), Is.EqualTo((UInt48)0b_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111uL), "Max << (-96 = 0)");
     Assert.That(ShiftLeft(UInt48.MaxValue, -97), Is.EqualTo((UInt48)0b_1000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000uL), "Max << (-97 = 47)");
 
+#pragma warning disable CS8321
     static TUInt24n ShiftLeft<TUInt24n>(TUInt24n value, int shiftAmount) where TUInt24n : IShiftOperators<TUInt24n, int, TUInt24n>
       => value << shiftAmount;
+#pragma warning restore CS8321
   }
 
   [TestCase(true)]
@@ -326,10 +328,12 @@ partial class UInt24nTests {
     Assert.That(ShiftRight(UInt48.MaxValue, -96, performUnsignedRightShift), Is.EqualTo((UInt48)0b_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111uL), $"Max {op} (-96 = 0)");
     Assert.That(ShiftRight(UInt48.MaxValue, -97, performUnsignedRightShift), Is.EqualTo((UInt48)0b_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0000_0001uL), $"Max {op} (-97 = 47)");
 
+#pragma warning disable CS8321
     static TUInt24n ShiftRight<TUInt24n>(TUInt24n value, int shiftAmount, bool performUnsignedRightShift) where TUInt24n : IShiftOperators<TUInt24n, int, TUInt24n>
       => performUnsignedRightShift
         ? value >>> shiftAmount
         : value >> shiftAmount;
+#pragma warning restore CS8321
   }
 }
 #endif

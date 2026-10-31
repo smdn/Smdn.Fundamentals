@@ -123,8 +123,10 @@ partial class UInt24nTests {
     Assert.That(GreaterThan(UInt48.Zero, UInt48.One), Is.False, "UInt48.Zero > UInt48.One");
     Assert.That(GreaterThan(UInt48.One, UInt48.One), Is.False, "UInt48.One > UInt48.One");
 
+#pragma warning disable CS8321
     static bool GreaterThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x > y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -140,8 +142,10 @@ partial class UInt24nTests {
     Assert.That(GreaterThanOrEqual(UInt48.Zero, UInt48.One), Is.False, "UInt48.Zero >= UInt48.One");
     Assert.That(GreaterThanOrEqual(UInt48.One, UInt48.One), Is.True, "UInt48.One >= UInt48.One");
 
+#pragma warning disable CS8321
     static bool GreaterThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x >= y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -157,8 +161,10 @@ partial class UInt24nTests {
     Assert.That(LessThan(UInt48.Zero, UInt48.One), Is.True, "UInt48.Zero < UInt48.One");
     Assert.That(LessThan(UInt48.One, UInt48.One), Is.False, "UInt48.One < UInt48.One");
 
+#pragma warning disable CS8321
     static bool LessThan<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x < y;
+#pragma warning restore CS8321
   }
 
   [Test]
@@ -174,8 +180,10 @@ partial class UInt24nTests {
     Assert.That(LessThanOrEqual(UInt48.Zero, UInt48.One), Is.True, "UInt48.Zero <= UInt48.One");
     Assert.That(LessThanOrEqual(UInt48.One, UInt48.One), Is.True, "UInt48.One <= UInt48.One");
 
+#pragma warning disable CS8321
     static bool LessThanOrEqual<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IComparisonOperators<TUInt24n, TUInt24n, bool>
       => x <= y;
+#pragma warning restore CS8321
   }
 #endif
 }
