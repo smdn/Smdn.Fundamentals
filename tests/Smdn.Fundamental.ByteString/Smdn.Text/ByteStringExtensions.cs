@@ -5,76 +5,76 @@ using System.Buffers;
 
 using NUnit.Framework;
 
-namespace Smdn.Text {
-  [TestFixture]
-  public class ByteStringExtensionsTests {
-    [Test]
-    public void TestByteString_AsReadOnlySequence()
-    {
-      var seq = ByteString.CreateImmutable("abc").AsReadOnlySequence();
+namespace Smdn.Text;
 
-      Assert.That(seq.Length, Is.EqualTo(3));
+[TestFixture]
+public class ByteStringExtensionsTests {
+  [Test]
+  public void TestByteString_AsReadOnlySequence()
+  {
+    var seq = ByteString.CreateImmutable("abc").AsReadOnlySequence();
 
-      var start = seq.Start;
+    Assert.That(seq.Length, Is.EqualTo(3));
 
-      seq.TryGet(ref start, out var mem);
+    var start = seq.Start;
 
-      Assert.That(mem.Span[0], Is.EqualTo((byte)'a'));
-      Assert.That(mem.Span[1], Is.EqualTo((byte)'b'));
-      Assert.That(mem.Span[2], Is.EqualTo((byte)'c'));
+    seq.TryGet(ref start, out var mem);
+
+    Assert.That(mem.Span[0], Is.EqualTo((byte)'a'));
+    Assert.That(mem.Span[1], Is.EqualTo((byte)'b'));
+    Assert.That(mem.Span[2], Is.EqualTo((byte)'c'));
+  }
+
+  [Test]
+  public void TestByteString_AsReadOnlySequence_Empty()
+  {
+    var seq = ByteString.CreateEmpty().AsReadOnlySequence();
+
+    Assert.That(seq.Length, Is.Zero);
+
+    var start = seq.Start;
+
+    seq.TryGet(ref start, out var mem);
+
+    Assert.That(mem.Length, Is.Zero);
+  }
+
+  private static Span<byte> CreateSpan(string str) => ByteString.CreateImmutable(str).Segment.AsSpan();
+
+  internal static ReadOnlySequence<byte> CreateSequence(string str, bool asSingleSegmentSequence = false)
+  {
+    if (asSingleSegmentSequence) {
+      return ByteString.CreateImmutable(str).AsReadOnlySequence();
     }
+    else {
+      StringSegment first = null;
+      StringSegment last = null;
+      const int seglen = 2;
 
-    [Test]
-    public void TestByteString_AsReadOnlySequence_Empty()
-    {
-      var seq = ByteString.CreateEmpty().AsReadOnlySequence();
+      for (var offset = 0; ;) {
+        var len = Math.Min(seglen, str.Length - offset);
 
-      Assert.That(seq.Length, Is.Zero);
+        last = new StringSegment(str.Substring(offset, len), last);
 
-      var start = seq.Start;
+        first ??= last;
 
-      seq.TryGet(ref start, out var mem);
+        offset += len;
 
-      Assert.That(mem.Length, Is.Zero);
+        if (offset == str.Length)
+          break;
+      }
+
+      return new ReadOnlySequence<byte>(first, 0, last, last.Memory.Length);
     }
+  }
 
-    private static Span<byte> CreateSpan(string str) => ByteString.CreateImmutable(str).Segment.AsSpan();
-
-    internal static ReadOnlySequence<byte> CreateSequence(string str, bool asSingleSegmentSequence = false)
+  private class StringSegment : ReadOnlySequenceSegment<byte> {
+    public StringSegment(string substr, StringSegment prev)
     {
-      if (asSingleSegmentSequence) {
-        return ByteString.CreateImmutable(str).AsReadOnlySequence();
-      }
-      else {
-        StringSegment first = null;
-        StringSegment last = null;
-        const int seglen = 2;
+      this.Memory = ByteString.CreateImmutable(substr).Segment.AsMemory();
+      this.RunningIndex = prev == null ? 0 : prev.RunningIndex + prev.Memory.Length;
 
-        for (var offset = 0; ;) {
-          var len = Math.Min(seglen, str.Length - offset);
-
-          last = new StringSegment(str.Substring(offset, len), last);
-
-          first ??= last;
-
-          offset += len;
-
-          if (offset == str.Length)
-            break;
-        }
-
-        return new ReadOnlySequence<byte>(first, 0, last, last.Memory.Length);
-      }
-    }
-
-    private class StringSegment : ReadOnlySequenceSegment<byte> {
-      public StringSegment(string substr, StringSegment prev)
-      {
-        this.Memory = ByteString.CreateImmutable(substr).Segment.AsMemory();
-        this.RunningIndex = prev == null ? 0 : prev.RunningIndex + prev.Memory.Length;
-
-        prev?.Next = this;
-      }
+      prev?.Next = this;
     }
   }
 }

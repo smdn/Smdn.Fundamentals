@@ -4,39 +4,39 @@ using System.Text.RegularExpressions;
 
 using NUnit.Framework;
 
-namespace Smdn.Text.RegularExpressions {
-  [TestFixture]
-  public class RegexExtensionsTests {
-    [Test]
-    public void TestIsMatch_ArgumentNull()
-    {
-      Regex r = null!;
-      Match m = null!;
+namespace Smdn.Text.RegularExpressions;
 
-      Assert.That(() => r.IsMatch("input", out m), Throws.ArgumentNullException);
+[TestFixture]
+public class RegexExtensionsTests {
+  [Test]
+  public void TestIsMatch_ArgumentNull()
+  {
+    Regex r = null!;
+    Match m = null!;
 
-      Assert.That(m, Is.Null);
-    }
+    Assert.That(() => r.IsMatch("input", out m), Throws.ArgumentNullException);
 
-    [Test]
-    public void TestIsMatch_Success()
-    {
-      var r = new Regex("x+");
+    Assert.That(m, Is.Null);
+  }
 
-      Assert.That(r.IsMatch("yyyxxxxzzz", out Match m), Is.True);
-      Assert.That(m, Is.Not.Null);
-      Assert.That(m.Success, Is.True);
-      Assert.That(m.Value, Is.EqualTo("xxxx"));
-    }
+  [Test]
+  public void TestIsMatch_Success()
+  {
+    var r = new Regex("x+");
 
-    [Test]
-    public void TestIsMatch_NotSuccess()
-    {
-      var r = new Regex("x+");
+    Assert.That(r.IsMatch("yyyxxxxzzz", out Match m), Is.True);
+    Assert.That(m, Is.Not.Null);
+    Assert.That(m.Success, Is.True);
+    Assert.That(m.Value, Is.EqualTo("xxxx"));
+  }
 
-      Assert.That(r.IsMatch("yyyzzz", out Match m), Is.False);
-      Assert.That(m, Is.Not.Null);
-      Assert.That(m.Success, Is.False);
-    }
+  [Test]
+  public void TestIsMatch_NotSuccess()
+  {
+    var r = new Regex("x+");
+
+    Assert.That(r.IsMatch("yyyzzz", out Match m), Is.False);
+    Assert.That(m, Is.Not.Null);
+    Assert.That(m.Success, Is.False);
   }
 }

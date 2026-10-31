@@ -4,85 +4,85 @@ using System;
 
 using NUnit.Framework;
 
-namespace Smdn {
-  [TestFixture()]
-  public class StringExtensionsTests {
-    [Test]
-    public void TestCount()
-    {
-      Assert.That("abcdefg".Count("abcdefgh"), Is.Zero);
-      Assert.That("abcdefg".Count("abcdefg"), Is.EqualTo(1));
-      Assert.That("abcdefg".Count("abcdef"), Is.EqualTo(1));
+namespace Smdn;
 
-      Assert.That("xxyyxyyxx".Count("xx"), Is.EqualTo(2));
-      Assert.That("xxyyxyyxx".Count("xy"), Is.EqualTo(2));
-      Assert.That("xxyyxyyxx".Count("xxx"), Is.Zero);
+[TestFixture()]
+public class StringExtensionsTests {
+  [Test]
+  public void TestCount()
+  {
+    Assert.That("abcdefg".Count("abcdefgh"), Is.Zero);
+    Assert.That("abcdefg".Count("abcdefg"), Is.EqualTo(1));
+    Assert.That("abcdefg".Count("abcdef"), Is.EqualTo(1));
 
-      Assert.That("xxyyxyyxx".Count('x'), Is.EqualTo(5));
-      Assert.That("xxyyxyyxx".Count('y'), Is.EqualTo(4));
-    }
+    Assert.That("xxyyxyyxx".Count("xx"), Is.EqualTo(2));
+    Assert.That("xxyyxyyxx".Count("xy"), Is.EqualTo(2));
+    Assert.That("xxyyxyyxx".Count("xxx"), Is.Zero);
 
-    [Test]
-    public void TestSlice()
-    {
-      Assert.That("abcdef".Slice(0, 3), Is.EqualTo("abc"));
-      Assert.That("abcdef".Slice(2, 4), Is.EqualTo("cd"));
-      Assert.That("abcdef".Slice(3, 5), Is.EqualTo("de"));
-      Assert.That("abcdef".Slice(0, 0), Is.EqualTo(""));
-      Assert.That("abcdef".Slice(0, 6), Is.EqualTo("abcdef"));
-      Assert.That("abcdef".Slice(5, 6), Is.EqualTo("f"));
-    }
+    Assert.That("xxyyxyyxx".Count('x'), Is.EqualTo(5));
+    Assert.That("xxyyxyyxx".Count('y'), Is.EqualTo(4));
+  }
 
-    [Test]
-    public void TestSlice_ArgumentOutOfRange()
-    {
-      Assert.That(
-        () => "abc".Slice(-1, 0),
-        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("from"),
-        "#1"
-      );
+  [Test]
+  public void TestSlice()
+  {
+    Assert.That("abcdef".Slice(0, 3), Is.EqualTo("abc"));
+    Assert.That("abcdef".Slice(2, 4), Is.EqualTo("cd"));
+    Assert.That("abcdef".Slice(3, 5), Is.EqualTo("de"));
+    Assert.That("abcdef".Slice(0, 0), Is.EqualTo(""));
+    Assert.That("abcdef".Slice(0, 6), Is.EqualTo("abcdef"));
+    Assert.That("abcdef".Slice(5, 6), Is.EqualTo("f"));
+  }
 
-      Assert.That(
-        () => "abc".Slice(3, 4),
-        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("from"),
-        "#2"
-      );
+  [Test]
+  public void TestSlice_ArgumentOutOfRange()
+  {
+    Assert.That(
+      () => "abc".Slice(-1, 0),
+      Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("from"),
+      "#1"
+    );
 
-      Assert.That(
-        () => "abc".Slice(1, 0),
-        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("to"),
-        "#3"
-      );
+    Assert.That(
+      () => "abc".Slice(3, 4),
+      Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("from"),
+      "#2"
+    );
 
-      Assert.That(
-        () => "abc".Slice(0, 4),
-        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("to"),
-        "#4"
-      );
-    }
+    Assert.That(
+      () => "abc".Slice(1, 0),
+      Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("to"),
+      "#3"
+    );
 
-    [Test]
-    public void TestIndexOfNot()
-    {
-      Assert.That("aabbcc".IndexOfNot('a'), Is.EqualTo(2));
-      Assert.That("aabbcc".IndexOfNot('b'), Is.Zero);
-      Assert.That("cccccc".IndexOfNot('c'), Is.EqualTo(-1));
+    Assert.That(
+      () => "abc".Slice(0, 4),
+      Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("to"),
+      "#4"
+    );
+  }
 
-      Assert.That("aabb".IndexOfNot('a', 0), Is.EqualTo(2));
-      Assert.That("aabb".IndexOfNot('a', 1), Is.EqualTo(2));
-      Assert.That("aabb".IndexOfNot('a', 2), Is.EqualTo(2));
-      Assert.That("aabb".IndexOfNot('a', 3), Is.EqualTo(3));
+  [Test]
+  public void TestIndexOfNot()
+  {
+    Assert.That("aabbcc".IndexOfNot('a'), Is.EqualTo(2));
+    Assert.That("aabbcc".IndexOfNot('b'), Is.Zero);
+    Assert.That("cccccc".IndexOfNot('c'), Is.EqualTo(-1));
 
-      Assert.That("aaaa".IndexOfNot('a', 2), Is.EqualTo(-1));
-      Assert.That("aaaa".IndexOfNot('a', 4), Is.EqualTo(-1));
+    Assert.That("aabb".IndexOfNot('a', 0), Is.EqualTo(2));
+    Assert.That("aabb".IndexOfNot('a', 1), Is.EqualTo(2));
+    Assert.That("aabb".IndexOfNot('a', 2), Is.EqualTo(2));
+    Assert.That("aabb".IndexOfNot('a', 3), Is.EqualTo(3));
 
-      Assert.That(
-        () => "abc".IndexOfNot('a', -1),
-        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("startIndex"),
-        "#1"
-      );
+    Assert.That("aaaa".IndexOfNot('a', 2), Is.EqualTo(-1));
+    Assert.That("aaaa".IndexOfNot('a', 4), Is.EqualTo(-1));
 
-      Assert.That(() => "abc".IndexOfNot('a', 4), Throws.ArgumentException);
-    }
+    Assert.That(
+      () => "abc".IndexOfNot('a', -1),
+      Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("startIndex"),
+      "#1"
+    );
+
+    Assert.That(() => "abc".IndexOfNot('a', 4), Throws.ArgumentException);
   }
 }

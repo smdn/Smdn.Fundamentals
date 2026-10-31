@@ -4,43 +4,43 @@ using System;
 
 using NUnit.Framework;
 
-namespace Smdn {
-  [TestFixture]
-  public class UriExtensionsTests {
-    [Test]
-    public void GetSplittedQueries()
-    {
-      var uri = new Uri("https://localhost/path/?key=value");
-      var queries = uri.GetSplittedQueries();
+namespace Smdn;
 
-      Assert.That(queries.Count, Is.EqualTo(1));
-      Assert.That(queries["key"], Is.EqualTo("value"));
-    }
+[TestFixture]
+public class UriExtensionsTests {
+  [Test]
+  public void GetSplittedQueries()
+  {
+    var uri = new Uri("https://localhost/path/?key=value");
+    var queries = uri.GetSplittedQueries();
 
-    [Test]
-    public void GetSplittedQueries_EmptyQuery()
-    {
-      var uri = new Uri("https://localhost/path/?");
-      var queries = uri.GetSplittedQueries();
+    Assert.That(queries.Count, Is.EqualTo(1));
+    Assert.That(queries["key"], Is.EqualTo("value"));
+  }
 
-      Assert.That(queries.Count, Is.Zero);
-    }
+  [Test]
+  public void GetSplittedQueries_EmptyQuery()
+  {
+    var uri = new Uri("https://localhost/path/?");
+    var queries = uri.GetSplittedQueries();
 
-    [Test]
-    public void GetSplittedQueries_NoQuery()
-    {
-      var uri = new Uri("https://localhost/path/");
-      var queries = uri.GetSplittedQueries();
+    Assert.That(queries.Count, Is.Zero);
+  }
 
-      Assert.That(queries.Count, Is.Zero);
-    }
+  [Test]
+  public void GetSplittedQueries_NoQuery()
+  {
+    var uri = new Uri("https://localhost/path/");
+    var queries = uri.GetSplittedQueries();
 
-    [Test]
-    public void GetSplittedQueries_ArgumentNull()
-    {
-      Uri uri = null!;
+    Assert.That(queries.Count, Is.Zero);
+  }
 
-      Assert.That(uri.GetSplittedQueries, Throws.ArgumentNullException);
-    }
+  [Test]
+  public void GetSplittedQueries_ArgumentNull()
+  {
+    Uri uri = null!;
+
+    Assert.That(uri.GetSplittedQueries, Throws.ArgumentNullException);
   }
 }

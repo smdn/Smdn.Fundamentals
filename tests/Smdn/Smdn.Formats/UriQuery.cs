@@ -13,128 +13,127 @@ using KeyValuePair = System.Collections.Generic.KeyValuePair;
 using KeyValuePair = Smdn.Collections.KeyValuePair;
 #endif
 
-namespace Smdn.Formats {
-  [TestFixture]
-  public class UriQueryTests {
-    [Test]
-    public void TestJoinQueryParameters()
-    {
-      Assert.That(UriQuery.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", "value1"),
-      }), Is.EqualTo("name1=value1"), "#1");
+namespace Smdn.Formats;
 
-      Assert.That(UriQuery.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", "value1"),
-        KeyValuePair.Create("name2", "value2"),
-      }), Is.EqualTo("name1=value1&name2=value2"), "#2");
+[TestFixture]
+public class UriQueryTests {
+  [Test]
+  public void TestJoinQueryParameters()
+  {
+    Assert.That(UriQuery.JoinQueryParameters(new[] {
+      KeyValuePair.Create("name1", "value1"),
+    }), Is.EqualTo("name1=value1"), "#1");
 
-      Assert.That(UriQuery.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", "value1"),
-        KeyValuePair.Create("name2", "value2"),
-        KeyValuePair.Create("name3", "value3"),
-      }), Is.EqualTo("name1=value1&name2=value2&name3=value3"), "#3");
+    Assert.That(UriQuery.JoinQueryParameters(new[] {
+      KeyValuePair.Create("name1", "value1"),
+      KeyValuePair.Create("name2", "value2"),
+    }), Is.EqualTo("name1=value1&name2=value2"), "#2");
 
-      Assert.That(UriQuery.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", (string)null),
-      }), Is.EqualTo("name1"), "#4");
+    Assert.That(UriQuery.JoinQueryParameters(new[] {
+      KeyValuePair.Create("name1", "value1"),
+      KeyValuePair.Create("name2", "value2"),
+      KeyValuePair.Create("name3", "value3"),
+    }), Is.EqualTo("name1=value1&name2=value2&name3=value3"), "#3");
 
-      Assert.That(UriQuery.JoinQueryParameters(new[] {
-        KeyValuePair.Create("name1", (string)null),
-        KeyValuePair.Create("name2", (string)null),
-      }), Is.EqualTo("name1&name2"), "#5");
-    }
+    Assert.That(UriQuery.JoinQueryParameters(new[] {
+      KeyValuePair.Create("name1", (string)null),
+    }), Is.EqualTo("name1"), "#4");
 
-    [Test]
-    public void TestJoinQueryParametersArgumentNull()
-    {
-      Assert.That(() => UriQuery.JoinQueryParameters(null), Throws.ArgumentNullException);
-    }
+    Assert.That(UriQuery.JoinQueryParameters(new[] {
+      KeyValuePair.Create("name1", (string)null),
+      KeyValuePair.Create("name2", (string)null),
+    }), Is.EqualTo("name1&name2"), "#5");
+  }
 
-    [Test]
-    public void TestJoinQueryParametersArgumentEmpty()
-    {
-      Assert.That(UriQuery.JoinQueryParameters(new KeyValuePair<string, string>[] { }), Is.Empty);
-    }
+  [Test]
+  public void TestJoinQueryParametersArgumentNull()
+  {
+    Assert.That(() => UriQuery.JoinQueryParameters(null), Throws.ArgumentNullException);
+  }
 
-    [Test]
-    public void TestSplitQueryParameters()
-    {
-      IDictionary<string, string> splitted;
+  [Test]
+  public void TestJoinQueryParametersArgumentEmpty()
+  {
+    Assert.That(UriQuery.JoinQueryParameters(new KeyValuePair<string, string>[] { }), Is.Empty);
+  }
 
-      splitted = UriQuery.SplitQueryParameters("?name1=value1");
+  [Test]
+  public void TestSplitQueryParameters()
+  {
+    IDictionary<string, string> splitted;
 
-      Assert.That(splitted.Count, Is.EqualTo(1), "#1 count");
-      Assert.That(splitted["name1"], Is.EqualTo("value1"), "#1 name1");
+    splitted = UriQuery.SplitQueryParameters("?name1=value1");
 
-      splitted = UriQuery.SplitQueryParameters("name1=value1");
+    Assert.That(splitted.Count, Is.EqualTo(1), "#1 count");
+    Assert.That(splitted["name1"], Is.EqualTo("value1"), "#1 name1");
 
-      Assert.That(splitted.Count, Is.EqualTo(1), "#2 count");
-      Assert.That(splitted["name1"], Is.EqualTo("value1"), "#2 name1");
+    splitted = UriQuery.SplitQueryParameters("name1=value1");
 
-      splitted = UriQuery.SplitQueryParameters("?name1=value1&name2=value2&name3=value3");
+    Assert.That(splitted.Count, Is.EqualTo(1), "#2 count");
+    Assert.That(splitted["name1"], Is.EqualTo("value1"), "#2 name1");
 
-      Assert.That(splitted.Count, Is.EqualTo(3), "#3 count");
-      Assert.That(splitted["name1"], Is.EqualTo("value1"), "#1 name1");
-      Assert.That(splitted["name2"], Is.EqualTo("value2"), "#1 name1");
-      Assert.That(splitted["name3"], Is.EqualTo("value3"), "#1 name1");
+    splitted = UriQuery.SplitQueryParameters("?name1=value1&name2=value2&name3=value3");
 
-      splitted = UriQuery.SplitQueryParameters("?name1");
+    Assert.That(splitted.Count, Is.EqualTo(3), "#3 count");
+    Assert.That(splitted["name1"], Is.EqualTo("value1"), "#1 name1");
+    Assert.That(splitted["name2"], Is.EqualTo("value2"), "#1 name1");
+    Assert.That(splitted["name3"], Is.EqualTo("value3"), "#1 name1");
 
-      Assert.That(splitted.Count, Is.EqualTo(1), "#4 count");
-      Assert.That(splitted["name1"], Is.Not.Null, "#4 name1 IsNotNull");
-      Assert.That(splitted["name1"], Is.Empty, "#4 name1 IsEmpty");
+    splitted = UriQuery.SplitQueryParameters("?name1");
 
-      splitted = UriQuery.SplitQueryParameters("?name1&name2&name3=value3");
+    Assert.That(splitted.Count, Is.EqualTo(1), "#4 count");
+    Assert.That(splitted["name1"], Is.Not.Null, "#4 name1 IsNotNull");
+    Assert.That(splitted["name1"], Is.Empty, "#4 name1 IsEmpty");
 
-      Assert.That(splitted.Count, Is.EqualTo(3), "#5 count");
-      Assert.That(splitted["name1"], Is.Not.Null, "#5 name1 IsNotNull");
-      Assert.That(splitted["name1"], Is.Empty, "#5 name1 IsEmpty");
-      Assert.That(splitted["name2"], Is.Not.Null, "#5 name2 IsNotNull");
-      Assert.That(splitted["name2"], Is.Empty, "#5 name2 IsEmpty");
-      Assert.That(splitted["name3"], Is.EqualTo("value3"), "#5 name3");
-    }
+    splitted = UriQuery.SplitQueryParameters("?name1&name2&name3=value3");
 
-    [Test]
-    public void TestSplitQueryParametersArgumentNull()
-    {
-      Assert.That(() => UriQuery.SplitQueryParameters(null), Throws.ArgumentNullException);
-    }
+    Assert.That(splitted.Count, Is.EqualTo(3), "#5 count");
+    Assert.That(splitted["name1"], Is.Not.Null, "#5 name1 IsNotNull");
+    Assert.That(splitted["name1"], Is.Empty, "#5 name1 IsEmpty");
+    Assert.That(splitted["name2"], Is.Not.Null, "#5 name2 IsNotNull");
+    Assert.That(splitted["name2"], Is.Empty, "#5 name2 IsEmpty");
+    Assert.That(splitted["name3"], Is.EqualTo("value3"), "#5 name3");
+  }
 
-    [Test]
-    public void TestSplitQueryParametersArgumentEmpty()
-    {
-      IDictionary<string, string> splitted;
+  [Test]
+  public void TestSplitQueryParametersArgumentNull()
+  {
+    Assert.That(() => UriQuery.SplitQueryParameters(null), Throws.ArgumentNullException);
+  }
 
-      splitted = UriQuery.SplitQueryParameters(string.Empty);
+  [Test]
+  public void TestSplitQueryParametersArgumentEmpty()
+  {
+    IDictionary<string, string> splitted;
 
-      Assert.That(splitted.Count, Is.Zero, "#1 count");
+    splitted = UriQuery.SplitQueryParameters(string.Empty);
 
-      splitted = UriQuery.SplitQueryParameters("?");
+    Assert.That(splitted.Count, Is.Zero, "#1 count");
 
-      Assert.That(splitted.Count, Is.Zero, "#2 count");
-    }
+    splitted = UriQuery.SplitQueryParameters("?");
 
-    [Test]
-    public void TestSplitQueryParametersContainsSameName()
-    {
-      IDictionary<string, string> splitted;
+    Assert.That(splitted.Count, Is.Zero, "#2 count");
+  }
 
-      splitted = UriQuery.SplitQueryParameters("?name1=value1&name1=value2");
+  [Test]
+  public void TestSplitQueryParametersContainsSameName()
+  {
+    IDictionary<string, string> splitted;
 
-      Assert.That(splitted.Count, Is.EqualTo(1), "#1 count");
-      Assert.That(splitted["name1"], Is.EqualTo("value2"), "#1 name1");
-    }
+    splitted = UriQuery.SplitQueryParameters("?name1=value1&name1=value2");
 
-    [Test]
-    public void TestSplitQueryParametersWithEqualityComparer()
-    {
-      IDictionary<string, string> splitted;
+    Assert.That(splitted.Count, Is.EqualTo(1), "#1 count");
+    Assert.That(splitted["name1"], Is.EqualTo("value2"), "#1 name1");
+  }
 
-      splitted = UriQuery.SplitQueryParameters("?name1=value1", StringComparer.OrdinalIgnoreCase);
+  [Test]
+  public void TestSplitQueryParametersWithEqualityComparer()
+  {
+    IDictionary<string, string> splitted;
 
-      Assert.That(splitted.Count, Is.EqualTo(1), "#1 count");
-      Assert.That(splitted["NAME1"], Is.EqualTo("value1"), "#1 name1");
-    }
+    splitted = UriQuery.SplitQueryParameters("?name1=value1", StringComparer.OrdinalIgnoreCase);
+
+    Assert.That(splitted.Count, Is.EqualTo(1), "#1 count");
+    Assert.That(splitted["NAME1"], Is.EqualTo("value1"), "#1 name1");
   }
 }
-

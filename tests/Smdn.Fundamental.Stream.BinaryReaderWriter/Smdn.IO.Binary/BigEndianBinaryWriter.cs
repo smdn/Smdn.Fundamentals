@@ -4,73 +4,73 @@ using System.IO;
 
 using NUnit.Framework;
 
-namespace Smdn.IO.Binary {
-  [TestFixture]
-  public class BigEndianBinaryWriterTests {
-    [Test]
-    public void TestWriteUnsignedInt()
-    {
-      var stream = new MemoryStream();
-      var writer = new BigEndianBinaryWriter(stream);
+namespace Smdn.IO.Binary;
 
-      writer.Write((ulong)0x8000000000000000);
-      writer.Write((uint)0x80000000);
-      writer.Write((byte)0x80);
-      writer.Write((ushort)0x8000);
-      writer.Write((byte)0x00);
-      writer.Write((UInt48)0x800000000000);
-      writer.Write((UInt24)0x800000);
+[TestFixture]
+public class BigEndianBinaryWriterTests {
+  [Test]
+  public void TestWriteUnsignedInt()
+  {
+    var stream = new MemoryStream();
+    var writer = new BigEndianBinaryWriter(stream);
 
-      var actual = new byte[] {
-        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
-        0x00,
-      };
+    writer.Write((ulong)0x8000000000000000);
+    writer.Write((uint)0x80000000);
+    writer.Write((byte)0x80);
+    writer.Write((ushort)0x8000);
+    writer.Write((byte)0x00);
+    writer.Write((UInt48)0x800000000000);
+    writer.Write((UInt24)0x800000);
 
-      Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
-      Assert.That(actual, Is.EqualTo(stream.ToArray()));
-    }
+    var actual = new byte[] {
+      0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x80, 0x00, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00,
+      0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
+      0x00,
+    };
 
-    [Test]
-    public void TestWriteSignedInt()
-    {
-      var stream = new MemoryStream();
-      var writer = new BigEndianBinaryWriter(stream);
+    Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
+    Assert.That(actual, Is.EqualTo(stream.ToArray()));
+  }
 
-      writer.Write(long.MinValue);
-      writer.Write(int.MinValue);
-      writer.Write(sbyte.MinValue);
-      writer.Write(short.MinValue);
-      writer.Write((sbyte)0);
-      writer.Write((UInt48)0x800000000000);
-      writer.Write((UInt24)0x800000);
+  [Test]
+  public void TestWriteSignedInt()
+  {
+    var stream = new MemoryStream();
+    var writer = new BigEndianBinaryWriter(stream);
 
-      var actual = new byte[] {
-        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00,
-        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
-        0x00,
-      };
+    writer.Write(long.MinValue);
+    writer.Write(int.MinValue);
+    writer.Write(sbyte.MinValue);
+    writer.Write(short.MinValue);
+    writer.Write((sbyte)0);
+    writer.Write((UInt48)0x800000000000);
+    writer.Write((UInt24)0x800000);
 
-      Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
-      Assert.That(actual, Is.EqualTo(stream.ToArray()));
-    }
+    var actual = new byte[] {
+      0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+      0x80, 0x00, 0x00, 0x00, 0x80, 0x80, 0x00, 0x00,
+      0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x00,
+      0x00,
+    };
 
-    [Test]
-    public void TestWriteFourCC()
-    {
-      var stream = new MemoryStream();
-      var writer = new BigEndianBinaryWriter(stream);
+    Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
+    Assert.That(actual, Is.EqualTo(stream.ToArray()));
+  }
 
-      writer.Write(new FourCC("RIFF"));
+  [Test]
+  public void TestWriteFourCC()
+  {
+    var stream = new MemoryStream();
+    var writer = new BigEndianBinaryWriter(stream);
 
-      var actual = new byte[] {
-        0x52, 0x49, 0x46, 0x46,
-      };
+    writer.Write(new FourCC("RIFF"));
 
-      Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
-      Assert.That(actual, Is.EqualTo(stream.ToArray()));
-    }
+    var actual = new byte[] {
+      0x52, 0x49, 0x46, 0x46,
+    };
+
+    Assert.That(actual.Length, Is.EqualTo(stream.Position), "length");
+    Assert.That(actual, Is.EqualTo(stream.ToArray()));
   }
 }

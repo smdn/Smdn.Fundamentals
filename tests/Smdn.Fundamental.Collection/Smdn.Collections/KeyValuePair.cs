@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 using NUnit.Framework;
 
-namespace Smdn.Collections {
-  [TestFixture]
-  public class KeyValuePairTests {
-    [Test]
-    public void Test()
-    {
-      var pair = KeyValuePair.Create(42, "foo");
+namespace Smdn.Collections;
 
-      Assert.That(pair.GetType(), Is.EqualTo(typeof(global::System.Collections.Generic.KeyValuePair<int, string>)));
-      Assert.That(pair.Key, Is.EqualTo(42));
-      Assert.That(pair.Value, Is.EqualTo("foo"));
-    }
+[TestFixture]
+public class KeyValuePairTests {
+  [Test]
+  public void Test()
+  {
+    var pair = KeyValuePair.Create(42, "foo");
+
+    Assert.That(pair.GetType(), Is.EqualTo(typeof(global::System.Collections.Generic.KeyValuePair<int, string>)));
+    Assert.That(pair.Key, Is.EqualTo(42));
+    Assert.That(pair.Value, Is.EqualTo("foo"));
   }
 }

@@ -5,97 +5,97 @@
 
 using NUnit.Framework;
 
-namespace Smdn.Formats {
-  [TestFixture]
-  public class HtmlTests {
-    [Test]
-    public void TestToXhtmlEscapedString()
-    {
-      Assert.That(() => Html.ToXhtmlEscapedString(null), Throws.ArgumentNullException);
+namespace Smdn.Formats;
 
-      Assert.That(Html.ToXhtmlEscapedString("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;&apos;#"));
-    }
+[TestFixture]
+public class HtmlTests {
+  [Test]
+  public void TestToXhtmlEscapedString()
+  {
+    Assert.That(() => Html.ToXhtmlEscapedString(null), Throws.ArgumentNullException);
 
-    [Test]
-    public void TestToXhtmlEscapedStringNullable()
-    {
-      Assert.That(Html.ToXhtmlEscapedStringNullable(null), Is.Null);
+    Assert.That(Html.ToXhtmlEscapedString("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;&apos;#"));
+  }
 
-      Assert.That(Html.ToXhtmlEscapedStringNullable("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;&apos;#"));
-    }
+  [Test]
+  public void TestToXhtmlEscapedStringNullable()
+  {
+    Assert.That(Html.ToXhtmlEscapedStringNullable(null), Is.Null);
 
-    [Test]
-    public void TestToHtmlEscapedString()
-    {
-      Assert.That(() => Html.ToHtmlEscapedString(null), Throws.ArgumentNullException);
+    Assert.That(Html.ToXhtmlEscapedStringNullable("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;&apos;#"));
+  }
 
-      Assert.That(Html.ToHtmlEscapedString("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;'#"));
-    }
+  [Test]
+  public void TestToHtmlEscapedString()
+  {
+    Assert.That(() => Html.ToHtmlEscapedString(null), Throws.ArgumentNullException);
 
-    [Test]
-    public void TestToHtmlEscapedStringNullable()
-    {
-      Assert.That(Html.ToHtmlEscapedStringNullable(null), Is.Null);
+    Assert.That(Html.ToHtmlEscapedString("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;'#"));
+  }
 
-      Assert.That(Html.ToHtmlEscapedStringNullable("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;'#"));
-    }
+  [Test]
+  public void TestToHtmlEscapedStringNullable()
+  {
+    Assert.That(Html.ToHtmlEscapedStringNullable(null), Is.Null);
 
-    [Test]
-    public void TestFromXhtmlEscapedString()
-    {
-      Assert.That(() => Html.FromXhtmlEscapedString(null), Throws.ArgumentNullException);
+    Assert.That(Html.ToHtmlEscapedStringNullable("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;'#"));
+  }
 
-      Assert.That(Html.FromXhtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"\'#"));
-    }
+  [Test]
+  public void TestFromXhtmlEscapedString()
+  {
+    Assert.That(() => Html.FromXhtmlEscapedString(null), Throws.ArgumentNullException);
 
-    [Test]
-    public void TestFromXhtmlEscapedStringNullable()
-    {
-      Assert.That(Html.FromXhtmlEscapedStringNullable(null), Is.Null);
+    Assert.That(Html.FromXhtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"\'#"));
+  }
 
-      Assert.That(Html.FromXhtmlEscapedStringNullable("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"\'#"));
-    }
+  [Test]
+  public void TestFromXhtmlEscapedStringNullable()
+  {
+    Assert.That(Html.FromXhtmlEscapedStringNullable(null), Is.Null);
 
-    [Test]
-    public void TestFromHtmlEscapedString()
-    {
-      Assert.That(() => Html.FromHtmlEscapedString(null), Throws.ArgumentNullException);
+    Assert.That(Html.FromXhtmlEscapedStringNullable("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"\'#"));
+  }
 
-      Assert.That(Html.FromHtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"&apos;#"));
-    }
+  [Test]
+  public void TestFromHtmlEscapedString()
+  {
+    Assert.That(() => Html.FromHtmlEscapedString(null), Throws.ArgumentNullException);
 
-    [Test]
-    public void TestFromHtmlEscapedStringNullable()
-    {
-      Assert.That(Html.FromHtmlEscapedStringNullable(null), Is.Null);
+    Assert.That(Html.FromHtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"&apos;#"));
+  }
 
-      Assert.That(Html.FromHtmlEscapedStringNullable("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"&apos;#"));
-    }
+  [Test]
+  public void TestFromHtmlEscapedStringNullable()
+  {
+    Assert.That(Html.FromHtmlEscapedStringNullable(null), Is.Null);
 
-    [Test]
-    public void TestFromNumericCharacterReference()
-    {
-      Assert.That(() => Html.FromNumericCharacterReference(null), Throws.ArgumentNullException);
+    Assert.That(Html.FromHtmlEscapedStringNullable("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"&apos;#"));
+  }
 
-      Assert.That(Html.FromNumericCharacterReference("&#931;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReference("&#0931;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReference("&#x3A3;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReference("&#x03A3;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReference("&#x3a3;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReference("&lt;&#931;&gt;"), Is.EqualTo("&lt;Σ&gt;"));
-    }
+  [Test]
+  public void TestFromNumericCharacterReference()
+  {
+    Assert.That(() => Html.FromNumericCharacterReference(null), Throws.ArgumentNullException);
 
-    [Test]
-    public void TestFromNumericCharacterReferenceNullable()
-    {
-      Assert.That(Html.FromNumericCharacterReferenceNullable(null), Is.Null);
+    Assert.That(Html.FromNumericCharacterReference("&#931;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReference("&#0931;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReference("&#x3A3;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReference("&#x03A3;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReference("&#x3a3;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReference("&lt;&#931;&gt;"), Is.EqualTo("&lt;Σ&gt;"));
+  }
 
-      Assert.That(Html.FromNumericCharacterReferenceNullable("&#931;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReferenceNullable("&#0931;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReferenceNullable("&#x3A3;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReferenceNullable("&#x03A3;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReferenceNullable("&#x3a3;"), Is.EqualTo("Σ"));
-      Assert.That(Html.FromNumericCharacterReferenceNullable("&lt;&#931;&gt;"), Is.EqualTo("&lt;Σ&gt;"));
-    }
+  [Test]
+  public void TestFromNumericCharacterReferenceNullable()
+  {
+    Assert.That(Html.FromNumericCharacterReferenceNullable(null), Is.Null);
+
+    Assert.That(Html.FromNumericCharacterReferenceNullable("&#931;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReferenceNullable("&#0931;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReferenceNullable("&#x3A3;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReferenceNullable("&#x03A3;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReferenceNullable("&#x3a3;"), Is.EqualTo("Σ"));
+    Assert.That(Html.FromNumericCharacterReferenceNullable("&lt;&#931;&gt;"), Is.EqualTo("&lt;Σ&gt;"));
   }
 }
