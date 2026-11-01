@@ -9,6 +9,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "global.json"
+      - "**/Directory.Build.props"
+      - "**/Directory.Build.targets"
       - "src/**/*.cs"
       - "src/**/*.csproj"
       - "tests/**/*.cs"
@@ -17,6 +20,9 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - "global.json"
+      - "**/Directory.Build.props"
+      - "**/Directory.Build.targets"
       - "src/**/*.cs"
       - "src/**/*.csproj"
       - "tests/**/*.cs"
