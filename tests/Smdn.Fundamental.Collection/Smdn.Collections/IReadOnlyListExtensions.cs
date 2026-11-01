@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
 
 namespace Smdn.Collections {
@@ -72,7 +73,7 @@ namespace Smdn.Collections {
     [Test]
     public void TestIndexOf_List() => TestIndexOf<ArgumentOutOfRangeException>(new List<int> { 1, 1, 2, 1 });
 
-    private void TestIndexOf<TExpectedArgumentException> (IReadOnlyList<int> list) where TExpectedArgumentException : ArgumentException
+    private void TestIndexOf<TExpectedArgumentException>(IReadOnlyList<int> list) where TExpectedArgumentException : ArgumentException
     {
       Assert.That(list.IndexOf(item: 1), Is.Zero);
       Assert.That(list.IndexOf(item: 2), Is.EqualTo(2));

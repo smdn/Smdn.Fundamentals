@@ -5,6 +5,7 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using NUnit.Framework;
 
 namespace Smdn.IO.Binary {
@@ -139,7 +140,7 @@ namespace Smdn.IO.Binary {
     public void TestFlush()
     {
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Write((int)0);
         writer.Flush();
@@ -148,7 +149,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        Assert.That(() => writer.Flush(), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(writer.Flush, Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -160,7 +161,7 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Write(data);
         writer.Flush();
@@ -177,7 +178,7 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Write(data, 1, 2);
         writer.Flush();
@@ -200,7 +201,7 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Write(new ArraySegment<byte>(data, 0, 4));
         writer.Flush();
@@ -217,7 +218,7 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Write(new ArraySegment<byte>(data, 1, 2));
         writer.Flush();
@@ -238,22 +239,21 @@ namespace Smdn.IO.Binary {
       using (var stream = new MemoryStream()) {
         var writer = new Smdn.IO.Binary.BinaryWriter(stream);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         Assert.That(() => writer.Write(new ArraySegment<byte>()), Throws.ArgumentException);
 
         writer.Flush();
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
       }
     }
 
     [Test]
     public void TestWriteZero()
     {
-      Predicate<byte> allZero = delegate(byte b) {
-        return b == 0x00;
-      };
+      static bool AllZero(byte b)
+        => b == 0x00;
 
       foreach (var len in new[] {
         0,
@@ -279,7 +279,7 @@ namespace Smdn.IO.Binary {
           arr = stream.ToArray();
 
           Assert.That(arr.Length, Is.EqualTo(len));
-          Assert.That(Array.TrueForAll(arr, allZero), Is.True);
+          Assert.That(Array.TrueForAll(arr, AllZero), Is.True);
         }
       }
     }
@@ -290,11 +290,11 @@ namespace Smdn.IO.Binary {
       var zero = new byte[0];
 
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Write(zero);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Close();
 
@@ -311,15 +311,15 @@ namespace Smdn.IO.Binary {
     public void TestWriteZeroZeroLength()
     {
       using (var writer = new Smdn.IO.Binary.BinaryWriter(new MemoryStream())) {
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.WriteZero(0);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.WriteZero(0L);
 
-        Assert.That(writer.BaseStream.Position,Is.Zero);
+        Assert.That(writer.BaseStream.Position, Is.Zero);
 
         writer.Close();
 
@@ -353,8 +353,8 @@ namespace Smdn.IO.Binary {
           stream.ToArray(),
           Is.EqualTo(
             BitConverter.IsLittleEndian
-              ? new byte[] {0x44, 0x33, 0x22, 0x11}
-              : new byte[] {0x11, 0x22, 0x33, 0x44}
+              ? new byte[] { 0x44, 0x33, 0x22, 0x11 }
+              : new byte[] { 0x11, 0x22, 0x33, 0x44 }
           ).AsCollection
         );
       }
@@ -362,17 +362,17 @@ namespace Smdn.IO.Binary {
 
     private static IEnumerable YieldTestCases_Write()
     {
-      yield return new object[] { (byte)0,       1L };
-      yield return new object[] { (sbyte)0,      1L };
-      yield return new object[] { (short)0,      2L };
-      yield return new object[] { (ushort)0,     2L };
-      yield return new object[] { (int)0,        4L };
-      yield return new object[] { (uint)0,       4L };
-      yield return new object[] { (long)0,       8L };
-      yield return new object[] { (ulong)0,      8L };
-      yield return new object[] { UInt24.Zero,   3L };
-      yield return new object[] { UInt48.Zero,   6L };
-      yield return new object[] { FourCC.Empty,  4L };
+      yield return new object[] { (byte)0, 1L };
+      yield return new object[] { (sbyte)0, 1L };
+      yield return new object[] { (short)0, 2L };
+      yield return new object[] { (ushort)0, 2L };
+      yield return new object[] { (int)0, 4L };
+      yield return new object[] { (uint)0, 4L };
+      yield return new object[] { (long)0, 8L };
+      yield return new object[] { (ulong)0, 8L };
+      yield return new object[] { UInt24.Zero, 3L };
+      yield return new object[] { UInt48.Zero, 6L };
+      yield return new object[] { FourCC.Empty, 4L };
     }
 
     [TestCaseSource(nameof(YieldTestCases_Write))]
@@ -382,7 +382,7 @@ namespace Smdn.IO.Binary {
 
       writer.BaseStream.Seek(0L, SeekOrigin.Begin);
 
-      Assert.That(writer.BaseStream.Position,Is.Zero);
+      Assert.That(writer.BaseStream.Position, Is.Zero);
 
       try {
         typeof(Smdn.IO.Binary.BinaryWriter)

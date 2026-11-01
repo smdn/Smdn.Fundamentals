@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats {
@@ -36,7 +37,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestSplit()
     {
-      Assert.That(CsvRecord.Split("a,b,c"), Is.EqualTo(new[] {"a", "b", "c"}).AsCollection);
+      Assert.That(CsvRecord.Split("a,b,c"), Is.EqualTo(new[] { "a", "b", "c" }).AsCollection);
       Assert.That(CsvRecord.Split("a,b,c,"), Is.EqualTo(new[] { "a", "b", "c", string.Empty }).AsCollection);
       Assert.That(CsvRecord.Split("a,b,\"c\","), Is.EqualTo(new[] { "a", "b", "c", string.Empty }).AsCollection);
       Assert.That(CsvRecord.Split("a,b,,c,"), Is.EqualTo(new[] { "a", "b", string.Empty, "c", string.Empty }).AsCollection);
@@ -46,7 +47,7 @@ namespace Smdn.Formats {
       Assert.That(CsvRecord.Split("a,\"b,c\""), Is.EqualTo(new[] { "a", "b,c" }).AsCollection);
       Assert.That(CsvRecord.Split("\"\"a,b\"\",c"), Is.EqualTo(new[] { "\"a", "b\"", "c" }).AsCollection);
       Assert.That(CsvRecord.Split("a,\"\"b,c\"\""), Is.EqualTo(new[] { "a", "\"b", "c\"" }).AsCollection);
-      Assert.That(CsvRecord.Split("abc,\"d\"\"e\"\"f\",g'h'i"), Is.EqualTo(new[] {"abc", "d\"e\"f", "g'h'i"}).AsCollection);
+      Assert.That(CsvRecord.Split("abc,\"d\"\"e\"\"f\",g'h'i"), Is.EqualTo(new[] { "abc", "d\"e\"f", "g'h'i" }).AsCollection);
 
       Assert.That(CsvRecord.Split(string.Empty), Is.EqualTo(Enumerable.Empty<string>()).AsCollection, "argument empty");
 
@@ -56,11 +57,11 @@ namespace Smdn.Formats {
     [Test]
     public void TestSplit_Dequote()
     {
-      Assert.That(CsvRecord.Split("\"\"a\"\",b,c"), Is.EqualTo(new[] {"\"a\"", "b", "c"}).AsCollection);
-      Assert.That(CsvRecord.Split("a,\"\"b\"\",c"), Is.EqualTo(new[] {"a", "\"b\"", "c"}).AsCollection);
-      Assert.That(CsvRecord.Split("a,b,\"\"c\"\""), Is.EqualTo(new[] {"a", "b", "\"c\""}).AsCollection);
-      Assert.That(CsvRecord.Split("\"\"\"\"a\"\"\"\",b"), Is.EqualTo(new[] {"\"\"a\"\"", "b"}).AsCollection);
-      Assert.That(CsvRecord.Split("a,\"\"\"\"b\"\"\"\""), Is.EqualTo(new[] {"a", "\"\"b\"\""}).AsCollection);
+      Assert.That(CsvRecord.Split("\"\"a\"\",b,c"), Is.EqualTo(new[] { "\"a\"", "b", "c" }).AsCollection);
+      Assert.That(CsvRecord.Split("a,\"\"b\"\",c"), Is.EqualTo(new[] { "a", "\"b\"", "c" }).AsCollection);
+      Assert.That(CsvRecord.Split("a,b,\"\"c\"\""), Is.EqualTo(new[] { "a", "b", "\"c\"" }).AsCollection);
+      Assert.That(CsvRecord.Split("\"\"\"\"a\"\"\"\",b"), Is.EqualTo(new[] { "\"\"a\"\"", "b" }).AsCollection);
+      Assert.That(CsvRecord.Split("a,\"\"\"\"b\"\"\"\""), Is.EqualTo(new[] { "a", "\"\"b\"\"" }).AsCollection);
     }
 
 #pragma warning disable CS0618 // [Obsolete]

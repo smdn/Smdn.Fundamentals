@@ -1,7 +1,6 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 
-using System;
 using System.Buffers;
 
 using NUnit.Framework;
@@ -39,7 +38,7 @@ namespace Smdn.Buffers {
 
       Assert.That(
         reader.GetUnreadSequence().ToArray(),
-        Is.EqualTo(new[] {0, 1, 2, 3, 4}),
+        Is.EqualTo(new[] { 0, 1, 2, 3, 4 }),
         "#0"
       );
 
@@ -47,7 +46,7 @@ namespace Smdn.Buffers {
 
       Assert.That(
         reader.GetUnreadSequence().ToArray(),
-        Is.EqualTo(new[] {3, 4}),
+        Is.EqualTo(new[] { 3, 4 }),
         "#1"
       );
 
@@ -55,7 +54,7 @@ namespace Smdn.Buffers {
 
       Assert.That(
         reader.GetUnreadSequence().ToArray(),
-        Is.EqualTo(new[] {4}),
+        Is.EqualTo(new[] { 4 }),
         "#2"
       );
 

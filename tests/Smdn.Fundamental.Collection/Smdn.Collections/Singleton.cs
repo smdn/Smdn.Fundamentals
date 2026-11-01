@@ -3,8 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
+
 using NUnit.Framework;
+
 using Assert = Smdn.Test.NUnit.Assertion.Assert;
 
 namespace Smdn.Collections {

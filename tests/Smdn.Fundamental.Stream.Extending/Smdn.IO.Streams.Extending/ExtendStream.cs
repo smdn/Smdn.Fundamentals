@@ -21,13 +21,13 @@ public class ExtendStreamTests {
   [Test]
   public void Construct()
   {
-    Assert.That(new ExtendStream(Stream.Null, (byte[])null, null).Length,Is.Zero, "construct null/null");
-    Assert.That(new ExtendStream(Stream.Null, new byte[0], null).Length,Is.Zero, "construct byte[]/null");
-    Assert.That(new ExtendStream(Stream.Null, null, new byte[0]).Length,Is.Zero, "construct null/byte[]");
-    Assert.That(new ExtendStream(Stream.Null, new byte[0], new byte[0]).Length,Is.Zero, "construct byte[]/byte[]");
-    Assert.That(new ExtendStream(Stream.Null, Stream.Null, null).Length,Is.Zero, "construct Stream/null");
-    Assert.That(new ExtendStream(Stream.Null, null, Stream.Null).Length,Is.Zero, "construct null/Stream");
-    Assert.That(new ExtendStream(Stream.Null, Stream.Null, Stream.Null).Length,Is.Zero, "construct Stream/Stream");
+    Assert.That(new ExtendStream(Stream.Null, (byte[])null, null).Length, Is.Zero, "construct null/null");
+    Assert.That(new ExtendStream(Stream.Null, new byte[0], null).Length, Is.Zero, "construct byte[]/null");
+    Assert.That(new ExtendStream(Stream.Null, null, new byte[0]).Length, Is.Zero, "construct null/byte[]");
+    Assert.That(new ExtendStream(Stream.Null, new byte[0], new byte[0]).Length, Is.Zero, "construct byte[]/byte[]");
+    Assert.That(new ExtendStream(Stream.Null, Stream.Null, null).Length, Is.Zero, "construct Stream/null");
+    Assert.That(new ExtendStream(Stream.Null, null, Stream.Null).Length, Is.Zero, "construct null/Stream");
+    Assert.That(new ExtendStream(Stream.Null, Stream.Null, Stream.Null).Length, Is.Zero, "construct Stream/Stream");
   }
 
   [Test]
@@ -48,9 +48,9 @@ public class ExtendStreamTests {
     }
 
     if (leaveOpen)
-      Assert.That(() => baseStream.ReadByte(), Throws.Nothing);
+      Assert.That(baseStream.ReadByte, Throws.Nothing);
     else
-      Assert.That(() => baseStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(baseStream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
   }
 
   [TestCase(true)]
@@ -64,12 +64,12 @@ public class ExtendStreamTests {
     using (var stream = new ExtendStream(baseStream, prependStream, appendStream, leavePrependStreamOpen: leaveOpen)) {
     }
 
-    Assert.That(() => appendStream.ReadByte(), Throws.Nothing, "leave open as default");
+    Assert.That(appendStream.ReadByte, Throws.Nothing, "leave open as default");
 
     if (leaveOpen)
-      Assert.That(() => prependStream.ReadByte(), Throws.Nothing);
+      Assert.That(prependStream.ReadByte, Throws.Nothing);
     else
-      Assert.That(() => prependStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(prependStream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
   }
 
   [TestCase(true)]
@@ -83,12 +83,12 @@ public class ExtendStreamTests {
     using (var stream = new ExtendStream(baseStream, prependStream, appendStream, leaveAppendStreamOpen: leaveOpen)) {
     }
 
-    Assert.That(() => prependStream.ReadByte(), Throws.Nothing, "leave open as default");
+    Assert.That(prependStream.ReadByte, Throws.Nothing, "leave open as default");
 
     if (leaveOpen)
-      Assert.That(() => appendStream.ReadByte(), Throws.Nothing);
+      Assert.That(appendStream.ReadByte, Throws.Nothing);
     else
-      Assert.That(() => appendStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(appendStream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
   }
 
   [Test]
@@ -126,7 +126,7 @@ public class ExtendStreamTests {
 
     Assert.That(() => _ = stream.InnerStream, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.InnerStream));
     Assert.That(() => _ = stream.LeaveInnerStreamOpen, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.LeaveInnerStreamOpen));
-    Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.ReadByte));
+    Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.ReadByte));
     Assert.That(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Read));
     Assert.That(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.ReadAsync));
     Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.WriteByte));
@@ -139,15 +139,15 @@ public class ExtendStreamTests {
       nameof(stream.WriteAsync)
     );
 #endif
-    Assert.That(() => stream.Flush(), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Flush));
-    Assert.That(() => stream.FlushAsync(), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.FlushAsync));
+    Assert.That(stream.Flush, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Flush));
+    Assert.That(stream.FlushAsync, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.FlushAsync));
     Assert.That(() => stream.Seek(0, SeekOrigin.Begin), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Seek));
     Assert.That(() => stream.SetLength(0L), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.SetLength));
     Assert.That(() => _ = stream.Length, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Length));
     Assert.That(() => _ = stream.Position, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Length));
 
 #if SYSTEM_IO_STREAM_CLOSE
-    Assert.That(() => stream.Close(), Throws.Nothing, nameof(stream.Close));
+    Assert.That(stream.Close, Throws.Nothing, nameof(stream.Close));
 #endif
   }
 
@@ -199,8 +199,8 @@ public class ExtendStreamTests {
     var len = extended.Length;
     var pos = extended.Position;
 
-    Assert.That(() => extended.Flush(), Throws.TypeOf<NotSupportedException>());
-    Assert.That(() => extended.FlushAsync(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(extended.Flush, Throws.TypeOf<NotSupportedException>());
+    Assert.That(extended.FlushAsync, Throws.TypeOf<NotSupportedException>());
 
     Assert.That(extended.Length, Is.EqualTo(len));
     Assert.That(extended.Position, Is.EqualTo(pos));
@@ -238,10 +238,10 @@ public class ExtendStreamTests {
   {
     using var stream = new ExtendStream(Stream.Null, Stream.Null, Stream.Null);
 
-      Assert.That(
-        () => stream.ReadAsync(buffer, offset, count),
-        Throws.TypeOf(expectedExceptionType)
-      );
+    Assert.That(
+      () => stream.ReadAsync(buffer, offset, count),
+      Throws.TypeOf(expectedExceptionType)
+    );
   }
 
   public enum ReadMethod {
@@ -492,7 +492,7 @@ public class ExtendStreamTests {
     using var extended = new ExtendStream(innerStream, new byte[] { 0x00, 0x01, 0x02, 0x03 }, new byte[] { 0x08, 0x09, 0x0a, 0x0b });
 
     Assert.That(extended.Length, Is.EqualTo(12L));
-    Assert.That(extended.Position,Is.Zero);
+    Assert.That(extended.Position, Is.Zero);
     Assert.That(extended.CanRead, Is.True);
 
     for (var expected = 0L; expected < 12L; expected++) {

@@ -4,8 +4,10 @@ using System;
 using System.Collections;
 using System.Reflection;
 using System.Text;
+
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+
 using Smdn.Formats;
 
 namespace Smdn.Security.Cryptography {
@@ -77,10 +79,10 @@ namespace Smdn.Security.Cryptography {
       }
 #endif
 
-    [TestCase("A",     "QQ==")]
-    [TestCase("AS",    "QVM=")]
-    [TestCase("ASC",   "QVND")]
-    [TestCase("ASCI",  "QVNDSQ==")]
+    [TestCase("A", "QQ==")]
+    [TestCase("AS", "QVM=")]
+    [TestCase("ASC", "QVND")]
+    [TestCase("ASCI", "QVNDSQ==")]
     [TestCase("ASCII", "QVNDSUk=")]
     public void TestTransformBlock(string output, string input)
     {
@@ -219,10 +221,10 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [TestCase("A",     "QQ== ")]
-    [TestCase("AS",    "QVM= ")]
-    [TestCase("ASC",   "QVND ")]
-    [TestCase("ASCI",  "QVNDSQ== ")]
+    [TestCase("A", "QQ== ")]
+    [TestCase("AS", "QVM= ")]
+    [TestCase("ASC", "QVND ")]
+    [TestCase("ASCI", "QVNDSQ== ")]
     [TestCase("ASCII", "QVNDSUk= ")]
     [TestCase("ASCII", "QVNDSUk=\t")]
     [TestCase("ASCII", "QVNDSUk=\r")]
@@ -298,10 +300,10 @@ namespace Smdn.Security.Cryptography {
       );
     }
 
-    [TestCase("A",     "QQ==")]
-    [TestCase("AS",    "QVM=")]
-    [TestCase("ASC",   "QVND")]
-    [TestCase("ASCI",  "QVNDSQ==")]
+    [TestCase("A", "QQ==")]
+    [TestCase("AS", "QVM=")]
+    [TestCase("ASC", "QVND")]
+    [TestCase("ASCI", "QVNDSQ==")]
     [TestCase("ASCII", "QVNDSUk=")]
     public void TestTransformFinalBlock(string output, string input)
     {

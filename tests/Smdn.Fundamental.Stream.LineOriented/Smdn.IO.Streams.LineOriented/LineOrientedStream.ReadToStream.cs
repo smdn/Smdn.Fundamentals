@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 namespace Smdn.IO.Streams.LineOriented;
@@ -48,7 +49,7 @@ partial class LineOrientedStreamTests {
         : stream.Read(copyStream, 0L),
      Is.Zero
     );
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     copyStream.Dispose();
 
@@ -71,7 +72,7 @@ partial class LineOrientedStreamTests {
      Is.Zero
     );
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     copyStream.Dispose();
 
@@ -93,7 +94,7 @@ partial class LineOrientedStreamTests {
     Assert.That(t.IsCanceled, Is.True);
     Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
   }
 
   [Test]

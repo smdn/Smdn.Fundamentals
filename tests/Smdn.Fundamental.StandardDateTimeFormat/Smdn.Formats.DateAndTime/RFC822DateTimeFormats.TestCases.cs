@@ -73,20 +73,20 @@ partial class RFC822DateTimeFormatsTests {
         (TestCaseLevel.Complemental, "01"),
       }) {
         foreach (var zone in new[] { "GMT", "UT" }) {
-          yield return (lv,                         $"{dayOfWeek}13 Apr {year} 19:23:02.1234567 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.Zero).AddTicks(4567), expectedKind);
+          yield return (lv, $"{dayOfWeek}13 Apr {year} 19:23:02.1234567 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.Zero).AddTicks(4567), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:02.123456 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.Zero).AddTicks(4560), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:02.12345 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.Zero).AddTicks(4500), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:02.1234 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.Zero).AddTicks(4000), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:02.123 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 123, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:02.12 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 120, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:02.1 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, 100, TimeSpan.Zero), expectedKind);
-          yield return (lv,                         $"{dayOfWeek}13 Apr {year} 19:23:02 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.Zero), expectedKind);
+          yield return (lv, $"{dayOfWeek}13 Apr {year} 19:23:02 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23:2 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 2, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:23 {zone}", new DateTimeOffset(2001, 4, 13, 19, 23, 0, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 19:2 {zone}", new DateTimeOffset(2001, 4, 13, 19, 2, 0, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 01:2 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.Zero), expectedKind);
           yield return (TestCaseLevel.Complemental, $"{dayOfWeek}13 Apr {year} 1:02 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.Zero), expectedKind);
-          yield return (lv,                         $"{dayOfWeek}13 Apr {year} 1:2 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.Zero), expectedKind);
+          yield return (lv, $"{dayOfWeek}13 Apr {year} 1:2 {zone}", new DateTimeOffset(2001, 4, 13, 1, 2, 0, TimeSpan.Zero), expectedKind);
         }
       }
     }
@@ -110,18 +110,18 @@ partial class RFC822DateTimeFormatsTests {
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.123456 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4560), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.12345 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4500), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.1234 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)).AddTicks(4000), expectedKind);
-      yield return (level,                      $"{dayOfWeek}10 Jun 2003 09:41:01.1234567 -0400", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(-4)).AddTicks(4567), expectedKind);
+      yield return (level, $"{dayOfWeek}10 Jun 2003 09:41:01.1234567 -0400", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(-4)).AddTicks(4567), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.1234567 +1245", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(12) + TimeSpan.FromMinutes(45)).AddTicks(4567), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.123 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 123, TimeSpan.FromHours(+9)), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.12 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 120, TimeSpan.FromHours(+9)), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:01.1 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, 100, TimeSpan.FromHours(+9)), expectedKind);
-      yield return (level,                      $"{dayOfWeek}10 Jun 2003 09:41:01 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, TimeSpan.FromHours(+9)), expectedKind);
+      yield return (level, $"{dayOfWeek}10 Jun 2003 09:41:01 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, TimeSpan.FromHours(+9)), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41:1 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 1, TimeSpan.FromHours(+9)), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:41 +0900", new DateTimeOffset(2003, 6, 10, 9, 41, 0, TimeSpan.FromHours(+9)), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 09:4 +0900", new DateTimeOffset(2003, 6, 10, 9, 4, 0, TimeSpan.FromHours(+9)), expectedKind);
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}10 Jun 2003 9:04 +0900", new DateTimeOffset(2003, 6, 10, 9, 4, 0, TimeSpan.FromHours(+9)), expectedKind);
-      yield return (level,                      $"{dayOfWeek}10 Jun 2003 9:4 +0900", new DateTimeOffset(2003, 6, 10, 9, 4, 0, TimeSpan.FromHours(+9)), expectedKind);
-      yield return (level,                      $"{dayOfWeek}10 Jun 03 9:4 +0900", new DateTimeOffset(2003, 6, 10, 9, 4, 0, TimeSpan.FromHours(+9)), expectedKind);
+      yield return (level, $"{dayOfWeek}10 Jun 2003 9:4 +0900", new DateTimeOffset(2003, 6, 10, 9, 4, 0, TimeSpan.FromHours(+9)), expectedKind);
+      yield return (level, $"{dayOfWeek}10 Jun 03 9:4 +0900", new DateTimeOffset(2003, 6, 10, 9, 4, 0, TimeSpan.FromHours(+9)), expectedKind);
     }
   }
 
@@ -253,7 +253,7 @@ partial class RFC822DateTimeFormatsTests {
     yield return (TestCaseLevel.Essential, string.Empty); // empty string
     yield return (TestCaseLevel.Essential, "!"); // non-datetime string
 
-    yield return (TestCaseLevel.Essential,    "Thu, 01 May 2022 23:17:14.0123456 +0000"); // day of week / mismatch
+    yield return (TestCaseLevel.Essential, "Thu, 01 May 2022 23:17:14.0123456 +0000"); // day of week / mismatch
     yield return (TestCaseLevel.Complemental, "Nul, 01 May 2022 23:17:14.0123456 +0000"); // day of week / invalid
     yield return (TestCaseLevel.Complemental, "Su, 01 May 2022 23:17:14.0123456 +0000"); // day of week / invalid
     foreach (var (level, dayOfWeek) in new[] {
@@ -268,17 +268,17 @@ partial class RFC822DateTimeFormatsTests {
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022 25:17:14.0123456 +0000"); // hour / invalid
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022 23:60:14.0123456 +0000"); // minute / invalid
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022 23:17:61.0123456 +0000"); // second / invalid
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14. +0000"); // second / invalid
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14.01234567 +0000"); // precision / overflow
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14.0123456 J"); // time zone / non-existent
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14.0123456 GM"); // time zone / invalid
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14.0123456 UTC"); // time zone / invalid
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14.0123456 JST"); // time zone / invalid
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:17:14.0123456 +00"); // time zone / invalid
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14. +0000"); // second / invalid
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14.01234567 +0000"); // precision / overflow
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14.0123456 J"); // time zone / non-existent
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14.0123456 GM"); // time zone / invalid
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14.0123456 UTC"); // time zone / invalid
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14.0123456 JST"); // time zone / invalid
+      yield return (level, $"{dayOfWeek}01 May 2022 23:17:14.0123456 +00"); // time zone / invalid
 #if false
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022 23:17:14.0123456 +00:00"); // time zone / invalid but acceptable
 #endif
-      yield return (level,                      $"{dayOfWeek}01 May 2022 23:"); // lack of minute
+      yield return (level, $"{dayOfWeek}01 May 2022 23:"); // lack of minute
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022 23"); // lack of minute
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022 "); // lack of hour
       yield return (TestCaseLevel.Complemental, $"{dayOfWeek}01 May 2022"); // lack of hour

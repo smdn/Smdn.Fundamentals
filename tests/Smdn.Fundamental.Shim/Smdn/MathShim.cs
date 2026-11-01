@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn;
@@ -46,7 +47,7 @@ public class MathShimTests {
 
   [TestCase(-2, -1, +1, -1)]
   [TestCase(-1, -1, +1, -1)]
-  [TestCase( 0, -1, +1,  0)]
+  [TestCase(0, -1, +1, 0)]
   [TestCase(+1, -1, +1, +1)]
   [TestCase(+2, -1, +1, +1)]
   public void Clamp_MinusValue(int value, int min, int max, int expected)

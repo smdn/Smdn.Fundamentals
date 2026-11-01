@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.IO;
+
 using NUnit.Framework;
 
 namespace Smdn.OperatingSystem {

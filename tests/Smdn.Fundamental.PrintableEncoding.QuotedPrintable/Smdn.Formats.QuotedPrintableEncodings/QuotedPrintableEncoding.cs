@@ -3,7 +3,9 @@
 using System;
 using System.IO;
 using System.Text;
+
 using NUnit.Framework;
+
 using Smdn.Test.NUnit;
 
 namespace Smdn.Formats.QuotedPrintableEncodings {
@@ -43,7 +45,7 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     private void AssertUnquotable(Encoding encoding, string text)
     {
       try {
-        var unquoted = QuotedPrintableEncoding.GetDecodedString((QuotedPrintableEncoding.GetEncodedString(text, encoding)), encoding);
+        var unquoted = QuotedPrintableEncoding.GetDecodedString(QuotedPrintableEncoding.GetEncodedString(text, encoding), encoding);
 
         Assert.That(unquoted, Is.EqualTo(text), "with " + encoding.EncodingName);
       }
@@ -103,9 +105,9 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         }
 
         if (leaveStreamOpen)
-          Assert.That(() => stream.ReadByte(), Throws.Nothing);
+          Assert.That(stream.ReadByte, Throws.Nothing);
         else
-          Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+          Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
       }
     }
   }

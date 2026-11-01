@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Text;
+
 using NUnit.Framework;
 
 namespace Smdn {
@@ -23,24 +24,24 @@ namespace Smdn {
     [Test]
     public void TestConstructFromByteArray()
     {
-      Assert.That((new FourCC(new byte[] { 0x00, 0x52, 0x49, 0x46, 0x46, 0x00 }, 1)).ToString(), Is.EqualTo("RIFF"));
-      Assert.That((new FourCC(new byte[] { 0x69, 0x73, 0x6f, 0x6d })).ToString(), Is.EqualTo("isom"));
-      Assert.That((new FourCC(new byte[] { 0x69, 0x73, 0x6f, 0x6d, 0x00 })).ToString(), Is.EqualTo("isom"));
+      Assert.That(new FourCC(new byte[] { 0x00, 0x52, 0x49, 0x46, 0x46, 0x00 }, 1).ToString(), Is.EqualTo("RIFF"));
+      Assert.That(new FourCC(new byte[] { 0x69, 0x73, 0x6f, 0x6d }).ToString(), Is.EqualTo("isom"));
+      Assert.That(new FourCC(new byte[] { 0x69, 0x73, 0x6f, 0x6d, 0x00 }).ToString(), Is.EqualTo("isom"));
     }
 
     [Test]
     public void TestConstructFromByteSequence()
     {
-      Assert.That((new FourCC(0x52, 0x49, 0x46, 0x46)).ToString(), Is.EqualTo("RIFF"));
-      Assert.That((new FourCC(0x69, 0x73, 0x6f, 0x6d)).ToString(), Is.EqualTo("isom"));
+      Assert.That(new FourCC(0x52, 0x49, 0x46, 0x46).ToString(), Is.EqualTo("RIFF"));
+      Assert.That(new FourCC(0x69, 0x73, 0x6f, 0x6d).ToString(), Is.EqualTo("isom"));
     }
 
     [Test]
     public void TestConstructFromString()
     {
-      Assert.That((new FourCC("RIFF")).ToString(), Is.EqualTo("RIFF"));
-      Assert.That((new FourCC("isom")).ToString(), Is.EqualTo("isom"));
-      Assert.That((new FourCC("isomx")).ToString(), Is.EqualTo("isom"));
+      Assert.That(new FourCC("RIFF").ToString(), Is.EqualTo("RIFF"));
+      Assert.That(new FourCC("isom").ToString(), Is.EqualTo("isom"));
+      Assert.That(new FourCC("isomx").ToString(), Is.EqualTo("isom"));
 
       Assert.That(() => new FourCC("ああああ"), Throws.TypeOf<OverflowException>());
     }
@@ -48,8 +49,8 @@ namespace Smdn {
     [Test]
     public void TestConstructFromCharSequence()
     {
-      Assert.That((new FourCC('R', 'I', 'F', 'F')).ToString(), Is.EqualTo("RIFF"));
-      Assert.That((new FourCC('i', 's', 'o', 'm')).ToString(), Is.EqualTo("isom"));
+      Assert.That(new FourCC('R', 'I', 'F', 'F').ToString(), Is.EqualTo("RIFF"));
+      Assert.That(new FourCC('i', 's', 'o', 'm').ToString(), Is.EqualTo("isom"));
 
       Assert.That(() => new FourCC('あ', 'あ', 'あ', 'あ'), Throws.TypeOf<OverflowException>());
     }
@@ -68,7 +69,7 @@ namespace Smdn {
       Assert.That(x.Equals(0x46464952), Is.False);
       Assert.That(x.Equals(FourCC.CreateLittleEndian(0x46464952)), Is.True);
       Assert.That(x.Equals(new FourCC("RIFF")), Is.True);
-      Assert.That(x.Equals(new FourCC(new byte[] {0x52, 0x49, 0x46, 0x46})), Is.True);
+      Assert.That(x.Equals(new FourCC(new byte[] { 0x52, 0x49, 0x46, 0x46 })), Is.True);
     }
 
     [Test]
@@ -109,7 +110,7 @@ namespace Smdn {
       const ushort WAVE_FORMAT_PCM = 0x0001;
 
       Assert.That(FourCC.CreateLittleEndian((int)WAVE_FORMAT_PCM).ToCodecGuid(), Is.EqualTo(new Guid("00000001-0000-0010-8000-00aa00389b71")));
-      Assert.That((new FourCC("H264")).ToCodecGuid(), Is.EqualTo(new Guid("34363248-0000-0010-8000-00AA00389B71")));
+      Assert.That(new FourCC("H264").ToCodecGuid(), Is.EqualTo(new Guid("34363248-0000-0010-8000-00AA00389B71")));
     }
 
     [Test]
@@ -155,8 +156,8 @@ namespace Smdn {
     [Test]
     public void TestToByteArray()
     {
-      Assert.That(FourCC.CreateLittleEndian(0x46464952).ToByteArray(), Is.EqualTo(new byte[] {0x52, 0x49, 0x46, 0x46}));
-      Assert.That(FourCC.CreateBigEndian(0x69736f6d).ToByteArray(), Is.EqualTo(new byte[] {0x69, 0x73, 0x6f, 0x6d}));
+      Assert.That(FourCC.CreateLittleEndian(0x46464952).ToByteArray(), Is.EqualTo(new byte[] { 0x52, 0x49, 0x46, 0x46 }));
+      Assert.That(FourCC.CreateBigEndian(0x69736f6d).ToByteArray(), Is.EqualTo(new byte[] { 0x69, 0x73, 0x6f, 0x6d }));
     }
 
     [Test]

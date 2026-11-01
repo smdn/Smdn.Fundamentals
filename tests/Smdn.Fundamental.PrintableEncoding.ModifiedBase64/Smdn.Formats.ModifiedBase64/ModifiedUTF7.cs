@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats.ModifiedBase64;

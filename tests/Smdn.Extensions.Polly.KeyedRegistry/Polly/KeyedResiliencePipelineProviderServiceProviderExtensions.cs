@@ -1,10 +1,6 @@
 // SPDX-FileCopyrightText: 2025 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
-using System.Collections.Generic;
-
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using NUnit.Framework;
 

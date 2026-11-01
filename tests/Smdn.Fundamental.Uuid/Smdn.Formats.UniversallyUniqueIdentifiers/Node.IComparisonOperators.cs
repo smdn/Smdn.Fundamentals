@@ -10,20 +10,20 @@ using NUnit.Framework;
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 partial class NodeTests {
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", false,  true)]
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01",  true,  true)]
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00",  true,  true)]
-  [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00",  true,  true)]
-  [TestCase("00:00:00:00:00:00", "00:00:01:00:00:00",  true,  true)]
-  [TestCase("00:00:00:00:00:00", "00:01:00:00:00:00",  true,  true)]
-  [TestCase("00:00:00:00:00:00", "01:00:00:00:00:00",  true,  true)]
-  [TestCase("00:00:00:00:00:01", "00:00:00:00:00:00", false,  false)]
-  [TestCase("00:00:00:00:01:00", "00:00:00:00:00:00", false,  false)]
-  [TestCase("00:00:00:01:00:00", "00:00:00:00:00:00", false,  false)]
-  [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00", false,  false)]
-  [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00", false,  false)]
-  [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00", false,  false)]
-  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", false,   true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", false, true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01", true, true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00", true, true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00", true, true)]
+  [TestCase("00:00:00:00:00:00", "00:00:01:00:00:00", true, true)]
+  [TestCase("00:00:00:00:00:00", "00:01:00:00:00:00", true, true)]
+  [TestCase("00:00:00:00:00:00", "01:00:00:00:00:00", true, true)]
+  [TestCase("00:00:00:00:00:01", "00:00:00:00:00:00", false, false)]
+  [TestCase("00:00:00:00:01:00", "00:00:00:00:00:00", false, false)]
+  [TestCase("00:00:00:01:00:00", "00:00:00:00:00:00", false, false)]
+  [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00", false, false)]
+  [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00", false, false)]
+  [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00", false, false)]
+  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", false, true)]
   public void TestOpLessThan_OpLessThanOrEqual(string x, string y, bool lessThan, bool lessThanOrEqual)
   {
 #pragma warning disable CA1305
@@ -40,20 +40,20 @@ partial class NodeTests {
 #pragma warning restore CA1305
   }
 
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", false,  true)]
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01", false,  false)]
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00", false,  false)]
-  [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00", false,  false)]
-  [TestCase("00:00:00:00:00:00", "00:00:01:00:00:00", false,  false)]
-  [TestCase("00:00:00:00:00:00", "00:01:00:00:00:00", false,  false)]
-  [TestCase("00:00:00:00:00:00", "01:00:00:00:00:00", false,  false)]
-  [TestCase("00:00:00:00:00:01", "00:00:00:00:00:00",  true,   true)]
-  [TestCase("00:00:00:00:01:00", "00:00:00:00:00:00",  true,   true)]
-  [TestCase("00:00:00:01:00:00", "00:00:00:00:00:00",  true,   true)]
-  [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00",  true,   true)]
-  [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00",  true,   true)]
-  [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00",  true,   true)]
-  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", false,   true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", false, true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01", false, false)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00", false, false)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00", false, false)]
+  [TestCase("00:00:00:00:00:00", "00:00:01:00:00:00", false, false)]
+  [TestCase("00:00:00:00:00:00", "00:01:00:00:00:00", false, false)]
+  [TestCase("00:00:00:00:00:00", "01:00:00:00:00:00", false, false)]
+  [TestCase("00:00:00:00:00:01", "00:00:00:00:00:00", true, true)]
+  [TestCase("00:00:00:00:01:00", "00:00:00:00:00:00", true, true)]
+  [TestCase("00:00:00:01:00:00", "00:00:00:00:00:00", true, true)]
+  [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00", true, true)]
+  [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00", true, true)]
+  [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00", true, true)]
+  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", false, true)]
   public void TestOpGreaterThan_OpGreaterThanOrEqual(string x, string y, bool greaterThan, bool greaterThanOrEqual)
   {
 #pragma warning disable CA1305
@@ -70,7 +70,7 @@ partial class NodeTests {
 #pragma warning restore CA1305
   }
 
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00",  0)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", 0)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01", -1)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00", -1)]
   [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00", -1)]
@@ -83,7 +83,7 @@ partial class NodeTests {
   [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00", +1)]
   [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00", +1)]
   [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00", +1)]
-  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF",  0)]
+  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", 0)]
   public void TestCompareTo(string x, string y, int expected)
 #pragma warning disable CA1305
     => Assert.That(Math.Sign(Node.Parse(x).CompareTo(Node.Parse(y))), Is.EqualTo(expected));

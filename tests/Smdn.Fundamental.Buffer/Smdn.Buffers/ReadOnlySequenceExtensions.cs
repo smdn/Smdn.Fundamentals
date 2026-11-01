@@ -3,6 +3,7 @@
 using System;
 using System.Buffers;
 using System.Text;
+
 using NUnit.Framework;
 
 namespace Smdn.Buffers {
@@ -20,13 +21,12 @@ namespace Smdn.Buffers {
         StringSegment last = null;
         const int seglen = 2;
 
-        for (var offset = 0;;) {
+        for (var offset = 0; ;) {
           var len = Math.Min(seglen, str.Length - offset);
 
           last = new StringSegment(str.Substring(offset, len), last);
 
-          if (first == null)
-            first = last;
+          first ??= last;
 
           offset += len;
 
@@ -38,15 +38,13 @@ namespace Smdn.Buffers {
       }
     }
 
-    private class StringSegment : ReadOnlySequenceSegment<byte>
-    {
+    private class StringSegment : ReadOnlySequenceSegment<byte> {
       public StringSegment(string substr, StringSegment prev)
       {
         this.Memory = Smdn.Text.Encodings.OctetEncoding.EightBits.GetBytes(substr);
         this.RunningIndex = prev == null ? 0 : prev.RunningIndex + prev.Memory.Length;
 
-        if (prev != null)
-          prev.Next = this;
+        prev?.Next = this;
       }
     }
 
@@ -69,28 +67,28 @@ namespace Smdn.Buffers {
       Assert.That(str.SequenceEqual(CreateSpan("a")), Is.False);
     }
 
-    [TestCase(true,  "ABCXYZ", "ABCXYZ", true)]
+    [TestCase(true, "ABCXYZ", "ABCXYZ", true)]
     [TestCase(false, "ABCXYZ", "ABCXYZ", true)]
-    [TestCase(true,  "abcxyz", "ABCXYZ", true)]
+    [TestCase(true, "abcxyz", "ABCXYZ", true)]
     [TestCase(false, "abcxyz", "ABCXYZ", true)]
-    [TestCase(true,  "ABCXYZ", "abcxyz", true)]
+    [TestCase(true, "ABCXYZ", "abcxyz", true)]
     [TestCase(false, "ABCXYZ", "abcxyz", true)]
-    [TestCase(true,  "abcxyz", "abcxyz", true)]
+    [TestCase(true, "abcxyz", "abcxyz", true)]
     [TestCase(false, "abcxyz", "abcxyz", true)]
-    [TestCase(true,  "0123(){}", "0123(){}", true)]
+    [TestCase(true, "0123(){}", "0123(){}", true)]
     [TestCase(false, "0123(){}", "0123(){}", true)]
-    [TestCase(true,  "\x00\x10\x20\x30\x40\x60", "\x00\x10\x20\x30\x40\x60", true)]
+    [TestCase(true, "\x00\x10\x20\x30\x40\x60", "\x00\x10\x20\x30\x40\x60", true)]
     [TestCase(false, "\x00\x10\x20\x30\x40\x60", "\x00\x10\x20\x30\x40\x60", true)]
     [TestCase(false, "", "", true)]
-    [TestCase(true,  "a", "", false)]
+    [TestCase(true, "a", "", false)]
     [TestCase(false, "a", "", false)]
-    [TestCase(true,  "", "a", false)]
+    [TestCase(true, "", "a", false)]
     [TestCase(false, "", "a", false)]
-    [TestCase(true,  "a", "ab", false)]
+    [TestCase(true, "a", "ab", false)]
     [TestCase(false, "a", "ab", false)]
-    [TestCase(true,  "ab", "a", false)]
+    [TestCase(true, "ab", "a", false)]
     [TestCase(false, "ab", "a", false)]
-    [TestCase(true,  "ab", "ac", false)]
+    [TestCase(true, "ab", "ac", false)]
     [TestCase(false, "ac", "ab", false)]
     public void SequenceEqualIgnoreCase(bool singleSegment, string strSequence, string strSpan, bool expected)
     {

@@ -1,13 +1,14 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
 
 #if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
 using _KeyValuePair = System.Collections.Generic.KeyValuePair;
 #else
 using Smdn.Collections;
+
 using _KeyValuePair = Smdn.Collections.KeyValuePair;
 #endif
 

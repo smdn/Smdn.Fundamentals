@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 // cSpell:ignore apos
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn.Xml.Xhtml {

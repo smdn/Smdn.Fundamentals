@@ -20,7 +20,7 @@ partial class UuidTests {
       Assert.That(uuid.TimeHighAndVersion, Is.EqualTo(0x11d0), $"{testCaseLabel} {nameof(Uuid.TimeHighAndVersion)}");
       Assert.That(uuid.ClockSeqHighAndReserved, Is.EqualTo(0xa7), $"{testCaseLabel} {nameof(Uuid.ClockSeqHighAndReserved)}");
       Assert.That(uuid.ClockSeqLow, Is.EqualTo(0x65), $"{testCaseLabel} {nameof(Uuid.ClockSeqLow)}");
-      Assert.That(uuid.Node, Is.EqualTo(new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6}), $"{testCaseLabel} {nameof(Uuid.Node)}");
+      Assert.That(uuid.Node, Is.EqualTo(new byte[] { 0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6 }), $"{testCaseLabel} {nameof(Uuid.Node)}");
       Assert.That(uuid.Version, Is.EqualTo(UuidVersion.Version1), $"{testCaseLabel} {nameof(Uuid.Version)}");
       Assert.That(uuid.VariantField, Is.EqualTo(Uuid.Variant.RFC4122), $"{testCaseLabel} {nameof(Uuid.VariantField)}");
     }
@@ -55,7 +55,7 @@ partial class UuidTests {
       Assert.That(uuid.TimeHighAndVersion, Is.EqualTo(0x11d0), $"{testCaseLabel} {nameof(Uuid.TimeHighAndVersion)}");
       Assert.That(uuid.ClockSeqHighAndReserved, Is.EqualTo(0xa7), $"{testCaseLabel} {nameof(Uuid.ClockSeqHighAndReserved)}");
       Assert.That(uuid.ClockSeqLow, Is.EqualTo(0x65), $"{testCaseLabel} {nameof(Uuid.ClockSeqLow)}");
-      Assert.That(uuid.Node, Is.EqualTo(new byte[] {0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6}), $"{testCaseLabel} {nameof(Uuid.Node)}");
+      Assert.That(uuid.Node, Is.EqualTo(new byte[] { 0x00, 0xa0, 0xc9, 0x1e, 0x6b, 0xf6 }), $"{testCaseLabel} {nameof(Uuid.Node)}");
       Assert.That(uuid.Version, Is.EqualTo(UuidVersion.Version1), $"{testCaseLabel} {nameof(Uuid.Version)}");
       Assert.That(uuid.VariantField, Is.EqualTo(Uuid.Variant.RFC4122), $"{testCaseLabel} {nameof(Uuid.VariantField)}");
     }

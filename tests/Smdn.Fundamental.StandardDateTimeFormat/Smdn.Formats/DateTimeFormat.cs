@@ -19,11 +19,11 @@ public partial class DateTimeFormatTests {
     var mm = offset.Minutes;
 
     if (TimeSpan.Zero <= offset) {
-      timezoneOffset        = $"+{hh:d2}:{mm:d2}";
+      timezoneOffset = $"+{hh:d2}:{mm:d2}";
       timezoneOffsetNoDelim = $"+{hh:d2}{mm:d2}";
     }
     else {
-      timezoneOffset        = $"-{hh:d2}:{mm:d2}";
+      timezoneOffset = $"-{hh:d2}:{mm:d2}";
       timezoneOffsetNoDelim = $"-{hh:d2}{mm:d2}";
     }
   }

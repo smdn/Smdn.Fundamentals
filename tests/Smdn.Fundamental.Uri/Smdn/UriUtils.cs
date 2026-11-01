@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
 
 #if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
@@ -50,7 +51,7 @@ namespace Smdn {
     [Test]
     public void JoinQueryParameters_ArgumentEmpty()
     {
-      Assert.That(UriUtils.JoinQueryParameters(new KeyValuePair<string, string>[] {}), Is.Empty);
+      Assert.That(UriUtils.JoinQueryParameters(new KeyValuePair<string, string>[] { }), Is.Empty);
     }
 
     [Test]

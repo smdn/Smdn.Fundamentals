@@ -5,6 +5,7 @@ using System;
 using System.Net.NetworkInformation;
 #endif
 using System.Text.RegularExpressions;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats.UniversallyUniqueIdentifiers {

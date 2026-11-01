@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Globalization;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats {
@@ -26,7 +27,7 @@ namespace Smdn.Formats {
       foreach (var arg in new object[] {
         "aaaa",
         new Guid(),
-        new object(),
+        new(),
       }) {
         Assert.That(string.Format(provider, "{0:d}", arg), Is.Not.EqualTo("1k"), arg.GetType().ToString());
       }
@@ -120,7 +121,7 @@ namespace Smdn.Formats {
       var provider = SIPrefixNumberFormatter.InvaliantInfo;
       var decimalValue = +1000000m;
 
-      foreach (var sign in new[] {+1m, -1m}) {
+      foreach (var sign in new[] { +1m, -1m }) {
         foreach (var pair in new[] {
           new {Expected = "976ki",            Format = "b0"},
           new {Expected = "976.563ki",        Format = "b3"},
@@ -153,7 +154,7 @@ namespace Smdn.Formats {
       var provider = SIPrefixNumberFormatter.InvaliantInfo;
       var binaryValue = +1048576m;
 
-      foreach (var sign in new[] {+1m, -1m}) {
+      foreach (var sign in new[] { +1m, -1m }) {
         foreach (var pair in new[] {
           new {Expected = "1Mi",            Format = "b0"},
           new {Expected = "1.000Mi",        Format = "b3"},

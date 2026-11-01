@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.Collections;
 using System.Text;
+
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -14,8 +14,8 @@ namespace Smdn.Formats.ModifiedBase64;
 public class FromRFC2152ModifiedBase64TransformTests {
   private static IEnumerable YieldTestCases_Transform()
   {
-    yield return new object[] { new byte[] { 0xfb },             "+w==", "+w" };
-    yield return new object[] { new byte[] { 0xfb, 0xf0 },       "+/A=", "+/A" };
+    yield return new object[] { new byte[] { 0xfb }, "+w==", "+w" };
+    yield return new object[] { new byte[] { 0xfb, 0xf0 }, "+/A=", "+/A" };
     yield return new object[] { new byte[] { 0xfb, 0xf0, 0x00 }, "+/AA", "+/AA" };
   }
 

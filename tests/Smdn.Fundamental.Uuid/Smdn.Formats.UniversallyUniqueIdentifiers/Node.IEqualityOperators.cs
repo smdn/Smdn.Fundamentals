@@ -9,7 +9,7 @@ using NUnit.Framework;
 namespace Smdn.Formats.UniversallyUniqueIdentifiers;
 
 partial class NodeTests {
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00",  true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", true)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01", false)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00", false)]
   [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00", false)]
@@ -22,7 +22,7 @@ partial class NodeTests {
   [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00", false)]
   [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00", false)]
   [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00", false)]
-  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF",  true)]
+  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", true)]
   public void TestOpEquality_OpInequality(string x, string y, bool isEqual)
   {
 #pragma warning disable CA1305
@@ -39,7 +39,7 @@ partial class NodeTests {
 #pragma warning restore CA1305
   }
 
-  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00",  true)]
+  [TestCase("00:00:00:00:00:00", "00:00:00:00:00:00", true)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:00:01", false)]
   [TestCase("00:00:00:00:00:00", "00:00:00:00:01:00", false)]
   [TestCase("00:00:00:00:00:00", "00:00:00:01:00:00", false)]
@@ -52,7 +52,7 @@ partial class NodeTests {
   [TestCase("00:00:01:00:00:00", "00:00:00:00:00:00", false)]
   [TestCase("00:01:00:00:00:00", "00:00:00:00:00:00", false)]
   [TestCase("01:00:00:00:00:00", "00:00:00:00:00:00", false)]
-  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF",  true)]
+  [TestCase("FF:FF:FF:FF:FF:FF", "FF:FF:FF:FF:FF:FF", true)]
   public void TestEquals(string x, string y, bool expected)
 #pragma warning disable CA1305
     => Assert.That(Node.Parse(x).Equals(Node.Parse(y)), Is.EqualTo(expected));

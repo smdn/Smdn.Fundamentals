@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Text;
+
 using NUnit.Framework;
+
 using Smdn.Test.NUnit;
 
 namespace Smdn.Formats.PercentEncodings {

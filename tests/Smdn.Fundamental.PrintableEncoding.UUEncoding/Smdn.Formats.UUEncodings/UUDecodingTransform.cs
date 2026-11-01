@@ -1,8 +1,8 @@
 // SPDX-FileCopyrightText: 2012 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Security.Cryptography;
 using System.Text;
+
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
 
@@ -73,7 +73,7 @@ M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U
       var uuencode = @"#0V%T
 `".Replace("\r\n", "\n").Replace("\n", newline);
 
-      Assert.That(ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */));
+      Assert.That(ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)), Is.EqualTo(new byte[] { 0x43, 0x61, 0x74 } /* 'C' 'a' 't' */));
     }
 
     [TestCase("\r")]

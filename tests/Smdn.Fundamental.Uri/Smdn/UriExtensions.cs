@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2012 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Collections.Generic;
+
 using NUnit.Framework;
 
 namespace Smdn {
@@ -40,7 +40,7 @@ namespace Smdn {
     {
       Uri uri = null!;
 
-      Assert.That(() => uri.GetSplittedQueries(), Throws.ArgumentNullException);
+      Assert.That(uri.GetSplittedQueries, Throws.ArgumentNullException);
     }
   }
 }

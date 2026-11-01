@@ -4,8 +4,9 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Security.Cryptography;
+using System.Text;
+
 using NUnit.Framework;
 
 namespace Smdn.Security.Cryptography;
@@ -30,8 +31,8 @@ public class ICryptoTransformExtensionsTests {
     );
   }
 
-  [TestCase("A",   "QQ==")]
-  [TestCase("AA",  "QUE=")]
+  [TestCase("A", "QQ==")]
+  [TestCase("AA", "QUE=")]
   [TestCase("AAA", "QUFB")]
   public void TransformBytes_InputShorterThanInputBlockSize(string input, string output)
   {

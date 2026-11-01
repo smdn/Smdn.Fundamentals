@@ -3,9 +3,9 @@
 #pragma warning disable CS0618 // [Obsolete]
 
 using System;
-using NUnit.Framework;
-
 using System.Runtime.InteropServices;
+
+using NUnit.Framework;
 
 namespace Smdn {
   [TestFixture]

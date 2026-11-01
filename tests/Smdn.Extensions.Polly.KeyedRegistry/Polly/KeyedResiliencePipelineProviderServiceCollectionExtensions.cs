@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using NUnit.Framework;
 
@@ -39,7 +38,7 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     var provider = services.BuildServiceProvider();
 
     Assert.That(
-      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      provider.GetRequiredService<ResiliencePipelineProvider<int>>,
       Throws.InvalidOperationException,
       "The keyless services must not be registered."
     );
@@ -105,7 +104,7 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     var provider = services.BuildServiceProvider();
 
     Assert.That(
-      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      provider.GetRequiredService<ResiliencePipelineProvider<int>>,
       Throws.InvalidOperationException,
       "The keyless services must not be registered."
     );
@@ -158,7 +157,7 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     var provider = services.BuildServiceProvider();
 
     Assert.That(
-      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      provider.GetRequiredService<ResiliencePipelineProvider<int>>,
       Throws.InvalidOperationException,
       "The keyless services must not be registered."
     );
@@ -207,7 +206,7 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     var provider = services.BuildServiceProvider();
 
     Assert.That(
-      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      provider.GetRequiredService<ResiliencePipelineProvider<int>>,
       Throws.InvalidOperationException,
       "The keyless services must not be registered."
     );
@@ -241,7 +240,7 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     var provider = services.BuildServiceProvider();
 
     Assert.That(
-      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      provider.GetRequiredService<ResiliencePipelineProvider<int>>,
       Throws.InvalidOperationException,
       "The keyless services must not be registered."
     );
@@ -274,7 +273,7 @@ public class KeyedResiliencePipelineProviderServiceCollectionExtensionsTests {
     var provider = services.BuildServiceProvider();
 
     Assert.That(
-      () => provider.GetRequiredService<ResiliencePipelineProvider<int>>(),
+      provider.GetRequiredService<ResiliencePipelineProvider<int>>,
       Throws.Nothing,
       "The keyless services must be registered."
     );

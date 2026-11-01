@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using NUnit.Framework;
 
 using Smdn.IO;
@@ -90,9 +91,9 @@ extra text block
 
         Assert.That(file.FileName, Is.EqualTo("cat.txt"), "extracted file name #3");
         Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #3");
-        Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #3");
+        Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] { 0x43, 0x61, 0x74 } /* 'C' 'a' 't' */), "extracted file content #3");
 
-        Assert.That(() => stream.ReadByte(), Throws.Nothing, "read base stream");
+        Assert.That(stream.ReadByte, Throws.Nothing, "read base stream");
       }
     }
 
@@ -140,7 +141,7 @@ extra text block
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(input))) {
         var fileCount = 0;
 
-        UUDecoder.ExtractFiles(stream, delegate(UUDecoder.FileEntry file) {
+        UUDecoder.ExtractFiles(stream, delegate (UUDecoder.FileEntry file) {
           if (fileCount == 0) {
             Assert.That(file.FileName, Is.EqualTo("testimg.png"), "extracted file name #1");
             Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #1");
@@ -154,7 +155,7 @@ extra text block
           else if (fileCount == 2) {
             Assert.That(file.FileName, Is.EqualTo("cat.txt"), "extracted file name #3");
             Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #3");
-            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #3");
+            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] { 0x43, 0x61, 0x74 } /* 'C' 'a' 't' */), "extracted file content #3");
           }
           else {
             Assert.Fail("unexpected file entry");
@@ -170,7 +171,7 @@ extra text block
 
         Assert.That(fileCount, Is.EqualTo(3), "extracted file count");
 
-        Assert.That(() => stream.ReadByte(), Throws.Nothing, "read base stream");
+        Assert.That(stream.ReadByte, Throws.Nothing, "read base stream");
       }
     }
 
@@ -188,11 +189,11 @@ end
       using (var stream = new MemoryStream(Encoding.ASCII.GetBytes(input))) {
         var fileCount = 0;
 
-        UUDecoder.ExtractFiles(stream, delegate(UUDecoder.FileEntry file) {
+        UUDecoder.ExtractFiles(stream, delegate (UUDecoder.FileEntry file) {
           if (fileCount == 0) {
             Assert.That(file.FileName, Is.EqualTo(string.Empty), "extracted file name #1");
             Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #1");
-            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #1");
+            Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] { 0x43, 0x61, 0x74 } /* 'C' 'a' 't' */), "extracted file content #1");
 
             Assert.That(() => file.Save(), Throws.InvalidOperationException);
           }
@@ -210,7 +211,7 @@ end
 
         Assert.That(fileCount, Is.EqualTo(1), "extracted file count");
 
-        Assert.That(() => stream.ReadByte(), Throws.Nothing, "read base stream");
+        Assert.That(stream.ReadByte, Throws.Nothing, "read base stream");
       }
     }
   }

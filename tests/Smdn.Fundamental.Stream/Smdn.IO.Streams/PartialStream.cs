@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 #if SYSTEM_ARRAY_EMPTY
@@ -24,7 +25,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.LeaveInnerStreamOpen, Is.True);
       }
 
-      Assert.That(() => inner.ReadByte(), Throws.Nothing);
+      Assert.That(inner.ReadByte, Throws.Nothing);
     }
 
     [Test]
@@ -37,7 +38,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.LeaveInnerStreamOpen, Is.False);
       }
 
-      Assert.That(() => inner.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(inner.ReadByte, Throws.TypeOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -54,8 +55,8 @@ namespace Smdn.IO.Streams {
 
       Assert.That(stream.CanWrite, Is.False);
 
-      Assert.That(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4), Throws.TypeOf<NotSupportedException>());
-      Assert.That(() => stream.WriteAsync(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => stream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03 }, 0, 4), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => stream.WriteAsync(new byte[] { 0x00, 0x01, 0x02, 0x03 }, 0, 4), Throws.TypeOf<NotSupportedException>());
       Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<NotSupportedException>());
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       Assert.That(
@@ -67,7 +68,7 @@ namespace Smdn.IO.Streams {
       var len = stream.Length;
       var pos = stream.Position;
 
-      Assert.That(() => stream.Flush(), Throws.Nothing);
+      Assert.That(stream.Flush, Throws.Nothing);
 
       Assert.That(stream.Length, Is.EqualTo(len));
       Assert.That(stream.Position, Is.EqualTo(pos));
@@ -103,11 +104,11 @@ namespace Smdn.IO.Streams {
 
       nestInner.Position = 0;
       Assert.That(nestInner.Read(buffer, 0, buffer.Length), Is.EqualTo(4));
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00 }));
 
       nestOuter.Position = 0;
       Assert.That(nestOuter.Read(buffer, 0, buffer.Length), Is.EqualTo(6));
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00 }));
     }
 
     [Test]
@@ -127,11 +128,11 @@ namespace Smdn.IO.Streams {
 
       nestInner.Position = 0;
       Assert.That(nestInner.Read(buffer, 0, buffer.Length), Is.EqualTo(4));
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x02, 0x03, 0x04, 0x05, 0x00, 0x00, 0x00, 0x00 }));
 
       nestOuter.Position = 0;
       Assert.That(nestOuter.Read(buffer, 0, buffer.Length), Is.EqualTo(6));
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x00, 0x00 }));
     }
 
     [Test]
@@ -163,7 +164,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.CanSeek, Is.False, "CanSeek");
       Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-      Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
       Assert.That(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>());
       Assert.That(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>());
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -185,7 +186,7 @@ namespace Smdn.IO.Streams {
       stream.Dispose();
     }
 
-    enum ReadMethod {
+    private enum ReadMethod {
       Read,
       ReadAsync,
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -222,7 +223,7 @@ namespace Smdn.IO.Streams {
         },
         Is.EqualTo(2)
       );
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x02, 0x03, 0x00}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x02, 0x03, 0x00 }));
 
       Assert.That(stream.InnerStream.Position, Is.EqualTo(4));
       Assert.That(stream.Position, Is.EqualTo(2));
@@ -239,7 +240,7 @@ namespace Smdn.IO.Streams {
         },
         Is.EqualTo(1)
       );
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x05, 0x03, 0x00}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x05, 0x03, 0x00 }));
 
       Assert.That(stream.InnerStream.Position, Is.EqualTo(6));
       Assert.That(stream.Position, Is.EqualTo(4));
@@ -315,7 +316,7 @@ namespace Smdn.IO.Streams {
         },
         Is.EqualTo(3)
       );
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x02, 0x03, 0x04}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x02, 0x03, 0x04 }));
 
       Assert.That(stream.InnerStream.Position, Is.EqualTo(5));
       Assert.That(stream.Position, Is.EqualTo(3));
@@ -335,7 +336,7 @@ namespace Smdn.IO.Streams {
         },
         Is.EqualTo(2)
       );
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x06, 0x07, 0x04}));
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x06, 0x07, 0x04 }));
 
       Assert.That(stream.InnerStream.Position, Is.EqualTo(8));
       Assert.That(stream.Position, Is.EqualTo(6));
@@ -433,7 +434,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(8));
     }
 
-    enum WriteMethod {
+    private enum WriteMethod {
       Write,
       WriteAsync,
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
@@ -459,12 +460,12 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.Zero);
 
         switch (writeMethod) {
-          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x02, 0x03}, 0, 2); break;
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] { 0x02, 0x03 }, 0, 2); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x02, 0x03})); break;
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0x02, 0x03 })); break;
 #endif
-          default: stream.Write(new byte[] {0x02, 0x03}, 0, 2); break;
-        };
+          default: stream.Write(new byte[] { 0x02, 0x03 }, 0, 2); break;
+        }
 
         Assert.That(stream.Position, Is.EqualTo(2));
 
@@ -475,11 +476,11 @@ namespace Smdn.IO.Streams {
         Assert.That(
           async () => {
             switch (writeMethod) {
-              case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x05, 0x06}, 0, 2); break;
+              case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] { 0x05, 0x06 }, 0, 2); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-              case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x05, 0x06})); break;
+              case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0x05, 0x06 })); break;
 #endif
-              default: stream.Write(new byte[] {0x05, 0x06}, 0, 2); break;
+              default: stream.Write(new byte[] { 0x05, 0x06 }, 0, 2); break;
             }
           },
           Throws.TypeOf<IOException>()
@@ -488,12 +489,12 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.EqualTo(3));
 
         switch (writeMethod) {
-          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x05}, 0, 1); break;
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] { 0x05 }, 0, 1); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x05})); break;
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0x05 })); break;
 #endif
-          default: stream.Write(new byte[] {0x05}, 0, 1); break;
-        };
+          default: stream.Write(new byte[] { 0x05 }, 0, 1); break;
+        }
 
         Assert.That(stream.Position, Is.EqualTo(4));
 
@@ -502,7 +503,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.EqualTo(4));
       }
 
-      Assert.That(inner.ToArray(), Is.EqualTo(new byte[] {0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x00, 0x00}));
+      Assert.That(inner.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x00, 0x00 }));
     }
 
     [Test] public Task TestWrite_LengthNotSpecified() => TestWrite_LengthNotSpecified(WriteMethod.Write);
@@ -523,12 +524,12 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.Zero);
 
         switch (writeMethod) {
-          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x02, 0x03, 0x04}, 0, 3); break;
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] { 0x02, 0x03, 0x04 }, 0, 3); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x02, 0x03, 0x04})); break;
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0x02, 0x03, 0x04 })); break;
 #endif
-          default: stream.Write(new byte[] {0x02, 0x03, 0x04}, 0, 3); break;
-        };
+          default: stream.Write(new byte[] { 0x02, 0x03, 0x04 }, 0, 3); break;
+        }
 
         Assert.That(stream.Position, Is.EqualTo(3));
 
@@ -540,11 +541,11 @@ namespace Smdn.IO.Streams {
         Assert.That(
           async () => {
             switch (writeMethod) {
-              case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
+              case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] { 0x06, 0x07, 0x08 }, 0, 3); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-              case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x06, 0x07, 0x08})); break;
+              case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0x06, 0x07, 0x08 })); break;
 #endif
-              default: stream.Write(new byte[] {0x06, 0x07, 0x08}, 0, 3); break;
+              default: stream.Write(new byte[] { 0x06, 0x07, 0x08 }, 0, 3); break;
             }
           },
           Throws.TypeOf<NotSupportedException>()
@@ -553,12 +554,12 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.EqualTo(4));
 
         switch (writeMethod) {
-          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] {0x06, 0x07}, 0, 2); break;
+          case WriteMethod.WriteAsync: await stream.WriteAsync(new byte[] { 0x06, 0x07 }, 0, 2); break;
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
-          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] {0x06, 0x07})); break;
+          case WriteMethod.WriteAsyncFromReadOnlyMemory: await stream.WriteAsync(new ReadOnlyMemory<byte>(new byte[] { 0x06, 0x07 })); break;
 #endif
-          default: stream.Write(new byte[] {0x06, 0x07}, 0, 2); break;
-        };
+          default: stream.Write(new byte[] { 0x06, 0x07 }, 0, 2); break;
+        }
 
         Assert.That(stream.Position, Is.EqualTo(6));
 
@@ -568,7 +569,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.EqualTo(6));
       }
 
-      Assert.That(inner.ToArray(), Is.EqualTo(new byte[] {0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07}));
+      Assert.That(inner.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x00, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 }));
     }
 
 

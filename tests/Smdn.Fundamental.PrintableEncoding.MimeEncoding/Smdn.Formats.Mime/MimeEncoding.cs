@@ -5,7 +5,6 @@ using System.Text;
 
 using NUnit.Framework;
 
-using Smdn.Test.NUnit;
 using Smdn.Text.Encodings;
 
 namespace Smdn.Formats.Mime;
@@ -295,18 +294,20 @@ public class MimeEncodingTests {
   public void Decode_InvalidCharset_SelectFallback()
   {
     var called = false;
-    EncodingSelectionCallback callback = (string name) => {
-      called = true;
-      return Encoding.UTF8;
-    };
     string ret = default;
     MimeEncodingMethod encoding = default;
     Encoding charset = default;
 
+    Encoding Callback(string name)
+    {
+      called = true;
+      return Encoding.UTF8;
+    }
+
     Assert.That(
       () => ret = MimeEncoding.Decode(
         "=?x-invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
-        callback,
+        Callback,
         out encoding,
         out charset
       ),
@@ -323,17 +324,19 @@ public class MimeEncodingTests {
   public void Decode_InvalidCharset_SelectFallback_ReturnNull()
   {
     var called = false;
-    EncodingSelectionCallback callback = (string name) => {
-      called = true;
-      return null;
-    };
     MimeEncodingMethod encoding = default;
     Encoding charset = default;
+
+    Encoding Callback(string name)
+    {
+      called = true;
+      return null;
+    }
 
     Assert.That(
       () => MimeEncoding.Decode(
         "=?x-invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
-        callback,
+        Callback,
         out encoding,
         out charset
       ),

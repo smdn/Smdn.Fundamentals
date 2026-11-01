@@ -3,6 +3,7 @@
 #if SYSTEM_RUNTIME_VERSIONING_FRAMEWORKNAME
 using System;
 using System.Runtime.Versioning;
+
 using NUnit.Framework;
 
 namespace Smdn;

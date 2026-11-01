@@ -1,6 +1,5 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using NUnit.Framework;
 
 namespace Smdn {
@@ -12,7 +11,7 @@ namespace Smdn {
       var bytes = Nonce.GetRandomBytes(16);
 
       Assert.That(bytes.Length, Is.EqualTo(16));
-      Assert.That(bytes, Is.Not.EqualTo(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}));
+      Assert.That(bytes, Is.Not.EqualTo(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }));
     }
 
     [Test]
@@ -22,7 +21,7 @@ namespace Smdn {
 
       Nonce.GetRandomBytes(bytes);
 
-      Assert.That(bytes, Is.Not.EqualTo(new byte[] {0, 0, 0, 0, 0, 0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 0}));
+      Assert.That(bytes, Is.Not.EqualTo(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }));
     }
   }
 }

@@ -1,14 +1,13 @@
 // SPDX-FileCopyrightText: 2017 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 // cSpell:words stylesheet
-#nullable enable
-
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+
 using NUnit.Framework;
 
 using Smdn.Xml.Linq;
@@ -157,7 +156,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.That(() => output.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(output.ReadByte, Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -176,7 +175,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.That(() => output.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(output.ReadByte, Throws.TypeOf<ObjectDisposedException>());
       }
     }
 #endif
@@ -195,7 +194,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.That(() => output.ReadByte(), Throws.Nothing);
+        Assert.That(output.ReadByte, Throws.Nothing);
       }
     }
 
@@ -214,7 +213,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.That(() => output.ReadByte(), Throws.Nothing);
+        Assert.That(output.ReadByte, Throws.Nothing);
       }
     }
 #endif

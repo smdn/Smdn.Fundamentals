@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.IO;
+
 using NUnit.Framework;
 
 namespace Smdn.IO.Streams.LineOriented;
@@ -43,7 +44,7 @@ public partial class LineOrientedStreamTests {
     Assert.That(stream.CanSeek, Is.True, nameof(stream.CanSeek));
     Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
     Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
-    Assert.That(stream.Position,Is.Zero, nameof(stream.Position));
+    Assert.That(stream.Position, Is.Zero, nameof(stream.Position));
     Assert.That(stream.BufferSize, Is.EqualTo(bufferSize), nameof(stream.BufferSize));
   }
 
@@ -72,11 +73,11 @@ public partial class LineOrientedStreamTests {
     Assert.That(() => Assert.That(stream.BufferSize, Is.EqualTo(8)), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => Assert.That(stream.InnerStream, Is.Not.Null), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => Assert.That(stream.NewLine.IsEmpty, Is.False), Throws.TypeOf<ObjectDisposedException>());
-    Assert.That(() => stream.ReadLine(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(stream.ReadLine, Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.ReadLine(keepEOL: true), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.ReadLineAsync(), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.ReadLineAsync(keepEOL: true), Throws.TypeOf<ObjectDisposedException>());
-    Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => _ = stream.Read(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.ReadAsync(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
@@ -90,8 +91,8 @@ public partial class LineOrientedStreamTests {
 #endif
     Assert.That(() => stream.Read(Stream.Null, 8), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.ReadAsync(Stream.Null, 8), Throws.TypeOf<ObjectDisposedException>());
-    Assert.That(() => stream.Flush(), Throws.TypeOf<ObjectDisposedException>());
-    Assert.That(() => stream.FlushAsync(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(stream.Flush, Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(stream.FlushAsync, Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.Write(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.WriteAsync(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
@@ -109,14 +110,14 @@ public partial class LineOrientedStreamTests {
     Assert.That(() => stream.CopyToAsync(Stream.Null), Throws.TypeOf<ObjectDisposedException>());
     Assert.That(() => stream.CopyToAsync(Stream.Null, bufferSize: 1024), Throws.TypeOf<ObjectDisposedException>());
 
-    Assert.That(() => stream.Dispose(), Throws.Nothing, "Dispose() multiple time");
+    Assert.That(stream.Dispose, Throws.Nothing, "Dispose() multiple time");
 
     if (leaveStreamOpen) {
-      Assert.That(() => baseStream.ReadByte(), Throws.Nothing, "Read, base stream");
+      Assert.That(baseStream.ReadByte, Throws.Nothing, "Read, base stream");
       Assert.That(() => baseStream.WriteByte(0x00), Throws.Nothing, "Write, base stream");
     }
     else {
-      Assert.That(() => baseStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>(), "Read, base stream");
+      Assert.That(baseStream.ReadByte, Throws.TypeOf<ObjectDisposedException>(), "Read, base stream");
       Assert.That(() => baseStream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>(), "Write, base stream");
     }
   }

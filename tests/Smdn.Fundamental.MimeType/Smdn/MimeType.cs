@@ -248,6 +248,6 @@ public partial class MimeTypeTests {
     Assert.That((string?)MimeType.CreateTextType("html"), Is.EqualTo("text/html"));
 #endif
 
-    Assert.That((string?)((MimeType)null!), Is.Null);
+    Assert.That((string?)(MimeType)null!, Is.Null);
   }
 }

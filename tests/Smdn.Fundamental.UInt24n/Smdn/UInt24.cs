@@ -126,9 +126,9 @@ namespace Smdn {
 
     [TestCase((short)0x000000, 0x00000000, "0")]
     [TestCase((short)0x007fff, 0x00007fff, "7fff")]
-    [TestCase(Int16.MaxValue,  0x00007fff, "7fff")]
-    [TestCase((short)-1,       0x00ffffff, "ffffff")]
-    [TestCase(Int16.MinValue,  0x00ff8000, "ff8000")]
+    [TestCase(Int16.MaxValue, 0x00007fff, "7fff")]
+    [TestCase((short)-1, 0x00ffffff, "ffffff")]
+    [TestCase(Int16.MinValue, 0x00ff8000, "ff8000")]
     public void OpExplicitFromInt16(short value, int expectedResult, string expectedHex)
     {
       UInt24 val = unchecked((UInt24)value);
@@ -146,10 +146,10 @@ namespace Smdn {
 
     [TestCase((int)0x00000000, 0x00000000, "0")]
     [TestCase((int)0x00ffffff, 0x00ffffff, "ffffff")]
-    [TestCase((int)-1        , 0x00ffffff, "ffffff")]
+    [TestCase((int)-1, 0x00ffffff, "ffffff")]
     [TestCase((int)0x01000000, 0x00000000, "0")]
-    [TestCase(Int32.MaxValue,  0x00ffffff, "ffffff")]
-    [TestCase(Int32.MinValue,  0x00000000, "0")]
+    [TestCase(Int32.MaxValue, 0x00ffffff, "ffffff")]
+    [TestCase(Int32.MinValue, 0x00000000, "0")]
     public void OpExplicitFromInt32(int value, int expectedResult, string expectedHex)
     {
       UInt24 val = unchecked((UInt24)value);
@@ -169,10 +169,10 @@ namespace Smdn {
 
     [TestCase((uint)0x00000000, 0x00000000, "0")]
     [TestCase((uint)0x00ffffff, 0x00ffffff, "ffffff")]
-    [TestCase(UInt32.MinValue,  0x00000000, "0")]
+    [TestCase(UInt32.MinValue, 0x00000000, "0")]
     [TestCase((uint)0x01000000, 0x00000000, "0")]
     [TestCase((uint)0xffffffff, 0x00ffffff, "ffffff")]
-    [TestCase(UInt32.MaxValue,  0x00ffffff, "ffffff")]
+    [TestCase(UInt32.MaxValue, 0x00ffffff, "ffffff")]
     public void OpExplicitFromUInt32(uint value, int expectedResult, string expectedHex)
     {
       UInt24 val = unchecked((UInt24)value);
@@ -191,12 +191,12 @@ namespace Smdn {
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToInt16()
     {
-      yield return new object?[] { UInt24.MinValue,  (short)0x0000, "0" };
+      yield return new object?[] { UInt24.MinValue, (short)0x0000, "0" };
       yield return new object?[] { (UInt24)0x000000, (short)0x0000, "0" };
       yield return new object?[] { (UInt24)0x007fff, (short)0x7fff, "7fff" };
       yield return new object?[] { (UInt24)0x008000, unchecked((short)(ushort)0x8000), "8000" };
       yield return new object?[] { (UInt24)0xffffff, unchecked((short)(ushort)0xffff), "ffffff" };
-      yield return new object?[] { UInt24.MaxValue,  unchecked((short)(ushort)0xffff), "ffffff" };
+      yield return new object?[] { UInt24.MaxValue, unchecked((short)(ushort)0xffff), "ffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitToInt16))]
@@ -210,7 +210,7 @@ namespace Smdn {
     {
       yield return new object?[] { (UInt24)0x008000, "8000" };
       yield return new object?[] { (UInt24)0xffffff, "ffffff" };
-      yield return new object?[] { UInt24.MaxValue,  "ffffff" };
+      yield return new object?[] { UInt24.MaxValue, "ffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitCheckedToInt16))]
@@ -222,14 +222,14 @@ namespace Smdn {
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToUInt16()
     {
-      yield return new object?[] { UInt24.MinValue,  (ushort)0x0000, "0" };
+      yield return new object?[] { UInt24.MinValue, (ushort)0x0000, "0" };
       yield return new object?[] { (UInt24)0x000000, (ushort)0x0000, "0" };
       yield return new object?[] { (UInt24)0x007fff, (ushort)0x7fff, "7fff" };
       yield return new object?[] { (UInt24)0x008000, (ushort)0x8000, "8000" };
       yield return new object?[] { (UInt24)0x00ffff, (ushort)0xffff, "ffff" };
       yield return new object?[] { (UInt24)0x010000, (ushort)0x0000, "10000" };
       yield return new object?[] { (UInt24)0xffffff, (ushort)0xffff, "ffffff" };
-      yield return new object?[] { UInt24.MaxValue,  (ushort)0xffff, "ffffff" };
+      yield return new object?[] { UInt24.MaxValue, (ushort)0xffff, "ffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitToUInt16))]
@@ -243,7 +243,7 @@ namespace Smdn {
     {
       yield return new object?[] { (UInt24)0x010000, "10000" };
       yield return new object?[] { (UInt24)0xffffff, "ffffff" };
-      yield return new object?[] { UInt24.MaxValue,  "ffffff" };
+      yield return new object?[] { UInt24.MaxValue, "ffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitCheckedToUInt16))]
@@ -253,9 +253,9 @@ namespace Smdn {
       Assert.That(() => { var us = checked((ushort)value); }, Throws.TypeOf<OverflowException>());
     }
 
-    [TestCase((ushort)0,       0x00000000, "0")]
-    [TestCase((ushort)0x0000,  0x00000000, "0")]
-    [TestCase((ushort)0xffff,  0x0000ffff, "ffff")]
+    [TestCase((ushort)0, 0x00000000, "0")]
+    [TestCase((ushort)0x0000, 0x00000000, "0")]
+    [TestCase((ushort)0xffff, 0x0000ffff, "ffff")]
     [TestCase(UInt16.MinValue, 0x00000000, "0")]
     [TestCase(UInt16.MaxValue, 0x0000ffff, "ffff")]
     public void OpExplicitFromUInt16(ushort value, int expectedResult, string expectedHex)

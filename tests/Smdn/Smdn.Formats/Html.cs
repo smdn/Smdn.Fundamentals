@@ -3,7 +3,6 @@
 // cSpell:disable apos
 #pragma warning disable CS0618 // [Obsolete]
 
-using System;
 using NUnit.Framework;
 
 namespace Smdn.Formats {

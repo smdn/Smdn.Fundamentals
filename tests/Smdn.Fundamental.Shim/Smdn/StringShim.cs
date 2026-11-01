@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2022 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn;
@@ -94,10 +95,10 @@ public class StringShimTests {
   public void TestConstruct()
   {
     Assert.That(StringShim.Construct(default), Is.EqualTo(string.Empty), "#1");
-    Assert.That(StringShim.Construct(stackalloc char[] { 'A' } ), Is.EqualTo("A"), "#2");
-    Assert.That(StringShim.Construct(stackalloc char[] { 'A', 'B', 'C' } ), Is.EqualTo("ABC"), "#3");
-    Assert.That(StringShim.Construct(stackalloc char[] { 'A', '\u0000', 'C' } ), Is.EqualTo("A\u0000C"), "#4");
-    Assert.That(StringShim.Construct(stackalloc char[] { '\uD83C', '\uDF1F' } ), Is.EqualTo("🌟"), "#5");
+    Assert.That(StringShim.Construct(stackalloc char[] { 'A' }), Is.EqualTo("A"), "#2");
+    Assert.That(StringShim.Construct(stackalloc char[] { 'A', 'B', 'C' }), Is.EqualTo("ABC"), "#3");
+    Assert.That(StringShim.Construct(stackalloc char[] { 'A', '\u0000', 'C' }), Is.EqualTo("A\u0000C"), "#4");
+    Assert.That(StringShim.Construct(stackalloc char[] { '\uD83C', '\uDF1F' }), Is.EqualTo("🌟"), "#5");
   }
 #endif
 }

@@ -3,8 +3,10 @@
 using System;
 using System.Reflection;
 using System.Text;
+
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
+
 using Smdn.Formats;
 
 namespace Smdn.Security.Cryptography {
@@ -65,18 +67,18 @@ namespace Smdn.Security.Cryptography {
     }
 
 #if NET6_0_OR_GREATER
-    [TestCase("A",      null)]
-    [TestCase("AS",     null)]
-    [TestCase("ASC",    "QVND")]
-    [TestCase("ASCI",   null)]
-    [TestCase("ASCII",  null)]
+    [TestCase("A", null)]
+    [TestCase("AS", null)]
+    [TestCase("ASC", "QVND")]
+    [TestCase("ASCI", null)]
+    [TestCase("ASCII", null)]
     [TestCase("ASCII_", "QVNDSUlf")]
 #else
-    [TestCase("A",      null)]
-    [TestCase("AS",     null)]
-    [TestCase("ASC",    "QVND")]
-    [TestCase("ASCI",   "QVND")]
-    [TestCase("ASCII",  "QVND")]
+    [TestCase("A", null)]
+    [TestCase("AS", null)]
+    [TestCase("ASC", "QVND")]
+    [TestCase("ASCI", "QVND")]
+    [TestCase("ASCII", "QVND")]
     [TestCase("ASCII_", "QVND")]
 #endif
     public void TestTransformBlock(string input, string output)
@@ -85,7 +87,7 @@ namespace Smdn.Security.Cryptography {
 
       var inputBuffer = Encoding.ASCII.GetBytes(input);
 #if NET6_0_OR_GREATER
-      var inputBlocks = 1 + (input.Length - 1) / t.InputBlockSize;
+      var inputBlocks = 1 + ((input.Length - 1) / t.InputBlockSize);
 #endif
       var outputBlocks =
 #if NET6_0_OR_GREATER
@@ -106,7 +108,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [TestCase("A",  "QQ==")]
+    [TestCase("A", "QQ==")]
     [TestCase("AS", "QVM=")]
     public void TestTransformBlock_InputBufferTooShort(string input, string output)
     {
@@ -139,8 +141,8 @@ namespace Smdn.Security.Cryptography {
       );
     }
 
-    [TestCase("A",   "QQ==")]
-    [TestCase("AS",  "QVM=")]
+    [TestCase("A", "QQ==")]
+    [TestCase("AS", "QVM=")]
     [TestCase("ASC", "QVND")]
     public void TestTransformFinalBlock(string input, string output)
     {
@@ -162,7 +164,7 @@ namespace Smdn.Security.Cryptography {
       }
     }
 
-    [TestCase("ASCI",  "QVNDSQ==")]
+    [TestCase("ASCI", "QVNDSQ==")]
     [TestCase("ASCII", "QVNDSUk=")]
     public void TestTransformFinalBlock_InputBufferTooLong(string input, string output)
     {

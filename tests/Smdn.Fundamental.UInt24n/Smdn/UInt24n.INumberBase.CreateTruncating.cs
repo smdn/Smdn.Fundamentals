@@ -263,8 +263,8 @@ partial class UInt48Tests {
     Assert.That(UInt48.CreateTruncating((long)-1), Is.EqualTo(UInt48.MaxValue), "long -1");
     Assert.That(UInt48.CreateTruncating((long)0x1_000000_000000), Is.EqualTo(UInt48.Zero), "long 0x1_000000_000000");
     if (Environment.Is64BitProcess) {
-      Assert.That(UInt48.CreateTruncating(unchecked((nuint)0x1_000000_000000)), Is.EqualTo(UInt48.Zero) , "nuint 0x1_000000_000000");
-      Assert.That(UInt48.CreateTruncating(unchecked((nint)0x1_000000_000000)), Is.EqualTo(UInt48.Zero) , "nint 0x1_000000_000000");
+      Assert.That(UInt48.CreateTruncating(unchecked((nuint)0x1_000000_000000)), Is.EqualTo(UInt48.Zero), "nuint 0x1_000000_000000");
+      Assert.That(UInt48.CreateTruncating(unchecked((nint)0x1_000000_000000)), Is.EqualTo(UInt48.Zero), "nint 0x1_000000_000000");
     }
     Assert.That(UInt48.CreateTruncating((Half)(-1)), Is.EqualTo(UInt48.MaxValue), "Half -1");
     Assert.That(UInt48.CreateTruncating((float)-1), Is.EqualTo(UInt48.MaxValue), "float -1");

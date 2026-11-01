@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma warning disable CS0618 // [Obsolete]
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.IO;
+using System.Threading.Tasks;
 
 using NUnit.Framework;
 

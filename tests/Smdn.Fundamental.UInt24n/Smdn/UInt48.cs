@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Globalization;
+
 using NUnit.Framework;
 
 namespace Smdn {
@@ -127,9 +128,9 @@ namespace Smdn {
 
     [TestCase((int)0x00000000, (long)0x0000000000000000, "0")]
     [TestCase((int)0x7fffffff, (long)0x000000007fffffff, "7fffffff")]
-    [TestCase(Int32.MaxValue,  (long)0x000000007fffffff, "7fffffff")]
-    [TestCase((int)-1,         (long)0x0000ffffffffffff, "ffffffffffff")]
-    [TestCase(Int32.MinValue,  (long)0x0000ffff80000000, "ffff80000000")]
+    [TestCase(Int32.MaxValue, (long)0x000000007fffffff, "7fffffff")]
+    [TestCase((int)-1, (long)0x0000ffffffffffff, "ffffffffffff")]
+    [TestCase(Int32.MinValue, (long)0x0000ffff80000000, "ffff80000000")]
     public void OpExplicitFromInt32(int value, long expectedResult, string expectedHex)
     {
       UInt48 val = unchecked((UInt48)value);
@@ -147,10 +148,10 @@ namespace Smdn {
 
     [TestCase((long)0x0000000000000000, (long)0x0000000000000000, "0")]
     [TestCase((long)0x0000ffffffffffff, (long)0x0000ffffffffffff, "ffffffffffff")]
-    [TestCase((long)-1,                 (long)0x0000ffffffffffff, "ffffffffffff")]
+    [TestCase((long)-1, (long)0x0000ffffffffffff, "ffffffffffff")]
     [TestCase((long)0x0001000000000000, (long)0x0000000000000000, "0")]
-    [TestCase(Int64.MaxValue,           (long)0x0000ffffffffffff, "ffffffffffff")]
-    [TestCase(Int64.MinValue,           (long)0x0000000000000000, "0")]
+    [TestCase(Int64.MaxValue, (long)0x0000ffffffffffff, "ffffffffffff")]
+    [TestCase(Int64.MinValue, (long)0x0000000000000000, "0")]
     public void OpExplicitFromInt64(long value, long expectedResult, string expectedHex)
     {
       UInt48 val = unchecked((UInt48)value);
@@ -171,10 +172,10 @@ namespace Smdn {
     [Test]
     [TestCase((ulong)0x0000000000000000, (long)0x0000000000000000, "0")]
     [TestCase((ulong)0x0000ffffffffffff, (long)0x0000ffffffffffff, "ffffffffffff")]
-    [TestCase(UInt64.MinValue,           (long)0x0000000000000000, "0")]
+    [TestCase(UInt64.MinValue, (long)0x0000000000000000, "0")]
     [TestCase((ulong)0x0001000000000000, (long)0x0000000000000000, "0")]
     [TestCase((ulong)0xffffffffffffffff, (long)0x0000ffffffffffff, "ffffffffffff")]
-    [TestCase(UInt64.MaxValue,           (long)0x0000ffffffffffff, "ffffffffffff")]
+    [TestCase(UInt64.MaxValue, (long)0x0000ffffffffffff, "ffffffffffff")]
     public void OpExplicitFromUInt64(ulong value, long expectedResult, string expectedHex)
     {
       UInt48 val = unchecked((UInt48)value);
@@ -193,12 +194,12 @@ namespace Smdn {
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToInt32()
     {
-      yield return new object?[] { UInt48.MinValue,        (int)0x00000000, "0" };
+      yield return new object?[] { UInt48.MinValue, (int)0x00000000, "0" };
       yield return new object?[] { (UInt48)0x000000000000, (int)0x00000000, "0" };
       yield return new object?[] { (UInt48)0x00007fffffff, (int)0x7fffffff, "7fffffff" };
       yield return new object?[] { (UInt48)0x000080000000, unchecked((int)(uint)0x80000000), "80000000" };
       yield return new object?[] { (UInt48)0xffffffffffff, unchecked((int)(uint)0xffffffff), "ffffffffffff" };
-      yield return new object?[] { UInt48.MaxValue,        unchecked((int)(uint)0xffffffff), "ffffffffffff" };
+      yield return new object?[] { UInt48.MaxValue, unchecked((int)(uint)0xffffffff), "ffffffffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitToInt32))]
@@ -212,7 +213,7 @@ namespace Smdn {
     {
       yield return new object?[] { (UInt48)0x000080000000, "80000000" };
       yield return new object?[] { (UInt48)0xffffffffffff, "ffffffffffff" };
-      yield return new object?[] { UInt48.MaxValue,        "ffffffffffff" };
+      yield return new object?[] { UInt48.MaxValue, "ffffffffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitCheckedToInt32))]
@@ -224,14 +225,14 @@ namespace Smdn {
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToUInt32()
     {
-      yield return new object?[] { UInt48.MinValue,        (uint)0x00000000, "0" };
+      yield return new object?[] { UInt48.MinValue, (uint)0x00000000, "0" };
       yield return new object?[] { (UInt48)0x000000000000, (uint)0x00000000, "0" };
       yield return new object?[] { (UInt48)0x00007fffffff, (uint)0x7fffffff, "7fffffff" };
       yield return new object?[] { (UInt48)0x000080000000, (uint)0x80000000, "80000000" };
       yield return new object?[] { (UInt48)0x0000ffffffff, (uint)0xffffffff, "ffffffff" };
       yield return new object?[] { (UInt48)0x000100000000, (uint)0x00000000, "100000000" };
       yield return new object?[] { (UInt48)0xffffffffffff, (uint)0xffffffff, "ffffffffffff" };
-      yield return new object?[] { UInt48.MaxValue,        (uint)0xffffffff, "ffffffffffff" };
+      yield return new object?[] { UInt48.MaxValue, (uint)0xffffffff, "ffffffffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitToUInt32))]
@@ -245,7 +246,7 @@ namespace Smdn {
     {
       yield return new object?[] { (UInt48)0x000100000000, "100000000" };
       yield return new object?[] { (UInt48)0xffffffffffff, "ffffffffffff" };
-      yield return new object?[] { UInt48.MaxValue,        "ffffffffffff" };
+      yield return new object?[] { UInt48.MaxValue, "ffffffffffff" };
     }
 
     [TestCaseSource(nameof(YieldTestCases_OpExplicitCheckedToUInt32))]
@@ -255,11 +256,11 @@ namespace Smdn {
       Assert.That(() => { var ui = checked((uint)value); }, Throws.TypeOf<OverflowException>());
     }
 
-    [TestCase((uint)0,           (long)0x0000000000000000, "0")]
-    [TestCase((uint)0x00000000,  (long)0x0000000000000000, "0")]
-    [TestCase((uint)0xffffffff,  (long)0x00000000ffffffff, "ffffffff")]
-    [TestCase(UInt32.MinValue,   (long)0x0000000000000000, "0")]
-    [TestCase(UInt32.MaxValue,   (long)0x00000000ffffffff, "ffffffff")]
+    [TestCase((uint)0, (long)0x0000000000000000, "0")]
+    [TestCase((uint)0x00000000, (long)0x0000000000000000, "0")]
+    [TestCase((uint)0xffffffff, (long)0x00000000ffffffff, "ffffffff")]
+    [TestCase(UInt32.MinValue, (long)0x0000000000000000, "0")]
+    [TestCase(UInt32.MaxValue, (long)0x00000000ffffffff, "ffffffff")]
     public void OpExplicitFromUInt32(uint value, long expectedResult, string expectedHex)
     {
       var val = (UInt48)value;

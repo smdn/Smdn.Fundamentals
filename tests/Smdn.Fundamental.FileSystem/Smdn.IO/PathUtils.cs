@@ -3,7 +3,9 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+
 using NUnit.Framework;
+
 using Smdn.Test.NUnit;
 
 namespace Smdn.IO {

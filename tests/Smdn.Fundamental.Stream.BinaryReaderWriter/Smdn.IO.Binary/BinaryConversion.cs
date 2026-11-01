@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2010 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
+
 using NUnit.Framework;
 
 namespace Smdn.IO.Binary {
@@ -31,103 +32,103 @@ namespace Smdn.IO.Binary {
     [Test]
     public void TestToInt16()
     {
-      Assert.That(BinaryConversion.ToInt16(new byte[] {0x80, 0x00}, 0, asLittleEndian: false), Is.EqualTo(unchecked((short)0x8000)));
-      Assert.That(BinaryConversion.ToInt16(new byte[] {0x00, 0x80, 0x00}, 1, asLittleEndian: false), Is.EqualTo(unchecked((short)0x8000)));
-      Assert.That(BinaryConversion.ToInt16(new byte[] {0x80, 0x00}, 0, asLittleEndian: true), Is.EqualTo(unchecked((short)0x0080)));
-      Assert.That(BinaryConversion.ToInt16(new byte[] {0x00, 0x80, 0x00}, 1, asLittleEndian: true), Is.EqualTo(unchecked((short)0x0080)));
+      Assert.That(BinaryConversion.ToInt16(new byte[] { 0x80, 0x00 }, 0, asLittleEndian: false), Is.EqualTo(unchecked((short)0x8000)));
+      Assert.That(BinaryConversion.ToInt16(new byte[] { 0x00, 0x80, 0x00 }, 1, asLittleEndian: false), Is.EqualTo(unchecked((short)0x8000)));
+      Assert.That(BinaryConversion.ToInt16(new byte[] { 0x80, 0x00 }, 0, asLittleEndian: true), Is.EqualTo(unchecked((short)0x0080)));
+      Assert.That(BinaryConversion.ToInt16(new byte[] { 0x00, 0x80, 0x00 }, 1, asLittleEndian: true), Is.EqualTo(unchecked((short)0x0080)));
 
-      Assert.That(BinaryConversion.ToInt16BE(new byte[] {0x80, 0x00}, 0), Is.EqualTo(unchecked((short)0x8000)));
-      Assert.That(BinaryConversion.ToInt16LE(new byte[] {0x80, 0x00}, 0), Is.EqualTo(unchecked((short)0x0080)));
+      Assert.That(BinaryConversion.ToInt16BE(new byte[] { 0x80, 0x00 }, 0), Is.EqualTo(unchecked((short)0x8000)));
+      Assert.That(BinaryConversion.ToInt16LE(new byte[] { 0x80, 0x00 }, 0), Is.EqualTo(unchecked((short)0x0080)));
 
       Assert.That(() => BinaryConversion.ToInt16(null, 0, asLittleEndian: false), Throws.ArgumentNullException);
-      Assert.That(() => BinaryConversion.ToInt16(new byte[] {0x00}, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
-      Assert.That(() => BinaryConversion.ToInt16(new byte[] {0x00}, 0, asLittleEndian: false), Throws.ArgumentException);
-      Assert.That(() => BinaryConversion.ToInt16(new byte[] {0x00, 0x00}, 1, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToInt16(new byte[] { 0x00 }, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => BinaryConversion.ToInt16(new byte[] { 0x00 }, 0, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToInt16(new byte[] { 0x00, 0x00 }, 1, asLittleEndian: false), Throws.ArgumentException);
     }
 
     [Test]
     public void TestToUInt16()
     {
-      Assert.That(BinaryConversion.ToUInt16(new byte[] {0x80, 0x00}, 0, asLittleEndian: false), Is.EqualTo(unchecked((ushort)0x8000)));
-      Assert.That(BinaryConversion.ToUInt16(new byte[] {0x00, 0x80, 0x00}, 1, asLittleEndian: false), Is.EqualTo(unchecked((ushort)0x8000)));
-      Assert.That(BinaryConversion.ToUInt16(new byte[] {0x80, 0x00}, 0, asLittleEndian: true), Is.EqualTo(unchecked((ushort)0x0080)));
-      Assert.That(BinaryConversion.ToUInt16(new byte[] {0x00, 0x80, 0x00}, 1, asLittleEndian: true), Is.EqualTo(unchecked((ushort)0x0080)));
+      Assert.That(BinaryConversion.ToUInt16(new byte[] { 0x80, 0x00 }, 0, asLittleEndian: false), Is.EqualTo(unchecked((ushort)0x8000)));
+      Assert.That(BinaryConversion.ToUInt16(new byte[] { 0x00, 0x80, 0x00 }, 1, asLittleEndian: false), Is.EqualTo(unchecked((ushort)0x8000)));
+      Assert.That(BinaryConversion.ToUInt16(new byte[] { 0x80, 0x00 }, 0, asLittleEndian: true), Is.EqualTo(unchecked((ushort)0x0080)));
+      Assert.That(BinaryConversion.ToUInt16(new byte[] { 0x00, 0x80, 0x00 }, 1, asLittleEndian: true), Is.EqualTo(unchecked((ushort)0x0080)));
 
-      Assert.That(BinaryConversion.ToUInt16BE(new byte[] {0x80, 0x00}, 0), Is.EqualTo(unchecked((ushort)0x8000)));
-      Assert.That(BinaryConversion.ToUInt16LE(new byte[] {0x80, 0x00}, 0), Is.EqualTo(unchecked((ushort)0x0080)));
+      Assert.That(BinaryConversion.ToUInt16BE(new byte[] { 0x80, 0x00 }, 0), Is.EqualTo(unchecked((ushort)0x8000)));
+      Assert.That(BinaryConversion.ToUInt16LE(new byte[] { 0x80, 0x00 }, 0), Is.EqualTo(unchecked((ushort)0x0080)));
 
       Assert.That(() => BinaryConversion.ToUInt16(null, 0, asLittleEndian: false), Throws.ArgumentNullException);
-      Assert.That(() => BinaryConversion.ToUInt16(new byte[] {0x00}, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
-      Assert.That(() => BinaryConversion.ToUInt16(new byte[] {0x00}, 0, asLittleEndian: false), Throws.ArgumentException);
-      Assert.That(() => BinaryConversion.ToUInt16(new byte[] {0x00, 0x00}, 1, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToUInt16(new byte[] { 0x00 }, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => BinaryConversion.ToUInt16(new byte[] { 0x00 }, 0, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToUInt16(new byte[] { 0x00, 0x00 }, 1, asLittleEndian: false), Throws.ArgumentException);
     }
 
     [Test]
     public void TestToInt32()
     {
-      Assert.That(BinaryConversion.ToInt32(new byte[] {0xff, 0x00, 0x80, 0x00}, 0, asLittleEndian: false), Is.EqualTo(unchecked((int)0xff008000)));
-      Assert.That(BinaryConversion.ToInt32(new byte[] {0xff, 0x00, 0x80, 0x00, 0x00}, 1, asLittleEndian: false), Is.EqualTo(unchecked((int)0x00800000)));
-      Assert.That(BinaryConversion.ToInt32(new byte[] {0xff, 0x00, 0x80, 0x00}, 0, asLittleEndian: true), Is.EqualTo(unchecked((int)0x008000ff)));
-      Assert.That(BinaryConversion.ToInt32(new byte[] {0xff, 0x00, 0x80, 0x00, 0x00}, 1, asLittleEndian: true), Is.EqualTo(unchecked((int)0x00008000)));
+      Assert.That(BinaryConversion.ToInt32(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0, asLittleEndian: false), Is.EqualTo(unchecked((int)0xff008000)));
+      Assert.That(BinaryConversion.ToInt32(new byte[] { 0xff, 0x00, 0x80, 0x00, 0x00 }, 1, asLittleEndian: false), Is.EqualTo(unchecked((int)0x00800000)));
+      Assert.That(BinaryConversion.ToInt32(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0, asLittleEndian: true), Is.EqualTo(unchecked((int)0x008000ff)));
+      Assert.That(BinaryConversion.ToInt32(new byte[] { 0xff, 0x00, 0x80, 0x00, 0x00 }, 1, asLittleEndian: true), Is.EqualTo(unchecked((int)0x00008000)));
 
-      Assert.That(BinaryConversion.ToInt32BE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0), Is.EqualTo(unchecked((int)0xff008000)));
-      Assert.That(BinaryConversion.ToInt32LE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0), Is.EqualTo(unchecked((int)0x008000ff)));
+      Assert.That(BinaryConversion.ToInt32BE(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0), Is.EqualTo(unchecked((int)0xff008000)));
+      Assert.That(BinaryConversion.ToInt32LE(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0), Is.EqualTo(unchecked((int)0x008000ff)));
 
       Assert.That(() => BinaryConversion.ToInt32(null, 0, asLittleEndian: false), Throws.ArgumentNullException);
-      Assert.That(() => BinaryConversion.ToInt32(new byte[] {0x00, 0x00, 0x00}, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
-      Assert.That(() => BinaryConversion.ToInt32(new byte[] {0x00, 0x00, 0x00}, 0, asLittleEndian: false), Throws.ArgumentException);
-      Assert.That(() => BinaryConversion.ToInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToInt32(new byte[] { 0x00, 0x00, 0x00 }, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => BinaryConversion.ToInt32(new byte[] { 0x00, 0x00, 0x00 }, 0, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToInt32(new byte[] { 0x00, 0x00, 0x00, 0x00 }, 1, asLittleEndian: false), Throws.ArgumentException);
     }
 
     [Test]
     public void TestToUInt32()
     {
-      Assert.That(BinaryConversion.ToUInt32(new byte[] {0xff, 0x00, 0x80, 0x00}, 0, asLittleEndian: false), Is.EqualTo(unchecked((uint)0xff008000)));
-      Assert.That(BinaryConversion.ToUInt32(new byte[] {0xff, 0x00, 0x80, 0x00, 0x00}, 1, asLittleEndian: false), Is.EqualTo(unchecked((uint)0x00800000)));
-      Assert.That(BinaryConversion.ToUInt32(new byte[] {0xff, 0x00, 0x80, 0x00}, 0, asLittleEndian: true), Is.EqualTo(unchecked((uint)0x008000ff)));
-      Assert.That(BinaryConversion.ToUInt32(new byte[] {0xff, 0x00, 0x80, 0x00, 0x00}, 1, asLittleEndian: true), Is.EqualTo(unchecked((uint)0x00008000)));
+      Assert.That(BinaryConversion.ToUInt32(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0, asLittleEndian: false), Is.EqualTo(unchecked((uint)0xff008000)));
+      Assert.That(BinaryConversion.ToUInt32(new byte[] { 0xff, 0x00, 0x80, 0x00, 0x00 }, 1, asLittleEndian: false), Is.EqualTo(unchecked((uint)0x00800000)));
+      Assert.That(BinaryConversion.ToUInt32(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0, asLittleEndian: true), Is.EqualTo(unchecked((uint)0x008000ff)));
+      Assert.That(BinaryConversion.ToUInt32(new byte[] { 0xff, 0x00, 0x80, 0x00, 0x00 }, 1, asLittleEndian: true), Is.EqualTo(unchecked((uint)0x00008000)));
 
-      Assert.That(BinaryConversion.ToUInt32BE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0), Is.EqualTo(unchecked((uint)0xff008000)));
-      Assert.That(BinaryConversion.ToUInt32LE(new byte[] {0xff, 0x00, 0x80, 0x00}, 0), Is.EqualTo(unchecked((uint)0x008000ff)));
+      Assert.That(BinaryConversion.ToUInt32BE(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0), Is.EqualTo(unchecked((uint)0xff008000)));
+      Assert.That(BinaryConversion.ToUInt32LE(new byte[] { 0xff, 0x00, 0x80, 0x00 }, 0), Is.EqualTo(unchecked((uint)0x008000ff)));
 
       Assert.That(() => BinaryConversion.ToUInt32(null, 0, asLittleEndian: false), Throws.ArgumentNullException);
-      Assert.That(() => BinaryConversion.ToUInt32(new byte[] {0x00, 0x00, 0x00}, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
-      Assert.That(() => BinaryConversion.ToUInt32(new byte[] {0x00, 0x00, 0x00}, 0, asLittleEndian: false), Throws.ArgumentException);
-      Assert.That(() => BinaryConversion.ToUInt32(new byte[] {0x00, 0x00, 0x00, 0x00}, 1, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToUInt32(new byte[] { 0x00, 0x00, 0x00 }, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => BinaryConversion.ToUInt32(new byte[] { 0x00, 0x00, 0x00 }, 0, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToUInt32(new byte[] { 0x00, 0x00, 0x00, 0x00 }, 1, asLittleEndian: false), Throws.ArgumentException);
     }
 
     [Test]
     public void TestToInt64()
     {
-      Assert.That(BinaryConversion.ToInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0, asLittleEndian: false), Is.EqualTo(unchecked((long)0xff00cc008000dd00)));
-      Assert.That(BinaryConversion.ToInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00}, 1, asLittleEndian: false), Is.EqualTo(unchecked((long)0x00cc008000dd0000)));
-      Assert.That(BinaryConversion.ToInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0, asLittleEndian: true), Is.EqualTo(unchecked((long)0x00dd008000cc00ff)));
-      Assert.That(BinaryConversion.ToInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00}, 1, asLittleEndian: true), Is.EqualTo(unchecked((long)0x0000dd008000cc00)));
+      Assert.That(BinaryConversion.ToInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0, asLittleEndian: false), Is.EqualTo(unchecked((long)0xff00cc008000dd00)));
+      Assert.That(BinaryConversion.ToInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00 }, 1, asLittleEndian: false), Is.EqualTo(unchecked((long)0x00cc008000dd0000)));
+      Assert.That(BinaryConversion.ToInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0, asLittleEndian: true), Is.EqualTo(unchecked((long)0x00dd008000cc00ff)));
+      Assert.That(BinaryConversion.ToInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00 }, 1, asLittleEndian: true), Is.EqualTo(unchecked((long)0x0000dd008000cc00)));
 
-      Assert.That(BinaryConversion.ToInt64BE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0), Is.EqualTo(unchecked((long)0xff00cc008000dd00)));
-      Assert.That(BinaryConversion.ToInt64LE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0), Is.EqualTo(unchecked((long)0x00dd008000cc00ff)));
+      Assert.That(BinaryConversion.ToInt64BE(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0), Is.EqualTo(unchecked((long)0xff00cc008000dd00)));
+      Assert.That(BinaryConversion.ToInt64LE(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0), Is.EqualTo(unchecked((long)0x00dd008000cc00ff)));
 
       Assert.That(() => BinaryConversion.ToInt64(null, 0, asLittleEndian: false), Throws.ArgumentNullException);
-      Assert.That(() => BinaryConversion.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
-      Assert.That(() => BinaryConversion.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, asLittleEndian: false), Throws.ArgumentException);
-      Assert.That(() => BinaryConversion.ToInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToInt64(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => BinaryConversion.ToInt64(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToInt64(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 1, asLittleEndian: false), Throws.ArgumentException);
     }
 
     [Test]
     public void TestToUInt64()
     {
-      Assert.That(BinaryConversion.ToUInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0, asLittleEndian: false), Is.EqualTo(unchecked((ulong)0xff00cc008000dd00)));
-      Assert.That(BinaryConversion.ToUInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00}, 1, asLittleEndian: false), Is.EqualTo(unchecked((ulong)0x00cc008000dd0000)));
-      Assert.That(BinaryConversion.ToUInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0, asLittleEndian: true), Is.EqualTo(unchecked((ulong)0x00dd008000cc00ff)));
-      Assert.That(BinaryConversion.ToUInt64(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00}, 1, asLittleEndian: true), Is.EqualTo(unchecked((ulong)0x0000dd008000cc00)));
+      Assert.That(BinaryConversion.ToUInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0, asLittleEndian: false), Is.EqualTo(unchecked((ulong)0xff00cc008000dd00)));
+      Assert.That(BinaryConversion.ToUInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00 }, 1, asLittleEndian: false), Is.EqualTo(unchecked((ulong)0x00cc008000dd0000)));
+      Assert.That(BinaryConversion.ToUInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0, asLittleEndian: true), Is.EqualTo(unchecked((ulong)0x00dd008000cc00ff)));
+      Assert.That(BinaryConversion.ToUInt64(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00, 0x00 }, 1, asLittleEndian: true), Is.EqualTo(unchecked((ulong)0x0000dd008000cc00)));
 
-      Assert.That(BinaryConversion.ToUInt64BE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0), Is.EqualTo(unchecked((ulong)0xff00cc008000dd00)));
-      Assert.That(BinaryConversion.ToUInt64LE(new byte[] {0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00}, 0), Is.EqualTo(unchecked((ulong)0x00dd008000cc00ff)));
+      Assert.That(BinaryConversion.ToUInt64BE(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0), Is.EqualTo(unchecked((ulong)0xff00cc008000dd00)));
+      Assert.That(BinaryConversion.ToUInt64LE(new byte[] { 0xff, 0x00, 0xcc, 0x00, 0x80, 0x00, 0xdd, 0x00 }, 0), Is.EqualTo(unchecked((ulong)0x00dd008000cc00ff)));
 
       Assert.That(() => BinaryConversion.ToUInt64(null, 0, asLittleEndian: false), Throws.ArgumentNullException);
-      Assert.That(() => BinaryConversion.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
-      Assert.That(() => BinaryConversion.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 0, asLittleEndian: false), Throws.ArgumentException);
-      Assert.That(() => BinaryConversion.ToUInt64(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}, 1, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToUInt64(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, -1, asLittleEndian: false), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => BinaryConversion.ToUInt64(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 0, asLittleEndian: false), Throws.ArgumentException);
+      Assert.That(() => BinaryConversion.ToUInt64(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 1, asLittleEndian: false), Throws.ArgumentException);
     }
 
     [Test]
@@ -137,18 +138,18 @@ namespace Smdn.IO.Binary {
 
       BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: false, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0xff, 0x00, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0xff, 0x00, 0xcc }).AsCollection);
 
       BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: true, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x00, 0xff, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x00, 0xff, 0xcc }).AsCollection);
 
-      Assert.That(BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: false), Is.EqualTo(new byte[] {0xff, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: true), Is.EqualTo(new byte[] {0x00, 0xff}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(short.MinValue, asLittleEndian: false), Is.EqualTo(new byte[] {0x80, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(short.MinValue, asLittleEndian: true), Is.EqualTo(new byte[] {0x00, 0x80}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesBE(short.MinValue), Is.EqualTo(new byte[] {0x80, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesLE(short.MinValue), Is.EqualTo(new byte[] {0x00, 0x80}).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: false), Is.EqualTo(new byte[] { 0xff, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: true), Is.EqualTo(new byte[] { 0x00, 0xff }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(short.MinValue, asLittleEndian: false), Is.EqualTo(new byte[] { 0x80, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(short.MinValue, asLittleEndian: true), Is.EqualTo(new byte[] { 0x00, 0x80 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesBE(short.MinValue), Is.EqualTo(new byte[] { 0x80, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesLE(short.MinValue), Is.EqualTo(new byte[] { 0x00, 0x80 }).AsCollection);
 
       Assert.That(() => BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: false, null, 0), Throws.ArgumentNullException);
       Assert.That(() => BinaryConversion.GetBytes(unchecked((short)0xff00), asLittleEndian: false, new byte[1], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -163,16 +164,16 @@ namespace Smdn.IO.Binary {
 
       BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: false, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0xff, 0x00, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0xff, 0x00, 0xcc }).AsCollection);
 
       BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: true, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x00, 0xff, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x00, 0xff, 0xcc }).AsCollection);
 
-      Assert.That(BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: false), Is.EqualTo(new byte[] {0xff, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: true), Is.EqualTo(new byte[] {0x00, 0xff}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesBE(unchecked((ushort)0xff00)), Is.EqualTo(new byte[] {0xff, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesLE(unchecked((ushort)0xff00)), Is.EqualTo(new byte[] {0x00, 0xff}).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: false), Is.EqualTo(new byte[] { 0xff, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: true), Is.EqualTo(new byte[] { 0x00, 0xff }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesBE(unchecked((ushort)0xff00)), Is.EqualTo(new byte[] { 0xff, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesLE(unchecked((ushort)0xff00)), Is.EqualTo(new byte[] { 0x00, 0xff }).AsCollection);
 
       Assert.That(() => BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: false, null, 0), Throws.ArgumentNullException);
       Assert.That(() => BinaryConversion.GetBytes(unchecked((ushort)0xff00), asLittleEndian: false, new byte[1], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -187,18 +188,18 @@ namespace Smdn.IO.Binary {
 
       BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: false, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x11, 0x22, 0x33, 0x44, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x11, 0x22, 0x33, 0x44, 0xcc }).AsCollection);
 
       BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: true, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x44, 0x33, 0x22, 0x11, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x44, 0x33, 0x22, 0x11, 0xcc }).AsCollection);
 
-      Assert.That(BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: false), Is.EqualTo(new byte[] {0x11, 0x22, 0x33, 0x44}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: true), Is.EqualTo(new byte[] {0x44, 0x33, 0x22, 0x11}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(int.MinValue, asLittleEndian: false), Is.EqualTo(new byte[] {0x80, 0x00, 0x00, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(int.MinValue, asLittleEndian: true), Is.EqualTo(new byte[] {0x00, 0x00, 0x00, 0x80}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesBE(int.MinValue), Is.EqualTo(new byte[] {0x80, 0x00, 0x00, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesLE(int.MinValue), Is.EqualTo(new byte[] {0x00, 0x00, 0x00, 0x80}).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: false), Is.EqualTo(new byte[] { 0x11, 0x22, 0x33, 0x44 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: true), Is.EqualTo(new byte[] { 0x44, 0x33, 0x22, 0x11 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(int.MinValue, asLittleEndian: false), Is.EqualTo(new byte[] { 0x80, 0x00, 0x00, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(int.MinValue, asLittleEndian: true), Is.EqualTo(new byte[] { 0x00, 0x00, 0x00, 0x80 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesBE(int.MinValue), Is.EqualTo(new byte[] { 0x80, 0x00, 0x00, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesLE(int.MinValue), Is.EqualTo(new byte[] { 0x00, 0x00, 0x00, 0x80 }).AsCollection);
 
       Assert.That(() => BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: false, null, 0), Throws.ArgumentNullException);
       Assert.That(() => BinaryConversion.GetBytes(unchecked((int)0x11223344), asLittleEndian: false, new byte[3], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -213,16 +214,16 @@ namespace Smdn.IO.Binary {
 
       BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: false, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x11, 0x22, 0x33, 0x44, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x11, 0x22, 0x33, 0x44, 0xcc }).AsCollection);
 
       BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: true, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x44, 0x33, 0x22, 0x11, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x44, 0x33, 0x22, 0x11, 0xcc }).AsCollection);
 
-      Assert.That(BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: false), Is.EqualTo(new byte[] {0x11, 0x22, 0x33, 0x44}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: true), Is.EqualTo(new byte[] {0x44, 0x33, 0x22, 0x11}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesBE(unchecked((uint)0x11223344)), Is.EqualTo(new byte[] {0x11, 0x22, 0x33, 0x44}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesLE(unchecked((uint)0x11223344)), Is.EqualTo(new byte[] {0x44, 0x33, 0x22, 0x11}).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: false), Is.EqualTo(new byte[] { 0x11, 0x22, 0x33, 0x44 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: true), Is.EqualTo(new byte[] { 0x44, 0x33, 0x22, 0x11 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesBE(unchecked((uint)0x11223344)), Is.EqualTo(new byte[] { 0x11, 0x22, 0x33, 0x44 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesLE(unchecked((uint)0x11223344)), Is.EqualTo(new byte[] { 0x44, 0x33, 0x22, 0x11 }).AsCollection);
 
       Assert.That(() => BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: false, null, 0), Throws.ArgumentNullException);
       Assert.That(() => BinaryConversion.GetBytes(unchecked((uint)0x11223344), asLittleEndian: false, new byte[3], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -237,18 +238,18 @@ namespace Smdn.IO.Binary {
 
       BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: false, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0xcc }).AsCollection);
 
       BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: true, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0xcc }).AsCollection);
 
-      Assert.That(BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: false), Is.EqualTo(new byte[] {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: true), Is.EqualTo(new byte[] {0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(long.MinValue, asLittleEndian: false), Is.EqualTo(new byte[] {0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(long.MinValue, asLittleEndian: true), Is.EqualTo(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesBE(long.MinValue), Is.EqualTo(new byte[] {0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesLE(long.MinValue), Is.EqualTo(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80}).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: false), Is.EqualTo(new byte[] { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: true), Is.EqualTo(new byte[] { 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(long.MinValue, asLittleEndian: false), Is.EqualTo(new byte[] { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(long.MinValue, asLittleEndian: true), Is.EqualTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesBE(long.MinValue), Is.EqualTo(new byte[] { 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesLE(long.MinValue), Is.EqualTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80 }).AsCollection);
 
       Assert.That(() => BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: false, null, 0), Throws.ArgumentNullException);
       Assert.That(() => BinaryConversion.GetBytes(unchecked((long)0x1122334455667788), asLittleEndian: false, new byte[7], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
@@ -263,16 +264,16 @@ namespace Smdn.IO.Binary {
 
       BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: false, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0xcc }).AsCollection);
 
       BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: true, buffer, 1);
 
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xdd, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0xcc}).AsCollection);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xdd, 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0xcc }).AsCollection);
 
-      Assert.That(BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: false), Is.EqualTo(new byte[] {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88}).AsCollection);
-      Assert.That(BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: true), Is.EqualTo(new byte[] {0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesBE(unchecked((ulong)0x1122334455667788)), Is.EqualTo(new byte[] {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88}).AsCollection);
-      Assert.That(BinaryConversion.GetBytesLE(unchecked((ulong)0x1122334455667788)), Is.EqualTo(new byte[] {0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11}).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: false), Is.EqualTo(new byte[] { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: true), Is.EqualTo(new byte[] { 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesBE(unchecked((ulong)0x1122334455667788)), Is.EqualTo(new byte[] { 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88 }).AsCollection);
+      Assert.That(BinaryConversion.GetBytesLE(unchecked((ulong)0x1122334455667788)), Is.EqualTo(new byte[] { 0x88, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11 }).AsCollection);
 
       Assert.That(() => BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: false, null, 0), Throws.ArgumentNullException);
       Assert.That(() => BinaryConversion.GetBytes(unchecked((ulong)0x1122334455667788), asLittleEndian: false, new byte[7], -1), Throws.TypeOf<ArgumentOutOfRangeException>());

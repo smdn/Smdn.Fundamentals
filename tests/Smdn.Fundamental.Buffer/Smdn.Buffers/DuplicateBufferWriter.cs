@@ -23,10 +23,10 @@ namespace Smdn.Buffers {
     internal class ArrayBufferWriter<T> : IBufferWriter<T> {
       private const int maxSize = 16;
       private int offset = 0;
-      private Memory<T> buffer = new T[maxSize];
+      private readonly Memory<T> buffer = new T[maxSize];
 
-      public ArrayBufferWriter() {}
-      public ArrayBufferWriter(int initialCapacity) {}
+      public ArrayBufferWriter() { }
+      public ArrayBufferWriter(int initialCapacity) { }
 
       public void Advance(int count) => offset += count;
       public Memory<T> GetMemory(int sizeHint = 0) => buffer.Slice(offset);
@@ -105,7 +105,7 @@ namespace Smdn.Buffers {
 
       var memory = writer.GetMemory(4);
 
-      new[] {0, 1, 2, 3}.AsSpan().CopyTo(memory.Span);
+      new[] { 0, 1, 2, 3 }.AsSpan().CopyTo(memory.Span);
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -122,12 +122,12 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter0.WrittenMemory #1"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter1.WrittenMemory #1"
       );
 
@@ -135,12 +135,12 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter0.WrittenMemory #2"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter1.WrittenMemory #2"
       );
 
@@ -148,12 +148,12 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2, 3}),
+        Is.EqualTo(new[] { 0, 1, 2, 3 }),
         "baseWriter0.WrittenMemory #3"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2, 3}),
+        Is.EqualTo(new[] { 0, 1, 2, 3 }),
         "baseWriter1.WrittenMemory #3"
       );
 
@@ -170,7 +170,7 @@ namespace Smdn.Buffers {
 
       var memory = writer.GetMemory();
 
-      new[] {0, 1, 2, 3}.AsSpan().CopyTo(memory.Span);
+      new[] { 0, 1, 2, 3 }.AsSpan().CopyTo(memory.Span);
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -187,12 +187,12 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter0.WrittenMemory #1"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter1.WrittenMemory #1"
       );
 
@@ -200,12 +200,12 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter0.WrittenMemory #2"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0}),
+        Is.EqualTo(new[] { 0 }),
         "baseWriter1.WrittenMemory #2"
       );
 
@@ -213,12 +213,12 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2, 3}),
+        Is.EqualTo(new[] { 0, 1, 2, 3 }),
         "baseWriter0.WrittenMemory #3"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2, 3}),
+        Is.EqualTo(new[] { 0, 1, 2, 3 }),
         "baseWriter1.WrittenMemory #3"
       );
 
@@ -255,7 +255,7 @@ namespace Smdn.Buffers {
 
       var span = writer.GetSpan();
 
-      new[] {0, 1, 2, 3}.AsSpan().CopyTo(span);
+      new[] { 0, 1, 2, 3 }.AsSpan().CopyTo(span);
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -277,17 +277,17 @@ namespace Smdn.Buffers {
 
       Assert.That(
         baseWriter0.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2}),
+        Is.EqualTo(new[] { 0, 1, 2 }),
         "baseWriter0.WrittenMemory #0"
       );
       Assert.That(
         baseWriter1.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2}),
+        Is.EqualTo(new[] { 0, 1, 2 }),
         "baseWriter1.WrittenMemory #0"
       );
       Assert.That(
         baseWriter2.WrittenMemory,
-        Is.EqualTo(new[] {0, 1, 2}),
+        Is.EqualTo(new[] { 0, 1, 2 }),
         "baseWriter2.WrittenMemory #0"
       );
     }

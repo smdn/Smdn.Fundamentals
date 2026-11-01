@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System.IO;
 using System.Xml.Linq;
+
 using NUnit.Framework;
 
 namespace Smdn.Xml.Linq;

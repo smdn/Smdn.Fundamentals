@@ -1,9 +1,8 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+
 using NUnit.Framework;
 
 namespace Smdn.IO {
@@ -76,8 +75,8 @@ line3
     {
       StreamReader reader = null!;
 
-      Assert.That(() => reader.ReadAllLines(), Throws.ArgumentNullException);
-      Assert.That(() => reader.ReadAllLinesAsync(), Throws.ArgumentNullException);
+      Assert.That(reader.ReadAllLines, Throws.ArgumentNullException);
+      Assert.That(reader.ReadAllLinesAsync, Throws.ArgumentNullException);
     }
   }
 }

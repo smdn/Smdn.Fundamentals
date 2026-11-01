@@ -5,6 +5,7 @@ using System.Buffers;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 namespace Smdn.IO.Streams.LineOriented;
@@ -20,7 +21,7 @@ public class StrictLineOrientedStreamTests {
     using var stream = new StrictLineOrientedStream(new MemoryStream(new byte[0]), 8);
 
     Assert.That(stream.NewLine.IsEmpty, Is.False);
-    Assert.That(stream.NewLine.ToArray(), Is.EqualTo(new byte[] {0x0d, 0x0a}).AsCollection, "must return CRLF");
+    Assert.That(stream.NewLine.ToArray(), Is.EqualTo(new byte[] { 0x0d, 0x0a }).AsCollection, "must return CRLF");
   }
 
   [Test]
@@ -116,7 +117,7 @@ public class StrictLineOrientedStreamTests {
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
     var buffer = new byte[8];
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     Assert.That(stream.Read(buffer, 0, 5), Is.EqualTo(5));
 
@@ -144,7 +145,7 @@ public class StrictLineOrientedStreamTests {
     var data = new byte[] {0x40, CR, 0x42, LF, 0x44, LF, CR, 0x47, CR, LF, 0x50};
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? await stream.ReadLineAsync()
@@ -179,7 +180,7 @@ public class StrictLineOrientedStreamTests {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
@@ -212,7 +213,7 @@ public class StrictLineOrientedStreamTests {
     var data = new byte[] {0x40, 0x41, 0x42, 0x43, CR, LF, 0x44, 0x45};
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
@@ -247,7 +248,7 @@ public class StrictLineOrientedStreamTests {
     };
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
@@ -282,7 +283,7 @@ public class StrictLineOrientedStreamTests {
     };
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
@@ -319,7 +320,7 @@ public class StrictLineOrientedStreamTests {
     };
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
@@ -356,7 +357,7 @@ public class StrictLineOrientedStreamTests {
     };
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), 8);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
@@ -391,13 +392,13 @@ public class StrictLineOrientedStreamTests {
     };
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: false))?.ToArray()
       : stream.ReadLine(keepEOL: false);
 
-    Assert.That(line, Is.EqualTo(new byte[] {0x40, 0x41, 0x42, CR}));
+    Assert.That(line, Is.EqualTo(new byte[] { 0x40, 0x41, 0x42, CR }));
     Assert.That(stream.Position, Is.EqualTo(4L), "Position");
   }
 
@@ -412,13 +413,13 @@ public class StrictLineOrientedStreamTests {
     };
     using var stream = new StrictLineOrientedStream(new MemoryStream(data), bufferSize);
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
 
     var line = runAsync
       ? (await stream.ReadLineAsync(keepEOL: true))?.ToArray()
       : stream.ReadLine(keepEOL: true);
 
-    Assert.That(line, Is.EqualTo(new byte[] {0x40, 0x41, 0x42, CR}));
+    Assert.That(line, Is.EqualTo(new byte[] { 0x40, 0x41, 0x42, CR }));
 
     Assert.That(stream.Position, Is.EqualTo(4L), "Position");
   }

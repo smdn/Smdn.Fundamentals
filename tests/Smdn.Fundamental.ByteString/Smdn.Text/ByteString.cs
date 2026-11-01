@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Text;
+
 using NUnit.Framework;
+
 using Assert = Smdn.Test.NUnit.Assertion.Assert;
 
 namespace Smdn.Text {
@@ -42,20 +44,20 @@ namespace Smdn.Text {
     [Test]
     public void TestSegment()
     {
-      AssertSegmentsAreEquivalent(new byte[] {0x61, 0x62, 0x63}, ByteString.CreateMutable("abc").Segment);
-      AssertSegmentsAreEquivalent(new byte[] {0x61, 0x62, 0x63}, ByteString.CreateImmutable("abc").Segment);
-      AssertSegmentsAreEquivalent(new byte[] {0x61, 0x62, 0x63}, ByteString.CreateMutable(new byte[] {0x61, 0x62, 0x63}).Segment);
-      AssertSegmentsAreEquivalent(new byte[] {0x61, 0x62, 0x63}, ByteString.CreateMutable(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3).Segment);
-      AssertSegmentsAreEquivalent(new byte[] {0x61, 0x62, 0x63}, ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}).Segment);
-      AssertSegmentsAreEquivalent(new byte[] {0x61, 0x62, 0x63}, ByteString.CreateImmutable(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3).Segment);
+      AssertSegmentsAreEquivalent(new byte[] { 0x61, 0x62, 0x63 }, ByteString.CreateMutable("abc").Segment);
+      AssertSegmentsAreEquivalent(new byte[] { 0x61, 0x62, 0x63 }, ByteString.CreateImmutable("abc").Segment);
+      AssertSegmentsAreEquivalent(new byte[] { 0x61, 0x62, 0x63 }, ByteString.CreateMutable(new byte[] { 0x61, 0x62, 0x63 }).Segment);
+      AssertSegmentsAreEquivalent(new byte[] { 0x61, 0x62, 0x63 }, ByteString.CreateMutable(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3).Segment);
+      AssertSegmentsAreEquivalent(new byte[] { 0x61, 0x62, 0x63 }, ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }).Segment);
+      AssertSegmentsAreEquivalent(new byte[] { 0x61, 0x62, 0x63 }, ByteString.CreateImmutable(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3).Segment);
 
       var segment = new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3);
 
       AssertSegmentsAreEquivalent(segment, ByteString.CreateMutable(segment.Array, segment.Offset, segment.Count).Segment);
       AssertSegmentsAreSame(segment, ByteString.CreateImmutable(segment.Array, segment.Offset, segment.Count).Segment);
 
-      AssertSegmentsAreEquivalent(segment, (new ByteString(segment, true)).Segment);
-      AssertSegmentsAreSame(segment, (new ByteString(segment, false)).Segment);
+      AssertSegmentsAreEquivalent(segment, new ByteString(segment, true).Segment);
+      AssertSegmentsAreSame(segment, new ByteString(segment, false).Segment);
     }
 
     [Test]
@@ -63,29 +65,29 @@ namespace Smdn.Text {
     {
       Assert.That(ByteString.CreateMutable("abc").IsMutable, Is.True);
       Assert.That(ByteString.CreateImmutable("abc").IsMutable, Is.False);
-      Assert.That(ByteString.CreateMutable(new byte[] {0x61, 0x62, 0x63}).IsMutable, Is.True);
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}).IsMutable, Is.False);
-      Assert.That((new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), true)).IsMutable, Is.True);
-      Assert.That((new ByteString(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3), false)).IsMutable, Is.False);
+      Assert.That(ByteString.CreateMutable(new byte[] { 0x61, 0x62, 0x63 }).IsMutable, Is.True);
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }).IsMutable, Is.False);
+      Assert.That(new ByteString(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3), true).IsMutable, Is.True);
+      Assert.That(new ByteString(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3), false).IsMutable, Is.False);
     }
 
     [Test]
     public void TestToArray()
     {
-      Assert.That(ByteString.CreateMutable("abc").ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
-      Assert.That(ByteString.CreateImmutable("abc").ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
-      Assert.That(ByteString.CreateMutable(new byte[] {0x61, 0x62, 0x63}).ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
-      Assert.That(ByteString.CreateMutable(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3).ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}).ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
-      Assert.That(ByteString.CreateImmutable(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3).ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
+      Assert.That(ByteString.CreateMutable("abc").ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
+      Assert.That(ByteString.CreateImmutable("abc").ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
+      Assert.That(ByteString.CreateMutable(new byte[] { 0x61, 0x62, 0x63 }).ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
+      Assert.That(ByteString.CreateMutable(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3).ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }).ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3).ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
 
       var str = ByteString.CreateImmutable("xabcdex").Substring(1, 5);
 
-      Assert.That(str.ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65}));
-      Assert.That(str.ToArray(2), Is.EqualTo(new byte[] {0x63, 0x64, 0x65}));
-      Assert.That(str.ToArray(1, 3), Is.EqualTo(new byte[] {0x62, 0x63, 0x64}));
-      Assert.That(str.ToArray(0, 5), Is.EqualTo(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65}));
-      Assert.That(str.ToArray(5, 0), Is.EqualTo(new byte[] {}));
+      Assert.That(str.ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65 }));
+      Assert.That(str.ToArray(2), Is.EqualTo(new byte[] { 0x63, 0x64, 0x65 }));
+      Assert.That(str.ToArray(1, 3), Is.EqualTo(new byte[] { 0x62, 0x63, 0x64 }));
+      Assert.That(str.ToArray(0, 5), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65 }));
+      Assert.That(str.ToArray(5, 0), Is.EqualTo(new byte[] { }));
 
       Assert.That(() => str.ToArray(-1, 6), Throws.TypeOf<ArgumentOutOfRangeException>());
 
@@ -105,29 +107,29 @@ namespace Smdn.Text {
       var str = ByteString.CreateImmutable("xabcdex").Substring(1, 5);
       byte[] buffer;
 
-      str.CopyTo((buffer = alloc()));
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff}));
+      str.CopyTo(buffer = alloc());
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff }));
 
-      str.CopyTo((buffer = alloc()), 1);
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff}));
+      str.CopyTo(buffer = alloc(), 1);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0xff }));
 
-      str.CopyTo((buffer = alloc()), 1, 3);
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff, 0xff, 0xff}));
+      str.CopyTo(buffer = alloc(), 1, 3);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff, 0xff, 0xff }));
 
-      str.CopyTo(1, (buffer = alloc()));
-      Assert.That(buffer, Is.EqualTo(new byte[] {0x62, 0x63, 0x64, 0x65, 0xff, 0xff, 0xff}));
+      str.CopyTo(1, buffer = alloc());
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0x62, 0x63, 0x64, 0x65, 0xff, 0xff, 0xff }));
 
-      str.CopyTo(1, (buffer = alloc()), 1);
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xff, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff}));
+      str.CopyTo(1, buffer = alloc(), 1);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xff, 0x62, 0x63, 0x64, 0x65, 0xff, 0xff }));
 
-      str.CopyTo(1, (buffer = alloc()), 1, 3);
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xff, 0x62, 0x63, 0x64, 0xff, 0xff, 0xff}));
+      str.CopyTo(1, buffer = alloc(), 1, 3);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xff, 0x62, 0x63, 0x64, 0xff, 0xff, 0xff }));
 
-      str.CopyTo(5, (buffer = alloc()), 1);
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}));
+      str.CopyTo(5, buffer = alloc(), 1);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }));
 
-      str.CopyTo(0, (buffer = alloc()), 1, 0);
-      Assert.That(buffer, Is.EqualTo(new byte[] {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff}));
+      str.CopyTo(0, buffer = alloc(), 1, 0);
+      Assert.That(buffer, Is.EqualTo(new byte[] { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }));
 
       buffer = alloc();
 
@@ -149,18 +151,18 @@ namespace Smdn.Text {
     [Test]
     public void TestCreateFromByteArray()
     {
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}).ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 1).ToArray(), Is.EqualTo(new byte[] {0x62, 0x63}));
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 1, 1).ToArray(), Is.EqualTo(new byte[] {0x62}));
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 1, 0).ToArray(), Is.EqualTo(new byte[] {}));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }).ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, 1).ToArray(), Is.EqualTo(new byte[] { 0x62, 0x63 }));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, 1, 1).ToArray(), Is.EqualTo(new byte[] { 0x62 }));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, 1, 0).ToArray(), Is.EqualTo(new byte[] { }));
 
-      Assert.That(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 0, 4), Throws.ArgumentException);
+      Assert.That(() => ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, 0, 4), Throws.ArgumentException);
 
-      Assert.That(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 4, 0), Throws.ArgumentException);
+      Assert.That(() => ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, 4, 0), Throws.ArgumentException);
 
-      Assert.That(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, -1, 4), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, -1, 4), Throws.TypeOf<ArgumentOutOfRangeException>());
 
-      Assert.That(() => ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}, 4, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }, 4, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -171,14 +173,14 @@ namespace Smdn.Text {
       Assert.That(s.IsEmpty, Is.False);
       Assert.That(s.IsMutable, Is.True);
       Assert.That(s.Length, Is.EqualTo(3));
-      Assert.That(s.ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
+      Assert.That(s.ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
 
       s = ByteString.CreateImmutable("xabcx", 1, 3);
 
       Assert.That(s.IsEmpty, Is.False);
       Assert.That(s.IsMutable, Is.False);
       Assert.That(s.Length, Is.EqualTo(3));
-      Assert.That(s.ToArray(), Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
+      Assert.That(s.ToArray(), Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
     }
 
     [Test]
@@ -198,11 +200,11 @@ namespace Smdn.Text {
     {
       var bytes = ByteString.ToByteArray("abc");
 
-      Assert.That(bytes, Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
+      Assert.That(bytes, Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
 
       bytes = ByteString.ToByteArray("xabcx", 1, 3);
 
-      Assert.That(bytes, Is.EqualTo(new byte[] {0x61, 0x62, 0x63}));
+      Assert.That(bytes, Is.EqualTo(new byte[] { 0x61, 0x62, 0x63 }));
 
       bytes = ByteString.ToByteArray("");
 
@@ -287,16 +289,16 @@ namespace Smdn.Text {
       Assert.That(str.IndexOf(ByteString.CreateImmutable("aBc")), Is.EqualTo(-1));
       Assert.That(str.IndexOf(ByteString.CreateImmutable("abC")), Is.EqualTo(-1));
       Assert.That(str.Substring(10, 3).ToString(), Is.EqualTo("abc"));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)), Is.EqualTo(10));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3)), Is.EqualTo(10));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0xff, 0x41, 0x62, 0x63, 0xff}, 1, 3)), Is.EqualTo(-1));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x42, 0x63, 0xff}, 1, 3)), Is.EqualTo(-1));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x43, 0xff}, 1, 3)), Is.EqualTo(-1));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0x61, 0x62, 0x63 }, 0, 3)), Is.EqualTo(10));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3)), Is.EqualTo(10));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0xff, 0x41, 0x62, 0x63, 0xff }, 1, 3)), Is.EqualTo(-1));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x42, 0x63, 0xff }, 1, 3)), Is.EqualTo(-1));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x43, 0xff }, 1, 3)), Is.EqualTo(-1));
       Assert.That(str.IndexOf(ByteString.CreateImmutable("abd")), Is.EqualTo(2));
       Assert.That(str.Substring(2, 3).ToString(), Is.EqualTo("abd"));
       Assert.That(str.IndexOf(ByteString.CreateImmutable("abe")), Is.EqualTo(-1));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x65}, 0, 3)), Is.EqualTo(-1));
-      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x65, 0xff}, 1, 3)), Is.EqualTo(-1));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0x61, 0x62, 0x65 }, 0, 3)), Is.EqualTo(-1));
+      Assert.That(str.IndexOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x65, 0xff }, 1, 3)), Is.EqualTo(-1));
 
       var substr = ByteString.CreateImmutable("ab");
 
@@ -318,8 +320,8 @@ namespace Smdn.Text {
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("Abc")), Is.Zero);
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("abC")), Is.Zero);
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("abc")), Is.Zero);
-      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)), Is.Zero);
-      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0xff, 0x41, 0x42, 0x43, 0xff}, 1, 3)), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] { 0x61, 0x62, 0x63 }, 0, 3)), Is.Zero);
+      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] { 0xff, 0x41, 0x42, 0x43, 0xff }, 1, 3)), Is.Zero);
 
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("cde")), Is.EqualTo(2));
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("CDE")), Is.EqualTo(2));
@@ -327,8 +329,8 @@ namespace Smdn.Text {
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("cDE")), Is.EqualTo(2));
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("CDe")), Is.EqualTo(2));
       Assert.That(str.IndexOfIgnoreCase(ByteString.CreateImmutable("Cde")), Is.EqualTo(2));
-      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0x63, 0x64, 0x65}, 0, 3)), Is.EqualTo(2));
-      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] {0xff, 0x43, 0x44, 0x45, 0xff}, 1, 3)), Is.EqualTo(2));
+      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] { 0x63, 0x64, 0x65 }, 0, 3)), Is.EqualTo(2));
+      Assert.That(str.IndexOfIgnoreCase(new ArraySegment<byte>(new byte[] { 0xff, 0x43, 0x44, 0x45, 0xff }, 1, 3)), Is.EqualTo(2));
     }
 
     [Test]
@@ -387,8 +389,8 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("abcde");
 
-      Assert.That(str.StartsWith(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3)), Is.True);
-      Assert.That(str.StartsWith(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0xff}, 1, 6)), Is.False);
+      Assert.That(str.StartsWith(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3)), Is.True);
+      Assert.That(str.StartsWith(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0xff }, 1, 6)), Is.False);
     }
 
     [Test]
@@ -411,8 +413,8 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("aBC");
 
-      Assert.That(str.StartsWithIgnoreCase(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x42, 0x63, 0xff}, 1, 3)), Is.True);
-      Assert.That(str.StartsWithIgnoreCase(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x42, 0x63, 0x44, 0x65, 0x46, 0xff}, 1, 6)), Is.False);
+      Assert.That(str.StartsWithIgnoreCase(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x42, 0x63, 0xff }, 1, 3)), Is.True);
+      Assert.That(str.StartsWithIgnoreCase(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x42, 0x63, 0x44, 0x65, 0x46, 0xff }, 1, 6)), Is.False);
     }
 
     [Test]
@@ -444,8 +446,8 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("abcde");
 
-      Assert.That(str.EndsWith(new ArraySegment<byte>(new byte[] {0xff, 0x63, 0x64, 0x65, 0xff}, 1, 3)), Is.True);
-      Assert.That(str.EndsWith(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0xff}, 1, 6)), Is.False);
+      Assert.That(str.EndsWith(new ArraySegment<byte>(new byte[] { 0xff, 0x63, 0x64, 0x65, 0xff }, 1, 3)), Is.True);
+      Assert.That(str.EndsWith(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0xff }, 1, 6)), Is.False);
     }
 
     [Test]
@@ -466,13 +468,13 @@ namespace Smdn.Text {
       var str = ByteString.CreateImmutable("abc");
 
       Assert.That(str.IsPrefixOf(ByteString.CreateImmutable("abcd")), Is.True);
-      Assert.That(str.IsPrefixOf(new byte[] {0x61, 0x62, 0x63, 0x64}), Is.True);
+      Assert.That(str.IsPrefixOf(new byte[] { 0x61, 0x62, 0x63, 0x64 }), Is.True);
       Assert.That(str.IsPrefixOf(ByteString.CreateImmutable("abc")), Is.True);
-      Assert.That(str.IsPrefixOf(new byte[] {0x61, 0x62, 0x63}), Is.True);
+      Assert.That(str.IsPrefixOf(new byte[] { 0x61, 0x62, 0x63 }), Is.True);
       Assert.That(str.IsPrefixOf(ByteString.CreateImmutable("abd")), Is.False);
-      Assert.That(str.IsPrefixOf(new byte[] {0x61, 0x62, 0x64}), Is.False);
+      Assert.That(str.IsPrefixOf(new byte[] { 0x61, 0x62, 0x64 }), Is.False);
       Assert.That(str.IsPrefixOf(ByteString.CreateImmutable("ab")), Is.False);
-      Assert.That(str.IsPrefixOf(new byte[] {0x61, 0x62}), Is.False);
+      Assert.That(str.IsPrefixOf(new byte[] { 0x61, 0x62 }), Is.False);
     }
 
     [Test]
@@ -480,9 +482,9 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("abc");
 
-      Assert.That(str.IsPrefixOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0xff}, 1, 6)), Is.True);
-      Assert.That(str.IsPrefixOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3)), Is.True);
-      Assert.That(str.IsPrefixOf(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0xff}, 1, 1)), Is.False);
+      Assert.That(str.IsPrefixOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0x64, 0x65, 0x66, 0xff }, 1, 6)), Is.True);
+      Assert.That(str.IsPrefixOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3)), Is.True);
+      Assert.That(str.IsPrefixOf(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0xff }, 1, 1)), Is.False);
     }
 
     [Test]
@@ -606,7 +608,7 @@ namespace Smdn.Text {
       }
 
       try {
-       str.GetSubSegment(5, 1);
+        str.GetSubSegment(5, 1);
       }
       catch (ArgumentException) {
       }
@@ -615,7 +617,7 @@ namespace Smdn.Text {
     [Test]
     public void TestSplit()
     {
-      var splitted = (ByteString.CreateImmutable(" a bc  def g ")).Split(' ');
+      var splitted = ByteString.CreateImmutable(" a bc  def g ").Split(' ');
 
       Assert.That(splitted, Is.EqualTo(new[] {
         ByteString.CreateImmutable(string.Empty),
@@ -631,15 +633,15 @@ namespace Smdn.Text {
     [Test]
     public void TestSplitNoDelimiters()
     {
-      var splitted = (ByteString.CreateImmutable("abcde")).Split(' ');
+      var splitted = ByteString.CreateImmutable("abcde").Split(' ');
 
-      Assert.That(splitted, Is.EqualTo(new[] {ByteString.CreateImmutable("abcde")}));
+      Assert.That(splitted, Is.EqualTo(new[] { ByteString.CreateImmutable("abcde") }));
     }
 
     [Test]
     public void TestGetSplittedSubstrings()
     {
-      var splitted = (ByteString.CreateImmutable(" a bc  def g ")).GetSplittedSubstrings(' ');
+      var splitted = ByteString.CreateImmutable(" a bc  def g ").GetSplittedSubstrings(' ');
       var expected = new[] {
         ByteString.CreateImmutable(string.Empty),
         ByteString.CreateImmutable("a"),
@@ -652,7 +654,7 @@ namespace Smdn.Text {
 
       Assert.That(splitted, Is.EqualTo(expected).AsCollection);
 
-      splitted = (ByteString.CreateImmutable(string.Empty)).GetSplittedSubstrings(' ');
+      splitted = ByteString.CreateImmutable(string.Empty).GetSplittedSubstrings(' ');
       expected = new[] { ByteString.CreateImmutable(string.Empty) };
 
       Assert.That(splitted, Is.EqualTo(expected).AsCollection);
@@ -661,9 +663,9 @@ namespace Smdn.Text {
     [Test]
     public void TestGetSplittedSubstringsNoDelimiters()
     {
-      var splitted = (ByteString.CreateImmutable("abcde")).GetSplittedSubstrings(' ');
+      var splitted = ByteString.CreateImmutable("abcde").GetSplittedSubstrings(' ');
 
-      Assert.That(splitted, Is.EqualTo(new[] {ByteString.CreateImmutable("abcde")}).AsCollection);
+      Assert.That(splitted, Is.EqualTo(new[] { ByteString.CreateImmutable("abcde") }).AsCollection);
     }
 
     [Test]
@@ -677,10 +679,9 @@ namespace Smdn.Text {
       var bytes = new byte[0x100];
 
       for (var i = 0; i < 0x100; i++) {
-        if ('a' <= i && i <= 'z')
-          expected[i] = (byte)(i - ('a' - 'A'));
-        else
-          expected[i] = (byte)i;
+        expected[i] = 'a' <= i && i <= 'z'
+          ? (byte)(i - ('a' - 'A'))
+          : (byte)i;
 
         bytes[i] = (byte)i;
       }
@@ -699,10 +700,9 @@ namespace Smdn.Text {
       var bytes = new byte[0x100];
 
       for (var i = 0; i < 0x100; i++) {
-        if ('A' <= i && i <= 'Z')
-          expected[i] = (byte)(i + ('a' - 'A'));
-        else
-          expected[i] = (byte)i;
+        expected[i] = 'A' <= i && i <= 'Z'
+          ? (byte)(i + ('a' - 'A'))
+          : (byte)i;
 
         bytes[i] = (byte)i;
       }
@@ -713,8 +713,8 @@ namespace Smdn.Text {
     [Test]
     public void TestToUInt32()
     {
-      Assert.That((ByteString.CreateImmutable("0")).ToUInt64(), Is.Zero);
-      Assert.That((ByteString.CreateImmutable("1234567890")).ToUInt32(), Is.EqualTo(1234567890U));
+      Assert.That(ByteString.CreateImmutable("0").ToUInt64(), Is.Zero);
+      Assert.That(ByteString.CreateImmutable("1234567890").ToUInt32(), Is.EqualTo(1234567890U));
     }
 
     [Test]
@@ -728,14 +728,14 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("4294967296");
 
-      Assert.That(() => str.ToUInt32(), Throws.TypeOf<OverflowException>());
+      Assert.That(str.ToUInt32, Throws.TypeOf<OverflowException>());
     }
 
     [Test]
     public void TestToUInt64()
     {
-      Assert.That((ByteString.CreateImmutable("0")).ToUInt64(), Is.Zero);
-      Assert.That((ByteString.CreateImmutable("1234567890")).ToUInt64(), Is.EqualTo(1234567890UL));
+      Assert.That(ByteString.CreateImmutable("0").ToUInt64(), Is.Zero);
+      Assert.That(ByteString.CreateImmutable("1234567890").ToUInt64(), Is.EqualTo(1234567890UL));
     }
 
     [Test]
@@ -764,7 +764,7 @@ namespace Smdn.Text {
     {
       var str = ByteString.CreateImmutable("18446744073709551616");
 
-      Assert.That(() => str.ToUInt64(), Throws.TypeOf<OverflowException>());
+      Assert.That(str.ToUInt64, Throws.TypeOf<OverflowException>());
     }
 
     [Test]
@@ -772,17 +772,17 @@ namespace Smdn.Text {
     {
       var expected = ByteString.CreateImmutable("abc");
 
-      Assert.That((ByteString.CreateImmutable("\u0020abc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\u00a0abc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\u0009abc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\u000aabc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\u000babc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\u000cabc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\u000dabc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("\r\n   abc")).TrimStart(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("!abc")).TrimStart(), Is.EqualTo(ByteString.CreateImmutable("!abc")));
-      Assert.That((ByteString.CreateImmutable("abc ")).TrimStart(), Is.EqualTo(ByteString.CreateImmutable("abc ")));
-      Assert.That((ByteString.CreateImmutable("   \r\n")).TrimStart(), Is.EqualTo(ByteString.CreateEmpty()));
+      Assert.That(ByteString.CreateImmutable("\u0020abc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\u00a0abc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\u0009abc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\u000aabc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\u000babc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\u000cabc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\u000dabc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("\r\n   abc").TrimStart(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("!abc").TrimStart(), Is.EqualTo(ByteString.CreateImmutable("!abc")));
+      Assert.That(ByteString.CreateImmutable("abc ").TrimStart(), Is.EqualTo(ByteString.CreateImmutable("abc ")));
+      Assert.That(ByteString.CreateImmutable("   \r\n").TrimStart(), Is.EqualTo(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -790,24 +790,24 @@ namespace Smdn.Text {
     {
       var expected = ByteString.CreateImmutable("abc");
 
-      Assert.That((ByteString.CreateImmutable("abc\u0020")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc\u00a0")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc\u0009")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc\u000a")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc\u000b")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc\u000c")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc\u000d")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc  \r\n")).TrimEnd(), Is.EqualTo(expected));
-      Assert.That((ByteString.CreateImmutable("abc!")).TrimEnd(), Is.EqualTo(ByteString.CreateImmutable("abc!")));
-      Assert.That((ByteString.CreateImmutable(" abc")).TrimEnd(), Is.EqualTo(ByteString.CreateImmutable(" abc")));
-      Assert.That((ByteString.CreateImmutable("   \r\n")).TrimEnd(), Is.EqualTo(ByteString.CreateEmpty()));
+      Assert.That(ByteString.CreateImmutable("abc\u0020").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc\u00a0").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc\u0009").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc\u000a").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc\u000b").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc\u000c").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc\u000d").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc  \r\n").TrimEnd(), Is.EqualTo(expected));
+      Assert.That(ByteString.CreateImmutable("abc!").TrimEnd(), Is.EqualTo(ByteString.CreateImmutable("abc!")));
+      Assert.That(ByteString.CreateImmutable(" abc").TrimEnd(), Is.EqualTo(ByteString.CreateImmutable(" abc")));
+      Assert.That(ByteString.CreateImmutable("   \r\n").TrimEnd(), Is.EqualTo(ByteString.CreateEmpty()));
     }
 
     [Test]
     public void TestTrim()
     {
-      Assert.That((ByteString.CreateImmutable("\n\nabc  ")).Trim(), Is.EqualTo(ByteString.CreateImmutable("abc")));
-      Assert.That((ByteString.CreateImmutable("   \r\n")).Trim(), Is.EqualTo(ByteString.CreateEmpty()));
+      Assert.That(ByteString.CreateImmutable("\n\nabc  ").Trim(), Is.EqualTo(ByteString.CreateImmutable("abc")));
+      Assert.That(ByteString.CreateImmutable("   \r\n").Trim(), Is.EqualTo(ByteString.CreateEmpty()));
     }
 
     [Test]
@@ -818,27 +818,27 @@ namespace Smdn.Text {
       Assert.That(str.Equals(str), Is.True);
       Assert.That(str.Equals(ByteString.CreateImmutable("abc")), Is.True);
       Assert.That(str.Equals(ByteString.CreateMutable("abc")), Is.True);
-      Assert.That(str.Equals(new byte[] {0x61, 0x62, 0x63}), Is.True);
-      Assert.That(str.Equals(new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)), Is.True);
-      Assert.That(str.Equals(new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3)), Is.True);
+      Assert.That(str.Equals(new byte[] { 0x61, 0x62, 0x63 }), Is.True);
+      Assert.That(str.Equals(new ArraySegment<byte>(new byte[] { 0x61, 0x62, 0x63 }, 0, 3)), Is.True);
+      Assert.That(str.Equals(new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3)), Is.True);
 
       Assert.That(str.Equals((object)str), Is.True);
       Assert.That(str.Equals((object)ByteString.CreateImmutable("abc")), Is.True);
       Assert.That(str.Equals((object)ByteString.CreateMutable("abc")), Is.True);
-      Assert.That(str.Equals((object)new byte[] {0x61, 0x62, 0x63}), Is.True);
-      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] {0x61, 0x62, 0x63}, 0, 3)), Is.True);
-      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] {0xff, 0x61, 0x62, 0x63, 0xff}, 1, 3)), Is.True);
+      Assert.That(str.Equals((object)new byte[] { 0x61, 0x62, 0x63 }), Is.True);
+      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] { 0x61, 0x62, 0x63 }, 0, 3)), Is.True);
+      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0x62, 0x63, 0xff }, 1, 3)), Is.True);
 
       Assert.That(str.Equals((ByteString)null!), Is.False);
       Assert.That(str!.Equals((string)null!), Is.False);
       Assert.That(str!.Equals((byte[])null!), Is.False);
       Assert.That(str!.Equals((object)1), Is.False);
-      Assert.That(str.Equals((object)new byte[] {0x41, 0x42, 0x43}), Is.False);
-      Assert.That(str.Equals((object)new byte[] {0x41}), Is.False);
+      Assert.That(str.Equals((object)new byte[] { 0x41, 0x42, 0x43 }), Is.False);
+      Assert.That(str.Equals((object)new byte[] { 0x41 }), Is.False);
       Assert.That(str.Equals(ByteString.CreateImmutable("ABC")), Is.False);
       Assert.That(str.Equals(ByteString.CreateMutable("ABC")), Is.False);
-      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] {0x41, 0x42, 0x43}, 0, 3)), Is.False);
-      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] {0xff, 0x61, 0xff}, 1, 1)), Is.False);
+      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] { 0x41, 0x42, 0x43 }, 0, 3)), Is.False);
+      Assert.That(str.Equals((object)new ArraySegment<byte>(new byte[] { 0xff, 0x61, 0xff }, 1, 1)), Is.False);
       Assert.That(str.Equals((object)new ArraySegment<byte>()), Is.False);
     }
 
@@ -986,8 +986,8 @@ namespace Smdn.Text {
     [Test]
     public void TestGetHashCode()
     {
-      Assert.That(ByteString.CreateImmutable(new byte[] {0x61, 0x62, 0x63}).GetHashCode(), Is.EqualTo(ByteString.CreateImmutable("abc").GetHashCode()));
-      Assert.That(ByteString.CreateMutable(new byte[] {0x61, 0x62, 0x63}).GetHashCode(), Is.EqualTo(ByteString.CreateImmutable("abc").GetHashCode()));
+      Assert.That(ByteString.CreateImmutable(new byte[] { 0x61, 0x62, 0x63 }).GetHashCode(), Is.EqualTo(ByteString.CreateImmutable("abc").GetHashCode()));
+      Assert.That(ByteString.CreateMutable(new byte[] { 0x61, 0x62, 0x63 }).GetHashCode(), Is.EqualTo(ByteString.CreateImmutable("abc").GetHashCode()));
 #pragma warning disable NUnit2009
       Assert.That(ByteString.CreateImmutable("abc").GetHashCode(), Is.EqualTo(ByteString.CreateImmutable("abc").GetHashCode()));
 #pragma warning restore NUnit2009

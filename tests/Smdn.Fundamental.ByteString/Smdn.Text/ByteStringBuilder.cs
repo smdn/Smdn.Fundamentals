@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.IO;
+
 using NUnit.Framework;
 
 namespace Smdn.Text {
@@ -22,7 +22,7 @@ namespace Smdn.Text {
     {
       var b = new ByteStringBuilder();
 
-      b.Append(new byte[] {0x61, 0x62, 0x63});
+      b.Append(new byte[] { 0x61, 0x62, 0x63 });
 
       Assert.That(b[0], Is.EqualTo(0x61));
       Assert.That(b[1], Is.EqualTo(0x62));
@@ -55,7 +55,7 @@ namespace Smdn.Text {
       Assert.That(b.Length, Is.EqualTo(10));
       Assert.That(b.Capacity, Is.EqualTo(16));
 
-      Assert.That(Object.ReferenceEquals(b, b.Append(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0x66})), Is.True);
+      Assert.That(Object.ReferenceEquals(b, b.Append(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65, 0x66 })), Is.True);
 
       Assert.That(b.Length, Is.EqualTo(16));
       Assert.That(b.Capacity, Is.EqualTo(16));
@@ -81,7 +81,7 @@ namespace Smdn.Text {
     {
       var b = new ByteStringBuilder();
 
-      b.Append(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0x66});
+      b.Append(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65, 0x66 });
 
       var bytes1 = b.ToByteArray();
 
@@ -105,7 +105,7 @@ namespace Smdn.Text {
     {
       var b = new ByteStringBuilder();
 
-      b.Append(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0x66});
+      b.Append(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65, 0x66 });
 
       Assert.That(b.ToByteString(false), Is.EqualTo(ByteString.CreateImmutable("abcdef")));
 
@@ -119,7 +119,7 @@ namespace Smdn.Text {
     {
       var b = new ByteStringBuilder();
 
-      b.Append(new byte[] {0x61, 0x62, 0x63, 0x64, 0x65, 0x66});
+      b.Append(new byte[] { 0x61, 0x62, 0x63, 0x64, 0x65, 0x66 });
 
       Assert.That(b.ToString(), Is.EqualTo("abcdef"));
 

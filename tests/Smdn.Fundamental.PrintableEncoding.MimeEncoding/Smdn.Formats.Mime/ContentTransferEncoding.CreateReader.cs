@@ -28,7 +28,7 @@ partial class ContentTransferEncodingTests {
 
     decodingStream.Dispose();
 
-    Assert.That(() => inputStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(inputStream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
   }
 
   [TestCase(ContentTransferEncodingMethod.SevenBit)]
@@ -48,7 +48,7 @@ partial class ContentTransferEncodingTests {
 
     decodingStream.Dispose();
 
-    Assert.That(() => inputStream.ReadByte(), Throws.Nothing);
+    Assert.That(inputStream.ReadByte, Throws.Nothing);
   }
 
   [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
@@ -72,7 +72,7 @@ partial class ContentTransferEncodingTests {
 
     reader.Dispose();
 
-    Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
   }
 
   [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]
@@ -148,7 +148,7 @@ partial class ContentTransferEncodingTests {
 
     reader.Dispose();
 
-    Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
   }
 
   [TestCase(ContentTransferEncodingMethod.SevenBit, "\x1b\x24\x42\x34\x41\x3b\x7a\x1b\x28\x42\x61\x62\x63\x1b\x24\x42\x24\x2b\x24\x4a\x1b\x28\x42\x31\x32\x33\x1b\x24\x42\x25\x2b\x25\x4a\x1b\x28\x42")]

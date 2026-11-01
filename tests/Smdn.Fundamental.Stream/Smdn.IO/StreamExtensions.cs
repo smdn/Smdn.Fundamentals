@@ -3,7 +3,7 @@
 using System;
 using System.Buffers;
 using System.IO;
-using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 namespace Smdn.IO {
@@ -57,11 +57,10 @@ namespace Smdn.IO {
 
       outputStream.Dispose();
 
-      Assert.That(outputStream.ToArray(), Is.EqualTo(new byte[] {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07}));
+      Assert.That(outputStream.ToArray(), Is.EqualTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0x05, 0x06, 0x07 }));
     }
 
-    private class UnreadableMemoryStream : MemoryStream
-    {
+    private class UnreadableMemoryStream : MemoryStream {
       public override bool CanRead {
         get { return false; }
       }
@@ -147,7 +146,7 @@ namespace Smdn.IO {
     [TestCase(false)]
     public void TestReadToEnd(bool runAsync)
     {
-      using (var stream = new MemoryStream(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07})) {
+      using (var stream = new MemoryStream(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07 })) {
         stream.Seek(4, SeekOrigin.Begin);
 
         byte[] ret = null;
@@ -157,7 +156,7 @@ namespace Smdn.IO {
         else
           Assert.That(() => ret = StreamExtensions.ReadToEnd(stream, 2, 2), Throws.Nothing);
 
-        Assert.That(ret, Is.EqualTo(new byte[] {0x04, 0x05, 0x06, 0x07}));
+        Assert.That(ret, Is.EqualTo(new byte[] { 0x04, 0x05, 0x06, 0x07 }));
       }
     }
 
@@ -193,7 +192,7 @@ namespace Smdn.IO {
 
         StreamExtensions.Write(stream, segment);
 
-        Assert.That(stream.ToArray(), Is.EqualTo(new byte[] {0x01, 0x02, 0x03}));
+        Assert.That(stream.ToArray(), Is.EqualTo(new byte[] { 0x01, 0x02, 0x03 }));
       }
     }
 

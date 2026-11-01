@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 using System;
 using System.Buffers;
+
 using NUnit.Framework;
 
 namespace Smdn.Text {
@@ -49,13 +50,12 @@ namespace Smdn.Text {
         StringSegment last = null;
         const int seglen = 2;
 
-        for (var offset = 0;;) {
+        for (var offset = 0; ;) {
           var len = Math.Min(seglen, str.Length - offset);
 
           last = new StringSegment(str.Substring(offset, len), last);
 
-          if (first == null)
-            first = last;
+          first ??= last;
 
           offset += len;
 
@@ -67,15 +67,13 @@ namespace Smdn.Text {
       }
     }
 
-    private class StringSegment : ReadOnlySequenceSegment<byte>
-    {
+    private class StringSegment : ReadOnlySequenceSegment<byte> {
       public StringSegment(string substr, StringSegment prev)
       {
         this.Memory = ByteString.CreateImmutable(substr).Segment.AsMemory();
         this.RunningIndex = prev == null ? 0 : prev.RunningIndex + prev.Memory.Length;
 
-        if (prev != null)
-          prev.Next = this;
+        prev?.Next = this;
       }
     }
   }

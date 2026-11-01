@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 using Is = Smdn.Test.NUnit.Constraints.Buffers.Is;
@@ -118,7 +119,7 @@ partial class LineOrientedStreamTests {
       Is.Zero
     );
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
   }
 
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -129,8 +130,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.That(await stream.ReadAsync(Memory<byte>.Empty),Is.Zero);
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(await stream.ReadAsync(Memory<byte>.Empty), Is.Zero);
+    Assert.That(stream.Position, Is.Zero, "Position");
   }
 #endif
 
@@ -150,7 +151,7 @@ partial class LineOrientedStreamTests {
     Assert.That(t.IsCanceled, Is.True);
     Assert.That(async () => await t, Throws.InstanceOf<OperationCanceledException>());
 
-    Assert.That(stream.Position,Is.Zero, "Position");
+    Assert.That(stream.Position, Is.Zero, "Position");
   }
 
   [Test]

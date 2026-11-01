@@ -1,7 +1,7 @@
 // SPDX-FileCopyrightText: 2018 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
 
 namespace Smdn.Collections {

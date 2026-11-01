@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+
 using NUnit.Framework;
 
 #if SYSTEM_ARRAY_EMPTY
@@ -29,9 +30,9 @@ namespace Smdn.IO.Streams.Filtering {
       }
 
       if (leaveOpen)
-        Assert.That(() => baseStream.ReadByte(), Throws.Nothing);
+        Assert.That(baseStream.ReadByte, Throws.Nothing);
       else
-        Assert.That(() => baseStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(baseStream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
     }
 
     [Test] public void TestClose_LeaveStreamOpen() => TestClose_LeaveStreamOpen(true);
@@ -55,7 +56,7 @@ namespace Smdn.IO.Streams.Filtering {
       Assert.That(stream.CanSeek, Is.False, nameof(stream.CanSeek));
       Assert.That(stream.CanTimeout, Is.False, nameof(stream.CanTimeout));
 
-      Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.ReadByte));
+      Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.ReadByte));
       Assert.That(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Read));
       Assert.That(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.ReadAsync));
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -75,15 +76,15 @@ namespace Smdn.IO.Streams.Filtering {
         nameof(stream.WriteAsync)
       );
 #endif
-      Assert.That(() => stream.Flush(), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Flush));
-      Assert.That(() => stream.FlushAsync(), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.FlushAsync));
+      Assert.That(stream.Flush, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Flush));
+      Assert.That(stream.FlushAsync, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.FlushAsync));
       Assert.That(() => stream.Seek(0, SeekOrigin.Begin), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Seek));
       Assert.That(() => stream.SetLength(0L), Throws.TypeOf<ObjectDisposedException>(), nameof(stream.SetLength));
       Assert.That(() => _ = stream.Length, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Length));
       Assert.That(() => _ = stream.Position, Throws.TypeOf<ObjectDisposedException>(), nameof(stream.Length));
 
 #if SYSTEM_IO_STREAM_CLOSE
-      Assert.That(() => stream.Close(), Throws.Nothing, nameof(stream.Close));
+      Assert.That(stream.Close, Throws.Nothing, nameof(stream.Close));
 #endif
     }
 
@@ -144,7 +145,7 @@ namespace Smdn.IO.Streams.Filtering {
       );
     }
 
-    enum ReadMethod {
+    private enum ReadMethod {
       Read,
       ReadAsync,
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
@@ -180,7 +181,8 @@ namespace Smdn.IO.Streams.Filtering {
       };
 
       using (var stream = new FilterStream(baseStream, filters, leaveStreamOpen: true, bufferSize: 4)) {
-        Assert.That(stream.Position,Is.Zero, nameof(stream.Position));
+
+        Assert.That(stream.Position, Is.Zero, nameof(stream.Position));
         Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
 
         var buffer = new byte[8];
@@ -229,7 +231,7 @@ namespace Smdn.IO.Streams.Filtering {
       };
 
       using (var stream = new FilterStream(baseStream, filters, leaveStreamOpen: true, bufferSize: 4)) {
-        Assert.That(stream.Position,Is.Zero, nameof(stream.Position));
+        Assert.That(stream.Position, Is.Zero, nameof(stream.Position));
         Assert.That(stream.Length, Is.EqualTo(8L), nameof(stream.Length));
 
         for (var position = 0; position < expected.Length; position++) {

@@ -6,6 +6,7 @@ using System;
 #if SYSTEM_RUNTIME_SERIALIZATION_FORMATTER_BINARY
 using System.Runtime.Serialization.Formatters.Binary;
 #endif
+
 using NUnit.Framework;
 
 namespace Smdn.Test.NUnit.Assertion;
@@ -110,7 +111,7 @@ public class AssertSerializationTests {
       Assert.That(obj, Is.Not.Null);
       Assert.That(obj, Is.InstanceOf<NotSupportedException>());
 
-      var ex = (obj as NotSupportedException);
+      var ex = obj as NotSupportedException;
 
       Assert.That(ex.Message, Is.EqualTo(message));
 

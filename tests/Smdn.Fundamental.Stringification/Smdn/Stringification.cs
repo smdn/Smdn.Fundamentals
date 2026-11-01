@@ -1,14 +1,15 @@
 // SPDX-FileCopyrightText: 2021 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
-using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using NUnit.Framework;
 
 #if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
 using _KeyValuePair = System.Collections.Generic.KeyValuePair;
 #else
 using Smdn.Collections;
+
 using _KeyValuePair = Smdn.Collections.KeyValuePair;
 #endif
 
@@ -23,7 +24,7 @@ namespace Smdn {
 
       public override string ToString()
       {
-        return Stringification.Stringify(GetType(), new(string, object)[] {
+        return Stringification.Stringify(GetType(), new (string, object)[] {
           (nameof(MI), MI),
           (nameof(MS1), MS1),
           (nameof(MS2), MS2),

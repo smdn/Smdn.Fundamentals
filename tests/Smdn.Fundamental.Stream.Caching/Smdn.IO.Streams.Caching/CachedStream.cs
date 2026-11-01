@@ -1,12 +1,10 @@
 // SPDX-FileCopyrightText: 2009 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
 
-using Smdn;
+using NUnit.Framework;
 
 namespace Smdn.IO.Streams.Caching {
   [TestFixture]
@@ -33,7 +31,7 @@ namespace Smdn.IO.Streams.Caching {
     {
       using (var innerStream = new MemoryStream(8)) {
         innerStream.SetLength(8);
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+        innerStream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03 }, 0, 4);
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
           Assert.That(stream.CanRead, Is.True, "can read");
@@ -52,7 +50,7 @@ namespace Smdn.IO.Streams.Caching {
     {
       using (var innerStream = new MemoryStream(8)) {
         innerStream.SetLength(8);
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4);
+        innerStream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03 }, 0, 4);
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
           stream.Dispose();
@@ -62,7 +60,7 @@ namespace Smdn.IO.Streams.Caching {
           Assert.That(stream.CanSeek, Is.False, "CanSeek");
           Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-          Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+          Assert.That(stream.ReadByte, Throws.TypeOf<ObjectDisposedException>());
           Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
 
           stream.Dispose();
@@ -74,7 +72,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestSeek()
     {
       using (var innerStream = new MemoryStream(16)) {
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}, 0, 16);
+        innerStream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f }, 0, 16);
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
@@ -103,11 +101,11 @@ namespace Smdn.IO.Streams.Caching {
     public void TestReadByte()
     {
       using (var innerStream = new MemoryStream(16)) {
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f}, 0, 16);
+        innerStream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f }, 0, 16);
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
-          Assert.That(stream.Position,Is.Zero);
+          Assert.That(stream.Position, Is.Zero);
           Assert.That(stream.ReadByte(), Is.Zero);
           Assert.That(stream.Position, Is.EqualTo(1L));
 
@@ -142,7 +140,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestRead()
     {
       using (var innerStream = new MemoryStream(16)) {
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10}, 0, 17);
+        innerStream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10 }, 0, 17);
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
@@ -150,25 +148,25 @@ namespace Smdn.IO.Streams.Caching {
 
           Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(6));
           Assert.That(stream.Position, Is.EqualTo(6L));
-          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}));
+          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05 }));
 
           GC.Collect();
 
           Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(6));
           Assert.That(stream.Position, Is.EqualTo(12L));
-          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] {0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}));
+          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] { 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b }));
 
           stream.Position = 0L;
 
           Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(6));
           Assert.That(stream.Position, Is.EqualTo(6L));
-          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05}));
+          Assert.That(buffer.Skip(0).Take(6).ToArray(), Is.EqualTo(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05 }));
 
           stream.Position = 12L;
 
           Assert.That(stream.Read(buffer, 0, 6), Is.EqualTo(5));
           Assert.That(stream.Position, Is.EqualTo(17L));
-          Assert.That(buffer.Skip(0).Take(5).ToArray(), Is.EqualTo(new byte[] {0x0c, 0x0d, 0x0e, 0x0f, 0x10}));
+          Assert.That(buffer.Skip(0).Take(5).ToArray(), Is.EqualTo(new byte[] { 0x0c, 0x0d, 0x0e, 0x0f, 0x10 }));
 
           Assert.That(stream.Read(buffer, 0, 6), Is.Zero);
           Assert.That(stream.Position, Is.EqualTo(17L));
@@ -230,7 +228,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestSeekAndReadRandom()
     {
       using (var innerStream = new MemoryStream(16)) {
-        innerStream.Write(new byte[] {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b}, 0, 12);
+        innerStream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b }, 0, 12);
         innerStream.Position = 0L;
 
         using (var stream = CreateCachedStream(innerStream, 4, true)) {
@@ -298,7 +296,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestWrite()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        Assert.That(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4), Throws.TypeOf<NotSupportedException>());
+        Assert.That(() => stream.Write(new byte[] { 0x00, 0x01, 0x02, 0x03 }, 0, 4), Throws.TypeOf<NotSupportedException>());
       }
     }
 
@@ -317,7 +315,7 @@ namespace Smdn.IO.Streams.Caching {
         var pos = stream.Position;
         var len = stream.Length;
 
-        Assert.That(() => stream.Flush(), Throws.Nothing);
+        Assert.That(stream.Flush, Throws.Nothing);
 
         Assert.That(stream.Position, Is.EqualTo(pos));
         Assert.That(stream.Length, Is.EqualTo(len));

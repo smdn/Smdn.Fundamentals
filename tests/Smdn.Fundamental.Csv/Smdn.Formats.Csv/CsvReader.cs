@@ -4,6 +4,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+
 using NUnit.Framework;
 
 namespace Smdn.Formats.Csv;
@@ -155,7 +156,7 @@ public class CsvReaderTests {
     yield return new object?[] { "", null };
     yield return new object[] { "\r\n", new string[] { string.Empty } };
 
-    foreach (var lineBreak in new[] { string.Empty, "\r\n" } ) {
+    foreach (var lineBreak in new[] { string.Empty, "\r\n" }) {
       yield return new object[] { "," + lineBreak, new string[] { string.Empty, string.Empty } };
       yield return new object[] { "a," + lineBreak, new string[] { "a", string.Empty } };
       yield return new object[] { ",a" + lineBreak, new string[] { string.Empty, "a" } };

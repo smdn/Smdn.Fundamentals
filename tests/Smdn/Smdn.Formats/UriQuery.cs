@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using NUnit.Framework;
 
 #if SYSTEM_COLLECTIONS_GENERIC_KEYVALUEPAIR_CREATE
@@ -52,7 +53,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestJoinQueryParametersArgumentEmpty()
     {
-      Assert.That(UriQuery.JoinQueryParameters(new KeyValuePair<string, string>[] {}), Is.Empty);
+      Assert.That(UriQuery.JoinQueryParameters(new KeyValuePair<string, string>[] { }), Is.Empty);
     }
 
     [Test]

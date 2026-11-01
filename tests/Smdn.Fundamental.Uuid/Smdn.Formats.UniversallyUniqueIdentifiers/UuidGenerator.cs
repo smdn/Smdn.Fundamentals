@@ -1,8 +1,9 @@
 // SPDX-FileCopyrightText: 2020 smdn <smdn@smdn.jp>
 // SPDX-License-Identifier: MIT
 using System;
-using System.Diagnostics;
+
 using NUnit.Framework;
+
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
 using System.Net.NetworkInformation;
 #endif
