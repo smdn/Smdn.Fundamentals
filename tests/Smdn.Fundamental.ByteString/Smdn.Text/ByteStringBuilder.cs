@@ -37,10 +37,7 @@ public class ByteStringBuilderTests {
     Assert.That(b[1], Is.EqualTo(0x61));
     Assert.That(b[2], Is.EqualTo(0x62));
 
-#pragma warning disable 168
-    Assert.That(() => { var val = b[3]; }, Throws.TypeOf<IndexOutOfRangeException>());
-#pragma warning restore 168
-
+    Assert.That(() => { _ = b[3]; }, Throws.TypeOf<IndexOutOfRangeException>());
     Assert.That(() => b[3] = (byte)0x61, Throws.TypeOf<ArgumentOutOfRangeException>());
   }
 
