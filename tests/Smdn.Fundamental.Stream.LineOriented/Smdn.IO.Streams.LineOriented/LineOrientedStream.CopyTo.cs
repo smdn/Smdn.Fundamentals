@@ -24,7 +24,11 @@ partial class LineOrientedStreamTests {
     foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
       using var stream = CreateStream(type, new MemoryStream(), 8);
 
-      Assert.Throws(expectedExceptionType, () => stream.CopyTo(destination, bufferSize), $"{message} (type = {type})");
+      Assert.That(
+        () => stream.CopyTo(destination, bufferSize),
+        Throws.TypeOf(expectedExceptionType),
+        $"{message} (type = {type})"
+      );
     }
   }
 
@@ -42,7 +46,11 @@ partial class LineOrientedStreamTests {
     foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
       using var stream = CreateStream(type, new MemoryStream(), 8);
 
-      Assert.Throws(expectedExceptionType, () => stream.CopyToAsync(destination, bufferSize), $"{message} (type = {type})");
+      Assert.That(
+        () => stream.CopyToAsync(destination, bufferSize),
+        Throws.TypeOf(expectedExceptionType),
+        $"{message} (type = {type})"
+      );
     }
   }
 
@@ -107,8 +115,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null!));
-    Assert.Throws<ArgumentNullException>(() => stream.CopyTo(destination: null!, bufferSize: 0));
+    Assert.That(() => stream.CopyTo(destination: null!), Throws.ArgumentNullException);
+    Assert.That(() => stream.CopyTo(destination: null!, bufferSize: 0), Throws.ArgumentNullException);
   }
 
   [Test]
@@ -118,9 +126,9 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null!));
-    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null!, bufferSize: 0));
-    Assert.Throws<ArgumentNullException>(() => stream.CopyToAsync(destination: null!, bufferSize: 0, cancellationToken: default));
+    Assert.That(() => stream.CopyToAsync(destination: null!), Throws.ArgumentNullException);
+    Assert.That(() => stream.CopyToAsync(destination: null!, bufferSize: 0), Throws.ArgumentNullException);
+    Assert.That(() => stream.CopyToAsync(destination: null!, bufferSize: 0, cancellationToken: default), Throws.ArgumentNullException);
   }
 
 #if SYSTEM_IO_STREAM_COPYTO_VIRTUAL

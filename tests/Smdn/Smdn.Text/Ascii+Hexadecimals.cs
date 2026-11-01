@@ -42,9 +42,9 @@ namespace Smdn.Text {
       Assert.That(Ascii.Hexadecimals.ToByteArrayFromLowerString(""), Is.EqualTo(new byte[] {}), "empty");
       Assert.That(Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdef"), Is.EqualTo(new byte[] {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}));
 
-      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcde"), "#1");
-      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeg"), "#2");
-      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeF"), "#3");
+      Assert.That(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcde"), Throws.TypeOf<FormatException>(), "#1");
+      Assert.That(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeg"), Throws.TypeOf<FormatException>(), "#2");
+      Assert.That(() => Ascii.Hexadecimals.ToByteArrayFromLowerString("0123456789abcdeF"), Throws.TypeOf<FormatException>(), "#3");
     }
 
     [Test]
@@ -53,9 +53,9 @@ namespace Smdn.Text {
       Assert.That(Ascii.Hexadecimals.ToByteArrayFromUpperString(""), Is.EqualTo(new byte[] {}), "empty");
       Assert.That(Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEF"), Is.EqualTo(new byte[] {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef}));
 
-      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDE"), "#1");
-      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEG"), "#2");
-      Assert.Throws<FormatException>(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEf"), "#3");
+      Assert.That(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDE"), Throws.TypeOf<FormatException>(), "#1");
+      Assert.That(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEG"), Throws.TypeOf<FormatException>(), "#2");
+      Assert.That(() => Ascii.Hexadecimals.ToByteArrayFromUpperString("0123456789ABCDEf"), Throws.TypeOf<FormatException>(), "#3");
     }
 
     [Test]

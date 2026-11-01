@@ -47,7 +47,7 @@ public class EventInfoExtensionsTests {
 
   [Test]
   public void IsStatic_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).IsStatic());
+    => Assert.That(() => ((EventInfo)null!).IsStatic(), Throws.ArgumentNullException);
 
   [Test]
   public void GetMethods()
@@ -73,9 +73,9 @@ public class EventInfoExtensionsTests {
   {
     EventInfo ev = null!;
 
-    Assert.Throws<ArgumentNullException>(() => ev.GetMethods());
-    Assert.Throws<ArgumentNullException>(() => ev.GetMethods(nonPublic: true), "nonPublic: true");
-    Assert.Throws<ArgumentNullException>(() => ev.GetMethods(nonPublic: false), "nonPublic: false");
+    Assert.That(() => ev.GetMethods(), Throws.ArgumentNullException);
+    Assert.That(() => ev.GetMethods(nonPublic: true), Throws.ArgumentNullException, "nonPublic: true");
+    Assert.That(() => ev.GetMethods(nonPublic: false), Throws.ArgumentNullException, "nonPublic: false");
   }
 
   [TestCase(typeof(EventInfoExtensionsTests), nameof(E1), true)]
@@ -95,7 +95,7 @@ public class EventInfoExtensionsTests {
 
   [Test]
   public void GetBackingField_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).GetBackingField());
+    => Assert.That(() => ((EventInfo)null!).GetBackingField(), Throws.ArgumentNullException);
 
 #pragma warning disable CS0067
   class CStatic {
@@ -163,7 +163,7 @@ public class EventInfoExtensionsTests {
 
   [Test]
   public void IsOverride_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsOverride());
+    => Assert.That(() => ((PropertyInfo)null!).IsOverride(), Throws.ArgumentNullException);
 
 #if false
 Public Custom Event E As EventHandler
@@ -205,5 +205,5 @@ End Event
 
   [Test]
   public void IsReadOnly_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((EventInfo)null!).IsReadOnly());
+    => Assert.That(() => ((EventInfo)null!).IsReadOnly(), Throws.ArgumentNullException);
 }

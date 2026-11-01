@@ -24,65 +24,77 @@ namespace Smdn.Xml.Xhtml {
     {
       var doc = new XDocument(new XElement("html"));
 
-      Assert.DoesNotThrow(() => {
-        var sb = new StringBuilder();
+      Assert.That(
+        () => {
+          var sb = new StringBuilder();
+          using var writer = new PolyglotHtml5Writer(sb);
 
-        using (var writer = new PolyglotHtml5Writer(sb)) {
           Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
-        }
-      });
+        },
+        Throws.Nothing
+      );
 
-      Assert.DoesNotThrow(() => {
-        var sb = new StringBuilder();
+      Assert.That(
+        () => {
+          var sb = new StringBuilder();
+          using var writer = new PolyglotHtml5Writer(sb, null);
 
-        using (var writer = new PolyglotHtml5Writer(sb, null)) {
           Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
-        }
-      });
+        },
+        Throws.Nothing
+      );
 
-      Assert.DoesNotThrow(() => {
-        var sb = new StringBuilder();
+      Assert.That(
+        () => {
+          var sb = new StringBuilder();
+          using var writer = new PolyglotHtml5Writer(Stream.Null);
 
-        using (var writer = new PolyglotHtml5Writer(Stream.Null)) {
           Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
-        }
-      });
+        },
+        Throws.Nothing
+      );
 
-      Assert.DoesNotThrow(() => {
-        var sb = new StringBuilder();
+      Assert.That(
+        () => {
+          var sb = new StringBuilder();
+          using var writer = new PolyglotHtml5Writer(Stream.Null, null);
 
-        using (var writer = new PolyglotHtml5Writer(Stream.Null, null)) {
           Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
-        }
-      });
+        },
+        Throws.Nothing
+      );
 
-      Assert.DoesNotThrow(() => {
-        var sb = new StringBuilder();
+      Assert.That(
+        () => {
+          var sb = new StringBuilder();
+          using var writer = new PolyglotHtml5Writer(TextWriter.Null);
 
-        using (var writer = new PolyglotHtml5Writer(TextWriter.Null)) {
           Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
-        }
-      });
+        },
+        Throws.Nothing
+      );
 
-      Assert.DoesNotThrow(() => {
-        var sb = new StringBuilder();
+      Assert.That(
+        () => {
+          var sb = new StringBuilder();
+          using var writer = new PolyglotHtml5Writer(TextWriter.Null, null);
 
-        using (var writer = new PolyglotHtml5Writer(TextWriter.Null, null)) {
           Assert.That(writer.Settings, Is.Not.Null);
 
           doc.Save(writer);
-        }
-      });
+        },
+        Throws.Nothing
+      );
     }
 
     [Test]
@@ -145,7 +157,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.Throws<ObjectDisposedException>(() => output.ReadByte());
+        Assert.That(() => output.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -164,7 +176,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.Throws<ObjectDisposedException>(() => output.ReadByte());
+        Assert.That(() => output.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 #endif
@@ -183,7 +195,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.DoesNotThrow(() => output.ReadByte());
+        Assert.That(() => output.ReadByte(), Throws.Nothing);
       }
     }
 
@@ -202,7 +214,7 @@ namespace Smdn.Xml.Xhtml {
           doc.Save(writer);
         }
 
-        Assert.DoesNotThrow(() => output.ReadByte());
+        Assert.That(() => output.ReadByte(), Throws.Nothing);
       }
     }
 #endif

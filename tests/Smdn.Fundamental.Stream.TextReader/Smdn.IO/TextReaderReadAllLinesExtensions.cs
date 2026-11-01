@@ -76,8 +76,8 @@ line3
     {
       StreamReader reader = null!;
 
-      Assert.Throws<ArgumentNullException>(() => reader.ReadAllLines());
-      Assert.Throws<ArgumentNullException>(() => reader.ReadAllLinesAsync());
+      Assert.That(() => reader.ReadAllLines(), Throws.ArgumentNullException);
+      Assert.That(() => reader.ReadAllLinesAsync(), Throws.ArgumentNullException);
     }
   }
 }

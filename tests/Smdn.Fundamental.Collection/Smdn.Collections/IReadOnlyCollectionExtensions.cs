@@ -29,7 +29,7 @@ namespace Smdn.Collections {
     {
       IReadOnlyCollection<int> collection = null!;
 
-      Assert.Throws<ArgumentNullException>(() => collection.ConvertAll(i => i * 2));
+      Assert.That(() => collection.ConvertAll(i => i * 2), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -37,7 +37,7 @@ namespace Smdn.Collections {
     {
       IReadOnlyCollection<int> collection = new[] { 0, 1, 2, 3, 4 };
 
-      Assert.Throws<ArgumentNullException>(() => collection.ConvertAll<int, int>(converter: null!));
+      Assert.That(() => collection.ConvertAll<int, int>(converter: null!), Throws.ArgumentNullException);
     }
   }
 }

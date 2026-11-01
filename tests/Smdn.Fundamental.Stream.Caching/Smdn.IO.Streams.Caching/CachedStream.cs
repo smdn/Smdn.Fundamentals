@@ -62,8 +62,8 @@ namespace Smdn.IO.Streams.Caching {
           Assert.That(stream.CanSeek, Is.False, "CanSeek");
           Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-          Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
+          Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+          Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
 
           stream.Dispose();
         }
@@ -94,7 +94,7 @@ namespace Smdn.IO.Streams.Caching {
           Assert.That(stream.Position, Is.EqualTo(19L));
           Assert.That(stream.ReadByte(), Is.EqualTo(-1));
 
-          Assert.Throws<IOException>(() => stream.Seek(-17L, SeekOrigin.End));
+          Assert.That(() => stream.Seek(-17L, SeekOrigin.End), Throws.TypeOf<IOException>());
         }
       }
     }
@@ -199,7 +199,10 @@ namespace Smdn.IO.Streams.Caching {
     {
       using var stream = CreateCachedStream(new MemoryStream(8), 4, true);
 
-      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
+      Assert.That(
+        () => _ = stream.Read(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
 #if false
@@ -216,7 +219,10 @@ namespace Smdn.IO.Streams.Caching {
     {
       using var stream = CreateCachedStream(new MemoryStream(8), 4, true);
 
-      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+      Assert.That(
+        () => stream.ReadAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 #endif
 
@@ -284,7 +290,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestWriteByte()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x00));
+        Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<NotSupportedException>());
       }
     }
 
@@ -292,7 +298,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestWrite()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
+        Assert.That(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4), Throws.TypeOf<NotSupportedException>());
       }
     }
 
@@ -300,7 +306,7 @@ namespace Smdn.IO.Streams.Caching {
     public void TestSetLength()
     {
       using (var stream = CreateCachedStream(CreateStream(), 4, false)) {
-        Assert.Throws<NotSupportedException>(() => stream.SetLength(32L));
+        Assert.That(() => stream.SetLength(32L), Throws.TypeOf<NotSupportedException>());
       }
     }
 
@@ -311,7 +317,7 @@ namespace Smdn.IO.Streams.Caching {
         var pos = stream.Position;
         var len = stream.Length;
 
-        Assert.DoesNotThrow(() => stream.Flush());
+        Assert.That(() => stream.Flush(), Throws.Nothing);
 
         Assert.That(stream.Position, Is.EqualTo(pos));
         Assert.That(stream.Length, Is.EqualTo(len));

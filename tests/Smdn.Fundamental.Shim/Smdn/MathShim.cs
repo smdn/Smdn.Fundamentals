@@ -66,17 +66,17 @@ public class MathShimTests {
   [TestCase(0, 2, 1)]
   public void Clamp_MaxMustBeGreaterThanMin(int value, int min, int max)
   {
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((byte)value, (byte)min, (byte)max), $"Clamp<byte>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((ushort)value, (ushort)min, (ushort)max), $"Clamp<ushort>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((uint)value, (uint)min, (uint)max), $"Clamp<uint>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((ulong)value, (ulong)min, (ulong)max), $"Clamp<ulong>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((sbyte)value, (sbyte)min, (sbyte)max), $"Clamp<sbyte>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((short)value, (short)min, (short)max), $"Clamp<short>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((int)value, (int)min, (int)max), $"Clamp<int>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((long)value, (long)min, (long)max), $"Clamp<long>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((float)value, (float)min, (float)max), $"Clamp<float>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((double)value, (double)min, (double)max), $"Clamp<double>(value: {value}, min: {min}, max: {max})");
-    Assert.Throws<ArgumentException>(() => ShimTypeSystemMathClamp.Clamp((decimal)value, (decimal)min, (decimal)max), $"Clamp<decimal>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((byte)value, (byte)min, (byte)max), Throws.ArgumentException, $"Clamp<byte>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((ushort)value, (ushort)min, (ushort)max), Throws.ArgumentException, $"Clamp<ushort>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((uint)value, (uint)min, (uint)max), Throws.ArgumentException, $"Clamp<uint>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((ulong)value, (ulong)min, (ulong)max), Throws.ArgumentException, $"Clamp<ulong>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((sbyte)value, (sbyte)min, (sbyte)max), Throws.ArgumentException, $"Clamp<sbyte>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((short)value, (short)min, (short)max), Throws.ArgumentException, $"Clamp<short>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((int)value, (int)min, (int)max), Throws.ArgumentException, $"Clamp<int>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((long)value, (long)min, (long)max), Throws.ArgumentException, $"Clamp<long>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((float)value, (float)min, (float)max), Throws.ArgumentException, $"Clamp<float>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((double)value, (double)min, (double)max), Throws.ArgumentException, $"Clamp<double>(value: {value}, min: {min}, max: {max})");
+    Assert.That(() => ShimTypeSystemMathClamp.Clamp((decimal)value, (decimal)min, (decimal)max), Throws.ArgumentException, $"Clamp<decimal>(value: {value}, min: {min}, max: {max})");
   }
 
 #pragma warning disable NUnit2007
@@ -111,8 +111,8 @@ public class MathShimTests {
   [TestCase(1, 0)]
   public void DivRem_DivideByZero(int left, int right)
   {
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRem.DivRem(left, right, out _), $"DivRem<int>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRem.DivRem((long)left, (long)right, out _), $"DivRem<long>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRem.DivRem(left, right, out _), Throws.TypeOf<DivideByZeroException>(), $"DivRem<int>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRem.DivRem((long)left, (long)right, out _), Throws.TypeOf<DivideByZeroException>(), $"DivRem<long>({left}, {right})");
   }
 
 #pragma warning disable NUnit2007
@@ -151,14 +151,14 @@ public class MathShimTests {
   [TestCase(1, 0)]
   public void DivRemReturnValueTuple2_DivideByZero(int left, int right)
   {
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((sbyte)left, (sbyte)right), $"DivRem<sbyte>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((short)left, (short)right), $"DivRem<short>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem(left, right), $"DivRem<int>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((long)left, (long)right), $"DivRem<long>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((sbyte)left, (sbyte)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<sbyte>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((short)left, (short)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<short>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem(left, right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<int>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((long)left, (long)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<long>({left}, {right})");
 
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((byte)left, (byte)right), $"DivRem<byte>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((ushort)left, (ushort)right), $"DivRem<ushort>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((uint)left, (uint)right), $"DivRem<uint>({left}, {right})");
-    Assert.Throws<DivideByZeroException>(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((ulong)left, (ulong)right), $"DivRem<ulong>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((byte)left, (byte)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<byte>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((ushort)left, (ushort)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<ushort>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((uint)left, (uint)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<uint>({left}, {right})");
+    Assert.That(() => ShimTypeSystemMathDivRemReturnValueTuple2.DivRem((ulong)left, (ulong)right), Throws.TypeOf<DivideByZeroException>(), $"DivRem<ulong>({left}, {right})");
   }
 }

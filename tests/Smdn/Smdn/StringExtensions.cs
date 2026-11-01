@@ -35,23 +35,29 @@ namespace Smdn {
     [Test]
     public void TestSlice_ArgumentOutOfRange()
     {
-      ArgumentOutOfRangeException ex;
+      Assert.That(
+        () => "abc".Slice(-1, 0),
+        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("from"),
+        "#1"
+      );
 
-      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(-1, 0), "#1");
+      Assert.That(
+        () => "abc".Slice(3, 4),
+        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("from"),
+        "#2"
+      );
 
-      Assert.That(ex!.ParamName, Is.EqualTo("from"), "#1");
+      Assert.That(
+        () => "abc".Slice(1, 0),
+        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("to"),
+        "#3"
+      );
 
-      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(3, 4), "#2");
-
-      Assert.That(ex!.ParamName, Is.EqualTo("from"), "#2");
-
-      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(1, 0), "#3");
-
-      Assert.That(ex!.ParamName, Is.EqualTo("to"), "#3");
-
-      ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".Slice(0, 4), "#4");
-
-      Assert.That(ex!.ParamName, Is.EqualTo("to"), "#4");
+      Assert.That(
+        () => "abc".Slice(0, 4),
+        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("to"),
+        "#4"
+      );
     }
 
     [Test]
@@ -69,11 +75,13 @@ namespace Smdn {
       Assert.That("aaaa".IndexOfNot('a', 2), Is.EqualTo(-1));
       Assert.That("aaaa".IndexOfNot('a', 4), Is.EqualTo(-1));
 
-      var ex = Assert.Throws<ArgumentOutOfRangeException>(() => "abc".IndexOfNot('a', -1));
+      Assert.That(
+        () => "abc".IndexOfNot('a', -1),
+        Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("startIndex"),
+        "#1"
+      );
 
-      Assert.That(ex!.ParamName, Is.EqualTo("startIndex"), "#1");
-
-      Assert.Throws<ArgumentException>(() => "abc".IndexOfNot('a', 4));
+      Assert.That(() => "abc".IndexOfNot('a', 4), Throws.ArgumentException);
     }
   }
 }

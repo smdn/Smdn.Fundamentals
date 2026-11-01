@@ -25,8 +25,8 @@ partial class UInt24Tests {
   {
     UInt24 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(UInt24.Zero - UInt24.One), "0 - 1");
-    Assert.Throws<OverflowException>(() => result = checked(UInt24.One - UInt24.MaxValue), "1 - Max");
+    Assert.That(() => result = checked(UInt24.Zero - UInt24.One), Throws.TypeOf<OverflowException>(), "0 - 1");
+    Assert.That(() => result = checked(UInt24.One - UInt24.MaxValue), Throws.TypeOf<OverflowException>(), "1 - Max");
   }
 }
 
@@ -46,8 +46,8 @@ partial class UInt48Tests {
   {
     UInt48 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(UInt48.Zero - UInt48.One), "0 - 1");
-    Assert.Throws<OverflowException>(() => result = checked(UInt48.One - UInt48.MaxValue), "1 - Max");
+    Assert.That(() => result = checked(UInt48.Zero - UInt48.One), Throws.TypeOf<OverflowException>(), "0 - 1");
+    Assert.That(() => result = checked(UInt48.One - UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "1 - Max");
   }
 }
 
@@ -75,11 +75,11 @@ partial class UInt24nTests {
   [Test]
   public void ISubtractionOperators_OpCheckedSubtraction()
   {
-    Assert.Throws<OverflowException>(() => Subtract(UInt24.Zero, UInt24.One), "0 - 1");
-    Assert.Throws<OverflowException>(() => Subtract(UInt24.One, UInt24.MaxValue), "1 - Max");
+    Assert.That(() => Subtract(UInt24.Zero, UInt24.One), Throws.TypeOf<OverflowException>(), "0 - 1");
+    Assert.That(() => Subtract(UInt24.One, UInt24.MaxValue), Throws.TypeOf<OverflowException>(), "1 - Max");
 
-    Assert.Throws<OverflowException>(() => Subtract(UInt48.Zero, UInt48.One), "0 - 1");
-    Assert.Throws<OverflowException>(() => Subtract(UInt48.One, UInt48.MaxValue), "1 - Max");
+    Assert.That(() => Subtract(UInt48.Zero, UInt48.One), Throws.TypeOf<OverflowException>(), "0 - 1");
+    Assert.That(() => Subtract(UInt48.One, UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "1 - Max");
 
     static TUInt24n Subtract<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : ISubtractionOperators<TUInt24n, TUInt24n, TUInt24n>
       => checked(x - y);

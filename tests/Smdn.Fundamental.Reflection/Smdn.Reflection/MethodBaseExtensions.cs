@@ -27,7 +27,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void GetSignatureTypes_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).GetSignatureTypes());
+    => Assert.That(() => ((MethodBase)null!).GetSignatureTypes(), Throws.ArgumentNullException);
 
   class C2 : ICloneable, IDisposable {
     static C2() {}
@@ -94,7 +94,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void FindExplicitInterfaceMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).FindExplicitInterfaceMethod());
+    => Assert.That(() => ((MethodBase)null!).FindExplicitInterfaceMethod(), Throws.ArgumentNullException);
 
   [TestCase(typeof(C2), ".ctor", false, null, null)]
   [TestCase(typeof(C2), ".cctor", false, null, null)]
@@ -201,7 +201,10 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void TryFindExplicitInterfaceMethod_ArgumentNull()
-    => Assert.DoesNotThrow(() => Assert.That(((MethodBase)null!).TryFindExplicitInterfaceMethod(out _), Is.False));
+    => Assert.That(
+      () => Assert.That(((MethodBase)null!).TryFindExplicitInterfaceMethod(out _), Is.False),
+      Throws.Nothing
+    );
 
   [TestCase(typeof(C2), ".ctor", false)]
   [TestCase(typeof(C2), ".cctor", false)]
@@ -292,7 +295,7 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void IsExplicitlyImplemented_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).IsExplicitlyImplemented());
+    => Assert.That(() => ((MethodBase)null!).IsExplicitlyImplemented(), Throws.ArgumentNullException);
 
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.I1.M", "M")]
   [TestCase(typeof(MethodBaseExtensionsTestTypes.C1), "MethodBaseExtensionsTestTypes.I2.M", null)]
@@ -451,5 +454,5 @@ public class MethodBaseExtensionsTests {
 
   [Test]
   public void GetNameType_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodBase)null!).GetNameType());
+    => Assert.That(() => ((MethodBase)null!).GetNameType(), Throws.ArgumentNullException);
 }

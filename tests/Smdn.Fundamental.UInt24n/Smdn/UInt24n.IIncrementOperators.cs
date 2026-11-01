@@ -34,7 +34,7 @@ partial class UInt24Tests {
     var max = UInt24.MaxValue;
 
     checked {
-      Assert.Throws<OverflowException>(() => ++max, "++max");
+      Assert.That(() => ++max, Throws.TypeOf<OverflowException>(), "++max");
     }
   }
 }
@@ -64,7 +64,7 @@ partial class UInt48Tests {
     var max = UInt48.MaxValue;
 
     checked {
-      Assert.Throws<OverflowException>(() => ++max, "++max");
+      Assert.That(() => ++max, Throws.TypeOf<OverflowException>(), "++max");
     }
   }
 }
@@ -101,7 +101,7 @@ partial class UInt24nTests {
     static void Increment<TUInt24n>(TUInt24n value) where TUInt24n : IIncrementOperators<TUInt24n>
     {
       checked {
-        Assert.Throws<OverflowException>(() => ++value);
+        Assert.That(() => ++value, Throws.TypeOf<OverflowException>());
       }
     }
   }

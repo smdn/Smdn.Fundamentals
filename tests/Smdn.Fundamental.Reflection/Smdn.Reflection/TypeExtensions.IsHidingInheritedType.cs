@@ -78,5 +78,5 @@ partial class TypeExtensionsTests {
   [TestCase(true)]
   [TestCase(false)]
   public void IsHidingInheritedType_ArgumentNull(bool nonPublic)
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsHidingInheritedType(nonPublic));
+    => Assert.That(() => ((Type)null!).IsHidingInheritedType(nonPublic), Throws.ArgumentNullException);
 }

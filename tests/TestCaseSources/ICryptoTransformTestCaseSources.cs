@@ -14,14 +14,14 @@ public class ICryptoTransformTestCaseSources {
     var outputBuffer = new byte[1];
 
     // buffer, offset, count, constraint
-    yield return new object[] { null, 0, 1, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, -1, 0, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, -1, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 1, 1, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, 2, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, 1, null, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, 1, outputBuffer, -1, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, 1, outputBuffer, 1, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { null, 0, 1, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, -1, 0, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, -1, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 1, 1, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, 2, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, 1, null, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, 1, outputBuffer, -1, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, 1, outputBuffer, 1, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
   }
 
   public static IEnumerable YieldTestCases_TransformFinalBlock_InvalidArguments()
@@ -29,10 +29,10 @@ public class ICryptoTransformTestCaseSources {
     var inputBuffer = new byte[1];
 
     // buffer, offset, count, constraint
-    yield return new object[] { null, 0, 1, Is.TypeOf<ArgumentNullException>() };
-    yield return new object[] { inputBuffer, -1, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, -1, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 1, 1, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-    yield return new object[] { inputBuffer, 0, 2, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { null, 0, 1, Throws.ArgumentNullException };
+    yield return new object[] { inputBuffer, -1, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, -1, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 1, 1, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+    yield return new object[] { inputBuffer, 0, 2, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
   }
 }

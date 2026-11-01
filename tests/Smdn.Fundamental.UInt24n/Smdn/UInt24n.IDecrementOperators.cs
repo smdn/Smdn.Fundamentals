@@ -34,7 +34,7 @@ partial class UInt24Tests {
     var zero = UInt24.Zero;
 
     checked {
-      Assert.Throws<OverflowException>(() => --zero, "--zero");
+      Assert.That(() => --zero, Throws.TypeOf<OverflowException>(), "--zero");
     }
   }
 }
@@ -64,7 +64,7 @@ partial class UInt48Tests {
     var zero = UInt48.Zero;
 
     checked {
-      Assert.Throws<OverflowException>(() => --zero, "--zero");
+      Assert.That(() => --zero, Throws.TypeOf<OverflowException>(), "--zero");
     }
   }
 }
@@ -101,7 +101,7 @@ partial class UInt24nTests {
     static void Decrement<TUInt24n>(TUInt24n value) where TUInt24n : IDecrementOperators<TUInt24n>
     {
       checked {
-        Assert.Throws<OverflowException>(() => --value);
+        Assert.That(() => --value, Throws.TypeOf<OverflowException>());
       }
     }
   }

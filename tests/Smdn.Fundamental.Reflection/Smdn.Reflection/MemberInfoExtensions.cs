@@ -59,12 +59,12 @@ public class MemberInfoExtensionsTests {
   {
     var member = type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
 
-    Assert.Throws<InvalidOperationException>(() => member.GetAccessibility());
+    Assert.That(() => member.GetAccessibility(), Throws.InvalidOperationException);
   }
 
   [Test]
   public void GetAccessibility_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MemberInfo)null!).GetAccessibility());
+    => Assert.That(() => ((MemberInfo)null!).GetAccessibility(), Throws.ArgumentNullException);
 
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C1), null, null, false)]
   [TestCase(typeof(MemberInfoExtensionsTestTypes.C2), null, null, true)]
@@ -107,10 +107,10 @@ public class MemberInfoExtensionsTests {
   {
     var member = type.GetMember(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).First();
 
-    Assert.Throws<InvalidOperationException>(() => member.IsPrivateOrAssembly(), $"{type.FullName}.{member.Name}");
+    Assert.That(() => member.IsPrivateOrAssembly(), Throws.InvalidOperationException, $"{type.FullName}.{member.Name}");
   }
 
   [Test]
   public void IsPrivateOrAssembly_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MemberInfo)null!).IsPrivateOrAssembly());
+    => Assert.That(() => ((MemberInfo)null!).IsPrivateOrAssembly(), Throws.ArgumentNullException);
 }

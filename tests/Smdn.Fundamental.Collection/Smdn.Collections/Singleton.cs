@@ -62,14 +62,18 @@ namespace Smdn.Collections {
         Singleton.CreateList(42),
         new List<int> { 42 },
       }) {
-        var ex1 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list[1], Is.Zero));
+        Assert.That(
+          () => _ = list[1],
+          Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("index")
+        );
 
-        Assert.That(ex1!.ParamName, Is.EqualTo("index"));
         //Assert.AreEqual(1, ex1.ActualValue);
 
-        var ex2 = Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list[-1], Is.Zero));
+        Assert.That(
+          () => _ = list[-1],
+          Throws.TypeOf<ArgumentOutOfRangeException>().ParamName.EqualTo("index")
+        );
 
-        Assert.That(ex2!.ParamName, Is.EqualTo("index"));
         //Assert.AreEqual(-1, ex2.ActualValue);
       }
     }

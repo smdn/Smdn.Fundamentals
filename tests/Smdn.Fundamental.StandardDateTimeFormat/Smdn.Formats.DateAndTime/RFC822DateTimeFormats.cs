@@ -93,12 +93,12 @@ public partial class RFC822DateTimeFormatsTests {
    */
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat_Comprehensive))]
   public void ParseDateTime_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => RFC822DateTimeFormats.ParseDateTime(s));
+    => Assert.That(() => RFC822DateTimeFormats.ParseDateTime(s), Throws.TypeOf<FormatException>());
 
 #if SYSTEM_READONLYSPAN
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
   public void ParseDateTime_ReadOnlySpanOfChar_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => RFC822DateTimeFormats.ParseDateTime(s.AsSpan()));
+    => Assert.That(() => RFC822DateTimeFormats.ParseDateTime(s.AsSpan()), Throws.TypeOf<FormatException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
@@ -113,12 +113,12 @@ public partial class RFC822DateTimeFormatsTests {
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat_Comprehensive))]
   public void ParseDateTimeOffset_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => RFC822DateTimeFormats.ParseDateTimeOffset(s));
+    => Assert.That(() => RFC822DateTimeFormats.ParseDateTimeOffset(s), Throws.TypeOf<FormatException>());
 
 #if SYSTEM_READONLYSPAN
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
   public void ParseDateTimeOffset_ReadOnlySpanOfChar_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => RFC822DateTimeFormats.ParseDateTimeOffset(s.AsSpan()));
+    => Assert.That(() => RFC822DateTimeFormats.ParseDateTimeOffset(s.AsSpan()), Throws.TypeOf<FormatException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
@@ -133,7 +133,7 @@ public partial class RFC822DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTime_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => RFC822DateTimeFormats.ParseDateTime((string)null!));
+    => Assert.That(() => RFC822DateTimeFormats.ParseDateTime((string)null!), Throws.ArgumentNullException);
 
   [Test]
   public void TryParseDateTime_ArgumentNull()
@@ -141,7 +141,7 @@ public partial class RFC822DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTimeOffset_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => RFC822DateTimeFormats.ParseDateTimeOffset((string)null!));
+    => Assert.That(() => RFC822DateTimeFormats.ParseDateTimeOffset((string)null!), Throws.ArgumentNullException);
 
   [Test]
   public void TryParseDateTimeOffset_ArgumentNull()

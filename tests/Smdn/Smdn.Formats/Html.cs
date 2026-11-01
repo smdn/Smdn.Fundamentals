@@ -12,7 +12,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestToXhtmlEscapedString()
     {
-      Assert.Throws<ArgumentNullException>(() => Html.ToXhtmlEscapedString(null));
+      Assert.That(() => Html.ToXhtmlEscapedString(null), Throws.ArgumentNullException);
 
       Assert.That(Html.ToXhtmlEscapedString("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;&apos;#"));
     }
@@ -28,7 +28,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestToHtmlEscapedString()
     {
-      Assert.Throws<ArgumentNullException>(() => Html.ToHtmlEscapedString(null));
+      Assert.That(() => Html.ToHtmlEscapedString(null), Throws.ArgumentNullException);
 
       Assert.That(Html.ToHtmlEscapedString("<>&\"\'#"), Is.EqualTo("&lt;&gt;&amp;&quot;'#"));
     }
@@ -44,7 +44,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromXhtmlEscapedString()
     {
-      Assert.Throws<ArgumentNullException>(() => Html.FromXhtmlEscapedString(null));
+      Assert.That(() => Html.FromXhtmlEscapedString(null), Throws.ArgumentNullException);
 
       Assert.That(Html.FromXhtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"\'#"));
     }
@@ -60,7 +60,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromHtmlEscapedString()
     {
-      Assert.Throws<ArgumentNullException>(() => Html.FromHtmlEscapedString(null));
+      Assert.That(() => Html.FromHtmlEscapedString(null), Throws.ArgumentNullException);
 
       Assert.That(Html.FromHtmlEscapedString("&lt;&gt;&amp;&quot;&apos;#"), Is.EqualTo("<>&\"&apos;#"));
     }
@@ -76,7 +76,7 @@ namespace Smdn.Formats {
     [Test]
     public void TestFromNumericCharacterReference()
     {
-      Assert.Throws<ArgumentNullException>(() => Html.FromNumericCharacterReference(null));
+      Assert.That(() => Html.FromNumericCharacterReference(null), Throws.ArgumentNullException);
 
       Assert.That(Html.FromNumericCharacterReference("&#931;"), Is.EqualTo("Σ"));
       Assert.That(Html.FromNumericCharacterReference("&#0931;"), Is.EqualTo("Σ"));

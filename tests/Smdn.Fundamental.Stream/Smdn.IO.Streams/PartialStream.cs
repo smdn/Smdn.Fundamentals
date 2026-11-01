@@ -24,7 +24,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.LeaveInnerStreamOpen, Is.True);
       }
 
-      Assert.DoesNotThrow(() => inner.ReadByte());
+      Assert.That(() => inner.ReadByte(), Throws.Nothing);
     }
 
     [Test]
@@ -37,7 +37,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.LeaveInnerStreamOpen, Is.False);
       }
 
-      Assert.Throws<ObjectDisposedException>(() => inner.ReadByte());
+      Assert.That(() => inner.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -54,9 +54,9 @@ namespace Smdn.IO.Streams {
 
       Assert.That(stream.CanWrite, Is.False);
 
-      Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
-      Assert.Throws<NotSupportedException>(() => stream.WriteAsync(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4));
-      Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x00));
+      Assert.That(() => stream.Write(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => stream.WriteAsync(new byte[] {0x00, 0x01, 0x02, 0x03}, 0, 4), Throws.TypeOf<NotSupportedException>());
+      Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<NotSupportedException>());
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       Assert.That(
         async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty),
@@ -67,7 +67,7 @@ namespace Smdn.IO.Streams {
       var len = stream.Length;
       var pos = stream.Position;
 
-      Assert.DoesNotThrow(() => stream.Flush());
+      Assert.That(() => stream.Flush(), Throws.Nothing);
 
       Assert.That(stream.Length, Is.EqualTo(len));
       Assert.That(stream.Position, Is.EqualTo(pos));
@@ -163,18 +163,18 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.CanSeek, Is.False, "CanSeek");
       Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-      Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0));
-      Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
+      Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(() => _ = stream.Read(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(() => stream.ReadAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>());
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
       Assert.That(
         async () => _ = await stream.ReadAsync(Memory<byte>.Empty),
         Throws.TypeOf<ObjectDisposedException>()
       );
 #endif
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
-      Assert.Throws<ObjectDisposedException>(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0));
-      Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0));
+      Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(() => stream.Write(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(() => stream.WriteAsync(ArrayEmptyShim.Empty<byte>(), 0, 0), Throws.TypeOf<ObjectDisposedException>());
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
       Assert.That(
         async () => await stream.WriteAsync(ReadOnlyMemory<byte>.Empty),
@@ -387,7 +387,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
 
-      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
+      Assert.That(
+        () => _ = stream.Read(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
     [TestCaseSource(
@@ -403,7 +406,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
 
-      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+      Assert.That(
+        () => stream.ReadAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
     [Test]
@@ -491,7 +497,7 @@ namespace Smdn.IO.Streams {
 
         Assert.That(stream.Position, Is.EqualTo(4));
 
-        Assert.Throws<IOException>(() => stream.WriteByte(0x06));
+        Assert.That(() => stream.WriteByte(0x06), Throws.TypeOf<IOException>());
 
         Assert.That(stream.Position, Is.EqualTo(4));
       }
@@ -557,7 +563,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.Position, Is.EqualTo(6));
 
         // cannot expand MemoryStream
-        Assert.Throws<NotSupportedException>(() => stream.WriteByte(0x08));
+        Assert.That(() => stream.WriteByte(0x08), Throws.TypeOf<NotSupportedException>());
 
         Assert.That(stream.Position, Is.EqualTo(6));
       }
@@ -579,7 +585,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
 
-      Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count));
+      Assert.That(
+        () => stream.Write(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
     [TestCaseSource(
@@ -595,7 +604,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new PartialStream(new MemoryStream(new byte[8]), 2, 4);
 
-      Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count));
+      Assert.That(
+        () => stream.WriteAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
     [Test]
@@ -615,7 +627,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(14L));
 
       // before start of stream
-      Assert.Throws<IOException>(() => stream.Seek(-1, SeekOrigin.Begin));
+      Assert.That(() => stream.Seek(-1, SeekOrigin.Begin), Throws.TypeOf<IOException>());
 
       Assert.That(stream.Position, Is.EqualTo(10L));
       Assert.That(stream.InnerStream.Position, Is.EqualTo(14L));
@@ -638,7 +650,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(14L));
 
       // before start of stream
-      Assert.Throws<IOException>(() => stream.Seek(-12, SeekOrigin.Current));
+      Assert.That(() => stream.Seek(-12, SeekOrigin.Current), Throws.TypeOf<IOException>());
 
       Assert.That(stream.Position, Is.EqualTo(10L));
       Assert.That(stream.InnerStream.Position, Is.EqualTo(14L));
@@ -663,7 +675,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(14L));
 
       // before start of stream
-      Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -2);
+      Assert.That(() => stream.Position = -2, Throws.TypeOf<ArgumentOutOfRangeException>());
 
       Assert.That(stream.Position, Is.EqualTo(10L));
       Assert.That(stream.InnerStream.Position, Is.EqualTo(14L));
@@ -686,7 +698,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(12L));
 
       // before start of stream
-      Assert.Throws<IOException>(() => stream.Seek(-5, SeekOrigin.End));
+      Assert.That(() => stream.Seek(-5, SeekOrigin.End), Throws.TypeOf<IOException>());
 
       Assert.That(stream.Position, Is.EqualTo(8L));
       Assert.That(stream.InnerStream.Position, Is.EqualTo(12L));
@@ -709,7 +721,7 @@ namespace Smdn.IO.Streams {
       Assert.That(stream.InnerStream.Position, Is.EqualTo(12L));
 
       // before start of stream
-      Assert.Throws<IOException>(() => stream.Seek(-5, SeekOrigin.End));
+      Assert.That(() => stream.Seek(-5, SeekOrigin.End), Throws.TypeOf<IOException>());
 
       Assert.That(stream.Position, Is.EqualTo(8L));
       Assert.That(stream.InnerStream.Position, Is.EqualTo(12L));

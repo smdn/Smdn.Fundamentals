@@ -19,8 +19,8 @@ namespace Smdn.Text {
       Assert.That(StringConversion.ToEnum<DayOfWeek>("sUndaY", true), Is.EqualTo(DayOfWeek.Sunday));
       Assert.That(StringConversion.ToEnumIgnoreCase<DayOfWeek>("sUndaY"), Is.EqualTo(DayOfWeek.Sunday));
 
-      Assert.Throws<ArgumentException>(() => StringConversion.ToEnum<DayOfWeek>("sUndaY"), "#1");
-      Assert.Throws<ArgumentException>(() => StringConversion.ToEnum<DayOfWeek>("sUndaY", false), "#2");
+      Assert.That(() => StringConversion.ToEnum<DayOfWeek>("sUndaY"), Throws.ArgumentException, "#1");
+      Assert.That(() => StringConversion.ToEnum<DayOfWeek>("sUndaY", false), Throws.ArgumentException, "#2");
     }
   }
 }

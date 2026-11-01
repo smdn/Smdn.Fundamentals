@@ -144,9 +144,10 @@ namespace Smdn {
     {
       PhysicalAddress? node = null;
 
-      Assert.Throws<ArgumentNullException>(() => {
-        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node!);
-      });
+      Assert.That(
+        () => Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node!),
+        Throws.ArgumentNullException
+      );
     }
 
     [TestCaseSource(nameof(YieldInvalidLengthOfPhysicalAddressBytes))]
@@ -154,9 +155,10 @@ namespace Smdn {
     {
       var node = new PhysicalAddress(address);
 
-      Assert.Throws<ArgumentException>(() => {
-        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
-      });
+      Assert.That(
+        () => Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node),
+        Throws.ArgumentException
+      );
     }
 #endif
 
@@ -172,44 +174,44 @@ namespace Smdn {
     {
       byte[]? node = null;
 
-      Assert.Throws<ArgumentNullException>(() => {
-        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node!);
-      });
+      Assert.That(
+        () => Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node!),
+        Throws.ArgumentNullException
+      );
     }
 
     [TestCaseSource(nameof(YieldInvalidLengthOfPhysicalAddressBytes))]
     public void TestCreateTimeBased3_NodeInvalidLength_Bytes(byte[] node)
-    {
-      Assert.Throws<ArgumentException>(() => {
-        Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node);
-      });
-    }
+      => Assert.That(
+        () => Uuid.CreateTimeBased(new DateTime(2009, 3, 4, 1, 3, 25, DateTimeKind.Utc), 0, node),
+        Throws.ArgumentException
+      );
 
     [Test]
     public void TestCreateNameBased_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null!, UuidVersion.NameBasedMD5Hash), "#1");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(url: null!, UuidVersion.NameBasedSHA1Hash), "#2");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#3");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (string)null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#4");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), "#5");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBased(name: (byte[])null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), "#6");
+      Assert.That(() => Uuid.CreateNameBased(url: null!, UuidVersion.NameBasedMD5Hash), Throws.ArgumentNullException, "#1");
+      Assert.That(() => Uuid.CreateNameBased(url: null!, UuidVersion.NameBasedSHA1Hash), Throws.ArgumentNullException, "#2");
+      Assert.That(() => Uuid.CreateNameBased(name: (string)null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), Throws.ArgumentNullException, "#3");
+      Assert.That(() => Uuid.CreateNameBased(name: (string)null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), Throws.ArgumentNullException, "#4");
+      Assert.That(() => Uuid.CreateNameBased(name: (byte[])null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedMD5Hash), Throws.ArgumentNullException, "#5");
+      Assert.That(() => Uuid.CreateNameBased(name: (byte[])null!, Uuid.Namespace.RFC4122Url, UuidVersion.NameBasedSHA1Hash), Throws.ArgumentNullException, "#6");
     }
 
     [Test]
     public void TestCreateNameBasedMD5_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null!), "#1");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null!, Uuid.Namespace.RFC4122Url), "#2");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null!, Uuid.Namespace.RFC4122Url), "#3");
+      Assert.That(() => Uuid.CreateNameBasedMD5(url: null!), Throws.ArgumentNullException, "#1");
+      Assert.That(() => Uuid.CreateNameBasedMD5(name: (string)null!, Uuid.Namespace.RFC4122Url), Throws.ArgumentNullException, "#2");
+      Assert.That(() => Uuid.CreateNameBasedMD5(name: (byte[])null!, Uuid.Namespace.RFC4122Url), Throws.ArgumentNullException, "#3");
     }
 
     [Test]
     public void TestCreateNameBasedSHA1_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(url: null!), "#1");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (string)null!, Uuid.Namespace.RFC4122Url), "#2");
-      Assert.Throws<ArgumentNullException>(() => Uuid.CreateNameBasedMD5(name: (byte[])null!, Uuid.Namespace.RFC4122Url), "#3");
+      Assert.That(() => Uuid.CreateNameBasedMD5(url: null!), Throws.ArgumentNullException, "#1");
+      Assert.That(() => Uuid.CreateNameBasedMD5(name: (string)null!, Uuid.Namespace.RFC4122Url), Throws.ArgumentNullException, "#2");
+      Assert.That(() => Uuid.CreateNameBasedMD5(name: (byte[])null!, Uuid.Namespace.RFC4122Url), Throws.ArgumentNullException, "#3");
     }
 
     [TestCase("www.widgets.com", Uuid.Namespace.RFC4122Dns, "3d813cbb-47fb-32ba-91df-831e1593ac29")]
@@ -313,10 +315,10 @@ namespace Smdn {
 
       Assert.That(buffer, Is.EqualTo(new[] {0xcc, 0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc}).AsCollection);
 
-      Assert.Throws<ArgumentNullException>(() => Uuid.RFC4122NamespaceDns.GetBytes(null!, 0));
-      Assert.Throws<ArgumentOutOfRangeException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], -1));
-      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0));
-      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1));
+      Assert.That(() => Uuid.RFC4122NamespaceDns.GetBytes(null!, 0), Throws.ArgumentNullException);
+      Assert.That(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[15], 0), Throws.ArgumentException);
+      Assert.That(() => Uuid.RFC4122NamespaceDns.GetBytes(new byte[16], 1), Throws.ArgumentException);
     }
 
     [Test]
@@ -331,19 +333,28 @@ namespace Smdn {
         0xcc
       };
 
-      Assert.DoesNotThrow(() => Uuid.RFC4122NamespaceDns.WriteBytes(buffer.AsSpan(1), asBigEndian: true));
+      Assert.That(
+        () => Uuid.RFC4122NamespaceDns.WriteBytes(buffer.AsSpan(1), asBigEndian: true),
+        Throws.Nothing
+      );
       Assert.That(
         buffer, Is.EqualTo(new byte[] {0xcc, 0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xcc}).AsCollection,
         "#1"
       );
 
-      Assert.DoesNotThrow(() => Uuid.RFC4122NamespaceDns.WriteBytes(buffer, asBigEndian: true));
+      Assert.That(
+        () => Uuid.RFC4122NamespaceDns.WriteBytes(buffer, asBigEndian: true),
+        Throws.Nothing
+      );
       Assert.That(
         buffer, Is.EqualTo(new byte[] {0x6b, 0xa7, 0xb8, 0x10, 0x9d, 0xad, 0x11, 0xd1, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xc8, 0xcc}).AsCollection,
         "#2"
       );
 
-      Assert.DoesNotThrow(() => Uuid.RFC4122NamespaceDns.WriteBytes(buffer, asBigEndian: false));
+      Assert.That(
+        () => Uuid.RFC4122NamespaceDns.WriteBytes(buffer, asBigEndian: false),
+        Throws.Nothing
+      );
       Assert.That(
         buffer, Is.EqualTo(new byte[] {0x10, 0xb8, 0xa7, 0x6b, 0xad, 0x9d, 0xd1, 0x11, 0x80, 0xb4, 0x00, 0xc0, 0x4f, 0xd4, 0x30, 0xc8, 0xc8, 0xcc}).AsCollection,
         "#3"
@@ -384,9 +395,9 @@ namespace Smdn {
     [Test]
     public void TestWriteBytes_DestinationTooShort()
     {
-      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[15], asBigEndian: true), "#1");
-      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[15], asBigEndian: false), "#2");
-      Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[0], asBigEndian: false), "#3");
+      Assert.That(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[15], asBigEndian: true), Throws.ArgumentException, "#1");
+      Assert.That(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[15], asBigEndian: false), Throws.ArgumentException, "#2");
+      Assert.That(() => Uuid.RFC4122NamespaceDns.WriteBytes(new byte[0], asBigEndian: false), Throws.ArgumentException, "#3");
     }
 
     [Test]

@@ -35,9 +35,9 @@ partial class NodeTests {
 #pragma warning disable CA1305
     var node = Node.CreateRandom();
 
-    Assert.Throws<FormatException>(() => node.ToString("n"));
-    Assert.Throws<FormatException>(() => node.ToString("xx"));
-    Assert.Throws<FormatException>(() => node.ToString("XX"));
+    Assert.That(() => node.ToString("n"), Throws.TypeOf<FormatException>());
+    Assert.That(() => node.ToString("xx"), Throws.TypeOf<FormatException>());
+    Assert.That(() => node.ToString("XX"), Throws.TypeOf<FormatException>());
 #pragma warning restore CA1305
   }
 

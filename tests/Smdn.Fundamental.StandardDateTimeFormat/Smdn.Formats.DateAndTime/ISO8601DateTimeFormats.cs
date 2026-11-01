@@ -96,12 +96,12 @@ public partial class ISO8601DateTimeFormatsTests {
    */
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat_Comprehensive))]
   public void ParseDateTime_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTime(s));
+    => Assert.That(() => ISO8601DateTimeFormats.ParseDateTime(s), Throws.TypeOf<FormatException>());
 
 #if SYSTEM_READONLYSPAN
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
   public void ParseDateTime_ReadOnlySpanOfChar_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTime(s.AsSpan()));
+    => Assert.That(() => ISO8601DateTimeFormats.ParseDateTime(s.AsSpan()), Throws.TypeOf<FormatException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
@@ -116,12 +116,12 @@ public partial class ISO8601DateTimeFormatsTests {
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat_Comprehensive))]
   public void ParseDateTimeOffset_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset(s));
+    => Assert.That(() => ISO8601DateTimeFormats.ParseDateTimeOffset(s), Throws.TypeOf<FormatException>());
 
 #if SYSTEM_READONLYSPAN
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
   public void ParseDateTimeOffset_ReadOnlySpanOfChar_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset(s.AsSpan()));
+    => Assert.That(() => ISO8601DateTimeFormats.ParseDateTimeOffset(s.AsSpan()), Throws.TypeOf<FormatException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
@@ -136,7 +136,7 @@ public partial class ISO8601DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTime_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTime((string)null!));
+    => Assert.That(() => ISO8601DateTimeFormats.ParseDateTime((string)null!), Throws.ArgumentNullException);
 
   [Test]
   public void TryParseDateTime_ArgumentNull()
@@ -144,7 +144,7 @@ public partial class ISO8601DateTimeFormatsTests {
 
   [Test]
   public void ParseDateTimeOffset_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ISO8601DateTimeFormats.ParseDateTimeOffset((string)null!));
+    => Assert.That(() => ISO8601DateTimeFormats.ParseDateTimeOffset((string)null!), Throws.ArgumentNullException);
 
   [Test]
   public void TryParseDateTimeOffset_ArgumentNull()

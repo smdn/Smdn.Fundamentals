@@ -24,7 +24,7 @@ partial class UuidTests {
     Assert.That(Uuid.Nil.ToString("P", null), Is.EqualTo("(00000000-0000-0000-0000-000000000000)"));
     Assert.That(Uuid.Nil.ToString("X", null), Is.EqualTo("{0x00000000,0x0000,0x0000,{0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00}}"));
 
-    Assert.Throws<FormatException>(() => Uuid.Nil.ToString("Z", null));
+    Assert.That(() => Uuid.Nil.ToString("Z", null), Throws.TypeOf<FormatException>());
   }
 
   private static System.Collections.IEnumerable YieldTestCases_Format()
@@ -124,7 +124,7 @@ partial class UuidTests {
   [TestCase("x")]
   public void TestToString_InvalidFormat(string format)
 #pragma warning disable CA1305
-    => Assert.Throws<FormatException>(() => Uuid.Nil.ToString(format));
+    => Assert.That(() => Uuid.Nil.ToString(format), Throws.TypeOf<FormatException>());
 #pragma warning restore CA1305
 
   [TestCase("Q")]

@@ -97,8 +97,8 @@ partial class NodeTests {
     Assert.That(0 > Node.Parse("00:00:00:00:00:00").CompareTo((object)Node.Parse("00:00:00:00:00:01")), "#2");
     Assert.That(0 < Node.Parse("00:00:00:00:00:00").CompareTo(null), "#3");
 
-    Assert.Throws<ArgumentException>(() => Node.Parse("00:00:00:00:00:00").CompareTo("00:00:00:00:00:00"), "#4");
-    Assert.Throws<ArgumentException>(() => Node.Parse("00:00:00:00:00:00").CompareTo(0), "#5");
+    Assert.That(() => Node.Parse("00:00:00:00:00:00").CompareTo("00:00:00:00:00:00"), Throws.ArgumentException, "#4");
+    Assert.That(() => Node.Parse("00:00:00:00:00:00").CompareTo(0), Throws.ArgumentException, "#5");
 #pragma warning restore CA1305
   }
 }

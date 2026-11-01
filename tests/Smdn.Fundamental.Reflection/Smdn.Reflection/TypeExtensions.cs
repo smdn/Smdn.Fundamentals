@@ -20,7 +20,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void IsDelegate_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsDelegate());
+    => Assert.That(() => ((Type)null!).IsDelegate(), Throws.ArgumentNullException);
 
   [TestCase(typeof(D), true)]
   [TestCase(typeof(Guid), false)]
@@ -31,7 +31,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void IsConcreteDelegate_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsConcreteDelegate());
+    => Assert.That(() => ((Type)null!).IsConcreteDelegate(), Throws.ArgumentNullException);
 
   enum E1 { }
   [Flags] enum E2 { }
@@ -45,7 +45,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void IsEnumFlags_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsEnumFlags());
+    => Assert.That(() => ((Type)null!).IsEnumFlags(), Throws.ArgumentNullException);
 
   struct SReadOnly1 {}
   readonly struct SReadOnly2 { }
@@ -57,7 +57,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void IsReadOnlyValueType_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsReadOnlyValueType());
+    => Assert.That(() => ((Type)null!).IsReadOnlyValueType(), Throws.ArgumentNullException);
 
   struct SByRefLike1 { }
   ref struct SByRefLike2 { }
@@ -69,7 +69,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void IsByRefLikeValueType_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsByRefLikeValueType());
+    => Assert.That(() => ((Type)null!).IsByRefLikeValueType(), Throws.ArgumentNullException);
 
   [TestCase(typeof(Action), new Type[] { }, typeof(void))]
   [TestCase(typeof(Action<int>), new[] { typeof(int) }, typeof(void))]
@@ -84,7 +84,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void GetDelegateSignatureMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).GetDelegateSignatureMethod());
+    => Assert.That(() => ((Type)null!).GetDelegateSignatureMethod(), Throws.ArgumentNullException);
 
   struct STest1 {}
 
@@ -114,7 +114,7 @@ public partial class TypeExtensionsTests {
 
   [Test]
   public void GetExplicitBaseTypeAndInterfaces_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).GetExplicitBaseTypeAndInterfaces());
+    => Assert.That(() => ((Type)null!).GetExplicitBaseTypeAndInterfaces(), Throws.ArgumentNullException);
 
   [TestCase(typeof(int), new[] { "System" })]
   [TestCase(typeof(int*), new[] { "System" })]
@@ -189,9 +189,9 @@ public partial class TypeExtensionsTests {
   {
     Type t = null!;
 
-    Assert.Throws<ArgumentNullException>(() => t.GetNamespaces());
-    Assert.Throws<ArgumentNullException>(() => t.GetNamespaces(static ty => true));
-    Assert.Throws<ArgumentNullException>(() => typeof(object).GetNamespaces(isLanguagePrimitive: null!));
+    Assert.That(() => t.GetNamespaces(), Throws.ArgumentNullException);
+    Assert.That(() => t.GetNamespaces(static ty => true), Throws.ArgumentNullException);
+    Assert.That(() => typeof(object).GetNamespaces(isLanguagePrimitive: null!), Throws.ArgumentNullException);
   }
 
   [TestCase(typeof(List<>), "List")]
@@ -208,9 +208,9 @@ public partial class TypeExtensionsTests {
   [TestCase(typeof(int))]
   [TestCase(typeof(System.Collections.IList))]
   public void GetGenericTypeName_NonGenericTypes(Type type)
-    => Assert.Throws<ArgumentException>(() => type.GetGenericTypeName());
+    => Assert.That(() => type.GetGenericTypeName(), Throws.ArgumentException);
 
   [Test]
   public void GetGenericTypeName_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).GetGenericTypeName());
+    => Assert.That(() => ((Type)null!).GetGenericTypeName(), Throws.ArgumentNullException);
 }

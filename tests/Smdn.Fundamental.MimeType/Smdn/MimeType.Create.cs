@@ -12,11 +12,11 @@ partial class MimeTypeTests {
     if (expectedExceptionType is null) {
       MimeType? mimeType = default;
 
-      Assert.DoesNotThrow(() => mimeType = create());
+      Assert.That(() => mimeType = create(), Throws.Nothing);
       Assert.That(mimeType, Is.EqualTo(new MimeType(expectedMimeType!)));
     }
     else {
-      Assert.Throws(expectedExceptionType, () => create());
+      Assert.That(() => _ = create(), Throws.TypeOf(expectedExceptionType));
     }
   }
 

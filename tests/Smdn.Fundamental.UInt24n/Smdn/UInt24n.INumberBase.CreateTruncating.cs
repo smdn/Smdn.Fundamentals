@@ -330,8 +330,8 @@ partial class UInt24Tests {
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(BigInteger.Zero), "BigInteger");
-    Assert.Throws<NotSupportedException>(() => UInt24.CreateTruncating(Complex.Zero), "Complex");
+    Assert.That(() => UInt24.CreateTruncating(BigInteger.Zero), Throws.TypeOf<NotSupportedException>(), "BigInteger");
+    Assert.That(() => UInt24.CreateTruncating(Complex.Zero), Throws.TypeOf<NotSupportedException>(), "Complex");
   }
 }
 
@@ -339,8 +339,8 @@ partial class UInt48Tests {
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(BigInteger.Zero), "BigInteger");
-    Assert.Throws<NotSupportedException>(() => UInt48.CreateTruncating(Complex.Zero), "Complex");
+    Assert.That(() => UInt48.CreateTruncating(BigInteger.Zero), Throws.TypeOf<NotSupportedException>(), "BigInteger");
+    Assert.That(() => UInt48.CreateTruncating(Complex.Zero), Throws.TypeOf<NotSupportedException>(), "Complex");
   }
 }
 
@@ -348,11 +348,11 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_CreateTruncating_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => CreateTruncating<UInt24, Complex>());
-    Assert.Throws<NotSupportedException>(() => CreateTruncating<UInt48, Complex>());
+    Assert.That(() => CreateTruncating<UInt24, Complex>(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(() => CreateTruncating<UInt48, Complex>(), Throws.TypeOf<NotSupportedException>());
 
-    Assert.Throws<NotSupportedException>(() => CreateTruncating<UInt24, BigInteger>());
-    Assert.Throws<NotSupportedException>(() => CreateTruncating<UInt48, BigInteger>());
+    Assert.That(() => CreateTruncating<UInt24, BigInteger>(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(() => CreateTruncating<UInt48, BigInteger>(), Throws.TypeOf<NotSupportedException>());
 
     static TUInt24n CreateTruncating<TUInt24n, TOther>() where TUInt24n : INumberBase<TUInt24n> where TOther : INumberBase<TOther>
       => TUInt24n.CreateTruncating(TOther.Zero);

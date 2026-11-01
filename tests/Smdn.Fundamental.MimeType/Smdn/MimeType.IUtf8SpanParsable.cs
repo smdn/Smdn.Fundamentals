@@ -46,8 +46,14 @@ partial class MimeTypeTests {
       return;
     }
 
-    Assert.Throws(expectedExceptionType, () => MimeType.Parse(Encoding.UTF8.GetBytes(s).AsSpan(), provider: null));
-    Assert.Throws(expectedExceptionType, () => Parse<MimeType>(Encoding.UTF8.GetBytes(s).AsSpan()));
+    Assert.That(
+      () => MimeType.Parse(Encoding.UTF8.GetBytes(s).AsSpan(), provider: null),
+      Throws.TypeOf(expectedExceptionType)
+    );
+    Assert.That(
+      () => Parse<MimeType>(Encoding.UTF8.GetBytes(s).AsSpan()),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
     static TSelf Parse<TSelf>(ReadOnlySpan<byte> utf8Text) where TSelf : IUtf8SpanParsable<TSelf>
       => TSelf.Parse(utf8Text, provider: null);

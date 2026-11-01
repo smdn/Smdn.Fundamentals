@@ -178,7 +178,7 @@ public partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsOverride_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsOverride());
+    => Assert.That(() => ((MethodInfo)null!).IsOverride(), Throws.ArgumentNullException);
 
   // cspell:ignore reoverride
   class CReoverride : COverride {
@@ -291,8 +291,7 @@ public partial class MethodInfoExtensionsTests {
       () => ((MethodInfo)null!).GetImmediateOverriddenMethod(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("m")
     );
 
@@ -353,7 +352,7 @@ public partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsDelegateSignatureMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsDelegateSignatureMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsDelegateSignatureMethod(), Throws.ArgumentNullException);
 
   // ref: https://learn.microsoft.com/ja-jp/dotnet/csharp/language-reference/proposals/csharp-8.0/readonly-instance-members
   struct SReadOnlyMethod {
@@ -373,7 +372,7 @@ public partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsReadOnly_Method_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsReadOnly());
+    => Assert.That(() => ((MethodInfo)null!).IsReadOnly(), Throws.ArgumentNullException);
 
   class CAsyncStateMachine {
     public virtual void M() => throw new NotImplementedException();
@@ -433,8 +432,7 @@ public partial class MethodInfoExtensionsTests {
       () => ((MethodInfo)null!).IsAsyncStateMachine(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("m")
     );
 }

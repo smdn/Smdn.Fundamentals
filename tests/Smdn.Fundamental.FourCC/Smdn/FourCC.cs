@@ -42,7 +42,7 @@ namespace Smdn {
       Assert.That((new FourCC("isom")).ToString(), Is.EqualTo("isom"));
       Assert.That((new FourCC("isomx")).ToString(), Is.EqualTo("isom"));
 
-      Assert.Throws<OverflowException>(() => new FourCC("ああああ"));
+      Assert.That(() => new FourCC("ああああ"), Throws.TypeOf<OverflowException>());
     }
 
     [Test]
@@ -51,7 +51,7 @@ namespace Smdn {
       Assert.That((new FourCC('R', 'I', 'F', 'F')).ToString(), Is.EqualTo("RIFF"));
       Assert.That((new FourCC('i', 's', 'o', 'm')).ToString(), Is.EqualTo("isom"));
 
-      Assert.Throws<OverflowException>(() => new FourCC('あ', 'あ', 'あ', 'あ'));
+      Assert.That(() => new FourCC('あ', 'あ', 'あ', 'あ'), Throws.TypeOf<OverflowException>());
     }
 
     [Test]
@@ -132,7 +132,7 @@ namespace Smdn {
     {
       var fourcc = new FourCC("RIFF");
 
-      Assert.Throws<ArgumentNullException>(() => fourcc.GetBytes(null, 0));
+      Assert.That(() => fourcc.GetBytes(null, 0), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -140,7 +140,7 @@ namespace Smdn {
     {
       var fourcc = new FourCC("RIFF");
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => fourcc.GetBytes(new byte[3], -1));
+      Assert.That(() => fourcc.GetBytes(new byte[3], -1), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -148,8 +148,8 @@ namespace Smdn {
     {
       var fourcc = new FourCC("RIFF");
 
-      Assert.Throws<ArgumentException>(() => fourcc.GetBytes(new byte[4], 1), "#1");
-      Assert.Throws<ArgumentException>(() => fourcc.GetBytes(new byte[3], 0), "#2");
+      Assert.That(() => fourcc.GetBytes(new byte[4], 1), Throws.ArgumentException, "#1");
+      Assert.That(() => fourcc.GetBytes(new byte[3], 0), Throws.ArgumentException, "#2");
     }
 
     [Test]

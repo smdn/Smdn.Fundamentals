@@ -38,7 +38,7 @@ namespace Smdn.Xml.Xhtml {
     [Test]
     public void DecodeNumericCharacterReference()
     {
-      Assert.Throws<ArgumentNullException>(() => HtmlConvert.DecodeNumericCharacterReference(null));
+      Assert.That(() => HtmlConvert.DecodeNumericCharacterReference(null), Throws.ArgumentNullException);
 
       Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#931;"), Is.EqualTo("Σ"));
       Assert.That(HtmlConvert.DecodeNumericCharacterReference("&#0931;"), Is.EqualTo("Σ"));

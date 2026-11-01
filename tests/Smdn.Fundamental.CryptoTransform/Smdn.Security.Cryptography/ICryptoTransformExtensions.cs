@@ -60,7 +60,10 @@ public class ICryptoTransformExtensionsTests {
 
   [TestCaseSource(nameof(YieldTestCases_TransformBytes_ArgumentException))]
   public void TransformBytes_ArgumentException(Type expectedExceptionType, ICryptoTransform transform, byte[] input, int offset, int count)
-    => Assert.Throws(expectedExceptionType, () => ICryptoTransformExtensions.TransformBytes(transform, input, offset, count));
+    => Assert.That(
+      () => ICryptoTransformExtensions.TransformBytes(transform, input, offset, count),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
   private byte[] TransformByCryptoStream(HashAlgorithm algorithm, byte[] bytes)
   {

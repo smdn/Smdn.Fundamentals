@@ -67,20 +67,20 @@ public partial class LineOrientedStreamTests {
 
     var buffer = new byte[8];
 
-    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Position, Is.Zero));
-    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Length, Is.EqualTo(8)));
-    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.BufferSize, Is.EqualTo(8)));
-    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.InnerStream, Is.Not.Null));
-    Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.NewLine.IsEmpty, Is.False));
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadLine());
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadLine(keepEOL: true));
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync());
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadLineAsync(keepEOL: true));
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
-    Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(buffer, 0, 8));
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(buffer, 0, 8));
+    Assert.That(() => Assert.That(stream.Position, Is.Zero), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => Assert.That(stream.Length, Is.EqualTo(8)), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => Assert.That(stream.BufferSize, Is.EqualTo(8)), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => Assert.That(stream.InnerStream, Is.Not.Null), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => Assert.That(stream.NewLine.IsEmpty, Is.False), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadLine(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadLine(keepEOL: true), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadLineAsync(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadLineAsync(keepEOL: true), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => _ = stream.Read(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadAsync(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
 #if SYSTEM_IO_STREAM_READ_SPAN_OF_BYTE
-    Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(Span<byte>.Empty));
+    Assert.That(() => _ = stream.Read(Span<byte>.Empty), Throws.TypeOf<ObjectDisposedException>());
 #endif
 #if SYSTEM_IO_STREAM_READASYNC_MEMORY_OF_BYTE
     Assert.That(
@@ -88,15 +88,15 @@ public partial class LineOrientedStreamTests {
       Throws.TypeOf<ObjectDisposedException>()
     );
 #endif
-    Assert.Throws<ObjectDisposedException>(() => stream.Read(Stream.Null, 8));
-    Assert.Throws<ObjectDisposedException>(() => stream.ReadAsync(Stream.Null, 8));
-    Assert.Throws<ObjectDisposedException>(() => stream.Flush());
-    Assert.Throws<ObjectDisposedException>(() => stream.FlushAsync());
-    Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
-    Assert.Throws<ObjectDisposedException>(() => stream.Write(buffer, 0, 8));
-    Assert.Throws<ObjectDisposedException>(() => stream.WriteAsync(buffer, 0, 8));
+    Assert.That(() => stream.Read(Stream.Null, 8), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.ReadAsync(Stream.Null, 8), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.Flush(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.FlushAsync(), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.Write(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.WriteAsync(buffer, 0, 8), Throws.TypeOf<ObjectDisposedException>());
 #if SYSTEM_IO_STREAM_WRITE_READONLYSPAN_OF_BYTE
-    Assert.Throws<ObjectDisposedException>(() => stream.Write(Span<byte>.Empty));
+    Assert.That(() => stream.Write(Span<byte>.Empty), Throws.TypeOf<ObjectDisposedException>());
 #endif
 #if SYSTEM_IO_STREAM_WRITEASYNC_READONLYMEMORY_OF_BYTE
     Assert.That(
@@ -104,20 +104,20 @@ public partial class LineOrientedStreamTests {
       Throws.TypeOf<ObjectDisposedException>()
     );
 #endif
-    Assert.Throws<ObjectDisposedException>(() => stream.CopyTo(Stream.Null));
-    Assert.Throws<ObjectDisposedException>(() => stream.CopyTo(Stream.Null, bufferSize: 1024));
-    Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null));
-    Assert.Throws<ObjectDisposedException>(() => stream.CopyToAsync(Stream.Null, bufferSize: 1024));
+    Assert.That(() => stream.CopyTo(Stream.Null), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.CopyTo(Stream.Null, bufferSize: 1024), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.CopyToAsync(Stream.Null), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => stream.CopyToAsync(Stream.Null, bufferSize: 1024), Throws.TypeOf<ObjectDisposedException>());
 
-    Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() multiple time");
+    Assert.That(() => stream.Dispose(), Throws.Nothing, "Dispose() multiple time");
 
     if (leaveStreamOpen) {
-      Assert.DoesNotThrow(() => baseStream.ReadByte(), "Read, base stream");
-      Assert.DoesNotThrow(() => baseStream.WriteByte(0x00), "Write, base stream");
+      Assert.That(() => baseStream.ReadByte(), Throws.Nothing, "Read, base stream");
+      Assert.That(() => baseStream.WriteByte(0x00), Throws.Nothing, "Write, base stream");
     }
     else {
-      Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte(), "Read, base stream");
-      Assert.Throws<ObjectDisposedException>(() => baseStream.WriteByte(0x00), "Write, base stream");
+      Assert.That(() => baseStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>(), "Read, base stream");
+      Assert.That(() => baseStream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>(), "Write, base stream");
     }
   }
 }

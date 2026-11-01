@@ -74,9 +74,9 @@ namespace Smdn.Formats {
         }
 
         if (leaveStreamOpen)
-          Assert.DoesNotThrow(() => stream.WriteByte(0));
+          Assert.That(() => stream.WriteByte(0), Throws.Nothing);
         else
-          Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0));
+          Assert.That(() => stream.WriteByte(0), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -89,9 +89,9 @@ namespace Smdn.Formats {
         }
 
         if (leaveStreamOpen)
-          Assert.DoesNotThrow(() => stream.ReadByte());
+          Assert.That(() => stream.ReadByte(), Throws.Nothing);
         else
-          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+          Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
   }

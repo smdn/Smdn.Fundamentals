@@ -33,19 +33,19 @@ partial class UInt24nTests {
   [Test]
   public void IParsable_Parse_FormatException()
   {
-    Assert.Throws<FormatException>(() => Parse<UInt24>("ABCDEF"), nameof(UInt24));
+    Assert.That(() => Parse<UInt24>("ABCDEF"), Throws.TypeOf<FormatException>(), nameof(UInt24));
 
-    Assert.Throws<FormatException>(() => Parse<UInt48>("456789ABCDEF"), nameof(UInt48));
+    Assert.That(() => Parse<UInt48>("456789ABCDEF"), Throws.TypeOf<FormatException>(), nameof(UInt48));
   }
 
   [Test]
   public void IParsable_Parse_OverflowException()
   {
-    Assert.Throws<OverflowException>(() => Parse<UInt24>("-1"), nameof(UInt24));
-    Assert.Throws<OverflowException>(() => Parse<UInt24>("16777216"), nameof(UInt24));
+    Assert.That(() => Parse<UInt24>("-1"), Throws.TypeOf<OverflowException>(), nameof(UInt24));
+    Assert.That(() => Parse<UInt24>("16777216"), Throws.TypeOf<OverflowException>(), nameof(UInt24));
 
-    Assert.Throws<OverflowException>(() => Parse<UInt48>("-1"), nameof(UInt48));
-    Assert.Throws<OverflowException>(() => Parse<UInt48>("281474976710656"), nameof(UInt48));
+    Assert.That(() => Parse<UInt48>("-1"), Throws.TypeOf<OverflowException>(), nameof(UInt48));
+    Assert.That(() => Parse<UInt48>("281474976710656"), Throws.TypeOf<OverflowException>(), nameof(UInt48));
   }
 
   [Test]
@@ -101,19 +101,19 @@ partial class UInt24nTests {
   [Test]
   public void ISpanParsable_Parse_FormatException()
   {
-    Assert.Throws<FormatException>(() => Parse<UInt24>("ABCDEF".AsSpan()), nameof(UInt24));
+    Assert.That(() => Parse<UInt24>("ABCDEF".AsSpan()), Throws.TypeOf<FormatException>(), nameof(UInt24));
 
-    Assert.Throws<FormatException>(() => Parse<UInt48>("456789ABCDEF".AsSpan()), nameof(UInt48));
+    Assert.That(() => Parse<UInt48>("456789ABCDEF".AsSpan()), Throws.TypeOf<FormatException>(), nameof(UInt48));
   }
 
   [Test]
   public void ISpanParsable_Parse_OverflowException()
   {
-    Assert.Throws<OverflowException>(() => Parse<UInt24>("-1".AsSpan()), nameof(UInt24));
-    Assert.Throws<OverflowException>(() => Parse<UInt24>("16777216".AsSpan()), nameof(UInt24));
+    Assert.That(() => Parse<UInt24>("-1".AsSpan()), Throws.TypeOf<OverflowException>(), nameof(UInt24));
+    Assert.That(() => Parse<UInt24>("16777216".AsSpan()), Throws.TypeOf<OverflowException>(), nameof(UInt24));
 
-    Assert.Throws<OverflowException>(() => Parse<UInt48>("-1".AsSpan()), nameof(UInt48));
-    Assert.Throws<OverflowException>(() => Parse<UInt48>("281474976710656".AsSpan()), nameof(UInt48));
+    Assert.That(() => Parse<UInt48>("-1".AsSpan()), Throws.TypeOf<OverflowException>(), nameof(UInt48));
+    Assert.That(() => Parse<UInt48>("281474976710656".AsSpan()), Throws.TypeOf<OverflowException>(), nameof(UInt48));
   }
 
   [Test]

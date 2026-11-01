@@ -332,8 +332,8 @@ partial class UInt24Tests {
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(BigInteger.Zero), "BigInteger");
-    Assert.Throws<NotSupportedException>(() => UInt24.CreateSaturating(Complex.Zero), "Complex");
+    Assert.That(() => UInt24.CreateSaturating(BigInteger.Zero), Throws.TypeOf<NotSupportedException>(), "BigInteger");
+    Assert.That(() => UInt24.CreateSaturating(Complex.Zero), Throws.TypeOf<NotSupportedException>(), "Complex");
   }
 }
 
@@ -341,8 +341,8 @@ partial class UInt48Tests {
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(BigInteger.Zero), "BigInteger");
-    Assert.Throws<NotSupportedException>(() => UInt48.CreateSaturating(Complex.Zero), "Complex");
+    Assert.That(() => UInt48.CreateSaturating(BigInteger.Zero), Throws.TypeOf<NotSupportedException>(), "BigInteger");
+    Assert.That(() => UInt48.CreateSaturating(Complex.Zero), Throws.TypeOf<NotSupportedException>(), "Complex");
   }
 }
 
@@ -350,11 +350,11 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_CreateSaturating_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt24, Complex>());
-    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt48, Complex>());
+    Assert.That(() => CreateSaturating<UInt24, Complex>(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(() => CreateSaturating<UInt48, Complex>(), Throws.TypeOf<NotSupportedException>());
 
-    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt24, BigInteger>());
-    Assert.Throws<NotSupportedException>(() => CreateSaturating<UInt48, BigInteger>());
+    Assert.That(() => CreateSaturating<UInt24, BigInteger>(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(() => CreateSaturating<UInt48, BigInteger>(), Throws.TypeOf<NotSupportedException>());
 
     static TUInt24n CreateSaturating<TUInt24n, TOther>() where TUInt24n : INumberBase<TUInt24n> where TOther : INumberBase<TOther>
       => TUInt24n.CreateSaturating(TOther.Zero);

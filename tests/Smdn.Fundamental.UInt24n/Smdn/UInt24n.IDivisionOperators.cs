@@ -13,8 +13,8 @@ partial class UInt24Tests {
   [Test]
   public void OpDivision()
   {
-    Assert.Throws<DivideByZeroException>(() => Assert.That(UInt24.Zero / UInt24.Zero, Is.EqualTo(UInt24.One)), "0 / 0");
-    Assert.Throws<DivideByZeroException>(() => Assert.That(UInt24.One / UInt24.Zero, Is.EqualTo(UInt24.One)), "1 / 0");
+    Assert.That(() => Assert.That(UInt24.Zero / UInt24.Zero, Is.EqualTo(UInt24.One)), Throws.TypeOf<DivideByZeroException>(), "0 / 0");
+    Assert.That(() => Assert.That(UInt24.One / UInt24.Zero, Is.EqualTo(UInt24.One)), Throws.TypeOf<DivideByZeroException>(), "1 / 0");
     Assert.That(UInt24.Zero / UInt24.One, Is.EqualTo(UInt24.Zero), "0 / 1");
     Assert.That(UInt24.One / UInt24.One, Is.EqualTo(UInt24.One), "1 / 1");
     Assert.That(UInt24.MaxValue / UInt24.MaxValue, Is.EqualTo(UInt24.One), "Max / Max");
@@ -38,8 +38,8 @@ partial class UInt48Tests {
   [Test]
   public void OpDivision()
   {
-    Assert.Throws<DivideByZeroException>(() => Assert.That(UInt48.Zero / UInt48.Zero, Is.EqualTo(UInt48.One)), "0 / 0");
-    Assert.Throws<DivideByZeroException>(() => Assert.That(UInt48.One / UInt48.Zero, Is.EqualTo(UInt48.One)), "1 / 0");
+    Assert.That(() => Assert.That(UInt48.Zero / UInt48.Zero, Is.EqualTo(UInt48.One)), Throws.TypeOf<DivideByZeroException>(), "0 / 0");
+    Assert.That(() => Assert.That(UInt48.One / UInt48.Zero, Is.EqualTo(UInt48.One)), Throws.TypeOf<DivideByZeroException>(), "1 / 0");
     Assert.That(UInt48.Zero / UInt48.One, Is.EqualTo(UInt48.Zero), "0 / 1");
     Assert.That(UInt48.One / UInt48.One, Is.EqualTo(UInt48.One), "1 / 1");
     Assert.That(UInt48.MaxValue / UInt48.MaxValue, Is.EqualTo(UInt48.One), "Max / Max");
@@ -64,14 +64,14 @@ partial class UInt24nTests {
   [Test]
   public void IDivisionOperators_OpDivision()
   {
-    Assert.Throws<DivideByZeroException>(() => Assert.That(Divide(UInt24.Zero, UInt24.Zero), Is.EqualTo(UInt24.One)), "0 / 0");
-    Assert.Throws<DivideByZeroException>(() => Assert.That(Divide(UInt24.One, UInt24.Zero), Is.EqualTo(UInt24.One)), "1 / 0");
+    Assert.That(() => Assert.That(Divide(UInt24.Zero, UInt24.Zero), Is.EqualTo(UInt24.One)), Throws.TypeOf<DivideByZeroException>(), "0 / 0");
+    Assert.That(() => Assert.That(Divide(UInt24.One, UInt24.Zero), Is.EqualTo(UInt24.One)), Throws.TypeOf<DivideByZeroException>(), "1 / 0");
     Assert.That(Divide(UInt24.Zero, UInt24.One), Is.EqualTo(UInt24.Zero), "0 / 1");
     Assert.That(Divide(UInt24.One, UInt24.One), Is.EqualTo(UInt24.One), "1 / 1");
     Assert.That(Divide(UInt24.MaxValue, UInt24.MaxValue), Is.EqualTo(UInt24.One), "Max / Max");
 
-    Assert.Throws<DivideByZeroException>(() => Assert.That(Divide(UInt48.Zero, UInt48.Zero), Is.EqualTo(UInt48.One)), "0 / 0");
-    Assert.Throws<DivideByZeroException>(() => Assert.That(Divide(UInt48.One, UInt48.Zero), Is.EqualTo(UInt48.One)), "1 / 0");
+    Assert.That(() => Assert.That(Divide(UInt48.Zero, UInt48.Zero), Is.EqualTo(UInt48.One)), Throws.TypeOf<DivideByZeroException>(), "0 / 0");
+    Assert.That(() => Assert.That(Divide(UInt48.One, UInt48.Zero), Is.EqualTo(UInt48.One)), Throws.TypeOf<DivideByZeroException>(), "1 / 0");
     Assert.That(Divide(UInt48.Zero, UInt48.One), Is.EqualTo(UInt48.Zero), "0 / 1");
     Assert.That(Divide(UInt48.One, UInt48.One), Is.EqualTo(UInt48.One), "1 / 1");
     Assert.That(Divide(UInt48.MaxValue, UInt48.MaxValue), Is.EqualTo(UInt48.One), "Max / Max");

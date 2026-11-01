@@ -76,8 +76,8 @@ line3
     [Test]
     public void TestReadAllLines_ReaderNull()
     {
-      Assert.Throws<ArgumentNullException>(() => TextReaderExtensions.ReadAllLines(null));
-      Assert.Throws<ArgumentNullException>(() => TextReaderExtensions.ReadAllLinesAsync(null));
+      Assert.That(() => TextReaderExtensions.ReadAllLines(null), Throws.ArgumentNullException);
+      Assert.That(() => TextReaderExtensions.ReadAllLinesAsync(null), Throws.ArgumentNullException);
     }
   }
 }

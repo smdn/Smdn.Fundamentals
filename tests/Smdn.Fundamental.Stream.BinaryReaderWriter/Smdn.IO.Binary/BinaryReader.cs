@@ -41,12 +41,12 @@ namespace Smdn.IO.Binary {
 
     [Test]
     public void TestConstructWithNonReadableStream()
-    {
-      Assert.Throws<ArgumentException>(() => {
-        using (var reader = new Smdn.IO.Binary.BinaryReader(new NonReadableStream())) {
-        }
-      });
-    }
+      => Assert.That(
+        () => {
+          using var reader = new Smdn.IO.Binary.BinaryReader(new NonReadableStream());
+        },
+        Throws.ArgumentException
+      );
 
     [Test]
     public void TestClose()
@@ -77,9 +77,9 @@ namespace Smdn.IO.Binary {
           reader.Dispose();
         }
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.That(reader.BaseStream, Is.Null));
+        Assert.That(() => Assert.That(reader.BaseStream, Is.Null), Throws.TypeOf<ObjectDisposedException>());
 
-        Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte());
+        Assert.That(() => baseStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -99,7 +99,7 @@ namespace Smdn.IO.Binary {
           Assert.That(reader.LeaveBaseStreamOpen, Is.False);
         }
 
-        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+        Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -123,7 +123,7 @@ namespace Smdn.IO.Binary {
 
         reader.Close();
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.That(reader.BaseStream, Is.Null));
+        Assert.That(() => Assert.That(reader.BaseStream, Is.Null), Throws.TypeOf<ObjectDisposedException>());
 
         try {
           baseStream.ReadByte();
@@ -220,20 +220,20 @@ namespace Smdn.IO.Binary {
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.That(reader.ReadExactBytes((int)reader.BaseStream.Length), Is.EqualTo(actual));
 
-        Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes((int)1));
+        Assert.That(() => reader.ReadExactBytes((int)1), Throws.TypeOf<EndOfStreamException>());
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.That(reader.ReadExactBytes(reader.BaseStream.Length), Is.EqualTo(actual));
 
-        Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(1L));
+        Assert.That(() => reader.ReadExactBytes(1L), Throws.TypeOf<EndOfStreamException>());
       }
 
       using (var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual))) {
         Assert.That(reader.ReadExactBytes(3L), Is.EqualTo(actual.Skip(0).Take(3).ToArray()));
         Assert.That(reader.ReadExactBytes(3L), Is.EqualTo(actual.Skip(3).Take(3).ToArray()));
 
-        Assert.Throws<EndOfStreamException>(() => reader.ReadExactBytes(3L));
+        Assert.That(() => reader.ReadExactBytes(3L), Throws.TypeOf<EndOfStreamException>());
       }
     }
 
@@ -369,14 +369,16 @@ namespace Smdn.IO.Binary {
       using var reader = new Smdn.IO.Binary.BinaryReader(new MemoryStream(actual));
       reader.Close();
 
-      var ex = Assert.Throws<TargetInvocationException>(() => {
-        typeof(Smdn.IO.Binary.BinaryReader)
+      Assert.That(
+        () => typeof(Smdn.IO.Binary.BinaryReader)
           .GetTypeInfo()
           .GetDeclaredMethod(methodName)
-          !.Invoke(reader, null);
-      });
-
-      Assert.That(ex!.InnerException, Is.InstanceOf<ObjectDisposedException>());
+          !.Invoke(reader, null),
+        Throws
+          .TypeOf<TargetInvocationException>()
+          .With
+          .InnerException.InstanceOf<ObjectDisposedException>()
+      );
     }
 
     [TestCase(nameof(Smdn.IO.Binary.BinaryReader.ReadByte), 1)]
@@ -403,12 +405,13 @@ namespace Smdn.IO.Binary {
       else
         Assert.That(reader.EndOfStream, Is.True, $"EndOfStream before read: {methodName}");
 
-      Assert.Throws<TargetInvocationException>(() => {
-        typeof(Smdn.IO.Binary.BinaryReader)
+      Assert.That(
+        () => typeof(Smdn.IO.Binary.BinaryReader)
           .GetTypeInfo()
           .GetDeclaredMethod(methodName)
-          !.Invoke(reader, null);
-      });
+          !.Invoke(reader, null),
+        Throws.TargetInvocationException
+      );
 
       Assert.That(reader.BaseStream.Length, Is.EqualTo(reader.BaseStream.Position), $"Stream.Position: {methodName}");
 

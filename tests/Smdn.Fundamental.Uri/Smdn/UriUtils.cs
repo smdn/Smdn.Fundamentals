@@ -44,7 +44,7 @@ namespace Smdn {
     [Test]
     public void JoinQueryParameters_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => UriUtils.JoinQueryParameters(null!));
+      Assert.That(() => UriUtils.JoinQueryParameters(null!), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -94,7 +94,7 @@ namespace Smdn {
     [Test]
     public void SplitQueryParameters_ArgumentNull()
     {
-      Assert.Throws<ArgumentNullException>(() => UriUtils.SplitQueryParameters(null!));
+      Assert.That(() => UriUtils.SplitQueryParameters(null!), Throws.ArgumentNullException);
     }
 
     [Test]

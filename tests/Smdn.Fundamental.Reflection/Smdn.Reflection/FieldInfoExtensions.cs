@@ -168,7 +168,7 @@ public class FieldInfoExtensionsTests {
 
   [TestCase]
   public void IsPropertyBackingField_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsPropertyBackingField());
+    => Assert.That(() => ((FieldInfo)null!).IsPropertyBackingField(), Throws.ArgumentNullException);
 
   [TestCaseSource(nameof(YieldTestCases_PropertyBackingField))]
   public void TryGetPropertyFromBackingField(FieldInfo f, PropertyBackingFieldAttribute attr)
@@ -206,7 +206,7 @@ public class FieldInfoExtensionsTests {
 
   [TestCase]
   public void IsEventBackingField_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsEventBackingField());
+    => Assert.That(() => ((FieldInfo)null!).IsEventBackingField(), Throws.ArgumentNullException);
 
   [TestCaseSource(nameof(YieldTestCases_EventBackingField))]
   public void TryGetEventFromBackingField(FieldInfo f, EventBackingFieldAttribute attr)
@@ -263,7 +263,7 @@ public class FieldInfoExtensionsTests {
 
   [TestCase]
   public void IsReadOnly_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((FieldInfo)null!).IsReadOnly());
+    => Assert.That(() => ((FieldInfo)null!).IsReadOnly(), Throws.ArgumentNullException);
 
 #if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
   [TestCase(typeof(C), nameof(C.FRequired), true)]
@@ -305,8 +305,7 @@ public class FieldInfoExtensionsTests {
       () => ((FieldInfo)null!).IsRequired(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("f")
     );
 
@@ -339,8 +338,7 @@ public class FieldInfoExtensionsTests {
       () => ((FieldInfo)null!).IsFixedBuffer(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("f")
     );
 
@@ -380,8 +378,7 @@ public class FieldInfoExtensionsTests {
       () => ((FieldInfo)null!).TryGetFixedBufferElementTypeAndLength(out _, out _),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("f")
     );
 #nullable restore

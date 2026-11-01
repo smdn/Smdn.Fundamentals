@@ -59,8 +59,7 @@ public partial class TypeExtensionsTests {
       () => ((Type)null!).IsFixedBufferFieldType(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("t")
     );
 }

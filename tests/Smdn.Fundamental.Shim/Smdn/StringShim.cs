@@ -27,7 +27,7 @@ public class StringShimTests {
 #if !SYSTEM_STRING_STARTSWITH_CHAR
     string nullString = null!;
 
-    Assert.Throws<ArgumentNullException>(() => nullString.StartsWith('a'));
+    Assert.That(() => nullString.StartsWith('a'), Throws.ArgumentNullException);
 #endif
 
     Assert.That(string.Empty.StartsWith('a'), Is.False);
@@ -68,7 +68,7 @@ public class StringShimTests {
 #if !SYSTEM_STRING_ENDSWITH_CHAR
     string nullString = null!;
 
-    Assert.Throws<ArgumentNullException>(() => nullString.EndsWith('a'));
+    Assert.That(() => nullString.EndsWith('a'), Throws.ArgumentNullException);
 #endif
 
     Assert.That(string.Empty.EndsWith('a'), Is.False);

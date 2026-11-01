@@ -40,7 +40,7 @@ namespace Smdn {
     {
       Uri uri = null!;
 
-      Assert.Throws<ArgumentNullException>(() => uri.GetSplittedQueries());
+      Assert.That(() => uri.GetSplittedQueries(), Throws.ArgumentNullException);
     }
   }
 }

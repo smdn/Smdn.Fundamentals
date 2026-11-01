@@ -25,8 +25,8 @@ partial class UInt24Tests {
   {
     UInt24 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(UInt24.MaxValue * (UInt24)2), "Max * 2");
-    Assert.Throws<OverflowException>(() => result = checked(UInt24.MaxValue * UInt24.MaxValue), "Max * Max");
+    Assert.That(() => result = checked(UInt24.MaxValue * (UInt24)2), Throws.TypeOf<OverflowException>(), "Max * 2");
+    Assert.That(() => result = checked(UInt24.MaxValue * UInt24.MaxValue), Throws.TypeOf<OverflowException>(), "Max * Max");
   }
 }
 
@@ -46,8 +46,8 @@ partial class UInt48Tests {
   {
     UInt48 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(UInt48.MaxValue * (UInt48)2), "Max * 2");
-    Assert.Throws<OverflowException>(() => result = checked(UInt48.MaxValue * UInt48.MaxValue), "Max * Max");
+    Assert.That(() => result = checked(UInt48.MaxValue * (UInt48)2), Throws.TypeOf<OverflowException>(), "Max * 2");
+    Assert.That(() => result = checked(UInt48.MaxValue * UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "Max * Max");
   }
 }
 
@@ -75,11 +75,11 @@ partial class UInt24nTests {
   [Test]
   public void IMultiplyOperators_OpCheckedMultiply()
   {
-    Assert.Throws<OverflowException>(() => Multiply(UInt24.MaxValue, (UInt24)2), "Max * 2");
-    Assert.Throws<OverflowException>(() => Multiply(UInt24.MaxValue, UInt24.MaxValue), "Max * Max");
+    Assert.That(() => Multiply(UInt24.MaxValue, (UInt24)2), Throws.TypeOf<OverflowException>(), "Max * 2");
+    Assert.That(() => Multiply(UInt24.MaxValue, UInt24.MaxValue), Throws.TypeOf<OverflowException>(), "Max * Max");
 
-    Assert.Throws<OverflowException>(() => Multiply(UInt48.MaxValue, (UInt48)2), "Max * 2");
-    Assert.Throws<OverflowException>(() => Multiply(UInt48.MaxValue, UInt48.MaxValue), "Max * Max");
+    Assert.That(() => Multiply(UInt48.MaxValue, (UInt48)2), Throws.TypeOf<OverflowException>(), "Max * 2");
+    Assert.That(() => Multiply(UInt48.MaxValue, UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "Max * Max");
 
     static TUInt24n Multiply<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IMultiplyOperators<TUInt24n, TUInt24n, TUInt24n>
       => checked(x * y);

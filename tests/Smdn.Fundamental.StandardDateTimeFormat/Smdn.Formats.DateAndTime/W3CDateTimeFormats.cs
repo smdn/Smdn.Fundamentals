@@ -75,12 +75,12 @@ public partial class W3CDateTimeFormatsTests {
    */
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat_Comprehensive))]
   public void ParseDateTime_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => W3CDateTimeFormats.ParseDateTime(s));
+    => Assert.That(() => W3CDateTimeFormats.ParseDateTime(s), Throws.TypeOf<FormatException>());
 
 #if SYSTEM_READONLYSPAN
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
   public void ParseDateTime_ReadOnlySpanOfChar_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => W3CDateTimeFormats.ParseDateTime(s.AsSpan()));
+    => Assert.That(() => W3CDateTimeFormats.ParseDateTime(s.AsSpan()), Throws.TypeOf<FormatException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
@@ -95,12 +95,12 @@ public partial class W3CDateTimeFormatsTests {
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat_Comprehensive))]
   public void ParseDateTimeOffset_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => W3CDateTimeFormats.ParseDateTimeOffset(s));
+    => Assert.That(() => W3CDateTimeFormats.ParseDateTimeOffset(s), Throws.TypeOf<FormatException>());
 
 #if SYSTEM_READONLYSPAN
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
   public void ParseDateTimeOffset_ReadOnlySpanOfChar_InvalidFormat(string s)
-    => Assert.Throws<FormatException>(() => W3CDateTimeFormats.ParseDateTimeOffset(s.AsSpan()));
+    => Assert.That(() => W3CDateTimeFormats.ParseDateTimeOffset(s.AsSpan()), Throws.TypeOf<FormatException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_Parse_InvalidFormat))]
@@ -115,7 +115,7 @@ public partial class W3CDateTimeFormatsTests {
 
   [Test]
   public void ParseDateTime_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => W3CDateTimeFormats.ParseDateTime((string)null!));
+    => Assert.That(() => W3CDateTimeFormats.ParseDateTime((string)null!), Throws.ArgumentNullException);
 
   [Test]
   public void TryParseDateTime_ArgumentNull()
@@ -123,7 +123,7 @@ public partial class W3CDateTimeFormatsTests {
 
   [Test]
   public void ParseDateTimeOffset_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => W3CDateTimeFormats.ParseDateTimeOffset((string)null!));
+    => Assert.That(() => W3CDateTimeFormats.ParseDateTimeOffset((string)null!), Throws.ArgumentNullException);
 
   [Test]
   public void TryParseDateTimeOffset_ArgumentNull()

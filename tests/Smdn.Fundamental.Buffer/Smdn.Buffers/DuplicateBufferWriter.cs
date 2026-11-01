@@ -52,9 +52,9 @@ namespace Smdn.Buffers {
     {
       var baseWriter = new ByteArrayBufferWriter();
 
-      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create<byte>(null!, null!));
-      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create(null!, baseWriter));
-      Assert.Throws<ArgumentNullException>(() => DuplicateBufferWriter.Create(baseWriter, null!));
+      Assert.That(() => DuplicateBufferWriter.Create<byte>(null!, null!), Throws.ArgumentNullException);
+      Assert.That(() => DuplicateBufferWriter.Create(null!, baseWriter), Throws.ArgumentNullException);
+      Assert.That(() => DuplicateBufferWriter.Create(baseWriter, null!), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -62,35 +62,38 @@ namespace Smdn.Buffers {
     {
       var baseWriter = new ByteArrayBufferWriter();
 
-      Assert.Throws<ArgumentException>(() => DuplicateBufferWriter.Create<byte>(baseWriter, baseWriter));
+      Assert.That(() => DuplicateBufferWriter.Create<byte>(baseWriter, baseWriter), Throws.ArgumentException);
     }
 
     [Test]
     public void GetMemory_ArgumentOutOfRange()
-      => Assert.Throws<ArgumentOutOfRangeException>(() => {
-        DuplicateBufferWriter.Create(
+      => Assert.That(
+        () => DuplicateBufferWriter.Create(
           new ByteArrayBufferWriter(),
           new ByteArrayBufferWriter()
-        ).GetMemory(-1);
-      });
+        ).GetMemory(-1),
+        Throws.TypeOf<ArgumentOutOfRangeException>()
+      );
 
     [Test]
     public void GetSpan_ArgumentOutOfRange()
-      => Assert.Throws<ArgumentOutOfRangeException>(() => {
-        DuplicateBufferWriter.Create(
+      => Assert.That(
+        () => DuplicateBufferWriter.Create(
           new ByteArrayBufferWriter(),
           new ByteArrayBufferWriter()
-        ).GetMemory(-1);
-      });
+        ).GetMemory(-1),
+        Throws.TypeOf<ArgumentOutOfRangeException>()
+      );
 
     [Test]
     public void Advance_ArgumentOutOfRange()
-      => Assert.Throws<ArgumentOutOfRangeException>(() => {
-        DuplicateBufferWriter.Create(
+      => Assert.That(
+        () => DuplicateBufferWriter.Create(
           new ByteArrayBufferWriter(),
           new ByteArrayBufferWriter()
-        ).Advance(-1);
-      });
+        ).Advance(-1),
+        Throws.TypeOf<ArgumentOutOfRangeException>()
+      );
 
     [Test]
     public void GetMemory_WithSizeHint()
@@ -115,7 +118,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #0"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(1), "Advance #1");
+      Assert.That(() => writer.Advance(1), Throws.Nothing, "Advance #1");
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -128,7 +131,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #1"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(0), "Advance #2");
+      Assert.That(() => writer.Advance(0), Throws.Nothing, "Advance #2");
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -141,7 +144,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #2"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(3), "Advance #3");
+      Assert.That(() => writer.Advance(3), Throws.Nothing, "Advance #3");
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -154,7 +157,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #3"
       );
 
-      Assert.Throws<InvalidOperationException>(() => writer.Advance(1), "Advance #3");
+      Assert.That(() => writer.Advance(1), Throws.InvalidOperationException, "Advance #3");
     }
 
     [Test]
@@ -180,7 +183,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #0"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(1), "Advance #1");
+      Assert.That(() => writer.Advance(1), Throws.Nothing, "Advance #1");
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -193,7 +196,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #1"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(0), "Advance #2");
+      Assert.That(() => writer.Advance(0), Throws.Nothing, "Advance #2");
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -206,7 +209,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #2"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(3), "Advance #3");
+      Assert.That(() => writer.Advance(3), Throws.Nothing, "Advance #3");
 
       Assert.That(
         baseWriter0.WrittenMemory,
@@ -219,7 +222,7 @@ namespace Smdn.Buffers {
         "baseWriter1.WrittenMemory #3"
       );
 
-      Assert.DoesNotThrow(() => writer.Advance(1), "Advance #4");
+      Assert.That(() => writer.Advance(1), Throws.Nothing, "Advance #4");
     }
 
     [Test]
@@ -230,8 +233,8 @@ namespace Smdn.Buffers {
 
       var writer = DuplicateBufferWriter.Create(baseWriter0, baseWriter1);
 
-      Assert.DoesNotThrow(() => writer.Advance(0));
-      Assert.Throws<InvalidOperationException>(() => writer.Advance(1));
+      Assert.That(() => writer.Advance(0), Throws.Nothing);
+      Assert.That(() => writer.Advance(1), Throws.InvalidOperationException);
     }
 
 

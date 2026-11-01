@@ -23,10 +23,10 @@ namespace Smdn {
       Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00 }, isBigEndian: false), Is.EqualTo((UInt48)0x0000000000ff));
       Assert.That(new UInt48(new byte[] { 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0xcc }, 1, isBigEndian: false), Is.EqualTo((UInt48)0xcc0000000000));
 
-      Assert.Throws<ArgumentNullException>(() => new UInt48(null, 0));
-      Assert.Throws<ArgumentOutOfRangeException>(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }, -1));
-      Assert.Throws<ArgumentException>(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }, 0));
-      Assert.Throws<ArgumentException>(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 1));
+      Assert.That(() => new UInt48(null, 0), Throws.ArgumentNullException);
+      Assert.That(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }, 0), Throws.ArgumentException);
+      Assert.That(() => new UInt48(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }, 1), Throws.ArgumentException);
     }
 
     [Test]
@@ -41,12 +41,12 @@ namespace Smdn {
         Is.EqualTo((UInt48)0xAB8967452301)
       );
 
-      Assert.Throws<ArgumentException>(() => new UInt48(ReadOnlySpan<byte>.Empty));
-      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00 }));
-      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00 }));
-      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00 }));
-      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00 }));
-      Assert.Throws<ArgumentException>(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }));
+      Assert.That(() => new UInt48(ReadOnlySpan<byte>.Empty), Throws.ArgumentException);
+      Assert.That(() => new UInt48(stackalloc byte[] { 0x00 }), Throws.ArgumentException);
+      Assert.That(() => new UInt48(stackalloc byte[] { 0x00, 0x00 }), Throws.ArgumentException);
+      Assert.That(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00 }), Throws.ArgumentException);
+      Assert.That(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00 }), Throws.ArgumentException);
+      Assert.That(() => new UInt48(stackalloc byte[] { 0x00, 0x00, 0x00, 0x00, 0x00 }), Throws.ArgumentException);
     }
 
     [Test]
@@ -123,7 +123,7 @@ namespace Smdn {
     [TestCase((byte)0)]
     [TestCase("0")]
     public void CompareTo_NotComparable(object value)
-      => Assert.Throws<ArgumentException>(() => UInt48.Zero.CompareTo(value));
+      => Assert.That(() => UInt48.Zero.CompareTo(value), Throws.ArgumentException);
 
     [TestCase((int)0x00000000, (long)0x0000000000000000, "0")]
     [TestCase((int)0x7fffffff, (long)0x000000007fffffff, "7fffffff")]
@@ -142,7 +142,7 @@ namespace Smdn {
     [TestCase(Int32.MinValue)]
     public void OpExplicitCheckedFromInt32(int value)
     {
-      Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)value); });
+      Assert.That(() => { UInt48 val = checked((UInt48)value); }, Throws.TypeOf<OverflowException>());
     }
 
     [TestCase((long)0x0000000000000000, (long)0x0000000000000000, "0")]
@@ -165,7 +165,7 @@ namespace Smdn {
     [TestCase(Int64.MinValue)]
     public void OpExplicitCheckedFromInt64(long value)
     {
-      Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)value); });
+      Assert.That(() => { UInt48 val = checked((UInt48)value); }, Throws.TypeOf<OverflowException>());
     }
 
     [Test]
@@ -188,7 +188,7 @@ namespace Smdn {
     [TestCase(UInt64.MaxValue)]
     public void OpExplicitCheckedFromUInt64(ulong value)
     {
-      Assert.Throws<OverflowException>(() => { UInt48 val = checked((UInt48)value); });
+      Assert.That(() => { UInt48 val = checked((UInt48)value); }, Throws.TypeOf<OverflowException>());
     }
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToInt32()
@@ -219,7 +219,7 @@ namespace Smdn {
     public void OpExplicitCheckedToInt32(UInt48 value, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
-      Assert.Throws<OverflowException>(() => { var i = checked((int)value); });
+      Assert.That(() => { var i = checked((int)value); }, Throws.TypeOf<OverflowException>());
     }
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToUInt32()
@@ -252,7 +252,7 @@ namespace Smdn {
     public void OpExplicitCheckedToUInt32(UInt48 value, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
-      Assert.Throws<OverflowException>(() => { var ui = checked((uint)value); });
+      Assert.That(() => { var ui = checked((uint)value); }, Throws.TypeOf<OverflowException>());
     }
 
     [TestCase((uint)0,           (long)0x0000000000000000, "0")]
@@ -335,7 +335,7 @@ namespace Smdn {
         typeof(uint),
       }) {
 #pragma warning disable CA1305
-        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName ?? t.ToString());
+        Assert.That(() => Convert.ChangeType(UInt48.MaxValue, t), Throws.TypeOf<OverflowException>(), t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
 
@@ -344,7 +344,7 @@ namespace Smdn {
         typeof(ulong),
       }) {
 #pragma warning disable CA1305
-        Assert.DoesNotThrow(() => Convert.ChangeType(UInt48.MaxValue, t), t.FullName ?? t.ToString());
+        Assert.That(() => Convert.ChangeType(UInt48.MaxValue, t), Throws.Nothing, t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
     }
@@ -353,9 +353,9 @@ namespace Smdn {
     public void IConvertible_ToDateTime()
     {
 #pragma warning disable CA1305
-      Assert.Throws<InvalidCastException>(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)));
+      Assert.That(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)), Throws.TypeOf<InvalidCastException>());
 #pragma warning restore CA1305
-      Assert.Throws<InvalidCastException>(() => ((IConvertible)UInt24.Zero).ToDateTime(provider: null));
+      Assert.That(() => ((IConvertible)UInt24.Zero).ToDateTime(provider: null), Throws.TypeOf<InvalidCastException>());
     }
 
     [Test]
@@ -409,10 +409,10 @@ namespace Smdn {
       Assert.That(UInt48.Parse("1", provider: null), Is.EqualTo((UInt48)1));
       Assert.That(UInt48.Parse("281474976710655", provider: null), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.Throws<ArgumentNullException>(() => UInt48.Parse(null!, provider: null));
-      Assert.Throws<OverflowException>(() => UInt48.Parse("-1", provider: null));
-      Assert.Throws<OverflowException>(() => UInt48.Parse("281474976710656", provider: null));
-      Assert.Throws<FormatException>(() => UInt48.Parse("FFFFFFFFFFFF", provider: null));
+      Assert.That(() => UInt48.Parse(null!, provider: null), Throws.ArgumentNullException);
+      Assert.That(() => UInt48.Parse("-1", provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt48.Parse("281474976710656", provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt48.Parse("FFFFFFFFFFFF", provider: null), Throws.TypeOf<FormatException>());
 #pragma warning restore CA1305
     }
 
@@ -439,9 +439,9 @@ namespace Smdn {
       Assert.That(UInt48.Parse("_1".AsSpan(1), provider: null), Is.EqualTo((UInt48)1));
       Assert.That(UInt48.Parse("_281474976710655".AsSpan(1), provider: null), Is.EqualTo((UInt48)0xFFFFFFFFFFFF));
 
-      Assert.Throws<OverflowException>(() => UInt48.Parse("_-1".AsSpan(1), provider: null));
-      Assert.Throws<OverflowException>(() => UInt48.Parse("_281474976710656".AsSpan(1), provider: null));
-      Assert.Throws<FormatException>(() => UInt48.Parse("_FFFFFFFFFFFF".AsSpan(1), provider: null));
+      Assert.That(() => UInt48.Parse("_-1".AsSpan(1), provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt48.Parse("_281474976710656".AsSpan(1), provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt48.Parse("_FFFFFFFFFFFF".AsSpan(1), provider: null), Throws.TypeOf<FormatException>());
 #pragma warning restore CA1305
 
     }

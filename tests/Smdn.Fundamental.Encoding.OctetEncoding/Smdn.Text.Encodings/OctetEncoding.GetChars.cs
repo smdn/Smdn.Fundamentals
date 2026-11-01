@@ -86,17 +86,17 @@ partial class OctetEncodingTests {
   [Test]
   public void GetCharCount_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetCharCount((byte[])null!));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetCharCount((byte[])null!, 0, 0));
+    Assert.That(() => OctetEncoding.SevenBits.GetCharCount((byte[])null!), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetCharCount((byte[])null!, 0, 0), Throws.ArgumentNullException);
   }
 
   [Test]
   public void GetChars_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetChars((byte[])null!));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetChars((byte[])null!, 0, 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetChars((byte[])null!, 0, 0, new char[0], 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetChars(new byte[0], 0, 0, (char[])null!, 0));
+    Assert.That(() => OctetEncoding.SevenBits.GetChars((byte[])null!), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetChars((byte[])null!, 0, 0), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetChars((byte[])null!, 0, 0, new char[0], 0), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetChars(new byte[0], 0, 0, (char[])null!, 0), Throws.ArgumentNullException);
   }
 
   private static IEnumerable YieldTestCases_GetCharCount()

@@ -194,7 +194,7 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.CanSeek, Is.False, "CanSeek");
         Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+        Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
 
       Assert.That(results[1], Is.EqualTo(results[0]));
@@ -211,9 +211,9 @@ namespace Smdn.IO.Streams {
         Assert.That(stream.CanSeek, Is.False, "CanSeek");
         Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-        Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+        Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
 
-        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
+        Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
 
         stream.Dispose();
       }
@@ -229,7 +229,7 @@ namespace Smdn.IO.Streams {
           Assert.That(stream.Position, Is.EqualTo((long)i + 1));
         }
 
-        Assert.Throws<ArgumentOutOfRangeException>(() => stream.Position = -1L);
+        Assert.That(() => stream.Position = -1L, Throws.TypeOf<ArgumentOutOfRangeException>());
 
         for (var expected = 0L; expected < 12L; expected++) {
           stream.Position = expected;
@@ -317,7 +317,7 @@ namespace Smdn.IO.Streams {
     public void TestSetLengthNegative()
     {
       using (var stream = new ChunkedMemoryStream(4)) {
-        Assert.Throws<ArgumentOutOfRangeException>(() => stream.SetLength(-1));
+        Assert.That(() => stream.SetLength(-1), Throws.TypeOf<ArgumentOutOfRangeException>());
       }
     }
 
@@ -340,7 +340,7 @@ namespace Smdn.IO.Streams {
 
         Assert.That(stream.Seek(0x40, SeekOrigin.Begin), Is.EqualTo(0x40));
 
-        Assert.Throws<IOException>(() => stream.Seek(-1, SeekOrigin.Begin));
+        Assert.That(() => stream.Seek(-1, SeekOrigin.Begin), Throws.TypeOf<IOException>());
       }
     }
 
@@ -363,7 +363,7 @@ namespace Smdn.IO.Streams {
 
         Assert.That(stream.Seek(+0x30, SeekOrigin.Current), Is.EqualTo(0x40));
 
-        Assert.Throws<IOException>(() => stream.Seek(-0x41, SeekOrigin.Current));
+        Assert.That(() => stream.Seek(-0x41, SeekOrigin.Current), Throws.TypeOf<IOException>());
       }
     }
 
@@ -386,7 +386,7 @@ namespace Smdn.IO.Streams {
 
         Assert.That(stream.Seek(+0x20, SeekOrigin.End), Is.EqualTo(0x40));
 
-        Assert.Throws<IOException>(() => stream.Seek(-0x41, SeekOrigin.End));
+        Assert.That(() => stream.Seek(-0x41, SeekOrigin.End), Throws.TypeOf<IOException>());
       }
     }
 
@@ -568,7 +568,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new ChunkedMemoryStream(8);
 
-      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
+      Assert.That(
+        () => _ = stream.Read(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
 #if false
@@ -585,7 +588,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new ChunkedMemoryStream(8);
 
-      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
+      Assert.That(
+        () => stream.ReadAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 #endif
 
@@ -763,7 +769,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new ChunkedMemoryStream(8);
 
-      Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count));
+      Assert.That(
+        () => stream.Write(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
 #if false
@@ -780,7 +789,10 @@ namespace Smdn.IO.Streams {
     {
       using var stream = new ChunkedMemoryStream(8);
 
-      Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count));
+      Assert.That(
+        () => stream.WriteAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 #endif
 

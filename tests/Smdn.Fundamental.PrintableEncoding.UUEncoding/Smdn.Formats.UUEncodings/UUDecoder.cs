@@ -34,9 +34,9 @@ extra text block
 begin 644 testimg.png
 MB5!.1PT*&@H    -24A$4@   ""     @"" 8   !S>GKT    !&=!34$  +&/
 M""_QA!0   $=)1$%46$?MUK$- "" (!$#<?VA$W0 *FR/Y4OU<@RLBLM*>S-'Q
-M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U    
+M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U
 ) $E%3D2N0F""""
- 
+
 end
 
 ****************
@@ -77,8 +77,8 @@ extra text block
 
         file.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.That(file.Stream, Is.Not.Null));
-        Assert.DoesNotThrow(() => file.Dispose(), "dispose again #1");
+        Assert.That(() => Assert.That(file.Stream, Is.Not.Null), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(() => file.Dispose(), Throws.Nothing, "dispose again #1");
 
         file = files[1];
 
@@ -92,7 +92,7 @@ extra text block
         Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #3");
         Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #3");
 
-        Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
+        Assert.That(() => stream.ReadByte(), Throws.Nothing, "read base stream");
       }
     }
 
@@ -107,9 +107,9 @@ extra text block
 begin 644 testimg.png
 MB5!.1PT*&@H    -24A$4@   ""     @"" 8   !S>GKT    !&=!34$  +&/
 M""_QA!0   $=)1$%46$?MUK$- "" (!$#<?VA$W0 *FR/Y4OU<@RLBLM*>S-'Q
-M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U    
+M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U
 ) $E%3D2N0F""""
- 
+
 end
 
 ****************
@@ -164,13 +164,13 @@ extra text block
 
           file.Dispose();
 
-          Assert.Throws<ObjectDisposedException>(() => Assert.That(file.Stream, Is.Not.Null));
-          Assert.DoesNotThrow(() => file.Dispose(), "dispose again");
+          Assert.That(() => Assert.That(file.Stream, Is.Not.Null), Throws.TypeOf<ObjectDisposedException>());
+          Assert.That(() => file.Dispose(), Throws.Nothing, "dispose again");
         });
 
         Assert.That(fileCount, Is.EqualTo(3), "extracted file count");
 
-        Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
+        Assert.That(() => stream.ReadByte(), Throws.Nothing, "read base stream");
       }
     }
 
@@ -194,7 +194,7 @@ end
             Assert.That(file.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8)), "extracted file permissions #1");
             Assert.That(file.Stream.ReadToEnd(), Is.EqualTo(new byte[] {0x43, 0x61, 0x74} /* 'C' 'a' 't' */), "extracted file content #1");
 
-            Assert.Throws<InvalidOperationException>(() => file.Save());
+            Assert.That(() => file.Save(), Throws.InvalidOperationException);
           }
           else {
             Assert.Fail("unexpected file entry");
@@ -204,13 +204,13 @@ end
 
           file.Dispose();
 
-          Assert.Throws<ObjectDisposedException>(() => Assert.That(file.Stream, Is.Not.Null));
-          Assert.DoesNotThrow(() => file.Dispose(), "dispose again");
+          Assert.That(() => Assert.That(file.Stream, Is.Not.Null), Throws.TypeOf<ObjectDisposedException>());
+          Assert.That(() => file.Dispose(), Throws.Nothing, "dispose again");
         });
 
         Assert.That(fileCount, Is.EqualTo(1), "extracted file count");
 
-        Assert.DoesNotThrow(() => stream.ReadByte(), "read base stream");
+        Assert.That(() => stream.ReadByte(), Throws.Nothing, "read base stream");
       }
     }
   }

@@ -404,5 +404,5 @@ partial class MemberInfoExtensions {
   [TestCase(true)]
   [TestCase(false)]
   public void IsHidingInheritedMember_ArgumentNull(bool nonPublic)
-    => Assert.Throws<ArgumentNullException>(() => ((Type)null!).IsHidingInheritedMember(nonPublic));
+    => Assert.That(() => ((Type)null!).IsHidingInheritedMember(nonPublic), Throws.ArgumentNullException);
 }

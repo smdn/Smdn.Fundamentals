@@ -102,7 +102,10 @@ partial class MimeTypeTests {
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void Parse_InvalidFormat(string? s, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => MimeType.Parse(s!, provider: null));
+    => Assert.That(
+      () => MimeType.Parse(s!, provider: null),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void Parse_ReadOnlySpanOfChar_InvalidFormat(string? s, Type expectedExceptionType)
@@ -112,7 +115,10 @@ partial class MimeTypeTests {
       return;
     }
 
-    Assert.Throws(expectedExceptionType, () => MimeType.Parse(s.AsSpan(), provider: null));
+    Assert.That(
+      () => MimeType.Parse(s.AsSpan(), provider: null),
+      Throws.TypeOf(expectedExceptionType)
+    );
   }
 
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
@@ -134,7 +140,10 @@ partial class MimeTypeTests {
   [TestCaseSource(nameof(YieldParseInvalidFormatTestCases))]
   public void IParsable_Parse_InvalidFormat(string? s, Type expectedExceptionType)
   {
-    Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s!));
+    Assert.That(
+      () => Parse<MimeType>(s!),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
     static TSelf Parse<TSelf>(string s) where TSelf : IParsable<TSelf>
       => TSelf.Parse(s, provider: null);
@@ -150,7 +159,10 @@ partial class MimeTypeTests {
       return;
     }
 
-    Assert.Throws(expectedExceptionType, () => Parse<MimeType>(s.AsSpan()));
+    Assert.That(
+      () => Parse<MimeType>(s.AsSpan()),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
     static TSelf Parse<TSelf>(ReadOnlySpan<char> s) where TSelf : ISpanParsable<TSelf>
       => TSelf.Parse(s, provider: null);

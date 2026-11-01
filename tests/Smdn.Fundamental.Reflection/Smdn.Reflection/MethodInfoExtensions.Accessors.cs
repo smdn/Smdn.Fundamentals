@@ -151,7 +151,7 @@ partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsPropertyGetMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsPropertyGetMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsPropertyGetMethod(), Throws.ArgumentNullException);
 
   [TestCaseSourceAttribute(nameof(YieldTestCases_PropertyAccessors))]
   public void IsPropertySetMethod(MethodInfo method, PropertyAccessorAttribute attr)
@@ -164,7 +164,7 @@ partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsPropertySetMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsPropertySetMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsPropertySetMethod(), Throws.ArgumentNullException);
 
   [TestCaseSourceAttribute(nameof(YieldTestCases_PropertyAccessors))]
   public void IsPropertyAccessorMethod(MethodInfo method, PropertyAccessorAttribute attr)
@@ -177,7 +177,7 @@ partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsPropertyAccessorMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsPropertyAccessorMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsPropertyAccessorMethod(), Throws.ArgumentNullException);
 
   [TestCaseSourceAttribute(nameof(YieldTestCases_PropertyAccessors))]
   public void TryGetPropertyFromAccessorMethod(MethodInfo method, PropertyAccessorAttribute attr)
@@ -218,7 +218,7 @@ partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsEventAddMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsEventAddMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsEventAddMethod(), Throws.ArgumentNullException);
 
   [TestCaseSourceAttribute(nameof(YieldTestCases_EventAccessors))]
   public void IsEventRemoveMethod(MethodInfo method, EventAccessorAttribute attr)
@@ -231,7 +231,7 @@ partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsEventRemoveMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsEventRemoveMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsEventRemoveMethod(), Throws.ArgumentNullException);
 
   [TestCaseSourceAttribute(nameof(YieldTestCases_EventAccessors))]
   public void IsEventAccessorMethod(MethodInfo method, EventAccessorAttribute attr)
@@ -244,7 +244,7 @@ partial class MethodInfoExtensionsTests {
 
   [Test]
   public void IsEventAccessorMethod_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((MethodInfo)null!).IsEventAccessorMethod());
+    => Assert.That(() => ((MethodInfo)null!).IsEventAccessorMethod(), Throws.ArgumentNullException);
 
   [TestCaseSourceAttribute(nameof(YieldTestCases_EventAccessors))]
   public void TryGetEventFromAccessorMethod(MethodInfo method, EventAccessorAttribute attr)

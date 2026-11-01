@@ -34,8 +34,8 @@ end";
         Assert.That(stream.CanSeek, Is.False, "CanSeek");
         Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Length, Is.EqualTo(-1)), "Length");
-        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Position, Is.EqualTo(-1)), "Position");
+        Assert.That(() => Assert.That(stream.Length, Is.EqualTo(-1)), Throws.TypeOf<NotSupportedException>(), "Length");
+        Assert.That(() => Assert.That(stream.Position, Is.EqualTo(-1)), Throws.TypeOf<NotSupportedException>(), "Position");
 
         stream.Dispose();
 
@@ -44,8 +44,8 @@ end";
         Assert.That(stream.CanSeek, Is.False, "CanSeek");
         Assert.That(stream.CanTimeout, Is.False, "CanTimeout");
 
-        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Length, Is.EqualTo(-1)), "Length");
-        Assert.Throws<NotSupportedException>(() => Assert.That(stream.Position, Is.EqualTo(-1)), "Position");
+        Assert.That(() => Assert.That(stream.Length, Is.EqualTo(-1)), Throws.TypeOf<NotSupportedException>(), "Length");
+        Assert.That(() => Assert.That(stream.Position, Is.EqualTo(-1)), Throws.TypeOf<NotSupportedException>(), "Position");
       }
     }
 
@@ -58,17 +58,17 @@ end";
 end";
 
       using (var stream = new UUDecodingStream(CreateStream(input))) {
-        Assert.Throws<NotSupportedException>(() => stream.Write(new byte[] {0x00}, 0, 1));
-        Assert.Throws<NotSupportedException>(() => stream.WriteByte((byte)0x00));
-        Assert.Throws<NotSupportedException>(() => stream.Seek(0L, SeekOrigin.Begin));
-        Assert.Throws<NotSupportedException>(() => stream.SetLength(0L));
+        Assert.That(() => stream.Write(new byte[] {0x00}, 0, 1), Throws.TypeOf<NotSupportedException>());
+        Assert.That(() => stream.WriteByte((byte)0x00), Throws.TypeOf<NotSupportedException>());
+        Assert.That(() => stream.Seek(0L, SeekOrigin.Begin), Throws.TypeOf<NotSupportedException>());
+        Assert.That(() => stream.SetLength(0L), Throws.TypeOf<NotSupportedException>());
 
         stream.Dispose();
 
-        Assert.Throws<ObjectDisposedException>(() => stream.Write(new byte[] {0x00}, 0, 1));
-        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte((byte)0x00));
-        Assert.Throws<ObjectDisposedException>(() => stream.Seek(0L, SeekOrigin.Begin));
-        Assert.Throws<ObjectDisposedException>(() => stream.SetLength(0L));
+        Assert.That(() => stream.Write(new byte[] {0x00}, 0, 1), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(() => stream.WriteByte((byte)0x00), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(() => stream.Seek(0L, SeekOrigin.Begin), Throws.TypeOf<ObjectDisposedException>());
+        Assert.That(() => stream.SetLength(0L), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -82,7 +82,7 @@ end";
 
       using (var baseStream = CreateStream(input)) {
         using (var stream = new UUDecodingStream(baseStream)) {
-          Assert.DoesNotThrow(() => stream.Flush());
+          Assert.That(() => stream.Flush(), Throws.Nothing);
         }
       }
     }
@@ -99,20 +99,20 @@ end";
         using (var stream = new UUDecodingStream(baseStream)) {
           var buffer = new byte[3];
 
-          Assert.DoesNotThrow(() => _ = stream.Read(buffer, 0, 1), "Read");
-          Assert.DoesNotThrow(() => stream.ReadByte(), "ReadByte");
+          Assert.That(() => _ = stream.Read(buffer, 0, 1), Throws.Nothing, "Read");
+          Assert.That(() => stream.ReadByte(), Throws.Nothing, "ReadByte");
 
           stream.Dispose();
 
-          Assert.Throws<ObjectDisposedException>(() => _ = stream.Read(buffer, 0, 1), "Read");
-          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte(), "ReadByte");
-          Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8))), "Permissions");
-          Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.FileName, Is.EqualTo("cat.txt")), "FileName");
-          Assert.Throws<ObjectDisposedException>(() => Assert.That(stream.EndOfFile, Is.True), "EndOfFile");
+          Assert.That(() => _ = stream.Read(buffer, 0, 1), Throws.TypeOf<ObjectDisposedException>(), "Read");
+          Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>(), "ReadByte");
+          Assert.That(() => Assert.That(stream.Permissions, Is.EqualTo(Convert.ToUInt32("0644", 8))), Throws.TypeOf<ObjectDisposedException>(), "Permissions");
+          Assert.That(() => Assert.That(stream.FileName, Is.EqualTo("cat.txt")), Throws.TypeOf<ObjectDisposedException>(), "FileName");
+          Assert.That(() => Assert.That(stream.EndOfFile, Is.True), Throws.TypeOf<ObjectDisposedException>(), "EndOfFile");
 
-          Assert.Throws<ObjectDisposedException>(() => baseStream.ReadByte(), "baseStream.ReadByte()");
+          Assert.That(() => baseStream.ReadByte(), Throws.TypeOf<ObjectDisposedException>(), "baseStream.ReadByte()");
 
-          Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() again");
+          Assert.That(() => stream.Dispose(), Throws.Nothing, "Dispose() again");
         }
       }
     }
@@ -129,9 +129,9 @@ end";
         using (var stream = new UUDecodingStream(baseStream, true)) {
           stream.Dispose();
 
-          Assert.DoesNotThrow(() => baseStream.ReadByte(), "baseStream.ReadByte()");
+          Assert.That(() => baseStream.ReadByte(), Throws.Nothing, "baseStream.ReadByte()");
 
-          Assert.DoesNotThrow(() => stream.Dispose(), "Dispose() again");
+          Assert.That(() => stream.Dispose(), Throws.Nothing, "Dispose() again");
         }
       }
     }
@@ -239,7 +239,7 @@ begin 1 1.txt
 `
 end
 
-begin 10000 2.txt   
+begin 10000 2.txt
 #0V%T
 `
 end
@@ -249,7 +249,7 @@ begin 888      3.txt
 `
 end
 
-begin 777      4.txt            
+begin 777      4.txt
 #0V%T
 `
 end
@@ -373,7 +373,10 @@ end
 end";
       using var stream = new UUDecodingStream(CreateStream(input));
 
-      Assert.Throws(expectedExceptionType, () => _ = stream.Read(buffer, offset, count));
+      Assert.That(
+        () => _ = stream.Read(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
     }
 
 #if false
@@ -387,9 +390,10 @@ end";
       int count,
       Type expectedExceptionType
     )
-    {
-      Assert.Throws(expectedExceptionType, () => stream.ReadAsync(buffer, offset, count));
-    }
+      => Assert.That(
+        () => stream.ReadAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType)
+      );
 #endif
   }
 }

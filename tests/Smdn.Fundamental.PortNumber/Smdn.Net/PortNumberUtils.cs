@@ -42,20 +42,22 @@ public class PortNumberUtilsTests {
 
   [Test]
   public void CreateServiceWithAvailablePort_ArgumentNull_CreateService()
-    => Assert.Throws<ArgumentNullException>(
+    => Assert.That(
       () => PortNumberUtils.CreateServiceWithAvailablePort<int>(
         createService: null!,
         isPortInUseException: static ex => ex is NotSupportedException
-      )
+      ),
+      Throws.ArgumentNullException
     );
 
   [Test]
   public void CreateServiceWithAvailablePort_ArgumentNull_IsPortInUseException()
-    => Assert.Throws<ArgumentNullException>(
+    => Assert.That(
       () => PortNumberUtils.CreateServiceWithAvailablePort(
         createService: static port => port,
         isPortInUseException: null!
-      )
+      ),
+      Throws.ArgumentNullException
     );
 
   [Test]
@@ -67,12 +69,13 @@ public class PortNumberUtilsTests {
     static bool ExceptPort(int port)
       => !(min <= port && port <= max);
 
-    Assert.Throws<NotImplementedException>(
+    Assert.That(
       () => PortNumberUtils.CreateServiceWithAvailablePort<int>(
         createService: static port => throw new NotImplementedException("not implemented creating service"),
         exceptPort: ExceptPort,
         isPortInUseException: static ex => ex is NotSupportedException
-      )
+      ),
+      Throws.TypeOf<NotImplementedException>()
     );
   }
 
@@ -87,15 +90,16 @@ public class PortNumberUtilsTests {
 
     int servicePort = default;
 
-    Assert.DoesNotThrow(() => {
-      servicePort = PortNumberUtils.CreateServiceWithAvailablePort(
+    Assert.That(
+      () => servicePort = PortNumberUtils.CreateServiceWithAvailablePort(
         createService: static port => port == max
           ? port
           : throw new NotSupportedException($"cannot create service with port {port}"),
         exceptPort: ExceptPort,
         isPortInUseException: static ex => ex is NotSupportedException
-      );
-    });
+      ),
+      Throws.Nothing
+    );
 
     Assert.That(servicePort, Is.EqualTo(max));
   }
@@ -103,12 +107,13 @@ public class PortNumberUtilsTests {
   [Test]
   public void CreateServiceWithAvailablePort_NoAvailablePort()
   {
-    Assert.Throws<InvalidOperationException>(
+    Assert.That(
       () => PortNumberUtils.CreateServiceWithAvailablePort(
         createService: static port => port,
         exceptPort: static port => true /* except ALL ports */,
         isPortInUseException: static ex => false
-      )
+      ),
+      Throws.InvalidOperationException
     );
   }
 
@@ -174,12 +179,13 @@ public class PortNumberUtilsTests {
         break;
       }
 
-      Assert.Throws<InvalidOperationException>(
+      Assert.That(
         () => PortNumberUtils.CreateServiceWithAvailablePort(
           createService: CreateListener,
           exceptPort: ExceptPort,
           isPortInUseException: static ex => ex is SocketException
-        )
+        ),
+        Throws.InvalidOperationException
       );
     }
     finally {

@@ -37,12 +37,12 @@ namespace Smdn.Collections {
       Assert.That(list.Slice(10), Is.EqualTo(new int[] { }));
       Assert.That(list.Slice(10, 0), Is.EqualTo(new int[] { }));
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => list.Slice(-1, 1), "argument exception #1");
-      Assert.Throws<ArgumentOutOfRangeException>(() => list.Slice(1, -1), "argument exception #2");
-      Assert.Throws<ArgumentException>(() => list.Slice(10, 1), "argument exception #3");
-      Assert.Throws<ArgumentException>(() => list.Slice(1, 10), "argument exception #4");
-      Assert.Throws<ArgumentException>(() => list.Slice(11, 0), "argument exception #5");
-      Assert.Throws<ArgumentException>(() => list.Slice(0, 11), "argument exception #6");
+      Assert.That(() => list.Slice(-1, 1), Throws.TypeOf<ArgumentOutOfRangeException>(), "argument exception #1");
+      Assert.That(() => list.Slice(1, -1), Throws.TypeOf<ArgumentOutOfRangeException>(), "argument exception #2");
+      Assert.That(() => list.Slice(10, 1), Throws.ArgumentException, "argument exception #3");
+      Assert.That(() => list.Slice(1, 10), Throws.ArgumentException, "argument exception #4");
+      Assert.That(() => list.Slice(11, 0), Throws.ArgumentException, "argument exception #5");
+      Assert.That(() => list.Slice(0, 11), Throws.ArgumentException, "argument exception #6");
 
       // test IReadOnlyList.Count
       Assert.That(list.Slice(0).Count, Is.EqualTo(10));
@@ -54,10 +54,10 @@ namespace Smdn.Collections {
       Assert.That(list.Slice(2, 3)[0], Is.EqualTo(2));
       Assert.That(list.Slice(2, 3)[1], Is.EqualTo(3));
       Assert.That(list.Slice(2, 3)[2], Is.EqualTo(4));
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[-1], Is.Zero));
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(2, 3)[3], Is.Zero));
+      Assert.That(() => Assert.That(list.Slice(2, 3)[-1], Is.Zero), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => Assert.That(list.Slice(2, 3)[3], Is.Zero), Throws.TypeOf<ArgumentOutOfRangeException>());
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => Assert.That(list.Slice(0, 0)[0], Is.Zero));
+      Assert.That(() => Assert.That(list.Slice(0, 0)[0], Is.Zero), Throws.TypeOf<ArgumentOutOfRangeException>());
 
       // test enumerator
       Assert.That(list.Slice(0, 3).ToArray(), Is.EqualTo(new[] { 0, 1, 2 }));
@@ -91,13 +91,13 @@ namespace Smdn.Collections {
       Assert.That(list.IndexOf(item: 2, 0, 4), Is.EqualTo(2));
       Assert.That(list.IndexOf(item: 2, 4, 0), Is.EqualTo(-1));
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, -1));
-      Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, 5));
+      Assert.That(() => list.IndexOf(default, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => list.IndexOf(default, 5), Throws.TypeOf<ArgumentOutOfRangeException>());
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => list.IndexOf(default, 0, -1));
-      Assert.Throws<TExpectedArgumentException>(() => list.IndexOf(default, 0, 5)); // List<T>.IndexOf() throws ArgumentOutOfRangeException
-      Assert.Throws<TExpectedArgumentException>(() => list.IndexOf(default, 1, 4)); // List<T>.IndexOf() throws ArgumentOutOfRangeException
-      Assert.Throws<TExpectedArgumentException>(() => list.IndexOf(default, 4, 1)); // List<T>.IndexOf() throws ArgumentOutOfRangeException
+      Assert.That(() => list.IndexOf(default, 0, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => list.IndexOf(default, 0, 5), Throws.TypeOf<TExpectedArgumentException>()); // List<T>.IndexOf() throws ArgumentOutOfRangeException
+      Assert.That(() => list.IndexOf(default, 1, 4), Throws.TypeOf<TExpectedArgumentException>()); // List<T>.IndexOf() throws ArgumentOutOfRangeException
+      Assert.That(() => list.IndexOf(default, 4, 1), Throws.TypeOf<TExpectedArgumentException>()); // List<T>.IndexOf() throws ArgumentOutOfRangeException
     }
 
     [Test]

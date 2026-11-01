@@ -24,7 +24,11 @@ partial class LineOrientedStreamTests {
     foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
       using var stream = CreateStream(type, new MemoryStream(), 8);
 
-      Assert.Throws(expectedExceptionType, () => stream.Write(buffer, offset, count), $"type = {type}");
+      Assert.That(
+        () => stream.Write(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType),
+        $"type = {type}"
+      );
     }
   }
 
@@ -42,7 +46,11 @@ partial class LineOrientedStreamTests {
     foreach (var type in new[] { StreamType.Strict, StreamType.Loose }) {
       using var stream = CreateStream(type, new MemoryStream(), 8);
 
-      Assert.Throws(expectedExceptionType, () => stream.WriteAsync(buffer, offset, count), $"type = {type}");
+      Assert.That(
+        () => stream.WriteAsync(buffer, offset, count),
+        Throws.TypeOf(expectedExceptionType),
+        $"type = {type}"
+      );
     }
   }
 

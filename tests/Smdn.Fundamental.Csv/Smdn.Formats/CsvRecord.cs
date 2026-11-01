@@ -18,8 +18,8 @@ namespace Smdn.Formats {
 
       Assert.That(CsvRecord.ToJoined(Enumerable.Empty<string>().ToArray()), Is.EqualTo(string.Empty), "argument empty");
 
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined(csv: null!), "argument null");
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.ToJoined((IEnumerable<string>)null!), "argument null");
+      Assert.That(() => CsvRecord.ToJoined(csv: null!), Throws.ArgumentNullException, "argument null");
+      Assert.That(() => CsvRecord.ToJoined((IEnumerable<string>)null!), Throws.ArgumentNullException, "argument null");
     }
 
     [Test]
@@ -50,7 +50,7 @@ namespace Smdn.Formats {
 
       Assert.That(CsvRecord.Split(string.Empty), Is.EqualTo(Enumerable.Empty<string>()).AsCollection, "argument empty");
 
-      Assert.Throws<ArgumentNullException>(() => CsvRecord.Split(csv: null!), "argument null");
+      Assert.That(() => CsvRecord.Split(csv: null!), Throws.ArgumentNullException, "argument null");
     }
 
     [Test]

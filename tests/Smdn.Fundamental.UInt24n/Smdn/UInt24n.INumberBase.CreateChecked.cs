@@ -231,24 +231,24 @@ partial class UInt24Tests {
   [Test]
   public void INumberBase_CreateChecked_OverflowException()
   {
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((sbyte)-1), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((short)-1), "short -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((uint)0x1_000000), "uint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((int)-1), "int -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((int)0x1_000000), "int 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((ulong)0x1_000000), "ulong 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((long)-1), "long -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((long)0x1_000000), "long 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((nuint)0x1_000000), "nuint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((nint)(-1)), "nint -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((nint)0x1_000000), "nint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((Half)(-1)), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((float)-1), "float -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((float)0x1_000000), "float 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((double)-1), "double -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((double)0x1_000000), "double 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((decimal)-1), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt24.CreateChecked((decimal)0x1_000000), "decimal 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((sbyte)-1), Throws.TypeOf<OverflowException>(), "sbyte -1");
+    Assert.That(() => UInt24.CreateChecked((short)-1), Throws.TypeOf<OverflowException>(), "short -1");
+    Assert.That(() => UInt24.CreateChecked((uint)0x1_000000), Throws.TypeOf<OverflowException>(), "uint 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((int)-1), Throws.TypeOf<OverflowException>(), "int -1");
+    Assert.That(() => UInt24.CreateChecked((int)0x1_000000), Throws.TypeOf<OverflowException>(), "int 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((ulong)0x1_000000), Throws.TypeOf<OverflowException>(), "ulong 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((long)-1), Throws.TypeOf<OverflowException>(), "long -1");
+    Assert.That(() => UInt24.CreateChecked((long)0x1_000000), Throws.TypeOf<OverflowException>(), "long 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((nuint)0x1_000000), Throws.TypeOf<OverflowException>(), "nuint 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((nint)(-1)), Throws.TypeOf<OverflowException>(), "nint -1");
+    Assert.That(() => UInt24.CreateChecked((nint)0x1_000000), Throws.TypeOf<OverflowException>(), "nint 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((Half)(-1)), Throws.TypeOf<OverflowException>(), "Half -1");
+    Assert.That(() => UInt24.CreateChecked((float)-1), Throws.TypeOf<OverflowException>(), "float -1");
+    Assert.That(() => UInt24.CreateChecked((float)0x1_000000), Throws.TypeOf<OverflowException>(), "float 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((double)-1), Throws.TypeOf<OverflowException>(), "double -1");
+    Assert.That(() => UInt24.CreateChecked((double)0x1_000000), Throws.TypeOf<OverflowException>(), "double 0x1_000000");
+    Assert.That(() => UInt24.CreateChecked((decimal)-1), Throws.TypeOf<OverflowException>(), "decimal -1");
+    Assert.That(() => UInt24.CreateChecked((decimal)0x1_000000), Throws.TypeOf<OverflowException>(), "decimal 0x1_000000");
   }
 }
 
@@ -256,23 +256,23 @@ partial class UInt48Tests {
   [Test]
   public void INumberBase_CreateChecked_OverflowException()
   {
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((sbyte)-1), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((short)-1), "short -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((int)-1), "int -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((ulong)0x1_000000_000000), "ulong 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((long)-1), "long -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((long)0x1_000000_000000), "long 0x1_000000_000000");
+    Assert.That(() => UInt48.CreateChecked((sbyte)-1), Throws.TypeOf<OverflowException>(), "sbyte -1");
+    Assert.That(() => UInt48.CreateChecked((short)-1), Throws.TypeOf<OverflowException>(), "short -1");
+    Assert.That(() => UInt48.CreateChecked((int)-1), Throws.TypeOf<OverflowException>(), "int -1");
+    Assert.That(() => UInt48.CreateChecked((ulong)0x1_000000_000000), Throws.TypeOf<OverflowException>(), "ulong 0x1_000000_000000");
+    Assert.That(() => UInt48.CreateChecked((long)-1), Throws.TypeOf<OverflowException>(), "long -1");
+    Assert.That(() => UInt48.CreateChecked((long)0x1_000000_000000), Throws.TypeOf<OverflowException>(), "long 0x1_000000_000000");
     if (Environment.Is64BitProcess) {
-      Assert.Throws<OverflowException>(() => UInt48.CreateChecked(unchecked((nuint)0x1_000000_000000)), "nuint 0x1_000000_000000");
-      Assert.Throws<OverflowException>(() => UInt48.CreateChecked(unchecked((nint)0x1_000000_000000)), "nint 0x1_000000_000000");
+      Assert.That(() => UInt48.CreateChecked(unchecked((nuint)0x1_000000_000000)), Throws.TypeOf<OverflowException>(), "nuint 0x1_000000_000000");
+      Assert.That(() => UInt48.CreateChecked(unchecked((nint)0x1_000000_000000)), Throws.TypeOf<OverflowException>(), "nint 0x1_000000_000000");
     }
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((Half)(-1)), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((float)-1), "float -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((float)0x1_000000_000000), "float 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((double)-1), "double -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((double)0x1_000000_000000), "double 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((decimal)-1), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt48.CreateChecked((decimal)0x1_000000_000000), "decimal 0x1_000000_000000");
+    Assert.That(() => UInt48.CreateChecked((Half)(-1)), Throws.TypeOf<OverflowException>(), "Half -1");
+    Assert.That(() => UInt48.CreateChecked((float)-1), Throws.TypeOf<OverflowException>(), "float -1");
+    Assert.That(() => UInt48.CreateChecked((float)0x1_000000_000000), Throws.TypeOf<OverflowException>(), "float 0x1_000000_000000");
+    Assert.That(() => UInt48.CreateChecked((double)-1), Throws.TypeOf<OverflowException>(), "double -1");
+    Assert.That(() => UInt48.CreateChecked((double)0x1_000000_000000), Throws.TypeOf<OverflowException>(), "double 0x1_000000_000000");
+    Assert.That(() => UInt48.CreateChecked((decimal)-1), Throws.TypeOf<OverflowException>(), "decimal -1");
+    Assert.That(() => UInt48.CreateChecked((decimal)0x1_000000_000000), Throws.TypeOf<OverflowException>(), "decimal 0x1_000000_000000");
   }
 }
 
@@ -280,24 +280,24 @@ partial class UInt24Tests {
   [Test]
   public void INumberBase_TryConvertFromChecked_Overflow()
   {
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((sbyte)-1, out var _), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((short)-1, out var _), "short -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((uint)0x1_000000, out var _), "uint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((int)-1, out var _), "int -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((int)0x1_000000, out var _), "int 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((ulong)0x1_000000, out var _), "ulong 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((long)-1, out var _), "long -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((long)0x1_000000, out var _), "long 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((nuint)0x1_000000, out var _), "nuint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((nint)(-1), out var _), "nint -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((nint)0x1_000000, out var _), "nint 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((Half)(-1), out var _), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((float)-1, out var _), "float -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((float)0x1_000000, out var _), "float 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((double)-1, out var _), "double -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((double)0x1_000000, out var _), "double 0x1_000000");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((decimal)-1, out var _), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((decimal)0x1_000000, out var _), "decimal 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((sbyte)-1, out var _), Throws.TypeOf<OverflowException>(), "sbyte -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((short)-1, out var _), Throws.TypeOf<OverflowException>(), "short -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((uint)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "uint 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((int)-1, out var _), Throws.TypeOf<OverflowException>(), "int -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((int)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "int 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((ulong)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "ulong 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((long)-1, out var _), Throws.TypeOf<OverflowException>(), "long -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((long)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "long 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((nuint)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "nuint 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((nint)(-1), out var _), Throws.TypeOf<OverflowException>(), "nint -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((nint)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "nint 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((Half)(-1), out var _), Throws.TypeOf<OverflowException>(), "Half -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((float)-1, out var _), Throws.TypeOf<OverflowException>(), "float -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((float)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "float 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((double)-1, out var _), Throws.TypeOf<OverflowException>(), "double -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((double)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "double 0x1_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((decimal)-1, out var _), Throws.TypeOf<OverflowException>(), "decimal -1");
+    Assert.That(() => UInt24.TryConvertFromChecked((decimal)0x1_000000, out var _), Throws.TypeOf<OverflowException>(), "decimal 0x1_000000");
   }
 }
 
@@ -305,23 +305,23 @@ partial class UInt48Tests {
   [Test]
   public void INumberBase_TryConvertFromChecked_Overflow()
   {
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((sbyte)-1, out var _), "sbyte -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((short)-1, out var _), "short -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((int)-1, out var _), "int -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((ulong)0x1_000000_000000, out var _), "ulong 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((long)-1, out var _), "long -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((long)0x1_000000_000000, out var _), "long 0x1_000000_000000");
+    Assert.That(() => UInt48.TryConvertFromChecked((sbyte)-1, out var _), Throws.TypeOf<OverflowException>(), "sbyte -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((short)-1, out var _), Throws.TypeOf<OverflowException>(), "short -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((int)-1, out var _), Throws.TypeOf<OverflowException>(), "int -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((ulong)0x1_000000_000000, out var _), Throws.TypeOf<OverflowException>(), "ulong 0x1_000000_000000");
+    Assert.That(() => UInt48.TryConvertFromChecked((long)-1, out var _), Throws.TypeOf<OverflowException>(), "long -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((long)0x1_000000_000000, out var _), Throws.TypeOf<OverflowException>(), "long 0x1_000000_000000");
     if (Environment.Is64BitProcess) {
-      Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked(unchecked((nuint)0x1_000000_000000), out var _), "nuint 0x1_000000_000000");
-      Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked(unchecked((nint)0x1_000000_000000), out var _), "nint 0x1_000000_000000");
+      Assert.That(() => UInt48.TryConvertFromChecked(unchecked((nuint)0x1_000000_000000), out var _), Throws.TypeOf<OverflowException>(), "nuint 0x1_000000_000000");
+      Assert.That(() => UInt48.TryConvertFromChecked(unchecked((nint)0x1_000000_000000), out var _), Throws.TypeOf<OverflowException>(), "nint 0x1_000000_000000");
     }
-    Assert.Throws<OverflowException>(() => UInt24.TryConvertFromChecked((Half)(-1), out var _), "Half -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((float)-1, out var _), "float -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((float)0x1_000000_000000, out var _), "float 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((double)-1, out var _), "double -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((double)0x1_000000_000000, out var _), "double 0x1_000000_000000");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((decimal)-1, out var _), "decimal -1");
-    Assert.Throws<OverflowException>(() => UInt48.TryConvertFromChecked((decimal)0x1_000000_000000, out var _), "decimal 0x1_000000_000000");
+    Assert.That(() => UInt24.TryConvertFromChecked((Half)(-1), out var _), Throws.TypeOf<OverflowException>(), "Half -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((float)-1, out var _), Throws.TypeOf<OverflowException>(), "float -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((float)0x1_000000_000000, out var _), Throws.TypeOf<OverflowException>(), "float 0x1_000000_000000");
+    Assert.That(() => UInt48.TryConvertFromChecked((double)-1, out var _), Throws.TypeOf<OverflowException>(), "double -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((double)0x1_000000_000000, out var _), Throws.TypeOf<OverflowException>(), "double 0x1_000000_000000");
+    Assert.That(() => UInt48.TryConvertFromChecked((decimal)-1, out var _), Throws.TypeOf<OverflowException>(), "decimal -1");
+    Assert.That(() => UInt48.TryConvertFromChecked((decimal)0x1_000000_000000, out var _), Throws.TypeOf<OverflowException>(), "decimal 0x1_000000_000000");
   }
 }
 
@@ -329,8 +329,8 @@ partial class UInt24Tests {
   [Test]
   public void INumberBase_CreateChecked_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => UInt24.CreateChecked(BigInteger.Zero), "BigInteger");
-    Assert.Throws<NotSupportedException>(() => UInt24.CreateChecked(Complex.Zero), "Complex");
+    Assert.That(() => UInt24.CreateChecked(BigInteger.Zero), Throws.TypeOf<NotSupportedException>(), "BigInteger");
+    Assert.That(() => UInt24.CreateChecked(Complex.Zero), Throws.TypeOf<NotSupportedException>(), "Complex");
   }
 }
 
@@ -338,8 +338,8 @@ partial class UInt48Tests {
   [Test]
   public void INumberBase_CreateChecked_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => UInt48.CreateChecked(BigInteger.Zero), "BigInteger");
-    Assert.Throws<NotSupportedException>(() => UInt48.CreateChecked(Complex.Zero), "Complex");
+    Assert.That(() => UInt48.CreateChecked(BigInteger.Zero), Throws.TypeOf<NotSupportedException>(), "BigInteger");
+    Assert.That(() => UInt48.CreateChecked(Complex.Zero), Throws.TypeOf<NotSupportedException>(), "Complex");
   }
 }
 
@@ -347,11 +347,11 @@ partial class UInt24nTests {
   [Test]
   public void INumberBase_CreateChecked_TypeNotSupportedException()
   {
-    Assert.Throws<NotSupportedException>(() => CreateChecked<UInt24, Complex>());
-    Assert.Throws<NotSupportedException>(() => CreateChecked<UInt48, Complex>());
+    Assert.That(() => CreateChecked<UInt24, Complex>(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(() => CreateChecked<UInt48, Complex>(), Throws.TypeOf<NotSupportedException>());
 
-    Assert.Throws<NotSupportedException>(() => CreateChecked<UInt24, BigInteger>());
-    Assert.Throws<NotSupportedException>(() => CreateChecked<UInt48, BigInteger>());
+    Assert.That(() => CreateChecked<UInt24, BigInteger>(), Throws.TypeOf<NotSupportedException>());
+    Assert.That(() => CreateChecked<UInt48, BigInteger>(), Throws.TypeOf<NotSupportedException>());
 
     static TUInt24n CreateChecked<TUInt24n, TOther>() where TUInt24n : INumberBase<TUInt24n> where TOther : INumberBase<TOther>
       => TUInt24n.CreateChecked(TOther.Zero);

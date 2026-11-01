@@ -16,7 +16,7 @@ public class XEntityReferenceTests {
   [TestCase(null)]
   [TestCase("")]
   public void Ctor_InvalidName(string? name)
-    => Assert.Throws<ArgumentException>(() => new XEntityReference(name!));
+    => Assert.That(() => new XEntityReference(name!), Throws.ArgumentException);
 
   [Test]
   public void TestWriteTo()

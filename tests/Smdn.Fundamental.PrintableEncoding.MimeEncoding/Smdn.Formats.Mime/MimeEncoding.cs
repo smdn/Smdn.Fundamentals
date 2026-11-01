@@ -88,12 +88,12 @@ public class MimeEncodingTests {
 
   [Test]
   public void Encode_InvalidCharset()
-    => Assert.Throws<ArgumentNullException>(() => MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null!));
+    => Assert.That(() => MimeEncoding.Encode("漢字abcかな123カナ", MimeEncodingMethod.Base64, null!), Throws.ArgumentNullException);
 
   [TestCase(0x7fffffff)]
   [TestCase(MimeEncodingMethod.None)]
   public void Encode_InvalidEncoding(MimeEncodingMethod encoding)
-    => Assert.Throws<ArgumentException>(() => MimeEncoding.Encode("漢字abcかな123カナ", encoding, Encoding.UTF8));
+    => Assert.That(() => MimeEncoding.Encode("漢字abcかな123カナ", encoding, Encoding.UTF8), Throws.ArgumentException);
 
   [Test]
   public void Decode_ContainsLanguageSpecification()
@@ -223,7 +223,7 @@ public class MimeEncodingTests {
 
   [Test]
   public void Decode_InvalidEncoding()
-    => Assert.Throws<FormatException>(() => MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="));
+    => Assert.That(() => MimeEncoding.Decode("=?utf-8?x?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="), Throws.TypeOf<FormatException>());
 
   [Test]
   public void Decode_InvalidEncoding_ConvertToAlternativeText()
@@ -261,13 +261,13 @@ public class MimeEncodingTests {
 
   [Test]
   public void Decode_CharsetNotBeSupported()
-  {
-    var ex = Assert.Throws<EncodingNotSupportedException>(
-      () => MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=")
+    => Assert.That(
+      () => MimeEncoding.Decode("=?invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?="),
+      Throws
+        .TypeOf<EncodingNotSupportedException>()
+        .With
+        .Property(nameof(EncodingNotSupportedException.EncodingName)).EqualTo("invalid")
     );
-
-    Assert.That(ex!.EncodingName, Is.EqualTo("invalid"), "EncodingName");
-  }
 
   [Test]
   public void Decode_ValidCharset_SelectFallback()
@@ -276,14 +276,15 @@ public class MimeEncodingTests {
     MimeEncodingMethod encoding = default;
     Encoding charset = default;
 
-    Assert.DoesNotThrow(() => {
-      ret = MimeEncoding.Decode(
+    Assert.That(
+      () => ret = MimeEncoding.Decode(
         "=?utf-8?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
         name => throw new InvalidOperationException("callback must not be called"),
         out encoding,
         out charset
-      );
-    });
+      ),
+      Throws.Nothing
+    );
 
     Assert.That(ret, Is.EqualTo("漢字abcかな123カナ"));
     Assert.That(encoding, Is.EqualTo(MimeEncodingMethod.QEncoding));
@@ -302,14 +303,15 @@ public class MimeEncodingTests {
     MimeEncodingMethod encoding = default;
     Encoding charset = default;
 
-    Assert.DoesNotThrow(() => {
-      ret = MimeEncoding.Decode(
+    Assert.That(
+      () => ret = MimeEncoding.Decode(
         "=?x-invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
         callback,
         out encoding,
         out charset
-      );
-    });
+      ),
+      Throws.Nothing
+    );
 
     Assert.That(ret, Is.EqualTo("漢字abcかな123カナ"));
     Assert.That(called, Is.True);
@@ -328,16 +330,19 @@ public class MimeEncodingTests {
     MimeEncodingMethod encoding = default;
     Encoding charset = default;
 
-    var ex = Assert.Throws<EncodingNotSupportedException>(
+    Assert.That(
       () => MimeEncoding.Decode(
         "=?x-invalid?q?=E6=BC=A2=E5=AD=97abc=E3=81=8B=E3=81=AA123=E3=82=AB=E3=83=8A?=",
         callback,
         out encoding,
         out charset
-      )
+      ),
+      Throws
+        .TypeOf<EncodingNotSupportedException>()
+        .With
+        .Property(nameof(EncodingNotSupportedException.EncodingName)).EqualTo("x-invalid")
     );
 
-    Assert.That(ex!.EncodingName, Is.EqualTo("x-invalid"), "EncodingName");
     Assert.That(called, Is.True);
     Assert.That(encoding, Is.EqualTo(MimeEncodingMethod.None));
     Assert.That(charset, Is.Null);
@@ -350,8 +355,8 @@ public class MimeEncodingTests {
     Encoding charset = default;
     MimeEncodingMethod encoding = default;
 
-    Assert.DoesNotThrow(() => {
-      ret = MimeEncoding.Decode(
+    Assert.That(
+      () => ret = MimeEncoding.Decode(
         "foo =?utf-8?q?===?= bar",
         null,
         (Encoding c, string m, string t) => {
@@ -362,8 +367,9 @@ public class MimeEncodingTests {
         },
         out encoding,
         out charset
-      );
-    });
+      ),
+      Throws.Nothing
+    );
 
     Assert.That(ret, Is.EqualTo("foobazbar"));
     Assert.That(encoding, Is.EqualTo(MimeEncodingMethod.QEncoding));
@@ -372,7 +378,7 @@ public class MimeEncodingTests {
 
   [TestCase("=?utf-8?q?===?=")]
   public void Decode_QEncoding_InvalidFormat(string input)
-    => Assert.Throws<FormatException>(() => MimeEncoding.Decode(input));
+    => Assert.That(() => MimeEncoding.Decode(input), Throws.TypeOf<FormatException>());
 
   [TestCase("=?utf-8?q?===?=", null, "=?utf-8?q?===?=")]
   [TestCase("=?utf-8?q?===?=", "", "")]
@@ -396,7 +402,7 @@ public class MimeEncodingTests {
 
   [TestCase("=?utf-8?b?****?=")]
   public void Decode_BEncoding_InvalidFormat(string input)
-    => Assert.Throws<FormatException>(() => MimeEncoding.Decode(input));
+    => Assert.That(() => MimeEncoding.Decode(input), Throws.TypeOf<FormatException>());
 
 
   [TestCase("=?utf-8?b?****?=", null, "=?utf-8?b?****?=")]

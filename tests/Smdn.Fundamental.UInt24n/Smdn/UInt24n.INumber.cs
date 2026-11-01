@@ -211,10 +211,10 @@ partial class UInt24nTests {
   {
     var (value, min, max) = input;
 
-    Assert.Throws<ArgumentException>(() => UInt24.Clamp(value, min, max), nameof(UInt24.Clamp));
+    Assert.That(() => UInt24.Clamp(value, min, max), Throws.ArgumentException, nameof(UInt24.Clamp));
 
 #if SYSTEM_NUMERICS_INUMBER
-    Assert.Throws<ArgumentException>(() => INumber_Clamp(value, min, max), nameof(INumber_Clamp));
+    Assert.That(() => INumber_Clamp(value, min, max), Throws.ArgumentException, nameof(INumber_Clamp));
 
     static TUInt24n INumber_Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
       => TUInt24n.Clamp(value, min, max);
@@ -234,10 +234,10 @@ partial class UInt24nTests {
   {
     var (value, min, max) = input;
 
-    Assert.Throws<ArgumentException>(() => UInt48.Clamp(value, min, max), nameof(UInt48.Clamp));
+    Assert.That(() => UInt48.Clamp(value, min, max), Throws.ArgumentException, nameof(UInt48.Clamp));
 
 #if SYSTEM_NUMERICS_INUMBER
-    Assert.Throws<ArgumentException>(() => INumber_Clamp(value, min, max), nameof(INumber_Clamp));
+    Assert.That(() => INumber_Clamp(value, min, max), Throws.ArgumentException, nameof(INumber_Clamp));
 
     static TUInt24n INumber_Clamp<TUInt24n>(TUInt24n value, TUInt24n min, TUInt24n max) where TUInt24n : INumber<TUInt24n>
       => TUInt24n.Clamp(value, min, max);

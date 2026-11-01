@@ -37,7 +37,7 @@ namespace Smdn.Security.Cryptography {
       var input = new byte[1];
       var output = new byte[3];
 
-      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+      Assert.That(() => t.TransformBlock(input, 0, input.Length, output, 0), Throws.TypeOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -63,7 +63,7 @@ namespace Smdn.Security.Cryptography {
       var input = new byte[1];
       var output = new byte[3];
 
-      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
+      Assert.That(() => t.TransformBlock(input, 0, input.Length, output, 0), Throws.TypeOf<ObjectDisposedException>());
     }
 
 #if false
@@ -148,7 +148,7 @@ namespace Smdn.Security.Cryptography {
         var inputBuffer = Encoding.ASCII.GetBytes(input);
         var outputBuffer = new byte[8];
 
-        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
+        Assert.That(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), Throws.TypeOf<FormatException>(), $"input: {input}");
       }
     }
 
@@ -174,7 +174,7 @@ namespace Smdn.Security.Cryptography {
 
         inputBuffer = Encoding.ASCII.GetBytes("=");
 
-        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0));
+        Assert.That(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), Throws.TypeOf<FormatException>());
       }
     }
 
@@ -215,7 +215,7 @@ namespace Smdn.Security.Cryptography {
         var inputBuffer = Encoding.ASCII.GetBytes(input);
         var outputBuffer = new byte[8];
 
-        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
+        Assert.That(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), Throws.TypeOf<FormatException>(), $"input: {input}");
       }
     }
 
@@ -235,7 +235,7 @@ namespace Smdn.Security.Cryptography {
         var outputBuffer = new byte[8];
 
 #if NET8_0_OR_GREATER
-        Assert.Throws<FormatException>(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), $"input: {input}");
+        Assert.That(() => t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0), Throws.TypeOf<FormatException>(), $"input: {input}");
 #else
         var transformedLength = t.TransformBlock(inputBuffer, 0, inputBuffer.Length, outputBuffer, 0);
 
@@ -267,16 +267,16 @@ namespace Smdn.Security.Cryptography {
       var outputBuffer = new byte[1];
 
       // buffer, offset, count, constraint
-      yield return new object[] { null, 0, 1, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
-      yield return new object[] { inputBuffer, -1, 0, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-      yield return new object[] { inputBuffer, 0, -1, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-      yield return new object[] { inputBuffer, 1, 1, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-      yield return new object[] { inputBuffer, 0, 2, outputBuffer, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+      yield return new object[] { null, 0, 1, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, -1, 0, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, 0, -1, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, 1, 1, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, 0, 2, outputBuffer, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
 #if !SYSTEM_SECURITY_CRYPTOGRAPHY_FROMBASE64TRANSFORM
       // System.Security.Cryptography.FromBase64Transform does not throw any exceptions in these cases
-      yield return new object[] { inputBuffer, 0, 1, null, 0, Is.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
-      yield return new object[] { inputBuffer, 0, 1, outputBuffer, -1, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
-      yield return new object[] { inputBuffer, 0, 1, outputBuffer, 1, Is.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, 0, 1, null, 0, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentNullException; System.Security.Cryptography.ToBase64Transform throws ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, 0, 1, outputBuffer, -1, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
+      yield return new object[] { inputBuffer, 0, 1, outputBuffer, 1, Throws.InstanceOf<ArgumentException>() }; // includes ArgumentOutOfRangeException
 #endif
     }
 
@@ -287,14 +287,14 @@ namespace Smdn.Security.Cryptography {
       int inputCount,
       byte[] outputBuffer,
       int outputOffset,
-      IResolveConstraint constraint
+      Constraint throwsConstraint
     )
     {
       using var t = Base64.CreateFromBase64Transform();
 
-      Assert.Throws(
-        constraint,
-        () => t.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+      Assert.That(
+        () => t.TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset),
+        throwsConstraint
       );
     }
 
@@ -324,7 +324,7 @@ namespace Smdn.Security.Cryptography {
         var inputBuffer = Encoding.ASCII.GetBytes(input);
         var outputBuffer = new byte[8];
 
-        Assert.Throws<FormatException>(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), $"input: {input}");
+        Assert.That(() => t.TransformFinalBlock(inputBuffer, 0, inputBuffer.Length), Throws.TypeOf<FormatException>(), $"input: {input}");
       }
     }
 
@@ -336,14 +336,14 @@ namespace Smdn.Security.Cryptography {
       byte[] inputBuffer,
       int inputOffset,
       int inputCount,
-      IResolveConstraint constraint
+      Constraint throwsConstraint
     )
     {
       using var t = Base64.CreateFromBase64Transform();
 
-      Assert.Throws(
-        constraint,
-        () => t.TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+      Assert.That(
+        () => t.TransformFinalBlock(inputBuffer, inputOffset, inputCount),
+        throwsConstraint
       );
     }
   }

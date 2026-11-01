@@ -39,11 +39,11 @@ public class ToRFC3501ModifiedBase64TransformTests {
     int inputCount,
     byte[] outputBuffer,
     int outputOffset,
-    IResolveConstraint constraint
+    Constraint throwsConstraint
   )
-    => Assert.Throws(
-      constraint,
-      () => new ToRFC3501ModifiedBase64Transform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+    => Assert.That(
+      () => new ToRFC3501ModifiedBase64Transform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset),
+      throwsConstraint
     );
 
   [TestCaseSource(
@@ -54,10 +54,10 @@ public class ToRFC3501ModifiedBase64TransformTests {
     byte[] inputBuffer,
     int inputOffset,
     int inputCount,
-    IResolveConstraint constraint
+    Constraint throwsConstraint
   )
-    => Assert.Throws(
-      constraint,
-      () => new ToRFC3501ModifiedBase64Transform().TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+    => Assert.That(
+      () => new ToRFC3501ModifiedBase64Transform().TransformFinalBlock(inputBuffer, inputOffset, inputCount),
+      throwsConstraint
     );
 }

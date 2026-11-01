@@ -82,27 +82,27 @@ partial class OctetEncodingTests {
   [Test]
   public void GetByteCount_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null!));
+    Assert.That(() => OctetEncoding.SevenBits.GetByteCount((string)null!), Throws.ArgumentNullException);
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_STRING_INT_INT
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((string)null!, 0, 0));
+    Assert.That(() => OctetEncoding.SevenBits.GetByteCount((string)null!, 0, 0), Throws.ArgumentNullException);
 #endif
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((char[])null!));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetByteCount((char[])null!, 0, 0));
+    Assert.That(() => OctetEncoding.SevenBits.GetByteCount((char[])null!), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetByteCount((char[])null!, 0, 0), Throws.ArgumentNullException);
   }
 
   [Test]
   public void GetBytes_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null!));
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes((string)null!), Throws.ArgumentNullException);
 #if SYSTEM_TEXT_ENCODING_GETBYTES_STRING_INT_INT
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null!, 0, 0));
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes((string)null!, 0, 0), Throws.ArgumentNullException);
 #endif
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((string)null!, 0, 0, new byte[0], 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes(string.Empty, 0, 0, (byte[])null!, 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null!));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null!, 0, 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes((char[])null!, 0, 0, new byte[0], 0));
-    Assert.Throws<ArgumentNullException>(() => OctetEncoding.SevenBits.GetBytes(new char[0], 0, 0, (byte[])null!, 0));
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes((string)null!, 0, 0, new byte[0], 0), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes(string.Empty, 0, 0, (byte[])null!, 0), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes((char[])null!), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes((char[])null!, 0, 0), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes((char[])null!, 0, 0, new byte[0], 0), Throws.ArgumentNullException);
+    Assert.That(() => OctetEncoding.SevenBits.GetBytes(new char[0], 0, 0, (byte[])null!, 0), Throws.ArgumentNullException);
   }
 
   [Test]
@@ -224,31 +224,31 @@ partial class OctetEncodingTests {
 
   [TestCaseSource(nameof(YieldTestCases_GetBytes_InvalidChar_SevenBits))]
   public void GetBytes_OfString_InvalidChar_SevenBits(string input)
-    => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.SevenBits.GetBytes(input));
+    => Assert.That(() => OctetEncoding.SevenBits.GetBytes(input), Throws.TypeOf<EncoderFallbackException>());
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   [TestCaseSource(nameof(YieldTestCases_GetBytes_InvalidChar_SevenBits))]
   public void GetBytes_OfReadOnlySpan_InvalidChar_SevenBits(string input)
-    => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.SevenBits.GetBytes(input.AsSpan(), new byte[0x10].AsSpan()));
+    => Assert.That(() => OctetEncoding.SevenBits.GetBytes(input.AsSpan(), new byte[0x10].AsSpan()), Throws.TypeOf<EncoderFallbackException>());
 #endif
 
   [TestCaseSource(nameof(YieldTestCases_GetBytes_InvalidChar_EightBits))]
   public void GetBytes_OfString_InvalidChar_EightBits(string input)
-    => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.EightBits.GetBytes(input));
+    => Assert.That(() => OctetEncoding.EightBits.GetBytes(input), Throws.TypeOf<EncoderFallbackException>());
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   [TestCaseSource(nameof(YieldTestCases_GetBytes_InvalidChar_EightBits))]
   public void GetBytes_OfReadOnlySpan_InvalidChar_EightBits(string input)
-    => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.EightBits.GetBytes(input.AsSpan(), new byte[0x10].AsSpan()));
+    => Assert.That(() => OctetEncoding.EightBits.GetBytes(input.AsSpan(), new byte[0x10].AsSpan()), Throws.TypeOf<EncoderFallbackException>());
 #endif
 
   [Test]
   public void GetBytes_InvalidChar_SevenBits()
-    => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.SevenBits.GetBytes("\x20\x40\x60\x80"));
+    => Assert.That(() => OctetEncoding.SevenBits.GetBytes("\x20\x40\x60\x80"), Throws.TypeOf<EncoderFallbackException>());
 
   [Test]
   public void GetBytes_InvalidChar_EightBits()
-    => Assert.Throws<EncoderFallbackException>(() => OctetEncoding.EightBits.GetBytes("INBOX.日本語"));
+    => Assert.That(() => OctetEncoding.EightBits.GetBytes("INBOX.日本語"), Throws.TypeOf<EncoderFallbackException>());
 
 #if SYSTEM_TEXT_ENCODING_CTOR_ENCODERFALLBACK_DECODERFALLBACK
   [Test]
@@ -269,15 +269,17 @@ partial class OctetEncodingTests {
 
   [Test]
   public void GetByteCount_OfString_EncoderFallback_Exception()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?")
+    => Assert.That(
+      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?"),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 
 #if SYSTEM_TEXT_ENCODING_GETBYTECOUNT_READONLYSPAN_OF_CHAR
   [Test]
   public void GetByteCount_OfReadOnlySpan_EncoderFallback_Exception()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?".AsSpan())
+    => Assert.That(
+      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?".AsSpan()),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 #endif
 
@@ -305,44 +307,50 @@ partial class OctetEncodingTests {
 
   [Test]
   public void GetBytes_OfString_EncoderFallback_Replacement_FallbackCharGreaterThanMaxValue_7bit()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 7, new EncoderReplacementFallback("\u0080")).GetBytes(" aA\u0080あ😩💥?")
+    => Assert.That(
+      () => CreateEncoding(bits: 7, new EncoderReplacementFallback("\u0080")).GetBytes(" aA\u0080あ😩💥?"),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   [Test]
   public void GetBytes_OfReadOnlySpan_EncoderFallback_Replacement_FallbackCharGreaterThanMaxValue_7bit()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 7, new EncoderReplacementFallback("\u0080")).GetBytes(" aA\u0080あ😩💥?".AsSpan(), new byte[0x10].AsSpan())
+    => Assert.That(
+      () => CreateEncoding(bits: 7, new EncoderReplacementFallback("\u0080")).GetBytes(" aA\u0080あ😩💥?".AsSpan(), new byte[0x10].AsSpan()),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 #endif
 
   [Test]
   public void GetBytes_OfString_EncoderFallback_Replacement_FallbackCharGreaterThanMaxValue_8bit()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 8, new EncoderReplacementFallback("\u0100")).GetBytes(" aA\u0080あ😩💥?")
+    => Assert.That(
+      () => CreateEncoding(bits: 8, new EncoderReplacementFallback("\u0100")).GetBytes(" aA\u0080あ😩💥?"),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
 
   [Test]
   public void GetBytes_OfReadOnlySpan_EncoderFallback_Replacement_FallbackCharGreaterThanMaxValue_8bit()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 8, new EncoderReplacementFallback("\u0100")).GetBytes(" aA\u0080あ😩💥?".AsSpan(), new byte[0x10].AsSpan())
+    => Assert.That(
+      () => CreateEncoding(bits: 8, new EncoderReplacementFallback("\u0100")).GetBytes(" aA\u0080あ😩💥?".AsSpan(), new byte[0x10].AsSpan()),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 #endif
 
   [Test]
   public void GetBytes_OfString_EncoderFallback_Exception()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?")
+    => Assert.That(
+      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?"),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 
 #if SYSTEM_TEXT_ENCODING_GETBYTES_READONLYSPAN_OF_CHAR
   [Test]
   public void GetBytes_OfReadOnlySpan_EncoderFallback_Exception()
-    => Assert.Throws<EncoderFallbackException>(
-      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?".AsSpan())
+    => Assert.That(
+      () => CreateEncoding(bits: 7, new EncoderExceptionFallback()).GetByteCount(" aA\u0080あ😩💥?".AsSpan()),
+      Throws.TypeOf<EncoderFallbackException>()
     );
 #endif
 

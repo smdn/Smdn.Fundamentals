@@ -64,11 +64,11 @@ namespace Smdn {
     {
       var array = new[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => array.Slice(-1, 1), "#1");
-      Assert.Throws<ArgumentOutOfRangeException>(() => array.Slice(1, -1), "#2");
+      Assert.That(() => array.Slice(-1, 1), Throws.TypeOf<ArgumentOutOfRangeException>(), "#1");
+      Assert.That(() => array.Slice(1, -1), Throws.TypeOf<ArgumentOutOfRangeException>(), "#2");
 
-      Assert.Throws<ArgumentException>(() => array.Slice(11, 0), "#3");
-      Assert.Throws<ArgumentException>(() => array.Slice(0, 11), "#4");
+      Assert.That(() => array.Slice(11, 0), Throws.ArgumentException, "#3");
+      Assert.That(() => array.Slice(0, 11), Throws.ArgumentException, "#4");
     }
 
     [Test]
@@ -122,7 +122,7 @@ namespace Smdn {
     {
       int[] array = null;
 
-      Assert.Throws<ArgumentNullException>(() => array.Repeat(0));
+      Assert.That(() => array.Repeat(0), Throws.ArgumentNullException);
     }
 
     [TestCase(-1)]
@@ -131,7 +131,7 @@ namespace Smdn {
     {
       var array = new[] { 0 };
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => array.Repeat(count));
+      Assert.That(() => array.Repeat(count), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test]

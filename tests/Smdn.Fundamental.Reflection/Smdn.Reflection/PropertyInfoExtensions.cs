@@ -97,7 +97,7 @@ public partial class PropertyInfoExtensionsTests {
 
   [Test]
   public void IsStatic_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsStatic());
+    => Assert.That(() => ((PropertyInfo)null!).IsStatic(), Throws.ArgumentNullException);
 
   [TestCase(typeof(C), nameof(C.P0), true)]
   [TestCase(typeof(C), nameof(C.P1), false)]
@@ -119,12 +119,12 @@ public partial class PropertyInfoExtensionsTests {
   {
     var property = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-    Assert.Throws<InvalidOperationException>(() => property!.IsSetMethodInitOnly(), $"{type.Name}.{property!.Name}");
+    Assert.That(() => property!.IsSetMethodInitOnly(), Throws.InvalidOperationException, $"{type.Name}.{property!.Name}");
   }
 
   [Test]
   public void IsSetMethodInitOnly_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsSetMethodInitOnly());
+    => Assert.That(() => ((PropertyInfo)null!).IsSetMethodInitOnly(), Throws.ArgumentNullException);
 
   [TestCase(typeof(C), nameof(C.P0), true)]
   [TestCase(typeof(C), nameof(C.P1), true)]
@@ -161,7 +161,7 @@ public partial class PropertyInfoExtensionsTests {
 
   [Test]
   public void GetBackingField_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).GetBackingField());
+    => Assert.That(() => ((PropertyInfo)null!).GetBackingField(), Throws.ArgumentNullException);
 
   [TestCase(typeof(C), nameof(C.P0), false)]
   [TestCase(typeof(C), nameof(C.SP0), false)]
@@ -198,7 +198,7 @@ public partial class PropertyInfoExtensionsTests {
 
   [Test]
   public void IsOverride_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsOverride());
+    => Assert.That(() => ((PropertyInfo)null!).IsOverride(), Throws.ArgumentNullException);
 
   // ref: https://learn.microsoft.com/ja-jp/dotnet/csharp/language-reference/proposals/csharp-8.0/readonly-instance-members
   struct SReadOnlyProperty {
@@ -234,7 +234,7 @@ public partial class PropertyInfoExtensionsTests {
 
   [Test]
   public void IsAccessorReadOnly_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((PropertyInfo)null!).IsAccessorReadOnly());
+    => Assert.That(() => ((PropertyInfo)null!).IsAccessorReadOnly(), Throws.ArgumentNullException);
 
 #if SYSTEM_RUNTIME_COMPILERSERVICES_REQUIREDMEMBERATTRIBUTE
   [TestCase(typeof(C), nameof(C.PRequiredSet), true)]
@@ -272,8 +272,7 @@ public partial class PropertyInfoExtensionsTests {
       () => ((PropertyInfo)null!).IsRequired(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("property")
     );
 }

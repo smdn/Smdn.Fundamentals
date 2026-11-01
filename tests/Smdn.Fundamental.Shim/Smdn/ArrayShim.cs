@@ -72,7 +72,7 @@ public class ArrayShimTests {
   {
     int[] array = null!;
 
-    Assert.Throws<ArgumentNullException>(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i));
+    Assert.That(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, i => i), Throws.ArgumentNullException);
   }
 
   [Test]
@@ -85,6 +85,6 @@ public class ArrayShimTests {
     Func<int, long> converter = null!;
 #endif
 
-    Assert.Throws<ArgumentNullException>(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, converter));
+    Assert.That(() => ShimTypeSystemArrayConvertAll.ConvertAll(array, converter), Throws.ArgumentNullException);
   }
 }

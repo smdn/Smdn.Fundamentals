@@ -21,8 +21,8 @@ namespace Smdn.Formats.UUEncodings {
       var input = new byte[t.InputBlockSize];
       var output = new byte[t.OutputBlockSize];
 
-      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
-      Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+      Assert.That(() => t.TransformBlock(input, 0, input.Length, output, 0), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(() => t.TransformFinalBlock(input, 0, input.Length), Throws.TypeOf<ObjectDisposedException>());
     }
 
     [Test]
@@ -35,8 +35,8 @@ namespace Smdn.Formats.UUEncodings {
       var input = new byte[t.InputBlockSize];
       var output = new byte[t.OutputBlockSize];
 
-      Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
-      Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+      Assert.That(() => t.TransformBlock(input, 0, input.Length, output, 0), Throws.TypeOf<ObjectDisposedException>());
+      Assert.That(() => t.TransformFinalBlock(input, 0, input.Length), Throws.TypeOf<ObjectDisposedException>());
     }
 
     private static readonly byte[] testimg_png = new byte[] {
@@ -58,9 +58,9 @@ namespace Smdn.Formats.UUEncodings {
     {
       var uuencode = @"MB5!.1PT*&@H    -24A$4@   ""     @"" 8   !S>GKT    !&=!34$  +&/
 M""_QA!0   $=)1$%46$?MUK$- "" (!$#<?VA$W0 *FR/Y4OU<@RLBLM*>S-'Q
-M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U    
+M^^ZYH9TJ,!H%""! @0(  @1CMTO<9F$4! @0($""! X+? !I?UJM5MS!;U
 ) $E%3D2N0F""""
- 
+
 ".Replace("\r\n", "\n").Replace("\n", newline);
       Assert.That(ICryptoTransformExtensions.TransformBytes(new UUDecodingTransform(), Encoding.ASCII.GetBytes(uuencode)), Is.EqualTo(testimg_png));
     }
@@ -100,11 +100,11 @@ M^^ZYH9TJ,!H%""!`@0(``@1CMTO<9F$4!`@0($""!`X+?`!I?UJM5MS!;U````
       int inputCount,
       byte[] outputBuffer,
       int outputOffset,
-      IResolveConstraint constraint
+      Constraint throwsConstraint
     )
-      => Assert.Throws(
-        constraint,
-        () => new UUDecodingTransform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+      => Assert.That(
+        () => new UUDecodingTransform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset),
+        throwsConstraint
       );
 
     [TestCaseSource(
@@ -115,11 +115,11 @@ M^^ZYH9TJ,!H%""!`@0(``@1CMTO<9F$4!`@0($""!`X+?`!I?UJM5MS!;U````
       byte[] inputBuffer,
       int inputOffset,
       int inputCount,
-      IResolveConstraint constraint
+      Constraint throwsConstraint
     )
-      => Assert.Throws(
-        constraint,
-        () => new UUDecodingTransform().TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+      => Assert.That(
+        () => new UUDecodingTransform().TransformFinalBlock(inputBuffer, inputOffset, inputCount),
+        throwsConstraint
       );
   }
 }

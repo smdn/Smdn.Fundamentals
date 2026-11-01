@@ -19,25 +19,27 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       Func<ulong>? nullTimeStampSource = null;
       Func<ushort>? nullClockSource = null;
 
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource!, nullClockSource!));
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(nullTimeStampSource!, ZeroClockSource));
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(ZeroTimeStampSource, nullClockSource!));
+      Assert.That(() => UuidGenerator.CreateTimeBased(nullTimeStampSource!, nullClockSource!), Throws.ArgumentNullException);
+      Assert.That(() => UuidGenerator.CreateTimeBased(nullTimeStampSource!, ZeroClockSource), Throws.ArgumentNullException);
+      Assert.That(() => UuidGenerator.CreateTimeBased(ZeroTimeStampSource, nullClockSource!), Throws.ArgumentNullException);
 
 #if SYSTEM_NET_NETWORKINFORMATION_PHYSICALADDRESS
       PhysicalAddress? nullNode = null;
 
-      Assert.Throws<ArgumentNullException>(() => UuidGenerator.CreateTimeBased(DateTimeOffset.Now, 0, nullNode!));
+      Assert.That(() => UuidGenerator.CreateTimeBased(DateTimeOffset.Now, 0, nullNode!), Throws.ArgumentNullException);
 #endif
     }
 
     [Test]
     public void TestCreateTimeBased_ArgumentOutOfRangeException_TimeStampLessThanEpoch()
     {
-      Assert.Throws<ArgumentOutOfRangeException>(
-        () => UuidGenerator.CreateTimeBased(new DateTimeOffset(1582, 10, 14, 23, 59, 59, TimeSpan.Zero))
+      Assert.That(
+        () => UuidGenerator.CreateTimeBased(new DateTimeOffset(1582, 10, 14, 23, 59, 59, TimeSpan.Zero)),
+        Throws.TypeOf<ArgumentOutOfRangeException>()
       );
-      Assert.Throws<ArgumentOutOfRangeException>(
-        () => UuidGenerator.CreateTimeBased(DateTimeOffset.MinValue)
+      Assert.That(
+        () => UuidGenerator.CreateTimeBased(DateTimeOffset.MinValue),
+        Throws.TypeOf<ArgumentOutOfRangeException>()
       );
     }
 

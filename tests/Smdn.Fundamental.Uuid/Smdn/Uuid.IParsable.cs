@@ -150,22 +150,34 @@ partial class UuidTests {
   public void TestParse_FormatException(string uuid, string expectedExceptionMessage)
   {
 #pragma warning disable CA1305
-    var exString = Assert.Throws<FormatException>(() => Uuid.Parse(uuid), "Parse<string>");
-    Assert.That(exString!.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "Parse<string> exception message");
+    Assert.That(
+      () => Uuid.Parse(uuid),
+      Throws.TypeOf<FormatException>().With.Message.Contain(expectedExceptionMessage).And.Message.Contain(uuid),
+      "Parse<string>"
+    );
 
-    var exReadOnlySpanOfChar = Assert.Throws<FormatException>(() => Uuid.Parse(uuid.AsSpan()), "Parse<ReadOnlySpan<char>>");
-    Assert.That(exReadOnlySpanOfChar!.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "Parse<<ReadOnlySpan<char>> exception message");
+    Assert.That(
+      () => Uuid.Parse(uuid.AsSpan()),
+      Throws.TypeOf<FormatException>().With.Message.Contain(expectedExceptionMessage).And.Message.Contain(uuid),
+      "Parse<ReadOnlySpan<char>>"
+    );
 
 #if SYSTEM_IPARSABLE
-    var exStringGM = Assert.Throws<FormatException>(() => ParseString<Uuid>(uuid), "IParsable.Parse<string>");
-    Assert.That(exStringGM.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "IParsable.Parse<string> exception message");
+    Assert.That(
+      () => ParseString<Uuid>(uuid),
+      Throws.TypeOf<FormatException>().With.Message.Contain(expectedExceptionMessage).And.Message.Contain(uuid),
+      "IParsable.Parse<string>"
+    );
 
     static T ParseString<T>(string s) where T : IParsable<T> => T.Parse(s, provider: null);
 #endif
 
 #if SYSTEM_ISPANPARSABLE
-    var exReadOnlySpanOfCharGM = Assert.Throws<FormatException>(() => ParseReadOnlySpanOfChar<Uuid>(uuid.AsSpan()), "IParsable.Parse<ReadOnlySpan<char>>");
-    Assert.That(exReadOnlySpanOfCharGM.Message, Does.Contain(expectedExceptionMessage).And.Contain(uuid), "IParsable.Parse<<ReadOnlySpan<char>> exception message");
+    Assert.That(
+      () => ParseReadOnlySpanOfChar<Uuid>(uuid.AsSpan()),
+      Throws.TypeOf<FormatException>().With.Message.Contain(expectedExceptionMessage).And.Message.Contain(uuid),
+      "IParsable.Parse<ReadOnlySpan<char>>"
+    );
 
     static T ParseReadOnlySpanOfChar<T>(ReadOnlySpan<char> s) where T : ISpanParsable<T> => T.Parse(s, provider: null);
 #endif

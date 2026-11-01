@@ -61,7 +61,7 @@ namespace Smdn.Formats.Mime {
     {
       LineOrientedStream nullStream = null!;
 
-      Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream: nullStream));
+      Assert.That(() => MimeUtils.ParseHeaderAsync(stream: nullStream), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Smdn.Formats.Mime {
         Func<RawHeaderField, int> nullConverter = null!;
 #endif
 
-        Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsync(stream, converter: nullConverter));
+        Assert.That(() => MimeUtils.ParseHeaderAsync(stream, converter: nullConverter), Throws.ArgumentNullException);
       });
     }
 
@@ -181,7 +181,7 @@ line3".Replace("\r\n", "\n").Replace("\n", "\r\n");
     {
       LineOrientedStream nullStream = null!;
 
-      Assert.Throws<ArgumentNullException>(() => MimeUtils.ParseHeaderAsNameValuePairsAsync(stream: nullStream));
+      Assert.That(() => MimeUtils.ParseHeaderAsNameValuePairsAsync(stream: nullStream), Throws.ArgumentNullException);
     }
 
     [Test]

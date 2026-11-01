@@ -24,10 +24,10 @@ namespace Smdn {
       Assert.That(new UInt24(new byte[] { 0xff, 0x00, 0x00 }, isBigEndian: false), Is.EqualTo((UInt24)0x0000ff));
       Assert.That(new UInt24(new byte[] { 0xff, 0x00, 0x00, 0xcc }, 1, isBigEndian: false), Is.EqualTo((UInt24)0xcc0000));
 
-      Assert.Throws<ArgumentNullException>(() => new UInt24(null, 0));
-      Assert.Throws<ArgumentOutOfRangeException>(() => new UInt24(new byte[] { 0x00, 0x00 }, -1));
-      Assert.Throws<ArgumentException>(() => new UInt24(new byte[] { 0x00, 0x00 }, 0));
-      Assert.Throws<ArgumentException>(() => new UInt24(new byte[] { 0x00, 0x00, 0x00 }, 1));
+      Assert.That(() => new UInt24(null, 0), Throws.ArgumentNullException);
+      Assert.That(() => new UInt24(new byte[] { 0x00, 0x00 }, -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => new UInt24(new byte[] { 0x00, 0x00 }, 0), Throws.ArgumentException);
+      Assert.That(() => new UInt24(new byte[] { 0x00, 0x00, 0x00 }, 1), Throws.ArgumentException);
     }
 
     [Test]
@@ -42,9 +42,9 @@ namespace Smdn {
         Is.EqualTo((UInt24)0x452301)
       );
 
-      Assert.Throws<ArgumentException>(() => new UInt24(ReadOnlySpan<byte>.Empty));
-      Assert.Throws<ArgumentException>(() => new UInt24(stackalloc byte[] { 0x00 }));
-      Assert.Throws<ArgumentException>(() => new UInt24(stackalloc byte[] { 0x00, 0x00 }));
+      Assert.That(() => new UInt24(ReadOnlySpan<byte>.Empty), Throws.ArgumentException);
+      Assert.That(() => new UInt24(stackalloc byte[] { 0x00 }), Throws.ArgumentException);
+      Assert.That(() => new UInt24(stackalloc byte[] { 0x00, 0x00 }), Throws.ArgumentException);
     }
 
     [Test]
@@ -122,7 +122,7 @@ namespace Smdn {
     [TestCase((byte)0)]
     [TestCase("0")]
     public void CompareTo_NotComparable(object value)
-      => Assert.Throws<ArgumentException>(() => UInt24.Zero.CompareTo(value));
+      => Assert.That(() => UInt24.Zero.CompareTo(value), Throws.ArgumentException);
 
     [TestCase((short)0x000000, 0x00000000, "0")]
     [TestCase((short)0x007fff, 0x00007fff, "7fff")]
@@ -141,7 +141,7 @@ namespace Smdn {
     [TestCase(Int16.MinValue)]
     public void OpExplicitCheckedFromInt16(short value)
     {
-      Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)value); });
+      Assert.That(() => { UInt24 val = checked((UInt24)value); }, Throws.TypeOf<OverflowException>());
     }
 
     [TestCase((int)0x00000000, 0x00000000, "0")]
@@ -164,7 +164,7 @@ namespace Smdn {
     [TestCase(Int32.MinValue)]
     public void OpExplicitCheckedFromInt32(int value)
     {
-      Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)value); });
+      Assert.That(() => { UInt24 val = checked((UInt24)value); }, Throws.TypeOf<OverflowException>());
     }
 
     [TestCase((uint)0x00000000, 0x00000000, "0")]
@@ -186,7 +186,7 @@ namespace Smdn {
     [TestCase(UInt32.MaxValue)]
     public void OpExplicitCheckedFromUInt32(uint value)
     {
-      Assert.Throws<OverflowException>(() => { UInt24 val = checked((UInt24)value); });
+      Assert.That(() => { UInt24 val = checked((UInt24)value); }, Throws.TypeOf<OverflowException>());
     }
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToInt16()
@@ -217,7 +217,7 @@ namespace Smdn {
     public void OpExplicitCheckedToInt16(UInt24 value, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
-      Assert.Throws<OverflowException>(() => { var s = checked((short)value); });
+      Assert.That(() => { var s = checked((short)value); }, Throws.TypeOf<OverflowException>());
     }
 
     private static System.Collections.IEnumerable YieldTestCases_OpExplicitToUInt16()
@@ -250,7 +250,7 @@ namespace Smdn {
     public void OpExplicitCheckedToUInt16(UInt24 value, string expectedHex)
     {
       Assert.That(value.ToString("x", null), Is.EqualTo(expectedHex));
-      Assert.Throws<OverflowException>(() => { var us = checked((ushort)value); });
+      Assert.That(() => { var us = checked((ushort)value); }, Throws.TypeOf<OverflowException>());
     }
 
     [TestCase((ushort)0,       0x00000000, "0")]
@@ -331,7 +331,7 @@ namespace Smdn {
         typeof(ushort),
       }) {
 #pragma warning disable CA1305
-        Assert.Throws<OverflowException>(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName ?? t.ToString());
+        Assert.That(() => Convert.ChangeType(UInt24.MaxValue, t), Throws.TypeOf<OverflowException>(), t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
 
@@ -342,7 +342,7 @@ namespace Smdn {
         typeof(ulong),
       }) {
 #pragma warning disable CA1305
-        Assert.DoesNotThrow(() => Convert.ChangeType(UInt24.MaxValue, t), t.FullName ?? t.ToString());
+        Assert.That(() => Convert.ChangeType(UInt24.MaxValue, t), Throws.Nothing, t.FullName ?? t.ToString());
 #pragma warning restore CA1305
       }
     }
@@ -351,9 +351,9 @@ namespace Smdn {
     public void IConvertible_ToDateTime()
     {
 #pragma warning disable CA1305
-      Assert.Throws<InvalidCastException>(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)));
+      Assert.That(() => Convert.ChangeType(UInt24.Zero, typeof(DateTime)), Throws.TypeOf<InvalidCastException>());
 #pragma warning restore CA1305
-      Assert.Throws<InvalidCastException>(() => ((IConvertible)UInt24.Zero).ToDateTime(provider: null));
+      Assert.That(() => ((IConvertible)UInt24.Zero).ToDateTime(provider: null), Throws.TypeOf<InvalidCastException>());
     }
 
     [Test]
@@ -407,10 +407,10 @@ namespace Smdn {
       Assert.That(UInt24.Parse("1", provider: null), Is.EqualTo((UInt24)1));
       Assert.That(UInt24.Parse("16777215", provider: null), Is.EqualTo((UInt24)0xFFFFFF));
 
-      Assert.Throws<ArgumentNullException>(() => UInt24.Parse(null!, provider: null));
-      Assert.Throws<OverflowException>(() => UInt24.Parse("-1", provider: null));
-      Assert.Throws<OverflowException>(() => UInt24.Parse("16777216", provider: null));
-      Assert.Throws<FormatException>(() => UInt24.Parse("FFFFFF", provider: null));
+      Assert.That(() => UInt24.Parse(null!, provider: null), Throws.ArgumentNullException);
+      Assert.That(() => UInt24.Parse("-1", provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt24.Parse("16777216", provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt24.Parse("FFFFFF", provider: null), Throws.TypeOf<FormatException>());
 #pragma warning restore CA1305
     }
 
@@ -437,9 +437,9 @@ namespace Smdn {
       Assert.That(UInt24.Parse("_1".AsSpan(1), provider: null), Is.EqualTo((UInt24)1));
       Assert.That(UInt24.Parse("_16777215".AsSpan(1), provider: null), Is.EqualTo((UInt24)0xFFFFFF));
 
-      Assert.Throws<OverflowException>(() => UInt24.Parse("_-1".AsSpan(1), provider: null));
-      Assert.Throws<OverflowException>(() => UInt24.Parse("_16777216".AsSpan(1), provider: null));
-      Assert.Throws<FormatException>(() => UInt24.Parse("_FFFFFF".AsSpan(1), provider: null));
+      Assert.That(() => UInt24.Parse("_-1".AsSpan(1), provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt24.Parse("_16777216".AsSpan(1), provider: null), Throws.TypeOf<OverflowException>());
+      Assert.That(() => UInt24.Parse("_FFFFFF".AsSpan(1), provider: null), Throws.TypeOf<FormatException>());
 #pragma warning restore CA1305
     }
 

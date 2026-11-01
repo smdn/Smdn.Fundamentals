@@ -25,7 +25,7 @@ partial class UInt24Tests {
   {
     UInt24 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(UInt24.MaxValue + UInt24.One), "Max + 1");
+    Assert.That(() => result = checked(UInt24.MaxValue + UInt24.One), Throws.TypeOf<OverflowException>(), "Max + 1");
   }
 }
 
@@ -45,7 +45,7 @@ partial class UInt48Tests {
   {
     UInt48 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(UInt48.MaxValue + UInt48.One), "Max + 1");
+    Assert.That(() => result = checked(UInt48.MaxValue + UInt48.One), Throws.TypeOf<OverflowException>(), "Max + 1");
   }
 }
 
@@ -73,8 +73,8 @@ partial class UInt24nTests {
   [Test]
   public void IAdditionOperators_OpCheckedAddition()
   {
-    Assert.Throws<OverflowException>(() => Add(UInt24.MaxValue, UInt24.One), "Max + 1");
-    Assert.Throws<OverflowException>(() => Add(UInt48.MaxValue, UInt48.One), "Max + 1");
+    Assert.That(() => Add(UInt24.MaxValue, UInt24.One), Throws.TypeOf<OverflowException>(), "Max + 1");
+    Assert.That(() => Add(UInt48.MaxValue, UInt48.One), Throws.TypeOf<OverflowException>(), "Max + 1");
 
     static TUInt24n Add<TUInt24n>(TUInt24n x, TUInt24n y) where TUInt24n : IAdditionOperators<TUInt24n, TUInt24n, TUInt24n>
       => checked(x + y);

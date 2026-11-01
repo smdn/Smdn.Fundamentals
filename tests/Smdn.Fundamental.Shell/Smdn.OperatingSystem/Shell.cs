@@ -10,11 +10,11 @@ namespace Smdn.OperatingSystem {
     [Test]
     public void TestCreateProcessStartInfo()
     {
-      Assert.Throws<ArgumentNullException>(() => Shell.CreateProcessStartInfo(null, (string)null), "#1");
-      Assert.Throws<ArgumentNullException>(() => Shell.CreateProcessStartInfo(null, (string[])null), "#2");
+      Assert.That(() => Shell.CreateProcessStartInfo(null, (string)null), Throws.ArgumentNullException, "#1");
+      Assert.That(() => Shell.CreateProcessStartInfo(null, (string[])null), Throws.ArgumentNullException, "#2");
 
-      Assert.DoesNotThrow(() => Shell.CreateProcessStartInfo("foo", (string)null), "#3");
-      Assert.DoesNotThrow(() => Shell.CreateProcessStartInfo("foo", (string[])null), "#4");
+      Assert.That(() => Shell.CreateProcessStartInfo("foo", (string)null), Throws.Nothing, "#3");
+      Assert.That(() => Shell.CreateProcessStartInfo("foo", (string[])null), Throws.Nothing, "#4");
     }
 #endif
   }

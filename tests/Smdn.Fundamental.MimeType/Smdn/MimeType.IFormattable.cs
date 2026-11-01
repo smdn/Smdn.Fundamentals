@@ -34,5 +34,5 @@ partial class MimeTypeTests {
       "unsupported format"
     )] string format
   )
-    => Assert.Throws<FormatException>(() => new MimeType(mimeType).ToString(format: format, formatProvider: null));
+    => Assert.That(() => new MimeType(mimeType).ToString(format: format, formatProvider: null), Throws.TypeOf<FormatException>());
 }

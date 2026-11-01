@@ -84,11 +84,12 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.Elapses(
+    Assert.That(
+      () => Assert.Elapses(
         expected: TimeSpan.FromMilliseconds(20),
         code: () => Thread.Sleep(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -116,11 +117,12 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.ElapsesAsync(
+    Assert.That(
+      () => Assert.ElapsesAsync(
         expected: TimeSpan.FromMilliseconds(20),
         code: () => Task.Delay(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -148,11 +150,12 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.NotElapse(
+    Assert.That(
+      () => Assert.NotElapse(
         expected: TimeSpan.FromMilliseconds(20),
         code: () => Thread.Sleep(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -180,11 +183,12 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.NotElapseAsync(
+    Assert.That(
+      () => Assert.NotElapseAsync(
         expected: TimeSpan.FromMilliseconds(20),
         code: () => Task.Delay(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -213,12 +217,13 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.ElapsesInRange(
+    Assert.That(
+      () => Assert.ElapsesInRange(
         expectedMin: TimeSpan.FromMilliseconds(20),
         expectedMax: TimeSpan.FromMilliseconds(21),
         code: () => Thread.Sleep(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -231,12 +236,13 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.ElapsesInRange(
+    Assert.That(
+      () => Assert.ElapsesInRange(
         expectedMin: TimeSpan.FromMilliseconds(20),
         expectedMax: TimeSpan.FromMilliseconds(21),
         code: () => Thread.Sleep(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -265,12 +271,13 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.ElapsesInRangeAsync(
+    Assert.That(
+      () => Assert.ElapsesInRangeAsync(
         expectedMin: TimeSpan.FromMilliseconds(20),
         expectedMax: TimeSpan.FromMilliseconds(21),
         code: () => Task.Delay(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 
@@ -283,12 +290,13 @@ public class AssertExecutionTimeTests {
     if (!SatisfiesPrerequisites())
       return;
 
-    Assert.Throws<AssertionException>(() =>
-      Assert.ElapsesInRangeAsync(
+    Assert.That(
+      () => Assert.ElapsesInRangeAsync(
         expectedMin: TimeSpan.FromMilliseconds(20),
         expectedMax: TimeSpan.FromMilliseconds(21),
         code: () => Task.Delay(milliseconds)
-      )
+      ),
+      Throws.TypeOf<AssertionException>()
     );
   }
 }

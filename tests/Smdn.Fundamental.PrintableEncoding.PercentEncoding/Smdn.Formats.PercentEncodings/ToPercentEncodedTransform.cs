@@ -21,8 +21,8 @@ public class ToPercentEncodedTransformTests {
     var input = new byte[t.InputBlockSize];
     var output = new byte[t.OutputBlockSize];
 
-    Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
-    Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+    Assert.That(() => t.TransformBlock(input, 0, input.Length, output, 0), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => t.TransformFinalBlock(input, 0, input.Length), Throws.TypeOf<ObjectDisposedException>());
   }
 
   [Test]
@@ -35,8 +35,8 @@ public class ToPercentEncodedTransformTests {
     var input = new byte[t.InputBlockSize];
     var output = new byte[t.OutputBlockSize];
 
-    Assert.Throws<ObjectDisposedException>(() => t.TransformBlock(input, 0, input.Length, output, 0));
-    Assert.Throws<ObjectDisposedException>(() => t.TransformFinalBlock(input, 0, input.Length));
+    Assert.That(() => t.TransformBlock(input, 0, input.Length, output, 0), Throws.TypeOf<ObjectDisposedException>());
+    Assert.That(() => t.TransformFinalBlock(input, 0, input.Length), Throws.TypeOf<ObjectDisposedException>());
   }
 
   [TestCaseSource(
@@ -49,11 +49,11 @@ public class ToPercentEncodedTransformTests {
     int inputCount,
     byte[] outputBuffer,
     int outputOffset,
-    IResolveConstraint constraint
+    Constraint throwsConstraint
   )
-    => Assert.Throws(
-      constraint,
-      () => new ToPercentEncodedTransform(ToPercentEncodedTransformMode.UriEscapeUriString).TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+    => Assert.That(
+      () => new ToPercentEncodedTransform(ToPercentEncodedTransformMode.UriEscapeUriString).TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset),
+      throwsConstraint
     );
 
   [TestCaseSource(
@@ -64,10 +64,10 @@ public class ToPercentEncodedTransformTests {
     byte[] inputBuffer,
     int inputOffset,
     int inputCount,
-    IResolveConstraint constraint
+    Constraint throwsConstraint
   )
-    => Assert.Throws(
-      constraint,
-      () => new ToPercentEncodedTransform(ToPercentEncodedTransformMode.UriEscapeUriString).TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+    => Assert.That(
+      () => new ToPercentEncodedTransform(ToPercentEncodedTransformMode.UriEscapeUriString).TransformFinalBlock(inputBuffer, inputOffset, inputCount),
+      throwsConstraint
     );
 }

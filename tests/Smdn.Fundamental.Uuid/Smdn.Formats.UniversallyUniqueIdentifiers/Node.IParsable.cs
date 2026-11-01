@@ -10,10 +10,10 @@ partial class NodeTests {
   [Test]
   public void TestParse_ArgumentNull()
   {
-    Assert.Throws<ArgumentNullException>(() => Node.Parse((string)null!, provider: null));
+    Assert.That(() => Node.Parse((string)null!, provider: null), Throws.ArgumentNullException);
 
 #if SYSTEM_IPARSABLE
-    Assert.Throws<ArgumentNullException>(() => Parse<Node>(null!, provider: null), "IParsable");
+    Assert.That(() => Parse<Node>(null!, provider: null), Throws.ArgumentNullException, "IParsable");
 
     static T Parse<T>(string s, IFormatProvider? provider) where T : IParsable<T> => T.Parse(s, provider);
 #endif
@@ -39,9 +39,9 @@ partial class NodeTests {
     Node n = default;
 
     if (expectValid)
-      Assert.DoesNotThrow(() => n = Node.Parse(s, provider: null));
+      Assert.That(() => n = Node.Parse(s, provider: null), Throws.Nothing);
     else
-      Assert.Throws<FormatException>(() => n = Node.Parse(s, provider: null));
+      Assert.That(() => n = Node.Parse(s, provider: null), Throws.TypeOf<FormatException>());
 
     if (expectValid) {
       Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()));
@@ -50,9 +50,9 @@ partial class NodeTests {
 
 #if SYSTEM_IPARSABLE
     if (expectValid)
-      Assert.DoesNotThrow(() => n = Parse<Node>(s, provider: null), "IParsable");
+      Assert.That(() => n = Parse<Node>(s, provider: null), Throws.Nothing, "IParsable");
     else
-      Assert.Throws<FormatException>(() => n = Parse<Node>(s, provider: null), "IParsable");
+      Assert.That(() => n = Parse<Node>(s, provider: null), Throws.TypeOf<FormatException>(), "IParsable");
 
     if (expectValid) {
       Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()), "IParsable");
@@ -84,9 +84,9 @@ partial class NodeTests {
     Node n = default;
 
     if (expectValid)
-      Assert.DoesNotThrow(() => n = Node.Parse(s.AsSpan(), provider: null));
+      Assert.That(() => n = Node.Parse(s.AsSpan(), provider: null), Throws.Nothing);
     else
-      Assert.Throws<FormatException>(() => n = Node.Parse(s.AsSpan(), provider: null));
+      Assert.That(() => n = Node.Parse(s.AsSpan(), provider: null), Throws.TypeOf<FormatException>());
 
     if (expectValid) {
       Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()));
@@ -95,9 +95,9 @@ partial class NodeTests {
 
 #if SYSTEM_IPARSABLE
     if (expectValid)
-      Assert.DoesNotThrow(() => n = Parse<Node>(s.AsSpan(), provider: null), "IParsable");
+      Assert.That(() => n = Parse<Node>(s.AsSpan(), provider: null), Throws.Nothing, "IParsable");
     else
-      Assert.Throws<FormatException>(() => n = Parse<Node>(s.AsSpan(), provider: null), "IParsable");
+      Assert.That(() => n = Parse<Node>(s.AsSpan(), provider: null), Throws.TypeOf<FormatException>(), "IParsable");
 
     if (expectValid) {
       Assert.That(n.ToString("X"), Is.EqualTo(expectedString!.ToUpperInvariant()), "IParsable");

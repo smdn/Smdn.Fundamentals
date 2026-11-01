@@ -18,9 +18,15 @@ public class DateAndTimeParserTests {
 
   [TestCaseSource(nameof(YieldTestCases_ParseCommon_Invalid))]
   public void ParseDateTime_Invalid(string s, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => DateTimeFormat.FromISO8601DateTimeString(s));
+    => Assert.That(
+      () => DateTimeFormat.FromISO8601DateTimeString(s),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
   [TestCaseSource(nameof(YieldTestCases_ParseCommon_Invalid))]
   public void ParseDateTimeOffset_Invalid(string s, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => DateTimeFormat.FromISO8601DateTimeOffsetString(s));
+    => Assert.That(
+      () => DateTimeFormat.FromISO8601DateTimeOffsetString(s),
+      Throws.TypeOf(expectedExceptionType)
+    );
 }

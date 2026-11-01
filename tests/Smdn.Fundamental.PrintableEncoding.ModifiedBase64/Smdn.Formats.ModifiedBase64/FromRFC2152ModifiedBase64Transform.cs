@@ -42,11 +42,11 @@ public class FromRFC2152ModifiedBase64TransformTests {
     int inputCount,
     byte[] outputBuffer,
     int outputOffset,
-    IResolveConstraint constraint
+    Constraint throwsConstraint
   )
-    => Assert.Throws(
-      constraint,
-      () => new FromRFC2152ModifiedBase64Transform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset)
+    => Assert.That(
+      () => new FromRFC2152ModifiedBase64Transform().TransformBlock(inputBuffer, inputOffset, inputCount, outputBuffer, outputOffset),
+      throwsConstraint
     );
 
   [TestCaseSource(
@@ -57,10 +57,10 @@ public class FromRFC2152ModifiedBase64TransformTests {
     byte[] inputBuffer,
     int inputOffset,
     int inputCount,
-    IResolveConstraint constraint
+    Constraint throwsConstraint
   )
-    => Assert.Throws(
-      constraint,
-      () => new FromRFC2152ModifiedBase64Transform().TransformFinalBlock(inputBuffer, inputOffset, inputCount)
+    => Assert.That(
+      () => new FromRFC2152ModifiedBase64Transform().TransformFinalBlock(inputBuffer, inputOffset, inputCount),
+      throwsConstraint
     );
 }

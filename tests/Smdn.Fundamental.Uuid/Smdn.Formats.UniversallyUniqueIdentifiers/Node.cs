@@ -43,10 +43,10 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
       var node = Node.CreateRandom();
       var dest = new byte[7] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-      Assert.DoesNotThrow(() => node.WriteBytes((Span<byte>)dest), "length 7");
+      Assert.That(() => node.WriteBytes((Span<byte>)dest), Throws.Nothing, "length 7");
       Assert.That(dest, Is.Not.EquivalentTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }));
 
-      Assert.DoesNotThrow(() => node.WriteBytes(((Span<byte>)dest).Slice(0, 6)), "length 6");
+      Assert.That(() => node.WriteBytes(((Span<byte>)dest).Slice(0, 6)), Throws.Nothing, "length 6");
       Assert.That(dest, Is.Not.EquivalentTo(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }));
     }
 
@@ -68,9 +68,9 @@ namespace Smdn.Formats.UniversallyUniqueIdentifiers {
     {
       var node = Node.CreateRandom();
 
-      Assert.Throws<ArgumentException>(() => node.WriteBytes(stackalloc byte[5]), "length 5");
-      Assert.Throws<ArgumentException>(() => node.WriteBytes(stackalloc byte[1]), "length 1");
-      Assert.Throws<ArgumentException>(() => node.WriteBytes(stackalloc byte[0]), "length 0");
+      Assert.That(() => node.WriteBytes(stackalloc byte[5]), Throws.ArgumentException, "length 5");
+      Assert.That(() => node.WriteBytes(stackalloc byte[1]), Throws.ArgumentException, "length 1");
+      Assert.That(() => node.WriteBytes(stackalloc byte[0]), Throws.ArgumentException, "length 0");
     }
 
     [Test]

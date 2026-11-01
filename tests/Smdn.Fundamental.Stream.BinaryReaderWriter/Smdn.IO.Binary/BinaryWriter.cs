@@ -42,12 +42,12 @@ namespace Smdn.IO.Binary {
 
     [Test]
     public void TestConstructWithNonWritableStream()
-    {
-      Assert.Throws<ArgumentException>(() => {
-        using (var writer = new Smdn.IO.Binary.BinaryWriter(new NonWritableStream())) {
-        }
-      });
-    }
+      => Assert.That(
+        () => {
+          using var writer = new Smdn.IO.Binary.BinaryWriter(new NonWritableStream());
+        },
+        Throws.ArgumentException
+      );
 
     [Test]
     public void TestClose()
@@ -78,9 +78,9 @@ namespace Smdn.IO.Binary {
           writer.Dispose();
         }
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.That(writer.BaseStream, Is.Null));
+        Assert.That(() => Assert.That(writer.BaseStream, Is.Null), Throws.TypeOf<ObjectDisposedException>());
 
-        Assert.Throws<ObjectDisposedException>(() => baseStream.WriteByte(0x00));
+        Assert.That(() => baseStream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -100,7 +100,7 @@ namespace Smdn.IO.Binary {
           Assert.That(writer.LeaveBaseStreamOpen, Is.False);
         }
 
-        Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0x00));
+        Assert.That(() => stream.WriteByte(0x00), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -124,7 +124,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        Assert.Throws<ObjectDisposedException>(() => Assert.That(writer.BaseStream, Is.Null));
+        Assert.That(() => Assert.That(writer.BaseStream, Is.Null), Throws.TypeOf<ObjectDisposedException>());
 
         try {
           baseStream.WriteByte(0x00);
@@ -148,7 +148,7 @@ namespace Smdn.IO.Binary {
 
         writer.Close();
 
-        Assert.Throws<ObjectDisposedException>(() => writer.Flush());
+        Assert.That(() => writer.Flush(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -171,7 +171,7 @@ namespace Smdn.IO.Binary {
 
         Assert.That(stream.ToArray(), Is.EqualTo(data).AsCollection);
 
-        Assert.Throws<ObjectDisposedException>(() => writer.Write(data));
+        Assert.That(() => writer.Write(data), Throws.TypeOf<ObjectDisposedException>());
       }
 
       using (var stream = new MemoryStream()) {
@@ -188,7 +188,7 @@ namespace Smdn.IO.Binary {
 
         Assert.That(stream.ToArray(), Is.EqualTo(data.Skip(1).Take(2).ToArray()).AsCollection);
 
-        Assert.Throws<ObjectDisposedException>(() => writer.Write(data, 1, 2));
+        Assert.That(() => writer.Write(data, 1, 2), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -211,7 +211,7 @@ namespace Smdn.IO.Binary {
 
         Assert.That(stream.ToArray(), Is.EqualTo(data).AsCollection);
 
-        Assert.Throws<ObjectDisposedException>(() => writer.Write(data));
+        Assert.That(() => writer.Write(data), Throws.TypeOf<ObjectDisposedException>());
       }
 
       using (var stream = new MemoryStream()) {
@@ -228,7 +228,7 @@ namespace Smdn.IO.Binary {
 
         Assert.That(stream.ToArray(), Is.EqualTo(data.Skip(1).Take(2).ToArray()).AsCollection);
 
-        Assert.Throws<ObjectDisposedException>(() => writer.Write(new ArraySegment<byte>(data, 1, 2)));
+        Assert.That(() => writer.Write(new ArraySegment<byte>(data, 1, 2)), Throws.TypeOf<ObjectDisposedException>());
       }
     }
 
@@ -240,7 +240,7 @@ namespace Smdn.IO.Binary {
 
         Assert.That(writer.BaseStream.Position,Is.Zero);
 
-        Assert.Throws<ArgumentException>(() => writer.Write(new ArraySegment<byte>()));
+        Assert.That(() => writer.Write(new ArraySegment<byte>()), Throws.ArgumentException);
 
         writer.Flush();
 
@@ -408,18 +408,20 @@ namespace Smdn.IO.Binary {
 
       writer.Close();
 
-      var ex = Assert.Throws<TargetInvocationException>(() => {
-        typeof(Smdn.IO.Binary.BinaryWriter)
+      Assert.That(
+        () => typeof(Smdn.IO.Binary.BinaryWriter)
           .GetTypeInfo()
           .GetMethod(
             "Write",
             new[] { value.GetType() },
             null
           )
-          !.Invoke(writer, new[] { value });
-      });
-
-      Assert.That(ex!.InnerException, Is.InstanceOf<ObjectDisposedException>());
+          !.Invoke(writer, new[] { value }),
+        Throws
+          .TypeOf<TargetInvocationException>()
+          .With
+          .InnerException.InstanceOf<ObjectDisposedException>()
+      );
     }
   }
 }

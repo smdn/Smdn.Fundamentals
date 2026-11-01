@@ -23,8 +23,8 @@ partial class UInt24Tests {
   {
     UInt24 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(-UInt24.One), "-1");
-    Assert.Throws<OverflowException>(() => result = checked(-UInt24.MaxValue), "-Max");
+    Assert.That(() => result = checked(-UInt24.One), Throws.TypeOf<OverflowException>(), "-1");
+    Assert.That(() => result = checked(-UInt24.MaxValue), Throws.TypeOf<OverflowException>(), "-Max");
   }
 }
 
@@ -42,8 +42,8 @@ partial class UInt48Tests {
   {
     UInt48 result;
 
-    Assert.Throws<OverflowException>(() => result = checked(-UInt48.One), "-1");
-    Assert.Throws<OverflowException>(() => result = checked(-UInt48.MaxValue), "-Max");
+    Assert.That(() => result = checked(-UInt48.One), Throws.TypeOf<OverflowException>(), "-1");
+    Assert.That(() => result = checked(-UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "-Max");
   }
 }
 
@@ -67,11 +67,11 @@ partial class UInt24nTests {
   [Test]
   public void IUnaryNegationOperators_OpCheckedUnaryNegation()
   {
-    Assert.Throws<OverflowException>(() => CheckedUnaryNegation(UInt24.One), "-1");
-    Assert.Throws<OverflowException>(() => CheckedUnaryNegation(UInt24.MaxValue), "-Max");
+    Assert.That(() => CheckedUnaryNegation(UInt24.One), Throws.TypeOf<OverflowException>(), "-1");
+    Assert.That(() => CheckedUnaryNegation(UInt24.MaxValue), Throws.TypeOf<OverflowException>(), "-Max");
 
-    Assert.Throws<OverflowException>(() => CheckedUnaryNegation(UInt48.One), "-1");
-    Assert.Throws<OverflowException>(() => CheckedUnaryNegation(UInt48.MaxValue), "-Max");
+    Assert.That(() => CheckedUnaryNegation(UInt48.One), Throws.TypeOf<OverflowException>(), "-1");
+    Assert.That(() => CheckedUnaryNegation(UInt48.MaxValue), Throws.TypeOf<OverflowException>(), "-Max");
 
     static TUInt24n CheckedUnaryNegation<TUInt24n>(TUInt24n value) where TUInt24n : IUnaryNegationOperators<TUInt24n, TUInt24n>
       => checked(-value);

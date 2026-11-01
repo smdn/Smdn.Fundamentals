@@ -121,7 +121,10 @@ public partial class MimeTypeTests {
   [TestCase("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", typeof(ArgumentException))] // 129chars (64chars '/' 64chars)
   [TestCase("Ｔext/Ｐlain", typeof(ArgumentException))]
   public void Constructor_String_ArgumentException(string? mimeType, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => new MimeType(mimeType!));
+    => Assert.That(
+      () => new MimeType(mimeType!),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
   [TestCase(null, null, typeof(ArgumentNullException))]
   [TestCase("text", null, typeof(ArgumentNullException))]
@@ -132,7 +135,10 @@ public partial class MimeTypeTests {
   [TestCase("Ｔext", "plain", typeof(ArgumentException))]
   [TestCase("text", "Ｐlain", typeof(ArgumentException))]
   public void Constructor_String_String_ArgumentException(string? type, string? subtype, Type expectedExceptionType)
-    => Assert.Throws(expectedExceptionType, () => new MimeType(type!, subtype!));
+    => Assert.That(
+      () => new MimeType(type!, subtype!),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
   [TestCase(null, null, typeof(ArgumentNullException))]
   [TestCase("text", null, typeof(ArgumentNullException))]
@@ -146,7 +152,10 @@ public partial class MimeTypeTests {
   {
     var mimeType = (type!, subtype!);
 
-    Assert.Throws(expectedExceptionType, () => new MimeType(mimeType));
+    Assert.That(
+      () => new MimeType(mimeType),
+      Throws.TypeOf(expectedExceptionType)
+    );
   }
 
   [TestCase("", "", typeof(ArgumentException))]
@@ -155,9 +164,10 @@ public partial class MimeTypeTests {
   [TestCase("Ｔext", "plain", typeof(ArgumentException))]
   [TestCase("text", "Ｐlain", typeof(ArgumentException))]
   public void Constructor_ReadOnlySpanOfChar_ReadOnlySpanOfChar_ArgumentException(string type, string subtype, Type expectedExceptionType)
-  {
-    Assert.Throws(expectedExceptionType, () => new MimeType(type.AsSpan(), subtype.AsSpan()));
-  }
+    => Assert.That(
+      () => new MimeType(type.AsSpan(), subtype.AsSpan()),
+      Throws.TypeOf(expectedExceptionType)
+    );
 
   [Test]
   public void Deconstruct()

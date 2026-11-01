@@ -35,13 +35,13 @@ partial class MimeTypeTests {
     Assert.That(MimeType.FindMimeTypeByExtension(string.Empty), Is.Null);
     Assert.That(MimeType.FindMimeTypeByExtension("."), Is.Null);
 
-    Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension(null!));
+    Assert.That(() => MimeType.FindMimeTypeByExtension(null!), Throws.ArgumentNullException);
 
     if (IsRunningOnUnix)
-      Assert.Throws<ArgumentNullException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null!));
+      Assert.That(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null!), Throws.ArgumentNullException);
 
     if (IsRunningOnWindows)
-      Assert.DoesNotThrow(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null!));
+      Assert.That(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: null!), Throws.Nothing);
   }
 
   [Test]
@@ -72,15 +72,16 @@ partial class MimeTypeTests {
   {
     const string nonExistentFile = ".nonexistent.mime.types";
 
-    Assert.DoesNotThrow(() => {
-      Assert.That(MimeType.FindMimeTypeByExtension(string.Empty, mimeTypesFile: nonExistentFile), Is.Null);
-    });
+    Assert.That(
+      () => Assert.That(MimeType.FindMimeTypeByExtension(string.Empty, mimeTypesFile: nonExistentFile), Is.Null),
+      Throws.Nothing
+    );
 
     if (IsRunningOnUnix)
-      Assert.Throws<FileNotFoundException>(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: nonExistentFile));
+      Assert.That(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: nonExistentFile), Throws.TypeOf<FileNotFoundException>());
 
     if (IsRunningOnWindows)
-      Assert.DoesNotThrow(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: nonExistentFile));
+      Assert.That(() => MimeType.FindMimeTypeByExtension("hoge.txt", mimeTypesFile: nonExistentFile), Throws.Nothing);
   }
 
   [Test]
@@ -101,14 +102,14 @@ partial class MimeTypeTests {
 
     Assert.That(MimeType.FindExtensionsByMimeType("application/x-hogemoge"), Is.Empty);
 
-    Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((string)null!));
-    Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType((MimeType)null!));
+    Assert.That(() => MimeType.FindExtensionsByMimeType((string)null!), Throws.ArgumentNullException);
+    Assert.That(() => MimeType.FindExtensionsByMimeType((MimeType)null!), Throws.ArgumentNullException);
 
     if (IsRunningOnUnix)
-      Assert.Throws<ArgumentNullException>(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null!));
+      Assert.That(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null!), Throws.ArgumentNullException);
 
     if (IsRunningOnWindows)
-      Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null!));
+      Assert.That(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: null!), Throws.Nothing);
   }
 
   [Test]
@@ -135,9 +136,9 @@ partial class MimeTypeTests {
     const string nonExistentFile = ".nonexistent.mime.types";
 
     if (IsRunningOnUnix)
-      Assert.Throws<FileNotFoundException>(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: nonExistentFile));
+      Assert.That(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: nonExistentFile), Throws.TypeOf<FileNotFoundException>());
 
     if (IsRunningOnWindows)
-      Assert.DoesNotThrow(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: nonExistentFile));
+      Assert.That(() => MimeType.FindExtensionsByMimeType("text/plain", mimeTypesFile: nonExistentFile), Throws.Nothing);
   }
 }

@@ -234,7 +234,7 @@ namespace Smdn.Formats {
           new {Name = "PrefixUnitDelimiter", Action = (Action<string>)delegate(string arg) {provider.PrefixUnitDelimiter = arg;}},
           new {Name = "ValuePrefixDelimiter", Action = (Action<string>)delegate(string arg) {provider.ValuePrefixDelimiter = arg;}},
         }) {
-          Assert.Throws<InvalidOperationException>(() => pair.Action(string.Empty), pair.Name);
+          Assert.That(() => pair.Action(string.Empty), Throws.InvalidOperationException, pair.Name);
         }
       }
     }

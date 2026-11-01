@@ -19,7 +19,7 @@ partial class UuidTests {
     Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(null), Is.EqualTo(1));
     Assert.That(Uuid.RFC4122NamespaceDns.CompareTo(Guid.Empty), Is.Not.Zero);
 
-    Assert.Throws<ArgumentException>(() => Uuid.RFC4122NamespaceDns.CompareTo(1));
+    Assert.That(() => Uuid.RFC4122NamespaceDns.CompareTo(1), Throws.ArgumentException);
 
     var ux = new Uuid("00000000-0000-0000-0000-000000000000");
     var uy = new Uuid("00000001-0000-0000-0000-000000000000");

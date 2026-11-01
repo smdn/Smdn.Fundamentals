@@ -37,10 +37,10 @@ namespace Smdn.Text {
       Assert.That(b[2], Is.EqualTo(0x62));
 
 #pragma warning disable 168
-      Assert.Throws<IndexOutOfRangeException>(() => { var val = b[3]; });
+      Assert.That(() => { var val = b[3]; }, Throws.TypeOf<IndexOutOfRangeException>());
 #pragma warning restore 168
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => b[3] = (byte)0x61);
+      Assert.That(() => b[3] = (byte)0x61, Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test]

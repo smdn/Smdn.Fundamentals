@@ -37,22 +37,24 @@ partial class EncodingUtilsTests {
 
   [Test]
   public void GetEncoding_Null()
-    => Assert.Throws<ArgumentNullException>(
+    => Assert.That(
       () => EncodingUtils.GetEncoding(
         name: null!,
         codePageCollationTable: null,
         selectFallbackEncoding: null
-      )
+      ),
+      Throws.ArgumentNullException
     );
 
   [Test]
   public void GetEncoding_NotSupported()
-    => Assert.Throws<EncodingNotSupportedException>(
+    => Assert.That(
       () => EncodingUtils.GetEncoding(
         name: "x-unknown",
         codePageCollationTable: null,
         selectFallbackEncoding: null
-      )
+      ),
+      Throws.TypeOf<EncodingNotSupportedException>()
     );
 
   [TestCase("x-foo", true, "UTF-8")]

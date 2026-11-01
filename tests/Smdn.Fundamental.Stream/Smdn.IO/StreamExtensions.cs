@@ -79,7 +79,7 @@ namespace Smdn.IO {
       var inputStream = new UnreadableMemoryStream(inputData);
       var outputStream = new MemoryStream();
 
-      Assert.Throws<NotSupportedException>(() => inputStream.CopyTo(outputStream));
+      Assert.That(() => inputStream.CopyTo(outputStream), Throws.TypeOf<NotSupportedException>());
     }
 
     [Test]
@@ -89,7 +89,7 @@ namespace Smdn.IO {
       var inputStream = new MemoryStream(inputData);
       var outputStream = new MemoryStream(new byte[0], false);
 
-      Assert.Throws<NotSupportedException>(() => inputStream.CopyTo(outputStream));
+      Assert.That(() => inputStream.CopyTo(outputStream), Throws.TypeOf<NotSupportedException>());
     }
 
     [TestCase(false)]
@@ -120,15 +120,15 @@ namespace Smdn.IO {
     {
       var writer = new System.IO.BinaryWriter(Stream.Null);
 
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.CopyTo(null, writer));
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.CopyToAsync(null, writer));
+      Assert.That(() => StreamExtensions.CopyTo(null, writer), Throws.ArgumentNullException);
+      Assert.That(() => StreamExtensions.CopyToAsync(null, writer), Throws.ArgumentNullException);
     }
 
     [Test]
     public void TestCopyToBinaryWriter_WriterNull()
     {
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.CopyTo(Stream.Null, null));
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.CopyToAsync(Stream.Null, null));
+      Assert.That(() => StreamExtensions.CopyTo(Stream.Null, null), Throws.ArgumentNullException);
+      Assert.That(() => StreamExtensions.CopyToAsync(Stream.Null, null), Throws.ArgumentNullException);
     }
 
     [Test]
@@ -136,11 +136,11 @@ namespace Smdn.IO {
     {
       var writer = new System.IO.BinaryWriter(Stream.Null);
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.CopyTo(Stream.Null, writer, bufferSize: 0));
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.CopyToAsync(Stream.Null, writer, bufferSize: 0));
+      Assert.That(() => StreamExtensions.CopyTo(Stream.Null, writer, bufferSize: 0), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => StreamExtensions.CopyToAsync(Stream.Null, writer, bufferSize: 0), Throws.TypeOf<ArgumentOutOfRangeException>());
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.CopyTo(Stream.Null, writer, bufferSize: -1));
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.CopyToAsync(Stream.Null, writer, bufferSize: -1));
+      Assert.That(() => StreamExtensions.CopyTo(Stream.Null, writer, bufferSize: -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => StreamExtensions.CopyToAsync(Stream.Null, writer, bufferSize: -1), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [TestCase(true)]
@@ -164,25 +164,25 @@ namespace Smdn.IO {
     [Test]
     public void TestReadToEnd_StreamNull()
     {
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.ReadToEnd(null));
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.ReadToEndAsync(null));
+      Assert.That(() => StreamExtensions.ReadToEnd(null), Throws.ArgumentNullException);
+      Assert.That(() => StreamExtensions.ReadToEndAsync(null), Throws.ArgumentNullException);
     }
 
     [Test]
     public void TestReadToEnd_OutOfRange_ReadBufferSize()
     {
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.ReadToEnd(Stream.Null, readBufferSize: 0));
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.ReadToEndAsync(Stream.Null, readBufferSize: 0));
+      Assert.That(() => StreamExtensions.ReadToEnd(Stream.Null, readBufferSize: 0), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => StreamExtensions.ReadToEndAsync(Stream.Null, readBufferSize: 0), Throws.TypeOf<ArgumentOutOfRangeException>());
 
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.ReadToEnd(Stream.Null, readBufferSize: -1));
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.ReadToEndAsync(Stream.Null, readBufferSize: -1));
+      Assert.That(() => StreamExtensions.ReadToEnd(Stream.Null, readBufferSize: -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => StreamExtensions.ReadToEndAsync(Stream.Null, readBufferSize: -1), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
     public void TestReadToEnd_OutOfRange_InitialCapacity()
     {
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.ReadToEnd(Stream.Null, initialCapacity: -1));
-      Assert.Throws<ArgumentOutOfRangeException>(() => StreamExtensions.ReadToEndAsync(Stream.Null, initialCapacity: -1));
+      Assert.That(() => StreamExtensions.ReadToEnd(Stream.Null, initialCapacity: -1), Throws.TypeOf<ArgumentOutOfRangeException>());
+      Assert.That(() => StreamExtensions.ReadToEndAsync(Stream.Null, initialCapacity: -1), Throws.TypeOf<ArgumentOutOfRangeException>());
     }
 
     [Test]
@@ -210,8 +210,8 @@ namespace Smdn.IO {
     [Test]
     public void TestWriteAsync_ReadOnlySequence_StreamNull()
     {
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.Write(stream: null, sequence: default));
-      Assert.Throws<ArgumentNullException>(() => StreamExtensions.WriteAsync(stream: null, sequence: default));
+      Assert.That(() => StreamExtensions.Write(stream: null, sequence: default), Throws.ArgumentNullException);
+      Assert.That(() => StreamExtensions.WriteAsync(stream: null, sequence: default), Throws.ArgumentNullException);
     }
 
     [TestCase(true)]

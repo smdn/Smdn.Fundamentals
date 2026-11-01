@@ -139,7 +139,7 @@ public class ParameterInfoExtensionsTests {
 
   [TestCase]
   public void IsReturnParameter_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((ParameterInfo)null!).IsReturnParameter());
+    => Assert.That(() => ((ParameterInfo)null!).IsReturnParameter(), Throws.ArgumentNullException);
 
   private static System.Collections.IEnumerable YieldTestCases_GetDeclaringProperty()
   {
@@ -168,7 +168,7 @@ public class ParameterInfoExtensionsTests {
 
   [TestCase]
   public void GetDeclaringProperty_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((ParameterInfo)null!).GetDeclaringProperty());
+    => Assert.That(() => ((ParameterInfo)null!).GetDeclaringProperty(), Throws.ArgumentNullException);
 
   private static System.Collections.IEnumerable YieldTestCases_GetDeclaringEvent()
   {
@@ -197,7 +197,7 @@ public class ParameterInfoExtensionsTests {
 
   [TestCase]
   public void GetDeclaringEvent_ArgumentNull()
-    => Assert.Throws<ArgumentNullException>(() => ((ParameterInfo)null!).GetDeclaringEvent());
+    => Assert.That(() => ((ParameterInfo)null!).GetDeclaringEvent(), Throws.ArgumentNullException);
 
   [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MInt), false)]
   [TestCase(typeof(ParameterInfoExtensionsTestTypes.CExtensionMethods), nameof(ParameterInfoExtensionsTestTypes.CExtensionMethods.MString), false)]
@@ -231,8 +231,7 @@ public class ParameterInfoExtensionsTests {
       () => ((ParameterInfo)null!).IsExtensionMethodFirstParameter(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("param")
     );
 
@@ -296,8 +295,7 @@ public class ParameterInfoExtensionsTests {
       () => ((ParameterInfo)null!).IsRefReadOnly(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("param")
     );
 
@@ -337,8 +335,7 @@ public class ParameterInfoExtensionsTests {
       () => ((ParameterInfo)null!).IsScopedRef(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("param")
     );
 
@@ -392,8 +389,7 @@ public class ParameterInfoExtensionsTests {
       () => ((ParameterInfo)null!).CanTakeArbitraryLengthOfArgs(),
       Throws
         .ArgumentNullException
-        .With
-        .Property(nameof(ArgumentNullException.ParamName))
+        .ParamName
         .EqualTo("param")
     );
 }

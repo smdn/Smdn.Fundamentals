@@ -51,17 +51,28 @@ namespace Smdn {
     [Test]
     public void TestToEnumerableNonNullable_ContainsNull()
     {
-      const string paramName = "param";
-      ArgumentException ex;
+      const string ParamName = "param";
 
-      ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToEnumerableNonNullable(paramName, (string)null).ToList());
-      Assert.That(ex!.ParamName, Is.EqualTo(paramName));
+      Assert.That(
+        () => ParamArrayUtils.ToEnumerableNonNullable(ParamName, (string)null).ToList(),
+        Throws
+          .ArgumentException
+          .ParamName.EqualTo(ParamName)
+      );
 
-      ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", (string)null).ToList());
-      Assert.That(ex!.ParamName, Is.EqualTo(paramName));
+      Assert.That(
+        () => ParamArrayUtils.ToEnumerableNonNullable(ParamName, "foo", (string)null).ToList(),
+        Throws
+          .ArgumentException
+          .ParamName.EqualTo(ParamName)
+      );
 
-      ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToEnumerableNonNullable(paramName, "foo", new string[] { null }).ToList());
-      Assert.That(ex!.ParamName, Is.EqualTo(paramName));
+      Assert.That(
+        () => ParamArrayUtils.ToEnumerableNonNullable(ParamName, "foo", new string[] { null }).ToList(),
+        Throws
+          .ArgumentException
+          .ParamName.EqualTo(ParamName)
+      );
     }
 
     [Test]
@@ -108,17 +119,22 @@ namespace Smdn {
     [Test]
     public void TestToListNonNullable_ContainsNull()
     {
-      const string paramName = "param";
-      ArgumentException ex;
+      const string ParamName = "param";
 
-      ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToListNonNullable(paramName, (string)null).ToList());
-      Assert.That(ex!.ParamName, Is.EqualTo(paramName));
+      Assert.That(
+        () => ParamArrayUtils.ToListNonNullable(ParamName, (string)null).ToList(),
+        Throws.ArgumentException.ParamName.EqualTo(ParamName)
+      );
 
-      ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToListNonNullable(paramName, "foo", (string)null).ToList());
-      Assert.That(ex!.ParamName, Is.EqualTo(paramName));
+      Assert.That(
+        () => ParamArrayUtils.ToListNonNullable(ParamName, "foo", (string)null).ToList(),
+        Throws.ArgumentException.ParamName.EqualTo(ParamName)
+      );
 
-      ex = Assert.Throws<ArgumentException>(() => ParamArrayUtils.ToListNonNullable(paramName, "foo", new string[] { null }).ToList());
-      Assert.That(ex!.ParamName, Is.EqualTo(paramName));
+      Assert.That(
+        () => ParamArrayUtils.ToListNonNullable(ParamName, "foo", new string[] { null }).ToList(),
+        Throws.ArgumentException.ParamName.EqualTo(ParamName)
+      );
     }
   }
 }

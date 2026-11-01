@@ -18,8 +18,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentNullException>(() => stream.Read(null!, 16L));
-    Assert.Throws<ArgumentNullException>(() => stream.ReadAsync(null!, 16L));
+    Assert.That(() => stream.Read(null!, 16L), Throws.ArgumentNullException);
+    Assert.That(() => stream.ReadAsync(null!, 16L), Throws.ArgumentNullException);
   }
 
   [Test]
@@ -29,8 +29,8 @@ partial class LineOrientedStreamTests {
   {
     using var stream = CreateStream(type, new MemoryStream(), 8);
 
-    Assert.Throws<ArgumentOutOfRangeException>(() => stream.Read(Stream.Null, -1L));
-    Assert.Throws<ArgumentOutOfRangeException>(() => stream.ReadAsync(Stream.Null, -1L));
+    Assert.That(() => stream.Read(Stream.Null, -1L), Throws.TypeOf<ArgumentOutOfRangeException>());
+    Assert.That(() => stream.ReadAsync(Stream.Null, -1L), Throws.TypeOf<ArgumentOutOfRangeException>());
   }
 
   [Test]

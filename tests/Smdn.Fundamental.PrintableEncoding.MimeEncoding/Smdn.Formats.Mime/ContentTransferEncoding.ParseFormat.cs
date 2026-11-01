@@ -34,7 +34,10 @@ public partial class ContentTransferEncodingTests {
   [TestCase("x-unknown", typeof(FormatException))]
   [TestCase("unknown", typeof(FormatException))]
   public void Parse_Invalid(string input, Type typeOfExpectedException)
-    => Assert.Throws(typeOfExpectedException, () => ContentTransferEncoding.Parse(input));
+    => Assert.That(
+      () => ContentTransferEncoding.Parse(input),
+      Throws.TypeOf(typeOfExpectedException)
+    );
 
   [TestCase("7bit", true, ContentTransferEncodingMethod.SevenBit)]
   [TestCase("7BIT", true, ContentTransferEncodingMethod.SevenBit)]

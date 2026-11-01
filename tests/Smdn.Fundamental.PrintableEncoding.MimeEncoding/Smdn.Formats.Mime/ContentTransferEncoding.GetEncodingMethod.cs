@@ -34,8 +34,9 @@ public partial class ContentTransferEncodingTests {
   [TestCase("unknown")]
   [TestCase("base32")]
   public void GetEncodingMethod_ThrowException(string name)
-    => Assert.Throws<NotSupportedException>(
+    => Assert.That(
       () => ContentTransferEncoding.GetEncodingMethodThrowException(name),
+      Throws.TypeOf<NotSupportedException>(),
       name
     );
 }

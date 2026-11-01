@@ -21,7 +21,7 @@ public partial class EncodingUtilsTests {
 
   [Test]
   public void TestGetEncodingNameNull()
-    => Assert.Throws<ArgumentNullException>(() => EncodingUtils.GetEncoding(name: null!));
+    => Assert.That(() => EncodingUtils.GetEncoding(name: null!), Throws.ArgumentNullException);
 
   [Test]
   public void TestGetEncodingNameEmpty()
@@ -127,13 +127,15 @@ public partial class EncodingUtilsTests {
   [Test]
   public void TestGetEncodingThrowException()
   {
-    var ex = Assert.Throws<EncodingNotSupportedException>(
-      () => EncodingUtils.GetEncodingThrowException("x-unknown-encoding")
+    Assert.That(
+      () => EncodingUtils.GetEncodingThrowException("x-unknown-encoding"),
+      Throws
+        .TypeOf<EncodingNotSupportedException>()
+        .With
+        .Message.Not.Null
+        .And
+        .InnerException.Null
     );
-
-    Assert.That(ex!.EncodingName, Is.EqualTo("x-unknown-encoding"));
-    Assert.That(ex.Message, Is.Not.Null);
-    Assert.That(ex.InnerException, Is.Null);
   }
 
   [Test]
@@ -153,16 +155,24 @@ public partial class EncodingUtilsTests {
   {
     string encodingName = null;
 
-    var ex = Assert.Throws<EncodingNotSupportedException>(
-      () => EncodingUtils.GetEncodingThrowException("x-unknown-encoding", name => {
-        encodingName = name;
-        return null;
-      })
+    Assert.That(
+      () => EncodingUtils.GetEncodingThrowException(
+        "x-unknown-encoding",
+        name => {
+          encodingName = name;
+          return null;
+        }
+      ),
+      Throws
+        .TypeOf<EncodingNotSupportedException>()
+        .With
+        .InnerException.Null
+        .And
+        .Message.Not.Null
+        .And
+        .Property(nameof(EncodingNotSupportedException.EncodingName)).EqualTo("x-unknown-encoding")
     );
 
     Assert.That(encodingName, Is.EqualTo("x-unknown-encoding"));
-    Assert.That(ex!.EncodingName, Is.EqualTo("x-unknown-encoding"));
-    Assert.That(ex.Message, Is.Not.Null);
-    Assert.That(ex.InnerException, Is.Null);
   }
 }

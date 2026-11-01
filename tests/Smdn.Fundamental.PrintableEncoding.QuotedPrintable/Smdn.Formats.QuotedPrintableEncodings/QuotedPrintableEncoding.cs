@@ -81,15 +81,15 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
     public void TestCreateEncodingStream_LeaveStreamOpen(bool leaveStreamOpen)
     {
       using (var stream = new MemoryStream()) {
-        Assert.Throws<NotImplementedException>(() => QuotedPrintableEncoding.CreateEncodingStream(stream, leaveStreamOpen));
+        Assert.That(() => QuotedPrintableEncoding.CreateEncodingStream(stream, leaveStreamOpen), Throws.TypeOf<NotImplementedException>());
 #if false
         using (var s = QuotedPrintableEncoding.CreateEncodingStream(stream, leaveStreamOpen)) {
         }
 
         if (leaveStreamOpen)
-          Assert.DoesNotThrow(() => stream.WriteByte(0));
+          Assert.That(() => stream.WriteByte(0), Throws.Nothing);
         else
-          Assert.Throws<ObjectDisposedException>(() => stream.WriteByte(0));
+          Assert.That(() => stream.WriteByte(0), Throws.TypeOf<ObjectDisposedException>());
 #endif
       }
     }
@@ -103,9 +103,9 @@ namespace Smdn.Formats.QuotedPrintableEncodings {
         }
 
         if (leaveStreamOpen)
-          Assert.DoesNotThrow(() => stream.ReadByte());
+          Assert.That(() => stream.ReadByte(), Throws.Nothing);
         else
-          Assert.Throws<ObjectDisposedException>(() => stream.ReadByte());
+          Assert.That(() => stream.ReadByte(), Throws.TypeOf<ObjectDisposedException>());
       }
     }
   }

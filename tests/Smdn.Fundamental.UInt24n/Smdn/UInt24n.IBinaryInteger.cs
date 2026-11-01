@@ -106,8 +106,8 @@ partial class UInt24Tests {
   [Test]
   public void DivRem()
   {
-    Assert.Throws<DivideByZeroException>(() => DivRem(UInt24.Zero, UInt24.Zero), $"{typeof(UInt24).Name} DivRem(Zero, Zero)");
-    Assert.Throws<DivideByZeroException>(() => DivRem(UInt24.One, UInt24.Zero), $"{typeof(UInt24).Name} DivRem(One, Zero)");
+    Assert.That(() => DivRem(UInt24.Zero, UInt24.Zero), Throws.TypeOf<DivideByZeroException>(), $"{typeof(UInt24).Name} DivRem(Zero, Zero)");
+    Assert.That(() => DivRem(UInt24.One, UInt24.Zero), Throws.TypeOf<DivideByZeroException>(), $"{typeof(UInt24).Name} DivRem(One, Zero)");
 
     Assert.That(DivRem(UInt24.Zero, UInt24.One), Is.EqualTo((UInt24.Zero, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(Zero, One)");
     Assert.That(DivRem(UInt24.One, UInt24.One), Is.EqualTo((UInt24.One, UInt24.Zero)), $"{typeof(UInt24).Name} DivRem(One, One)");
@@ -129,8 +129,8 @@ partial class UInt48Tests {
   [Test]
   public void DivRem()
   {
-    Assert.Throws<DivideByZeroException>(() => DivRem(UInt48.Zero, UInt48.Zero), $"{typeof(UInt48).Name} DivRem(Zero, Zero)");
-    Assert.Throws<DivideByZeroException>(() => DivRem(UInt48.One, UInt48.Zero), $"{typeof(UInt48).Name} DivRem(One, Zero)");
+    Assert.That(() => DivRem(UInt48.Zero, UInt48.Zero), Throws.TypeOf<DivideByZeroException>(), $"{typeof(UInt48).Name} DivRem(Zero, Zero)");
+    Assert.That(() => DivRem(UInt48.One, UInt48.Zero), Throws.TypeOf<DivideByZeroException>(), $"{typeof(UInt48).Name} DivRem(One, Zero)");
 
     Assert.That(DivRem(UInt48.Zero, UInt48.One), Is.EqualTo((UInt48.Zero, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(Zero, One)");
     Assert.That(DivRem(UInt48.One, UInt48.One), Is.EqualTo((UInt48.One, UInt48.Zero)), $"{typeof(UInt48).Name} DivRem(One, One)");
