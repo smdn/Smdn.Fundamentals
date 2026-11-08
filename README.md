@@ -64,7 +64,14 @@ Some of `Smdn.Fundamental.*` are based on former `Smdn.dll`.
 
 The list of APIs and the list of assemblies to be transferred are listed in [these files](doc/api-list/).
 
-## Extracted Projects (Build Assets & MSBuild SDKs)
+## Extracted Projects
+
+### Smdn.Extensions.Polly.KeyedRegistry
+The project `Smdn.Extensions.Polly.KeyedRegistry` previously maintained in this repository have been extracted to a dedicated repository: **[`smdn/Smdn.Extensions.Polly`](https://github.com/smdn/Smdn.Extensions.Polly)**. For details regarding the extraction process and associated changes, please refer to [smdn/Smdn.Fundamentals#378](https://github.com/smdn/Smdn.Fundamentals/pull/378).
+
+For further details, source code, or issue tracking regarding these packages, please visit the new repository [`smdn/Smdn.Extensions.Polly`](https://github.com/smdn/Smdn.Extensions.Polly).
+
+### Build Assets & MSBuild SDKs
 The following MSBuild SDKs and build assets previously maintained in this repository have been extracted to a dedicated repository: **[`smdn/Smdn.Fundamentals.BuildAssets`](https://github.com/smdn/Smdn.Fundamentals.BuildAssets)**. For details regarding the extraction process and associated changes, please refer to [smdn/Smdn.Fundamentals#368](https://github.com/smdn/Smdn.Fundamentals/pull/368).
 
 For further details, source code, or issue tracking regarding these packages, please visit the new repository.
