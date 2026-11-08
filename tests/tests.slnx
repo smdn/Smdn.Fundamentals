@@ -1,5 +1,4 @@
 ﻿<Solution>
-  <Project Path="Smdn.Extensions.Polly.KeyedRegistry/Smdn.Extensions.Polly.KeyedRegistry.Tests.csproj" />
   <Project Path="Smdn.Fundamental.Buffer/Smdn.Fundamental.Buffer.Tests.csproj" />
   <Project Path="Smdn.Fundamental.ByteString/Smdn.Fundamental.ByteString.Tests.csproj" />
   <Project Path="Smdn.Fundamental.Collection/Smdn.Fundamental.Collection.Tests.csproj" />

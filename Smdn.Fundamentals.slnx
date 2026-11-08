@@ -4,7 +4,6 @@ SPDX-License-Identifier: MIT
 -->
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Smdn.Extensions.Polly.KeyedRegistry/Smdn.Extensions.Polly.KeyedRegistry.csproj" />
     <Project Path="src/Smdn.Fundamental.Buffer/Smdn.Fundamental.Buffer.csproj" />
     <Project Path="src/Smdn.Fundamental.ByteString/Smdn.Fundamental.ByteString.csproj" />
     <Project Path="src/Smdn.Fundamental.Collection/Smdn.Fundamental.Collection.csproj" />
@@ -55,7 +54,6 @@ SPDX-License-Identifier: MIT
     <Project Path="src/Smdn/Smdn.csproj" />
   </Folder>
   <Folder Name="/tests/">
-    <Project Path="tests/Smdn.Extensions.Polly.KeyedRegistry/Smdn.Extensions.Polly.KeyedRegistry.Tests.csproj" />
     <Project Path="tests/Smdn.Fundamental.Buffer/Smdn.Fundamental.Buffer.Tests.csproj" />
     <Project Path="tests/Smdn.Fundamental.ByteString/Smdn.Fundamental.ByteString.Tests.csproj" />
     <Project Path="tests/Smdn.Fundamental.Collection/Smdn.Fundamental.Collection.Tests.csproj" />
