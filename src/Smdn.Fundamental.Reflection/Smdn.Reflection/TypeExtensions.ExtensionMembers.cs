@@ -139,8 +139,6 @@ static partial class TypeExtensions {
     return true;
   }
 
-#pragma warning disable CA1034 // see https://github.com/dotnet/sdk/issues/51681
-#pragma warning disable CS1734 // see https://github.com/dotnet/roslyn/pull/81269
   /// <param name="t">The instance of the <see cref="Type"/> being invoked by the extension member.</param>
   extension(Type t) {
     /// <summary>
@@ -510,5 +508,4 @@ static partial class TypeExtensions {
     }
 #pragma warning restore CA1502
   } // extension(Type t)
-#pragma warning restore CA1034, CS1734
 }
